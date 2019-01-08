@@ -240,6 +240,15 @@
   <data name="PutLists" xml:space="preserve">
     <value>Liste di Versamento</value>
   </data>
+  <data name="Missions" xml:space="preserve">
+    <value>Missioni</value>
+  </data>
+  <data name="Requests" xml:space="preserve">
+    <value>Richieste</value>
+  </data>
+  <data name="Scheduler" xml:space="preserve">
+    <value>Schedulatore</value>
+  </data>
   <data name="ListRowDetails" xml:space="preserve">
     <value>Dettagli della riga lista</value>
   </data>

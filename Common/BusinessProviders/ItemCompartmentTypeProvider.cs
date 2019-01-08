@@ -10,56 +10,66 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
-        private readonly IDatabaseContextService dataContext;
+        private readonly IDatabaseContextService dataContextService;
 
         #endregion Fields
 
         #region Constructors
 
         public ItemCompartmentTypeProvider(
-            IDatabaseContextService context)
+            IDatabaseContextService dataContextService)
         {
-            this.dataContext = context;
+            this.dataContextService = dataContextService;
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public async Task<OperationResult> Add(ItemCompartmentType model)
+        public async Task<OperationResult> AddAsync(ItemCompartmentType model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
+
             try
             {
-                var dataContext = this.dataContext.Current;
-                var existing = dataContext.ItemsCompartmentTypes.SingleOrDefault(
-                    ict =>
-                    (ict.CompartmentTypeId == model.CompartmentTypeId
-                    && ict.ItemId == model.ItemId));
-
-                if (existing == null)
+                using (var dataContext = this.dataContextService.Current)
                 {
-                    var entry = dataContext.ItemsCompartmentTypes.Add(new DataModels.ItemCompartmentType
-                    {
-                        CompartmentTypeId = model.CompartmentTypeId,
-                        ItemId = model.ItemId,
-                        MaxCapacity = model.MaxCapacity
-                    });
+                    var itemCompartmentType = dataContext.ItemsCompartmentTypes
+                    .SingleOrDefault(ict =>
+                        ict.CompartmentTypeId == model.CompartmentTypeId
+                        &&
+                        ict.ItemId == model.ItemId);
 
-                    var changedEntitiesCount = await dataContext.SaveChangesAsync();
-                    if (changedEntitiesCount <= 0)
+                    if (itemCompartmentType == null)
                     {
-                        return new OperationResult(false, description: string.Format(Resources.Errors.NotAddDB, nameof(ItemCompartmentType)));
+                        var entry = dataContext.ItemsCompartmentTypes.Add(new DataModels.ItemCompartmentType
+                        {
+                            CompartmentTypeId = model.CompartmentTypeId,
+                            ItemId = model.ItemId,
+                            MaxCapacity = model.MaxCapacity
+                        });
+
+                        var changedEntitiesCount = await dataContext.SaveChangesAsync();
+                        if (changedEntitiesCount <= 0)
+                        {
+                            return new OperationResult(false);
+                        }
                     }
+                    else
+                    {
+                        dataContext.Entry(itemCompartmentType).CurrentValues.SetValues(model);
+                        await dataContext.SaveChangesAsync();
+                    }
+
+                    return new OperationResult(true);
                 }
-                return new OperationResult(true);
             }
             catch (Exception ex)
             {
-                return new OperationResult(false, description: ex.Message);
+                return new OperationResult(ex);
             }
         }
 
@@ -83,7 +93,7 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotImplementedException();
         }
 
-        public int Save(ItemCompartmentType model)
+        public Task<OperationResult> SaveAsync(ItemCompartmentType model)
         {
             throw new NotImplementedException();
         }

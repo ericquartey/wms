@@ -232,6 +232,10 @@
       <Project>{2ddc7447-9196-4c21-af86-502d0c952669}</Project>
       <Name>OperatorApp</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RemoteIODriver\RemoteIODriver.csproj">
+      <Project>{65b277ef-77fd-4a89-b550-086df53be54c}</Project>
+      <Name>RemoteIODriver</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utils\Utils.csproj">
       <Project>{eaeeeb73-e9e7-4cdf-b100-a433a33562e3}</Project>
       <Name>Utils</Name>

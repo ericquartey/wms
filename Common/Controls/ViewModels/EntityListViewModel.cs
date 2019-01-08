@@ -77,7 +77,7 @@ namespace Ferretto.Common.Controls
             protected set => this.SetProperty(ref this.flattenDataSource, value);
         }
 
-        [Display(Name = nameof(General.Search), ResourceType = typeof(General))]
+        [Display(Name = nameof(DesktopApp.SearchLabel), ResourceType = typeof(DesktopApp))]
         public string SearchText { get; set; }
 
         public Tile SelectedFilter

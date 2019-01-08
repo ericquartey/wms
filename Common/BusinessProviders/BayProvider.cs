@@ -27,7 +27,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<OperationResult> Add(Bay model)
+        public Task<OperationResult> AddAsync(Bay model)
         {
             throw new NotImplementedException();
         }
@@ -90,20 +90,29 @@ namespace Ferretto.Common.BusinessProviders
                    .SingleAsync();
         }
 
-        public int Save(Bay model)
+        public async Task<OperationResult> SaveAsync(Bay model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+
+            try
             {
-                var existingModel = dataContext.Bays.Find(model.Id);
+                using (var dataContext = this.dataContext.Current)
+                {
+                    var existingModel = dataContext.Bays.Find(model.Id);
 
-                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                    dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return dataContext.SaveChanges();
+                    var changedEntityCount = await dataContext.SaveChangesAsync();
+
+                    return new OperationResult(changedEntityCount > 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(ex);
             }
         }
 
