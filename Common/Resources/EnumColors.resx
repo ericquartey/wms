@@ -189,6 +189,15 @@
     <value>#57A639</value>
   </data>
   <data name="MissionStatusNew" xml:space="preserve">
-    <value>#FB8C00</value>
+    <value>#970da0</value>
+  </data>
+  <data name="MissionStatusWaiting" xml:space="preserve">
+    <value>#00BCD4</value>
+  </data>
+  <data name="MissionStatusExecuting" xml:space="preserve">
+    <value>#0D47A1</value>
+  </data>
+  <data name="MissionStatusError" xml:space="preserve">
+    <value>#D50000</value>
   </data>
 </root>
