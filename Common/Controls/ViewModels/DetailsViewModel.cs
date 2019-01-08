@@ -16,10 +16,15 @@ namespace Ferretto.Common.Controls
         private readonly ChangeDetector<T> changeDetector = new ChangeDetector<T>();
 
         private readonly IDialogService dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
+
         private bool isBusy;
+
         private bool isValidationEnabled;
+
         private T model;
+
         private ICommand revertCommand;
+
         private ICommand saveCommand;
 
         #endregion Fields
@@ -86,16 +91,20 @@ namespace Ferretto.Common.Controls
         }
 
         public ICommand RevertCommand => this.revertCommand ??
-                    (this.revertCommand = new DelegateCommand(async () => await this.ExecuteRevertWithPrompt().ConfigureAwait(true), this.CanExecuteRevertCommand));
+            (this.revertCommand = new DelegateCommand(
+                async () => await this.ExecuteRevertWithPrompt(),
+                this.CanExecuteRevertCommand));
 
         public ICommand SaveCommand => this.saveCommand ??
-                                       (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand));
+            (this.saveCommand = new DelegateCommand(
+                async () => await this.ExecuteSaveCommand(),
+                this.CanExecuteSaveCommand));
 
         #endregion Properties
 
         #region Methods
 
-        public override System.Boolean CanDisappear()
+        public override bool CanDisappear()
         {
             if (this.changeDetector.IsModified)
             {
@@ -141,14 +150,26 @@ namespace Ferretto.Common.Controls
 
         protected abstract Task ExecuteRevertCommand();
 
-        protected abstract void ExecuteSaveCommand();
+        protected abstract Task ExecuteSaveCommand();
+
+        protected virtual void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            this.EvaluateCanExecuteCommands();
+        }
+
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+
+            this.model.PropertyChanged -= this.Model_PropertyChanged;
+        }
 
         protected void TakeModelSnapshot()
         {
             this.changeDetector.TakeSnapshot(this.model);
         }
 
-        private void ChangeDetector_ModifiedChanged(System.Object sender, System.EventArgs e)
+        private void ChangeDetector_ModifiedChanged(object sender, System.EventArgs e)
         {
             this.EvaluateCanExecuteCommands();
         }
@@ -165,11 +186,6 @@ namespace Ferretto.Common.Controls
             {
                 await this.ExecuteRevertCommand();
             }
-        }
-
-        private void Model_PropertyChanged(System.Object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            this.EvaluateCanExecuteCommands();
         }
 
         #endregion Methods

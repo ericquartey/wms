@@ -11,7 +11,7 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Methods
 
-        Task<OperationResult> Add(TDetailsModel model);
+        Task<OperationResult> AddAsync(TDetailsModel model);
 
         int Delete(int id);
 
@@ -21,7 +21,7 @@ namespace Ferretto.Common.BusinessProviders
 
         Task<TDetailsModel> GetById(int id);
 
-        int Save(TDetailsModel model);
+        Task<OperationResult> SaveAsync(TDetailsModel model);
 
         #endregion Methods
     }

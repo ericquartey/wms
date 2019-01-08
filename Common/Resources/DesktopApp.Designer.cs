@@ -259,11 +259,11 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to save changes..
+        ///   Looks up a localized string similar to .
         /// </summary>
-        public static string UnableToSaveChanges {
+        public static string SearchLabel {
             get {
-                return ResourceManager.GetString("UnableToSaveChanges", resourceCulture);
+                return ResourceManager.GetString("SearchLabel", resourceCulture);
             }
         }
     }

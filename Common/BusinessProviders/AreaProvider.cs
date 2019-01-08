@@ -27,7 +27,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<OperationResult> Add(Area model)
+        public Task<OperationResult> AddAsync(Area model)
         {
             throw new NotImplementedException();
         }
@@ -44,8 +44,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.Areas.AsNoTracking().Count();
             }
@@ -80,20 +79,29 @@ namespace Ferretto.Common.BusinessProviders
                 .Distinct();
         }
 
-        public int Save(Area model)
+        public async Task<OperationResult> SaveAsync(Area model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+
+            try
             {
-                var existingModel = dataContext.Areas.Find(model.Id);
+                using (var dataContext = this.dataContext.Current)
+                {
+                    var existingModel = dataContext.Areas.Find(model.Id);
 
-                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                    dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return dataContext.SaveChanges();
+                    var changedEntityCount = await dataContext.SaveChangesAsync();
+
+                    return new OperationResult(changedEntityCount > 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(ex);
             }
         }
 
