@@ -18,13 +18,13 @@ namespace Ferretto.WMS.Scheduler.Core
 
         public int ItemId { get; set; }
 
-        public string Lot { get; set; }
-
         public int? ItemListId { get; set; }
 
         public int? ItemListRowId { get; set; }
 
         public int LoadingUnitId { get; set; }
+
+        public string Lot { get; set; }
 
         public int? MaterialStatusId { get; set; }
 

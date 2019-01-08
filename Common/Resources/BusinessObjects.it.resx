@@ -766,4 +766,46 @@
   <data name="LastExecutionDate" xml:space="preserve">
     <value>Data Ultima Esecuzione</value>
   </data>
+  <data name="MissionStatusNew" xml:space="preserve">
+    <value>Nuovo</value>
+  </data>
+  <data name="MissionStatusWaiting" xml:space="preserve">
+    <value>In attesa</value>
+  </data>
+  <data name="MissionStatusExecuting" xml:space="preserve">
+    <value>In esecuzione</value>
+  </data>
+  <data name="MissionStatusCompleted" xml:space="preserve">
+    <value>Completato</value>
+  </data>
+  <data name="MissionStatusError" xml:space="preserve">
+    <value>Errore</value>
+  </data>
+  <data name="MissionTypeBypass" xml:space="preserve">
+    <value>By passare</value>
+  </data>
+  <data name="MissionTypeInventory" xml:space="preserve">
+    <value>Inventario</value>
+  </data>
+  <data name="MissionTypePick" xml:space="preserve">
+    <value>Prelievo</value>
+  </data>
+  <data name="MissionTypePut" xml:space="preserve">
+    <value>Versamento</value>
+  </data>
+  <data name="MissionTypeReorder" xml:space="preserve">
+    <value>Riordino</value>
+  </data>
+  <data name="MissionTypeReplace" xml:space="preserve">
+    <value>Rimpiazzo</value>
+  </data>
+  <data name="Item" xml:space="preserve">
+    <value>Articolo</value>
+  </data>
+  <data name="ItemList" xml:space="preserve">
+    <value>Liste</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Baia</value>
+  </data>
 </root>
