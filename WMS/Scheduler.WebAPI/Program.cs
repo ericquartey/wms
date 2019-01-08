@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.WindowsServices;
 using Microsoft.Extensions.Configuration;
 
-namespace Ferretto.WMS.Scheduler.WebAPI.Host
+namespace Ferretto.WMS.Scheduler.WebAPI
 {
     public class Program
     {

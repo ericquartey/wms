@@ -13,18 +13,17 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
         #region Fields
 
         private readonly ILogger logger;
+
         private readonly IServiceProvider serviceProvider;
 
         #endregion Fields
 
         #region Constructors
 
-        public MissionsController(
-            IServiceProvider serviceProvider,
-            ILogger<ItemsController> logger)
+        public MissionsController(IServiceProvider serviceProvider, ILogger<BaysController> logger)
         {
-            this.logger = logger;
             this.serviceProvider = serviceProvider;
+            this.logger = logger;
         }
 
         #endregion Constructors
@@ -32,26 +31,15 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
         #region Methods
 
         [HttpPost("Abort")]
-        public async Task<ActionResult> Abort(Mission mission)
+        public Task<ActionResult> Abort(Mission mission)
         {
-            await Task.Delay(1000);
-            this.logger.LogInformation($"Mission {mission} aborted.");
-            return this.Ok();
+            throw new NotImplementedException();
         }
 
         [HttpPost("Complete")]
-        public async Task<ActionResult> Complete(Mission mission)
+        public Task<ActionResult> Complete(Mission mission)
         {
-            await Task.Delay(1000);
-            this.logger.LogInformation($"Mission {mission} completed.");
-            return this.Ok();
-        }
-
-        [HttpGet]
-        public async Task<ActionResult> GetAll(int bayId)
-        {
-            await Task.Delay(100);
-            return this.Ok();
+            throw new NotImplementedException();
         }
 
         #endregion Methods

@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <OutputType>Exe</OutputType>
     <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
-    <StartupObject>Ferretto.WMS.Scheduler.WebAPI.Host.Program</StartupObject>
+    <StartupObject>Ferretto.WMS.Scheduler.WebAPI.Program</StartupObject>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

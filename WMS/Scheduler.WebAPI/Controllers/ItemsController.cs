@@ -1,12 +1,9 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
-using Ferretto.Common.EF;
 using Ferretto.WMS.Scheduler.WebAPI.Hubs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
@@ -18,9 +15,13 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
         #region Fields
 
         private const string DEFAULT_ORDERBY_FIELD = nameof(Item.Code);
+
         private readonly IHubContext<WakeupHub, IWakeupHub> hubContext;
+
         private readonly ILogger logger;
+
         private readonly IServiceProvider serviceProvider;
+
         private readonly Core.IWarehouse warehouse;
 
         #endregion Fields
@@ -42,40 +43,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
         #endregion Constructors
 
         #region Methods
-
-        [HttpGet]
-        public async Task<ActionResult> GetAll(int skip = 0, int take = int.MaxValue, string orderBy = DEFAULT_ORDERBY_FIELD)
-        {
-            try
-            {
-                using (var dbContext = (DatabaseContext)this.serviceProvider.GetService(typeof(DatabaseContext)))
-                {
-                    var orderByField = string.IsNullOrWhiteSpace(orderBy) ? DEFAULT_ORDERBY_FIELD : orderBy;
-                    var skipValue = skip < 0 ? 0 : skip;
-                    var takeValue = take < 0 ? int.MaxValue : take;
-
-                    var expression = this.CreateSelectorExpression<Common.DataModels.Item, object>(orderByField);
-
-                    var result = await dbContext.Items
-                        .Skip(skipValue)
-                        .Take(takeValue)
-                        .OrderBy(expression)
-                        .Select(i => new Item
-                        {
-                            Id = i.Id,
-                            Code = i.Code
-                        }
-                        ).ToListAsync();
-
-                    return this.Ok(result);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, $"An error occurred while retrieving the list of lists.");
-                return this.BadRequest(ex.Message);
-            }
-        }
 
         [HttpPost(nameof(Withdraw))]
         [ProducesResponseType(201, Type = typeof(Core.SchedulerRequest))]
