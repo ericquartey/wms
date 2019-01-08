@@ -745,6 +745,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-target-50.png.
+        /// </summary>
+        public static string Missions {
+            get {
+                return ResourceManager.GetString("Missions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/navigation/ic_check_black_24dp.png.
         /// </summary>
         public static string NavigationCheck {
@@ -804,6 +813,24 @@ namespace Ferretto.Common.Resources {
         public static string PutLists {
             get {
                 return ResourceManager.GetString("PutLists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-task-50.png.
+        /// </summary>
+        public static string Requests {
+            get {
+                return ResourceManager.GetString("Requests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_date_range_white_24dp.png.
+        /// </summary>
+        public static string Scheduler {
+            get {
+                return ResourceManager.GetString("Scheduler", resourceCulture);
             }
         }
         

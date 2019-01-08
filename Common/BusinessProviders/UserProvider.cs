@@ -9,7 +9,7 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Methods
 
-        public Task<OperationResult> Add(User model)
+        public Task<OperationResult> AddAsync(User model)
         {
             throw new NotImplementedException();
         }
@@ -39,7 +39,7 @@ namespace Ferretto.Common.BusinessProviders
             return string.Empty;
         }
 
-        public int Save(User model)
+        public Task<OperationResult> SaveAsync(User model)
         {
             throw new NotImplementedException();
         }

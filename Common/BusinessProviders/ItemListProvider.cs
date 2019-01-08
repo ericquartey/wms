@@ -22,7 +22,9 @@ namespace Ferretto.Common.BusinessProviders
             list => (char)list.ItemListType == (char)(ItemListType.Put);
 
         private readonly IDatabaseContextService dataContext;
+
         private readonly ItemListRowProvider itemListRowProvider;
+
         private readonly WMS.Scheduler.WebAPI.Contracts.IItemListsService itemListService;
 
         #endregion Fields
@@ -43,7 +45,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<OperationResult> Add(ItemListDetails model)
+        public Task<OperationResult> AddAsync(ItemListDetails model)
         {
             throw new NotImplementedException();
         }
@@ -185,20 +187,29 @@ namespace Ferretto.Common.BusinessProviders
             return this.dataContext.Current.ItemLists.AsNoTracking().Count(TypePutFilter);
         }
 
-        public int Save(ItemListDetails model)
+        public async Task<OperationResult> SaveAsync(ItemListDetails model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+
+            try
             {
-                var existingModel = dataContext.ItemLists.Find(model.Id);
+                using (var dataContext = this.dataContext.Current)
+                {
+                    var existingModel = this.dataContext.Current.ItemLists.Find(model.Id);
 
-                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                    this.dataContext.Current.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return dataContext.SaveChanges();
+                    var changedEntityCount = await dataContext.SaveChangesAsync();
+
+                    return new OperationResult(changedEntityCount > 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(ex);
             }
         }
 

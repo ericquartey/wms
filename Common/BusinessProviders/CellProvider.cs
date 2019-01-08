@@ -22,6 +22,7 @@ cell => cell.CellStatusId == 1;
                    cell => cell.CellStatusId == 3;
 
         private readonly IDatabaseContextService dataContext;
+
         private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
@@ -40,7 +41,7 @@ cell => cell.CellStatusId == 1;
 
         #region Methods
 
-        public Task<OperationResult> Add(CellDetails model)
+        public Task<OperationResult> AddAsync(CellDetails model)
         {
             throw new NotImplementedException();
         }
@@ -57,8 +58,7 @@ cell => cell.CellStatusId == 1;
 
         public int GetAllCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.Cells.AsNoTracking().Count();
             }
@@ -132,10 +132,9 @@ cell => cell.CellStatusId == 1;
             return GetAllCellsWithFilter(this.dataContext.Current, ClassAFilter);
         }
 
-        public Int32 GetWithClassACount()
+        public int GetWithClassACount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.Cells.AsNoTracking().Count(ClassAFilter);
             }
@@ -146,10 +145,9 @@ cell => cell.CellStatusId == 1;
             return GetAllCellsWithFilter(this.dataContext.Current, StatusEmptyFilter);
         }
 
-        public Int32 GetWithStatusEmptyCount()
+        public int GetWithStatusEmptyCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.Cells.AsNoTracking().Count(StatusEmptyFilter);
             }
@@ -160,10 +158,9 @@ cell => cell.CellStatusId == 1;
             return GetAllCellsWithFilter(this.dataContext.Current, StatusFullFilter);
         }
 
-        public Int32 GetWithStatusFullCount()
+        public int GetWithStatusFullCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.Cells.AsNoTracking().Count(StatusFullFilter);
             }
@@ -171,28 +168,35 @@ cell => cell.CellStatusId == 1;
 
         public bool HasAnyLoadingUnits(int cellId)
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.LoadingUnits.AsNoTracking().Any(l => l.CellId == cellId);
             }
         }
 
-        public int Save(CellDetails model)
+        public async Task<OperationResult> SaveAsync(CellDetails model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            try
             {
-                var existingModel = dataContext.Cells.Find(model.Id);
+                using (var dataContext = this.dataContext.Current)
+                {
+                    var existingModel = dataContext.Cells.Find(model.Id);
 
-                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                    dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return dataContext.SaveChanges();
+                    var changedEntityCount = await dataContext.SaveChangesAsync();
+
+                    return new OperationResult(changedEntityCount > 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(ex);
             }
         }
 
