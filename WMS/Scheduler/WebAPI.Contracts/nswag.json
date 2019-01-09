@@ -4,7 +4,7 @@
   "swaggerGenerator": {
     "aspNetCoreToSwagger": {
       "configuration": "$(Configuration)",
-      "project": "../Scheduler.WebAPI/Ferretto.WMS.Scheduler.WebAPI.csproj"
+      "project": "../WebAPI/Ferretto.WMS.Scheduler.WebAPI.csproj"
 
       //...
     }
