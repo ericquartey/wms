@@ -2,17 +2,12 @@
 
   <PropertyGroup>
     <LanguageTargets>$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
-    <TargetFramework>net471</TargetFramework>
+    <TargetFrameworks>net471</TargetFrameworks>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="DevExpress.Wpf.Grid.Core" Version="18.2.3" />
-    <PackageReference Include="DevExpress.Wpf.Navigation" Version="18.2.3" />
-      <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.4" />
-      <PackageReference Include="NLog" Version="4.5.11" />
-    <PackageReference Include="Prism.Unity" Version="6.3.0" />
-    <PackageReference Include="Prism.Wpf" Version="6.3.0" />
-  </ItemGroup>
+  <PropertyGroup>
+    <OutputPath>$(SolutionDir)\WMS\App\bin\$(Configuration)</OutputPath>
+  </PropertyGroup>
 
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -34,8 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Modules\BLL\Ferretto.Common.Modules.BLL.csproj" />
-    <ProjectReference Include="..\Resources\Ferretto.Common.Resources.csproj" />
+    <ProjectReference Include="..\..\..\..\Common\Controls\Ferretto.Common.Controls.csproj" />
   </ItemGroup>
 
 </Project>
