@@ -13,8 +13,10 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.Bay), ResourceType = typeof(BusinessObjects))]
         public string BayDescription { get; set; }
 
+        [Display(Name = nameof(MasterData.CellInformation), ResourceType = typeof(MasterData))]
         public int? CellId { get; set; }
 
+        [Display(Name = nameof(MasterData.Compartment), ResourceType = typeof(MasterData))]
         public int? CompartmentId { get; set; }
 
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
@@ -35,14 +37,19 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.LoadingUnit), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitDescription { get; set; }
 
+        [Display(Name = nameof(BusinessObjects.CompartmentLot), ResourceType = typeof(BusinessObjects))]
         public string Lot { get; set; }
 
+        [Display(Name = nameof(BusinessObjects.MaterialStatus), ResourceType = typeof(BusinessObjects))]
         public int? MaterialStatusId { get; set; }
 
+        [Display(Name = nameof(BusinessObjects.PackageType), ResourceType = typeof(BusinessObjects))]
         public int? PackageTypeId { get; set; }
 
+        [Display(Name = nameof(General.Priority), ResourceType = typeof(General))]
         public int? Priority { get; set; }
 
+        [Display(Name = nameof(BusinessObjects.RegistrationNumber), ResourceType = typeof(BusinessObjects))]
         public string RegistrationNumber { get; set; }
 
         [Display(Name = nameof(General.Quantity), ResourceType = typeof(General))]
@@ -51,8 +58,10 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(General.Status), ResourceType = typeof(General))]
         public MissionStatus Status { get; set; } = MissionStatus.New;
 
+        [Display(Name = nameof(BusinessObjects.CompartmentSub1), ResourceType = typeof(BusinessObjects))]
         public string Sub1 { get; set; }
 
+        [Display(Name = nameof(BusinessObjects.CompartmentSub2), ResourceType = typeof(BusinessObjects))]
         public string Sub2 { get; set; }
 
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]

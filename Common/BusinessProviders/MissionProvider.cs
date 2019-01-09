@@ -73,7 +73,18 @@ namespace Ferretto.Common.BusinessProviders
                     Priority = m.Priority,
                     RequiredQuantity = m.RequiredQuantity,
                     Status = (MissionStatus)m.Status,
-                    Type = (MissionType)m.Type
+                    Type = (MissionType)m.Type,
+
+                    CreationDate = m.CreationDate,
+                    LastModificationDate = m.LastModificationDate,
+                    RegistrationNumber = m.RegistrationNumber,
+                    Lot = m.Lot,
+                    CellId = m.CellId,
+                    CompartmentId = m.CompartmentId,
+                    MaterialStatusId = m.MaterialStatusId,
+                    PackageTypeId = m.PackageTypeId,
+                    Sub1 = m.Sub1,
+                    Sub2 = m.Sub2
                 });
         }
 
