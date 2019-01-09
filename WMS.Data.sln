@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.Utils", "Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.Resources", "Common\Resources\Ferretto.Common.Resources.csproj", "{C22EC77B-1DE1-47FD-B8CA-8C861480C8B7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Data.Tests", "Ferretto.WMS.Data.Tests\Ferretto.WMS.Data.Tests.csproj", "{88376B56-F8BE-4672-8552-E6117ECB2A25}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{C22EC77B-1DE1-47FD-B8CA-8C861480C8B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C22EC77B-1DE1-47FD-B8CA-8C861480C8B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C22EC77B-1DE1-47FD-B8CA-8C861480C8B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88376B56-F8BE-4672-8552-E6117ECB2A25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88376B56-F8BE-4672-8552-E6117ECB2A25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88376B56-F8BE-4672-8552-E6117ECB2A25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88376B56-F8BE-4672-8552-E6117ECB2A25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +66,7 @@ Global
 		{EF8C10AB-1349-40F0-BC6C-832246E29DCB} = {C6AB2AE0-C101-4638-AC86-6B6BCB7ACCB2}
 		{63DE2B5E-FFFE-4389-8E8C-A95785FE251E} = {7C870AE6-46DD-493B-BAD9-FDEFE22ECA1F}
 		{C22EC77B-1DE1-47FD-B8CA-8C861480C8B7} = {7C870AE6-46DD-493B-BAD9-FDEFE22ECA1F}
+		{88376B56-F8BE-4672-8552-E6117ECB2A25} = {C6AB2AE0-C101-4638-AC86-6B6BCB7ACCB2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B998A0C5-DD2C-4088-9C42-300A146A4118}
