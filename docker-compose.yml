@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  ferretto.wms.data.webapi:
+    image: ${DOCKER_REGISTRY-}ferrettowmsdatawebapi
+    build:
+      context: .
+      dockerfile: WMS\Data\WebAPI\Dockerfile

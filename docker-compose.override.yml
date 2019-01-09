@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  ferretto.wms.data.webapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS="https://*;http://*"
+      - ASPNETCORE_HTTPS_PORT=443
+      - Kestrel__Certificates__Default__Path=/app/dev-certificate.pfx
+      - Kestrel__Certificates__Default__Password=ferretto
+
+    ports:
+      - "6000:80"
+      - "6001:443"
+
+networks:
+  default:
+    external:
+      name: nat
