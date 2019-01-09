@@ -9,14 +9,77 @@
              xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
              Title="{x:Static res:Navigation.Missions}"
              MinHeight="300"
              d:DesignHeight="450"
              d:DesignWidth="800"
              EnableHistoryView="True"
              mc:Ignorable="d">
+    <wms:WmsView.Resources>
+        <dxg:RowPropertyValueConverter x:Key="rowPropertyConverter" />
+
+        
+        <DataTemplate x:Key="DetailTooltipTemplate">
+            <dx:MeasurePixelSnapper MaxWidth="300" MaxHeight="300">
+                <Border  Padding="2">
+                    <WrapPanel Orientation="Horizontal" ><!--DataContext="{Binding Path=Row}"-->
+                        <!--<TextBlock Text="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=ItemDescription}" Margin="5,0,5,0"/>-->
+                        <wms:InfoText Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=CellId}" />
+                        <wms:InfoText Grid.Row="0"
+                                 Grid.Column="1"
+                                     Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=CompartmentId}" />
+                        <wms:InfoText Grid.Row="1"
+                                 Grid.Column="0"
+                                     Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=Sub1}" />
+                        <wms:InfoText Grid.Row="1"
+                                 Grid.Column="1"
+                                     Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=Sub2}" />
+                        <wms:InfoText Grid.Row="2"
+                                 Grid.Column="0"
+                                     Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=MaterialStatusId}" />
+                        <wms:InfoText Grid.Row="2"
+                                 Grid.Column="1"
+                                     Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=PackageTypeId}" />
+                        <wms:InfoText Grid.Row="3"
+                                 Grid.Column="0"
+                                     Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=RegistrationNumber}" />
+                        <wms:InfoText Grid.Row="3"
+                                 Grid.Column="1"
+                                     Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=Lot}" />
+                    </WrapPanel>
+                </Border>
+            </dx:MeasurePixelSnapper>
+        </DataTemplate>
+        <!--Style="{StaticResource brdGroupBox}"-->
+        <!--<DataTemplate x:Key="rowWithToolTipTemplate">
+            <ContentPresenter Content="{Binding}" ContentTemplate="{Binding View.DefaultDataRowTemplate}">
+                <ToolTipService.ToolTip>
+                    <ContentControl Content="{Binding}" ContentTemplate="{DynamicResource DetailTooltipTemplate}" />
+                </ToolTipService.ToolTip>
+            </ContentPresenter>
+        </DataTemplate>-->
+
+        <ImageBrush x:Key="AddButtonImageBrush" ImageSource="pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_visibility_black_36dp.png" Stretch="UniformToFill"/>
+
+
+        <Style TargetType="{x:Type Button}" x:Key="ImageButtonStyle">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <ContentPresenter/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </wms:WmsView.Resources>
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"
+                           MaxHeight="350"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
@@ -47,7 +110,6 @@
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_add_circle_outline_black_24dp.png"
                                    GlyphSize="Custom" />
-                
                 <wms:ActionBarItem Content="{x:Static res:General.Refresh}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
@@ -65,8 +127,19 @@
                     <dxg:TableView SearchPanelHorizontalAlignment="Right"
                                    ShowFilterPanelMode="ShowAlways"
                                    ShowSearchPanelMode="Always">
+                        <!--NavigationStyle="Row"
+                        Name=view -->
+                        <!--dxg:TableView.RowStyle>
+                            <Style TargetType="dxg:RowControl">
+                                --><!--<Setter Property="ToolTip" Value="{Binding Row.ItemDescription}" />--><!--
+                                <Setter Property="ToolTipService.ToolTip">
+                                    <Setter.Value>
+                                        <ContentControl Content="{Binding}" ContentTemplate="{DynamicResource DetailTooltipTemplate}" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </dxg:TableView.RowStyle>-->
                     </dxg:TableView>
-
                 </wms:WmsGridControl.View>
 
                 <wms:WmsGridControl.Columns>
@@ -87,6 +160,57 @@
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
                     </dxg:GridColumn>
+                    <dxg:GridColumn Width="80*"
+                                    FieldName="Id"
+                                    CellToolTipBinding="{Binding}">
+                        <dxg:GridColumn.CellTemplate>
+                            <DataTemplate>
+                                <!--<Button Style="{StaticResource ImageButtonStyle}" >-->
+                                    <Image  Width="16" Height="16">
+                                        <Image.Source>
+                                            <BitmapImage UriSource="pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_visibility_black_36dp.png"/>
+                                        </Image.Source>
+                                    </Image>
+                                <!--</Button>-->
+                                <!--UriSource="{StaticResource AddButtonImageBrush}"-->
+                            </DataTemplate>
+                        </dxg:GridColumn.CellTemplate>
+                        <dxg:GridColumn.CellToolTipTemplate>
+                            <DataTemplate >
+                                <dx:MeasurePixelSnapper MaxWidth="300" MaxHeight="300">
+                                    <Border  Padding="2">
+                                        <WrapPanel Orientation="Horizontal" >
+                                            <!--DataContext="{Binding Path=Row}"-->
+                                            <!--<TextBlock Text="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=ItemDescription}" Margin="5,0,5,0"/>-->
+                                            <wms:InfoText Content="{Binding Path=RowData.Row.CellId}" />
+                                            <wms:InfoText Grid.Row="0"
+                                 Grid.Column="1"
+                                     Content="{Binding Converter={StaticResource rowPropertyConverter}, ConverterParameter=Mission.CompartmentId}" />
+                                            <wms:InfoText Grid.Row="1"
+                                 Grid.Column="0"
+                                     Content="{Binding Path=Data, Converter={StaticResource rowPropertyConverter}, ConverterParameter=Sub1}" />
+                                            <wms:InfoText Grid.Row="1"
+                                 Grid.Column="1"
+                                     Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=Sub2}" />
+                                            <wms:InfoText Grid.Row="2"
+                                 Grid.Column="0"
+                                     Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=MaterialStatusId}" />
+                                            <wms:InfoText Grid.Row="2"
+                                 Grid.Column="1"
+                                     Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=PackageTypeId}" />
+                                            <wms:InfoText Grid.Row="3"
+                                 Grid.Column="0"
+                                     Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=RegistrationNumber}" />
+                                            <wms:InfoText Grid.Row="3"
+                                 Grid.Column="1"
+                                     Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=Lot}" />
+                                        </WrapPanel>
+                                    </Border>
+                                </dx:MeasurePixelSnapper>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellToolTipTemplate>
+                    </dxg:GridColumn>
+
                     <dxg:GridColumn Width="140*"
                                     FieldName="BayDescription" />
                     <dxg:GridColumn Width="370*"
@@ -113,6 +237,278 @@
                 </wms:WmsGridControl.SortInfo>
 
             </wms:WmsGridControl>
+        </Grid>
+
+
+        <Grid Grid.Row="1"
+              Grid.Column="0"
+              Background="#E6E6E6"
+               Grid.ColumnSpan="2" Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto"
+                              MaxWidth="400" />
+            </Grid.ColumnDefinitions>
+
+            <!--<GroupBox Grid.Row="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          Header="{x:Static res:MasterData.ItemInformation}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"  />
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <wms:InfoText Content="{Binding Path=Model.CellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <wms:InfoText Grid.Row="0"
+                                 Grid.Column="1"
+                                     Content="{Binding Path=Model.CompartmentId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <wms:InfoText Grid.Row="1"
+                                 Grid.Column="0"
+                                     Content="{Binding Path=Model.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <wms:InfoText Grid.Row="1"
+                                 Grid.Column="1"
+                                     Content="{Binding Path=Model.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <wms:InfoText Grid.Row="2"
+                                 Grid.Column="0"
+                                     Content="{Binding Path=Model.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <wms:InfoText Grid.Row="2"
+                                 Grid.Column="1"
+                                     Content="{Binding Path=Model.PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <wms:InfoText Grid.Row="3"
+                                 Grid.Column="0"
+                                     Content="{Binding Path=Model.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <wms:InfoText Grid.Row="3"
+                                 Grid.Column="1"
+                                     Content="{Binding Path=Model.Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+            </GroupBox>-->
+
+            <ScrollViewer Grid.RowSpan="2"
+                      Grid.Column="0"
+                      Focusable="False"
+                      IsTabStop="False">
+
+
+                <Border BorderThickness="1" BorderBrush="#c5c7c4"
+                        Margin="0,0,2,2">
+                    <!--<Border.BorderBrush>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Offset="0" Color="Black"/>
+                            <GradientStop Offset="0.6" Color="Black"/>
+                            <GradientStop Offset="1" Color="Transparent"/>
+                        </LinearGradientBrush>
+                    </Border.BorderBrush>-->
+
+                    <GroupBox Margin="20,0,20,20"
+                          Header="{x:Static res:MasterData.OtherInformation}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"  />
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <wms:InfoText Content="{Binding Path=CurrentItem.CellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <wms:InfoText Grid.Row="0"
+                                 Grid.Column="1"
+                                     Content="{Binding Path=CurrentItem.CompartmentId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <wms:InfoText Grid.Row="1"
+                                 Grid.Column="0"
+                                     Content="{Binding Path=CurrentItem.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <wms:InfoText Grid.Row="1"
+                                 Grid.Column="1"
+                                     Content="{Binding Path=CurrentItem.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <wms:InfoText Grid.Row="2"
+                                 Grid.Column="0"
+                                     Content="{Binding Path=CurrentItem.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <wms:InfoText Grid.Row="2"
+                                 Grid.Column="1"
+                                     Content="{Binding Path=CurrentItem.PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <wms:InfoText Grid.Row="3"
+                                 Grid.Column="0"
+                                     Content="{Binding Path=CurrentItem.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <wms:InfoText Grid.Row="3"
+                                 Grid.Column="1"
+                                     Content="{Binding Path=CurrentItem.Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <wms:InfoText HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                          Grid.Column="2"
+                                      Content="{Binding Path=CurrentItem.CreationDate}" />
+                            <wms:InfoText HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                          Grid.Column="2"
+                                          Grid.Row="1"
+                                      Content="{Binding Path=CurrentItem.LastModificationDate}" />
+                        </Grid>
+                        <!--<StackPanel Orientation="Vertical">
+                            <wms:InfoText HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                      Content="{Binding Path=Model.CreationDate}" />
+                            <wms:InfoText HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                      Content="{Binding Path=Model.LastModificationDate}" />
+                        </StackPanel>-->
+                    </GroupBox>
+                </Border>
+            </ScrollViewer>
+            
+        </Grid>
+
+
+        <Grid Grid.Row="1"
+              Grid.Column="0"
+              Background="#E6E6E6"
+               Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto"
+                              MaxWidth="400" />
+            </Grid.ColumnDefinitions>
+
+            <!--<GroupBox Grid.Row="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          Header="{x:Static res:MasterData.ItemInformation}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"  />
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <wms:InfoText Content="{Binding Path=Model.CellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <wms:InfoText Grid.Row="0"
+                                 Grid.Column="1"
+                                     Content="{Binding Path=Model.CompartmentId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <wms:InfoText Grid.Row="1"
+                                 Grid.Column="0"
+                                     Content="{Binding Path=Model.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <wms:InfoText Grid.Row="1"
+                                 Grid.Column="1"
+                                     Content="{Binding Path=Model.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <wms:InfoText Grid.Row="2"
+                                 Grid.Column="0"
+                                     Content="{Binding Path=Model.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <wms:InfoText Grid.Row="2"
+                                 Grid.Column="1"
+                                     Content="{Binding Path=Model.PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <wms:InfoText Grid.Row="3"
+                                 Grid.Column="0"
+                                     Content="{Binding Path=Model.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <wms:InfoText Grid.Row="3"
+                                 Grid.Column="1"
+                                     Content="{Binding Path=Model.Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+            </GroupBox>-->
+
+            <ScrollViewer Grid.RowSpan="2"
+                      Grid.Column="0"
+                      Focusable="False"
+                      IsTabStop="False">
+
+
+                <Border BorderThickness="1" BorderBrush="#c5c7c4"
+                        Margin="0,0,2,2">
+                    <!--<Border.BorderBrush>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Offset="0" Color="Black"/>
+                            <GradientStop Offset="0.6" Color="Black"/>
+                            <GradientStop Offset="1" Color="Transparent"/>
+                        </LinearGradientBrush>
+                    </Border.BorderBrush>-->
+
+                    <GroupBox Margin="20,0,20,20"
+                          Header="{x:Static res:MasterData.OtherInformation}">
+                        <Grid MaxHeight="150">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <!--<Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"  />
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>-->
+
+                            <!--<dxg:GridControl x:Name="grid" AutoGenerateColumns="AddNew" MaxHeight="150">
+                                <dxg:GridControl.Columns>
+                                    <dxg:GridColumn FieldName="Id" Width="100"/>
+                                    <dxg:GridColumn FieldName="Name" Width="100"/>
+                                    <dxg:GridColumn FieldName="Bool" Width="100"/>
+                                </dxg:GridControl.Columns>
+                                <dxg:GridControl.View>
+                                    <dxg:TableView Name="view" ShowTotalSummary="True" NavigationStyle="Row">
+                                        <dxg:TableView.RowStyle>
+                                            <Style TargetType="dxg:RowControl">
+                                                <Setter Property="ToolTip" Value="{Binding Row.Name}" />
+                                            </Style>
+                                        </dxg:TableView.RowStyle>
+                                    </dxg:TableView>
+                                </dxg:GridControl.View>
+                            </dxg:GridControl>-->
+
+                            <wms:InfoText Content="{Binding Path=CurrentItem.CellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <wms:InfoText Grid.Row="0"
+                                 Grid.Column="1"
+                                     Content="{Binding Path=CurrentItem.CompartmentId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <wms:InfoText Grid.Row="1"
+                                 Grid.Column="0"
+                                     Content="{Binding Path=CurrentItem.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <wms:InfoText Grid.Row="1"
+                                 Grid.Column="2"
+                                     Content="{Binding Path=CurrentItem.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <wms:InfoText Grid.Row="2"
+                                 Grid.Column="0"
+                                     Content="{Binding Path=CurrentItem.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <wms:InfoText Grid.Row="2"
+                                 Grid.Column="1"
+                                     Content="{Binding Path=CurrentItem.PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <wms:InfoText Grid.Row="3"
+                                 Grid.Column="0"
+                                     Content="{Binding Path=CurrentItem.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <wms:InfoText Grid.Row="3"
+                                 Grid.Column="1"
+                                     Content="{Binding Path=CurrentItem.Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <wms:InfoText HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                          Grid.Column="2"
+                                      Content="{Binding Path=CurrentItem.CreationDate}" />
+                            <wms:InfoText HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                          Grid.Column="2"
+                                          Grid.Row="1"
+                                      Content="{Binding Path=CurrentItem.LastModificationDate}" />
+                        </Grid>
+                    </GroupBox>
+                </Border>
+            </ScrollViewer>
+
         </Grid>
 
     </Grid>
