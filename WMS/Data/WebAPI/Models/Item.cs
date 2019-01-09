@@ -54,6 +54,7 @@ namespace Ferretto.WMS.Data.WebAPI.Models
             private set => this.abcClassDescription = value;
         }
 
+        [Newtonsoft.Json.JsonIgnore]
         public IEnumerable<AbcClass> AbcClasses { get; set; }
 
         public string AbcClassId { get; set; }
@@ -98,6 +99,7 @@ namespace Ferretto.WMS.Data.WebAPI.Models
             set => this.inventoryTolerance = this.CheckIfStrictlyPositive(value);
         }
 
+        [Newtonsoft.Json.JsonIgnore]
         public IEnumerable<ItemCategory> ItemCategories { get; set; }
 
         public string ItemCategoryDescription
