@@ -107,8 +107,8 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = false;
 
             this.EventService.Invoke(result.Success
-                ? new StatusEventArgs(Common.Resources.MasterData.ListRowRequestAccepted, StatusType.Success)
-                : new StatusEventArgs(result.Description, StatusType.Error));
+                ? new StatusPubSubEvent(Common.Resources.MasterData.ListRowRequestAccepted, StatusType.Success)
+                : new StatusPubSubEvent(result.Description, StatusType.Error));
         }
 
         private void Initialize()

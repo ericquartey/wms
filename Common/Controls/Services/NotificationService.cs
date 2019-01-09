@@ -95,7 +95,7 @@ namespace Ferretto.Common.Controls.Services
 
                 if (this.isConnected)
                 {
-                    this.eventService.Invoke(new StatusEventArgs() { IsSchedulerOnline = false });
+                    this.eventService.Invoke(new StatusPubSubEvent() { IsSchedulerOnline = false });
                 }
 
                 this.isConnected = false;
@@ -120,7 +120,7 @@ namespace Ferretto.Common.Controls.Services
                .Error(string.Format("Message {0} received from server", HealthIsOnLineMessage));
 
             this.isConnected = true;
-            this.eventService.Invoke(new StatusEventArgs() { IsSchedulerOnline = true });
+            this.eventService.Invoke(new StatusPubSubEvent() { IsSchedulerOnline = true });
         }
 
         #endregion Methods

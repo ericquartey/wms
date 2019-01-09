@@ -130,12 +130,12 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedEvent<LoadingUnit>(this.Model.Id));
-                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new ModelChangedPubSubEvent<LoadingUnit>(this.Model.Id));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
             }
             else
             {
-                this.EventService.Invoke(new StatusEventArgs(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
             }
 
             this.IsBusy = false;
@@ -149,9 +149,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<RefreshModelsEvent<LoadingUnit>>(this.modelRefreshSubscription);
-            this.EventService.Unsubscribe<ModelChangedEvent<LoadingUnit>>(this.modelChangedEventSubscription);
-            this.EventService.Unsubscribe<ModelSelectionChangedEvent<LoadingUnit>>(
+            this.EventService.Unsubscribe<RefreshModelsPubSubEvent<LoadingUnit>>(this.modelRefreshSubscription);
+            this.EventService.Unsubscribe<ModelChangedPubSubEvent<LoadingUnit>>(this.modelChangedEventSubscription);
+            this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<LoadingUnit>>(
                 this.modelSelectionChangedSubscription);
             base.OnDispose();
         }
@@ -168,13 +168,13 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<LoadingUnit>>(
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<LoadingUnit>>(
                 async eventArgs => { await this.LoadData(); }, this.Token, true, true);
 
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<LoadingUnit>>(
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<LoadingUnit>>(
                 async eventArgs => { await this.LoadData(); });
 
-            this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedEvent<LoadingUnit>>(
+            this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<LoadingUnit>>(
                 async eventArgs =>
                 {
                     if (eventArgs.ModelId.HasValue)
