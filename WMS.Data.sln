@@ -15,6 +15,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Data.WebAPI", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Data.WebAPI.Contracts", "WMS\Data\WebAPI.Contracts\Ferretto.WMS.Data.WebAPI.Contracts.csproj", "{EF8C10AB-1349-40F0-BC6C-832246E29DCB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.Utils", "Common\Utils\Ferretto.Common.Utils.csproj", "{63DE2B5E-FFFE-4389-8E8C-A95785FE251E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.Resources", "Common\Resources\Ferretto.Common.Resources.csproj", "{C22EC77B-1DE1-47FD-B8CA-8C861480C8B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +41,14 @@ Global
 		{EF8C10AB-1349-40F0-BC6C-832246E29DCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF8C10AB-1349-40F0-BC6C-832246E29DCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF8C10AB-1349-40F0-BC6C-832246E29DCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63DE2B5E-FFFE-4389-8E8C-A95785FE251E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63DE2B5E-FFFE-4389-8E8C-A95785FE251E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63DE2B5E-FFFE-4389-8E8C-A95785FE251E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63DE2B5E-FFFE-4389-8E8C-A95785FE251E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C22EC77B-1DE1-47FD-B8CA-8C861480C8B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C22EC77B-1DE1-47FD-B8CA-8C861480C8B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C22EC77B-1DE1-47FD-B8CA-8C861480C8B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C22EC77B-1DE1-47FD-B8CA-8C861480C8B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +58,8 @@ Global
 		{1DA46E40-CF35-4458-9B2F-A6F6B3BA1C65} = {7C870AE6-46DD-493B-BAD9-FDEFE22ECA1F}
 		{D6A0CC4F-522B-4815-AE99-F1739BB47BCC} = {C6AB2AE0-C101-4638-AC86-6B6BCB7ACCB2}
 		{EF8C10AB-1349-40F0-BC6C-832246E29DCB} = {C6AB2AE0-C101-4638-AC86-6B6BCB7ACCB2}
+		{63DE2B5E-FFFE-4389-8E8C-A95785FE251E} = {7C870AE6-46DD-493B-BAD9-FDEFE22ECA1F}
+		{C22EC77B-1DE1-47FD-B8CA-8C861480C8B7} = {7C870AE6-46DD-493B-BAD9-FDEFE22ECA1F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B998A0C5-DD2C-4088-9C42-300A146A4118}
