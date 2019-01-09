@@ -58,6 +58,7 @@ namespace Ferretto.Common.BusinessProviders
         public IQueryable<Mission> GetAll()
         {
             return this.dataContextService.Current.Missions
+                 .Include(m => m.Bay)
                 .Include(m => m.Item)
                 .Include(m => m.ItemList)
                 .Include(m => m.ItemListRow)
@@ -125,6 +126,11 @@ namespace Ferretto.Common.BusinessProviders
 
             return context.Missions
              .Where(actualWhereFunc)
+             .Include(m => m.Bay)
+             .Include(m => m.Item)
+             .Include(m => m.ItemList)
+             .Include(m => m.ItemListRow)
+             .Include(m => m.LoadingUnit)
              .Select(m => new Mission
              {
                  BayDescription = m.Bay.Description,

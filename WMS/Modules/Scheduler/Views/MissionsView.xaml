@@ -108,7 +108,7 @@
                 </wms:WmsGridControl.Columns>
 
                 <wms:WmsGridControl.SortInfo>
-                    <dxg:GridSortInfo FieldName="ItemListStatus"
+                    <dxg:GridSortInfo FieldName="Priority"
                                       SortOrder="Descending" />
                 </wms:WmsGridControl.SortInfo>
 

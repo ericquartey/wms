@@ -3,7 +3,7 @@
 namespace Ferretto.Common.DataModels
 {
     // Missione
-    public sealed class Mission : IDataModel
+    public sealed class Mission : IDataModel, ITimestamped
     {
         #region Properties
 

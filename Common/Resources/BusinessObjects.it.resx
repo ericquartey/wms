@@ -782,7 +782,7 @@
     <value>Errore</value>
   </data>
   <data name="MissionTypeBypass" xml:space="preserve">
-    <value>By passare</value>
+    <value>Bypass</value>
   </data>
   <data name="MissionTypeInventory" xml:space="preserve">
     <value>Inventario</value>
