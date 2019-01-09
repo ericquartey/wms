@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
@@ -40,7 +40,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [HttpGet]
-        public ActionResult GetAll()
+        public ActionResult<IEnumerable<Models.ItemList>> GetAll()
         {
             return this.Ok(this.warehouse.Lists);
         }
@@ -49,7 +49,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [HttpGet("{id}")]
-        public ActionResult GetById(int id)
+        public ActionResult<Models.ItemList> GetById(int id)
         {
             try
             {

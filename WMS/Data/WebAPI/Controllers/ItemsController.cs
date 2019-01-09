@@ -49,7 +49,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]
         [HttpGet]
-        public IEnumerable<Models.Item> GetAll(
+        public ActionResult<IEnumerable<Models.Item>> GetAll(
             int skip = 0,
             int take = int.MaxValue,
             string where = null,
@@ -75,10 +75,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(200, Type = typeof(Models.Item))]
-        [ProducesResponseType(400, Type = typeof(SerializableError))]
-        [ProducesResponseType(404, Type = typeof(SerializableError))]
+        [ProducesResponseType(400, Type = typeof(string))]
+        [ProducesResponseType(404, Type = typeof(string))]
         [HttpGet("{id}")]
-        public ActionResult GetById(int id)
+        public ActionResult<Models.Item> GetById(int id)
         {
             try
             {
