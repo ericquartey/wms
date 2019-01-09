@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Scheduler\WebAPI\Ferretto.WMS.Scheduler.WebAPI.csproj" />
+    <ProjectReference Include="..\Scheduler\WebAPI.Contracts\Ferretto.WMS.Scheduler.WebAPI.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>
