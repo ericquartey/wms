@@ -202,4 +202,8 @@
     <value />
     <comment>@invariant</comment>
   </data>
+  <data name="InitializingSchedulerModule" xml:space="preserve">
+    <value>Initializing Scheduler module ...</value>
+    <comment>Splash screen message</comment>
+  </data>
 </root>

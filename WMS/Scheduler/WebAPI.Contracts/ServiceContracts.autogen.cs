@@ -522,6 +522,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
         private string _materialStatusDescription;
         private int _requiredQuantity;
         private int _rowPriority;
+        private bool _canBeExecuted;
     
         [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Code
@@ -631,6 +632,20 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
                 if (_rowPriority != value)
                 {
                     _rowPriority = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("canBeExecuted", Required = Newtonsoft.Json.Required.Always)]
+        public bool CanBeExecuted
+        {
+            get { return _canBeExecuted; }
+            set 
+            {
+                if (_canBeExecuted != value)
+                {
+                    _canBeExecuted = value; 
                     RaisePropertyChanged();
                 }
             }
@@ -1108,10 +1123,10 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
         private int _cellId;
         private int _compartmentId;
         private int _itemId;
-        private string _lot;
         private int? _itemListId;
         private int? _itemListRowId;
         private int _loadingUnitId;
+        private string _lot;
         private int? _materialStatusId;
         private int? _packageTypeId;
         private int _quantity;
@@ -1177,20 +1192,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
             }
         }
     
-        [Newtonsoft.Json.JsonProperty("lot", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Lot
-        {
-            get { return _lot; }
-            set 
-            {
-                if (_lot != value)
-                {
-                    _lot = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
         [Newtonsoft.Json.JsonProperty("itemListId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? ItemListId
         {
@@ -1228,6 +1229,20 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
                 if (_loadingUnitId != value)
                 {
                     _loadingUnitId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("lot", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Lot
+        {
+            get { return _lot; }
+            set 
+            {
+                if (_lot != value)
+                {
+                    _lot = value; 
                     RaisePropertyChanged();
                 }
             }

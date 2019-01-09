@@ -26,6 +26,11 @@ namespace Ferretto.Common.EF.Configurations
                 .HasColumnType("char(1)")
                 .HasConversion(x => (char)x, x => (MissionType)System.Enum.ToObject(typeof(MissionType), x));
 
+            builder.Property(m => m.CreationDate)
+                .HasDefaultValueSql("GETUTCDATE()");
+            builder.Property(m => m.LastModificationDate)
+                .HasDefaultValueSql("GETUTCDATE()");
+
             builder.HasOne(m => m.Cell)
                 .WithMany(s => s.Missions)
                 .HasForeignKey(m => m.CellId)

@@ -180,4 +180,10 @@
   <data name="AreYouSureToDeleteCompartment" xml:space="preserve">
     <value>Sei sicuro di voler eliminare questo scomparto?</value>
   </data>
+  <data name="UnableToSaveChanges" xml:space="preserve">
+    <value>Impossibile salvare le modifiche.</value>
+  </data>
+  <data name="InitializingSchedulerModule" xml:space="preserve">
+    <value>Inizializzazione modulo Schedulatore...</value>
+  </data>
 </root>
