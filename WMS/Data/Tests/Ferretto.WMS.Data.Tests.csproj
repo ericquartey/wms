@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WMS\Data\WebAPI\Ferretto.WMS.Data.WebAPI.csproj" />
+    <ProjectReference Include="..\WebAPI\Ferretto.WMS.Data.WebAPI.csproj" />
   </ItemGroup>
 
 </Project>

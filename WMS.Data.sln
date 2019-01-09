@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.Utils", "Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.Resources", "Common\Resources\Ferretto.Common.Resources.csproj", "{C22EC77B-1DE1-47FD-B8CA-8C861480C8B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Data.Tests", "Ferretto.WMS.Data.Tests\Ferretto.WMS.Data.Tests.csproj", "{88376B56-F8BE-4672-8552-E6117ECB2A25}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Data.Tests", "WMS\Data\Tests\Ferretto.WMS.Data.Tests.csproj", "{88376B56-F8BE-4672-8552-E6117ECB2A25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
