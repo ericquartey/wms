@@ -10,6 +10,8 @@ namespace Ferretto.WMS.Data.WebAPI.Models
 
         private string abcClassDescription;
 
+        private string abcClassId;
+
         private int? averageWeight;
 
         private int? fifoTimePick;
@@ -57,7 +59,15 @@ namespace Ferretto.WMS.Data.WebAPI.Models
         [Newtonsoft.Json.JsonIgnore]
         public IEnumerable<AbcClass> AbcClasses { get; set; }
 
-        public string AbcClassId { get; set; }
+        public string AbcClassId
+        {
+            get => this.abcClassId;
+            set
+            {
+                this.abcClassId = value;
+                this.ComputeAbcClassDescription();
+            }
+        }
 
         public int? AverageWeight
         {
@@ -131,8 +141,6 @@ namespace Ferretto.WMS.Data.WebAPI.Models
         }
 
         public ItemManagementType ManagementType { get; set; }
-
-        public string ManagementTypeDescription { get; internal set; }
 
         public string MeasureUnitDescription { get; set; }
 
