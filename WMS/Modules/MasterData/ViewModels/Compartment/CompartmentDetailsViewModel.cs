@@ -106,17 +106,21 @@ namespace Ferretto.WMS.Modules.MasterData
             await this.LoadData();
         }
 
-        protected override void ExecuteSaveCommand()
+        protected override async Task ExecuteSaveCommand()
         {
             this.IsBusy = true;
 
-            var modifiedRowCount = this.compartmentProvider.Save(this.Model);
-            if (modifiedRowCount > 0)
+            var result = await this.compartmentProvider.SaveAsync(this.Model);
+            if (result.Success)
             {
                 this.TakeModelSnapshot();
 
                 this.EventService.Invoke(new ModelChangedPubSubEvent<Compartment>(this.Model.Id));
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.CompartmentSavedSuccessfully));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.CompartmentSavedSuccessfully, StatusType.Success));
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
             }
 
             this.IsBusy = false;

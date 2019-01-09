@@ -29,14 +29,14 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="70" />
-            <ColumnDefinition Width="180" />
+            <ColumnDefinition Width="60" />
+            <ColumnDefinition Width="200" />
         </Grid.ColumnDefinitions>
 
         <Image Grid.Row="1"
                Width="134"
                Height="140"
-               Margin="35,0,0,0"
+               Margin="25,0,0,0"
                HorizontalAlignment="Left"
                Focusable="False"
                Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/Images/FGLogo_narrow.png" />

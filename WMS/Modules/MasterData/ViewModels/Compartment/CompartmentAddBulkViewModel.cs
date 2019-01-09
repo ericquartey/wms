@@ -33,15 +33,16 @@ namespace Ferretto.WMS.Modules.MasterData
             throw new NotImplementedException();
         }
 
-        protected override async void ExecuteSaveCommand()
+        protected override async Task ExecuteSaveCommand()
         {
-            this.IsBusy = true;
             this.IsValidationEnabled = true;
 
             if (string.IsNullOrWhiteSpace(this.Model.Error) == false)
             {
                 return;
             }
+
+            this.IsBusy = true;
 
             var newCompartments = this.Model.CreateBulk();
             var result = await this.compartmentProvider.AddRange(newCompartments);

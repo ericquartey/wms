@@ -21,7 +21,7 @@ namespace Ferretto.Common.DataModels
 
         public DateTime? FirstStoreDate { get; set; }
 
-        public int? Height { get; set; }
+        public bool HasRotation { get; set; }
 
         public int Id { get; set; }
 
@@ -51,8 +51,6 @@ namespace Ferretto.Common.DataModels
 
         public int? MaterialStatusId { get; set; }
 
-        public int? MaxCapacity { get; set; }
-
         public List<Mission> Missions { get; set; }
 
         public PackageType PackageType { get; set; }
@@ -70,8 +68,6 @@ namespace Ferretto.Common.DataModels
         public string Sub1 { get; set; }
 
         public string Sub2 { get; set; }
-
-        public int? Width { get; set; }
 
         public int? XPosition { get; set; }
 

@@ -9,6 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App", "WMS\App
 		{C32FD908-0388-4096-AF68-43BBEDB58725} = {C32FD908-0388-4096-AF68-43BBEDB58725}
 		{641C7533-696E-48D4-95DA-9A8E31BCDBED} = {641C7533-696E-48D4-95DA-9A8E31BCDBED}
 		{965F447E-A8A3-42FA-9EDB-E90F677437AE} = {965F447E-A8A3-42FA-9EDB-E90F677437AE}
+		{E57315E5-A49E-467A-BB83-FFB64FF407DF} = {E57315E5-A49E-467A-BB83-FFB64FF407DF}
 		{0D3E44FD-B369-4B85-AEBE-17A754D71C8D} = {0D3E44FD-B369-4B85-AEBE-17A754D71C8D}
 	EndProjectSection
 EndProject
@@ -48,9 +49,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App.Tests", "W
 		{69935FFE-3DC9-47C4-9192-D925D043C137} = {69935FFE-3DC9-47C4-9192-D925D043C137}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.Common.Controls.Tests", "Common\Controls.Tests\Ferretto.Common.Controls.Tests.csproj", "{B9FFA685-D50F-4168-B325-BF1B35DD9C3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.Controls.Tests", "Common\Controls.Tests\Ferretto.Common.Controls.Tests.csproj", "{B9FFA685-D50F-4168-B325-BF1B35DD9C3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.Common.Utils.Testing", "Common\Utils.Testing\Ferretto.Common.Utils.Testing.csproj", "{EF9E711B-EA05-4856-BD9F-E13CF5EF5926}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.Utils.Testing", "Common\Utils.Testing\Ferretto.Common.Utils.Testing.csproj", "{EF9E711B-EA05-4856-BD9F-E13CF5EF5926}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.Resources", "Common\Resources\Ferretto.Common.Resources.csproj", "{EC02D26C-F149-496C-BC7C-75D229B4333F}"
 EndProject
@@ -69,6 +70,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Scheduler.WebAPI", "WMS\Scheduler.WebAPI\Ferretto.WMS.Scheduler.WebAPI.csproj", "{E437D7CD-D68E-4DE2-A156-D18172F645D3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.AutomationServiceMock", "WMS\AutomationServiceMock\Ferretto.WMS.AutomationServiceMock.csproj", "{B42F9CC0-AB23-4A32-9280-7117CE8EF47C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Modules.Scheduler", "WMS\Modules\Scheduler\Ferretto.WMS.Modules.Scheduler.csproj", "{E57315E5-A49E-467A-BB83-FFB64FF407DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -168,6 +171,10 @@ Global
 		{B42F9CC0-AB23-4A32-9280-7117CE8EF47C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B42F9CC0-AB23-4A32-9280-7117CE8EF47C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B42F9CC0-AB23-4A32-9280-7117CE8EF47C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E57315E5-A49E-467A-BB83-FFB64FF407DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E57315E5-A49E-467A-BB83-FFB64FF407DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E57315E5-A49E-467A-BB83-FFB64FF407DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E57315E5-A49E-467A-BB83-FFB64FF407DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -198,6 +205,7 @@ Global
 		{EB5DEB07-BCE3-4F1D-9B9A-708B900EC1B9} = {C6AB2AE0-C101-4638-AC86-6B6BCB7ACCB2}
 		{E437D7CD-D68E-4DE2-A156-D18172F645D3} = {C6AB2AE0-C101-4638-AC86-6B6BCB7ACCB2}
 		{B42F9CC0-AB23-4A32-9280-7117CE8EF47C} = {C6AB2AE0-C101-4638-AC86-6B6BCB7ACCB2}
+		{E57315E5-A49E-467A-BB83-FFB64FF407DF} = {12BF6A8D-AC9B-4ECE-B134-FB3644430056}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B998A0C5-DD2C-4088-9C42-300A146A4118}

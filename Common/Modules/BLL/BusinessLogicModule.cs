@@ -48,6 +48,7 @@ namespace Ferretto.Common.Modules.BLL
             this.Container.RegisterType<ILoadingUnitProvider, LoadingUnitProvider>();
             this.Container.RegisterType<IMachineProvider, MachineProvider>();
             this.Container.RegisterType<IUserProvider, UserProvider>();
+            this.Container.RegisterType<IMissionProvider, MissionProvider>();
 
             this.Container.RegisterType<IDatabaseContextService, DatabaseContextService>();
 

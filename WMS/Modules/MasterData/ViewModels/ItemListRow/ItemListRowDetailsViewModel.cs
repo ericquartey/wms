@@ -19,7 +19,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
-
         private IDataSource<Item> itemsDataSource;
 
         private ICommand listRowExecuteCommand;
@@ -42,7 +41,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #endregion Constructors
 
         #region Properties
-        
+
         public IDataSource<Item> ItemsDataSource
         {
             get => this.itemsDataSource;
@@ -57,10 +56,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        protected override async Task ExecuteRevertCommand()
-        {
-            await this.LoadData();
-        }
         protected override void EvaluateCanExecuteCommands()
         {
             base.EvaluateCanExecuteCommands();
@@ -68,18 +63,28 @@ namespace Ferretto.WMS.Modules.MasterData
             ((DelegateCommand)this.ListRowExecuteCommand)?.RaiseCanExecuteChanged();
         }
 
-        protected override void ExecuteSaveCommand()
+        protected override async Task ExecuteRevertCommand()
+        {
+            await this.LoadData();
+        }
+
+        protected override async Task ExecuteSaveCommand()
         {
             this.IsBusy = true;
 
-            var modifiedRowCount = this.itemListRowProvider.Save(this.Model);
-            if (modifiedRowCount > 0)
+            var result = await this.itemListRowProvider.SaveAsync(this.Model);
+            if (result.Success)
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<ItemListRow>(this.Model.Id));
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemListRowSavedSuccessfully));
+                this.EventService.Invoke(new ModelChangedPubSubEvent<Item>(this.Model.Id));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemListSavedSuccessfully));
             }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+            }
+
             this.IsBusy = false;
         }
 

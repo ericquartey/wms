@@ -66,15 +66,15 @@ namespace Ferretto.Common.Utils.Menu
             );
 
             this.menu.Items.Add(
-                new MainMenuItem(Navigation.Others, bgColor, Icons.Others, string.Empty, string.Empty)
-                {
-                    Children = new List<MainMenuItem>
-                    {
-                        new MainMenuItem(Navigation.UnderStockItems, bgColor, nameof(Navigation.UnderStockItems), string.Empty, string.Empty),
-                        new MainMenuItem(Navigation.Inventory, bgColor, nameof(Navigation.Inventory), string.Empty, string.Empty)
-                    }
-                }
-            );
+               new MainMenuItem(Navigation.Scheduler, bgColor, Icons.Scheduler, string.Empty, string.Empty)
+               {
+                   Children = new List<MainMenuItem>
+                   {
+                       new MainMenuItem(Navigation.Missions, bgColor, nameof(Navigation.Missions), nameof(Modules.Scheduler), Modules.Scheduler.MISSIONS),
+                       new MainMenuItem(Navigation.Requests, bgColor, nameof(Navigation.Requests), nameof(Modules.Scheduler), Modules.Scheduler.REQUESTS),
+                   }
+               }
+           );
 
             this.menu.Items.Add(
                 new MainMenuItem(Navigation.ImportExport, bgColor, Icons.ImportExport, string.Empty, string.Empty)
@@ -104,6 +104,17 @@ namespace Ferretto.Common.Utils.Menu
                         new MainMenuItem(Navigation.ListStatuses, bgColor, nameof(Navigation.ListStatuses),  string.Empty, string.Empty),
                         new MainMenuItem(Navigation.ListRowStatuses, bgColor, nameof(Navigation.ListRowStatuses), string.Empty, string.Empty),
                         new MainMenuItem(Navigation.MachineTypes, bgColor, nameof(Navigation.MachineTypes), string.Empty, string.Empty)
+                    }
+                }
+            );
+
+            this.menu.Items.Add(
+                new MainMenuItem(Navigation.Others, bgColor, Icons.Others, string.Empty, string.Empty)
+                {
+                    Children = new List<MainMenuItem>
+                    {
+                        new MainMenuItem(Navigation.UnderStockItems, bgColor, nameof(Navigation.UnderStockItems), string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.Inventory, bgColor, nameof(Navigation.Inventory), string.Empty, string.Empty)
                     }
                 }
             );

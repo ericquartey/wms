@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
@@ -25,6 +26,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ICommand deleteCommand;
 
+        private bool itemIdHasValue;
+
         private IDataSource<Item> itemsDataSource;
 
         #endregion Fields
@@ -43,6 +46,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public ICommand DeleteCommand => this.deleteCommand ??
             (this.deleteCommand = new DelegateCommand(async () => await this.ExecuteDeleteCommand(), this.CanExecuteDeleteCommand));
+
+        public bool ItemIdHasValue
+        {
+            get => this.itemIdHasValue;
+            set => this.SetProperty(ref this.itemIdHasValue, value);
+        }
 
         public IDataSource<Item> ItemsDataSource
         {
@@ -67,12 +76,12 @@ namespace Ferretto.WMS.Modules.MasterData
             return null;
         }
 
-        protected override void ExecuteSaveCommand()
+        protected override async Task ExecuteSaveCommand()
         {
             this.IsBusy = true;
 
-            var affectedRowsCount = this.compartmentProvider.Save(this.Model);
-            if (affectedRowsCount > 0)
+            var result = await this.compartmentProvider.SaveAsync(this.Model);
+            if (result.Success)
             {
                 this.TakeModelSnapshot();
 
@@ -83,10 +92,38 @@ namespace Ferretto.WMS.Modules.MasterData
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(DesktopApp.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
             }
 
             this.IsBusy = false;
+        }
+
+        protected override async void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(CompartmentDetails.ItemId))
+            {
+                this.ItemIdHasValue = this.Model.ItemId.HasValue;
+            }
+
+            if (this.Model.ItemId.HasValue
+                &&
+                (
+                e.PropertyName == nameof(CompartmentDetails.ItemId)
+                ||
+                e.PropertyName == nameof(CompartmentDetails.Width)
+                ||
+                e.PropertyName == nameof(CompartmentDetails.Height)
+                ))
+            {
+                var capacity = await this.compartmentProvider.GetMaxCapacityAsync(
+                    this.Model.Width,
+                    this.Model.Height,
+                    this.Model.ItemId.Value);
+
+                this.Model.MaxCapacity = capacity ?? this.Model.MaxCapacity;
+            }
+
+            base.Model_PropertyChanged(sender, e);
         }
 
         private bool CanExecuteDeleteCommand()
@@ -120,7 +157,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 }
                 else
                 {
-                    this.EventService.Invoke(new StatusPubSubEvent(DesktopApp.UnableToSaveChanges, StatusType.Error));
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
                 }
             }
 
