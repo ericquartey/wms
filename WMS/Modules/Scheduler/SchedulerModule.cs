@@ -1,0 +1,53 @@
+﻿using Ferretto.Common.Controls.Interfaces;
+using Ferretto.Common.Controls.Services;
+using Microsoft.Practices.Unity;
+using Prism.Modularity;
+using Prism.Regions;
+
+namespace Ferretto.WMS.Modules.Scheduler
+{
+    [Module(ModuleName = nameof(Common.Utils.Modules.Scheduler), OnDemand = true)]
+    [ModuleDependency(nameof(Common.Utils.Modules.BusinessLogic))]
+    public class SchedulerModule : IModule
+    {
+        #region Constructors
+
+        public SchedulerModule(IUnityContainer container, IRegionManager regionManager, INavigationService navigationService)
+        {
+            this.Container = container;
+            this.RegionManager = regionManager;
+            this.NavigationService = navigationService;
+        }
+
+        #endregion Constructors
+
+        #region Properties
+
+        public IUnityContainer Container { get; private set; }
+
+        public INavigationService NavigationService { get; private set; }
+
+        public IRegionManager RegionManager { get; private set; }
+
+        #endregion Properties
+
+        #region Methods
+
+        public void Initialize()
+        {
+            SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingSchedulerModule);
+
+            NLog.LogManager
+               .GetCurrentClassLogger()
+               .Trace("Loading module ...");
+
+            this.NavigationService.Register<MissionsView, MissionsViewModel>();
+
+            NLog.LogManager
+               .GetCurrentClassLogger()
+               .Trace("Module loaded.");
+        }
+
+        #endregion Methods
+    }
+}

@@ -115,6 +115,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bay.
+        /// </summary>
+        public static string Bay {
+            get {
+                return ResourceManager.GetString("Bay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string BayDescription {
@@ -529,6 +538,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item.
+        /// </summary>
+        public static string Item {
+            get {
+                return ResourceManager.GetString("Item", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Available.
         /// </summary>
         public static string ItemAvailable {
@@ -678,6 +696,15 @@ namespace Ferretto.Common.Resources {
         public static string ItemLength {
             get {
                 return ResourceManager.GetString("ItemLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List.
+        /// </summary>
+        public static string ItemList {
+            get {
+                return ResourceManager.GetString("ItemList", resourceCulture);
             }
         }
         
@@ -1884,6 +1911,105 @@ namespace Ferretto.Common.Resources {
         public static string MeasureUnitDescription {
             get {
                 return ResourceManager.GetString("MeasureUnitDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Completed.
+        /// </summary>
+        public static string MissionStatusCompleted {
+            get {
+                return ResourceManager.GetString("MissionStatusCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string MissionStatusError {
+            get {
+                return ResourceManager.GetString("MissionStatusError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Executing.
+        /// </summary>
+        public static string MissionStatusExecuting {
+            get {
+                return ResourceManager.GetString("MissionStatusExecuting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        public static string MissionStatusNew {
+            get {
+                return ResourceManager.GetString("MissionStatusNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Waiting.
+        /// </summary>
+        public static string MissionStatusWaiting {
+            get {
+                return ResourceManager.GetString("MissionStatusWaiting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bypass.
+        /// </summary>
+        public static string MissionTypeBypass {
+            get {
+                return ResourceManager.GetString("MissionTypeBypass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inventory.
+        /// </summary>
+        public static string MissionTypeInventory {
+            get {
+                return ResourceManager.GetString("MissionTypeInventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pick.
+        /// </summary>
+        public static string MissionTypePick {
+            get {
+                return ResourceManager.GetString("MissionTypePick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Put.
+        /// </summary>
+        public static string MissionTypePut {
+            get {
+                return ResourceManager.GetString("MissionTypePut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reorder.
+        /// </summary>
+        public static string MissionTypeReorder {
+            get {
+                return ResourceManager.GetString("MissionTypeReorder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Replace.
+        /// </summary>
+        public static string MissionTypeReplace {
+            get {
+                return ResourceManager.GetString("MissionTypeReplace", resourceCulture);
             }
         }
         

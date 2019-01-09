@@ -210,4 +210,10 @@
   <data name="Loading" xml:space="preserve">
     <value>Caricamento</value>
   </data>
+  <data name="Status" xml:space="preserve">
+    <value>Stato</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Quantità</value>
+  </data>
 </root>

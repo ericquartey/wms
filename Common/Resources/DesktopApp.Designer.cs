@@ -214,6 +214,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Initializing Scheduler module ....
+        /// </summary>
+        public static string InitializingSchedulerModule {
+            get {
+                return ResourceManager.GetString("InitializingSchedulerModule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading ....
         /// </summary>
         public static string Loading {
