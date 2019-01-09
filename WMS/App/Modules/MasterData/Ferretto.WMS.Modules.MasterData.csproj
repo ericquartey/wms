@@ -15,10 +15,6 @@
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Common\Controls\Ferretto.Common.Controls.csproj" />
-  </ItemGroup>
   
   <ItemGroup>
     <Compile Update="**\*.xaml.cs">
@@ -30,6 +26,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Common\Controls\Ferretto.Common.Controls.csproj" />
   </ItemGroup>
  
 
