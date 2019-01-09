@@ -105,8 +105,8 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedEvent<Cell>(this.Model.Id));
-                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.CellSavedSuccessfully));
+                this.EventService.Invoke(new ModelChangedPubSubEvent<Cell>(this.Model.Id));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.CellSavedSuccessfully));
             }
 
             this.IsBusy = false;
@@ -120,17 +120,17 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<RefreshModelsEvent<Cell>>(this.modelRefreshSubscription);
-            this.EventService.Unsubscribe<ModelChangedEvent<Cell>>(this.modelChangedEventSubscription);
-            this.EventService.Unsubscribe<ModelSelectionChangedEvent<Cell>>(this.modelSelectionChangedSubscription);
+            this.EventService.Unsubscribe<RefreshModelsPubSubEvent<Cell>>(this.modelRefreshSubscription);
+            this.EventService.Unsubscribe<ModelChangedPubSubEvent<Cell>>(this.modelChangedEventSubscription);
+            this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<Cell>>(this.modelSelectionChangedSubscription);
             base.OnDispose();
         }
 
         private void Initialize()
         {
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<Cell>>(async eventArgs => { await this.LoadData(); }, this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<Cell>>(async eventArgs => { await this.LoadData(); });
-            this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedEvent<Cell>>(
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<Cell>>(async eventArgs => { await this.LoadData(); }, this.Token, true, true);
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<Cell>>(async eventArgs => { await this.LoadData(); });
+            this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<Cell>>(
                 async eventArgs =>
                 {
                     if (eventArgs.ModelId.HasValue)

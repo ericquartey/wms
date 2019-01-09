@@ -116,12 +116,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (result.Success)
             {
-                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ListRequestAccepted, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ListRequestAccepted, StatusType.Success));
                 this.Disappear();
             }
             else
             {
-                this.EventService.Invoke(new StatusEventArgs(result.Description, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(result.Description, StatusType.Error));
                 this.ValidationError = result.Description;
             }
         }

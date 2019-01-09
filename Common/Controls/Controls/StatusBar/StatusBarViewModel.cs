@@ -27,7 +27,7 @@ namespace Ferretto.Common.Controls
             this.keepInfoTimer.Interval = new TimeSpan(0, 0, timeToKeepText);
 
             ServiceLocator.Current.GetInstance<IEventService>()
-               .Subscribe((StatusEventArgs eventArgs) =>
+               .Subscribe((StatusPubSubEvent eventArgs) =>
                {
                    NLog.LogManager
                       .GetCurrentClassLogger()

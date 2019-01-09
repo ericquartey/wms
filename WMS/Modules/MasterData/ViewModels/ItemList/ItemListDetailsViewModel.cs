@@ -111,8 +111,8 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedEvent<Item>(this.Model.Id));
-                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemListSavedSuccessfully));
+                this.EventService.Invoke(new ModelChangedPubSubEvent<Item>(this.Model.Id));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemListSavedSuccessfully));
             }
             this.IsBusy = false;
         }
@@ -193,10 +193,10 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             await this.LoadData();
 
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<ItemList>>(async eventArgs => { await this.LoadData(); }, this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<ItemList>>(async eventArgs => { await this.LoadData(); });
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<ItemList>>(async eventArgs => { await this.LoadData(); }, this.Token, true, true);
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<ItemList>>(async eventArgs => { await this.LoadData(); });
             this.modelSelectionChangedSubscription =
-                this.EventService.Subscribe<ModelSelectionChangedEvent<ItemList>>(
+                this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<ItemList>>(
                     async eventArgs =>
                     {
                         if (eventArgs.ModelId.HasValue)

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
@@ -81,8 +77,8 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedEvent<ItemListRow>(this.Model.Id));
-                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemListRowSavedSuccessfully));
+                this.EventService.Invoke(new ModelChangedPubSubEvent<ItemListRow>(this.Model.Id));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemListRowSavedSuccessfully));
             }
             this.IsBusy = false;
         }
@@ -117,10 +113,10 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             await this.LoadData();
 
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<ItemListRow>>(async eventArgs => { await this.LoadData(); }, this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<ItemListRow>>(async eventArgs => { await this.LoadData(); });
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<ItemListRow>>(async eventArgs => { await this.LoadData(); }, this.Token, true, true);
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<ItemListRow>>(async eventArgs => { await this.LoadData(); });
             this.modelSelectionChangedSubscription =
-                this.EventService.Subscribe<ModelSelectionChangedEvent<ItemListRow>>(
+                this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<ItemListRow>>(
                     async eventArgs =>
                     {
                         if (eventArgs.ModelId.HasValue)

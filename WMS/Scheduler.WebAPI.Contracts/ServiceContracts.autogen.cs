@@ -522,6 +522,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
         private string _materialStatusDescription;
         private int _requiredQuantity;
         private int _rowPriority;
+        private bool _canBeExecuted;
     
         [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Code
@@ -631,6 +632,20 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
                 if (_rowPriority != value)
                 {
                     _rowPriority = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("canBeExecuted", Required = Newtonsoft.Json.Required.Always)]
+        public bool CanBeExecuted
+        {
+            get { return _canBeExecuted; }
+            set 
+            {
+                if (_canBeExecuted != value)
+                {
+                    _canBeExecuted = value; 
                     RaisePropertyChanged();
                 }
             }

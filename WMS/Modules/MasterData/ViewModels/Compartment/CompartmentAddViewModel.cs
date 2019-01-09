@@ -66,8 +66,8 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedEvent<LoadingUnit>(this.Model.LoadingUnit.Id));
-                this.EventService.Invoke(new StatusEventArgs(
+                this.EventService.Invoke(new ModelChangedPubSubEvent<LoadingUnit>(this.Model.LoadingUnit.Id));
+                this.EventService.Invoke(new StatusPubSubEvent(
                     Common.Resources.MasterData.LoadingUnitSavedSuccessfully,
                     StatusType.Success));
 
@@ -75,7 +75,7 @@ namespace Ferretto.WMS.Modules.MasterData
             }
             else
             {
-                this.EventService.Invoke(new StatusEventArgs(result.Description, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(result.Description, StatusType.Error));
             }
 
             this.IsBusy = false;

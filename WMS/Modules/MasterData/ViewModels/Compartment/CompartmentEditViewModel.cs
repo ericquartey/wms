@@ -76,14 +76,14 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedEvent<LoadingUnit>(this.Model.LoadingUnit.Id));
-                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new ModelChangedPubSubEvent<LoadingUnit>(this.Model.LoadingUnit.Id));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
 
                 this.CompleteOperation();
             }
             else
             {
-                this.EventService.Invoke(new StatusEventArgs(DesktopApp.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(DesktopApp.UnableToSaveChanges, StatusType.Error));
             }
 
             this.IsBusy = false;
@@ -112,7 +112,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     loadingUnit.Compartments.Remove(this.Model as ICompartment);
 
-                    this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.CompartmentDeletedSuccessfully, StatusType.Success));
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.CompartmentDeletedSuccessfully, StatusType.Success));
 
                     this.IsBusy = false;
                     this.Model = null;
@@ -120,7 +120,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 }
                 else
                 {
-                    this.EventService.Invoke(new StatusEventArgs(DesktopApp.UnableToSaveChanges, StatusType.Error));
+                    this.EventService.Invoke(new StatusPubSubEvent(DesktopApp.UnableToSaveChanges, StatusType.Error));
                 }
             }
 

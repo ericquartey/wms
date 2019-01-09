@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Grid;
@@ -121,7 +120,7 @@ namespace Ferretto.Common.Controls
             this.SelectedBusinessObject = (e.NewItem is IBusinessObject bo) ? bo : null;
             if (this.SelectedBusinessObject != null)
             {
-                this.eventService.Invoke(new ModelSelectionChangedEvent<IBusinessObject>(this.SelectedBusinessObject.Id, this.token));
+                this.eventService.Invoke(new ModelSelectionChangedPubSubEvent<IBusinessObject>(this.SelectedBusinessObject.Id, this.token));
             }
         }
         #endregion Methods
