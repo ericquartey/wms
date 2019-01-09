@@ -16,11 +16,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private const string DEFAULT_ORDERBY_FIELD = nameof(Models.Item.Code);
 
-        private static readonly System.Text.RegularExpressions.Regex binaryExpressionRegex =
-               new System.Text.RegularExpressions.Regex(
-           @"(?<operator>[^(]+)\((?<left>[^,]+),(?<right>[^)]+)\)",
-           System.Text.RegularExpressions.RegexOptions.Compiled);
-
         private readonly ILogger logger;
 
         private readonly IServiceProvider serviceProvider;
@@ -100,24 +95,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
-        private static IExpression BuildExpression(string where)
-        {
-            var match = binaryExpressionRegex.Match(where);
-            if (match.Success)
-            {
-                var operatorName = match.Groups["operator"].Value;
-                return new Models.Expressions.BinaryExpression(operatorName)
-                {
-                    LeftExpression = BuildExpression(match.Groups["left"].Value),
-                    RightExpression = BuildExpression(match.Groups["right"].Value)
-                };
-            }
-            else
-            {
-                return new ValueExpression(where);
-            }
-        }
-
         private static Expression<Func<Models.Item, bool>> BuildSearchExpression(string search)
         {
             if (string.IsNullOrWhiteSpace(search))
@@ -142,9 +119,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return null;
             }
 
-            var expression = BuildExpression(where);
-
             var lambdaInParameter = Expression.Parameter(typeof(T), typeof(T).Name.ToLower());
+
+            var expression = where.BuildExpression();
 
             var lambdaBody = expression?.GetLambdaBody<Models.Item>(lambdaInParameter);
 
@@ -154,7 +131,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         private IQueryable<T> ApplyTransform<T>(int skip, int take, string orderBy, Expression<Func<T, bool>> where,
                     Expression<Func<T, bool>> searchFunction, IQueryable<T> entities)
         {
-            // TODO: if skip or take, then orderby should be defined (exception)
+            // TODO: if skip or take, then orderby should be defined (throw exception)
             var filteredItems = entities;
             if (where != null)
             {

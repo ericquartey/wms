@@ -4,7 +4,34 @@ namespace Ferretto.WMS.Data.WebAPI.Models.Expressions
 {
     public static class ExpressionExtensions
     {
+        #region Fields
+
+        private static readonly System.Text.RegularExpressions.Regex binaryExpressionRegex =
+               new System.Text.RegularExpressions.Regex(
+           @"(?<operator>[^(]+)\((?<left>[^,]+),(?<right>[^)]+)\)",
+           System.Text.RegularExpressions.RegexOptions.Compiled);
+
+        #endregion Fields
+
         #region Methods
+
+        public static IExpression BuildExpression(this string where)
+        {
+            var match = binaryExpressionRegex.Match(where);
+            if (match.Success)
+            {
+                var operatorName = match.Groups["operator"].Value;
+                return new BinaryExpression(operatorName)
+                {
+                    LeftExpression = BuildExpression(match.Groups["left"].Value),
+                    RightExpression = BuildExpression(match.Groups["right"].Value)
+                };
+            }
+            else
+            {
+                return new ValueExpression(where);
+            }
+        }
 
         public static Expression GetLambdaBody<T>(this IExpression expression, ParameterExpression inParameter)
         {
