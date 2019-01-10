@@ -20,12 +20,10 @@
     <wms:WmsView.Resources>
         <dxg:RowPropertyValueConverter x:Key="rowPropertyConverter" />
 
-        
         <DataTemplate x:Key="DetailTooltipTemplate">
             <dx:MeasurePixelSnapper MaxWidth="300" MaxHeight="300">
                 <Border  Padding="2">
-                    <WrapPanel Orientation="Horizontal" ><!--DataContext="{Binding Path=Row}"-->
-                        <!--<TextBlock Text="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=ItemDescription}" Margin="5,0,5,0"/>-->
+                    <WrapPanel Orientation="Horizontal">
                         <wms:InfoText Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=CellId}" />
                         <wms:InfoText Grid.Row="0"
                                  Grid.Column="1"
@@ -52,29 +50,6 @@
                 </Border>
             </dx:MeasurePixelSnapper>
         </DataTemplate>
-        <!--Style="{StaticResource brdGroupBox}"-->
-        <!--<DataTemplate x:Key="rowWithToolTipTemplate">
-            <ContentPresenter Content="{Binding}" ContentTemplate="{Binding View.DefaultDataRowTemplate}">
-                <ToolTipService.ToolTip>
-                    <ContentControl Content="{Binding}" ContentTemplate="{DynamicResource DetailTooltipTemplate}" />
-                </ToolTipService.ToolTip>
-            </ContentPresenter>
-        </DataTemplate>-->
-
-        <ImageBrush x:Key="AddButtonImageBrush" ImageSource="pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_visibility_black_36dp.png" Stretch="UniformToFill"/>
-
-
-        <Style TargetType="{x:Type Button}" x:Key="ImageButtonStyle">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <ContentPresenter/>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        
     </wms:WmsView.Resources>
 
     <Grid>
@@ -104,16 +79,17 @@
 
             <wms:ActionBar HorizontalAlignment="Left"
                            Style="{DynamicResource ActionBarOverlayedWithGrid}">
-                <wms:ActionBarItem Command="{Binding ShowDetailsCommand}"
+                <wms:ActionBarItem Command="{Binding}"
                                    Content="{x:Static res:General.ShowDetails}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_info_outline_black_24dp.png"
                                    GlyphSize="Custom" >
+                    <!--TODO
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="ItemClick" >
                             <wms:WmsTooltipViewAppear Grid="{Binding ElementName=MainGridControl, Path=SelectedItem }" />
                         </i:EventTrigger>
-                    </i:Interaction.Triggers>
+                    </i:Interaction.Triggers>-->
                 </wms:ActionBarItem>
                 <wms:ActionBarItem Content="{x:Static res:General.Refresh}"
                                    CustomGlyphSize="24,24"
@@ -126,13 +102,10 @@
                                 MaxHeight="5000"
                                 CurrentItem="{Binding SelectedItem, Mode=TwoWay}"
                                 ItemsSource="{Binding SelectedFilterDataSource, Mode=OneWay}"
-                                ShowBorder="False"
-                                ShowTooltipCurrent="{Binding ShowTooltipCurrent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                ShowBorder="False">
                 <wms:WmsGridControl.Resources>
                     <Style TargetType="{x:Type ToolTip}">
                         <Setter Property="Background" Value="White" />
-                        <!--<Setter Property="BorderBrush" Value="{StaticResource ToolTip.BorderBrush}" />
-            <Setter Property="Foreground" Value="{StaticResource Text.Foreground}" />-->
                         <Setter Property="BorderThickness" Value="1" />
                         <Setter Property="Padding" Value="0" />
                         <Setter Property="FontSize" Value="12" />
@@ -165,33 +138,20 @@
                         </Style.Triggers>
                     </Style>
                 </wms:WmsGridControl.Resources>
+
                 <wms:WmsGridControl.View>
                     <dxg:TableView SearchPanelHorizontalAlignment="Right"
                                    ShowFilterPanelMode="ShowAlways"
-                                   ShowSearchPanelMode="Always">
-                        <!--NavigationStyle="Row"
-                        Name=view -->
-                        <!--dxg:TableView.RowStyle>
-                            <Style TargetType="dxg:RowControl">
-                                --><!--<Setter Property="ToolTip" Value="{Binding Row.ItemDescription}" />--><!--
-                                <Setter Property="ToolTipService.ToolTip">
-                                    <Setter.Value>
-                                        <ContentControl Content="{Binding}" ContentTemplate="{DynamicResource DetailTooltipTemplate}" />
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </dxg:TableView.RowStyle>-->
-                    </dxg:TableView>
+                                   ShowSearchPanelMode="Always"/>
                 </wms:WmsGridControl.View>
 
                 <wms:WmsGridControl.Columns>
-                    
+
                     <dxg:GridColumn Width="80*"
                                     FieldName="Details"
                                     CellToolTipBinding="{Binding}">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
-                                <!--<Button Style="{StaticResource ImageButtonStyle}" >-->
                                 <Image  Width="16" Height="16">
                                     <Image.Source>
                                         <BitmapImage UriSource="pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_visibility_black_36dp.png"/>
@@ -202,81 +162,76 @@
                         <dxg:GridColumn.CellToolTipTemplate >
                             <DataTemplate>
                                 <wms:CustomBorder x:Name="CustomBorder" >
-                                    <!--<StackPanel Orientation="Vertical">-->
-                                        <Grid MaxHeight="350" MinWidth="380" Margin="8,0,0,0">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"  />
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="*"/>
-                                                <!--<ColumnDefinition Width="*"/>-->
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock FontWeight="SemiBold" FontSize="14.66" Grid.RowSpan="2" Margin="0,8,0,0">Details</TextBlock>
-                                            <wms:InfoText
+                                    <Grid MaxHeight="350" MinWidth="400" Margin="8,0,0,0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"  />
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock FontWeight="SemiBold" FontSize="14.66" Grid.RowSpan="2" Margin="0,8,0,0" Text="{x:Static res:General.Details}"/>
+                                        <wms:InfoText
                                                 Grid.Row="2"
                                                 Grid.Column="0"
                                                 Content="{Binding Path=CellDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <wms:InfoText Grid.Row="2"
+                                        <wms:InfoText Grid.Row="2"
                                                 Grid.Column="1"
-                                                Content="{Binding Path=CompartmentId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <wms:InfoText Grid.Row="3"
+                                                Content="{Binding Path=CompartmentType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <wms:InfoText Grid.Row="3"
                                                 Grid.Column="0"
                                                 Content="{Binding Path=Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <wms:InfoText Grid.Row="3"
+                                        <wms:InfoText Grid.Row="3"
                                                 Grid.Column="1"
                                                 Content="{Binding Path=Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <wms:InfoText Grid.Row="4"
+                                        <wms:InfoText Grid.Row="4"
                                                 Grid.Column="0"
                                                 Content="{Binding Path=MaterialStatusDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <wms:InfoText Grid.Row="4"
+                                        <wms:InfoText Grid.Row="4"
                                                 Grid.Column="1"
                                                 Content="{Binding Path=PackageTypeDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <wms:InfoText Grid.Row="5"
+                                        <wms:InfoText Grid.Row="5"
                                                 Grid.Column="0"
                                                 Content="{Binding Path=RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <wms:InfoText Grid.Row="5"
+                                        <wms:InfoText Grid.Row="5"
                                                 Grid.Column="1"
                                                 Content="{Binding Path=Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                                            <ScrollViewer Grid.RowSpan="6"
+                                        <ScrollViewer Grid.RowSpan="6"
                                               Grid.Column="3"
                                               Focusable="False"
                                               IsTabStop="False"
-                                                          Margin="0">                                
-
-                                                <Border Style="{StaticResource InfoBoxBorderStyle}"
-                                                        Margin="0">
-
-                                                    <GroupBox 
+                                              Margin="0">
+                                            <Border Style="{StaticResource InfoBoxBorderStyle}"
+                                                    Margin="0">
+                                                <GroupBox 
                                                         Header="{x:Static res:MasterData.OtherInformation}"
                                                         Margin="0">
-                                                        <StackPanel Orientation="Vertical">
-                                                            <wms:InfoText HorizontalAlignment="Left"
+                                                    <StackPanel Orientation="Vertical">
+                                                        <wms:InfoText HorizontalAlignment="Left"
                                                                 HorizontalContentAlignment="Left"
                                                                 Content="{Binding Path=CreationDate}" />
-                                                            <wms:InfoText HorizontalAlignment="Left"
+                                                        <wms:InfoText HorizontalAlignment="Left"
                                                                 HorizontalContentAlignment="Left"
                                                                 Grid.Column="1"
                                                                 Grid.Row="5"
                                                                 Content="{Binding Path=LastModificationDate}" />
-                                                        </StackPanel>
-                                                    </GroupBox>
-                                                </Border>
-                                            </ScrollViewer>
-                                        </Grid>
-                                    <!--</StackPanel>-->
+                                                    </StackPanel>
+                                                </GroupBox>
+                                            </Border>
+                                        </ScrollViewer>
+                                    </Grid>
                                 </wms:CustomBorder>
                             </DataTemplate>
                         </dxg:GridColumn.CellToolTipTemplate>
                     </dxg:GridColumn>
-                    
+
                     <dxg:GridColumn Width="120*"
                                     FieldName="Status">
                         <dxg:GridColumn.CellTemplate>
@@ -289,7 +244,6 @@
                                                           HideIcon="True"
                                                           IconSize="8"
                                                           ShowText="True" />
-
                                 </StackPanel>
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
@@ -310,8 +264,6 @@
                                     FieldName="RequiredQuantity" />
                     <dxg:GridColumn Width="120*"
                                     FieldName="Type" />
-                    
-
                 </wms:WmsGridControl.Columns>
 
                 <wms:WmsGridControl.SortInfo>
@@ -321,178 +273,5 @@
 
             </wms:WmsGridControl>
         </Grid>
-
-
-        <!--<Grid Grid.Row="1"
-              Grid.Column="0"
-              Background="Aquamarine"
-               Grid.ColumnSpan="2" Visibility="Visible">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto"
-                              MaxWidth="400" />
-            </Grid.ColumnDefinitions>
-
-            <wms:CustomBorder>
-                <StackPanel Orientation="Vertical">
-                    <Grid MaxHeight="350" MinWidth="300" Background="Azure">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"  />
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            --><!--<ColumnDefinition Width="*"/>--><!--
-                        </Grid.ColumnDefinitions>
-                        <TextBlock FontWeight="Bold" FontSize="14" Grid.RowSpan="2">Details</TextBlock>
-                        <wms:InfoText
-                                                Grid.Row="2"
-                                                Grid.Column="0"
-                                                Content="{Binding Path=CellDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <wms:InfoText Grid.Row="2"
-                                                Grid.Column="1"
-                                                Content="{Binding Path=CompartmentId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <wms:InfoText Grid.Row="3"
-                                                Grid.Column="0"
-                                                Content="{Binding Path=Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <wms:InfoText Grid.Row="3"
-                                                Grid.Column="1"
-                                                Content="{Binding Path=Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <wms:InfoText Grid.Row="4"
-                                                Grid.Column="0"
-                                                Content="{Binding Path=MaterialStatusDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <wms:InfoText Grid.Row="4"
-                                                Grid.Column="1"
-                                                Content="{Binding Path=PackageTypeDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <wms:InfoText Grid.Row="5"
-                                                Grid.Column="0"
-                                                Content="{Binding Path=RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <wms:InfoText Grid.Row="5"
-                                                Grid.Column="1"
-                                                Content="{Binding Path=Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        --><!--<GridSplitter Grid.Row="4"
-                                                Grid.Column="0" ResizeDirection="Rows" Grid.ColumnSpan="3" Height="1" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0"/>--><!--
-
-
-                        <ScrollViewer Grid.RowSpan="6"
-                                              Grid.Column="3"
-                                              Focusable="False"
-                                              IsTabStop="False"
-                                                          Margin="0">
-
-                            <Border Style="{StaticResource InfoBoxBorderStyle}"
-                                                        Margin="0">
-
-                                <GroupBox 
-                                                        Header="{x:Static res:MasterData.OtherInformation}"
-                                                        Margin="0">
-                                    <StackPanel Orientation="Vertical">
-                                        <wms:InfoText HorizontalAlignment="Left"
-                                                                HorizontalContentAlignment="Left"
-                                                                Content="{Binding Path=CreationDate}" />
-                                        <wms:InfoText HorizontalAlignment="Left"
-                                                                HorizontalContentAlignment="Left"
-                                                                Grid.Column="1"
-                                                                Grid.Row="5"
-                                                                Content="{Binding Path=LastModificationDate}" />
-                                    </StackPanel>
-                                </GroupBox>
-                            </Border>
-                        </ScrollViewer>
-                    </Grid>
-                </StackPanel>
-            </wms:CustomBorder>
-
-
-            --><!--<ScrollViewer Grid.RowSpan="2"
-                      Grid.Column="0"
-                      Focusable="False"
-                      IsTabStop="False">
-
-
-                <Border BorderThickness="1" BorderBrush="#c5c7c4"
-                        Margin="0,0,2,2">
-
-                    <GroupBox Margin="20,0,20,20"
-                          Header="{x:Static res:MasterData.OtherInformation}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"  />
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <wms:InfoText Content="{Binding Path=CurrentItem.CellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <wms:InfoText Grid.Row="0"
-                                 Grid.Column="1"
-                                     Content="{Binding Path=CurrentItem.CompartmentId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <wms:InfoText Grid.Row="1"
-                                 Grid.Column="0"
-                                     Content="{Binding Path=CurrentItem.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <wms:InfoText Grid.Row="1"
-                                 Grid.Column="1"
-                                     Content="{Binding Path=CurrentItem.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <wms:InfoText Grid.Row="2"
-                                 Grid.Column="0"
-                                     Content="{Binding Path=CurrentItem.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <wms:InfoText Grid.Row="2"
-                                 Grid.Column="1"
-                                     Content="{Binding Path=CurrentItem.PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <wms:InfoText Grid.Row="3"
-                                 Grid.Column="0"
-                                     Content="{Binding Path=CurrentItem.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <wms:InfoText Grid.Row="3"
-                                 Grid.Column="1"
-                                     Content="{Binding Path=CurrentItem.Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <wms:InfoText HorizontalAlignment="Left"
-                                      HorizontalContentAlignment="Left"
-                                          Grid.Column="2"
-                                      Content="{Binding Path=CurrentItem.CreationDate}" />
-                            <wms:InfoText HorizontalAlignment="Left"
-                                      HorizontalContentAlignment="Left"
-                                          Grid.Column="2"
-                                          Grid.Row="1"
-                                      Content="{Binding Path=CurrentItem.LastModificationDate}" />
-                        </Grid>
-                        --><!--<StackPanel Orientation="Vertical">
-                            <wms:InfoText HorizontalAlignment="Left"
-                                      HorizontalContentAlignment="Left"
-                                      Content="{Binding Path=Model.CreationDate}" />
-                            <wms:InfoText HorizontalAlignment="Left"
-                                      HorizontalContentAlignment="Left"
-                                      Content="{Binding Path=Model.LastModificationDate}" />
-                        </StackPanel>--><!--
-                    </GroupBox>
-                </Border>
-            </ScrollViewer>--><!--
-            
-        </Grid>-->
-
-
-        <!--<Grid Grid.Row="1"
-              Grid.Column="0"
-              Background="#E6E6E6"
-               Grid.ColumnSpan="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto"
-                              MaxWidth="400" />
-            </Grid.ColumnDefinitions>
-
-        </Grid>-->
-
     </Grid>
 </wms:WmsView>

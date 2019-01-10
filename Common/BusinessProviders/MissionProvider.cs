@@ -67,6 +67,8 @@ namespace Ferretto.Common.BusinessProviders
                 .Include(m => m.LoadingUnit)
                 .Include(m => m.MaterialStatus)
                 .Include(m => m.PackageType)
+                .Include(m => m.Compartment)
+                .ThenInclude(c => c.CompartmentType)
                 .Select(m => new Mission
                 {
                     BayDescription = m.Bay.Description,
@@ -84,7 +86,7 @@ namespace Ferretto.Common.BusinessProviders
                     RegistrationNumber = m.RegistrationNumber,
                     Lot = m.Lot,
                     CellDescription = m.Cell.Aisle.Name,
-                    CompartmentId = m.CompartmentId,
+                    CompartmentType = string.Format("{0}x{1}", m.Compartment.CompartmentType.Width, m.Compartment.CompartmentType.Height),
                     MaterialStatusDescription = m.MaterialStatus.Description,
                     PackageTypeDescription = m.PackageType.Description,
                     Sub1 = m.Sub1,

@@ -16,8 +16,8 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(MasterData.CellInformation), ResourceType = typeof(MasterData))]
         public string CellDescription { get; set; }
 
-        [Display(Name = nameof(MasterData.Compartment), ResourceType = typeof(MasterData))]
-        public int? CompartmentId { get; set; }
+        [Display(Name = nameof(Scheduler.CompartmentType), ResourceType = typeof(Scheduler))]
+        public string CompartmentType { get; set; }
 
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get; set; }
