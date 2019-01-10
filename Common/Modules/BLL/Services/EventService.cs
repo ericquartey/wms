@@ -23,13 +23,18 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         #region Methods
 
-        public void Invoke<TEventArgs>(TEventArgs eventArgs) where TEventArgs : IPubSubEvent
+        public void Invoke<TEventArgs>(TEventArgs eventArgs)
+            where TEventArgs : IPubSubEvent
         {
             this.GetEventBus<TEventArgs>()?.Publish(eventArgs);
         }
 
-        public object Subscribe<TEventArgs>(Action<TEventArgs> action, string token, bool keepSubscriberReferenceAlive,
-            bool forceUiThread = false) where TEventArgs : IPubSubEvent
+        public object Subscribe<TEventArgs>(
+                Action<TEventArgs> action,
+                string token,
+                bool keepSubscriberReferenceAlive,
+                bool forceUiThread = false)
+            where TEventArgs : IPubSubEvent
         {
             return this.GetEventBus<TEventArgs>().Subscribe(
                 action,
@@ -45,12 +50,14 @@ namespace Ferretto.Common.Modules.BLL.Services
                 .Subscribe(action, forceUiThread ? ThreadOption.UIThread : ThreadOption.PublisherThread, true);
         }
 
-        public void Unsubscribe<TEventArgs>(object subscriptionToken) where TEventArgs : IPubSubEvent
+        public void Unsubscribe<TEventArgs>(object subscriptionToken)
+            where TEventArgs : IPubSubEvent
         {
             this.GetEventBus<TEventArgs>().Unsubscribe(subscriptionToken as SubscriptionToken);
         }
 
-        private PubSubEvent<TEventArgs> GetEventBus<TEventArgs>() where TEventArgs : IPubSubEvent
+        private PubSubEvent<TEventArgs> GetEventBus<TEventArgs>()
+            where TEventArgs : IPubSubEvent
         {
             return this.eventAggregator.GetEvent<PubSubEvent<TEventArgs>>();
         }

@@ -10,7 +10,8 @@ namespace Ferretto.Common.BLL.Tests
         #region Methods
 
         [TestMethod]
-        [TestProperty("Description",
+        [TestProperty(
+            "Description",
             @"GIVEN that a non-withdrawal request is created \
                WHEN the FullyQualifyWithdrawalRequest method is called with the invalid request\
                THEN the method should throw an exception")]
@@ -38,7 +39,8 @@ namespace Ferretto.Common.BLL.Tests
         }
 
         [TestMethod]
-        [TestProperty("Description",
+        [TestProperty(
+            "Description",
             @"GIVEN that a null request is created \
                WHEN the FullyQualifyWithdrawalRequest method is called with the null new request\
                THEN the method should throw an exception")]
