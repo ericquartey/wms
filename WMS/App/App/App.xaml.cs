@@ -30,16 +30,20 @@ namespace Ferretto.WMS.App
             base.OnExit(e);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Major Code Smell",
+            "S2221",
+            Justification = "This method log all startup errors")]
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
             try
             {
-                var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                var assembly = typeof(App).Assembly;
                 var versionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
 
-                this.logger.Info(string.Format("Starting application, version '{0}'.", versionInfo.ProductVersion));
+                this.logger.Info($"Starting application, version '{versionInfo.ProductVersion}'.");
 
                 this.SetLanguage();
 
@@ -53,7 +57,7 @@ namespace Ferretto.WMS.App
             }
         }
 
-        private void CurrentDomain_UnhandledException(System.Object sender, System.UnhandledExceptionEventArgs e)
+        private void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
         {
             this.logger.Error(e.ExceptionObject as System.Exception, "An unhandled exception was thrown.");
         }
@@ -65,9 +69,8 @@ namespace Ferretto.WMS.App
                 &&
                 System.Globalization.CultureInfo.CurrentUICulture.Name != defaultLanguage)
             {
-                this.logger.Info(string.Format("Overriding user's UI language '{0}' with '{1}' as specified in configuration.",
-                    System.Globalization.CultureInfo.CurrentUICulture.Name,
-                    defaultLanguage));
+                this.logger.Info(
+                    $"Overriding user's UI language '{System.Globalization.CultureInfo.CurrentUICulture.Name}' with '{defaultLanguage}' as specified in configuration.");
 
                 System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(defaultLanguage);
                 System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(defaultLanguage);
