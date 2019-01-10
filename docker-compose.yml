@@ -2,7 +2,12 @@ version: '3.4'
 
 services:
   ferretto.wms.data.webapi:
-    image: ${DOCKER_REGISTRY-}ferrettowmsdatawebapi
+    image: ${DOCKER_REGISTRY-}ferretto_wms_data_webapi
     build:
       context: .
       dockerfile: WMS\Data\WebAPI\Dockerfile
+  ferretto.wms.scheduler.webapi:
+    image: ${DOCKER_REGISTRY-}ferretto_wms_scheduler_webapi
+    build:
+      context: .
+      dockerfile: WMS\Scheduler\WebAPI\Dockerfile

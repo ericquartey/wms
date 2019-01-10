@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Scheduler.Driv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.BusinessProviders", "Common\BusinessProviders\Ferretto.Common.BusinessProviders.csproj", "{5756C0BC-6332-488A-B2CA-3C1F0FA8A576}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{72A16EE1-E7EE-4D33-B821-2A6209800E3C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{5756C0BC-6332-488A-B2CA-3C1F0FA8A576}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5756C0BC-6332-488A-B2CA-3C1F0FA8A576}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5756C0BC-6332-488A-B2CA-3C1F0FA8A576}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72A16EE1-E7EE-4D33-B821-2A6209800E3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72A16EE1-E7EE-4D33-B821-2A6209800E3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72A16EE1-E7EE-4D33-B821-2A6209800E3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72A16EE1-E7EE-4D33-B821-2A6209800E3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -99,6 +105,7 @@ Global
 		{1D8B6FF0-298B-466F-8C25-F087CFDB1B59} = {7C870AE6-46DD-493B-BAD9-FDEFE22ECA1F}
 		{6D9EB260-9249-4A4C-BF0F-030B647B3699} = {C6AB2AE0-C101-4638-AC86-6B6BCB7ACCB2}
 		{5756C0BC-6332-488A-B2CA-3C1F0FA8A576} = {7C870AE6-46DD-493B-BAD9-FDEFE22ECA1F}
+		{72A16EE1-E7EE-4D33-B821-2A6209800E3C} = {C6AB2AE0-C101-4638-AC86-6B6BCB7ACCB2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B998A0C5-DD2C-4088-9C42-300A146A4118}
