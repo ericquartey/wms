@@ -774,7 +774,7 @@
     <Rule Id="S4047" Action="Warning" />
     <Rule Id="S4050" Action="Warning" />
     <Rule Id="S4052" Action="Warning" />
-    <Rule Id="S4055" Action="Warning" />
+    <Rule Id="S4055" Action="None" />
     <Rule Id="S4056" Action="None" />
     <Rule Id="S4057" Action="Warning" />
     <Rule Id="S4058" Action="Warning" />
