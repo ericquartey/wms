@@ -14,7 +14,7 @@ namespace Ferretto.Common.BusinessModels
         public string BayDescription { get; set; }
 
         [Display(Name = nameof(MasterData.CellInformation), ResourceType = typeof(MasterData))]
-        public int? CellId { get; set; }
+        public string CellDescription { get; set; }
 
         [Display(Name = nameof(MasterData.Compartment), ResourceType = typeof(MasterData))]
         public int? CompartmentId { get; set; }
@@ -41,10 +41,10 @@ namespace Ferretto.Common.BusinessModels
         public string Lot { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MaterialStatus), ResourceType = typeof(BusinessObjects))]
-        public int? MaterialStatusId { get; set; }
+        public string MaterialStatusDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.PackageType), ResourceType = typeof(BusinessObjects))]
-        public int? PackageTypeId { get; set; }
+        public string PackageTypeDescription { get; set; }
 
         [Display(Name = nameof(General.Priority), ResourceType = typeof(General))]
         public int? Priority { get; set; }
