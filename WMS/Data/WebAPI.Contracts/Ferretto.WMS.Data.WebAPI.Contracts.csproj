@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
    <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net471</TargetFrameworks>
@@ -29,7 +29,7 @@
     <Compile Remove="ServiceCollectionExtensions.cs" Condition="'$(TargetFramework)' == 'net471'" />
   </ItemGroup>
 
-  <Target Name="NSwag" BeforeTargets="Clean" Condition=" '$(Configuration)' == 'debug' and '$(TargetFramework)' == 'netstandard2.0' ">
+  <Target Name="NSwag" AfterTargets="Build" Condition=" '$(Configuration)' == 'debug' and '$(TargetFramework)' == 'netstandard2.0' ">
     <Copy SourceFiles="@(Reference)" DestinationFolder="$(OutDir)References" />
     <Exec Command="$(NSwagExe_Core21) run nswag.json /variables:Configuration=$(Configuration)" />
     <RemoveDir Directories="$(OutDir)References" />

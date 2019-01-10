@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +16,9 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
         #region Fields
 
         private readonly ILogger logger;
+
         private readonly IServiceProvider serviceProvider;
+
         private readonly Core.IWarehouse warehouse;
 
         #endregion Fields
@@ -70,7 +71,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
             return this.Ok();
         }
 
-        [ProducesResponseType(200, Type = typeof(ItemListRow))]
+        [ProducesResponseType(200, Type = typeof(Core.ItemListRow))]
         [ProducesResponseType(400)]
         [HttpGet]
         public async Task<ActionResult> GetAll()
@@ -80,7 +81,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
                 using (var dbContext = (DatabaseContext)this.serviceProvider.GetService(typeof(DatabaseContext)))
                 {
                     var result = await dbContext.ItemListRows
-                        .Select(i => new ItemListRowDetails
+                        .Select(i => new Core.ItemListRow
                         {
                             Id = i.Id,
                             Code = i.Code,
@@ -100,7 +101,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
             }
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<ItemListRow>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Core.ItemListRow>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [HttpGet("{id}")]
@@ -113,13 +114,13 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
                     var listRow = await dbContext.ItemListRows
                        .Include(r => r.Item)
                        .Where(l => l.Id == id)
-                       .Select(l => new ItemListRowDetails
+                       .Select(l => new Core.ItemListRow
                        {
                            Id = l.Id,
                            Code = l.Code,
                            ItemDescription = l.Item.Description,
                            RowPriority = l.Priority,
-                           ItemListRowStatus = (ItemListRowStatus)l.Status,
+                           ItemListRowStatus = (Core.ItemListRowStatus)l.Status,
                            DispatchedQuantity = l.DispatchedQuantity,
                            CreationDate = l.CreationDate,
                            LastModificationDate = l.LastModificationDate,
