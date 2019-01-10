@@ -70,15 +70,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scheduler", "Scheduler", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Scheduler.Drivers.Vertimag", "WMS\Scheduler\Drivers.Vertimag\Ferretto.WMS.Scheduler.Drivers.Vertimag.csproj", "{F5B1D8E3-7F1E-47AD-81ED-D62B20057BEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Modules.Scheduler", "WMS\App\Modules\Scheduler\Ferretto.WMS.Modules.Scheduler.csproj", "{DDB29CA1-B560-4BA6-B7CF-E5BD2CF5CDFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Modules.Scheduler", "WMS\App\Modules\Scheduler\Ferretto.WMS.Modules.Scheduler.csproj", "{DDB29CA1-B560-4BA6-B7CF-E5BD2CF5CDFB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{B4262EEC-49FA-4052-80C9-73E0A03BBBEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Data.WebAPI", "WMS\Data\WebAPI\Ferretto.WMS.Data.WebAPI.csproj", "{860F6E66-50E9-4C12-AEE5-96BA308293D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Data.WebAPI", "WMS\Data\WebAPI\Ferretto.WMS.Data.WebAPI.csproj", "{860F6E66-50E9-4C12-AEE5-96BA308293D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Data.WebAPI.Contracts", "WMS\Data\WebAPI.Contracts\Ferretto.WMS.Data.WebAPI.Contracts.csproj", "{7E74AA8E-0B5E-4D3B-ADD5-DED190AAA3EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Data.WebAPI.Contracts", "WMS\Data\WebAPI.Contracts\Ferretto.WMS.Data.WebAPI.Contracts.csproj", "{7E74AA8E-0B5E-4D3B-ADD5-DED190AAA3EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Data.Tests", "WMS\Data\Tests\Ferretto.WMS.Data.Tests.csproj", "{A9EA288E-806A-42E9-A9AD-6C9CB325FB9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Data.Tests", "WMS\Data\Tests\Ferretto.WMS.Data.Tests.csproj", "{A9EA288E-806A-42E9-A9AD-6C9CB325FB9B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Scheduler.WebAPI", "WMS\Scheduler\WebAPI\Ferretto.WMS.Scheduler.WebAPI.csproj", "{9CCFC95C-729B-4F26-81FB-FA320FFECE29}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -186,6 +188,10 @@ Global
 		{A9EA288E-806A-42E9-A9AD-6C9CB325FB9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9EA288E-806A-42E9-A9AD-6C9CB325FB9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9EA288E-806A-42E9-A9AD-6C9CB325FB9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CCFC95C-729B-4F26-81FB-FA320FFECE29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CCFC95C-729B-4F26-81FB-FA320FFECE29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CCFC95C-729B-4F26-81FB-FA320FFECE29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CCFC95C-729B-4F26-81FB-FA320FFECE29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -221,6 +227,7 @@ Global
 		{860F6E66-50E9-4C12-AEE5-96BA308293D5} = {B4262EEC-49FA-4052-80C9-73E0A03BBBEA}
 		{7E74AA8E-0B5E-4D3B-ADD5-DED190AAA3EE} = {B4262EEC-49FA-4052-80C9-73E0A03BBBEA}
 		{A9EA288E-806A-42E9-A9AD-6C9CB325FB9B} = {B4262EEC-49FA-4052-80C9-73E0A03BBBEA}
+		{9CCFC95C-729B-4F26-81FB-FA320FFECE29} = {BCC44DCE-D5A7-46A7-BE20-2E28AF437A9F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B998A0C5-DD2C-4088-9C42-300A146A4118}
