@@ -8,8 +8,8 @@ namespace Feretto.Common.BLL.Tests
     {
         #region Methods
 
-        //For test check on WIDTH = 1027 (2 border's pixel + 25 width ruler) HEIGHT= 427
-        //To help add to CompartmentDetails: CompartmentName, binding on label
+        // For test check on WIDTH = 1027 (2 border's pixel + 25 width ruler) HEIGHT= 427
+        // To help add to CompartmentDetails: CompartmentName, binding on label
         [TestMethod]
         public void TestControlSize100()
         {
@@ -49,6 +49,8 @@ namespace Feretto.Common.BLL.Tests
                 XPosition = 0,
                 YPosition = 300,
             });
+
+            Assert.AreEqual(4, tray.Compartments.Count);
         }
 
         [TestMethod]

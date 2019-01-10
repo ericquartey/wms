@@ -26,7 +26,7 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public ImageSource GetImage(string pathName)
         {
-            if (String.IsNullOrWhiteSpace(pathName))
+            if (string.IsNullOrWhiteSpace(pathName))
             {
                 return null;
             }
