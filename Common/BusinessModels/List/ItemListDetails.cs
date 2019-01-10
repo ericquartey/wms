@@ -65,7 +65,7 @@ namespace Ferretto.Common.BusinessModels
             get => this.customerOrderDescription;
             set => this.SetProperty(ref this.customerOrderDescription, value);
         }
-        
+
         [Display(Name = nameof(General.Description), ResourceType = typeof(General))]
         public string Description
         {

@@ -25,6 +25,7 @@ namespace Ferretto.Common.BusinessModels
         #region Properties
 
         public int Height { get; set; }
+
         public int Width { get; set; }
 
         #endregion Properties
@@ -35,6 +36,7 @@ namespace Ferretto.Common.BusinessModels
         #region Properties
 
         public double X { get; set; }
+
         public double Y { get; set; }
 
         #endregion Properties
@@ -45,8 +47,11 @@ namespace Ferretto.Common.BusinessModels
         #region Properties
 
         public double XEnd { get; set; }
+
         public double XStart { get; set; }
+
         public double YEnd { get; set; }
+
         public double YStart { get; set; }
 
         #endregion Properties
@@ -57,6 +62,7 @@ namespace Ferretto.Common.BusinessModels
         #region Properties
 
         public int X { get; set; }
+
         public int Y { get; set; }
 
         #endregion Properties
