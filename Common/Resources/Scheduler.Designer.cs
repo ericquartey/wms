@@ -88,6 +88,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Row List.
+        /// </summary>
+        public static string ItemListRow {
+            get {
+                return ResourceManager.GetString("ItemListRow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string MissionAll {

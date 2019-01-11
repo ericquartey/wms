@@ -119,9 +119,12 @@
     <value>Tutte</value>
   </data>
   <data name="IsInstant" xml:space="preserve">
-    <value>E' istantaneo</value>
+    <value>Immediato</value>
   </data>
   <data name="DispatchedQuantity" xml:space="preserve">
     <value>Quantità Evasa</value>
+  </data>
+  <data name="ItemListRow" xml:space="preserve">
+    <value>Riga Lista</value>
   </data>
 </root>

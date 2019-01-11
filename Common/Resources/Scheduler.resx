@@ -124,4 +124,7 @@
   <data name="DispatchedQuantity" xml:space="preserve">
     <value>Dispatched Quantity</value>
   </data>
+  <data name="ItemListRow" xml:space="preserve">
+    <value>Row List</value>
+  </data>
 </root>
