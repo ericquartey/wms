@@ -106,7 +106,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 return;
             }
 
-            this.ItemWithdraw.ItemDetails = await this.itemProvider.GetById(modelId.Value);
+            this.ItemWithdraw.ItemDetails = await this.itemProvider.GetByIdAsync(modelId.Value);
         }
 
         protected override void OnDispose()

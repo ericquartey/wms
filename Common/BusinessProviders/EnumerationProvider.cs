@@ -25,6 +25,14 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
+        public static IEnumerable<Enumeration> GetAllItemManagementTypes()
+        {
+            var values = System.Enum.GetValues(typeof(ItemManagementType));
+
+            return values.Cast<ItemManagementType>()
+                .Select(x => new Enumeration((int)x, System.Enum.GetName(typeof(ItemManagementType), x)));
+        }
+
         public IQueryable<Enumeration> GetAislesByAreaId(int areaId)
         {
             return this.dataContext.Aisles
@@ -35,8 +43,7 @@ namespace Ferretto.Common.BusinessProviders
                 .ThenBy(a => a.Name)
                 .Select(a => new Enumeration(
                     a.Id,
-                    $"{a.Area.Name} - {a.Name}")
-                );
+                    $"{a.Area.Name} - {a.Name}"));
         }
 
         public IQueryable<EnumerationString> GetAllAbcClasses()
@@ -87,14 +94,6 @@ namespace Ferretto.Common.BusinessProviders
             return this.dataContext.ItemCategories
                 .AsNoTracking()
                 .Select(x => new Enumeration(x.Id, x.Description));
-        }
-
-        public IEnumerable<Enumeration> GetAllItemManagementTypes()
-        {
-            var values = System.Enum.GetValues(typeof(ItemManagementType));
-
-            return values.Cast<ItemManagementType>()
-                .Select(x => new Enumeration((int)x, System.Enum.GetName(typeof(ItemManagementType), x)));
         }
 
         public IQueryable<EnumerationString> GetAllLoadingUnitStatuses()

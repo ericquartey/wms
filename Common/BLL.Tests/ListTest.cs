@@ -33,10 +33,6 @@ namespace Ferretto.Common.BLL.Tests
                THEN a new set of requests is generated
                 AND the total amount of items for each row is covered by the requests
                 AND the requests are transformed in missions, ordered by row priority")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Major Code Smell",
-            "CA1506",
-            Justification = "This is a test class")]
         public async Task ListExecutionRequest()
         {
             #region Arrange

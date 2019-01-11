@@ -179,10 +179,6 @@ namespace Ferretto.Common.EF
 #endif
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Major Code Smell",
-            "CA1506",
-            Justification = "Class Designed as part of the Entity Framework")]
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             if (modelBuilder == null)
