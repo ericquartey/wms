@@ -206,4 +206,7 @@
     <value>Initializing Scheduler module ...</value>
     <comment>Splash screen message</comment>
   </data>
+  <data name="UnableToSaveChanges" xml:space="preserve">
+    <value>Unable To SaveChanges</value>
+  </data>
 </root>

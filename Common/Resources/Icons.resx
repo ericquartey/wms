@@ -467,12 +467,14 @@
   </data>
   <data name="Missions" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-target-50.png</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="SchedulerRequests" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-ask-question-50.png</value>
   </data>
   <data name="Scheduler" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_date_range_white_24dp.png</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="ItemListRowStatusCompleted" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_check_circle_black_48dp.png</value>
@@ -496,12 +498,15 @@
   </data>
   <data name="MissionViewAll" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-europe-50.png</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="MissionViewStatusCompleted" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-tick-box-50.png</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="MissionViewStatusNew" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-new-50.png</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="SchedulerRequestViewAll" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-europe-50.png</value>

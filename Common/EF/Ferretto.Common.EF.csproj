@@ -47,8 +47,6 @@
   
   <ItemGroup>
     <ProjectReference Include="..\DataModels\Ferretto.Common.DataModels.csproj" />
-    <ProjectReference Include="..\Resources\Ferretto.Common.Resources.csproj" />
-    <ProjectReference Include="..\Utils\Ferretto.Common.Utils.csproj" />
   </ItemGroup>
 
 </Project>

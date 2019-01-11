@@ -15,11 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Modules\BLL\Ferretto.Common.Modules.BLL.csproj" />
-    <ProjectReference Include="..\Resources\Ferretto.Common.Resources.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System.Xaml" />
@@ -36,6 +31,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Modules\BLL\Ferretto.Common.Modules.BLL.csproj" />
+    <ProjectReference Include="..\Resources\Ferretto.Common.Resources.csproj" />
   </ItemGroup>
 
 </Project>
