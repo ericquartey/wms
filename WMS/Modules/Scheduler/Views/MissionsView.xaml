@@ -241,21 +241,7 @@
                     </dxg:GridColumn>
 
                     <dxg:GridColumn Width="120*"
-                                    FieldName="Status">
-                        <dxg:GridColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <wms:WmsEnumIndicator Margin="5,0,0,0"
-                                                          VerticalAlignment="Center"
-                                                          EnumType="{x:Type models:MissionStatus}"
-                                                          EnumValue="{Binding Data.Status}"
-                                                          HideIcon="True"
-                                                          IconSize="8"
-                                                          ShowText="True" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </dxg:GridColumn.CellTemplate>
-                    </dxg:GridColumn>
+                                    FieldName="Status" />
                     <dxg:GridColumn Width="140*"
                                     FieldName="BayDescription" />
                     <dxg:GridColumn Width="370*"
@@ -263,7 +249,7 @@
                     <dxg:GridColumn Width="200*"
                                     FieldName="ItemListDescription" />
                     <dxg:GridColumn Width="190*"
-                                    FieldName="ItemListRowDescription" />
+                                    FieldName="ListRowDescription" />
                     <dxg:GridColumn Width="140*"
                                     FieldName="LoadingUnitDescription" />
                     <dxg:GridColumn Width="90*"
