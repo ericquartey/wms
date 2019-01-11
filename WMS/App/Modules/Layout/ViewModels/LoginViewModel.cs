@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
@@ -17,11 +16,17 @@ namespace Ferretto.WMS.Modules.Layout
         #region Fields
 
         private readonly IUserProvider userProvider = ServiceLocator.Current.GetInstance<IUserProvider>();
+
         private bool isBusy;
+
         private bool isEnabled;
+
         private string loginCheck;
+
         private ICommand loginCommand;
+
         private string status;
+
         private string validationError;
 
         #endregion Fields
@@ -60,8 +65,10 @@ namespace Ferretto.WMS.Modules.Layout
             set => this.SetProperty(ref this.loginCheck, value);
         }
 
-        public ICommand LoginCommand => this.loginCommand ?? (this.loginCommand = new DelegateCommand(async () => await this.ExecuteLogin().ConfigureAwait(true)
-                                                            , this.CanLogin));
+        public ICommand LoginCommand => this.loginCommand ??
+                                        (this.loginCommand = new DelegateCommand(
+                                             async () => await this.ExecuteLoginAsync().ConfigureAwait(true),
+                                             this.CanLogin));
 
         public string Status
         {
@@ -81,16 +88,18 @@ namespace Ferretto.WMS.Modules.Layout
 
         #region Methods
 
-        public override Boolean KeyPress(ShortKeyInfo shortKeyInfo)
+        public override bool KeyPress(ShortKeyInfo shortKeyInfo)
         {
-            if (shortKeyInfo.ShortKey.IsControlShift &&
+            if (shortKeyInfo != null &&
+                shortKeyInfo.ShortKey.IsControlShift &&
                 shortKeyInfo.ShortKey.Key == Key.O)
             {
                 this.AccessGranted();
                 return true;
             }
 
-            if (shortKeyInfo.ShortKey.Key == Key.Enter)
+            if (shortKeyInfo != null &&
+                shortKeyInfo.ShortKey.Key == Key.Enter)
             {
                 this.loginCommand.Execute(null);
                 return true;
@@ -117,10 +126,11 @@ namespace Ferretto.WMS.Modules.Layout
             {
                 return false;
             }
+
             return true;
         }
 
-        private async Task ExecuteLogin()
+        private async Task ExecuteLoginAsync()
         {
             this.ValidationError = this.userProvider.IsValid(this.User);
             if (string.IsNullOrEmpty(this.ValidationError) == false)
@@ -142,7 +152,7 @@ namespace Ferretto.WMS.Modules.Layout
             this.LoginCheck = Common.Resources.Layout.Ok;
         }
 
-        private void OnItemPropertyChanged(Object sender, PropertyChangedEventArgs e)
+        private void OnItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             this.ValidationError = string.Empty;
             ((DelegateCommand)this.LoginCommand)?.RaiseCanExecuteChanged();

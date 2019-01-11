@@ -10,14 +10,14 @@ namespace Ferretto.WMS.Modules.Layout
         public LayoutView()
         {
             this.InitializeComponent();
-            this.Loaded += this.LayoutView_Loaded;
+            this.Loaded += LayoutView_Loaded;
         }
 
         #endregion Constructors
 
         #region Methods
 
-        private void LayoutView_Loaded(System.Object sender, System.Windows.RoutedEventArgs e)
+        private static void LayoutView_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             SplashScreenService.Hide();
         }
