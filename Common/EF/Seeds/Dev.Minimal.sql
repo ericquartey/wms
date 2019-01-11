@@ -905,4 +905,13 @@ INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListI
 INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListId, ItemListRowId, ItemId, Sub1, Sub2, MaterialStatusId, PackageTypeId, Lot, RegistrationNumber, RequiredQuantity, Priority, Status, Type) VALUES (6, 1, 1, 1, 1, 1, 1 , 1, 'A', 'B', 1, 1, 'LOTTO 6', 112233, 2, 1, 'N','O');
 SET IDENTITY_INSERT Missions OFF;
 
+
+-- Scheduler Request
+SET IDENTITY_INSERT SchedulerRequests ON;
+INSERT INTO SchedulerRequests (Id,AreaId,BayId,IsInstant,ItemId,ListId,ListRowId,LoadingUnitId,LoadingUnitTypeId,Lot,MaterialStatusId,OperationType,PackageTypeId,RegistrationNumber,RequestedQuantity,Sub1,Sub2,DispatchedQuantity) VALUES (1, 1, 1, 1, 1, 1, 1, 1,1, 'LOTTO 1', 1, 'W', 1, 112233, 20, 's1s1s1', 's2s2s2', 1);
+INSERT INTO SchedulerRequests (Id,AreaId,BayId,IsInstant,ItemId,ListId,ListRowId,LoadingUnitId,LoadingUnitTypeId,Lot,MaterialStatusId,OperationType,PackageTypeId,RegistrationNumber,RequestedQuantity,Sub1,Sub2,DispatchedQuantity) VALUES (2, 2, 1, 1, 1, 1, 1, 1,1, 'LOTTO 2', 1, 'R', 1, 112233, 20, 's1s1s1', 's2s2s2', 1);
+INSERT INTO SchedulerRequests (Id,AreaId,BayId,IsInstant,ItemId,ListId,ListRowId,LoadingUnitId,LoadingUnitTypeId,Lot,MaterialStatusId,OperationType,PackageTypeId,RegistrationNumber,RequestedQuantity,Sub1,Sub2,DispatchedQuantity) VALUES (3, 2, 1, 1, 1, 1, 1, 1,1, 'LOTTO 3', 1, 'O', 1, 112233, 20, 's1s1s1', 's2s2s2', 1);
+INSERT INTO SchedulerRequests (Id,AreaId,BayId,IsInstant,ItemId,ListId,ListRowId,LoadingUnitId,LoadingUnitTypeId,Lot,MaterialStatusId,OperationType,PackageTypeId,RegistrationNumber,RequestedQuantity,Sub1,Sub2,DispatchedQuantity) VALUES (4, 2, 1, 1, 1, 1, 1, 1,1, 'LOTTO 4', 1, 'I', 1, 112233, 20, 's1s1s1', 's2s2s2', 1);
+SET IDENTITY_INSERT SchedulerRequests OFF;
+
 COMMIT;
