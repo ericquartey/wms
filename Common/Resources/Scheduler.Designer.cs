@@ -61,6 +61,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compartment Type.
+        /// </summary>
+        public static string CompartmentType {
+            get {
+                return ResourceManager.GetString("CompartmentType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string MissionAll {

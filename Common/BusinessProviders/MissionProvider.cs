@@ -59,10 +59,16 @@ namespace Ferretto.Common.BusinessProviders
         {
             return this.dataContextService.Current.Missions
                  .Include(m => m.Bay)
+                 .Include(m => m.Cell)
+                 .ThenInclude(c => c.Aisle)
                 .Include(m => m.Item)
                 .Include(m => m.ItemList)
                 .Include(m => m.ItemListRow)
                 .Include(m => m.LoadingUnit)
+                .Include(m => m.MaterialStatus)
+                .Include(m => m.PackageType)
+                .Include(m => m.Compartment)
+                .ThenInclude(c => c.CompartmentType)
                 .Select(m => new Mission
                 {
                     BayDescription = m.Bay.Description,
@@ -73,7 +79,18 @@ namespace Ferretto.Common.BusinessProviders
                     Priority = m.Priority,
                     RequiredQuantity = m.RequiredQuantity,
                     Status = (MissionStatus)m.Status,
-                    Type = (MissionType)m.Type
+                    Type = (MissionType)m.Type,
+
+                    CreationDate = m.CreationDate,
+                    LastModificationDate = m.LastModificationDate,
+                    RegistrationNumber = m.RegistrationNumber,
+                    Lot = m.Lot,
+                    CellDescription = m.Cell.Aisle.Name,
+                    CompartmentType = string.Format(Common.Resources.MasterData.CompartmentTypeListFormatReduced, m.Compartment.CompartmentType.Width, m.Compartment.CompartmentType.Height),
+                    MaterialStatusDescription = m.MaterialStatus.Description,
+                    PackageTypeDescription = m.PackageType.Description,
+                    Sub1 = m.Sub1,
+                    Sub2 = m.Sub2
                 });
         }
 

@@ -133,9 +133,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>OperatorApp.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Scheduler.it.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="Scheduler.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Scheduler.Designer.cs</LastGenOutput>
