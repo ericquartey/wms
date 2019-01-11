@@ -18,7 +18,7 @@ namespace Ferretto.Common.Controls
     /// <summary>
     /// Interaction logic for Accordion.xaml
     /// </summary>
-    public partial class AccordionItem : DevExpress.Xpf.Accordion.AccordionItem
+    public class AccordionItem : DevExpress.Xpf.Accordion.AccordionItem
     {
         #region Fields
 
@@ -29,7 +29,7 @@ namespace Ferretto.Common.Controls
                    nameof(IsToggleVisible), typeof(bool), typeof(AccordionItem), new UIPropertyMetadata(false));
 
         public static readonly DependencyProperty TitleHeaderProperty = DependencyProperty.Register(
-                           nameof(TitleHeader), typeof(string), typeof(AccordionItem), new UIPropertyMetadata(""));
+                           nameof(TitleHeader), typeof(string), typeof(AccordionItem), new UIPropertyMetadata(string.Empty));
 
         #endregion Fields
 

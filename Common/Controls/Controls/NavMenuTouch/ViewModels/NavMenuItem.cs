@@ -18,7 +18,8 @@ namespace Ferretto.Common.Controls
             this.Command = new DelegateCommand(this.CommandAction);
         }
 
-        public NavMenuItem(MainMenuItem item, string currBreadCrumb) : this()
+        public NavMenuItem(MainMenuItem item, string currBreadCrumb)
+            : this()
         {
             if (item == null)
             {
@@ -50,9 +51,9 @@ namespace Ferretto.Common.Controls
 
         public string DisplayName { get; set; }
 
-        public bool HasChildren => (this.Child != null &&
+        public bool HasChildren => this.Child != null &&
                                      this.Child.Children != null &&
-                                     this.Child.Children.Count > 0);
+                                     this.Child.Children.Count > 0;
 
         public string Image { get; set; }
 

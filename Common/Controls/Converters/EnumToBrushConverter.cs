@@ -11,24 +11,25 @@ namespace Ferretto.Common.Controls
     {
         #region Methods
 
-        public Object Convert(object value, Type targetType, Object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (targetType != typeof(Brush))
             {
                 throw new InvalidOperationException(Errors.ConverterCanConvertOnlyToBrushType);
             }
 
-            if (!( parameter is Type type ))
+            if (!(parameter is Type type))
             {
                 throw new InvalidOperationException(Errors.ConverterParameterMustBeType);
             }
+
             var resourceValue = EnumColors.ResourceManager.GetString($"{type.Name}{value}");
-            var color = (Color) (ColorConverter.ConvertFromString(resourceValue) ?? Colors.Transparent);
+            var color = (Color)(ColorConverter.ConvertFromString(resourceValue) ?? Colors.Transparent);
 
             return new SolidColorBrush(color);
         }
 
-        public Object ConvertBack(object value, Type targetType, Object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return null;
         }

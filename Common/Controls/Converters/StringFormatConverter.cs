@@ -19,6 +19,7 @@ namespace Ferretto.Common.Controls
             {
                 throw new InvalidOperationException(Errors.ConverterCanConvertOnlyToDoubleType);
             }
+
             return string.Format(values[0].ToString(), values.Skip(1).ToArray());
         }
 

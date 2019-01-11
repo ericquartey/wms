@@ -5,13 +5,18 @@ namespace Ferretto.Common.Controls.Services
     public enum StatusType
     {
         None,
+
         Info,
+
         Error,
+
         Warning,
+
         Success
     }
 
-    public class ModelChangedPubSubEvent<TModel> : Prism.Events.PubSubEvent, IPubSubEvent where TModel : IBusinessObject
+    public class ModelChangedPubSubEvent<TModel> : Prism.Events.PubSubEvent, IPubSubEvent
+        where TModel : IBusinessObject
     {
         #region Fields
 
@@ -37,11 +42,13 @@ namespace Ferretto.Common.Controls.Services
         #endregion Properties
     }
 
-    public class ModelSelectionChangedPubSubEvent<TModel> : Prism.Events.PubSubEvent<TModel>, IPubSubEvent where TModel : IBusinessObject
+    public class ModelSelectionChangedPubSubEvent<TModel> : Prism.Events.PubSubEvent<TModel>, IPubSubEvent
+        where TModel : IBusinessObject
     {
         #region Fields
 
         private readonly int? modelId;
+
         private readonly string token;
 
         #endregion Fields
@@ -97,7 +104,7 @@ namespace Ferretto.Common.Controls.Services
 
         public StatusPubSubEvent(string message = null, StatusType type = StatusType.Info)
         {
-            this.Message = message?.Split(new char[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries)[0];
+            this.Message = message?.Split(new[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries)[0];
             this.Type = type;
         }
 

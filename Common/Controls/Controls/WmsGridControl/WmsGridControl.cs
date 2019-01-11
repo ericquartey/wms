@@ -54,24 +54,21 @@ namespace Ferretto.Common.Controls
         #region Methods
 
         protected override void OnInitialized(System.EventArgs e)
-        {            
+        {
             base.OnInitialized(e);
 
             this.SetValue(ScrollBarExtensions.ScrollBarModeProperty, ScrollBarMode.TouchOverlap);
 
             this.SetToken();
 
-            this.SetOperationsOnSelectedItem();            
+            this.SetOperationsOnSelectedItem();
         }
 
         private static void OnSelectedValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsGridControl gridControl)
+            if (d is WmsGridControl gridControl && e.NewValue is IBusinessObject bo)
             {
-                if (e.NewValue is IBusinessObject bo)
-                {
-                    SetSelectedItem(gridControl, bo);
-                }
+                SetSelectedItem(gridControl, bo);
             }
         }
 
@@ -88,20 +85,21 @@ namespace Ferretto.Common.Controls
             {
                 gridControl.SelectedItem = gridControl.CurrentItem = null;
             }
+
             gridControl.SelectedItem = gridControl.CurrentItem;
         }
 
         private void SetOperationsOnSelectedItem()
         {
-            this.SelectedItemChanged += this.WmsGridControl_SelectedItemChanged;         
+            this.SelectedItemChanged += this.WmsGridControl_SelectedItemChanged;
         }
 
         private void SetToken()
         {
-            this.Loaded += this.WmsGridControl_Loaded;            
+            this.Loaded += this.WmsGridControl_Loaded;
         }
 
-        private void WmsGridControl_Loaded(Object sender, RoutedEventArgs e)
+        private void WmsGridControl_Loaded(object sender, RoutedEventArgs e)
         {
             var wmsViews = LayoutTreeHelper.GetVisualParents(this.Parent).OfType<WmsView>();
             if (wmsViews != null && wmsViews.Any())
@@ -110,14 +108,14 @@ namespace Ferretto.Common.Controls
                 this.token = wmsView.Token;
                 var wmsViewViewModel = ((INavigableView)wmsView).DataContext as INavigableViewModel;
                 this.wmsViewModel = wmsViewViewModel as IRefreshDataEntityViewModel;
-                this.SelectedItem = -1;                
+                this.SelectedItem = -1;
                 this.Loaded -= this.WmsGridControl_Loaded;
             }
         }
 
-        private void WmsGridControl_SelectedItemChanged(Object sender, SelectedItemChangedEventArgs e)
+        private void WmsGridControl_SelectedItemChanged(object sender, SelectedItemChangedEventArgs e)
         {
-            this.SelectedBusinessObject = (e.NewItem is IBusinessObject bo) ? bo : null;
+            this.SelectedBusinessObject = e.NewItem is IBusinessObject bo ? bo : null;
             if (this.SelectedBusinessObject != null)
             {
                 this.eventService.Invoke(new ModelSelectionChangedPubSubEvent<IBusinessObject>(this.SelectedBusinessObject.Id, this.token));

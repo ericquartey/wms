@@ -128,14 +128,7 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            if (control.EnumValue != null && control.EnumType != null && control.ShowText)
-            {
-                control.textBlock.Text = control.EnumValue.GetDisplayName(control.EnumType);
-            }
-            else
-            {
-                control.textBlock.Text = null;
-            }
+            control.textBlock.Text = control.EnumValue != null && control.EnumType != null && control.ShowText ? control.EnumValue.GetDisplayName(control.EnumType) : null;
         }
 
         #endregion Methods

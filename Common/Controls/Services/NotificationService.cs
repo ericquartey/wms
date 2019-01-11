@@ -64,19 +64,19 @@ namespace Ferretto.Common.Controls.Services
         {
             NLog.LogManager
                .GetCurrentClassLogger()
-               .Trace(string.Format("Hub connecting..."));
+               .Trace("Hub connecting...");
 
             await this.connection.StartAsync();
 
             NLog.LogManager
                .GetCurrentClassLogger()
-               .Trace(string.Format("Hub connected."));
+               .Trace("Hub connected.");
 
             await this.connection.SendAsync(HealthIsOnLineMessage);
 
             NLog.LogManager
                .GetCurrentClassLogger()
-               .Trace(string.Format("Message to hub sent."));
+               .Trace("Message to hub sent.");
         }
 
         private async Task InitializeAsync()
@@ -91,7 +91,7 @@ namespace Ferretto.Common.Controls.Services
             {
                 NLog.LogManager
                    .GetCurrentClassLogger()
-                   .Debug(string.Format("Connection to hub closed."));
+                   .Debug("Connection to hub closed.");
 
                 if (this.isConnected)
                 {

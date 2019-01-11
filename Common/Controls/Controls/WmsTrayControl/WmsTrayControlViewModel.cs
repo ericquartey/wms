@@ -180,6 +180,7 @@ namespace Ferretto.Common.Controls
                         Y = this.tray.Dimension.Height
                     };
                 }
+
                 this.UpdateCompartments(this.Tray.Compartments);
                 this.NotifyPropertyChanged(nameof(this.Tray));
             }
@@ -286,6 +287,7 @@ namespace Ferretto.Common.Controls
                     IsSelectable = this.IsCompartmentSelectable
                 };
             }
+
             return null;
         }
 
@@ -295,17 +297,14 @@ namespace Ferretto.Common.Controls
             {
                 this.items.RemoveAt(e.NewIndex);
             }
-            else if (e.ListChangedType == ListChangedType.ItemAdded)
+            else if (e.ListChangedType == ListChangedType.ItemAdded && sender is IList<CompartmentDetails> compartments)
             {
-                if (sender is IList<CompartmentDetails> compartments)
-                {
-                    var addedCompartment = compartments[compartments.Count - 1];
-                    var compartmentGraphic = this.AddCompartment(addedCompartment);
+                var addedCompartment = compartments[compartments.Count - 1];
+                var compartmentGraphic = this.AddCompartment(addedCompartment);
 
-                    this.ResizeCompartment(this.widthTrayPixel, this.heightTrayPixel, compartmentGraphic);
+                this.ResizeCompartment(this.widthTrayPixel, this.heightTrayPixel, compartmentGraphic);
 
-                    this.items.Add(compartmentGraphic);
-                }
+                this.items.Add(compartmentGraphic);
             }
 
             this.NotifyPropertyChanged(nameof(this.Items));
@@ -316,8 +315,8 @@ namespace Ferretto.Common.Controls
             this.UpdateCompartments(this.Tray.Compartments);
         }
 
-        private void ResizeCompartment(double widthTrayPixel, double heightTrayPixel, WmsBaseCompartment compartment)
         // TODO: consider moving this into the view
+        private void ResizeCompartment(double widthTrayPixel, double heightTrayPixel, WmsBaseCompartment compartment)
         {
             if (compartment == null ||
                 this.tray == null)
@@ -380,6 +379,7 @@ namespace Ferretto.Common.Controls
                 this.SelectedItem = null;
                 return;
             }
+
             var foundCompartment = this.Items.FirstOrDefault(c => c.CompartmentDetails.Id == this.selectedCompartment.Id);
             if (foundCompartment == null)
             {
