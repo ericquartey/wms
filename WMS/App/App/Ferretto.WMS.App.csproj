@@ -50,7 +50,7 @@
   <ItemGroup>
     <PackageReference Include="DevExpress.Wpf.PrismAdapters" Version="18.2.3" />
     <PackageReference Include="Unity.NLog" Version="1.0.2" />
-    <PackageReference Include="GitVersionTask" Version="4.0.0-beta*">
+    <PackageReference Include="GitVersionTask" Version="4.0.0">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
   </ItemGroup>

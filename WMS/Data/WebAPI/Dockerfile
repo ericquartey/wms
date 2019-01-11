@@ -3,8 +3,7 @@
 
 FROM microsoft/dotnet:2.1-aspnetcore-runtime-nanoserver-1803 AS base
 WORKDIR /app
-EXPOSE 6000
-EXPOSE 6001
+EXPOSE 6000 6001
 
 FROM microsoft/dotnet:2.1-sdk-nanoserver-1803 AS build
 WORKDIR /src
