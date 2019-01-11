@@ -108,8 +108,8 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            this.DataContext = string.IsNullOrEmpty(this.MapId) == false ?
-                this.navigationService.GetRegisteredViewModel(this.MapId, this.Data) :
+            this.DataContext = !string.IsNullOrEmpty(this.MapId) ?
+                this.navigationService.GetRegisteredViewModel(this.MapId, this.Data) : // Is Main WMSView registered
                 this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken(), this.Data);
 
             this.ViewModel = (INavigableViewModel)this.DataContext;
