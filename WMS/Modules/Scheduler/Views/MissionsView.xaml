@@ -109,8 +109,8 @@
                         <Setter Property="Background" Value="White" />
                         <Setter Property="BorderThickness" Value="1" />
                         <Setter Property="Padding" Value="0" />
-                        <Setter Property="FontSize" Value="12" />
-                        <Setter Property="FontFamily" Value="Segoe UI" />
+                        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}" />
+                        <Setter Property="FontFamily" Value="{DynamicResource FontSmall}" />
                         <Setter Property="FontStyle" Value="Normal" />
                         <Setter Property="FontWeight" Value="Normal" />
                         <Setter Property="HorizontalContentAlignment" Value="Left" />
@@ -216,28 +216,24 @@
                                                       Grid.Column="1"
                                                       Content="{Binding Path=Lot, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                                        <ScrollViewer Grid.RowSpan="6"
-                                                      Grid.Column="3"
-                                                      Margin="0"
-                                                      Focusable="False"
-                                                      IsTabStop="False">
-                                            <Border Margin="0"
-                                                    Style="{StaticResource InfoBoxBorderStyle}">
-                                                <GroupBox Margin="0"
-                                                          Header="{x:Static res:MasterData.OtherInformation}">
-                                                    <StackPanel Orientation="Vertical">
-                                                        <wms:InfoText HorizontalAlignment="Left"
-                                                                      HorizontalContentAlignment="Left"
-                                                                      Content="{Binding Path=CreationDate}" />
-                                                        <wms:InfoText Grid.Row="5"
-                                                                      Grid.Column="1"
-                                                                      HorizontalAlignment="Left"
-                                                                      HorizontalContentAlignment="Left"
-                                                                      Content="{Binding Path=LastModificationDate}" />
-                                                    </StackPanel>
-                                                </GroupBox>
-                                            </Border>
-                                        </ScrollViewer>
+                                        <Border Grid.RowSpan="6"
+                                                Grid.Column="3"
+                                                Margin="0"
+                                                Style="{StaticResource InfoBoxBorderStyle}">
+                                            <GroupBox Margin="0"
+                                                      Header="{x:Static res:MasterData.OtherInformation}">
+                                                <StackPanel Orientation="Vertical">
+                                                    <wms:InfoText HorizontalAlignment="Left"
+                                                                  HorizontalContentAlignment="Left"
+                                                                  Content="{Binding Path=CreationDate}" />
+                                                    <wms:InfoText Grid.Row="5"
+                                                                  Grid.Column="1"
+                                                                  HorizontalAlignment="Left"
+                                                                  HorizontalContentAlignment="Left"
+                                                                  Content="{Binding Path=LastModificationDate}" />
+                                                </StackPanel>
+                                            </GroupBox>
+                                        </Border>
                                     </Grid>
                                 </wms:CustomBorder>
                             </DataTemplate>
