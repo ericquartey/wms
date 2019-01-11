@@ -18,7 +18,7 @@ COPY ["WMS/Scheduler/Drivers.Vertimag/Ferretto.WMS.Scheduler.Drivers.Vertimag.cs
 COPY ["Common/BusinessModels/Ferretto.Common.BusinessModels.csproj", "Common/BusinessModels/"]
 COPY ["Common/BLL.Interfaces/Ferretto.Common.BLL.Interfaces.csproj", "Common/BLL.Interfaces/"]
 COPY ["WMS/Scheduler/WebAPI.Contracts/Ferretto.WMS.Scheduler.WebAPI.Contracts.csproj", "WMS/Scheduler/WebAPI.Contracts/"]
-COPY ["dev-certificate.pfx"] ["/app/dev-certificate.pfx"]
+COPY ["dev-certificate.pfx", "/app/dev-certificate.pfx"]
 RUN dotnet restore "WMS/Scheduler/WebAPI/Ferretto.WMS.Scheduler.WebAPI.csproj"
 COPY . .
 WORKDIR "/src/WMS/Scheduler/WebAPI"

@@ -1,5 +1,4 @@
 ﻿using System;
-using Ferretto.Common.Resources;
 
 namespace Ferretto.WMS.Scheduler.Core
 {
@@ -19,7 +18,7 @@ namespace Ferretto.WMS.Scheduler.Core
             {
                 if (value.Value < 0)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBePositive);
+                    throw new ArgumentOutOfRangeException(nameof(value), "Parameter must be positive.");
                 }
 
                 if (!member.HasValue || member.Value != value.Value)
@@ -36,7 +35,7 @@ namespace Ferretto.WMS.Scheduler.Core
         {
             if (value < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBePositive);
+                throw new ArgumentOutOfRangeException(nameof(value), "Parameter must be positive.");
             }
 
             if (member != value)
@@ -54,7 +53,7 @@ namespace Ferretto.WMS.Scheduler.Core
             {
                 if (value.Value <= 0)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBeStrictlyPositive);
+                    throw new ArgumentOutOfRangeException(nameof(value), "Parameter must be strictly positive.");
                 }
 
                 if (!member.HasValue || member.Value != value.Value)
@@ -71,7 +70,7 @@ namespace Ferretto.WMS.Scheduler.Core
         {
             if (value <= 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBeStrictlyPositive);
+                throw new ArgumentOutOfRangeException(nameof(value), "Parameter must be strictly positive.");
             }
 
             if (member != value)
