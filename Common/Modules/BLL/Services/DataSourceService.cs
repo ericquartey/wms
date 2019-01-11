@@ -11,6 +11,10 @@ using Compartment = Ferretto.Common.BusinessModels.Compartment;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Major Code Smell",
+        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
+        Justification = "This method centralize the DataSource provision")]
     public class DataSourceService : IDataSourceService
     {
         #region Methods

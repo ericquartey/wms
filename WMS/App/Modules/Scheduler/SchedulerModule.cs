@@ -42,7 +42,6 @@ namespace Ferretto.WMS.Modules.Scheduler
                .Trace("Loading module ...");
 
             this.NavigationService.Register<MissionsView, MissionsViewModel>();
-            this.NavigationService.Register<SchedulerRequestsView, SchedulerRequestsViewModel>();
 
             NLog.LogManager
                .GetCurrentClassLogger()
