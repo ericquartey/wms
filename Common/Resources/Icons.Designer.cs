@@ -880,6 +880,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_visibility_black_36dp.png.
+        /// </summary>
+        public static string ShowDetail {
+            get {
+                return ResourceManager.GetString("ShowDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/alert/ic_error_black_18dp.png.
         /// </summary>
         public static string StatusTypeError {

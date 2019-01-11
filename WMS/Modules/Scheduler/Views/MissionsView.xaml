@@ -1,16 +1,16 @@
 <wms:WmsView x:Class="Ferretto.WMS.Modules.Scheduler.MissionsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:models="clr-namespace:Ferretto.Common.BusinessModels;assembly=Ferretto.Common.BusinessModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxdst="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="clr-namespace:Ferretto.Common.BusinessModels;assembly=Ferretto.Common.BusinessModels"
              xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
-             xmlns:dxdst="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
-             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
              Title="{x:Static res:Navigation.Missions}"
              MinHeight="300"
              d:DesignHeight="450"
@@ -21,31 +21,32 @@
         <dxg:RowPropertyValueConverter x:Key="rowPropertyConverter" />
 
         <DataTemplate x:Key="DetailTooltipTemplate">
-            <dx:MeasurePixelSnapper MaxWidth="300" MaxHeight="300">
-                <Border  Padding="2">
+            <dx:MeasurePixelSnapper MaxWidth="300"
+                                    MaxHeight="300">
+                <Border Padding="2">
                     <WrapPanel Orientation="Horizontal">
                         <wms:InfoText Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=CellId}" />
                         <wms:InfoText Grid.Row="0"
-                                 Grid.Column="1"
-                                     Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=CompartmentId}" />
+                                      Grid.Column="1"
+                                      Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=CompartmentId}" />
                         <wms:InfoText Grid.Row="1"
-                                 Grid.Column="0"
-                                     Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=Sub1}" />
+                                      Grid.Column="0"
+                                      Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=Sub1}" />
                         <wms:InfoText Grid.Row="1"
-                                 Grid.Column="1"
-                                     Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=Sub2}" />
+                                      Grid.Column="1"
+                                      Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=Sub2}" />
                         <wms:InfoText Grid.Row="2"
-                                 Grid.Column="0"
-                                     Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=MaterialStatusId}" />
+                                      Grid.Column="0"
+                                      Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=MaterialStatusId}" />
                         <wms:InfoText Grid.Row="2"
-                                 Grid.Column="1"
-                                     Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=PackageTypeId}" />
+                                      Grid.Column="1"
+                                      Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=PackageTypeId}" />
                         <wms:InfoText Grid.Row="3"
-                                 Grid.Column="0"
-                                     Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=RegistrationNumber}" />
+                                      Grid.Column="0"
+                                      Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=RegistrationNumber}" />
                         <wms:InfoText Grid.Row="3"
-                                 Grid.Column="1"
-                                     Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=Lot}" />
+                                      Grid.Column="1"
+                                      Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=Lot}" />
                     </WrapPanel>
                 </Border>
             </dx:MeasurePixelSnapper>
@@ -54,9 +55,9 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" />
             <RowDefinition Height="Auto"
-                           MaxHeight="350"/>
+                           MaxHeight="350" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -75,7 +76,7 @@
             </Grid>
         </wms:Expander>
 
-        <Grid Grid.Column="1" >
+        <Grid Grid.Column="1">
 
             <wms:ActionBar HorizontalAlignment="Left"
                            Style="{DynamicResource ActionBarOverlayedWithGrid}">
@@ -83,7 +84,7 @@
                                    Content="{x:Static res:General.ShowDetails}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_info_outline_black_24dp.png"
-                                   GlyphSize="Custom" >
+                                   GlyphSize="Custom">
                     <!--TODO
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="ItemClick" >
@@ -109,7 +110,7 @@
                         <Setter Property="BorderThickness" Value="1" />
                         <Setter Property="Padding" Value="0" />
                         <Setter Property="FontSize" Value="12" />
-                        <Setter Property="FontFamily" Value="Sergoe UI" />
+                        <Setter Property="FontFamily" Value="Segoe UI" />
                         <Setter Property="FontStyle" Value="Normal" />
                         <Setter Property="FontWeight" Value="Normal" />
                         <Setter Property="HorizontalContentAlignment" Value="Left" />
@@ -121,8 +122,17 @@
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type ToolTip}">
                                     <Grid SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
-                                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" TextElement.FontFamily="{TemplateBinding FontFamily}" TextElement.FontSize="{TemplateBinding FontSize}" TextElement.FontStyle="{TemplateBinding FontStyle}" TextElement.FontWeight="{TemplateBinding FontWeight}" TextElement.Foreground="{TemplateBinding Foreground}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                        <Border Padding="{TemplateBinding Padding}"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}">
+                                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                              TextElement.FontFamily="{TemplateBinding FontFamily}"
+                                                              TextElement.FontSize="{TemplateBinding FontSize}"
+                                                              TextElement.FontStyle="{TemplateBinding FontStyle}"
+                                                              TextElement.FontWeight="{TemplateBinding FontWeight}"
+                                                              TextElement.Foreground="{TemplateBinding Foreground}" />
                                         </Border>
                                     </Grid>
                                     <ControlTemplate.Triggers>
@@ -142,29 +152,29 @@
                 <wms:WmsGridControl.View>
                     <dxg:TableView SearchPanelHorizontalAlignment="Right"
                                    ShowFilterPanelMode="ShowAlways"
-                                   ShowSearchPanelMode="Always"/>
+                                   ShowSearchPanelMode="Always" />
                 </wms:WmsGridControl.View>
 
                 <wms:WmsGridControl.Columns>
 
                     <dxg:GridColumn Width="80*"
-                                    FieldName="Details"
-                                    CellToolTipBinding="{Binding}">
+                                    CellToolTipBinding="{Binding}"
+                                    FieldName="Details">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
-                                <Image  Width="16" Height="16">
-                                    <Image.Source>
-                                        <BitmapImage UriSource="pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_visibility_black_36dp.png"/>
-                                    </Image.Source>
-                                </Image>
+                                <wms:WmsIcon Width="16"
+                                             Height="16"
+                                             SymbolName="ShowDetail" />
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
-                        <dxg:GridColumn.CellToolTipTemplate >
+                        <dxg:GridColumn.CellToolTipTemplate>
                             <DataTemplate>
-                                <wms:CustomBorder x:Name="CustomBorder" >
-                                    <Grid MaxHeight="350" MinWidth="400" Margin="8,0,0,0">
+                                <wms:CustomBorder x:Name="CustomBorder">
+                                    <Grid MinWidth="400"
+                                          MaxHeight="350"
+                                          Margin="8,0,0,0">
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
@@ -172,56 +182,58 @@
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"  />
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock FontWeight="SemiBold" FontSize="14.66" Grid.RowSpan="2" Margin="0,8,0,0" Text="{x:Static res:General.Details}"/>
-                                        <wms:InfoText
-                                                Grid.Row="2"
-                                                Grid.Column="0"
-                                                Content="{Binding Path=CellDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock Grid.RowSpan="2"
+                                                   Margin="0,8,0,0"
+                                                   FontSize="14.66"
+                                                   FontWeight="SemiBold"
+                                                   Text="{x:Static res:General.Details}" />
                                         <wms:InfoText Grid.Row="2"
-                                                Grid.Column="1"
-                                                Content="{Binding Path=CompartmentType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                      Grid.Column="0"
+                                                      Content="{Binding Path=CellDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <wms:InfoText Grid.Row="2"
+                                                      Grid.Column="1"
+                                                      Content="{Binding Path=CompartmentType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <wms:InfoText Grid.Row="3"
-                                                Grid.Column="0"
-                                                Content="{Binding Path=Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                      Grid.Column="0"
+                                                      Content="{Binding Path=Sub1, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <wms:InfoText Grid.Row="3"
-                                                Grid.Column="1"
-                                                Content="{Binding Path=Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                      Grid.Column="1"
+                                                      Content="{Binding Path=Sub2, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <wms:InfoText Grid.Row="4"
-                                                Grid.Column="0"
-                                                Content="{Binding Path=MaterialStatusDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                      Grid.Column="0"
+                                                      Content="{Binding Path=MaterialStatusDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <wms:InfoText Grid.Row="4"
-                                                Grid.Column="1"
-                                                Content="{Binding Path=PackageTypeDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                      Grid.Column="1"
+                                                      Content="{Binding Path=PackageTypeDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <wms:InfoText Grid.Row="5"
-                                                Grid.Column="0"
-                                                Content="{Binding Path=RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                      Grid.Column="0"
+                                                      Content="{Binding Path=RegistrationNumber, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <wms:InfoText Grid.Row="5"
-                                                Grid.Column="1"
-                                                Content="{Binding Path=Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                      Grid.Column="1"
+                                                      Content="{Binding Path=Lot, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                         <ScrollViewer Grid.RowSpan="6"
-                                              Grid.Column="3"
-                                              Focusable="False"
-                                              IsTabStop="False"
-                                              Margin="0">
-                                            <Border Style="{StaticResource InfoBoxBorderStyle}"
-                                                    Margin="0">
-                                                <GroupBox 
-                                                        Header="{x:Static res:MasterData.OtherInformation}"
-                                                        Margin="0">
+                                                      Grid.Column="3"
+                                                      Margin="0"
+                                                      Focusable="False"
+                                                      IsTabStop="False">
+                                            <Border Margin="0"
+                                                    Style="{StaticResource InfoBoxBorderStyle}">
+                                                <GroupBox Margin="0"
+                                                          Header="{x:Static res:MasterData.OtherInformation}">
                                                     <StackPanel Orientation="Vertical">
                                                         <wms:InfoText HorizontalAlignment="Left"
-                                                                HorizontalContentAlignment="Left"
-                                                                Content="{Binding Path=CreationDate}" />
-                                                        <wms:InfoText HorizontalAlignment="Left"
-                                                                HorizontalContentAlignment="Left"
-                                                                Grid.Column="1"
-                                                                Grid.Row="5"
-                                                                Content="{Binding Path=LastModificationDate}" />
+                                                                      HorizontalContentAlignment="Left"
+                                                                      Content="{Binding Path=CreationDate}" />
+                                                        <wms:InfoText Grid.Row="5"
+                                                                      Grid.Column="1"
+                                                                      HorizontalAlignment="Left"
+                                                                      HorizontalContentAlignment="Left"
+                                                                      Content="{Binding Path=LastModificationDate}" />
                                                     </StackPanel>
                                                 </GroupBox>
                                             </Border>

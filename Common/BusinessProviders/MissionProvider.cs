@@ -86,7 +86,7 @@ namespace Ferretto.Common.BusinessProviders
                     RegistrationNumber = m.RegistrationNumber,
                     Lot = m.Lot,
                     CellDescription = m.Cell.Aisle.Name,
-                    CompartmentType = string.Format("{0}x{1}", m.Compartment.CompartmentType.Width, m.Compartment.CompartmentType.Height),
+                    CompartmentType = string.Format(Common.Resources.MasterData.CompartmentTypeListFormatReduced, m.Compartment.CompartmentType.Width, m.Compartment.CompartmentType.Height),
                     MaterialStatusDescription = m.MaterialStatus.Description,
                     PackageTypeDescription = m.PackageType.Description,
                     Sub1 = m.Sub1,

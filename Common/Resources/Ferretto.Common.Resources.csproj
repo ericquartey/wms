@@ -101,9 +101,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Errors.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="General.it.resx">
-      <Generator></Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="General.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>General.Designer.cs</LastGenOutput>
@@ -135,9 +132,6 @@
     <EmbeddedResource Update="OperatorApp.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>OperatorApp.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Scheduler.it.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Scheduler.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
