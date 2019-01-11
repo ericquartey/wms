@@ -286,6 +286,31 @@ namespace Ferretto.Common.Modules.BLL.Services
                             () => missionCountProvider.GetWithStatusNewCount())
                     }.Cast<IFilterDataSource<TModel>>();
 
+                case Scheduler.SCHEDULERREQUESTS:
+                    var schedulerRequestProvider = ServiceLocator.Current.GetInstance<ISchedulerRequestProvider>();
+                    var schedulerRequestCountProvider = ServiceLocator.Current.GetInstance<ISchedulerRequestProvider>();
+
+                    return new List<FilterDataSource<SchedulerRequest>>
+                    {
+                        new FilterDataSource<SchedulerRequest>(
+                            "SchedulerRequestViewAll",
+                            Resources.Scheduler.SchedulerRequestViewAll,
+                            () => schedulerRequestProvider.GetAll(),
+                            () => schedulerRequestCountProvider.GetAllCount()),
+
+                        new FilterDataSource<SchedulerRequest>(
+                            "SchedulerRequestOperationInsert",
+                            Resources.Scheduler.SchedulerRequestOperationInsert,
+                            () => schedulerRequestProvider.GetWithOperationTypeInsertion(),
+                            () => schedulerRequestCountProvider.GetWithOperationTypeInsertionCount()),
+
+                        new FilterDataSource<SchedulerRequest>(
+                            "SchedulerRequestOperationWithdraw",
+                            Resources.Scheduler.SchedulerRequestOperationWithdraw,
+                            () => schedulerRequestProvider.GetWithOperationTypeWithdrawal(),
+                            () => schedulerRequestCountProvider.GetWithOperationTypeWithdrawalCount())
+                    }.Cast<IFilterDataSource<TModel>>();
+
                 default:
                     return new List<IFilterDataSource<TModel>>();
             }
