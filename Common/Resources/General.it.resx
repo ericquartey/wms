@@ -216,4 +216,10 @@
   <data name="Quantity" xml:space="preserve">
     <value>Quantità</value>
   </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Priorità</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Dettagli</value>
+  </data>
 </root>

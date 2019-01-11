@@ -106,4 +106,7 @@
   <data name="MissionStatusNew" xml:space="preserve">
     <value>Nuovo</value>
   </data>
+  <data name="CompartmentType" xml:space="preserve">
+    <value>Tipo di scomparto</value>
+  </data>
 </root>

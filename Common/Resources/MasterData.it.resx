@@ -455,4 +455,7 @@
   <data name="ItemListWithNoRows" xml:space="preserve">
     <value>Questa Lista non ha righe.</value>
   </data>
+  <data name="Compartment" xml:space="preserve">
+    <value>Scomparto</value>
+  </data>
 </root>
