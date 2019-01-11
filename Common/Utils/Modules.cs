@@ -88,7 +88,7 @@
 
         public const string MISSIONS = "MissionsViewModel";
 
-        public const string REQUESTS = "RequestsViewModel";
+        public const string SCHEDULERREQUESTS = "SchedulerRequestsViewModel";
 
         #endregion Fields
     }
