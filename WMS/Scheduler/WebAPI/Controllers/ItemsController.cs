@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Ferretto.Common.BusinessModels;
 using Ferretto.WMS.Scheduler.WebAPI.Hubs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -13,8 +12,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
     public class ItemsController : ControllerBase
     {
         #region Fields
-
-        private const string DEFAULT_ORDERBY_FIELD = nameof(Item.Code);
 
         private readonly IHubContext<WakeupHub, IWakeupHub> hubContext;
 

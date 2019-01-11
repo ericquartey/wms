@@ -13,7 +13,7 @@ COPY ["Common/EF/Ferretto.Common.EF.csproj", "Common/EF/"]
 COPY ["Common/Resources/Ferretto.Common.Resources.csproj", "Common/Resources/"]
 COPY ["Common/Utils/Ferretto.Common.Utils.csproj", "Common/Utils/"]
 COPY ["Common/DataModels/Ferretto.Common.DataModels.csproj", "Common/DataModels/"]
-COPY ["dev-certificate.pfx"] ["/app/dev-certificate.pfx"]
+COPY ["dev-certificate.pfx", "/app/dev-certificate.pfx"]
 RUN dotnet restore "WMS/Data/WebAPI/Ferretto.WMS.Data.WebAPI.csproj"
 COPY . .
 WORKDIR "/src/WMS/Data/WebAPI"
