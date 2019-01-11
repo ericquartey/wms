@@ -77,7 +77,7 @@ namespace Ferretto.Common.Controls
             protected set => this.SetProperty(ref this.flattenDataSource, value);
         }
 
-        [Display(Name = nameof(General.Search), ResourceType = typeof(General))]
+        [Display(Name = nameof(DesktopApp.SearchLabel), ResourceType = typeof(DesktopApp))]
         public string SearchText { get; set; }
 
         public Tile SelectedFilter
@@ -155,15 +155,15 @@ namespace Ferretto.Common.Controls
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<RefreshModelsEvent<TModel>>(this.modelRefreshSubscription);
-            this.EventService.Unsubscribe<ModelChangedEvent<TModel>>(this.modelChangedEventSubscription);
+            this.EventService.Unsubscribe<RefreshModelsPubSubEvent<TModel>>(this.modelRefreshSubscription);
+            this.EventService.Unsubscribe<ModelChangedPubSubEvent<TModel>>(this.modelChangedEventSubscription);
             base.OnDispose();
         }
 
         private void InitializeEvent()
         {
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<TModel>>(eventArgs => { this.RefreshData(); }, this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<TModel>>(eventArgs => { this.RefreshData(); });
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<TModel>>(eventArgs => { this.RefreshData(); }, this.Token, true, true);
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<TModel>>(eventArgs => { this.RefreshData(); });
         }
 
         #endregion Methods

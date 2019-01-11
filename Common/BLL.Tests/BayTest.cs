@@ -15,10 +15,15 @@ namespace Ferretto.Common.BLL.Tests
         #region Fields
 
         private DataModels.Aisle aisle1;
+
         private DataModels.Area area1;
+
         private DataModels.Bay bay1;
+
         private DataModels.Cell cell1;
+
         private DataModels.Item itemFifo;
+
         private DataModels.LoadingUnit loadingUnit1;
 
         #endregion Fields
@@ -28,7 +33,7 @@ namespace Ferretto.Common.BLL.Tests
         [TestCleanup]
         public void Cleanup()
         {
-            using (var context = this.CreateContext())
+            using (var context = CreateContext())
             {
                 context.Database.EnsureDeleted();
             }
@@ -45,7 +50,7 @@ namespace Ferretto.Common.BLL.Tests
 
             this.itemFifo = new DataModels.Item { Id = 1, ManagementType = DataModels.ItemManagementType.FIFO };
 
-            using (var context = this.CreateContext())
+            using (var context = CreateContext())
             {
                 context.Areas.Add(this.area1);
                 context.Aisles.Add(this.aisle1);
@@ -59,7 +64,8 @@ namespace Ferretto.Common.BLL.Tests
         }
 
         [TestMethod]
-        [TestProperty("Description",
+        [TestProperty(
+            "Description",
             @"GIVEN a request for an item on an area and a bay \
                 AND a compartment that can satisfy the request \
                 AND a bay that has a mission already assigned, but enough buffer to accept another mission \
@@ -68,8 +74,6 @@ namespace Ferretto.Common.BLL.Tests
         public async Task OneAvailableBay()
         {
             #region Arrange
-
-            var now = System.DateTime.Now;
 
             var mission1 = new DataModels.Mission
             {
@@ -96,7 +100,7 @@ namespace Ferretto.Common.BLL.Tests
                 OperationType = DataModels.OperationType.Withdrawal
             };
 
-            using (var context = this.CreateContext())
+            using (var context = CreateContext())
             {
                 context.Compartments.Add(compartment1);
                 context.Missions.Add(mission1);
@@ -107,7 +111,7 @@ namespace Ferretto.Common.BLL.Tests
 
             #endregion Arrange
 
-            using (var context = this.CreateContext())
+            using (var context = CreateContext())
             {
                 #region Act
 
@@ -130,7 +134,8 @@ namespace Ferretto.Common.BLL.Tests
         }
 
         [TestMethod]
-        [TestProperty("Description",
+        [TestProperty(
+            "Description",
             @"GIVEN a request for an item on a bay \
                 AND a compartment that can satisfy the request \
                 AND the specified bay has no more buffer availability to accept a new mission \
@@ -139,8 +144,6 @@ namespace Ferretto.Common.BLL.Tests
         public async Task OneFullBay()
         {
             #region Arrange
-
-            var now = System.DateTime.Now;
 
             var request1 = new DataModels.SchedulerRequest
             {
@@ -178,7 +181,7 @@ namespace Ferretto.Common.BLL.Tests
                 ReservedForPick = mission1.RequiredQuantity + mission2.RequiredQuantity
             };
 
-            using (var context = this.CreateContext())
+            using (var context = CreateContext())
             {
                 context.Compartments.Add(compartment1);
                 context.Missions.Add(mission1);
@@ -190,7 +193,7 @@ namespace Ferretto.Common.BLL.Tests
 
             #endregion Arrange
 
-            using (var context = this.CreateContext())
+            using (var context = CreateContext())
             {
                 #region Act
 
@@ -211,13 +214,12 @@ namespace Ferretto.Common.BLL.Tests
             }
         }
 
-        private DatabaseContext CreateContext()
+        private static DatabaseContext CreateContext()
         {
             return new DatabaseContext(
                 new DbContextOptionsBuilder<DatabaseContext>()
                     .UseInMemoryDatabase(databaseName: "test_database")
-                    .Options
-                );
+                    .Options);
         }
 
         #endregion Methods

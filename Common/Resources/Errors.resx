@@ -261,4 +261,7 @@
   <data name="CompartmentCannotBeInsertedInLoadingUnit" xml:space="preserve">
     <value>Error adding new compartment because it overlaps with other compartments or it crosses the tray's boundaries.</value>
   </data>
+  <data name="UnableToSaveChanges" xml:space="preserve">
+    <value>Unable to save changes.</value>
+  </data>
 </root>

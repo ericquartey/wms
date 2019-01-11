@@ -400,7 +400,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<DateTime?>("FirstStoreDate");
 
-                    b.Property<int?>("Height");
+                    b.Property<bool>("HasRotation");
 
                     b.Property<DateTime?>("InventoryDate");
 
@@ -424,8 +424,6 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int?>("MaterialStatusId");
 
-                    b.Property<int?>("MaxCapacity");
-
                     b.Property<int?>("PackageTypeId");
 
                     b.Property<string>("RegistrationNumber");
@@ -445,8 +443,6 @@ namespace Ferretto.Common.EF.Migrations
                     b.Property<string>("Sub1");
 
                     b.Property<string>("Sub2");
-
-                    b.Property<int?>("Width");
 
                     b.Property<int?>("XPosition");
 
@@ -1146,11 +1142,19 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int?>("CompartmentId");
 
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("GETUTCDATE()");
+
                     b.Property<int?>("ItemId");
 
                     b.Property<int?>("ItemListId");
 
                     b.Property<int?>("ItemListRowId");
+
+                    b.Property<DateTime>("LastModificationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<int?>("LoadingUnitId");
 

@@ -183,4 +183,7 @@
   <data name="UnableToSaveChanges" xml:space="preserve">
     <value>Impossibile salvare le modifiche.</value>
   </data>
+  <data name="InitializingSchedulerModule" xml:space="preserve">
+    <value>Inizializzazione modulo Schedulatore...</value>
+  </data>
 </root>

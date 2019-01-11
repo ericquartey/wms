@@ -7,18 +7,25 @@ namespace Ferretto.Common.BLL.Tests
     [TestClass]
     public abstract class BaseWarehouseTest
     {
-        #region Fields
+        #region Properties
 
-        protected DataModels.Aisle aisle1;
-        protected DataModels.Area area1;
-        protected DataModels.Bay bay1;
-        protected DataModels.Cell cell1;
-        protected DataModels.Item item1;
-        protected DataModels.Item itemFifo;
-        protected DataModels.Item itemVolume;
-        protected DataModels.LoadingUnit loadingUnit1;
+        protected DataModels.Aisle Aisle1 { get; private set; }
 
-        #endregion Fields
+        protected DataModels.Area Area1 { get; private set; }
+
+        protected DataModels.Bay Bay1 { get; private set; }
+
+        protected DataModels.Cell Cell1 { get; private set; }
+
+        protected DataModels.Item Item1 { get; private set; }
+
+        protected DataModels.Item ItemFifo { get; private set; }
+
+        protected DataModels.Item ItemVolume { get; private set; }
+
+        protected DataModels.LoadingUnit LoadingUnit1 { get; private set; }
+
+        #endregion Properties
 
         #region Methods
 
@@ -36,32 +43,31 @@ namespace Ferretto.Common.BLL.Tests
             return new DatabaseContext(
                 new DbContextOptionsBuilder<DatabaseContext>()
                     .UseInMemoryDatabase(databaseName: this.GetType().FullName)
-                    .Options
-                );
+                    .Options);
         }
 
         [TestInitialize]
         protected virtual void InitializeDatabase()
         {
-            this.area1 = new DataModels.Area { Id = 1, Name = "Area #1" };
-            this.aisle1 = new DataModels.Aisle { Id = 1, AreaId = this.area1.Id, Name = "Aisle #1" };
-            this.cell1 = new DataModels.Cell { Id = 1, AisleId = this.aisle1.Id };
-            this.loadingUnit1 = new DataModels.LoadingUnit { Id = 1, Code = "Loading Unit #1", CellId = this.cell1.Id };
-            this.bay1 = new DataModels.Bay { Id = 1, Description = "Bay #1", AreaId = this.area1.Id, LoadingUnitsBufferSize = 2 };
-            this.item1 = new DataModels.Item { Id = 1, Code = "Item #1", ManagementType = DataModels.ItemManagementType.FIFO };
-            this.itemFifo = new DataModels.Item { Id = 2, Code = "Item #2", ManagementType = DataModels.ItemManagementType.FIFO };
-            this.itemVolume = new DataModels.Item { Id = 3, Code = "Item #3", ManagementType = DataModels.ItemManagementType.Volume };
+            this.Area1 = new DataModels.Area { Id = 1, Name = "Area #1" };
+            this.Aisle1 = new DataModels.Aisle { Id = 1, AreaId = this.Area1.Id, Name = "Aisle #1" };
+            this.Cell1 = new DataModels.Cell { Id = 1, AisleId = this.Aisle1.Id };
+            this.LoadingUnit1 = new DataModels.LoadingUnit { Id = 1, Code = "Loading Unit #1", CellId = this.Cell1.Id };
+            this.Bay1 = new DataModels.Bay { Id = 1, Description = "Bay #1", AreaId = this.Area1.Id, LoadingUnitsBufferSize = 2 };
+            this.Item1 = new DataModels.Item { Id = 1, Code = "Item #1", ManagementType = DataModels.ItemManagementType.FIFO };
+            this.ItemFifo = new DataModels.Item { Id = 2, Code = "Item #2", ManagementType = DataModels.ItemManagementType.FIFO };
+            this.ItemVolume = new DataModels.Item { Id = 3, Code = "Item #3", ManagementType = DataModels.ItemManagementType.Volume };
 
             using (var context = this.CreateContext())
             {
-                context.Areas.Add(this.area1);
-                context.Aisles.Add(this.aisle1);
-                context.Bays.Add(this.bay1);
-                context.Cells.Add(this.cell1);
-                context.LoadingUnits.Add(this.loadingUnit1);
-                context.Items.Add(this.item1);
-                context.Items.Add(this.itemFifo);
-                context.Items.Add(this.itemVolume);
+                context.Areas.Add(this.Area1);
+                context.Aisles.Add(this.Aisle1);
+                context.Bays.Add(this.Bay1);
+                context.Cells.Add(this.Cell1);
+                context.LoadingUnits.Add(this.LoadingUnit1);
+                context.Items.Add(this.Item1);
+                context.Items.Add(this.ItemFifo);
+                context.Items.Add(this.ItemVolume);
 
                 context.SaveChanges();
             }

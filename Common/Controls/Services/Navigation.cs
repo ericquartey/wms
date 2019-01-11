@@ -11,7 +11,7 @@ namespace Ferretto.Common.Controls.Services
         Success
     }
 
-    public class ModelChangedEvent<TModel> : Prism.Events.PubSubEvent, IEventArgs where TModel : IBusinessObject
+    public class ModelChangedPubSubEvent<TModel> : Prism.Events.PubSubEvent, IPubSubEvent where TModel : IBusinessObject
     {
         #region Fields
 
@@ -21,7 +21,7 @@ namespace Ferretto.Common.Controls.Services
 
         #region Constructors
 
-        public ModelChangedEvent(object modelId)
+        public ModelChangedPubSubEvent(object modelId)
         {
             this.modelId = modelId;
         }
@@ -37,7 +37,7 @@ namespace Ferretto.Common.Controls.Services
         #endregion Properties
     }
 
-    public class ModelSelectionChangedEvent<TModel> : Prism.Events.PubSubEvent<TModel>, IEventArgs where TModel : IBusinessObject
+    public class ModelSelectionChangedPubSubEvent<TModel> : Prism.Events.PubSubEvent<TModel>, IPubSubEvent where TModel : IBusinessObject
     {
         #region Fields
 
@@ -48,7 +48,7 @@ namespace Ferretto.Common.Controls.Services
 
         #region Constructors
 
-        public ModelSelectionChangedEvent(int? modelId, string token)
+        public ModelSelectionChangedPubSubEvent(int? modelId, string token)
         {
             this.modelId = modelId;
             this.token = token;
@@ -65,7 +65,7 @@ namespace Ferretto.Common.Controls.Services
         #endregion Properties
     }
 
-    public class RefreshModelsEvent<TModel> : Prism.Events.PubSubEvent<TModel>, IEventArgs
+    public class RefreshModelsPubSubEvent<TModel> : Prism.Events.PubSubEvent<TModel>, IPubSubEvent
     {
         #region Fields
 
@@ -75,7 +75,7 @@ namespace Ferretto.Common.Controls.Services
 
         #region Constructors
 
-        public RefreshModelsEvent(int modelId)
+        public RefreshModelsPubSubEvent(int modelId)
         {
             this.modelId = modelId;
         }
@@ -91,11 +91,11 @@ namespace Ferretto.Common.Controls.Services
         #endregion Properties
     }
 
-    public class StatusEventArgs : Prism.Events.PubSubEvent, IEventArgs
+    public class StatusPubSubEvent : Prism.Events.PubSubEvent, IPubSubEvent
     {
         #region Constructors
 
-        public StatusEventArgs(string message = null, StatusType type = StatusType.Info)
+        public StatusPubSubEvent(string message = null, StatusType type = StatusType.Info)
         {
             this.Message = message?.Split(new char[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries)[0];
             this.Type = type;

@@ -4,12 +4,13 @@ using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.ActionBlocks;
 using Ferretto.VW.InstallationApp;
+using Ferretto.VW.InverterDriver;
 using Ferretto.VW.MathLib;
+using Ferretto.VW.RemoteIODriver;
 using Ferretto.VW.Utils.Source;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Mvvm;
-using Ferretto.VW.InverterDriver;
 
 namespace Ferretto.VW.VWApp
 {
@@ -18,20 +19,39 @@ namespace Ferretto.VW.VWApp
         #region Fields
 
         public CalibrateVerticalAxis CalibrateVerticalAxis;
+
         public IUnityContainer Container;
+
         public DataManager Data;
+
         public DrawerWeightDetection DrawerWeightDetection;
+
         public InverterDriver.InverterDriver Inverter;
+
         public PositioningDrawer PositioningDrawer;
+
+        public RemoteIO remoteIO;
+
+        public SwitchMotors switchMotors;
+
         private ICommand changeSkin;
+
         private Converter converter;
+
         private bool installationCompleted;
+
         private ICommand loginButtonCommand;
+
         private string loginErrorMessage;
+
         private string machineModel;
+
         private string passwordLogin;
+
         private string serialNumber;
+
         private ICommand switchOffCommand;
+
         private string userLogin = "Installer";
 
         #endregion Fields
@@ -91,6 +111,7 @@ namespace Ferretto.VW.VWApp
 
         private void ExecuteLoginButtonCommand()
         {
+            this.InitializeRemoteIOConnection(); // without service
             this.InitializeInverterConnection();
             if (this.CheckInputCorrectness(this.UserLogin, this.PasswordLogin))
             {
@@ -138,8 +159,25 @@ namespace Ferretto.VW.VWApp
 
             this.CalibrateVerticalAxis = (CalibrateVerticalAxis)this.Container.Resolve<ICalibrateVerticalAxis>();
 
+            this.switchMotors = (SwitchMotors)this.Container.Resolve<ISwitchMotors>();
+            this.switchMotors.SetInverterDriverInterface = this.Inverter;
+            this.switchMotors.SetRemoteIOInterface = this.remoteIO;
+            this.switchMotors.Initialize();
+
             this.converter = (Converter)this.Container.Resolve<IConverter>();
             this.converter.ManageResolution = 1024;
+        }
+
+        private void InitializeRemoteIOConnection()
+        {
+            this.remoteIO = (RemoteIODriver.RemoteIO)this.Container.Resolve<IRemoteIO>();
+            try
+            {
+                this.remoteIO.Connect();
+            }
+            catch (Exception exc)
+            {
+            }
         }
 
         private string Validate(string propertyName)

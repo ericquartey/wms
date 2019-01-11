@@ -1,15 +1,16 @@
-﻿using Microsoft.Practices.Unity;
-using Prism.Unity;
-using System.Windows;
-using Prism.Modularity;
-using Ferretto.VW.InstallationApp;
-using Ferretto.VW.Navigation;
-using Ferretto.VW.Utils.Source;
-using Ferretto.VW.InverterDriver;
-using Prism.Mvvm;
+﻿using System.Windows;
 using Ferretto.VW.ActionBlocks;
-using Ferretto.VW.MathLib;
 using Ferretto.VW.ActionBlocks.Source.ActionsBasic;
+using Ferretto.VW.InstallationApp;
+using Ferretto.VW.InverterDriver;
+using Ferretto.VW.MathLib;
+using Ferretto.VW.Navigation;
+using Ferretto.VW.RemoteIODriver;
+using Ferretto.VW.Utils.Source;
+using Microsoft.Practices.Unity;
+using Prism.Modularity;
+using Prism.Mvvm;
+using Prism.Unity;
 
 namespace Ferretto.VW.VWApp
 {
@@ -69,6 +70,7 @@ namespace Ferretto.VW.VWApp
             NavigationService.ChangeSkinToDarkEventHandler += (Application.Current as App).ChangeSkin;
             this.InitializeData();
             this.InitializeInverter();
+            this.InitializeIODevice();
             this.InitializeActions();
             this.InitializeMainWindow();
 
@@ -87,11 +89,13 @@ namespace Ferretto.VW.VWApp
             var drawerWeightDetection = new DrawerWeightDetection();
             var converter = new Converter();
             var calibrateVertical = new CalibrateVerticalAxis();
+            var switchMotors = new SwitchMotors();
 
             this.Container.RegisterInstance<IPositioningDrawer>(positioning);
             this.Container.RegisterInstance<IDrawerWeightDetection>(drawerWeightDetection);
             this.Container.RegisterInstance<IConverter>(converter);
             this.Container.RegisterInstance<ICalibrateVerticalAxis>(calibrateVertical);
+            this.Container.RegisterInstance<ISwitchMotors>(switchMotors);
         }
 
         private void InitializeData()
@@ -103,12 +107,13 @@ namespace Ferretto.VW.VWApp
         private void InitializeInverter()
         {
             var inverter = new InverterDriver.InverterDriver();
-            inverter.Initialize();
             this.Container.RegisterInstance<IInverterDriver>(inverter);
         }
 
         private void InitializeIODevice()
         {
+            var remIO = new RemoteIODriver.RemoteIO();
+            this.Container.RegisterInstance<IRemoteIO>(remIO);
         }
 
         private void InitializeMainWindow()

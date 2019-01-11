@@ -10,6 +10,10 @@ using Prism.Modularity;
 namespace Ferretto.Common.Modules.BLL
 {
     [Module(ModuleName = nameof(Utils.Modules.BusinessLogic))]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Major Code Smell",
+        "S1200",
+        Justification = "This class register services into container")]
     public class BusinessLogicModule : IModule
     {
         #region Constructors
@@ -48,6 +52,7 @@ namespace Ferretto.Common.Modules.BLL
             this.Container.RegisterType<ILoadingUnitProvider, LoadingUnitProvider>();
             this.Container.RegisterType<IMachineProvider, MachineProvider>();
             this.Container.RegisterType<IUserProvider, UserProvider>();
+            this.Container.RegisterType<IMissionProvider, MissionProvider>();
 
             this.Container.RegisterType<IDatabaseContextService, DatabaseContextService>();
 

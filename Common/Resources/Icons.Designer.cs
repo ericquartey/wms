@@ -754,6 +754,33 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-europe-50.png.
+        /// </summary>
+        public static string MissionViewAll {
+            get {
+                return ResourceManager.GetString("MissionViewAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-tick-box-50.png.
+        /// </summary>
+        public static string MissionViewStatusCompleted {
+            get {
+                return ResourceManager.GetString("MissionViewStatusCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-new-50.png.
+        /// </summary>
+        public static string MissionViewStatusNew {
+            get {
+                return ResourceManager.GetString("MissionViewStatusNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/navigation/ic_check_black_24dp.png.
         /// </summary>
         public static string NavigationCheck {
@@ -849,6 +876,15 @@ namespace Ferretto.Common.Resources {
         public static string SchedulerOnLine {
             get {
                 return ResourceManager.GetString("SchedulerOnLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_visibility_black_36dp.png.
+        /// </summary>
+        public static string ShowDetail {
+            get {
+                return ResourceManager.GetString("ShowDetail", resourceCulture);
             }
         }
         
