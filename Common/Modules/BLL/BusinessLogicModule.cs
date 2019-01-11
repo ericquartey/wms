@@ -49,6 +49,7 @@ namespace Ferretto.Common.Modules.BLL
             this.Container.RegisterType<IMachineProvider, MachineProvider>();
             this.Container.RegisterType<IUserProvider, UserProvider>();
             this.Container.RegisterType<IMissionProvider, MissionProvider>();
+            this.Container.RegisterType<ISchedulerRequestProvider, SchedulerRequestProvider>();
 
             this.Container.RegisterType<IDatabaseContextService, DatabaseContextService>();
 
