@@ -991,4 +991,19 @@
   <data name="Bay" xml:space="preserve">
     <value>Bay</value>
   </data>
+  <data name="OperationInsert" xml:space="preserve">
+    <value>Insert</value>
+  </data>
+  <data name="OperationWithdraw" xml:space="preserve">
+    <value>Withdraw</value>
+  </data>
+  <data name="OperationReplace" xml:space="preserve">
+    <value>Replace</value>
+  </data>
+  <data name="OperationReorder" xml:space="preserve">
+    <value>Reorder</value>
+  </data>
+  <data name="OperationType" xml:space="preserve">
+    <value>Operation Type</value>
+  </data>
 </root>

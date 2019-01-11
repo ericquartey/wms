@@ -808,4 +808,19 @@
   <data name="Bay" xml:space="preserve">
     <value>Baia</value>
   </data>
+  <data name="OperationInsert" xml:space="preserve">
+    <value>Inserimento</value>
+  </data>
+  <data name="OperationReorder" xml:space="preserve">
+    <value>Riordino</value>
+  </data>
+  <data name="OperationReplace" xml:space="preserve">
+    <value>Sostituire</value>
+  </data>
+  <data name="OperationWithdraw" xml:space="preserve">
+    <value>Prelievo</value>
+  </data>
+  <data name="OperationType" xml:space="preserve">
+    <value>Tipo Operazione</value>
+  </data>
 </root>

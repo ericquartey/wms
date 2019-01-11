@@ -109,4 +109,19 @@
   <data name="CompartmentType" xml:space="preserve">
     <value>Compartment Type</value>
   </data>
+  <data name="SchedulerRequestViewAll" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="SchedulerRequestOperationInsert" xml:space="preserve">
+    <value>Operation Insert</value>
+  </data>
+  <data name="SchedulerRequestOperationWithdraw" xml:space="preserve">
+    <value>Operation Withdraw</value>
+  </data>
+  <data name="IsInstant" xml:space="preserve">
+    <value>Is Instant</value>
+  </data>
+  <data name="DispatchedQuantity" xml:space="preserve">
+    <value>Dispatched Quantity</value>
+  </data>
 </root>
