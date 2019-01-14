@@ -5,12 +5,5 @@ namespace Ferretto.WMS.Modules.Scheduler
 {
     public class MissionsViewModel : EntityListViewModel<Mission>
     {
-        #region Constructors
-
-        public MissionsViewModel()
-        {
-        }
-
-        #endregion Constructors
     }
 }

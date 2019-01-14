@@ -2,13 +2,13 @@
 
 namespace Ferretto.Common.BusinessModels
 {
-    public class EditFilter : IFilter
+    public class EditReadOnlyFilter : IFilter
     {
         #region Properties
 
         public Func<ICompartment, ICompartment, string> ColorFunc => (compartment, selected) =>
         {
-            var color = "#57A639";
+            var color = "#e6e6e6";
             return color;
         };
 

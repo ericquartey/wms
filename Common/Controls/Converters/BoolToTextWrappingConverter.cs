@@ -10,7 +10,7 @@ namespace Ferretto.Common.Controls
     {
         #region Methods
 
-        public Object Convert(object value, Type targetType, Object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (targetType != typeof(TextWrapping))
             {
@@ -22,7 +22,7 @@ namespace Ferretto.Common.Controls
             return booleanValue ? TextWrapping.Wrap : TextWrapping.NoWrap;
         }
 
-        public Object ConvertBack(object value, Type targetType, Object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is TextWrapping == false)
             {

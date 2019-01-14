@@ -8,21 +8,21 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Methods
 
-        IQueryable<Enumeration> GetByAisleId(int areaId);
+        IQueryable<Enumeration> GetByAisleId(int aisleId);
 
         IQueryable<Enumeration> GetByAreaId(int areaId);
 
         IQueryable<Cell> GetWithClassA();
 
-        Int32 GetWithClassACount();
+        int GetWithClassACount();
 
         IQueryable<Cell> GetWithStatusEmpty();
 
-        Int32 GetWithStatusEmptyCount();
+        int GetWithStatusEmptyCount();
 
         IQueryable<Cell> GetWithStatusFull();
 
-        Int32 GetWithStatusFullCount();
+        int GetWithStatusFullCount();
 
         bool HasAnyLoadingUnits(int cellId);
 

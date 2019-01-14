@@ -149,7 +149,6 @@ namespace Ferretto.VW.VWApp
         private void InitializeInverterConnection()
         {
             this.Inverter = (InverterDriver.InverterDriver)this.Container.Resolve<IInverterDriver>();
-            if (!this.Inverter.Initialize()) return;
             this.PositioningDrawer = (PositioningDrawer)this.Container.Resolve<IPositioningDrawer>();
             this.PositioningDrawer.SetInverterDriverInterface = this.Inverter;
             this.PositioningDrawer.Initialize();  // 1024 is the default value

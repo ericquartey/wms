@@ -1,10 +1,12 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.WindowsServices;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI
 {
@@ -21,38 +23,59 @@ namespace Ferretto.WMS.Data.WebAPI
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost
             .CreateDefaultBuilder(args)
+            .ConfigureLogging((context, logBuilder) =>
+            {
+                logBuilder.AddEventLog(new Microsoft.Extensions.Logging.EventLog.EventLogSettings
+                {
+                    SourceName = "WMSDataService"
+                });
+            })
             .UseStartup<Startup>();
 
         public static void Main(string[] args)
         {
-            var pathToContentRoot = Directory.GetCurrentDirectory();
+            IWebHost host = null;
 
-            var isService = !(Debugger.IsAttached || args.Contains(ConsoleArgument));
-            if (isService)
+            try
             {
-                var pathToExe = Process.GetCurrentProcess().MainModule.FileName;
-                pathToContentRoot = Path.GetDirectoryName(pathToExe);
+                var pathToContentRoot = Directory.GetCurrentDirectory();
+
+                var isService = !(Debugger.IsAttached || args.Contains(ConsoleArgument));
+                if (isService)
+                {
+                    var pathToExe = Process.GetCurrentProcess().MainModule.FileName;
+                    pathToContentRoot = Path.GetDirectoryName(pathToExe);
+                }
+
+                var webHostArgs = args.Where(arg => arg != ConsoleArgument).ToArray();
+
+                var config = new ConfigurationBuilder()
+                             .SetBasePath(pathToContentRoot)
+                             .AddJsonFile("hostconfig.json", optional: true)
+                             .Build();
+
+                host = CreateWebHostBuilder(webHostArgs)
+                           .UseContentRoot(pathToContentRoot)
+                           .UseConfiguration(config)
+                           .Build();
+
+                var logger = host.Services.GetService(typeof(ILogger<Program>)) as ILogger<Program>;
+                logger.LogInformation($"Starting WMS Data (as service: {isService}) ...");
+                logger.LogInformation($"pathToContentRoot: {pathToContentRoot}");
+
+                if (isService)
+                {
+                    host.RunAsService();
+                }
+                else
+                {
+                    host.Run();
+                }
             }
-
-            var webHostArgs = args.Where(arg => arg != ConsoleArgument).ToArray();
-
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("hostconfig.json", optional: true)
-                .Build();
-
-            var host = CreateWebHostBuilder(webHostArgs)
-                    .UseContentRoot(pathToContentRoot)
-                    .UseConfiguration(config)
-                    .Build();
-
-            if (isService)
+            catch (Exception ex)
             {
-                host.RunAsService();
-            }
-            else
-            {
-                host.Run();
+                var logger = host?.Services.GetService(typeof(ILogger<Program>)) as ILogger<Program>;
+                logger.LogError(ex, $"Unhandled exception");
             }
         }
 

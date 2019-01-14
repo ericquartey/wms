@@ -13,10 +13,11 @@ namespace Ferretto.Common.Controls
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if(parameter is Type enumType && value is Enum enumValue)
+            if (parameter is Type enumType && value is Enum enumValue)
             {
                 return enumValue.GetDisplayName(enumType);
             }
+
             return null;
         }
 

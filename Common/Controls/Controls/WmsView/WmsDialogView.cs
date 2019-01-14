@@ -9,15 +9,21 @@ using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Controls
 {
-    public partial class WmsDialogView : DXWindow, INavigableView
+    public class WmsDialogView : DXWindow, INavigableView
     {
         #region Fields
 
-        public static readonly DependencyProperty FocusedStartProperty = DependencyProperty.Register(nameof(FocusedStart), typeof(string), typeof(WmsDialogView), new FrameworkPropertyMetadata(default(string), null));
+        public static readonly DependencyProperty FocusedStartProperty = DependencyProperty.Register(
+            nameof(FocusedStart),
+            typeof(string),
+            typeof(WmsDialogView),
+            new FrameworkPropertyMetadata(default(string), null));
 
-        public static readonly DependencyProperty HeaderIsEnabledProperty = DependencyProperty.Register(nameof(HeaderIsEnabled), typeof(bool),
-           typeof(WmsDialogView),
-           new FrameworkPropertyMetadata(false, OnHeaderIsEnabledChanged));
+        public static readonly DependencyProperty HeaderIsEnabledProperty = DependencyProperty.Register(
+            nameof(HeaderIsEnabled),
+            typeof(bool),
+            typeof(WmsDialogView),
+            new FrameworkPropertyMetadata(false, OnHeaderIsEnabledChanged));
 
         private readonly INavigationService
                     navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
@@ -70,11 +76,11 @@ namespace Ferretto.Common.Controls
 
         public static void ShowDialog(INavigableView registeredView)
         {
-            var wmsDialog = registeredView as WmsDialogView;
-            if (wmsDialog == null)
+            if (!(registeredView is WmsDialogView wmsDialog))
             {
                 return;
             }
+
             if (Application.Current.MainWindow.IsVisible)
             {
                 wmsDialog.Owner = Application.Current.MainWindow;
@@ -98,6 +104,7 @@ namespace Ferretto.Common.Controls
                 {
                     childView.Disappear();
                 }
+
                 ((INavigableViewModel)this.DataContext).Disappear();
                 this.navigationService.Disappear(this);
                 ((INavigableViewModel)this.DataContext).Dispose();
@@ -118,7 +125,7 @@ namespace Ferretto.Common.Controls
             this.Disappear();
         }
 
-        private static void EnableControls(WmsDialogView dialogView, Boolean isEnabled)
+        private static void EnableControls(WmsDialogView dialogView, bool isEnabled)
         {
             var childrenToCheck = LayoutTreeHelper.GetVisualChildren(dialogView).OfType<IEnabled>();
             if (childrenToCheck != null)
@@ -142,16 +149,10 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            if (string.IsNullOrEmpty(this.MapId) == false)
-            {
-                // Is Main WMSView registered
-                this.DataContext = this.navigationService.GetRegisteredViewModel(this.MapId, this.Data);
-            }
-            else
-            {
-                this.DataContext =
-                    this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken(), this.Data);
-            }
+            this.DataContext = string.IsNullOrEmpty(this.MapId) == false ?
+                this.navigationService.GetRegisteredViewModel(this.MapId, this.Data) :
+                this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken(), this.Data);
+
             ((INavigableViewModel)this.DataContext)?.Appear();
             FormControl.SetFocus(this, this.FocusedStart);
         }
@@ -181,13 +182,13 @@ namespace Ferretto.Common.Controls
             }
 
             if (this.MapId != null && this.DataContext is INavigableViewModel navViewModel &&
-             this.MapId.Equals(navViewModel.MapId, System.StringComparison.InvariantCulture))
+             this.MapId.Equals(navViewModel.MapId, System.StringComparison.Ordinal))
             {
                 return false;
             }
 
             var dataContextName = this.DataContext.GetType().ToString();
-            return !this.GetAttachedViewModel().Equals(dataContextName, System.StringComparison.InvariantCulture);
+            return !this.GetAttachedViewModel().Equals(dataContextName, System.StringComparison.Ordinal);
         }
 
         private void WMSView_Loaded(object sender, System.Windows.RoutedEventArgs e)

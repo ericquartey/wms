@@ -198,7 +198,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (this.Data is int modelId)
             {
-                this.Model = await this.itemProvider.GetById(modelId);
+                this.Model = await this.itemProvider.GetByIdAsync(modelId);
                 this.ItemHasCompartments = this.itemProvider.HasAnyCompartments(modelId);
             }
 

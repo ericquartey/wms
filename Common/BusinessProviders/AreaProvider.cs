@@ -27,15 +27,9 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<OperationResult> AddAsync(Area model)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<OperationResult> AddAsync(Area model) => throw new NotSupportedException();
 
-        public int Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
         public IQueryable<Area> GetAll()
         {
@@ -44,13 +38,13 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllCount()
         {
-            using (var dataContext = this.dataContext.Current)
+            using (var dc = this.dataContext.Current)
             {
-                return dataContext.Areas.AsNoTracking().Count();
+                return dc.Areas.AsNoTracking().Count();
             }
         }
 
-        public async Task<Area> GetById(int id)
+        public async Task<Area> GetByIdAsync(int id)
         {
             return await this.dataContext.Current.Areas
                 .Where(a => a.Id == id)
@@ -88,13 +82,13 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
-                using (var dataContext = this.dataContext.Current)
+                using (var dc = this.dataContext.Current)
                 {
-                    var existingModel = dataContext.Areas.Find(model.Id);
+                    var existingModel = dc.Areas.Find(model.Id);
 
-                    dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                    dc.Entry(existingModel).CurrentValues.SetValues(model);
 
-                    var changedEntityCount = await dataContext.SaveChangesAsync();
+                    var changedEntityCount = await dc.SaveChangesAsync();
 
                     return new OperationResult(changedEntityCount > 0);
                 }
@@ -105,7 +99,8 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        private static IQueryable<Area> GetAllAreasWithFilter(DatabaseContext context,
+        private static IQueryable<Area> GetAllAreasWithFilter(
+            DatabaseContext context,
             Expression<Func<DataModels.Area, bool>> whereFunc = null)
         {
             var actualWhereFunc = whereFunc ?? ((i) => true);

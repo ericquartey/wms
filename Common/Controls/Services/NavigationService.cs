@@ -37,7 +37,7 @@ namespace Ferretto.Common.Controls.Services
 
         public void Appear<TViewModel>()
         {
-            var (moduleName, viewModelName) = MvvmNaming.GetViewModelNames<TViewModel>();
+            var(moduleName, viewModelName) = MvvmNaming.GetViewModelNames<TViewModel>();
             this.Appear(moduleName, viewModelName);
         }
 
@@ -135,6 +135,7 @@ namespace Ferretto.Common.Controls.Services
                 this.RegisterType(viewModelBind, instanceModuleViewName);
                 return instanceModuleViewName;
             }
+
             return null;
         }
 
@@ -194,13 +195,14 @@ namespace Ferretto.Common.Controls.Services
             {
                 return view.DataContext as INavigableViewModel;
             }
+
             return null;
         }
 
         public void LoadModule(string moduleName)
         {
             var catalog = this.container.Resolve<IModuleCatalog>();
-            var module = (catalog.Modules.FirstOrDefault(m => m.ModuleName == moduleName));
+            var module = catalog.Modules.FirstOrDefault(m => m.ModuleName == moduleName);
             if (module.State != ModuleState.NotStarted)
             {
                 return;
@@ -210,8 +212,9 @@ namespace Ferretto.Common.Controls.Services
             moduleManager.LoadModule(moduleName);
         }
 
-        public void Register<TItemsView, TItemsViewModel>() where TItemsViewModel : INavigableViewModel
-                    where TItemsView : INavigableView
+        public void Register<TItemsView, TItemsViewModel>()
+            where TItemsViewModel : INavigableViewModel
+            where TItemsView : INavigableView
         {
             var newRegId = this.GetNewRegistrationId<TItemsView, TItemsViewModel>();
             this.container.RegisterType<INavigableViewModel, TItemsViewModel>(newRegId);
@@ -235,6 +238,7 @@ namespace Ferretto.Common.Controls.Services
             }
 
             var viewModelBind = this.registrations[viewName];
+
             // Generate random mapId
             var mapId = Guid.NewGuid().ToString("N");
             this.container.RegisterType(typeof(INavigableViewModel), viewModelBind.ViewModel, mapId);
@@ -245,28 +249,30 @@ namespace Ferretto.Common.Controls.Services
 
         public void StartPresentation(Action operationBefore, Action operationAfter)
         {
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle,
-                 new Action(() =>
-                 {
-                     var inputService = ServiceLocator.Current.GetInstance<IInputService>();
-                     // Get current UI context
-                     if (inputService.FocusedElement is UIElement elementFocused)
-                     {
-                         elementFocused.Dispatcher.BeginInvoke(
-                              DispatcherPriority.DataBind,
-                              new Action(() =>
-                              {
-                                  operationBefore.Invoke();
-                              }));
-                         elementFocused.Dispatcher.BeginInvoke(
-                             DispatcherPriority.SystemIdle,
+            Application.Current.Dispatcher.BeginInvoke(
+                DispatcherPriority.SystemIdle,
+                new Action(() =>
+                {
+                    var inputService = ServiceLocator.Current.GetInstance<IInputService>();
+
+                    // Get current UI context
+                    if (inputService.FocusedElement is UIElement elementFocused)
+                    {
+                        elementFocused.Dispatcher.BeginInvoke(
+                             DispatcherPriority.DataBind,
                              new Action(() =>
                              {
-                                 Application.Current.MainWindow.Show();
-                                 operationAfter.Invoke();
+                                 operationBefore.Invoke();
                              }));
-                     }
-                 }));
+                        elementFocused.Dispatcher.BeginInvoke(
+                            DispatcherPriority.SystemIdle,
+                            new Action(() =>
+                            {
+                                Application.Current.MainWindow.Show();
+                                operationAfter.Invoke();
+                            }));
+                    }
+                }));
         }
 
         private void ActivateView(string moduleViewName, string instanceModuleViewName)
@@ -315,7 +321,7 @@ namespace Ferretto.Common.Controls.Services
             return instanceModuleViewName;
         }
 
-        private String GetNewModuleViewName(ViewModelBind viewModelBind, string moduleViewName)
+        private string GetNewModuleViewName(ViewModelBind viewModelBind, string moduleViewName)
         {
             var newRegId = viewModelBind.GetNewId();
             return $"{moduleViewName}.{newRegId}";

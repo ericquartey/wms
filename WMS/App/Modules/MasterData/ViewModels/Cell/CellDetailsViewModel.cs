@@ -158,7 +158,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (this.Data is int modelId)
             {
-                this.Model = await this.cellProvider.GetById(modelId);
+                this.Model = await this.cellProvider.GetByIdAsync(modelId);
                 this.CellHasLoadingUnits = this.cellProvider.HasAnyLoadingUnits(modelId);
             }
 

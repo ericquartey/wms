@@ -13,13 +13,13 @@ namespace Ferretto.Common.BusinessProviders
         #region Fields
 
         private static readonly Expression<Func<DataModels.ItemList, bool>> TypeInventoryFilter =
-            list => (char)list.ItemListType == (char)(ItemListType.Inventory);
+            list => (char)list.ItemListType == (char)ItemListType.Inventory;
 
         private static readonly Expression<Func<DataModels.ItemList, bool>> TypePickFilter =
-            list => (char)list.ItemListType == (char)(ItemListType.Pick);
+            list => (char)list.ItemListType == (char)ItemListType.Pick;
 
         private static readonly Expression<Func<DataModels.ItemList, bool>> TypePutFilter =
-            list => (char)list.ItemListType == (char)(ItemListType.Put);
+            list => (char)list.ItemListType == (char)ItemListType.Put;
 
         private readonly IDatabaseContextService dataContext;
 
@@ -45,17 +45,11 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<OperationResult> AddAsync(ItemListDetails model)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<OperationResult> AddAsync(ItemListDetails model) => throw new NotSupportedException();
 
-        public int Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
-        public async Task<OperationResult> ExecuteImmediately(int listId, int areaId, int bayId)
+        public async Task<OperationResult> ExecuteImmediatelyAsync(int listId, int areaId, int bayId)
         {
             try
             {
@@ -91,14 +85,20 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            try
             {
-                return dataContext.ItemLists.Count();
+                using (var dc = this.dataContext.Current)
+                {
+                    return dc.ItemLists.Count();
+                }
+            }
+            catch
+            {
+                return 0;
             }
         }
 
-        public async Task<ItemListDetails> GetById(int id)
+        public async Task<ItemListDetails> GetByIdAsync(int id)
         {
             var itemListDetails = await this.dataContext.Current.ItemLists
                .Include(l => l.ItemListRows)
@@ -124,10 +124,9 @@ namespace Ferretto.Common.BusinessProviders
                    ExecutionEndDate = l.ExecutionEndDate
                }).SingleAsync();
 
-            itemListDetails.ItemListStatusChoices = ((ItemListStatus[])
-                Enum.GetValues(typeof(ItemListStatus)))
+            itemListDetails.ItemListStatusChoices = ((ItemListStatus[])Enum.GetValues(typeof(ItemListStatus)))
                 .Select(i => new Enumeration((int)i, i.ToString())).ToList();
-            
+
             itemListDetails.ItemListRows = this.itemListRowProvider.GetByItemListId(id);
 
             return itemListDetails;
@@ -196,13 +195,13 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
-                using (var dataContext = this.dataContext.Current)
+                using (var dc = this.dataContext.Current)
                 {
                     var existingModel = this.dataContext.Current.ItemLists.Find(model.Id);
 
                     this.dataContext.Current.Entry(existingModel).CurrentValues.SetValues(model);
 
-                    var changedEntityCount = await dataContext.SaveChangesAsync();
+                    var changedEntityCount = await dc.SaveChangesAsync();
 
                     return new OperationResult(changedEntityCount > 0);
                 }
@@ -213,7 +212,7 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public async Task<OperationResult> ScheduleForExecution(int listId, int areaId)
+        public async Task<OperationResult> ScheduleForExecutionAsync(int listId, int areaId)
         {
             try
             {

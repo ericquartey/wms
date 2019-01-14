@@ -85,7 +85,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 return;
             }
 
-            this.executionRequest.ItemListDetails = await this.itemListProvider.GetById(modelId.Value);
+            this.executionRequest.ItemListDetails = await this.itemListProvider.GetByIdAsync(modelId.Value);
             this.executionRequest.AreaChoices = this.areaProvider.GetAll();
             this.executionRequest.PropertyChanged += this.OnAreaIdChanged;
         }
@@ -105,11 +105,11 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 Debug.Assert(this.executionRequest.BayId.HasValue);
 
-                result = await this.itemListProvider.ExecuteImmediately(this.executionRequest.ItemListDetails.Id, this.executionRequest.AreaId.Value, this.executionRequest.BayId.Value);
+                result = await this.itemListProvider.ExecuteImmediatelyAsync(this.executionRequest.ItemListDetails.Id, this.executionRequest.AreaId.Value, this.executionRequest.BayId.Value);
             }
             else
             {
-                result = await this.itemListProvider.ScheduleForExecution(this.executionRequest.ItemListDetails.Id, this.executionRequest.AreaId.Value);
+                result = await this.itemListProvider.ScheduleForExecutionAsync(this.executionRequest.ItemListDetails.Id, this.executionRequest.AreaId.Value);
             }
 
             this.IsBusy = false;
