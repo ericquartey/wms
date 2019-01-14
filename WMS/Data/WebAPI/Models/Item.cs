@@ -72,7 +72,7 @@ namespace Ferretto.WMS.Data.WebAPI.Models
         public int? AverageWeight
         {
             get => this.averageWeight;
-            set => this.averageWeight = this.CheckIfStrictlyPositive(value);
+            set => this.averageWeight = CheckIfStrictlyPositive(value);
         }
 
         public string Code { get; set; }
@@ -84,19 +84,19 @@ namespace Ferretto.WMS.Data.WebAPI.Models
         public int? FifoTimePick
         {
             get => this.fifoTimePick;
-            set => this.fifoTimePick = this.CheckIfStrictlyPositive(value);
+            set => this.fifoTimePick = CheckIfStrictlyPositive(value);
         }
 
         public int? FifoTimeStore
         {
             get => this.fifoTimeStore;
-            set => this.fifoTimeStore = this.CheckIfStrictlyPositive(value);
+            set => this.fifoTimeStore = CheckIfStrictlyPositive(value);
         }
 
         public int? Height
         {
             get => this.height;
-            set => this.height = this.CheckIfStrictlyPositive(value);
+            set => this.height = CheckIfStrictlyPositive(value);
         }
 
         public string Image { get; set; }
@@ -106,7 +106,7 @@ namespace Ferretto.WMS.Data.WebAPI.Models
         public int? InventoryTolerance
         {
             get => this.inventoryTolerance;
-            set => this.inventoryTolerance = this.CheckIfStrictlyPositive(value);
+            set => this.inventoryTolerance = CheckIfStrictlyPositive(value);
         }
 
         [Newtonsoft.Json.JsonIgnore]
@@ -137,7 +137,7 @@ namespace Ferretto.WMS.Data.WebAPI.Models
         public int? Length
         {
             get => this.length;
-            set => this.length = this.CheckIfStrictlyPositive(value);
+            set => this.length = CheckIfStrictlyPositive(value);
         }
 
         public ItemManagementType ManagementType { get; set; }
@@ -151,31 +151,31 @@ namespace Ferretto.WMS.Data.WebAPI.Models
         public int? PickTolerance
         {
             get => this.pickTolerance;
-            set => this.pickTolerance = this.CheckIfStrictlyPositive(value);
+            set => this.pickTolerance = CheckIfStrictlyPositive(value);
         }
 
         public int? ReorderPoint
         {
             get => this.reorderPoint;
-            set => this.reorderPoint = this.CheckIfStrictlyPositive(value);
+            set => this.reorderPoint = CheckIfStrictlyPositive(value);
         }
 
         public int? ReorderQuantity
         {
             get => this.reorderQuantity;
-            set => this.reorderQuantity = this.CheckIfStrictlyPositive(value);
+            set => this.reorderQuantity = CheckIfStrictlyPositive(value);
         }
 
         public int? StoreTolerance
         {
             get => this.storeTolerance;
-            set => this.storeTolerance = this.CheckIfStrictlyPositive(value);
+            set => this.storeTolerance = CheckIfStrictlyPositive(value);
         }
 
         public int TotalAvailable
         {
             get => this.totalAvailable;
-            private set => this.totalAvailable = this.CheckIfPositive(value);
+            private set => this.totalAvailable = CheckIfPositive(value);
         }
 
         public int TotalReservedForPick
@@ -183,7 +183,7 @@ namespace Ferretto.WMS.Data.WebAPI.Models
             get => this.totalReservedForPick;
             set
             {
-                this.totalReservedForPick = this.CheckIfPositive(value);
+                this.totalReservedForPick = CheckIfPositive(value);
                 this.ComputeTotalAvailable();
             }
         }
@@ -193,7 +193,7 @@ namespace Ferretto.WMS.Data.WebAPI.Models
             get => this.totalReservedToStore;
             set
             {
-                this.totalReservedToStore = this.CheckIfPositive(value);
+                this.totalReservedToStore = CheckIfPositive(value);
                 this.ComputeTotalAvailable();
             }
         }
@@ -203,7 +203,7 @@ namespace Ferretto.WMS.Data.WebAPI.Models
             get => this.totalStock;
             set
             {
-                this.totalStock = this.CheckIfPositive(value);
+                this.totalStock = CheckIfPositive(value);
                 this.ComputeTotalAvailable();
             }
         }
@@ -211,7 +211,7 @@ namespace Ferretto.WMS.Data.WebAPI.Models
         public int? Width
         {
             get => this.width;
-            set => this.width = this.CheckIfStrictlyPositive(value);
+            set => this.width = CheckIfStrictlyPositive(value);
         }
 
         #endregion Properties

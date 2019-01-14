@@ -25,13 +25,13 @@ namespace Ferretto.WMS.Data.WebAPI.Models
         public int ItemListItemsCount
         {
             get => this.itemListItemsCount;
-            set => this.itemListItemsCount = this.CheckIfPositive(value);
+            set => this.itemListItemsCount = CheckIfPositive(value);
         }
 
         public int ItemListRowsCount
         {
             get => this.itemListRowsCount;
-            set => this.itemListRowsCount = this.CheckIfPositive(value);
+            set => this.itemListRowsCount = CheckIfPositive(value);
         }
 
         public ItemListStatus ItemListStatus { get; set; }
@@ -41,7 +41,7 @@ namespace Ferretto.WMS.Data.WebAPI.Models
         public int Priority
         {
             get => this.priority;
-            set => this.priority = this.CheckIfPositive(value);
+            set => this.priority = CheckIfPositive(value);
         }
 
         #endregion Properties
