@@ -7,6 +7,7 @@ namespace Ferretto.Common.Controls
         #region Properties
 
         ICommand RevertCommand { get; }
+
         ICommand SaveCommand { get; }
 
         #endregion Properties

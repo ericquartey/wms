@@ -2,7 +2,7 @@
 
 namespace Ferretto.Common.Controls
 {
-    public partial class PasswordBox : PasswordBoxEdit
+    public class PasswordBox : PasswordBoxEdit
     {
     }
 }

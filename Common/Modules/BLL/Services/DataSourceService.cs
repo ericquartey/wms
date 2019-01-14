@@ -15,10 +15,6 @@ namespace Ferretto.Common.Modules.BLL.Services
     {
         #region Methods
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Major Code Smell",
-            "CA1506",
-            Justification = "This method centralize the DataSource provision")]
         public IEnumerable<IFilterDataSource<TModel>> GetAllFilters<TModel>(string viewModelName, object parameter = null)
             where TModel : IBusinessObject
         {
@@ -292,8 +288,8 @@ namespace Ferretto.Common.Modules.BLL.Services
                 new FilterDataSource<Machine>(
                     "MachinesViewVertimagXS",
                     Resources.Machines.MachineVertimagXS,
-                    () => machineProvider.GetAllVertimagModelXS(),
-                    () => machineCountProvider.GetAllVertimagModelXSCount()),
+                    () => machineProvider.GetAllVertimagModelXs(),
+                    () => machineCountProvider.GetAllVertimagModelXsCount()),
 
                 new FilterDataSource<Machine>(
                     "MachinesViewVertimagM",

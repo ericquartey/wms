@@ -8,11 +8,11 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Methods
 
-        Task<OperationResult> ExecuteImmediately(int listRowId, int areaId, int bayId);
+        Task<OperationResult> ExecuteImmediatelyAsync(int listRowId, int areaId, int bayId);
 
         IQueryable<ItemListRow> GetByItemListId(int id);
 
-        Task<OperationResult> ScheduleForExecution(int listRowId, int areaId);
+        Task<OperationResult> ScheduleForExecutionAsync(int listRowId, int areaId);
 
         #endregion Methods
     }

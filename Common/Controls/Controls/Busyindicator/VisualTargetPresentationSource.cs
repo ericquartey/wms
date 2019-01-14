@@ -43,7 +43,7 @@ namespace Ferretto.Common.Controls
                 var rootElement = value as UIElement;
                 if (rootElement != null)
                 {
-                    rootElement.Measure(new Size(Double.PositiveInfinity, Double.PositiveInfinity));
+                    rootElement.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                     rootElement.Arrange(new Rect(rootElement.DesiredSize));
 
                     this.DesiredSize = rootElement.DesiredSize;

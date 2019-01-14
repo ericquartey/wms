@@ -45,7 +45,7 @@ namespace Ferretto.Common.BusinessProviders
 
                     if (itemCompartmentType == null)
                     {
-                        var entry = dataContext.ItemsCompartmentTypes.Add(new DataModels.ItemCompartmentType
+                        dataContext.ItemsCompartmentTypes.Add(new DataModels.ItemCompartmentType
                         {
                             CompartmentTypeId = model.CompartmentTypeId,
                             ItemId = model.ItemId,
@@ -73,30 +73,15 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public int Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
-        public IQueryable<ItemCompartmentType> GetAll()
-        {
-            throw new NotImplementedException();
-        }
+        public IQueryable<ItemCompartmentType> GetAll() => throw new NotSupportedException();
 
-        public int GetAllCount()
-        {
-            throw new NotImplementedException();
-        }
+        public int GetAllCount() => throw new NotSupportedException();
 
-        public Task<ItemCompartmentType> GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<ItemCompartmentType> GetByIdAsync(int id) => throw new NotSupportedException();
 
-        public Task<OperationResult> SaveAsync(ItemCompartmentType model)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<OperationResult> SaveAsync(ItemCompartmentType model) => throw new NotSupportedException();
 
         #endregion Methods
     }

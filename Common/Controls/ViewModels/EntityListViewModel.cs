@@ -53,12 +53,13 @@ namespace Ferretto.Common.Controls
                 {
                     return default(TModel);
                 }
+
                 if ((this.selectedItem is DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread) == false)
                 {
                     return default(TModel);
                 }
 
-                return (TModel)(((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedItem).OriginalRow);
+                return (TModel)((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedItem).OriginalRow;
             }
         }
 

@@ -23,7 +23,7 @@ namespace Ferretto.Common.Controls.Services
             }
         }
 
-        public static void SetMessage(System.String message)
+        public static void SetMessage(string message)
         {
             if (DXSplashScreen.IsActive)
             {

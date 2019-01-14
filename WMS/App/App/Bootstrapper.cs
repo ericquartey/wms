@@ -29,7 +29,8 @@ namespace Ferretto.WMS.App
             if (mappings != null)
             {
                 var factory = ServiceLocator.Current.GetInstance<IRegionBehaviorFactory>();
-                mappings.RegisterMapping(typeof(LayoutPanel),
+                mappings.RegisterMapping(
+                    typeof(LayoutPanel),
                     AdapterFactory.Make<RegionAdapterBase<LayoutPanel>>(factory));
             }
 

@@ -60,13 +60,12 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.bayId, value);
         }
 
-        public override string Error => String.Join(Environment.NewLine, new[]
+        public override string Error => string.Join(Environment.NewLine, new[]
             {
                 this[nameof(this.ItemListRowDetails)],
                 this[nameof(this.AreaId)],
                 this[nameof(this.BayId)],
-            }.Where(s => !String.IsNullOrEmpty(s))
-        );
+            }.Where(s => !string.IsNullOrEmpty(s)));
 
         public ItemListRowDetails ItemListRowDetails
         {
@@ -103,6 +102,7 @@ namespace Ferretto.Common.BusinessModels
                         {
                             return Resources.BusinessObjects.ItemListExecutionAreaInvalidError;
                         }
+
                         break;
 
                     case nameof(this.BayId):
@@ -111,6 +111,7 @@ namespace Ferretto.Common.BusinessModels
                         {
                             return Resources.BusinessObjects.ItemListExecutionBayInvalidError;
                         }
+
                         break;
                 }
 

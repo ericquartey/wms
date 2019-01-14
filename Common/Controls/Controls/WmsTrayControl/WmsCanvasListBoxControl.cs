@@ -42,6 +42,7 @@ namespace Ferretto.Common.Controls
         public Position OriginTray { get; set; }
 
         public Tray Tray { get; set; }
+
         public WmsTrayControl TrayControl { get; set; }
 
         #endregion Properties
@@ -86,6 +87,7 @@ namespace Ferretto.Common.Controls
             {
                 heightNewCalculated = heightConverted;
             }
+
             heightNewCalculated = Math.Floor(heightNewCalculated);
             widthNewCalculated = Math.Floor(widthNewCalculated);
 
@@ -123,7 +125,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        private void WmsCanvasItemsControl_Loaded(Object sender, RoutedEventArgs e)
+        private void WmsCanvasItemsControl_Loaded(object sender, RoutedEventArgs e)
         {
             if (!(this.DataContext is WmsTrayControlViewModel))
             {
@@ -134,12 +136,13 @@ namespace Ferretto.Common.Controls
             this.SetValue(ScrollViewer.VerticalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
         }
 
-        private void WmsCanvasItemsControl_SizeChanged(Object sender, SizeChangedEventArgs e)
+        private void WmsCanvasItemsControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (this.canvas == null)
             {
                 this.canvas = LayoutTreeHelper.GetVisualChildren(this).OfType<WmsTrayCanvas>().FirstOrDefault();
             }
+
             if (this.border == null)
             {
                 this.border = LayoutTreeHelper.GetVisualChildren(this).OfType<Border>().FirstOrDefault(x => x.Name == "ListBoxBorder");

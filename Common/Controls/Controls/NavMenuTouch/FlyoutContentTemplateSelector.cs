@@ -9,7 +9,7 @@ namespace Ferretto.Common.Controls
         {
             if (item != null)
             {
-                var template = (DataTemplate) Application.Current.Resources["FlyoutCollectionTemplate"];
+                var template = (DataTemplate)Application.Current.Resources["FlyoutCollectionTemplate"];
                 return template;
             }
 

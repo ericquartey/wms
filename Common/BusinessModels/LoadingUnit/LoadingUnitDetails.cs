@@ -91,7 +91,8 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.LoadingUnitCreationDate), ResourceType = typeof(BusinessObjects))]
         public DateTime CreationDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.LoadingUnitHandlingParametersCorrection),
+        [Display(
+            Name = nameof(BusinessObjects.LoadingUnitHandlingParametersCorrection),
             ResourceType = typeof(BusinessObjects))]
         public int? HandlingParametersCorrection
         {
@@ -219,9 +220,9 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
-        public void AddDynamicCompartments(int row, int column, int XPosition, int YPosition, int width, int height)
+        public void AddDynamicCompartments(int row, int column, int xPosition, int yPosition, int width, int height)
         {
-            //TODO: add logic of dynamic scompartition
+            // TODO: add logic of dynamic scompartition
             //      n: is calculated number of compartment to add
             //      n: based on row/column
             var n = 0;
@@ -243,16 +244,10 @@ namespace Ferretto.Common.BusinessModels
                 &&
                 compartment.YPosition + compartment.Height <= this.Length
                 &&
-                !this.compartments.Any(c => this.HasCollision(c, compartment));
+                !this.compartments.Any(c => HasCollision(c, compartment));
         }
 
-        /// <summary>
-        /// Checks if the specified compartments are physically overlapping.
-        /// </summary>
-        /// <returns>
-        /// True if the specified compartments are overlapping, False otherwise.
-        /// <returns>
-        private bool HasCollision(ICompartment c1, ICompartment c2)
+        private static bool HasCollision(ICompartment c1, ICompartment c2)
         {
             if (c1.Id == c2.Id)
             {
@@ -265,7 +260,7 @@ namespace Ferretto.Common.BusinessModels
             var xBPositionFinal = c2.XPosition + c2.Width;
             var yBPositionFinal = c2.YPosition + c2.Height;
 
-            //A: Top-Left
+            // A: Top-Left
             if (c1.XPosition >= c2.XPosition
                 && c1.XPosition < xBPositionFinal
                 && c1.YPosition >= c2.YPosition
@@ -274,7 +269,7 @@ namespace Ferretto.Common.BusinessModels
                 return true;
             }
 
-            //B: Top-Right
+            // B: Top-Right
             if (xAPositionFinal > c2.XPosition
                 && xAPositionFinal <= xBPositionFinal
                 && c1.YPosition >= c2.YPosition
@@ -283,7 +278,7 @@ namespace Ferretto.Common.BusinessModels
                 return true;
             }
 
-            //C: Bottom-Left
+            // C: Bottom-Left
             if (c1.XPosition >= c2.XPosition
                 && c1.XPosition < xBPositionFinal
                 && yAPositionFinal > c2.YPosition
@@ -292,7 +287,7 @@ namespace Ferretto.Common.BusinessModels
                 return true;
             }
 
-            //D: Bottom-Right
+            // D: Bottom-Right
             if (xAPositionFinal > c2.XPosition
                 && xAPositionFinal <= xBPositionFinal
                 && yAPositionFinal > c2.YPosition

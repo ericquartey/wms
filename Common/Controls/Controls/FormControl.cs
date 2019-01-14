@@ -100,6 +100,7 @@ namespace Ferretto.Common.Controls
 
                     return null;
                 }
+
                 type = p.PropertyType;
             }
 

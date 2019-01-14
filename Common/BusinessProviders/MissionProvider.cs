@@ -15,45 +15,32 @@ namespace Ferretto.Common.BusinessProviders
         #region Fields
 
         private static readonly Expression<Func<DataModels.Mission, bool>> StatusCompletedFilter =
-            mission => (char)mission.Status == (char)(MissionStatus.Completed);
+            mission => (char)mission.Status == (char)MissionStatus.Completed;
 
         private static readonly Expression<Func<DataModels.Mission, bool>> StatusNewFilter =
-            mission => (char)mission.Status == (char)(MissionStatus.New);
+            mission => (char)mission.Status == (char)MissionStatus.New;
 
         private readonly IDatabaseContextService dataContextService;
-
-        private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
 
         #region Constructors
 
         public MissionProvider(
-            IDatabaseContextService dataContextService,
-            EnumerationProvider enumerationProvider)
+            IDatabaseContextService dataContextService)
         {
             this.dataContextService = dataContextService;
-            this.enumerationProvider = enumerationProvider;
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public Task<OperationResult> Add(MissionDetails model)
-        {
-            throw new NotImplementedException();
-        }
+        public static int Save(MissionDetails model) => throw new NotSupportedException();
 
-        public Task<OperationResult> AddAsync(MissionDetails model)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<OperationResult> AddAsync(MissionDetails model) => throw new NotSupportedException();
 
-        public int Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
         public IQueryable<Mission> GetAll()
         {
@@ -102,10 +89,7 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public Task<MissionDetails> GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<MissionDetails> GetByIdAsync(int id) => throw new NotSupportedException();
 
         public IQueryable<Mission> GetWithStatusCompleted()
         {
@@ -127,15 +111,7 @@ namespace Ferretto.Common.BusinessProviders
             return this.dataContextService.Current.Missions.AsNoTracking().Count(StatusNewFilter);
         }
 
-        public int Save(MissionDetails model)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<OperationResult> SaveAsync(MissionDetails model)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<OperationResult> SaveAsync(MissionDetails model) => throw new NotSupportedException();
 
         private static IQueryable<Mission> GetAllMissionsWithAggregations(DatabaseContext context, Expression<Func<DataModels.Mission, bool>> whereFunc = null)
         {

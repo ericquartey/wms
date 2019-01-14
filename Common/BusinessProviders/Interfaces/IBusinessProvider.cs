@@ -13,13 +13,13 @@ namespace Ferretto.Common.BusinessProviders
 
         Task<OperationResult> AddAsync(TDetailsModel model);
 
-        int Delete(int id);
+        Task<int> DeleteAsync(int id);
 
         IQueryable<TModel> GetAll();
 
         int GetAllCount();
 
-        Task<TDetailsModel> GetById(int id);
+        Task<TDetailsModel> GetByIdAsync(int id);
 
         Task<OperationResult> SaveAsync(TDetailsModel model);
 
