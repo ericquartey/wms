@@ -15,45 +15,30 @@ namespace Ferretto.Common.BusinessProviders
         #region Fields
 
         private static readonly Expression<Func<DataModels.SchedulerRequest, bool>> OperationInsertFilter =
-            request => (char)request.OperationType == (char)(OperationType.Insertion);
+            request => (char)request.OperationType == (char)OperationType.Insertion;
 
         private static readonly Expression<Func<DataModels.SchedulerRequest, bool>> OperationWithdrawFilter =
-            request => (char)request.OperationType == (char)(OperationType.Withdrawal);
+            request => (char)request.OperationType == (char)OperationType.Withdrawal;
 
         private readonly IDatabaseContextService dataContextService;
-
-        private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
 
         #region Constructors
 
         public SchedulerRequestProvider(
-            IDatabaseContextService dataContextService,
-            EnumerationProvider enumerationProvider)
+            IDatabaseContextService dataContextService)
         {
             this.dataContextService = dataContextService;
-            this.enumerationProvider = enumerationProvider;
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public Task<OperationResult> AddAsync(SchedulerRequest model)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<OperationResult> AddAsync(SchedulerRequest model) => throw new NotSupportedException();
 
-        public int Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> DeleteAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
         public IQueryable<SchedulerRequest> GetAll()
         {
@@ -100,15 +85,7 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public Task<SchedulerRequest> GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<SchedulerRequest> GetByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<SchedulerRequest> GetByIdAsync(int id) => throw new NotSupportedException();
 
         public IQueryable<SchedulerRequest> GetWithOperationTypeInsertion()
         {
@@ -132,7 +109,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public Task<OperationResult> SaveAsync(SchedulerRequest model)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         private static IQueryable<SchedulerRequest> GetAllRequestsWithAggregations(DatabaseContext context, Expression<Func<DataModels.SchedulerRequest, bool>> whereFunc = null)
