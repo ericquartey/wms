@@ -33,6 +33,8 @@ namespace Ferretto.Common.BusinessModels
 
         private ItemListType itemListType;
 
+        private string itemUnitMeasure;
+
         private DateTime? lastExecutionDate;
 
         private DateTime? lastModificationDate;
@@ -60,6 +62,13 @@ namespace Ferretto.Common.BusinessModels
         #endregion Fields
 
         #region Properties
+
+        public bool CanBeExecuted
+        {
+            get => this.itemListRowStatus == ItemListRowStatus.Incomplete
+                    || this.itemListRowStatus == ItemListRowStatus.Suspended
+                    || this.itemListRowStatus == ItemListRowStatus.Waiting;
+        }
 
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string Code { get => this.code; set => this.SetProperty(ref this.code, value); }
@@ -93,6 +102,8 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
         public ItemListType ItemListType { get => this.itemListType; set => this.SetProperty(ref this.itemListType, value); }
+
+        public string ItemUnitMeasure { get => this.itemUnitMeasure; set => this.SetProperty(ref this.itemUnitMeasure, value); }
 
         [Display(Name = nameof(BusinessObjects.LastExecutionDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastExecutionDate { get => this.lastExecutionDate; set => this.SetProperty(ref this.lastExecutionDate, value); }
@@ -135,13 +146,6 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(BusinessObjects.ItemListRowSub2), ResourceType = typeof(BusinessObjects))]
         public string Sub2 { get => this.sub2; set => this.SetProperty(ref this.sub2, value); }
-
-        public bool CanBeExecuted
-        {
-            get => this.itemListRowStatus == ItemListRowStatus.Incomplete
-                    || this.itemListRowStatus == ItemListRowStatus.Suspended
-                    || this.itemListRowStatus == ItemListRowStatus.Waiting;
-        }
 
         #endregion Properties
     }
