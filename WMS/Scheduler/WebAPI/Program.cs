@@ -25,7 +25,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI
             .CreateDefaultBuilder(args)
              .ConfigureLogging((context, logBuilder) =>
              {
-                 logBuilder.AddEventLog();
+                 logBuilder.AddEventLog(new Microsoft.Extensions.Logging.EventLog.EventLogSettings { SourceName = "WMSSchedulerService" });
              })
             .UseStartup<Startup>();
 
