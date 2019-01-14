@@ -136,7 +136,7 @@
     <value>Data Ultimo Inventario</value>
   </data>
   <data name="ItemInventoryTolerance" xml:space="preserve">
-    <value>Tolleranza di Inventario [pezzi]</value>
+    <value>Tolleranza di Inventario</value>
   </data>
   <data name="ItemNotes" xml:space="preserve">
     <value>Note</value>
@@ -154,7 +154,7 @@
     <value>Codice</value>
   </data>
   <data name="ItemPickTolerance" xml:space="preserve">
-    <value>Tolleranza in Prelievo [pezzi]</value>
+    <value>Tolleranza in Prelievo</value>
   </data>
   <data name="ItemCode" xml:space="preserve">
     <value>Codice</value>
@@ -319,7 +319,7 @@
     <value>Quantità Minima di Riordino</value>
   </data>
   <data name="ItemStoreTolerance" xml:space="preserve">
-    <value>Tolleranza in Versamento [pezzi]</value>
+    <value>Tolleranza in Versamento </value>
   </data>
   <data name="ItemReservedForPick" xml:space="preserve">
     <value>Impegnato in Prelievo</value>

@@ -302,7 +302,7 @@
     <comment>Allowed Item In Compartment - Max Capacity</comment>
   </data>
   <data name="ItemInventoryTolerance" xml:space="preserve">
-    <value>Inventory Tolerance [pieces]</value>
+    <value>Inventory Tolerance </value>
     <comment>Item - Last Inventory Date</comment>
   </data>
   <data name="ItemLastInventoryDate" xml:space="preserve">
@@ -330,7 +330,7 @@
     <comment>Item - Notes</comment>
   </data>
   <data name="ItemPickTolerance" xml:space="preserve">
-    <value>Pick Tolerance [pieces]</value>
+    <value>Pick Tolerance </value>
     <comment>Item - Pick Tolerance</comment>
   </data>
   <data name="ItemReorderPoint" xml:space="preserve">
@@ -354,7 +354,7 @@
     <comment>Item - Stock (calculated)</comment>
   </data>
   <data name="ItemStoreTolerance" xml:space="preserve">
-    <value>Store Tolerance [pieces]</value>
+    <value>Store Tolerance </value>
     <comment>Item - Store Tolerance</comment>
   </data>
   <data name="ItemWidth" xml:space="preserve">
