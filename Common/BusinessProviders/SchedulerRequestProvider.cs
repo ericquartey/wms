@@ -50,6 +50,11 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotImplementedException();
         }
 
+        public Task<int> DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public IQueryable<SchedulerRequest> GetAll()
         {
             return this.dataContextService.Current.SchedulerRequests
@@ -96,6 +101,11 @@ namespace Ferretto.Common.BusinessProviders
         }
 
         public Task<SchedulerRequest> GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<SchedulerRequest> GetByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
