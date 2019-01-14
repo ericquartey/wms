@@ -25,10 +25,7 @@ namespace Ferretto.WMS.Data.WebAPI
             .CreateDefaultBuilder(args)
             .ConfigureLogging((context, logBuilder) =>
             {
-                logBuilder.AddEventLog(new Microsoft.Extensions.Logging.EventLog.EventLogSettings
-                {
-                    SourceName = "WMSDataService"
-                });
+                logBuilder.AddEventLog();
             })
             .UseStartup<Startup>();
 
@@ -61,7 +58,6 @@ namespace Ferretto.WMS.Data.WebAPI
 
                 var logger = host.Services.GetService(typeof(ILogger<Program>)) as ILogger<Program>;
                 logger.LogInformation($"Starting WMS Data (as service: {isService}) ...");
-                logger.LogInformation($"pathToContentRoot: {pathToContentRoot}");
 
                 if (isService)
                 {
@@ -71,11 +67,13 @@ namespace Ferretto.WMS.Data.WebAPI
                 {
                     host.Run();
                 }
+
+                logger.LogInformation($"WMS Data shutting down.");
             }
             catch (Exception ex)
             {
                 var logger = host?.Services.GetService(typeof(ILogger<Program>)) as ILogger<Program>;
-                logger.LogError(ex, $"Unhandled exception");
+                logger?.LogError(ex, $"Unhandled exception");
             }
         }
 
