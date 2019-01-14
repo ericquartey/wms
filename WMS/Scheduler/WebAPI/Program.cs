@@ -47,7 +47,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI
                 var webHostArgs = args.Where(arg => arg != ConsoleArgument).ToArray();
 
                 var config = new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .SetBasePath(pathToContentRoot)
                     .AddJsonFile("hostconfig.json", optional: true)
                     .Build();
 
