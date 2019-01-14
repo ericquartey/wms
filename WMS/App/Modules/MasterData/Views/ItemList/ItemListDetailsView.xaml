@@ -21,6 +21,8 @@
     <wms:WmsView.Resources>
         <wms:StringFormatConverter x:Key="SFC" />
         <wms:DisplayNameConverter x:Key="DNC" />
+
+
     </wms:WmsView.Resources>
     <wms:WmsView.SubTitle>
         <MultiBinding Converter="{StaticResource SFC}">
@@ -284,9 +286,45 @@
                                 <dxg:GridColumn Width="400*"
                                                 FieldName="ItemDescription" />
                                 <dxg:GridColumn Width="120*"
-                                                FieldName="RequiredQuantity" />
+                                                FieldName="RequiredQuantity">
+                                    <dxg:GridColumn.CellDisplayTemplate>
+                                        <DataTemplate>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding Converter="{StaticResource SFC}">
+                                                        <Binding Source="{x:Static res:MasterData.QuantityWithUnitMeasure}" />
+                                                        <Binding Path="RowData.Row.RequiredQuantity"
+                                                                 TargetNullValue="" />
+                                                        <Binding Path="RowData.Row.ItemUnitMeasure"
+                                                                 TargetNullValue="" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </dxg:GridColumn.CellDisplayTemplate>
+                                    <dxg:GridColumn.EditSettings>
+                                        <dxe:TextEditSettings Mask="{x:Static res:MasterData.CompartmentTypeListFormatReduced}"
+                                                              MaskUseAsDisplayFormat="True" />
+                                    </dxg:GridColumn.EditSettings>
+                                </dxg:GridColumn>
                                 <dxg:GridColumn Width="120*"
-                                                FieldName="DispatchedQuantity" />
+                                                FieldName="DispatchedQuantity">
+                                    <dxg:GridColumn.CellDisplayTemplate>
+                                        <DataTemplate>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding Converter="{StaticResource SFC}">
+                                                        <Binding Source="{x:Static res:MasterData.QuantityWithUnitMeasure}" />
+                                                        <Binding Path="RowData.Row.DispatchedQuantity"
+                                                                 TargetNullValue="" />
+                                                        <Binding Path="RowData.Row.ItemUnitMeasure"
+                                                                 TargetNullValue="" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </dxg:GridColumn.CellDisplayTemplate>
+                                </dxg:GridColumn>
                                 <dxg:GridColumn Width="120*"
                                                 FieldName="ItemListRowStatus" />
                                 <dxg:GridColumn Width="120*"
