@@ -182,6 +182,7 @@
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
@@ -220,6 +221,9 @@
                                         <wms:InfoText Grid.Row="6"
                                                       Grid.Column="0"
                                                       Content="{Binding Path=AreaDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <wms:InfoText Grid.Row="7"
+                                                      Grid.Column="0"
+                                                      Content="{Binding Path=LoadingUnitTypeDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                         <ScrollViewer Grid.RowSpan="7"
                                                       Grid.Column="3"
