@@ -61,11 +61,13 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     return default(Compartment);
                 }
+
                 if ((this.selectedCompartment is DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread) == false)
                 {
                     return default(Compartment);
                 }
-                return (Compartment)(((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedCompartment).OriginalRow);
+
+                return (Compartment)((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedCompartment).OriginalRow;
             }
         }
 
@@ -86,8 +88,9 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand WithdrawCommand => this.withdrawCommand ??
-                                          (this.withdrawCommand = new DelegateCommand(this.ExecuteWithdraw,
-                                              this.CanExecuteWithdraw));
+                                          (this.withdrawCommand = new DelegateCommand(
+                                               this.ExecuteWithdraw,
+                                               this.CanExecuteWithdraw));
 
         #endregion Properties
 
@@ -111,7 +114,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async Task ExecuteRevertCommand()
         {
-            await this.LoadData();
+            await this.LoadDataAsync();
         }
 
         protected override async Task ExecuteSaveCommand()
@@ -138,7 +141,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             base.OnAppear();
 
-            await this.LoadData();
+            await this.LoadDataAsync();
         }
 
         protected override void OnDispose()
@@ -164,23 +167,22 @@ namespace Ferretto.WMS.Modules.MasterData
                 new
                 {
                     Id = this.Model.Id
-                }
-            );
+                });
 
             this.IsBusy = false;
         }
 
         private void Initialize()
         {
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<Item>>(async eventArgs => await this.LoadData(), this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<Item>>(async eventArgs => await this.LoadData());
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<Item>>(async eventArgs => await this.LoadDataAsync(), this.Token, true, true);
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<Item>>(async eventArgs => await this.LoadDataAsync());
             this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<Item>>(
                 async eventArgs =>
                 {
                     if (eventArgs.ModelId.HasValue)
                     {
                         this.Data = eventArgs.ModelId.Value;
-                        await this.LoadData();
+                        await this.LoadDataAsync();
                     }
                     else
                     {
@@ -192,7 +194,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 true);
         }
 
-        private async Task LoadData()
+        private async Task LoadDataAsync()
         {
             this.IsBusy = true;
 

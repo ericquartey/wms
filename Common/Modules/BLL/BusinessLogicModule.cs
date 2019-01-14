@@ -12,7 +12,7 @@ namespace Ferretto.Common.Modules.BLL
     [Module(ModuleName = nameof(Utils.Modules.BusinessLogic))]
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Major Code Smell",
-        "S1200",
+        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
         Justification = "This class register services into container")]
     public class BusinessLogicModule : IModule
     {

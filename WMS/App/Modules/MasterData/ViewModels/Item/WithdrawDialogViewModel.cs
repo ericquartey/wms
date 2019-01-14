@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
@@ -23,7 +24,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private ItemWithdraw itemWithdraw;
         private ICommand runWithdrawCommand;
         private ICommand simpleWithdrawCommand;
-        private bool validationEnabled = false;
+        private bool validationEnabled;
         private string validationError;
 
         #endregion Fields
@@ -77,8 +78,9 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand RunWithdrawCommand => this.runWithdrawCommand ??
-                                              (this.runWithdrawCommand = new DelegateCommand(this.ExecuteRunWithdraw,
-                                                      this.CanExecuteRunWithdraw)
+                                              (this.runWithdrawCommand = new DelegateCommand(
+                                                                     async () => await this.ExecuteRunWithdrawAsync(),
+                                                                     this.CanExecuteRunWithdraw)
                                                   .ObservesProperty(() => this.ItemWithdraw)
                                                   .ObservesProperty(() => this.ItemWithdraw.Quantity));
 
@@ -125,7 +127,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.AdvancedWithdraw = true;
         }
 
-        private async void ExecuteRunWithdraw()
+        private async Task ExecuteRunWithdrawAsync()
         {
             this.validationEnabled = true;
 
@@ -163,7 +165,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             var error = this.ItemWithdraw.Error;
             this.ValidationError = error;
-            return this.ItemWithdraw != null && String.IsNullOrEmpty(error);
+            return this.ItemWithdraw != null && string.IsNullOrEmpty(error);
         }
 
         private void Initialize()
@@ -175,27 +177,18 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             ((DelegateCommand)this.RunWithdrawCommand)?.RaiseCanExecuteChanged();
 
-            if (e.PropertyName == nameof(this.ItemWithdraw.AreaId))
+            switch (e.PropertyName)
             {
-                if (this.ItemWithdraw.AreaId.HasValue)
-                {
-                    this.ItemWithdraw.BayChoices = this.bayProvider.GetByAreaId(this.ItemWithdraw.AreaId.Value);
-                }
-                else
-                {
-                    this.ItemWithdraw.BayChoices = null;
-                }
-            }
-            else if (e.PropertyName == nameof(this.ItemWithdraw.ItemDetails))
-            {
-                if (this.ItemWithdraw.ItemDetails != null)
-                {
-                    this.ItemWithdraw.AreaChoices = this.areaProvider.GetByItemIdAvailability(this.ItemWithdraw.ItemDetails.Id);
-                }
-                else
-                {
-                    this.ItemWithdraw.AreaChoices = null;
-                }
+                case nameof(this.ItemWithdraw.AreaId):
+                    this.ItemWithdraw.BayChoices = this.ItemWithdraw.AreaId.HasValue ?
+                                                       this.bayProvider.GetByAreaId(this.ItemWithdraw.AreaId.Value) :
+                                                       null;
+                    break;
+                case nameof(this.ItemWithdraw.ItemDetails):
+                    this.ItemWithdraw.AreaChoices = this.ItemWithdraw.ItemDetails != null ?
+                                                        this.areaProvider.GetByItemIdAvailability(this.ItemWithdraw.ItemDetails.Id) :
+                                                        null;
+                    break;
             }
         }
 

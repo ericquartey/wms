@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
@@ -22,8 +23,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
-        private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
-
         private ICommand deleteCommand;
 
         private bool itemIdHasValue;
@@ -45,7 +44,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Properties
 
         public ICommand DeleteCommand => this.deleteCommand ??
-            (this.deleteCommand = new DelegateCommand(async () => await this.ExecuteDeleteCommand(), this.CanExecuteDeleteCommand));
+            (this.deleteCommand = new DelegateCommand(async () => await this.ExecuteDeleteCommandAsync(), this.CanExecuteDeleteCommand));
 
         public bool ItemIdHasValue
         {
@@ -70,11 +69,7 @@ namespace Ferretto.WMS.Modules.MasterData
             ((DelegateCommand)this.deleteCommand)?.RaiseCanExecuteChanged();
         }
 
-        protected override Task ExecuteRevertCommand()
-        {
-            // do nothing here
-            return null;
-        }
+        protected override Task ExecuteRevertCommand() => throw new NotSupportedException();
 
         protected override async Task ExecuteSaveCommand()
         {
@@ -100,6 +95,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (e == null)
+            {
+                return;
+            }
+
             if (e.PropertyName == nameof(CompartmentDetails.ItemId))
             {
                 this.ItemIdHasValue = this.Model.ItemId.HasValue;
@@ -112,8 +112,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 ||
                 e.PropertyName == nameof(CompartmentDetails.Width)
                 ||
-                e.PropertyName == nameof(CompartmentDetails.Height)
-                ))
+                e.PropertyName == nameof(CompartmentDetails.Height)))
             {
                 var capacity = await this.compartmentProvider.GetMaxCapacityAsync(
                     this.Model.Width,
@@ -131,7 +130,7 @@ namespace Ferretto.WMS.Modules.MasterData
             return this.Model != null;
         }
 
-        private async Task ExecuteDeleteCommand()
+        private async Task ExecuteDeleteCommandAsync()
         {
             this.IsBusy = true;
 

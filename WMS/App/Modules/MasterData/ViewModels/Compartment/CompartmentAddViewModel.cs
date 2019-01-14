@@ -54,11 +54,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        protected override Task ExecuteRevertCommand()
-        {
-            // do nothing here
-            throw new NotImplementedException();
-        }
+        protected override Task ExecuteRevertCommand() => throw new NotSupportedException();
 
         protected override async Task ExecuteSaveCommand()
         {
@@ -93,6 +89,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (e == null)
+            {
+                return;
+            }
+
             if (e.PropertyName == nameof(CompartmentDetails.ItemId))
             {
                 this.ItemIdHasValue = this.Model.ItemId.HasValue;
@@ -105,8 +106,7 @@ namespace Ferretto.WMS.Modules.MasterData
               ||
               e.PropertyName == nameof(CompartmentDetails.Width)
               ||
-              e.PropertyName == nameof(CompartmentDetails.Height)
-              ))
+              e.PropertyName == nameof(CompartmentDetails.Height)))
             {
                 var capacity = await this.compartmentProvider.GetMaxCapacityAsync(
                         this.Model.Width,

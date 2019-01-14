@@ -22,8 +22,9 @@ namespace Ferretto.WMS.Modules.MasterData
            .ObservesProperty(() => this.CurrentItem));
 
         public ICommand WithdrawCommand => this.withdrawCommand ??
-                                                   (this.withdrawCommand = new DelegateCommand(this.ExecuteWithdraw,
-                                               this.CanExecuteWithdraw).ObservesProperty(() => this.CurrentItem));
+                                                   (this.withdrawCommand = new DelegateCommand(
+                                                        this.ExecuteWithdraw,
+                                                        this.CanExecuteWithdraw).ObservesProperty(() => this.CurrentItem));
 
         #endregion Properties
 
@@ -34,7 +35,7 @@ namespace Ferretto.WMS.Modules.MasterData
             return this.CurrentItem?.TotalAvailable > 0;
         }
 
-        private Boolean CanShowDetailsCommand()
+        private bool CanShowDetailsCommand()
         {
             return this.CurrentItem != null;
         }
@@ -52,8 +53,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 new
                 {
                     Id = this.CurrentItem.Id
-                }
-            );
+                });
         }
 
         #endregion Methods
