@@ -6,9 +6,9 @@ namespace Ferretto.WMS.AutomationServiceMock
     {
         #region Methods
 
-        Task Initialize();
+        Task InitializeAsync();
 
-        Task NotifyUserLogin(int bayId);
+        Task NotifyUserLoginAsync(int bayId);
 
         #endregion Methods
     }
