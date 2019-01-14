@@ -34,12 +34,15 @@ namespace Ferretto.Common.Controls
             nameof(IsBusy),
             typeof(bool),
             typeof(BusyIndicator),
-            new FrameworkPropertyMetadata(false,
+            new FrameworkPropertyMetadata(
+                false,
                 FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public static readonly DependencyProperty ShowModeProperty =
-                        DependencyProperty.Register(nameof(ShowMode), typeof(IndicatorType),
-                        typeof(BusyIndicator),
+                        DependencyProperty.Register(
+                            nameof(ShowMode),
+                            typeof(IndicatorType),
+                            typeof(BusyIndicator),
                         new FrameworkPropertyMetadata(IndicatorType.Default, OnIndicatorTypeChanged));
 
         private const string suffixStyle = "Style";
@@ -126,7 +129,7 @@ namespace Ferretto.Common.Controls
             {
                 this.Child.Arrange(new Rect(arrangeSize));
                 ret = this.Child.RenderSize;
-                this.Child.Visibility = (this.IsBusy) ? Visibility.Hidden : Visibility.Visible;
+                this.Child.Visibility = this.IsBusy ? Visibility.Hidden : Visibility.Visible;
             }
 
             this.busyHost.Arrange(new Rect(arrangeSize));

@@ -143,7 +143,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             if (this.Data is int modelId)
             {
-                this.Model = await this.itemListRowProvider.GetById(modelId);
+                this.Model = await this.itemListRowProvider.GetByIdAsync(modelId);
 
                 this.ItemsDataSource = this.Model != null
                 ? new DataSource<Item>(() => this.itemProvider.GetAll())

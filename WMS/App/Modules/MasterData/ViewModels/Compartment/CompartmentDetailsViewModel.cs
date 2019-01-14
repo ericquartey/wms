@@ -196,8 +196,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (this.Data is int modelId)
             {
-                var compartment = await this.compartmentProvider.GetById(modelId);
-                var loadingUnit = await this.loadingUnitProvider.GetById(compartment.LoadingUnitId);
+                var compartment = await this.compartmentProvider.GetByIdAsync(modelId);
+                var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId);
                 this.Model = compartment;
                 this.InitializeTray(loadingUnit);
             }

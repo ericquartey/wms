@@ -27,15 +27,9 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<OperationResult> AddAsync(Bay model)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<OperationResult> AddAsync(Bay model) => throw new NotSupportedException();
 
-        public int Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
         public IQueryable<Bay> GetAll()
         {
@@ -68,7 +62,7 @@ namespace Ferretto.Common.BusinessProviders
                 });
         }
 
-        public async Task<Bay> GetById(int id)
+        public async Task<Bay> GetByIdAsync(int id)
         {
             return await this.dataContext.Current.Bays
                    .Include(b => b.BayType)
@@ -99,13 +93,13 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
-                using (var dataContext = this.dataContext.Current)
+                using (var dc = this.dataContext.Current)
                 {
-                    var existingModel = dataContext.Bays.Find(model.Id);
+                    var existingModel = dc.Bays.Find(model.Id);
 
-                    dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                    dc.Entry(existingModel).CurrentValues.SetValues(model);
 
-                    var changedEntityCount = await dataContext.SaveChangesAsync();
+                    var changedEntityCount = await dc.SaveChangesAsync();
 
                     return new OperationResult(changedEntityCount > 0);
                 }
@@ -116,7 +110,8 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        private static IQueryable<Bay> GetAllBaysWithFilter(DatabaseContext context,
+        private static IQueryable<Bay> GetAllBaysWithFilter(
+            DatabaseContext context,
             Expression<Func<DataModels.Bay, bool>> whereFunc = null)
         {
             var actualWhereFunc = whereFunc ?? ((i) => true);

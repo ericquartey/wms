@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Ferretto.VW.ActionBlocks;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
@@ -31,6 +32,7 @@ namespace Ferretto.VW.InstallationApp
         private bool isStepDownButtonActive = false;
         private bool isStepUpButtonActive = false;
         private string noteString = Common.Resources.InstallationApp.VerticalOffsetCalibration;
+        private readonly DispatcherTimer dispatcherTimer = new DispatcherTimer();
         private short offsetValue;
         private PositioningDrawer positioningDrawerInstance;
         private string referenceCellHeight;
@@ -101,12 +103,12 @@ namespace Ferretto.VW.InstallationApp
         {
             // Unsubscribe methods
             this.UnSubscribeMethodFromEvent();
+            this.dispatcherTimer.Stop();
         }
 
         public void InitializeViewModel(IUnityContainer _container)
         {
             this.Container = _container;
-            this.positioningDrawerInstance = (PositioningDrawer)this.Container.Resolve<IPositioningDrawer>();
         }
 
         public void PositioningDone(bool result)
@@ -138,8 +140,18 @@ namespace Ferretto.VW.InstallationApp
             this.isSetPositionButtonActive = false;
             this.NoteString = Common.Resources.InstallationApp.VerticalOffsetCalibration;
 
+            this.dispatcherTimer.Tick += this.DispatcherTimer_Tick;
+            this.dispatcherTimer.Interval = new TimeSpan(350);
+            this.dispatcherTimer.Start();
+
+            this.positioningDrawerInstance.EnableRetrivialCurrentPositionMode = true;
             this.positioningDrawerInstance.AbsoluteMovement = true;
             this.positioningDrawerInstance.MoveAlongVerticalAxisToPoint(x, this.vMax, this.acc, this.dec, this.w, this.offset);
+        }
+
+        private void DispatcherTimer_Tick(Object sender, EventArgs e)
+        {
+            this.CurrentHeight = Convert.ToString(this.positioningDrawerInstance.CurrentPosition);
         }
 
         public void StepDownButtonCommandMethod()
@@ -164,6 +176,7 @@ namespace Ferretto.VW.InstallationApp
 
         public void SubscribeMethodToEvent()
         {
+            this.positioningDrawerInstance = (PositioningDrawer)this.Container.Resolve<IPositioningDrawer>();
             if (this.positioningDrawerInstance != null)
             {
                 this.positioningDrawerInstance.ThrowEndEvent += this.PositioningDone;

@@ -225,7 +225,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if ((this.Data is int modelId))
             {
-                this.Model = await this.itemListProvider.GetById(modelId);
+                this.Model = await this.itemListProvider.GetByIdAsync(modelId);
                 this.ListHasRows = this.Model.ItemListRowsCount > 0;
             }
 

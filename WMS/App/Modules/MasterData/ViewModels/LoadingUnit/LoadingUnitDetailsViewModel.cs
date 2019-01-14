@@ -220,7 +220,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (this.Data is int modelId)
             {
-                this.Model = await this.loadingUnitProvider.GetById(modelId);
+                this.Model = await this.loadingUnitProvider.GetByIdAsync(modelId);
                 this.LoadingUnitHasCompartments = this.loadingUnitProvider.HasAnyCompartments(modelId);
                 this.InitializeTray();
             }

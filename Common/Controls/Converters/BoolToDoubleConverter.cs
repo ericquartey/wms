@@ -8,17 +8,17 @@ namespace Ferretto.Common.Controls
 {
     public class BoolToDoubleConverter : DependencyObject, IValueConverter
     {
-
         #region Properties
 
         public object ValueOnFalse { get; set; }
+
         public object ValueOnTrue { get; set; }
 
         #endregion Properties
 
         #region Methods
 
-        public Object Convert(object value, Type targetType, Object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (targetType != typeof(double))
             {
@@ -30,7 +30,7 @@ namespace Ferretto.Common.Controls
                 : System.Convert.ToDouble(this.ValueOnFalse, culture);
         }
 
-        public Object ConvertBack(object value, Type targetType, Object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return null;
         }

@@ -24,6 +24,7 @@ namespace Ferretto.Common.Controls
         #region Properties
 
         public EventArgs EventUIArgs { get; set; }
+
         public object Sender { get; set; }
 
         #endregion Properties

@@ -20,6 +20,7 @@ namespace Ferretto.Common.Controls
             {
                 throw new ArgumentException(Errors.MarkupNameOfSyntax);
             }
+
             return this.Type.Name;
         }
 

@@ -42,7 +42,7 @@
                         <wms:InfoText Content="{Binding Status}" IsPillVisible="True" />
                         <wms:InfoText Content="{Binding MaintenanceStatus}" IsPillVisible="True" />
                         <wms:ProgressBarEdit DisplayFormatString="p0"
-                                             EditValue="{Binding FillRate}"
+                                             EditValue="{Binding Path=FillRate, Mode=OneWay}"
                                              Minimum="0"
                                              Maximum="100" />
                     </StackPanel>

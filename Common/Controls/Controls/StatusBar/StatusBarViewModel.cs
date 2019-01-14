@@ -72,7 +72,7 @@ namespace Ferretto.Common.Controls
             return $"{nameof(StatusType)}{status}";
         }
 
-        private void KeepInfoTimer_Tick(Object sender, EventArgs e)
+        private void KeepInfoTimer_Tick(object sender, EventArgs e)
         {
             this.Message = string.Empty;
             this.IconName = string.Empty;

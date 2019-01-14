@@ -45,7 +45,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = true;
 
             var newCompartments = this.Model.CreateBulk();
-            var result = await this.compartmentProvider.AddRange(newCompartments);
+            var result = await this.compartmentProvider.AddRangeAsync(newCompartments);
             if (result.Success)
             {
                 this.TakeModelSnapshot();

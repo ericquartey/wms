@@ -110,8 +110,7 @@ namespace Ferretto.Common.BusinessModels
                 this[nameof(this.Stock)],
             }
             .Distinct()
-            .Where(s => !string.IsNullOrEmpty(s))
-        );
+            .Where(s => !string.IsNullOrEmpty(s)));
 
         [Display(Name = nameof(BusinessObjects.CompartmentFifoTime), ResourceType = typeof(BusinessObjects))]
         public int? FifoTime
@@ -369,6 +368,7 @@ namespace Ferretto.Common.BusinessModels
                         {
                             return Errors.CompartmentYPositionIsNotSpecified;
                         }
+
                         break;
 
                     case nameof(this.Width):
@@ -394,6 +394,7 @@ namespace Ferretto.Common.BusinessModels
                         {
                             return Errors.CompartmentSizeIsNotSpecified;
                         }
+
                         break;
 
                     case nameof(this.MaxCapacity):
@@ -401,6 +402,7 @@ namespace Ferretto.Common.BusinessModels
                         {
                             return Errors.CompartmentStockGreaterThanMaxCapacity;
                         }
+
                         break;
 
                     case nameof(this.Stock):
@@ -408,6 +410,7 @@ namespace Ferretto.Common.BusinessModels
                         {
                             return Errors.CompartmentStockGreaterThanMaxCapacity;
                         }
+
                         break;
                 }
 

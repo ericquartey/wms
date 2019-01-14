@@ -11,7 +11,12 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty HideToggleButtonProperty = DependencyProperty.RegisterAttached("HideToggleButton", typeof(bool), typeof(Expander), new FrameworkPropertyMetadata(false));
+        public static readonly DependencyProperty HideToggleButtonProperty = DependencyProperty.RegisterAttached(
+            "HideToggleButton",
+            typeof(bool),
+            typeof(Expander),
+            new FrameworkPropertyMetadata(false));
+
         private Grid gridHeaderSite;
         private ToggleButton toggleButton;
 
@@ -45,37 +50,37 @@ namespace Ferretto.Common.Controls
             ((FrameworkElement)this.Parent).SizeChanged += this.Expander_SizeChanged;
         }
 
-        private void Expander_SizeChanged(Object sender, SizeChangedEventArgs e)
+        private void Expander_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (!(sender is FrameworkElement parentControl))
+            if (!(sender is FrameworkElement))
             {
                 return;
             }
+
             if (this.toggleButton == null)
             {
-                var toggleButtonFound = LayoutTreeHelper.GetVisualChildren(this as DependencyObject)
+                var toggleButtonFound = LayoutTreeHelper.GetVisualChildren(this)
                  .OfType<ToggleButton>()
                  .FirstOrDefault();
                 if (toggleButtonFound != null)
                 {
-                    this.toggleButton = toggleButtonFound as ToggleButton;
+                    this.toggleButton = toggleButtonFound;
                 }
             }
+
             if (this.gridHeaderSite == null)
             {
-                var gridFound = LayoutTreeHelper.GetVisualChildren(this as DependencyObject)
+                var gridFound = LayoutTreeHelper.GetVisualChildren(this)
                  .OfType<Grid>()
                  .FirstOrDefault(n => n.Name == "GridHeaderSite");
                 if (gridFound != null)
                 {
-                    this.gridHeaderSite = gridFound as Grid;
+                    this.gridHeaderSite = gridFound;
                 }
             }
-            var actualHeight = (this.ActualHeight - 4);
-            if (this.gridHeaderSite.Height != actualHeight)
-            {
-                this.gridHeaderSite.Height = actualHeight;
-            }
+
+            var actualHeight = this.ActualHeight - 4;
+            this.gridHeaderSite.Height = actualHeight;
         }
 
         #endregion Methods

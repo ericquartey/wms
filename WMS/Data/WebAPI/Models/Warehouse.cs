@@ -152,12 +152,22 @@ namespace Ferretto.WMS.Data.WebAPI.Models
         private IEnumerable<ItemList> RetrieveLists()
         {
             return this.dataContext.ItemLists
-            .Select(l =>
-                new ItemList
+                .AsNoTracking()
+                .Include(l => l.ItemListRows)
+                .Select(l => new ItemList
                 {
-                    Id = l.Id
+                    Id = l.Id,
+                    Code = l.Code,
+                    Description = l.Description,
+                    Priority = l.Priority,
+                    ItemListStatus = (ItemListStatus)l.Status,
+                    ItemListType = (ItemListType)l.ItemListType,
+                    ItemListRowsCount = l.ItemListRows.Count(),
+                    ItemListItemsCount = l.ItemListRows.Sum(row => row.RequiredQuantity),
+                    CreationDate = l.CreationDate
                 })
-            .ToArray();
+
+             .ToArray();
         }
 
         private IEnumerable<Mission> RetrieveMissions()
@@ -166,7 +176,23 @@ namespace Ferretto.WMS.Data.WebAPI.Models
                .Select(m =>
                    new Mission
                    {
-                       Id = m.Id
+                       Id = m.Id,
+                       BayId = m.BayId,
+                       CellId = m.CellId,
+                       CompartmentId = m.CompartmentId,
+                       Lot = m.Lot,
+                       ItemId = m.ItemId,
+                       ItemListId = m.ItemListId,
+                       ItemListRowId = m.ItemListRowId,
+                       LoadingUnitId = m.LoadingUnitId,
+                       MaterialStatusId = m.MaterialStatusId,
+                       PackageTypeId = m.PackageTypeId,
+                       Quantity = m.RequiredQuantity,
+                       RegistrationNumber = m.RegistrationNumber,
+                       Status = (MissionStatus)m.Status,
+                       Sub1 = m.Sub1,
+                       Sub2 = m.Sub2,
+                       Type = (MissionType)m.Type
                    })
                 .ToArray();
         }

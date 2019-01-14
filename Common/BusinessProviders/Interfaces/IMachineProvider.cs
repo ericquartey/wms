@@ -19,9 +19,9 @@ namespace Ferretto.Common.BusinessProviders
 
         int GetAllVertimagModelMCount();
 
-        IQueryable<Machine> GetAllVertimagModelXS();
+        IQueryable<Machine> GetAllVertimagModelXs();
 
-        int GetAllVertimagModelXSCount();
+        int GetAllVertimagModelXsCount();
 
         #endregion Methods
     }

@@ -7,7 +7,6 @@
     <StartupObject>Ferretto.WMS.Scheduler.WebAPI.Program</StartupObject>
     <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
     <UserSecretsId>fa981bc1-f37c-4ca2-8125-0f503703278a</UserSecretsId>
-    <PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -22,9 +21,6 @@
     <PackageReference Include="NSwag.AspNetCore" Version="11.20.1" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.1.1" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
-    <PackageReference Include="GitVersionTask" Version="4.0.0-beta*">
-      <PrivateAssets>All</PrivateAssets>
-    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

@@ -184,7 +184,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task ExecuteEditCompartmentCommand()
         {
-            var model = await this.compartmentProvider.GetById(this.selectedCompartmentTray.Id);
+            var model = await this.compartmentProvider.GetByIdAsync(this.selectedCompartmentTray.Id);
             model.LoadingUnit = this.loadingUnit;
 
             this.ShowSidePanel(new CompartmentEditViewModel { Model = model });
@@ -220,7 +220,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             if (this.Data is int modelId)
             {
-                this.LoadingUnit = await this.loadingUnitProvider.GetById(modelId);
+                this.LoadingUnit = await this.loadingUnitProvider.GetByIdAsync(modelId);
                 this.InitializeTray();
             }
         }
