@@ -85,10 +85,16 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllCount()
         {
-            var dc = this.dataContext.Current;
-            lock (dc)
+            try
             {
-                return dc.ItemLists.Count();
+                using (var dc = this.dataContext.Current)
+                {
+                    return dc.ItemLists.Count();
+                }
+            }
+            catch
+            {
+                return 0;
             }
         }
 
