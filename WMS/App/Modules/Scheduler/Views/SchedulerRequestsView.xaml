@@ -171,7 +171,7 @@
                         <dxg:GridColumn.CellToolTipTemplate>
                             <DataTemplate>
                                 <wms:CustomBorder x:Name="CustomBorder">
-                                    <Grid MinWidth="400"
+                                    <Grid MinWidth="470"
                                           MaxHeight="350"
                                           Margin="8,0,0,0">
                                         <Grid.RowDefinitions>
@@ -223,9 +223,10 @@
                                                       Content="{Binding Path=AreaDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <wms:InfoText Grid.Row="7"
                                                       Grid.Column="0"
+                                                      Grid.ColumnSpan="2"
                                                       Content="{Binding Path=LoadingUnitTypeDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                                        <ScrollViewer Grid.RowSpan="7"
+                                        <ScrollViewer Grid.RowSpan="8"
                                                       Grid.Column="3"
                                                       Margin="0"
                                                       Focusable="False"

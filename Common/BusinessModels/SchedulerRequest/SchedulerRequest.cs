@@ -34,7 +34,7 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.ItemList), ResourceType = typeof(BusinessObjects))]
         public string ListDescription { get; set; }
 
-        [Display(Name = nameof(Scheduler.ItemListRow), ResourceType = typeof(MasterData))]
+        [Display(Name = nameof(Scheduler.ItemListRow), ResourceType = typeof(Scheduler))]
         public string ListRowDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnit), ResourceType = typeof(BusinessObjects))]
