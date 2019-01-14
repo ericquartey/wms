@@ -28,7 +28,7 @@
         </MultiBinding>
     </wms:WmsView.SubTitle>
 
-    <Grid>
+    <Grid IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
