@@ -38,8 +38,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool loadingUnitHasCompartments;
 
-        private ICommand refreshCommand;
-
         private ICompartment selectedCompartmentTray;
 
         private Tray tray;
@@ -119,10 +117,6 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.loadingUnitHasCompartments;
             set => this.SetProperty(ref this.loadingUnitHasCompartments, value);
         }
-
-        public ICommand RefreshCommand => this.refreshCommand ??
-                                                                                            (this.refreshCommand = new DelegateCommand(
-                this.ExecuteRefreshCommand));
 
         public ICompartment SelectedCompartmentTray
         {
@@ -208,11 +202,6 @@ namespace Ferretto.WMS.Modules.MasterData
             model.LoadingUnit = this.loadingUnit;
 
             this.ShowSidePanel(new CompartmentEditViewModel { Model = model });
-        }
-
-        private void ExecuteRefreshCommand()
-        {
-            this.RefreshData();
         }
 
         private void HideSidePanel()

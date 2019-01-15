@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -36,6 +37,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool readOnlyTray;
 
+        private ICommand refreshCommand;
+
         private CompartmentDetails selectedCompartment;
 
         private Tray tray;
@@ -56,6 +59,8 @@ namespace Ferretto.WMS.Modules.MasterData
         #endregion Constructors
 
         #region Properties
+
+        public bool CanRefresh { get; set; }
 
         public IEnumerable<CompartmentDetails> CompartmentsDataSource
         {
@@ -84,6 +89,10 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.readOnlyTray, value);
         }
 
+        public ICommand RefreshCommand => this.refreshCommand ??
+                 (this.refreshCommand = new DelegateCommand(
+                       this.ExecuteRefreshCommand).ObservesProperty(() => this.CanRefresh));
+
         public CompartmentDetails SelectedCompartment
         {
             get => this.selectedCompartment;
@@ -109,8 +118,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public override void RefreshData()
+        public override async void RefreshData()
         {
+            await this.LoadDataAsync();
             this.CompartmentsDataSource = this.Model != null
                 ? this.compartmentProvider.GetByLoadingUnitId(this.Model.Id).ToList()
                 : null;
@@ -141,6 +151,12 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = false;
         }
 
+        protected override void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            base.Model_PropertyChanged(sender, e);
+            this.CanRefresh = false;
+        }
+
         protected override async void OnAppear()
         {
             await this.LoadDataAsync();
@@ -164,6 +180,11 @@ namespace Ferretto.WMS.Modules.MasterData
         private void ExecuteEditCommand()
         {
             this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.LOADINGUNITEDIT, this.Model.Id);
+        }
+
+        private void ExecuteRefreshCommand()
+        {
+            this.RefreshData();
         }
 
         private void Initialize()
