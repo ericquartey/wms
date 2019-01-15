@@ -1,4 +1,4 @@
 {
-  "Urls": "http://*:8000;https://*:8001",
-  "https_port": 8001
+  "Urls": "http://*:6200;https://*:6201",
+  "https_port": 6201
 }

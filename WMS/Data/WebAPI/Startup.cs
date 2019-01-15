@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+#if DEBUG
 using NSwag.AspNetCore;
+#endif
 
 namespace Ferretto.WMS.Data.WebAPI
 {
@@ -37,7 +39,7 @@ namespace Ferretto.WMS.Data.WebAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
+#if DEBUG
                 app.UseSwaggerUi3WithApiExplorer(settings =>
                 {
                     settings.PostProcess = document =>
@@ -51,6 +53,7 @@ namespace Ferretto.WMS.Data.WebAPI
 
                     settings.GeneratorSettings.DefaultEnumHandling = NJsonSchema.EnumHandling.String;
                 });
+#endif
             }
             else
             {
