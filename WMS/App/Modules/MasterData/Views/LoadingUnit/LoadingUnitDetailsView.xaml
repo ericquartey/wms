@@ -231,6 +231,10 @@
 
                             <wms:WmsGridControl.Columns>
                                 <dxg:GridColumn Width="100*"
+                                                FieldName="ItemCode" />
+                                <dxg:GridColumn Width="100*"
+                                                FieldName="ItemDescription" />
+                                <dxg:GridColumn Width="100*"
                                                 FieldName="Sub1" />
                                 <dxg:GridColumn Width="100*"
                                                 FieldName="Sub2" />
