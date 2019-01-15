@@ -18,6 +18,8 @@
 
         public static readonly DependencyProperty GridProperty = DependencyProperty.Register(nameof(Grid), typeof(object), typeof(WmsTooltipViewAppear));
 
+        public static readonly DependencyProperty TooltipProperty = DependencyProperty.Register(nameof(Tooltip), typeof(string), typeof(WmsTooltipViewAppear));
+
         #endregion Fields
 
         #region Properties
@@ -26,6 +28,12 @@
         {
             get => (WmsGridControl)this.GetValue(GridProperty);
             set => this.SetValue(GridProperty, value);
+        }
+
+        public string Tooltip
+        {
+            get => (string)this.GetValue(TooltipProperty);
+            set => this.SetValue(TooltipProperty, value);
         }
 
         #endregion Properties
@@ -38,7 +46,7 @@
             {
                 var rowHandle = this.Grid.GetSelectedRowHandles().FirstOrDefault();
 
-                var cell = this.Grid.View.GetCellElementByRowHandleAndColumn(rowHandle, this.Grid.Columns["Details"]);
+                var cell = this.Grid.View.GetCellElementByRowHandleAndColumn(rowHandle, this.Grid.Columns[this.Tooltip]);
 
                 if (cell != null)
                 {

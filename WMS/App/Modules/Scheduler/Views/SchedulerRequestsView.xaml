@@ -87,7 +87,8 @@
                                    GlyphSize="Custom">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="ItemClick">
-                            <wms:WmsTooltipViewAppear Grid="{Binding RelativeSource={RelativeSource AncestorType={x:Type Grid}}, Path=Children[1]}" />
+                            <wms:WmsTooltipViewAppear Grid="{Binding RelativeSource={RelativeSource AncestorType={x:Type Grid}}, Path=Children[1]}"
+                                                      Tooltip="Details" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </wms:ActionBarItem>
