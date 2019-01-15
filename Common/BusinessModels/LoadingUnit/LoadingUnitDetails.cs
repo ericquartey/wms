@@ -12,22 +12,39 @@ namespace Ferretto.Common.BusinessModels
         #region Fields
 
         private readonly BindingList<ICompartment> compartments = new BindingList<ICompartment>();
+
         private string abcClassId;
+
         private int aisleId;
+
         private int areaId;
+
         private int cellId;
+
         private int cellPositionId;
+
         private string code;
+
         private int? handlingParametersCorrection;
+
         private int height;
+
         private int inCycleCount;
+
         private bool isCellPairingFixed;
+
         private int length;
+
         private string loadingUnitStatusId;
+
         private int loadingUnitTypeId;
+
         private string note;
+
         private ReferenceType referenceType;
+
         private int weight;
+
         private int width;
 
         #endregion Fields
@@ -240,11 +257,21 @@ namespace Ferretto.Common.BusinessModels
             }
 
             return
-                compartment.XPosition + compartment.Width <= this.Width
-                &&
-                compartment.YPosition + compartment.Height <= this.Length
-                &&
-                !this.compartments.Any(c => HasCollision(c, compartment));
+                (
+                    this.LoadingUnitTypeHasCompartments
+                    &&
+                    compartment.XPosition + compartment.Width <= this.Width
+                    &&
+                    compartment.YPosition + compartment.Height <= this.Length
+                    &&
+                    !this.compartments.Any(c => HasCollision(c, compartment)))
+                ||
+                (
+                    this.LoadingUnitTypeHasCompartments == false
+                    &&
+                    compartment.XPosition.HasValue == false
+                    &&
+                    compartment.YPosition.HasValue == false);
         }
 
         private static bool HasCollision(ICompartment c1, ICompartment c2)

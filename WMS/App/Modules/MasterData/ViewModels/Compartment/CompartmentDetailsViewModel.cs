@@ -192,17 +192,24 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task LoadDataAsync()
         {
-            this.IsBusy = true;
-
-            if (this.Data is int modelId)
+            try
             {
-                var compartment = await this.compartmentProvider.GetByIdAsync(modelId);
-                var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId);
-                this.Model = compartment;
-                this.InitializeTray(loadingUnit);
-            }
+                this.IsBusy = true;
 
-            this.IsBusy = false;
+                if (this.Data is int modelId)
+                {
+                    var compartment = await this.compartmentProvider.GetByIdAsync(modelId);
+                    var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId);
+                    this.Model = compartment;
+                    this.InitializeTray(loadingUnit);
+                }
+
+                this.IsBusy = false;
+            }
+            catch
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
+            }
         }
 
         private void SetSelectedCompartment()

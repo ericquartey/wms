@@ -161,7 +161,10 @@ namespace Ferretto.Common.Controls
         {
             base.OnDispose();
 
-            this.model.PropertyChanged -= this.Model_PropertyChanged;
+            if (this.model != null)
+            {
+                this.model.PropertyChanged -= this.Model_PropertyChanged;
+            }
         }
 
         protected void TakeModelSnapshot()

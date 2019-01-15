@@ -475,6 +475,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to load data..
+        /// </summary>
+        public static string UnableToLoadData {
+            get {
+                return ResourceManager.GetString("UnableToLoadData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to save changes..
         /// </summary>
         public static string UnableToSaveChanges {

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
@@ -239,15 +239,22 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task LoadDataAsync()
         {
-            this.IsBusy = true;
-
             if (this.Data is int modelId)
             {
-                this.Model = await this.itemListProvider.GetByIdAsync(modelId);
-                this.ListHasRows = this.Model.ItemListRowsCount > 0;
-            }
+                try
+                {
+                    this.IsBusy = true;
 
-            this.IsBusy = false;
+                    this.Model = await this.itemListProvider.GetByIdAsync(modelId);
+                    this.ListHasRows = this.Model.ItemListRowsCount > 0;
+
+                    this.IsBusy = false;
+                }
+                catch
+                {
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
+                }
+            }
         }
 
         #endregion Methods
