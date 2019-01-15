@@ -7,12 +7,18 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Scheduler.Core
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Blocker Code Smell",
+        "S4462:Calls to \"async\" methods should not be blocking",
+        Justification = "Blocking task execution inside Select lambda will be refactored within data service")]
     public class Warehouse : IWarehouse
     {
         #region Fields
 
         private readonly IDataProvider dataProvider;
+
         private readonly ILogger<Warehouse> logger;
+
         private readonly ISchedulerRequestProvider schedulerRequestProvider;
 
         #endregion Fields
@@ -33,7 +39,7 @@ namespace Ferretto.WMS.Scheduler.Core
 
         #region Methods
 
-        public async Task<IEnumerable<Mission>> CreateMissionsForPendingRequests()
+        public async Task<IEnumerable<Mission>> CreateMissionsForPendingRequestsAsync()
         {
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -55,7 +61,7 @@ namespace Ferretto.WMS.Scheduler.Core
                     switch (request.Type)
                     {
                         case OperationType.Withdrawal:
-                            missions = await this.DispatchWithdrawalRequest(request);
+                            missions = await this.DispatchWithdrawalRequestAsync(request);
                             break;
 
                         case OperationType.Insertion:
@@ -71,6 +77,7 @@ namespace Ferretto.WMS.Scheduler.Core
                             throw new InvalidOperationException($"Cannot process scheduler request id={request.Id} because operation type cannot be understood.");
                     }
                 }
+
                 scope.Complete();
 
                 return missions;
@@ -111,7 +118,7 @@ namespace Ferretto.WMS.Scheduler.Core
                             Sub2 = row.Sub2
                         };
 
-                        var task = this.schedulerRequestProvider.FullyQualifyWithdrawalRequest(request);
+                        var task = this.schedulerRequestProvider.FullyQualifyWithdrawalRequestAsync(request);
                         task.Wait();
 
                         if (bayId.HasValue)
@@ -133,8 +140,7 @@ namespace Ferretto.WMS.Scheduler.Core
                         this.dataProvider.Update(row);
 
                         return task.Result;
-                    }
-                )
+                    })
                 .Where(r => r != null) // remark: some qualified requests may be null
                 .ToList();
 
@@ -149,7 +155,7 @@ namespace Ferretto.WMS.Scheduler.Core
                 scope.Complete();
             }
 
-            await this.CreateMissionsForPendingRequests();
+            await this.CreateMissionsForPendingRequestsAsync();
 
             return requests;
         }
@@ -164,7 +170,7 @@ namespace Ferretto.WMS.Scheduler.Core
             SchedulerRequest qualifiedRequest = null;
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                qualifiedRequest = await this.schedulerRequestProvider.FullyQualifyWithdrawalRequest(request);
+                qualifiedRequest = await this.schedulerRequestProvider.FullyQualifyWithdrawalRequestAsync(request);
                 if (qualifiedRequest != null)
                 {
                     this.dataProvider.Add(qualifiedRequest);
@@ -174,17 +180,18 @@ namespace Ferretto.WMS.Scheduler.Core
                 }
             }
 
-            await this.CreateMissionsForPendingRequests();
+            await this.CreateMissionsForPendingRequestsAsync();
 
             return qualifiedRequest;
         }
 
-        private async Task<IEnumerable<Mission>> DispatchWithdrawalRequest(SchedulerRequest request)
+        private async Task<IEnumerable<Mission>> DispatchWithdrawalRequestAsync(SchedulerRequest request)
         {
             var item = await this.dataProvider.GetItemByIdAsync(request.ItemId);
 
             var missions = new List<Mission>();
-            while (request.QuantityLeftToDispatch > 0)
+            var availableCompartments = true;
+            while (request.QuantityLeftToDispatch > 0 && availableCompartments)
             {
                 var compartments = this.schedulerRequestProvider.GetCandidateWithdrawalCompartments(request);
 
@@ -195,36 +202,40 @@ namespace Ferretto.WMS.Scheduler.Core
                 if (compartment == null)
                 {
                     this.logger.LogWarning($"Scheduler Request (id={request.Id}): no more compartments can fulfill the request at the moment.");
-                    break;
+                    availableCompartments = false;
                 }
-
-                var quantityToExtractFromCompartment = Math.Min(compartment.Availability, request.QuantityLeftToDispatch);
-                compartment.ReservedForPick += quantityToExtractFromCompartment;
-                request.DispatchedQuantity += quantityToExtractFromCompartment;
-
-                this.dataProvider.Update(compartment);
-                this.dataProvider.Update(request);
-
-                var mission = new Mission
+                else
                 {
-                    ItemId = item.Id,
-                    BayId = request.BayId.Value,
-                    CellId = compartment.CellId,
-                    CompartmentId = compartment.Id,
-                    LoadingUnitId = compartment.LoadingUnitId,
-                    ItemListId = request.ListId,
-                    ItemListRowId = request.ListRowId,
-                    MaterialStatusId = compartment.MaterialStatusId,
-                    Sub1 = compartment.Sub1,
-                    Sub2 = compartment.Sub2,
-                    Quantity = quantityToExtractFromCompartment,
-                    Type = MissionType.Pick
-                };
+                    var quantityToExtractFromCompartment = Math.Min(compartment.Availability, request.QuantityLeftToDispatch);
+                    compartment.ReservedForPick += quantityToExtractFromCompartment;
+                    request.DispatchedQuantity += quantityToExtractFromCompartment;
 
-                this.logger.LogWarning(
-                    $"Scheduler Request (id={request.Id}): generating withdrawal mission (CompartmentId={mission.CompartmentId}, BayId={mission.BayId}, Quantity={mission.Quantity}). A total quantity of {request.QuantityLeftToDispatch} still needs to be dispatched.");
+                    this.dataProvider.Update(compartment);
+                    this.dataProvider.Update(request);
 
-                missions.Add(mission);
+                    var mission = new Mission
+                    {
+                        ItemId = item.Id,
+                        BayId = request.BayId.Value,
+                        CellId = compartment.CellId,
+                        CompartmentId = compartment.Id,
+                        LoadingUnitId = compartment.LoadingUnitId,
+                        ItemListId = request.ListId,
+                        ItemListRowId = request.ListRowId,
+                        MaterialStatusId = compartment.MaterialStatusId,
+                        Sub1 = compartment.Sub1,
+                        Sub2 = compartment.Sub2,
+                        Quantity = quantityToExtractFromCompartment,
+                        Type = MissionType.Pick
+                    };
+
+                    this.logger.LogWarning(
+                        $"Scheduler Request (id={request.Id}): generating withdrawal mission (CompartmentId={mission.CompartmentId}, " +
+                        $"BayId={mission.BayId}, Quantity={mission.Quantity}). " +
+                        $"A total quantity of {request.QuantityLeftToDispatch} still needs to be dispatched.");
+
+                    missions.Add(mission);
+                }
             }
 
             this.dataProvider.AddRange(missions);
@@ -233,7 +244,7 @@ namespace Ferretto.WMS.Scheduler.Core
             return missions;
         }
 
-        private async Task<Bay> GetNextEmptyBay(int areaId, int? bayId)
+        private async Task<Bay> GetNextEmptyBayAsync(int areaId, int? bayId)
         {
             if (bayId.HasValue)
             {

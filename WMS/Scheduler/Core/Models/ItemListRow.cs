@@ -31,11 +31,17 @@ namespace Ferretto.WMS.Scheduler.Core
         public string Sub1 { get; set; }
 
         public string Sub2 { get; set; }
+
         public int DispatchedQuantity { get; set; }
+
         public DateTime LastModificationDate { get; set; }
+
         public DateTime? CompletionDate { get; set; }
+
         public DateTime? LastExecutionDate { get; set; }
+
         public int RequiredQuantity { get; set; }
+
         public ItemListRowStatus ItemListRowStatus { get; set; }
 
         #endregion Properties

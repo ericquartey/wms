@@ -7,7 +7,7 @@ namespace Ferretto.WMS.Scheduler.Core
     {
         #region Methods
 
-        Task<SchedulerRequest> FullyQualifyWithdrawalRequest(SchedulerRequest schedulerRequest);
+        Task<SchedulerRequest> FullyQualifyWithdrawalRequestAsync(SchedulerRequest schedulerRequest);
 
         IQueryable<Compartment> GetCandidateWithdrawalCompartments(SchedulerRequest schedulerRequest);
 

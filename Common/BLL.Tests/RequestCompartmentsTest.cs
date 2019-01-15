@@ -68,7 +68,7 @@ namespace Ferretto.Common.BLL.Tests
                     Type = OperationType.Withdrawal
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
 
                 #endregion Act
 
@@ -146,7 +146,7 @@ namespace Ferretto.Common.BLL.Tests
                     Type = OperationType.Withdrawal
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
 
                 #endregion Act
 
@@ -203,7 +203,7 @@ namespace Ferretto.Common.BLL.Tests
                     Type = OperationType.Withdrawal
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
 
                 #endregion Act
 
@@ -263,7 +263,7 @@ namespace Ferretto.Common.BLL.Tests
                     Type = OperationType.Withdrawal
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
 
                 #endregion Act
 
@@ -366,7 +366,7 @@ namespace Ferretto.Common.BLL.Tests
                     Type = OperationType.Withdrawal
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
 
                 #endregion Act
 
@@ -422,7 +422,7 @@ namespace Ferretto.Common.BLL.Tests
                     Type = OperationType.Withdrawal
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
 
                 #endregion Act
 
@@ -490,7 +490,7 @@ namespace Ferretto.Common.BLL.Tests
                     Type = OperationType.Withdrawal
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
 
                 #endregion Act
 
@@ -568,7 +568,7 @@ namespace Ferretto.Common.BLL.Tests
                     Type = OperationType.Withdrawal
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
 
                 #endregion Act
 
@@ -669,7 +669,7 @@ namespace Ferretto.Common.BLL.Tests
                     Type = OperationType.Withdrawal
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
 
                 #endregion Act
 
@@ -759,7 +759,7 @@ namespace Ferretto.Common.BLL.Tests
                     Type = OperationType.Withdrawal
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
 
                 #endregion Act
 
@@ -846,7 +846,7 @@ namespace Ferretto.Common.BLL.Tests
                     Type = OperationType.Withdrawal
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
 
                 #endregion Act
 

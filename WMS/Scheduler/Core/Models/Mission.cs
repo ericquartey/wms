@@ -33,7 +33,7 @@ namespace Ferretto.WMS.Scheduler.Core
         public int Quantity
         {
             get => this.quantity;
-            set => this.SetIfStrictlyPositive(ref this.quantity, value);
+            set => SetIfStrictlyPositive(ref this.quantity, value);
         }
 
         public string RegistrationNumber { get; set; }

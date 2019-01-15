@@ -1,4 +1,6 @@
-﻿namespace Ferretto.WMS.Scheduler.Core
+﻿using System;
+
+namespace Ferretto.WMS.Scheduler.Core
 {
     public class SchedulerRequest : BusinessObject
     {
@@ -17,6 +19,11 @@
 
         public SchedulerRequest(SchedulerRequest request)
         {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
             this.AreaId = request.AreaId;
             this.BayId = request.BayId;
             this.IsInstant = request.IsInstant;
@@ -88,7 +95,7 @@
         public int RequestedQuantity
         {
             get => this.requestedQuantity;
-            set => this.SetIfStrictlyPositive(ref this.requestedQuantity, value);
+            set => SetIfStrictlyPositive(ref this.requestedQuantity, value);
         }
 
         public string Sub1 { get; set; }
