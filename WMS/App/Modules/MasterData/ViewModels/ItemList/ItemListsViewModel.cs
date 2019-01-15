@@ -11,6 +11,9 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private ICommand listExecuteCommand;
+
+        private ICommand refreshCommand;
+
         private ICommand showDetailsCommand;
 
         #endregion Fields
@@ -22,6 +25,10 @@ namespace Ferretto.WMS.Modules.MasterData
                            this.ExecuteListCommand,
                            this.CanExecuteListCommand)
             .ObservesProperty(() => this.CurrentItem));
+
+        public ICommand RefreshCommand => this.refreshCommand ??
+                    (this.refreshCommand = new DelegateCommand(
+                this.ExecuteRefreshCommand));
 
         public ICommand ShowDetailsCommand => this.showDetailsCommand ??
                           (this.showDetailsCommand = new DelegateCommand(this.ExecuteShowDetailsCommand, this.CanShowDetailsCommand)
@@ -61,6 +68,11 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     Id = this.CurrentItem.Id
                 });
+        }
+
+        private void ExecuteRefreshCommand()
+        {
+            this.RefreshData();
         }
 
         private void ExecuteShowDetailsCommand()

@@ -10,12 +10,19 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
+        private ICommand refreshCommand;
+
         private ICommand showDetailsCommand;
+
         private ICommand withdrawCommand;
 
         #endregion Fields
 
         #region Properties
+
+        public ICommand RefreshCommand => this.refreshCommand ??
+                    (this.refreshCommand = new DelegateCommand(
+                this.ExecuteRefreshCommand));
 
         public ICommand ShowDetailsCommand => this.showDetailsCommand ??
                          (this.showDetailsCommand = new DelegateCommand(this.ExecuteShowDetailsCommand, this.CanShowDetailsCommand)
@@ -38,6 +45,11 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool CanShowDetailsCommand()
         {
             return this.CurrentItem != null;
+        }
+
+        private void ExecuteRefreshCommand()
+        {
+            this.RefreshData();
         }
 
         private void ExecuteShowDetailsCommand()
