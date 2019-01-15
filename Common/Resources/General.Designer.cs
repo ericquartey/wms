@@ -79,6 +79,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to [{0}].
+        /// </summary>
+        public static string AdditionalInfo {
+            get {
+                return ResourceManager.GetString("AdditionalInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
         public static string Back {

@@ -245,7 +245,7 @@ namespace Ferretto.Common.BusinessModels
                     }
                     else
                     {
-                        throw new Exception(Errors.BulkAddNoPossible);
+                        throw new InvalidOperationException(Errors.BulkAddNoPossible);
                     }
                 }
             }

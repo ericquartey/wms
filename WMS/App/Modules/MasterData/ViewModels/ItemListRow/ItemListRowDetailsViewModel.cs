@@ -49,8 +49,9 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand ListRowExecuteCommand => this.listRowExecuteCommand ??
-                                   (this.listRowExecuteCommand = new DelegateCommand(this.ExecuteListRowCommand,
-                       this.CanExecuteListRowCommand));
+                                   (this.listRowExecuteCommand = new DelegateCommand(
+                                        this.ExecuteListRowCommand,
+                                        this.CanExecuteListRowCommand));
 
         #endregion Properties
 
@@ -65,7 +66,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async Task ExecuteRevertCommand()
         {
-            await this.LoadData();
+            await this.LoadDataAsync();
         }
 
         protected override async Task ExecuteSaveCommand()
@@ -90,8 +91,17 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async void OnAppear()
         {
-            await this.LoadData();
+            await this.LoadDataAsync();
             base.OnAppear();
+        }
+
+        protected override void OnDispose()
+        {
+            this.EventService.Unsubscribe<RefreshModelsPubSubEvent<ItemListRow>>(this.modelRefreshSubscription);
+            this.EventService.Unsubscribe<ModelChangedPubSubEvent<ItemListRow>>(this.modelChangedEventSubscription);
+            this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<ItemListRow>>(
+                this.modelSelectionChangedSubscription);
+            base.OnDispose();
         }
 
         private bool CanExecuteListRowCommand()
@@ -109,17 +119,18 @@ namespace Ferretto.WMS.Modules.MasterData
                 new
                 {
                     Id = this.Model.Id
-                }
-            );
+                });
             this.IsBusy = false;
         }
 
-        private async void Initialize()
+        private void Initialize()
         {
-            await this.LoadData();
-
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<ItemListRow>>(async eventArgs => { await this.LoadData(); }, this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<ItemListRow>>(async eventArgs => { await this.LoadData(); });
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<ItemListRow>>(
+                async eventArgs => { await this.LoadDataAsync(); },
+                this.Token,
+                true,
+                true);
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<ItemListRow>>(async eventArgs => { await this.LoadDataAsync(); });
             this.modelSelectionChangedSubscription =
                 this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<ItemListRow>>(
                     async eventArgs =>
@@ -127,7 +138,7 @@ namespace Ferretto.WMS.Modules.MasterData
                         if (eventArgs.ModelId.HasValue)
                         {
                             this.Data = eventArgs.ModelId.Value;
-                            await this.LoadData();
+                            await this.LoadDataAsync();
                         }
                         else
                         {
@@ -139,15 +150,26 @@ namespace Ferretto.WMS.Modules.MasterData
                     true);
         }
 
-        private async Task LoadData()
+        private async Task LoadDataAsync()
         {
             if (this.Data is int modelId)
             {
-                this.Model = await this.itemListRowProvider.GetByIdAsync(modelId);
+                try
+                {
+                    this.IsBusy = true;
 
-                this.ItemsDataSource = this.Model != null
-                ? new DataSource<Item>(() => this.itemProvider.GetAll())
-                : null;
+                    this.Model = await this.itemListRowProvider.GetByIdAsync(modelId);
+
+                    this.ItemsDataSource = this.Model != null
+                    ? new DataSource<Item>(() => this.itemProvider.GetAll())
+                    : null;
+
+                    this.IsBusy = false;
+                }
+                catch
+                {
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
+                }
             }
         }
 

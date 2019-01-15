@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
@@ -22,6 +22,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ICommand listExecuteCommand;
 
+        private bool listHasRows;
+
         private ICommand listRowExecuteCommand;
 
         private object modelChangedEventSubscription;
@@ -33,7 +35,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private ItemListRow selectedItemListRow;
 
         private ICommand showDetailsListRowCommand;
-        private bool listHasRows;
 
         #endregion Fields
 
@@ -48,13 +49,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public bool ListHasRows {
-            get => this.listHasRows;
-            set => this.SetProperty(ref this.listHasRows, value); }
-
         public ICommand AddListRowCommand => this.addListRowCommand ??
-                                   (this.addListRowCommand = new DelegateCommand(this.ExecuteAddListRowCommand,
-                       this.CanExecuteAddListRowCommand));
+                                   (this.addListRowCommand = new DelegateCommand(
+                                        this.ExecuteAddListRowCommand,
+                                        this.CanExecuteAddListRowCommand));
 
         public IEnumerable<ItemListRow> ItemListRowDataSource
         {
@@ -63,12 +61,20 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand ListExecuteCommand => this.listExecuteCommand ??
-                                   (this.listExecuteCommand = new DelegateCommand(this.ExecuteListCommand,
-                       this.CanExecuteListCommand));
+                                   (this.listExecuteCommand = new DelegateCommand(
+                                        this.ExecuteListCommand,
+                                        this.CanExecuteListCommand));
+
+        public bool ListHasRows
+        {
+            get => this.listHasRows;
+            set => this.SetProperty(ref this.listHasRows, value);
+        }
 
         public ICommand ListRowExecuteCommand => this.listRowExecuteCommand ??
-                                   (this.listRowExecuteCommand = new DelegateCommand(this.ExecuteListRowCommand,
-                       this.CanExecuteListRowCommand).ObservesProperty(() => this.SelectedItemListRow));
+                                   (this.listRowExecuteCommand = new DelegateCommand(
+                                        this.ExecuteListRowCommand,
+                                        this.CanExecuteListRowCommand).ObservesProperty(() => this.SelectedItemListRow));
 
         public ItemListRow SelectedItemListRow
         {
@@ -77,12 +83,19 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand ShowDetailsListRowCommand => this.showDetailsListRowCommand ??
-                  (this.showDetailsListRowCommand = new DelegateCommand(this.ExecuteShowDetailsListRowCommand,
+                  (this.showDetailsListRowCommand = new DelegateCommand(
+                       this.ExecuteShowDetailsListRowCommand,
                        this.CanExecuteShowDetailsListRowCommand).ObservesProperty(() => this.SelectedItemListRow));
 
         #endregion Properties
 
         #region Methods
+
+        public override void RefreshData()
+        {
+            // TODO: implement method
+        }
+
         protected override void EvaluateCanExecuteCommands()
         {
             base.EvaluateCanExecuteCommands();
@@ -92,14 +105,9 @@ namespace Ferretto.WMS.Modules.MasterData
             ((DelegateCommand)this.AddListRowCommand)?.RaiseCanExecuteChanged();
         }
 
-        public override void RefreshData()
-        {
-            // TODO: implement method
-        }
-
         protected override async Task ExecuteRevertCommand()
         {
-            await this.LoadData();
+            await this.LoadDataAsync();
         }
 
         protected override async Task ExecuteSaveCommand()
@@ -125,7 +133,17 @@ namespace Ferretto.WMS.Modules.MasterData
         protected override async void OnAppear()
         {
             base.OnAppear();
-            await this.LoadData();
+
+            await this.LoadDataAsync();
+        }
+
+        protected override void OnDispose()
+        {
+            this.EventService.Unsubscribe<RefreshModelsPubSubEvent<ItemList>>(this.modelRefreshSubscription);
+            this.EventService.Unsubscribe<ModelChangedPubSubEvent<ItemList>>(this.modelChangedEventSubscription);
+            this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<ItemList>>(
+                this.modelSelectionChangedSubscription);
+            base.OnDispose();
         }
 
         private bool CanExecuteAddListRowCommand()
@@ -152,8 +170,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.IsBusy = true;
 
-            //TODO
-
+            // TODO
             this.IsBusy = false;
         }
 
@@ -167,8 +184,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 new
                 {
                     Id = this.Model.Id
-                }
-            );
+                });
 
             this.IsBusy = false;
         }
@@ -183,8 +199,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 new
                 {
                     Id = this.SelectedItemListRow.Id
-                }
-            );
+                });
 
             this.IsBusy = false;
         }
@@ -194,12 +209,15 @@ namespace Ferretto.WMS.Modules.MasterData
             this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.ITEMLISTROWDETAILS, this.SelectedItemListRow.Id);
         }
 
-        private async void Initialize()
+        private void Initialize()
         {
-            await this.LoadData();
-
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<ItemList>>(async eventArgs => { await this.LoadData(); }, this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<ItemList>>(async eventArgs => { await this.LoadData(); });
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<ItemList>>(
+                async eventArgs => { await this.LoadDataAsync(); },
+                this.Token,
+                true,
+                true);
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<ItemList>>(
+                async eventArgs => { await this.LoadDataAsync(); });
             this.modelSelectionChangedSubscription =
                 this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<ItemList>>(
                     async eventArgs =>
@@ -207,7 +225,7 @@ namespace Ferretto.WMS.Modules.MasterData
                         if (eventArgs.ModelId.HasValue)
                         {
                             this.Data = eventArgs.ModelId.Value;
-                            await this.LoadData();
+                            await this.LoadDataAsync();
                         }
                         else
                         {
@@ -219,17 +237,24 @@ namespace Ferretto.WMS.Modules.MasterData
                     true);
         }
 
-        private async Task LoadData()
+        private async Task LoadDataAsync()
         {
-            this.IsBusy = true;
-
-            if ((this.Data is int modelId))
+            if (this.Data is int modelId)
             {
-                this.Model = await this.itemListProvider.GetByIdAsync(modelId);
-                this.ListHasRows = this.Model.ItemListRowsCount > 0;
-            }
+                try
+                {
+                    this.IsBusy = true;
 
-            this.IsBusy = false;
+                    this.Model = await this.itemListProvider.GetByIdAsync(modelId);
+                    this.ListHasRows = this.Model.ItemListRowsCount > 0;
+
+                    this.IsBusy = false;
+                }
+                catch
+                {
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
+                }
+            }
         }
 
         #endregion Methods

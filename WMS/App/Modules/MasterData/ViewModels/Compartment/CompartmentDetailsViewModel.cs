@@ -103,7 +103,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async Task ExecuteRevertCommand()
         {
-            await this.LoadData();
+            await this.LoadDataAsync();
         }
 
         protected override async Task ExecuteSaveCommand()
@@ -129,7 +129,7 @@ namespace Ferretto.WMS.Modules.MasterData
         protected override async void OnAppear()
         {
             base.OnAppear();
-            await this.LoadData();
+            await this.LoadDataAsync();
         }
 
         protected override void OnDispose()
@@ -143,10 +143,10 @@ namespace Ferretto.WMS.Modules.MasterData
         private void Initialize()
         {
             this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<Compartment>>(
-                async eventArgs => { await this.LoadData(); }, this.Token, true, true);
+                async eventArgs => { await this.LoadDataAsync(); }, this.Token, true, true);
 
             this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<Compartment>>(
-                async eventArgs => { await this.LoadData(); });
+                async eventArgs => { await this.LoadDataAsync(); });
 
             this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<Compartment>>(
                 async eventArgs =>
@@ -154,7 +154,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     if (eventArgs.ModelId.HasValue)
                     {
                         this.Data = eventArgs.ModelId.Value;
-                        await this.LoadData();
+                        await this.LoadDataAsync();
                     }
                     else
                     {
@@ -190,19 +190,26 @@ namespace Ferretto.WMS.Modules.MasterData
             this.RaisePropertyChanged(nameof(this.IsCompartmentSelectableTray));
         }
 
-        private async Task LoadData()
+        private async Task LoadDataAsync()
         {
-            this.IsBusy = true;
-
-            if (this.Data is int modelId)
+            try
             {
-                var compartment = await this.compartmentProvider.GetByIdAsync(modelId);
-                var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId);
-                this.Model = compartment;
-                this.InitializeTray(loadingUnit);
-            }
+                this.IsBusy = true;
 
-            this.IsBusy = false;
+                if (this.Data is int modelId)
+                {
+                    var compartment = await this.compartmentProvider.GetByIdAsync(modelId);
+                    var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId);
+                    this.Model = compartment;
+                    this.InitializeTray(loadingUnit);
+                }
+
+                this.IsBusy = false;
+            }
+            catch
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
+            }
         }
 
         private void SetSelectedCompartment()

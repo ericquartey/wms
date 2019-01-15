@@ -56,11 +56,13 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     return default(LoadingUnitDetails);
                 }
+
                 if ((this.selectedLoadingUnit is DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread) == false)
                 {
                     return default(LoadingUnitDetails);
                 }
-                return (LoadingUnitDetails)(((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedLoadingUnit).OriginalRow);
+
+                return (LoadingUnitDetails)((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedLoadingUnit).OriginalRow;
             }
         }
 
@@ -93,7 +95,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async Task ExecuteRevertCommand()
         {
-            await this.LoadData();
+            await this.LoadDataAsync();
         }
 
         protected override async Task ExecuteSaveCommand()
@@ -118,7 +120,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async void OnAppear()
         {
-            await this.LoadData();
+            await this.LoadDataAsync();
             base.OnAppear();
         }
 
@@ -132,15 +134,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<Cell>>(async eventArgs => { await this.LoadData(); }, this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<Cell>>(async eventArgs => { await this.LoadData(); });
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<Cell>>(async eventArgs => { await this.LoadDataAsync(); }, this.Token, true, true);
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<Cell>>(async eventArgs => { await this.LoadDataAsync(); });
             this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<Cell>>(
                 async eventArgs =>
                 {
                     if (eventArgs.ModelId.HasValue)
                     {
                         this.Data = eventArgs.ModelId.Value;
-                        await this.LoadData();
+                        await this.LoadDataAsync();
                     }
                     else
                     {
@@ -152,17 +154,24 @@ namespace Ferretto.WMS.Modules.MasterData
                 true);
         }
 
-        private async Task LoadData()
+        private async Task LoadDataAsync()
         {
-            this.IsBusy = true;
-
-            if (this.Data is int modelId)
+            try
             {
-                this.Model = await this.cellProvider.GetByIdAsync(modelId);
-                this.CellHasLoadingUnits = this.cellProvider.HasAnyLoadingUnits(modelId);
-            }
+                this.IsBusy = true;
 
-            this.IsBusy = false;
+                if (this.Data is int modelId)
+                {
+                    this.Model = await this.cellProvider.GetByIdAsync(modelId);
+                    this.CellHasLoadingUnits = this.cellProvider.HasAnyLoadingUnits(modelId);
+                }
+
+                this.IsBusy = false;
+            }
+            catch
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
+            }
         }
 
         #endregion Methods

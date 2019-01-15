@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
@@ -65,7 +66,9 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand RunListExecuteCommand => this.runListExecuteCommand ??
-                            (this.runListExecuteCommand = new DelegateCommand(this.ExecuteListCommand, this.CanExecuteListCommand));
+                            (this.runListExecuteCommand = new DelegateCommand(
+                                 async () => await this.ExecuteListCommandAsync(),
+                                 this.CanExecuteListCommand));
 
         public string ValidationError
         {
@@ -95,15 +98,15 @@ namespace Ferretto.WMS.Modules.MasterData
             return string.IsNullOrEmpty(this.executionRequest.Error);
         }
 
-        private async void ExecuteListCommand()
+        private async Task ExecuteListCommandAsync()
         {
-            Debug.Assert(this.executionRequest.AreaId.HasValue);
+            Debug.Assert(this.executionRequest.AreaId.HasValue, "The parameter must always have a value.");
 
             this.IsBusy = true;
             OperationResult result = null;
             if (!this.executionRequest.Schedule)
             {
-                Debug.Assert(this.executionRequest.BayId.HasValue);
+                Debug.Assert(this.executionRequest.BayId.HasValue, "The parameter must always have a value.");
 
                 result = await this.itemListProvider.ExecuteImmediatelyAsync(this.executionRequest.ItemListDetails.Id, this.executionRequest.AreaId.Value, this.executionRequest.BayId.Value);
             }

@@ -14,7 +14,8 @@
              mc:Ignorable="d">
 
     <Grid HorizontalAlignment="Stretch"
-          VerticalAlignment="Stretch">
+          VerticalAlignment="Stretch"
+          IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

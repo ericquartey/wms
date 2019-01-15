@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI
 {
-    public class Program
+    public static class Program
     {
         #region Fields
 
@@ -56,8 +56,8 @@ namespace Ferretto.WMS.Data.WebAPI
                            .UseConfiguration(config)
                            .Build();
 
-                var logger = host.Services.GetService(typeof(ILogger<Program>)) as ILogger<Program>;
-                logger.LogInformation($"Starting WMS Data (as service: {isService}) ...");
+                var logger = host.Services.GetService(typeof(ILogger<Startup>)) as ILogger<Startup>;
+                logger.LogInformation($"Starting WMS Data service.");
 
                 if (isService)
                 {
@@ -68,12 +68,12 @@ namespace Ferretto.WMS.Data.WebAPI
                     host.Run();
                 }
 
-                logger.LogInformation($"WMS Data shutting down.");
+                logger.LogInformation($"WMS Data service stopped.");
             }
             catch (Exception ex)
             {
-                var logger = host?.Services.GetService(typeof(ILogger<Program>)) as ILogger<Program>;
-                logger?.LogError(ex, $"Unhandled exception");
+                var logger = host?.Services.GetService(typeof(ILogger<Startup>)) as ILogger<Startup>;
+                logger?.LogError(ex, $"Service terminated due to unhandled exception.");
             }
         }
 

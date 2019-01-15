@@ -14,11 +14,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     {
         #region Fields
 
-        private const string DEFAULT_ORDERBY_FIELD = nameof(Models.Item.Code);
-
         private readonly ILogger logger;
-
-        private readonly IServiceProvider serviceProvider;
 
         private readonly Models.IWarehouse warehouse;
 
@@ -27,11 +23,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Constructors
 
         public ItemsController(
-            IServiceProvider serviceProvider,
             ILogger<ItemsController> logger,
             Models.IWarehouse warehouse)
         {
-            this.serviceProvider = serviceProvider;
             this.logger = logger;
             this.warehouse = warehouse;
         }
@@ -128,8 +122,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return (Expression<Func<T, bool>>)Expression.Lambda(lambdaBody, lambdaInParameter);
         }
 
-        private IQueryable<T> ApplyTransform<T>(int skip, int take, string orderBy, Expression<Func<T, bool>> where,
-                    Expression<Func<T, bool>> searchFunction, IQueryable<T> entities)
+        private IQueryable<T> ApplyTransform<T>(
+            int skip,
+            int take,
+            string orderBy,
+            Expression<Func<T, bool>> where,
+            Expression<Func<T, bool>> searchFunction,
+            IQueryable<T> entities)
         {
             // TODO: if skip or take, then orderby should be defined (throw exception)
             var filteredItems = entities;

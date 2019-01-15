@@ -137,9 +137,9 @@ namespace Ferretto.Common.Controls
         protected virtual bool CanExecuteSaveCommand()
         {
             return this.Model != null
-                && this.changeDetector.IsModified == true
-                && (this.isValidationEnabled == false || string.IsNullOrWhiteSpace(this.Model.Error))
-                && this.IsBusy == false;
+                && this.changeDetector.IsModified
+                && (!this.isValidationEnabled || string.IsNullOrWhiteSpace(this.Model.Error))
+                && !this.IsBusy;
         }
 
         protected virtual void EvaluateCanExecuteCommands()
@@ -161,7 +161,10 @@ namespace Ferretto.Common.Controls
         {
             base.OnDispose();
 
-            this.model.PropertyChanged -= this.Model_PropertyChanged;
+            if (this.model != null)
+            {
+                this.model.PropertyChanged -= this.Model_PropertyChanged;
+            }
         }
 
         protected void TakeModelSnapshot()

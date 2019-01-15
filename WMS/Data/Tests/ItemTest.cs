@@ -28,9 +28,9 @@ namespace Ferretto.WMS.Data.Tests
             {
                 AbcClasses = new List<AbcClass>
                 {
-                    new AbcClass { Id = "A", Description = "A Class"},
-                    new AbcClass { Id = "B", Description = "B Class"},
-                    new AbcClass { Id = "C", Description = "C Class"}
+                    new AbcClass { Id = "A", Description = "A Class" },
+                    new AbcClass { Id = "B", Description = "B Class" },
+                    new AbcClass { Id = "C", Description = "C Class" }
                 },
                 AbcClassId = "C"
             };
@@ -61,9 +61,9 @@ namespace Ferretto.WMS.Data.Tests
             {
                 ItemCategories = new List<ItemCategory>
                 {
-                    new ItemCategory { Id = 1, Description = "Category 1"},
-                    new ItemCategory { Id = 2, Description = "Category 2"},
-                    new ItemCategory { Id = 3, Description = "Category 3"}
+                    new ItemCategory { Id = 1, Description = "Category 1" },
+                    new ItemCategory { Id = 2, Description = "Category 2" },
+                    new ItemCategory { Id = 3, Description = "Category 3" }
                 },
                 ItemCategoryId = 3
             };

@@ -15,8 +15,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ILogger logger;
 
-        private readonly IServiceProvider serviceProvider;
-
         private readonly IWarehouse warehouse;
 
         #endregion Fields
@@ -24,12 +22,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Constructors
 
         public MissionsController(
-            IServiceProvider serviceProvider,
             ILogger<ItemsController> logger,
             Models.IWarehouse warehouse)
         {
             this.logger = logger;
-            this.serviceProvider = serviceProvider;
             this.warehouse = warehouse;
         }
 

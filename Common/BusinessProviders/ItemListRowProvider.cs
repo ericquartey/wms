@@ -66,6 +66,8 @@ namespace Ferretto.Common.BusinessProviders
         {
             var itemListRowDetails = await this.dataContextService.Current.ItemListRows
                 .Include(lr => lr.ItemList)
+                .Include(lr => lr.Item)
+                .ThenInclude(i => i.MeasureUnit)
                 .Where(lr => lr.Id == id)
                 .Select(lr => new ItemListRowDetails
                 {
@@ -90,7 +92,8 @@ namespace Ferretto.Common.BusinessProviders
                     Sub1 = lr.Sub1,
                     Sub2 = lr.Sub2,
                     PackageTypeId = lr.PackageTypeId,
-                    MaterialStatusId = lr.MaterialStatusId
+                    MaterialStatusId = lr.MaterialStatusId,
+                    ItemUnitMeasure = lr.Item.MeasureUnit.Description
                 }).SingleAsync();
 
             itemListRowDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
@@ -104,6 +107,7 @@ namespace Ferretto.Common.BusinessProviders
             var itemListRows = this.dataContextService.Current.ItemListRows
                 .Include(l => l.MaterialStatus)
                 .Include(l => l.Item)
+                .ThenInclude(i => i.MeasureUnit)
                 .Where(l => l.ItemListId == id)
                 .Select(l => new ItemListRow
                 {
@@ -115,7 +119,8 @@ namespace Ferretto.Common.BusinessProviders
                     DispatchedQuantity = l.DispatchedQuantity,
                     ItemListRowStatus = (ItemListRowStatus)l.Status,
                     MaterialStatusDescription = l.MaterialStatus.Description,
-                    CreationDate = l.CreationDate
+                    CreationDate = l.CreationDate,
+                    ItemUnitMeasure = l.Item.MeasureUnit.Description
                 }).AsNoTracking();
 
             return itemListRows;
