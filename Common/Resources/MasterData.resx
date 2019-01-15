@@ -494,4 +494,7 @@
   <data name="Compartment" xml:space="preserve">
     <value>Compartment</value>
   </data>
+  <data name="QuantityWithUnitMeasure" xml:space="preserve">
+    <value>{0} [{1}]</value>
+  </data>
 </root>
