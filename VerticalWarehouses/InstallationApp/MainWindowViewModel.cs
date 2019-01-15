@@ -274,7 +274,7 @@ namespace Ferretto.VW.InstallationApp
             NavigationService.GoToViewEventHandler += () => this.ExitViewButtonRegionCurrentViewModel = (MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>();
             NavigationService.GoToViewEventHandler += () => ((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).InitializeBottomButtons();
             NavigationService.ExitViewEventHandler += () => this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.Container.Resolve<IMainWindowNavigationButtonsViewModel>();
-            NavigationService.ExitViewEventHandler += () => this.IsExitViewButtonRegionExpanded = false;
+            NavigationService.ExitViewEventHandler += () => this.ExitViewButtonRegionCurrentViewModel = null;
             NavigationService.ExitViewEventHandler += () => ((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).FinalizeBottomButtons();
             MainWindow.FinishedMachineModeChangeStateEventHandler += () => { this.MachineModeSelectionBool = !this.MachineModeSelectionBool; };
             MainWindow.FinishedMachineOnMarchChangeStateEventHandler += () => { this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool; };

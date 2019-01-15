@@ -43,14 +43,14 @@
                    Text="{Binding SerialNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <custom:CustomInputFieldControlFocusable Grid.Row="1"
                                                  Width="200"
-                                                 Margin="50,280,0,283"
+                                                 Margin="55,162,0,401"
                                                  HorizontalAlignment="Left"
                                                  InputText="{Binding UserLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                  LabelText="{x:Static res:VWApp.UserLogin}"
                                                  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
         <custom:CustomInputFieldControlFocusable Grid.Row="1"
                                                  Width="200"
-                                                 Margin="50,220,0,348"
+                                                 Margin="50,243,0,325"
                                                  HorizontalAlignment="Left"
                                                  InputText="{Binding PasswordLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:VWApp.PasswordLogin}"

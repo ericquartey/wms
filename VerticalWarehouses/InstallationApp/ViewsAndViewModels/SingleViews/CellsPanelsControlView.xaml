@@ -6,99 +6,53 @@
              xmlns:local="clr-namespace:Ferretto.VW.InstallationApp"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:prism="http://prismlibrary.com/"
-             xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
-             Width="1024"
-             Height="620"
+             xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"             
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="80" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="120" />
-            <RowDefinition Height="490" />
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Column="1"
+    <Grid Width="1024"
+             Height="608">
+        <TextBlock
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.PanelsControl}" />
-        <Grid Grid.Row="1"
-              Grid.Column="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="auto" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <custom:CustomLabelTextBlockControl Grid.Row="2"
-                                                Margin="0,0,100,0"
+                   Text="{x:Static res:InstallationApp.PanelsControl}" Margin="160,10,0,562" />
+        <custom:CustomLabelTextBlockControl Margin="645,70,139,468"
                                                 ContentText="{Binding TotalPanels, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 LabelText="{x:Static res:InstallationApp.TotalPanels}" />
-            <custom:CustomLabelTextBlockControl Grid.Row="3"
-                                                Margin="0,0,100,0"
+        <custom:CustomLabelTextBlockControl Margin="160,75,624,463"
                                                 ContentText="{Binding CurrentPanel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 LabelText="{x:Static res:InstallationApp.CurrentPanel}" />
-            <custom:CustomLabelTextBlockControl Grid.Row="2"
-                                                Grid.Column="2"
-                                                ContentText="{Binding CurrentCell, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.CurrentCell}" />
-            <custom:CustomLabelTextBlockControl Grid.Row="3"
-                                                Grid.Column="2"
-                                                ContentText="{Binding CellHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.CellHeight}" />
-            <custom:CustomLabelTextBlockControl Grid.Row="6"
-                                                Margin="0,0,100,0"
+        <custom:CustomLabelTextBlockControl ContentText="{Binding CurrentCell, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                LabelText="{x:Static res:InstallationApp.CurrentCell}" Margin="160,485,624,53" />
+        <custom:CustomLabelTextBlockControl ContentText="{Binding CellHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                LabelText="{x:Static res:InstallationApp.CellHeight}" Margin="160,395,624,143" />
+        <custom:CustomLabelTextBlockControl Margin="160,310,624,228"
                                                 ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
-            <custom:CustomInputFieldControlFocusable Grid.Row="5"
-                                                     Margin="0,0,100,0"
+        <custom:CustomInputFieldControlFocusable Margin="160,220,624,318"
                                                      InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                      LabelText="{x:Static res:InstallationApp.StepValue}" />
-            <custom:CustomLabelTextBlockControl Grid.Row="7"
-                                                Margin="0,0,100,0"
+        <custom:CustomLabelTextBlockControl Margin="160,145,624,393"
                                                 ContentText="{Binding PanelCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 LabelText="{x:Static res:InstallationApp.PanelCorrection}" />
-            <Button Grid.Row="4"
-                    Margin="0,3"
+        <Button Margin="645,145,0,393"
                     HorizontalAlignment="Left"
                     Content="{x:Static res:General.Next}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-            <Button Grid.Row="4"
-                    Grid.Column="2"
-                    Margin="0,3"
+        <Button Margin="645,220,0,318"
                     HorizontalAlignment="Left"
                     Content="{x:Static res:InstallationApp.SetPosition}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-            <Button Grid.Row="5"
-                    Grid.Column="2"
-                    Margin="0,3"
+        <Button Margin="645,310,0,228"
                     HorizontalAlignment="Left"
                     Content="{x:Static res:InstallationApp.StepUp}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-            <Button Grid.Row="6"
-                    Grid.Column="2"
-                    Margin="0,3"
+        <Button Margin="645,400,0,143"
                     HorizontalAlignment="Left"
                     Content="{x:Static res:InstallationApp.StepDown}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-            <Button Grid.Row="7"
-                    Grid.Column="2"
-                    Margin="0,3"
+        <Button Margin="645,485,0,53"
                     HorizontalAlignment="Left"
                     Content="{x:Static res:InstallationApp.Correct}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        </Grid>
     </Grid>
 </UserControl>
