@@ -8,13 +8,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ListsController : ControllerBase
+    public class ItemListsController : ControllerBase
     {
         #region Fields
 
         private readonly ILogger logger;
-
-        private readonly IServiceProvider serviceProvider;
 
         private readonly Models.IWarehouse warehouse;
 
@@ -22,13 +20,12 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Constructors
 
-        public ListsController(
+        public ItemListsController(
             IServiceProvider serviceProvider,
-            ILogger<ListsController> logger,
+            ILogger<ItemListsController> logger,
             Models.IWarehouse warehouse)
         {
             this.logger = logger;
-            this.serviceProvider = serviceProvider;
             this.warehouse = warehouse;
         }
 

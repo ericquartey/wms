@@ -33,7 +33,7 @@
         public int Quantity
         {
             get => this.quantity;
-            set => this.quantity = this.CheckIfStrictlyPositive(value);
+            set => this.quantity = CheckIfStrictlyPositive(value);
         }
 
         public string RegistrationNumber { get; set; }

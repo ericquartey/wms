@@ -54,8 +54,8 @@ namespace Ferretto.WMS.Data.WebAPI.Models
                 // Key not in cache, so get data.
                 cacheEntry = retrieveData();
 
+                // Keep in cache for this time, reset time if accessed.
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    // Keep in cache for this time, reset time if accessed.
                     .SetSlidingExpiration(TimeSpan.FromMinutes(10));
 
                 // Save data in cache.
@@ -145,8 +145,7 @@ namespace Ferretto.WMS.Data.WebAPI.Models
                             TotalReservedForPick = b != null ? b.TotalReservedForPick : 0,
                             TotalReservedToStore = b != null ? b.TotalReservedToStore : 0,
                             TotalStock = b != null ? b.TotalStock : 0
-                        }
-                    ).ToArray();
+                        }).ToArray();
         }
 
         private IEnumerable<ItemList> RetrieveLists()

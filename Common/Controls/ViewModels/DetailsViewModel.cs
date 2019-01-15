@@ -137,9 +137,9 @@ namespace Ferretto.Common.Controls
         protected virtual bool CanExecuteSaveCommand()
         {
             return this.Model != null
-                && this.changeDetector.IsModified == true
-                && (this.isValidationEnabled == false || string.IsNullOrWhiteSpace(this.Model.Error))
-                && this.IsBusy == false;
+                && this.changeDetector.IsModified
+                && (!this.isValidationEnabled || string.IsNullOrWhiteSpace(this.Model.Error))
+                && !this.IsBusy;
         }
 
         protected virtual void EvaluateCanExecuteCommands()

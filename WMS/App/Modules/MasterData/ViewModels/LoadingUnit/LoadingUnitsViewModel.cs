@@ -23,13 +23,18 @@ namespace Ferretto.WMS.Modules.MasterData
             .ObservesProperty(() => this.CurrentItem));
 
         public ICommand WithdrawCommand => this.withdrawCommand ??
-                (this.withdrawCommand = new DelegateCommand(this.ExecuteWithdrawCommand));
+                (this.withdrawCommand = new DelegateCommand(ExecuteWithdrawCommand));
 
         #endregion Properties
 
         #region Methods
 
-        private Boolean CanShowDetailsCommand()
+        private static void ExecuteWithdrawCommand()
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool CanShowDetailsCommand()
         {
             return this.CurrentItem != null;
         }
@@ -37,11 +42,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private void ExecuteShowDetailsCommand()
         {
             this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.ITEMLISTDETAILS, this.CurrentItem.Id);
-        }
-
-        private void ExecuteWithdrawCommand()
-        {
-            throw new NotImplementedException();
         }
 
         #endregion Methods

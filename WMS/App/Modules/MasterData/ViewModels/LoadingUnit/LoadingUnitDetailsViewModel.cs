@@ -103,7 +103,7 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand WithdrawCommand => this.withdrawCommand ??
-            (this.withdrawCommand = new DelegateCommand(this.ExecuteWithdrawCommand));
+            (this.withdrawCommand = new DelegateCommand(ExecuteWithdrawCommand));
 
         #endregion Properties
 
@@ -118,7 +118,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async Task ExecuteRevertCommand()
         {
-            await this.LoadData();
+            await this.LoadDataAsync();
         }
 
         protected override async Task ExecuteSaveCommand()
@@ -143,7 +143,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async void OnAppear()
         {
-            await this.LoadData();
+            await this.LoadDataAsync();
             base.OnAppear();
         }
 
@@ -156,23 +156,23 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnDispose();
         }
 
+        private static void ExecuteWithdrawCommand()
+        {
+            throw new NotImplementedException();
+        }
+
         private void ExecuteEditCommand()
         {
             this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.LOADINGUNITEDIT, this.Model.Id);
         }
 
-        private void ExecuteWithdrawCommand()
-        {
-            throw new NotImplementedException();
-        }
-
         private void Initialize()
         {
             this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<LoadingUnit>>(
-                async eventArgs => { await this.LoadData(); }, this.Token, true, true);
+                async eventArgs => { await this.LoadDataAsync(); }, this.Token, true, true);
 
             this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<LoadingUnit>>(
-                async eventArgs => { await this.LoadData(); });
+                async eventArgs => { await this.LoadDataAsync(); });
 
             this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<LoadingUnit>>(
                 async eventArgs =>
@@ -180,7 +180,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     if (eventArgs.ModelId.HasValue)
                     {
                         this.Data = eventArgs.ModelId.Value;
-                        await this.LoadData();
+                        await this.LoadDataAsync();
                     }
                     else
                     {
@@ -211,10 +211,10 @@ namespace Ferretto.WMS.Modules.MasterData
             this.Tray = newTray;
             this.ReadOnlyTray = true;
             this.IsCompartmentSelectableTray = true;
-            this.TrayColoringFunc = (new FillingFilter()).ColorFunc;
+            this.TrayColoringFunc = new FillingFilter().ColorFunc;
         }
 
-        private async Task LoadData()
+        private async Task LoadDataAsync()
         {
             if (this.Data is int modelId)
             {

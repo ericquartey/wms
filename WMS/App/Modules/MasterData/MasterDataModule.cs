@@ -15,6 +15,10 @@ using Ferretto.Common.BusinessProviders;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Major Code Smell",
+        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
+        Justification = "This class associate all Views to related ViewModels")]
     [Module(ModuleName = nameof(Common.Utils.Modules.MasterData), OnDemand = true)]
     [ModuleDependency(nameof(Common.Utils.Modules.BusinessLogic))]
     public class MasterDataModule : IModule

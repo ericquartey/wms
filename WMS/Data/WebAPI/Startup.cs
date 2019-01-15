@@ -32,7 +32,7 @@ namespace Ferretto.WMS.Data.WebAPI
         ///  This method gets called by the runtime.
         ///  Use this method to configure the HTTP request pipeline.
         /// </summary>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public static void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
