@@ -243,7 +243,7 @@
   <data name="Missions" xml:space="preserve">
     <value>Missioni</value>
   </data>
-  <data name="Requests" xml:space="preserve">
+  <data name="SchedulerRequests" xml:space="preserve">
     <value>Richieste</value>
   </data>
   <data name="Scheduler" xml:space="preserve">
@@ -251,5 +251,8 @@
   </data>
   <data name="ListRowDetails" xml:space="preserve">
     <value>Dettagli della riga lista</value>
+  </data>
+  <data name="SchedulerRequest" xml:space="preserve">
+    <value>Richieste dello schedulatore</value>
   </data>
 </root>

@@ -469,9 +469,8 @@
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-target-50.png</value>
     <comment>@Invariant</comment>
   </data>
-  <data name="Requests" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-task-50.png</value>
-    <comment>@Invariant</comment>
+  <data name="SchedulerRequests" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-ask-question-50.png</value>
   </data>
   <data name="Scheduler" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_date_range_white_24dp.png</value>
@@ -508,6 +507,15 @@
   <data name="MissionViewStatusNew" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-new-50.png</value>
     <comment>@Invariant</comment>
+  </data>
+  <data name="SchedulerRequestViewAll" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-europe-50.png</value>
+  </data>
+  <data name="SchedulerRequestOperationInsert" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-insert-50.png</value>
+  </data>
+  <data name="SchedulerRequestOperationWithdraw" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-withdraw-50.png</value>
   </data>
   <data name="ShowDetail" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_visibility_black_36dp.png</value>

@@ -109,4 +109,22 @@
   <data name="CompartmentType" xml:space="preserve">
     <value>Tipo di scomparto</value>
   </data>
+  <data name="SchedulerRequestOperationInsert" xml:space="preserve">
+    <value>Inserimento Operazione</value>
+  </data>
+  <data name="SchedulerRequestOperationWithdraw" xml:space="preserve">
+    <value>Prelievo Operazione</value>
+  </data>
+  <data name="SchedulerRequestViewAll" xml:space="preserve">
+    <value>Tutte</value>
+  </data>
+  <data name="IsInstant" xml:space="preserve">
+    <value>Immediato</value>
+  </data>
+  <data name="DispatchedQuantity" xml:space="preserve">
+    <value>Quantità Evasa</value>
+  </data>
+  <data name="ItemListRow" xml:space="preserve">
+    <value>Riga Lista</value>
+  </data>
 </root>

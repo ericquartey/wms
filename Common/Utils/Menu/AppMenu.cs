@@ -71,7 +71,7 @@ namespace Ferretto.Common.Utils.Menu
                    Children = new List<MainMenuItem>
                    {
                        new MainMenuItem(Navigation.Missions, bgColor, nameof(Navigation.Missions), nameof(Modules.Scheduler), Modules.Scheduler.MISSIONS),
-                       new MainMenuItem(Navigation.Requests, bgColor, nameof(Navigation.Requests), nameof(Modules.Scheduler), Modules.Scheduler.REQUESTS),
+                       new MainMenuItem(Navigation.SchedulerRequests, bgColor, nameof(Navigation.SchedulerRequests), nameof(Modules.Scheduler), Modules.Scheduler.SCHEDULERREQUESTS),
                    }
                }
            );
