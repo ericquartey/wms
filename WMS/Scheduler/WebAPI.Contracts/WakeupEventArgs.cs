@@ -17,6 +17,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
         #region Properties
 
         public string Message { get; private set; }
+
         public string User { get; private set; }
 
         #endregion Properties

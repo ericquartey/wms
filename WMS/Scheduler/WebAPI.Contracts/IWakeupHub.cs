@@ -6,7 +6,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     {
         #region Methods
 
-        Task WakeUp(string user, string message);
+        Task WakeUpAsync(string user, string message);
 
         #endregion Methods
     }
