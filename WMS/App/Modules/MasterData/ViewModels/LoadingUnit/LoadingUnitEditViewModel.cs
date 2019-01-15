@@ -17,17 +17,31 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+
         private readonly Func<ICompartment, ICompartment, string> filterColorFunc = new EditFilter().ColorFunc;
+
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
+
         private BaseNavigationViewModel activeSideViewModel;
+
         private ICommand addCommand;
+
         private ICommand bulkAddCommand;
+
         private IEnumerable<CompartmentDetails> compartmentsDataSource;
+
         private ICommand editCommand;
+
         private bool isSidePanelOpen;
+
         private LoadingUnitDetails loadingUnit;
+
         private bool loadingUnitHasCompartments;
+
+        private ICommand refreshCommand;
+
         private ICompartment selectedCompartmentTray;
+
         private Tray tray;
 
         #endregion Fields
@@ -106,6 +120,10 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.loadingUnitHasCompartments, value);
         }
 
+        public ICommand RefreshCommand => this.refreshCommand ??
+                                                                                            (this.refreshCommand = new DelegateCommand(
+                this.ExecuteRefreshCommand));
+
         public ICompartment SelectedCompartmentTray
         {
             get => this.selectedCompartmentTray;
@@ -149,6 +167,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     case BulkCompartment bulk:
                         this.SelectedCompartmentTray = bulk.LoadingUnit.Compartments.FirstOrDefault();
                         break;
+
                     case ICompartment compartment:
                         this.SelectedCompartmentTray = compartment;
                         break;
@@ -189,6 +208,11 @@ namespace Ferretto.WMS.Modules.MasterData
             model.LoadingUnit = this.loadingUnit;
 
             this.ShowSidePanel(new CompartmentEditViewModel { Model = model });
+        }
+
+        private void ExecuteRefreshCommand()
+        {
+            this.RefreshData();
         }
 
         private void HideSidePanel()
