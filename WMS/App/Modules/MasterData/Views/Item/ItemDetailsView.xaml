@@ -21,7 +21,8 @@
              mc:Ignorable="d">
 
     <Grid HorizontalAlignment="Stretch"
-          VerticalAlignment="Stretch">
+          VerticalAlignment="Stretch"
+          IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -169,37 +170,40 @@
                         </Grid.RowDefinitions>
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="0"
-                                      Margin="0,0,20,0"
+                                      Margin="0,0,18,0"
                                       EditValue="{Binding Path=Model.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       MinValue="1" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="1"
-                                      Margin="0,0,20,0"
+                                      Margin="0,0,18,0"
+                                      wms:AdditionalInfo.Text="{Binding Model.MeasureUnitDescription}"
                                       EditValue="{Binding Path=Model.PickTolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       MinValue="1" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="2"
-                                      Margin="0,0,20,0"
+                                      Margin="0,0,18,0"
                                       EditValue="{Binding Path=Model.AverageWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       MinValue="1" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="0"
-                                      Margin="0,0,20,0"
+                                      Margin="0,0,18,0"
                                       EditValue="{Binding Path=Model.Length, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       MinValue="1" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
-                                      Margin="0,0,20,0"
+                                      Margin="0,0,18,0"
+                                      wms:AdditionalInfo.Text="{Binding Model.MeasureUnitDescription}"
                                       EditValue="{Binding Path=Model.StoreTolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       MinValue="1" />
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="0"
-                                      Margin="0,0,20,0"
+                                      Margin="0,0,18,0"
                                       EditValue="{Binding Path=Model.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       MinValue="1" />
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="1"
-                                      Margin="0,0,20,0"
+                                      Margin="0,0,18,0"
+                                      wms:AdditionalInfo.Text="{Binding Model.MeasureUnitDescription}"
                                       EditValue="{Binding Path=Model.InventoryTolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       MinValue="1" />
                     </Grid>

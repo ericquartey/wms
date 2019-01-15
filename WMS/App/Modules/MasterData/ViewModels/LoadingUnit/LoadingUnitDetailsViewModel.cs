@@ -216,16 +216,23 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task LoadDataAsync()
         {
-            this.IsBusy = true;
-
             if (this.Data is int modelId)
             {
-                this.Model = await this.loadingUnitProvider.GetByIdAsync(modelId);
-                this.LoadingUnitHasCompartments = this.loadingUnitProvider.HasAnyCompartments(modelId);
-                this.InitializeTray();
-            }
+                try
+                {
+                    this.IsBusy = true;
 
-            this.IsBusy = false;
+                    this.Model = await this.loadingUnitProvider.GetByIdAsync(modelId);
+                    this.LoadingUnitHasCompartments = this.loadingUnitProvider.HasAnyCompartments(modelId);
+                    this.InitializeTray();
+
+                    this.IsBusy = false;
+                }
+                catch
+                {
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
+                }
+            }
         }
 
         #endregion Methods

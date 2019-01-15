@@ -237,4 +237,7 @@
   <data name="Details" xml:space="preserve">
     <value>Details</value>
   </data>
+  <data name="AdditionalInfo" xml:space="preserve">
+    <value>[{0}]</value>
+  </data>
 </root>

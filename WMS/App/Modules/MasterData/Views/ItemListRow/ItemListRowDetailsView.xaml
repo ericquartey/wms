@@ -28,7 +28,7 @@
         </MultiBinding>
     </wms:WmsView.SubTitle>
 
-    <Grid>
+    <Grid IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -191,6 +191,7 @@
                                       Grid.Column="2"
                                       Margin="0,0,20,0"
                                       HorizontalAlignment="Stretch"
+                                      wms:AdditionalInfo.Text="{Binding Model.ItemUnitMeasure}"
                                       AllowNullInput="False"
                                       EditValue="{Binding Model.RequiredQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
