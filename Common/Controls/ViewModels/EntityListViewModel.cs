@@ -116,7 +116,7 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        public void RefreshData()
+        public void LoadRelatedData()
         {
             var oldFilterDataSource = this.selectedFilterDataSource;
             this.SelectedFilterDataSource = null;
@@ -163,8 +163,8 @@ namespace Ferretto.Common.Controls
 
         private void InitializeEvent()
         {
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<TModel>>(eventArgs => { this.RefreshData(); }, this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<TModel>>(eventArgs => { this.RefreshData(); });
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<TModel>>(eventArgs => { this.LoadRelatedData(); }, this.Token, true, true);
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<TModel>>(eventArgs => { this.LoadRelatedData(); });
         }
 
         #endregion Methods

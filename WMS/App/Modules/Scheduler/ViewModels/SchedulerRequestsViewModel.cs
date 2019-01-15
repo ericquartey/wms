@@ -30,7 +30,7 @@ namespace Ferretto.WMS.Modules.Scheduler
 
         private void ExecuteRefreshCommand()
         {
-            this.RefreshData();
+            this.LoadRelatedData();
         }
 
         #endregion Methods
