@@ -8,12 +8,10 @@
                  xmlns:myType="clr-namespace:Ferretto.VW.Utils.Source;assembly=Ferretto.VW.Utils"
                  xmlns:prism="http://prismlibrary.com/"
                  xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
-                 Width="1024"
-                 Height="620"
                  prism:ViewModelLocator.AutoWireViewModel="True"
                  mc:Ignorable="d">
-    <DockPanel>
-        <Grid>
+    <Grid Width="774"
+          Height="608">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="80" />
                 <ColumnDefinition />
@@ -64,5 +62,4 @@
                         Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
             </Grid>
         </Grid>
-    </DockPanel>
 </myType:BaseView>

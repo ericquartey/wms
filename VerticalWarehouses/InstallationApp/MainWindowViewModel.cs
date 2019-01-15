@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.Navigation;
@@ -28,19 +29,33 @@ namespace Ferretto.VW.InstallationApp
         #region Constants, Statics & Others
 
         private static readonly string SENSOR_INITIALIZER_URL = ConfigurationManager.AppSettings["SensorsStatesInitializer"];
+
         private static readonly string SERVICE_PATH = ConfigurationManager.AppSettings["SensorsStatesHubPath"];
+
         private static readonly string URL = ConfigurationManager.AppSettings["ServiceURL"];
+
         public static SensorsStates States;
+
         private SensorsStatesHubClient client;
+
         private BindableBase contentRegionCurrentViewModel;
+
         private BindableBase navigationRegionCurrentViewModel;
+
         private BindableBase exitViewButtonRegionCurrentViewModel;
+
         private bool machineModeSelectionBool = false;
+
         private bool machineOnMarchSelectionBool = false;
-        private bool isNavigationButtonRegionExpanded = true;
+
+        private Visibility isNavigationButtonRegionExpanded = Visibility.Visible;
+
         private bool isExitViewButtonRegionExpanded = false;
+
         private bool isPopupOpen = false;
+
         private ICommand openClosePopupCommand;
+
         public IUnityContainer Container;
 
         #endregion Constants, Statics & Others
@@ -48,35 +63,65 @@ namespace Ferretto.VW.InstallationApp
         #region Commands Fields
 
         private ICommand backToVWAPPCommand;
+
         private ICommand backToMainWindowNavigationButtonsViewCommand;
+
         private ICommand beltBurnishingButtonCommand;
+
         private ICommand cellsControlButtonCommand;
+
         private ICommand cellsPanelControlButtonCommand;
+
         private ICommand gate1HeightControlNavigationButtonCommand;
+
         private ICommand gate2HeightControlNavigationButtonCommand;
+
         private ICommand gate3HeightControlNavigationButtonCommand;
+
         private ICommand gateHeightControlButtonCommand;
+
         private ICommand gates1ControlNavigationButtonCommand;
+
         private ICommand gates2ControlNavigationButtonCommand;
+
         private ICommand gates3ControlNavigationButtonCommand;
+
         private ICommand gatesControlButtonCommand;
+
         private ICommand installationStateButtonCommand;
+
         private ICommand lowSpeedMovementsTestButtonCommand;
+
         private ICommand lsmtGateEngineButtonCommand;
+
         private ICommand lsmtHorizontalEngineButtonCommand;
+
         private ICommand lsmtVerticalEngineButtonCommand;
+
         private ICommand resolutionCalibrationVerticalAxisButtonCommand;
+
         private ICommand ssBaysButtonCommand;
+
         private ICommand ssCradleButtonCommand;
+
         private ICommand ssGateButtonCommand;
+
         private ICommand ssNavigationButtonsButtonCommand;
+
         private ICommand ssVariousInputsButtonCommand;
+
         private ICommand ssVerticalAxisButtonCommand;
+
         private ICommand verticalAxisCalibrationButtonCommand;
+
         private ICommand verticalOffsetCalibrationButtonCommand;
+
         private ICommand weightControlButtonCommand;
+
         private ICommand machineModeCustomCommand;
+
         private ICommand machineOnMarchCustomCommand;
+
         private ICommand errorButtonCommand;
 
         #endregion Commands Fields
@@ -175,7 +220,7 @@ namespace Ferretto.VW.InstallationApp
 
         public BindableBase NavigationRegionCurrentViewModel { get => this.navigationRegionCurrentViewModel; set => this.SetProperty(ref this.navigationRegionCurrentViewModel, value); }
 
-        public Boolean IsNavigationButtonRegionExpanded { get => this.isNavigationButtonRegionExpanded; set => this.SetProperty(ref this.isNavigationButtonRegionExpanded, value); }
+        public Visibility IsNavigationButtonRegionExpanded { get => this.isNavigationButtonRegionExpanded; set => this.SetProperty(ref this.isNavigationButtonRegionExpanded, value); }
 
         public BindableBase ExitViewButtonRegionCurrentViewModel { get => this.exitViewButtonRegionCurrentViewModel; set => this.SetProperty(ref this.exitViewButtonRegionCurrentViewModel, value); }
 
@@ -225,10 +270,10 @@ namespace Ferretto.VW.InstallationApp
 
         private void InitializeEvents()
         {
-            NavigationService.GoToViewEventHandler += () => this.IsNavigationButtonRegionExpanded = false;
-            NavigationService.GoToViewEventHandler += () => this.IsExitViewButtonRegionExpanded = true;
+            NavigationService.GoToViewEventHandler += () => this.NavigationRegionCurrentViewModel = null;
+            NavigationService.GoToViewEventHandler += () => this.ExitViewButtonRegionCurrentViewModel = (MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>();
             NavigationService.GoToViewEventHandler += () => ((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).InitializeBottomButtons();
-            NavigationService.ExitViewEventHandler += () => this.IsNavigationButtonRegionExpanded = true;
+            NavigationService.ExitViewEventHandler += () => this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.Container.Resolve<IMainWindowNavigationButtonsViewModel>();
             NavigationService.ExitViewEventHandler += () => this.IsExitViewButtonRegionExpanded = false;
             NavigationService.ExitViewEventHandler += () => ((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).FinalizeBottomButtons();
             MainWindow.FinishedMachineModeChangeStateEventHandler += () => { this.MachineModeSelectionBool = !this.MachineModeSelectionBool; };
@@ -248,7 +293,7 @@ namespace Ferretto.VW.InstallationApp
         {
             this.Container = _container;
             this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.Container.Resolve<IMainWindowNavigationButtonsViewModel>();
-            this.ExitViewButtonRegionCurrentViewModel = (MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>();
+            this.ExitViewButtonRegionCurrentViewModel = null;
             this.ContentRegionCurrentViewModel = (IdleViewModel)this.Container.Resolve<IIdleViewModel>();
             this.ConnectMethod();
             this.InitializeEvents();

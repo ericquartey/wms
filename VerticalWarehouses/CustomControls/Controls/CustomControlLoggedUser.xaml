@@ -8,8 +8,8 @@
              mc:Ignorable="d">
     <Grid Name="LayoutRoot">
         <Button Name="ButtonRoot"
-                Width="200"
-                Height="80"
+                Width="{DynamicResource VWAPP_CustomControlLoggedUser_Width}"
+                Height="{DynamicResource VWAPP_CustomControlLoggedUser_Height}"
                 VerticalContentAlignment="Center"
                 Background="Transparent"
                 BorderBrush="Transparent"
@@ -18,7 +18,7 @@
                 FontFamily="{DynamicResource VWAPP_CustomControlLoggedUser_FontFamily_Normal}"
                 FontSize="{DynamicResource VWAPP_CustomControlLoggedUser_FontSize_Normal}"
                 Foreground="{DynamicResource VWAPP_CustomControlLoggedUser_Foreground_Normal}" />
-        <Popup Width="200"
+        <Popup Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
                Height="240"
                VerticalAlignment="Top"
                AllowsTransparency="True"
@@ -27,7 +27,7 @@
             <StackPanel Height="160"
                         VerticalAlignment="Top"
                         Background="Transparent">
-                <TextBlock Width="200"
+                <TextBlock Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
                            Margin="0,30"
                            HorizontalAlignment="Center"
                            Background="Transparent"
@@ -36,9 +36,9 @@
                            Foreground="{DynamicResource VWAPP_CustomControlLoggedUser_Foreground_Normal}"
                            Text="{Binding UserText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            TextAlignment="Center" />
-                <Button Width="200"
+                <Button Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
                         Height="80"
-                        Background="Transparent"
+                        Background="{DynamicResource VWAPP_BACKGROUND}"
                         BorderBrush="Transparent"
                         Command="{Binding LogOffCommand}"
                         FontFamily="{DynamicResource VWAPP_CustomControlLoggedUser_FontFamily_Normal}"
@@ -46,6 +46,7 @@
                         Foreground="{DynamicResource VWAPP_CustomControlLoggedUser_Foreground_Normal}">
                     <Button.Content>
                         <TextBlock Background="Transparent"
+                                   HorizontalAlignment="Center"
                                    FontFamily="{DynamicResource VWAPP_CustomControlLoggedUser_FontFamily_Normal}"
                                    FontSize="{DynamicResource VWAPP_CustomControlLoggedUser_FontSize_Normal}"
                                    Foreground="{DynamicResource VWAPP_CustomControlLoggedUser_Foreground_Normal}"
