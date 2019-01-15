@@ -9,7 +9,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Hubs
     {
         #region Methods
 
-        Task IsOnline();
+        Task IsOnlineAsync();
 
         #endregion Methods
     }

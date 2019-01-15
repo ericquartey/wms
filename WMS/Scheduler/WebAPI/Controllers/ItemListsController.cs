@@ -13,8 +13,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
 
         private readonly ILogger logger;
 
-        private readonly IServiceProvider serviceProvider;
-
         private readonly Core.IWarehouse warehouse;
 
         #endregion Fields
@@ -22,12 +20,10 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
         #region Constructors
 
         public ItemListsController(
-            IServiceProvider serviceProvider,
             ILogger<ItemListsController> logger,
             Core.IWarehouse warehouse)
         {
             this.logger = logger;
-            this.serviceProvider = serviceProvider;
             this.warehouse = warehouse;
         }
 
@@ -41,6 +37,11 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
         [ProducesResponseType(422)]
         public async Task<ActionResult> Execute(ListExecutionRequest request)
         {
+            if (request == null)
+            {
+                return this.BadRequest();
+            }
+
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest(this.ModelState);

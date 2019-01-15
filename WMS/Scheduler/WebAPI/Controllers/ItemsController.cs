@@ -13,11 +13,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
     {
         #region Fields
 
-        private readonly IHubContext<WakeupHub, IWakeupHub> hubContext;
-
         private readonly ILogger logger;
-
-        private readonly IServiceProvider serviceProvider;
 
         private readonly Core.IWarehouse warehouse;
 
@@ -26,15 +22,11 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
         #region Constructors
 
         public ItemsController(
-            IServiceProvider serviceProvider,
             ILogger<ItemsController> logger,
-            Core.IWarehouse warehouse,
-            IHubContext<WakeupHub, IWakeupHub> hubContext)
+            Core.IWarehouse warehouse)
         {
-            this.serviceProvider = serviceProvider;
             this.logger = logger;
             this.warehouse = warehouse;
-            this.hubContext = hubContext;
         }
 
         #endregion Constructors
@@ -47,6 +39,11 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
         [ProducesResponseType(422)]
         public async Task<IActionResult> Withdraw([FromBody] Core.SchedulerRequest request)
         {
+            if (request == null)
+            {
+                return this.BadRequest();
+            }
+
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest(this.ModelState);
