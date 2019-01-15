@@ -11,8 +11,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public static Expression<Func<T, TResult>> CreateSelectorExpression<T, TResult>(this ControllerBase controller, string propertyName)
         {
             var parameterExpression = Expression.Parameter(typeof(T));
-            return (Expression<Func<T, TResult>>)Expression.Lambda(Expression.PropertyOrField(parameterExpression, propertyName),
-                                                                    parameterExpression);
+            return (Expression<Func<T, TResult>>)Expression.Lambda(
+                Expression.PropertyOrField(parameterExpression, propertyName),
+                parameterExpression);
         }
 
         #endregion Methods

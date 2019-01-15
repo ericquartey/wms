@@ -24,7 +24,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        private Boolean CanShowDetailsCommand()
+        private bool CanShowDetailsCommand()
         {
             return this.CurrentItem != null;
         }

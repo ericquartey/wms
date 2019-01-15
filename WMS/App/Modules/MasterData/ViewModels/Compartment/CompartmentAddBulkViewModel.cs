@@ -28,10 +28,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        protected override Task ExecuteRevertCommand()
-        {
-            throw new NotImplementedException();
-        }
+        protected override Task ExecuteRevertCommand() => throw new NotSupportedException();
 
         protected override async Task ExecuteSaveCommand()
         {
@@ -53,8 +50,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.EventService.Invoke(new ModelChangedPubSubEvent<LoadingUnit>(this.Model.LoadingUnit.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(
                     Common.Resources.MasterData.LoadingUnitSavedSuccessfully,
-                    StatusType.Success
-                    ));
+                    StatusType.Success));
 
                 this.CompleteOperation();
             }

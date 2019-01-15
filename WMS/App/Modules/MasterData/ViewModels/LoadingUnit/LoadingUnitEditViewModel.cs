@@ -77,7 +77,7 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand EditCommand => this.editCommand ??
-            (this.editCommand = new DelegateCommand(async () => await this.ExecuteEditCompartmentCommand(), this.CanExecuteEditCommand)
+            (this.editCommand = new DelegateCommand(async () => await this.ExecuteEditCompartmentCommandAsync(), this.CanExecuteEditCommand)
             .ObservesProperty(() => this.SelectedCompartmentTray));
 
         public Func<ICompartment, ICompartment, string> FilterColorFunc => this.filterColorFunc;
@@ -131,26 +131,27 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async void OnAppear()
         {
-            await this.LoadData();
+            await this.LoadDataAsync();
             base.OnAppear();
         }
 
-        private async void ActiveSideViewModel_OperationComplete(Object sender, OperationEventArgs e)
+        private async void ActiveSideViewModel_OperationComplete(object sender, OperationEventArgs e)
         {
             this.HideSidePanel();
 
             if (e.IsCanceled == false)
             {
                 this.SelectedCompartmentTray = null;
-                await this.LoadData();
+                await this.LoadDataAsync();
 
-                if (e.Model is BulkCompartment bulk)
+                switch (e.Model)
                 {
-                    this.SelectedCompartmentTray = bulk.LoadingUnit.Compartments.FirstOrDefault();
-                }
-                else if (e.Model is ICompartment compartment)
-                {
-                    this.SelectedCompartmentTray = compartment;
+                    case BulkCompartment bulk:
+                        this.SelectedCompartmentTray = bulk.LoadingUnit.Compartments.FirstOrDefault();
+                        break;
+                    case ICompartment compartment:
+                        this.SelectedCompartmentTray = compartment;
+                        break;
                 }
             }
         }
@@ -182,7 +183,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.ShowSidePanel(new CompartmentAddBulkViewModel { Model = model });
         }
 
-        private async Task ExecuteEditCompartmentCommand()
+        private async Task ExecuteEditCompartmentCommandAsync()
         {
             var model = await this.compartmentProvider.GetByIdAsync(this.selectedCompartmentTray.Id);
             model.LoadingUnit = this.loadingUnit;
@@ -216,7 +217,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.RaisePropertyChanged(nameof(this.Tray));
         }
 
-        private async Task LoadData()
+        private async Task LoadDataAsync()
         {
             if (this.Data is int modelId)
             {

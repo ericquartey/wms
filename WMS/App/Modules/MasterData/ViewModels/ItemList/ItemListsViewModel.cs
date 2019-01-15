@@ -18,8 +18,9 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Properties
 
         public ICommand ListExecuteCommand => this.listExecuteCommand ??
-                  (this.listExecuteCommand = new DelegateCommand(this.ExecuteListCommand,
-                      this.CanExecuteListCommand)
+                  (this.listExecuteCommand = new DelegateCommand(
+                           this.ExecuteListCommand,
+                           this.CanExecuteListCommand)
             .ObservesProperty(() => this.CurrentItem));
 
         public ICommand ShowDetailsCommand => this.showDetailsCommand ??
@@ -42,10 +43,11 @@ namespace Ferretto.WMS.Modules.MasterData
                     return true;
                 }
             }
+
             return false;
         }
 
-        private Boolean CanShowDetailsCommand()
+        private bool CanShowDetailsCommand()
         {
             return this.CurrentItem != null;
         }
@@ -58,8 +60,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 new
                 {
                     Id = this.CurrentItem.Id
-                }
-            );
+                });
         }
 
         private void ExecuteShowDetailsCommand()
