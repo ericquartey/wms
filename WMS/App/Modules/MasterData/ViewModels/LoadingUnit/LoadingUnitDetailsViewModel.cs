@@ -37,8 +37,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool readOnlyTray;
 
-        private ICommand refreshCommand;
-
         private CompartmentDetails selectedCompartment;
 
         private Tray tray;
@@ -89,10 +87,6 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.readOnlyTray, value);
         }
 
-        public ICommand RefreshCommand => this.refreshCommand ??
-                 (this.refreshCommand = new DelegateCommand(
-                       this.ExecuteRefreshCommand).ObservesProperty(() => this.CanRefresh));
-
         public CompartmentDetails SelectedCompartment
         {
             get => this.selectedCompartment;
@@ -118,12 +112,16 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public override async void RefreshData()
+        public override void LoadRelatedData()
         {
-            await this.LoadDataAsync();
             this.CompartmentsDataSource = this.Model != null
                 ? this.compartmentProvider.GetByLoadingUnitId(this.Model.Id).ToList()
                 : null;
+        }
+
+        protected override async Task ExecuteRefreshCommandAsync()
+        {
+            await this.LoadDataAsync();
         }
 
         protected override async Task ExecuteRevertCommand()
@@ -180,11 +178,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private void ExecuteEditCommand()
         {
             this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.LOADINGUNITEDIT, this.Model.Id);
-        }
-
-        private void ExecuteRefreshCommand()
-        {
-            this.RefreshData();
         }
 
         private void Initialize()
