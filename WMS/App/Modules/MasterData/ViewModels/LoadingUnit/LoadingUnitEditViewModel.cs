@@ -107,7 +107,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 if (this.SetProperty(ref this.loadingUnit, value))
                 {
-                    this.RefreshData();
+                    this.LoadRelatedData();
                 }
             }
         }
@@ -134,7 +134,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public void RefreshData()
+        public void LoadRelatedData()
         {
             this.CompartmentsDataSource = this.loadingUnit != null
                 ? this.compartmentProvider.GetByLoadingUnitId(this.loadingUnit.Id).ToList()

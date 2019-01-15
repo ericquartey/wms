@@ -72,7 +72,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteRefreshCommand()
         {
-            this.RefreshData();
+            this.LoadRelatedData();
         }
 
         private void ExecuteShowDetailsCommand()

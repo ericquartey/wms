@@ -34,7 +34,7 @@ namespace Ferretto.WMS.Modules.Machines
 
         private void ExecuteRefreshCommand()
         {
-            this.RefreshData();
+            this.LoadRelatedData();
         }
 
         #endregion Methods
