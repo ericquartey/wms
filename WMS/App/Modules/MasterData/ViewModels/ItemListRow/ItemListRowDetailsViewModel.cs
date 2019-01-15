@@ -143,11 +143,22 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             if (this.Data is int modelId)
             {
-                this.Model = await this.itemListRowProvider.GetByIdAsync(modelId);
+                try
+                {
+                    this.IsBusy = true;
 
-                this.ItemsDataSource = this.Model != null
-                ? new DataSource<Item>(() => this.itemProvider.GetAll())
-                : null;
+                    this.Model = await this.itemListRowProvider.GetByIdAsync(modelId);
+
+                    this.ItemsDataSource = this.Model != null
+                    ? new DataSource<Item>(() => this.itemProvider.GetAll())
+                    : null;
+
+                    this.IsBusy = false;
+                }
+                catch
+                {
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
+                }
             }
         }
 
