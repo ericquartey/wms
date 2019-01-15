@@ -57,10 +57,12 @@ namespace Ferretto.Common.Modules.BLL
 
             this.Container.RegisterType<IDatabaseContextService, DatabaseContextService>();
 
-            var schedulerEndPoint = ConfigurationManager.AppSettings["SchedulerEndpoint"];
-            this.Container.RegisterType<IItemsService, ItemsService>(new InjectionConstructor(schedulerEndPoint));
-            this.Container.RegisterType<IItemListsService, ItemListsService>(new InjectionConstructor(schedulerEndPoint));
-            this.Container.RegisterType<IItemListRowsService, ItemListRowsService>(new InjectionConstructor(schedulerEndPoint));
+            var schedulerServiceEndPoint = ConfigurationManager.AppSettings["SchedulerServiceEndpoint"];
+            var dataServiceEndPoint = ConfigurationManager.AppSettings["DataServiceEndpoint"];
+            this.Container.RegisterType<IItemsService, ItemsService>(new InjectionConstructor(schedulerServiceEndPoint));
+            this.Container.RegisterType<IMissionsService, MissionsService>(new InjectionConstructor(dataServiceEndPoint));
+            this.Container.RegisterType<IItemListsService, ItemListsService>(new InjectionConstructor(schedulerServiceEndPoint));
+            this.Container.RegisterType<IItemListRowsService, ItemListRowsService>(new InjectionConstructor(schedulerServiceEndPoint));
 
             this.Container.RegisterType<DatabaseContext, DatabaseContext>(new InjectionConstructor());
             this.Container.RegisterType<EnumerationProvider, EnumerationProvider>(new InjectionConstructor(new DatabaseContext()));
