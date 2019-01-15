@@ -5,8 +5,16 @@ using System.Threading.Tasks;
 
 namespace Ferretto.WMS.Data.WebAPI.Contracts
 {
-    public abstract class ServiceBase
+    public class ServiceBase
     {
+        #region Constructors
+
+        protected ServiceBase()
+        {
+        }
+
+        #endregion Constructors
+
         #region Properties
 
         public Func<Task<string>> RetrieveAuthorizationToken { get; set; }
@@ -25,6 +33,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 var token = await this.RetrieveAuthorizationToken();
                 msg.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             }
+
             return msg;
         }
 

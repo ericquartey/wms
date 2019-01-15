@@ -11,12 +11,12 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     #pragma warning disable // Disable all warnings
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class ListsService : ServiceBase, IListsService
+    public partial class ItemListsService : ServiceBase, IItemListsService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public ListsService(string baseUrl)
+        public ItemListsService(string baseUrl)
         {
             BaseUrl = baseUrl; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
@@ -51,7 +51,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ItemList>> GetAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Lists");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemLists");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -142,7 +142,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Lists/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemLists/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
