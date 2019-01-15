@@ -13,18 +13,18 @@ namespace Ferretto.WMS.Data.WebAPI
     {
         #region Fields
 
-        private static readonly System.Text.RegularExpressions.Regex orderByRegex =
+        private static readonly System.Text.RegularExpressions.Regex OrderByRegex =
             new System.Text.RegularExpressions.Regex(
             $@"(?<{nameof(SortOption.PropertyName)}>[^\s]+)\s+(?<{nameof(SortOption.Direction)}>({nameof(ListSortDirection.Ascending)}|{nameof(ListSortDirection.Descending)}))(,\s*)?",
             System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-        private static MethodInfo OrderByDescendingMethod;
+        private static MethodInfo orderByDescendingMethod;
 
-        private static MethodInfo OrderByMethod;
+        private static MethodInfo orderByMethod;
 
-        private static MethodInfo ThenByDescendingMethod;
+        private static MethodInfo thenByDescendingMethod;
 
-        private static MethodInfo ThenByMethod;
+        private static MethodInfo thenByMethod;
 
         #endregion Fields
 
@@ -46,7 +46,7 @@ namespace Ferretto.WMS.Data.WebAPI
             {
                 var propertyType = typeof(T)
                     .GetProperties()
-                    .SingleOrDefault(p => p.Name.Equals(sortOption.PropertyName, StringComparison.InvariantCultureIgnoreCase))?
+                    .SingleOrDefault(p => p.Name.Equals(sortOption.PropertyName, StringComparison.Ordinal))?
                     .PropertyType;
 
                 if (propertyType == null)
@@ -58,7 +58,7 @@ namespace Ferretto.WMS.Data.WebAPI
                 var expression = typeof(ControllerExtensions)
                     .GetMethod(nameof(CreateSelectorExpression))
                     .MakeGenericMethod(typeof(T), propertyType)
-                    .Invoke(null, new[] { sortOption.PropertyName });
+                    .Invoke(null, new object[] { sortOption.PropertyName });
 
                 MethodInfo methodInstance;
                 if (sortOption.Direction == ListSortDirection.Ascending)
@@ -92,18 +92,17 @@ namespace Ferretto.WMS.Data.WebAPI
 
             var propertyAccessor = Expression.Property(parameter, propertyName);
 
-            return ((Expression<Func<T, TResult>>)
-                Expression.Lambda(propertyAccessor, parameter));
+            return (Expression<Func<T, TResult>>)Expression.Lambda(propertyAccessor, parameter);
         }
 
         public static IEnumerable<SortOption> ParseOrderByString(this ControllerBase controller, string orderBy)
         {
             if (orderBy == null)
             {
-                return new SortOption[0];
+                return Array.Empty<SortOption>();
             }
 
-            var matches = orderByRegex.Matches(orderBy);
+            var matches = OrderByRegex.Matches(orderBy);
 
             return matches.Select(match =>
             {
@@ -115,17 +114,16 @@ namespace Ferretto.WMS.Data.WebAPI
                     ignoreCase: true);
 
                 return new SortOption(propertyName, direction);
-            }
-            );
+            });
         }
 
         private static MethodInfo GetOrderByDescendingMethod<T>(Type propertyType)
         {
-            if (OrderByDescendingMethod == null)
+            if (orderByDescendingMethod == null)
             {
-                var methodName = nameof(Queryable.OrderByDescending);
+                const string methodName = nameof(Queryable.OrderByDescending);
 
-                OrderByDescendingMethod = typeof(Queryable)
+                orderByDescendingMethod = typeof(Queryable)
                    .GetMethods(BindingFlags.Static | BindingFlags.Public)
                    .Single(m =>
                        m.Name == methodName
@@ -133,16 +131,16 @@ namespace Ferretto.WMS.Data.WebAPI
                        m.GetParameters().Count() == 2);
             }
 
-            return OrderByDescendingMethod.MakeGenericMethod(typeof(T), propertyType);
+            return orderByDescendingMethod.MakeGenericMethod(typeof(T), propertyType);
         }
 
         private static MethodInfo GetOrderByMethod<T>(Type propertyType)
         {
-            if (OrderByMethod == null)
+            if (orderByMethod == null)
             {
-                var methodName = nameof(Queryable.OrderBy);
+                const string methodName = nameof(Queryable.OrderBy);
 
-                OrderByMethod = typeof(Queryable)
+                orderByMethod = typeof(Queryable)
                    .GetMethods(BindingFlags.Static | BindingFlags.Public)
                    .Single(m =>
                        m.Name == methodName
@@ -150,16 +148,16 @@ namespace Ferretto.WMS.Data.WebAPI
                        m.GetParameters().Count() == 2);
             }
 
-            return OrderByMethod.MakeGenericMethod(typeof(T), propertyType);
+            return orderByMethod.MakeGenericMethod(typeof(T), propertyType);
         }
 
         private static MethodInfo GetThenByDescendingMethod<T>(Type propertyType)
         {
-            if (ThenByDescendingMethod == null)
+            if (thenByDescendingMethod == null)
             {
-                var methodName = nameof(Queryable.ThenByDescending);
+                const string methodName = nameof(Queryable.ThenByDescending);
 
-                ThenByDescendingMethod = typeof(Queryable)
+                thenByDescendingMethod = typeof(Queryable)
                    .GetMethods(BindingFlags.Static | BindingFlags.Public)
                    .Single(m =>
                        m.Name == methodName
@@ -167,16 +165,16 @@ namespace Ferretto.WMS.Data.WebAPI
                        m.GetParameters().Count() == 2);
             }
 
-            return ThenByDescendingMethod.MakeGenericMethod(typeof(T), propertyType);
+            return thenByDescendingMethod.MakeGenericMethod(typeof(T), propertyType);
         }
 
         private static MethodInfo GetThenByMethod<T>(Type propertyType)
         {
-            if (ThenByMethod == null)
+            if (thenByMethod == null)
             {
-                var methodName = nameof(Queryable.ThenBy);
+                const string methodName = nameof(Queryable.ThenBy);
 
-                ThenByMethod = typeof(Queryable)
+                thenByMethod = typeof(Queryable)
                    .GetMethods(BindingFlags.Static | BindingFlags.Public)
                    .Single(m =>
                        m.Name == methodName
@@ -184,7 +182,7 @@ namespace Ferretto.WMS.Data.WebAPI
                        m.GetParameters().Count() == 2);
             }
 
-            return ThenByMethod.MakeGenericMethod(typeof(T), propertyType);
+            return thenByMethod.MakeGenericMethod(typeof(T), propertyType);
         }
 
         #endregion Methods

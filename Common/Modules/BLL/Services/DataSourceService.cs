@@ -11,6 +11,10 @@ using Compartment = Ferretto.Common.BusinessModels.Compartment;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Major Code Smell",
+        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
+        Justification = "This method centralize the DataSource provision")]
     public class DataSourceService : IDataSourceService
     {
         #region Methods
@@ -40,6 +44,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
                 case Scheduler.MISSIONS:
                     return GetMissionsDataSources<TModel>();
+
+                case Scheduler.SCHEDULERREQUESTS:
+                    return GetSchedulerRequestDataSources<TModel>();
 
                 default:
                     return new List<IFilterDataSource<TModel>>();
@@ -325,6 +332,34 @@ namespace Ferretto.Common.Modules.BLL.Services
                     () => missionProvider.GetWithStatusNew(),
                     () => missionCountProvider.GetWithStatusNewCount())
             }.Cast<IFilterDataSource<TModel>>();
+        }
+
+        private static IEnumerable<IFilterDataSource<TModel>> GetSchedulerRequestDataSources<TModel>()
+                                            where TModel : IBusinessObject
+        {
+            var schedulerRequestProvider = ServiceLocator.Current.GetInstance<ISchedulerRequestProvider>();
+            var schedulerRequestCountProvider = ServiceLocator.Current.GetInstance<ISchedulerRequestProvider>();
+
+            return new List<FilterDataSource<SchedulerRequest>>
+                    {
+                        new FilterDataSource<SchedulerRequest>(
+                            "SchedulerRequestViewAll",
+                            Resources.Scheduler.SchedulerRequestViewAll,
+                            () => schedulerRequestProvider.GetAll(),
+                            () => schedulerRequestCountProvider.GetAllCount()),
+
+                        new FilterDataSource<SchedulerRequest>(
+                            "SchedulerRequestOperationInsert",
+                            Resources.Scheduler.SchedulerRequestOperationInsert,
+                            () => schedulerRequestProvider.GetWithOperationTypeInsertion(),
+                            () => schedulerRequestCountProvider.GetWithOperationTypeInsertionCount()),
+
+                        new FilterDataSource<SchedulerRequest>(
+                            "SchedulerRequestOperationWithdraw",
+                            Resources.Scheduler.SchedulerRequestOperationWithdraw,
+                            () => schedulerRequestProvider.GetWithOperationTypeWithdrawal(),
+                            () => schedulerRequestCountProvider.GetWithOperationTypeWithdrawalCount())
+                    }.Cast<IFilterDataSource<TModel>>();
         }
 
         #endregion Methods

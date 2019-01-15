@@ -70,6 +70,33 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dispatched Quantity.
+        /// </summary>
+        public static string DispatchedQuantity {
+            get {
+                return ResourceManager.GetString("DispatchedQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is Instant.
+        /// </summary>
+        public static string IsInstant {
+            get {
+                return ResourceManager.GetString("IsInstant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Row List.
+        /// </summary>
+        public static string ItemListRow {
+            get {
+                return ResourceManager.GetString("ItemListRow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string MissionAll {
@@ -93,6 +120,33 @@ namespace Ferretto.Common.Resources {
         public static string MissionStatusNew {
             get {
                 return ResourceManager.GetString("MissionStatusNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operation Insert.
+        /// </summary>
+        public static string SchedulerRequestOperationInsert {
+            get {
+                return ResourceManager.GetString("SchedulerRequestOperationInsert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operation Withdraw.
+        /// </summary>
+        public static string SchedulerRequestOperationWithdraw {
+            get {
+                return ResourceManager.GetString("SchedulerRequestOperationWithdraw", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string SchedulerRequestViewAll {
+            get {
+                return ResourceManager.GetString("SchedulerRequestViewAll", resourceCulture);
             }
         }
     }

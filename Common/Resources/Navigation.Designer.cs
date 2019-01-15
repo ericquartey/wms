@@ -439,20 +439,29 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Requests.
-        /// </summary>
-        public static string Requests {
-            get {
-                return ResourceManager.GetString("Requests", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Scheduler.
         /// </summary>
         public static string Scheduler {
             get {
                 return ResourceManager.GetString("Scheduler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scheduler Request.
+        /// </summary>
+        public static string SchedulerRequest {
+            get {
+                return ResourceManager.GetString("SchedulerRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Requests.
+        /// </summary>
+        public static string SchedulerRequests {
+            get {
+                return ResourceManager.GetString("SchedulerRequests", resourceCulture);
             }
         }
         

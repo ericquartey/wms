@@ -844,15 +844,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-task-50.png.
-        /// </summary>
-        public static string Requests {
-            get {
-                return ResourceManager.GetString("Requests", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_date_range_white_24dp.png.
         /// </summary>
         public static string Scheduler {
@@ -876,6 +867,42 @@ namespace Ferretto.Common.Resources {
         public static string SchedulerOnLine {
             get {
                 return ResourceManager.GetString("SchedulerOnLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-insert-50.png.
+        /// </summary>
+        public static string SchedulerRequestOperationInsert {
+            get {
+                return ResourceManager.GetString("SchedulerRequestOperationInsert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-withdraw-50.png.
+        /// </summary>
+        public static string SchedulerRequestOperationWithdraw {
+            get {
+                return ResourceManager.GetString("SchedulerRequestOperationWithdraw", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-ask-question-50.png.
+        /// </summary>
+        public static string SchedulerRequests {
+            get {
+                return ResourceManager.GetString("SchedulerRequests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-europe-50.png.
+        /// </summary>
+        public static string SchedulerRequestViewAll {
+            get {
+                return ResourceManager.GetString("SchedulerRequestViewAll", resourceCulture);
             }
         }
         

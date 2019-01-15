@@ -3,8 +3,16 @@ using System.Runtime.CompilerServices;
 
 namespace Ferretto.WMS.Data.WebAPI.Models
 {
-    public abstract class Model<TKey>
+    public class Model<TKey>
     {
+        #region Constructors
+
+        protected Model()
+        {
+        }
+
+        #endregion Constructors
+
         #region Properties
 
         public TKey Id { get; set; }
@@ -13,7 +21,7 @@ namespace Ferretto.WMS.Data.WebAPI.Models
 
         #region Methods
 
-        protected int? CheckIfPositive(int? value, [CallerMemberName] string propertyName = null)
+        protected static int? CheckIfPositive(int? value, [CallerMemberName] string propertyName = null)
         {
             if (value.HasValue && value.Value < 0)
             {
@@ -23,7 +31,7 @@ namespace Ferretto.WMS.Data.WebAPI.Models
             return value;
         }
 
-        protected int CheckIfPositive(int value, [CallerMemberName] string propertyName = null)
+        protected static int CheckIfPositive(int value, [CallerMemberName] string propertyName = null)
         {
             if (value < 0)
             {
@@ -33,7 +41,7 @@ namespace Ferretto.WMS.Data.WebAPI.Models
             return value;
         }
 
-        protected int? CheckIfStrictlyPositive(int? value, [CallerMemberName] string propertyName = null)
+        protected static int? CheckIfStrictlyPositive(int? value, [CallerMemberName] string propertyName = null)
         {
             if (value.HasValue && value.Value <= 0)
             {
@@ -43,7 +51,7 @@ namespace Ferretto.WMS.Data.WebAPI.Models
             return value;
         }
 
-        protected int CheckIfStrictlyPositive(int value, [CallerMemberName] string propertyName = null)
+        protected static int CheckIfStrictlyPositive(int value, [CallerMemberName] string propertyName = null)
         {
             if (value <= 0)
             {
