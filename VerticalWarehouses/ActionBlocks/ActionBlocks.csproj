@@ -111,6 +111,8 @@
     <Compile Include="Source\Actions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\ActionsBasic\ActionsModule.cs" />
+    <Compile Include="Source\ActionsBasic\CalibrateAxesOld.cs" />
+    <Compile Include="Source\ActionsBasic\CalibrateAxes.cs" />
     <Compile Include="Source\ActionsBasic\CalibrateHorizontalAxis.cs" />
     <Compile Include="Source\ActionsBasic\CalibrateVerticalAxis.cs" />
     <Compile Include="Source\ActionsBasic\DrawerWeightDetection.cs" />

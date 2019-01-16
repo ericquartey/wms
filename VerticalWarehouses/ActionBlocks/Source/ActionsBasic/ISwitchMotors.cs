@@ -25,15 +25,19 @@ namespace Ferretto.VW.ActionBlocks
         /// </summary>
         void Initialize();
 
+        void callSwitchHorizToVert();
+
         /// <summary>
         /// Switch from horizontal to vertical engine control.
         /// </summary>
-        void SwitchHorizToVert();
+        // void SwitchHorizToVert();
+
+        void callSwitchVertToHoriz();
 
         /// <summary>
         /// Switch from vertical to horizontal engine control.
         /// </summary>
-        void SwitchVertToHoriz();
+        // void SwitchVertToHoriz();
 
         /// <summary>
         /// Terminate.

@@ -83,7 +83,7 @@ namespace Ferretto.VW.InverterDriver
             this.CtrlWord = new BitArray(BITS_16);
             this.StatusWord = new BitArray(BITS_16);
 
-            logger.Log(LogLevel.Debug, String.Format("InverterDriver in a new incarnation..."));
+            // logger.Log(LogLevel.Debug, String.Format("InverterDriver in a new incarnation..."));
         }
 
         #endregion Constructors
@@ -194,7 +194,7 @@ namespace Ferretto.VW.InverterDriver
                 lock (lockFlags)
                 {
                     this.enableUpdateCurrentPositionVerticalShaftMode = value;
-                    logger.Log(LogLevel.Debug, "Set enableUpdateCurrentPositionVerticalShaftMode = {0}", value.ToString());
+                    // logger.Log(LogLevel.Debug, "Set enableUpdateCurrentPositionVerticalShaftMode = {0}", value.ToString());
                 }
             }
 
@@ -318,7 +318,7 @@ namespace Ferretto.VW.InverterDriver
         /// <returns></returns>
         public InverterDriverExitStatus GetDrawerWeight(float ic)
         {
-            logger.Log(LogLevel.Debug, String.Format("> Execute GetDrawerWeight operation."));
+            // logger.Log(LogLevel.Debug, String.Format("> Execute GetDrawerWeight operation."));
 
             // Add your implementation code here
 
@@ -327,7 +327,7 @@ namespace Ferretto.VW.InverterDriver
 
         public InverterDriverExitStatus GetIOEmergencyState()
         {
-            logger.Log(LogLevel.Debug, String.Format("> Execute GetIOEmergencyState operation."));
+            // logger.Log(LogLevel.Debug, String.Format("> Execute GetIOEmergencyState operation."));
 
             // Add your implementation code here
 
@@ -339,7 +339,7 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public bool Initialize()
         {
-            logger.Log(LogLevel.Debug, String.Format("InverterDriver initializing..."));
+            // logger.Log(LogLevel.Debug, String.Format("InverterDriver initializing..."));
 
             QueryPerformanceFrequency(out this.perfFrequency);
             this.executeRequestOnRunning = false;
@@ -455,7 +455,12 @@ namespace Ferretto.VW.InverterDriver
                         case ActionType.CalibrateHorizontalAxis:
                             {
                                 if (this.currentRequest.Type == TypeOfRequest.SendRequest && this.currentRequest.Source == RequestSource.External) { EnquiryTelegramDone_CalibrateVerticalAxis?.Invoke(this, new EnquiryTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType)); }
-                                if (this.currentRequest.Type == TypeOfRequest.SettingRequest && this.currentRequest.Source == RequestSource.External) { SelectTelegramDone_CalibrateVerticalAxis?.Invoke(this, new SelectTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType)); }
+                                if (this.currentRequest.Type == TypeOfRequest.SettingRequest && this.currentRequest.Source == RequestSource.External)
+                                {
+                                    //logger.Log(LogLevel.Debug, "Invoke SelectTelegramDone for parameter: {0}, value: {1}", this.currentRequest.ParameterID, (ushort)this.retParameterValue);
+                                    SelectTelegramDone_CalibrateVerticalAxis?.Invoke(this, new SelectTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType));
+                                }
+                            
                                 break;
                             }
                         case ActionType.PositioningDrawer:
@@ -486,11 +491,11 @@ namespace Ferretto.VW.InverterDriver
             }
             catch (ObjectDisposedException)
             {
-                logger.Log(LogLevel.Debug, String.Format("On Data Received: the Socket has been closed"));
+                // logger.Log(LogLevel.Debug, String.Format("On Data Received: the Socket has been closed"));
             }
             catch (SocketException)
             {
-                logger.Log(LogLevel.Debug, String.Format("On Data Received: Socket critical failure"));
+                // logger.Log(LogLevel.Debug, String.Format("On Data Received: Socket critical failure"));
             }
         }
 
@@ -565,7 +570,7 @@ namespace Ferretto.VW.InverterDriver
             this.disconnect_from_inverter();
 
             this.hwInverterState = HardwareInverterStatus.NotOperative;
-            logger.Log(LogLevel.Debug, String.Format("Release InverterDriver object."));
+            // logger.Log(LogLevel.Debug, String.Format("Release InverterDriver object."));
         }
 
         /// <summary>
@@ -607,7 +612,7 @@ namespace Ferretto.VW.InverterDriver
 
             if (this.IPAddressToConnect == "" || this.PortAddressToConnect <= 0)
             {
-                logger.Log(LogLevel.Debug, String.Format("Invalid IP address [IP:{0}, port:{1}]", this.IPAddressToConnect, this.PortAddressToConnect));
+                // logger.Log(LogLevel.Debug, String.Format("Invalid IP address [IP:{0}, port:{1}]", this.IPAddressToConnect, this.PortAddressToConnect));
                 this.LastError = InverterDriverErrors.IOError;
                 Error?.Invoke(this, new ErrorEventArgs(this.LastError));
                 return false;
@@ -632,7 +637,7 @@ namespace Ferretto.VW.InverterDriver
                 this.sckClient.Connect(ipEnd);
                 if (this.sckClient.Connected)
                 {
-                    logger.Log(LogLevel.Debug, String.Format("Connection to inverter [IP:{0}] established", this.IPAddressToConnect));
+                    // logger.Log(LogLevel.Debug, String.Format("Connection to inverter [IP:{0}] established", this.IPAddressToConnect));
                     Connected?.Invoke(this, new ConnectedEventArgs(true));
 
                     this.createThreads();
@@ -640,13 +645,13 @@ namespace Ferretto.VW.InverterDriver
                 }
                 else
                 {
-                    logger.Log(LogLevel.Debug, String.Format("Unable to connect to inverter [IP:{0}]", this.IPAddressToConnect));
+                    // logger.Log(LogLevel.Debug, String.Format("Unable to connect to inverter [IP:{0}]", this.IPAddressToConnect));
                     Connected?.Invoke(this, new ConnectedEventArgs(false));
                 }
             }
             catch (SocketException exc)
             {
-                logger.Log(LogLevel.Debug, String.Format("Connection to inverter failed [error message: {0}]", exc.Message));
+                // logger.Log(LogLevel.Debug, String.Format("Connection to inverter failed [error message: {0}]", exc.Message));
                 this.LastError = InverterDriverErrors.GenericError;
                 Error?.Invoke(this, new ErrorEventArgs(this.LastError));
                 bSuccess = false;
@@ -660,7 +665,7 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         private void createThreads()
         {
-            logger.Log(LogLevel.Debug, String.Format("Create main Working thread."));
+            // logger.Log(LogLevel.Debug, String.Format("Create main Working thread."));
             this.eventToSendPacket = new AutoResetEvent(false);
             this.regWaitForMainThread = ThreadPool.RegisterWaitForSingleObject(this.eventToSendPacket, this.onMainWorkingThread, null, -1, false);
 
@@ -677,7 +682,7 @@ namespace Ferretto.VW.InverterDriver
         private void destroyThread()
         {
             this.regWaitForMainThread?.Unregister(this.eventToSendPacket);
-            logger.Log(LogLevel.Debug, String.Format("Release main Working thread."));
+            // logger.Log(LogLevel.Debug, String.Format("Release main Working thread."));
         }
 
         /// <summary>
@@ -814,10 +819,10 @@ namespace Ferretto.VW.InverterDriver
             this.TimeSendingPacket = t;
 
             var isHeartBeat = false;
-            lock (lockObj)
-            {
-                isHeartBeat = this.HeartBeat;
-            }
+            //lock (lockObj)
+            //{
+            //    isHeartBeat = this.HeartBeat;
+            //}
 
             // Send a request
             if (isHeartBeat)
@@ -845,7 +850,7 @@ namespace Ferretto.VW.InverterDriver
                         this.RequestList.RemoveAt(0);
                     }
 
-                    logger.Log(LogLevel.Debug, String.Format("Send External Request Size of List: {0} Time elapsed: {1}", this.RequestList.Count, offsetTime_ms));
+                    // logger.Log(LogLevel.Debug, String.Format("Send External Request Size of List: {0} Time elapsed: {1}", this.RequestList.Count, offsetTime_ms));
                 }
                 else
                 {
@@ -928,7 +933,7 @@ namespace Ferretto.VW.InverterDriver
             }
             catch (SocketException exc)
             {
-                logger.Log(LogLevel.Debug, String.Format("Send telegram to inverter failed [error Message: {0}]", exc.Message));
+                // logger.Log(LogLevel.Debug, String.Format("Send telegram to inverter failed [error Message: {0}]", exc.Message));
                 // TODO: Warning? Handle the exception?
             }
         }
@@ -953,7 +958,7 @@ namespace Ferretto.VW.InverterDriver
             }
             catch (SocketException exc)
             {
-                logger.Log(LogLevel.Debug, String.Format("Asyncronously receive message invoke failed [error Message: {0}]", exc.Message));
+                // logger.Log(LogLevel.Debug, String.Format("Asyncronously receive message invoke failed [error Message: {0}]", exc.Message));
                 // TODO: Warning? Handle the exception?
             }
         }
