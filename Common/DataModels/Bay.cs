@@ -25,7 +25,7 @@ namespace Ferretto.Common.DataModels
 
         public int? MachineId { get; set; }
 
-        public List<Mission> Missions { get; set; }
+        public List<Mission> Missions { get; }
 
         public IEnumerable<SchedulerRequest> SchedulerRequests { get; set; }
 
