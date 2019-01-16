@@ -11,7 +11,7 @@ namespace Ferretto.Common.DataModels
 
         public string Id { get; set; }
 
-        public List<Machine> Machines { get; }
+        public List<Machine> Machines { get; set; }
 
         #endregion Properties
     }

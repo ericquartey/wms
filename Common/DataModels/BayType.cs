@@ -7,7 +7,7 @@ namespace Ferretto.Common.DataModels
     {
         #region Properties
 
-        public List<Bay> Bays { get; }
+        public List<Bay> Bays { get; set; }
 
         public string Description { get; set; }
 
