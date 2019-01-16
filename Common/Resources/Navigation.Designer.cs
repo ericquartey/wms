@@ -259,6 +259,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Details of Row List.
+        /// </summary>
+        public static string ListRowDetails {
+            get {
+                return ResourceManager.GetString("ListRowDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List Row Statuses.
         /// </summary>
         public static string ListRowStatuses {
@@ -385,6 +394,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Missions.
+        /// </summary>
+        public static string Missions {
+            get {
+                return ResourceManager.GetString("Missions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Others.
         /// </summary>
         public static string Others {
@@ -417,6 +435,33 @@ namespace Ferretto.Common.Resources {
         public static string PutLists {
             get {
                 return ResourceManager.GetString("PutLists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scheduler.
+        /// </summary>
+        public static string Scheduler {
+            get {
+                return ResourceManager.GetString("Scheduler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scheduler Request.
+        /// </summary>
+        public static string SchedulerRequest {
+            get {
+                return ResourceManager.GetString("SchedulerRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Requests.
+        /// </summary>
+        public static string SchedulerRequests {
+            get {
+                return ResourceManager.GetString("SchedulerRequests", resourceCulture);
             }
         }
         

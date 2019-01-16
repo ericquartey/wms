@@ -9,13 +9,13 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Methods
 
-        Task<OperationResult> AddRange(IEnumerable<ICompartment> compartments);
-
-        Task<int> DeleteAsync(int id);
+        Task<OperationResult> AddRangeAsync(IEnumerable<ICompartment> compartments);
 
         IQueryable<Compartment> GetByItemId(int id);
 
         IQueryable<CompartmentDetails> GetByLoadingUnitId(int id);
+
+        Task<int?> GetMaxCapacityAsync(int? width, int? height, int itemId);
 
         CompartmentDetails GetNew();
 

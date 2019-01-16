@@ -22,7 +22,7 @@ namespace Ferretto.VW.RemoteIODriver
     {
         #region Fields
 
-        private const int DELAY_TO_CLOSE = 250;
+        private const int DELAY_TO_CLOSE = 250; // ms
 
         private const ushort INPUT_ORIGIN = 0;
 
@@ -32,13 +32,9 @@ namespace Ferretto.VW.RemoteIODriver
 
         private const ushort OUTPUT_QUANTITY = 5;
 
-        private const int PULSE_TIME = 350;
+        private const int PULSE_TIME = 350; // ms
 
         private const int TIME_OUT = 100; // ms
-
-        // ms
-
-        // ms
 
         private static readonly object locker = new object();
 
@@ -172,8 +168,8 @@ namespace Ferretto.VW.RemoteIODriver
             // Just wait before to close the TCPClient object
             Thread.Sleep(DELAY_TO_CLOSE);
 
-            this.client.Close();
-            this.client.Dispose();
+            this.client?.Close();
+            this.client?.Dispose();
             this.bConnected = false;
         }
 

@@ -25,7 +25,7 @@ namespace Ferretto.Common.Controls
         public ThreadedVisualHelper(
             BackgroundVisualHost.CreateVisualContent createContent,
             Action invalidateMeasure)
-        {            
+        {
             this.createContent = createContent;
             this.invalidateMeasure = invalidateMeasure;
 
@@ -44,7 +44,7 @@ namespace Ferretto.Common.Controls
 
         public Size DesiredSize { get; private set; }
 
-        public HostVisual HostVisual { get { return this.hostVisual; } }
+        public HostVisual HostVisual => this.hostVisual;
 
         private Dispatcher Dispatcher { get; set; }
 

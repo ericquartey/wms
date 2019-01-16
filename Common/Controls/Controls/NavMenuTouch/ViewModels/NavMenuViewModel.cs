@@ -6,10 +6,27 @@ namespace Ferretto.Common.Controls
 {
     public class NavMenuViewModel
     {
+        #region Constructors
+
         public NavMenuViewModel()
         {
             this.Inizialize();
         }
+
+        public NavMenuViewModel(ObservableCollection<NavMenuItem> items)
+        {
+            this.Items = items;
+        }
+
+        #endregion Constructors
+
+        #region Properties
+
+        public ObservableCollection<NavMenuItem> Items { get; set; }
+
+        #endregion Properties
+
+        #region Methods
 
         private void Inizialize()
         {
@@ -21,11 +38,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public NavMenuViewModel(ObservableCollection<NavMenuItem> items)
-        {
-            this.Items = items;
-        }
-
-        public ObservableCollection<NavMenuItem> Items { get; set; }
+        #endregion Methods
     }
 }

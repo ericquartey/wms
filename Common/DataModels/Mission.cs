@@ -1,7 +1,9 @@
-﻿namespace Ferretto.Common.DataModels
+﻿using System;
+
+namespace Ferretto.Common.DataModels
 {
     // Missione
-    public sealed class Mission : IDataModel
+    public sealed class Mission : IDataModel, ITimestamped
     {
         #region Properties
 
@@ -17,6 +19,8 @@
 
         public int? CompartmentId { get; set; }
 
+        public DateTime CreationDate { get; set; }
+
         public int Id { get; set; }
 
         public Item Item { get; set; }
@@ -30,6 +34,8 @@
         public ItemListRow ItemListRow { get; set; }
 
         public int? ItemListRowId { get; set; }
+
+        public DateTime LastModificationDate { get; set; }
 
         public LoadingUnit LoadingUnit { get; set; }
 

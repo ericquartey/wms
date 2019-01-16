@@ -35,7 +35,7 @@ namespace Ferretto.Common.Controls.Services
 
         #region Properties
 
-        public IInputElement FocusedElement => this.currentElement as IInputElement;
+        public IInputElement FocusedElement => this.currentElement;
 
         #endregion Properties
 
@@ -47,7 +47,7 @@ namespace Ferretto.Common.Controls.Services
 
             if (key.Contains("NumPad"))
             {
-                key = key.Replace("NumPad", "");
+                key = key.Replace("NumPad", string.Empty);
             }
 
             if (key.Equals("Space"))
@@ -111,7 +111,7 @@ namespace Ferretto.Common.Controls.Services
             }
         }
 
-        public void RaiseEvent(System.Windows.Input.Key key)
+        public void RaiseEvent(Key key)
         {
             if (Keyboard.PrimaryDevice.ActiveSource != null)
             {
@@ -119,7 +119,8 @@ namespace Ferretto.Common.Controls.Services
                     new KeyEventArgs(
                         Keyboard.PrimaryDevice,
                         Keyboard.PrimaryDevice.ActiveSource,
-                        0, (System.Windows.Input.Key)key)
+                        0,
+                        key)
                     {
                         RoutedEvent = Keyboard.KeyDownEvent
                     });
@@ -138,10 +139,10 @@ namespace Ferretto.Common.Controls.Services
 
         private static bool IsValidKey(System.Windows.Input.Key key)
         {
-            return ((key >= System.Windows.Input.Key.A && key <= System.Windows.Input.Key.Z) ||
+            return (key >= System.Windows.Input.Key.A && key <= System.Windows.Input.Key.Z) ||
                     (key >= System.Windows.Input.Key.D0 && key <= System.Windows.Input.Key.D9) ||
                     (key >= System.Windows.Input.Key.F1 && key <= System.Windows.Input.Key.F24) ||
-                    (key >= System.Windows.Input.Key.NumPad0 && key <= System.Windows.Input.Key.NumPad9));
+                    (key >= System.Windows.Input.Key.NumPad0 && key <= System.Windows.Input.Key.NumPad9);
         }
 
         private void ControlFocusHandleKeyPress(object sender, KeyEventArgs e)
@@ -158,21 +159,24 @@ namespace Ferretto.Common.Controls.Services
 
             var origKey = (e.SystemKey != System.Windows.Input.Key.None) ? e.SystemKey : e.Key;
 
-            var keySt = (Key)origKey;
+            var keySt = origKey;
 
             if (Keyboard.Modifiers == (System.Windows.Input.ModifierKeys.Control | System.Windows.Input.ModifierKeys.Shift))
             {
                 isControl = true;
                 isShift = true;
             }
+
             if (Keyboard.Modifiers == System.Windows.Input.ModifierKeys.Control)
             {
                 isControl = true;
             }
+
             if (Keyboard.Modifiers == System.Windows.Input.ModifierKeys.Shift)
             {
                 isShift = true;
             }
+
             if (Keyboard.Modifiers == System.Windows.Input.ModifierKeys.Alt)
             {
                 isTab = true;
@@ -183,6 +187,7 @@ namespace Ferretto.Common.Controls.Services
             {
                 return;
             }
+
             shortKey.KeyString = this.GetSensitiveKey(origKey);
 
             this.NotifyShortKey(shortKey, viewModel, e);
@@ -193,7 +198,7 @@ namespace Ferretto.Common.Controls.Services
             this.ControlFocusHandleKeyPress(sender, e);
         }
 
-        private void DxWindow_PreviewMouseDown(Object sender, MouseButtonEventArgs e)
+        private void DxWindow_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             var mouseButton = MouseButtonPressed.None;
             if (e.LeftButton == MouseButtonState.Pressed)
@@ -225,6 +230,7 @@ namespace Ferretto.Common.Controls.Services
             {
                 return ((FrameworkElement)view).DataContext as INavigableViewModel;
             }
+
             return null;
         }
 
@@ -251,13 +257,14 @@ namespace Ferretto.Common.Controls.Services
             {
                 shortKey = new ShortKey(key, false);
             }
+
             return shortKey;
         }
 
         private string GetSensitiveKey(System.Windows.Input.Key key)
         {
             var keySt = GetStringFromKey(key);
-            var isCapsLockOn = ((Keyboard.GetKeyStates(Key.CapsLock) & KeyStates.Toggled) == KeyStates.Toggled);
+            var isCapsLockOn = (Keyboard.GetKeyStates(Key.CapsLock) & KeyStates.Toggled) == KeyStates.Toggled;
             var isShiftKeyPressed = (Keyboard.Modifiers & System.Windows.Input.ModifierKeys.Shift) == System.Windows.Input.ModifierKeys.Shift;
             if (!isCapsLockOn && !isShiftKeyPressed)
             {
@@ -292,7 +299,7 @@ namespace Ferretto.Common.Controls.Services
                 return;
             }
 
-            var dialogFound = LayoutTreeHelper.GetVisualParents(this.currentElement as DependencyObject)
+            var dialogFound = LayoutTreeHelper.GetVisualParents(this.currentElement)
                     .OfType<DXWindow>()
                     .FirstOrDefault();
 
@@ -334,6 +341,7 @@ namespace Ferretto.Common.Controls.Services
                     return isHandled;
                 }
             }
+
             if (handledShortKey != null &&
                 handledShortKey.DoAction != null)
             {
@@ -341,6 +349,7 @@ namespace Ferretto.Common.Controls.Services
                 handledShortKey.DoAction.Invoke(shortAction);
                 isHandled = (isHandled == false) ? shortAction.IsHandled : true;
             }
+
             var isLastHandled = ((IShortKey)viewModel).KeyPress(shortKeyInfo);
             isHandled = (isHandled == false) ? isLastHandled : true;
             return isHandled;

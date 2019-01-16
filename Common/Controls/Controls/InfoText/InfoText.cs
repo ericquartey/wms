@@ -28,7 +28,7 @@ namespace Ferretto.Common.Controls
 
         public SolidColorBrush BackgroundBrush
         {
-            get => (SolidColorBrush) this.GetValue(BackgroundBrushProperty);
+            get => (SolidColorBrush)this.GetValue(BackgroundBrushProperty);
             set => this.SetValue(BackgroundBrushProperty, value);
         }
 
@@ -40,14 +40,28 @@ namespace Ferretto.Common.Controls
 
         public Type EnumType
         {
-            get => (Type) this.GetValue(EnumTypeProperty);
+            get => (Type)this.GetValue(EnumTypeProperty);
             set => this.SetValue(EnumTypeProperty, value);
         }
 
         public bool IsPillVisible
         {
-            get => (bool) this.GetValue(IsPillVisibleProperty);
+            get => (bool)this.GetValue(IsPillVisibleProperty);
             set => this.SetValue(IsPillVisibleProperty, value);
+        }
+
+        public string SymbolName
+        {
+            get
+            {
+                if (this.Content == null || this.EnumType == null || this.Content is Enum == false)
+                {
+                    return null;
+                }
+
+                var enumValue = Enum.GetName(this.EnumType, this.Content);
+                return $"{this.EnumType.Name}{enumValue}";
+            }
         }
 
         #endregion Properties
@@ -82,7 +96,7 @@ namespace Ferretto.Common.Controls
                     : null;
 
                 this.BackgroundBrush = resourceValue != null
-                    ? new SolidColorBrush((Color) ColorConverter.ConvertFromString(resourceValue))
+                    ? new SolidColorBrush((Color)ColorConverter.ConvertFromString(resourceValue))
                     : Brushes.Transparent;
 
                 this.ContentText = (this.Content as Enum).GetDisplayName(this.EnumType);
@@ -90,20 +104,6 @@ namespace Ferretto.Common.Controls
             else
             {
                 this.ContentText = this.Content;
-            }
-        }
-
-        public string SymbolName
-        {
-            get
-            {
-                if (this.Content == null || this.EnumType == null || this.Content is Enum == false)
-                {
-                    return null;
-                }
-
-                var enumValue = Enum.GetName(this.EnumType, this.Content);
-                return $"{this.EnumType.Name}{enumValue}";
             }
         }
 

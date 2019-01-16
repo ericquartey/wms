@@ -12,6 +12,11 @@ namespace Ferretto.Common.Utils
 
         public static string GetDisplayName(this Enum enumValue, Type enumType)
         {
+            if (enumType == null || enumValue == null)
+            {
+                return string.Empty;
+            }
+
             var displayName = $"[{enumValue}]";
             var info = enumType.GetMember(enumValue.ToString()).First();
 
@@ -27,7 +32,7 @@ namespace Ferretto.Common.Utils
                     }
                     else
                     {
-                        displayName = nameAttr != null ? nameAttr.Name : enumValue.ToString();
+                        displayName = nameAttr.Name;
                     }
                 }
             }

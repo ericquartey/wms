@@ -22,6 +22,7 @@ cell => cell.CellStatusId == 1;
                    cell => cell.CellStatusId == 3;
 
         private readonly IDatabaseContextService dataContext;
+
         private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
@@ -40,15 +41,9 @@ cell => cell.CellStatusId == 1;
 
         #region Methods
 
-        public Task<OperationResult> Add(CellDetails model)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<OperationResult> AddAsync(CellDetails model) => throw new NotSupportedException();
 
-        public int Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
         public IQueryable<Cell> GetAll()
         {
@@ -57,25 +52,23 @@ cell => cell.CellStatusId == 1;
 
         public int GetAllCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dc = this.dataContext.Current)
             {
-                return dataContext.Cells.AsNoTracking().Count();
+                return dc.Cells.AsNoTracking().Count();
             }
         }
 
         public IQueryable<Enumeration> GetByAisleId(int aisleId)
         {
             return this.dataContext.Current.Cells
-                .AsNoTracking()
-                .Include(c => c.Aisle)
-                .ThenInclude(a => a.Area)
-                .Where(c => c.AisleId == aisleId)
-                .OrderBy(c => c.CellNumber)
-                .Select(c => new Enumeration(
-                    c.Id,
-                    $"{c.Aisle.Area.Name} - {c.Aisle.Name} - Cell {c.CellNumber} (Floor {c.Floor}, Column {c.Column}, {c.Side})") //TODO: localize string
-                );
+                       .AsNoTracking()
+                       .Include(c => c.Aisle)
+                       .ThenInclude(a => a.Area)
+                       .Where(c => c.AisleId == aisleId)
+                       .OrderBy(c => c.CellNumber)
+                       .Select(c => new Enumeration(
+                                   c.Id,
+                                   $"{c.Aisle.Area.Name} - {c.Aisle.Name} - Cell {c.CellNumber} (Floor {c.Floor}, Column {c.Column}, {c.Side})")); // TODO: localize string
         }
 
         public IQueryable<Enumeration> GetByAreaId(int areaId)
@@ -89,15 +82,14 @@ cell => cell.CellStatusId == 1;
                 .ThenBy(c => c.CellNumber)
                 .Select(c => new Enumeration(
                     c.Id,
-                    $"{c.Aisle.Area.Name} - {c.Aisle.Name} - Cell {c.CellNumber} (Floor {c.Floor}, Column {c.Column}, {c.Side})") //TODO: localize string
-                );
+                    $"{c.Aisle.Area.Name} - {c.Aisle.Name} - Cell {c.CellNumber} (Floor {c.Floor}, Column {c.Column}, {c.Side})")); // TODO: localize string
         }
 
-        public async Task<CellDetails> GetById(int id)
+        public async Task<CellDetails> GetByIdAsync(int id)
         {
-            var dataContext = this.dataContext.Current;
+            var dc = this.dataContext.Current;
 
-            var cellDetails = await dataContext.Cells
+            var cellDetails = await dc.Cells
                 .Where(c => c.Id == id)
                 .Include(c => c.Aisle)
                 .Select(c => new CellDetails
@@ -132,12 +124,11 @@ cell => cell.CellStatusId == 1;
             return GetAllCellsWithFilter(this.dataContext.Current, ClassAFilter);
         }
 
-        public Int32 GetWithClassACount()
+        public int GetWithClassACount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dc = this.dataContext.Current)
             {
-                return dataContext.Cells.AsNoTracking().Count(ClassAFilter);
+                return dc.Cells.AsNoTracking().Count(ClassAFilter);
             }
         }
 
@@ -146,12 +137,11 @@ cell => cell.CellStatusId == 1;
             return GetAllCellsWithFilter(this.dataContext.Current, StatusEmptyFilter);
         }
 
-        public Int32 GetWithStatusEmptyCount()
+        public int GetWithStatusEmptyCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dc = this.dataContext.Current)
             {
-                return dataContext.Cells.AsNoTracking().Count(StatusEmptyFilter);
+                return dc.Cells.AsNoTracking().Count(StatusEmptyFilter);
             }
         }
 
@@ -160,39 +150,45 @@ cell => cell.CellStatusId == 1;
             return GetAllCellsWithFilter(this.dataContext.Current, StatusFullFilter);
         }
 
-        public Int32 GetWithStatusFullCount()
+        public int GetWithStatusFullCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dc = this.dataContext.Current)
             {
-                return dataContext.Cells.AsNoTracking().Count(StatusFullFilter);
+                return dc.Cells.AsNoTracking().Count(StatusFullFilter);
             }
         }
 
         public bool HasAnyLoadingUnits(int cellId)
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dc = this.dataContext.Current)
             {
-                return dataContext.LoadingUnits.AsNoTracking().Any(l => l.CellId == cellId);
+                return dc.LoadingUnits.AsNoTracking().Any(l => l.CellId == cellId);
             }
         }
 
-        public int Save(CellDetails model)
+        public async Task<OperationResult> SaveAsync(CellDetails model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            try
             {
-                var existingModel = dataContext.Cells.Find(model.Id);
+                using (var dc = this.dataContext.Current)
+                {
+                    var existingModel = dc.Cells.Find(model.Id);
 
-                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                    dc.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return dataContext.SaveChanges();
+                    var changedEntityCount = await dc.SaveChangesAsync();
+
+                    return new OperationResult(changedEntityCount > 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(ex);
             }
         }
 
@@ -244,7 +240,7 @@ cell => cell.CellStatusId == 1;
                         YCoordinate = a.Cell.YCoordinate,
                         ZCoordinate = a.Cell.ZCoordinate,
                         LoadingUnitsCount = b != null ? b.LoadingUnitsCount : 0,
-                        LoadingUnitsDescription = b != null ? b.LoadingUnitsDescription : "",
+                        LoadingUnitsDescription = b != null ? b.LoadingUnitsDescription : string.Empty,
                     });
         }
 

@@ -743,58 +743,69 @@ INSERT INTO CompartmentStatuses (Id, Description) VALUES (5, 'Reserved');
 INSERT INTO CompartmentStatuses (Id, Description) VALUES (6, 'Disabled');
 SET IDENTITY_INSERT CompartmentStatuses OFF;
 
+DECLARE
+    @CompTypesId_100x100 int = 3,
+    @CompTypesId_50x50 int = 2,
+    @CompTypesId_800x1200 int = 1,
+    @CompTypesId_500x215 int = 5,
+    @CompTypesId_500x325 int = 4;
+
 SET IDENTITY_INSERT CompartmentTypes ON;
-INSERT INTO CompartmentTypes (Id, Width, Height) VALUES (1, 800, 1200);
-INSERT INTO CompartmentTypes (Id, Width, Height) VALUES (2, 50, 50);
-INSERT INTO CompartmentTypes (Id, Width, Height) VALUES (3, 100, 100);
+INSERT INTO CompartmentTypes (Id, Width, Height) VALUES (@CompTypesId_800x1200, 800, 1200);
+INSERT INTO CompartmentTypes (Id, Width, Height) VALUES (@CompTypesId_50x50, 50, 50);
+INSERT INTO CompartmentTypes (Id, Width, Height) VALUES (@CompTypesId_100x100, 100, 100);
+INSERT INTO CompartmentTypes (Id, Width, Height) VALUES (@CompTypesId_500x325, 500, 325);
+INSERT INTO CompartmentTypes (Id, Width, Height) VALUES (@CompTypesId_500x215, 500, 215);
 SET IDENTITY_INSERT CompartmentTypes OFF;
 
-INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (1, 1, 100);
-INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (2, 1, 100);
-INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (2, 2, 200);
-INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (2, 3, 300);
-INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (2, 4, 400);
-INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (2, 5, 500);
-INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (2, 6, 600);
-INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (3, 4, 1400);
-INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (3, 5, 1500);
-INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (3, 6, 1600);
+INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (@CompTypesId_800x1200, 1, 100);
+INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (@CompTypesId_50x50, 1, 100);
+INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (@CompTypesId_50x50, 2, 200);
+INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (@CompTypesId_50x50, 3, 300);
+INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (@CompTypesId_50x50, 4, 400);
+INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (@CompTypesId_50x50, 5, 500);
+INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (@CompTypesId_50x50, 6, 600);
+INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (@CompTypesId_100x100, 4, 1400);
+INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (@CompTypesId_100x100, 5, 1500);
+INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (@CompTypesId_100x100, 6, 1600);
+INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (@CompTypesId_500x215, 1, 100);
+INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (@CompTypesId_500x325, 1, 100);
+INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (@CompTypesId_500x325, 2, 666);
 
 SET IDENTITY_INSERT Compartments ON;
+-- manual area
 INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (1, 1, 1, 0, 1, 1, 1, 2, 5, 's1s1s1', 's2s2s2', 'llllll', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+  VALUES (1, 1, @CompTypesId_50x50, 0, 1, 1, 1, 2, 5, 's1s1s1', 's2s2s2', 'llllll', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (2, 1, 1, 0, 1, 1, 1, 2, 10, 's3s3s3', 's4s4s4', 'mmmmmm', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
-
-INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, Width, Height, MaxCapacity, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (3, 3, 2, 0, 3, 1, 1, 2, 0, 's5s5s5', 's6s6s6', 'nnnnnn', 0, 0, 200, 200, 100, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
-INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, Width, Height, MaxCapacity, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (4, 3, 2, 0, 3, 1, 1, 2, 5, 's7s7s7', 's8s8s8', 'pppppp', 0, 200, 200, 400, 100, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
-INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, Width, Height, MaxCapacity, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (5, 3, 2, 0, 4, 1, 1, 2, 10, 's9s9s9', 's10s10s10', 'rrrrrr', 0, 600, 200, 50, 100, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
-INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, Width, Height, MaxCapacity, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (6, 3, 2, 0, 4, 1, 1, 2, 20, 's11s11s11', 's12s12s12', 'tttttt', 200, 0, 400, 400, 100, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
-INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, Width, Height, MaxCapacity, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (7, 3, 2, 0, 5, 1, 1, 2, 30, 's13s13s13', 's14s14s14', 'uuuuuu', 200, 400, 400, 250, 100, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
-INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, Width, Height, MaxCapacity, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (8, 3, 2, 0, 5, 1, 1, 2, 40, 's15s15s15', 's16s16s16', 'vvvvvv', 600, 0, 200, 250, 100, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
-INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, Width, Height, MaxCapacity, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (9, 3, 2, 0, 6, 1, 1, 2, 50, 's17s17s17', 's18s18s18', 'wwwwww', 600, 250, 200, 200, 100, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
-INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, Width, Height, MaxCapacity, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (10, 3, 2, 0, 6, 1, 1, 2, 60, 's19s19s19', 's20s20s20', 'xxxxxx', 600, 450, 200, 200, 100, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
-INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, Width, Height, MaxCapacity, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (11, 3, 2, 0, 6, 1, 1, 2, 70, 's21s21s21', 's22s22s22', 'yyyyyy', 800, 0, 200, 650, 100, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
-INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, Width, Height, MaxCapacity, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (12, 3, 3, 0, 4, 1, 1, 2, 80, 's5s5s5', 's6s6s6', 'nnnnnn', 1000, 0, 500, 200, 100, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
-INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, Width, Height, MaxCapacity, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (13, 3, 3, 0, 5, 1, 1, 2, 90, 's7s7s7', 's8s8s8', 'pppppp', 1000, 200, 500, 400, 100, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
-INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, Width, Height, MaxCapacity, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (14, 3, 3, 0, 6, 1, 1, 2, 100, 's9s9s9', 's10s10s10', 'rrrrrr', 1000, 600, 500, 50, 100, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
-INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, Width, Height, MaxCapacity, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-
-  VALUES (15, 4, 2, 0, 3, 1, 1, 2, 40, 'sss111', 'sss222', 'qqqqqq', 0, 0, 200, 200, 100, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+  VALUES (2, 2, @CompTypesId_50x50, 0, 1, 1, 1, 2, 10, 's3s3s3', 's4s4s4', 'mmmmmm', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+-- vertimag
+INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
+  VALUES (3, 3, @CompTypesId_500x325, 0, 1, 1, 1, 2, 0, 's5s5s5', 's6s6s6', 'nnnnnn', 0, 0, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
+  VALUES (4, 3, @CompTypesId_500x325, 0, 1, 1, 1, 2, 5, 's7s7s7', 's8s8s8', 'pppppp', 0, 325, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
+  VALUES (5, 3, @CompTypesId_500x215, 0, 1, 1, 1, 2, 10, 's9s9s9', 's10s10s10', 'rrrrrr', 500, 0, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
+  VALUES (6, 3, @CompTypesId_500x215, 0, 1, 1, 1, 2, 20, 's11s11s11', 's12s12s12', 'tttttt', 500, 215, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
+  VALUES (7, 3, @CompTypesId_500x215, 0, 1, 1, 1, 2, 30, 's13s13s13', 's14s14s14', 'uuuuuu', 500, 430, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
+  VALUES (8, 3, @CompTypesId_500x325, 0, 1, 1, 1, 2, 40, 's15s15s15', 's16s16s16', 'vvvvvv', 1000, 0, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
+  VALUES (9, 3, @CompTypesId_500x325, 0, 1, 1, 1, 2, 50, 's17s17s17', 's18s18s18', 'wwwwww', 1000, 325, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
+  VALUES (10, 3, @CompTypesId_500x215, 0, 1, 1, 1, 2, 60, 's19s19s19', 's20s20s20', 'xxxxxx', 1500, 0, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
+  VALUES (11, 3, @CompTypesId_500x215, 0, 1, 1, 1, 2, 70, 's21s21s21', 's22s22s22', 'yyyyyy', 1500, 215, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
+  VALUES (12, 3, @CompTypesId_500x215, 0, 1, 1, 1, 2, 80, 's5s5s5', 's6s6s6', 'nnnnnn', 1500, 430, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
+  VALUES (13, 3, @CompTypesId_500x325, 0, 1, 1, 1, 2, 90, 's7s7s7', 's8s8s8', 'pppppp', 2000, 0, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
+  VALUES (14, 3, @CompTypesId_500x325, 0, 1, 1, 1, 2, 100, 's9s9s9', 's10s10s10', 'rrrrrr', 2000, 325, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
+  VALUES (15, 4, @CompTypesId_50x50, 0, 3, 1, 1, 2, 40, 'sss111', 'sss222', 'qqqqqq', 0, 0, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 SET IDENTITY_INSERT Compartments OFF;
-
 
 -- Machines
 INSERT INTO MachineTypes (Id, Description) VALUES ('T', 'Traslo');
@@ -884,5 +895,23 @@ INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, MaterialStatus
 INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequiredQuantity, DispatchedQuantity, Status) VALUES (3, @ItemList1_Id, 'Code 3', 1, 1, 1, 1, 'Third Item'  , 25, 10, @ItemListStatus_Comp);
 SET IDENTITY_INSERT ItemListRows OFF;
 
+-- Missions
+SET IDENTITY_INSERT Missions ON;
+INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListId, ItemListRowId, ItemId, Sub1, Sub2, MaterialStatusId, PackageTypeId, Lot, RegistrationNumber, RequiredQuantity, Priority, Status, Type) VALUES (1, 1, 1, 1, 1, 1, 1 , 1, 'A', 'B', 1, 1, 'LOTTO 1', 112233, 2, 1, 'N','P');
+INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListId, ItemListRowId, ItemId, Sub1, Sub2, MaterialStatusId, PackageTypeId, Lot, RegistrationNumber, RequiredQuantity, Priority, Status, Type) VALUES (2, 1, 1, 1, 1, 1, 1 , 1, 'A', 'B', 1, 1, 'LOTTO 2', 112233, 2, 1, 'W','B');
+INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListId, ItemListRowId, ItemId, Sub1, Sub2, MaterialStatusId, PackageTypeId, Lot, RegistrationNumber, RequiredQuantity, Priority, Status, Type) VALUES (3, 1, 1, 1, 1, 1, 1 , 1, 'A', 'B', 1, 1, 'LOTTO 3', 112233, 2, 1, 'X','I');
+INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListId, ItemListRowId, ItemId, Sub1, Sub2, MaterialStatusId, PackageTypeId, Lot, RegistrationNumber, RequiredQuantity, Priority, Status, Type) VALUES (4, 1, 1, 1, 1, 1, 1 , 1, 'A', 'B', 1, 1, 'LOTTO 4', 112233, 2, 1, 'C','T');
+INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListId, ItemListRowId, ItemId, Sub1, Sub2, MaterialStatusId, PackageTypeId, Lot, RegistrationNumber, RequiredQuantity, Priority, Status, Type) VALUES (5, 1, 1, 1, 1, 1, 1 , 1, 'A', 'B', 1, 1, 'LOTTO 5', 112233, 2, 1, 'E','R');
+INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListId, ItemListRowId, ItemId, Sub1, Sub2, MaterialStatusId, PackageTypeId, Lot, RegistrationNumber, RequiredQuantity, Priority, Status, Type) VALUES (6, 1, 1, 1, 1, 1, 1 , 1, 'A', 'B', 1, 1, 'LOTTO 6', 112233, 2, 1, 'N','O');
+SET IDENTITY_INSERT Missions OFF;
+
+
+-- Scheduler Request
+SET IDENTITY_INSERT SchedulerRequests ON;
+INSERT INTO SchedulerRequests (Id,AreaId,BayId,IsInstant,ItemId,ListId,ListRowId,LoadingUnitId,LoadingUnitTypeId,Lot,MaterialStatusId,OperationType,PackageTypeId,RegistrationNumber,RequestedQuantity,Sub1,Sub2,DispatchedQuantity) VALUES (4, 1, 1, 1, 1, 1, 1, 1,1, 'LOTTO 1', 1, 'W', 1, 112233, 20, 's1s1s1', 's2s2s2', 1);
+INSERT INTO SchedulerRequests (Id,AreaId,BayId,IsInstant,ItemId,ListId,ListRowId,LoadingUnitId,LoadingUnitTypeId,Lot,MaterialStatusId,OperationType,PackageTypeId,RegistrationNumber,RequestedQuantity,Sub1,Sub2,DispatchedQuantity) VALUES (5, 2, 1, 1, 1, 1, 1, 1,1, 'LOTTO 2', 1, 'R', 1, 112233, 20, 's1s1s1', 's2s2s2', 1);
+INSERT INTO SchedulerRequests (Id,AreaId,BayId,IsInstant,ItemId,ListId,ListRowId,LoadingUnitId,LoadingUnitTypeId,Lot,MaterialStatusId,OperationType,PackageTypeId,RegistrationNumber,RequestedQuantity,Sub1,Sub2,DispatchedQuantity) VALUES (6, 2, 1, 1, 1, 1, 1, 1,1, 'LOTTO 3', 1, 'O', 1, 112233, 20, 's1s1s1', 's2s2s2', 1);
+INSERT INTO SchedulerRequests (Id,AreaId,BayId,IsInstant,ItemId,ListId,ListRowId,LoadingUnitId,LoadingUnitTypeId,Lot,MaterialStatusId,OperationType,PackageTypeId,RegistrationNumber,RequestedQuantity,Sub1,Sub2,DispatchedQuantity) VALUES (7, 2, 1, 1, 1, 1, 1, 1,1, 'LOTTO 4', 1, 'I', 1, 112233, 20, 's1s1s1', 's2s2s2', 1);
+SET IDENTITY_INSERT SchedulerRequests OFF;
 
 COMMIT;

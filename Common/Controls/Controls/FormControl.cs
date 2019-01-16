@@ -13,6 +13,7 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         private const string DisplayAttributeNameProperty = "Name";
+
         private const string DisplayAttributeResourceTypeProperty = "ResourceType";
 
         #endregion Fields
@@ -47,8 +48,10 @@ namespace Ferretto.Common.Controls
             }
 
             // get the Display attribute argument values
-            var name = (string)displayAttributeData.NamedArguments.Single(arg => arg.MemberName == DisplayAttributeNameProperty).TypedValue.Value;
-            var resourceType = displayAttributeData.NamedArguments.Single(arg => arg.MemberName == DisplayAttributeResourceTypeProperty).TypedValue.Value as System.Type;
+            var name = (string)displayAttributeData.NamedArguments.Single(
+                arg => arg.MemberName == DisplayAttributeNameProperty).TypedValue.Value;
+            var resourceType = displayAttributeData.NamedArguments.SingleOrDefault(
+                arg => arg.MemberName == DisplayAttributeResourceTypeProperty).TypedValue.Value as System.Type;
 
             if (name == null || resourceType == null)
             {
@@ -56,7 +59,6 @@ namespace Ferretto.Common.Controls
             }
 
             var propertyInfo = resourceType.GetProperty(name);
-
             if (propertyInfo == null)
             {
                 NLog.LogManager
@@ -98,6 +100,7 @@ namespace Ferretto.Common.Controls
 
                     return null;
                 }
+
                 type = p.PropertyType;
             }
 

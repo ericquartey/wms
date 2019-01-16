@@ -16,8 +16,11 @@
         #region Properties
 
         public object Element { get; set; }
+
         public bool IsHandled { get; set; }
+
         public ShortKey ShortKey { get; set; }
+
         public object ViewModel { get; set; }
 
         #endregion Properties

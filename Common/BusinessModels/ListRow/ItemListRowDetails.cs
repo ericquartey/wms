@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
@@ -10,31 +12,63 @@ namespace Ferretto.Common.BusinessModels
         #region Fields
 
         private string code;
+
         private DateTime? completionDate;
+
         private DateTime creationDate;
+
         private int dispatchedQuantity;
+
         private string itemDescription;
+
+        private int itemId;
+
         private string itemListCode;
+
         private string itemListDescription;
+
         private ItemListRowStatus itemListRowStatus;
+
         private ItemListStatus itemListStatus;
+
         private ItemListType itemListType;
+
+        private string itemUnitMeasure;
+
         private DateTime? lastExecutionDate;
+
         private DateTime? lastModificationDate;
+
         private string lot;
+
         private IEnumerable<Enumeration> materialStatusChoices;
+
         private int? materialStatusId;
+
         private IEnumerable<Enumeration> packageTypeChoices;
+
         private int? packageTypeId;
+
         private string registrationNumber;
+
         private int requiredQuantity;
+
         private int rowPriority;
+
         private string sub1;
+
         private string sub2;
 
         #endregion Fields
 
         #region Properties
+
+        public bool CanBeExecuted
+        {
+            get => this.itemListRowStatus == ItemListRowStatus.Incomplete
+                    || this.itemListRowStatus == ItemListRowStatus.Suspended
+                    || this.itemListRowStatus == ItemListRowStatus.Waiting;
+        }
 
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string Code { get => this.code; set => this.SetProperty(ref this.code, value); }
@@ -51,6 +85,9 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.ItemListRowItemDescription), ResourceType = typeof(BusinessObjects))]
         public string ItemDescription { get => this.itemDescription; set => this.SetProperty(ref this.itemDescription, value); }
 
+        [Display(Name = nameof(BusinessObjects.ItemListRowItemDescription), ResourceType = typeof(BusinessObjects))]
+        public int ItemId { get => this.itemId; set => this.SetProperty(ref this.itemId, value); }
+
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string ItemListCode { get => this.itemListCode; set => this.SetProperty(ref this.itemListCode, value); }
 
@@ -65,6 +102,8 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
         public ItemListType ItemListType { get => this.itemListType; set => this.SetProperty(ref this.itemListType, value); }
+
+        public string ItemUnitMeasure { get => this.itemUnitMeasure; set => this.SetProperty(ref this.itemUnitMeasure, value); }
 
         [Display(Name = nameof(BusinessObjects.LastExecutionDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastExecutionDate { get => this.lastExecutionDate; set => this.SetProperty(ref this.lastExecutionDate, value); }
@@ -81,6 +120,7 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.materialStatusChoices, value);
         }
 
+        [Display(Name = nameof(BusinessObjects.MaterialStatus), ResourceType = typeof(BusinessObjects))]
         public int? MaterialStatusId { get => this.materialStatusId; set => this.SetProperty(ref this.materialStatusId, value); }
 
         public IEnumerable<Enumeration> PackageTypeChoices
@@ -89,6 +129,7 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.packageTypeChoices, value);
         }
 
+        [Display(Name = nameof(BusinessObjects.PackageType), ResourceType = typeof(BusinessObjects))]
         public int? PackageTypeId { get => this.packageTypeId; set => this.SetProperty(ref this.packageTypeId, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowRegistrationNumber), ResourceType = typeof(BusinessObjects))]

@@ -62,13 +62,6 @@ namespace Feretto.Common.BLL.Tests
             var tray = new Tray { Dimension = new Dimension { Height = 100, Width = 100 } };
             var compartment1 = new CompartmentDetails { XPosition = 30, YPosition = 30, Width = 10, Height = 10 };
             var compartment2 = new CompartmentDetails { XPosition = 39, YPosition = 30, Width = 10, Height = 10 };
-            var compartment3 = new CompartmentDetails { XPosition = 39, YPosition = 39, Width = 10, Height = 10 };
-            var compartment4 = new CompartmentDetails { XPosition = 30, YPosition = 29, Width = 10, Height = 10 };
-            var compartment5 = new CompartmentDetails { XPosition = 21, YPosition = 39, Width = 10, Height = 10 };
-            var compartment6 = new CompartmentDetails { XPosition = 21, YPosition = 30, Width = 10, Height = 10 };
-            var compartment7 = new CompartmentDetails { XPosition = 21, YPosition = 21, Width = 10, Height = 10 };
-            var compartment8 = new CompartmentDetails { XPosition = 30, YPosition = 21, Width = 10, Height = 10 };
-            var compartment9 = new CompartmentDetails { XPosition = 39, YPosition = 21, Width = 10, Height = 10 };
 
             tray.AddCompartment(compartment1);
             Assert.IsFalse(tray.CanAddCompartment(compartment2));

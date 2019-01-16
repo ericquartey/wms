@@ -17,6 +17,7 @@ namespace Ferretto.Common.BusinessModels
         #region Properties
 
         public string Description { get; }
+
         public int Id { get; set; }
 
         #endregion Properties

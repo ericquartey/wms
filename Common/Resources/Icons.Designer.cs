@@ -279,6 +279,51 @@ namespace Ferretto.Common.Resources {
         /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_check_circle_black_48dp.png.
         /// </summary>
+        public static string ItemListRowStatusCompleted {
+            get {
+                return ResourceManager.GetString("ItemListRowStatusCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/av/ic_play_circle_filled_black_48dp.png.
+        /// </summary>
+        public static string ItemListRowStatusExecuting {
+            get {
+                return ResourceManager.GetString("ItemListRowStatusExecuting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/alert/ic_error_white_48dp.png.
+        /// </summary>
+        public static string ItemListRowStatusIncomplete {
+            get {
+                return ResourceManager.GetString("ItemListRowStatusIncomplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/av/ic_pause_circle_filled_black_48dp.png.
+        /// </summary>
+        public static string ItemListRowStatusSuspended {
+            get {
+                return ResourceManager.GetString("ItemListRowStatusSuspended", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_watch_later_white_48dp.png.
+        /// </summary>
+        public static string ItemListRowStatusWaiting {
+            get {
+                return ResourceManager.GetString("ItemListRowStatusWaiting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_check_circle_black_48dp.png.
+        /// </summary>
         public static string ItemListStatusCompleted {
             get {
                 return ResourceManager.GetString("ItemListStatusCompleted", resourceCulture);
@@ -700,6 +745,42 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-target-50.png.
+        /// </summary>
+        public static string Missions {
+            get {
+                return ResourceManager.GetString("Missions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-europe-50.png.
+        /// </summary>
+        public static string MissionViewAll {
+            get {
+                return ResourceManager.GetString("MissionViewAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-tick-box-50.png.
+        /// </summary>
+        public static string MissionViewStatusCompleted {
+            get {
+                return ResourceManager.GetString("MissionViewStatusCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-new-50.png.
+        /// </summary>
+        public static string MissionViewStatusNew {
+            get {
+                return ResourceManager.GetString("MissionViewStatusNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/navigation/ic_check_black_24dp.png.
         /// </summary>
         public static string NavigationCheck {
@@ -763,6 +844,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_date_range_white_24dp.png.
+        /// </summary>
+        public static string Scheduler {
+            get {
+                return ResourceManager.GetString("Scheduler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/hardware/ic_cast_black_24dp.png.
         /// </summary>
         public static string SchedulerOffLine {
@@ -777,6 +867,51 @@ namespace Ferretto.Common.Resources {
         public static string SchedulerOnLine {
             get {
                 return ResourceManager.GetString("SchedulerOnLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-insert-50.png.
+        /// </summary>
+        public static string SchedulerRequestOperationInsert {
+            get {
+                return ResourceManager.GetString("SchedulerRequestOperationInsert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-withdraw-50.png.
+        /// </summary>
+        public static string SchedulerRequestOperationWithdraw {
+            get {
+                return ResourceManager.GetString("SchedulerRequestOperationWithdraw", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-ask-question-50.png.
+        /// </summary>
+        public static string SchedulerRequests {
+            get {
+                return ResourceManager.GetString("SchedulerRequests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-europe-50.png.
+        /// </summary>
+        public static string SchedulerRequestViewAll {
+            get {
+                return ResourceManager.GetString("SchedulerRequestViewAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_visibility_black_36dp.png.
+        /// </summary>
+        public static string ShowDetail {
+            get {
+                return ResourceManager.GetString("ShowDetail", resourceCulture);
             }
         }
         

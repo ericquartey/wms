@@ -475,6 +475,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to load data..
+        /// </summary>
+        public static string UnableToLoadData {
+            get {
+                return ResourceManager.GetString("UnableToLoadData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to save changes..
+        /// </summary>
+        public static string UnableToSaveChanges {
+            get {
+                return ResourceManager.GetString("UnableToSaveChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Syntax for WmsHistoryViewAppear is StartModuleName={&lt;module name&gt;}  StartViewName={&lt;view name&gt;}  optional Id={&lt;item id&gt;} ..
         /// </summary>
         public static string WmsHistoryViewAppearSyntax {

@@ -9,17 +9,33 @@ namespace Ferretto.Common.BusinessModels
         #region Fields
 
         private string code;
+
         private DateTime creationDate;
+
         private int dispatchedQuantity;
+
         private string itemDescription;
+
         private ItemListRowStatus itemListRowStatus;
+
+        private string itemUnitMeasure;
+
         private string materialStatusDescription;
+
         private int requiredQuantity;
+
         private int rowPriority;
 
         #endregion Fields
 
         #region Properties
+
+        public bool CanBeExecuted
+        {
+            get => this.itemListRowStatus == ItemListRowStatus.Incomplete
+                    || this.itemListRowStatus == ItemListRowStatus.Suspended
+                    || this.itemListRowStatus == ItemListRowStatus.Waiting;
+        }
 
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string Code { get => this.code; set => this.SetProperty(ref this.code, value); }
@@ -35,6 +51,8 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusDescription), ResourceType = typeof(BusinessObjects))]
         public ItemListRowStatus ItemListRowStatus { get => this.itemListRowStatus; set => this.SetProperty(ref this.itemListRowStatus, value); }
+
+        public string ItemUnitMeasure { get => this.itemUnitMeasure; set => this.SetProperty(ref this.itemUnitMeasure, value); }
 
         [Display(Name = nameof(BusinessObjects.MaterialStatus), ResourceType = typeof(BusinessObjects))]
         public string MaterialStatusDescription { get => this.materialStatusDescription; set => this.SetProperty(ref this.materialStatusDescription, value); }

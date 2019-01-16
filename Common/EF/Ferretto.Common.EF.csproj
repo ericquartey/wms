@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net471</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.1;netstandard2.0;net471</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(Configuration)' == 'debug'">
@@ -47,8 +47,6 @@
   
   <ItemGroup>
     <ProjectReference Include="..\DataModels\Ferretto.Common.DataModels.csproj" />
-    <ProjectReference Include="..\Resources\Ferretto.Common.Resources.csproj" />
-    <ProjectReference Include="..\Utils\Ferretto.Common.Utils.csproj" />
   </ItemGroup>
 
 </Project>

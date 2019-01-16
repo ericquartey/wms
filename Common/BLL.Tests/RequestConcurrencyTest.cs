@@ -15,17 +15,18 @@ namespace Ferretto.Common.BLL.Tests
         [TestCleanup]
         public void Cleanup()
         {
-            base.CleanupDatabase();
+            this.CleanupDatabase();
         }
 
         [TestInitialize]
         public void Initialize()
         {
-            base.InitializeDatabase();
+            this.InitializeDatabase();
         }
 
         [TestMethod]
-        [TestProperty("Description",
+        [TestProperty(
+            "Description",
             @"GIVEN a new request for an item on a bay \
                 AND another request that was already completed \
                WHEN the new request is processed \
@@ -34,20 +35,18 @@ namespace Ferretto.Common.BLL.Tests
         {
             #region Arrange
 
-            var now = System.DateTime.Now;
-
             var compartment1 = new DataModels.Compartment
             {
-                ItemId = this.itemFifo.Id,
-                LoadingUnitId = this.loadingUnit1.Id,
+                ItemId = this.ItemFifo.Id,
+                LoadingUnitId = this.LoadingUnit1.Id,
                 Stock = 10
             };
 
             var request1 = new DataModels.SchedulerRequest
             {
-                ItemId = this.itemFifo.Id,
-                AreaId = this.area1.Id,
-                BayId = this.bay1.Id,
+                ItemId = this.ItemFifo.Id,
+                AreaId = this.Area1.Id,
+                BayId = this.Bay1.Id,
                 IsInstant = true,
                 RequestedQuantity = 15,
                 DispatchedQuantity = 15,
@@ -56,9 +55,9 @@ namespace Ferretto.Common.BLL.Tests
 
             var request2 = new DataModels.SchedulerRequest
             {
-                ItemId = this.itemFifo.Id,
-                AreaId = this.area1.Id,
-                BayId = this.bay1.Id,
+                ItemId = this.ItemFifo.Id,
+                AreaId = this.Area1.Id,
+                BayId = this.Bay1.Id,
                 IsInstant = true,
                 RequestedQuantity = 5,
                 OperationType = DataModels.OperationType.Withdrawal
@@ -84,7 +83,7 @@ namespace Ferretto.Common.BLL.Tests
                     new SchedulerRequestProvider(context),
                     new Mock<ILogger<Warehouse>>().Object);
 
-                var missions = await warehouse.CreateMissionsForPendingRequests();
+                var missions = await warehouse.CreateMissionsForPendingRequestsAsync();
 
                 #endregion Act
 
@@ -98,7 +97,8 @@ namespace Ferretto.Common.BLL.Tests
         }
 
         [TestMethod]
-        [TestProperty("Description",
+        [TestProperty(
+            "Description",
             @"GIVEN a request for an item on a bay \
                 AND two compartments that together can satisfy the request \
                WHEN the request is processed \
@@ -115,8 +115,8 @@ namespace Ferretto.Common.BLL.Tests
             var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
-                ItemId = this.itemFifo.Id,
-                LoadingUnitId = this.loadingUnit1.Id,
+                ItemId = this.ItemFifo.Id,
+                LoadingUnitId = this.LoadingUnit1.Id,
                 Stock = 10,
                 FirstStoreDate = now.AddDays(-1)
             };
@@ -124,17 +124,17 @@ namespace Ferretto.Common.BLL.Tests
             var compartment2 = new DataModels.Compartment
             {
                 Id = 2,
-                ItemId = this.itemFifo.Id,
-                LoadingUnitId = this.loadingUnit1.Id,
+                ItemId = this.ItemFifo.Id,
+                LoadingUnitId = this.LoadingUnit1.Id,
                 Stock = 10,
                 FirstStoreDate = now.AddDays(-2)
             };
 
             var request1 = new DataModels.SchedulerRequest
             {
-                ItemId = this.itemFifo.Id,
-                AreaId = this.area1.Id,
-                BayId = this.bay1.Id,
+                ItemId = this.ItemFifo.Id,
+                AreaId = this.Area1.Id,
+                BayId = this.Bay1.Id,
                 IsInstant = true,
                 RequestedQuantity = 15,
                 OperationType = DataModels.OperationType.Withdrawal
@@ -160,7 +160,7 @@ namespace Ferretto.Common.BLL.Tests
                     new SchedulerRequestProvider(context),
                     new Mock<ILogger<Warehouse>>().Object);
 
-                var missions = await warehouse.CreateMissionsForPendingRequests();
+                var missions = await warehouse.CreateMissionsForPendingRequestsAsync();
 
                 #endregion Act
 

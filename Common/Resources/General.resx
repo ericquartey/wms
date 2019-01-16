@@ -225,4 +225,19 @@
     <value>Loading</value>
     <comment>Busy Indicator Content</comment>
   </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Priority</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="AdditionalInfo" xml:space="preserve">
+    <value>[{0}]</value>
+  </data>
 </root>

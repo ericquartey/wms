@@ -19,7 +19,9 @@ namespace Ferretto.Common.BusinessProviders
             item => item.ManagementType == DataModels.ItemManagementType.FIFO;
 
         private readonly IDatabaseContextService dataContext;
+
         private readonly EnumerationProvider enumerationProvider;
+
         private readonly WMS.Scheduler.WebAPI.Contracts.IItemsService itemsService;
 
         #endregion Fields
@@ -40,15 +42,9 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<OperationResult> Add(ItemDetails model)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<OperationResult> AddAsync(ItemDetails model) => throw new NotSupportedException();
 
-        public int Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
         public IQueryable<Item> GetAll()
         {
@@ -57,10 +53,9 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dc = this.dataContext.Current)
             {
-                return dataContext.Items.AsNoTracking().Count();
+                return dc.Items.AsNoTracking().Count();
             }
         }
 
@@ -87,20 +82,19 @@ namespace Ferretto.Common.BusinessProviders
                         AbcClassDescription = ict.Item.AbcClass.Description,
                         ItemCategoryDescription = ict.Item.ItemCategory.Description,
                         Image = ict.Item.Image,
-                    }
-                )
+                    })
                 .AsNoTracking();
         }
 
-        public async Task<ItemDetails> GetById(int id)
+        public async Task<ItemDetails> GetByIdAsync(int id)
         {
-            var dataContext = this.dataContext.Current;
+            var dc = this.dataContext.Current;
 
-            var itemDetails = await dataContext.Items
+            var itemDetails = await dc.Items
             .Include(i => i.MeasureUnit)
             .Where(i => i.Id == id)
             .GroupJoin(
-                dataContext.Compartments
+                dc.Compartments
                     .AsNoTracking()
                     .Where(c => c.ItemId != null)
                     .GroupBy(c => c.ItemId)
@@ -156,14 +150,13 @@ namespace Ferretto.Common.BusinessProviders
                     TotalAvailable = b != null
                         ? (b.TotalStock + b.TotalReservedToStore - b.TotalReservedForPick)
                         : 0,
-                }
-            )
+                })
             .AsNoTracking()
             .SingleAsync();
 
             itemDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
             itemDetails.MeasureUnitChoices = this.enumerationProvider.GetAllMeasureUnits();
-            itemDetails.ManagementTypeChoices = this.enumerationProvider.GetAllItemManagementTypes();
+            itemDetails.ManagementTypeChoices = EnumerationProvider.GetAllItemManagementTypes();
             itemDetails.ItemCategoryChoices = this.enumerationProvider.GetAllItemCategories();
 
             return itemDetails;
@@ -176,10 +169,9 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetWithAClassCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dc = this.dataContext.Current)
             {
-                return dataContext.Items.AsNoTracking().Count(AClassFilter);
+                return dc.Items.AsNoTracking().Count(AClassFilter);
             }
         }
 
@@ -190,10 +182,9 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetWithFifoCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dc = this.dataContext.Current)
             {
-                return dataContext.Items
+                return dc.Items
                     .AsNoTracking()
                     .Count(FifoFilter);
             }
@@ -201,33 +192,45 @@ namespace Ferretto.Common.BusinessProviders
 
         public bool HasAnyCompartments(int itemId)
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dc = this.dataContext.Current)
             {
-                return dataContext.Compartments.AsNoTracking().Any(c => c.ItemId == itemId);
+                return dc.Compartments.AsNoTracking().Any(c => c.ItemId == itemId);
             }
         }
 
-        public int Save(ItemDetails model)
+        public async Task<OperationResult> SaveAsync(ItemDetails model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            try
             {
-                var existingModel = dataContext.Items.Find(model.Id);
+                using (var dc = this.dataContext.Current)
+                {
+                    var existingModel = dc.Items.Find(model.Id);
 
-                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                    dc.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return dataContext.SaveChanges();
+                    var changedEntityCount = await dc.SaveChangesAsync();
+
+                    return new OperationResult(changedEntityCount > 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(ex);
             }
         }
 
         public async Task<OperationResult> WithdrawAsync(ItemWithdraw itemWithdraw)
         {
+            if (itemWithdraw == null)
+            {
+                throw new ArgumentNullException(nameof(itemWithdraw));
+            }
+
             try
             {
                 await this.itemsService.WithdrawAsync(
@@ -243,14 +246,13 @@ namespace Ferretto.Common.BusinessProviders
                        RegistrationNumber = itemWithdraw.RegistrationNumber,
                        Sub1 = itemWithdraw.Sub1,
                        Sub2 = itemWithdraw.Sub2,
-                   }
-               );
+                   });
 
                 return new OperationResult(true);
             }
             catch (Exception ex)
             {
-                return new OperationResult(false, description: ex.Message);
+                return new OperationResult(ex);
             }
         }
 
@@ -316,8 +318,7 @@ namespace Ferretto.Common.BusinessProviders
                        TotalAvailable = b != null
                            ? (b.TotalStock + b.TotalReservedToStore - b.TotalReservedForPick)
                            : 0,
-                   }
-               );
+                   });
         }
 
         #endregion Methods

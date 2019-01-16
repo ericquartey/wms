@@ -11,7 +11,7 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
-        private readonly IDatabaseContextService dataContext;
+        private readonly IDatabaseContextService dataContextService;
 
         private readonly EnumerationProvider enumerationProvider;
 
@@ -22,11 +22,11 @@ namespace Ferretto.Common.BusinessProviders
         #region Constructors
 
         public ItemListRowProvider(
-            IDatabaseContextService dataContext,
+            IDatabaseContextService dataContextService,
             EnumerationProvider enumerationProvider,
             WMS.Scheduler.WebAPI.Contracts.IItemListRowsService itemListRowService)
         {
-            this.dataContext = dataContext;
+            this.dataContextService = dataContextService;
             this.enumerationProvider = enumerationProvider;
             this.itemListRowService = itemListRowService;
         }
@@ -35,17 +35,11 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<OperationResult> Add(ItemListRowDetails model)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<OperationResult> AddAsync(ItemListRowDetails model) => throw new NotSupportedException();
 
-        public int Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
-        public async Task<OperationResult> ExecuteImmediately(int listRowId, int areaId, int bayId)
+        public async Task<OperationResult> ExecuteImmediatelyAsync(int listRowId, int areaId, int bayId)
         {
             try
             {
@@ -60,49 +54,60 @@ namespace Ferretto.Common.BusinessProviders
             }
             catch (Exception ex)
             {
-                return new OperationResult(false, description: ex.Message);
+                return new OperationResult(ex);
             }
         }
 
-        public IQueryable<ItemListRow> GetAll()
-        {
-            throw new NotImplementedException();
-        }
+        public IQueryable<ItemListRow> GetAll() => throw new NotSupportedException();
 
-        public int GetAllCount()
-        {
-            throw new NotImplementedException();
-        }
+        public int GetAllCount() => throw new NotSupportedException();
 
-        public async Task<ItemListRowDetails> GetById(int id)
+        public async Task<ItemListRowDetails> GetByIdAsync(int id)
         {
-            var itemListRowDetails = await this.dataContext.Current.ItemListRows
+            var itemListRowDetails = await this.dataContextService.Current.ItemListRows
                 .Include(lr => lr.ItemList)
+                .Include(lr => lr.Item)
+                .ThenInclude(i => i.MeasureUnit)
                 .Where(lr => lr.Id == id)
                 .Select(lr => new ItemListRowDetails
                 {
                     Id = lr.Id,
                     Code = lr.Code,
                     RowPriority = lr.Priority,
-                    ItemDescription = lr.Item.Description,
+                    ItemId = lr.Item.Id,
                     RequiredQuantity = lr.RequiredQuantity,
                     DispatchedQuantity = lr.DispatchedQuantity,
                     ItemListRowStatus = (ItemListRowStatus)lr.Status,
+                    ItemDescription = lr.Item.Description,
                     CreationDate = lr.CreationDate,
                     ItemListCode = lr.ItemList.Code,
                     ItemListDescription = lr.ItemList.Description,
                     ItemListType = (ItemListType)lr.ItemList.ItemListType,
                     ItemListStatus = (ItemListStatus)lr.ItemList.Status,
+                    CompletionDate = lr.CompletionDate,
+                    LastExecutionDate = lr.LastExecutionDate,
+                    LastModificationDate = lr.LastModificationDate,
+                    Lot = lr.Lot,
+                    RegistrationNumber = lr.RegistrationNumber,
+                    Sub1 = lr.Sub1,
+                    Sub2 = lr.Sub2,
+                    PackageTypeId = lr.PackageTypeId,
+                    MaterialStatusId = lr.MaterialStatusId,
+                    ItemUnitMeasure = lr.Item.MeasureUnit.Description
                 }).SingleAsync();
+
+            itemListRowDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
+            itemListRowDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
 
             return itemListRowDetails;
         }
 
         public IQueryable<ItemListRow> GetByItemListId(int id)
         {
-            var itemListRows = this.dataContext.Current.ItemListRows
+            var itemListRows = this.dataContextService.Current.ItemListRows
                 .Include(l => l.MaterialStatus)
                 .Include(l => l.Item)
+                .ThenInclude(i => i.MeasureUnit)
                 .Where(l => l.ItemListId == id)
                 .Select(l => new ItemListRow
                 {
@@ -114,18 +119,40 @@ namespace Ferretto.Common.BusinessProviders
                     DispatchedQuantity = l.DispatchedQuantity,
                     ItemListRowStatus = (ItemListRowStatus)l.Status,
                     MaterialStatusDescription = l.MaterialStatus.Description,
-                    CreationDate = l.CreationDate
+                    CreationDate = l.CreationDate,
+                    ItemUnitMeasure = l.Item.MeasureUnit.Description
                 }).AsNoTracking();
 
             return itemListRows;
         }
 
-        public int Save(ItemListRowDetails model)
+        public async Task<OperationResult> SaveAsync(ItemListRowDetails model)
         {
-            throw new NotImplementedException();
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            try
+            {
+                using (var dataContext = this.dataContextService.Current)
+                {
+                    var existingModel = dataContext.ItemListRows.Find(model.Id);
+
+                    dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+
+                    var changedEntityCount = await dataContext.SaveChangesAsync();
+
+                    return new OperationResult(changedEntityCount > 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(ex);
+            }
         }
 
-        public async Task<OperationResult> ScheduleForExecution(int listRowId, int areaId)
+        public async Task<OperationResult> ScheduleForExecutionAsync(int listRowId, int areaId)
         {
             try
             {
@@ -139,7 +166,7 @@ namespace Ferretto.Common.BusinessProviders
             }
             catch (Exception ex)
             {
-                return new OperationResult(false, description: ex.Message);
+                return new OperationResult(ex);
             }
         }
 

@@ -129,6 +129,9 @@
   <data name="ItemListDetailsView" xml:space="preserve">
     <value>Lista di {0} : {1}</value>
   </data>
+  <data name="ItemListRowDetailsView" xml:space="preserve">
+    <value>Riga Lista di {0} : {1}</value>
+  </data>
   <data name="LoadingUnitDetailsView" xml:space="preserve">
     <value>Dettagli della UDC : {0}</value>
   </data>

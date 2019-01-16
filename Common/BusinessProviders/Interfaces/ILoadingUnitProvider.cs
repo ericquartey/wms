@@ -12,25 +12,25 @@ namespace Ferretto.Common.BusinessProviders
 
         IQueryable<LoadingUnit> GetWithAreaManual();
 
-        Int32 GetWithAreaManualCount();
+        int GetWithAreaManualCount();
 
         IQueryable<LoadingUnit> GetWithAreaVertimag();
 
-        Int32 GetWithAreaVertimagCount();
+        int GetWithAreaVertimagCount();
 
         IQueryable<LoadingUnit> GetWithStatusAvailable();
 
-        Int32 GetWithStatusAvailableCount();
+        int GetWithStatusAvailableCount();
 
         IQueryable<LoadingUnit> GetWithStatusBlocked();
 
-        Int32 GetWithStatusBlockedCount();
+        int GetWithStatusBlockedCount();
 
         IQueryable<LoadingUnit> GetWithStatusUsed();
 
-        Int32 GetWithStatusUsedCount();
+        int GetWithStatusUsedCount();
 
-        bool HasAnyCompartments(int itemId);
+        bool HasAnyCompartments(int loadingUnitId);
 
         #endregion Methods
     }

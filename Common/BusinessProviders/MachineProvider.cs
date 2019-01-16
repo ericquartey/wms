@@ -25,33 +25,24 @@ namespace Ferretto.Common.BusinessProviders
             m => m.Model.Contains("VARIANT-XS");
 
         private readonly IDatabaseContextService dataContext;
-        private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
 
         #region Constructors
 
         public MachineProvider(
-            IDatabaseContextService dataContext,
-            EnumerationProvider enumerationProvider)
+            IDatabaseContextService dataContext)
         {
             this.dataContext = dataContext;
-            this.enumerationProvider = enumerationProvider;
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public Task<OperationResult> Add(MachineDetails model)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<OperationResult> AddAsync(MachineDetails model) => throw new NotSupportedException();
 
-        public int Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
         public IQueryable<Machine> GetAll()
         {
@@ -60,10 +51,9 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dc = this.dataContext.Current)
             {
-                return dataContext.Machines.AsNoTracking().Count();
+                return dc.Machines.AsNoTracking().Count();
             }
         }
 
@@ -74,10 +64,9 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllTrasloCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dc = this.dataContext.Current)
             {
-                return dataContext.Machines.AsNoTracking().Where(TrasloFilter).Count();
+                return dc.Machines.AsNoTracking().Where(TrasloFilter).Count();
             }
         }
 
@@ -88,10 +77,9 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllVertimagCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dc = this.dataContext.Current)
             {
-                return dataContext.Machines.AsNoTracking().Where(VertimagFilter).Count();
+                return dc.Machines.AsNoTracking().Where(VertimagFilter).Count();
             }
         }
 
@@ -102,47 +90,50 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllVertimagModelMCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dc = this.dataContext.Current)
             {
-                return dataContext.Machines.AsNoTracking().Where(VertimagModelMFilter).Count();
+                return dc.Machines.AsNoTracking().Where(VertimagModelMFilter).Count();
             }
         }
 
-        public IQueryable<Machine> GetAllVertimagModelXS()
+        public IQueryable<Machine> GetAllVertimagModelXs()
         {
             return GetAllMachinesWithFilter(this.dataContext.Current, VertimagModelXSFilter);
         }
 
-        public int GetAllVertimagModelXSCount()
+        public int GetAllVertimagModelXsCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dc = this.dataContext.Current)
             {
-                return dataContext.Machines.AsNoTracking().Where(VertimagModelXSFilter).Count();
+                return dc.Machines.AsNoTracking().Where(VertimagModelXSFilter).Count();
             }
         }
 
-        public Task<MachineDetails> GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<MachineDetails> GetByIdAsync(int id) => throw new NotSupportedException();
 
-        public int Save(MachineDetails model)
+        public async Task<OperationResult> SaveAsync(MachineDetails model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            try
             {
-                var existingModel = dataContext.Machines.Find(model.Id);
+                using (var dc = this.dataContext.Current)
+                {
+                    var existingModel = dc.Machines.Find(model.Id);
 
-                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                    dc.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return dataContext.SaveChanges();
+                    var changedEntityCount = await dc.SaveChangesAsync();
+
+                    return new OperationResult(changedEntityCount > 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(ex);
             }
         }
 
@@ -190,8 +181,7 @@ namespace Ferretto.Common.BusinessProviders
                     RegistrationNumber = m.RegistrationNumber,
                     TestDate = m.TestDate,
                     TotalMaxWeight = m.TotalMaxWeight
-                }
-                );
+                });
         }
 
         #endregion Methods
