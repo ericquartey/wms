@@ -56,7 +56,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override Task ExecuteRefreshCommandAsync()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         protected override Task ExecuteRevertCommand() => throw new NotSupportedException();
