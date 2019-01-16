@@ -1,44 +1,5 @@
 ﻿namespace Ferretto.Common.Utils.Modules
 {
-    public static class BusinessLogic
-    {
-    }
-
-    public static class Compartment
-    {
-        #region Fields
-
-        public const string COMPARTMENT = "CompartmentViewModel";
-
-        public const string REGION_MAINCONTENT = "MainContent";
-
-        #endregion Fields
-    }
-
-    public static class Layout
-    {
-        #region Fields
-
-        public const string LOGINVIEW = "LoginViewModel";
-
-        public const string REGION_MAINCONTENT = "MainContent";
-
-        public const string REGION_MENU = "Menu";
-
-        #endregion Fields
-    }
-
-    public static class Machines
-    {
-        #region Fields
-
-        public const string MACHINEDETAILS = "MachineDetailsViewModel";
-
-        public const string MACHINES = "MachinesViewModel";
-
-        #endregion Fields
-    }
-
     public static class MasterData
     {
         #region Fields
@@ -78,17 +39,6 @@
         public const string LOADINGUNITS = "LoadingUnitsViewModel";
 
         public const string WITHDRAWDIALOG = "WithdrawDialogViewModel";
-
-        #endregion Fields
-    }
-
-    public static class Scheduler
-    {
-        #region Fields
-
-        public const string MISSIONS = "MissionsViewModel";
-
-        public const string SCHEDULERREQUESTS = "SchedulerRequestsViewModel";
 
         #endregion Fields
     }

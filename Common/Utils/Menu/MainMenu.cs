@@ -5,6 +5,6 @@ namespace Ferretto.Common.Utils.Menu
 {
     public class MainMenu
     {
-        public List<MainMenuItem> Items { get; set; }
+        public List<MainMenuItem> Items { get; } = new List<MainMenuItem>();
     }
 }
