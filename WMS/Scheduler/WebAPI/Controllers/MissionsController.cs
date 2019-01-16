@@ -10,24 +10,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
     [ApiController]
     public class MissionsController : ControllerBase
     {
-        #region Fields
-
-        private readonly ILogger logger;
-
-        private readonly IServiceProvider serviceProvider;
-
-        #endregion Fields
-
-        #region Constructors
-
-        public MissionsController(IServiceProvider serviceProvider, ILogger<BaysController> logger)
-        {
-            this.serviceProvider = serviceProvider;
-            this.logger = logger;
-        }
-
-        #endregion Constructors
-
         #region Methods
 
         [HttpPost("Abort")]

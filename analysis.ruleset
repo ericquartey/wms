@@ -689,7 +689,7 @@
     <Rule Id="S138" Action="Info" />
     <Rule Id="S1449" Action="None" />
     <Rule Id="S1479" Action="Warning" />
-    <Rule Id="S1541" Action="Warning" />
+    <Rule Id="S1541" Action="Info" />
     <Rule Id="S1659" Action="Warning" />
     <Rule Id="S1694" Action="Warning" />
     <Rule Id="S1696" Action="Warning" />

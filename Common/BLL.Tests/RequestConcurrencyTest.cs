@@ -83,7 +83,7 @@ namespace Ferretto.Common.BLL.Tests
                     new SchedulerRequestProvider(context),
                     new Mock<ILogger<Warehouse>>().Object);
 
-                var missions = await warehouse.CreateMissionsForPendingRequests();
+                var missions = await warehouse.CreateMissionsForPendingRequestsAsync();
 
                 #endregion Act
 
@@ -160,7 +160,7 @@ namespace Ferretto.Common.BLL.Tests
                     new SchedulerRequestProvider(context),
                     new Mock<ILogger<Warehouse>>().Object);
 
-                var missions = await warehouse.CreateMissionsForPendingRequests();
+                var missions = await warehouse.CreateMissionsForPendingRequestsAsync();
 
                 #endregion Act
 

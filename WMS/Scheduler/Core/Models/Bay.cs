@@ -5,6 +5,7 @@
         #region Properties
 
         public int? LoadingUnitsBufferSize { get; set; }
+
         public int LoadingUnitsBufferUsage { get; internal set; }
 
         #endregion Properties

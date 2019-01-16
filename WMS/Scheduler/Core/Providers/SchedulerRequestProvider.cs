@@ -25,16 +25,16 @@ namespace Ferretto.WMS.Scheduler.Core
 
         #region Methods
 
-        public async Task<SchedulerRequest> FullyQualifyWithdrawalRequest(SchedulerRequest request)
+        public async Task<SchedulerRequest> FullyQualifyWithdrawalRequestAsync(SchedulerRequest schedulerRequest)
         {
-            if (request == null)
+            if (schedulerRequest == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(schedulerRequest));
             }
 
-            if (request.Type != OperationType.Withdrawal)
+            if (schedulerRequest.Type != OperationType.Withdrawal)
             {
-                throw new ArgumentException("Only withdrawal requests are supported.", nameof(request));
+                throw new ArgumentException("Only withdrawal requests are supported.", nameof(schedulerRequest));
             }
 
             var aggregatedCompartments = this.dataContext.Compartments
@@ -43,24 +43,23 @@ namespace Ferretto.WMS.Scheduler.Core
                 .ThenInclude(c => c.Aisle)
                 .ThenInclude(a => a.Area)
                 .Where(c =>
-                    c.ItemId == request.ItemId
+                    c.ItemId == schedulerRequest.ItemId
                     &&
-                    c.LoadingUnit.Cell.Aisle.Area.Id == request.AreaId
+                    c.LoadingUnit.Cell.Aisle.Area.Id == schedulerRequest.AreaId
                     &&
-                    (request.BayId.HasValue == false || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == request.BayId))
+                    (schedulerRequest.BayId.HasValue == false || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == schedulerRequest.BayId))
                     &&
-                    (request.Sub1 == null || c.Sub1 == request.Sub1)
+                    (schedulerRequest.Sub1 == null || c.Sub1 == schedulerRequest.Sub1)
                     &&
-                    (request.Sub2 == null || c.Sub2 == request.Sub2)
+                    (schedulerRequest.Sub2 == null || c.Sub2 == schedulerRequest.Sub2)
                     &&
-                    (request.Lot == null || c.Lot == request.Lot)
+                    (schedulerRequest.Lot == null || c.Lot == schedulerRequest.Lot)
                     &&
-                    (request.PackageTypeId.HasValue == false || c.PackageTypeId == request.PackageTypeId)
+                    (schedulerRequest.PackageTypeId.HasValue == false || c.PackageTypeId == schedulerRequest.PackageTypeId)
                     &&
-                    (request.MaterialStatusId.HasValue == false || c.MaterialStatusId == request.MaterialStatusId)
+                    (schedulerRequest.MaterialStatusId.HasValue == false || c.MaterialStatusId == schedulerRequest.MaterialStatusId)
                     &&
-                    (request.RegistrationNumber == null || c.RegistrationNumber == request.RegistrationNumber)
-                )
+                    (schedulerRequest.RegistrationNumber == null || c.RegistrationNumber == schedulerRequest.RegistrationNumber))
                 .GroupBy(
                     x => new { x.Sub1, x.Sub2, x.Lot, x.PackageTypeId, x.MaterialStatusId, x.RegistrationNumber },
                     (key, group) => new
@@ -74,11 +73,10 @@ namespace Ferretto.WMS.Scheduler.Core
                         MaterialStatusId = key.MaterialStatusId,
                         RegistrationNumber = key.RegistrationNumber,
                         FirstStoreDate = group.Min(c => c.FirstStoreDate)
-                    }
-                );
+                    });
 
             var aggregatedRequests = this.dataContext.SchedulerRequests
-                .Where(r => r.ItemId == request.ItemId);
+                .Where(r => r.ItemId == schedulerRequest.ItemId);
 
             var compartmentSets = aggregatedCompartments
                 .GroupJoin(
@@ -87,10 +85,9 @@ namespace Ferretto.WMS.Scheduler.Core
                     r => new { r.Sub1, r.Sub2, r.Lot, r.PackageTypeId, r.MaterialStatusId, r.RegistrationNumber },
                     (c, r) => new
                     {
-                        c = c,
+                        c,
                         r = r.DefaultIfEmpty()
-                    }
-                )
+                    })
                 .Select(g => new CompartmentSet
                 {
                     Availability = g.c.Availability - g.r.Sum(r => r.RequestedQuantity - r.DispatchedQuantity),
@@ -101,19 +98,18 @@ namespace Ferretto.WMS.Scheduler.Core
                     MaterialStatusId = g.c.MaterialStatusId,
                     RegistrationNumber = g.c.RegistrationNumber,
                     FirstStoreDate = g.c.FirstStoreDate
-                }
-                )
-                .Where(x => x.Availability >= request.RequestedQuantity);
+                })
+                .Where(x => x.Availability >= schedulerRequest.RequestedQuantity);
 
             var item = await this.dataContext.Items
                 .Select(i => new { i.Id, i.ManagementType })
-                .SingleAsync(i => i.Id == request.ItemId);
+                .SingleAsync(i => i.Id == schedulerRequest.ItemId);
 
             var orderedCompartmentSets = this.OrderCompartmentsByManagementType(compartmentSets, (ItemManagementType)item.ManagementType);
 
             return await orderedCompartmentSets
                   .Select(
-                  c => new SchedulerRequest(request)
+                  c => new SchedulerRequest(schedulerRequest)
                   {
                       Lot = c.Lot,
                       MaterialStatusId = c.MaterialStatusId,
@@ -121,26 +117,25 @@ namespace Ferretto.WMS.Scheduler.Core
                       RegistrationNumber = c.RegistrationNumber,
                       Sub1 = c.Sub1,
                       Sub2 = c.Sub2
-                  }
-              )
+                  })
               .FirstOrDefaultAsync();
         }
 
         /// <summary>
         /// Gets all compartments in the specified area/bay that have availability for the specified item.
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="schedulerRequest"></param>
         /// <returns>The unsorted set of compartments matching the specified request.</returns>
-        public IQueryable<Compartment> GetCandidateWithdrawalCompartments(SchedulerRequest request)
+        public IQueryable<Compartment> GetCandidateWithdrawalCompartments(SchedulerRequest schedulerRequest)
         {
-            if (request == null)
+            if (schedulerRequest == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(schedulerRequest));
             }
 
-            if (request.Type != OperationType.Withdrawal)
+            if (schedulerRequest.Type != OperationType.Withdrawal)
             {
-                throw new ArgumentException("Only withdrawal requests are supported.", nameof(request));
+                throw new ArgumentException("Only withdrawal requests are supported.", nameof(schedulerRequest));
             }
 
             return this.dataContext.Compartments
@@ -150,26 +145,25 @@ namespace Ferretto.WMS.Scheduler.Core
                 .ThenInclude(a => a.Area)
                 .ThenInclude(a => a.Bays)
                 .Where(c =>
-                    c.ItemId == request.ItemId
+                    c.ItemId == schedulerRequest.ItemId
                     &&
-                    c.Lot == request.Lot
+                    c.Lot == schedulerRequest.Lot
                     &&
-                    c.MaterialStatusId == request.MaterialStatusId
+                    c.MaterialStatusId == schedulerRequest.MaterialStatusId
                     &&
-                    c.MaterialStatusId == request.PackageTypeId
+                    c.MaterialStatusId == schedulerRequest.PackageTypeId
                     &&
-                    c.RegistrationNumber == request.RegistrationNumber
+                    c.RegistrationNumber == schedulerRequest.RegistrationNumber
                     &&
-                    c.Sub1 == request.Sub1
+                    c.Sub1 == schedulerRequest.Sub1
                     &&
-                    c.Sub2 == request.Sub2
+                    c.Sub2 == schedulerRequest.Sub2
                     &&
                     (c.Stock - c.ReservedForPick + c.ReservedToStore) > 0
                     &&
-                    (request.BayId.HasValue == false || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == request.BayId))
+                    (schedulerRequest.BayId.HasValue == false || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == schedulerRequest.BayId))
                     &&
-                    (c.LoadingUnit.Cell.Aisle.AreaId == request.AreaId)
-                    )
+                    (c.LoadingUnit.Cell.Aisle.AreaId == schedulerRequest.AreaId))
                 .Select(c => new Compartment
                 {
                     AreaId = c.LoadingUnit.Cell.Aisle.AreaId,
@@ -207,7 +201,9 @@ namespace Ferretto.WMS.Scheduler.Core
                         .ThenBy(c => c.FirstStoreDate);
 
                 default:
-                    throw new Exception($"Unable to interpret enumeration value for {nameof(ItemManagementType)}");
+                    throw new ArgumentException(
+                        $"Unable to interpret enumeration value for {nameof(ItemManagementType)}",
+                        nameof(type));
             }
         }
 
@@ -253,7 +249,7 @@ namespace Ferretto.WMS.Scheduler.Core
             public string Sub2 { get; set; }
 
             #endregion Properties
-        };
+        }
 
         #endregion Classes
     }

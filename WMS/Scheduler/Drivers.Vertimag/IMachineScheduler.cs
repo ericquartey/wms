@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.WMS.Scheduler.Drivers
 {
-    public class IMachineScheduler
+    public interface IMachineScheduler
     {
     }
 }

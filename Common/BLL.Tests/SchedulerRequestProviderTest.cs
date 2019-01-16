@@ -13,7 +13,7 @@ namespace Ferretto.Common.BLL.Tests
         [TestProperty(
             "Description",
             @"GIVEN that a non-withdrawal request is created \
-               WHEN the FullyQualifyWithdrawalRequest method is called with the invalid request\
+               WHEN the FullyQualifyWithdrawalRequestAsync method is called with the invalid request\
                THEN the method should throw an exception")]
         public async Task FullyQualifyWithdrawalRequestWithInvalidArgumentTest()
         {
@@ -32,7 +32,7 @@ namespace Ferretto.Common.BLL.Tests
 
                 var provider = new SchedulerRequestProvider(context);
 
-                await Assert.ThrowsExceptionAsync<System.ArgumentException>(() => provider.FullyQualifyWithdrawalRequest(request));
+                await Assert.ThrowsExceptionAsync<System.ArgumentException>(() => provider.FullyQualifyWithdrawalRequestAsync(request));
 
                 #endregion Act + Assert
             }
@@ -42,7 +42,7 @@ namespace Ferretto.Common.BLL.Tests
         [TestProperty(
             "Description",
             @"GIVEN that a null request is created \
-               WHEN the FullyQualifyWithdrawalRequest method is called with the null new request\
+               WHEN the FullyQualifyWithdrawalRequestAsync method is called with the null new request\
                THEN the method should throw an exception")]
         public async Task FullyQualifyWithdrawalRequestWithNullArgumentTest()
         {
@@ -58,7 +58,7 @@ namespace Ferretto.Common.BLL.Tests
 
                 var provider = new SchedulerRequestProvider(context);
 
-                await Assert.ThrowsExceptionAsync<System.ArgumentNullException>(() => provider.FullyQualifyWithdrawalRequest(request));
+                await Assert.ThrowsExceptionAsync<System.ArgumentNullException>(() => provider.FullyQualifyWithdrawalRequestAsync(request));
 
                 #endregion Act + Assert
             }
