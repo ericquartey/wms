@@ -13,7 +13,7 @@ namespace Ferretto.Common.EF.Configurations
                 throw new System.ArgumentNullException(nameof(builder));
             }
 
-            builder.HasKey(l => new {l.AisleId, l.LoadingUnitTypeId});
+            builder.HasKey(l => new { l.AisleId, l.LoadingUnitTypeId });
 
             builder.HasOne(l => l.Aisle)
                 .WithMany(a => a.AisleLoadingUnitTypes)
