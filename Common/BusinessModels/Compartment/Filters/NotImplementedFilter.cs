@@ -2,7 +2,7 @@
 
 namespace Ferretto.Common.BusinessModels
 {
-    public class NotImplementdFilter : IFilter
+    public class NotImplementedFilter : IFilter
     {
         #region Properties
 
