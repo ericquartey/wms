@@ -76,21 +76,21 @@
             </Grid>
         </wms:Expander>
 
-        <Grid Grid.Column="1">
+        <Grid Name="GridParent"
+              Grid.Column="1">
 
             <wms:ActionBar HorizontalAlignment="Left"
                            Style="{DynamicResource ActionBarOverlayedWithGrid}">
-                <wms:ActionBarItem Command="{Binding}"
-                                   Content="{x:Static res:General.ShowDetails}"
+                <wms:ActionBarItem Content="{x:Static res:General.ShowDetails}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_info_outline_black_24dp.png"
                                    GlyphSize="Custom">
-                    <!--TODO
                     <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="ItemClick" >
-                            <wms:WmsTooltipViewAppear Grid="{Binding ElementName=MainGridControl, Path=SelectedItem }" />
+                        <i:EventTrigger EventName="ItemClick">
+                            <wms:WmsTooltipViewAppear Grid="{Binding RelativeSource={RelativeSource AncestorType={x:Type Grid}}, Path=Children[1]}"
+                                                      Tooltip="Details" />
                         </i:EventTrigger>
-                    </i:Interaction.Triggers>-->
+                    </i:Interaction.Triggers>
                 </wms:ActionBarItem>
                 <wms:ActionBarItem Content="{x:Static res:General.Refresh}"
                                    CustomGlyphSize="24,24"
