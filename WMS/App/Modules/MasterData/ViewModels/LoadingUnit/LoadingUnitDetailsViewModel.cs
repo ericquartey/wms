@@ -58,8 +58,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public bool CanRefresh { get; set; }
-
         public IEnumerable<CompartmentDetails> CompartmentsDataSource
         {
             get => this.compartmentsDataSource;
@@ -147,12 +145,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.IsBusy = false;
-        }
-
-        protected override void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            base.Model_PropertyChanged(sender, e);
-            this.CanRefresh = false;
         }
 
         protected override async void OnAppear()
