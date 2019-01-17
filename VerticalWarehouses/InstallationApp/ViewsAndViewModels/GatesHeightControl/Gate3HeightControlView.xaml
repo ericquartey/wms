@@ -16,7 +16,7 @@
         <TextBlock Grid.Row="0"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.Gate3HeightControl}" Margin="120,19,0,543" Height="46" />
-        <custom:CustomInputFieldControlFocusable
+        <custom:CustomInputFieldControlFocusable Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
                                                      Margin="120,155,624,405"
                                                      InputText="{Binding Speed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                      LabelText="{x:Static res:InstallationApp.SpeedMMSec}" />

@@ -16,11 +16,10 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.Gate1Control}" />
 
-        <custom:CustomInputFieldControlFocusable Grid.Column="0"
-                                                 Margin="150,170,499,375"
+        <custom:CustomInputFieldControlFocusable Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" Margin="150,170,499,375"
                                                  LabelText="{x:Static res:InstallationApp.RequiredCicles}" />
-        <custom:CustomInputFieldControlFocusable Grid.Column="0"
-                                                 Margin="150,260,549,284"
+        <custom:CustomInputFieldControlFocusable Margin="150,260,549,284"
+                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
                                                  LabelText="{x:Static res:InstallationApp.DelayBetweenCicles}" />
         <custom:CustomLabelTextBlockControl Margin="150,350,549,195"
                                             LabelText="{x:Static res:InstallationApp.CompletedCicles}" />

@@ -27,7 +27,7 @@
                                                 Margin="160,175,544,348"
                                                 ContentText="4500"
                                                 LabelText="{x:Static res:InstallationApp.CompletedCicles}" />
-        <custom:CustomInputFieldControlFocusable
+        <custom:CustomInputFieldControlFocusable Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
                                                      Margin="160,85,544,438"
                                                      LabelText="{x:Static res:InstallationApp.RequiredCicles}" />
         <Button Content="{x:Static res:InstallationApp.Start}"
