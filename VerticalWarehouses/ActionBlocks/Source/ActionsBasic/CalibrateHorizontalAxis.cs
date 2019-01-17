@@ -129,6 +129,7 @@ namespace Ferretto.VW.ActionBlocks
                 this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_INDEX, this.valParam);
 
                 this.stopPushed = true;
+                this.Terminate();
             }
             catch (Exception ex)
             {
@@ -199,7 +200,7 @@ namespace Ferretto.VW.ActionBlocks
 
             switch (type)
             {
-                case ValueDataType.UInt16: // Verif.
+                case ValueDataType.UInt16:
                     {
                         var value = Convert.ToUInt16(eventArgs.Value);
                         statusWord = new byte[sizeof(short)];
@@ -228,9 +229,6 @@ namespace Ferretto.VW.ActionBlocks
 
             statusWord01 = new byte[] { statusWord[0], statusWord[1] };
             statusWordBA01 = new BitArray(statusWord01);
-
-            // var myBytes = BitArrayToByteArray(statusWordBA01);
-            // var myShort = BitConverter.ToUInt16(myBytes, 0);
 
             logger.Log(LogLevel.Debug, String.Format(" <-- EnquiryTelegram - Step: {0}", stepCounter));
             logger.Log(LogLevel.Debug, String.Format("Bit 0: {0} - Bit 1: {1} - Bit 2: {2} - Bit 3: {3} - Bit 4: {4} - Bit 5: {5} - Bit 6: {6} - Bit 7: {7} - Bit 8: {8} - Bit 9: {9} - Bit 10: {10} - Bit 11: {11} - Bit 12: {12} - Bit 13: {13} - Bit 14: {14} - Bit 15: {15}", statusWordBA01[0], statusWordBA01[1], statusWordBA01[2], statusWordBA01[3], statusWordBA01[4], statusWordBA01[5], statusWordBA01[6], statusWordBA01[7], statusWordBA01[8], statusWordBA01[9], statusWordBA01[10], statusWordBA01[11], statusWordBA01[12], statusWordBA01[13], statusWordBA01[14], statusWordBA01[15]));
@@ -327,18 +325,13 @@ namespace Ferretto.VW.ActionBlocks
                     // The calibrate horizontal axis routine is ended
                     if (!this.signaledEnd)
                     {
-                        this.StopInverter(); // Verif.
+                        this.StopInverter();
                         this.signaledEnd = true;
-
-                        // Eventually insert here a delay
-
+                        
                         ThrowEndEvent?.Invoke();
                     }
 
                     logger.Log(LogLevel.Debug, "--> EnquiryTelegram:: Send stop inverter command");
-
-                    // End the motion control of inverter
-                    // this.StopInverter(); // Verif.
                 }
             }
             else
@@ -346,7 +339,7 @@ namespace Ferretto.VW.ActionBlocks
                 logger.Log(LogLevel.Debug, "Button Stop Pushed: {0}", this.stopPushed);
 
                 if (!this.stopPushed)
-                { 
+                {
                     logger.Log(LogLevel.Debug, " --> EnquiryTelegram :: Not execute following step. Send a request for STATUS WORD ...");
 
                     // Just wait...
@@ -363,13 +356,6 @@ namespace Ferretto.VW.ActionBlocks
             }
         }
 
-        //internal static byte[] BitArrayToByteArray(BitArray bits)
-        //{
-        //    var ret = new byte[(bits.Length - 1) / 8 + 1];
-        //    bits.CopyTo(ret, 0);
-        //    return ret;
-        //}
-
         /// <summary>
         /// Handle the select telegram sent by the inverter.
         /// </summary>
@@ -382,12 +368,12 @@ namespace Ferretto.VW.ActionBlocks
                 logger.Log(LogLevel.Debug, "Calibrate Horizontal Operation = " + stepCounter);
 
                 // In the case of Command Engine we have to check the StatusWord
-                if (this.stepCounter == 1)
+                if (this.stepCounter == 1) // There is not the need to check the Status Word value
                 {
                     this.stepCounter++;
                     this.stepExecution();
                 }
-                else // There is not the need to check the Status Word value
+                else
                 {
                     this.paramID = ParameterID.STATUS_WORD_PARAM;
                     logger.Log(LogLevel.Debug, " --> Select Telegram:: Send a request for STATUS WORD ...");
