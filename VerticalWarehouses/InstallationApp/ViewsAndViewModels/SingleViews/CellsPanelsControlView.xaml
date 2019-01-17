@@ -28,6 +28,7 @@
                                                 ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
         <custom:CustomInputFieldControlFocusable Margin="160,220,624,318"
+                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
                                                      InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                      LabelText="{x:Static res:InstallationApp.StepValue}" />
         <custom:CustomLabelTextBlockControl Margin="160,145,624,393"
