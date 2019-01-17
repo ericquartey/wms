@@ -6,8 +6,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True">
-    <Grid>
+    <Grid Width="774">
         <Image Margin="50"
-               Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/background_machine.png" />
+               Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/background_machine.png"
+               Stretch="Uniform" />
     </Grid>
 </UserControl>

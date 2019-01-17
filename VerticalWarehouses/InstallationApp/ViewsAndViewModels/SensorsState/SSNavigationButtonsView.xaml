@@ -7,13 +7,13 @@
                  xmlns:myType="clr-namespace:Ferretto.VW.Utils.Source;assembly=Ferretto.VW.Utils"
                  xmlns:prism="http://prismlibrary.com/"
                  xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
-                 Height="610"
                  prism:ViewModelLocator.AutoWireViewModel="True"
                  mc:Ignorable="d">
-    <Grid Height="610">
+    <Grid Height="608"
+          Margin="25,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
-            <RowDefinition Height="520" />
+            <RowDefinition Height="510" />
             <RowDefinition Height="70" />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="1"

@@ -98,6 +98,15 @@ namespace Ferretto.VW.VWApp
         {
             this.Container = _container;
             this.Data = (DataManager)this.Container.Resolve<IDataManager>();
+            if (!this.Data.IsGeneralInfoFilePresent && !this.Data.IsInstallationInfoFilePresent)
+            {
+                this.LoginErrorMessage = "ERROR: both InstallationInfo and GeneralInfo files are missing.";
+            }
+            else if (!this.Data.IsGeneralInfoFilePresent)
+            {
+                if (!this.Data.IsGeneralInfoFilePresent) this.LoginErrorMessage = "ERROR: GeneralInfo file is missing.";
+                if (!this.Data.IsInstallationInfoFilePresent) this.LoginErrorMessage = "ERROR: InstallationInfo file is missing.";
+            }
             this.installationCompleted = this.Data.InstallationInfo.Machine_Ok;
             this.machineModel = this.Data.GeneralInfo.Model;
             this.serialNumber = this.Data.GeneralInfo.Serial;
@@ -111,8 +120,8 @@ namespace Ferretto.VW.VWApp
 
         private void ExecuteLoginButtonCommand()
         {
-            this.InitializeRemoteIOConnection(); // without service
-            this.InitializeInverterConnection();
+            //this.InitializeRemoteIOConnection(); // without service
+            //this.InitializeInverterConnection();
             if (this.CheckInputCorrectness(this.UserLogin, this.PasswordLogin))
             {
                 switch (this.UserLogin)

@@ -8,61 +8,26 @@
                  xmlns:myType="clr-namespace:Ferretto.VW.Utils.Source;assembly=Ferretto.VW.Utils"
                  xmlns:prism="http://prismlibrary.com/"
                  xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
-                 Width="1024"
-                 Height="620"
                  prism:ViewModelLocator.AutoWireViewModel="True"
                  mc:Ignorable="d">
-    <DockPanel>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="80" />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="120" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0"
-                       Grid.Column="1"
+    <Grid Width="774"
+          Height="608">
+        <TextBlock 
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.LSMTGateEngineTitle}" />
-            <Grid Grid.Row="1"
-                  Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="3*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="7*" />
-                </Grid.ColumnDefinitions>
-                <custom:CustomLabelTextBlockControl Name="ActualPositionLabel"
-                                                    Grid.Row="1"
-                                                    Grid.Column="0"
+                       Text="{x:Static res:InstallationApp.LSMTGateEngineTitle}" Margin="161,10,0,562" />
+        <custom:CustomLabelTextBlockControl Name="ActualPositionLabel"
+                                                    
                                                     ContentText="1235,2"
-                                                    LabelText="{x:Static res:InstallationApp.ActualPosition}" />
-                <custom:CustomLabelTextBlockControl Name="FeedRateLabel"
-                                                    Grid.Row="3"
-                                                    Grid.Column="0"
+                                                    LabelText="{x:Static res:InstallationApp.ActualPosition}" Margin="161,402,359,143" />
+        <custom:CustomLabelTextBlockControl Name="FeedRateLabel"
+                                                    
                                                     ContentText="10%"
-                                                    LabelText="{x:Static res:InstallationApp.FeedRate}" />
-                <Button Name="GateEngineUp"
-                        Grid.Row="1"
-                        Grid.Column="2"
+                                                    LabelText="{x:Static res:InstallationApp.FeedRate}" Margin="161,162,359,383" />
+        <Button Name="GateEngineUp"
                         Content="{x:Static res:InstallationApp.Up}"
-                        Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-                <Button Name="GateEngineDown"
-                        Grid.Row="3"
-                        Grid.Column="2"
+                        Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="490,162,120,383" />
+        <Button Name="GateEngineDown"
                         Content="{x:Static res:InstallationApp.Down}"
-                        Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-            </Grid>
-        </Grid>
-    </DockPanel>
+                        Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="490,402,120,143" />
+    </Grid>
 </myType:BaseView>
