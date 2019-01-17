@@ -29,7 +29,7 @@
         /// <summary>
         /// Stop the routine.
         /// </summary>
-        void StopInverter();
+        bool StopInverter();
 
         /// <summary>
         /// Terminate the Calibrate Vertical Axis routine.
