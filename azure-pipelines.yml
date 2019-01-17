@@ -19,7 +19,7 @@ steps:
 
 
 - task: NuGetCommand@2
-  displayName: 'NuGet restore for all solutions'
+  displayName: 'NuGet restore for *.sln'
   inputs:
     restoreSolution: '*.sln'
 
