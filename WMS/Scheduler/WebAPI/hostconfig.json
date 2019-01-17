@@ -1,6 +1,6 @@
 {
-  "Urls": "http://*:5000;https://*:5001",
-  "https_port": 5001,
+  "Urls": "http://*:80;https://*:443",
+  "https_port": 443,
   "Hubs": {
     "WakeUp": "wake-up",
     "Health": "health"

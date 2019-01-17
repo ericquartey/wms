@@ -16,6 +16,8 @@ namespace Ferretto.WMS.Scheduler.WebAPI
 
         private const string ConsoleArgument = "--console";
 
+        private const string HostConfigurationFile = "hostconfig.json";
+
         #endregion Fields
 
         #region Methods
@@ -48,7 +50,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI
 
                 var config = new ConfigurationBuilder()
                     .SetBasePath(pathToContentRoot)
-                    .AddJsonFile("hostconfig.json", optional: true)
+                    .AddJsonFile(HostConfigurationFile, optional: true)
                     .Build();
 
                 host = CreateWebHostBuilder(webHostArgs)
