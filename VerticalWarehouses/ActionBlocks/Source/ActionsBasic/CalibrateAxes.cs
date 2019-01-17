@@ -5,18 +5,18 @@ using NLog;
 
 namespace Ferretto.VW.ActionBlocks
 {
-    public class CalibrateAxes
+    public class CalibrateAxes : ICalibrateAxes
     {
         // On [EndedEventHandler] delegate for Calibrate Vertical Axis routine
         public delegate void CalibrateAxesEndEventHandler();
 
-        public delegate void CalibrateHAxisEndEventHandler(int stepCounter);
-
-        public delegate void CalibrateVAxisEndEventHandler();
+        public delegate void CalibrateAxisEndEventHandler(string calibrationEndMessage);
 
         public delegate void SwitchVerticalToHorizontalEndEventHandler();
 
         public delegate void SwitchHorizontalToVerticalEndEventHandler();
+
+        public delegate void StopCalibration(string stopMessage);
 
         // On [ErrorEventHandler] delegate for Calibrate Vertical Axis routine
         public delegate void CalibrateAxesErrorEventHandler(string errorDescription);
@@ -33,13 +33,13 @@ namespace Ferretto.VW.ActionBlocks
 
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private CalibrateHorizontalAxis calibrateHorizontalAxis;
-
         private SwitchMotors switchMotors;
 
-        private CalibrateVerticalAxis calibrateVerticalAxis;
+        private CalibrateAxis calibrateAxis;
 
         private int stepCounter;
+
+        private bool stopPushed;
 
         // Inverter driver
         private InverterDriver.InverterDriver inverterDriver;
@@ -54,13 +54,13 @@ namespace Ferretto.VW.ActionBlocks
         // [Ended] event
         public event CalibrateAxesEndEventHandler ThrowEndEvent;
 
-        public event CalibrateHAxisEndEventHandler ThrowHorizontalCalibrationEndEvent;
-
-        public event CalibrateVAxisEndEventHandler ThrowVerticalCalibrationEndEvent;
+        public event CalibrateAxisEndEventHandler ThrowCalibrationEndEvent;
 
         public event SwitchVerticalToHorizontalEndEventHandler ThrowSwitchVerticalToHorizontalEndEvent;
 
         public event SwitchHorizontalToVerticalEndEventHandler ThrowHorizontalToVerticalEndEvent;
+
+        public event StopCalibration ThrowStopEvent;
 
         // [Error] event
         public event CalibrateAxesErrorEventHandler ThrowErrorEvent;
@@ -84,6 +84,8 @@ namespace Ferretto.VW.ActionBlocks
 
         #endregion Properties
 
+        #region Methods
+
         public void SetAxesOrigin(int m, short ofs, short vFast, short vCreep)
         {
             this.m = m;
@@ -96,37 +98,37 @@ namespace Ferretto.VW.ActionBlocks
 
             this.stepCounter = 0;
 
+            this.stopPushed = false;
+
             logger.Log(LogLevel.Debug, "Start total routine to calibrate...");
 
             stepExecution();
         }
-
-        #region Methods
 
         /// <summary>
         /// Initialize the Calibrate Vertical Axis routine.
         /// </summary>
         public void Initialize()
         {
+            logger.Log(LogLevel.Debug, "Initialize - Begin");
+
             // Insert here the SwitchMotors class
             this.switchMotors = new SwitchMotors();
             this.switchMotors.SetInverterDriverInterface = this.inverterDriver;
             this.switchMotors.SetRemoteIOInterface = this.remoteIO;
             this.switchMotors.SetCurrentMotor = false;
 
-            // Calibration Horizontal Axis class
-            this.calibrateHorizontalAxis = new CalibrateHorizontalAxis();
-            this.calibrateHorizontalAxis.SetInverterDriverInterface = this.inverterDriver;
-
-            // Calibration Vertical Axis class
-            this.calibrateVerticalAxis = new CalibrateVerticalAxis();
-            this.calibrateVerticalAxis.SetInverterDriverInterface = this.inverterDriver;
+            // Calibrate Axis class
+            this.calibrateAxis = new CalibrateAxis();
+            this.calibrateAxis.SetInverterDriverInterface = this.inverterDriver;
+            this.calibrateAxis.GetAndSetActualcalibrationAxis = "V"; // We assign the Vertical Engine as default
 
             // Subscribe the event handlers
-            this.calibrateHorizontalAxis.ThrowEndEvent += this.nextStep;
-            this.calibrateHorizontalAxis.ThrowErrorEvent += this.happenedErrorEvent;
+            this.calibrateAxis.ThrowErrorEvent += this.happenedErrorEvent;
+            this.calibrateAxis.ThrowEndEvent += this.nextStep;
             this.switchMotors.ThrowEndEvent += this.nextStep;
-            this.calibrateVerticalAxis.ThrowEndEvent += this.nextStep;
+
+            logger.Log(LogLevel.Debug, "Initialize - End");
         }
 
         private void happenedErrorEvent(CalibrationStatus ErrorDescription)
@@ -135,35 +137,37 @@ namespace Ferretto.VW.ActionBlocks
             ThrowErrorEvent?.Invoke(ErrorDescription.ToString());
         }
 
-        public bool StopInverter()
+        public void StopInverter()
         {
             bool result;
+            string stopMessage = "Calibration Stopped";
 
             try
             {
-                if (this.switchMotors.SetCurrentMotor)
-                {
-                    result = this.calibrateHorizontalAxis.StopInverter();
-                }
-                else
-                {
-                    result = this.calibrateVerticalAxis.StopInverter();
-                }
+                result = this.calibrateAxis.StopInverter();
+                this.stopPushed = true;
             }
             catch (Exception ex)
             {
                 result = false;
             }
 
-            return result;
+            if (!result)
+                stopMessage = "An error happened during the STOP";
+
+            ThrowStopEvent?.Invoke(stopMessage);
+
         }
 
         private void nextStep()
         {
-            logger.Log(LogLevel.Debug, String.Format("Aknowledge of end calibration  stepCounter={0}", this.stepCounter));
+            logger.Log(LogLevel.Debug, String.Format("Aknowledge of end calibration  stepCounter = {0}", this.stepCounter));
 
-            stepCounter++;
-            this.stepExecution();
+            if (!this.stopPushed)
+            {
+                stepCounter++;
+                this.stepExecution();
+            }
         }
 
         private void stepExecution()
@@ -174,6 +178,8 @@ namespace Ferretto.VW.ActionBlocks
             {
 
                 // Insert here the slow chain motion to find the horizontal cam
+
+                // First Vertical to Horizontal Switch
                 case 0:
                     {
                         logger.Log(LogLevel.Debug, "Switch to horizontal motor");
@@ -183,21 +189,24 @@ namespace Ferretto.VW.ActionBlocks
 
                         break;
                     }
-                case 1: // First Horizontal Axis Calibration
+                // First Horizontal Axis Calibration
+                case 1:
                     {
-                        logger.Log(LogLevel.Debug, "Calibrate horizontal axis...");
+                        logger.Log(LogLevel.Debug, "Start calibrate horizontal axis...");
                         ThrowSwitchVerticalToHorizontalEndEvent?.Invoke(); // Throw an event to signal the switch end
-                        this.calibrateHorizontalAxis.Initialize();
-                        this.calibrateHorizontalAxis.SetHAxisOrigin(m, ofs, vFast, vCreep);
+                        this.calibrateAxis.Initialize();
+                        this.calibrateAxis.GetAndSetActualcalibrationAxis = "H";
+                        this.calibrateAxis.SetAxisOrigin(m, ofs, vFast, vCreep);
 
                         break;
                     }
-                case 2: // First Horizontal Axis Calibration
+                // First Horizontal to Vertical Switch
+                case 2:
                     {
                         logger.Log(LogLevel.Debug, "Terminate horizontal axis calibration.");
-                        this.calibrateHorizontalAxis.Terminate();
+                        this.calibrateAxis.Terminate();
                         // Notify horizontal calibration end (first)
-                        this.ThrowHorizontalCalibrationEndEvent?.Invoke(stepCounter);
+                        this.ThrowCalibrationEndEvent?.Invoke("Fist Horizontal Calibration");
                         // Switch from the Horizontal to the Vertical motor
                         logger.Log(LogLevel.Debug, "Switch to vertical motor");
                         this.switchMotors.callSwitchHorizToVert();
@@ -205,22 +214,25 @@ namespace Ferretto.VW.ActionBlocks
 
                         break;
                     }
+                // Vertical Axis Calibration
                 case 3:
                     {
                         this.ThrowHorizontalToVerticalEndEvent?.Invoke();
-                        logger.Log(LogLevel.Debug, "Calibrate vertical axis...");
-                        this.calibrateVerticalAxis.Initialize();
+                        logger.Log(LogLevel.Debug, "Start calibrate vertical axis...");
+                        this.calibrateAxis.Initialize();
+                        this.calibrateAxis.GetAndSetActualcalibrationAxis = "V";
                         // Vertical Homing
-                        this.calibrateVerticalAxis.SetVAxisOrigin(m, ofs, vFast, vCreep);
+                        this.calibrateAxis.SetAxisOrigin(m, ofs, vFast, vCreep);
 
                         break;
                     }
+                // Second Vertical to Horizontal Switch
                 case 4:
                     {
                         logger.Log(LogLevel.Debug, "Terminate vertical axis calibration.");
-                        this.calibrateVerticalAxis.Terminate();
+                        this.calibrateAxis.Terminate();
                         // Notify vertical calibration end
-                        this.ThrowVerticalCalibrationEndEvent?.Invoke();
+                        this.ThrowCalibrationEndEvent?.Invoke("Vertical Calibration");
                         // Switch from the Vertical to the Horizontal motor
                         logger.Log(LogLevel.Debug, "Switch to horizontal motor");
                         this.switchMotors.callSwitchVertToHoriz();
@@ -228,21 +240,24 @@ namespace Ferretto.VW.ActionBlocks
 
                         break;
                     }
-                case 5: // Second Horizontal Axis Calibration
+                // Second Horizontal Axis Calibration
+                case 5: 
                     {
                         ThrowSwitchVerticalToHorizontalEndEvent?.Invoke(); // Throw an event to signal the switch end
-                        logger.Log(LogLevel.Debug, "Calibrate horizontal axis (2)...");
-                        this.calibrateHorizontalAxis.Initialize();
-                        this.calibrateHorizontalAxis.SetHAxisOrigin(m, ofs, vFast, vCreep);
+                        logger.Log(LogLevel.Debug, "Start calibrate horizontal axis (2)...");
+                        this.calibrateAxis.Initialize();
+                        this.calibrateAxis.GetAndSetActualcalibrationAxis = "H";
+                        this.calibrateAxis.SetAxisOrigin(m, ofs, vFast, vCreep);
 
                         break;
                     }
+                // Second Horizontal to Vertical Switch
                 case 6:
                     {
                         logger.Log(LogLevel.Debug, "Terminate horizontal axis calibration (2).");
-                        this.calibrateHorizontalAxis.Terminate();
+                        this.calibrateAxis.Terminate();
                         // Notify horizontal calibration end (last)
-                        this.ThrowHorizontalCalibrationEndEvent?.Invoke(stepCounter); 
+                        this.ThrowCalibrationEndEvent?.Invoke("Second Horizontal Calibration"); 
                         // Switch from the Horizontal to the Vertical motor
                         logger.Log(LogLevel.Debug, "Switch to vertical motor");
                         this.switchMotors.callSwitchHorizToVert();
@@ -264,10 +279,9 @@ namespace Ferretto.VW.ActionBlocks
         public void Terminate()
         {
             // Subscribe the event handlers
-            this.calibrateHorizontalAxis.ThrowEndEvent -= this.nextStep;
-            this.calibrateHorizontalAxis.ThrowErrorEvent -= this.happenedErrorEvent;
+            this.calibrateAxis.ThrowEndEvent -= this.nextStep;
+            this.calibrateAxis.ThrowErrorEvent -= this.happenedErrorEvent;
             this.switchMotors.ThrowEndEvent -= this.nextStep;
-            this.calibrateVerticalAxis.ThrowEndEvent -= this.nextStep;
         }
 
         #endregion Methods
