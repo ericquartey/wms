@@ -7,86 +7,46 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
-             Width="1024"
-             Height="620"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="80" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="120" />
-            <RowDefinition Height="490" />
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Column="1"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.VerticalOffsetCalibration}" />
-        <Grid Grid.Row="1"
-              Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="auto" />
-            </Grid.ColumnDefinitions>
+    <Grid              Width="1024"
+             Height="608">
+        <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.VerticalOffsetCalibration}" Margin="160,10,0,562" />
 
-            <custom:CustomInputFieldControlFocusable Grid.Row="1"
-                                                     Margin="0,0,100,0"
+        <custom:CustomInputFieldControlFocusable Margin="160,405,544,135"
                                                      InputText="{Binding ReferenceCellHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                      LabelText="{x:Static res:InstallationApp.ReferenceCellHeight}"
                                                      Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
-            <custom:CustomLabelTextBlockControl Grid.Row="2"
-                                                Margin="0,0,100,0"
+        <custom:CustomLabelTextBlockControl Margin="160,332,544,208"
                                                 ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
-            <custom:CustomInputFieldControlFocusable Grid.Row="3"
-                                                     Margin="0,0,100,0"
+        <custom:CustomInputFieldControlFocusable Margin="160,231,544,309"
                                                      InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                      LabelText="{x:Static res:InstallationApp.StepValue}"
                                                      Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
-            <custom:CustomLabelTextBlockControl Grid.Row="4"
-                                                Margin="0,0,100,0"
+        <custom:CustomLabelTextBlockControl Margin="160,163,544,377"
                                                 ContentText="{Binding CurrentOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 LabelText="{x:Static res:InstallationApp.CurrentOffset}" />
-            <custom:CustomInputFieldControlFocusable Grid.Row="5"
-                                                     Margin="0,0,100,0"
+        <custom:CustomInputFieldControlFocusable Margin="160,90,544,450"
                                                      InputText="{Binding CorrectOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                      LabelText="{x:Static res:InstallationApp.CorrectOffset}"
                                                      Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
-            <Button Grid.Row="1"
-                    Grid.Column="2"
-                    Command="{Binding SetPositionButtonCommand}"
+        <Button Command="{Binding SetPositionButtonCommand}"
                     Content="{x:Static res:InstallationApp.SetPosition}"
                     IsEnabled="{Binding IsSetPositionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-            <Button Grid.Row="2"
-                    Grid.Column="2"
-                    Command="{Binding StepUpButtonCommand}"
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="646,100,209,440" />
+        <Button Command="{Binding StepUpButtonCommand}"
                     Content="{x:Static res:InstallationApp.StepUp}"
                     IsEnabled="{Binding IsStepUpButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-            <Button Grid.Row="3"
-                    Grid.Column="2"
-                    Command="{Binding StepDownButtonCommand}"
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="646,207,209,333" />
+        <Button Command="{Binding StepDownButtonCommand}"
                     Content="{x:Static res:InstallationApp.StepDown}"
                     IsEnabled="{Binding IsStepDownButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-            <Button Grid.Row="5"
-                    Grid.Column="2"
-                    Command="{Binding CorrectOffsetButtonCommand}"
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="646,280,209,260" />
+        <Button Command="{Binding CorrectOffsetButtonCommand}"
                     Content="{x:Static res:InstallationApp.DoCorrectOffset}"
                     IsEnabled="{Binding IsCorrectOffsetButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        </Grid>
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="646,405,209,135" />
     </Grid>
 </UserControl>

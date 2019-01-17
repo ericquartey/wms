@@ -13,7 +13,7 @@ namespace Ferretto.Common.EF.Configurations
                 throw new System.ArgumentNullException(nameof(builder));
             }
 
-            builder.HasKey(c => new {c.CellConfigurationId, c.CellTypeId});
+            builder.HasKey(c => new { c.CellConfigurationId, c.CellTypeId });
 
             builder.Property(c => c.Priority)
                 .HasDefaultValue(1);
