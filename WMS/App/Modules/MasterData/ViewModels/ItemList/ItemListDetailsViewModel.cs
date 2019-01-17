@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -91,7 +92,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public override void RefreshData()
+        public override void LoadRelatedData()
         {
             // TODO: implement method
         }
@@ -103,6 +104,11 @@ namespace Ferretto.WMS.Modules.MasterData
             ((DelegateCommand)this.ListRowExecuteCommand)?.RaiseCanExecuteChanged();
             ((DelegateCommand)this.ShowDetailsListRowCommand)?.RaiseCanExecuteChanged();
             ((DelegateCommand)this.AddListRowCommand)?.RaiseCanExecuteChanged();
+        }
+
+        protected override async Task ExecuteRefreshCommandAsync()
+        {
+            await this.LoadDataAsync();
         }
 
         protected override async Task ExecuteRevertCommand()

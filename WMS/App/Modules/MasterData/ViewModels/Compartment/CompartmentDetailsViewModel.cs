@@ -90,7 +90,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public override void RefreshData()
+        public override void LoadRelatedData()
         {
             this.AllowedItemsDataSource = this.Model != null
                 ? new DataSource<AllowedItemInCompartment>(() => this.itemProvider.GetAllowedByCompartmentId(this.Model.Id))
@@ -98,7 +98,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.LoadingUnitsDataSource = new DataSource<LoadingUnit>(() => this.loadingUnitProvider.GetAll());
 
-            base.RefreshData();
+            base.LoadRelatedData();
+        }
+
+        protected override async Task ExecuteRefreshCommandAsync()
+        {
+            await this.LoadDataAsync();
         }
 
         protected override async Task ExecuteRevertCommand()

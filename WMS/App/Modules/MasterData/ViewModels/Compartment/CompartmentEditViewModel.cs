@@ -69,6 +69,11 @@ namespace Ferretto.WMS.Modules.MasterData
             ((DelegateCommand)this.deleteCommand)?.RaiseCanExecuteChanged();
         }
 
+        protected override Task ExecuteRefreshCommandAsync()
+        {
+            throw new NotSupportedException();
+        }
+
         protected override Task ExecuteRevertCommand() => throw new NotSupportedException();
 
         protected override async Task ExecuteSaveCommand()

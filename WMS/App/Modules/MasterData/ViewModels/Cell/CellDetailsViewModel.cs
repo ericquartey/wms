@@ -86,11 +86,16 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public override void RefreshData()
+        public override void LoadRelatedData()
         {
             this.LoadingUnitsDataSource = this.Model != null
                 ? new DataSource<LoadingUnitDetails>(() => this.loadingUnitsProvider.GetByCellId(this.Model.Id))
                 : null;
+        }
+
+        protected override async Task ExecuteRefreshCommandAsync()
+        {
+            await this.LoadDataAsync();
         }
 
         protected override async Task ExecuteRevertCommand()
