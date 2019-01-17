@@ -19,7 +19,9 @@
     <Grid>
 
         <Grid.Resources>
-            <wms:BoolToDoubleConverter x:Key="BTOC" ValueOnTrue="1" ValueOnFalse="0.3" />
+            <wms:BoolToDoubleConverter x:Key="BTOC"
+                                       ValueOnFalse="0.3"
+                                       ValueOnTrue="1" />
 
             <DataTemplate x:Key="cardTemplate">
 
@@ -29,22 +31,24 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <wms:WmsIcon Grid.Column="0"
-                                 Margin="0,35,0,0"
                                  Width="90"
                                  Height="90"
-                                 Opacity="{Binding IsOnLine, Converter={StaticResource BTOC}}"
+                                 Margin="0,35,0,0"
                                  VerticalAlignment="Top"
+                                 Opacity="{Binding IsOnLine, Converter={StaticResource BTOC}}"
                                  SymbolName="{Binding Image}" />
                     <StackPanel Grid.Column="1"
                                 Margin="12,-10,12,0"
                                 VerticalAlignment="Top"
                                 Orientation="Vertical">
-                        <wms:InfoText Content="{Binding Status}" IsPillVisible="True" />
-                        <wms:InfoText Content="{Binding MaintenanceStatus}" IsPillVisible="True" />
+                        <wms:InfoText Content="{Binding Status}"
+                                      IsPillVisible="True" />
+                        <wms:InfoText Content="{Binding MaintenanceStatus}"
+                                      IsPillVisible="True" />
                         <wms:ProgressBarEdit DisplayFormatString="p0"
                                              EditValue="{Binding Path=FillRate, Mode=OneWay}"
-                                             Minimum="0"
-                                             Maximum="100" />
+                                             Maximum="100"
+                                             Minimum="0" />
                     </StackPanel>
                 </Grid>
 
@@ -83,7 +87,8 @@
             <wms:ActionBar HorizontalAlignment="Left"
                            Style="{DynamicResource ActionBarOverlayedWithGrid}">
 
-                <wms:ActionBarItem Content="{x:Static res:General.Refresh}"
+                <wms:ActionBarItem Command="{Binding RefreshCommand}"
+                                   Content="{x:Static res:General.Refresh}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
                                    GlyphSize="Custom" />

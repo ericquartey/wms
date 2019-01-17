@@ -58,6 +58,11 @@
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_play_arrow_black_24dp.png"
                                GlyphSize="Custom" />
+            <wms:ActionBarItem Command="{Binding RefreshCommand}"
+                               Content="{x:Static res:General.Refresh}"
+                               CustomGlyphSize="24,24"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
+                               GlyphSize="Custom" />
         </wms:ActionBar>
 
         <ScrollViewer Grid.Row="1"
@@ -232,18 +237,22 @@
 
                             <wms:WmsGridControl.Columns>
                                 <dxg:GridColumn Width="100*"
+                                                FieldName="ItemCode" />
+                                <dxg:GridColumn Width="280*"
+                                                FieldName="ItemDescription" />
+                                <dxg:GridColumn Width="100*"
                                                 FieldName="Sub1" />
                                 <dxg:GridColumn Width="100*"
                                                 FieldName="Sub2" />
-                                <dxg:GridColumn Width="200*"
+                                <dxg:GridColumn Width="180*"
                                                 FieldName="Lot" />
-                                <dxg:GridColumn Width="200*"
+                                <dxg:GridColumn Width="150*"
                                                 FieldName="CompartmentStatusDescription" />
                                 <dxg:GridColumn Width="100*"
                                                 FieldName="Stock" />
                                 <dxg:GridColumn Width="100*"
                                                 FieldName="MaxCapacity" />
-                                <dxg:GridColumn Width="200*"
+                                <dxg:GridColumn Width="90*"
                                                 CellDisplayTemplate="{DynamicResource BooleanCellTemplate}"
                                                 FieldName="IsItemPairingFixed" />
                             </wms:WmsGridControl.Columns>

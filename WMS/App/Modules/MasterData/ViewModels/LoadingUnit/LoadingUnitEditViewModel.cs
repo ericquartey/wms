@@ -17,17 +17,29 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+
         private readonly Func<ICompartment, ICompartment, string> filterColorFunc = new EditFilter().ColorFunc;
+
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
+
         private BaseNavigationViewModel activeSideViewModel;
+
         private ICommand addCommand;
+
         private ICommand bulkAddCommand;
+
         private IEnumerable<CompartmentDetails> compartmentsDataSource;
+
         private ICommand editCommand;
+
         private bool isSidePanelOpen;
+
         private LoadingUnitDetails loadingUnit;
+
         private bool loadingUnitHasCompartments;
+
         private ICompartment selectedCompartmentTray;
+
         private Tray tray;
 
         #endregion Fields
@@ -95,7 +107,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 if (this.SetProperty(ref this.loadingUnit, value))
                 {
-                    this.RefreshData();
+                    this.LoadRelatedData();
                 }
             }
         }
@@ -122,7 +134,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public void RefreshData()
+        public void LoadRelatedData()
         {
             this.CompartmentsDataSource = this.loadingUnit != null
                 ? this.compartmentProvider.GetByLoadingUnitId(this.loadingUnit.Id).ToList()
@@ -149,6 +161,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     case BulkCompartment bulk:
                         this.SelectedCompartmentTray = bulk.LoadingUnit.Compartments.FirstOrDefault();
                         break;
+
                     case ICompartment compartment:
                         this.SelectedCompartmentTray = compartment;
                         break;

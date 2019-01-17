@@ -64,6 +64,11 @@ namespace Ferretto.WMS.Modules.MasterData
             ((DelegateCommand)this.ListRowExecuteCommand)?.RaiseCanExecuteChanged();
         }
 
+        protected override async Task ExecuteRefreshCommandAsync()
+        {
+            await this.LoadDataAsync();
+        }
+
         protected override async Task ExecuteRevertCommand()
         {
             await this.LoadDataAsync();
