@@ -32,7 +32,7 @@ namespace Ferretto.Common.BusinessModels
                 if (this.isModified != value)
                 {
                     this.isModified = value;
-                    this.ModifiedChanged?.Invoke(this, null);
+                    this.ModifiedChanged?.Invoke(this, EventArgs.Empty);
                 }
             }
         }

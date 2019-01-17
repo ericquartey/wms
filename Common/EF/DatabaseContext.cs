@@ -9,9 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 #else
 using System;
-using Microsoft.Extensions.Configuration;
 using System.IO;
 using System.Reflection;
+using Microsoft.Extensions.Configuration;
 #endif
 
 namespace Ferretto.Common.EF
@@ -20,7 +20,7 @@ namespace Ferretto.Common.EF
         "Major Code Smell",
         "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
         Justification = "Class Designed as part of the Entity Framework")]
-    public partial class DatabaseContext : DbContext
+    public class DatabaseContext : DbContext
     {
         private const string ConnectionStringName = "WmsConnectionString";
         private const string DefaultApplicationSettingsFile = "appsettings.json";
@@ -28,7 +28,8 @@ namespace Ferretto.Common.EF
         #region Constructors
 
         public DatabaseContext()
-        { }
+        {
+        }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
@@ -142,7 +143,7 @@ namespace Ferretto.Common.EF
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.AddTimestamps();
-            return await base.SaveChangesAsync();
+            return await base.SaveChangesAsync(cancellationToken);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -237,8 +238,7 @@ namespace Ferretto.Common.EF
                 .Where(x =>
                     x.Entity is ITimestamped
                     &&
-                    (x.State == EntityState.Added || x.State == EntityState.Modified)
-                );
+                    (x.State == EntityState.Added || x.State == EntityState.Modified));
 
             var timeNow = System.DateTime.UtcNow;
 

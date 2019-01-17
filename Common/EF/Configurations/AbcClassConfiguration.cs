@@ -14,6 +14,7 @@ namespace Ferretto.Common.EF.Configurations
             {
                 throw new System.ArgumentNullException(nameof(builder));
             }
+
             builder.HasKey(a => a.Id);
 
             builder.Property(a => a.Id).HasColumnType("char(1)");
