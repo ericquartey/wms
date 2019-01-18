@@ -8,6 +8,12 @@ queue:
   - visualstudio
   - vstest
 
+trigger:
+  branches:
+    include:
+    - develop
+    - feature/*
+
 variables:
   BuildPlatform: 'any cpu'
   BuildConfiguration: 'debug'
