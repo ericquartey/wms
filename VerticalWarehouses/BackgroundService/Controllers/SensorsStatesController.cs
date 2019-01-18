@@ -18,9 +18,9 @@ namespace BackgroundService
 
         #region Constructors
 
-        public SensorsStatesController(IHubContext<SensorsStatesHub, ISensorsStatesHub> hub)
+        public SensorsStatesController(IHubContext<SensorsStatesHub, ISensorsStatesHub> _hub)
         {
-            this.hub = hub;
+            this.hub = _hub;
         }
 
         #endregion Constructors
