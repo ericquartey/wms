@@ -7,11 +7,16 @@ namespace Ferretto.Common.EF
 {
     public class BuildDatabaseContext : DatabaseContext
     {
+        #region Fields
+
         private const string buildNumberEnvVariable = "buildNumber";
+
         private static readonly System.Text.RegularExpressions.Regex ConnectionStringInitialCatalog =
             new System.Text.RegularExpressions.Regex(
                 @"Initial Catalog=(?<dbname>[^;]+)",
                 System.Text.RegularExpressions.RegexOptions.Compiled);
+
+        #endregion Fields
 
         #region Constructors
 
@@ -40,13 +45,14 @@ namespace Ferretto.Common.EF
                 return;
             }
 
+            var applicationSettingsFile = GetSettingFileFromEnvironment();
+
             var configurationBuilder = new ConfigurationBuilder()
                                        .SetBasePath(Directory.GetCurrentDirectory())
-                                       .AddJsonFile(DefaultApplicationSettingsFile, optional: false, reloadOnChange: false)
+                                       .AddJsonFile(applicationSettingsFile, optional: false, reloadOnChange: false)
                                        .Build();
 
             var connectionString = configurationBuilder.GetConnectionString(ConnectionStringName);
-
             var databaseSuffix = Environment.GetEnvironmentVariable(buildNumberEnvVariable);
             Console.WriteLine($"Build Number: {databaseSuffix}");
 
