@@ -63,7 +63,7 @@ steps:
 
     FileVersionNumber: '$(GitVersion.AssemblySemFileVer)'
 
-    InformationalVersion: '$(GitVersion.InformationalVersion)'
+    InformationalVersion: '$(GitVersion.FullSemVer)'
 
     InsertAttributes: true
 
@@ -80,7 +80,7 @@ steps:
 
   failOnStderr: true
 
-  displayName: 'dotnet ef update last'
+  displayName: 'dotnet ef database update'
   continueOnError: true
   env:
     NETCORE_ENVIRONMENT: CloudBuild
