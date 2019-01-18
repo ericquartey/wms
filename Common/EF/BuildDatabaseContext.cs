@@ -48,6 +48,13 @@ namespace Ferretto.Common.EF
             var connectionString = configurationBuilder.GetConnectionString(ConnectionStringName);
 
             var databaseSuffix = Environment.GetEnvironmentVariable(buildNumberEnvVariable);
+            Console.WriteLine($"Build Number: {databaseSuffix}");
+
+            if (databaseSuffix == null)
+            {
+                throw new InvalidOperationException($"Environment variable {buildNumberEnvVariable} must be specified!");
+            }
+
             var modifiedConnectionString = ConnectionStringInitialCatalog.Replace(
                 connectionString,
                 $"${{dbname}}_{databaseSuffix}");
