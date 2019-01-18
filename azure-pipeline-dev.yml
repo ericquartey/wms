@@ -3,7 +3,7 @@ resources:
   clean: true
 queue:
   name: Hosted VS2017
-  demands: 
+  demands:
   - msbuild
   - visualstudio
   - vstest
@@ -65,6 +65,8 @@ steps:
 
     InformationalVersion: '$(GitVersion.InformationalVersion)'
 
+    InsertAttributes: true
+
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Common Sources'
@@ -73,18 +75,7 @@ steps:
 
     ArtifactName: 'common_sources'
 
-
-- script: 'dotnet ef database update Initial --verbose'
-  workingDirectory: Common/EF
-
-  failOnStderr: true
-
-  displayName: 'dotnet ef update Initial'
-  continueOnError: true
-  env:
-    NETCORE_ENVIRONMENT: CloudBuild
-
-- script: 'dotnet ef database update --verbose'
+- script: 'dotnet ef database update --verbose --context BuildDatabaseContext'
   workingDirectory: Common/EF
 
   failOnStderr: true
@@ -93,6 +84,7 @@ steps:
   continueOnError: true
   env:
     NETCORE_ENVIRONMENT: CloudBuild
+    buildNumber: '$(Build.BuildId)'
 
 - task: SqlAzureDacpacDeployment@1
   displayName: 'Azure SQL Publish'

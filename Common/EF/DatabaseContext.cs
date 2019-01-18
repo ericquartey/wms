@@ -22,8 +22,8 @@ namespace Ferretto.Common.EF
         Justification = "Class Designed as part of the Entity Framework")]
     public class DatabaseContext : DbContext
     {
-        private const string ConnectionStringName = "WmsConnectionString";
-        private const string DefaultApplicationSettingsFile = "appsettings.json";
+        protected const string ConnectionStringName = "WmsConnectionString";
+        protected const string DefaultApplicationSettingsFile = "appsettings.json";
 
         #region Constructors
 
