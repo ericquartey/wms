@@ -22,8 +22,13 @@ namespace Ferretto.Common.EF
         Justification = "Class Designed as part of the Entity Framework")]
     public class DatabaseContext : DbContext
     {
-        private const string ConnectionStringName = "WmsConnectionString";
+        protected const string ConnectionStringName = "WmsConnectionString";
+
         private const string DefaultApplicationSettingsFile = "appsettings.json";
+
+        private const string ParametrizedApplicationSettingsFile = "appsettings.{0}.json";
+
+        private const string NetcoreEnvironmentEnvVariable = "NETCORE_ENVIRONMENT";
 
         #region Constructors
 
@@ -146,6 +151,15 @@ namespace Ferretto.Common.EF
             return await base.SaveChangesAsync(cancellationToken);
         }
 
+        protected static string GetSettingFileFromEnvironment()
+        {
+            var netcoreEnvironment = System.Environment.GetEnvironmentVariable(NetcoreEnvironmentEnvVariable);
+
+            return netcoreEnvironment != null
+                       ? string.Format(ParametrizedApplicationSettingsFile, netcoreEnvironment)
+                       : DefaultApplicationSettingsFile;
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (optionsBuilder == null)
@@ -168,10 +182,11 @@ namespace Ferretto.Common.EF
 
             optionsBuilder.UseSqlServer(configuration.ConnectionString);
 #else
+            var applicationSettingsFile = GetSettingFileFromEnvironment();
 
             var configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(DefaultApplicationSettingsFile, optional: false, reloadOnChange: false)
+                .AddJsonFile(applicationSettingsFile, optional: false, reloadOnChange: false)
                 .Build();
 
             var connectionString = configurationBuilder.GetConnectionString(ConnectionStringName);
