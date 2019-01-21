@@ -10,12 +10,15 @@ steps:
     NETCORE_ENVIRONMENT: CloudBuild
     buildNumber: '$(Build.BuildId)'
 
-- task: SqlAzureDacpacDeployment@1
-  displayName: 'Azure SQL Publish'
-  inputs:
-    TaskNameSelector: SqlTask
-    SqlFile: Common/EF/Seeds/Dev.Minimal.sql
-  enabled: false
+- script: 'sqlcmd -S rd-ferrettogroup.database.windows.net -d Ferretto_WmsDb_%buildDefinitionName%_%buildNumber% -i Dev.Minimal.sql -U admin_rd_ferrettogroup -P Ferretto2019!'
+  workingDirectory: Common/EF/Seeds
+  failOnStderr: true
+  displayName: 'Apply db seed'
+  continueOnError: false
+  env:
+    NETCORE_ENVIRONMENT: CloudBuild
+    buildNumber: '$(Build.BuildId)'
+    buildDefinitionName: '$(Build.DefinitionName)'
 
 - script: 'dotnet ef database drop --verbose --force --context BuildDatabaseContext'
   workingDirectory: Common/EF
