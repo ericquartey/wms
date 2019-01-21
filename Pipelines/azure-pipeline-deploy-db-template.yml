@@ -17,7 +17,7 @@ steps:
     SqlFile: Common/EF/Seeds/Dev.Minimal.sql
   enabled: false
 
-- script: 'dotnet ef database drop --verbose --context BuildDatabaseContext'
+- script: 'dotnet ef database drop --verbose --force --context BuildDatabaseContext'
   workingDirectory: Common/EF
   failOnStderr: true
   displayName: 'dotnet ef database drop'
