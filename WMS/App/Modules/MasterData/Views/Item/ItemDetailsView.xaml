@@ -243,9 +243,17 @@
                                                 FieldName="Lot" />
                                 <dxg:GridColumn Width="200*"
                                                 FieldName="CompartmentStatusDescription" />
+                                <dxg:GridColumn Width="150*">
+                                    <dxg:GridColumn.FieldName>
+                                        <MultiBinding Converter="{StaticResource SFC}">
+                                            <Binding Source="{x:Static res:MasterData.QuantityWithUnitMeasure}" />
+                                            <Binding Source="{x:Static res:BusinessObjects.ItemStock}" />
+                                            <Binding Path="Model.MeasureUnitDescription"
+                                                     TargetNullValue="" />
+                                        </MultiBinding>
+                                    </dxg:GridColumn.FieldName>
+                                </dxg:GridColumn>
                                 <dxg:GridColumn Width="100*"
-                                                FieldName="Stock" />
-                                <dxg:GridColumn Width="200*"
                                                 CellDisplayTemplate="{DynamicResource BooleanCellTemplate}"
                                                 FieldName="IsItemPairingFixed" />
                             </wms:WmsGridControl.Columns>
