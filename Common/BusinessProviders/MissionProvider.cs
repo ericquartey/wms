@@ -49,6 +49,7 @@ namespace Ferretto.Common.BusinessProviders
                  .Include(m => m.Cell)
                  .ThenInclude(c => c.Aisle)
                 .Include(m => m.Item)
+                .ThenInclude(i => i.MeasureUnit)
                 .Include(m => m.ItemList)
                 .Include(m => m.ItemListRow)
                 .Include(m => m.LoadingUnit)
@@ -77,7 +78,9 @@ namespace Ferretto.Common.BusinessProviders
                     MaterialStatusDescription = m.MaterialStatus.Description,
                     PackageTypeDescription = m.PackageType.Description,
                     Sub1 = m.Sub1,
-                    Sub2 = m.Sub2
+                    Sub2 = m.Sub2,
+
+                    ItemUnitMeasure = m.Item.MeasureUnit.Description
                 });
         }
 

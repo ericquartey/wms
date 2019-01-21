@@ -20,6 +20,22 @@
     <wms:WmsView.Resources>
         <dxg:RowPropertyValueConverter x:Key="rowPropertyConverter" />
 
+        <wms:StringFormatConverter x:Key="SFC" />
+
+        <DataTemplate x:Key="CellDisplayTemplateQuantity">
+            <TextBlock VerticalAlignment="Center">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource SFC}">
+                        <Binding Source="{x:Static res:MasterData.QuantityWithUnitMeasure}" />
+                        <Binding Path="Data.RequiredQuantity"
+                                 TargetNullValue="" />
+                        <Binding Path="Data.ItemUnitMeasure"
+                                 TargetNullValue="" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </DataTemplate>
+
         <DataTemplate x:Key="DetailTooltipTemplate">
             <dx:MeasurePixelSnapper MaxWidth="300"
                                     MaxHeight="300">
@@ -256,6 +272,7 @@
                     <dxg:GridColumn Width="90*"
                                     FieldName="Priority" />
                     <dxg:GridColumn Width="90*"
+                                    CellDisplayTemplate="{StaticResource CellDisplayTemplateQuantity}"
                                     FieldName="RequiredQuantity" />
                     <dxg:GridColumn Width="120*"
                                     FieldName="Type" />
