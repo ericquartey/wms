@@ -87,8 +87,10 @@
                                     FieldName="Description" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="ItemCategoryDescription" />
-                    <dxg:GridColumn Width="100*"
+                    <dxg:GridColumn Width="90*"
                                     FieldName="AbcClassDescription" />
+                    <dxg:GridColumn Width="80*"
+                                    FieldName="MeasureUnitDescription" />
                     <dxg:GridColumn Width="50*"
                                     FieldName="TotalStock" />
                     <dxg:GridColumn Width="100*"
