@@ -287,22 +287,26 @@
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
+                                      wms:AdditionalInfo.Text="{Binding Model.ItemMeasureUnit}"
                                       EditValue="{Binding Model.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       MinValue="1" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
+                                      wms:AdditionalInfo.Text="{Binding Model.ItemMeasureUnit}"
                                       AllowNullInput="False"
                                       EditValue="{Binding Model.ReservedForPick, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
+                                      wms:AdditionalInfo.Text="{Binding Model.ItemMeasureUnit}"
                                       AllowNullInput="False"
                                       EditValue="{Binding Model.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
+                                      wms:AdditionalInfo.Text="{Binding Model.ItemMeasureUnit}"
                                       AllowNullInput="False"
                                       EditValue="{Binding Model.ReservedToStore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False" />

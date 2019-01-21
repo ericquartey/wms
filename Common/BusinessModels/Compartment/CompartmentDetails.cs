@@ -30,6 +30,8 @@ namespace Ferretto.Common.BusinessModels
 
         private int? itemId;
 
+        private string itemMeasureUnit;
+
         private string loadingUnitCode;
 
         private int loadingUnitId;
@@ -165,6 +167,12 @@ namespace Ferretto.Common.BusinessModels
         {
             get => this.itemId;
             set => this.SetProperty(ref this.itemId, value);
+        }
+
+        public string ItemMeasureUnit
+        {
+            get => this.itemMeasureUnit;
+            set => this.SetProperty(ref this.itemMeasureUnit, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentLastHandlingDate), ResourceType = typeof(BusinessObjects))]
