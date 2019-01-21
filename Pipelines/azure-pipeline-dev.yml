@@ -18,44 +18,13 @@ trigger:
 variables:
   BuildPlatform: 'any cpu'
   BuildConfiguration: 'debug'
+
 steps:
 
-- task: NuGetToolInstaller@0
-  displayName: 'Use NuGet 4.x'
-  inputs:
-    versionSpec: 4.x
+- template: azure-pipeline-net4-nuget-template.yml
 
 
-- task: NuGetCommand@2
-  displayName: 'NuGet restore'
-  inputs:
-    restoreSolution: '*.sln'
-    feedsToUse: config
-    nugetConfigPath: nuget.config
-    restoreDirectory: ./packages
-    verbosityRestore: Normal
-
-
-- task: gittools.gitversion.gitversion-task.GitVersion@4
-  displayName: GitVersion
-  inputs:
-    updateAssemblyInfo: true
-    preferBundledVersion: false
-
-
-- task: bleddynrichards.Assembly-Info-Task.Assembly-Info-Task.Assembly-Info-Task@1
-  displayName: 'Set Assembly Manifest Data'
-  inputs:
-    FileNames: |
-     AssemblyInfo.cs
-     *.csproj
-    Product: 'Warehouse Management System'
-    Company: 'Ferretto Group S.p.A.'
-    Copyright: 'Copyright Ferretto Group S.p.A. 2019'
-    VersionNumber: '$(GitVersion.AssemblySemVer)'
-    FileVersionNumber: '$(GitVersion.AssemblySemFileVer)'
-    InformationalVersion: '$(GitVersion.FullSemVer)'
-    InsertAttributes: true
+- template: azure-pipeline-assembly-versioning-template.yml
 
 
 - task: PublishBuildArtifacts@1
@@ -64,7 +33,9 @@ steps:
     PathtoPublish: Common
     ArtifactName: 'common_sources'
 
+
 - template: azure-pipeline-build-services-template.yml
+
 
 - task: VSBuild@1
   displayName: 'Build solution WMS.App'
@@ -147,50 +118,6 @@ steps:
     TargetFolder: '$(build.artifactstagingdirectory)'
 
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: drop'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)'
 
-  enabled: false
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Desktop App'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/WMS/App/App/bin/$(BuildConfiguration)/net471'
-
-    ArtifactName: 'desktop_app'
-
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Scheduler Service'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/WMS/Scheduler/WebAPI/bin/$(BuildConfiguration)/netcoreapp2.1/win7-x64/publish'
-
-    ArtifactName: 'scheduler_service'
-
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Data Service'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/WMS/Data/WebAPI/bin/$(BuildConfiguration)/netcoreapp2.1/win7-x64/publish'
-
-    ArtifactName: 'data_service'
-
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Level1 Automation'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses'
-
-    ArtifactName: 'level1_automation'
-
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: on_premises_appconfig_transform'
-  inputs:
-    PathtoPublish: WMS/App/App
-
-    ArtifactName: 'on_premises_appconfig_transform'
-
+- template: azure-pipeline-publish-symbols-template.yml
 
