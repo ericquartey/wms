@@ -86,11 +86,16 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public override void RefreshData()
+        public override void LoadRelatedData()
         {
             this.LoadingUnitsDataSource = this.Model != null
                 ? new DataSource<LoadingUnitDetails>(() => this.loadingUnitsProvider.GetByCellId(this.Model.Id))
                 : null;
+        }
+
+        protected override async Task ExecuteRefreshCommandAsync()
+        {
+            await this.LoadDataAsync();
         }
 
         protected override async Task ExecuteRevertCommand()
@@ -156,15 +161,22 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task LoadDataAsync()
         {
-            this.IsBusy = true;
-
-            if (this.Data is int modelId)
+            try
             {
-                this.Model = await this.cellProvider.GetByIdAsync(modelId);
-                this.CellHasLoadingUnits = this.cellProvider.HasAnyLoadingUnits(modelId);
-            }
+                this.IsBusy = true;
 
-            this.IsBusy = false;
+                if (this.Data is int modelId)
+                {
+                    this.Model = await this.cellProvider.GetByIdAsync(modelId);
+                    this.CellHasLoadingUnits = this.cellProvider.HasAnyLoadingUnits(modelId);
+                }
+
+                this.IsBusy = false;
+            }
+            catch
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
+            }
         }
 
         #endregion Methods

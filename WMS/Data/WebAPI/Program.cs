@@ -16,6 +16,8 @@ namespace Ferretto.WMS.Data.WebAPI
 
         private const string ConsoleArgument = "--console";
 
+        private const string HostConfigurationFile = "hostconfig.json";
+
         #endregion Fields
 
         #region Methods
@@ -48,7 +50,7 @@ namespace Ferretto.WMS.Data.WebAPI
 
                 var config = new ConfigurationBuilder()
                              .SetBasePath(pathToContentRoot)
-                             .AddJsonFile("hostconfig.json", optional: true)
+                             .AddJsonFile(HostConfigurationFile, optional: true)
                              .Build();
 
                 host = CreateWebHostBuilder(webHostArgs)
@@ -56,8 +58,8 @@ namespace Ferretto.WMS.Data.WebAPI
                            .UseConfiguration(config)
                            .Build();
 
-                var logger = host.Services.GetService(typeof(ILogger)) as ILogger;
-                logger.LogInformation($"Starting WMS Data (as service: {isService}) ...");
+                var logger = host.Services.GetService(typeof(ILogger<Startup>)) as ILogger<Startup>;
+                logger.LogInformation($"Starting WMS Data service.");
 
                 if (isService)
                 {
@@ -68,12 +70,12 @@ namespace Ferretto.WMS.Data.WebAPI
                     host.Run();
                 }
 
-                logger.LogInformation($"WMS Data shutting down.");
+                logger.LogInformation($"WMS Data service stopped.");
             }
             catch (Exception ex)
             {
-                var logger = host?.Services.GetService(typeof(ILogger)) as ILogger;
-                logger?.LogError(ex, $"Unhandled exception");
+                var logger = host?.Services.GetService(typeof(ILogger<Startup>)) as ILogger<Startup>;
+                logger?.LogError(ex, $"Service terminated due to unhandled exception.");
             }
         }
 

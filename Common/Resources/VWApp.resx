@@ -128,6 +128,10 @@
   <data name="PasswordLogin" xml:space="preserve">
     <value>Password Login:</value>
   </data>
+  <data name="SwitchOff" xml:space="preserve">
+    <value>Switch Off</value>
+    <comment>Button - Label text</comment>
+  </data>
   <data name="UserLogin" xml:space="preserve">
     <value>User Login:</value>
   </data>

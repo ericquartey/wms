@@ -1,0 +1,246 @@
+resources:
+- repo: self
+  clean: true
+queue:
+  name: Hosted VS2017
+  demands:
+  - msbuild
+  - visualstudio
+  - vstest
+
+trigger:
+  branches:
+    include:
+    - master
+    - release/*
+    - bugfix/*
+    - hotfix/*
+
+variables:
+  BuildPlatform: 'any cpu'
+  BuildConfiguration: 'release'
+steps:
+- task: NuGetToolInstaller@0
+  displayName: 'Use NuGet 4.x'
+  inputs:
+    versionSpec: 4.x
+
+
+- task: NuGetCommand@2
+  displayName: 'NuGet restore'
+  inputs:
+    restoreSolution: '*.sln'
+
+    feedsToUse: config
+
+    nugetConfigPath: nuget.config
+
+    restoreDirectory: ./packages
+
+    verbosityRestore: Normal
+
+
+- task: gittools.gitversion.gitversion-task.GitVersion@4
+  displayName: GitVersion
+  inputs:
+    updateAssemblyInfo: true
+
+    preferBundledVersion: false
+
+
+- task: bleddynrichards.Assembly-Info-Task.Assembly-Info-Task.Assembly-Info-Task@1
+  displayName: 'Set Assembly Manifest Data'
+  inputs:
+    FileNames: |
+     AssemblyInfo.cs
+     *.csproj
+
+    Product: 'Warehouse Management System'
+
+    Company: 'Ferretto Group S.p.A.'
+
+    Copyright: 'Copyright Ferretto Group S.p.A. 2019'
+
+    VersionNumber: '$(GitVersion.AssemblySemVer)'
+
+    FileVersionNumber: '$(GitVersion.AssemblySemFileVer)'
+
+    InformationalVersion: '$(GitVersion.FullSemVer)'
+
+    InsertAttributes: true
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Common Sources'
+  inputs:
+    PathtoPublish: Common
+
+    ArtifactName: 'common_sources'
+
+- script: 'dotnet ef database update --verbose --context BuildDatabaseContext'
+  workingDirectory: Common/EF
+
+  failOnStderr: true
+
+  displayName: 'dotnet ef database update'
+  continueOnError: true
+  env:
+    NETCORE_ENVIRONMENT: CloudBuild
+    buildNumber: '$(Build.BuildId)'
+
+- task: SqlAzureDacpacDeployment@1
+  displayName: 'Azure SQL Publish'
+  inputs:
+    TaskNameSelector: SqlTask
+
+    SqlFile: Common/EF/Seeds/Dev.Minimal.sql
+
+  enabled: false
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build WMS.Data.sln'
+  inputs:
+    projects: WMS.Data.sln
+
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build WMS.Scheduler.sln'
+  inputs:
+    projects: WMS.Scheduler.sln
+
+
+- task: VSBuild@1
+  displayName: 'Build solution WMS.App'
+  inputs:
+    solution: WMS.App.sln
+
+    msbuildArgs: '-v:normal'
+
+    platform: '$(BuildPlatform)'
+
+    configuration: '$(BuildConfiguration)'
+
+    msbuildArchitecture: x64
+
+
+- task: VSBuild@1
+  displayName: 'Build solution VerticalWarehouses'
+  inputs:
+    solution: VerticalWarehouses.sln
+
+    msbuildArgs: '-v:normal'
+
+    platform: '$(BuildPlatform)'
+
+    configuration: '$(BuildConfiguration)'
+
+    msbuildArchitecture: x64
+
+
+- task: VSTest@2
+  displayName: 'Run Tests'
+  inputs:
+    testAssemblyVer2: |
+     **\$(BuildConfiguration)\*test*.dll
+     !**\obj\**
+
+    codeCoverageEnabled: true
+
+    platform: '$(BuildPlatform)'
+
+    configuration: '$(BuildConfiguration)'
+
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet test'
+  inputs:
+    command: test
+
+    projects: '**/*.Tests.csproj'
+
+    arguments: '--no-build --configuration $(BuildConfiguration)'
+
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet publish'
+  inputs:
+    command: publish
+
+    publishWebProjects: false
+
+    projects: '**/*.WebAPI.csproj'
+
+    arguments: '-f netcoreapp2.1 --configuration $(BuildConfiguration)'
+
+    zipAfterPublish: false
+
+    workingDirectory: WMS
+
+  continueOnError: true
+
+- task: PublishSymbols@2
+  displayName: 'Publish symbols path'
+  inputs:
+    SearchPattern: '**\bin\**\*.pdb'
+
+    PublishSymbols: false
+
+  continueOnError: true
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to staging directory'
+  inputs:
+    SourceFolder: '$(system.defaultworkingdirectory)'
+
+    Contents: '**\bin\$(BuildConfiguration)\**'
+
+    TargetFolder: '$(build.artifactstagingdirectory)'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
+
+  enabled: false
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Desktop App'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)/WMS/App/App/bin/$(BuildConfiguration)/net471'
+
+    ArtifactName: 'desktop_app'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Scheduler Service'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)/WMS/Scheduler/WebAPI/bin/$(BuildConfiguration)/netcoreapp2.1/win7-x64/publish'
+
+    ArtifactName: 'scheduler_service'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Data Service'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)/WMS/Data/WebAPI/bin/$(BuildConfiguration)/netcoreapp2.1/win7-x64/publish'
+
+    ArtifactName: 'data_service'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Level1 Automation'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses'
+
+    ArtifactName: 'level1_automation'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: on_premises_appconfig_transform'
+  inputs:
+    PathtoPublish: WMS/App/App
+
+    ArtifactName: 'on_premises_appconfig_transform'
+
+

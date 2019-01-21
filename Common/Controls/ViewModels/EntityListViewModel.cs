@@ -3,11 +3,13 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Resources;
 using Microsoft.Practices.ServiceLocation;
+using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
@@ -25,6 +27,8 @@ namespace Ferretto.Common.Controls
         private object modelChangedEventSubscription;
 
         private object modelRefreshSubscription;
+
+        private ICommand refreshCommand;
 
         private object selectedFilterDataSource;
 
@@ -78,6 +82,10 @@ namespace Ferretto.Common.Controls
             protected set => this.SetProperty(ref this.flattenDataSource, value);
         }
 
+        public ICommand RefreshCommand => this.refreshCommand ??
+               (this.refreshCommand = new DelegateCommand(
+               this.ExecuteRefreshCommand));
+
         [Display(Name = nameof(DesktopApp.SearchLabel), ResourceType = typeof(DesktopApp))]
         public string SearchText { get; set; }
 
@@ -116,7 +124,7 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        public void RefreshData()
+        public void LoadRelatedData()
         {
             var oldFilterDataSource = this.selectedFilterDataSource;
             this.SelectedFilterDataSource = null;
@@ -132,6 +140,11 @@ namespace Ferretto.Common.Controls
                     filterTile.Count = this.filterDataSources.Single(d => d.Key == filterTile.Key).GetDataCount();
                 }
             }).ConfigureAwait(true);
+        }
+
+        protected void ExecuteRefreshCommand()
+        {
+            this.LoadRelatedData();
         }
 
         protected override async void OnAppear()
@@ -163,8 +176,8 @@ namespace Ferretto.Common.Controls
 
         private void InitializeEvent()
         {
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<TModel>>(eventArgs => { this.RefreshData(); }, this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<TModel>>(eventArgs => { this.RefreshData(); });
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<TModel>>(eventArgs => { this.LoadRelatedData(); }, this.Token, true, true);
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<TModel>>(eventArgs => { this.LoadRelatedData(); });
         }
 
         #endregion Methods

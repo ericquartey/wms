@@ -6,28 +6,17 @@ namespace Ferretto.WMS.Scheduler.Core
     {
         #region Fields
 
-        protected int areaId;
-        protected int availability;
-        protected int bayId;
-        protected int? fifoTime;
-        protected int? height;
-        protected int? maxCapacity;
-        protected int reservedForPick;
-        protected int reservedToStore;
-        protected int stock;
-        protected int? width;
-        protected int? xPosition;
-        protected int? yPosition;
+        private int? fifoTime;
+        private int? maxCapacity;
+        private int reservedForPick;
+        private int reservedToStore;
+        private int stock;
 
         #endregion Fields
 
         #region Properties
 
-        public int AreaId
-        {
-            get => this.areaId;
-            set => this.areaId = value;
-        }
+        public int AreaId { get; set; }
 
         public int Availability => this.stock - this.reservedForPick + this.reservedToStore;
 
@@ -36,7 +25,7 @@ namespace Ferretto.WMS.Scheduler.Core
         public int? FifoTime
         {
             get => this.fifoTime;
-            set => this.SetIfStrictlyPositive(ref this.fifoTime, value);
+            set => SetIfStrictlyPositive(ref this.fifoTime, value);
         }
 
         public DateTime? FirstStoreDate { get; set; }
@@ -52,7 +41,7 @@ namespace Ferretto.WMS.Scheduler.Core
         public int? MaxCapacity
         {
             get => this.maxCapacity;
-            set => this.SetIfStrictlyPositive(ref this.maxCapacity, value);
+            set => SetIfStrictlyPositive(ref this.maxCapacity, value);
         }
 
         public int? PackageTypeId { get; set; }

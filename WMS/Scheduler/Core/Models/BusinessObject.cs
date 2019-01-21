@@ -2,8 +2,20 @@
 
 namespace Ferretto.WMS.Scheduler.Core
 {
-    public abstract class BusinessObject
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Critical Code Smell",
+        "S3874:\"out\" and \"ref\" parameters should not be used",
+        Justification = "This code nned to be refactored in the scope of data service implementation")]
+    public class BusinessObject
     {
+        #region Constructors
+
+        protected BusinessObject()
+        {
+        }
+
+        #endregion Constructors
+
         #region Properties
 
         public int Id { get; set; }
@@ -47,7 +59,7 @@ namespace Ferretto.WMS.Scheduler.Core
             return false;
         }
 
-        protected bool SetIfStrictlyPositive(ref int? member, int? value)
+        protected static bool SetIfStrictlyPositive(ref int? member, int? value)
         {
             if (value.HasValue)
             {
@@ -66,7 +78,7 @@ namespace Ferretto.WMS.Scheduler.Core
             return false;
         }
 
-        protected bool SetIfStrictlyPositive(ref int member, int value)
+        protected static bool SetIfStrictlyPositive(ref int member, int value)
         {
             if (value <= 0)
             {

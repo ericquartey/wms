@@ -9,7 +9,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     #pragma warning disable // Disable all warnings
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial interface IListsService
+    public partial interface IItemListsService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ItemList>> GetAllAsync();
@@ -68,7 +68,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
-    public abstract partial class ModelOfInt32 : System.ComponentModel.INotifyPropertyChanged
+    public partial class ModelOfInt32 : System.ComponentModel.INotifyPropertyChanged
     {
         private int _id;
     

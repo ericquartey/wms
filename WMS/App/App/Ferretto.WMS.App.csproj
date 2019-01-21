@@ -47,6 +47,12 @@
     <Content Include="Images\*.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Update="App.Production.config">
+      <DependentUpon>App.config</DependentUpon>
+    </None>
+    <None Update="App.Testing.config">
+      <DependentUpon>App.config</DependentUpon>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

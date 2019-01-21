@@ -96,13 +96,13 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public override void RefreshData()
+        public override void LoadRelatedData()
         {
             this.CompartmentsDataSource = this.Model != null
                 ? new DataSource<Compartment>(() => this.compartmentProvider.GetByItemId(this.Model.Id))
                 : null;
 
-            this.EvaluateCanExecuteCommands();
+            base.LoadRelatedData();
         }
 
         protected override void EvaluateCanExecuteCommands()
@@ -110,6 +110,11 @@ namespace Ferretto.WMS.Modules.MasterData
             base.EvaluateCanExecuteCommands();
 
             ((DelegateCommand)this.WithdrawCommand)?.RaiseCanExecuteChanged();
+        }
+
+        protected override async Task ExecuteRefreshCommandAsync()
+        {
+            await this.LoadDataAsync();
         }
 
         protected override async Task ExecuteRevertCommand()
@@ -196,15 +201,22 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task LoadDataAsync()
         {
-            this.IsBusy = true;
-
-            if (this.Data is int modelId)
+            try
             {
-                this.Model = await this.itemProvider.GetByIdAsync(modelId);
-                this.ItemHasCompartments = this.itemProvider.HasAnyCompartments(modelId);
-            }
+                this.IsBusy = true;
 
-            this.IsBusy = false;
+                if (this.Data is int modelId)
+                {
+                    this.Model = await this.itemProvider.GetByIdAsync(modelId);
+                    this.ItemHasCompartments = this.itemProvider.HasAnyCompartments(modelId);
+                }
+
+                this.IsBusy = false;
+            }
+            catch
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
+            }
         }
 
         #endregion Methods

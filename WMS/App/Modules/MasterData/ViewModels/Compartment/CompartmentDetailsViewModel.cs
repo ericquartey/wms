@@ -90,7 +90,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public override void RefreshData()
+        public override void LoadRelatedData()
         {
             this.AllowedItemsDataSource = this.Model != null
                 ? new DataSource<AllowedItemInCompartment>(() => this.itemProvider.GetAllowedByCompartmentId(this.Model.Id))
@@ -98,7 +98,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.LoadingUnitsDataSource = new DataSource<LoadingUnit>(() => this.loadingUnitProvider.GetAll());
 
-            base.RefreshData();
+            base.LoadRelatedData();
+        }
+
+        protected override async Task ExecuteRefreshCommandAsync()
+        {
+            await this.LoadDataAsync();
         }
 
         protected override async Task ExecuteRevertCommand()
@@ -192,17 +197,24 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task LoadDataAsync()
         {
-            this.IsBusy = true;
-
-            if (this.Data is int modelId)
+            try
             {
-                var compartment = await this.compartmentProvider.GetByIdAsync(modelId);
-                var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId);
-                this.Model = compartment;
-                this.InitializeTray(loadingUnit);
-            }
+                this.IsBusy = true;
 
-            this.IsBusy = false;
+                if (this.Data is int modelId)
+                {
+                    var compartment = await this.compartmentProvider.GetByIdAsync(modelId);
+                    var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId);
+                    this.Model = compartment;
+                    this.InitializeTray(loadingUnit);
+                }
+
+                this.IsBusy = false;
+            }
+            catch
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
+            }
         }
 
         private void SetSelectedCompartment()

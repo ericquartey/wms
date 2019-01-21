@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -109,11 +110,16 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public override void RefreshData()
+        public override void LoadRelatedData()
         {
             this.CompartmentsDataSource = this.Model != null
                 ? this.compartmentProvider.GetByLoadingUnitId(this.Model.Id).ToList()
                 : null;
+        }
+
+        protected override async Task ExecuteRefreshCommandAsync()
+        {
+            await this.LoadDataAsync();
         }
 
         protected override async Task ExecuteRevertCommand()
@@ -216,16 +222,23 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task LoadDataAsync()
         {
-            this.IsBusy = true;
-
             if (this.Data is int modelId)
             {
-                this.Model = await this.loadingUnitProvider.GetByIdAsync(modelId);
-                this.LoadingUnitHasCompartments = this.loadingUnitProvider.HasAnyCompartments(modelId);
-                this.InitializeTray();
-            }
+                try
+                {
+                    this.IsBusy = true;
 
-            this.IsBusy = false;
+                    this.Model = await this.loadingUnitProvider.GetByIdAsync(modelId);
+                    this.LoadingUnitHasCompartments = this.loadingUnitProvider.HasAnyCompartments(modelId);
+                    this.InitializeTray();
+
+                    this.IsBusy = false;
+                }
+                catch
+                {
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
+                }
+            }
         }
 
         #endregion Methods

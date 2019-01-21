@@ -8,20 +8,20 @@ namespace Ferretto.VW.Utils.Source.Configuration
 
         public General_Info()
         {
-            this.Order = "FILE MANCANTE";
-            this.Client_Code = "FILE MANCANTE";
-            this.Client_Name = "FILE MANCANTE";
-            this.Address = "FILE MANCANTE";
-            this.City = "FILE MANCANTE";
-            this.Province = "FILE MANCANTE";
-            this.Country = "FILE MANCANTE";
-            this.Latitude = "FILE MANCANTE";
-            this.Longitude = "FILE MANCANTE";
+            this.Order = "";
+            this.Client_Code = "";
+            this.Client_Name = "";
+            this.Address = "";
+            this.City = "";
+            this.Province = "";
+            this.Country = "";
+            this.Latitude = "";
+            this.Longitude = "";
             this.Installation_Date = DateTime.Now;
             this.WMS_ON = true;
             this.Machine_Number_In_Area = 1;
-            this.Model = "FILE MANCANTE";
-            this.Serial = "FILE MANCANTE";
+            this.Model = "";
+            this.Serial = "";
             this.Height = 10000d;
             this.Bays_Quantity = 2;
             this.Type_Bay1 = 1;

@@ -99,7 +99,7 @@ namespace Ferretto.VW.InstallationApp
             throw new NotImplementedException();
         }
 
-        private void Calibration(bool result)
+        private void Calibration()
         {
             this.EnableStartButton = true;
             this.IsStopButtonActive = false;

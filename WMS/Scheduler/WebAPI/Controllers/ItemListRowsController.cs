@@ -45,6 +45,11 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
         [ProducesResponseType(422)]
         public async Task<ActionResult> Execute(ListRowExecutionRequest request)
         {
+            if (request == null)
+            {
+                return this.BadRequest();
+            }
+
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest(this.ModelState);
@@ -88,8 +93,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
                             CreationDate = i.CreationDate,
                             ItemDescription = i.Item.Description,
                             RowPriority = i.Priority
-                        }
-                        ).ToListAsync();
+                        }).ToListAsync();
 
                     return this.Ok(result);
                 }

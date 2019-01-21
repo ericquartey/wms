@@ -5,7 +5,6 @@ namespace Ferretto.Common.DataModels
 {
     // Macchina
     public sealed class Machine : IDataModel
-
     {
         #region Properties
 

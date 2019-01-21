@@ -7,6 +7,7 @@ namespace Ferretto.WMS.Scheduler.Core
         #region Properties
 
         int Availability { get; }
+
         DateTime? FirstStoreDate { get; }
 
         #endregion Properties

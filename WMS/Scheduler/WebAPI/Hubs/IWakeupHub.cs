@@ -7,9 +7,9 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Hubs
     {
         #region Methods
 
-        Task NotifyNewMission(Mission mission);
+        Task NotifyNewMissionAsync(Mission mission);
 
-        Task WakeUp(string user, string message);
+        Task WakeUpAsync(string user, string message);
 
         #endregion Methods
     }

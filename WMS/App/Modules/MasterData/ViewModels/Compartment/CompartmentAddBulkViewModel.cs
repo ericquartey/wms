@@ -28,6 +28,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
+        protected override Task ExecuteRefreshCommandAsync()
+        {
+            throw new NotSupportedException();
+        }
+
         protected override Task ExecuteRevertCommand() => throw new NotSupportedException();
 
         protected override async Task ExecuteSaveCommand()

@@ -88,6 +88,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Switch Off.
+        /// </summary>
+        public static string SwitchOff {
+            get {
+                return ResourceManager.GetString("SwitchOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Login:.
         /// </summary>
         public static string UserLogin {

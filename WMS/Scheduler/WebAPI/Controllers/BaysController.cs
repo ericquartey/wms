@@ -12,15 +12,13 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
         #region Fields
 
         private readonly ILogger logger;
-        private readonly IServiceProvider serviceProvider;
 
         #endregion Fields
 
         #region Constructors
 
-        public BaysController(IServiceProvider serviceProvider, ILogger<BaysController> logger)
+        public BaysController(ILogger<BaysController> logger)
         {
-            this.serviceProvider = serviceProvider;
             this.logger = logger;
         }
 

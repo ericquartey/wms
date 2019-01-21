@@ -264,4 +264,7 @@
   <data name="UnableToSaveChanges" xml:space="preserve">
     <value>Unable to save changes.</value>
   </data>
+  <data name="UnableToLoadData" xml:space="preserve">
+    <value>Unable to load data.</value>
+  </data>
 </root>

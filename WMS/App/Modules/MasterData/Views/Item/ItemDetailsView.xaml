@@ -21,7 +21,8 @@
              mc:Ignorable="d">
 
     <Grid HorizontalAlignment="Stretch"
-          VerticalAlignment="Stretch">
+          VerticalAlignment="Stretch"
+          IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -52,6 +53,12 @@
                                Content="{x:Static res:MasterData.Withdraw}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_play_arrow_black_24dp.png"
+                               GlyphSize="Custom" />
+
+            <wms:ActionBarItem Command="{Binding RefreshCommand}"
+                               Content="{x:Static res:General.Refresh}"
+                               CustomGlyphSize="24,24"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
                                GlyphSize="Custom" />
         </wms:ActionBar>
 

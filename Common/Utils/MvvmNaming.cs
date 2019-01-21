@@ -23,19 +23,19 @@ namespace Ferretto.Common.Utils
             return ViewModelSuffixRegEx.Replace(viewModelName, string.Empty);
         }
 
-        public static (string moduleName, string viewModelName) GetViewModelNames(string viewModelName)
+        public static(string moduleName, string viewModelName) GetViewModelNames(string viewModelName)
         {
             return GetViewModelNameSplit(viewModelName);
         }
 
-        public static (string moduleName, string viewModelName) GetViewModelNames<TViewModel>()
+        public static(string moduleName, string viewModelName) GetViewModelNames<TViewModel>()
         {
             var type = typeof(TViewModel);
             var viewModelName = type.ToString();
             return GetViewModelNameSplit(viewModelName);
         }
 
-        public static (string moduleName, string viewModelName) GetViewModelNameSplit(string viewModelName)
+        public static(string moduleName, string viewModelName) GetViewModelNameSplit(string viewModelName)
         {
             var vmMatch = ViewModelNameRegEx.Match(viewModelName);
             return (vmMatch.Groups[0].Value, vmMatch.Groups[1].Value);

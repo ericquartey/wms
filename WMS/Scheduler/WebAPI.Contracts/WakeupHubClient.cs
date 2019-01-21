@@ -16,10 +16,10 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
 
         #region Constructors
 
-        public WakeupHubClient(string url, string wakeUpPath)
+        public WakeupHubClient(Uri url, string wakeUpPath)
         {
             this.connection = new HubConnectionBuilder()
-              .WithUrl(new Uri(new Uri(url), wakeUpPath).AbsoluteUri)
+              .WithUrl(new Uri(url, wakeUpPath).AbsoluteUri)
               .Build();
 
             this.connection.On<string, string>(WakeUpMessageName, this.OnWakeUp_MessageReceived);

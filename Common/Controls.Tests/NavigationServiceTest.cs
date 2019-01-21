@@ -47,16 +47,14 @@ namespace Feretto.Common.Controls.Tests
                 &&
                 registration.MappedToType == typeof(TestView)
                 &&
-                registration.Name == expectedRegistrationName
-            ));
+                registration.Name == expectedRegistrationName));
 
             Assert.IsNotNull(this.Container.Registrations.SingleOrDefault(registration =>
                 registration.RegisteredType == typeof(INavigableViewModel)
                 &&
                 registration.MappedToType == typeof(TestViewModel)
                 &&
-                registration.Name == expectedRegistrationName
-            ));
+                registration.Name == expectedRegistrationName));
         }
 
         [TestMethod]
@@ -78,8 +76,7 @@ namespace Feretto.Common.Controls.Tests
             Assert.AreEqual(2, this.Container.Registrations.Count(registration =>
                 registration.RegisteredType == typeof(INavigableViewModel)
                 &&
-                registration.MappedToType == typeof(TestViewModel)
-            ));
+                registration.MappedToType == typeof(TestViewModel)));
         }
 
         [TestMethod]
@@ -98,8 +95,7 @@ namespace Feretto.Common.Controls.Tests
             Assert.AreEqual(1 + 3, this.Container.Registrations.Count(registration =>
                 registration.RegisteredType == typeof(INavigableViewModel)
                 &&
-                registration.MappedToType == typeof(TestViewModel)
-            ));
+                registration.MappedToType == typeof(TestViewModel)));
         }
 
         [TestMethod]
@@ -131,36 +127,36 @@ namespace Feretto.Common.Controls.Tests
             Assert.AreEqual(2, this.Container.Registrations.Count(registration =>
                 registration.RegisteredType == typeof(INavigableView)
                 &&
-                registration.MappedToType == typeof(TestView)
-            ));
+                registration.MappedToType == typeof(TestView)));
 
             Assert.AreEqual(2, this.Container.Registrations.Count(registration =>
                 registration.RegisteredType == typeof(INavigableView)
                 &&
-                registration.MappedToType == typeof(TestView)
-            ));
+                registration.MappedToType == typeof(TestView)));
 
             Assert.IsNotNull(this.Container.Registrations.SingleOrDefault(registration =>
                 registration.RegisteredType == typeof(INavigableView)
                 &&
                 registration.MappedToType == typeof(TestView)
                 &&
-                registration.Name == expectedRegistrationName
-            ));
+                registration.Name == expectedRegistrationName));
 
             Assert.IsNotNull(this.Container.Registrations.SingleOrDefault(registration =>
                 registration.RegisteredType == typeof(INavigableViewModel)
                 &&
                 registration.MappedToType == typeof(TestViewModel)
                 &&
-                registration.Name == expectedRegistrationName
-            ));
+                registration.Name == expectedRegistrationName));
         }
 
         #endregion Methods
 
         #region Classes
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Major Code Smell",
+            "CA1812: NavigationServiceTest.TestView is an internal class that is apparently never instantiated.",
+            Justification = "Prism test class")]
         private class TestView : INavigableView
         {
             #region Properties
@@ -185,22 +181,27 @@ namespace Feretto.Common.Controls.Tests
 
             public void Disappear()
             {
+                // TODO
             }
 
             #endregion Methods
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Major Code Smell",
+            "CA1812: NavigationServiceTest.TestView is an internal class that is apparently never instantiated.",
+            Justification = "Prism test class")]
         private class TestViewModel : INavigableViewModel
         {
             #region Properties
 
-            public System.Object Data { get; set; }
+            public object Data { get; set; }
 
-            public System.String MapId { get; set; }
+            public string MapId { get; set; }
 
-            public System.String StateId { get; set; }
+            public string StateId { get; set; }
 
-            public System.String Token { get; set; }
+            public string Token { get; set; }
 
             #endregion Properties
 
@@ -211,7 +212,7 @@ namespace Feretto.Common.Controls.Tests
                 // Test method. Nothing to do here.
             }
 
-            public System.Boolean CanDisappear()
+            public bool CanDisappear()
             {
                 return true;
             }

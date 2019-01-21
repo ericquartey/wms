@@ -11,6 +11,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private ICommand listExecuteCommand;
+
         private ICommand showDetailsCommand;
 
         #endregion Fields
