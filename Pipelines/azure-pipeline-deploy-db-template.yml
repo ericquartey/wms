@@ -10,7 +10,7 @@ steps:
     NETCORE_ENVIRONMENT: CloudBuild
     buildNumber: '$(Build.BuildId)'
 
-- script: 'sqlcmd -S rd-ferrettogroup.database.windows.net -d Ferretto_WmsDb_%buildDefinitionName%_%buildNumber% -i Dev.Minimal.sql -U admin_rd_ferrettogroup -P Ferretto2019!'
+- script: 'sqlcmd -S rd-ferrettogroup.database.windows.net -d Ferretto_WmsDb_%buildDefinitionName%_%buildNumber% -i Dev.InitDb.sql -U admin_rd_ferrettogroup -P Ferretto2019!'
   workingDirectory: Common/EF/Seeds
   failOnStderr: true
   displayName: 'Apply db seed'
