@@ -23,7 +23,7 @@
         <wms:DisplayNameConverter x:Key="DNC" />
 
         <DataTemplate x:Key="CellDisplayTemplateRequiredQuantity">
-            <TextBlock>
+            <TextBlock VerticalAlignment="Center">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource SFC}">
                         <Binding Source="{x:Static res:MasterData.QuantityWithUnitMeasure}" />
@@ -37,7 +37,7 @@
         </DataTemplate>
 
         <DataTemplate x:Key="CellDisplayTemplateDispatchedQuantity">
-            <TextBlock>
+            <TextBlock VerticalAlignment="Center">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource SFC}">
                         <Binding Source="{x:Static res:MasterData.QuantityWithUnitMeasure}" />
