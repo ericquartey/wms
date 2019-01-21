@@ -1,6 +1,7 @@
 resources:
 - repo: self
   clean: true
+
 queue:
   name: Hosted VS2017
   demands:
@@ -18,6 +19,7 @@ variables:
   BuildPlatform: 'any cpu'
   BuildConfiguration: 'debug'
 steps:
+
 - task: NuGetToolInstaller@0
   displayName: 'Use NuGet 4.x'
   inputs:
@@ -28,13 +30,9 @@ steps:
   displayName: 'NuGet restore'
   inputs:
     restoreSolution: '*.sln'
-
     feedsToUse: config
-
     nugetConfigPath: nuget.config
-
     restoreDirectory: ./packages
-
     verbosityRestore: Normal
 
 
@@ -42,7 +40,6 @@ steps:
   displayName: GitVersion
   inputs:
     updateAssemblyInfo: true
-
     preferBundledVersion: false
 
 
@@ -52,19 +49,12 @@ steps:
     FileNames: |
      AssemblyInfo.cs
      *.csproj
-
     Product: 'Warehouse Management System'
-
     Company: 'Ferretto Group S.p.A.'
-
     Copyright: 'Copyright Ferretto Group S.p.A. 2019'
-
     VersionNumber: '$(GitVersion.AssemblySemVer)'
-
     FileVersionNumber: '$(GitVersion.AssemblySemFileVer)'
-
     InformationalVersion: '$(GitVersion.FullSemVer)'
-
     InsertAttributes: true
 
 
@@ -72,52 +62,17 @@ steps:
   displayName: 'Publish Artifact: Common Sources'
   inputs:
     PathtoPublish: Common
-
     ArtifactName: 'common_sources'
 
-- script: 'dotnet ef database update --verbose --context BuildDatabaseContext'
-  workingDirectory: Common/EF
-
-  failOnStderr: true
-
-  displayName: 'dotnet ef database update'
-  continueOnError: true
-  env:
-    NETCORE_ENVIRONMENT: CloudBuild
-    buildNumber: '$(Build.BuildId)'
-
-- task: SqlAzureDacpacDeployment@1
-  displayName: 'Azure SQL Publish'
-  inputs:
-    TaskNameSelector: SqlTask
-
-    SqlFile: Common/EF/Seeds/Dev.Minimal.sql
-
-  enabled: false
-
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet build WMS.Data.sln'
-  inputs:
-    projects: WMS.Data.sln
-
-
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet build WMS.Scheduler.sln'
-  inputs:
-    projects: WMS.Scheduler.sln
-
+- template: azure-pipeline-build-services-template.yml
 
 - task: VSBuild@1
   displayName: 'Build solution WMS.App'
   inputs:
     solution: WMS.App.sln
-
     msbuildArgs: '-v:normal'
-
     platform: '$(BuildPlatform)'
-
     configuration: '$(BuildConfiguration)'
-
     msbuildArchitecture: x64
 
 
@@ -125,15 +80,12 @@ steps:
   displayName: 'Build solution VerticalWarehouses'
   inputs:
     solution: VerticalWarehouses.sln
-
     msbuildArgs: '-v:normal'
-
     platform: '$(BuildPlatform)'
-
     configuration: '$(BuildConfiguration)'
-
     msbuildArchitecture: x64
 
+- template: azure-pipeline-deploy-db-template.yml
 
 - task: VSTest@2
   displayName: 'Run Tests'
