@@ -109,15 +109,6 @@ steps:
 
   continueOnError: true
 
-- task: PublishSymbols@2
-  displayName: 'Publish symbols path'
-  inputs:
-    SearchPattern: '**\bin\**\*.pdb'
-
-    PublishSymbols: false
-
-  continueOnError: true
-
 - task: CopyFiles@2
   displayName: 'Copy Files to staging directory'
   inputs:
