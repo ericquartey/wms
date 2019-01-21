@@ -10,7 +10,7 @@ steps:
     NETCORE_ENVIRONMENT: CloudBuild
     cloudInitialCatalog: '$(CloudInitialCatalog)'
 
-  - task: andrewlackenby.sql-toolkit.runsinglesqlscript.RunSingleSqlScript@2
+  - task: 'andrewlackenby.sql-toolkit.runsinglesqlscript.RunSingleSqlScript@2'
     displayName: 'Apply db seed'
     inputs:
       sqlScript: Common/EF/Seeds/Dev.InitDb.sql
