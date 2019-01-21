@@ -9,7 +9,7 @@ namespace Ferretto.Common.EF
     {
         #region Fields
 
-        private const string buildNumberEnvVariable = "buildNumber";
+        private const string cloudInitialCatalogEnvVariable = "cloudInitialCatalog";
 
         private static readonly System.Text.RegularExpressions.Regex ConnectionStringInitialCatalog =
             new System.Text.RegularExpressions.Regex(
@@ -53,17 +53,17 @@ namespace Ferretto.Common.EF
                                        .Build();
 
             var connectionString = configurationBuilder.GetConnectionString(ConnectionStringName);
-            var databaseSuffix = Environment.GetEnvironmentVariable(buildNumberEnvVariable);
-            Console.WriteLine($"Build Number: {databaseSuffix}");
+            var cloudInitialCatalog = Environment.GetEnvironmentVariable(cloudInitialCatalogEnvVariable);
+            Console.WriteLine($"Cloud Initial Catalog: {cloudInitialCatalog}");
 
-            if (databaseSuffix == null)
+            if (cloudInitialCatalog == null)
             {
-                throw new InvalidOperationException($"Environment variable {buildNumberEnvVariable} must be specified!");
+                throw new InvalidOperationException($"Environment variable {cloudInitialCatalogEnvVariable} must be specified!");
             }
 
             var modifiedConnectionString = ConnectionStringInitialCatalog.Replace(
                 connectionString,
-                $"Initial Catalog=${{dbname}}_{databaseSuffix}");
+                $"Initial Catalog=${cloudInitialCatalog}");
 
             optionsBuilder.UseSqlServer(modifiedConnectionString);
             Console.WriteLine("Build db connection string:");

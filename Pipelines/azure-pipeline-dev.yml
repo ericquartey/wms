@@ -18,6 +18,7 @@ trigger:
 variables:
   BuildPlatform: 'any cpu'
   BuildConfiguration: 'debug'
+  CloudInitialCatalog: 'FerrettoWmsDb_Testing_$(Build.BuildId)'
 
 steps:
 

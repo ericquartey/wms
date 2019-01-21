@@ -8,17 +8,17 @@ steps:
   continueOnError: true
   env:
     NETCORE_ENVIRONMENT: CloudBuild
-    buildNumber: '$(Build.BuildId)'
+    cloudInitialCatalog: '$(CloudInitialCatalog)'
 
-- script: 'sqlcmd -S rd-ferrettogroup.database.windows.net -d Ferretto_WmsDb_%buildDefinitionName%_%buildNumber% -i Dev.InitDb.sql -U admin_rd_ferrettogroup -P Ferretto2019!'
-  workingDirectory: Common/EF/Seeds
-  failOnStderr: true
-  displayName: 'Apply db seed'
-  continueOnError: false
-  env:
-    NETCORE_ENVIRONMENT: CloudBuild
-    buildNumber: '$(Build.BuildId)'
-    buildDefinitionName: '$(Build.DefinitionName)'
+  - task: andrewlackenby.sql-toolkit.runsinglesqlscript.RunSingleSqlScript@2
+    displayName: 'Apply db seed'
+    inputs:
+      sqlScript: Common/EF/Seeds/Dev.InitDb.sql
+      serverName: 'rd-ferrettogroup.database.windows.net'
+      databaseName: '$(CloudInitialCatalog)'
+      userName: 'admin_rd_ferrettogroup'
+      userPassword: 'Ferretto2019!'
+      queryTimeout: 60
 
 - script: 'dotnet ef database drop --verbose --force --context BuildDatabaseContext'
   workingDirectory: Common/EF
@@ -27,4 +27,4 @@ steps:
   continueOnError: true
   env:
     NETCORE_ENVIRONMENT: CloudBuild
-    buildNumber: '$(Build.BuildId)'
+    cloudInitialCatalog: '$(CloudInitialCatalog)'
