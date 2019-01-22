@@ -202,7 +202,7 @@
     <comment>Compartment - Lot</comment>
   </data>
   <data name="CompartmentMaxCapacity" xml:space="preserve">
-    <value>Max Capacity [pieces]</value>
+    <value>Max Capacity</value>
     <comment>Compartment - Max Capacity</comment>
   </data>
   <data name="CompartmentIsItemPairingFixed" xml:space="preserve">
@@ -210,11 +210,11 @@
     <comment>Compartment - Fixed Pairing</comment>
   </data>
   <data name="CompartmentReservedForPick" xml:space="preserve">
-    <value>Reserved for Pick [pieces]</value>
+    <value>Reserved for Pick</value>
     <comment>Compartment - Reserved for Pick</comment>
   </data>
   <data name="CompartmentReservedToStore" xml:space="preserve">
-    <value>Reserved to Store [pieces]</value>
+    <value>Reserved to Store</value>
     <comment>Compartment - Reserved To Store</comment>
   </data>
   <data name="CompartmentStatus" xml:space="preserve">
@@ -222,7 +222,7 @@
     <comment>Compartment - Status</comment>
   </data>
   <data name="CompartmentStock" xml:space="preserve">
-    <value>Stock [pieces]</value>
+    <value>Stock </value>
     <comment>Compartment - Stock</comment>
   </data>
   <data name="CompartmentSub1" xml:space="preserve">
