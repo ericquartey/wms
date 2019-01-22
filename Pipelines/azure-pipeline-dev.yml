@@ -27,7 +27,7 @@ steps:
   inputs:
     sqlScript: Common/EF/Seeds/Dev.InitDb.sql
     serverName: 'rd-ferrettogroup.database.windows.net'
-    databaseName: '$(CloudInitialCatalog)'
+    databaseName: 'FerrettoWmsDb_Testing'
     userName: admin_rd_ferrettogroup
     userPassword: Ferretto2019!
     queryTimeout: 30
