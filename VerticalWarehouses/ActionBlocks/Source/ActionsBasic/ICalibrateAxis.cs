@@ -9,7 +9,7 @@
         /// </summary>
         InverterDriver.InverterDriver SetInverterDriverInterface { set; }
 
-        string GetAndSetActualcalibrationAxis { set; get;  }
+        CalibrationType ActualCalibrationAxis { set; get;  }
 
         #endregion Properties
 
@@ -20,10 +20,12 @@
         /// </summary>
         void Initialize();
 
+        void SetUpVerticalHomingParameters(int acc, int vFast, int vCreep);
+
         /// <summary>
         /// Start Calibrate Vertical Axis routine.
         /// </summary>
-        void SetAxisOrigin(int m, short ofs, short vFast, short vCreep);
+        void SetAxisOrigin();
 
         /// <summary>
         /// Stop the routine.

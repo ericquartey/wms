@@ -14,7 +14,7 @@ namespace Ferretto.VW.ActionBlocks
         #region Methods
         void Initialize();
 
-        void SetAxesOrigin(int m, short ofs, short vFast, short vCreep);
+        void SetAxesOrigin(int acc, int vFast, int vCreep);
 
         void StopInverter();
 

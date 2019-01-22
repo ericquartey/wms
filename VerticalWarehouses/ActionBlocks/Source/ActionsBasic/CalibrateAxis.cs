@@ -9,6 +9,8 @@ namespace Ferretto.VW.ActionBlocks
     // On [EndedEventHandler] delegate for Calibrate Vertical Axis routine
     public delegate void CalibrateAxisEndEventHandler();
 
+    public delegate void CalibrateAxisSetUpEndEventHandler();
+
     // On [ErrorEventHandler] delegate for Calibrate Vertical Axis routine
     public delegate void CalibrateAxisErrorEventHandler(CalibrationStatus ErrorDescription);
 
@@ -21,6 +23,9 @@ namespace Ferretto.VW.ActionBlocks
         private const int STEPS_NUMBER = 6;
 
         private const byte DATASET_INDEX = 0x05;
+
+        // The number of parameters to SetUp for the Vertical Calibration
+        private const int SETUP_PARAMETERS_STEPS = 3;
 
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -36,27 +41,15 @@ namespace Ferretto.VW.ActionBlocks
 
         private object valParam = "";
 
-        // Mode
-        private int m;
+        // Variable to keep the end of the execution
+        private bool stopExecution;
 
-        // Offset
-        private short ofs;
-
-        // Creep speed
-        private short vCreep;
-
-        // Fast speed
-        private short vFast;
-
-        // To keep the end of the execution
-        private bool signaledEnd;
-
-        private bool stopPushed;
+        private bool setupParameters;
 
         // actualCalibrationAxis keep the actual calibration in execution,
-        // * V: Calibration Vertical Axis
-        // * H: Calibration Horizontal Axis
-        private string actualCalibrationAxis;
+        // * 0: Vertical Calibration Axis
+        // * 1: Horizontal Calibration Axis
+        private CalibrationType actualCalibrationAxis;
 
         #endregion Fields
 
@@ -64,6 +57,8 @@ namespace Ferretto.VW.ActionBlocks
 
         // [Ended] event
         public event CalibrateAxisEndEventHandler ThrowEndEvent;
+
+        public event CalibrateAxisSetUpEndEventHandler ThrowSetUpEnd;
 
         // [Error] event
         public event CalibrateAxisErrorEventHandler ThrowErrorEvent;
@@ -80,7 +75,7 @@ namespace Ferretto.VW.ActionBlocks
             set => this.inverterDriver = value;
         }
 
-        public string GetAndSetActualcalibrationAxis
+        public CalibrationType ActualCalibrationAxis
         {
             set => this.actualCalibrationAxis = value;
             get => this.actualCalibrationAxis;
@@ -100,23 +95,77 @@ namespace Ferretto.VW.ActionBlocks
             this.inverterDriver.EnquiryTelegramDone_CalibrateVerticalAxis += this.EnquiryTelegram;
         }
 
+        public void SetUpVerticalHomingParameters(int acc, int vFast, int vCreep)
+        {
+            logger.Log(LogLevel.Debug, " --> SetVerticalHomingParameters Begin ...");
+
+            int setUpCounter = 0;
+            this.setupParameters = true;
+
+            while (setUpCounter < SETUP_PARAMETERS_STEPS)
+            { 
+                // Select the operation
+                switch (setUpCounter)
+                {
+                    // Vertical Homing Parameters
+                    case 0:
+                    {
+                        this.paramID = ParameterID.HOMING_ACCELERATION;
+                        this.valParam = acc;
+
+                        break;
+                    }
+
+                    case 1:
+                    {
+                        this.paramID = ParameterID.HOMING_FAST_SPEED_PARAM;
+                        this.valParam = vFast;
+
+                        break;
+                    }
+
+                    case 2:
+                    {
+                        this.paramID = ParameterID.HOMING_CREEP_SPEED_PARAM;
+                        this.valParam = vCreep;
+
+                        break;
+                    }
+                    default:
+                    {
+                        ThrowErrorEvent?.Invoke(CalibrationStatus.UNKNOWN_OPERATION);
+
+                        break;
+                    }
+                }
+
+                // Set request to inverter
+                var idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_INDEX, this.valParam);
+
+                logger.Log(LogLevel.Debug, String.Format(" --> SetVerticalHomingParameters: {0}. Set parameter to inverter::  paramID: {1}, value: {2:X}, DataSetIndex: {3}", setUpCounter, this.paramID.ToString(), this.valParam, DATASET_INDEX));
+
+                this.checkExistStatus(idExitStatus);
+
+                setUpCounter++;
+            }
+
+            logger.Log(LogLevel.Debug, String.Format(" --> ... SetVerticalHomingParameters End"));
+
+            ThrowSetUpEnd?.Invoke();
+        }
+
         /// <summary>
         /// Start Calibrate Vertical Axis routine.
         /// </summary>
-        public void SetAxisOrigin(int m, short ofs, short vFast, short vCreep)
+        public void SetAxisOrigin()
         {
-            // Assign the parameters
-            this.m = m;
-            this.ofs = ofs;
-            this.vFast = vFast;
-            this.vCreep = vCreep;
+            this.stopExecution = false;
 
-            this.signaledEnd = false;
-            this.stopPushed = false;
+            this.setupParameters = false;
 
             this.stepCounter = 0;
         
-            if (this.actualCalibrationAxis == "V") // Vertical Calibration
+            if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION) // Vertical Calibration
                 this.inverterDriver.CurrentActionType = ActionType.CalibrateVerticalAxis;
             else // Horizontal Calibration
                 this.inverterDriver.CurrentActionType = ActionType.CalibrateHorizontalAxis;
@@ -139,15 +188,14 @@ namespace Ferretto.VW.ActionBlocks
             {
                 this.paramID = ParameterID.CONTROL_WORD_PARAM;
 
-                if (this.actualCalibrationAxis == "V") // Vertical
+                if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION) // Vertical
                     this.valParam = 0x0000; // 0000 0000 0000 0000
                 else // Horizontal
                     this.valParam = 0x8000; // 1000 0000 0000 0000
 
                 logger.Log(LogLevel.Debug, String.Format(" --> Send stop::  paramID: {0}, value: {1:X}", this.paramID.ToString(), this.valParam));
                 this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_INDEX, this.valParam);
-
-                this.stopPushed = true;
+                this.stopExecution = true;
                 this.Terminate();
             }
             catch (Exception ex)
@@ -340,10 +388,10 @@ namespace Ferretto.VW.ActionBlocks
                     logger.Log(LogLevel.Debug, "Calibration ended!!");
 
                     // The calibrate vertical axis routine is ended
-                    if (!this.signaledEnd)
+                    if (!this.stopExecution)
                     {
                         this.StopInverter();
-                        this.signaledEnd = true;
+                        this.stopExecution = true;
 
                         ThrowEndEvent?.Invoke();
                     }
@@ -353,9 +401,9 @@ namespace Ferretto.VW.ActionBlocks
             }
             else
             {
-                logger.Log(LogLevel.Debug, "Button Stop Pushed: {0}", this.stopPushed);
+                logger.Log(LogLevel.Debug, "Button Stop Pushed: {0}", this.stopExecution);
 
-                if (!this.stopPushed)
+                if (!this.stopExecution)
                 {
                     // Just wait...
                     Thread.Sleep(DELAY_TIME);
@@ -375,34 +423,44 @@ namespace Ferretto.VW.ActionBlocks
         /// Handle the select telegram sent by the inverter.
         /// </summary>
         private void SelectTelegram(object sender, SelectTelegramDoneEventArgs eventArgs)
-        {
+        { 
             logger.Log(LogLevel.Debug, String.Format(" <-- SelectTelegram - Step: {0} - {1}", stepCounter, this.actualCalibrationAxis));
 
-            if (this.stepCounter < STEPS_NUMBER)
-            {
-                logger.Log(LogLevel.Debug, "Calibrate Vertical Operation = " + this.stepCounter);
-                // There is not the need to check the Status Word value
-                if (this.stepCounter == 1)
+            // During the SetUp Vertical Homing Parameters i don't need to do any control
+            if (!setupParameters)
+            { 
+                if (this.stepCounter < STEPS_NUMBER)
                 {
-                    this.stepCounter++;
-                    this.stepExecution();
+                    logger.Log(LogLevel.Debug, "Calibrate Vertical Operation = " + this.stepCounter);
+                    // There is not the need to check the Status Word value
+                    if (this.stepCounter == 1)
+                    {
+                        this.stepCounter++;
+                        this.stepExecution();
+                    }
+                    else
+                    {
+                        this.paramID = ParameterID.STATUS_WORD_PARAM;
+                        logger.Log(LogLevel.Debug, " --> Select Telegram:: Send a request for STATUS WORD ...");
+                        this.inverterDriver.SendRequest(this.paramID, this.systemIndex, DATASET_INDEX);
+                    }
                 }
-                else
+                else // When the steps are ended, the polling thread is being stopped
                 {
-                    this.paramID = ParameterID.STATUS_WORD_PARAM;
-                    logger.Log(LogLevel.Debug, " --> Select Telegram:: Send a request for STATUS WORD ...");
-                    this.inverterDriver.SendRequest(this.paramID, this.systemIndex, DATASET_INDEX);
+                    // No other step to do, but it sends a signal to the UI about the end of the execution
+                    // true succeffully calibration ended
+                    if (!this.stopExecution)
+                    {
+                        this.stopExecution = true;
+                        ThrowEndEvent?.Invoke();
+                    }
                 }
             }
-            else // When the steps are ended, the polling thread is being stopped
+            else // Up to now we don't check the value backed from the SelectTelegram
             {
-                // No other step to do, but it sends a signal to the UI about the end of the execution
-                // true succeffully calibration ended
-                if (!this.signaledEnd)
-                {
-                    this.signaledEnd = true;
-                    ThrowEndEvent?.Invoke();
-                }
+                logger.Log(LogLevel.Debug, "SetUp Parameters");
+
+                logger.Log(LogLevel.Debug, "Value = {0} - ID Parameter = {1}", eventArgs.Value, eventArgs.ParamID);
             }
         }
 
@@ -421,7 +479,7 @@ namespace Ferretto.VW.ActionBlocks
                     {
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
 
-                        if (this.actualCalibrationAxis == "V") // Vertical
+                        if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION) // Vertical
                             this.valParam = 0x0000; // 0000 0000 0000 0000
                         else // Horizontal
                             this.valParam = 0x8000; // 1000 0000 0000 0000
@@ -441,7 +499,7 @@ namespace Ferretto.VW.ActionBlocks
                     {
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
 
-                        if (this.actualCalibrationAxis == "V") // Vertical
+                        if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION) // Vertical
                             this.valParam = 0x0006; // 0000 0000 0000 0110
                         else // Horizontal
                             this.valParam = 0x8006; // 1000 0000 0000 0110
@@ -453,7 +511,7 @@ namespace Ferretto.VW.ActionBlocks
                     {
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
 
-                        if (this.actualCalibrationAxis == "V") // Vertical
+                        if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION) // Vertical
                             this.valParam = 0x0007; // 0000 0000 0000 0111
                         else // Horizontal
                             this.valParam = 0x8007; // 1000 0000 0000 0111
@@ -465,7 +523,7 @@ namespace Ferretto.VW.ActionBlocks
                     {
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
 
-                        if (this.actualCalibrationAxis == "V") // Vertical
+                        if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION) // Vertical
                             this.valParam = 0x000F; // 0000 0000 0000 1111
                         else // Horizontal
                             this.valParam = 0x800F; // 1000 0000 0000 1111
@@ -477,7 +535,7 @@ namespace Ferretto.VW.ActionBlocks
                     {
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
 
-                        if (this.actualCalibrationAxis == "V") // Vertical
+                        if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION) // Vertical
                             this.valParam = 0x001F; // 0000 0000 0001 1111
                         else // Horizontal
                             this.valParam = 0x801F; // 1000 0000 0001 1111

@@ -58,15 +58,14 @@ namespace UIVHATest
 
         private void BtnStart_Click(Object sender, RoutedEventArgs e)
         {
-            // At this time 1 is the default value for each variable
-            int m = 5;
-            short ofs = 1;
-            short vFast = 1;
-            short vCreep = 1;
+            // We assign the half value of the actual parameters we have in V-Plus
+            int acc = 500;
+            int vFast = 500;
+            int vCreep = 40;
 
             logger.Log(LogLevel.Debug, "PUSHED BTN START!!!");
             logger.Log(LogLevel.Debug, "Start calibration ...");
-            this.calibrateAxes.SetAxesOrigin(m, ofs, vFast, vCreep);
+            this.calibrateAxes.SetAxesOrigin(acc, vFast, vCreep);
 
             this.Dispatcher.Invoke(() =>
             {
@@ -98,7 +97,8 @@ namespace UIVHATest
             // Events subscription
             this.calibrateAxes.ThrowSwitchVerticalToHorizontalEndEvent += this.SwitchVerticalToHorizontalEndEvent;
             this.calibrateAxes.ThrowCalibrationEndEvent += this.CalibrationEndEvent;
-            this.calibrateAxes.ThrowHorizontalToVerticalEndEvent += this.SwitchHorizontalToVerticalEndEvent;
+            this.calibrateAxes.ThrowHorizontalToVerticalEndEvent += this.HorizontalToVerticalEndEvent;
+            this.calibrateAxes.ThrowSetUpVerticalHomingEndEvent += this.SetUpVerticalHomingEndEvent;
         }
 
         private void CatchError(string errorDescription)
@@ -136,7 +136,7 @@ namespace UIVHATest
             // Events subscription
             this.calibrateAxes.ThrowSwitchVerticalToHorizontalEndEvent -= this.SwitchVerticalToHorizontalEndEvent;
             this.calibrateAxes.ThrowCalibrationEndEvent -= this.CalibrationEndEvent;
-            this.calibrateAxes.ThrowHorizontalToVerticalEndEvent -= this.SwitchHorizontalToVerticalEndEvent;
+            this.calibrateAxes.ThrowHorizontalToVerticalEndEvent -= this.HorizontalToVerticalEndEvent;
             this.calibrateAxes.ThrowStopEvent -= this.CatchStopCalibration;
         }
 
@@ -176,7 +176,7 @@ namespace UIVHATest
             });
         }
 
-        private void SwitchHorizontalToVerticalEndEvent()
+        private void HorizontalToVerticalEndEvent()
         {
             logger.Log(LogLevel.Debug, "Switch H --> V");
 
@@ -184,6 +184,17 @@ namespace UIVHATest
             {
                 this.lbStateConnection.Content = "Switch Horizontal to Vertical ended";
                 this.TextMessagesBoxProgressive.Text = this.TextMessagesBoxProgressive.Text + "SwitchHToV-";
+            });
+        }
+
+        private void SetUpVerticalHomingEndEvent()
+        {
+            logger.Log(LogLevel.Debug, "SetUp Vertical Homing");
+
+            this.Dispatcher.Invoke(() =>
+            {
+                this.lbStateConnection.Content = "SetUp Vertical Homing parameters ended";
+                this.TextMessagesBoxProgressive.Text = this.TextMessagesBoxProgressive.Text + "SetUpVP-";
             });
         }
     }
