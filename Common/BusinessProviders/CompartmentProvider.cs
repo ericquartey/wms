@@ -146,6 +146,7 @@ namespace Ferretto.Common.BusinessProviders
                .Include(c => c.LoadingUnit)
                .Include(c => c.MaterialStatus)
                .Include(c => c.Item)
+               .ThenInclude(i => i.MeasureUnit)
                .Include(c => c.CompartmentType)
                .Include(c => c.CompartmentStatus)
                .Include(c => c.PackageType)
@@ -164,7 +165,8 @@ namespace Ferretto.Common.BusinessProviders
                    MaterialStatusDescription = c.MaterialStatus.Description,
                    Stock = c.Stock,
                    Sub1 = c.Sub1,
-                   Sub2 = c.Sub2
+                   Sub2 = c.Sub2,
+                   ItemMeasureUnit = c.Item.MeasureUnit.Description
                })
                .AsNoTracking();
         }
@@ -186,6 +188,7 @@ namespace Ferretto.Common.BusinessProviders
                .Include(c => c.LoadingUnit)
                .ThenInclude(l => l.LoadingUnitType)
                .Include(c => c.Item)
+               .ThenInclude(i => i.MeasureUnit)
                .Include(c => c.CompartmentStatus)
                .Include(c => c.CompartmentType)
                .GroupJoin(
@@ -226,7 +229,8 @@ namespace Ferretto.Common.BusinessProviders
                    YPosition = j.cmp.YPosition,
                    LoadingUnitId = j.cmp.LoadingUnitId,
                    ItemId = j.cmp.ItemId,
-                   LoadingUnitHasCompartments = j.cmp.LoadingUnit.LoadingUnitType.HasCompartments
+                   LoadingUnitHasCompartments = j.cmp.LoadingUnit.LoadingUnitType.HasCompartments,
+                   ItemMeasureUnit = j.cmp.Item.MeasureUnit.Description
                })
                .SingleAsync();
 
@@ -271,6 +275,7 @@ namespace Ferretto.Common.BusinessProviders
                 .Include(c => c.LoadingUnit)
                 .ThenInclude(l => l.LoadingUnitType)
                 .Include(c => c.Item)
+                .ThenInclude(i => i.MeasureUnit)
                 .Include(c => c.CompartmentStatus)
                 .Include(c => c.CompartmentType)
                 .ThenInclude(ct => ct.ItemsCompartmentTypes)
@@ -307,7 +312,8 @@ namespace Ferretto.Common.BusinessProviders
                     LoadingUnitId = c.LoadingUnitId,
                     ItemId = c.ItemId,
                     IsItemPairingFixed = c.IsItemPairingFixed,
-                    LoadingUnitHasCompartments = c.LoadingUnit.LoadingUnitType.HasCompartments
+                    LoadingUnitHasCompartments = c.LoadingUnit.LoadingUnitType.HasCompartments,
+                    ItemMeasureUnit = c.Item.MeasureUnit.Description
                 })
                 .AsNoTracking();
         }

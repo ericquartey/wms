@@ -7,6 +7,8 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Fields
 
+        private string itemMeasureUnit;
+
         private int stock;
 
         #endregion Fields
@@ -24,6 +26,12 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(BusinessObjects.ItemDescription_extended), ResourceType = typeof(BusinessObjects))]
         public string ItemDescription { get; set; }
+
+        public string ItemMeasureUnit
+        {
+            get => this.itemMeasureUnit;
+            set => this.SetProperty(ref this.itemMeasureUnit, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitCode_extended), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitCode { get; set; }
