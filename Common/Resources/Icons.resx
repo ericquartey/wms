@@ -520,4 +520,8 @@
   <data name="ShowDetail" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_visibility_black_36dp.png</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_not_interested_black_24dp.png</value>
+    <comment>@Invariant</comment>
+  </data>
 </root>

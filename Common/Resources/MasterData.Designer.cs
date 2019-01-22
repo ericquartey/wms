@@ -484,6 +484,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item Image.
+        /// </summary>
+        public static string ItemImage {
+            get {
+                return ResourceManager.GetString("ItemImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item Information.
         /// </summary>
         public static string ItemInformation {
