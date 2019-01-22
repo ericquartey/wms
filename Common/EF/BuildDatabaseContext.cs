@@ -63,7 +63,7 @@ namespace Ferretto.Common.EF
 
             var modifiedConnectionString = ConnectionStringInitialCatalog.Replace(
                 connectionString,
-                $"Initial Catalog=${cloudInitialCatalog}");
+                $"Initial Catalog={cloudInitialCatalog}");
 
             optionsBuilder.UseSqlServer(modifiedConnectionString);
             Console.WriteLine("Build db connection string:");
