@@ -124,6 +124,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\CustomMainWindowServiceButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\CustomMainWindowErrorButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -345,6 +349,9 @@
     </Compile>
     <Compile Include="Controls\CustomMachineOnMarchToggleButton.xaml.cs">
       <DependentUpon>CustomMachineOnMarchToggleButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomMainWindowServiceButton.xaml.cs">
+      <DependentUpon>CustomMainWindowServiceButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CustomMainWindowErrorButton.xaml.cs">
       <DependentUpon>CustomMainWindowErrorButton.xaml</DependentUpon>
