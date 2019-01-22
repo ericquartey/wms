@@ -22,6 +22,16 @@ variables:
 
 steps:
 
+- task: andrewlackenby.sql-toolkit.runsinglesqlscript.RunSingleSqlScript@2
+  displayName: 'Apply db seed'
+  inputs:
+    sqlScript: Common/EF/Seeds/Dev.InitDb.sql
+    serverName: 'rd-ferrettogroup.database.windows.net'
+    databaseName: '$(CloudInitialCatalog)'
+    userName: admin_rd_ferrettogroup
+    userPassword: Ferretto2019!
+    queryTimeout: 30
+
 - template: azure-pipeline-net4-nuget-template.yml
 
 
