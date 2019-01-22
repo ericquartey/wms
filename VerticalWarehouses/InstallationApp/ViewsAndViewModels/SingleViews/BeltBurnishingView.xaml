@@ -9,31 +9,35 @@
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
-    <Grid              Width="1024"
-             Height="608">
-        <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.BeltBurnishing}" Margin="160,7,0,565" />
-        <custom:CustomLabelTextBlockControl Margin="160,445,544,0"
-                                                ContentText="4500"
-                                                LabelText="{x:Static res:InstallationApp.UpperBound}" Height="85" VerticalAlignment="Top" />
+    <Grid Width="1024"
+          Height="608">
+        <TextBlock Margin="160,7,0,565"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.BeltBurnishing}" />
+        <custom:CustomLabelTextBlockControl Height="85"
+                                            Margin="160,445,544,0"
+                                            VerticalAlignment="Top"
+                                            ContentText="4500"
+                                            LabelText="{x:Static res:InstallationApp.UpperBound}" />
         <custom:CustomLabelTextBlockControl Margin="160,355,544,168"
-                                                ContentText="4500"
-                                                LabelText="{x:Static res:InstallationApp.LowerBound}" />
-        <custom:CustomLabelTextBlockControl
-                                                Margin="160,265,544,258"
-                                                ContentText="4500"
-                                                LabelText="{x:Static res:InstallationApp.CurrentPosition}" />
-        <custom:CustomLabelTextBlockControl
-                                                Margin="160,175,544,348"
-                                                ContentText="4500"
-                                                LabelText="{x:Static res:InstallationApp.CompletedCicles}" />
-        <custom:CustomInputFieldControlFocusable Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
-                                                     Margin="160,85,544,438"
-                                                     LabelText="{x:Static res:InstallationApp.RequiredCicles}" />
-        <Button Content="{x:Static res:InstallationApp.Start}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="240,530,620,10" />
-        <Button
-                    Content="{x:Static res:InstallationApp.Stop}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="691,530,169,10" />
+                                            ContentText="4500"
+                                            LabelText="{x:Static res:InstallationApp.LowerBound}" />
+        <custom:CustomLabelTextBlockControl Margin="160,265,544,258"
+                                            ContentText="4500"
+                                            LabelText="{x:Static res:InstallationApp.CurrentPosition}" />
+        <custom:CustomLabelTextBlockControl Margin="160,175,544,348"
+                                            ContentText="4500"
+                                            LabelText="{x:Static res:InstallationApp.CompletedCicles}" />
+        <custom:CustomInputFieldControlFocusable Margin="160,85,544,438"
+                                                 LabelText="{x:Static res:InstallationApp.RequiredCicles}"
+                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+        <Button Margin="240,530,620,10"
+                Command="{Binding ConnectToService}"
+                Content="{x:Static res:InstallationApp.Start}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <Button Margin="691,530,169,10"
+                Command="{Binding ExecuteServerMethod}"
+                Content="{x:Static res:InstallationApp.Stop}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
     </Grid>
 </UserControl>

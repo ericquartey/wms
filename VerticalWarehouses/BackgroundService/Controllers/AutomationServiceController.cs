@@ -25,5 +25,15 @@ namespace BackgroundService
         }
 
         #endregion Constructors
+
+        #region Methods
+
+        [HttpGet("test-method")]
+        public string TestMethod()
+        {
+            return "test-method executed.\n";
+        }
+
+        #endregion Methods
     }
 }

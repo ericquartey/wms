@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 using Ferretto.VW.Utils.Source;
+using System.Diagnostics;
 
 namespace Ferretto.VW.InstallationApp.ServiceUtilities
 {
@@ -31,6 +32,17 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
                 await Task.Delay(new Random().Next(0, 5) * 1000);
                 await this.connection.StartAsync();
             };
+
+            this.connection.StartAsync();
+
+            //if (this.connection.State == HubConnectionState.Connected)
+            //{
+            //    Debug.Print("Connection to sensors service SUCCESS\n");
+            //}
+            //else
+            //{
+            //    Debug.Print("Connection to sensors service FAILED\n");
+            //}
         }
 
         #endregion Constructors
