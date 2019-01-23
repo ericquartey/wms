@@ -21,10 +21,16 @@ variables:
 
 steps:
 
+- task: CopyFiles@2
+  displayName: 'Copy sources to staging directory'
+  inputs:
+    contents: '.!(.git)'
+    targetFolder: '$(Build.ArtifactStagingDirectory)\sources'
+
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Common Sources'
   inputs:
-    PathtoPublish: '.!(.git)'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)\sources
     ArtifactName: 'common_sources'
 
 
