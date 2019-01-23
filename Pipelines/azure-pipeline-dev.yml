@@ -25,7 +25,7 @@ steps:
   displayName: 'Copy sources to staging directory'
   inputs:
     Contents: |
-     .\**
+     **
      !.git
     targetFolder: '$(Build.ArtifactStagingDirectory)\sources'
 
