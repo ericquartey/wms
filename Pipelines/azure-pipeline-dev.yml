@@ -29,6 +29,7 @@ steps:
     sqlCommand: 'CREATE DATABASE $(CloudInitialCatalog);'
     userName: admin_rd_ferrettogroup
     userPassword: Ferretto2019!
+    queryTimeout: 60
 
 
 - task: CopyFiles@2
