@@ -16,6 +16,9 @@ trigger:
     - release/*
     - bugfix/*
     - hotfix/*
+  paths:
+    exclude:
+    - VerticalWarehouses
 
 variables:
   BuildPlatform: 'any cpu'

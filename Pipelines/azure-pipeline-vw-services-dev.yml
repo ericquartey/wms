@@ -11,11 +11,11 @@ trigger:
     include:
     - develop
   paths:
-    include:
-    - Common\Resources
     exclude:
     - Common
     - WMS
+    include:
+    - Common\Resources
 
 variables:
   BuildConfiguration: 'Release'
