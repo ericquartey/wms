@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
+using Ferretto.Common.Utils.Expressions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.Common.BusinessProviders
@@ -22,6 +24,8 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly EnumerationProvider enumerationProvider;
 
+        private readonly WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService;
+
         private readonly WMS.Scheduler.WebAPI.Contracts.IItemsService itemsService;
 
         #endregion Fields
@@ -31,10 +35,12 @@ namespace Ferretto.Common.BusinessProviders
         public ItemProvider(
             IDatabaseContextService dataContext,
             EnumerationProvider enumerationProvider,
+            WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService,
             WMS.Scheduler.WebAPI.Contracts.IItemsService itemsService)
         {
             this.dataContext = dataContext;
             this.itemsService = itemsService;
+            this.itemsDataService = itemsDataService;
             this.enumerationProvider = enumerationProvider;
         }
 
@@ -49,6 +55,48 @@ namespace Ferretto.Common.BusinessProviders
         public IQueryable<Item> GetAll()
         {
             return GetAllItemsWithAggregations(this.dataContext.Current);
+        }
+
+        public async Task<IEnumerable<Item>> GetAllAsync(
+            int take = 0,
+            int skip = 0,
+            string where = null,
+            IEnumerable<SortOption> orderBy = null,
+            string search = null)
+        {
+            var orderByString = string.Join(",", orderBy.Select(s => $"{s.PropertyName} {s.Direction}"));
+
+            return (await this.itemsDataService.GetAllAsync(skip, take, where, orderByString, search))
+                .Select(i => new Item
+                {
+                    Id = i.Id,
+                    AbcClassDescription = i.AbcClassDescription,
+                    AverageWeight = i.AverageWeight,
+                    CreationDate = i.CreationDate,
+                    FifoTimePick = i.FifoTimePick,
+                    FifoTimeStore = i.FifoTimeStore,
+                    Height = i.Height,
+                    InventoryDate = i.InventoryDate,
+                    InventoryTolerance = i.InventoryTolerance,
+                    ManagementTypeDescription = i.ManagementType.ToString(), // TODO change
+                    ItemCategoryDescription = i.ItemCategoryDescription,
+                    LastModificationDate = i.LastModificationDate,
+                    LastPickDate = i.LastPickDate,
+                    LastStoreDate = i.LastStoreDate,
+                    Length = i.Length,
+                    MeasureUnitDescription = i.MeasureUnitDescription,
+                    PickTolerance = i.PickTolerance,
+                    ReorderPoint = i.ReorderPoint,
+                    ReorderQuantity = i.ReorderQuantity,
+                    StoreTolerance = i.StoreTolerance,
+                    Width = i.Width,
+                    Code = i.Code,
+                    Description = i.Description,
+                    TotalReservedForPick = i.TotalReservedForPick,
+                    TotalReservedToStore = i.TotalReservedToStore,
+                    TotalStock = i.TotalStock,
+                    TotalAvailable = i.TotalAvailable,
+                });
         }
 
         public int GetAllCount()

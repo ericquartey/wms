@@ -4,7 +4,7 @@ using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
 {
-    public interface IItemProvider : IBusinessProvider<Item, ItemDetails>
+    public interface IItemProvider : IBusinessProvider<Item, ItemDetails>, IPagedBusinessProvider<Item>
     {
         #region Methods
 

@@ -27,6 +27,7 @@
     <ProjectReference Include="..\BusinessModels\Ferretto.Common.BusinessModels.csproj" />
     <ProjectReference Include="..\DataModels\Ferretto.Common.DataModels.csproj" />
     <ProjectReference Include="..\EF\Ferretto.Common.EF.csproj" />
+    <ProjectReference Include="..\Utils\Ferretto.Common.Utils.csproj" />
   </ItemGroup>
 
 </Project>
