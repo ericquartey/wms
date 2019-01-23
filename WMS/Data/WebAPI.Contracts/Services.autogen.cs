@@ -11,12 +11,12 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     #pragma warning disable // Disable all warnings
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class ItemListsService : ServiceBase, IItemListsService
+    public partial class ItemListsDataService : ServiceBase, IItemListsDataService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public ItemListsService(string baseUrl)
+        public ItemListsDataService(string baseUrl)
         {
             BaseUrl = baseUrl; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
@@ -254,12 +254,12 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class ItemsService : ServiceBase, IItemsService
+    public partial class ItemsDataService : ServiceBase, IItemsDataService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public ItemsService(string baseUrl)
+        public ItemsDataService(string baseUrl)
         {
             BaseUrl = baseUrl; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
@@ -554,12 +554,12 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class MissionsService : ServiceBase, IMissionsService
+    public partial class MissionsDataService : ServiceBase, IMissionsDataService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MissionsService(string baseUrl)
+        public MissionsDataService(string baseUrl)
         {
             BaseUrl = baseUrl; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 

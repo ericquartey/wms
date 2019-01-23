@@ -9,9 +9,14 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public static IServiceCollection AddWebApiServices(
              this IServiceCollection serviceCollection, System.Uri baseUrl)
         {
-            serviceCollection.AddTransient<IItemsService>(s => new ItemsService(baseUrl.AbsoluteUri));
-            serviceCollection.AddTransient<IMissionsService>(s => new MissionsService(baseUrl.AbsoluteUri));
-            serviceCollection.AddTransient<IItemListsService>(s => new ItemListsService(baseUrl.AbsoluteUri));
+            if (serviceCollection == null)
+            {
+                throw new System.ArgumentNullException(nameof(serviceCollection));
+            }
+
+            serviceCollection.AddTransient<IItemsDataService>(s => new ItemsDataService(baseUrl.AbsoluteUri));
+            serviceCollection.AddTransient<IMissionsDataService>(s => new MissionsDataService(baseUrl.AbsoluteUri));
+            serviceCollection.AddTransient<IItemListsDataService>(s => new ItemListsDataService(baseUrl.AbsoluteUri));
 
             return serviceCollection;
         }

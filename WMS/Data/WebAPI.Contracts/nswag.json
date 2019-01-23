@@ -12,7 +12,7 @@
   "codeGenerators": {
     "swaggerToCSharpClient": {
       "clientBaseClass": "ServiceBase",
-      "className": "{controller}Service",
+      "className": "{controller}DataService",
       "configurationClass": null,
       "generateClientClasses": true,
       "generateClientInterfaces": true,
