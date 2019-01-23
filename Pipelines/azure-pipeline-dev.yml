@@ -27,6 +27,8 @@ steps:
     Contents: |
      **
      !**\.git\**
+     !**\*.png
+     !**\*.jpg
     targetFolder: '$(Build.ArtifactStagingDirectory)\sources'
 
 
