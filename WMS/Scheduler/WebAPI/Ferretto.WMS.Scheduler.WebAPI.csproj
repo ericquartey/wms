@@ -44,26 +44,17 @@
     <Content Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="hostconfig.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Update="appsettings.Development.json">
       <DependentUpon>appsettings.json</DependentUpon>
-    </Content>
-    <Content Update="appsettings.Production.json">
-      <DependentUpon>appsettings.json</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="appsettings.Testing.json">
       <DependentUpon>appsettings.json</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="hostconfig.Development.json">
-      <DependentUpon>hostconfig.json</DependentUpon>
-    </Content>
-    <Content Update="hostconfig.Production.json">
-      <DependentUpon>hostconfig.json</DependentUpon>
-    </Content>
-    <Content Update="hostconfig.Testing.json">
-      <DependentUpon>hostconfig.json</DependentUpon>
+    <Content Update="appsettings.Production.json">
+      <DependentUpon>appsettings.json</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
