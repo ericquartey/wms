@@ -29,7 +29,7 @@ steps:
   inputs:
     command: restore
 
-    projects: '$(Parameters.RestoreBuildProjects)'
+    projects: '$(RestoreBuildProjects)'
 
     feedsToUse: config
 
@@ -39,7 +39,7 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
-    projects: '$(Parameters.RestoreBuildProjects)'
+    projects: '$(RestoreBuildProjects)'
 
     arguments: '--configuration $(BuildConfiguration)'
 
@@ -49,7 +49,7 @@ steps:
   inputs:
     command: test
 
-    projects: '$(Parameters.TestProjects)'
+    projects: '$(TestProjects)'
 
     arguments: '--configuration $(BuildConfiguration)'
 
