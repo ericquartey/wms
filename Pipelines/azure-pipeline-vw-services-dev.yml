@@ -20,8 +20,8 @@ trigger:
 
 variables:
   BuildConfiguration: 'Release'
-  RestoreBuildProjects: '**/VerticalWarehouses/**/*.csproj'
-  TestProjects: '**/VerticalWarehouses/**/*[Tt]ests/*.csproj'
+  RestoreBuildProjects: 'VerticalWarehouses/Machine Automation Service/**/*.csproj'
+  TestProjects: 'VerticalWarehouses/Machine Automation Service/**/*[Tt]ests/*.csproj'
 
 steps:
 - task: DotNetCoreCLI@2
