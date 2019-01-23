@@ -33,7 +33,7 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Common Sources'
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)\sources
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)\sources'
     ArtifactName: 'common_sources'
 
 
