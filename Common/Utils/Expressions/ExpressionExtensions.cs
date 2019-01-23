@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace Ferretto.WMS.Data.WebAPI.Models.Expressions
+namespace Ferretto.Common.Utils.Expressions
 {
     public static class ExpressionExtensions
     {
@@ -43,10 +43,12 @@ namespace Ferretto.WMS.Data.WebAPI.Models.Expressions
                         return Expression.And(
                             binaryExpression.LeftExpression.GetLambdaBody<T>(inParameter),
                             binaryExpression.RightExpression.GetLambdaBody<T>(inParameter));
+
                     case nameof(Expression.Or):
                         return Expression.Or(
                             binaryExpression.LeftExpression.GetLambdaBody<T>(inParameter),
                             binaryExpression.RightExpression.GetLambdaBody<T>(inParameter));
+
                     case nameof(Expression.Equal):
                         return Expression.Equal(
                             binaryExpression.LeftExpression.GetLambdaBody<T>(inParameter),
