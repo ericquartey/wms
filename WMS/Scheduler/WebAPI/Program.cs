@@ -15,8 +15,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI
 
         private const string ConsoleArgument = "--console";
 
-        private const string HostConfigurationFile = "hostconfig.json";
-
         #endregion Fields
 
         #region Methods
