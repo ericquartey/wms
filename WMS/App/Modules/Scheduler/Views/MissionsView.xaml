@@ -228,16 +228,18 @@
                                                       Content="{Binding Path=PackageTypeDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <wms:InfoText Grid.Row="5"
                                                       Grid.Column="0"
+                                                      Margin="0,0,0,8"
                                                       Content="{Binding Path=RegistrationNumber, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <wms:InfoText Grid.Row="5"
                                                       Grid.Column="1"
+                                                      Margin="0,0,0,8"
                                                       Content="{Binding Path=Lot, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                         <Border Grid.RowSpan="6"
                                                 Grid.Column="3"
                                                 Margin="0"
                                                 Style="{StaticResource InfoBoxBorderStyle}">
-                                            <GroupBox Margin="0"
+                                            <GroupBox Margin="3,0,5,5"
                                                       Header="{x:Static res:MasterData.OtherInformation}">
                                                 <StackPanel Orientation="Vertical">
                                                     <wms:InfoText HorizontalAlignment="Left"
