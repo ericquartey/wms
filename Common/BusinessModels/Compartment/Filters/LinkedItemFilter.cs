@@ -4,14 +4,19 @@ namespace Ferretto.Common.BusinessModels
 {
     public class LinkedItemFilter : IFilter
     {
-        #region Fields
+        #region Properties
 
-        private static readonly Func<CompartmentDetails, CompartmentDetails, string> colorFunc = delegate (CompartmentDetails compartment, CompartmentDetails selected)
+        public Func<ICompartment, ICompartment, string> ColorFunc => (compartment, selected) =>
         {
+            var compartmentDetails = compartment as CompartmentDetails;
+            var selectedDetails = selected as CompartmentDetails;
+
             var color = "Blue";
-            if (selected != null)
+            if (selectedDetails != null && compartmentDetails != null)
             {
-                if (compartment == selected && compartment.IsItemPairingFixed == selected.IsItemPairingFixed)
+                if (compartment == selected
+                    &&
+                    compartmentDetails.IsItemPairingFixed == selectedDetails.IsItemPairingFixed)
                 {
                     color = "#76FF03";
                 }
@@ -20,20 +25,15 @@ namespace Ferretto.Common.BusinessModels
                     color = "#90A4AE";
                 }
             }
+
             return color;
         };
-
-        #endregion Fields
-
-        #region Properties
-
-        public Func<CompartmentDetails, CompartmentDetails, string> ColorFunc => colorFunc;
 
         public string Description => "Compartment";
 
         public int Id => 2;
 
-        public CompartmentDetails Selected { get; set; }
+        public ICompartment Selected { get; set; }
 
         #endregion Properties
     }

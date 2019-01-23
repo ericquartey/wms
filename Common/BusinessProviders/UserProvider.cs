@@ -9,40 +9,22 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Methods
 
-        public Task<OperationResult> Add(User model)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<OperationResult> AddAsync(User model) => throw new NotSupportedException();
 
-        public int Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
-        public IQueryable<User> GetAll()
-        {
-            throw new NotImplementedException();
-        }
+        public IQueryable<User> GetAll() => throw new NotSupportedException();
 
-        public int GetAllCount()
-        {
-            throw new NotImplementedException();
-        }
+        public int GetAllCount() => throw new NotSupportedException();
 
-        public Task<User> GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<User> GetByIdAsync(int id) => throw new NotSupportedException();
 
         public string IsValid(User user)
         {
             return string.Empty;
         }
 
-        public int Save(User model)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<OperationResult> SaveAsync(User model) => throw new NotSupportedException();
 
         #endregion Methods
     }

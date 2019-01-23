@@ -1,0 +1,19 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Ferretto.WMS.Scheduler.WebAPI
+{
+    public class ListRowExecutionRequest
+    {
+        #region Properties
+
+        [Required]
+        public int AreaId { get; set; }
+
+        public int? BayId { get; set; }
+
+        [Required]
+        public int ListRowId { get; set; }
+
+        #endregion Properties
+    }
+}

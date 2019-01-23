@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using DevExpress.Mvvm.UI;
+using DevExpress.Xpf.Editors;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.Controls
@@ -12,6 +14,7 @@ namespace Ferretto.Common.Controls
         #region Properties
 
         public Type Control { get; set; }
+
         public DependencyProperty Property { get; set; }
 
         #endregion Properties
@@ -31,13 +34,28 @@ namespace Ferretto.Common.Controls
             }
 
             var editControl = LayoutTreeHelper.GetVisualParents(control).OfType<FrameworkElement>().FirstOrDefault(c => c.GetType() == this.Control);
+            if (this.Control == null &&
+               control.TemplatedParent is ContentControl editorControlCoreTemplatedParent &&
+               editorControlCoreTemplatedParent.Content is FrameworkElement editorControlCoreParent)
+            {
+                var editCore = LayoutTreeHelper.GetVisualChildren(editorControlCoreParent).OfType<EditorControl>()
+                                                         .FirstOrDefault(e => e.DataContext is FrameworkElement);
+                if (editCore == null)
+                {
+                    return null;
+                }
+
+                editControl = editCore.DataContext as FrameworkElement;
+            }
+
             if (editControl == null || editControl.DataContext == null)
             {
                 return null;
             }
 
-            var bindingExpression = BindingOperations.GetBindingExpression(editControl,
-                                    this.Property);
+            var bindingExpression = BindingOperations.GetBindingExpression(
+                editControl,
+                this.Property);
 
             if (bindingExpression != null)
             {

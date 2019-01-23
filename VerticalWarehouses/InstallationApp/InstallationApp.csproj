@@ -42,6 +42,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="MainWindowBackToIAPPButtonView.xaml" />
+    <None Remove="ViewsAndViewModels\LowSpeedMovements\LSMTMainView.xaml" />
+    <None Remove="ViewsAndViewModels\MainWindowBackToIAPPButtonView.xaml" />
+    <None Remove="ViewsAndViewModels\SensorsState\SSMainView.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CommonServiceLocator" Version="1.3.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.1.0" />
@@ -147,6 +154,12 @@
     <None Update="ViewsAndViewModels\SingleViews\WeightControlView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="ViewsAndViewModels\SensorsState\SSMainView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
 </Project>

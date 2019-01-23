@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
+namespace Ferretto.VW.InstallationApp
 {
     /// <summary>
     /// Interaction logic for VerticalOffsetCalibrationView.xaml
@@ -12,7 +12,6 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         public VerticalOffsetCalibrationView()
         {
             this.InitializeComponent();
-            this.DataContext = new VerticalOffsetCalibrationViewModel();
         }
 
         #endregion Constructors

@@ -79,6 +79,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this compartment?.
+        /// </summary>
+        public static string AreYouSureToDeleteCompartment {
+            get {
+                return ResourceManager.GetString("AreYouSureToDeleteCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Leaving the page will revert all your usaved changes. Are you sure you want to proceed?.
         /// </summary>
         public static string AreYouSureToLeaveThePage {
@@ -205,6 +214,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Initializing Scheduler module ....
+        /// </summary>
+        public static string InitializingSchedulerModule {
+            get {
+                return ResourceManager.GetString("InitializingSchedulerModule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading ....
         /// </summary>
         public static string Loading {
@@ -237,6 +255,24 @@ namespace Ferretto.Common.Resources {
         public static string ReseedingDatabase {
             get {
                 return ResourceManager.GetString("ReseedingDatabase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SearchLabel {
+            get {
+                return ResourceManager.GetString("SearchLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable To SaveChanges.
+        /// </summary>
+        public static string UnableToSaveChanges {
+            get {
+                return ResourceManager.GetString("UnableToSaveChanges", resourceCulture);
             }
         }
     }

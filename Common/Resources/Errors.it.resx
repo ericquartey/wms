@@ -166,7 +166,7 @@
     <value>L'altezza non può essere maggiore dell'altezza del cassetto.</value>
   </data>
   <data name="CompartmentOverlaps" xml:space="preserve">
-    <value>Le dimensioni sono in sovrapposizione con un altro scomparto.</value>
+    <value>Lo scomparto si sovrappone ad altri scomparti esistenti.</value>
   </data>
   <data name="CompartmentSizeHMore" xml:space="preserve">
     <value>La dimensione del nuovo Scomparto non può essere maggiore dell'altezza del cassetto.</value>
@@ -208,7 +208,7 @@
     <value>Non ho trovato modifiche da apportare.</value>
   </data>
   <data name="LoadingUnitOverlappingCompartment" xml:space="preserve">
-    <value>Impossibile aggiungere lo scomparto specificato alla loading unit con id={0} perchè si sovrappone a uno o più scomparti esistenti.</value>
+    <value>Impossibile aggiungere lo scomparto (id={0}) specificato alla loading unit con id={1} perchè si sovrappone a uno o più scomparti esistenti.</value>
   </data>
   <data name="BusyIndicatorStyleNotFound" xml:space="preserve">
     <value>Stile '{0}' per '{1}' non trovato.</value>
@@ -218,5 +218,41 @@
   </data>
   <data name="NotAddDB" xml:space="preserve">
     <value>Non aggiunto {0} al database.</value>
+  </data>
+  <data name="CompartmentSizeIsNotSpecified" xml:space="preserve">
+    <value>La dimensione dello scomparto non è specificata.</value>
+  </data>
+  <data name="CompartmentStockGreaterThanMaxCapacity" xml:space="preserve">
+    <value>La quantità in magazzino dell'articolo non può superare la capacità massima dello scomparto.</value>
+  </data>
+  <data name="CompartmentXPositionIsNotSpecified" xml:space="preserve">
+    <value>La posizione X dello scomparto non è specificata</value>
+  </data>
+  <data name="CompartmentYPositionIsNotSpecified" xml:space="preserve">
+    <value>La posizione Y dello scomparto non è specificata.</value>
+  </data>
+  <data name="CompartmentPositionCannotBeNegative" xml:space="preserve">
+    <value>La posizione dello scomparto non può essere negativa.</value>
+  </data>
+  <data name="CompartmentSizeMustBeStrictlyPositive" xml:space="preserve">
+    <value>La dimensione dello scomparto deve essere strettamente positiva.</value>
+  </data>
+  <data name="CompartmentSetCannotBeInsertedInLoadingUnit" xml:space="preserve">
+    <value>L'insieme di scomparti specificato non può essere inserito nella unità di carico.</value>
+  </data>
+  <data name="CompartmentBulkMustHaveAtLeastOneColumn" xml:space="preserve">
+    <value>L'aggiunta di un insieme di scomparti deve avere almeno una riga.</value>
+  </data>
+  <data name="CompartmentBulkMustHaveAtLeastOneRow" xml:space="preserve">
+    <value>L'aggiunta di un insieme di scomparti deve avere almeno una colonna.</value>
+  </data>
+  <data name="CompartmentCannotBeInsertedInLoadingUnit" xml:space="preserve">
+    <value>Errore durante l'aggiunta dello scomparto perchè si sovrappone ad altri scomparti o rimane fuori dai bordi del cassetto.</value>
+  </data>
+  <data name="UnableToSaveChanges" xml:space="preserve">
+    <value>Impossibile salvare le modifiche.</value>
+  </data>
+  <data name="UnableToLoadData" xml:space="preserve">
+    <value>Impossibile caricare i dati.</value>
   </data>
 </root>

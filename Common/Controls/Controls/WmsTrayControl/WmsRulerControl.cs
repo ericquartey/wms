@@ -7,16 +7,24 @@ using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.Controls
 {
-    public enum OriginHorizontal { Left, Right }
+    public enum OriginHorizontal
+    {
+        Left, Right
+    }
 
-    public enum OriginVertical { Top, Bottom }
+    public enum OriginVertical
+    {
+        Top, Bottom
+    }
 
     public class InfoRuler
     {
         #region Properties
 
         public Orientation OrientationRuler { get; set; }
+
         public OriginHorizontal OriginHorizontal { get; set; }
+
         public OriginVertical OriginVertical { get; set; }
 
         #endregion Properties
@@ -27,24 +35,39 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         public static readonly DependencyProperty LittleMarkLengthProperty =
-                    DependencyProperty.Register("LittleMarkLengthProperty", typeof(int), typeof(WmsRulerControl),
-                    new UIPropertyMetadata(8));
+                    DependencyProperty.Register(
+                        "LittleMarkLengthProperty",
+                        typeof(int),
+                        typeof(WmsRulerControl),
+                        new UIPropertyMetadata(8));
 
         public static readonly DependencyProperty MajorIntervalProperty =
-                    DependencyProperty.Register("MajorIntervalProperty", typeof(int), typeof(WmsRulerControl),
-                    new UIPropertyMetadata(100));
+                    DependencyProperty.Register(
+                        "MajorIntervalProperty",
+                        typeof(int),
+                        typeof(WmsRulerControl),
+                        new UIPropertyMetadata(100));
 
         public static readonly DependencyProperty MarkLengthProperty =
-                    DependencyProperty.Register("MarkLengthProperty", typeof(int), typeof(WmsRulerControl),
-                    new UIPropertyMetadata(20));
+                    DependencyProperty.Register(
+                        "MarkLengthProperty",
+                        typeof(int),
+                        typeof(WmsRulerControl),
+                        new UIPropertyMetadata(20));
 
         public static readonly DependencyProperty MiddleMarkLengthProperty =
-                    DependencyProperty.Register("MiddleMarkLengthProperty", typeof(int), typeof(WmsRulerControl),
-                    new UIPropertyMetadata(14));
+                    DependencyProperty.Register(
+                        "MiddleMarkLengthProperty",
+                        typeof(int),
+                        typeof(WmsRulerControl),
+                        new UIPropertyMetadata(14));
 
         public static readonly DependencyProperty OrientationProperty =
-                    DependencyProperty.Register("DisplayMode", typeof(Orientation), typeof(WmsRulerControl),
-                    new FrameworkPropertyMetadata(OnOrientationChanged));
+                    DependencyProperty.Register(
+                        "DisplayMode",
+                        typeof(Orientation),
+                        typeof(WmsRulerControl),
+                        new FrameworkPropertyMetadata(OnOrientationChanged));
 
         private readonly int BORDER = 1;
         private readonly int FONTSIZE = 10;
@@ -70,6 +93,7 @@ namespace Ferretto.Common.Controls
         #region Properties
 
         public double HeightMmForRatio { get; set; }
+
         public InfoRuler InfoRuler { get; set; }
 
         public int LittleMarkLength
@@ -118,6 +142,7 @@ namespace Ferretto.Common.Controls
                 {
                     this.InfoRuler.OriginHorizontal = OriginHorizontal.Right;
                 }
+
                 if (value.Y == 0)
                 {
                     this.InfoRuler.OriginVertical = OriginVertical.Top;
@@ -130,6 +155,7 @@ namespace Ferretto.Common.Controls
         }
 
         public double WidthMmForConvert { get; set; }
+
         public double WidthPixelForConvert { get; set; }
 
         #endregion Properties
@@ -161,6 +187,7 @@ namespace Ferretto.Common.Controls
 
                         break;
                     }
+
                 case Orientation.Vertical:
                     {
                         this.MarkLength = (int)this.ActualWidth;
@@ -176,6 +203,7 @@ namespace Ferretto.Common.Controls
 
                         break;
                     }
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -204,7 +232,7 @@ namespace Ferretto.Common.Controls
 
             if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
             {
-                //Ruler with origin Left
+                // Ruler with origin Left
                 mark.XStart = actualDimension;
                 mark.XEnd = mark.XStart;
                 mark.YStart = 0;
@@ -222,7 +250,7 @@ namespace Ferretto.Common.Controls
             }
             else
             {
-                //Ruler with origin Top
+                // Ruler with origin Top
                 mark.YStart = actualDimension;
                 mark.YEnd = mark.YStart;
                 mark.XStart = 0;
@@ -308,6 +336,7 @@ namespace Ferretto.Common.Controls
                 {
                     continue;
                 }
+
                 drawingContext.DrawLine(
                                 new Pen(new SolidColorBrush(Colors.Black), this.WIDTH_MARK_MINOR),
                                 new Point(Math.Floor(littleMark.XStart), Math.Floor(littleMark.YStart)),
@@ -323,7 +352,7 @@ namespace Ferretto.Common.Controls
             if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
             {
                 ////Ruler with origin Left
-                mark.XStart = GraphicUtils.ConvertMillimetersToPixel((i * this.MajorInterval), this.WidthPixelForConvert, this.WidthMmForConvert);
+                mark.XStart = GraphicUtils.ConvertMillimetersToPixel(i * this.MajorInterval, this.WidthPixelForConvert, this.WidthMmForConvert);
                 mark.YStart = 0;
                 mark.YEnd = this.MarkLength;
                 if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left)
@@ -345,11 +374,12 @@ namespace Ferretto.Common.Controls
 
                 mark.XEnd = mark.XStart;
             }
-            //Vertical Ruler
+
+            // Vertical Ruler
             else
             {
-                //Ruler with origin Top
-                mark.YStart = GraphicUtils.ConvertMillimetersToPixel((i * this.MajorInterval), this.WidthPixelForConvert, this.WidthMmForConvert);
+                // Ruler with origin Top
+                mark.YStart = GraphicUtils.ConvertMillimetersToPixel(i * this.MajorInterval, this.WidthPixelForConvert, this.WidthMmForConvert);
 
                 mark.XStart = 0;
                 mark.XEnd = this.MarkLength;
@@ -372,6 +402,7 @@ namespace Ferretto.Common.Controls
 
                 mark.YEnd = mark.YStart;
             }
+
             if (toDraw)
             {
                 drawingContext.DrawLine(
@@ -468,8 +499,11 @@ namespace Ferretto.Common.Controls
         {
             var ft = new FormattedText(
                     (pseudoStartValue * majorInterval).ToString(CultureInfo.InvariantCulture),
-                    CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
-                    new Typeface("Tahoma"), this.FONTSIZE, Brushes.Black,
+                    CultureInfo.CurrentUICulture,
+                    FlowDirection.LeftToRight,
+                    new Typeface("Tahoma"),
+                    this.FONTSIZE,
+                    Brushes.Black,
                     VisualTreeHelper.GetDpi(this).PixelsPerDip);
             var startFrom = 0;
             var toDraw = true;
@@ -501,6 +535,7 @@ namespace Ferretto.Common.Controls
                     }
                 }
             }
+
             // Vertical Ruler
             else
             {
@@ -534,6 +569,7 @@ namespace Ferretto.Common.Controls
                     drawingContext.PushTransform(new RotateTransform(-90, position.X, position.Y));
                 }
             }
+
             if (toDraw)
             {
                 drawingContext.DrawText(ft, new Point(position.X, position.Y));

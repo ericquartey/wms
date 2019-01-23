@@ -27,15 +27,9 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<OperationResult> Add(Bay model)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<OperationResult> AddAsync(Bay model) => throw new NotSupportedException();
 
-        public int Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
         public IQueryable<Bay> GetAll()
         {
@@ -68,7 +62,7 @@ namespace Ferretto.Common.BusinessProviders
                 });
         }
 
-        public async Task<Bay> GetById(int id)
+        public async Task<Bay> GetByIdAsync(int id)
         {
             return await this.dataContext.Current.Bays
                    .Include(b => b.BayType)
@@ -90,24 +84,34 @@ namespace Ferretto.Common.BusinessProviders
                    .SingleAsync();
         }
 
-        public int Save(Bay model)
+        public async Task<OperationResult> SaveAsync(Bay model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+
+            try
             {
-                var existingModel = dataContext.Bays.Find(model.Id);
+                using (var dc = this.dataContext.Current)
+                {
+                    var existingModel = dc.Bays.Find(model.Id);
 
-                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                    dc.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return dataContext.SaveChanges();
+                    var changedEntityCount = await dc.SaveChangesAsync();
+
+                    return new OperationResult(changedEntityCount > 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(ex);
             }
         }
 
-        private static IQueryable<Bay> GetAllBaysWithFilter(DatabaseContext context,
+        private static IQueryable<Bay> GetAllBaysWithFilter(
+            DatabaseContext context,
             Expression<Func<DataModels.Bay, bool>> whereFunc = null)
         {
             var actualWhereFunc = whereFunc ?? ((i) => true);

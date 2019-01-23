@@ -6,15 +6,10 @@ namespace Ferretto.Common.BusinessModels
 {
     public sealed class Machine : BusinessObject
     {
-        #region Fields
-
-        private int fillRate;
-        private MachineStatus status;
-        private MaintenanceStatus maintenanceStatus;
-
-        #endregion Fields
-
         #region Properties
+
+        [Display(Name = nameof(BusinessObjects.MachineFillRate), ResourceType = typeof(BusinessObjects))]
+        public static int FillRate => new Random().Next(100);
 
         [Display(Name = nameof(BusinessObjects.MachineActualWeight), ResourceType = typeof(BusinessObjects))]
         public long? ActualWeight { get; set; }
@@ -52,13 +47,6 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.MachineErrorTime), ResourceType = typeof(BusinessObjects))]
         public long? ErrorTime { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.MachineFillRate), ResourceType = typeof(BusinessObjects))]
-        public int FillRate
-        {
-            get => (new Random()).Next(100);
-            set => this.fillRate = value;
-        }
-
         [Display(Name = nameof(BusinessObjects.MachineImage), ResourceType = typeof(BusinessObjects))]
         public string Image { get; set; }
 
@@ -91,6 +79,9 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.MachineTypeDescription), ResourceType = typeof(BusinessObjects))]
         public string MachineTypeDescription { get; set; }
 
+        [Display(Name = nameof(BusinessObjects.MachineMaintenanceStatus), ResourceType = typeof(BusinessObjects))]
+        public MaintenanceStatus MaintenanceStatus => (MaintenanceStatus)((this.Id - 1) % 3);
+
         [Display(Name = nameof(BusinessObjects.MachineManualTime), ResourceType = typeof(BusinessObjects))]
         public long? ManualTime { get; set; }
 
@@ -119,18 +110,7 @@ namespace Ferretto.Common.BusinessModels
         public string RegistrationNumber { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineStatus), ResourceType = typeof(BusinessObjects))]
-        public MachineStatus Status
-        {
-            get => (MachineStatus) ( this.Id - 1 );
-            set => this.status = value;
-        }
-
-        [Display(Name = nameof(BusinessObjects.MachineMaintenanceStatus), ResourceType = typeof(BusinessObjects))]
-        public MaintenanceStatus MaintenanceStatus
-        {
-            get => (MaintenanceStatus) ( (this.Id - 1) % 3 );
-            set => this.maintenanceStatus = value;
-        }
+        public MachineStatus Status => (MachineStatus)(this.Id - 1);
 
         [Display(Name = nameof(BusinessObjects.MachineTestDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? TestDate { get; set; }

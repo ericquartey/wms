@@ -14,19 +14,18 @@ namespace Ferretto.VW.InstallationApp
 
     public delegate void FinishedMachineOnMarchChangeStateEvent();
 
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IMainWindow
     {
         #region Constructors
 
         public MainWindow()
         {
             this.InitializeComponent();
-            NavigationService.BackToVWAppEventHandler += () => this.Close();
+            NavigationService.BackToVWAppEventHandler += () => this.HideAndUnsubscribe();
             FinishedMachineModeChangeStateEventHandler += () => { };
             FinishedMachineOnMarchChangeStateEventHandler += () => { };
             MainWindowViewModel.ClickedOnMachineModeEventHandler += this.SetMachineMode;
             MainWindowViewModel.ClickedOnMachineOnMarchEventHandler += this.SetMachineOn;
-            this.DataContext = new MainWindowViewModel();
         }
 
         #endregion Constructors
@@ -41,21 +40,6 @@ namespace Ferretto.VW.InstallationApp
 
         #region Methods
 
-        public void ChangeSkinToDark(object sender, MouseButtonEventArgs e)
-        {
-            NavigationService.RaiseChangeSkinToDarkEvent();
-        }
-
-        public void ChangeSkinToLight(object sender, MouseButtonEventArgs e)
-        {
-            NavigationService.RaiseChangeSkinToLightEvent();
-        }
-
-        public void ChangeSkinToMedium(object sender, MouseButtonEventArgs e)
-        {
-            NavigationService.RaiseChangeSkinToMediumEvent();
-        }
-
         public void RaiseFinishedMachineModeChangeStateEvent() => FinishedMachineModeChangeStateEventHandler();
 
         public void RaiseFinishedMachineOnMarchChangeStateEvent() => FinishedMachineOnMarchChangeStateEventHandler();
@@ -64,6 +48,12 @@ namespace Ferretto.VW.InstallationApp
         {
             this.UnsubscribeEvents();
             base.OnClosed(e);
+        }
+
+        private void HideAndUnsubscribe()
+        {
+            this.UnsubscribeEvents();
+            this.Hide();
         }
 
         private async void SetMachineMode()

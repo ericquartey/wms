@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
+namespace Ferretto.VW.InstallationApp
 {
     /// <summary>
     /// Interaction logic for SSVariousInputsView.xaml
@@ -12,7 +12,6 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
         public SSVariousInputsView()
         {
             this.InitializeComponent();
-            this.DataContext = new SSVariousInputsViewModel();
         }
 
         #endregion Constructors

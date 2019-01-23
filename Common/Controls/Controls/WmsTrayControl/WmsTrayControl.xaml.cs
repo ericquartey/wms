@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Ferretto.Common.BusinessModels;
-using System.Linq;
 
 namespace Ferretto.Common.Controls
 {
@@ -16,7 +14,9 @@ namespace Ferretto.Common.Controls
             nameof(CanvasMinHeight), typeof(double), typeof(WmsTrayControl), new UIPropertyMetadata(150.0));
 
         public static readonly DependencyProperty IsCompartmentSelectableProperty = DependencyProperty.Register(
-            nameof(IsCompartmentSelectable), typeof(bool), typeof(WmsTrayControl),
+            nameof(IsCompartmentSelectable),
+            typeof(bool),
+            typeof(WmsTrayControl),
             new FrameworkPropertyMetadata(true, OnIsCompartmentSelectableChanged));
 
         public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(
@@ -26,16 +26,21 @@ namespace Ferretto.Common.Controls
             nameof(RulerStep), typeof(int), typeof(WmsTrayControl), new FrameworkPropertyMetadata(100, OnRulerStepChanged));
 
         public static readonly DependencyProperty SelectedColorFilterFuncProperty = DependencyProperty.Register(
-            nameof(SelectedColorFilterFunc), typeof(Func<CompartmentDetails, CompartmentDetails, string>),
+            nameof(SelectedColorFilterFunc),
+            typeof(Func<ICompartment, ICompartment, string>),
             typeof(WmsTrayControl),
             new FrameworkPropertyMetadata(OnSelectedColorFilterFuncChanged));
 
         public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register(
-            nameof(SelectedItem), typeof(CompartmentDetails), typeof(WmsTrayControl),
+            nameof(SelectedItem),
+            typeof(ICompartment),
+            typeof(WmsTrayControl),
             new FrameworkPropertyMetadata(OnSelectedCompartmentChanged));
 
         public static readonly DependencyProperty ShowBackgroundProperty = DependencyProperty.Register(
-            nameof(ShowBackground), typeof(bool), typeof(WmsTrayControl),
+            nameof(ShowBackground),
+            typeof(bool),
+            typeof(WmsTrayControl),
             new FrameworkPropertyMetadata(OnShowBackgroundChanged));
 
         public static readonly DependencyProperty ShowRulerProperty = DependencyProperty.Register(
@@ -84,16 +89,16 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(RulerStepProperty, value);
         }
 
-        public Func<CompartmentDetails, CompartmentDetails, string> SelectedColorFilterFunc
+        public Func<ICompartment, ICompartment, string> SelectedColorFilterFunc
         {
-            get => (Func<CompartmentDetails, CompartmentDetails, string>)this.GetValue(
+            get => (Func<ICompartment, ICompartment, string>)this.GetValue(
                 SelectedColorFilterFuncProperty);
             set => this.SetValue(SelectedColorFilterFuncProperty, value);
         }
 
-        public CompartmentDetails SelectedItem
+        public ICompartment SelectedItem
         {
-            get => (CompartmentDetails)this.GetValue(SelectedItemProperty);
+            get => (ICompartment)this.GetValue(SelectedItemProperty);
             set => this.SetValue(SelectedItemProperty, value);
         }
 
@@ -121,23 +126,16 @@ namespace Ferretto.Common.Controls
 
         public void SetBackground(bool? show, double widthTrayPixel = 0)
         {
-            if (show.HasValue && show.Value || this.ShowBackground)
+            if ((show.HasValue && show.Value) || this.ShowBackground)
             {
                 var drawingBrush = new DrawingBrush
                 {
                     TileMode = TileMode.Tile
                 };
 
-                double width;
-                if (widthTrayPixel == 0 && this.CanvasListBoxControl.Canvas != null)
-                {
-                    width = this.CanvasListBoxControl.Canvas.ActualWidth;
-                }
-                else
-                {
-                    width = widthTrayPixel;
-                }
-
+                var width = widthTrayPixel == 0 && this.CanvasListBoxControl.Canvas != null
+                    ? this.CanvasListBoxControl.Canvas.ActualWidth
+                    : widthTrayPixel;
                 var stepPixel = GraphicUtils.ConvertMillimetersToPixel(this.RulerStep, width, this.Tray.Dimension.Width);
 
                 drawingBrush.Viewport = new Rect(0, 0, stepPixel, stepPixel);
@@ -147,8 +145,10 @@ namespace Ferretto.Common.Controls
                 gGroup.Children.Add(new LineGeometry(new Point(stepPixel, 0), new Point(stepPixel, stepPixel)));
                 gGroup.Children.Add(new LineGeometry(new Point(0, stepPixel), new Point(stepPixel, stepPixel)));
                 var drawingPen = new Pen((SolidColorBrush)Application.Current.Resources["BackgroundGridBrush"], 1);
-                var checkers = new GeometryDrawing((SolidColorBrush)Application.Current.Resources["TrayBackground"],
-                    drawingPen, gGroup);
+                var checkers = new GeometryDrawing(
+                    (SolidColorBrush)Application.Current.Resources["TrayBackground"],
+                    drawingPen,
+                    gGroup);
 
                 var checkersDrawingGroup = new DrawingGroup();
                 checkersDrawingGroup.Children.Add(checkers);
@@ -170,6 +170,7 @@ namespace Ferretto.Common.Controls
                 this.HorizontalRulerControl.Origin = this.Tray.Origin;
                 this.VerticalRulerControl.Origin = this.Tray.Origin;
             }
+
             this.HorizontalRulerControl.WidthMmForConvert = this.Tray.Dimension.Width;
             this.HorizontalRulerControl.WidthPixelForConvert = widthNewCalculated;
             this.HorizontalRulerControl.HeightMmForRatio = this.Tray.Dimension.Height;
@@ -184,11 +185,15 @@ namespace Ferretto.Common.Controls
             var majorIntervalStepHorizontal = this.HorizontalRulerControl.MajorInterval;
             var majorIntervalStepVertical = this.VerticalRulerControl.MajorInterval;
             this.HorizontalRulerControl.MajorIntervalPixel =
-                (int)Math.Floor(GraphicUtils.ConvertMillimetersToPixel(majorIntervalStepHorizontal, widthNewCalculated,
-                    this.Tray.Dimension.Width));
+                (int)Math.Floor(GraphicUtils.ConvertMillimetersToPixel(
+                                    majorIntervalStepHorizontal,
+                                    widthNewCalculated,
+                                    this.Tray.Dimension.Width));
             this.VerticalRulerControl.MajorIntervalPixel =
-                (int)Math.Floor(GraphicUtils.ConvertMillimetersToPixel(majorIntervalStepVertical, widthNewCalculated,
-                    this.Tray.Dimension.Width));
+                (int)Math.Floor(GraphicUtils.ConvertMillimetersToPixel(
+                                    majorIntervalStepVertical,
+                                    widthNewCalculated,
+                                    this.Tray.Dimension.Width));
 
             this.SetBackground(this.ShowBackground, widthNewCalculated);
         }
@@ -225,13 +230,10 @@ namespace Ferretto.Common.Controls
             if (d is WmsTrayControl wmsTrayControl &&
                 wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
-                viewModel.SelectedColorFilterFunc = (Func<CompartmentDetails, CompartmentDetails, string>)e.NewValue;
+                viewModel.SelectedColorFilterFunc = (Func<ICompartment, ICompartment, string>)e.NewValue;
             }
         }
 
-        /// <summary>
-        /// CompartmentsProperty: Property Changed Callback, do nothing, only update the Property
-        /// </summary>
         private static void OnSelectedCompartmentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (!(d is WmsTrayControl wmsTrayControl) ||
@@ -240,12 +242,14 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            viewModel.SelectedCompartment = (CompartmentDetails)e.NewValue;
+            viewModel.SelectedCompartment = (ICompartment)e.NewValue;
         }
 
         private static void OnShowBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel && wmsTrayControl.Tray != null && wmsTrayControl.CanvasListBoxControl.Canvas != null)
+            if (d is WmsTrayControl wmsTrayControl &&
+                wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel &&
+                wmsTrayControl.Tray != null && wmsTrayControl.CanvasListBoxControl.Canvas != null)
             {
                 wmsTrayControl.SetBackground((bool)e.NewValue);
             }

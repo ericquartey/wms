@@ -11,6 +11,7 @@ namespace Ferretto.Common.BusinessProviders
         #region Fields
 
         private readonly IDatabaseContextService dataContext;
+
         private readonly ItemCompartmentTypeProvider itemCompartmentTypeProvider;
 
         #endregion Fields
@@ -29,94 +30,87 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public async Task<OperationResult> Add(CompartmentType model, int? itemId, int? maxCapacity)
+        public async Task<OperationResult> AddAsync(CompartmentType model, int? itemId = null, int? maxCapacity = null)
         {
-            //TODO: Task 823
+            // TODO: Task 823
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var dataContext = this.dataContext.Current;
-            var existing = dataContext.CompartmentTypes.SingleOrDefault(ct =>
-            (ct.Width == model.Width && ct.Height == model.Height)
-            ||
-            (ct.Width == model.Height && ct.Height == model.Width));
-
-            var compartmentTypeId = -1;
-            if (existing == null)
+            try
             {
-                var entry = dataContext.CompartmentTypes.Add(new DataModels.CompartmentType
+                using (var dc = this.dataContext.Current)
                 {
-                    Height = model.Height,
-                    Width = model.Width
-                });
+                    var compartmentType = dc.CompartmentTypes
+                        .SingleOrDefault(ct =>
+                            (ct.Width == model.Width && ct.Height == model.Height)
+                            ||
+                            (ct.Width == model.Height && ct.Height == model.Width));
 
-                var changedEntitiesCount = await dataContext.SaveChangesAsync();
-                if (changedEntitiesCount > 0)
-                {
-                    model.Id = entry.Entity.Id;
-                    compartmentTypeId = model.Id;
-                }
-                else
-                {
-                    return new OperationResult(false, description: string.Format(Resources.Errors.NotAddDB, nameof(CompartmentType)));
+                    if (compartmentType == null)
+                    {
+                        var entry = dc.CompartmentTypes.Add(new DataModels.CompartmentType
+                        {
+                            Height = model.Height,
+                            Width = model.Width
+                        });
+
+                        var changedEntitiesCount = await dc.SaveChangesAsync();
+                        if (changedEntitiesCount > 0)
+                        {
+                            compartmentType = entry.Entity;
+                            model.Id = entry.Entity.Id;
+                        }
+                        else
+                        {
+                            return new OperationResult(false);
+                        }
+                    }
+
+                    if (itemId.HasValue)
+                    {
+                        var result = await this.itemCompartmentTypeProvider.AddAsync(
+                            new ItemCompartmentType
+                            {
+                                ItemId = itemId.Value,
+                                MaxCapacity = maxCapacity,
+                                CompartmentTypeId = compartmentType.Id
+                            });
+
+                        if (result.Success)
+                        {
+                            await dc.SaveChangesAsync();
+                        }
+                        else
+                        {
+                            return new OperationResult(false);
+                        }
+                    }
+
+                    return new OperationResult(true, entityId: compartmentType.Id);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                compartmentTypeId = existing.Id;
+                return new OperationResult(ex);
             }
-
-            //Add Association ItemCompartmentType
-            if (itemId.HasValue)
-            {
-                var itemCompartmentTypeId = await this.itemCompartmentTypeProvider.Add(new ItemCompartmentType
-                {
-                    ItemId = itemId.Value,
-                    MaxCapacity = maxCapacity,
-                    CompartmentTypeId = compartmentTypeId
-                });
-
-                var addItemCompartmentTypeCount = await dataContext.SaveChangesAsync();
-                if (addItemCompartmentTypeCount < 1)
-                {
-                    //TODO
-                }
-            }
-
-            return new OperationResult(true, entityId: compartmentTypeId);
         }
 
-        public Task<OperationResult> Add(CompartmentType model)
+        public Task<OperationResult> AddAsync(CompartmentType model)
         {
-            return this.Add(model, null, null);
+            return this.AddAsync(model, null, null);
         }
 
-        public int Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
-        public IQueryable<CompartmentType> GetAll()
-        {
-            throw new NotImplementedException();
-        }
+        public IQueryable<CompartmentType> GetAll() => throw new NotSupportedException();
 
-        public int GetAllCount()
-        {
-            throw new NotImplementedException();
-        }
+        public int GetAllCount() => throw new NotSupportedException();
 
-        public Task<CompartmentType> GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<CompartmentType> GetByIdAsync(int id) => throw new NotSupportedException();
 
-        public int Save(CompartmentType model)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<OperationResult> SaveAsync(CompartmentType model) => throw new NotSupportedException();
 
         #endregion Methods
     }

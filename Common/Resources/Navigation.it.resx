@@ -211,10 +211,10 @@
     <value>Dettaglio delle liste</value>
   </data>
   <data name="ItemListExecution" xml:space="preserve">
-    <value>Esecuzione della Lista</value>
+    <value>Esecuzione Lista</value>
   </data>
   <data name="ItemListRowExecution" xml:space="preserve">
-    <value>Esecuzione della Riga della Lista</value>
+    <value>Esecuzione Riga Lista</value>
   </data>
   <data name="CellDetails" xml:space="preserve">
     <value>Dettagli Cella</value>
@@ -239,5 +239,20 @@
   </data>
   <data name="PutLists" xml:space="preserve">
     <value>Liste di Versamento</value>
+  </data>
+  <data name="Missions" xml:space="preserve">
+    <value>Missioni</value>
+  </data>
+  <data name="SchedulerRequests" xml:space="preserve">
+    <value>Richieste</value>
+  </data>
+  <data name="Scheduler" xml:space="preserve">
+    <value>Schedulatore</value>
+  </data>
+  <data name="ListRowDetails" xml:space="preserve">
+    <value>Dettagli della riga lista</value>
+  </data>
+  <data name="SchedulerRequest" xml:space="preserve">
+    <value>Richieste dello schedulatore</value>
   </data>
 </root>

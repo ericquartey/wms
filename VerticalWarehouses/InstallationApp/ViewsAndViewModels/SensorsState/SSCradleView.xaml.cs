@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.Utils.Source;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
+namespace Ferretto.VW.InstallationApp
 {
     /// <summary>
     /// Interaction logic for SSCradleView.xaml
@@ -12,7 +12,6 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
         public SSCradleView()
         {
             this.InitializeComponent();
-            this.DataContext = new SSCradleViewModel();
         }
 
         #endregion Constructors

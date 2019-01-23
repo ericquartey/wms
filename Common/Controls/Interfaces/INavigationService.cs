@@ -28,8 +28,9 @@ namespace Ferretto.Common.Controls.Interfaces
 
         void LoadModule(string moduleName);
 
-        void Register<TItemsView, TItemsViewModel>() where TItemsViewModel : INavigableViewModel
-                                                            where TItemsView : INavigableView;
+        void Register<TItemsView, TItemsViewModel>()
+            where TItemsViewModel : INavigableViewModel
+            where TItemsView : INavigableView;
 
         INavigableViewModel RegisterAndGetViewModel(string viewName, string token, object data = null);
 

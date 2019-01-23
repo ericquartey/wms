@@ -10,6 +10,10 @@ using Prism.Modularity;
 namespace Ferretto.Common.Modules.BLL
 {
     [Module(ModuleName = nameof(Utils.Modules.BusinessLogic))]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Major Code Smell",
+        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
+        Justification = "This class register services into container")]
     public class BusinessLogicModule : IModule
     {
         #region Constructors
@@ -44,12 +48,21 @@ namespace Ferretto.Common.Modules.BLL
             this.Container.RegisterType<IImageProvider, ImageProvider>();
             this.Container.RegisterType<IItemProvider, ItemProvider>();
             this.Container.RegisterType<IItemListProvider, ItemListProvider>();
+            this.Container.RegisterType<IItemListRowProvider, ItemListRowProvider>();
             this.Container.RegisterType<ILoadingUnitProvider, LoadingUnitProvider>();
             this.Container.RegisterType<IMachineProvider, MachineProvider>();
             this.Container.RegisterType<IUserProvider, UserProvider>();
+            this.Container.RegisterType<IMissionProvider, MissionProvider>();
+            this.Container.RegisterType<ISchedulerRequestProvider, SchedulerRequestProvider>();
 
-            this.Container.RegisterType<IItemsService, ItemsService>(new InjectionConstructor(ConfigurationManager.AppSettings["SchedulerEndpoint"]));
             this.Container.RegisterType<IDatabaseContextService, DatabaseContextService>();
+
+            var schedulerServiceEndPoint = ConfigurationManager.AppSettings["SchedulerServiceEndpoint"];
+            var dataServiceEndPoint = ConfigurationManager.AppSettings["DataServiceEndpoint"];
+            this.Container.RegisterType<IItemsService, ItemsService>(new InjectionConstructor(schedulerServiceEndPoint));
+            this.Container.RegisterType<IMissionsService, MissionsService>(new InjectionConstructor(dataServiceEndPoint));
+            this.Container.RegisterType<IItemListsService, ItemListsService>(new InjectionConstructor(schedulerServiceEndPoint));
+            this.Container.RegisterType<IItemListRowsService, ItemListRowsService>(new InjectionConstructor(schedulerServiceEndPoint));
 
             this.Container.RegisterType<DatabaseContext, DatabaseContext>(new InjectionConstructor());
             this.Container.RegisterType<EnumerationProvider, EnumerationProvider>(new InjectionConstructor(new DatabaseContext()));

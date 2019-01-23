@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
@@ -10,23 +11,40 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Fields
 
-        private readonly BindingList<CompartmentDetails> compartments = new BindingList<CompartmentDetails>();
+        private readonly BindingList<ICompartment> compartments = new BindingList<ICompartment>();
+
         private string abcClassId;
+
         private int aisleId;
+
         private int areaId;
+
         private int cellId;
+
         private int cellPositionId;
+
         private string code;
+
         private int? handlingParametersCorrection;
+
         private int height;
+
         private int inCycleCount;
+
         private bool isCellPairingFixed;
+
         private int length;
+
         private string loadingUnitStatusId;
+
         private int loadingUnitTypeId;
+
         private string note;
-        private string referenceType;
+
+        private ReferenceType referenceType;
+
         private int weight;
+
         private int width;
 
         #endregion Fields
@@ -85,12 +103,13 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.code, value);
         }
 
-        public BindingList<CompartmentDetails> Compartments => this.compartments;
+        public BindingList<ICompartment> Compartments => this.compartments;
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitCreationDate), ResourceType = typeof(BusinessObjects))]
         public DateTime CreationDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.LoadingUnitHandlingParametersCorrection),
+        [Display(
+            Name = nameof(BusinessObjects.LoadingUnitHandlingParametersCorrection),
             ResourceType = typeof(BusinessObjects))]
         public int? HandlingParametersCorrection
         {
@@ -180,7 +199,7 @@ namespace Ferretto.Common.BusinessModels
         public int OutCycleCount { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitReferenceType), ResourceType = typeof(BusinessObjects))]
-        public string ReferenceType
+        public ReferenceType ReferenceType
         {
             get => this.referenceType;
             set => this.SetProperty(ref this.referenceType, value);
@@ -206,7 +225,7 @@ namespace Ferretto.Common.BusinessModels
 
         #region Methods
 
-        public void AddCompartment(CompartmentDetails compartmentDetails)
+        public void AddCompartment(ICompartment compartmentDetails)
         {
             if (this.CanAddCompartment(compartmentDetails))
             {
@@ -214,80 +233,91 @@ namespace Ferretto.Common.BusinessModels
             }
             else
             {
-                throw new ArgumentException(string.Format(Resources.Errors.LoadingUnitOverlappingCompartment, this.Id));
+                throw new ArgumentException(string.Format(Resources.Errors.LoadingUnitOverlappingCompartment, compartmentDetails.Id, this.Id));
             }
         }
 
-        public void AddDynamicCompartments(int row, int column, int XPosition, int YPosition, int width, int height)
+        public void AddDynamicCompartments(int row, int column, int xPosition, int yPosition, int width, int height)
         {
-            //TODO: add logic of dynamic scompartition
+            // TODO: add logic of dynamic scompartition
             //      n: is calculated number of compartment to add
             //      n: based on row/column
-            var n = 0;
-            for (var i = 0; i < n; i++)
-            {
-                this.AddCompartment(null);
-            }
         }
 
-        public bool CanAddCompartment(CompartmentDetails compartmentDetails)
+        public bool CanAddCompartment(ICompartment compartment)
         {
-            //CHECK: exit from window
-            var xPositionFinal = compartmentDetails.XPosition + compartmentDetails.Width;
-            var yPositionFinal = compartmentDetails.YPosition + compartmentDetails.Height;
-            if (xPositionFinal > this.Width || yPositionFinal > this.Length)
+            if (compartment == null)
+            {
+                throw new ArgumentNullException(nameof(compartment));
+            }
+
+            return
+                (
+                    this.LoadingUnitTypeHasCompartments
+                    &&
+                    compartment.XPosition + compartment.Width <= this.Width
+                    &&
+                    compartment.YPosition + compartment.Height <= this.Length
+                    &&
+                    !this.compartments.Any(c => HasCollision(c, compartment)))
+                ||
+                (
+                    this.LoadingUnitTypeHasCompartments == false
+                    &&
+                    compartment.XPosition.HasValue == false
+                    &&
+                    compartment.YPosition.HasValue == false);
+        }
+
+        private static bool HasCollision(ICompartment c1, ICompartment c2)
+        {
+            if (c1.Id == c2.Id)
             {
                 return false;
             }
 
-            foreach (var compartment in this.compartments)
-            {
-                var areCollisions = this.HasCollision(compartmentDetails, compartment);
-                if (areCollisions)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
+            var xAPositionFinal = c1.XPosition + c1.Width;
+            var yAPositionFinal = c1.YPosition + c1.Height;
 
-        /// <summary>
-        /// Checks if the specified compartments are physically overlapping.
-        /// </summary>
-        /// <returns>
-        /// True if the specified compartments are overlapping, False otherwise.
-        /// <returns>
-        private bool HasCollision(CompartmentDetails compartmentA, CompartmentDetails compartmentB)
-        {
-            var xAPositionFinal = compartmentA.XPosition + compartmentA.Width;
-            var yAPositionFinal = compartmentA.YPosition + compartmentA.Height;
+            var xBPositionFinal = c2.XPosition + c2.Width;
+            var yBPositionFinal = c2.YPosition + c2.Height;
 
-            var xBPositionFinal = compartmentB.XPosition + compartmentB.Width;
-            var yBPositionFinal = compartmentB.YPosition + compartmentB.Height;
-            //A: Top-Left
-            if (compartmentA.XPosition >= compartmentB.XPosition && compartmentA.XPosition < xBPositionFinal
-                && compartmentA.YPosition >= compartmentB.YPosition && compartmentA.YPosition < yBPositionFinal)
+            // A: Top-Left
+            if (c1.XPosition >= c2.XPosition
+                && c1.XPosition < xBPositionFinal
+                && c1.YPosition >= c2.YPosition
+                && c1.YPosition < yBPositionFinal)
             {
                 return true;
             }
-            //B: Top-Right
-            if (xAPositionFinal > compartmentB.XPosition && xAPositionFinal <= xBPositionFinal
-                && compartmentA.YPosition >= compartmentB.YPosition && compartmentA.YPosition < yBPositionFinal)
+
+            // B: Top-Right
+            if (xAPositionFinal > c2.XPosition
+                && xAPositionFinal <= xBPositionFinal
+                && c1.YPosition >= c2.YPosition
+                && c1.YPosition < yBPositionFinal)
             {
                 return true;
             }
-            //C: Bottom-Left
-            if (compartmentA.XPosition >= compartmentB.XPosition && compartmentA.XPosition < xBPositionFinal
-                && yAPositionFinal > compartmentB.YPosition && yAPositionFinal <= yBPositionFinal)
+
+            // C: Bottom-Left
+            if (c1.XPosition >= c2.XPosition
+                && c1.XPosition < xBPositionFinal
+                && yAPositionFinal > c2.YPosition
+                && yAPositionFinal <= yBPositionFinal)
             {
                 return true;
             }
-            //D: Bottom-Right
-            if (xAPositionFinal > compartmentB.XPosition && xAPositionFinal <= xBPositionFinal
-                && yAPositionFinal > compartmentB.YPosition && yAPositionFinal <= yBPositionFinal)
+
+            // D: Bottom-Right
+            if (xAPositionFinal > c2.XPosition
+                && xAPositionFinal <= xBPositionFinal
+                && yAPositionFinal > c2.YPosition
+                && yAPositionFinal <= yBPositionFinal)
             {
                 return true;
             }
+
             return false;
         }
 

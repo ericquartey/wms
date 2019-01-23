@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Ferretto.VW.Utils.Source;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
+namespace Ferretto.VW.InstallationApp
 {
     /// <summary>
     /// Interaction logic for SSVerticalAxisView.xaml
@@ -26,7 +26,6 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
         public SSVerticalAxisView()
         {
             this.InitializeComponent();
-            this.DataContext = new SSVerticalAxisViewModel();
         }
 
         #endregion Constructors

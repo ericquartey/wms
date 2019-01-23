@@ -4,7 +4,7 @@ namespace Ferretto.Common.Controls.Interfaces
     {
         #region Methods
 
-        void RefreshData();
+        void LoadRelatedData();
 
         #endregion Methods
     }

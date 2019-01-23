@@ -2,13 +2,16 @@
 using Ferretto.VW.Utils.Source;
 using System;
 using Ferretto.VW.Navigation;
+using Microsoft.Practices.Unity;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class InstallationStateViewModel : BindableBase
+    public class InstallationStateViewModel : BindableBase, IViewModel, IInstallationStateViewModel
     {
         #region Fields
 
+        public IUnityContainer Container;
+        public DataManager Data;
         private bool isBeltBurnishingDone;
         private bool isGate1Done;
         private bool isGate2Done;
@@ -30,7 +33,6 @@ namespace Ferretto.VW.InstallationApp
 
         public InstallationStateViewModel()
         {
-            this.UpdateData();
             NavigationService.InstallationInfoChangedEventHandler += this.UpdateData;
         }
 
@@ -70,22 +72,44 @@ namespace Ferretto.VW.InstallationApp
 
         #region Methods
 
+        public void ExitFromViewMethod()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void InitializeViewModel(IUnityContainer _container)
+        {
+            this.Container = _container;
+            this.Data = (DataManager)this.Container.Resolve<IDataManager>();
+            this.UpdateData();
+        }
+
+        public void SubscribeMethodToEvent()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UnSubscribeMethodFromEvent()
+        {
+            throw new NotImplementedException();
+        }
+
         private void UpdateData()
         {
-            this.IsBeltBurnishingDone = DataManager.CurrentData.InstallationInfo.Belt_Burnishing;
-            this.IsGate1Done = DataManager.CurrentData.InstallationInfo.Ok_Gate1;
-            this.IsGate2Done = DataManager.CurrentData.InstallationInfo.Ok_Gate2;
-            this.IsGate3Done = DataManager.CurrentData.InstallationInfo.Ok_Gate3;
-            this.IsHorizontalHomingDone = DataManager.CurrentData.InstallationInfo.Origin_X_Axis;
-            this.IsLaserGate1Done = DataManager.CurrentData.InstallationInfo.Ok_Laser1;
-            this.IsLaserGate2Done = DataManager.CurrentData.InstallationInfo.Ok_Laser2;
-            this.IsLaserGate3Done = DataManager.CurrentData.InstallationInfo.Ok_Laser3;
-            this.IsMachineDone = DataManager.CurrentData.InstallationInfo.Machine_Ok;
-            this.IsShapeGate1Done = DataManager.CurrentData.InstallationInfo.Ok_Shape1;
-            this.IsShapeGate2Done = DataManager.CurrentData.InstallationInfo.Ok_Shape2;
-            this.IsShapeGate3Done = DataManager.CurrentData.InstallationInfo.Ok_Shape3;
-            this.IsSetResolutionDone = DataManager.CurrentData.InstallationInfo.Set_Y_Resolution;
-            this.IsVerticalHomingDone = DataManager.CurrentData.InstallationInfo.Origin_Y_Axis;
+            this.IsBeltBurnishingDone = this.Data.InstallationInfo.Belt_Burnishing;
+            this.IsGate1Done = this.Data.InstallationInfo.Ok_Gate1;
+            this.IsGate2Done = this.Data.InstallationInfo.Ok_Gate2;
+            this.IsGate3Done = this.Data.InstallationInfo.Ok_Gate3;
+            this.IsHorizontalHomingDone = this.Data.InstallationInfo.Origin_X_Axis;
+            this.IsLaserGate1Done = this.Data.InstallationInfo.Ok_Laser1;
+            this.IsLaserGate2Done = this.Data.InstallationInfo.Ok_Laser2;
+            this.IsLaserGate3Done = this.Data.InstallationInfo.Ok_Laser3;
+            this.IsMachineDone = this.Data.InstallationInfo.Machine_Ok;
+            this.IsShapeGate1Done = this.Data.InstallationInfo.Ok_Shape1;
+            this.IsShapeGate2Done = this.Data.InstallationInfo.Ok_Shape2;
+            this.IsShapeGate3Done = this.Data.InstallationInfo.Ok_Shape3;
+            this.IsSetResolutionDone = this.Data.InstallationInfo.Set_Y_Resolution;
+            this.IsVerticalHomingDone = this.Data.InstallationInfo.Origin_Y_Axis;
         }
 
         #endregion Methods

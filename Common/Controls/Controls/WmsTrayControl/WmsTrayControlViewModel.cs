@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Media;
 using Ferretto.Common.BusinessModels;
-using System.Windows;
-using System.Linq;
 
 namespace Ferretto.Common.Controls
 {
@@ -15,16 +15,27 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         private double heightTrayPixel;
+
         private bool isCompartmentSelectable = true;
+
         private ObservableCollection<WmsBaseCompartment> items;
+
         private int left;
+
         private SolidColorBrush penBrush;
+
         private int penThickness;
-        private Func<CompartmentDetails, CompartmentDetails, string> selectedColorFilterFunc;
-        private CompartmentDetails selectedCompartment;
+
+        private Func<ICompartment, ICompartment, string> selectedColorFilterFunc;
+
+        private ICompartment selectedCompartment;
+
         private WmsBaseCompartment selectedItem;
+
         private int top;
+
         private Tray tray;
+
         private double widthTrayPixel;
 
         #endregion Fields
@@ -37,7 +48,7 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
-        public CompartmentDetails CompartmentDetailsProperty { get; set; }
+        public ICompartment CompartmentDetailsProperty { get; set; }
 
         public bool IsCompartmentSelectable
         {
@@ -92,7 +103,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public Func<CompartmentDetails, CompartmentDetails, string> SelectedColorFilterFunc
+        public Func<ICompartment, ICompartment, string> SelectedColorFilterFunc
         {
             get => this.selectedColorFilterFunc;
             set
@@ -102,7 +113,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public CompartmentDetails SelectedCompartment
+        public ICompartment SelectedCompartment
         {
             get => this.selectedCompartment;
             set
@@ -169,6 +180,7 @@ namespace Ferretto.Common.Controls
                         Y = this.tray.Dimension.Height
                     };
                 }
+
                 this.UpdateCompartments(this.Tray.Compartments);
                 this.NotifyPropertyChanged(nameof(this.Tray));
             }
@@ -193,7 +205,7 @@ namespace Ferretto.Common.Controls
             this.SetSelectedItem();
         }
 
-        public void UpdateCompartments(IEnumerable<CompartmentDetails> compartments)
+        public void UpdateCompartments(IEnumerable<ICompartment> compartments)
         {
             if (this.Tray == null)
             {
@@ -253,7 +265,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        protected void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -275,38 +287,36 @@ namespace Ferretto.Common.Controls
                     IsSelectable = this.IsCompartmentSelectable
                 };
             }
+
             return null;
         }
 
-        private void Compartments_ListChanged(Object sender, ListChangedEventArgs e)
+        private void Compartments_ListChanged(object sender, ListChangedEventArgs e)
         {
             if (e.ListChangedType == ListChangedType.ItemDeleted)
             {
                 this.items.RemoveAt(e.NewIndex);
             }
-            else if (e.ListChangedType == ListChangedType.ItemAdded)
+            else if (e.ListChangedType == ListChangedType.ItemAdded && sender is IList<CompartmentDetails> compartments)
             {
-                if (sender is IList<CompartmentDetails> compartments)
-                {
-                    var addedCompartment = compartments[compartments.Count - 1];
-                    var compartmentGraphic = this.AddCompartment(addedCompartment);
+                var addedCompartment = compartments[compartments.Count - 1];
+                var compartmentGraphic = this.AddCompartment(addedCompartment);
 
-                    this.ResizeCompartment(this.widthTrayPixel, this.heightTrayPixel, compartmentGraphic);
+                this.ResizeCompartment(this.widthTrayPixel, this.heightTrayPixel, compartmentGraphic);
 
-                    this.items.Add(compartmentGraphic);
-                }
+                this.items.Add(compartmentGraphic);
             }
 
             this.NotifyPropertyChanged(nameof(this.Items));
         }
 
-        private void LoadingUnitDetails_AddedCompartmentEvent(Object sender, EventArgs e)
+        private void LoadingUnitDetails_AddedCompartmentEvent(object sender, EventArgs e)
         {
             this.UpdateCompartments(this.Tray.Compartments);
         }
 
-        private void ResizeCompartment(double widthTrayPixel, double heightTrayPixel, WmsBaseCompartment compartment)
         // TODO: consider moving this into the view
+        private void ResizeCompartment(double widthTrayPixel, double heightTrayPixel, WmsBaseCompartment compartment)
         {
             if (compartment == null ||
                 this.tray == null)
@@ -369,6 +379,7 @@ namespace Ferretto.Common.Controls
                 this.SelectedItem = null;
                 return;
             }
+
             var foundCompartment = this.Items.FirstOrDefault(c => c.CompartmentDetails.Id == this.selectedCompartment.Id);
             if (foundCompartment == null)
             {
@@ -387,7 +398,7 @@ namespace Ferretto.Common.Controls
             this.ResizeCompartment(this.widthTrayPixel, this.heightTrayPixel, this.selectedItem);
         }
 
-        private void Tray_CompartmentChangedEvent(Object sender, Tray.CompartmentEventArgs e)
+        private void Tray_CompartmentChangedEvent(object sender, CompartmentEventArgs e)
         {
             this.SelectedCompartment = e.Compartment;
         }

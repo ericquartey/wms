@@ -4,9 +4,9 @@ using System.Reflection;
 
 namespace Ferretto.Common.BusinessModels
 {
-    ///<summary>
+    /// <summary>
     /// Provides support for extracting property information based on a property expression.
-    ///</summary>
+    /// </summary>
     public static class PropertySupport
     {
         #region Methods

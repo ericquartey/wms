@@ -4,7 +4,8 @@ using System.ComponentModel;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public class ChangeDetector<T> : IDisposable where T : class, ICloneable, INotifyPropertyChanged
+    public class ChangeDetector<T> : IDisposable
+        where T : class, ICloneable, INotifyPropertyChanged
     {
         #region Fields
 
@@ -31,7 +32,7 @@ namespace Ferretto.Common.BusinessModels
                 if (this.isModified != value)
                 {
                     this.isModified = value;
-                    this.ModifiedChanged?.Invoke(this, null);
+                    this.ModifiedChanged?.Invoke(this, EventArgs.Empty);
                 }
             }
         }
@@ -66,7 +67,7 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
-        private void Instance_PropertyChanged(Object sender, PropertyChangedEventArgs e)
+        private void Instance_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (this.instance == null || this.snapshot == null)
             {
@@ -81,11 +82,13 @@ namespace Ferretto.Common.BusinessModels
                 if (this.modifiedProperties.Contains(e.PropertyName) == false)
                 {
                     this.modifiedProperties.Add(e.PropertyName);
+                    NLog.LogManager.GetCurrentClassLogger().Trace($"Property '{this.instance.GetType().Name}.{e.PropertyName}' was modified.");
                 }
             }
             else if (this.modifiedProperties.Contains(e.PropertyName))
             {
                 this.modifiedProperties.Remove(e.PropertyName);
+                NLog.LogManager.GetCurrentClassLogger().Trace($"Property '{this.instance.GetType().Name}.{e.PropertyName}' was reset to initial value.");
             }
 
             this.IsModified = this.modifiedProperties.Count > 0;

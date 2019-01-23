@@ -12,7 +12,8 @@ namespace Ferretto.Common.Utils.Menu
             this.Children = new List<MainMenuItem>();
         }
 
-        public MainMenuItem(String name, String backgroundColor, string image, String moduleName, String viewName, object data = null) : this()
+        public MainMenuItem(string name, string backgroundColor, string image, string moduleName, string viewName, object data = null)
+            : this()
         {
             this.Name = name;
             this.Image = image;
@@ -28,7 +29,7 @@ namespace Ferretto.Common.Utils.Menu
 
         public string BackgroundColor { get; set; }
 
-        public List<MainMenuItem> Children { get; set; }
+        public List<MainMenuItem> Children { get; }
 
         public object Data { get; set; }
 

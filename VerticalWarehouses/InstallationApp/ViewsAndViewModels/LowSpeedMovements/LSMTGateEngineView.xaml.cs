@@ -13,9 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Ferretto.VW.Utils.Source;
-using Ferretto.VW.InverterDriver.Source;
+using Ferretto.VW.InverterDriver;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.LowSpeedMovements
+namespace Ferretto.VW.InstallationApp
 {
     /// <summary>
     /// Interaction logic for LSMTGateEngineView.xaml
@@ -27,7 +27,6 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.LowSpeedMovements
         public LSMTGateEngineView()
         {
             this.InitializeComponent();
-            this.DataContext = new LSMTGateEngineViewModel();
         }
 
         #endregion Constructors

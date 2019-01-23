@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
+namespace Ferretto.VW.InstallationApp
 {
     /// <summary>
     /// Interaction logic for CellsPanelsControlView.xaml
@@ -12,7 +12,6 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         public CellsPanelsControlView()
         {
             this.InitializeComponent();
-            this.DataContext = new CellsPanelsControlViewModel();
         }
 
         #endregion Constructors

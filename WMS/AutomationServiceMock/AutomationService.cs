@@ -6,12 +6,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.AutomationServiceMock
 {
-    internal class AutomationService : IAutomationService
+    public class AutomationService : IAutomationService
     {
         #region Fields
 
         private readonly IBaysService baysService;
-        private readonly IConfiguration configuration;
 
         private readonly ILogger logger;
         private readonly IMissionsService missionsService;
@@ -24,17 +23,15 @@ namespace Ferretto.WMS.AutomationServiceMock
         #region Constructors
 
         public AutomationService(
-            IConfiguration configuration,
             ILogger<AutomationService> logger,
-            IWakeupHubClient wakeupHublient,
+            IWakeupHubClient wakeupHubClient,
             IMissionsService missionsService,
             IBaysService baysService)
         {
-            this.configuration = configuration;
             this.logger = logger;
             this.missionsService = missionsService;
             this.baysService = baysService;
-            this.wakeupHubClient = wakeupHublient;
+            this.wakeupHubClient = wakeupHubClient;
 
             this.wakeupHubClient.WakeupReceived += this.WakeupReceived;
             this.wakeupHubClient.NewMissionReceived += this.NewMissionReceived;
@@ -44,20 +41,20 @@ namespace Ferretto.WMS.AutomationServiceMock
 
         #region Methods
 
-        public async Task Initialize()
+        public async Task InitializeAsync()
         {
             await this.wakeupHubClient.ConnectAsync();
 
             this.logger.LogInformation("Automation service initialized");
         }
 
-        public async Task NotifyUserLogin(int bayId)
+        public async Task NotifyUserLoginAsync(int bayId)
         {
             this.logger.LogInformation($"Notifying the scheduler that bay '{bayId}' is operational.");
             await this.baysService.MarkAsOperationalAsync(bayId);
         }
 
-        private async Task ExecuteMission(Mission mission)
+        private async Task ExecuteMissionAsync(Mission mission)
         {
             this.logger.LogInformation($"Executing mission '{mission.Type}' on item {mission.ItemId}, quantity {mission.Quantity}");
 
@@ -77,11 +74,13 @@ namespace Ferretto.WMS.AutomationServiceMock
             }
         }
 
-        private async void NewMissionReceived(Object sender, MissionEventArgs e)
+        private async void NewMissionReceived(object sender, MissionEventArgs e)
         {
             this.logger.LogInformation($"New mission received from Scheduler id={e.Mission.Id}.");
 
-            await this.ExecuteMission(e.Mission);
+            // TODO CHECK
+            // Cannot convert from "Ferretto.WMS.Scheduler.Core.Mission" => "Ferretto.WMS.Scheduler.WebAPI.Contracts.Mission"
+            await this.ExecuteMissionAsync(e.Mission);
         }
 
         private void WakeupReceived(object sender, WakeUpEventArgs e)

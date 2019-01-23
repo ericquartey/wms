@@ -24,31 +24,52 @@
             <Grid x:Name="Content_Area"
                   Margin="12">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="15" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="45" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="10" />
                 </Grid.RowDefinitions>
+
+                <TextBlock x:Name="Timing"
+                           Grid.Row="1" />
+
                 <Image x:Name="Image"
-                       Source="Image.png"
-                       Stretch="None" />
-                <TextBlock x:Name="Timing" />
+                       Grid.Row="2"
+                       Width="480"
+                       Focusable="False"
+                       Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/Images/splash.png" />
                 <TextBlock x:Name="Info"
-                           Grid.Row="1"
+                           Grid.Row="3"
                            Margin="12,12,12,0"
                            Foreground="#FF2D2D2D"
                            Text="{Binding State}"
                            TextWrapping="Wrap" />
-                <ProgressBar x:Name="progressBar"
-                             Grid.Row="2"
-                             Height="12"
-                             Margin="12"
-                             IsIndeterminate="{Binding IsIndeterminate}"
-                             Maximum="{Binding MaxProgress}"
-                             Value="{Binding Progress}" />
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="45" />
+                    </Grid.ColumnDefinitions>
+
+                    <ProgressBar x:Name="progressBar"
+                                 Height="12"
+                                 Margin="12"
+                                 IsIndeterminate="{Binding IsIndeterminate}"
+                                 Maximum="{Binding MaxProgress}"
+                                 Value="{Binding Progress}" />
+                    <Image x:Name="Logotype"
+                           Grid.Column="1"
+                           Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/Images/FGOnlyLogo_narrow.png"
+                           Stretch="Fill"
+                           Visibility="Visible" />
+                </Grid>
+
                 <DockPanel x:Name="Footer"
-                           Grid.Row="3"
-                           Margin="12,20,12,4">
+                           Grid.Row="5"
+                           Height="20"
+                           Margin="5,5,5,4">
                     <TextBlock x:Name="Footer_Text"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
@@ -56,11 +77,6 @@
                                Opacity="0.5"
                                Text="{Binding Source={x:Static sys:DateTime.Today}, Path=Year, StringFormat='{}Copyright © {0}'}"
                                TextWrapping="Wrap" />
-                    <Image x:Name="Logotype"
-                           HorizontalAlignment="Right"
-                           DockPanel.Dock="Right"
-                           Source="Logo.png"
-                           Stretch="None" />
                 </DockPanel>
             </Grid>
         </Grid>

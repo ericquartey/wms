@@ -27,7 +27,7 @@ namespace Ferretto.Common.Controls
             this.keepInfoTimer.Interval = new TimeSpan(0, 0, timeToKeepText);
 
             ServiceLocator.Current.GetInstance<IEventService>()
-               .Subscribe((StatusEventArgs eventArgs) =>
+               .Subscribe((StatusPubSubEvent eventArgs) =>
                {
                    NLog.LogManager
                       .GetCurrentClassLogger()
@@ -72,7 +72,7 @@ namespace Ferretto.Common.Controls
             return $"{nameof(StatusType)}{status}";
         }
 
-        private void KeepInfoTimer_Tick(Object sender, EventArgs e)
+        private void KeepInfoTimer_Tick(object sender, EventArgs e)
         {
             this.Message = string.Empty;
             this.IconName = string.Empty;

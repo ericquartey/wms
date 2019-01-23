@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -15,17 +13,19 @@ namespace Ferretto.Common.BusinessProviders
         #region Fields
 
         private static readonly Expression<Func<DataModels.ItemList, bool>> TypeInventoryFilter =
-            list => (char)list.ItemListType == (char)(ItemListType.Inventory);
+            list => (char)list.ItemListType == (char)ItemListType.Inventory;
 
         private static readonly Expression<Func<DataModels.ItemList, bool>> TypePickFilter =
-            list => (char)list.ItemListType == (char)(ItemListType.Pick);
+            list => (char)list.ItemListType == (char)ItemListType.Pick;
 
         private static readonly Expression<Func<DataModels.ItemList, bool>> TypePutFilter =
-            list => (char)list.ItemListType == (char)(ItemListType.Put);
+            list => (char)list.ItemListType == (char)ItemListType.Put;
 
         private readonly IDatabaseContextService dataContext;
-        private readonly EnumerationProvider enumerationProvider;
+
         private readonly ItemListRowProvider itemListRowProvider;
+
+        private readonly WMS.Scheduler.WebAPI.Contracts.IItemListsService itemListService;
 
         #endregion Fields
 
@@ -33,31 +33,34 @@ namespace Ferretto.Common.BusinessProviders
 
         public ItemListProvider(
             IDatabaseContextService dataContext,
-            EnumerationProvider enumerationProvider,
-            ItemListRowProvider itemListRowProvider)
+            ItemListRowProvider itemListRowProvider,
+            WMS.Scheduler.WebAPI.Contracts.IItemListsService itemListService)
         {
             this.dataContext = dataContext;
-            this.enumerationProvider = enumerationProvider;
             this.itemListRowProvider = itemListRowProvider;
+            this.itemListService = itemListService;
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public Task<OperationResult> Add(ItemListDetails model)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<OperationResult> AddAsync(ItemListDetails model) => throw new NotSupportedException();
 
-        public int Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
-        public Task<OperationResult> ExecuteImmediately(int areaId, int bayId)
+        public async Task<OperationResult> ExecuteImmediatelyAsync(int listId, int areaId, int bayId)
         {
-            return new Task<OperationResult>(() => new OperationResult(false, description: "not implemented"));
+            try
+            {
+                await this.itemListService.ExecuteAsync(new WMS.Scheduler.WebAPI.Contracts.ListExecutionRequest { ListId = listId, AreaId = areaId, BayId = bayId });
+
+                return new OperationResult(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(false, description: ex.Message);
+            }
         }
 
         public IQueryable<ItemList> GetAll()
@@ -82,17 +85,21 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            try
             {
-                return dataContext.ItemLists.Count();
+                using (var dc = this.dataContext.Current)
+                {
+                    return dc.ItemLists.Count();
+                }
+            }
+            catch
+            {
+                return 0;
             }
         }
 
-        public async Task<ItemListDetails> GetById(int id)
+        public async Task<ItemListDetails> GetByIdAsync(int id)
         {
-            var dataContext = this.dataContext.Current;
-
             var itemListDetails = await this.dataContext.Current.ItemLists
                .Include(l => l.ItemListRows)
                .Where(l => l.Id == id)
@@ -103,7 +110,7 @@ namespace Ferretto.Common.BusinessProviders
                    Description = l.Description,
                    Priority = l.Priority,
                    ItemListStatus = (ItemListStatus)l.Status,
-                   ItemListType = (int)((ItemListType)l.ItemListType),
+                   ItemListType = (ItemListType)l.ItemListType,
                    ItemListItemsCount = l.ItemListRows.Sum(row => row.RequiredQuantity),
                    CreationDate = l.CreationDate,
                    Job = l.Job,
@@ -114,14 +121,10 @@ namespace Ferretto.Common.BusinessProviders
                    ShipmentUnitDescription = l.ShipmentUnitDescription,
                    LastModificationDate = l.LastModificationDate,
                    FirstExecutionDate = l.FirstExecutionDate,
-                   ExecutionEndDate = l.ExecutionEndDate,
+                   ExecutionEndDate = l.ExecutionEndDate
                }).SingleAsync();
 
-            itemListDetails.ItemListStatusChoices = ((ItemListStatus[])
-                Enum.GetValues(typeof(ItemListStatus)))
-                .Select(i => new Enumeration((int)i, i.ToString())).ToList();
-            itemListDetails.ItemListTypeChoices = ((ItemListType[])
-                Enum.GetValues(typeof(ItemListType)))
+            itemListDetails.ItemListStatusChoices = ((ItemListStatus[])Enum.GetValues(typeof(ItemListStatus)))
                 .Select(i => new Enumeration((int)i, i.ToString())).ToList();
 
             itemListDetails.ItemListRows = this.itemListRowProvider.GetByItemListId(id);
@@ -183,30 +186,47 @@ namespace Ferretto.Common.BusinessProviders
             return this.dataContext.Current.ItemLists.AsNoTracking().Count(TypePutFilter);
         }
 
-        public int Save(ItemListDetails model)
+        public async Task<OperationResult> SaveAsync(ItemListDetails model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
-            var dataContext = this.dataContext.Current;
 
-            lock (this.dataContext)
+            try
             {
-                var existingModel = this.dataContext.Current.ItemLists.Find(model.Id);
+                using (var dc = this.dataContext.Current)
+                {
+                    var existingModel = this.dataContext.Current.ItemLists.Find(model.Id);
 
-                this.dataContext.Current.Entry(existingModel).CurrentValues.SetValues(model);
+                    this.dataContext.Current.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return dataContext.SaveChanges();
+                    var changedEntityCount = await dc.SaveChangesAsync();
+
+                    return new OperationResult(changedEntityCount > 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(ex);
             }
         }
 
-        public Task<OperationResult> ScheduleForExecution(int areaId)
+        public async Task<OperationResult> ScheduleForExecutionAsync(int listId, int areaId)
         {
-            return new Task<OperationResult>(() => new OperationResult(false, description: "not implemented"));
+            try
+            {
+                await this.itemListService.ExecuteAsync(new WMS.Scheduler.WebAPI.Contracts.ListExecutionRequest { ListId = listId, AreaId = areaId });
+
+                return new OperationResult(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(false, description: ex.Message);
+            }
         }
 
-        private static Expression<Func<DataModels.ItemList, Boolean>> BuildFilter(ItemListType? type, ItemListStatus status)
+        private static Expression<Func<DataModels.ItemList, bool>> BuildFilter(ItemListType? type, ItemListStatus status)
         {
             var listType = type.HasValue ? (DataModels.ItemListType)type.Value : default(DataModels.ItemListType);
             var listStatus = (DataModels.ItemListStatus)status;

@@ -28,7 +28,7 @@
 
         #region Methods
 
-        public override System.String ToString()
+        public override string ToString()
         {
             return this.Name ?? base.ToString();
         }

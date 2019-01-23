@@ -1,5 +1,6 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
@@ -8,27 +9,31 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Methods
 
+        Task<OperationResult> AddRangeAsync(IEnumerable<ICompartment> compartments);
+
         IQueryable<Compartment> GetByItemId(int id);
 
         IQueryable<CompartmentDetails> GetByLoadingUnitId(int id);
 
-        CompartmentDetails GetNewCompartmentDetails();
+        Task<int?> GetMaxCapacityAsync(int? width, int? height, int itemId);
+
+        CompartmentDetails GetNew();
 
         IQueryable<Compartment> GetWithStatusAvailable();
 
-        Int32 GetWithStatusAvailableCount();
+        int GetWithStatusAvailableCount();
 
         IQueryable<Compartment> GetWithStatusAwaiting();
 
-        Int32 GetWithStatusAwaitingCount();
+        int GetWithStatusAwaitingCount();
 
         IQueryable<Compartment> GetWithStatusBlocked();
 
-        Int32 GetWithStatusBlockedCount();
+        int GetWithStatusBlockedCount();
 
         IQueryable<Compartment> GetWithStatusExpired();
 
-        Int32 GetWithStatusExpiredCount();
+        int GetWithStatusExpiredCount();
 
         bool HasAnyAllowedItem(int modelId);
 

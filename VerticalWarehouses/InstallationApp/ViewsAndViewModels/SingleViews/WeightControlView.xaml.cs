@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
+namespace Ferretto.VW.InstallationApp
 {
     /// <summary>
     /// Interaction logic for WeightControlView.xaml
@@ -12,7 +12,6 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         public WeightControlView()
         {
             this.InitializeComponent();
-            this.DataContext = new WeightControlViewModel();
         }
 
         #endregion Constructors

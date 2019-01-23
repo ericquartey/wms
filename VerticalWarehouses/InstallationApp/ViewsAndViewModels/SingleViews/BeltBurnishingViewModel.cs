@@ -8,7 +8,25 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class BeltBurnishingViewModel : BindableBase
+    public class BeltBurnishingViewModel : BindableBase, IViewModel, IBeltBurnishingViewModel
     {
+        #region Methods
+
+        public void ExitFromViewMethod()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SubscribeMethodToEvent()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UnSubscribeMethodFromEvent()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion Methods
     }
 }

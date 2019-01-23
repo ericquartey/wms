@@ -1,0 +1,47 @@
+﻿using Ferretto.VW.InverterDriver;
+using Microsoft.Practices.Unity;
+using Prism.Modularity;
+
+namespace Ferretto.VW.ActionBlocks.Source.ActionsBasic
+{
+    public class ActionsModule : IModule
+    {
+        #region Fields
+
+        public IUnityContainer Container;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public ActionsModule(IUnityContainer _container)
+        {
+            this.Container = _container;
+            var positioningDrawerInstance = new PositioningDrawer();
+            var calibrateVerticalAxisInstance = new CalibrateVerticalAxis();
+            // var calibrateAxesInstance = new CalibrateAxes();
+            var drawerWeightDetection = new DrawerWeightDetection();
+
+            calibrateVerticalAxisInstance.SetInverterDriverInterface = (InverterDriver.InverterDriver)this.Container.Resolve<IInverterDriver>();
+            // calibrateAxesInstance.SetInverterDriverInterface = (InverterDriver.InverterDriver)this.Container.Resolve<IInverterDriver>();
+            positioningDrawerInstance.SetInverterDriverInterface = (InverterDriver.InverterDriver)this.Container.Resolve<IInverterDriver>();
+
+            this.Container.RegisterInstance<IPositioningDrawer>(positioningDrawerInstance);
+            this.Container.RegisterInstance<ICalibrateVerticalAxis>(calibrateVerticalAxisInstance);
+            // this.Container.RegisterInstance<ICalibrateAxes>(calibrateAxesInstance);
+            this.Container.RegisterInstance<IDrawerWeightDetection>(drawerWeightDetection);
+
+            positioningDrawerInstance.InitializeAction(this.Container);
+        }
+
+        #endregion Constructors
+
+        #region Methods
+
+        public void Initialize()
+        {
+        }
+
+        #endregion Methods
+    }
+}

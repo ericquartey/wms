@@ -11,17 +11,17 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Methods
 
-        Task<OperationResult> Add(TDetailsModel model);
+        Task<OperationResult> AddAsync(TDetailsModel model);
 
-        int Delete(int id);
+        Task<int> DeleteAsync(int id);
 
         IQueryable<TModel> GetAll();
 
         int GetAllCount();
 
-        Task<TDetailsModel> GetById(int id);
+        Task<TDetailsModel> GetByIdAsync(int id);
 
-        int Save(TDetailsModel model);
+        Task<OperationResult> SaveAsync(TDetailsModel model);
 
         #endregion Methods
     }

@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.AutomationServiceMock
 {
-    internal class Program
+    internal static class Program
     {
         #region Methods
 
@@ -22,9 +22,9 @@ namespace Ferretto.WMS.AutomationServiceMock
 
             var schedulerUrl = configuration["Scheduler:Url"];
             var wakeUpPath = configuration["Hubs:WakeUp"];
-            services.AddTransient<IWakeupHubClient>(s => new WakeupHubClient(schedulerUrl, wakeUpPath));
+            services.AddTransient<IWakeupHubClient>(s => new WakeupHubClient(new Uri(schedulerUrl), wakeUpPath));
 
-            services.AddWebAPIServices(schedulerUrl);
+            services.AddWebApiServices(new Uri(schedulerUrl));
 
             return services.BuildServiceProvider();
         }
@@ -41,11 +41,11 @@ namespace Ferretto.WMS.AutomationServiceMock
 
                 var automationService = serviceProvider.GetService<IAutomationService>();
 
-                await automationService.Initialize();
+                await automationService.InitializeAsync();
 
                 // notify the scheduler that a user logged in
                 // to the PanelPC associated to the specified bay
-                await automationService.NotifyUserLogin(bayId: 1);
+                await automationService.NotifyUserLoginAsync(bayId: 1);
             }
             catch (Exception ex)
             {

@@ -16,6 +16,7 @@
         #region Properties
 
         public object Data { get; set; }
+
         public ShortKey ShortKey { get; set; }
 
         public object UIElementObj { get; set; }

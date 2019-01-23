@@ -57,13 +57,14 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            if (LayoutTreeHelper.GetVisualParents(tileBar as DependencyObject)
+            if (LayoutTreeHelper.GetVisualParents(tileBar)
                     .OfType<TileBarContentControl>()
                     .FirstOrDefault() != null)
             {
                 var flyout =
                     (DevExpress.Xpf.Editors.Flyout.Native.FlyoutBase)tileBar.GetValue(DevExpress.Xpf.Editors.Flyout
                         .Native.FlyoutBase.FlyoutProperty);
+
                 // Change position of child tilebar
                 flyout.Padding = new Thickness(0, -(tileBar.ActualHeight - 10), 0, 0);
                 flyout.UpdateLayout();
@@ -87,7 +88,7 @@ namespace Ferretto.Common.Controls
                     .FlyoutBase.FlyoutProperty);
             if (flyout != null)
             {
-                ((FrameworkElement)(flyout.Content)).Opacity = 1;
+                ((FrameworkElement)flyout.Content).Opacity = 1;
             }
         }
 
@@ -98,7 +99,7 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            var tileBar = LayoutTreeHelper.GetVisualChildren(grid as DependencyObject)
+            var tileBar = LayoutTreeHelper.GetVisualChildren(grid)
                 .OfType<DevExpress.Xpf.Navigation.TileBar>()
                 .FirstOrDefault();
             if (tileBar != null)
@@ -126,9 +127,9 @@ namespace Ferretto.Common.Controls
 
         private static bool IsClickOnScroll(object originalSource)
         {
-            return (LayoutTreeHelper.GetVisualParents(originalSource as UIElement)
+            return LayoutTreeHelper.GetVisualParents(originalSource as UIElement)
                          .OfType<DevExpress.Xpf.Controls.Primitives.ScrollableControlButton>()
-                         .FirstOrDefault() != null);
+                         .FirstOrDefault() != null;
         }
 
         private static void OnSetEnabledChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
@@ -172,11 +173,10 @@ namespace Ferretto.Common.Controls
             {
                 if (flyout != null)
                 {
-                    ((FrameworkElement)(flyout.Content)).Opacity = 0;
+                    ((FrameworkElement)flyout.Content).Opacity = 0;
                 }
 
-                var dt = tileBarItem.DataContext as IMenuItemViewModel;
-                if (dt != null && dt.HasChildren == false)
+                if (tileBarItem.DataContext is IMenuItemViewModel dt && dt.HasChildren == false)
                 {
                     tileBarItem.Command?.Execute(null);
                     e.Handled = true;

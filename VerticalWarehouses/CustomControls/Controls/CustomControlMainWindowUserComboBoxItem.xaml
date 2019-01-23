@@ -10,6 +10,8 @@
     <Grid Name="LayoutRoot"
           Background="Transparent">
         <Button Name="btnctrl"
+                Width="{Binding ElementName=LayoutRoot, Path=ActualWidth}"
+                HorizontalAlignment="Center"
                 Background="Transparent"
                 BorderBrush="Transparent"
                 Command="{Binding CustomCommand}"

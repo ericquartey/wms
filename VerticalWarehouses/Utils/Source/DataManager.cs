@@ -9,18 +9,20 @@ using System.Configuration;
 
 namespace Ferretto.VW.Utils.Source
 {
-    public class DataManager
+    public class DataManager : IDataManager
     {
         #region Fields
 
-        public static DataManager CurrentData;
-
         private readonly string JSON_GENERAL_INFO_PATH = string.Concat(Environment.CurrentDirectory, ConfigurationManager.AppSettings["GeneralInfoFilePath"]);
+
         private readonly string JSON_INSTALLATION_INFO_PATH = string.Concat(Environment.CurrentDirectory, ConfigurationManager.AppSettings["InstallationInfoFilePath"]);
 
         private List<CellBlock> cellBlocks;
+
         private List<Cell> cells;
+
         private List<Drawer> drawers;
+
         private Installation_Info installationInfo;
 
         #endregion Fields
@@ -37,10 +39,18 @@ namespace Ferretto.VW.Utils.Source
         #region Properties
 
         public List<CellBlock> CellBlocks { get => this.cellBlocks; set { this.cellBlocks = value; this.RaiseCellBlocksChangedEvent(); } }
+
         public List<Cell> Cells { get => this.cells; set { this.cells = value; this.RaiseCellsChangedEvent(); } }
+
         public List<Drawer> Drawers { get => this.drawers; set { this.drawers = value; this.RaiseDrawersChangedEvent(); } }
+
         public General_Info GeneralInfo { get; set; }
+
         public Installation_Info InstallationInfo { get => this.installationInfo; set { this.installationInfo = value; this.RaiseInstallationInfoChangedEvent(); } }
+
+        public bool IsGeneralInfoFilePresent { get; set; }
+
+        public bool IsInstallationInfoFilePresent { get; set; }
 
         #endregion Properties
 
@@ -54,6 +64,15 @@ namespace Ferretto.VW.Utils.Source
                 var jsonII = File.ReadAllText(this.JSON_INSTALLATION_INFO_PATH);
                 this.GeneralInfo = JsonConvert.DeserializeObject<General_Info>(jsonGI);
                 this.InstallationInfo = JsonConvert.DeserializeObject<Installation_Info>(jsonII);
+                this.IsGeneralInfoFilePresent = true;
+                this.IsInstallationInfoFilePresent = true;
+            }
+            else
+            {
+                this.GeneralInfo = new General_Info();
+                this.InstallationInfo = new Installation_Info();
+                this.IsGeneralInfoFilePresent = false;
+                this.IsInstallationInfoFilePresent = false;
             }
         }
 

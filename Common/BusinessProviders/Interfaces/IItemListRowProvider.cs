@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
@@ -10,7 +8,11 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Methods
 
-        IQueryable<ItemListRow> GetByItemListId(Int32 id);
+        Task<OperationResult> ExecuteImmediatelyAsync(int listRowId, int areaId, int bayId);
+
+        IQueryable<ItemListRow> GetByItemListId(int id);
+
+        Task<OperationResult> ScheduleForExecutionAsync(int listRowId, int areaId);
 
         #endregion Methods
     }

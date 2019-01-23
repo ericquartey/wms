@@ -52,7 +52,7 @@ namespace Ferretto.Common.Controls.Services
 
                 NLog.LogManager
                    .GetCurrentClassLogger()
-                   .Error(string.Format("Connection failed. Retrying in {0} seconds...", reconnectionTime / 1000));
+                   .Warn($"Connection failed. Retrying in {reconnectionTime / 1000} seconds...");
 
                 await Task.Delay(reconnectionTime);
 
@@ -64,19 +64,19 @@ namespace Ferretto.Common.Controls.Services
         {
             NLog.LogManager
                .GetCurrentClassLogger()
-               .Trace(string.Format("Hub connecting..."));
+               .Trace("Hub connecting...");
 
             await this.connection.StartAsync();
 
             NLog.LogManager
                .GetCurrentClassLogger()
-               .Trace(string.Format("Hub connected."));
+               .Trace("Hub connected.");
 
             await this.connection.SendAsync(HealthIsOnLineMessage);
 
             NLog.LogManager
                .GetCurrentClassLogger()
-               .Trace(string.Format("Message to hub sent."));
+               .Trace("Message to hub sent.");
         }
 
         private async Task InitializeAsync()
@@ -91,11 +91,11 @@ namespace Ferretto.Common.Controls.Services
             {
                 NLog.LogManager
                    .GetCurrentClassLogger()
-                   .Debug(string.Format("Connection to hub closed."));
+                   .Debug("Connection to hub closed.");
 
                 if (this.isConnected)
                 {
-                    this.eventService.Invoke(new StatusEventArgs() { IsSchedulerOnline = false });
+                    this.eventService.Invoke(new StatusPubSubEvent() { IsSchedulerOnline = false });
                 }
 
                 this.isConnected = false;
@@ -120,7 +120,7 @@ namespace Ferretto.Common.Controls.Services
                .Error(string.Format("Message {0} received from server", HealthIsOnLineMessage));
 
             this.isConnected = true;
-            this.eventService.Invoke(new StatusEventArgs() { IsSchedulerOnline = true });
+            this.eventService.Invoke(new StatusPubSubEvent() { IsSchedulerOnline = true });
         }
 
         #endregion Methods

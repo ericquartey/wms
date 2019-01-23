@@ -40,7 +40,7 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        public Object Convert(object value, Type targetType, Object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (targetType != typeof(Visibility))
             {
@@ -57,7 +57,7 @@ namespace Ferretto.Common.Controls
             return isValueNull ? (this.Hide ? Visibility.Hidden : Visibility.Collapsed) : Visibility.Visible;
         }
 
-        public Object ConvertBack(object value, Type targetType, Object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return null;
         }

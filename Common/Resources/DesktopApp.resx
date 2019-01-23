@@ -195,4 +195,18 @@
   <data name="AreYouSureToLeaveThePage" xml:space="preserve">
     <value>Leaving the page will revert all your usaved changes. Are you sure you want to proceed?</value>
   </data>
+  <data name="AreYouSureToDeleteCompartment" xml:space="preserve">
+    <value>Are you sure you want to delete this compartment?</value>
+  </data>
+  <data name="SearchLabel" xml:space="preserve">
+    <value />
+    <comment>@invariant</comment>
+  </data>
+  <data name="InitializingSchedulerModule" xml:space="preserve">
+    <value>Initializing Scheduler module ...</value>
+    <comment>Splash screen message</comment>
+  </data>
+  <data name="UnableToSaveChanges" xml:space="preserve">
+    <value>Unable To SaveChanges</value>
+  </data>
 </root>

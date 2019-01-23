@@ -4,14 +4,18 @@ namespace Ferretto.Common.BusinessModels
 {
     public class ArticleFilter : IFilter
     {
-        #region Fields
+        #region Properties
 
-        private static readonly Func<CompartmentDetails, CompartmentDetails, string> colorFunc = delegate (CompartmentDetails compartment, CompartmentDetails selected)
+        public Func<ICompartment, ICompartment, string> ColorFunc => (compartment, selected) =>
         {
+            var compartmentDetails = compartment as CompartmentDetails;
+            var selectedDetails = selected as CompartmentDetails;
             var color = "Orange";
-            if (selected != null)
+            if (selectedDetails != null && compartmentDetails != null)
             {
-                if ((compartment.MaterialStatusId != 0 || compartment == selected) && compartment.MaterialStatusId == selected.MaterialStatusId)
+                if ((compartmentDetails.MaterialStatusId != 0 || compartment == selected)
+                    &&
+                    compartmentDetails.MaterialStatusId == selectedDetails.MaterialStatusId)
                 {
                     color = "#76FF03";
                 }
@@ -20,17 +24,15 @@ namespace Ferretto.Common.BusinessModels
                     color = "#90A4AE";
                 }
             }
+
             return color;
         };
 
-        #endregion Fields
-
-        #region Properties
-
-        public Func<CompartmentDetails, CompartmentDetails, string> ColorFunc => colorFunc;
         public string Description => "Article";
+
         public int Id => 1;
-        public CompartmentDetails Selected { get; set; }
+
+        public ICompartment Selected { get; set; }
 
         #endregion Properties
     }

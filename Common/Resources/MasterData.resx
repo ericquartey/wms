@@ -277,7 +277,7 @@
     <value>Waiting Status</value>
   </data>
   <data name="ItemListsTypePick" xml:space="preserve">
-    <value>Pick Lists</value>
+    <value>Picking Lists</value>
   </data>
   <data name="CustomerOrderInformation" xml:space="preserve">
     <value>Customer Order Information</value>
@@ -334,7 +334,7 @@
     <comment>Notification - request accepted</comment>
   </data>
   <data name="CompartmentTypeListFormat" xml:space="preserve">
-    <value>{0} X {1} ( Width [mm] X Height [mm] )</value>
+    <value>{0} X {1} (Width X Height)</value>
   </data>
   <data name="AdvancedDetails" xml:space="preserve">
     <value>Advanced Details</value>
@@ -467,5 +467,34 @@
   </data>
   <data name="MachinesViewVertimagXSDescription" xml:space="preserve">
     <value>Get all machines of type Vertimag XS</value>
+  </data>
+  <data name="CompartmentDeletedSuccessfully" xml:space="preserve">
+    <value>Compartment deleted successfully</value>
+  </data>
+  <data name="ListRowRequestAccepted" xml:space="preserve">
+    <value>List Row request accepted</value>
+    <comment>Notification - request accepted</comment>
+  </data>
+  <data name="ItemListRows" xml:space="preserve">
+    <value>List Rows</value>
+  </data>
+  <data name="GeneralInformation" xml:space="preserve">
+    <value>General Information</value>
+  </data>
+  <data name="ScheduleInformation" xml:space="preserve">
+    <value>Schedule Information</value>
+  </data>
+  <data name="ItemListRowSavedSuccessfully" xml:space="preserve">
+    <value>Item list row saved sucessfully</value>
+    <comment>Notification - item saved</comment>
+  </data>
+  <data name="ItemListWithNoRows" xml:space="preserve">
+    <value>This list has no rows.</value>
+  </data>
+  <data name="Compartment" xml:space="preserve">
+    <value>Compartment</value>
+  </data>
+  <data name="QuantityWithUnitMeasure" xml:space="preserve">
+    <value>{0} [{1}]</value>
   </data>
 </root>

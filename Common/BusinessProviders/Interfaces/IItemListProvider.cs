@@ -8,7 +8,7 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Methods
 
-        Task<OperationResult> ExecuteImmediately(int areaId, int bayId);
+        Task<OperationResult> ExecuteImmediatelyAsync(int listId, int areaId, int bayId);
 
         IQueryable<ItemList> GetWithStatusCompleted(ItemListType? type);
 
@@ -30,7 +30,7 @@ namespace Ferretto.Common.BusinessProviders
 
         int GetWithTypePutCount();
 
-        Task<OperationResult> ScheduleForExecution(int areaId);
+        Task<OperationResult> ScheduleForExecutionAsync(int listId, int areaId);
 
         #endregion Methods
     }

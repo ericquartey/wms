@@ -8,12 +8,13 @@ using System.Threading;
 using Ferretto.VW.Utils.Source.Configuration;
 using System.Threading.Tasks;
 using Ferretto.VW.ActionBlocks;
-using Ferretto.VW.InverterDriver.Source;
+using Ferretto.VW.InverterDriver;
 using System.Diagnostics;
+using Microsoft.Practices.Unity;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class VerticalAxisCalibrationViewModel : BindableBase
+    public class VerticalAxisCalibrationViewModel : BindableBase, IViewModel, IVerticalAxisCalibrationViewModel
     {
         #region Fields
 
@@ -27,6 +28,8 @@ namespace Ferretto.VW.InstallationApp
         private ICommand startButtonCommand;
         private ICommand stopButtonCommand;
         private string upperBound;
+        public IUnityContainer Container;
+        private CalibrateVerticalAxis calibrateVerticalAxis;
 
         #endregion Fields
 
@@ -75,7 +78,28 @@ namespace Ferretto.VW.InstallationApp
 
         #region Methods
 
-        private void Calibration(bool result)
+        public void InitializeViewModel(IUnityContainer _container)
+        {
+            this.Container = _container;
+            this.calibrateVerticalAxis = (CalibrateVerticalAxis)this.Container.Resolve<ICalibrateVerticalAxis>();
+        }
+
+        public void ExitFromViewMethod()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SubscribeMethodToEvent()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UnSubscribeMethodFromEvent()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Calibration()
         {
             this.EnableStartButton = true;
             this.IsStopButtonActive = false;
@@ -104,11 +128,11 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        private async void ExecuteStartButtonCommand()
+        private void ExecuteStartButtonCommand()
         {
-            // Temporary the variables have a fixed value,
-            // they will be variables when there'll be new functions
-            if (ActionManager.CalibrateVerticalAxisInstance != null)
+            this.calibrateVerticalAxis = (CalibrateVerticalAxis)this.Container.Resolve<ICalibrateVerticalAxis>();
+            this.calibrateVerticalAxis.Initialize();
+            if (this.calibrateVerticalAxis != null)
             {
                 int m = 5;
                 short ofs = 1;
@@ -117,12 +141,10 @@ namespace Ferretto.VW.InstallationApp
 
                 this.EnableStartButton = false;
                 this.IsStopButtonActive = true;
-                await Task.Delay(2000);
 
-                ActionManager.CalibrateVerticalAxisInstance.ThrowEndEvent += this.Calibration;
+                this.calibrateVerticalAxis.ThrowEndEvent += this.Calibration;
                 this.NoteString = Common.Resources.InstallationApp.VerticalAxisCalibrating;
-                ActionManager.CalibrateVerticalAxisInstance.SetVAxisOrigin(m, ofs, vFast, vCreep);
-                this.NoteString = "Homing Done.";
+                this.calibrateVerticalAxis.SetVAxisOrigin(m, ofs, vFast, vCreep);
             }
         }
 

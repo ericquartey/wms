@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesHeightControl
+namespace Ferretto.VW.InstallationApp
 {
     /// <summary>
     /// Interaction logic for Gate2HeightControlView.xaml
@@ -12,7 +12,6 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesHeightControl
         public Gate2HeightControlView()
         {
             this.InitializeComponent();
-            this.DataContext = new Gate2HeightControlViewModel();
         }
 
         #endregion Constructors
