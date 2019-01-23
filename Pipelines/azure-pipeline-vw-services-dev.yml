@@ -17,22 +17,19 @@ trigger:
     - Common
     - WMS
 
-
 variables:
   BuildConfiguration: 'Release'
   RestoreBuildProjects: 'VerticalWarehouses/Machine Automation Service/**/*.csproj'
   TestProjects: 'VerticalWarehouses/Machine Automation Service/**/*[Tt]ests/*.csproj'
+
 
 steps:
 - task: DotNetCoreCLI@2
   displayName: Restore
   inputs:
     command: restore
-
     projects: '$(RestoreBuildProjects)'
-
     feedsToUse: config
-
     nugetConfigPath: nuget.config
 
 
@@ -40,7 +37,6 @@ steps:
   displayName: Build
   inputs:
     projects: '$(RestoreBuildProjects)'
-
     arguments: '--configuration $(BuildConfiguration)'
 
 
@@ -48,9 +44,7 @@ steps:
   displayName: Test
   inputs:
     command: test
-
     projects: '$(TestProjects)'
-
     arguments: '--configuration $(BuildConfiguration)'
 
 
@@ -58,19 +52,16 @@ steps:
   displayName: Publish
   inputs:
     command: publish
-
-    publishWebProjects: True
-
+    publishWebProjects: false
+    projects: '$(RestoreBuildProjects)'
     arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
-
-    zipAfterPublish: True
+    zipAfterPublish: false
 
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)'
-
     ArtifactName: 'automation_services'
 
 
