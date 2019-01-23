@@ -21,13 +21,15 @@ variables:
 
 steps:
 
-- template: azure-pipeline-net4-nuget-template.yml
-
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Common Sources'
   inputs:
-    PathtoPublish: '.'
+    PathtoPublish: '.!(.git)'
     ArtifactName: 'common_sources'
+
+
+- template: azure-pipeline-net4-nuget-template.yml
+
 
 - template: azure-pipeline-assembly-versioning-template.yml
 
