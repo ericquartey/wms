@@ -25,9 +25,8 @@
 
     <SolidColorBrush x:Key="MenuBackground"
                      Color="#4d5a7c" />
-    <!--  TEST  247dd6  4d5a7c  313a51  -->
-    <sys:Double x:Key="{dxet:CameraControlThemeKey ResourceKey=SettingsMinWidth}">280</sys:Double>
 
+    <sys:Double x:Key="{dxet:CameraControlThemeKey ResourceKey=SettingsMinWidth}">280</sys:Double>
 
     <ControlTemplate x:Key="{dxet:ImageEditThemeKey ResourceKey=Template}"
                      TargetType="{x:Type dxe:ImageEdit}">
