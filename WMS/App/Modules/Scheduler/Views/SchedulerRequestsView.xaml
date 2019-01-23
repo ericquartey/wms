@@ -246,6 +246,7 @@
                                         <wms:InfoText Grid.Row="7"
                                                       Grid.Column="0"
                                                       Grid.ColumnSpan="2"
+                                                      Margin="0,0,0,8"
                                                       Content="{Binding Path=LoadingUnitTypeDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                         <ScrollViewer Grid.RowSpan="8"
@@ -255,7 +256,7 @@
                                                       IsTabStop="False">
                                             <Border Margin="0"
                                                     Style="{StaticResource InfoBoxBorderStyle}">
-                                                <GroupBox Margin="0"
+                                                <GroupBox Margin="3,0,5,5"
                                                           Header="{x:Static res:MasterData.OtherInformation}">
                                                     <StackPanel Orientation="Vertical">
                                                         <wms:InfoText HorizontalAlignment="Left"
@@ -285,6 +286,7 @@
                     <dxg:GridColumn Width="140*"
                                     FieldName="ListRowDescription" />
                     <dxg:GridColumn Width="70*"
+                                    CellDisplayTemplate="{DynamicResource BooleanCellTemplate}"
                                     FieldName="IsInstant" />
                     <dxg:GridColumn Width="90*"
                                     FieldName="OperationType" />
