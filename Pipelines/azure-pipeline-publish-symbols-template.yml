@@ -1,11 +1,6 @@
 
 steps:
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Common Sources'
-  inputs:
-    ArtifactName: 'common_sources'
-
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Desktop App'
