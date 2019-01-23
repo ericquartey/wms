@@ -264,6 +264,7 @@ namespace Ferretto.Common.BusinessProviders
                .AsNoTracking()
                .Include(i => i.AbcClass)
                .Include(i => i.ItemCategory)
+               .Include(i => i.MeasureUnit)
                .Where(actualWhereFunc)
                .GroupJoin(
                    context.Compartments

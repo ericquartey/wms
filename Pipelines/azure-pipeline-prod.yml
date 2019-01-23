@@ -29,14 +29,6 @@ steps:
 - template: azure-pipeline-assembly-versioning-template.yml
 
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Common Sources'
-  inputs:
-    PathtoPublish: Common
-
-    ArtifactName: 'common_sources'
-
-
 - template: azure-pipeline-build-services-template.yml
 
 

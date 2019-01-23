@@ -11,6 +11,7 @@
         HOMING_FAST_SPEED_PARAM = 1132,
         HOMING_MODE_PARAM = 1130,
         HOMING_OFFSET_PARAM = 1131,
+        HOMING_ACCELERATION = 1134,
         POSITION_ACCELERATION_PARAM = 1457,
         POSITION_DECELERATION_PARAM = 1458,
         POSITION_TARGET_POSITION_PARAM = 1455,
@@ -53,10 +54,11 @@
             switch (p)
             {
                 case ParameterID.CONTROL_WORD_PARAM: type = ValueDataType.UInt16; break;
-                case ParameterID.HOMING_CREEP_SPEED_PARAM: type = ValueDataType.Float; break;
-                case ParameterID.HOMING_FAST_SPEED_PARAM: type = ValueDataType.Float; break;
+                case ParameterID.HOMING_CREEP_SPEED_PARAM: type = ValueDataType.Int32; break;
+                case ParameterID.HOMING_FAST_SPEED_PARAM: type = ValueDataType.Int32; break;
                 case ParameterID.HOMING_MODE_PARAM: type = ValueDataType.Int16; break;
                 case ParameterID.HOMING_OFFSET_PARAM: type = ValueDataType.Int16; break;
+                case ParameterID.HOMING_ACCELERATION: type = ValueDataType.Int32; break;
                 case ParameterID.POSITION_ACCELERATION_PARAM: type = ValueDataType.Float; break;
                 case ParameterID.POSITION_DECELERATION_PARAM: type = ValueDataType.Float; break;
                 case ParameterID.POSITION_TARGET_POSITION_PARAM: type = ValueDataType.Int32; break;

@@ -88,8 +88,26 @@
                                     FieldName="Sub2" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="Lot" />
-                    <dxg:GridColumn Width="50*"
-                                    FieldName="Stock" />
+
+                    <dxg:GridColumn Width="90*"
+                                    FieldName="Stock">
+                        <dxg:GridColumn.CellDisplayTemplate>
+                            <DataTemplate>
+                                <TextBlock VerticalAlignment="Center">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource SFC}">
+                                            <Binding Source="{x:Static res:MasterData.QuantityWithUnitMeasure}" />
+                                            <Binding Path="Data.Stock"
+                                                     TargetNullValue="" />
+                                            <Binding Path="Data.ItemMeasureUnit"
+                                                     TargetNullValue="" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellDisplayTemplate>
+                    </dxg:GridColumn>
+
                 </wms:WmsGridControl.Columns>
 
                 <wms:WmsGridControl.SortInfo>

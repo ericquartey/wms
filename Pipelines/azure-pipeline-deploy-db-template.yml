@@ -1,7 +1,7 @@
 
 steps:
 
-- script: 'dotnet ef database update --verbose'
+- script: 'dotnet ef database update --no-build --verbose'
   workingDirectory: Common/EF
   failOnStderr: true
   displayName: 'dotnet ef database update'
@@ -20,7 +20,7 @@ steps:
     userPassword: Ferretto2019!
     queryTimeout: 30
 
-- script: 'dotnet ef database drop --verbose --force'
+- script: 'dotnet ef database drop --no-build --verbose --force'
   workingDirectory: Common/EF
   failOnStderr: true
   displayName: 'dotnet ef database drop'

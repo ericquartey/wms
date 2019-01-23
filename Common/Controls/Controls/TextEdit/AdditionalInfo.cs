@@ -52,14 +52,18 @@ namespace Ferretto.Common.Controls
                  .FirstOrDefault(x => x.Name == "TextEditGrid");
                 if (y != null)
                 {
-                    var l = y.Children.OfType<Label>().FirstOrDefault(x => x.Name == "TitleLabel");
+                    var l = y.Children.OfType<WmsLabel>().FirstOrDefault(x => x.Name == "TitleLabel");
+                    if (l.Content != null && l.Title == null)
+                    {
+                        l.Title = (string)l.Content;
+                    }
                     if (binding)
                     {
-                        l.Content += $" {String.Format(Resources.General.AdditionalInfo, prop)}";
+                        l.Content = $"{l.Title} {String.Format(Resources.General.AdditionalInfo, prop)}";
                     }
                     else
                     {
-                        l.Content += $" {prop}";
+                        l.Content = $"{l.Title} {prop}";
                     }
                     baseEdit.Loaded -= BaseEdit_Loaded;
                 }
