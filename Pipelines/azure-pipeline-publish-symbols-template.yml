@@ -24,13 +24,6 @@ steps:
 
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Level1 Automation'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses'
-    ArtifactName: 'level1_automation'
-
-
-- task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: on_premises_appconfig_transform'
   inputs:
     PathtoPublish: WMS/App/App
