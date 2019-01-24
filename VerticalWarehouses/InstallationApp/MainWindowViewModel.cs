@@ -143,7 +143,7 @@ namespace Ferretto.VW.InstallationApp
 
         #region Commands Properties
 
-        public ICommand OpenHelpWindow => this.openHelpWindow ?? (this.openHelpWindow = new DelegateCommand(() => this.helpWindow.Show()));
+        public ICommand OpenHelpWindow => this.openHelpWindow ?? (this.openHelpWindow = new DelegateCommand(() => { this.helpWindow.Show(); this.helpWindow.HelpContentRegion.Content = this.contentRegionCurrentViewModel; }));
 
         public ICommand BackToMainWindowNavigationButtonsViewButtonCommand => this.backToMainWindowNavigationButtonsViewCommand ?? (this.backToMainWindowNavigationButtonsViewCommand = new DelegateCommand(() => { this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.Container.Resolve<IMainWindowNavigationButtonsViewModel>(); this.ContentRegionCurrentViewModel = (IdleViewModel)this.Container.Resolve<IIdleViewModel>(); NavigationService.RaiseExitViewEvent(); }));
 
