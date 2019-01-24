@@ -4,40 +4,28 @@ namespace Ferretto.Common.EF.Migrations
 {
     public partial class Remove_Tables_MissionType_MissionStatus : Migration
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Missions_MissionStatuses_MissionStatusId",
-                table: "Missions");
+        #region Fields
 
-            migrationBuilder.DropTable(
-                name: "MissionStatuses");
+        private const string MissionsTable = "Missions";
 
-            migrationBuilder.DropIndex(
-                name: "IX_Missions_MissionStatusId",
-                table: "Missions");
+        #endregion Fields
 
-            migrationBuilder.DropColumn(
-                name: "MissionStatusId",
-                table: "Missions");
-
-            migrationBuilder.AddColumn<string>(
-                name: "Status",
-                table: "Missions",
-                type: "char(1)",
-                nullable: false,
-                defaultValueSql: "'N'");
-        }
+        #region Methods
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.DropColumn(
                 name: "Status",
-                table: "Missions");
+                table: MissionsTable);
 
             migrationBuilder.AddColumn<string>(
                 name: "MissionStatusId",
-                table: "Missions",
+                table: MissionsTable,
                 type: "char(1)",
                 nullable: true);
 
@@ -55,16 +43,48 @@ namespace Ferretto.Common.EF.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Missions_MissionStatusId",
-                table: "Missions",
+                table: MissionsTable,
                 column: "MissionStatusId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Missions_MissionStatuses_MissionStatusId",
-                table: "Missions",
+                table: MissionsTable,
                 column: "MissionStatusId",
                 principalTable: "MissionStatuses",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }
+
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Missions_MissionStatuses_MissionStatusId",
+                table: MissionsTable);
+
+            migrationBuilder.DropTable(
+                name: "MissionStatuses");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Missions_MissionStatusId",
+                table: MissionsTable);
+
+            migrationBuilder.DropColumn(
+                name: "MissionStatusId",
+                table: MissionsTable);
+
+            migrationBuilder.AddColumn<string>(
+                name: "Status",
+                table: MissionsTable,
+                type: "char(1)",
+                nullable: false,
+                defaultValueSql: "'N'");
+        }
+
+        #endregion Methods
     }
 }

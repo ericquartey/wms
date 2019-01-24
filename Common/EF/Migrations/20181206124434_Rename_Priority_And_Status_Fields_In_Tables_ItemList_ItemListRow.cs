@@ -8,6 +8,11 @@ namespace Ferretto.Common.EF.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.RenameColumn(
                 name: "Status",
                 table: "ItemListRows",
@@ -26,6 +31,11 @@ namespace Ferretto.Common.EF.Migrations
 
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.RenameColumn(
                 name: "ItemListRowStatus",
                 table: "ItemListRows",
