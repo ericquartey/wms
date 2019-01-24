@@ -13,10 +13,11 @@ trigger:
   paths:
     exclude:
     - VerticalWarehouses
+    - WMS\App
 
 variables:
   BuildConfiguration: 'Debug'
-  RestoreBuildProjects: 'WMS/Scheduler/**/*.csproj;WMS/Data/**/*.csproj'
+  RestoreBuildProjects: 'WMS/@(Scheduler|Data)/**/*.csproj'
   TestProjects: 'WMS/Scheduler/**/*[Tt]ests.csproj;WMS/Data/**/*[Tt]ests.csproj'
 
 
@@ -29,6 +30,9 @@ steps:
     feedsToUse: config
     nugetConfigPath: nuget.config
     restoreDirectory: ./packages
+    
+
+- template: azure-pipeline-assembly-versioning-template.yml
 
 
 - task: DotNetCoreCLI@2
