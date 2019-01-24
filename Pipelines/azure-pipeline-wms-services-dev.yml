@@ -63,14 +63,14 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Scheduler Service'
   inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/WMS/Scheduler/WebAPI/bin/$(BuildConfiguration)/$(TargetFramework)/win7-x64/publish'
+    PathtoPublish: 'WMS/Scheduler/WebAPI/bin/$(BuildConfiguration)/$(TargetFramework)/win7-x64/publish'
     ArtifactName: 'scheduler_service'
 
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Data Service'
   inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/WMS/Data/WebAPI/bin/$(BuildConfiguration)/$(TargetFramework)/win7-x64/publish'
+    PathtoPublish: 'WMS/Data/WebAPI/bin/$(BuildConfiguration)/$(TargetFramework)/win7-x64/publish'
     ArtifactName: 'data_service'
 
 
