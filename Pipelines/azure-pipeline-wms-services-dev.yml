@@ -17,8 +17,9 @@ trigger:
 
 variables:
   BuildConfiguration: 'Debug'
-  RestoreBuildProjects: 'WMS/@(Scheduler|Data)/**/*.csproj'
-  TestProjects: 'WMS/Scheduler/**/*[Tt]ests.csproj;WMS/Data/**/*[Tt]ests.csproj'
+  RestoreBuildProjects: 'WMS/@(Scheduler|Data)/**/*.WebAPI.csproj'
+  TestProjects: 'WMS/@(Scheduler|Data)/**/*.Tests.csproj'
+  TargetFramework: 'netcoreapp2.1'
 
 
 steps:
@@ -38,7 +39,7 @@ steps:
   displayName: Build
   inputs:
     projects: '$(RestoreBuildProjects)'
-    arguments: '--configuration $(BuildConfiguration) --framework netcoreapp2.1'
+    arguments: '--configuration $(BuildConfiguration) --framework $(TargetFramework)'
 
 
 - task: DotNetCoreCLI@2
@@ -55,21 +56,21 @@ steps:
     command: publish
     publishWebProjects: false
     projects: '$(RestoreBuildProjects)'
-    arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+    arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory) --framework $(TargetFramework)'
     zipAfterPublish: false
 
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Scheduler Service'
   inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/WMS/Scheduler/WebAPI/bin/$(BuildConfiguration)/netcoreapp2.1/win7-x64/publish'
+    PathtoPublish: '$(build.artifactstagingdirectory)/WMS/Scheduler/WebAPI/bin/$(BuildConfiguration)/$(TargetFramework)/win7-x64/publish'
     ArtifactName: 'scheduler_service'
 
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Data Service'
   inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/WMS/Data/WebAPI/bin/$(BuildConfiguration)/netcoreapp2.1/win7-x64/publish'
+    PathtoPublish: '$(build.artifactstagingdirectory)/WMS/Data/WebAPI/bin/$(BuildConfiguration)/$(TargetFramework)/win7-x64/publish'
     ArtifactName: 'data_service'
 
 
