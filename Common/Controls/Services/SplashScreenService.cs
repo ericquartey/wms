@@ -8,11 +8,10 @@ namespace Ferretto.Common.Controls.Services
     {
         #region Properties
 
-        public static string Copyright => (typeof(SplashScreenService).Assembly.GetCustomAttributes(false)
+        public static string Copyright => (Assembly.GetEntryAssembly().GetCustomAttributes(false)
                 .FirstOrDefault(attribute => attribute is AssemblyCopyrightAttribute) as AssemblyCopyrightAttribute)?.Copyright;
 
-        public static string Version => (typeof(SplashScreenService).Assembly.GetCustomAttributes(false)
-                .FirstOrDefault(attribute => attribute is AssemblyVersionAttribute) as AssemblyVersionAttribute)?.Version;
+        public static string Version => Assembly.GetEntryAssembly().GetName()?.Version?.ToString();
 
         #endregion Properties
 
