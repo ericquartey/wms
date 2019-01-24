@@ -18,7 +18,7 @@ trigger:
     - 'VerticalWarehouses\Machine Automation Service'
 
 variables:
-  BuildConfiguration: 'Release'
+  BuildConfiguration: 'Debug'
   RestoreBuildProjects: 'VerticalWarehouses/Machine Automation Service/**/*.csproj'
   TestProjects: 'VerticalWarehouses/Machine Automation Service/**/*[Tt]ests/*.csproj'
 

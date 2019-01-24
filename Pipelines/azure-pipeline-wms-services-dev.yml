@@ -29,7 +29,6 @@ steps:
     projects: '$(RestoreBuildProjects)'
     feedsToUse: config
     nugetConfigPath: nuget.config
-    restoreDirectory: ./packages
     
 
 #- template: azure-pipeline-assembly-versioning-template.yml

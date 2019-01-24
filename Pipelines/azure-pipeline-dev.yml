@@ -59,9 +59,6 @@ steps:
 - template: azure-pipeline-assembly-versioning-template.yml
 
 
-- template: azure-pipeline-build-services-template.yml
-
-
 - task: VSBuild@1
   displayName: 'Build solution WMS.App'
   inputs:
@@ -81,59 +78,24 @@ steps:
     testAssemblyVer2: |
      **\$(BuildConfiguration)\*test*.dll
      !**\obj\**
-
     codeCoverageEnabled: true
-
     platform: '$(BuildPlatform)'
-
     configuration: '$(BuildConfiguration)'
 
-
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet test'
-  inputs:
-    command: test
-
-    projects: '**/*.Tests.csproj'
-
-    arguments: '--no-build --configuration $(BuildConfiguration)'
-
-
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet publish'
-  inputs:
-    command: publish
-
-    publishWebProjects: false
-
-    projects: '**/*.WebAPI.csproj'
-
-    arguments: '-f netcoreapp2.1 --configuration $(BuildConfiguration)'
-
-    zipAfterPublish: false
-
-    workingDirectory: WMS
-
-  continueOnError: true
 
 - task: PublishSymbols@2
   displayName: 'Publish symbols path'
   inputs:
     SearchPattern: '**\bin\**\*.pdb'
-
     PublishSymbols: false
-
   continueOnError: true
 
 - task: CopyFiles@2
   displayName: 'Copy Files to staging directory'
   inputs:
     SourceFolder: '$(system.defaultworkingdirectory)'
-
     Contents: '**\bin\$(BuildConfiguration)\**'
-
     TargetFolder: '$(build.artifactstagingdirectory)'
-
 
 
 - template: azure-pipeline-publish-artifacts-template.yml
