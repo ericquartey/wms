@@ -44,7 +44,10 @@ namespace Ferretto.WMS.Data.WebAPI
                 {
                     settings.PostProcess = document =>
                     {
-                        document.Info.Version = "v1";
+                        var assembly = typeof(Startup).Assembly;
+                        var versionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+
+                        document.Info.Version = versionInfo.FileVersion;
                         document.Info.Title = "WMS Data API";
                         document.Info.Description = "REST API for the WMS Data Service";
                     };
