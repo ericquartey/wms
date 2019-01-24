@@ -18,6 +18,8 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
+        protected Tile selectedFilterTile;
+
         private IEnumerable<IFilterDataSource<TModel>> filterDataSources;
 
         private IEnumerable<Tile> filterTiles;
@@ -31,8 +33,6 @@ namespace Ferretto.Common.Controls
         private ICommand refreshCommand;
 
         private object selectedFilterDataSource;
-
-        private Tile selectedFilterTile;
 
         private object selectedItem;
 
@@ -89,7 +89,7 @@ namespace Ferretto.Common.Controls
         [Display(Name = nameof(DesktopApp.SearchLabel), ResourceType = typeof(DesktopApp))]
         public string SearchText { get; set; }
 
-        public Tile SelectedFilter
+        public virtual Tile SelectedFilter
         {
             get => this.selectedFilterTile;
             set
@@ -102,7 +102,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public object SelectedFilterDataSource
+        public virtual object SelectedFilterDataSource
         {
             get => this.selectedFilterDataSource;
             protected set => this.SetProperty(ref this.selectedFilterDataSource, value);
@@ -119,6 +119,8 @@ namespace Ferretto.Common.Controls
                 }
             }
         }
+
+        protected IEnumerable<IFilterDataSource<TModel>> FilterDataSources => this.filterDataSources;
 
         #endregion Properties
 
@@ -160,11 +162,6 @@ namespace Ferretto.Common.Controls
             }).ToList());
 
             await this.UpdateFilterTilesCountsAsync();
-        }
-
-        protected override void OnDisappear()
-        {
-            base.OnDisappear();
         }
 
         protected override void OnDispose()
