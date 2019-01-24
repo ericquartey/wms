@@ -13,6 +13,9 @@ trigger:
   branches:
     include:
     - develop
+  paths:
+    exclude:
+    - VerticalWarehouses
 
 variables:
   BuildPlatform: 'any cpu'
@@ -20,6 +23,17 @@ variables:
   CloudInitialCatalog: 'FerrettoWmsDb_Testing_$(Build.BuildId)'
 
 steps:
+
+- task: andrewlackenby.sql-toolkit.runsqlcommand.RunSqlCommand@2
+  displayName: 'Create cloud db'
+  inputs:
+    serverName: 'rd-ferrettogroup.database.windows.net'
+    databaseName: master
+    sqlCommand: 'CREATE DATABASE $(CloudInitialCatalog);'
+    userName: admin_rd_ferrettogroup
+    userPassword: Ferretto2019!
+    queryTimeout: 120
+
 
 - task: CopyFiles@2
   displayName: 'Copy sources to staging directory'
@@ -58,16 +72,8 @@ steps:
     msbuildArchitecture: x64
 
 
-- task: VSBuild@1
-  displayName: 'Build solution VerticalWarehouses'
-  inputs:
-    solution: VerticalWarehouses.sln
-    msbuildArgs: '-v:normal'
-    platform: '$(BuildPlatform)'
-    configuration: '$(BuildConfiguration)'
-    msbuildArchitecture: x64
-
 - template: azure-pipeline-deploy-db-template.yml
+
 
 - task: VSTest@2
   displayName: 'Run Tests'
@@ -130,5 +136,15 @@ steps:
 
 
 
-- template: azure-pipeline-publish-symbols-template.yml
+- template: azure-pipeline-publish-artifacts-template.yml
 
+
+- script: 'dotnet ef database drop --no-build --verbose --force'
+  workingDirectory: Common/EF
+  failOnStderr: true
+  displayName: 'dotnet ef database drop'
+  continueOnError: true
+  condition: always()
+  env:
+    NETCORE_ENVIRONMENT: CloudBuild
+    cloudInitialCatalog: '$(CloudInitialCatalog)'

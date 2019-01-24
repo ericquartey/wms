@@ -16,12 +16,33 @@ trigger:
     - release/*
     - bugfix/*
     - hotfix/*
+  paths:
+    exclude:
+    - VerticalWarehouses
 
 variables:
   BuildPlatform: 'any cpu'
   BuildConfiguration: 'release'
 
 steps:
+
+- task: CopyFiles@2
+  displayName: 'Copy sources to staging directory'
+  inputs:
+    Contents: |
+     **
+     !**\.git\**
+     !**\*.png
+     !**\*.jpg
+    targetFolder: '$(Build.ArtifactStagingDirectory)\sources'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Common Sources'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)\sources'
+    ArtifactName: 'common_sources'
+
 
 - template: azure-pipeline-net4-nuget-template.yml
 
@@ -41,27 +62,9 @@ steps:
   displayName: 'Build solution WMS.App'
   inputs:
     solution: WMS.App.sln
-
     msbuildArgs: '-v:normal'
-
     platform: '$(BuildPlatform)'
-
     configuration: '$(BuildConfiguration)'
-
-    msbuildArchitecture: x64
-
-
-- task: VSBuild@1
-  displayName: 'Build solution VerticalWarehouses'
-  inputs:
-    solution: VerticalWarehouses.sln
-
-    msbuildArgs: '-v:normal'
-
-    platform: '$(BuildPlatform)'
-
-    configuration: '$(BuildConfiguration)'
-
     msbuildArchitecture: x64
 
 
@@ -116,5 +119,6 @@ steps:
     TargetFolder: '$(build.artifactstagingdirectory)'
 
 
-- template: azure-pipeline-publish-symbols-template.yml
+
+- template: azure-pipeline-publish-artifacts-template.yml
 

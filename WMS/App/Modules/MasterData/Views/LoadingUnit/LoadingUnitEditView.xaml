@@ -84,16 +84,20 @@
 
                 <wms:WmsGridControl.Columns>
                     <dxg:GridColumn Width="100*"
+                                    FieldName="ItemCode" />
+                    <dxg:GridColumn Width="250*"
+                                    FieldName="ItemDescription" />
+                    <dxg:GridColumn Width="100*"
                                     FieldName="Sub1" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="Sub2" />
                     <dxg:GridColumn Width="200*"
                                     FieldName="Lot" />
-                    <dxg:GridColumn Width="200*"
+                    <dxg:GridColumn Width="120*"
                                     FieldName="CompartmentStatusDescription" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="Stock" />
-                    <dxg:GridColumn Width="200*"
+                    <dxg:GridColumn Width="100*"
                                     CellDisplayTemplate="{DynamicResource BooleanCellTemplate}"
                                     FieldName="IsItemPairingFixed" />
                 </wms:WmsGridControl.Columns>
