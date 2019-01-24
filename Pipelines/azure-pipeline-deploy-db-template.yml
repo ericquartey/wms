@@ -19,12 +19,3 @@ steps:
     userName: admin_rd_ferrettogroup
     userPassword: Ferretto2019!
     queryTimeout: 30
-
-- script: 'dotnet ef database drop --no-build --verbose --force'
-  workingDirectory: Common/EF
-  failOnStderr: true
-  displayName: 'dotnet ef database drop'
-  continueOnError: true
-  env:
-    NETCORE_ENVIRONMENT: CloudBuild
-    cloudInitialCatalog: '$(CloudInitialCatalog)'
