@@ -40,6 +40,7 @@ steps:
     restoreSolution: '$(TargetSolution)'
     feedsToUse: config
     nugetConfigPath: nuget.config
+    restoreDirectory: ./packages
 
 
 - task: VSBuild@1
