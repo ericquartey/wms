@@ -17,7 +17,7 @@ trigger:
 
 variables:
   BuildConfiguration: 'Debug'
-  RestoreBuildProjects: 'WMS/@(Scheduler|Data)/**/*.WebAPI.csproj'
+  RestoreBuildProjects: 'WMS/@(Scheduler|Data)/**/*.csproj'
   TestProjects: 'WMS/@(Scheduler|Data)/**/*.Tests.csproj'
   TargetFramework: 'netcoreapp2.1'
 
