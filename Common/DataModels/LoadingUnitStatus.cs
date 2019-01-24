@@ -5,9 +5,14 @@ namespace Ferretto.Common.DataModels
     // Stato Udc
     public sealed class LoadingUnitStatus
     {
-        public string Id { get; set; }
+        #region Properties
+
         public string Description { get; set; }
 
+        public string Id { get; set; }
+
         public IEnumerable<LoadingUnit> LoadingUnits { get; set; }
+
+        #endregion Properties
     }
 }

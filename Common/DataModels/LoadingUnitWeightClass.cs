@@ -4,7 +4,6 @@ namespace Ferretto.Common.DataModels
 {
     // Classe Peso Udc
     public sealed class LoadingUnitWeightClass : IDataModel
-
     {
         #region Properties
 

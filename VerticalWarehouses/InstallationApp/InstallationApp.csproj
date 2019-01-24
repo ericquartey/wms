@@ -6,6 +6,8 @@
     <OutputType>Library</OutputType>
     <StartupObject />
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <RootNamespace>Ferretto.VW.InstallationApp</RootNamespace>
+    <AssemblyName>Ferretto.VW.InstallationApp</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -35,6 +37,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="CellsControlHelpView.xaml" />
+    <None Remove="HelpWindows\BeltBurnishingHelpView.xaml" />
+    <None Remove="HelpWindows\HelpMainWindow.xaml" />
     <None Remove="MainWindowBackToIAPPButtonView.xaml" />
     <None Remove="ViewsAndViewModels\LowSpeedMovements\LSMTMainView.xaml" />
     <None Remove="ViewsAndViewModels\MainWindowBackToIAPPButtonView.xaml" />
@@ -62,6 +67,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="HelpWindows\CellsControlHelpView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
     <None Update="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>

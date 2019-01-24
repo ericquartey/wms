@@ -23,7 +23,7 @@ namespace Ferretto.Common.EF.Configurations
                 .HasColumnType("char(1)");
             builder.Property(c => c.Side).IsRequired()
                 .HasColumnType("char(1)")
-                .HasConversion(x => (char) x, x => (Side) Enum.ToObject(typeof(Side), x));
+                .HasConversion(x => (char)x, x => (Side)Enum.ToObject(typeof(Side), x));
             builder.Property(c => c.Priority)
                 .HasDefaultValue(1);
 

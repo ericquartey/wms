@@ -1,0 +1,67 @@
+resources:
+- repo: self
+  fetchDepth: 15
+
+queue:
+  name: Hosted Ubuntu 1604
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - develop
+  paths:
+    exclude:
+    - Common
+    - WMS
+    include:
+    - 'VerticalWarehouses\Machine Automation Service'
+
+variables:
+  BuildConfiguration: 'Release'
+  RestoreBuildProjects: 'VerticalWarehouses/Machine Automation Service/**/*.csproj'
+  TestProjects: 'VerticalWarehouses/Machine Automation Service/**/*[Tt]ests/*.csproj'
+
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: Restore
+  inputs:
+    command: restore
+    projects: '$(RestoreBuildProjects)'
+    feedsToUse: config
+    nugetConfigPath: nuget.config
+
+
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    projects: '$(RestoreBuildProjects)'
+    arguments: '--configuration $(BuildConfiguration)'
+
+
+- task: DotNetCoreCLI@2
+  displayName: Test
+  inputs:
+    command: test
+    projects: '$(TestProjects)'
+    arguments: '--configuration $(BuildConfiguration)'
+
+
+- task: DotNetCoreCLI@2
+  displayName: Publish
+  inputs:
+    command: publish
+    publishWebProjects: false
+    projects: '$(RestoreBuildProjects)'
+    arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+    zipAfterPublish: false
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
+    ArtifactName: 'automation_services'
+
+

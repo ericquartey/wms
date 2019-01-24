@@ -20,6 +20,22 @@
     <wms:WmsView.Resources>
         <dxg:RowPropertyValueConverter x:Key="rowPropertyConverter" />
 
+        <wms:StringFormatConverter x:Key="SFC" />
+
+        <DataTemplate x:Key="CellDisplayTemplateQuantity">
+            <TextBlock VerticalAlignment="Center">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource SFC}">
+                        <Binding Source="{x:Static res:MasterData.QuantityWithUnitMeasure}" />
+                        <Binding Path="Data.RequiredQuantity"
+                                 TargetNullValue="" />
+                        <Binding Path="Data.ItemUnitMeasure"
+                                 TargetNullValue="" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </DataTemplate>
+
         <DataTemplate x:Key="DetailTooltipTemplate">
             <dx:MeasurePixelSnapper MaxWidth="300"
                                     MaxHeight="300">
@@ -212,16 +228,18 @@
                                                       Content="{Binding Path=PackageTypeDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <wms:InfoText Grid.Row="5"
                                                       Grid.Column="0"
+                                                      Margin="0,0,0,8"
                                                       Content="{Binding Path=RegistrationNumber, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <wms:InfoText Grid.Row="5"
                                                       Grid.Column="1"
+                                                      Margin="0,0,0,8"
                                                       Content="{Binding Path=Lot, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                         <Border Grid.RowSpan="6"
                                                 Grid.Column="3"
                                                 Margin="0"
                                                 Style="{StaticResource InfoBoxBorderStyle}">
-                                            <GroupBox Margin="0"
+                                            <GroupBox Margin="3,0,5,5"
                                                       Header="{x:Static res:MasterData.OtherInformation}">
                                                 <StackPanel Orientation="Vertical">
                                                     <wms:InfoText HorizontalAlignment="Left"
@@ -256,6 +274,7 @@
                     <dxg:GridColumn Width="90*"
                                     FieldName="Priority" />
                     <dxg:GridColumn Width="90*"
+                                    CellDisplayTemplate="{StaticResource CellDisplayTemplateQuantity}"
                                     FieldName="RequiredQuantity" />
                     <dxg:GridColumn Width="120*"
                                     FieldName="Type" />

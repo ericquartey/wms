@@ -1,0 +1,31 @@
+
+steps:
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Desktop App'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)/WMS/App/App/bin/$(BuildConfiguration)/net471'
+    ArtifactName: 'desktop_app'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Scheduler Service'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)/WMS/Scheduler/WebAPI/bin/$(BuildConfiguration)/netcoreapp2.1/win7-x64/publish'
+    ArtifactName: 'scheduler_service'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Data Service'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)/WMS/Data/WebAPI/bin/$(BuildConfiguration)/netcoreapp2.1/win7-x64/publish'
+    ArtifactName: 'data_service'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: on_premises_appconfig_transform'
+  inputs:
+    PathtoPublish: WMS/App/App
+    ArtifactName: 'on_premises_appconfig_transform'
+

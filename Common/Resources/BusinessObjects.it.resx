@@ -235,13 +235,13 @@
     <value>Lotto</value>
   </data>
   <data name="CompartmentMaxCapacity" xml:space="preserve">
-    <value>Capacità Massima [pezzi]</value>
+    <value>Capacità Massima </value>
   </data>
   <data name="CompartmentStatus" xml:space="preserve">
     <value>Stato Scomparto</value>
   </data>
   <data name="CompartmentStock" xml:space="preserve">
-    <value>Giacenza [pezzi]</value>
+    <value>Giacenza </value>
   </data>
   <data name="CompartmentType" xml:space="preserve">
     <value>Tipo Scomparto [mm] x [mm]</value>
@@ -292,10 +292,10 @@
     <value>Abbinamento Articolo</value>
   </data>
   <data name="CompartmentReservedForPick" xml:space="preserve">
-    <value>Impegnato in Prelievo [pezzi]</value>
+    <value>Impegnato in Prelievo</value>
   </data>
   <data name="CompartmentReservedToStore" xml:space="preserve">
-    <value>Impegnato in Versamento [pezzi]</value>
+    <value>Impegnato in Versamento</value>
   </data>
   <data name="CompartmentSub1" xml:space="preserve">
     <value>Sub 1</value>

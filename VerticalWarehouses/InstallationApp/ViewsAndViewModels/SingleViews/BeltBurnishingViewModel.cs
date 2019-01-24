@@ -9,6 +9,7 @@ using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Microsoft.AspNetCore.SignalR.Client;
 using Prism.Commands;
 using Prism.Mvvm;
+using Ferretto.VW.InstallationApp;
 
 namespace Ferretto.VW.InstallationApp
 {

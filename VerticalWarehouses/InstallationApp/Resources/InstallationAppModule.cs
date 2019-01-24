@@ -47,6 +47,7 @@ namespace Ferretto.VW.InstallationApp
             var VerticalOffsetCalibrationVMInstance = new VerticalOffsetCalibrationViewModel();
             var WeightControlVMInstance = new WeightControlViewModel();
             var MainWindowVMInstance = new MainWindowViewModel();
+            var HelpMainWindowInstance = new HelpMainWindow();
 
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
             this.container.RegisterInstance<IBeltBurnishingViewModel>(beltBurnishingVMInstance);
@@ -79,6 +80,7 @@ namespace Ferretto.VW.InstallationApp
             this.container.RegisterInstance<IVerticalOffsetCalibrationViewModel>(VerticalOffsetCalibrationVMInstance);
             this.container.RegisterInstance<IWeightControlViewModel>(WeightControlVMInstance);
             this.container.RegisterInstance<IMainWindowViewModel>(MainWindowVMInstance);
+            this.container.RegisterInstance<IHelpMainWindow>(HelpMainWindowInstance);
 
             LSMTNavigationButtonsVMInstance.InitializeViewModel(this.container);
             LSMTMainVMInstance.InitializeViewModel(this.container);
