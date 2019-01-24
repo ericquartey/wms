@@ -8,8 +8,6 @@
     <StartupObject />
     <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <Product>Ferretto.WMS.App</Product>
-    <PackageId>Ferretto.WMS.App</PackageId>
     <AssemblyVersion>0.2.0.0</AssemblyVersion>
     <Copyright>copyright</Copyright>
   </PropertyGroup>
