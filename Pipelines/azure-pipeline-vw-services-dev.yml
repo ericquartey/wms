@@ -16,7 +16,6 @@ trigger:
     - WMS
     include:
     - 'VerticalWarehouses\Machine Automation Service'
-    - 'Common\Resources'
 
 variables:
   BuildConfiguration: 'Release'
