@@ -48,21 +48,27 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Machine Automation Service"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Panel PC User Interface", "Panel PC User Interface", "{F1C06ED8-17DC-48AE-9D64-B18455CA3231}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAS_FiniteStateMachines", "VerticalWarehouses\Machine Automation Service\MAS_FiniteStateMachines\MAS_FiniteStateMachines.csproj", "{2AB518D4-51CC-4405-853A-DAB7C5FF8287}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAS_FiniteStateMachines", "VerticalWarehouses\Machine Automation Service\MAS_FiniteStateMachines\MAS_FiniteStateMachines.csproj", "{2AB518D4-51CC-4405-853A-DAB7C5FF8287}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAS_InverterDriver", "VerticalWarehouses\Machine Automation Service\MAS_InverterDriver\MAS_InverterDriver.csproj", "{9BFA1210-9BD2-480F-AF7E-1F48C109096F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAS_IODriver", "VerticalWarehouses\Machine Automation Service\MAS_IODriver\MAS_IODriver.csproj", "{AD15351E-AF2E-414A-9A70-96A943FEA55F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAS_MachineManager", "VerticalWarehouses\Machine Automation Service\MAS_MachineManager\MAS_MachineManager.csproj", "{92D3C631-C45C-4075-BEC9-4CC9C1DEF8C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAS_MachineManager", "VerticalWarehouses\Machine Automation Service\MAS_MachineManager\MAS_MachineManager.csproj", "{92D3C631-C45C-4075-BEC9-4CC9C1DEF8C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAS_MissionScheduler", "VerticalWarehouses\Machine Automation Service\MAS_MissionScheduler\MAS_MissionScheduler.csproj", "{1CC69F97-41B2-4C36-8043-602A8189F4FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAS_MissionScheduler", "VerticalWarehouses\Machine Automation Service\MAS_MissionScheduler\MAS_MissionScheduler.csproj", "{1CC69F97-41B2-4C36-8043-602A8189F4FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAS_DataLayer", "VerticalWarehouses\Machine Automation Service\MAS_DataLayer\MAS_DataLayer.csproj", "{EA441495-D8F4-48B0-84CB-A5250DE7AB92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAS_DataLayer", "VerticalWarehouses\Machine Automation Service\MAS_DataLayer\MAS_DataLayer.csproj", "{EA441495-D8F4-48B0-84CB-A5250DE7AB92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAS_AutomationService", "VerticalWarehouses\Machine Automation Service\MAS_AutomationService\MAS_AutomationService.csproj", "{9420AF02-44C5-470C-9DD5-B6D34E2AC0B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAS_AutomationService", "VerticalWarehouses\Machine Automation Service\MAS_AutomationService\MAS_AutomationService.csproj", "{9420AF02-44C5-470C-9DD5-B6D34E2AC0B8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZZ_AutomationServiceTESTPROJECT", "VerticalWarehouses\ZZ_AutomationServiceTESTPROJECT\ZZ_AutomationServiceTESTPROJECT.csproj", "{BC370E4F-8183-4F8C-BA16-A8EF3A49B1D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPC_VWApp", "VerticalWarehouses\Panel PC User Interface\PPC_VWApp\PPC_VWApp.csproj", "{F67C2A2F-7DD2-4932-B5D2-953591739066}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPC_InstallationApp", "VerticalWarehouses\Panel PC User Interface\PPC_InstallationApp\PPC_InstallationApp.csproj", "{4CA56D37-2EAF-4784-94B2-FD3DE3405566}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPC_OperatorApp", "VerticalWarehouses\Panel PC User Interface\PPC_OperatorApp\PPC_OperatorApp.csproj", "{048EE841-E68D-499C-AD27-93C5195338A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -374,6 +380,42 @@ Global
 		{BC370E4F-8183-4F8C-BA16-A8EF3A49B1D9}.Release|x64.Build.0 = Release|Any CPU
 		{BC370E4F-8183-4F8C-BA16-A8EF3A49B1D9}.Release|x86.ActiveCfg = Release|Any CPU
 		{BC370E4F-8183-4F8C-BA16-A8EF3A49B1D9}.Release|x86.Build.0 = Release|Any CPU
+		{F67C2A2F-7DD2-4932-B5D2-953591739066}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F67C2A2F-7DD2-4932-B5D2-953591739066}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F67C2A2F-7DD2-4932-B5D2-953591739066}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F67C2A2F-7DD2-4932-B5D2-953591739066}.Debug|x64.Build.0 = Debug|Any CPU
+		{F67C2A2F-7DD2-4932-B5D2-953591739066}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F67C2A2F-7DD2-4932-B5D2-953591739066}.Debug|x86.Build.0 = Debug|Any CPU
+		{F67C2A2F-7DD2-4932-B5D2-953591739066}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F67C2A2F-7DD2-4932-B5D2-953591739066}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F67C2A2F-7DD2-4932-B5D2-953591739066}.Release|x64.ActiveCfg = Release|Any CPU
+		{F67C2A2F-7DD2-4932-B5D2-953591739066}.Release|x64.Build.0 = Release|Any CPU
+		{F67C2A2F-7DD2-4932-B5D2-953591739066}.Release|x86.ActiveCfg = Release|Any CPU
+		{F67C2A2F-7DD2-4932-B5D2-953591739066}.Release|x86.Build.0 = Release|Any CPU
+		{4CA56D37-2EAF-4784-94B2-FD3DE3405566}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CA56D37-2EAF-4784-94B2-FD3DE3405566}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CA56D37-2EAF-4784-94B2-FD3DE3405566}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4CA56D37-2EAF-4784-94B2-FD3DE3405566}.Debug|x64.Build.0 = Debug|Any CPU
+		{4CA56D37-2EAF-4784-94B2-FD3DE3405566}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4CA56D37-2EAF-4784-94B2-FD3DE3405566}.Debug|x86.Build.0 = Debug|Any CPU
+		{4CA56D37-2EAF-4784-94B2-FD3DE3405566}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CA56D37-2EAF-4784-94B2-FD3DE3405566}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CA56D37-2EAF-4784-94B2-FD3DE3405566}.Release|x64.ActiveCfg = Release|Any CPU
+		{4CA56D37-2EAF-4784-94B2-FD3DE3405566}.Release|x64.Build.0 = Release|Any CPU
+		{4CA56D37-2EAF-4784-94B2-FD3DE3405566}.Release|x86.ActiveCfg = Release|Any CPU
+		{4CA56D37-2EAF-4784-94B2-FD3DE3405566}.Release|x86.Build.0 = Release|Any CPU
+		{048EE841-E68D-499C-AD27-93C5195338A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{048EE841-E68D-499C-AD27-93C5195338A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{048EE841-E68D-499C-AD27-93C5195338A7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{048EE841-E68D-499C-AD27-93C5195338A7}.Debug|x64.Build.0 = Debug|Any CPU
+		{048EE841-E68D-499C-AD27-93C5195338A7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{048EE841-E68D-499C-AD27-93C5195338A7}.Debug|x86.Build.0 = Debug|Any CPU
+		{048EE841-E68D-499C-AD27-93C5195338A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{048EE841-E68D-499C-AD27-93C5195338A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{048EE841-E68D-499C-AD27-93C5195338A7}.Release|x64.ActiveCfg = Release|Any CPU
+		{048EE841-E68D-499C-AD27-93C5195338A7}.Release|x64.Build.0 = Release|Any CPU
+		{048EE841-E68D-499C-AD27-93C5195338A7}.Release|x86.ActiveCfg = Release|Any CPU
+		{048EE841-E68D-499C-AD27-93C5195338A7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -406,6 +448,9 @@ Global
 		{EA441495-D8F4-48B0-84CB-A5250DE7AB92} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
 		{9420AF02-44C5-470C-9DD5-B6D34E2AC0B8} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
 		{BC370E4F-8183-4F8C-BA16-A8EF3A49B1D9} = {2ED9180C-3A78-44C2-AB9C-83B6944848B0}
+		{F67C2A2F-7DD2-4932-B5D2-953591739066} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
+		{4CA56D37-2EAF-4784-94B2-FD3DE3405566} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
+		{048EE841-E68D-499C-AD27-93C5195338A7} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40395CF2-451B-48E4-A29A-0E8AE12146B4}
