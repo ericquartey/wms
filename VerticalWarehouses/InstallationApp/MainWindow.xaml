@@ -21,7 +21,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Name="upperRow"
                            Height="80" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="608" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">

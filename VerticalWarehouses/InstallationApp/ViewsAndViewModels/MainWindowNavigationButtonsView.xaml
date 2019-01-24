@@ -12,11 +12,11 @@
                  mc:Ignorable="d">
     <Grid Name="NavigationButtonViewRoot"
           Width="auto"
-          Height="610">
+          Height="600">
         <Grid.RowDefinitions>
             <RowDefinition Height="60" />
             <RowDefinition Height="10" />
-            <RowDefinition Height="470" />
+            <RowDefinition Height="460" />
             <RowDefinition Height="10" />
             <RowDefinition Height="60" />
         </Grid.RowDefinitions>
