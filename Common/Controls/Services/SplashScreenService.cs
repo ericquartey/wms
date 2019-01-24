@@ -11,6 +11,9 @@ namespace Ferretto.Common.Controls.Services
         public static string Copyright => (typeof(SplashScreenService).Assembly.GetCustomAttributes(false)
                 .FirstOrDefault(attribute => attribute is AssemblyCopyrightAttribute) as AssemblyCopyrightAttribute)?.Copyright;
 
+        public static string Version => (typeof(SplashScreenService).Assembly.GetCustomAttributes(false)
+                .FirstOrDefault(attribute => attribute is AssemblyVersionAttribute) as AssemblyVersionAttribute)?.Version;
+
         #endregion Properties
 
         #region Methods
