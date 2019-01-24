@@ -21,7 +21,8 @@ namespace Ferretto.Common.Controls
         {
             this.InitializeComponent();
 
-            this.Footer_Text.Text = SplashScreenService.Copyright;
+            this.copyrightText.Text = SplashScreenService.Copyright;
+            this.versionText.Text = $"Version: {SplashScreenService.Version}";
 
 #if DEBUG
             this.SetupTimer();
