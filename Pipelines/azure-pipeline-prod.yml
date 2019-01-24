@@ -16,6 +16,9 @@ trigger:
     - release/*
     - bugfix/*
     - hotfix/*
+  paths:
+    exclude:
+    - VerticalWarehouses
 
 variables:
   BuildPlatform: 'any cpu'
@@ -59,16 +62,6 @@ steps:
   displayName: 'Build solution WMS.App'
   inputs:
     solution: WMS.App.sln
-    msbuildArgs: '-v:normal'
-    platform: '$(BuildPlatform)'
-    configuration: '$(BuildConfiguration)'
-    msbuildArchitecture: x64
-
-
-- task: VSBuild@1
-  displayName: 'Build solution VerticalWarehouses'
-  inputs:
-    solution: VerticalWarehouses.sln
     msbuildArgs: '-v:normal'
     platform: '$(BuildPlatform)'
     configuration: '$(BuildConfiguration)'

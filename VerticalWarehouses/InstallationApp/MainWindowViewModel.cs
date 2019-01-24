@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.Navigation;
 using Ferretto.VW.Utils.Source;
+using Ferretto.VW.InstallationApp;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -58,9 +59,13 @@ namespace Ferretto.VW.InstallationApp
 
         public IUnityContainer Container;
 
+        private readonly HelpMainWindow helpWindow = new HelpMainWindow();
+
         #endregion Constants, Statics & Others
 
         #region Commands Fields
+
+        private ICommand openHelpWindow;
 
         private ICommand backToVWAPPCommand;
 
@@ -137,6 +142,8 @@ namespace Ferretto.VW.InstallationApp
         #endregion Events
 
         #region Commands Properties
+
+        public ICommand OpenHelpWindow => this.openHelpWindow ?? (this.openHelpWindow = new DelegateCommand(() => { this.helpWindow.Show(); this.helpWindow.HelpContentRegion.Content = this.contentRegionCurrentViewModel; }));
 
         public ICommand BackToMainWindowNavigationButtonsViewButtonCommand => this.backToMainWindowNavigationButtonsViewCommand ?? (this.backToMainWindowNavigationButtonsViewCommand = new DelegateCommand(() => { this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.Container.Resolve<IMainWindowNavigationButtonsViewModel>(); this.ContentRegionCurrentViewModel = (IdleViewModel)this.Container.Resolve<IIdleViewModel>(); NavigationService.RaiseExitViewEvent(); }));
 
