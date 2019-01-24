@@ -136,5 +136,15 @@ steps:
 
 
 
-- template: azure-pipeline-publish-symbols-template.yml
+- template: azure-pipeline-publish-artifacts-template.yml
 
+
+- script: 'dotnet ef database drop --no-build --verbose --force'
+  workingDirectory: Common/EF
+  failOnStderr: true
+  displayName: 'dotnet ef database drop'
+  continueOnError: true
+  condition: always()
+  env:
+    NETCORE_ENVIRONMENT: CloudBuild
+    cloudInitialCatalog: '$(CloudInitialCatalog)'
