@@ -38,7 +38,7 @@ steps:
   displayName: Build
   inputs:
     projects: '$(RestoreBuildProjects)'
-    arguments: '--configuration $(BuildConfiguration)'
+    arguments: '--configuration $(BuildConfiguration) --framework netcoreapp2.1'
 
 
 - task: DotNetCoreCLI@2
