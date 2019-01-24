@@ -1,0 +1,72 @@
+resources:
+- repo: self
+  fetchDepth: 15
+
+queue:
+  name: Hosted Ubuntu 1604
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - develop
+  paths:
+    exclude:
+    - VerticalWarehouses
+
+variables:
+  BuildConfiguration: 'Debug'
+  RestoreBuildProjects: 'WMS/Scheduler/**/*.csproj;WMS/Data/**/*.csproj'
+  TestProjects: 'WMS/Scheduler/**/*[Tt]ests.csproj;WMS/Data/**/*[Tt]ests.csproj'
+
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: Restore
+  inputs:
+    command: restore
+    projects: '$(RestoreBuildProjects)'
+    feedsToUse: config
+    nugetConfigPath: nuget.config
+    restoreDirectory: ./packages
+
+
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    projects: '$(RestoreBuildProjects)'
+    arguments: '--configuration $(BuildConfiguration)'
+
+
+- task: DotNetCoreCLI@2
+  displayName: Test
+  inputs:
+    command: test
+    projects: '$(TestProjects)'
+    arguments: '--configuration $(BuildConfiguration)'
+
+
+- task: DotNetCoreCLI@2
+  displayName: Publish
+  inputs:
+    command: publish
+    publishWebProjects: false
+    projects: '$(RestoreBuildProjects)'
+    arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+    zipAfterPublish: false
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Scheduler Service'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)/WMS/Scheduler/WebAPI/bin/$(BuildConfiguration)/netcoreapp2.1/win7-x64/publish'
+    ArtifactName: 'scheduler_service'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Data Service'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)/WMS/Data/WebAPI/bin/$(BuildConfiguration)/netcoreapp2.1/win7-x64/publish'
+    ArtifactName: 'data_service'
+
+
