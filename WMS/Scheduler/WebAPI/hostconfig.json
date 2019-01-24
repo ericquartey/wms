@@ -1,8 +1,0 @@
-{
-  "Urls": "http://*:80;https://*:443",
-  "https_port": 443,
-  "Hubs": {
-    "WakeUp": "wake-up",
-    "Health": "health"
-  }
-}
