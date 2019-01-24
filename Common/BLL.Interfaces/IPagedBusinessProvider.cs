@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Utils.Expressions;
 
-namespace Ferretto.Common.BusinessProviders
+namespace Ferretto.Common.BLL.Interfaces
 {
     public interface IPagedBusinessProvider<TModel>
         where TModel : IBusinessObject
