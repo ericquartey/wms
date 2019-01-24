@@ -288,11 +288,11 @@
                 <GroupBox Margin="20,0"
                           Header="{x:Static res:MasterData.OtherInformation}">
                     <StackPanel Orientation="Vertical">
-                        <wms:WmsImage MaxWidth="300"
-                                      MaxHeight="400"
-                                      BorderBrush="{DynamicResource CommonSecondaryLight}"
-                                      BorderThickness="1"
-                                      Path="{Binding Path=Model.Image}" />
+                        <wms:WmsImageEdit MaxWidth="300"
+                                          MaxHeight="400"
+                                          BorderBrush="{DynamicResource CommonSecondaryLight}"
+                                          BorderThickness="1"
+                                          Path="{Binding Path=Model.Image}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
                                       Content="{Binding Path=Model.CreationDate}" />
