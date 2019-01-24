@@ -13,6 +13,9 @@ trigger:
   branches:
     include:
     - develop
+  paths:
+    exclude:
+    - VerticalWarehouses
 
 variables:
   BuildPlatform: 'any cpu'
@@ -69,16 +72,8 @@ steps:
     msbuildArchitecture: x64
 
 
-- task: VSBuild@1
-  displayName: 'Build solution VerticalWarehouses'
-  inputs:
-    solution: VerticalWarehouses.sln
-    msbuildArgs: '-v:normal'
-    platform: '$(BuildPlatform)'
-    configuration: '$(BuildConfiguration)'
-    msbuildArchitecture: x64
-
 - template: azure-pipeline-deploy-db-template.yml
+
 
 - task: VSTest@2
   displayName: 'Run Tests'
