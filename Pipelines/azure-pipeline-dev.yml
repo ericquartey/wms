@@ -136,7 +136,7 @@ steps:
 
 
 
-- template: azure-pipeline-publish-symbols-template.yml
+- template: azure-pipeline-publish-artifacts-template.yml
 
 
 - script: 'dotnet ef database drop --no-build --verbose --force'

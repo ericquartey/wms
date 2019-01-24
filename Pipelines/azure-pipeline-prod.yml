@@ -120,5 +120,5 @@ steps:
 
 
 
-- template: azure-pipeline-publish-symbols-template.yml
+- template: azure-pipeline-publish-artifacts-template.yml
 
