@@ -109,11 +109,11 @@
                                                 <DataTemplate>
                                                     <StackPanel Margin="2"
                                                                 HorizontalAlignment="Center">
-                                                        <wms:WmsImage MaxWidth="100"
-                                                                      MaxHeight="100"
+                                                        <wms:WmsImage Width="100"
+                                                                      Height="100"
                                                                       BorderBrush="{DynamicResource CommonSecondaryLight}"
                                                                       BorderThickness="1"
-                                                                      Path="{Binding Data.Image}" />
+                                                                      Path="{Binding Data.Image, Mode=OneWay}" />
                                                     </StackPanel>
                                                 </DataTemplate>
                                             </dxg:GridColumn.CellTemplate>
