@@ -14,6 +14,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     {
         #region Fields
 
+        private const string CollectionErrorMessage = "An error occurred while retrieving the requested set of entities.";
+
         private readonly ILogger logger;
 
         private readonly Models.IWarehouse warehouse;
@@ -46,21 +48,29 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             string search = null)
         {
             this.logger.LogInformation(
-                $"Get All items (skip:{skip}, take:{take}, orderBy:'{orderBy}', where:'{where}', search:'{search}')");
+                $"Get Items (skip:{skip}, take:{take}, orderBy:'{orderBy}', where:'{where}', search:'{search}')");
 
-            var searchExpression = BuildSearchExpression(search);
+            try
+            {
+                var searchExpression = BuildSearchExpression(search);
 
-            var whereExpression = BuildWhereExpression<Models.Item>(where);
+                var whereExpression = BuildWhereExpression<Models.Item>(where);
 
-            var transformedItems = this.ApplyTransform(
-                skip: skip,
-                take: take,
-                orderBy: orderBy,
-                where: whereExpression,
-                searchFunction: searchExpression,
-                entities: this.warehouse.Items.AsQueryable());
+                var transformedItems = this.ApplyTransform(
+                    skip: skip,
+                    take: take,
+                    orderBy: orderBy,
+                    where: whereExpression,
+                    searchFunction: searchExpression,
+                    entities: this.warehouse.Items.AsQueryable());
 
-            return transformedItems.ToArray();
+                return transformedItems.ToArray();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, CollectionErrorMessage);
+                return this.BadRequest(CollectionErrorMessage);
+            }
         }
 
         [ProducesResponseType(200, Type = typeof(Models.Item))]
@@ -69,6 +79,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpGet("{id}")]
         public ActionResult<Models.Item> GetById(int id)
         {
+            this.logger.LogInformation($"Get Item (id:{id})");
+
             try
             {
                 var result = this.warehouse.Items.SingleOrDefault(i => i.Id == id);
