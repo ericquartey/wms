@@ -129,7 +129,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             var expression = where.BuildExpression();
 
-            var lambdaBody = expression?.GetLambdaBody<Models.Item>(lambdaInParameter);
+            var lambdaBody = expression?.GetLambdaBody<T>(lambdaInParameter);
 
             return (Expression<Func<T, bool>>)Expression.Lambda(lambdaBody, lambdaInParameter);
         }
