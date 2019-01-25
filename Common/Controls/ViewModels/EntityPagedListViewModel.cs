@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using DevExpress.Data.Filtering;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Utils.Expressions;
 
 namespace Ferretto.Common.Controls
@@ -19,16 +18,30 @@ namespace Ferretto.Common.Controls
 
         private object dataSource;
 
+        private CriteriaOperator fixedFilter;
+
         private IPagedBusinessProvider<TModel> provider;
 
         #endregion Fields
 
         #region Properties
 
+        public CriteriaOperator FixedFilter
+        {
+            get => this.fixedFilter;
+            set => this.SetProperty(ref this.fixedFilter, value);
+        }
+
         public IPagedBusinessProvider<TModel> Provider
         {
             get => this.provider;
-            set => this.SetProperty(ref this.provider, value);
+            set
+            {
+                if (this.SetProperty(ref this.provider, value))
+                {
+                    this.SelectedFilterDataSource = this.InitializeSource();
+                }
+            }
         }
 
         public override Tile SelectedFilter
@@ -38,8 +51,10 @@ namespace Ferretto.Common.Controls
             {
                 if (this.SetProperty(ref this.selectedFilterTile, value))
                 {
-                    // TODO: use later // var filterDataSource = this.FilterDataSources.Single(d => d.Key == value.Key);
-                    this.SelectedFilterDataSource = this.InitializeSource();
+                    var filterDataSource = this.FilterDataSources.Single(d => d.Key == value.Key);
+
+                    this.Provider = filterDataSource.Provider;
+                    this.FixedFilter = filterDataSource.Expression != null ? CriteriaOperator.Parse(filterDataSource.Expression) : null;
                 }
             }
         }
@@ -109,7 +124,7 @@ namespace Ferretto.Common.Controls
             var propertyInfo = typeof(TModel).GetProperty(e.PropertyName);
             if (propertyInfo == null
                ||
-                !propertyInfo.PropertyType.IsEnum)
+               !propertyInfo.PropertyType.IsEnum)
             {
                 throw new InvalidOperationException();
             }
@@ -127,7 +142,13 @@ namespace Ferretto.Common.Controls
 
             if (filterExpression is BinaryExpression expression)
             {
-                if (expression.LeftExpression is ValueExpression valueExpressionLeft)
+                if (expression.LeftExpression is ValueExpression valueExpressionLeft
+                    &&
+                    expression.RightExpression is ValueExpression valueExpressionRight)
+                {
+                    where = expression;
+                }
+                /*else if (expression.LeftExpression is ValueExpression valueExpressionLeft)
                 {
                     where = expression.RightExpression;
                     search = valueExpressionLeft;
@@ -136,7 +157,7 @@ namespace Ferretto.Common.Controls
                 {
                     where = expression.LeftExpression;
                     search = valueExpressionRight;
-                }
+                }*/
             }
             else if (filterExpression is ValueExpression valueExpression)
             {
@@ -153,30 +174,15 @@ namespace Ferretto.Common.Controls
             return new FetchRowsResult(entities.Cast<object>().ToArray(), hasMoreRows: entities.Count() == DefaultPageSize);
         }
 
-        /*
-        private async Task<object[]> GetTotalSummariesAsync(GetSummariesAsyncEventArgs e)
-        {
-            var filter = BuildExpression(e.Filter);
-
-            return e.Summaries.Select(s =>
-            {
-                switch (s.SummaryType)
-                {
-                    case SummaryType.Count:
-                        {
-                            return (object)this.provider.GetAllCount();
-                        }
-                    default:
-                        {
-                            throw new InvalidOperationException();
-                        }
-                }
-            }).ToArray();
-        }
-        */
-
         private InfiniteAsyncSource InitializeSource()
         {
+            // TODO: use later // var filterDataSource = this.FilterDataSources.Single(d => d.Key == value.Key);
+
+            if (this.provider == null)
+            {
+                return null;
+            }
+
             var source = new InfiniteAsyncSource
             {
                 ElementType = typeof(TModel)
@@ -192,13 +198,6 @@ namespace Ferretto.Common.Controls
                 GetUniqueValues(e);
             };
 
-            /*
-            source.GetTotalSummaries += (o, e) =>
-            {
-                e.Result = this.GetTotalSummariesAsync(e);
-            };
-            */
-
             return source;
         }
 
@@ -209,25 +208,6 @@ namespace Ferretto.Common.Controls
         {
             e.Filter = new ConstantValue(e.SearchString);
             // e.ApplyToColumnsFilter = true;
-        }
-        */
-        /*
-        private void tileBar_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            var item = this.tileBar.SelectedItem as Tile;
-
-            if (item?.Key == "ItemsViewAll")
-            {
-                this.MainGridControl.FixedFilter = null;
-            }
-            else if (item?.Key == "ItemsViewClassA")
-            {
-                this.MainGridControl.FixedFilter = CriteriaOperator.Parse("[AbcClassDescription] == 'A Class'");
-            }
-            else if (item?.Key == "ItemsViewFIFO")
-            {
-                this.MainGridControl.FixedFilter = CriteriaOperator.Parse("[ManagementTypeDescription] == 'FIFO'");
-            }
         }
         */
     }

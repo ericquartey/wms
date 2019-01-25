@@ -63,6 +63,7 @@
                                 MaxHeight="5000"
                                 Margin="3"
                                 CurrentItem="{Binding SelectedItem, Mode=TwoWay}"
+                                FixedFilter="{Binding FixedFilter, Mode=OneWay}"
                                 ItemsSource="{Binding SelectedFilterDataSource, Mode=OneWay}"
                                 ShowBorder="False">
                 <wms:WmsGridControl.View>
@@ -82,23 +83,50 @@
 
                 <wms:WmsGridControl.Columns>
                     <dxg:GridColumn Width="100*"
-                                    FieldName="Code" />
+                                    AllowSorting="True"
+                                    AllowedBinaryFilters="All"
+                                    FieldName="Code"
+                                    FilterPopupMode="Excel" />
                     <dxg:GridColumn Width="400*"
-                                    FieldName="Description" />
+                                    AllowSorting="True"
+                                    AllowedBinaryFilters="All"
+                                    FieldName="Description"
+                                    FilterPopupMode="Excel" />
                     <dxg:GridColumn Width="100*"
-                                    FieldName="ItemCategoryDescription" />
+                                    AllowSorting="True"
+                                    AllowedBinaryFilters="All"
+                                    FieldName="ItemCategoryDescription"
+                                    FilterPopupMode="Excel" />
                     <dxg:GridColumn Width="90*"
-                                    FieldName="AbcClassDescription" />
+                                    AllowSorting="True"
+                                    AllowedBinaryFilters="All"
+                                    FieldName="AbcClassDescription"
+                                    FilterPopupMode="Excel" />
                     <dxg:GridColumn Width="80*"
-                                    FieldName="MeasureUnitDescription" />
+                                    AllowSorting="True"
+                                    AllowedBinaryFilters="All"
+                                    FieldName="MeasureUnitDescription"
+                                    FilterPopupMode="Excel" />
                     <dxg:GridColumn Width="50*"
-                                    FieldName="TotalStock" />
+                                    AllowSorting="True"
+                                    AllowedBinaryFilters="All"
+                                    FieldName="TotalStock"
+                                    FilterPopupMode="Excel" />
                     <dxg:GridColumn Width="100*"
-                                    FieldName="TotalReservedForPick" />
+                                    AllowSorting="True"
+                                    AllowedBinaryFilters="All"
+                                    FieldName="TotalReservedForPick"
+                                    FilterPopupMode="Excel" />
                     <dxg:GridColumn Width="100*"
-                                    FieldName="TotalReservedToStore" />
+                                    AllowSorting="True"
+                                    AllowedBinaryFilters="All"
+                                    FieldName="TotalReservedToStore"
+                                    FilterPopupMode="Excel" />
                     <dxg:GridColumn Width="50*"
-                                    FieldName="TotalAvailable" />
+                                    AllowSorting="True"
+                                    AllowedBinaryFilters="All"
+                                    FieldName="TotalAvailable"
+                                    FilterPopupMode="Excel" />
                 </wms:WmsGridControl.Columns>
 
                 <wms:WmsGridControl.SortInfo>
