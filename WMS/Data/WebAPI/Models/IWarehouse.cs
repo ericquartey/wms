@@ -7,6 +7,10 @@ namespace Ferretto.WMS.Data.WebAPI.Models
     {
         #region Properties
 
+        IEnumerable<AbcClass> AbcClasses { get; }
+
+        IEnumerable<ItemCategory> ItemCategories { get; }
+
         IEnumerable<Item> Items { get; }
 
         IEnumerable<ItemList> Lists { get; }

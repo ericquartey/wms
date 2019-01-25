@@ -15,24 +15,6 @@ namespace Ferretto.Common.Utils.Expressions
 
         #region Methods
 
-        public static IExpression BuildExpression(this string where)
-        {
-            var match = BinaryExpressionRegex.Match(where);
-            if (match.Success)
-            {
-                var operatorName = match.Groups["operator"].Value;
-                return new BinaryExpression(operatorName)
-                {
-                    LeftExpression = BuildExpression(match.Groups["left"].Value),
-                    RightExpression = BuildExpression(match.Groups["right"].Value)
-                };
-            }
-            else
-            {
-                return new ValueExpression(where);
-            }
-        }
-
         public static Expression GetLambdaBody<T>(this IExpression expression, ParameterExpression inParameter)
         {
             if (expression is BinaryExpression binaryExpression)
@@ -98,6 +80,24 @@ namespace Ferretto.Common.Utils.Expressions
             }
 
             return null;
+        }
+
+        public static IExpression ParseExpression(this string where)
+        {
+            var match = BinaryExpressionRegex.Match(where);
+            if (match.Success)
+            {
+                var operatorName = match.Groups["operator"].Value;
+                return new BinaryExpression(operatorName)
+                {
+                    LeftExpression = ParseExpression(match.Groups["left"].Value),
+                    RightExpression = ParseExpression(match.Groups["right"].Value)
+                };
+            }
+            else
+            {
+                return new ValueExpression(where);
+            }
         }
 
         #endregion Methods

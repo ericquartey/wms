@@ -228,7 +228,7 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
-                await this.itemsDataService.UpdateAsync(model);
+                await this.itemsDataService.UpdateAsync(null);
 
                 return new OperationResult(true);
             }

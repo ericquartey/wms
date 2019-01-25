@@ -33,9 +33,9 @@ namespace Ferretto.WMS.Data.WebAPI.Models
 
         #region Properties
 
-        public IEnumerable<ItemCategory> ItemCategories => this.GetValue(this.RetrieveItemCategories);
+        public IEnumerable<AbcClass> AbcClasses => this.GetValue(this.RetrieveAbcClasses);
 
-        public IEnumerable<AbcClass> ItemClasses => this.GetValue(this.RetrieveItemClasses);
+        public IEnumerable<ItemCategory> ItemCategories => this.GetValue(this.RetrieveItemCategories);
 
         public IEnumerable<Item> Items => this.GetValue(this.RetrieveItems);
 
@@ -82,11 +82,11 @@ namespace Ferretto.WMS.Data.WebAPI.Models
             return item;
         }
 
-        private IEnumerable<ItemCategory> RetrieveItemCategories()
+        private IEnumerable<AbcClass> RetrieveAbcClasses()
         {
-            return this.dataContext.ItemCategories
+            return this.dataContext.AbcClasses
             .Select(c =>
-                new ItemCategory
+                new AbcClass
                 {
                     Id = c.Id,
                     Description = c.Description
@@ -94,11 +94,11 @@ namespace Ferretto.WMS.Data.WebAPI.Models
             .ToArray();
         }
 
-        private IEnumerable<AbcClass> RetrieveItemClasses()
+        private IEnumerable<ItemCategory> RetrieveItemCategories()
         {
-            return this.dataContext.AbcClasses
+            return this.dataContext.ItemCategories
             .Select(c =>
-                new AbcClass
+                new ItemCategory
                 {
                     Id = c.Id,
                     Description = c.Description
@@ -136,7 +136,7 @@ namespace Ferretto.WMS.Data.WebAPI.Models
                         (a, b) => new Item
                         {
                             ItemCategories = this.ItemCategories,
-                            AbcClasses = this.ItemClasses,
+                            AbcClasses = this.AbcClasses,
                             Id = a.Item.Id,
                             AbcClassId = a.Item.AbcClassId,
                             AverageWeight = a.Item.AverageWeight,

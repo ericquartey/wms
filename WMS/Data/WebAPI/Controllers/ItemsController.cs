@@ -4,13 +4,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    [Route("api/[controller]"), ApiController]
     public class ItemsController : ControllerBase
     {
         #region Fields
@@ -87,7 +87,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 var result = this.warehouse.Items.SingleOrDefault(i => i.Id == id);
                 if (result == null)
                 {
-                    var message = string.Format("No entity with the specified id={0} exists.", id);
+                    var message = $"No entity with the specified id={id} exists.";
                     this.logger.LogWarning(message);
                     return this.NotFound(message);
                 }
@@ -96,7 +96,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                var message = string.Format("An error occurred while retrieving the requested entity with id={0}.", id);
+                var message = $"An error occurred while retrieving the requested entity with id={id}.";
                 this.logger.LogError(ex, message);
                 return this.BadRequest(message);
             }
@@ -121,7 +121,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 var existingItem = this.warehouse.Items.SingleOrDefault(i => i.Id == item.Id);
                 if (existingItem == null)
                 {
-                    var message = string.Format("No entity with the specified id={0} exists.", item.Id);
+                    var message = $"No entity with the specified id={item.Id} exists.";
                     this.logger.LogWarning(message);
                     return this.NotFound(message);
                 }
@@ -132,7 +132,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                var message = string.Format("An error occurred while retrieving the requested entity with id={0}.", item.Id);
+                var message = $"An error occurred while retrieving the requested entity with id={item.Id}.";
                 this.logger.LogError(ex, message);
                 return this.BadRequest(message);
             }
@@ -164,7 +164,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             var lambdaInParameter = Expression.Parameter(typeof(T), typeof(T).Name.ToLower());
 
-            var expression = where.BuildExpression();
+            var expression = where.ParseExpression();
 
             var lambdaBody = expression?.GetLambdaBody<T>(lambdaInParameter);
 

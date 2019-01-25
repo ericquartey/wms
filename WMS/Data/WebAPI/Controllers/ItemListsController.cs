@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -8,7 +9,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ItemListsController : ControllerBase
+    public class ItemListsController : ControllerBase,
+          IReadAllController<Models.ItemList>,
+          IReadSingleController<Models.ItemList>
     {
         #region Fields
 
@@ -34,8 +37,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Methods
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<Models.ItemList>))]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
         [HttpGet]
         public ActionResult<IEnumerable<Models.ItemList>> GetAll()
         {
@@ -53,7 +54,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 var result = this.warehouse.Lists.SingleOrDefault(l => l.Id == id);
                 if (result == null)
                 {
-                    var message = string.Format("No entity with the specified id={0} exists.", id);
+                    var message = $"No entity with the specified id={id} exists.";
                     this.logger.LogWarning(message);
                     return this.NotFound(message);
                 }
@@ -62,7 +63,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                var message = string.Format("An error occurred while retrieving the requested entity with id={0}.", id);
+                var message = $"An error occurred while retrieving the requested entity with id={id}.";
                 this.logger.LogError(ex, message);
                 return this.BadRequest(message);
             }
