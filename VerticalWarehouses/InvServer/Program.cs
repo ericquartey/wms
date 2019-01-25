@@ -16,15 +16,25 @@ namespace Ferretto.VW.InvServer
     public enum ParameterID
     {
         CONTROL_WORD_PARAM = 410,
+
         HOMING_CREEP_SPEED_PARAM = 1133,
+
         HOMING_FAST_SPEED_PARAM = 1132,
+
         HOMING_MODE_PARAM = 1130,
+
         HOMING_OFFSET_PARAM = 1131,
+
         POSITION_ACCELERATION_PARAM = 1457,
+
         POSITION_DECELERATION_PARAM = 1458,
+
         POSITION_TARGET_POSITION_PARAM = 1455,
+
         POSITION_TARGET_SPEED_PARAM = 1456,
+
         SET_OPERATING_MODE_PARAM = 1454,
+
         STATUS_WORD_PARAM = 411
     }
 
@@ -33,9 +43,13 @@ namespace Ferretto.VW.InvServer
         #region Fields
 
         public const int DEFAULT_PORT = 17221;              // Default port address
+
         public const int N_BITS_16 = 16;                    // Number of lines for status word
+
         public const int N_BITS_8 = 8;                      // Number of bits for a byte
+
         public const int NBYTES_ERROR_ENQUIRY_TELEGRAM = 6; // Size of enquiry telegram for error
+
         public const int NMAX_CLIENTS = 1;                  // Number of concurrent clients in the TCP/IP architecture
 
         // Resource synchronization
@@ -44,9 +58,12 @@ namespace Ferretto.VW.InvServer
         // Logger
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+        private int controlWord;
+
         private int diffTime = 0;
 
         private bool errorCondition;
+
         private bool operativeStatus;
 
         private IPEndPoint remoteIpEndPoint;
@@ -58,8 +75,6 @@ namespace Ferretto.VW.InvServer
 
         // Status word (internal)
         private BitArray statusWord;
-
-        private int controlWord;
 
         #endregion Fields
 
@@ -454,7 +469,7 @@ namespace Ferretto.VW.InvServer
 
                 if ((ParameterID)paramId == ParameterID.CONTROL_WORD_PARAM)
                 {
-                    controlWord = telegramReceived[6];
+                    this.controlWord = telegramReceived[6];
                 }
             }
             else
@@ -469,8 +484,8 @@ namespace Ferretto.VW.InvServer
                     case ParameterID.HOMING_OFFSET_PARAM: nBytesPayload = 2; break;
                     case ParameterID.POSITION_ACCELERATION_PARAM: nBytesPayload = 4; break;
                     case ParameterID.POSITION_DECELERATION_PARAM: nBytesPayload = 4; break;
-                    case ParameterID.POSITION_TARGET_POSITION_PARAM: nBytesPayload = 2; break;
-                    case ParameterID.POSITION_TARGET_SPEED_PARAM: nBytesPayload = 2; break;
+                    case ParameterID.POSITION_TARGET_POSITION_PARAM: nBytesPayload = /*2*/4; break;
+                    case ParameterID.POSITION_TARGET_SPEED_PARAM: nBytesPayload = /*2*/4; break;
                     case ParameterID.SET_OPERATING_MODE_PARAM: nBytesPayload = 2; break;
                     case ParameterID.STATUS_WORD_PARAM: nBytesPayload = 2; break;
                     default: nBytesPayload = 2; break;
@@ -562,22 +577,22 @@ namespace Ferretto.VW.InvServer
                         }
                     case ParameterID.POSITION_TARGET_POSITION_PARAM:
                         {
-                            var value = 0x1234;
-                            var ans = new byte[2];
-                            var valueBytes = new byte[sizeof(short)];
-                            valueBytes = BitConverter.GetBytes(Convert.ToInt16(value));
+                            var value = 0x12340000;
+                            var ans = new byte[/*2*/4];
+                            var valueBytes = new byte[sizeof(/*short*/int)];
+                            valueBytes = BitConverter.GetBytes(/*Convert.ToInt16(value)*/Convert.ToInt32(value));
                             valueBytes.CopyTo(ans, 0);
-                            Array.Copy(ans, 0, telegramToSend, 6, 2);
+                            Array.Copy(ans, 0, telegramToSend, 6, /*2*/4);
                             break;
                         }
                     case ParameterID.POSITION_TARGET_SPEED_PARAM:
                         {
-                            var value = 0x0345;
-                            var ans = new byte[2];
-                            var valueBytes = new byte[sizeof(short)];
-                            valueBytes = BitConverter.GetBytes(Convert.ToInt16(value));
+                            var value = 0x03450011;
+                            var ans = new byte[/*2*/4];
+                            var valueBytes = new byte[sizeof(/*short*/int)];
+                            valueBytes = BitConverter.GetBytes(/*Convert.ToInt16(value)*/Convert.ToInt32(value));
                             valueBytes.CopyTo(ans, 0);
-                            Array.Copy(ans, 0, telegramToSend, 6, 2);
+                            Array.Copy(ans, 0, telegramToSend, 6, /*2*/4);
                             break;
                         }
                     case ParameterID.SET_OPERATING_MODE_PARAM:
@@ -592,9 +607,9 @@ namespace Ferretto.VW.InvServer
                         }
                     case ParameterID.STATUS_WORD_PARAM:
                         {
-                            statusWord.SetAll(false);
+                            this.statusWord.SetAll(false);
 
-                            switch (controlWord)
+                            switch (this.controlWord)
                             {
                                 // 3.1
                                 case (4):// Control Word: 00000000 00000100
@@ -632,6 +647,7 @@ namespace Ferretto.VW.InvServer
                                     this.statusWord.Set(1, true);
 
                                     break;
+
                                 default:
 
                                     break;
