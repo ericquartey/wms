@@ -139,7 +139,7 @@ namespace Ferretto.Common.Controls
             {
                 foreach (var filterTile in this.filterTiles)
                 {
-                    filterTile.Count = this.filterDataSources.Single(d => d.Key == filterTile.Key).GetDataCount();
+                    filterTile.Count = this.filterDataSources.Single(d => d.Key == filterTile.Key).GetDataCount?.Invoke();
                 }
             }).ConfigureAwait(true);
         }
