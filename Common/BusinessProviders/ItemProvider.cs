@@ -64,7 +64,7 @@ namespace Ferretto.Common.BusinessProviders
             IEnumerable<SortOption> orderBy = null,
             string search = null)
         {
-            var orderByString = string.Join(",", orderBy.Select(s => $"{s.PropertyName} {s.Direction}"));
+            var orderByString = orderBy != null ? string.Join(",", orderBy.Select(s => $"{s.PropertyName} {s.Direction}")) : null;
 
             return (await this.itemsDataService.GetAllAsync(skip, take, where, orderByString, search))
                 .Select(i => new Item
