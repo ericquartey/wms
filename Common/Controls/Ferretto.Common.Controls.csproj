@@ -3,6 +3,8 @@
   <PropertyGroup>
     <LanguageTargets>$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
     <TargetFramework>net471</TargetFramework>
+    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
+    <!--<TreatWarningsAsErrors>true</TreatWarningsAsErrors>-->
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +14,13 @@
     <PackageReference Include="NLog" Version="4.5.11" />
     <PackageReference Include="Prism.Unity" Version="6.3.0" />
     <PackageReference Include="Prism.Wpf" Version="6.3.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="SonarAnalyzer" Version="6.6.0.3969" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.10.0.7896" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,6 +45,12 @@
   <ItemGroup>
     <ProjectReference Include="..\Modules\BLL\Ferretto.Common.Modules.BLL.csproj" />
     <ProjectReference Include="..\Resources\Ferretto.Common.Resources.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Controls\Image\WmsImageEdit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
   </ItemGroup>
 
 </Project>
