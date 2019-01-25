@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Ferretto.Common.Utils.Expressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -96,6 +97,42 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             catch (Exception ex)
             {
                 var message = string.Format("An error occurred while retrieving the requested entity with id={0}.", id);
+                this.logger.LogError(ex, message);
+                return this.BadRequest(message);
+            }
+        }
+
+        [ProducesResponseType(200, Type = typeof(Models.Item))]
+        [ProducesResponseType(400, Type = typeof(string))]
+        [HttpPost]
+#pragma warning disable S3242 // Method parameters should be declared with base types
+        public async Task<ActionResult> UpdateAsync(Models.Item item)
+#pragma warning restore S3242 // Method parameters should be declared with base types
+        {
+            if (item == null)
+            {
+                return this.BadRequest();
+            }
+
+            this.logger.LogInformation($"Update Item (id:{item.Id})");
+
+            try
+            {
+                var existingItem = this.warehouse.Items.SingleOrDefault(i => i.Id == item.Id);
+                if (existingItem == null)
+                {
+                    var message = string.Format("No entity with the specified id={0} exists.", item.Id);
+                    this.logger.LogWarning(message);
+                    return this.NotFound(message);
+                }
+
+                var updatedItem = await this.warehouse.UpdateAsync(existingItem);
+
+                return this.Ok(updatedItem);
+            }
+            catch (Exception ex)
+            {
+                var message = string.Format("An error occurred while retrieving the requested entity with id={0}.", item.Id);
                 this.logger.LogError(ex, message);
                 return this.BadRequest(message);
             }

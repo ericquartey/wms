@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
@@ -63,6 +64,22 @@ namespace Ferretto.WMS.Data.WebAPI.Models
             }
 
             return cacheEntry;
+        }
+
+        public async Task<Item> UpdateAsync(Item item)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            var existingModel = this.dataContext.Items.Find(item.Id);
+
+            this.dataContext.Entry(existingModel).CurrentValues.SetValues(item);
+
+            await this.dataContext.SaveChangesAsync();
+
+            return item;
         }
 
         private IEnumerable<ItemCategory> RetrieveItemCategories()

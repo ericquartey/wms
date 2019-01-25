@@ -228,16 +228,9 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
-                using (var dc = this.dataContext.Current)
-                {
-                    var existingModel = dc.Items.Find(model.Id);
+                await this.itemsDataService.UpdateAsync(model);
 
-                    dc.Entry(existingModel).CurrentValues.SetValues(model);
-
-                    var changedEntityCount = await dc.SaveChangesAsync();
-
-                    return new OperationResult(changedEntityCount > 0);
-                }
+                return new OperationResult(true);
             }
             catch (Exception ex)
             {
