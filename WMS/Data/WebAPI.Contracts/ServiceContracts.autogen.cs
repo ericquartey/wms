@@ -31,6 +31,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     public partial interface IItemsDataService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<int> GetAllCountAsync(string where, string search);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<int> GetAllCountAsync(string where, string search, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Item>> GetAllAsync(int? skip, int? take, string where, string orderBy, string search);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>

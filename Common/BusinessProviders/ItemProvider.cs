@@ -107,6 +107,11 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
+        public async Task<int> GetAllCountAsync(string where = null, string search = null)
+        {
+            return await this.itemsDataService.GetAllCountAsync(where, search);
+        }
+
         public IQueryable<AllowedItemInCompartment> GetAllowedByCompartmentId(int compartmentId)
         {
             return this.dataContext.Current.Compartments
@@ -228,7 +233,32 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
-                await this.itemsDataService.UpdateAsync(model);
+                await this.itemsDataService.UpdateAsync(new WMS.Data.WebAPI.Contracts.Item
+                {
+                    AbcClassId = model.AbcClassId,
+                    AverageWeight = model.AverageWeight,
+                    Code = model.Code,
+                    Description = model.Description,
+                    FifoTimePick = model.FifoTimePick,
+                    FifoTimeStore = model.FifoTimeStore,
+                    Height = model.Height,
+                    Id = model.Id,
+                    Image = model.Image,
+                    InventoryDate = model.InventoryDate,
+                    InventoryTolerance = model.InventoryTolerance,
+                    ItemCategoryId = model.ItemCategoryId,
+                    LastPickDate = model.LastPickDate,
+                    LastStoreDate = model.LastStoreDate,
+                    Length = model.Length,
+                    ManagementType = (WMS.Data.WebAPI.Contracts.ItemManagementType)model.ManagementType,
+                    MeasureUnitId = model.MeasureUnitId,
+                    Note = model.Note,
+                    PickTolerance = model.PickTolerance,
+                    ReorderPoint = model.ReorderPoint,
+                    ReorderQuantity = model.ReorderQuantity,
+                    StoreTolerance = model.StoreTolerance,
+                    Width = model.Width
+                });
 
                 return new OperationResult(true);
             }

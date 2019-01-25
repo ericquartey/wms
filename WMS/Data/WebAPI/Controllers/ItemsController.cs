@@ -37,6 +37,41 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
+        [ProducesResponseType(200, Type = typeof(int))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [HttpGet]
+        [Route("api/[controller]/count")]
+        public ActionResult<int> GetAllCount(
+            string where = null,
+            string search = null)
+        {
+            this.logger.LogInformation(
+                $"Get Items count (where:'{where}', search:'{search}')");
+
+            try
+            {
+                var searchExpression = BuildSearchExpression(search);
+
+                var whereExpression = BuildWhereExpression<Models.Item>(where);
+
+                var transformedItems = this.ApplyTransform(
+                    skip: 0,
+                    take: int.MaxValue,
+                    orderBy: null,
+                    where: whereExpression,
+                    searchFunction: searchExpression,
+                    entities: this.warehouse.Items.AsQueryable());
+
+                return transformedItems.Count();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, CollectionErrorMessage);
+                return this.BadRequest(CollectionErrorMessage);
+            }
+        }
+
         [ProducesResponseType(200, Type = typeof(IEnumerable<Models.Item>))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]

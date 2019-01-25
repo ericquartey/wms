@@ -16,6 +16,10 @@ namespace Ferretto.Common.BLL.Interfaces
           IEnumerable<SortOption> orderBy = null,
           string search = null);
 
+        Task<int> GetAllCountAsync(
+          string where = null,
+          string search = null);
+
         #endregion Methods
     }
 }
