@@ -136,71 +136,44 @@ namespace Ferretto.Common.BusinessProviders
 
         public async Task<ItemDetails> GetByIdAsync(int id)
         {
-            var dc = this.dataContext.Current;
+            var item = await this.itemsDataService.GetByIdAsync(id);
 
-            var itemDetails = await dc.Items
-            .Include(i => i.MeasureUnit)
-            .Where(i => i.Id == id)
-            .GroupJoin(
-                dc.Compartments
-                    .AsNoTracking()
-                    .Where(c => c.ItemId != null)
-                    .GroupBy(c => c.ItemId)
-                    .Select(j => new
-                    {
-                        ItemId = j.Key,
-                        TotalStock = j.Sum(x => x.Stock),
-                        TotalReservedForPick = j.Sum(x => x.ReservedForPick),
-                        TotalReservedToStore = j.Sum(x => x.ReservedToStore)
-                    }),
-                i => i.Id,
-                c => c.ItemId,
-                (i, c) => new
-                {
-                    Item = i,
-                    CompartmentsAggregation = c
-                })
-            .SelectMany(
-                temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
-                (a, b) => new ItemDetails
-                {
-                    Id = a.Item.Id,
-                    Code = a.Item.Code,
-                    Description = a.Item.Description,
-                    ItemCategoryId = a.Item.ItemCategoryId,
-                    Note = a.Item.Note,
+            var itemDetails = new ItemDetails
+            {
+                Id = item.Id,
+                Code = item.Code,
+                Description = item.Description,
+                ItemCategoryId = item.ItemCategoryId,
+                Note = item.Note,
 
-                    AbcClassId = a.Item.AbcClassId,
-                    MeasureUnitId = a.Item.MeasureUnitId,
-                    MeasureUnitDescription = a.Item.MeasureUnit.Description,
-                    ManagementType = (ItemManagementType)a.Item.ManagementType,
-                    FifoTimePick = a.Item.FifoTimePick,
-                    FifoTimeStore = a.Item.FifoTimeStore,
-                    ReorderPoint = a.Item.ReorderPoint,
-                    ReorderQuantity = a.Item.ReorderQuantity,
+                AbcClassId = item.AbcClassId,
+                MeasureUnitId = item.MeasureUnitId,
 
-                    Height = a.Item.Height,
-                    Length = a.Item.Length,
-                    Width = a.Item.Width,
-                    PickTolerance = a.Item.PickTolerance,
-                    StoreTolerance = a.Item.StoreTolerance,
-                    InventoryTolerance = a.Item.InventoryTolerance,
-                    AverageWeight = a.Item.AverageWeight,
+                // TODO  MeasureUnitDescription = item.MeasureUnit.,
+                ManagementType = (ItemManagementType)item.ManagementType,
+                FifoTimePick = item.FifoTimePick,
+                FifoTimeStore = item.FifoTimeStore,
+                ReorderPoint = item.ReorderPoint,
+                ReorderQuantity = item.ReorderQuantity,
 
-                    Image = a.Item.Image,
+                Height = item.Height,
+                Length = item.Length,
+                Width = item.Width,
+                PickTolerance = item.PickTolerance,
+                StoreTolerance = item.StoreTolerance,
+                InventoryTolerance = item.InventoryTolerance,
+                AverageWeight = item.AverageWeight,
 
-                    CreationDate = a.Item.CreationDate,
-                    InventoryDate = a.Item.InventoryDate,
-                    LastModificationDate = a.Item.LastModificationDate,
-                    LastPickDate = a.Item.LastPickDate,
-                    LastStoreDate = a.Item.LastStoreDate,
+                Image = item.Image,
 
-                    TotalAvailable = b != null
-                        ? (b.TotalStock + b.TotalReservedToStore - b.TotalReservedForPick)
-                        : 0,
-                })
-            .AsNoTracking()
-            .SingleAsync();
+                CreationDate = item.CreationDate,
+                InventoryDate = item.InventoryDate,
+                LastModificationDate = item.LastModificationDate,
+                LastPickDate = item.LastPickDate,
+                LastStoreDate = item.LastStoreDate,
+
+                TotalAvailable = item.TotalAvailable
+            };
 
             itemDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
             itemDetails.MeasureUnitChoices = this.enumerationProvider.GetAllMeasureUnits();

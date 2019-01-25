@@ -58,6 +58,11 @@ namespace Ferretto.Common.Controls
                     return default(TModel);
                 }
 
+                if (this.selectedItem is TModel)
+                {
+                    return (TModel)this.selectedItem;
+                }
+
                 if ((this.selectedItem is DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread) == false)
                 {
                     return default(TModel);

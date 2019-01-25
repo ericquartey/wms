@@ -50,9 +50,24 @@ namespace Ferretto.Common.Utils.Expressions
                             binaryExpression.RightExpression.GetLambdaBody<T>(inParameter));
 
                     case nameof(Expression.Equal):
-                        return Expression.Equal(
-                            binaryExpression.LeftExpression.GetLambdaBody<T>(inParameter),
-                            binaryExpression.RightExpression.GetLambdaBody<T>(inParameter));
+                        {
+                            var leftOperandType = binaryExpression.LeftExpression.GetOperandType<T>();
+
+                            Expression rightOperand = null;
+                            if (leftOperandType.IsEnum && binaryExpression.RightExpression is ValueExpression rightValueExpression)
+                            {
+                                var enumValue = System.Enum.Parse(leftOperandType, rightValueExpression.Value);
+                                rightOperand = Expression.Constant(enumValue);
+                            }
+                            else
+                            {
+                                rightOperand = binaryExpression.RightExpression.GetLambdaBody<T>(inParameter);
+                            }
+
+                            return Expression.Equal(
+                                binaryExpression.LeftExpression.GetLambdaBody<T>(inParameter),
+                                rightOperand);
+                        }
                 }
             }
             else if (expression is ValueExpression valueExpression)
@@ -65,6 +80,21 @@ namespace Ferretto.Common.Utils.Expressions
                 }
 
                 return Expression.Property(inParameter, valueExpression.Value);
+            }
+
+            return null;
+        }
+
+        public static System.Type GetOperandType<T>(this IExpression expression)
+        {
+            if (expression is ValueExpression valueExpression)
+            {
+                var propertyInfo = typeof(T).GetProperty(valueExpression.Value);
+
+                if (propertyInfo != null)
+                {
+                    return propertyInfo.PropertyType;
+                }
             }
 
             return null;
