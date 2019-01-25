@@ -136,5 +136,15 @@ steps:
 
 
 
-- template: azure-pipeline-publish-symbols-template.yml
+- template: azure-pipeline-publish-artifacts-template.yml
 
+
+- task: andrewlackenby.sql-toolkit.runsqlcommand.RunSqlCommand@2
+  displayName: 'Drop cloud db'
+  inputs:
+    serverName: 'rd-ferrettogroup.database.windows.net'
+    databaseName: master
+    sqlCommand: 'DROP DATABASE $(CloudInitialCatalog);'
+    userName: admin_rd_ferrettogroup
+    userPassword: Ferretto2019!
+    queryTimeout: 120
