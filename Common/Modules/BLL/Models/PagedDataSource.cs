@@ -19,7 +19,8 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         public PagedDataSource(string key, string name, IPagedBusinessProvider<TModel> provider)
             : this(key, name, provider, expression: null)
-        { }
+        {
+        }
 
         #endregion Constructors
 
@@ -35,7 +36,7 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         public string Name { get; }
 
-        public IPagedBusinessProvider<TModel> Provider { get; };
+        public IPagedBusinessProvider<TModel> Provider { get; }
 
         #endregion Properties
 
