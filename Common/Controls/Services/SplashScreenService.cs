@@ -8,8 +8,10 @@ namespace Ferretto.Common.Controls.Services
     {
         #region Properties
 
-        public static string Copyright => (typeof(SplashScreenService).Assembly.GetCustomAttributes(false)
+        public static string Copyright => (Assembly.GetEntryAssembly().GetCustomAttributes(false)
                 .FirstOrDefault(attribute => attribute is AssemblyCopyrightAttribute) as AssemblyCopyrightAttribute)?.Copyright;
+
+        public static string Version => Assembly.GetEntryAssembly().GetName()?.Version?.ToString();
 
         #endregion Properties
 
@@ -23,7 +25,7 @@ namespace Ferretto.Common.Controls.Services
             }
         }
 
-        public static void SetMessage(System.String message)
+        public static void SetMessage(string message)
         {
             if (DXSplashScreen.IsActive)
             {

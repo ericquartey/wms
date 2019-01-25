@@ -214,6 +214,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compartment.
+        /// </summary>
+        public static string Compartment {
+            get {
+                return ResourceManager.GetString("Compartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string CompartmentAll {
@@ -975,6 +984,15 @@ namespace Ferretto.Common.Resources {
         public static string PhysicalInformation {
             get {
                 return ResourceManager.GetString("PhysicalInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} [{1}].
+        /// </summary>
+        public static string QuantityWithUnitMeasure {
+            get {
+                return ResourceManager.GetString("QuantityWithUnitMeasure", resourceCulture);
             }
         }
         

@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
+  <!--
+    Microsoft ResX Schema
+
     Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
     associated with the data types.
-    
+
     Example:
-    
+
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-                
-    There are any number of "resheader" rows that contain simple 
+
+    There are any number of "resheader" rows that contain simple
     name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
     mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
     extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
     read any of the formats listed below.
-    
+
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-    
+
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
+    value   : The object must be serialized into a byte array
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -136,7 +136,7 @@
     <value>Data Ultimo Inventario</value>
   </data>
   <data name="ItemInventoryTolerance" xml:space="preserve">
-    <value>Tolleranza di Inventario [pezzi]</value>
+    <value>Tolleranza di Inventario</value>
   </data>
   <data name="ItemNotes" xml:space="preserve">
     <value>Note</value>
@@ -154,7 +154,7 @@
     <value>Codice</value>
   </data>
   <data name="ItemPickTolerance" xml:space="preserve">
-    <value>Tolleranza in Prelievo [pezzi]</value>
+    <value>Tolleranza in Prelievo</value>
   </data>
   <data name="ItemCode" xml:space="preserve">
     <value>Codice</value>
@@ -235,13 +235,13 @@
     <value>Lotto</value>
   </data>
   <data name="CompartmentMaxCapacity" xml:space="preserve">
-    <value>Capacità Massima [pezzi]</value>
+    <value>Capacità Massima </value>
   </data>
   <data name="CompartmentStatus" xml:space="preserve">
     <value>Stato Scomparto</value>
   </data>
   <data name="CompartmentStock" xml:space="preserve">
-    <value>Giacenza [pezzi]</value>
+    <value>Giacenza </value>
   </data>
   <data name="CompartmentType" xml:space="preserve">
     <value>Tipo Scomparto [mm] x [mm]</value>
@@ -292,10 +292,10 @@
     <value>Abbinamento Articolo</value>
   </data>
   <data name="CompartmentReservedForPick" xml:space="preserve">
-    <value>Impegnato in Prelievo [pezzi]</value>
+    <value>Impegnato in Prelievo</value>
   </data>
   <data name="CompartmentReservedToStore" xml:space="preserve">
-    <value>Impegnato in Versamento [pezzi]</value>
+    <value>Impegnato in Versamento</value>
   </data>
   <data name="CompartmentSub1" xml:space="preserve">
     <value>Sub 1</value>
@@ -319,7 +319,7 @@
     <value>Quantità Minima di Riordino</value>
   </data>
   <data name="ItemStoreTolerance" xml:space="preserve">
-    <value>Tolleranza in Versamento [pezzi]</value>
+    <value>Tolleranza in Versamento </value>
   </data>
   <data name="ItemReservedForPick" xml:space="preserve">
     <value>Impegnato in Prelievo</value>
@@ -765,5 +765,62 @@
   </data>
   <data name="LastExecutionDate" xml:space="preserve">
     <value>Data Ultima Esecuzione</value>
+  </data>
+  <data name="MissionStatusNew" xml:space="preserve">
+    <value>Nuovo</value>
+  </data>
+  <data name="MissionStatusWaiting" xml:space="preserve">
+    <value>In attesa</value>
+  </data>
+  <data name="MissionStatusExecuting" xml:space="preserve">
+    <value>In esecuzione</value>
+  </data>
+  <data name="MissionStatusCompleted" xml:space="preserve">
+    <value>Completato</value>
+  </data>
+  <data name="MissionStatusError" xml:space="preserve">
+    <value>Errore</value>
+  </data>
+  <data name="MissionTypeBypass" xml:space="preserve">
+    <value>Bypass</value>
+  </data>
+  <data name="MissionTypeInventory" xml:space="preserve">
+    <value>Inventario</value>
+  </data>
+  <data name="MissionTypePick" xml:space="preserve">
+    <value>Prelievo</value>
+  </data>
+  <data name="MissionTypePut" xml:space="preserve">
+    <value>Versamento</value>
+  </data>
+  <data name="MissionTypeReorder" xml:space="preserve">
+    <value>Riordino</value>
+  </data>
+  <data name="MissionTypeReplace" xml:space="preserve">
+    <value>Rimpiazzo</value>
+  </data>
+  <data name="Item" xml:space="preserve">
+    <value>Articolo</value>
+  </data>
+  <data name="ItemList" xml:space="preserve">
+    <value>Liste</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Baia</value>
+  </data>
+  <data name="OperationInsert" xml:space="preserve">
+    <value>Inserimento</value>
+  </data>
+  <data name="OperationReorder" xml:space="preserve">
+    <value>Riordino</value>
+  </data>
+  <data name="OperationReplace" xml:space="preserve">
+    <value>Sostituzione</value>
+  </data>
+  <data name="OperationWithdraw" xml:space="preserve">
+    <value>Prelievo</value>
+  </data>
+  <data name="OperationType" xml:space="preserve">
+    <value>Tipo Operazione</value>
   </data>
 </root>

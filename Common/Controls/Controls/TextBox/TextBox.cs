@@ -3,7 +3,7 @@ using DevExpress.Xpf.Editors;
 
 namespace Ferretto.Common.Controls
 {
-    public partial class TextBox : TextEdit
+    public class TextBox : TextEdit
     {
         #region Fields
 

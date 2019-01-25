@@ -8,63 +8,30 @@
                  xmlns:myType="clr-namespace:Ferretto.VW.Utils.Source;assembly=Ferretto.VW.Utils"
                  xmlns:prism="http://prismlibrary.com/"
                  xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
-                 Width="1024"
-                 Height="620"
                  prism:ViewModelLocator.AutoWireViewModel="True"
                  mc:Ignorable="d">
-    <DockPanel>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="80" />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="120" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0"
-                       Grid.Column="1"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.LSMTVerticalEngineTitle}" />
-            <Grid Grid.Row="1"
-                  Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="3*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="7*" />
-                </Grid.ColumnDefinitions>
-                <custom:CustomLabelTextBlockControl Grid.Row="1"
-                                                    Grid.Column="0"
-                                                    ContentText="1235,2"
-                                                    LabelText="{x:Static res:InstallationApp.ActualPosition}" />
-                <custom:CustomLabelTextBlockControl Grid.Row="3"
-                                                    Grid.Column="0"
-                                                    ContentText="10%"
-                                                    LabelText="{x:Static res:InstallationApp.FeedRate}" />
-                <Button Name="VerticalEngineUp"
-                        Grid.Row="1"
-                        Grid.Column="2"
-                        Content="{x:Static res:InstallationApp.Up}"
-                        PreviewMouseDown="MoveUpVerticalAxisHandler"
-                        PreviewMouseUp="StopVerticalAxisHandler"
-                        Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-                <Button Name="VerticalEngineDown"
-                        Grid.Row="3"
-                        Grid.Column="2"
-                        Content="{x:Static res:InstallationApp.Down}"
-                        PreviewMouseDown="MoveDownVerticalAxisHandler"
-                        PreviewMouseUp="StopVerticalAxisHandler"
-                        Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-            </Grid>
-        </Grid>
-    </DockPanel>
+    <Grid Width="774"
+          Height="608">
+        <TextBlock 
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.LSMTVerticalEngineTitle}" Margin="160,10,0,562" />
+        <custom:CustomLabelTextBlockControl
+                                                
+                                                ContentText="1235,2"
+                                                LabelText="{x:Static res:InstallationApp.ActualPosition}" Margin="160,162,379,383" />
+        <custom:CustomLabelTextBlockControl
+                                                
+                                                ContentText="10%"
+                                                LabelText="{x:Static res:InstallationApp.FeedRate}" Margin="160,402,379,143" />
+        <Button Name="VerticalEngineUp"
+                    Content="{x:Static res:InstallationApp.Up}"
+                    PreviewMouseDown="MoveUpVerticalAxisHandler"
+                    PreviewMouseUp="StopVerticalAxisHandler"
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="475,162,134,383" />
+        <Button Name="VerticalEngineDown"
+                    Content="{x:Static res:InstallationApp.Down}"
+                    PreviewMouseDown="MoveDownVerticalAxisHandler"
+                    PreviewMouseUp="StopVerticalAxisHandler"
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="475,402,134,143" />
+    </Grid>
 </myType:BaseView>

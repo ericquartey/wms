@@ -15,17 +15,18 @@ namespace Ferretto.Common.BLL.Tests
         [TestCleanup]
         public void Cleanup()
         {
-            base.CleanupDatabase();
+            this.CleanupDatabase();
         }
 
         [TestInitialize]
         public void Initialize()
         {
-            base.InitializeDatabase();
+            this.InitializeDatabase();
         }
 
         [TestMethod]
-        [TestProperty("Description",
+        [TestProperty(
+            "Description",
            @"GIVEN a list with prioritized rows \
                 AND some compartments that can satisfy the list \
                WHEN the new list is requested for execution \
@@ -41,14 +42,14 @@ namespace Ferretto.Common.BLL.Tests
             var bay2 = new DataModels.Bay
             {
                 Id = 2,
-                AreaId = this.area1.Id,
+                AreaId = this.Area1.Id,
                 LoadingUnitsBufferSize = 10
             };
 
             var row1 = new DataModels.ItemListRow
             {
                 Id = 1,
-                ItemId = this.itemFifo.Id,
+                ItemId = this.ItemFifo.Id,
                 RequiredQuantity = 10,
                 ItemListId = listId,
                 Status = DataModels.ItemListRowStatus.Waiting,
@@ -58,7 +59,7 @@ namespace Ferretto.Common.BLL.Tests
             var row2 = new DataModels.ItemListRow
             {
                 Id = 2,
-                ItemId = this.itemFifo.Id,
+                ItemId = this.ItemFifo.Id,
                 RequiredQuantity = 10,
                 ItemListId = listId,
                 Status = DataModels.ItemListRowStatus.Waiting,
@@ -68,7 +69,7 @@ namespace Ferretto.Common.BLL.Tests
             var row3 = new DataModels.ItemListRow
             {
                 Id = 3,
-                ItemId = this.itemFifo.Id,
+                ItemId = this.ItemFifo.Id,
                 RequiredQuantity = 10,
                 ItemListId = listId,
                 Status = DataModels.ItemListRowStatus.Waiting,
@@ -84,8 +85,8 @@ namespace Ferretto.Common.BLL.Tests
 
             var compartment1 = new DataModels.Compartment
             {
-                ItemId = this.itemFifo.Id,
-                LoadingUnitId = this.loadingUnit1.Id,
+                ItemId = this.ItemFifo.Id,
+                LoadingUnitId = this.LoadingUnit1.Id,
                 Stock = 100
             };
 
@@ -118,25 +119,38 @@ namespace Ferretto.Common.BLL.Tests
 
                 #region Assert
 
-                Assert.AreEqual(3, requests.Count(),
+                Assert.AreEqual(
+                    3,
+                    requests.Count(),
                     "Number of scheduler requests should match the number of list rows.");
 
-                Assert.IsTrue(requests.All(r => r.BayId == bay2.Id),
+                Assert.IsTrue(
+                    requests.All(r => r.BayId == bay2.Id),
                     "All requests should address the same bay.");
 
-                Assert.AreEqual(list1.ItemListRows.Sum(r => r.RequiredQuantity), requests.Sum(r => r.RequestedQuantity),
+                Assert.AreEqual(
+                    list1.ItemListRows.Sum(r => r.RequiredQuantity),
+                    requests.Sum(r => r.RequestedQuantity),
                     "The total quantity recorded in the requests should be the same as the quantity reported in the list rows.");
 
-                Assert.AreEqual(3, context.Missions.Count(),
+                Assert.AreEqual(
+                    3,
+                    context.Missions.Count(),
                     "A total of three missions should be generated.");
 
-                Assert.AreEqual(listId, context.Missions.First().ItemListId,
+                Assert.AreEqual(
+                    listId,
+                    context.Missions.First().ItemListId,
                     "The first generated mission should refer to the list with highest priority.");
 
-                Assert.AreEqual(row2.Id, context.Missions.First().ItemListRowId,
+                Assert.AreEqual(
+                    row2.Id,
+                    context.Missions.First().ItemListRowId,
                     "The first generated mission should refer to the row with highest priority.");
 
-                Assert.AreEqual(row1.Id, context.Missions.Last().ItemListRowId,
+                Assert.AreEqual(
+                    row1.Id,
+                    context.Missions.Last().ItemListRowId,
                     "The last generated mission should refer to the row with lowest priority.");
 
                 #endregion Assert

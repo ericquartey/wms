@@ -1,0 +1,78 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+                    xmlns:dxeh="http://schemas.devexpress.com/winfx/2008/xaml/editors/internal"
+                    xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+                    xmlns:dxn="http://schemas.devexpress.com/winfx/2008/xaml/core/internal"
+                    xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls">
+
+    <wms:PropertyDescriptionConverter x:Key="DNC"
+                                      Property="{x:Static dxe:BaseEdit.EditValueProperty}" />
+
+    <dxn:RenderTemplate x:Key="{dxet:InplaceBaseEditThemeKey ResourceKey=TextEditBorderTemplate}">
+        <dxn:RenderPanel Name="PART_Root">
+            <dxn:RenderPanel Name="PART_Border">
+                <dxn:RenderBorder Background="White"
+                                  BorderBrush="#7F5C5C5C"
+                                  BorderThickness="1" />
+            </dxn:RenderPanel>
+        </dxn:RenderPanel>
+        <dxn:RenderTemplate.Triggers>
+            <dxn:RenderTrigger DependencyProperty="{x:Static dx:ThemeManager.IsTouchEnabledProperty}"
+                               ValueSource="TemplatedParent"
+                               Value="True">
+                <dxn:RenderSetter TargetName="PART_Root"
+                                  Property="MinWidth"
+                                  Value="44" />
+                <dxn:RenderSetter TargetName="PART_Root"
+                                  Property="MinHeight"
+                                  Value="44" />
+            </dxn:RenderTrigger>
+        </dxn:RenderTemplate.Triggers>
+    </dxn:RenderTemplate>
+
+    <ControlTemplate x:Key="{dxet:BaseEditThemeKey ResourceKey=TextEditBorderTemplate,
+                                                   ThemeName=Office2016White}"
+                     TargetType="ContentControl">
+        <Grid x:Name="TextEditGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <wms:WmsLabel x:Name="TitleLabel"
+                          Style="{DynamicResource ControlLabelStyle}">
+                <wms:WmsLabel.Content>
+                    <MultiBinding Converter="{StaticResource DNC}">
+                        <Binding RelativeSource="{RelativeSource Self}" />
+                        <Binding Path="DataContext"
+                                 RelativeSource="{RelativeSource Self}" />
+                    </MultiBinding>
+                </wms:WmsLabel.Content>
+            </wms:WmsLabel>
+            <dxn:Chrome Grid.Row="1"
+                        RenderTemplate="{StaticResource {dxet:InplaceBaseEditThemeKey ResourceKey=TextEditBorderTemplate}}" />
+            <ContentPresenter Grid.Row="1"
+                              Margin="{StaticResource ResourceKey={dxet:InplaceBaseEditThemeKey ResourceKey=TextEditBorderThickness}}" />
+            <dxn:Chrome Grid.Row="1"
+                        dxeh:ControlHelper.ShowFocusedState="{Binding Path=(dxeh:ControlHelper.ShowFocusedState), RelativeSource={RelativeSource TemplatedParent}}"
+                        IsHitTestVisible="False"
+                        RenderTemplate="{StaticResource {dxet:InplaceBaseEditThemeKey ResourceKey=HoverBorderTemplate}}" />
+            <Border Name="MouseOverBorder"
+                    Grid.Row="1"
+                    BorderThickness="1"
+                    Visibility="Collapsed" />
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="MouseOverBorder" Property="Visibility" Value="Visible" />
+                <Setter TargetName="MouseOverBorder" Property="BorderBrush" Value="{DynamicResource CommonSecondaryMedium}" />
+            </Trigger>
+            <Trigger Property="dxe:BaseEdit.IsKeyboardFocusWithin" Value="True">
+                <Setter TargetName="MouseOverBorder" Property="Visibility" Value="Visible" />
+                <Setter TargetName="MouseOverBorder" Property="BorderBrush" Value="{DynamicResource CommonSecondaryDark}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+</ResourceDictionary>

@@ -35,17 +35,11 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<OperationResult> AddAsync(ItemListRowDetails model)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<OperationResult> AddAsync(ItemListRowDetails model) => throw new NotSupportedException();
 
-        public int Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
-        public async Task<OperationResult> ExecuteImmediately(int listRowId, int areaId, int bayId)
+        public async Task<OperationResult> ExecuteImmediatelyAsync(int listRowId, int areaId, int bayId)
         {
             try
             {
@@ -64,20 +58,16 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public IQueryable<ItemListRow> GetAll()
-        {
-            throw new NotImplementedException();
-        }
+        public IQueryable<ItemListRow> GetAll() => throw new NotSupportedException();
 
-        public int GetAllCount()
-        {
-            throw new NotImplementedException();
-        }
+        public int GetAllCount() => throw new NotSupportedException();
 
-        public async Task<ItemListRowDetails> GetById(int id)
+        public async Task<ItemListRowDetails> GetByIdAsync(int id)
         {
             var itemListRowDetails = await this.dataContextService.Current.ItemListRows
                 .Include(lr => lr.ItemList)
+                .Include(lr => lr.Item)
+                .ThenInclude(i => i.MeasureUnit)
                 .Where(lr => lr.Id == id)
                 .Select(lr => new ItemListRowDetails
                 {
@@ -102,7 +92,8 @@ namespace Ferretto.Common.BusinessProviders
                     Sub1 = lr.Sub1,
                     Sub2 = lr.Sub2,
                     PackageTypeId = lr.PackageTypeId,
-                    MaterialStatusId = lr.MaterialStatusId
+                    MaterialStatusId = lr.MaterialStatusId,
+                    ItemUnitMeasure = lr.Item.MeasureUnit.Description
                 }).SingleAsync();
 
             itemListRowDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
@@ -116,6 +107,7 @@ namespace Ferretto.Common.BusinessProviders
             var itemListRows = this.dataContextService.Current.ItemListRows
                 .Include(l => l.MaterialStatus)
                 .Include(l => l.Item)
+                .ThenInclude(i => i.MeasureUnit)
                 .Where(l => l.ItemListId == id)
                 .Select(l => new ItemListRow
                 {
@@ -127,7 +119,8 @@ namespace Ferretto.Common.BusinessProviders
                     DispatchedQuantity = l.DispatchedQuantity,
                     ItemListRowStatus = (ItemListRowStatus)l.Status,
                     MaterialStatusDescription = l.MaterialStatus.Description,
-                    CreationDate = l.CreationDate
+                    CreationDate = l.CreationDate,
+                    ItemUnitMeasure = l.Item.MeasureUnit.Description
                 }).AsNoTracking();
 
             return itemListRows;
@@ -139,6 +132,7 @@ namespace Ferretto.Common.BusinessProviders
             {
                 throw new ArgumentNullException(nameof(model));
             }
+
             try
             {
                 using (var dataContext = this.dataContextService.Current)
@@ -158,7 +152,7 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public async Task<OperationResult> ScheduleForExecution(int listRowId, int areaId)
+        public async Task<OperationResult> ScheduleForExecutionAsync(int listRowId, int areaId)
         {
             try
             {

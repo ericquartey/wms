@@ -1,0 +1,18 @@
+
+steps:
+
+- task: NuGetToolInstaller@0
+  displayName: 'Use NuGet 4.x'
+  inputs:
+    versionSpec: 4.x
+
+
+- task: NuGetCommand@2
+  displayName: 'NuGet restore'
+  inputs:
+    restoreSolution: '*.sln'
+    feedsToUse: config
+    nugetConfigPath: nuget.config
+    restoreDirectory: ./packages
+    verbosityRestore: Normal
+

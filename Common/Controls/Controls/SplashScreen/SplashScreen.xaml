@@ -28,8 +28,9 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="45" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="10" />
                 </Grid.RowDefinitions>
 
                 <TextBlock x:Name="Timing"
@@ -46,30 +47,41 @@
                            Foreground="#FF2D2D2D"
                            Text="{Binding State}"
                            TextWrapping="Wrap" />
-                <ProgressBar x:Name="progressBar"
-                             Grid.Row="4"
-                             Height="12"
-                             Margin="12"
-                             IsIndeterminate="{Binding IsIndeterminate}"
-                             Maximum="{Binding MaxProgress}"
-                             Value="{Binding Progress}" />
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="45" />
+                    </Grid.ColumnDefinitions>
+
+                    <ProgressBar x:Name="progressBar"
+                                 Height="12"
+                                 Margin="12"
+                                 IsIndeterminate="{Binding IsIndeterminate}"
+                                 Maximum="{Binding MaxProgress}"
+                                 Value="{Binding Progress}" />
+                    <Image x:Name="Logotype"
+                           Grid.Column="1"
+                           Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/Images/FGOnlyLogo_narrow.png"
+                           Stretch="Fill"
+                           Visibility="Visible" />
+                </Grid>
+
                 <DockPanel x:Name="Footer"
                            Grid.Row="5"
-                           Margin="5,20,5,4">
-                    <TextBlock x:Name="Footer_Text"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               Foreground="#FF2D2D2D"
-                               Opacity="0.5"
-                               Text="{Binding Source={x:Static sys:DateTime.Today}, Path=Year, StringFormat='{}Copyright © {0}'}"
-                               TextWrapping="Wrap" />
-                    <Image x:Name="Logotype"
-                           Width="60"
-                           HorizontalAlignment="Right"
-                           DockPanel.Dock="Right"
-                           Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/Images/FGLogo_narrow.png"
-                           Stretch="None"
-                           Visibility="Visible" />
+                           Height="30"
+                           Margin="5,5,5,4">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock x:Name="copyrightText"
+                                   HorizontalAlignment="Left"
+                                   Foreground="#FF2D2D2D"
+                                   Opacity="0.5"
+                                   TextWrapping="Wrap" />
+                        <TextBlock x:Name="versionText"
+                                   HorizontalAlignment="Left"
+                                   Foreground="#FF2D2D2D"
+                                   Opacity="0.5"
+                                   TextWrapping="Wrap" />
+                    </StackPanel>
                 </DockPanel>
             </Grid>
         </Grid>

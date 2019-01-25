@@ -12,7 +12,8 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         public FilterDataSource(string key, string name, Func<IQueryable<TModel>> getData)
                           : this(key, name, getData, () => getData().Count())
-        { }
+        {
+        }
 
         public FilterDataSource(string key, string name, Func<IQueryable<TModel>> getData, Func<int> getDataCount)
                 : base((a) => a.QueryableSource = getData())
@@ -61,7 +62,7 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         #region Methods
 
-        public override String ToString()
+        public override string ToString()
         {
             return this.Name ?? base.ToString();
         }

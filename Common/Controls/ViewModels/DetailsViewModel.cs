@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls.Interfaces;
@@ -22,6 +23,8 @@ namespace Ferretto.Common.Controls
         private bool isValidationEnabled;
 
         private T model;
+
+        private ICommand refreshCommand;
 
         private ICommand revertCommand;
 
@@ -85,10 +88,15 @@ namespace Ferretto.Common.Controls
                         this.model.PropertyChanged += this.Model_PropertyChanged;
                     }
 
-                    this.RefreshData();
+                    this.LoadRelatedData();
+                    this.EvaluateCanExecuteCommands();
                 }
             }
         }
+
+        public ICommand RefreshCommand => this.refreshCommand ??
+                                                       (this.refreshCommand = new DelegateCommand(
+               async () => await this.ExecuteRefreshCommandAsync(), this.CanExecuteRefreshCommand));
 
         public ICommand RevertCommand => this.revertCommand ??
             (this.revertCommand = new DelegateCommand(
@@ -123,9 +131,9 @@ namespace Ferretto.Common.Controls
             return true;
         }
 
-        public virtual void RefreshData()
+        public virtual void LoadRelatedData()
         {
-            this.EvaluateCanExecuteCommands();
+            // do nothing. The derived classes can customize the behaviour
         }
 
         protected virtual bool CanExecuteRevertCommand()
@@ -137,16 +145,19 @@ namespace Ferretto.Common.Controls
         protected virtual bool CanExecuteSaveCommand()
         {
             return this.Model != null
-                && this.changeDetector.IsModified == true
-                && (this.isValidationEnabled == false || string.IsNullOrWhiteSpace(this.Model.Error))
-                && this.IsBusy == false;
+                && this.changeDetector.IsModified
+                && (!this.isValidationEnabled || string.IsNullOrWhiteSpace(this.Model.Error))
+                && !this.IsBusy;
         }
 
         protected virtual void EvaluateCanExecuteCommands()
         {
             ((DelegateCommand)this.RevertCommand)?.RaiseCanExecuteChanged();
             ((DelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
+            ((DelegateCommand)this.RefreshCommand)?.RaiseCanExecuteChanged();
         }
+
+        protected abstract Task ExecuteRefreshCommandAsync();
 
         protected abstract Task ExecuteRevertCommand();
 
@@ -161,12 +172,22 @@ namespace Ferretto.Common.Controls
         {
             base.OnDispose();
 
-            this.model.PropertyChanged -= this.Model_PropertyChanged;
+            if (this.model != null)
+            {
+                this.model.PropertyChanged -= this.Model_PropertyChanged;
+            }
         }
 
         protected void TakeModelSnapshot()
         {
             this.changeDetector.TakeSnapshot(this.model);
+        }
+
+        private bool CanExecuteRefreshCommand()
+        {
+            return
+                !this.changeDetector.IsModified
+                && !this.IsBusy;
         }
 
         private void ChangeDetector_ModifiedChanged(object sender, System.EventArgs e)

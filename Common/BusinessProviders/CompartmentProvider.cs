@@ -55,17 +55,19 @@ namespace Ferretto.Common.BusinessProviders
             {
                 throw new ArgumentNullException(nameof(model));
             }
-            // TODO: add transaction management
 
+            // TODO: add transaction management
             try
             {
                 using (var dataContext = this.dataContextService.Current)
                 {
-                    var result = await this.compartmentTypeProvider.AddAsync(new CompartmentType
-                    {
-                        Width = model.Width,
-                        Height = model.Height
-                    }, model.ItemId, model.MaxCapacity);
+                    var result = await this.compartmentTypeProvider.AddAsync(
+                                     new CompartmentType
+                                     {
+                                         Width = model.Width,
+                                         Height = model.Height
+                                     }, model.ItemId,
+                                     model.MaxCapacity);
 
                     if (result.Success == false)
                     {
@@ -104,7 +106,7 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public async Task<OperationResult> AddRange(IEnumerable<ICompartment> compartments)
+        public async Task<OperationResult> AddRangeAsync(IEnumerable<ICompartment> compartments)
         {
             if (compartments == null)
             {
@@ -124,14 +126,6 @@ namespace Ferretto.Common.BusinessProviders
             return new OperationResult(true);
         }
 
-        public int Delete(int id)
-        {
-            var task = this.DeleteAsync(id);
-            task.RunSynchronously();
-
-            return task.Result;
-        }
-
         public async Task<int> DeleteAsync(int id)
         {
             using (var dataContext = this.dataContextService.Current)
@@ -141,6 +135,7 @@ namespace Ferretto.Common.BusinessProviders
                 {
                     dataContext.Remove(existingModel);
                 }
+
                 return await dataContext.SaveChangesAsync();
             }
         }
@@ -151,6 +146,7 @@ namespace Ferretto.Common.BusinessProviders
                .Include(c => c.LoadingUnit)
                .Include(c => c.MaterialStatus)
                .Include(c => c.Item)
+               .ThenInclude(i => i.MeasureUnit)
                .Include(c => c.CompartmentType)
                .Include(c => c.CompartmentStatus)
                .Include(c => c.PackageType)
@@ -169,9 +165,9 @@ namespace Ferretto.Common.BusinessProviders
                    MaterialStatusDescription = c.MaterialStatus.Description,
                    Stock = c.Stock,
                    Sub1 = c.Sub1,
-                   Sub2 = c.Sub2
-               }
-               )
+                   Sub2 = c.Sub2,
+                   ItemMeasureUnit = c.Item.MeasureUnit.Description
+               })
                .AsNoTracking();
         }
 
@@ -183,7 +179,7 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public async Task<CompartmentDetails> GetById(int id)
+        public async Task<CompartmentDetails> GetByIdAsync(int id)
         {
             using (var dataContext = this.dataContextService.Current)
             {
@@ -192,14 +188,14 @@ namespace Ferretto.Common.BusinessProviders
                .Include(c => c.LoadingUnit)
                .ThenInclude(l => l.LoadingUnitType)
                .Include(c => c.Item)
+               .ThenInclude(i => i.MeasureUnit)
                .Include(c => c.CompartmentStatus)
                .Include(c => c.CompartmentType)
                .GroupJoin(
                     dataContext.ItemsCompartmentTypes,
                     cmp => new { CompartmentTypeId = cmp.CompartmentTypeId, ItemId = cmp.ItemId.Value },
                     ict => new { CompartmentTypeId = ict.CompartmentTypeId, ItemId = ict.ItemId },
-                    (cmp, ict) => new { cmp, ict = ict.DefaultIfEmpty() }
-                )
+                    (cmp, ict) => new { cmp, ict = ict.DefaultIfEmpty() })
                .Select(j => new CompartmentDetails
                {
                    Id = j.cmp.Id,
@@ -233,7 +229,8 @@ namespace Ferretto.Common.BusinessProviders
                    YPosition = j.cmp.YPosition,
                    LoadingUnitId = j.cmp.LoadingUnitId,
                    ItemId = j.cmp.ItemId,
-                   LoadingUnitHasCompartments = j.cmp.LoadingUnit.LoadingUnitType.HasCompartments
+                   LoadingUnitHasCompartments = j.cmp.LoadingUnit.LoadingUnitType.HasCompartments,
+                   ItemMeasureUnit = j.cmp.Item.MeasureUnit.Description
                })
                .SingleAsync();
 
@@ -278,6 +275,7 @@ namespace Ferretto.Common.BusinessProviders
                 .Include(c => c.LoadingUnit)
                 .ThenInclude(l => l.LoadingUnitType)
                 .Include(c => c.Item)
+                .ThenInclude(i => i.MeasureUnit)
                 .Include(c => c.CompartmentStatus)
                 .Include(c => c.CompartmentType)
                 .ThenInclude(ct => ct.ItemsCompartmentTypes)
@@ -314,7 +312,8 @@ namespace Ferretto.Common.BusinessProviders
                     LoadingUnitId = c.LoadingUnitId,
                     ItemId = c.ItemId,
                     IsItemPairingFixed = c.IsItemPairingFixed,
-                    LoadingUnitHasCompartments = c.LoadingUnit.LoadingUnitType.HasCompartments
+                    LoadingUnitHasCompartments = c.LoadingUnit.LoadingUnitType.HasCompartments,
+                    ItemMeasureUnit = c.Item.MeasureUnit.Description
                 })
                 .AsNoTracking();
         }
@@ -326,14 +325,9 @@ namespace Ferretto.Common.BusinessProviders
                 var compartmentType = await dataContext.ItemsCompartmentTypes
                     .Include(ict => ict.CompartmentType)
                     .SingleOrDefaultAsync(ict =>
-                        ict.ItemId == itemId
-                        &&
-                        (
-                            (ict.CompartmentType.Width == width && ict.CompartmentType.Height == height)
-                            ||
-                            (ict.CompartmentType.Width == height && ict.CompartmentType.Height == width)
-                        )
-                    );
+                        ict.ItemId == itemId &&
+                        ((ict.CompartmentType.Width == width && ict.CompartmentType.Height == height) ||
+                            (ict.CompartmentType.Width == height && ict.CompartmentType.Height == width)));
 
                 return compartmentType?.MaxCapacity;
             }
@@ -427,11 +421,13 @@ namespace Ferretto.Common.BusinessProviders
             {
                 using (var dataContext = this.dataContextService.Current)
                 {
-                    var result = await this.compartmentTypeProvider.AddAsync(new CompartmentType
-                    {
-                        Width = model.Width,
-                        Height = model.Height
-                    }, model.ItemId, model.MaxCapacity);
+                    var result = await this.compartmentTypeProvider.AddAsync(
+                                     new CompartmentType
+                                     {
+                                         Width = model.Width,
+                                         Height = model.Height
+                                     }, model.ItemId,
+                                     model.MaxCapacity);
 
                     if (result.Success == false)
                     {
@@ -490,8 +486,7 @@ namespace Ferretto.Common.BusinessProviders
                    Stock = c.Stock,
                    Sub1 = c.Sub1,
                    Sub2 = c.Sub2
-               }
-               )
+               })
                .AsNoTracking();
         }
 

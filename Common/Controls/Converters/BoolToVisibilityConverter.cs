@@ -26,13 +26,13 @@ namespace Ferretto.Common.Controls
 
         public bool Hide
         {
-            get => (bool) this.GetValue(HideProperty);
+            get => (bool)this.GetValue(HideProperty);
             set => this.SetValue(HideProperty, value);
         }
 
         public bool Invert
         {
-            get => (bool) this.GetValue(InvertProperty);
+            get => (bool)this.GetValue(InvertProperty);
             set => this.SetValue(InvertProperty, value);
         }
 
@@ -40,7 +40,7 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        public Object Convert(object value, Type targetType, Object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (targetType != typeof(Visibility))
             {
@@ -49,7 +49,7 @@ namespace Ferretto.Common.Controls
 
             var visible = System.Convert.ToBoolean(value, culture);
 
-            if (( visible && !this.Invert ) || ( !visible && this.Invert ))
+            if ((visible && !this.Invert) || (!visible && this.Invert))
             {
                 return Visibility.Visible;
             }
@@ -57,16 +57,16 @@ namespace Ferretto.Common.Controls
             return this.Hide ? Visibility.Hidden : Visibility.Collapsed;
         }
 
-        public Object ConvertBack(object value, Type targetType, Object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is Visibility == false)
             {
                 throw new InvalidOperationException(Errors.ConverterCanConvertOnlyToVisibilityType);
             }
 
-            var visible = ( (Visibility) value == Visibility.Visible ? true : false );
+            var visible = (Visibility)value == Visibility.Visible ? true : false;
 
-            if (( visible && !this.Invert ) || ( !visible && this.Invert ))
+            if ((visible && !this.Invert) || (!visible && this.Invert))
             {
                 return true;
             }

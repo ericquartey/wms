@@ -4,9 +4,9 @@ namespace Ferretto.Common.BusinessModels
 {
     public class ArticleFilter : IFilter
     {
-        #region Fields
+        #region Properties
 
-        private static readonly Func<ICompartment, ICompartment, string> colorFunc = delegate (ICompartment compartment, ICompartment selected)
+        public Func<ICompartment, ICompartment, string> ColorFunc => (compartment, selected) =>
         {
             var compartmentDetails = compartment as CompartmentDetails;
             var selectedDetails = selected as CompartmentDetails;
@@ -24,14 +24,9 @@ namespace Ferretto.Common.BusinessModels
                     color = "#90A4AE";
                 }
             }
+
             return color;
         };
-
-        #endregion Fields
-
-        #region Properties
-
-        public Func<ICompartment, ICompartment, string> ColorFunc => colorFunc;
 
         public string Description => "Article";
 

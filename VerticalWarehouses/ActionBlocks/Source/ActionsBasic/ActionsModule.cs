@@ -19,13 +19,16 @@ namespace Ferretto.VW.ActionBlocks.Source.ActionsBasic
             this.Container = _container;
             var positioningDrawerInstance = new PositioningDrawer();
             var calibrateVerticalAxisInstance = new CalibrateVerticalAxis();
+            // var calibrateAxesInstance = new CalibrateAxes();
             var drawerWeightDetection = new DrawerWeightDetection();
 
             calibrateVerticalAxisInstance.SetInverterDriverInterface = (InverterDriver.InverterDriver)this.Container.Resolve<IInverterDriver>();
+            // calibrateAxesInstance.SetInverterDriverInterface = (InverterDriver.InverterDriver)this.Container.Resolve<IInverterDriver>();
             positioningDrawerInstance.SetInverterDriverInterface = (InverterDriver.InverterDriver)this.Container.Resolve<IInverterDriver>();
 
             this.Container.RegisterInstance<IPositioningDrawer>(positioningDrawerInstance);
             this.Container.RegisterInstance<ICalibrateVerticalAxis>(calibrateVerticalAxisInstance);
+            // this.Container.RegisterInstance<ICalibrateAxes>(calibrateAxesInstance);
             this.Container.RegisterInstance<IDrawerWeightDetection>(drawerWeightDetection);
 
             positioningDrawerInstance.InitializeAction(this.Container);

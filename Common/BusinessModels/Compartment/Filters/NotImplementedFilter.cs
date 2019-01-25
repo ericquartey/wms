@@ -2,20 +2,11 @@
 
 namespace Ferretto.Common.BusinessModels
 {
-    public class NotImplementdFilter : IFilter
+    public class NotImplementedFilter : IFilter
     {
-        #region Fields
-
-        private static readonly Func<ICompartment, ICompartment, string> colorFunc = delegate (ICompartment compartment, ICompartment selected)
-        {
-            return "Gray";
-        };
-
-        #endregion Fields
-
         #region Properties
 
-        public Func<ICompartment, ICompartment, string> ColorFunc => colorFunc;
+        public Func<ICompartment, ICompartment, string> ColorFunc => (compartment, selected) => "Gray";
 
         public string Description => "Compartment";
 

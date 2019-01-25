@@ -15,6 +15,7 @@ namespace Ferretto.Common.Controls.Services
         #region Fields
 
         private static readonly List<ShortKey> MainKeys = new List<ShortKey>();
+
         private static readonly Dictionary<string, List<ShortKey>> ViewShortKeys = new Dictionary<string, List<ShortKey>>();
 
         #endregion Fields
@@ -43,14 +44,16 @@ namespace Ferretto.Common.Controls.Services
             if (shortKeyFound == null)
             {
                 shortKeyFound = Getkey(MainKeys, shortKey);
-                isMain = (shortKeyFound != null);
+                isMain = shortKeyFound != null;
             }
+
             return shortKeyFound;
         }
 
         public static void Initialize()
         {
-            // MAIN SHORTKEYS
+            #region ******* MAIN SHORTKEYS
+
             // ******* Main Menu *********
             MainKeys.Add(new ShortKey(Key.I, true, ModifierKeys.Control, (v) =>
             {
@@ -60,13 +63,14 @@ namespace Ferretto.Common.Controls.Services
             {
                 ServiceLocator.Current.GetInstance<INavigationService>().Appear(nameof(Utils.Modules.MasterData), Utils.Modules.MasterData.COMPARTMENTS);
             }));
-            // **************************
-            // ENDMAIN
+
+            #endregion ******* MAIN SHORTKEYS
 
             #region ******* LOGINVIEW
 
             var logiView = new List<ShortKey>();
-            logiView.Add(new ShortKey(Key.Enter, false, (v) => {
+            logiView.Add(new ShortKey(Key.Enter, false, (v) =>
+            {
                 if (v.ShortKey.Key == Key.Enter &&
                     LayoutTreeHelper.GetVisualParents(v.Element as UIElement).OfType<INavigableView>().FirstOrDefault() is WmsDialogView view &&
                     LayoutTreeHelper.GetVisualChildren(view).OfType<ActionBar>().FirstOrDefault() is ActionBar actionBar)
@@ -86,8 +90,6 @@ namespace Ferretto.Common.Controls.Services
             ViewShortKeys.Add(MvvmNaming.GetViewModelName(nameof(Utils.Modules.MasterData), Utils.Modules.MasterData.ITEMDETAILS), itemDetails);
 
             #endregion ******* ITEMDETAILS
-
-            // **************************
         }
 
         private static ShortKey Getkey(List<ShortKey> keys, ShortKey shortKey)

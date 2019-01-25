@@ -14,10 +14,15 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         public static readonly DependencyProperty StartModuleNameProperty = DependencyProperty.Register(nameof(StartModuleName), typeof(string), typeof(WmsHistoryView));
+
         public static readonly DependencyProperty StartViewNameProperty = DependencyProperty.Register(nameof(StartViewName), typeof(string), typeof(WmsHistoryView));
+
         private readonly INavigationService navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
+
         private readonly Stack<INavigableView> registeredViews = new Stack<INavigableView>();
+
         private ActionBar actionBarHsitoryView;
+
         private INavigableView viewToAdd;
 
         #endregion Fields
@@ -29,7 +34,8 @@ namespace Ferretto.Common.Controls
             this.InitializeComponent();
         }
 
-        public WmsHistoryView(INavigableView view) : this()
+        public WmsHistoryView(INavigableView view)
+            : this()
         {
             this.viewToAdd = view;
         }
@@ -82,6 +88,7 @@ namespace Ferretto.Common.Controls
             {
                 return null;
             }
+
             return ((FrameworkElement)this.Content).DataContext as INavigableViewModel;
         }
 
@@ -89,7 +96,7 @@ namespace Ferretto.Common.Controls
         {
             base.OnApplyTemplate();
 
-            this.actionBarHsitoryView = LayoutTreeHelper.GetVisualChildren(this as DependencyObject)
+            this.actionBarHsitoryView = LayoutTreeHelper.GetVisualChildren(this)
                 .OfType<ActionBar>()
                 .FirstOrDefault();
 
@@ -148,7 +155,7 @@ namespace Ferretto.Common.Controls
 
         private object GetParentWmsViewData()
         {
-            var parentWmsView = LayoutTreeHelper.GetVisualParents(this as DependencyObject)
+            var parentWmsView = LayoutTreeHelper.GetVisualParents(this)
                .OfType<WmsView>()
                .FirstOrDefault();
 

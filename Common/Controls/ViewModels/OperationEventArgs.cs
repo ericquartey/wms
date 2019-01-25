@@ -17,7 +17,7 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
-        public Boolean IsCanceled { get; }
+        public bool IsCanceled { get; }
 
         public IBusinessObject Model { get; }
 

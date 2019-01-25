@@ -4,14 +4,22 @@ namespace Ferretto.Common.Controls
 {
     public class TileNavMenuChildItem
     {
-        public string Info { get; set; }
-
-        public ObservableCollection<NavMenuItem> Children { get; set; }
+        #region Constructors
 
         public TileNavMenuChildItem(string parentInfo)
         {
             this.Info = parentInfo;
             this.Children = new ObservableCollection<NavMenuItem>();
         }
+
+        #endregion Constructors
+
+        #region Properties
+
+        public ObservableCollection<NavMenuItem> Children { get; set; }
+
+        public string Info { get; set; }
+
+        #endregion Properties
     }
 }

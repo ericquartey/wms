@@ -252,4 +252,7 @@
   <data name="UnableToSaveChanges" xml:space="preserve">
     <value>Impossibile salvare le modifiche.</value>
   </data>
+  <data name="UnableToLoadData" xml:space="preserve">
+    <value>Impossibile caricare i dati.</value>
+  </data>
 </root>

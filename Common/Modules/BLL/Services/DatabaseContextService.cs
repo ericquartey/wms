@@ -1,5 +1,4 @@
-﻿using Ferretto.Common.BusinessProviders;
-using Ferretto.Common.EF;
+﻿using Ferretto.Common.EF;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {

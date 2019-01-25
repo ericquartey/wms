@@ -30,9 +30,9 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public async Task<OperationResult> AddAsync(CompartmentType model, int? itemId, int? maxCapacity)
+        public async Task<OperationResult> AddAsync(CompartmentType model, int? itemId = null, int? maxCapacity = null)
         {
-            //TODO: Task 823
+            // TODO: Task 823
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
@@ -40,9 +40,9 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
-                using (var dataContext = this.dataContext.Current)
+                using (var dc = this.dataContext.Current)
                 {
-                    var compartmentType = dataContext.CompartmentTypes
+                    var compartmentType = dc.CompartmentTypes
                         .SingleOrDefault(ct =>
                             (ct.Width == model.Width && ct.Height == model.Height)
                             ||
@@ -50,13 +50,13 @@ namespace Ferretto.Common.BusinessProviders
 
                     if (compartmentType == null)
                     {
-                        var entry = dataContext.CompartmentTypes.Add(new DataModels.CompartmentType
+                        var entry = dc.CompartmentTypes.Add(new DataModels.CompartmentType
                         {
                             Height = model.Height,
                             Width = model.Width
                         });
 
-                        var changedEntitiesCount = await dataContext.SaveChangesAsync();
+                        var changedEntitiesCount = await dc.SaveChangesAsync();
                         if (changedEntitiesCount > 0)
                         {
                             compartmentType = entry.Entity;
@@ -80,7 +80,7 @@ namespace Ferretto.Common.BusinessProviders
 
                         if (result.Success)
                         {
-                            await dataContext.SaveChangesAsync();
+                            await dc.SaveChangesAsync();
                         }
                         else
                         {
@@ -102,30 +102,15 @@ namespace Ferretto.Common.BusinessProviders
             return this.AddAsync(model, null, null);
         }
 
-        public int Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
-        public IQueryable<CompartmentType> GetAll()
-        {
-            throw new NotImplementedException();
-        }
+        public IQueryable<CompartmentType> GetAll() => throw new NotSupportedException();
 
-        public int GetAllCount()
-        {
-            throw new NotImplementedException();
-        }
+        public int GetAllCount() => throw new NotSupportedException();
 
-        public Task<CompartmentType> GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<CompartmentType> GetByIdAsync(int id) => throw new NotSupportedException();
 
-        public Task<OperationResult> SaveAsync(CompartmentType model)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<OperationResult> SaveAsync(CompartmentType model) => throw new NotSupportedException();
 
         #endregion Methods
     }

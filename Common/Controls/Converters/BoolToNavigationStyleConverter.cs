@@ -11,7 +11,7 @@ namespace Ferretto.Common.Controls
     {
         #region Methods
 
-        public Object Convert(object value, Type targetType, Object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (targetType != typeof(GridViewNavigationStyle))
             {
@@ -23,14 +23,14 @@ namespace Ferretto.Common.Controls
             return enable ? GridViewNavigationStyle.Row : GridViewNavigationStyle.None;
         }
 
-        public Object ConvertBack(object value, Type targetType, Object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is GridViewNavigationStyle == false)
             {
                 throw new InvalidOperationException(Errors.ConverterCanConvertOnlyToNavigationStyleType);
             }
 
-            var enable = ((GridViewNavigationStyle)value == GridViewNavigationStyle.Row ? true : false);
+            var enable = (GridViewNavigationStyle)value == GridViewNavigationStyle.Row;
 
             return enable;
         }

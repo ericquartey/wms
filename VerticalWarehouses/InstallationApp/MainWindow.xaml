@@ -9,7 +9,6 @@
         Width="1024"
         Height="768"
         ResizeMode="NoResize"
-
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         mc:Ignorable="d">
@@ -44,47 +43,26 @@
                     BorderThickness="0">
                 <StackPanel FlowDirection="RightToLeft"
                             Orientation="Horizontal">
-                    <!--<ComboBox Name="userComboBox"
-                              Width="150"
-                              Margin="20,15,0,5"
-                              HorizontalContentAlignment="Right"
-                              VerticalContentAlignment="Center"
-                              FontSize="25"
-                              Foreground="{DynamicResource VWAPP_MainWindowUserComboBox_Foreground_Normal}"
-                              Style="{StaticResource IAPP_MainWindowUserComboBoxTemplate}">
-                        <ComboBoxItem Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
-                                      HorizontalAlignment="Center"
-                                      Background="{DynamicResource VWAPP_MainWindowUserComboBox_Background_Normal}"
-                                      Content="{x:Static res:InstallationApp.Installer}"
-                                      IsSelected="True"
-                                      Style="{StaticResource VWAPP_MainWindowUserComboBoxItemStyle}"
-                                      Template="{StaticResource VWAPP_MainWindowUserComboBoxItemTemplate}" />
-                        <ComboBoxItem Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
-                                      HorizontalAlignment="Center">
-                            <ComboBoxItem.Style>
-                                <Style TargetType="ComboBoxItem">
-                                    <Setter Property="Background" Value="{DynamicResource VWAPP_MainWindowUserComboBox_Background_Normal}" />
-                                    <Setter Property="Foreground" Value="{DynamicResource VWAPP_MainWindowUserComboBox_Foreground_Normal}" />
-                                    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_BodyFont}" />
-                                    <Setter Property="FontSize" Value="{DynamicResource VWAPP_MainWindowUserComboBox_FontSize_Normal}" />
-                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                    <Setter Property="VerticalContentAlignment" Value="Center" />
-                                </Style>
-                            </ComboBoxItem.Style>
-                            <custom:CustomControlMainWindowUserComboBoxItem Width="{Binding ElementName=userComboBox, Path=ActualWidth}"
-                                                                            Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
-                                                                            HorizontalAlignment="Center"
-                                                                            HorizontalContentAlignment="Center"
-                                                                            CustomCommand="{Binding BackToVWAPPCommand}"
-                                                                            LabelText="{x:Static res:InstallationApp.LogOff}" />
-                        </ComboBoxItem>
-                    </ComboBox>-->
+                    <Button Width="60"
+                            Height="60"
+                            Margin="5,0,0,0"
+                            Command="{Binding OpenHelpWindow}"
+                            VerticalContentAlignment="Center"
+                            Background="{DynamicResource VWAPP_BACKGROUND}"
+                            BorderBrush="{DynamicResource VWAPP_CustomMachineModeToggleButton_BorderBrush_Normal}"
+                            BorderThickness="1">
+                        <TextBlock FontSize="45"                                  
+                                   Foreground="{DynamicResource FerrettoPureWhite}"
+                                   TextAlignment="Center">
+                            ?
+                        </TextBlock>
+                    </Button>
                     <custom:CustomControlLoggedUser IsPopupOpen="{Binding IsPopupOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     LogOffCommand="{Binding BackToVWAPPCommand}"
                                                     OpenClosePopupCommand="{Binding OpenClosePopupCommand}"
                                                     UserText="Installer" />
                     <Image Height="30"
-                           Margin="2,10,20,2"
+                           Margin="2,10,20,12"
                            Source="/Ferretto.VW.CustomControls;Component/Assets/ic_account_circle_black_48dp.png" />
                     <custom:CustomMachineModeToggleButton Name="MachineModeControl"
                                                           CustomCommand="{Binding MachineModeCustomCommand}"
@@ -106,32 +84,17 @@
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
-            <Expander Grid.Column="1"
-                      IsExpanded="True"
-                      Style="{StaticResource WmsExpanderStyle}">
-                <ContentControl Name="InstallationPageRegionContentControl"
-                                Width="730"
-                                Height="610"
-                                Content="{Binding ContentRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            </Expander>
-            <Expander Grid.Column="0"
-                      Width="auto"
-                      Height="610"
-                      Margin="10,0,0,0"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Center"
-                      IsExpanded="{Binding IsNavigationButtonRegionExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      Style="{StaticResource WmsExpanderStyle}">
-                <ContentControl Name="InstallationPageNavigationButtonsRegionContentControl"
-                                Content="{Binding NavigationRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            </Expander>
+            <ContentControl Name="InstallationPageRegionContentControl"
+                            Grid.Column="1"
+                            Width="auto"
+                            Height="610"
+                            Content="{Binding ContentRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <ContentControl Name="InstallationPageNavigationButtonsRegionContentControl"
+                            Grid.Column="0"
+                            Height="610"
+                            Content="{Binding NavigationRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
-        <Expander Name="ExitViewButtonRegion"
-                  Grid.Row="2"
-                  Height="auto"
-                  IsExpanded="{Binding IsExitViewButtonRegionExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  Style="{StaticResource WmsExpanderStyle}">
-            <ContentControl Content="{Binding ExitViewButtonRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        </Expander>
+        <ContentControl Grid.Row="2"
+                        Content="{Binding ExitViewButtonRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>
 </Window>

@@ -30,6 +30,8 @@ namespace Ferretto.Common.BusinessModels
 
         private int? itemId;
 
+        private string itemMeasureUnit;
+
         private string loadingUnitCode;
 
         private int loadingUnitId;
@@ -110,8 +112,7 @@ namespace Ferretto.Common.BusinessModels
                 this[nameof(this.Stock)],
             }
             .Distinct()
-            .Where(s => !string.IsNullOrEmpty(s))
-        );
+            .Where(s => !string.IsNullOrEmpty(s)));
 
         [Display(Name = nameof(BusinessObjects.CompartmentFifoTime), ResourceType = typeof(BusinessObjects))]
         public int? FifoTime
@@ -166,6 +167,12 @@ namespace Ferretto.Common.BusinessModels
         {
             get => this.itemId;
             set => this.SetProperty(ref this.itemId, value);
+        }
+
+        public string ItemMeasureUnit
+        {
+            get => this.itemMeasureUnit;
+            set => this.SetProperty(ref this.itemMeasureUnit, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentLastHandlingDate), ResourceType = typeof(BusinessObjects))]
@@ -369,6 +376,7 @@ namespace Ferretto.Common.BusinessModels
                         {
                             return Errors.CompartmentYPositionIsNotSpecified;
                         }
+
                         break;
 
                     case nameof(this.Width):
@@ -394,6 +402,7 @@ namespace Ferretto.Common.BusinessModels
                         {
                             return Errors.CompartmentSizeIsNotSpecified;
                         }
+
                         break;
 
                     case nameof(this.MaxCapacity):
@@ -401,6 +410,7 @@ namespace Ferretto.Common.BusinessModels
                         {
                             return Errors.CompartmentStockGreaterThanMaxCapacity;
                         }
+
                         break;
 
                     case nameof(this.Stock):
@@ -408,6 +418,7 @@ namespace Ferretto.Common.BusinessModels
                         {
                             return Errors.CompartmentStockGreaterThanMaxCapacity;
                         }
+
                         break;
                 }
 

@@ -47,14 +47,13 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.bayId, value);
         }
 
-        public override string Error => String.Join(Environment.NewLine, new[]
+        public override string Error => string.Join(Environment.NewLine, new[]
             {
                 this[nameof(this.ItemDetails)],
                 this[nameof(this.AreaId)],
                 this[nameof(this.BayId)],
                 this[nameof(this.Quantity)],
-            }.Where(s => !String.IsNullOrEmpty(s))
-        );
+            }.Where(s => !string.IsNullOrEmpty(s)));
 
         [Display(Name = nameof(BusinessObjects.ItemWithdrawItem), ResourceType = typeof(BusinessObjects))]
         public ItemDetails ItemDetails
@@ -96,34 +95,38 @@ namespace Ferretto.Common.BusinessModels
                         if (this.areaId.HasValue == false ||
                             this.areaId.Value == 0)
                         {
-                            return Resources.BusinessObjects.ItemWithdrawAreaInvalidError;
+                            return BusinessObjects.ItemWithdrawAreaInvalidError;
                         }
+
                         break;
 
                     case nameof(this.BayId):
                         if (this.bayId.HasValue == false ||
                             this.bayId.Value == 0)
                         {
-                            return Resources.BusinessObjects.ItemWithdrawBayInvalidError;
+                            return BusinessObjects.ItemWithdrawBayInvalidError;
                         }
+
                         break;
 
                     case nameof(this.Quantity):
                         if (this.Quantity <= 0 || this.Quantity > this.ItemDetails?.TotalAvailable)
                         {
-                            return Resources.BusinessObjects.ItemWithdrawQuantityInvalidError;
+                            return BusinessObjects.ItemWithdrawQuantityInvalidError;
                         }
+
                         break;
 
                     case nameof(this.ItemDetails):
                         if (this.ItemDetails == null)
                         {
-                            return Resources.BusinessObjects.ItemWithdrawItemDetailsInvalidError;
+                            return BusinessObjects.ItemWithdrawItemDetailsInvalidError;
                         }
+
                         break;
                 }
 
-                return String.Empty;
+                return string.Empty;
             }
         }
 

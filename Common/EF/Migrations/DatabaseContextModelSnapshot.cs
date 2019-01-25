@@ -1142,11 +1142,19 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int?>("CompartmentId");
 
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("GETUTCDATE()");
+
                     b.Property<int?>("ItemId");
 
                     b.Property<int?>("ItemListId");
 
                     b.Property<int?>("ItemListRowId");
+
+                    b.Property<DateTime>("LastModificationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<int?>("LoadingUnitId");
 

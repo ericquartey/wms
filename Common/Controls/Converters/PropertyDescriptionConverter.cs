@@ -44,6 +44,7 @@ namespace Ferretto.Common.Controls
                 {
                     return null;
                 }
+
                 editControl = editCore.DataContext as FrameworkElement;
             }
 
@@ -52,8 +53,9 @@ namespace Ferretto.Common.Controls
                 return null;
             }
 
-            var bindingExpression = BindingOperations.GetBindingExpression(editControl,
-                                    this.Property);
+            var bindingExpression = BindingOperations.GetBindingExpression(
+                editControl,
+                this.Property);
 
             if (bindingExpression != null)
             {

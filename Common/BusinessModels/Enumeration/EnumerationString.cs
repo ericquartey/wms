@@ -15,6 +15,7 @@
         #region Properties
 
         public string Description { get; }
+
         public string Id { get; set; }
 
         #endregion Properties

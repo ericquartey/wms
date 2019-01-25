@@ -47,8 +47,7 @@ namespace Ferretto.Common.BusinessModels
                 this[nameof(this.Height)]
             }
           .Distinct()
-          .Where(s => !string.IsNullOrEmpty(s))
-      );
+          .Where(s => !string.IsNullOrEmpty(s)));
 
         [Display(Name = nameof(BusinessObjects.CompartmentHeight), ResourceType = typeof(BusinessObjects))]
         public int? Height
@@ -192,6 +191,7 @@ namespace Ferretto.Common.BusinessModels
                         {
                             return Errors.CompartmentBulkMustHaveAtLeastOneRow;
                         }
+
                         break;
 
                     case nameof(this.Columns):
@@ -199,6 +199,7 @@ namespace Ferretto.Common.BusinessModels
                         {
                             return Errors.CompartmentBulkMustHaveAtLeastOneColumn;
                         }
+
                         break;
 
                     default:
@@ -244,7 +245,7 @@ namespace Ferretto.Common.BusinessModels
                     }
                     else
                     {
-                        throw new Exception(Errors.BulkAddNoPossible);
+                        throw new InvalidOperationException(Errors.BulkAddNoPossible);
                     }
                 }
             }

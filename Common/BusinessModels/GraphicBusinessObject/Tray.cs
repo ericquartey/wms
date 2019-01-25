@@ -69,7 +69,7 @@ namespace Ferretto.Common.BusinessModels
             var error = false;
             foreach (var compartment in compartmentDetails)
             {
-                //TODO: extreme check on compartment:
+                // TODO: extreme check on compartment:
                 //  1) bigger than tray
                 //  2) over tray position
                 this.compartments.Add(compartment);
@@ -83,7 +83,7 @@ namespace Ferretto.Common.BusinessModels
 
         public bool CanAddCompartment(ICompartment compartmentDetails, bool edit = false)
         {
-            //CHECK: exit from window
+            // CHECK: exit from window
             var xPositionFinal = compartmentDetails.XPosition + compartmentDetails.Width;
             var yPositionFinal = compartmentDetails.YPosition + compartmentDetails.Height;
             if (xPositionFinal > this.Dimension.Width || yPositionFinal > this.Dimension.Height)
@@ -97,12 +97,14 @@ namespace Ferretto.Common.BusinessModels
                 {
                     break;
                 }
+
                 var areCollisions = this.HasCollision(compartmentDetails, compartment);
                 if (areCollisions)
                 {
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -118,15 +120,18 @@ namespace Ferretto.Common.BusinessModels
         private CompartmentDetails ConvertBulkCompartmentToCompartmentDetails(BulkCompartment bulk)
         {
             var compartment = new CompartmentDetails();
-            int row = 1, column = 1;
+            int row = 1;
+            int column = 1;
             if (bulk.Rows != 0)
             {
                 row = bulk.Rows;
             }
+
             if (bulk.Columns != 0)
             {
                 column = bulk.Columns;
             }
+
             compartment.Width = bulk.Width * column;
             compartment.Height = bulk.Height * row;
             compartment.XPosition = bulk.XPosition;
@@ -139,7 +144,7 @@ namespace Ferretto.Common.BusinessModels
         /// </summary>
         /// <returns>
         /// True if the specified compartments are overlapping, False otherwise.
-        /// <returns>
+        /// </returns>
         private bool HasCollision(ICompartment compartmentA, ICompartment compartmentB)
         {
             var xAPositionFinal = compartmentA.XPosition + compartmentA.Width;
@@ -147,30 +152,35 @@ namespace Ferretto.Common.BusinessModels
 
             var xBPositionFinal = compartmentB.XPosition + compartmentB.Width;
             var yBPositionFinal = compartmentB.YPosition + compartmentB.Height;
-            //A: Top-Left
+
+            // A: Top-Left
             if (compartmentA.XPosition >= compartmentB.XPosition && compartmentA.XPosition < xBPositionFinal
                 && compartmentA.YPosition >= compartmentB.YPosition && compartmentA.YPosition < yBPositionFinal)
             {
                 return true;
             }
-            //B: Top-Right
+
+            // B: Top-Right
             if (xAPositionFinal > compartmentB.XPosition && xAPositionFinal <= xBPositionFinal
                 && compartmentA.YPosition >= compartmentB.YPosition && compartmentA.YPosition < yBPositionFinal)
             {
                 return true;
             }
-            //C: Bottom-Left
+
+            // C: Bottom-Left
             if (compartmentA.XPosition >= compartmentB.XPosition && compartmentA.XPosition < xBPositionFinal
                 && yAPositionFinal > compartmentB.YPosition && yAPositionFinal <= yBPositionFinal)
             {
                 return true;
             }
-            //D: Bottom-Right
+
+            // D: Bottom-Right
             if (xAPositionFinal > compartmentB.XPosition && xAPositionFinal <= xBPositionFinal
                 && yAPositionFinal > compartmentB.YPosition && yAPositionFinal <= yBPositionFinal)
             {
                 return true;
             }
+
             return false;
         }
 

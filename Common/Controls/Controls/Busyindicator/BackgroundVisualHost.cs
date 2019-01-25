@@ -21,9 +21,9 @@ namespace Ferretto.Common.Controls
             typeof(BackgroundVisualHost),
             new FrameworkPropertyMetadata(false, OnIsContentShowingChanged));
 
-        private HostVisual hostVisual = null;
+        private HostVisual hostVisual;
 
-        private ThreadedVisualHelper threadedHelper = null;
+        private ThreadedVisualHelper threadedHelper;
 
         #endregion Fields
 
