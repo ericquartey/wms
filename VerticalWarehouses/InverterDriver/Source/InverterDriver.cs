@@ -21,49 +21,87 @@ namespace Ferretto.VW.InverterDriver
         #region Fields
 
         public const int BITS_16 = 16;
+
         public const int HEARTBEAT_TIMEOUT = 300;
+
         public const int HEARTBIT = 14;
+
         public const string IP_ADDR_INVERTER_DEFAULT = "169.254.231.248";
+
         public const int PORT_ADDR_INVERTER_DEFAULT = 17221;
+
         public ActionType CurrentActionType;
+
         private static readonly object lockFlags = new object();
+
         private static readonly object lockObj = new object();
+
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly InverterDriverState state;
+
         private int ActualPositionHorizontalShaft;
+
         private int ActualPositionVerticalShaft;
+
         private Request[] BaseRequestArray;
+
         private bool BrakeResistanceOvertemperature;
+
         private BitArray CtrlWord;
+
         private Request currentRequest;
+
         private bool EmergencyStop;
+
         private bool enableUpdateCurrentPositionHorizontalShaftMode;
+
         private bool enableUpdateCurrentPositionVerticalShaftMode;
+
         private bool errorReceivedTelegram;
+
         private AutoResetEvent eventToSendPacket;
 
-        private bool executeRequestOnRunning;
         private bool getStatusWordValue;
+
         private bool HeartBeat;
+
         private HardwareInverterStatus hwInverterState;
+
         private int IndexOfBaseRequest;
+
         private bool PawlSensorZero;
+
         private long perfFrequency;
+
+        private long perfHeartBeatTime;
+
+        private long perfTimeGetActualPosition;
+
         private long perfTimeOnReceivingTelegram;
+
         private long perfTimeOnSendingTelegram;
+
         private RegisteredWaitHandle regWaitForMainThread;
+
         private List<Request> RequestList;
+
         private object retParameterValue;
 
         private Socket sckClient;
 
         private BitArray StatusWord;
+
         private AutoResetEvent Terminate_HeartBeat;
+
         private Thread thrdHeartBeat;
+
         private long TimeSendingHeartBeatPacket;
+
         private long TimeSendingPacket;
+
         private bool UdcPresenceCradleMachine;
+
         private bool UdcPresenceCradleOperator;
 
         #endregion Fields
@@ -342,7 +380,6 @@ namespace Ferretto.VW.InverterDriver
             logger.Log(LogLevel.Debug, String.Format("InverterDriver initializing..."));
 
             QueryPerformanceFrequency(out this.perfFrequency);
-            this.executeRequestOnRunning = false;
 
             // Create the base requests array (for internal requests)
             this.BaseRequestArray = new Request[3];
@@ -351,7 +388,7 @@ namespace Ferretto.VW.InverterDriver
             this.BaseRequestArray[2] = new Request(TypeOfRequest.SendRequest, ParameterID.ACTUAL_POSITION_SHAFT, RequestSource.Internal, 0x00, 0x05, ValueDataType.Int32, null);
 
             this.getStatusWordValue = false;
-            this.enableUpdateCurrentPositionVerticalShaftMode = true; //false;
+            this.enableUpdateCurrentPositionVerticalShaftMode = false;
             this.enableUpdateCurrentPositionHorizontalShaftMode = false;
             this.IndexOfBaseRequest = -1;
 
@@ -426,9 +463,23 @@ namespace Ferretto.VW.InverterDriver
 
                         case ParameterID.ACTUAL_POSITION_SHAFT:
                             {
-                                lock (lockObj)
+                                var dTime_ms = (int)(((double)(this.perfTimeOnReceivingTelegram - this.perfTimeGetActualPosition) * 1000) / this.perfFrequency);
+                                this.perfTimeGetActualPosition = this.perfTimeOnReceivingTelegram;
+                                //logger.Log(LogLevel.Debug, String.Format(" --> Get actual position: dTime = {0} ms", dTime_ms));
+
+                                if (this.CurrentActionType == ActionType.PositioningDrawer)
                                 {
-                                    this.ActualPositionVerticalShaft = Convert.ToInt32(this.retParameterValue);
+                                    lock (lockObj)
+                                    {
+                                        this.ActualPositionVerticalShaft = Convert.ToInt32(this.retParameterValue);
+                                    }
+                                }
+                                else
+                                {
+                                    lock (lockObj)
+                                    {
+                                        this.ActualPositionHorizontalShaft = Convert.ToInt32(this.retParameterValue);
+                                    }
                                 }
 
                                 break;
@@ -459,6 +510,7 @@ namespace Ferretto.VW.InverterDriver
                                 break;
                             }
                         case ActionType.PositioningDrawer:
+                        case ActionType.HorizontalMoving:
                             {
                                 if (this.currentRequest.Type == TypeOfRequest.SendRequest && this.currentRequest.Source == RequestSource.External) { EnquiryTelegramDone_PositioningDrawer?.Invoke(this, new EnquiryTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType)); }
                                 if (this.currentRequest.Type == TypeOfRequest.SettingRequest && this.currentRequest.Source == RequestSource.External) { SelectTelegramDone_PositioningDrawer?.Invoke(this, new SelectTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType)); }
@@ -472,11 +524,6 @@ namespace Ferretto.VW.InverterDriver
                 {
                     // if we are here, an error occurs
                     // and so we have to manage it
-                }
-
-                lock (lockObj)
-                {
-                    this.executeRequestOnRunning = false;
                 }
 
                 this.eventToSendPacket?.Set();
@@ -790,6 +837,12 @@ namespace Ferretto.VW.InverterDriver
 
                     case WaitHandle.WaitTimeout:
                         {
+                            QueryPerformanceCounter(out var t);
+                            var offsetTime_ms = (int)(((double)(t - this.perfHeartBeatTime) * 1000) / this.perfFrequency);
+                            this.perfHeartBeatTime = t;
+
+                            //logger.Log(LogLevel.Debug, String.Format("Heart Beat dwTime = {0} ms", offsetTime_ms));
+
                             lock (lockObj)
                             {
                                 this.HeartBeat = true;
@@ -814,24 +867,44 @@ namespace Ferretto.VW.InverterDriver
             this.TimeSendingPacket = t;
 
             var isHeartBeat = false;
+
+            /* // Actually the heart beat is disabled
             lock (lockObj)
             {
                 isHeartBeat = this.HeartBeat;
             }
+            */
 
             // Send a request
             if (isHeartBeat)
             {
                 var offsetTime_HeartBeat = (int)(((double)(t - this.TimeSendingHeartBeatPacket) * 1000) / this.perfFrequency);
+
+                // Just wait in order to ensure HEARTBEAT_TIMEOUT time elapsed from the previous HeartBeat operation (inverter heart beat feature)
+                if (offsetTime_HeartBeat < HEARTBEAT_TIMEOUT)
+                {
+                    Thread.Sleep(HEARTBEAT_TIMEOUT - offsetTime_HeartBeat);
+                    QueryPerformanceCounter(out t);
+                    offsetTime_HeartBeat = (int)(((double)(t - this.TimeSendingHeartBeatPacket) * 1000) / this.perfFrequency);
+                }
                 this.TimeSendingHeartBeatPacket = t;
 
-                var bytes = BitArrayToByteArray(this.CtrlWord);
-                //var value = BitConverter.ToInt16(bytes, 0);
+                var ctrlWTmp = new BitArray(BITS_16);
+                lock (lockObj)
+                {
+                    ctrlWTmp = this.CtrlWord;
+                }
+
+                var bytes = BitArrayToByteArray(ctrlWTmp);
                 var value = BitConverter.ToUInt16(bytes, 0);
                 this.currentRequest = new Request(TypeOfRequest.SettingRequest, ParameterID.CONTROL_WORD_PARAM, RequestSource.Internal, 0x00, 0x05, ValueDataType.UInt16, value);
-                this.CtrlWord.Set(HEARTBIT, !this.CtrlWord.Get(HEARTBIT));
 
-                //logger.Log(LogLevel.Debug, String.Format("Send HeartBeat. Time elapsed: {0}", offsetTime_HeartBeat));
+                lock (lockObj)
+                {
+                    this.CtrlWord.Set(HEARTBIT, !ctrlWTmp.Get(HEARTBIT));
+                }
+
+                // logger.Log(LogLevel.Debug, String.Format("Send HeartBeat. Time elapsed: {0}", offsetTime_HeartBeat));
             }
             else
             {
@@ -845,7 +918,7 @@ namespace Ferretto.VW.InverterDriver
                         this.RequestList.RemoveAt(0);
                     }
 
-                    logger.Log(LogLevel.Debug, String.Format("Send External Request Size of List: {0} Time elapsed: {1}", this.RequestList.Count, offsetTime_ms));
+                    //logger.Log(LogLevel.Debug, String.Format("Send External Request Size of List: {0} Time elapsed: {1}", this.RequestList.Count, offsetTime_ms));
                 }
                 else
                 {
@@ -905,12 +978,6 @@ namespace Ferretto.VW.InverterDriver
 
             // Send the telegram related to the current request to inverter
             this.sendDataToInverter(telegramToSend);
-
-            // Update the flag
-            lock (lockObj)
-            {
-                this.executeRequestOnRunning = true;
-            }
         }
 
         /// <summary>
