@@ -200,10 +200,6 @@
     <Resource Include="favicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Resources\Ferretto.Common.Resources.csproj">
-      <Project>{ec02d26c-f149-496c-bc7c-75d229b4333f}</Project>
-      <Name>Ferretto.Common.Resources</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ActionBlocks\ActionBlocks.csproj">
       <Project>{ecdc6d6c-e5d2-4ec3-9aac-6336c2048fff}</Project>
       <Name>ActionBlocks</Name>
@@ -235,6 +231,10 @@
     <ProjectReference Include="..\RemoteIODriver\RemoteIODriver.csproj">
       <Project>{65b277ef-77fd-4a89-b550-086df53be54c}</Project>
       <Name>RemoteIODriver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Resources\Ferretto.VW.Resources.csproj">
+      <Project>{d335ebc4-93f7-4db4-afdf-2fa4db9678fe}</Project>
+      <Name>Ferretto.VW.Resources</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utils\Utils.csproj">
       <Project>{eaeeeb73-e9e7-4cdf-b100-a433a33562e3}</Project>

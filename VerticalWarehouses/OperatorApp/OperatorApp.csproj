@@ -205,10 +205,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Resources\Ferretto.Common.Resources.csproj">
-      <Project>{ec02d26c-f149-496c-bc7c-75d229b4333f}</Project>
-      <Name>Ferretto.Common.Resources</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CustomControls\CustomControls.csproj">
       <Project>{3c8a3855-897a-4395-bf65-d9d597896a3e}</Project>
       <Name>CustomControls</Name>
@@ -216,6 +212,10 @@
     <ProjectReference Include="..\Navigation\Navigation.csproj">
       <Project>{8f34417e-3c32-4694-91af-b286fbf0e1ac}</Project>
       <Name>Navigation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Resources\Ferretto.VW.Resources.csproj">
+      <Project>{d335ebc4-93f7-4db4-afdf-2fa4db9678fe}</Project>
+      <Name>Ferretto.VW.Resources</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utils\Utils.csproj">
       <Project>{eaeeeb73-e9e7-4cdf-b100-a433a33562e3}</Project>
