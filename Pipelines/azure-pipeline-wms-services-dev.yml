@@ -30,9 +30,10 @@ steps:
     projects: '$(RestoreBuildProjects)'
     feedsToUse: config
     nugetConfigPath: nuget.config
-    
 
-- template: azure-pipeline-assembly-versioning-template.yml
+
+# TODO: uncomment this template when this bug is solved: https://github.com/GitTools/GitVersion/issues/1483
+# - template: azure-pipeline-assembly-versioning-template.yml
 
 
 - task: DotNetCoreCLI@2
