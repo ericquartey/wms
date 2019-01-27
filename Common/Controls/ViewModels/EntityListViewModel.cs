@@ -133,7 +133,7 @@ namespace Ferretto.Common.Controls
             this.SelectedFilterDataSource = oldFilterDataSource;
         }
 
-        public async Task UpdateFilterTilesCountsAsync()
+        public virtual async Task UpdateFilterTilesCountsAsync()
         {
             await Task.Run(() =>
             {
