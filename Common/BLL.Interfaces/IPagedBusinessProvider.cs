@@ -20,6 +20,8 @@ namespace Ferretto.Common.BLL.Interfaces
           string where = null,
           string search = null);
 
+        Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName);
+
         #endregion Methods
     }
 }
