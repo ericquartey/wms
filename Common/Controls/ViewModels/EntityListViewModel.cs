@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Resources;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
@@ -90,9 +88,6 @@ namespace Ferretto.Common.Controls
         public ICommand RefreshCommand => this.refreshCommand ??
                (this.refreshCommand = new DelegateCommand(
                this.ExecuteRefreshCommand));
-
-        [Display(Name = nameof(DesktopApp.SearchLabel), ResourceType = typeof(DesktopApp))]
-        public string SearchText { get; set; }
 
         public virtual Tile SelectedFilter
         {
