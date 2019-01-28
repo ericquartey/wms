@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RootNamespace>Ferretto.VW.MAS_AutomationService</RootNamespace>
+    <AssemblyName>Ferretto.VW.MAS_AutomationService</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
