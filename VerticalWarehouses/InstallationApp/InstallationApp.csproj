@@ -47,6 +47,7 @@
     <None Remove="CellsControlHelpView.xaml" />
     <None Remove="HelpWindows\BeltBurnishingHelpView.xaml" />
     <None Remove="HelpWindows\HelpMainWindow.xaml" />
+    <None Remove="HelpWindows\HelpPageBase.xaml" />
     <None Remove="MainWindowBackToIAPPButtonView.xaml" />
     <None Remove="ViewsAndViewModels\LowSpeedMovements\LSMTMainView.xaml" />
     <None Remove="ViewsAndViewModels\MainWindowBackToIAPPButtonView.xaml" />
@@ -72,6 +73,12 @@
     <ProjectReference Include="..\MathLib\MathLib.csproj" />
     <ProjectReference Include="..\Navigation\Navigation.csproj" />
     <ProjectReference Include="..\Utils\Utils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="HelpWindows\HelpPageBase.xaml.cs">
+      <DependentUpon>HelpPageBase.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
