@@ -380,12 +380,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Resources\Ferretto.Common.Resources.csproj">
-      <Project>{ec02d26c-f149-496c-bc7c-75d229b4333f}</Project>
-      <Name>Ferretto.Common.Resources</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Assets\ferretto_logo_light.png" />
   </ItemGroup>
   <ItemGroup>
@@ -397,6 +391,12 @@
     <Resource Include="Assets\ferrettogrouplogo_light.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Resources\Ferretto.VW.Resources.csproj">
+      <Project>{d335ebc4-93f7-4db4-afdf-2fa4db9678fe}</Project>
+      <Name>Ferretto.VW.Resources</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

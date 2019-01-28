@@ -1,0 +1,77 @@
+resources:
+- repo: self
+  fetchDepth: 15
+
+queue:
+  name: Hosted Ubuntu 1604
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - develop
+  paths:
+    exclude:
+    - VerticalWarehouses
+    - WMS\App
+
+variables:
+  BuildConfiguration: 'Debug'
+  RestoreBuildProjects: 'WMS/@(Scheduler|Data)/**/*.csproj'
+  TestProjects: 'WMS/@(Scheduler|Data)/**/*.Tests.csproj'
+  TargetFramework: 'netcoreapp2.1'
+
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: Restore
+  inputs:
+    command: restore
+    projects: '$(RestoreBuildProjects)'
+    feedsToUse: config
+    nugetConfigPath: nuget.config
+
+
+# TODO: uncomment this template when this bug is solved: https://github.com/GitTools/GitVersion/issues/1483
+# - template: azure-pipeline-assembly-versioning-template.yml
+
+
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    projects: '$(RestoreBuildProjects)'
+    arguments: '--configuration $(BuildConfiguration) --framework $(TargetFramework)'
+
+
+- task: DotNetCoreCLI@2
+  displayName: Test
+  inputs:
+    command: test
+    projects: '$(TestProjects)'
+    arguments: '--configuration $(BuildConfiguration)'
+
+
+- task: DotNetCoreCLI@2
+  displayName: Publish
+  inputs:
+    command: publish
+    publishWebProjects: false
+    projects: '$(RestoreBuildProjects)'
+    arguments: '--configuration $(BuildConfiguration) --framework $(TargetFramework) --no-build --no-restore'
+    zipAfterPublish: false
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Scheduler Service'
+  inputs:
+    PathtoPublish: 'WMS/Scheduler/WebAPI/bin/$(BuildConfiguration)/$(TargetFramework)/win7-x64/publish'
+    ArtifactName: 'scheduler_service'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Data Service'
+  inputs:
+    PathtoPublish: 'WMS/Data/WebAPI/bin/$(BuildConfiguration)/$(TargetFramework)/win7-x64/publish'
+    ArtifactName: 'data_service'
+
+

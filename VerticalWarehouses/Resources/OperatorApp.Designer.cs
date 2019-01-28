@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Ferretto.Common.Resources {
+namespace Ferretto.VW.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Ferretto.Common.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.Common.Resources.OperatorApp", typeof(OperatorApp).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.VW.Resources.OperatorApp", typeof(OperatorApp).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

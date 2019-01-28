@@ -1,5 +1,4 @@
-﻿using Ferretto.Common.BusinessModels;
-using Ferretto.Common.Controls;
+﻿using Ferretto.Common.Controls;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
@@ -13,5 +12,18 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         #endregion Constructors
+
+        #region Methods
+
+        private void FilterEditor_FilterChanged(object sender, DevExpress.Xpf.Core.FilteringUI.FilterChangedEventArgs e)
+        {
+            if (this.DataContext is ItemsViewModel viewModel)
+            {
+                viewModel.CustomFilter = e.Filter;
+                e.Handled = true;
+            }
+        }
+
+        #endregion Methods
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
@@ -13,12 +12,6 @@ namespace Ferretto.Common.BusinessProviders
     public class ItemProvider : IItemProvider
     {
         #region Fields
-
-        private static readonly Expression<Func<DataModels.Item, bool>> AClassFilter =
-            item => item.AbcClassId == "A";
-
-        private static readonly Expression<Func<DataModels.Item, bool>> FifoFilter =
-            item => item.ManagementType == DataModels.ItemManagementType.FIFO;
 
         private readonly IDatabaseContextService dataContext;
 
@@ -54,7 +47,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<Item> GetAll()
         {
-            return GetAllItemsWithAggregations(this.dataContext.Current);
+            throw new NotSupportedException();
         }
 
         public async Task<IEnumerable<Item>> GetAllAsync(
@@ -101,10 +94,12 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllCount()
         {
-            using (var dc = this.dataContext.Current)
-            {
-                return dc.Items.AsNoTracking().Count();
-            }
+            throw new NotSupportedException();
+        }
+
+        public async Task<int> GetAllCountAsync(string where = null, string search = null)
+        {
+            return await this.itemsDataService.GetAllCountAsync(where, search);
         }
 
         public IQueryable<AllowedItemInCompartment> GetAllowedByCompartmentId(int compartmentId)
@@ -183,32 +178,15 @@ namespace Ferretto.Common.BusinessProviders
             return itemDetails;
         }
 
-        public IQueryable<Item> GetWithAClass()
+        public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
-            return GetAllItemsWithAggregations(this.dataContext.Current, AClassFilter);
-        }
-
-        public int GetWithAClassCount()
-        {
-            using (var dc = this.dataContext.Current)
+            if (string.IsNullOrWhiteSpace(propertyName))
             {
-                return dc.Items.AsNoTracking().Count(AClassFilter);
+                throw new ArgumentException(
+                    Resources.Errors.ParameterCannotBeNullOrWhitespace, nameof(propertyName));
             }
-        }
 
-        public IQueryable<Item> GetWithFifo()
-        {
-            return GetAllItemsWithAggregations(this.dataContext.Current, FifoFilter);
-        }
-
-        public int GetWithFifoCount()
-        {
-            using (var dc = this.dataContext.Current)
-            {
-                return dc.Items
-                    .AsNoTracking()
-                    .Count(FifoFilter);
-            }
+            return await this.itemsDataService.GetUniqueValuesAsync(propertyName);
         }
 
         public bool HasAnyCompartments(int itemId)
@@ -228,7 +206,32 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
-                await this.itemsDataService.UpdateAsync(null);
+                await this.itemsDataService.UpdateAsync(new WMS.Data.WebAPI.Contracts.Item
+                {
+                    AbcClassId = model.AbcClassId,
+                    AverageWeight = model.AverageWeight,
+                    Code = model.Code,
+                    Description = model.Description,
+                    FifoTimePick = model.FifoTimePick,
+                    FifoTimeStore = model.FifoTimeStore,
+                    Height = model.Height,
+                    Id = model.Id,
+                    Image = model.Image,
+                    InventoryDate = model.InventoryDate,
+                    InventoryTolerance = model.InventoryTolerance,
+                    ItemCategoryId = model.ItemCategoryId,
+                    LastPickDate = model.LastPickDate,
+                    LastStoreDate = model.LastStoreDate,
+                    Length = model.Length,
+                    ManagementType = (WMS.Data.WebAPI.Contracts.ItemManagementType)model.ManagementType,
+                    MeasureUnitId = model.MeasureUnitId,
+                    Note = model.Note,
+                    PickTolerance = model.PickTolerance,
+                    ReorderPoint = model.ReorderPoint,
+                    ReorderQuantity = model.ReorderQuantity,
+                    StoreTolerance = model.StoreTolerance,
+                    Width = model.Width
+                });
 
                 return new OperationResult(true);
             }
@@ -268,72 +271,6 @@ namespace Ferretto.Common.BusinessProviders
             {
                 return new OperationResult(ex);
             }
-        }
-
-        private static IQueryable<Item> GetAllItemsWithAggregations(DatabaseContext context, Expression<Func<DataModels.Item, bool>> whereFunc = null)
-        {
-            var actualWhereFunc = whereFunc ?? ((i) => true);
-
-            return context.Items
-               .AsNoTracking()
-               .Include(i => i.AbcClass)
-               .Include(i => i.ItemCategory)
-               .Include(i => i.MeasureUnit)
-               .Where(actualWhereFunc)
-               .GroupJoin(
-                   context.Compartments
-                       .AsNoTracking()
-                       .Where(c => c.ItemId != null)
-                       .GroupBy(c => c.ItemId)
-                       .Select(j => new
-                       {
-                           ItemId = j.Key,
-                           TotalStock = j.Sum(x => x.Stock),
-                           TotalReservedForPick = j.Sum(x => x.ReservedForPick),
-                           TotalReservedToStore = j.Sum(x => x.ReservedToStore)
-                       }),
-                   i => i.Id,
-                   c => c.ItemId,
-                   (i, c) => new
-                   {
-                       Item = i,
-                       CompartmentsAggregation = c
-                   })
-               .SelectMany(
-                   temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
-                   (a, b) => new Item
-                   {
-                       Id = a.Item.Id,
-                       AbcClassDescription = a.Item.AbcClass.Description,
-                       AverageWeight = a.Item.AverageWeight,
-                       CreationDate = a.Item.CreationDate,
-                       FifoTimePick = a.Item.FifoTimePick,
-                       FifoTimeStore = a.Item.FifoTimeStore,
-                       Height = a.Item.Height,
-                       Image = a.Item.Image,
-                       InventoryDate = a.Item.InventoryDate,
-                       InventoryTolerance = a.Item.InventoryTolerance,
-                       ManagementTypeDescription = a.Item.ManagementType.ToString(), // TODO change
-                       ItemCategoryDescription = a.Item.ItemCategory.Description,
-                       LastModificationDate = a.Item.LastModificationDate,
-                       LastPickDate = a.Item.LastPickDate,
-                       LastStoreDate = a.Item.LastStoreDate,
-                       Length = a.Item.Length,
-                       MeasureUnitDescription = a.Item.MeasureUnit.Description,
-                       PickTolerance = a.Item.PickTolerance,
-                       ReorderPoint = a.Item.ReorderPoint,
-                       ReorderQuantity = a.Item.ReorderQuantity,
-                       StoreTolerance = a.Item.StoreTolerance,
-                       Width = a.Item.Width,
-                       Code = a.Item.Code,
-                       Description = a.Item.Description,
-                       TotalReservedForPick = b != null ? b.TotalReservedForPick : 0,
-                       TotalReservedToStore = b != null ? b.TotalReservedToStore : 0,
-                       TotalStock = b != null ? b.TotalStock : 0,
-                       TotalAvailable = b != null
-                           ? (b.TotalStock + b.TotalReservedToStore - b.TotalReservedForPick)
-                           : 0,
-                   });
         }
 
         #endregion Methods

@@ -21,7 +21,8 @@ namespace Ferretto.VW.InstallationApp
         private bool enableStartButton = true;
         private bool isStopButtonActive;
         private string lowerBound;
-        private string noteString = Common.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
+
+        private string noteString = Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
         private string offset;
         private bool originProcedureCanceled;
         private string resolution;
@@ -103,7 +104,7 @@ namespace Ferretto.VW.InstallationApp
         {
             this.EnableStartButton = true;
             this.IsStopButtonActive = false;
-            this.NoteString = Common.Resources.InstallationApp.SetOriginVerticalAxisCompleted;
+            this.NoteString = Resources.InstallationApp.SetOriginVerticalAxisCompleted;
         }
 
         private void CheckInputsCorrectness()
@@ -143,14 +144,14 @@ namespace Ferretto.VW.InstallationApp
                 this.IsStopButtonActive = true;
 
                 this.calibrateVerticalAxis.ThrowEndEvent += this.Calibration;
-                this.NoteString = Common.Resources.InstallationApp.VerticalAxisCalibrating;
+                this.NoteString = Resources.InstallationApp.VerticalAxisCalibrating;
                 this.calibrateVerticalAxis.SetVAxisOrigin(m, ofs, vFast, vCreep);
             }
         }
 
         private void StopButtonMethod()
         {
-            this.NoteString = Common.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
+            this.NoteString = Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
             this.originProcedureCanceled = true;
         }
 

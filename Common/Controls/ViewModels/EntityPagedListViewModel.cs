@@ -16,20 +16,43 @@ namespace Ferretto.Common.Controls
 
         private const int DefaultPageSize = 30;
 
+        private CriteriaOperator customFilter;
+
         private object dataSource;
 
-        private CriteriaOperator fixedFilter;
+        private CriteriaOperator overallFilter;
 
         private IPagedBusinessProvider<TModel> provider;
+
+        private string searchText;
 
         #endregion Fields
 
         #region Properties
 
-        public CriteriaOperator FixedFilter
+        /// <summary>
+        /// Gets or sets the filter set by the filter editor.
+        /// </summary>
+        public CriteriaOperator CustomFilter
         {
-            get => this.fixedFilter;
-            set => this.SetProperty(ref this.fixedFilter, value);
+            get => this.customFilter;
+            set
+            {
+                if (this.SetProperty(ref this.customFilter, value))
+                {
+                    this.ComputeOverallFilter();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the fixed filter of the grid.
+        /// It is used to filter the data based on the filter tiles.
+        /// </summary>
+        public CriteriaOperator OverallFilter
+        {
+            get => this.overallFilter;
+            set => this.SetProperty(ref this.overallFilter, value);
         }
 
         public IPagedBusinessProvider<TModel> Provider
@@ -44,6 +67,18 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        public string SearchText
+        {
+            get => this.searchText;
+            set
+            {
+                if (this.SetProperty(ref this.searchText, value))
+                {
+                    this.ComputeOverallFilter();
+                }
+            }
+        }
+
         public override Tile SelectedFilter
         {
             get => this.selectedFilterTile;
@@ -51,10 +86,7 @@ namespace Ferretto.Common.Controls
             {
                 if (this.SetProperty(ref this.selectedFilterTile, value))
                 {
-                    var filterDataSource = this.FilterDataSources.Single(d => d.Key == value.Key);
-
-                    this.Provider = filterDataSource.Provider;
-                    this.FixedFilter = filterDataSource.Expression != null ? CriteriaOperator.Parse(filterDataSource.Expression) : null;
+                    this.ComputeOverallFilter();
                 }
             }
         }
@@ -68,6 +100,28 @@ namespace Ferretto.Common.Controls
         #endregion Properties
 
         #region Methods
+
+        public override async Task UpdateFilterTilesCountsAsync()
+        {
+            foreach (var filterTile in this.Filters)
+            {
+                var filterDataSource = this.FilterDataSources.Single(d => d.Key == filterTile.Key);
+
+                if (filterDataSource.Provider != null)
+                {
+                    string whereExpression = null;
+
+                    if (filterDataSource.Expression != null)
+                    {
+                        whereExpression = CriteriaOperator.Parse(filterDataSource.Expression)
+                            .BuildExpression()
+                            .ToString();
+                    }
+
+                    filterTile.Count = await filterDataSource.Provider.GetAllCountAsync(whereExpression);
+                }
+            }
+        }
 
         protected override void OnDispose()
         {
@@ -119,18 +173,39 @@ namespace Ferretto.Common.Controls
             return e.SortOrder.Select(s => new SortOption(s.PropertyName, s.Direction));
         }
 
-        private static void GetUniqueValues(GetUniqueValuesAsyncEventArgs e)
+        private void ComputeOverallFilter()
         {
-            var propertyInfo = typeof(TModel).GetProperty(e.PropertyName);
-            if (propertyInfo == null
-               ||
-               !propertyInfo.PropertyType.IsEnum)
+            var filterDataSource = this.FilterDataSources.Single(d => d.Key == this.selectedFilterTile.Key);
+
+            this.Provider = filterDataSource.Provider;
+
+            var overallFilter = CriteriaOperator.TryParse(filterDataSource.Expression);
+            var searchTextOperator = CriteriaOperator.TryParse(this.searchText);
+            if (searchTextOperator is null == false)
             {
-                throw new InvalidOperationException();
+                if (overallFilter is null == false)
+                {
+                    overallFilter = CriteriaOperator.And(overallFilter, searchTextOperator);
+                }
+                else
+                {
+                    overallFilter = searchTextOperator;
+                }
             }
 
-            var values = Enum.GetValues(propertyInfo.PropertyType).Cast<object>().ToArray();
-            e.Result = Task.FromResult(values);
+            if (this.CustomFilter is null == false)
+            {
+                if (overallFilter is null == false)
+                {
+                    overallFilter = CriteriaOperator.And(overallFilter, this.CustomFilter);
+                }
+                else
+                {
+                    overallFilter = this.CustomFilter;
+                }
+            }
+
+            this.OverallFilter = overallFilter;
         }
 
         private async Task<FetchRowsResult> FetchRowsAsync(FetchRowsAsyncEventArgs e)
@@ -148,16 +223,6 @@ namespace Ferretto.Common.Controls
                 {
                     where = expression;
                 }
-                /*else if (expression.LeftExpression is ValueExpression valueExpressionLeft)
-                {
-                    where = expression.RightExpression;
-                    search = valueExpressionLeft;
-                }
-                else if (expression.RightExpression is ValueExpression valueExpressionRight)
-                {
-                    where = expression.LeftExpression;
-                    search = valueExpressionRight;
-                }*/
             }
             else if (filterExpression is ValueExpression valueExpression)
             {
@@ -174,10 +239,35 @@ namespace Ferretto.Common.Controls
             return new FetchRowsResult(entities.Cast<object>().ToArray(), hasMoreRows: entities.Count() == DefaultPageSize);
         }
 
+        private void GetTotalSummaries(GetSummariesAsyncEventArgs e)
+        {
+            e.Result = Task.FromResult(new object[] { 30, 20 });
+        }
+
+        private void GetUniqueValues(GetUniqueValuesAsyncEventArgs e)
+        {
+            var propertyInfo = typeof(TModel).GetProperty(e.PropertyName);
+            if (propertyInfo != null)
+            {
+                if (propertyInfo.PropertyType.IsEnum)
+                {
+                    var values = Enum.GetValues(propertyInfo.PropertyType).Cast<object>().ToArray();
+                    e.Result = Task.FromResult(values);
+                }
+                else
+                {
+                    e.Result = this.GetUniqueValuesAsync(propertyInfo.Name);
+                }
+            }
+        }
+
+        private async Task<object[]> GetUniqueValuesAsync(string propertyName)
+        {
+            return (await this.Provider.GetUniqueValuesAsync(propertyName)).ToArray();
+        }
+
         private InfiniteAsyncSource InitializeSource()
         {
-            // TODO: use later // var filterDataSource = this.FilterDataSources.Single(d => d.Key == value.Key);
-
             if (this.provider == null)
             {
                 return null;
@@ -195,20 +285,17 @@ namespace Ferretto.Common.Controls
 
             source.GetUniqueValues += (o, e) =>
             {
-                GetUniqueValues(e);
+                this.GetUniqueValues(e);
+            };
+
+            source.GetTotalSummaries += (o, e) =>
+            {
+                this.GetTotalSummaries(e);
             };
 
             return source;
         }
 
         #endregion Methods
-
-        /*
-        private void TableView_SearchStringToFilterCriteria(object sender, DevExpress.Xpf.Grid.SearchStringToFilterCriteriaEventArgs e)
-        {
-            e.Filter = new ConstantValue(e.SearchString);
-            // e.ApplyToColumnsFilter = true;
-        }
-        */
     }
 }

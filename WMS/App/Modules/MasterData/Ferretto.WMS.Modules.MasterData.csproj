@@ -41,7 +41,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Views\FilterDialogView.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\..\Common\Controls\Ferretto.Common.Controls.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\FilterDialogView.xaml.cs">
+      <DependentUpon>FilterDialogView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 
