@@ -9,6 +9,8 @@ namespace Ferretto.WMS.Data.WebAPI.Models
 
         IEnumerable<AbcClass> AbcClasses { get; }
 
+        IEnumerable<Area> Areas { get; }
+
         IEnumerable<ItemCategory> ItemCategories { get; }
 
         IEnumerable<Item> Items { get; }

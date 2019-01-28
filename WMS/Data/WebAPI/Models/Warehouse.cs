@@ -35,6 +35,8 @@ namespace Ferretto.WMS.Data.WebAPI.Models
 
         public IEnumerable<AbcClass> AbcClasses => this.GetValue(this.RetrieveAbcClasses);
 
+        public IEnumerable<Area> Areas => this.GetValue(this.RetrieveAreas);
+
         public IEnumerable<ItemCategory> ItemCategories => this.GetValue(this.RetrieveItemCategories);
 
         public IEnumerable<Item> Items => this.GetValue(this.RetrieveItems);
@@ -90,6 +92,18 @@ namespace Ferretto.WMS.Data.WebAPI.Models
                 {
                     Id = c.Id,
                     Description = c.Description
+                })
+            .ToArray();
+        }
+
+        private IEnumerable<Area> RetrieveAreas()
+        {
+            return this.dataContext.Areas
+            .Select(a =>
+                new Area
+                {
+                    Id = a.Id,
+                    Name = a.Name
                 })
             .ToArray();
         }
