@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Ferretto.Common.Resources {
+namespace Ferretto.VW.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Ferretto.Common.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class VWApp {
+    public class Errors {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal VWApp() {
+        internal Errors() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Ferretto.Common.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.Common.Resources.VWApp", typeof(VWApp).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.VW.Resources.Errors", typeof(Errors).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,47 +61,11 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: Failed Login. Check inputs&apos; correctness..
+        ///   Looks up a localized string similar to Converter can only convert to value of type Visibility..
         /// </summary>
-        public static string ErrorLogin {
+        public static string ConverterCanConvertOnlyToVisibilityType {
             get {
-                return ResourceManager.GetString("ErrorLogin", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ok.
-        /// </summary>
-        public static string Ok {
-            get {
-                return ResourceManager.GetString("Ok", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Password Login:.
-        /// </summary>
-        public static string PasswordLogin {
-            get {
-                return ResourceManager.GetString("PasswordLogin", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Switch Off.
-        /// </summary>
-        public static string SwitchOff {
-            get {
-                return ResourceManager.GetString("SwitchOff", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User Login:.
-        /// </summary>
-        public static string UserLogin {
-            get {
-                return ResourceManager.GetString("UserLogin", resourceCulture);
+                return ResourceManager.GetString("ConverterCanConvertOnlyToVisibilityType", resourceCulture);
             }
         }
     }

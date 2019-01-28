@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
-using Ferretto.Common.Resources;
+using Ferretto.VW.Resources;
 
 namespace Ferretto.VW.CustomControls.Converters
 {
