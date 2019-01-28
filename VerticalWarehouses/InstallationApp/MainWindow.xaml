@@ -47,6 +47,7 @@
                     <Button Width="60"
                             Height="60"
                             Margin="10,0,10,0"
+                            Command="{Binding OpenHelpWindow}"
                             VerticalContentAlignment="Center"
                             Background="{DynamicResource VWAPP_BACKGROUND}"
                             BorderBrush="{DynamicResource VWAPP_CustomMachineModeToggleButton_BorderBrush_Normal}"

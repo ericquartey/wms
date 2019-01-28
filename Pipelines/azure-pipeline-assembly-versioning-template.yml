@@ -1,0 +1,24 @@
+
+steps:
+
+- task: gittools.gitversion.gitversion-task.GitVersion@4
+  displayName: GitVersion
+  inputs:
+    updateAssemblyInfo: true
+    preferBundledVersion: false
+
+
+- task: bleddynrichards.Assembly-Info-Task.Assembly-Info-Task.Assembly-Info-Task@1
+  displayName: 'Set Assembly Manifest Data'
+  inputs:
+    FileNames: |
+     AssemblyInfo.cs
+     *.csproj
+    Product: 'Warehouse Management System'
+    Company: 'Ferretto Group S.p.A.'
+    Copyright: 'Copyright Ferretto Group S.p.A. 2019'
+    VersionNumber: '$(GitVersion.AssemblySemVer)'
+    FileVersionNumber: '$(GitVersion.AssemblySemFileVer)'
+    InformationalVersion: '$(GitVersion.FullSemVer)'
+    InsertAttributes: true
+

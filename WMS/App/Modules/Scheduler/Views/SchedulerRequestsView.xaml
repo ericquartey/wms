@@ -20,6 +20,22 @@
     <wms:WmsView.Resources>
         <dxg:RowPropertyValueConverter x:Key="rowPropertyConverter" />
 
+        <wms:StringFormatConverter x:Key="SFC" />
+
+        <DataTemplate x:Key="CellDisplayTemplateQuantity">
+            <TextBlock VerticalAlignment="Center">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource SFC}">
+                        <Binding Source="{x:Static res:MasterData.QuantityWithUnitMeasure}" />
+                        <Binding Path="Data.RequestedQuantity"
+                                 TargetNullValue="" />
+                        <Binding Path="Data.ItemUnitMeasure"
+                                 TargetNullValue="" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </DataTemplate>
+
         <DataTemplate x:Key="DetailTooltipTemplate">
             <dx:MeasurePixelSnapper MaxWidth="300"
                                     MaxHeight="300">
@@ -92,11 +108,11 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </wms:ActionBarItem>
-                <wms:ActionBarItem Content="{x:Static res:General.Refresh}"
+                <wms:ActionBarItem Command="{Binding RefreshCommand}"
+                                   Content="{x:Static res:General.Refresh}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
-                                   GlyphSize="Custom"
-                                   Command="{Binding RefreshCommand}"/>
+                                   GlyphSize="Custom" />
             </wms:ActionBar>
 
             <wms:WmsGridControl x:Name="MainGridControl"
@@ -218,13 +234,19 @@
                                                       Content="{Binding Path=DispatchedQuantity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <wms:InfoText Grid.Row="5"
                                                       Grid.Column="1"
-                                                      Content="{Binding Path=LoadingUnitDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                      Content="{Binding Path=ItemUnitMeasure, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+
                                         <wms:InfoText Grid.Row="6"
                                                       Grid.Column="0"
                                                       Content="{Binding Path=AreaDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <wms:InfoText Grid.Row="6"
+                                                      Grid.Column="1"
+                                                      Content="{Binding Path=LoadingUnitDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+
                                         <wms:InfoText Grid.Row="7"
                                                       Grid.Column="0"
                                                       Grid.ColumnSpan="2"
+                                                      Margin="0,0,0,8"
                                                       Content="{Binding Path=LoadingUnitTypeDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                         <ScrollViewer Grid.RowSpan="8"
@@ -234,7 +256,7 @@
                                                       IsTabStop="False">
                                             <Border Margin="0"
                                                     Style="{StaticResource InfoBoxBorderStyle}">
-                                                <GroupBox Margin="0"
+                                                <GroupBox Margin="3,0,5,5"
                                                           Header="{x:Static res:MasterData.OtherInformation}">
                                                     <StackPanel Orientation="Vertical">
                                                         <wms:InfoText HorizontalAlignment="Left"
@@ -264,11 +286,13 @@
                     <dxg:GridColumn Width="140*"
                                     FieldName="ListRowDescription" />
                     <dxg:GridColumn Width="70*"
+                                    CellDisplayTemplate="{DynamicResource BooleanCellTemplate}"
                                     FieldName="IsInstant" />
                     <dxg:GridColumn Width="90*"
                                     FieldName="OperationType" />
-                    <dxg:GridColumn Width="90*"
-                                    FieldName="RequiredQuantity" />
+                    <dxg:GridColumn Width="100*"
+                                    CellDisplayTemplate="{StaticResource CellDisplayTemplateQuantity}"
+                                    FieldName="RequestedQuantity" />
                 </wms:WmsGridControl.Columns>
 
                 <wms:WmsGridControl.SortInfo>

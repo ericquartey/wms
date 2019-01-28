@@ -5,7 +5,6 @@ using System.Linq;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.WindowsServices;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI
@@ -15,8 +14,6 @@ namespace Ferretto.WMS.Data.WebAPI
         #region Fields
 
         private const string ConsoleArgument = "--console";
-
-        private const string HostConfigurationFile = "hostconfig.json";
 
         #endregion Fields
 
@@ -48,14 +45,8 @@ namespace Ferretto.WMS.Data.WebAPI
 
                 var webHostArgs = args.Where(arg => arg != ConsoleArgument).ToArray();
 
-                var config = new ConfigurationBuilder()
-                             .SetBasePath(pathToContentRoot)
-                             .AddJsonFile(HostConfigurationFile, optional: true)
-                             .Build();
-
                 host = CreateWebHostBuilder(webHostArgs)
                            .UseContentRoot(pathToContentRoot)
-                           .UseConfiguration(config)
                            .Build();
 
                 var logger = host.Services.GetService(typeof(ILogger<Startup>)) as ILogger<Startup>;

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.Controls
 {
@@ -21,7 +22,8 @@ namespace Ferretto.Common.Controls
         {
             this.InitializeComponent();
 
-            this.Footer_Text.Text = SplashScreenService.Copyright;
+            this.copyrightText.Text = SplashScreenService.Copyright;
+            this.versionText.Text = string.Format(DesktopApp.Version, SplashScreenService.Version);
 
 #if DEBUG
             this.SetupTimer();

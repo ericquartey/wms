@@ -21,18 +21,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial interface IItemListsService
-    {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ExecuteAsync(ListExecutionRequest request);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task ExecuteAsync(ListExecutionRequest request, System.Threading.CancellationToken cancellationToken);
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial interface IItemListRowsService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -55,6 +43,18 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ItemListRow>> GetByIdAsync(int id, System.Threading.CancellationToken cancellationToken);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v9.0.0.0))")]
+    public partial interface IItemListsService
+    {
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ExecuteAsync(ListExecutionRequest request);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task ExecuteAsync(ListExecutionRequest request, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -91,76 +91,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     
     
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ListExecutionRequest : System.ComponentModel.INotifyPropertyChanged
-    {
-        private int _areaId;
-        private int? _bayId;
-        private int _listId;
-    
-        [Newtonsoft.Json.JsonProperty("areaId", Required = Newtonsoft.Json.Required.Always)]
-        public int AreaId
-        {
-            get { return _areaId; }
-            set 
-            {
-                if (_areaId != value)
-                {
-                    _areaId = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("bayId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? BayId
-        {
-            get { return _bayId; }
-            set 
-            {
-                if (_bayId != value)
-                {
-                    _bayId = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("listId", Required = Newtonsoft.Json.Required.Always)]
-        public int ListId
-        {
-            get { return _listId; }
-            set 
-            {
-                if (_listId != value)
-                {
-                    _listId = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-        
-        public static ListExecutionRequest FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListExecutionRequest>(data);
-        }
-    
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) 
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-        }
-    
-    }
-    
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class ListRowExecutionRequest : System.ComponentModel.INotifyPropertyChanged
     {
@@ -232,7 +162,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
-    public abstract partial class BusinessObject : System.ComponentModel.INotifyPropertyChanged
+    public partial class BusinessObject : System.ComponentModel.INotifyPropertyChanged
     {
         private int _id;
     
@@ -614,6 +544,76 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
         Suspended = 83,
     
         Waiting = 87,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class ListExecutionRequest : System.ComponentModel.INotifyPropertyChanged
+    {
+        private int _areaId;
+        private int? _bayId;
+        private int _listId;
+    
+        [Newtonsoft.Json.JsonProperty("areaId", Required = Newtonsoft.Json.Required.Always)]
+        public int AreaId
+        {
+            get { return _areaId; }
+            set 
+            {
+                if (_areaId != value)
+                {
+                    _areaId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("bayId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? BayId
+        {
+            get { return _bayId; }
+            set 
+            {
+                if (_bayId != value)
+                {
+                    _bayId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("listId", Required = Newtonsoft.Json.Required.Always)]
+        public int ListId
+        {
+            get { return _listId; }
+            set 
+            {
+                if (_listId != value)
+                {
+                    _listId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static ListExecutionRequest FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListExecutionRequest>(data);
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
     
     }
     

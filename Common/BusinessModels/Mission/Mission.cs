@@ -31,6 +31,8 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(MasterData.ItemListRows), ResourceType = typeof(MasterData))]
         public string ItemListRowDescription { get; set; }
 
+        public string ItemUnitMeasure { get; set; }
+
         [Display(Name = nameof(General.LastModificationDate), ResourceType = typeof(General))]
         public DateTime? LastModificationDate { get; set; }
 
