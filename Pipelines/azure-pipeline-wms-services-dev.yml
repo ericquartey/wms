@@ -12,15 +12,13 @@ trigger:
     - develop
   paths:
     exclude:
-    - Common
-    - WMS
-    include:
-    - 'VerticalWarehouses\Machine Automation Service'
+    - VerticalWarehouses
+    - WMS\App
 
 variables:
   BuildConfiguration: 'Debug'
-  RestoreBuildProjects: 'VerticalWarehouses/Machine Automation Service/**/*.csproj'
-  TestProjects: 'VerticalWarehouses/Machine Automation Service/**/*[Tt]ests/*.csproj'
+  RestoreBuildProjects: 'WMS/@(Scheduler|Data)/**/*.csproj'
+  TestProjects: 'WMS/@(Scheduler|Data)/**/*.Tests.csproj'
   TargetFramework: 'netcoreapp2.1'
 
 
@@ -59,14 +57,21 @@ steps:
     command: publish
     publishWebProjects: false
     projects: '$(RestoreBuildProjects)'
-    arguments: '--configuration $(BuildConfiguration)  --framework $(TargetFramework) --no-build --no-restore'
+    arguments: '--configuration $(BuildConfiguration) --framework $(TargetFramework) --no-build --no-restore'
     zipAfterPublish: false
 
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact'
+  displayName: 'Publish Artifact: Scheduler Service'
   inputs:
-    PathtoPublish: 'VerticalWarehouses/Machine Automation Service'
-    ArtifactName: 'automation_services'
+    PathtoPublish: 'WMS/Scheduler/WebAPI/bin/$(BuildConfiguration)/$(TargetFramework)/win7-x64/publish'
+    ArtifactName: 'scheduler_service'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Data Service'
+  inputs:
+    PathtoPublish: 'WMS/Data/WebAPI/bin/$(BuildConfiguration)/$(TargetFramework)/win7-x64/publish'
+    ArtifactName: 'data_service'
 
 

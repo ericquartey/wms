@@ -145,13 +145,13 @@ namespace Ferretto.VW.VWApp
                         break;
 
                     default:
-                        this.LoginErrorMessage = Common.Resources.VWApp.ErrorLogin;
+                        this.LoginErrorMessage = Resources.VWApp.ErrorLogin;
                         break;
                 }
             }
             else
             {
-                this.LoginErrorMessage = Common.Resources.VWApp.ErrorLogin;
+                this.LoginErrorMessage = Resources.VWApp.ErrorLogin;
             }
         }
 
