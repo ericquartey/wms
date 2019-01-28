@@ -42,7 +42,8 @@ namespace Ferretto.VW.InstallationApp
         private string mesuredLenght;
         private ICommand moveButtonCommand;
         private string newResolution;
-        private string noteString = Common.Resources.InstallationApp.MoveToInitialPosition;
+
+        private string noteString = Resources.InstallationApp.MoveToInitialPosition;
         private short offset = 1;
 
         // Temporary assigned to constant value, they will become variable with new funcionalities
@@ -153,13 +154,13 @@ namespace Ferretto.VW.InstallationApp
                 {
                     this.IsMesuredInitialPositionTextInputActive = true;
                     this.IsMesuredInitialPositionHighlighted = true;
-                    message = Common.Resources.InstallationApp.InsertMesuredInitialPosition;
+                    message = Resources.InstallationApp.InsertMesuredInitialPosition;
                 }
                 else // false -> Move
                 {
                     this.IsMesuredLenghtTextInputActive = true;
                     this.IsMesuredMovementHighlighted = true;
-                    message = Common.Resources.InstallationApp.InsertMesuredMovement;
+                    message = Resources.InstallationApp.InsertMesuredMovement;
                 }
             }
             else
@@ -196,7 +197,7 @@ namespace Ferretto.VW.InstallationApp
         private void AcceptButtonMethod()
         {
             this.CurrentResolution = this.NewResolution;
-            this.NoteString = Common.Resources.InstallationApp.ResolutionModified;
+            this.NoteString = Resources.InstallationApp.ResolutionModified;
             var ii = this.data.InstallationInfo;
             ii.Belt_Burnishing = true;
             this.data.InstallationInfo = ii;
@@ -221,7 +222,7 @@ namespace Ferretto.VW.InstallationApp
             this.MesuredLenght = "";
             this.MesuredInitialPosition = "";
             this.NewResolution = "";
-            this.NoteString = Common.Resources.InstallationApp.MoveToInitialPosition;
+            this.NoteString = Resources.InstallationApp.MoveToInitialPosition;
             this.IsAcceptButtonActive = false;
             this.IsMesuredInitialPositionHighlighted = false;
             this.IsMesuredInitialPositionTextInputActive = false;
@@ -246,7 +247,7 @@ namespace Ferretto.VW.InstallationApp
                         this.IsMoveButtonActive = true;
                         this.IsMesuredInitialPositionTextInputActive = false;
                         this.IsMesuredInitialPositionHighlighted = false;
-                        this.NoteString = Common.Resources.InstallationApp.MoveToPosition;
+                        this.NoteString = Resources.InstallationApp.MoveToPosition;
 
                         // Inizio modifica
                         this.IsMesuredInitialPositionTextInputActive = true;
@@ -268,7 +269,7 @@ namespace Ferretto.VW.InstallationApp
                         this.IsMesuredMovementHighlighted = false;
                         this.IsMesuredLenghtTextInputActive = false;
                         this.CalculateNewResolutionMethod();
-                        this.NoteString = Common.Resources.InstallationApp.ConfirmResolution;
+                        this.NoteString = Resources.InstallationApp.ConfirmResolution;
                     }
                 }
             }
@@ -286,7 +287,7 @@ namespace Ferretto.VW.InstallationApp
                 this.operation = false;
                 this.x = repositionLenghtDec + this.desiredInitialPositionDec;
                 this.IsMoveButtonActive = false;
-                this.NoteString = Common.Resources.InstallationApp.MovingToDesiredPosition;
+                this.NoteString = Resources.InstallationApp.MovingToDesiredPosition;
                 this.positioningDrawer.ThrowEndEvent += this.PositioningDone;
                 this.positioningDrawer.AbsoluteMovement = true;
                 this.positioningDrawer.MoveAlongVerticalAxisToPoint(this.x, this.vMax, this.acc, this.dec, this.w, this.offset);
@@ -310,7 +311,7 @@ namespace Ferretto.VW.InstallationApp
                 this.operation = true;
                 this.x = this.desiredInitialPositionDec;
                 this.IsSetPositionButtonActive = false;
-                this.NoteString = Common.Resources.InstallationApp.SettingInitialPosition;
+                this.NoteString = Resources.InstallationApp.SettingInitialPosition;
                 if (this.positioningDrawer != null)
                 {
                     this.positioningDrawer.AbsoluteMovement = true;

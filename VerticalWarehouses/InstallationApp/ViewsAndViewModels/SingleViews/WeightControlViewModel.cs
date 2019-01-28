@@ -22,7 +22,7 @@ namespace Ferretto.VW.InstallationApp
         private bool isSetBeginButtonActive = true;
         private bool isSetStopButtonActive = false;
         private int mesuredWeight;
-        private string noteText = Common.Resources.InstallationApp.WeightControl;
+        private string noteText = Resources.InstallationApp.WeightControl;
         private AutoResetEvent raiseRestorePositionEvent;
         private RegisteredWaitHandle regWaitForRestorePositionThread;
         private ICommand setBeginButtonCommand;
