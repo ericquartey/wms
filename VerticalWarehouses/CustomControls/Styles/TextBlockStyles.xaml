@@ -34,4 +34,12 @@
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>
+    <Style x:Key="VWAPP_ViewHelpDescriptionTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewTitleViewTextBlock_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+        <Setter Property="FontSize" Value="25" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
 </ResourceDictionary>

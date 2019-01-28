@@ -13,18 +13,18 @@
              Height="608">
         <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.BeltBurnishing}"
-                   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="306,30,0,0" />
+                   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,30,0,0" />
 
         <custom:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,159,0,0"
                                              ContentText="4500"
                                              LabelText="{x:Static res:InstallationApp.UpperBound}"/>
 
         <custom:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,257,0,0"
-                                             ContentText="4500"
+                                             ContentText="500"
                                              LabelText="{x:Static res:InstallationApp.LowerBound}" />
 
         <custom:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,358,0,0"
-                                             ContentText="4500"
+                                             ContentText="3500"
                                              LabelText="{x:Static res:InstallationApp.CurrentPosition}" />
 
         <custom:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="607,257,0,0"
