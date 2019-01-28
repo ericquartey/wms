@@ -240,4 +240,8 @@
   <data name="AdditionalInfo" xml:space="preserve">
     <value>[{0}]</value>
   </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Filter</value>
+    <comment>Command - Filter the Data</comment>
+  </data>
 </root>
