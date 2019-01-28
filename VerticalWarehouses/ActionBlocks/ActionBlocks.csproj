@@ -116,14 +116,17 @@
     <Compile Include="Source\ActionsBasic\CalibrateHorizontalAxis.cs" />
     <Compile Include="Source\ActionsBasic\CalibrateVerticalAxis.cs" />
     <Compile Include="Source\ActionsBasic\DrawerWeightDetection.cs" />
+    <Compile Include="Source\ActionsBasic\HorizontalMovingDrawer.cs" />
     <Compile Include="Source\ActionsBasic\ICalibrateAxes.cs" />
     <Compile Include="Source\ActionsBasic\ICalibrateAxis.cs" />
     <Compile Include="Source\ActionsBasic\ICalibrateHorizontalAxis.cs" />
     <Compile Include="Source\ActionsBasic\ICalibrateVerticalAxis.cs" />
     <Compile Include="Source\ActionsBasic\IDrawerWeightDetection.cs" />
+    <Compile Include="Source\ActionsBasic\IHorizontalMovingDrawer.cs" />
     <Compile Include="Source\ActionsBasic\IPositioningDrawer.cs" />
     <Compile Include="Source\ActionsBasic\ISwitchMotors.cs" />
     <Compile Include="Source\ActionsBasic\PositioningDrawer.cs" />
+    <Compile Include="Source\ActionsBasic\ProfilePosition.cs" />
     <Compile Include="Source\ActionsBasic\SwitchMotors.cs" />
     <Compile Include="Source\Support.cs" />
   </ItemGroup>

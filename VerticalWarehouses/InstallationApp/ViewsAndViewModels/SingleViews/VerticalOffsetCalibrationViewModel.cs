@@ -31,8 +31,8 @@ namespace Ferretto.VW.InstallationApp
         private bool isSetPositionButtonActive = true;
         private bool isStepDownButtonActive = false;
         private bool isStepUpButtonActive = false;
-        private string noteString = Common.Resources.InstallationApp.VerticalOffsetCalibration;
         private readonly DispatcherTimer dispatcherTimer = new DispatcherTimer();
+        private string noteString = Resources.InstallationApp.VerticalOffsetCalibration;
         private short offsetValue;
         private PositioningDrawer positioningDrawerInstance;
         private string referenceCellHeight;
@@ -48,7 +48,7 @@ namespace Ferretto.VW.InstallationApp
 
         public VerticalOffsetCalibrationViewModel()
         {
-            this.NoteString = Common.Resources.InstallationApp.VerticalOffsetCalibration;
+            this.NoteString = Resources.InstallationApp.VerticalOffsetCalibration;
         }
 
         #endregion Constructors
@@ -118,7 +118,7 @@ namespace Ferretto.VW.InstallationApp
             if (result)
             {
                 this.IsSetPositionButtonActive = true;
-                message = Common.Resources.InstallationApp.SetPosition;
+                message = Resources.InstallationApp.SetPosition;
             }
             else
             {
@@ -138,7 +138,7 @@ namespace Ferretto.VW.InstallationApp
             short.TryParse(this.ReferenceCellHeight, out var x);
 
             this.isSetPositionButtonActive = false;
-            this.NoteString = Common.Resources.InstallationApp.VerticalOffsetCalibration;
+            this.NoteString = Resources.InstallationApp.VerticalOffsetCalibration;
 
             this.dispatcherTimer.Tick += this.DispatcherTimer_Tick;
             this.dispatcherTimer.Interval = new TimeSpan(350);
