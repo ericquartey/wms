@@ -20,7 +20,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Properties
 
         public ICommand FilterCommand => this.filterCommand ??
-                       (this.filterCommand = new DelegateCommand(this.ExecuteFilterCommandCommand));
+                       (this.filterCommand = new DelegateCommand(this.ExecuteFilterCommand));
 
         public ICommand ShowDetailsCommand => this.showDetailsCommand ??
                                  (this.showDetailsCommand = new DelegateCommand(this.ExecuteShowDetailsCommand, this.CanShowDetailsCommand)
@@ -47,10 +47,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteFilterCommand()
         {
-            this.NavigationService.Appear(
-                nameof(MasterData),
-                Common.Utils.Modules.MasterData.FILTERDIALOG,
-                this.FilterContext);
+            // TODO
         }
 
         private void ExecuteShowDetailsCommand()

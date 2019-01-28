@@ -27,11 +27,6 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <dxfui:FilterEditorControl x:Name="filterEditor"
-                                       Grid.Column="1"
-                                       Context="{Binding Path=FilteringContext, ElementName=MainGridControl}"
-                                       FilterChanged="FilterEditor_FilterChanged" />
-
             <wms:ActionBar Grid.Column="1"
                            Margin="5"
                            HorizontalAlignment="Right"

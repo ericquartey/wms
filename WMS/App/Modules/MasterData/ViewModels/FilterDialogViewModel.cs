@@ -26,15 +26,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public ICommand ApplyFilterCommand => this.applyFilterCommand ??
                                                    (this.applyFilterCommand = new DelegateCommand(
-                                                       this.ExecuteApplyFilterCommand));
+                                                       ExecuteApplyFilterCommand));
 
         public ICommand ClearFilterCommand => this.clearFilterCommand ??
                                                  (this.clearFilterCommand = new DelegateCommand(
-                                                     this.ExecuteClearFilterCommand));
+                                                     ExecuteClearFilterCommand));
 
         public ICommand CloseCommand => this.closeCommand ??
                                                  (this.closeCommand = new DelegateCommand(
-                                                     this.ExecuteCloseCommand));
+                                                     ExecuteCloseCommand));
 
         public FilteringUIContext FilterContext
         {
@@ -60,17 +60,17 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        private void ExecuteApplyFilterCommand()
+        private static void ExecuteApplyFilterCommand()
         {
             throw new NotImplementedException();
         }
 
-        private void ExecuteClearFilterCommand()
+        private static void ExecuteClearFilterCommand()
         {
             throw new NotImplementedException();
         }
 
-        private void ExecuteCloseCommand()
+        private static void ExecuteCloseCommand()
         {
             throw new NotImplementedException();
         }
