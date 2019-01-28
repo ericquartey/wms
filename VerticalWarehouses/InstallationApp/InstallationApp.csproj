@@ -66,11 +66,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ActionBlocks\ActionBlocks.csproj" />
+    <ProjectReference Include="..\Common\Resources\Ferretto.VW.Resources.csproj" />
     <ProjectReference Include="..\CustomControls\CustomControls.csproj" />
     <ProjectReference Include="..\InverterDriver\InverterDriver.csproj" />
     <ProjectReference Include="..\MathLib\MathLib.csproj" />
     <ProjectReference Include="..\Navigation\Navigation.csproj" />
-    <ProjectReference Include="..\Resources\Ferretto.VW.Resources.csproj" />
     <ProjectReference Include="..\Utils\Utils.csproj" />
   </ItemGroup>
 

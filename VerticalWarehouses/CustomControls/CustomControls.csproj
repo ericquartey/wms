@@ -393,8 +393,8 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Resources\Ferretto.VW.Resources.csproj">
-      <Project>{d335ebc4-93f7-4db4-afdf-2fa4db9678fe}</Project>
+    <ProjectReference Include="..\Common\Resources\Ferretto.VW.Resources.csproj">
+      <Project>{8231f83a-40f0-49a8-a4cf-2f582d957350}</Project>
       <Name>Ferretto.VW.Resources</Name>
     </ProjectReference>
   </ItemGroup>
