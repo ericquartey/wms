@@ -62,17 +62,17 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteApplyFilterCommand()
         {
-            throw new NotImplementedException();
+            this.isBusy = true;
         }
 
         private void ExecuteClearFilterCommand()
         {
-            throw new NotImplementedException();
+            this.isBusy = true;
         }
 
         private void ExecuteCloseCommand()
         {
-            throw new NotImplementedException();
+            this.isBusy = true;
         }
 
         #endregion Methods

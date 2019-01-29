@@ -9,7 +9,7 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private ICommand filterCommand;
+        private ICommand showFiltersCommand;
 
         private ICommand showDetailsCommand;
 
@@ -19,8 +19,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public ICommand FilterCommand => this.filterCommand ??
-                       (this.filterCommand = new DelegateCommand(this.ExecuteFilterCommandCommand));
+        public ICommand ShowFiltersCommand => this.showFiltersCommand ??
+                       (this.showFiltersCommand = new DelegateCommand(this.ExecuteShowFiltersCommand));
 
         public ICommand ShowDetailsCommand => this.showDetailsCommand ??
                                  (this.showDetailsCommand = new DelegateCommand(this.ExecuteShowDetailsCommand, this.CanShowDetailsCommand)
@@ -45,7 +45,7 @@ namespace Ferretto.WMS.Modules.MasterData
             return this.CurrentItem != null;
         }
 
-        private void ExecuteFilterCommand()
+        private void ExecuteShowFiltersCommand()
         {
             this.NavigationService.Appear(
                 nameof(MasterData),
