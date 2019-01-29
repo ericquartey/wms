@@ -1,25 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils;
 
 namespace Ferretto.VW.MAS_MachineManager
 {
-	public class MachineManager
-	{
-		MachineManager()
-		{
-		}
+    public class MachineManager : IMachineManager
+    {
+        #region Fields
 
-		class MachineManagerCreator
-		{
-			static MachineManagerCreator() { }
+        private readonly FiniteStateMachines finiteStateMachines = Singleton<FiniteStateMachines>.UniqueInstance;
 
-			internal static readonly MachineManager uniqueInstance = new MachineManager();
-		}
+        #endregion Fields
 
-		public static MachineManager Instance
-		{
-			get { return MachineManagerCreator.uniqueInstance; }
-		}
-	}
+        #region Methods
+
+        public async Task DoHoming(BroadcastDelegate _delegate)
+        {
+            await this.finiteStateMachines.DoHoming(_delegate);
+        }
+
+        #endregion Methods
+    }
 }

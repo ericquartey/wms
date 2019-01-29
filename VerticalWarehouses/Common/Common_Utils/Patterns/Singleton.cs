@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-//Usage: var instance = Singleton<typeof(instance)>();
-
-namespace Ferretto.VW.Common_Utils.Patterns
+﻿namespace Ferretto.VW.Common_Utils
 {
+    //Usage: var instance = Singleton<typeof(instance)>();
     public class Singleton<T> where T : class, new()
     {
         #region Constructors
@@ -17,10 +12,7 @@ namespace Ferretto.VW.Common_Utils.Patterns
 
         #region Properties
 
-        public static T UniqueInstance
-        {
-            get { return SingletonCreator.instance; }
-        }
+        public static T UniqueInstance => SingletonCreator.instance;
 
         #endregion Properties
 
