@@ -9,8 +9,6 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private ICommand showFiltersCommand;
-
         private ICommand showDetailsCommand;
 
         private ICommand withdrawCommand;
@@ -19,21 +17,26 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public ICommand ShowFiltersCommand => this.showFiltersCommand ??
-                       (this.showFiltersCommand = new DelegateCommand(this.ExecuteShowFiltersCommand));
-
         public ICommand ShowDetailsCommand => this.showDetailsCommand ??
-                                 (this.showDetailsCommand = new DelegateCommand(this.ExecuteShowDetailsCommand, this.CanShowDetailsCommand)
-           .ObservesProperty(() => this.CurrentItem));
+            (this.showDetailsCommand = new DelegateCommand(this.ExecuteShowDetailsCommand, this.CanShowDetailsCommand)
+                .ObservesProperty(() => this.CurrentItem));
 
         public ICommand WithdrawCommand => this.withdrawCommand ??
-                                                   (this.withdrawCommand = new DelegateCommand(
-                                                        this.ExecuteWithdraw,
-                                                        this.CanExecuteWithdraw).ObservesProperty(() => this.CurrentItem));
+            (this.withdrawCommand = new DelegateCommand(
+                this.ExecuteWithdraw,
+                this.CanExecuteWithdraw).ObservesProperty(() => this.CurrentItem));
 
         #endregion Properties
 
         #region Methods
+
+        protected override void ExecuteShowFiltersCommand()
+        {
+            this.NavigationService.Appear(
+                nameof(MasterData),
+                Common.Utils.Modules.MasterData.FILTERDIALOG,
+                this.FilteringContext);
+        }
 
         private bool CanExecuteWithdraw()
         {
@@ -43,14 +46,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool CanShowDetailsCommand()
         {
             return this.CurrentItem != null;
-        }
-
-        private void ExecuteShowFiltersCommand()
-        {
-            this.NavigationService.Appear(
-                nameof(MasterData),
-                Common.Utils.Modules.MasterData.FILTERDIALOG,
-                this.FilterContext);
         }
 
         private void ExecuteShowDetailsCommand()

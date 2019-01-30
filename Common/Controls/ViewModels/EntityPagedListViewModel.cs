@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using DevExpress.Data.Filtering;
+using DevExpress.Xpf.Core.FilteringUI;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Utils.Expressions;
+using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
@@ -20,11 +23,15 @@ namespace Ferretto.Common.Controls
 
         private object dataSource;
 
+        private FilteringUIContext filteringContext;
+
         private CriteriaOperator overallFilter;
 
         private IPagedBusinessProvider<TModel> provider;
 
         private string searchText;
+
+        private ICommand showFiltersCommand;
 
         #endregion Fields
 
@@ -43,6 +50,12 @@ namespace Ferretto.Common.Controls
                     this.ComputeOverallFilter();
                 }
             }
+        }
+
+        public FilteringUIContext FilteringContext
+        {
+            get => this.filteringContext;
+            set => this.SetProperty(ref this.filteringContext, value);
         }
 
         /// <summary>
@@ -97,6 +110,9 @@ namespace Ferretto.Common.Controls
             protected set => this.SetProperty(ref this.dataSource, value);
         }
 
+        public ICommand ShowFiltersCommand => this.showFiltersCommand ??
+             (this.showFiltersCommand = new DelegateCommand(this.ExecuteShowFiltersCommand));
+
         #endregion Properties
 
         #region Methods
@@ -121,6 +137,11 @@ namespace Ferretto.Common.Controls
                     filterTile.Count = await filterDataSource.Provider.GetAllCountAsync(whereExpression);
                 }
             }
+        }
+
+        protected virtual void ExecuteShowFiltersCommand()
+        {
+            // do nothing: derived classes can customize the behaviour of this command
         }
 
         protected override void OnDispose()
