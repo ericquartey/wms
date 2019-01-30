@@ -5,4 +5,8 @@
     <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common_Utils\Common_Utils.csproj" />
+  </ItemGroup>
+
 </Project>
