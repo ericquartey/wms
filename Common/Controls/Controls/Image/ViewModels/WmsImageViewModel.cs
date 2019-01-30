@@ -1,6 +1,7 @@
 ﻿namespace Ferretto.Common.Controls
 {
     using System.Windows.Media;
+    using Ferretto.Common.BLL.Interfaces;
     using Ferretto.Common.Modules.BLL;
     using Microsoft.Practices.ServiceLocation;
 
@@ -40,8 +41,8 @@
         public void RetrieveImage(string imagePath)
         {
             this.Source = string.IsNullOrWhiteSpace(imagePath)
-                ? (placeholderImage == null ? (placeholderImage = this.imageService.GetImage(Common.Resources.Icons.PlaceHolder)) : placeholderImage)
-                : this.imageService.GetImage(imagePath);
+                //? (placeholderImage == null ? (placeholderImage = this.imageService.GetImage(Resources.Icons.PlaceHolder)) : placeholderImage)
+                ? this.imageService.GetImage(imagePath) : null;
         }
 
         #endregion Methods
