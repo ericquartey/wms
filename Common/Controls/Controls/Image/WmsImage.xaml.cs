@@ -28,8 +28,6 @@ namespace Ferretto.Common.Controls
         {
             this.InitializeComponent();
 
-            this.InnerImage.DataContext = new WmsImageViewModel();
-
             this.imageService = ServiceLocator.Current.GetInstance<IImageProvider>();
 
         }
@@ -56,7 +54,7 @@ namespace Ferretto.Common.Controls
 
         private static void OnPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsImage wmsImage && wmsImage.InnerImage.DataContext is WmsImageViewModel viewModel)
+            if (d is WmsImage wmsImage)
             {
                 wmsImage.InnerImage.Source = ImageUtils.RetrieveImage(wmsImage.imageService, (string)e.NewValue);
                 if (e.NewValue == null)
