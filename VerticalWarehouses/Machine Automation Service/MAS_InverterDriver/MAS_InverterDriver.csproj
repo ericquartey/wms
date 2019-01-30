@@ -7,4 +7,8 @@
     <AssemblyName>Ferretto.VW.InverterDriver</AssemblyName>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\InverterDriver\InverterDriver.csproj" />
+  </ItemGroup>
+
 </Project>
