@@ -524,7 +524,4 @@
     <value>placeholder.png</value>
     <comment>@Invariant</comment>
   </data>
-  <data name="PathImage" xml:space="preserve">
-    <value>ack://application:,,,/Ferretto.WMS.App.Themes;component/Images/</value>
-  </data>
 </root>
