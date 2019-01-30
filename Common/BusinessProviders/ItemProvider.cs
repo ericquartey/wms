@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,8 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly EnumerationProvider enumerationProvider;
 
+        private readonly IImageProvider imageProvider;
+
         private readonly WMS.Scheduler.WebAPI.Contracts.IItemsService itemsService;
 
         #endregion Fields
@@ -31,11 +34,13 @@ namespace Ferretto.Common.BusinessProviders
         public ItemProvider(
             IDatabaseContextService dataContext,
             EnumerationProvider enumerationProvider,
+            IImageProvider imageProvider,
             WMS.Scheduler.WebAPI.Contracts.IItemsService itemsService)
         {
             this.dataContext = dataContext;
             this.itemsService = itemsService;
             this.enumerationProvider = enumerationProvider;
+            this.imageProvider = imageProvider;
         }
 
         #endregion Constructors
@@ -215,6 +220,8 @@ namespace Ferretto.Common.BusinessProviders
 
                     var changedEntityCount = await dc.SaveChangesAsync();
 
+                    this.SaveImage(model.Image);
+
                     return new OperationResult(changedEntityCount > 0);
                 }
             }
@@ -320,6 +327,11 @@ namespace Ferretto.Common.BusinessProviders
                            ? (b.TotalStock + b.TotalReservedToStore - b.TotalReservedForPick)
                            : 0,
                    });
+        }
+
+        private void SaveImage(string imagePath)
+        {
+            this.imageProvider.SaveImage(imagePath);
         }
 
         #endregion Methods
