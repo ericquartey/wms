@@ -214,13 +214,13 @@ namespace Ferretto.Common.BusinessProviders
             {
                 using (var dc = this.dataContext.Current)
                 {
+                   this.SaveImage(model.ImagePath);
+
                     var existingModel = dc.Items.Find(model.Id);
 
                     dc.Entry(existingModel).CurrentValues.SetValues(model);
 
                     var changedEntityCount = await dc.SaveChangesAsync();
-
-                    this.SaveImage(model.Image);
 
                     return new OperationResult(changedEntityCount > 0);
                 }
