@@ -6,8 +6,12 @@ namespace Ferretto.VW.InverterDriver
     public enum ActionType
     {
         PositioningDrawer,
+
         CalibrateVerticalAxis,
+
         CalibrateHorizontalAxis,
+
+        HorizontalMoving,
     }
 
     /// <summary>

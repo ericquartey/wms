@@ -4,7 +4,7 @@
     <LanguageTargets>$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
     <TargetFramework>net471</TargetFramework>
     <OutputType>Library</OutputType>
-    <StartupObject />
+    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <RootNamespace>Ferretto.VW.InstallationApp</RootNamespace>
     <AssemblyName>Ferretto.VW.InstallationApp</AssemblyName>
@@ -65,8 +65,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Resources\Ferretto.Common.Resources.csproj" />
     <ProjectReference Include="..\ActionBlocks\ActionBlocks.csproj" />
+    <ProjectReference Include="..\Common\Resources\Ferretto.VW.Resources.csproj" />
     <ProjectReference Include="..\CustomControls\CustomControls.csproj" />
     <ProjectReference Include="..\InverterDriver\InverterDriver.csproj" />
     <ProjectReference Include="..\MathLib\MathLib.csproj" />
