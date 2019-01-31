@@ -34,15 +34,6 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
             };
 
             this.connection.StartAsync();
-
-            //if (this.connection.State == HubConnectionState.Connected)
-            //{
-            //    Debug.Print("Connection to sensors service SUCCESS\n");
-            //}
-            //else
-            //{
-            //    Debug.Print("Connection to sensors service FAILED\n");
-            //}
         }
 
         #endregion Constructors

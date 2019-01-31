@@ -243,15 +243,15 @@ namespace Ferretto.VW.InstallationApp
 
         public string Get(string uri)
         {
-            //var request = (HttpWebRequest)WebRequest.Create(uri);
-            //request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            var request = (HttpWebRequest)WebRequest.Create(uri);
+            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 
-            //using (var response = (HttpWebResponse)request.GetResponse())
-            //using (var stream = response.GetResponseStream())
-            //using (var reader = new StreamReader(stream))
-            //{
-            //    return reader.ReadToEnd();
-            //}
+            using (var response = (HttpWebResponse)request.GetResponse())
+            using (var stream = response.GetResponseStream())
+            using (var reader = new StreamReader(stream))
+            {
+                return reader.ReadToEnd();
+            }
             return "";
         }
 
@@ -263,17 +263,17 @@ namespace Ferretto.VW.InstallationApp
 
         private async void ConnectMethod()
         {
-            //try
-            //{
-            //    this.client = new SensorsStatesHubClient(URL, SERVICE_PATH);
-            //    await this.client.ConnectAsync();
+            try
+            {
+                this.client = new SensorsStatesHubClient(URL, SERVICE_PATH);
+                await this.client.ConnectAsync();
 
-            //    this.client.SensorsStatesChanged += this.Client_SensorsStatesChanged;
-            //    this.Get(SENSOR_INITIALIZER_URL);
-            //}
-            //catch
-            //{
-            //}
+                this.client.SensorsStatesChanged += this.Client_SensorsStatesChanged;
+                this.Get(SENSOR_INITIALIZER_URL);
+            }
+            catch
+            {
+            }
         }
 
         private void InitializeEvents()

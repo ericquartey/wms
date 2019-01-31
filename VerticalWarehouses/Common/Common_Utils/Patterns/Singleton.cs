@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.Common.Common_Utils
 {
-    //Usage: var instance = Singleton<typeof(instance)>();
+    //Usage: var instance = Singleton<typeof(instance)>.UniqueInstance;
     public class Singleton<T> where T : class, new()
     {
         #region Constructors
