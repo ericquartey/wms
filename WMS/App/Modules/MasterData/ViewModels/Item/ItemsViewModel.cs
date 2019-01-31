@@ -32,10 +32,16 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void ExecuteShowFiltersCommand()
         {
+            var inputData = new FilterDialogData
+            {
+                FilteringContext = this.FilteringContext,
+                Filter = this.CustomFilter
+            };
+
             this.NavigationService.Appear(
                 nameof(MasterData),
                 Common.Utils.Modules.MasterData.FILTERDIALOG,
-                this.FilteringContext);
+                inputData);
         }
 
         private bool CanExecuteWithdraw()
@@ -50,7 +56,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteShowDetailsCommand()
         {
-            this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.ITEMDETAILS, this.CurrentItem.Id);
+            this.HistoryViewService.Appear(
+                nameof(Modules.MasterData),
+                Common.Utils.Modules.MasterData.ITEMDETAILS,
+                this.CurrentItem.Id);
         }
 
         private void ExecuteWithdraw()
