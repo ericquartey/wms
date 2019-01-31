@@ -1,6 +1,4 @@
-﻿using Ferretto.VW.MAS_InverterDriver.Interface;
-
-namespace Ferretto.VW.MAS_InverterDriver
+﻿namespace Ferretto.VW.MAS_InverterDriver
 {
     public class InverterDriver : IInverterDriver
     {

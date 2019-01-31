@@ -1,5 +1,6 @@
 ﻿using System;
-using Ferretto.VW.Common_Utils.Patterns;
+using Ferretto.Common.Common_Utils;
+using Ferretto.VW.MAS_InverterDriver;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines
 {
