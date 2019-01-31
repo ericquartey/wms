@@ -46,6 +46,11 @@ namespace BackgroundService
                 routes.MapHub<SensorsStatesHub>($"/sensors-endpoint", options => { });
             });
 
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<AutomationServiceHub>($"/automation-endpoint", options => { });
+            });
+
             app.UseHttpsRedirection();
             app.UseMvc();
         }
@@ -53,7 +58,6 @@ namespace BackgroundService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
             services.AddSignalR();
         }
 

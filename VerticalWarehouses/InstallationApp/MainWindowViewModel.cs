@@ -252,6 +252,7 @@ namespace Ferretto.VW.InstallationApp
             {
                 return reader.ReadToEnd();
             }
+            return "";
         }
 
         private void Client_SensorsStatesChanged(object sender, SensorsStatesEventArgs e)

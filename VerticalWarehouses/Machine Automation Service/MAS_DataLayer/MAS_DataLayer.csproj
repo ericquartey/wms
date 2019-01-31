@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
+    <RootNamespace>Ferretto.VW.MAS_DataLayer</RootNamespace>
+    <AssemblyName>Ferretto.VW.MAS_DataLayer</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
