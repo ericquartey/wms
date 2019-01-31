@@ -14,6 +14,10 @@ namespace Ferretto.Common.Controls
             {
                 return new ValueExpression(constantValue.Value.ToString());
             }
+            else if (filter is OperandValue operandValue)
+            {
+                return new ValueExpression(operandValue.Value.ToString());
+            }
             else if (filter is OperandProperty operandProperty)
             {
                 return new ValueExpression(operandProperty.PropertyName);
