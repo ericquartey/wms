@@ -7,6 +7,10 @@
     <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <OutputPath>Bin\Debug\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.2">
       <PrivateAssets>all</PrivateAssets>
@@ -27,6 +31,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>General.resx</DependentUpon>
+    </Compile>
+    <Compile Update="HelpDescriptions.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>HelpDescriptions.resx</DependentUpon>
     </Compile>
     <Compile Update="InstallationApp.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -58,6 +67,10 @@
     <EmbeddedResource Update="General.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>General.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="HelpDescriptions.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>HelpDescriptions.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="InstallationApp.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

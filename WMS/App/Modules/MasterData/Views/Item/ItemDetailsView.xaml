@@ -231,7 +231,7 @@
                                 <dxg:TableView>
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="RowDoubleClick">
-                                            <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.Model.Id, Mode=OneWay}"
+                                            <wms:WmsHistoryViewAppear Id="{Binding SelectedCompartment.Id, Mode=OneWay}"
                                                                       StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
                                                                       StartViewName="{x:Static modules:MasterData.COMPARTMENTDETAILS}" />
                                         </i:EventTrigger>
@@ -288,11 +288,11 @@
                 <GroupBox Margin="20,0"
                           Header="{x:Static res:MasterData.OtherInformation}">
                     <StackPanel Orientation="Vertical">
-                        <wms:WmsImage MaxWidth="300"
-                                      MaxHeight="400"
-                                      BorderBrush="{DynamicResource CommonSecondaryLight}"
-                                      BorderThickness="1"
-                                      Path="{Binding Path=Model.Image}" />
+                        <wms:WmsImageEdit MaxWidth="300"
+                                          MaxHeight="400"
+                                          BorderBrush="{DynamicResource CommonSecondaryLight}"
+                                          BorderThickness="1"
+                                          Path="{Binding Path=Model.Image}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
                                       Content="{Binding Path=Model.CreationDate}" />

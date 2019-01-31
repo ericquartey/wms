@@ -826,11 +826,29 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ack://application:,,,/Ferretto.WMS.App.Themes;component/Images/.
+        /// </summary>
+        public static string PathImage {
+            get {
+                return ResourceManager.GetString("PathImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/up.png.
         /// </summary>
         public static string PickLists {
             get {
                 return ResourceManager.GetString("PickLists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to placeholder.jpg.
+        /// </summary>
+        public static string PlaceHolder {
+            get {
+                return ResourceManager.GetString("PlaceHolder", resourceCulture);
             }
         }
         

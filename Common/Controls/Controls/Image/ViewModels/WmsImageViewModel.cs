@@ -1,14 +1,17 @@
-﻿using System.Windows.Media;
-using Ferretto.Common.Modules.BLL;
-using Microsoft.Practices.ServiceLocation;
-
-namespace Ferretto.Common.Controls
+﻿namespace Ferretto.Common.Controls
 {
+    using System.Windows.Media;
+    using Ferretto.Common.Modules.BLL;
+    using Microsoft.Practices.ServiceLocation;
+
     internal class WmsImageViewModel : Prism.Mvvm.BindableBase
     {
         #region Fields
 
+        private static ImageSource placeholderImage = null;
+
         private readonly IImageProvider imageService;
+
         private ImageSource source;
 
         #endregion Fields
@@ -36,7 +39,9 @@ namespace Ferretto.Common.Controls
 
         public void RetrieveImage(string imagePath)
         {
-            this.Source = string.IsNullOrWhiteSpace(imagePath) ? null : this.imageService.GetImage(imagePath);
+            this.Source = string.IsNullOrWhiteSpace(imagePath)
+                ? (placeholderImage == null ? (placeholderImage = this.imageService.GetImage(Common.Resources.Icons.PlaceHolder)) : placeholderImage)
+                : this.imageService.GetImage(imagePath);
         }
 
         #endregion Methods
