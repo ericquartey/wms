@@ -12,37 +12,37 @@
                    Height="600"
                    d:DesignHeight="500"
                    d:DesignWidth="500"
-                   HeaderIsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}"
                    ResizeMode="NoResize"
                    SizeToContent="Height"
                    mc:Ignorable="d">
 
     <Grid Margin="5,0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" MinHeight="200" />
+            <RowDefinition Height="*"
+                           MinHeight="200" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <dxfui:FilterEditorControl x:Name="filterEditor"
-                                    Grid.Column="1"
-                                    Context="{Binding Path=FilteringContext}"
-                                   FilterChanged="FilterEditor_FilterChanged"/>
+                                   Grid.Column="1"
+                                   Context="{Binding Path=FilteringContext}"
+                                   FilterChanged="FilterEditor_FilterChanged" />
 
         <wms:ActionBar Grid.Column="1"
-                        Margin="5"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom"
-                        Style="{DynamicResource ActionBarNotCustomizable}">
+                       Margin="5"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Bottom"
+                       Style="{DynamicResource ActionBarNotCustomizable}">
             <wms:ActionBarItem Command="{Binding RevertCommand}"
-                                Content="{x:Static res:General.Revert}"
-                                CustomGlyphSize="24,24"
-                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_undo_black_24dp.png"
-                                GlyphSize="Custom" />
+                               Content="{x:Static res:General.Revert}"
+                               CustomGlyphSize="24,24"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_undo_black_24dp.png"
+                               GlyphSize="Custom" />
             <wms:ActionBarItem Command="{Binding AcceptCommand}"
-                                Content="{x:Static res:General.Accept}"
-                                CustomGlyphSize="24,24"
-                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/av/ic_play_circle_outline_black_24dp.png"
-                                GlyphSize="Custom" />
+                               Content="{x:Static res:General.Accept}"
+                               CustomGlyphSize="24,24"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/av/ic_play_circle_outline_black_24dp.png"
+                               GlyphSize="Custom" />
         </wms:ActionBar>
 
     </Grid>

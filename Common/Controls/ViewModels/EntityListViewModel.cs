@@ -168,6 +168,7 @@ namespace Ferretto.Common.Controls
         {
             this.EventService.Unsubscribe<RefreshModelsPubSubEvent<TModel>>(this.modelRefreshSubscription);
             this.EventService.Unsubscribe<ModelChangedPubSubEvent<TModel>>(this.modelChangedEventSubscription);
+
             base.OnDispose();
         }
 
