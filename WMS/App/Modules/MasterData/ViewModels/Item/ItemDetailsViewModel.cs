@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
@@ -20,7 +22,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
-        private IDataSource<Compartment> compartmentsDataSource;
+        private IEnumerable<Compartment> compartmentsDataSource;
 
         private bool itemHasCompartments;
 
@@ -30,7 +32,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private object modelSelectionChangedSubscription;
 
-        private object selectedCompartment;
+        private Compartment selectedCompartment;
 
         private ICommand withdrawCommand;
 
@@ -47,28 +49,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public IDataSource<Compartment> CompartmentsDataSource
+        public IEnumerable<Compartment> CompartmentsDataSource
         {
             get => this.compartmentsDataSource;
             set => this.SetProperty(ref this.compartmentsDataSource, value);
-        }
-
-        public Compartment CurrentCompartment
-        {
-            get
-            {
-                if (this.selectedCompartment == null)
-                {
-                    return default(Compartment);
-                }
-
-                if ((this.selectedCompartment is DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread) == false)
-                {
-                    return default(Compartment);
-                }
-
-                return (Compartment)((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedCompartment).OriginalRow;
-            }
         }
 
         public bool ItemHasCompartments
@@ -77,14 +61,10 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.itemHasCompartments, value);
         }
 
-        public object SelectedCompartment
+        public Compartment SelectedCompartment
         {
             get => this.selectedCompartment;
-            set
-            {
-                this.SetProperty(ref this.selectedCompartment, value);
-                this.RaisePropertyChanged(nameof(this.CurrentCompartment));
-            }
+            set => this.SetProperty(ref this.selectedCompartment, value);
         }
 
         public ICommand WithdrawCommand => this.withdrawCommand ??
@@ -99,10 +79,8 @@ namespace Ferretto.WMS.Modules.MasterData
         public override void LoadRelatedData()
         {
             this.CompartmentsDataSource = this.Model != null
-                ? new DataSource<Compartment>(() => this.compartmentProvider.GetByItemId(this.Model.Id))
+                ? this.compartmentProvider.GetByItemId(this.Model.Id).ToList()
                 : null;
-
-            base.LoadRelatedData();
         }
 
         protected override void EvaluateCanExecuteCommands()

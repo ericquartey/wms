@@ -30,7 +30,8 @@ namespace Ferretto.WMS.Modules.MasterData
         public CompartmentAddViewModel()
         {
             this.Title = Common.Resources.MasterData.AddCompartment;
-            this.ItemsDataSource = new DataSource<Item>(() => this.itemProvider.GetAll());
+            this.ItemsDataSource = new DataSource<Item>(() =>
+                this.itemProvider.GetAll());
             this.IsValidationEnabled = false;
         }
 
