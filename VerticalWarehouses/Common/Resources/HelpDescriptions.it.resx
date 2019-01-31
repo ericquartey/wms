@@ -98,10 +98,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BeltBurnishingUpLimit" xml:space="preserve">
-    <value>Il campo riporta il valore della quota superiore richiesta dal test. Impostare il valore solo se il campo risulta editabile.</value>
+    <value>Il campo indica il valore della quota superiore richiesta dal test. Impostare il valore solo se il campo risulta editabile.</value>
   </data>
   <data name="BeltBurnishingDownLimit" xml:space="preserve">
-    <value>Il campo riporta il valore della quota inferiore richiesta dal test. Impostare il valore solo se il campo risulta editabile.</value>
+    <value>Il campo indica il valore della quota inferiore richiesta dal test. Impostare il valore solo se il campo risulta editabile.</value>
   </data>
   <data name="BeltBurnishingRequiredCycles" xml:space="preserve">
     <value>Impostare il numero di cicli richiesti.</value>
@@ -110,7 +110,7 @@
     <value>Visualizza il numero di cicli attualmente completati.</value>
   </data>
   <data name="BeltBurnishingActualPosition" xml:space="preserve">
-    <value>Riporta la posizione corrente dell'asse.</value>
+    <value>Il campo indica la posizione corrente dell'asse.</value>
   </data>
   <data name="BeltBurnishingStartCycle" xml:space="preserve">
     <value>Avvia il test. Il test continua fino al raggiungimento del numero di cicli richiesti o fino alla pressione del tasto di arresto.</value>

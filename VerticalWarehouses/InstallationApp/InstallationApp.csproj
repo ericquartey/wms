@@ -48,6 +48,7 @@
     <None Remove="HelpWindows\BeltBurnishingHelpView.xaml" />
     <None Remove="HelpWindows\HelpMainWindow.xaml" />
     <None Remove="HelpWindows\HelpPageBase.xaml" />
+    <None Remove="HelpWindows\HelpPageBase_old.xaml" />
     <None Remove="MainWindowBackToIAPPButtonView.xaml" />
     <None Remove="ViewsAndViewModels\LowSpeedMovements\LSMTMainView.xaml" />
     <None Remove="ViewsAndViewModels\MainWindowBackToIAPPButtonView.xaml" />
@@ -76,8 +77,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="HelpWindows\HelpPageBase.xaml.cs">
-      <DependentUpon>HelpPageBase.xaml</DependentUpon>
+    <Compile Update="HelpWindows\HelpPageBase_old.xaml.cs">
+      <DependentUpon>HelpPageBase_old.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 

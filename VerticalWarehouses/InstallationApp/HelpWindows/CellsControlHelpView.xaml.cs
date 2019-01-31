@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.InstallationApp.HelpWindows
 {
     /// <summary>
     /// Interaction logic for CellsControlHelpView.xaml
