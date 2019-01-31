@@ -5,17 +5,13 @@ namespace Ferretto.VW.MAS_MachineManager
 {
     public class MachineManager : IMachineManager
     {
-        #region Fields
-
-        private readonly FiniteStateMachines finiteStateMachines = Singleton<FiniteStateMachines>.UniqueInstance;
-
-        #endregion Fields
+        //TODO private readonly FiniteStateMachines finiteStateMachines = Singleton<FiniteStateMachines>.UniqueInstance;
 
         #region Methods
 
-        public async Task DoHoming(BroadcastDelegate _delegate)
+        public async Task DoHoming(BroadcastDelegate broadcastDelegate)
         {
-            await this.finiteStateMachines.DoHoming(_delegate);
+            //TODO await this.finiteStateMachines.DoHoming(broadcastDelegate);
         }
 
         #endregion Methods

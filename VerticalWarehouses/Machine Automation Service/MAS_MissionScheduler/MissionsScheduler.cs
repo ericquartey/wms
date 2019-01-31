@@ -1,7 +1,7 @@
 ﻿using System;
 using Ferretto.VW.MAS_MachineManager;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils;
+using Ferretto.Common.Common_Utils;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -19,14 +19,14 @@ namespace Ferretto.VW.MAS_MissionScheduler
 
         #region Methods
 
-        public void AddMission(Mission _mission)
+        public void AddMission(Mission mission)
         {
             throw new NotImplementedException();
         }
 
-        public async Task DoHoming(BroadcastDelegate _delegate)
+        public async Task DoHoming(BroadcastDelegate broadcastDelegate)
         {
-            await this.machineManager.DoHoming(_delegate);
+            await this.machineManager.DoHoming(broadcastDelegate);
         }
 
         #endregion Methods
