@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -7,7 +8,9 @@ using DevExpress.Data.Filtering;
 using DevExpress.Xpf.Core.FilteringUI;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Utils.Expressions;
+using NLog;
 using Prism.Commands;
 
 namespace Ferretto.Common.Controls
@@ -19,9 +22,13 @@ namespace Ferretto.Common.Controls
 
         private const int DefaultPageSize = 30;
 
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+
         private CriteriaOperator customFilter;
 
         private object dataSource;
+
+        private object filteringChangedSubscription;
 
         private FilteringUIContext filteringContext;
 
@@ -80,6 +87,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        [Display(Name = nameof(Resources.DesktopApp.EmptyString), ResourceType = typeof(Resources.DesktopApp))]
         public string SearchText
         {
             get => this.searchText;
@@ -144,11 +152,20 @@ namespace Ferretto.Common.Controls
             // do nothing: derived classes can customize the behaviour of this command
         }
 
+        protected override void OnAppear()
+        {
+            base.OnAppear();
+
+            this.filteringChangedSubscription = this.EventService.Subscribe<FilteringChangedPubSubEvent>(
+                eventArgs => this.OnFilteringChanged(eventArgs), this.Token, true, true);
+        }
+
         protected override void OnDispose()
         {
-            base.OnDispose();
-
+            this.EventService.Unsubscribe<FilteringChangedPubSubEvent>(this.filteringChangedSubscription);
             (this.dataSource as InfiniteAsyncSource)?.Dispose();
+
+            base.OnDispose();
         }
 
         private static IExpression BuildExpression(CriteriaOperator filter)
@@ -194,61 +211,35 @@ namespace Ferretto.Common.Controls
             return e.SortOrder.Select(s => new SortOption(s.PropertyName, s.Direction));
         }
 
+        private static CriteriaOperator JoinFilters(CriteriaOperator operator1, CriteriaOperator operator2)
+        {
+            if (operator1 is null == false && operator2 is null == false)
+            {
+                return CriteriaOperator.And(operator1, operator2);
+            }
+
+            return operator1 ?? operator2;
+        }
+
         private void ComputeOverallFilter()
         {
             var filterDataSource = this.FilterDataSources.Single(d => d.Key == this.selectedFilterTile.Key);
 
             this.Provider = filterDataSource.Provider;
 
-            var overallFilter = CriteriaOperator.TryParse(filterDataSource.Expression);
-            var searchTextOperator = CriteriaOperator.TryParse(this.searchText);
-            if (searchTextOperator is null == false)
-            {
-                if (overallFilter is null == false)
-                {
-                    overallFilter = CriteriaOperator.And(overallFilter, searchTextOperator);
-                }
-                else
-                {
-                    overallFilter = searchTextOperator;
-                }
-            }
+            var newOverallFilter = CriteriaOperator.TryParse(filterDataSource.Expression);
 
-            if (this.CustomFilter is null == false)
-            {
-                if (overallFilter is null == false)
-                {
-                    overallFilter = CriteriaOperator.And(overallFilter, this.CustomFilter);
-                }
-                else
-                {
-                    overallFilter = this.CustomFilter;
-                }
-            }
-
-            this.OverallFilter = overallFilter;
+            this.OverallFilter = JoinFilters(newOverallFilter, this.customFilter);
+            this.logger.Debug($"Data source filter: '{this.OverallFilter}'");
+            (this.dataSource as InfiniteAsyncSource)?.RefreshRows();
         }
 
         private async Task<FetchRowsResult> FetchRowsAsync(FetchRowsAsyncEventArgs e)
         {
             var orderBy = GetSortOrder(e);
-            var filterExpression = e.Filter.BuildExpression();
-            IExpression where = null;
-            IExpression search = null;
 
-            if (filterExpression is BinaryExpression expression)
-            {
-                if (expression.LeftExpression is ValueExpression valueExpressionLeft
-                    &&
-                    expression.RightExpression is ValueExpression valueExpressionRight)
-                {
-                    where = expression;
-                }
-            }
-            else if (filterExpression is ValueExpression valueExpression)
-            {
-                search = valueExpression;
-            }
+            var where = this.overallFilter?.BuildExpression();
+            var search = this.searchText?.BuildExpression();
 
             var entities = await this.provider.GetAllAsync(
                 skip: e.Skip,
@@ -315,6 +306,14 @@ namespace Ferretto.Common.Controls
             };
 
             return source;
+        }
+
+        private void OnFilteringChanged(FilteringChangedPubSubEvent eventArgs)
+        {
+            if (eventArgs.FilteringContext == this.filteringContext)
+            {
+                this.CustomFilter = eventArgs.Filter;
+            }
         }
 
         #endregion Methods

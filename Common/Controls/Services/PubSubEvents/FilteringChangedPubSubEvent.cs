@@ -26,9 +26,9 @@ namespace Ferretto.Common.Controls.Services
 
         #region Properties
 
-        public object Filter => this.filter;
+        public CriteriaOperator Filter => this.filter;
 
-        public object FilteringContext => this.filteringContext;
+        public FilteringUIContext FilteringContext => this.filteringContext;
 
         public string Token { get; }
 
