@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.Common_Utils
+﻿namespace Ferretto.Common.Common_Utils
 {
     public delegate void BroadcastDelegate(string s);
 }

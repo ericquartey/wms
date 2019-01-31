@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ferretto.VW.Common_Utils
+﻿namespace Ferretto.Common.Common_Utils
 {
     public class Mission
     {

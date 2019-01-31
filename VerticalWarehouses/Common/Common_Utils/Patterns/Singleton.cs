@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.Common_Utils
+﻿namespace Ferretto.Common.Common_Utils
 {
     //Usage: var instance = Singleton<typeof(instance)>();
     public class Singleton<T> where T : class, new()
