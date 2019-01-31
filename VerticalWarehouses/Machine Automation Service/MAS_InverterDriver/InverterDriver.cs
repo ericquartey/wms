@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ferretto.VW.MAS_InverterDriver;
-
-namespace Ferretto.VW.MAS_InverterDriver
+﻿namespace Ferretto.VW.MAS_InverterDriver
 {
     public class InverterDriver : IInverterDriver
     {
