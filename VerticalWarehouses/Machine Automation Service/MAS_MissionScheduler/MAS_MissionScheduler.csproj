@@ -7,4 +7,9 @@
     <AssemblyName>Ferretto.VW.MAS_MissionScheduler</AssemblyName>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common_Utils\Common_Utils.csproj" />
+    <ProjectReference Include="..\MAS_MachineManager\MAS_MachineManager.csproj" />
+  </ItemGroup>
+
 </Project>
