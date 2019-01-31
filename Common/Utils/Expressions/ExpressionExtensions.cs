@@ -11,13 +11,18 @@ namespace Ferretto.Common.Utils.Expressions
            @"(?<operator>[^(]+)\((?<left>[^,]+),(?<right>[^)]+)\)",
            System.Text.RegularExpressions.RegexOptions.Compiled);
 
+        private static readonly System.Text.RegularExpressions.Regex BinaryNestedExpressionRegex =
+               new System.Text.RegularExpressions.Regex(
+           @"^(?<operator>\w+)\((?<left>(\w+)\((.+)\)),(?<right>(\w+)\((.+)\))\)$",
+           System.Text.RegularExpressions.RegexOptions.Compiled);
+
         #endregion Fields
 
         #region Methods
 
         public static IExpression BuildExpression(this string where)
         {
-            var match = BinaryExpressionRegex.Match(where);
+            var match = BinaryNestedExpressionRegex.Match(where);
             if (match.Success)
             {
                 var operatorName = match.Groups["operator"].Value;
@@ -29,7 +34,20 @@ namespace Ferretto.Common.Utils.Expressions
             }
             else
             {
-                return new ValueExpression(where);
+                match = BinaryExpressionRegex.Match(where);
+                if (match.Success)
+                {
+                    var operatorName = match.Groups["operator"].Value;
+                    return new BinaryExpression(operatorName)
+                    {
+                        LeftExpression = BuildExpression(match.Groups["left"].Value),
+                        RightExpression = BuildExpression(match.Groups["right"].Value)
+                    };
+                }
+                else
+                {
+                    return new ValueExpression(where);
+                }
             }
         }
 
