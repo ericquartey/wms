@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ferretto.VW.InverterDriver.Interface
+﻿namespace Ferretto.VW.MAS_InverterDriver.Interface
 {
     public interface IInverterDriver
     {

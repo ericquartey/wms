@@ -5,4 +5,9 @@
     <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common_Utils\Common_Utils.csproj" />
+    <ProjectReference Include="..\MAS_InverterDriver\MAS_InverterDriver.csproj" />
+  </ItemGroup>
+
 </Project>
