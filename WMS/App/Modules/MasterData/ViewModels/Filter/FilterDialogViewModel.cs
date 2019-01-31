@@ -2,6 +2,7 @@ using System.Windows.Input;
 using DevExpress.Data.Filtering;
 using DevExpress.Xpf.Core.FilteringUI;
 using Ferretto.Common.Controls;
+using Ferretto.Common.Controls.Services;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -20,14 +21,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #endregion Fields
 
-        #region Constructors
-
-        public FilterDialogViewModel()
-        {
-        }
-
-        #endregion Constructors
-
         #region Properties
 
         public ICommand AcceptCommand => this.acceptCommand ??
@@ -36,13 +29,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public CriteriaOperator Filter
         {
             get => this.filter;
-            set
-            {
-                if (this.SetProperty(ref this.filter, value))
-                {
-                    this.EventService.Invoke(new FilteringChangedPubSubEvent(this.filter, this.filteringContext));
-                }
-            }
+            set => this.SetProperty(ref this.filter, value);
         }
 
         public FilteringUIContext FilteringContext
@@ -60,14 +47,21 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnAppear()
         {
-            if (this.Data is FilteringUIContext filteringContext)
+            if (this.Data is FilterDialogData filterDialogData)
             {
-                this.FilteringContext = filteringContext;
+                this.FilteringContext = filterDialogData.FilteringContext;
+
+                if (filterDialogData.Filter is null == false)
+                {
+                    this.Filter = CriteriaOperator.Parse(filterDialogData.Filter.ToString());
+                }
             }
         }
 
         private void ExecuteAcceptCommand()
         {
+            this.EventService.Invoke(new FilteringChangedPubSubEvent(this.filter, this.filteringContext));
+
             this.Disappear();
         }
 
