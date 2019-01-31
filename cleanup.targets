@@ -1,8 +1,0 @@
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Target Name="SpicNSpan" AfterTargets="Clean">
-    <!-- bin folder-->
-    <!--RemoveDir Directories="$(TargetDir)" /-->
-    <!-- obj folder-->
-    <RemoveDir Directories="$(ProjectDir)$(BaseIntermediateOutputPath)" />
-  </Target>
-</Project>
