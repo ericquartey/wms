@@ -118,4 +118,7 @@
   <data name="BeltBurnishingStopCycle" xml:space="preserve">
     <value></value>
   </data>
+  <data name="BeltBurnishingFunctionDescription" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

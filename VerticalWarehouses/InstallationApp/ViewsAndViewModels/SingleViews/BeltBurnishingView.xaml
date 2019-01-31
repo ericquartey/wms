@@ -37,10 +37,10 @@
 
         <Button     Content="{x:Static res:InstallationApp.Start}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"
-                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="607,358,0,0" />
+                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="607,490,0,0" />
 
         <Button     Content="{x:Static res:InstallationApp.Stop}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"
-                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="607,460,0,0" />
+                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,490,0,0" />
     </Grid>
 </UserControl>

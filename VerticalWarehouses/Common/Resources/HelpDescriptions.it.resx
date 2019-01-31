@@ -118,4 +118,7 @@
   <data name="BeltBurnishingStopCycle" xml:space="preserve">
     <value>Arresta il test. Il ciclo si arresta al termine del movimento corrente. La pressione del tasto di avvio ciclo riprende l'esecuzione del test fino a completamento.</value>
   </data>
+  <data name="BeltBurnishingFunctionDescription" xml:space="preserve">
+    <value>La procedura permette di effettuare una serie di cicli di spostamento dell'asse verticale fra due punti indicati nei dati di input. Il ciclo, quando avviato, prosegue o fino al raggiungimento dei cicli richiesti o alla pressione del tasto di fine.</value>
+  </data>
 </root>

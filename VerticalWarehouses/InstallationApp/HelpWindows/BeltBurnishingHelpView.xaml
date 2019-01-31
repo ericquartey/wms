@@ -18,77 +18,83 @@
                Stretch="Uniform" />
 
         <TextBlock Grid.Row="0"
-                   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="700,30,0,0"
+                   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.BeltBurnishing}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0"
             ContentText="4500" Width="150"
             LabelText="{x:Static res:InstallationApp.UpperBound}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,200,0,0"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,220,0,0"
             ContentText="500" Width="150"
             LabelText="{x:Static res:InstallationApp.LowerBound}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,280,0,0"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,300,0,0"
             ContentText="3500" Width="150"
             LabelText="{x:Static res:InstallationApp.CurrentPosition}" />
 
-        <Controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,440,0,0"
+        <Controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,460,0,0"
             ContentText="4500" Width="150"
             LabelText="{x:Static res:InstallationApp.CompletedCicles}" />
 
         <Controls:CustomInputFieldControlFocusable  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
-            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,360,0,0"
+            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,380,0,0"
             Width="150"
             LabelText="{x:Static res:InstallationApp.RequiredCicles}"/>
 
         <Button     Content="{x:Static res:InstallationApp.Start}"
             Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"
-            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="510,120,0,0" />
+            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="510,140,0,0" />
 
         <Button     Content="{x:Static res:InstallationApp.Stop}"
             Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"
-            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="510,200,0,0" />
+            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="510,220,0,0" />
 
         <TextBlock Grid.Row="0"
-                   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,120,0,0"
+                   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
+                   Width="640" Height="50"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.BeltBurnishingFunctionDescription}" />
+
+        <TextBlock Grid.Row="0"
+                   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,140,0,0"
                    Width="260" Height="70"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                    Text="{x:Static res:HelpDescriptions.BeltBurnishingUpLimit}" />
 
         <TextBlock Grid.Row="0"
-            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,200,0,0"
+            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,220,0,0"
             Width="260" Height="70"
             Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
             Text="{x:Static res:HelpDescriptions.BeltBurnishingDownLimit}" />
 
         <TextBlock Grid.Row="0"
-            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,280,0,0"
+            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,300,0,0"
             Width="260" Height="70"
             Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
             Text="{x:Static res:HelpDescriptions.BeltBurnishingActualPosition}" />
 
         <TextBlock Grid.Row="0"
-            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,360,0,0"
+            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,380,0,0"
             Width="260" Height="70"
             Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
             Text="{x:Static res:HelpDescriptions.BeltBurnishingRequiredCycles}" />
 
         <TextBlock Grid.Row="0"
-            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,440,0,0"
+            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,460,0,0"
             Width="260" Height="70"
             Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
             Text="{x:Static res:HelpDescriptions.BeltBurnishingCompletedCycles}" />
 
         <TextBlock Grid.Row="0"
-            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="700,120,0,0"
+            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="700,140,0,0"
             Width="260" Height="70"
             Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
             Text="{x:Static res:HelpDescriptions.BeltBurnishingStartCycle}" />
 
         <TextBlock Grid.Row="0"
-            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="700,200,0,0"
+            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="700,220,0,0"
             Width="260" Height="70"
             Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
             Text="{x:Static res:HelpDescriptions.BeltBurnishingStopCycle}" />

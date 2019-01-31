@@ -90,6 +90,15 @@ namespace Ferretto.VW.Resources {
         /// <summary>
         ///   Cerca una stringa localizzata simile a .
         /// </summary>
+        public static string BeltBurnishingFunctionDescription {
+            get {
+                return ResourceManager.GetString("BeltBurnishingFunctionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a .
+        /// </summary>
         public static string BeltBurnishingRequiredCycles {
             get {
                 return ResourceManager.GetString("BeltBurnishingRequiredCycles", resourceCulture);
