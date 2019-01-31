@@ -7,18 +7,6 @@ namespace Ferretto.VW.MAS_InverterDriver
 {
     public class InverterDriver : IInverterDriver
     {
-        #region Fields
-        #endregion Fields
-
-        #region Constructors
-
-        public InverterDriver()
-        {
-            return;
-        }
-
-        #endregion Constructors
-
         #region Methods
         public void ExecuteVerticalHoming()
         {
@@ -30,7 +18,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             return;
         }
 
-        public void ExecuteVerticalPosition(long target, float weight)
+        public void ExecuteVerticalPosition(int target, float weight)
         {
             return;
         }

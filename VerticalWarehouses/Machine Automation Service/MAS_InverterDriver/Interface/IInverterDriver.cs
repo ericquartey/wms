@@ -6,16 +6,11 @@ namespace Ferretto.VW.MAS_InverterDriver
 {
     public interface IInverterDriver
     {
-
-        #region Properties
-
-        #endregion Properties
-
         #region Methods
 
         void ExecuteVerticalHoming();
         void ExecuteHorizontalHoming();
-        void ExecuteVerticalPosition(long target, float weight);
+        void ExecuteVerticalPosition(int target, float weight);
         void ExecuteHorizontalPosition();
         bool[] GetSensorsStates();
         float GetDrawerWeight();
