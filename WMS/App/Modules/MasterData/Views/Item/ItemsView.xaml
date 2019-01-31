@@ -77,8 +77,10 @@
                 </wms:ActionBar>
 
                 <dxe:TextEdit Grid.Column="2"
-                              Margin="5"
-                              EditValue="{Binding SearchText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged, Delay=200}" />
+                              Margin="8"
+                              EditValue="{Binding SearchText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged, Delay=200}"
+                              NullText="{x:Static res:General.Search}"
+                              ShowNullText="True" />
 
                 <wms:WmsGridControl x:Name="MainGridControl"
                                     Grid.Row="1"
@@ -108,7 +110,7 @@
                     <wms:WmsGridControl.Columns>
                         <dxg:GridColumn Width="100*"
                                         AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual" 
+                                        AllowedBinaryFilters="Equals,DoesNotEqual"
                                         FieldName="Code"
                                         FilterPopupMode="Excel" />
                         <dxg:GridColumn Width="400*"
@@ -160,9 +162,6 @@
 
                 </wms:WmsGridControl>
             </Grid>
-
-
-
 
         </Grid>
 
