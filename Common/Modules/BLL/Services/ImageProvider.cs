@@ -1,23 +1,23 @@
-﻿namespace Ferretto.Common.Modules.BLL.Services
-{
-    using System;
-    using System.Configuration;
-    using System.Drawing;
-    using System.Drawing.Drawing2D;
-    using System.Drawing.Imaging;
-    using System.IO;
-    using System.Windows.Media;
-    using System.Windows.Media.Imaging;
-    using Ferretto.Common.BLL.Interfaces;
-    using Ferretto.Common.Resources;
+﻿using System;
+using System.Configuration;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.Resources;
 
+namespace Ferretto.Common.Modules.BLL.Services
+{
     public class ImageProvider : IImageProvider
     {
         #region Fields
 
         private const string defaultImagesDirectoryName = "images\\";
 
-        private const int PixelMax = 600;
+        private const int defaultPixelMax = 600;
 
         #endregion Fields
 
@@ -26,11 +26,24 @@
         private static Uri ImageDirectoryUri =>
                             new Uri(System.IO.Path.Combine(Environment.CurrentDirectory, ConfigurationManager.AppSettings["ImagesPath"] ?? defaultImagesDirectoryName));
 
-        #endregion Properties
+        private static int DefaultPixelMax
+        {
+            get
+            {
+                if (int.TryParse(ConfigurationManager.AppSettings["DefaultPixelMax"], out int x))
+                {
+                    return x;
+                }
 
-        #region Methods
+                return defaultPixelMax;
+            }
+        }
 
-        public static Bitmap ResizeImage(Image image, int width, int height)
+    #endregion Properties
+
+    #region Methods
+
+    public static Bitmap ResizeImage(Image image, int width, int height)
         {
             if (image != null)
             {
@@ -79,31 +92,38 @@
             return File.Exists(uri.LocalPath) ? File.Open(uri.LocalPath, FileMode.Open, FileAccess.Read) : null;
         }
 
-        public void SaveImage(string pathImage)
+        public void SaveImage(string originalPathImage)
         {
             // Load image
-            var image = Image.FromFile(pathImage);
-
-            if (image.Height > PixelMax || image.Width > PixelMax)
+            Image resizedImage = null;
+            using (var image = Image.FromFile(originalPathImage))
             {
-                var width = image.Width;
-                var height = image.Height;
-                CalculateDimensionProportioned(ref width, ref height);
-                image = ResizeImage(image, width, height);
+                if (image.Height > DefaultPixelMax || image.Width > DefaultPixelMax)
+                {
+                    var width = image.Width;
+                    var height = image.Height;
+                    CalculateDimensionProportioned(ref width, ref height);
+                    resizedImage = ResizeImage(image, width, height);
+                }
+                else
+                {
+                    resizedImage = image;
+                }
+
+                string fileName = Path.GetFileName(originalPathImage);
+
+                var uri = new Uri(ImageDirectoryUri, fileName);
+                var uriLocalPath = uri.LocalPath;
+                if (File.Exists(uriLocalPath))
+                {
+                    var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(originalPathImage);
+                    fileNameWithoutExtension += $"_{DateTime.Now.Ticks}{Path.GetExtension(originalPathImage)}";
+                    uri = new Uri(ImageDirectoryUri, fileNameWithoutExtension);
+                }
+
+                resizedImage.Save(uriLocalPath);
+                resizedImage.Dispose();
             }
-
-            string fileName = Path.GetFileName(pathImage);
-
-            var uri = new Uri(ImageDirectoryUri, fileName);
-
-            if (File.Exists(uri.LocalPath))
-            {
-                var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(pathImage);
-                fileNameWithoutExtension += $"_{DateTime.Now.Ticks}{Path.GetExtension(pathImage)}";
-                uri = new Uri(ImageDirectoryUri, fileNameWithoutExtension);
-            }
-
-            SaveOnLocal(image, uri.LocalPath);
         }
 
         private static void CalculateDimensionProportioned(ref int width, ref int height)
@@ -111,26 +131,19 @@
             if (width > height)
             {
                 height = CalculateProportion(width, height);
-                width = PixelMax;
+                width = DefaultPixelMax;
             }
             else
             {
                 width = CalculateProportion(height, width);
-                height = PixelMax;
+                height = DefaultPixelMax;
             }
         }
 
         private static int CalculateProportion(int x, int y)
         {
-            return (y * PixelMax) / x;
+            return (y * DefaultPixelMax) / x;
         }
-
-        private static void SaveOnLocal(Image image, string path)
-        {
-            image.Save(path);
-            image.Dispose();
-        }
-
         #endregion Methods
     }
 }

@@ -6,7 +6,7 @@
 
         System.IO.Stream GetImage(string pathName);
 
-        void SaveImage(string pathImage);
+        void SaveImage(string originalPathImage);
 
         #endregion Methods
     }
