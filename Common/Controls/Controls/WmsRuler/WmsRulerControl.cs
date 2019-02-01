@@ -267,7 +267,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        private bool CanBeShowed(int intervalMark, int factor)
+        private bool CanBeShown(int intervalMark, int factor)
         {
             var pixelSize = this.GetStepPixelSize(intervalMark);
             return pixelSize > (this.GetSizeOfPen() * factor);
@@ -523,9 +523,9 @@ namespace Ferretto.Common.Controls
         {
             var isBaseDrawVisible = false;
             var canShowText = this.CanShowText(totalSteps);
-            var canShowMarks = this.CanBeShowed(1, 20);
-            var canShowMiddleMarks = this.CanBeShowed(MIDDLE_INTERVALMARKS, 13);
-            var canShowLittleMarks = this.CanBeShowed(LITTLE_INTERVALMARKS, 4);
+            var canShowMarks = this.CanBeShown(1, 20);
+            var canShowMiddleMarks = this.CanBeShown(MIDDLE_INTERVALMARKS, 13);
+            var canShowLittleMarks = this.CanBeShown(LITTLE_INTERVALMARKS, 4);
 
             for (var currStep = 0; currStep < totalSteps; currStep++)
             {
