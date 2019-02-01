@@ -19,7 +19,7 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService;
 
-        private readonly WMS.Scheduler.WebAPI.Contracts.IItemsService itemsService;
+        private readonly WMS.Scheduler.WebAPI.Contracts.IItemsSchedulerService itemsSchedulerService;
 
         #endregion Fields
 
@@ -29,10 +29,10 @@ namespace Ferretto.Common.BusinessProviders
             IDatabaseContextService dataContext,
             EnumerationProvider enumerationProvider,
             WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService,
-            WMS.Scheduler.WebAPI.Contracts.IItemsService itemsService)
+            WMS.Scheduler.WebAPI.Contracts.IItemsSchedulerService itemsSchedulerService)
         {
             this.dataContext = dataContext;
-            this.itemsService = itemsService;
+            this.itemsSchedulerService = itemsSchedulerService;
             this.itemsDataService = itemsDataService;
             this.enumerationProvider = enumerationProvider;
         }
@@ -250,7 +250,7 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
-                await this.itemsService.WithdrawAsync(
+                await this.itemsSchedulerService.WithdrawAsync(
                    new WMS.Scheduler.WebAPI.Contracts.SchedulerRequest
                    {
                        IsInstant = true,

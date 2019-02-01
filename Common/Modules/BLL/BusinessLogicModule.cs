@@ -72,19 +72,19 @@ namespace Ferretto.Common.Modules.BLL
 
         private void RegisterDataServiceEndpoints()
         {
-            var dataServiceEndPoint = ConfigurationManager.AppSettings["DataServiceEndpoint"];
+            var serviceEndPoint = new System.Uri(ConfigurationManager.AppSettings["DataServiceEndpoint"]);
 
-            this.Container.RegisterType<IItemsDataService, ItemsDataService>(new InjectionConstructor(dataServiceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<IItemsDataService>(serviceEndPoint));
         }
 
         private void RegisterSchedulerServiceEndpoints()
         {
-            var schedulerServiceEndPoint = ConfigurationManager.AppSettings["SchedulerServiceEndpoint"];
+            var serviceEndPoint = new System.Uri(ConfigurationManager.AppSettings["SchedulerServiceEndpoint"]);
 
-            this.Container.RegisterType<IItemsService, ItemsService>(new InjectionConstructor(schedulerServiceEndPoint));
-            this.Container.RegisterType<IMissionsService, MissionsService>(new InjectionConstructor(schedulerServiceEndPoint));
-            this.Container.RegisterType<IItemListsService, ItemListsService>(new InjectionConstructor(schedulerServiceEndPoint));
-            this.Container.RegisterType<IItemListRowsService, ItemListRowsService>(new InjectionConstructor(schedulerServiceEndPoint));
+            this.Container.RegisterInstance(SchedulerServiceFactory.GetService<IItemsSchedulerService>(serviceEndPoint));
+            this.Container.RegisterInstance(SchedulerServiceFactory.GetService<IMissionsSchedulerService>(serviceEndPoint));
+            this.Container.RegisterInstance(SchedulerServiceFactory.GetService<IItemListsSchedulerService>(serviceEndPoint));
+            this.Container.RegisterInstance(SchedulerServiceFactory.GetService<IItemListRowsSchedulerService>(serviceEndPoint));
         }
 
         #endregion Methods

@@ -18,7 +18,7 @@
       "generateClientInterfaces": true,
 
       "useHttpRequestMessageCreationMethod": true,
-      "clientClassAccessModifier": "public",
+      "clientClassAccessModifier": "internal",
       "typeAccessModifier": "public",
       "generateContractsOutput": true,
       "contractsNamespace": "Ferretto.WMS.Data.WebAPI.Contracts",
