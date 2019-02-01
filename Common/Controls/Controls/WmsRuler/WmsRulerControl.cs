@@ -56,6 +56,8 @@ namespace Ferretto.Common.Controls
 
         private const int OFFSET_BORDER = 2;
 
+        private const double TEXT_OFFSET_FACTOR = 20;
+
         private const double WIDTH_MARK = 1;
 
         private readonly InfoRuler infoRuler;
@@ -584,7 +586,7 @@ namespace Ferretto.Common.Controls
                 var temp = currentStep * this.Step;
                 position.X = ConvertMillimetersToPixel(temp, this.ActualWidth, this.DimensionWidth);
 
-                position.Y = this.ActualHeight / 20.0;
+                position.Y = this.ActualHeight / TEXT_OFFSET_FACTOR;
                 if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left)
                 {
                     position.X += margin;
@@ -607,7 +609,7 @@ namespace Ferretto.Common.Controls
             }
             else
             {
-                position.X = this.ActualWidth / 20;
+                position.X = this.ActualWidth / TEXT_OFFSET_FACTOR;
                 var temp = currentStep * this.Step;
                 position.Y = ConvertMillimetersToPixel(temp, this.ActualHeight, this.DimensionHeight);
                 if (this.InfoRuler.OriginVertical == OriginVertical.Top)
