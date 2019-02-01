@@ -60,12 +60,12 @@ namespace Ferretto.WMS.Scheduler.WebAPI
                 });
 #endif
             }
-            else
+            else if (env.IsProduction())
             {
                 app.UseHsts();
-            }
 
-            app.UseHttpsRedirection();
+                app.UseHttpsRedirection();
+            }
 
             var wakeupHubEndpoint = this.Configuration["Hubs:WakeUp"];
             if (string.IsNullOrWhiteSpace(wakeupHubEndpoint) == false)
