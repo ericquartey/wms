@@ -18,6 +18,7 @@ namespace Ferretto.Common.BusinessModels
         private int? fifoTimeStore;
         private int? height;
         private string image;
+        private string imagePath;
         private DateTime? inventoryDate;
         private int? inventoryTolerance;
         private int? itemCategoryId;
@@ -103,6 +104,11 @@ namespace Ferretto.Common.BusinessModels
         {
             get => this.image;
             set => this.SetProperty(ref this.image, value);
+        }
+        public string ImagePath
+        {
+            get => this.imagePath;
+            set => this.SetProperty(ref this.imagePath, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemLastInventoryDate), ResourceType = typeof(BusinessObjects))]

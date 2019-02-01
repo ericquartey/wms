@@ -826,15 +826,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ack://application:,,,/Ferretto.WMS.App.Themes;component/Images/.
-        /// </summary>
-        public static string PathImage {
-            get {
-                return ResourceManager.GetString("PathImage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/up.png.
         /// </summary>
         public static string PickLists {
@@ -844,7 +835,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to placeholder.jpg.
+        ///   Looks up a localized string similar to placeholder.png.
         /// </summary>
         public static string PlaceHolder {
             get {

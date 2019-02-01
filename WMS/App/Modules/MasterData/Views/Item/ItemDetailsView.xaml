@@ -292,7 +292,8 @@
                                           MaxHeight="400"
                                           BorderBrush="{DynamicResource CommonSecondaryLight}"
                                           BorderThickness="1"
-                                          Path="{Binding Path=Model.Image}" />
+                                          Filename="{Binding Path=Model.Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          Path="{Binding Path=Model.ImagePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
                                       Content="{Binding Path=Model.CreationDate}" />
