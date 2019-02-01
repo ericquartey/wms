@@ -23,14 +23,11 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         #region Properties
 
-        private static Uri ImageDirectoryUri =>
-                            new Uri(System.IO.Path.Combine(Environment.CurrentDirectory, ConfigurationManager.AppSettings["ImagesPath"] ?? defaultImagesDirectoryName));
-
         private static int DefaultPixelMax
         {
             get
             {
-                if (int.TryParse(ConfigurationManager.AppSettings["DefaultPixelMax"], out int x))
+                if (int.TryParse(ConfigurationManager.AppSettings["ImagesDefaultPixelMax"], out int x))
                 {
                     return x;
                 }
@@ -39,11 +36,14 @@ namespace Ferretto.Common.Modules.BLL.Services
             }
         }
 
-    #endregion Properties
+        private static Uri ImageDirectoryUri =>
+                                    new Uri(System.IO.Path.Combine(Environment.CurrentDirectory, ConfigurationManager.AppSettings["ImagesPath"] ?? defaultImagesDirectoryName));
 
-    #region Methods
+        #endregion Properties
 
-    public static Bitmap ResizeImage(Image image, int width, int height)
+        #region Methods
+
+        public static Bitmap ResizeImage(Image image, int width, int height)
         {
             if (image != null)
             {
@@ -144,6 +144,7 @@ namespace Ferretto.Common.Modules.BLL.Services
         {
             return (y * DefaultPixelMax) / x;
         }
+
         #endregion Methods
     }
 }
