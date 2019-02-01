@@ -8,6 +8,8 @@ namespace Ferretto.Common.BLL.Interfaces
     {
         #region Properties
 
+        string Expression { get; }
+
         Func<IQueryable<TModel>> GetData { get; }
 
         Func<int> GetDataCount { get; }
@@ -15,6 +17,8 @@ namespace Ferretto.Common.BLL.Interfaces
         string Key { get; }
 
         string Name { get; }
+
+        IPagedBusinessProvider<TModel> Provider { get; }
 
         #endregion Properties
     }

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
+using Ferretto.WMS.Scheduler.WebAPI.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.Common.BusinessProviders
@@ -15,7 +16,7 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly EnumerationProvider enumerationProvider;
 
-        private readonly WMS.Scheduler.WebAPI.Contracts.IItemListRowsService itemListRowService;
+        private readonly IItemListRowsSchedulerService itemListRowsSchedulerService;
 
         #endregion Fields
 
@@ -24,11 +25,11 @@ namespace Ferretto.Common.BusinessProviders
         public ItemListRowProvider(
             IDatabaseContextService dataContextService,
             EnumerationProvider enumerationProvider,
-            WMS.Scheduler.WebAPI.Contracts.IItemListRowsService itemListRowService)
+            IItemListRowsSchedulerService itemListRowsSchedulerService)
         {
             this.dataContextService = dataContextService;
             this.enumerationProvider = enumerationProvider;
-            this.itemListRowService = itemListRowService;
+            this.itemListRowsSchedulerService = itemListRowsSchedulerService;
         }
 
         #endregion Constructors
@@ -43,12 +44,13 @@ namespace Ferretto.Common.BusinessProviders
         {
             try
             {
-                await this.itemListRowService.ExecuteAsync(new WMS.Scheduler.WebAPI.Contracts.ListRowExecutionRequest
-                {
-                    ListRowId = listRowId,
-                    AreaId = areaId,
-                    BayId = bayId
-                });
+                await this.itemListRowsSchedulerService.ExecuteAsync(
+                    new ListRowExecutionRequest
+                    {
+                        ListRowId = listRowId,
+                        AreaId = areaId,
+                        BayId = bayId
+                    });
 
                 return new OperationResult(true);
             }
@@ -58,7 +60,7 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public IQueryable<ItemListRow> GetAll() => throw new NotSupportedException();
+        public IQueryable<BusinessModels.ItemListRow> GetAll() => throw new NotSupportedException();
 
         public int GetAllCount() => throw new NotSupportedException();
 
@@ -77,7 +79,7 @@ namespace Ferretto.Common.BusinessProviders
                     ItemId = lr.Item.Id,
                     RequiredQuantity = lr.RequiredQuantity,
                     DispatchedQuantity = lr.DispatchedQuantity,
-                    ItemListRowStatus = (ItemListRowStatus)lr.Status,
+                    ItemListRowStatus = (BusinessModels.ItemListRowStatus)lr.Status,
                     ItemDescription = lr.Item.Description,
                     CreationDate = lr.CreationDate,
                     ItemListCode = lr.ItemList.Code,
@@ -102,14 +104,14 @@ namespace Ferretto.Common.BusinessProviders
             return itemListRowDetails;
         }
 
-        public IQueryable<ItemListRow> GetByItemListId(int id)
+        public IQueryable<BusinessModels.ItemListRow> GetByItemListId(int id)
         {
             var itemListRows = this.dataContextService.Current.ItemListRows
                 .Include(l => l.MaterialStatus)
                 .Include(l => l.Item)
                 .ThenInclude(i => i.MeasureUnit)
                 .Where(l => l.ItemListId == id)
-                .Select(l => new ItemListRow
+                .Select(l => new BusinessModels.ItemListRow
                 {
                     Id = l.Id,
                     Code = l.Code,
@@ -117,7 +119,7 @@ namespace Ferretto.Common.BusinessProviders
                     ItemDescription = l.Item.Description,
                     RequiredQuantity = l.RequiredQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
-                    ItemListRowStatus = (ItemListRowStatus)l.Status,
+                    ItemListRowStatus = (BusinessModels.ItemListRowStatus)l.Status,
                     MaterialStatusDescription = l.MaterialStatus.Description,
                     CreationDate = l.CreationDate,
                     ItemUnitMeasure = l.Item.MeasureUnit.Description
@@ -156,11 +158,12 @@ namespace Ferretto.Common.BusinessProviders
         {
             try
             {
-                await this.itemListRowService.ExecuteAsync(new WMS.Scheduler.WebAPI.Contracts.ListRowExecutionRequest
-                {
-                    ListRowId = listRowId,
-                    AreaId = areaId
-                });
+                await this.itemListRowsSchedulerService
+                    .ExecuteAsync(new ListRowExecutionRequest
+                    {
+                        ListRowId = listRowId,
+                        AreaId = areaId
+                    });
 
                 return new OperationResult(true);
             }

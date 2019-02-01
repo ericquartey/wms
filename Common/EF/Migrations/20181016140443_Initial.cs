@@ -6,8 +6,162 @@ namespace Ferretto.Common.EF.Migrations
 {
     public partial class Initial : Migration
     {
+        #region Methods
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "CellConfigurationCellPositionLoadingUnitTypes");
+
+            migrationBuilder.DropTable(
+                name: "CellConfigurationCellTypes");
+
+            migrationBuilder.DropTable(
+                name: "CellTotals");
+
+            migrationBuilder.DropTable(
+                name: "CellTypesAisles");
+
+            migrationBuilder.DropTable(
+                name: "DefaultCompartments");
+
+            migrationBuilder.DropTable(
+                name: "ItemsAreas");
+
+            migrationBuilder.DropTable(
+                name: "ItemsCompartmentTypes");
+
+            migrationBuilder.DropTable(
+                name: "LoadingUnitRanges");
+
+            migrationBuilder.DropTable(
+                name: "LoadingUnitTypesAisles");
+
+            migrationBuilder.DropTable(
+                name: "Machines");
+
+            migrationBuilder.DropTable(
+                name: "Missions");
+
+            migrationBuilder.DropTable(
+                name: "CellConfigurations");
+
+            migrationBuilder.DropTable(
+                name: "DefaultLoadingUnits");
+
+            migrationBuilder.DropTable(
+                name: "MachineTypes");
+
+            migrationBuilder.DropTable(
+                name: "Compartments");
+
+            migrationBuilder.DropTable(
+                name: "Bays");
+
+            migrationBuilder.DropTable(
+                name: "ItemListRows");
+
+            migrationBuilder.DropTable(
+                name: "MissionStatuses");
+
+            migrationBuilder.DropTable(
+                name: "MissionTypes");
+
+            migrationBuilder.DropTable(
+                name: "CompartmentStatuses");
+
+            migrationBuilder.DropTable(
+                name: "CompartmentTypes");
+
+            migrationBuilder.DropTable(
+                name: "LoadingUnits");
+
+            migrationBuilder.DropTable(
+                name: "BayTypes");
+
+            migrationBuilder.DropTable(
+                name: "Items");
+
+            migrationBuilder.DropTable(
+                name: "ItemLists");
+
+            migrationBuilder.DropTable(
+                name: "ItemListRowStatuses");
+
+            migrationBuilder.DropTable(
+                name: "MaterialStatuses");
+
+            migrationBuilder.DropTable(
+                name: "PackageTypes");
+
+            migrationBuilder.DropTable(
+                name: "Cells");
+
+            migrationBuilder.DropTable(
+                name: "CellPositions");
+
+            migrationBuilder.DropTable(
+                name: "LoadingUnitStatuses");
+
+            migrationBuilder.DropTable(
+                name: "LoadingUnitTypes");
+
+            migrationBuilder.DropTable(
+                name: "ItemCategories");
+
+            migrationBuilder.DropTable(
+                name: "ItemManagementTypes");
+
+            migrationBuilder.DropTable(
+                name: "MeasureUnits");
+
+            migrationBuilder.DropTable(
+                name: "ItemListStatuses");
+
+            migrationBuilder.DropTable(
+                name: "ItemListTypes");
+
+            migrationBuilder.DropTable(
+                name: "AbcClasses");
+
+            migrationBuilder.DropTable(
+                name: "Aisles");
+
+            migrationBuilder.DropTable(
+                name: "CellStatuses");
+
+            migrationBuilder.DropTable(
+                name: "CellTypes");
+
+            migrationBuilder.DropTable(
+                name: "LoadingUnitHeightClasses");
+
+            migrationBuilder.DropTable(
+                name: "LoadingUnitSizeClasses");
+
+            migrationBuilder.DropTable(
+                name: "LoadingUnitWeightClasses");
+
+            migrationBuilder.DropTable(
+                name: "Areas");
+
+            migrationBuilder.DropTable(
+                name: "CellHeightClasses");
+
+            migrationBuilder.DropTable(
+                name: "CellSizeClasses");
+
+            migrationBuilder.DropTable(
+                name: "CellWeightClasses");
+        }
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.CreateTable(
                 name: "AbcClasses",
                 columns: table => new
@@ -1607,151 +1761,6 @@ namespace Ferretto.Common.EF.Migrations
                 column: "SourceCellId");
         }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "CellConfigurationCellPositionLoadingUnitTypes");
-
-            migrationBuilder.DropTable(
-                name: "CellConfigurationCellTypes");
-
-            migrationBuilder.DropTable(
-                name: "CellTotals");
-
-            migrationBuilder.DropTable(
-                name: "CellTypesAisles");
-
-            migrationBuilder.DropTable(
-                name: "DefaultCompartments");
-
-            migrationBuilder.DropTable(
-                name: "ItemsAreas");
-
-            migrationBuilder.DropTable(
-                name: "ItemsCompartmentTypes");
-
-            migrationBuilder.DropTable(
-                name: "LoadingUnitRanges");
-
-            migrationBuilder.DropTable(
-                name: "LoadingUnitTypesAisles");
-
-            migrationBuilder.DropTable(
-                name: "Machines");
-
-            migrationBuilder.DropTable(
-                name: "Missions");
-
-            migrationBuilder.DropTable(
-                name: "CellConfigurations");
-
-            migrationBuilder.DropTable(
-                name: "DefaultLoadingUnits");
-
-            migrationBuilder.DropTable(
-                name: "MachineTypes");
-
-            migrationBuilder.DropTable(
-                name: "Compartments");
-
-            migrationBuilder.DropTable(
-                name: "Bays");
-
-            migrationBuilder.DropTable(
-                name: "ItemListRows");
-
-            migrationBuilder.DropTable(
-                name: "MissionStatuses");
-
-            migrationBuilder.DropTable(
-                name: "MissionTypes");
-
-            migrationBuilder.DropTable(
-                name: "CompartmentStatuses");
-
-            migrationBuilder.DropTable(
-                name: "CompartmentTypes");
-
-            migrationBuilder.DropTable(
-                name: "LoadingUnits");
-
-            migrationBuilder.DropTable(
-                name: "BayTypes");
-
-            migrationBuilder.DropTable(
-                name: "Items");
-
-            migrationBuilder.DropTable(
-                name: "ItemLists");
-
-            migrationBuilder.DropTable(
-                name: "ItemListRowStatuses");
-
-            migrationBuilder.DropTable(
-                name: "MaterialStatuses");
-
-            migrationBuilder.DropTable(
-                name: "PackageTypes");
-
-            migrationBuilder.DropTable(
-                name: "Cells");
-
-            migrationBuilder.DropTable(
-                name: "CellPositions");
-
-            migrationBuilder.DropTable(
-                name: "LoadingUnitStatuses");
-
-            migrationBuilder.DropTable(
-                name: "LoadingUnitTypes");
-
-            migrationBuilder.DropTable(
-                name: "ItemCategories");
-
-            migrationBuilder.DropTable(
-                name: "ItemManagementTypes");
-
-            migrationBuilder.DropTable(
-                name: "MeasureUnits");
-
-            migrationBuilder.DropTable(
-                name: "ItemListStatuses");
-
-            migrationBuilder.DropTable(
-                name: "ItemListTypes");
-
-            migrationBuilder.DropTable(
-                name: "AbcClasses");
-
-            migrationBuilder.DropTable(
-                name: "Aisles");
-
-            migrationBuilder.DropTable(
-                name: "CellStatuses");
-
-            migrationBuilder.DropTable(
-                name: "CellTypes");
-
-            migrationBuilder.DropTable(
-                name: "LoadingUnitHeightClasses");
-
-            migrationBuilder.DropTable(
-                name: "LoadingUnitSizeClasses");
-
-            migrationBuilder.DropTable(
-                name: "LoadingUnitWeightClasses");
-
-            migrationBuilder.DropTable(
-                name: "Areas");
-
-            migrationBuilder.DropTable(
-                name: "CellHeightClasses");
-
-            migrationBuilder.DropTable(
-                name: "CellSizeClasses");
-
-            migrationBuilder.DropTable(
-                name: "CellWeightClasses");
-        }
+        #endregion Methods
     }
 }

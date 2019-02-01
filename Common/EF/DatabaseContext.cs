@@ -201,16 +201,12 @@ namespace Ferretto.Common.EF
 
             if (cloudInitialCatalog != null)
             {
-                Console.WriteLine($"Cloud Initial Catalog: {cloudInitialCatalog}");
-
                 connectionString = ConnectionStringInitialCatalog.Replace(
                     connectionString,
                     $"Initial Catalog={cloudInitialCatalog}");
             }
 
             optionsBuilder.UseSqlServer(connectionString);
-            Console.WriteLine("Db connection string:");
-            Console.WriteLine(connectionString);
 #endif
         }
 

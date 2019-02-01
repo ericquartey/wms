@@ -50,6 +50,8 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         #region Properties
 
+        public string Expression => null;
+
         public Func<IQueryable<TModel>> GetData { get; protected set; }
 
         public Func<int> GetDataCount { get; protected set; }
@@ -57,6 +59,8 @@ namespace Ferretto.Common.Modules.BLL.Models
         public string Key { get; private set; }
 
         public string Name { get; private set; }
+
+        public IPagedBusinessProvider<TModel> Provider => null;
 
         #endregion Properties
 

@@ -34,8 +34,8 @@
     <DefineConstants>$(DefineConstants);NET4</DefineConstants>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="ServiceCollectionExtensions.cs" Condition="'$(TargetFramework)' == 'net471'" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'net471'">
+    <Compile Remove="DataWebApiServiceCollectionExtensions.cs" />
   </ItemGroup>
 
   <Target Name="NSwag" BeforeTargets="Clean" Condition=" '$(Configuration)' == 'debug' and '$(TargetFramework)' == 'netstandard2.0' ">

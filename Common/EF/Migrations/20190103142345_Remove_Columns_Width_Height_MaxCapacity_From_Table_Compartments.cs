@@ -4,23 +4,15 @@ namespace Ferretto.Common.EF.Migrations
 {
     public partial class Remove_Columns_Width_Height_MaxCapacity_From_Table_Compartments : Migration
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "Height",
-                table: "Compartments");
-
-            migrationBuilder.DropColumn(
-                name: "MaxCapacity",
-                table: "Compartments");
-
-            migrationBuilder.DropColumn(
-                name: "Width",
-                table: "Compartments");
-        }
+        #region Methods
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.AddColumn<int>(
                 name: "Height",
                 table: "Compartments",
@@ -36,5 +28,27 @@ namespace Ferretto.Common.EF.Migrations
                 table: "Compartments",
                 nullable: true);
         }
+
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
+            migrationBuilder.DropColumn(
+                name: "Height",
+                table: "Compartments");
+
+            migrationBuilder.DropColumn(
+                name: "MaxCapacity",
+                table: "Compartments");
+
+            migrationBuilder.DropColumn(
+                name: "Width",
+                table: "Compartments");
+        }
+
+        #endregion Methods
     }
 }

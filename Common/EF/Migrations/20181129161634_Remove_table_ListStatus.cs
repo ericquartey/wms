@@ -5,150 +5,32 @@ namespace Ferretto.Common.EF.Migrations
 {
     public partial class Remove_table_ListStatus : Migration
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropForeignKey(
-                name: "FK_ItemLists_ItemListStatuses_ItemListStatusId",
-                table: "ItemLists");
+        #region Fields
 
-            migrationBuilder.DropForeignKey(
-                name: "FK_Missions_Bays_DestinationBayId",
-                table: "Missions");
+        private const string MissionsTable = "Missions";
 
-            migrationBuilder.DropForeignKey(
-                name: "FK_Missions_Cells_DestinationCellId",
-                table: "Missions");
+        #endregion Fields
 
-            migrationBuilder.DropForeignKey(
-                name: "FK_Missions_MissionTypes_MissionTypeId",
-                table: "Missions");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Missions_Bays_SourceBayId",
-                table: "Missions");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Missions_Cells_SourceCellId",
-                table: "Missions");
-
-            migrationBuilder.DropTable(
-                name: "ItemListStatuses");
-
-            migrationBuilder.DropTable(
-                name: "MissionTypes");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Missions_DestinationBayId",
-                table: "Missions");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Missions_MissionTypeId",
-                table: "Missions");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ItemLists_ItemListStatusId",
-                table: "ItemLists");
-
-            migrationBuilder.DropColumn(
-                name: "DestinationBayId",
-                table: "Missions");
-
-            migrationBuilder.DropColumn(
-                name: "MissionTypeId",
-                table: "Missions");
-
-            migrationBuilder.DropColumn(
-                name: "ItemListStatusId",
-                table: "ItemLists");
-
-            migrationBuilder.RenameColumn(
-                name: "SourceCellId",
-                table: "Missions",
-                newName: "CellId");
-
-            migrationBuilder.RenameColumn(
-                name: "SourceBayId",
-                table: "Missions",
-                newName: "BayId1");
-
-            migrationBuilder.RenameColumn(
-                name: "DestinationCellId",
-                table: "Missions",
-                newName: "BayId");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_Missions_SourceCellId",
-                table: "Missions",
-                newName: "IX_Missions_CellId");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_Missions_SourceBayId",
-                table: "Missions",
-                newName: "IX_Missions_BayId1");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_Missions_DestinationCellId",
-                table: "Missions",
-                newName: "IX_Missions_BayId");
-
-            migrationBuilder.AddColumn<int>(
-                name: "DispatchedQuantity",
-                table: "SchedulerRequests",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddColumn<string>(
-                name: "Type",
-                table: "Missions",
-                type: "char(1)",
-                nullable: false,
-                defaultValue: "");
-
-            migrationBuilder.AddColumn<string>(
-                name: "ItemListStatus",
-                table: "ItemLists",
-                type: "char(1)",
-                nullable: false,
-                defaultValue: "");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Missions_Bays_BayId",
-                table: "Missions",
-                column: "BayId",
-                principalTable: "Bays",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Missions_Bays_BayId1",
-                table: "Missions",
-                column: "BayId1",
-                principalTable: "Bays",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Missions_Cells_CellId",
-                table: "Missions",
-                column: "CellId",
-                principalTable: "Cells",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-        }
+        #region Methods
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.DropForeignKey(
                 name: "FK_Missions_Bays_BayId",
-                table: "Missions");
+                table: MissionsTable);
 
             migrationBuilder.DropForeignKey(
                 name: "FK_Missions_Bays_BayId1",
-                table: "Missions");
+                table: MissionsTable);
 
             migrationBuilder.DropForeignKey(
                 name: "FK_Missions_Cells_CellId",
-                table: "Missions");
+                table: MissionsTable);
 
             migrationBuilder.DropColumn(
                 name: "DispatchedQuantity",
@@ -156,7 +38,7 @@ namespace Ferretto.Common.EF.Migrations
 
             migrationBuilder.DropColumn(
                 name: "Type",
-                table: "Missions");
+                table: MissionsTable);
 
             migrationBuilder.DropColumn(
                 name: "ItemListStatus",
@@ -164,42 +46,42 @@ namespace Ferretto.Common.EF.Migrations
 
             migrationBuilder.RenameColumn(
                 name: "CellId",
-                table: "Missions",
+                table: MissionsTable,
                 newName: "SourceCellId");
 
             migrationBuilder.RenameColumn(
                 name: "BayId1",
-                table: "Missions",
+                table: MissionsTable,
                 newName: "SourceBayId");
 
             migrationBuilder.RenameColumn(
                 name: "BayId",
-                table: "Missions",
+                table: MissionsTable,
                 newName: "DestinationCellId");
 
             migrationBuilder.RenameIndex(
                 name: "IX_Missions_CellId",
-                table: "Missions",
+                table: MissionsTable,
                 newName: "IX_Missions_SourceCellId");
 
             migrationBuilder.RenameIndex(
                 name: "IX_Missions_BayId1",
-                table: "Missions",
+                table: MissionsTable,
                 newName: "IX_Missions_SourceBayId");
 
             migrationBuilder.RenameIndex(
                 name: "IX_Missions_BayId",
-                table: "Missions",
+                table: MissionsTable,
                 newName: "IX_Missions_DestinationCellId");
 
             migrationBuilder.AddColumn<int>(
                 name: "DestinationBayId",
-                table: "Missions",
+                table: MissionsTable,
                 nullable: true);
 
             migrationBuilder.AddColumn<string>(
                 name: "MissionTypeId",
-                table: "Missions",
+                table: MissionsTable,
                 type: "char(2)",
                 nullable: true);
 
@@ -236,12 +118,12 @@ namespace Ferretto.Common.EF.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Missions_DestinationBayId",
-                table: "Missions",
+                table: MissionsTable,
                 column: "DestinationBayId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Missions_MissionTypeId",
-                table: "Missions",
+                table: MissionsTable,
                 column: "MissionTypeId");
 
             migrationBuilder.CreateIndex(
@@ -259,7 +141,7 @@ namespace Ferretto.Common.EF.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Missions_Bays_DestinationBayId",
-                table: "Missions",
+                table: MissionsTable,
                 column: "DestinationBayId",
                 principalTable: "Bays",
                 principalColumn: "Id",
@@ -267,7 +149,7 @@ namespace Ferretto.Common.EF.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Missions_Cells_DestinationCellId",
-                table: "Missions",
+                table: MissionsTable,
                 column: "DestinationCellId",
                 principalTable: "Cells",
                 principalColumn: "Id",
@@ -275,7 +157,7 @@ namespace Ferretto.Common.EF.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Missions_MissionTypes_MissionTypeId",
-                table: "Missions",
+                table: MissionsTable,
                 column: "MissionTypeId",
                 principalTable: "MissionTypes",
                 principalColumn: "Id",
@@ -283,7 +165,7 @@ namespace Ferretto.Common.EF.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Missions_Bays_SourceBayId",
-                table: "Missions",
+                table: MissionsTable,
                 column: "SourceBayId",
                 principalTable: "Bays",
                 principalColumn: "Id",
@@ -291,11 +173,149 @@ namespace Ferretto.Common.EF.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Missions_Cells_SourceCellId",
-                table: "Missions",
+                table: MissionsTable,
                 column: "SourceCellId",
                 principalTable: "Cells",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }
+
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_ItemLists_ItemListStatuses_ItemListStatusId",
+                table: "ItemLists");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Missions_Bays_DestinationBayId",
+                table: MissionsTable);
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Missions_Cells_DestinationCellId",
+                table: MissionsTable);
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Missions_MissionTypes_MissionTypeId",
+                table: MissionsTable);
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Missions_Bays_SourceBayId",
+                table: MissionsTable);
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Missions_Cells_SourceCellId",
+                table: MissionsTable);
+
+            migrationBuilder.DropTable(
+                name: "ItemListStatuses");
+
+            migrationBuilder.DropTable(
+                name: "MissionTypes");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Missions_DestinationBayId",
+                table: MissionsTable);
+
+            migrationBuilder.DropIndex(
+                name: "IX_Missions_MissionTypeId",
+                table: MissionsTable);
+
+            migrationBuilder.DropIndex(
+                name: "IX_ItemLists_ItemListStatusId",
+                table: "ItemLists");
+
+            migrationBuilder.DropColumn(
+                name: "DestinationBayId",
+                table: MissionsTable);
+
+            migrationBuilder.DropColumn(
+                name: "MissionTypeId",
+                table: MissionsTable);
+
+            migrationBuilder.DropColumn(
+                name: "ItemListStatusId",
+                table: "ItemLists");
+
+            migrationBuilder.RenameColumn(
+                name: "SourceCellId",
+                table: MissionsTable,
+                newName: "CellId");
+
+            migrationBuilder.RenameColumn(
+                name: "SourceBayId",
+                table: MissionsTable,
+                newName: "BayId1");
+
+            migrationBuilder.RenameColumn(
+                name: "DestinationCellId",
+                table: MissionsTable,
+                newName: "BayId");
+
+            migrationBuilder.RenameIndex(
+                name: "IX_Missions_SourceCellId",
+                table: MissionsTable,
+                newName: "IX_Missions_CellId");
+
+            migrationBuilder.RenameIndex(
+                name: "IX_Missions_SourceBayId",
+                table: MissionsTable,
+                newName: "IX_Missions_BayId1");
+
+            migrationBuilder.RenameIndex(
+                name: "IX_Missions_DestinationCellId",
+                table: MissionsTable,
+                newName: "IX_Missions_BayId");
+
+            migrationBuilder.AddColumn<int>(
+                name: "DispatchedQuantity",
+                table: "SchedulerRequests",
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.AddColumn<string>(
+                name: "Type",
+                table: MissionsTable,
+                type: "char(1)",
+                nullable: false,
+                defaultValue: string.Empty);
+
+            migrationBuilder.AddColumn<string>(
+                name: "ItemListStatus",
+                table: "ItemLists",
+                type: "char(1)",
+                nullable: false,
+                defaultValue: string.Empty);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Missions_Bays_BayId",
+                table: MissionsTable,
+                column: "BayId",
+                principalTable: "Bays",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Missions_Bays_BayId1",
+                table: MissionsTable,
+                column: "BayId1",
+                principalTable: "Bays",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Missions_Cells_CellId",
+                table: MissionsTable,
+                column: "CellId",
+                principalTable: "Cells",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+        }
+
+        #endregion Methods
     }
 }

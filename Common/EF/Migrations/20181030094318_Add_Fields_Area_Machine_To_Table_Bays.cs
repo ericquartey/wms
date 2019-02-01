@@ -8,6 +8,11 @@ namespace Ferretto.Common.EF.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.DropForeignKey(
                 name: "FK_Bays_Areas_AreaId",
                 table: "Bays");
@@ -35,6 +40,11 @@ namespace Ferretto.Common.EF.Migrations
 
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.AddColumn<int>(
                 name: "AreaId",
                 table: "Bays",
