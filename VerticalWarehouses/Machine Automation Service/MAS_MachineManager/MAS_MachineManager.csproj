@@ -3,6 +3,13 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
+    <RootNamespace>Ferretto.VW.MAS_MachineManager</RootNamespace>
+    <AssemblyName>Ferretto.VW.MAS_MachineManager</AssemblyName>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common_Utils\Common_Utils.csproj" />
+    <ProjectReference Include="..\MAS_FiniteStateMachines\MAS_FiniteStateMachines.csproj" />
+  </ItemGroup>
 
 </Project>
