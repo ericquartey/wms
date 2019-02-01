@@ -18,19 +18,29 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
+        public IUnityContainer Container;
+
+        private CalibrateVerticalAxis calibrateVerticalAxis;
+
         private bool enableStartButton = true;
+
         private bool isStopButtonActive;
+
         private string lowerBound;
 
         private string noteString = Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
+
         private string offset;
+
         private bool originProcedureCanceled;
+
         private string resolution;
+
         private ICommand startButtonCommand;
+
         private ICommand stopButtonCommand;
+
         private string upperBound;
-        public IUnityContainer Container;
-        private CalibrateVerticalAxis calibrateVerticalAxis;
 
         #endregion Fields
 
@@ -79,15 +89,15 @@ namespace Ferretto.VW.InstallationApp
 
         #region Methods
 
+        public void ExitFromViewMethod()
+        {
+            throw new NotImplementedException();
+        }
+
         public void InitializeViewModel(IUnityContainer _container)
         {
             this.Container = _container;
             this.calibrateVerticalAxis = (CalibrateVerticalAxis)this.Container.Resolve<ICalibrateVerticalAxis>();
-        }
-
-        public void ExitFromViewMethod()
-        {
-            throw new NotImplementedException();
         }
 
         public void SubscribeMethodToEvent()
@@ -113,7 +123,7 @@ namespace Ferretto.VW.InstallationApp
                 int.TryParse(this.Offset, out var _offset) &&
                 int.TryParse(this.Resolution, out var _resolution) &&
                 int.TryParse(this.UpperBound, out var _upperBound))
-            {//TODO: DEFINE AND INSERT VALIDATION LOGIC IN HERE. THESE PROPOSITIONS ARE TEMPORARY
+            { //TODO: DEFINE AND INSERT VALIDATION LOGIC IN HERE. THESE PROPOSITIONS ARE TEMPORARY
                 if (_lowerBound > 0 && _lowerBound < _upperBound && _upperBound > 0 && _resolution > 0 && _offset > 0)
                 {
                     this.EnableStartButton = true;

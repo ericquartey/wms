@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
@@ -17,6 +18,8 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly EnumerationProvider enumerationProvider;
 
+        private readonly IImageProvider imageProvider;
+
         private readonly WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService;
 
         private readonly WMS.Scheduler.WebAPI.Contracts.IItemsSchedulerService itemsSchedulerService;
@@ -28,6 +31,7 @@ namespace Ferretto.Common.BusinessProviders
         public ItemProvider(
             IDatabaseContextService dataContext,
             EnumerationProvider enumerationProvider,
+            IImageProvider imageProvider,
             WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService,
             WMS.Scheduler.WebAPI.Contracts.IItemsSchedulerService itemsSchedulerService)
         {
@@ -35,6 +39,7 @@ namespace Ferretto.Common.BusinessProviders
             this.itemsSchedulerService = itemsSchedulerService;
             this.itemsDataService = itemsDataService;
             this.enumerationProvider = enumerationProvider;
+            this.imageProvider = imageProvider;
         }
 
         #endregion Constructors
@@ -206,6 +211,8 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
+                var originalItem = await this.itemsDataService.GetByIdAsync(model.Id);
+
                 await this.itemsDataService.UpdateAsync(new WMS.Data.WebAPI.Contracts.Item
                 {
                     AbcClassId = model.AbcClassId,
@@ -232,6 +239,11 @@ namespace Ferretto.Common.BusinessProviders
                     StoreTolerance = model.StoreTolerance,
                     Width = model.Width
                 });
+
+                if (originalItem.Image != model.Image)
+                {
+                    this.SaveImage(model.ImagePath);
+                }
 
                 return new OperationResult(true);
             }
@@ -271,6 +283,11 @@ namespace Ferretto.Common.BusinessProviders
             {
                 return new OperationResult(ex);
             }
+        }
+
+        private void SaveImage(string imagePath)
+        {
+            this.imageProvider.SaveImage(imagePath);
         }
 
         #endregion Methods

@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VerticalWarehouses", "Verti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActionBlocks", "VerticalWarehouses\ActionBlocks\ActionBlocks.csproj", "{ECDC6D6C-E5D2-4EC3-9AAC-6336C2048FFF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InverterDriver", "VerticalWarehouses\InverterDriver\InverterDriver.csproj", "{119128D4-1776-427A-AEC1-6DA12B0FF813}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InverterDriver", "VerticalWarehouses\InverterDriver\InverterDriver.csproj", "{119128D4-1776-427A-AEC1-6DA12B0FF813}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "VerticalWarehouses\Utils\Utils.csproj", "{EAEEEB73-E9E7-4CDF-B100-A433A33562E3}"
 EndProject
