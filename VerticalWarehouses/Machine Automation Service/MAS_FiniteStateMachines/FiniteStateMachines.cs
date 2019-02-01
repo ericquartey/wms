@@ -19,9 +19,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         public FiniteStateMachines()
         {
-            this.homing = new StateMachineHoming();
-            this.verticalHoming = new StateMachineVerticalHoming();
             this.driver = Singleton<MAS_InverterDriver.InverterDriver>.UniqueInstance;
+            this.homing = new StateMachineHoming(this);
+            this.verticalHoming = new StateMachineVerticalHoming(this);
         }
 
         #endregion Constructors
@@ -59,6 +59,37 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
             this.verticalHoming.Start();
             this.verticalHoming.DoAction(IdOperation.VerticalHome);
+        }
+
+        public void MakeOperationByInverter(IdOperation code)
+        {
+            switch (code)
+            {
+                case IdOperation.HorizontalHome:
+                    {
+                        // TODO await driver.ExecuteAction("Horizontal Home");
+                        break;
+                    }
+                case IdOperation.SwitchHorizontalToVertical:
+                    {
+                        // TODO await driver.ExecuteAction("SwitchHorizontalToVertical");
+                        break;
+                    }
+                case IdOperation.VerticalHome:
+                    {
+                        this.driver.ExecuteVerticalHoming();
+                        break;
+                    }
+                case IdOperation.SwitchVerticalToHorizontal:
+                    {
+                        // TODO await driver.ExecuteAction("SwitchVerticalToHorizontal");
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
         }
 
         #endregion Methods

@@ -12,6 +12,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         void DoVerticalHoming(BroadcastDelegate broadcastDelegate);
 
+        void MakeOperationByInverter(IdOperation code);
+
         #endregion Methods
     }
 }
