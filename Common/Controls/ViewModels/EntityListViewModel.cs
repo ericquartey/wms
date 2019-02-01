@@ -153,15 +153,22 @@ namespace Ferretto.Common.Controls
         {
             base.OnAppear();
 
-            var dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
-            this.filterDataSources = dataSourceService.GetAllFilters<TModel>(this.GetType().Name, this.Data);
-            this.filterTiles = new BindingList<Tile>(this.filterDataSources.Select(filterDataSource => new Tile
+            try
             {
-                Key = filterDataSource.Key,
-                Name = filterDataSource.Name
-            }).ToList());
+                var dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
+                this.filterDataSources = dataSourceService.GetAllFilters<TModel>(this.GetType().Name, this.Data);
+                this.filterTiles = new BindingList<Tile>(this.filterDataSources.Select(filterDataSource => new Tile
+                {
+                    Key = filterDataSource.Key,
+                    Name = filterDataSource.Name
+                }).ToList());
 
-            await this.UpdateFilterTilesCountsAsync();
+                await this.UpdateFilterTilesCountsAsync();
+            }
+            catch (System.Exception ex)
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(ex));
+            }
         }
 
         protected override void OnDispose()

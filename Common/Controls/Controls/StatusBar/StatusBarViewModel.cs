@@ -11,9 +11,15 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         private const int timeToKeepText = 15;
+
+        private readonly System.Windows.Threading.DispatcherTimer keepInfoTimer = new System.Windows.Threading.DispatcherTimer();
+
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private string iconName;
-        private System.Windows.Threading.DispatcherTimer keepInfoTimer = new System.Windows.Threading.DispatcherTimer();
+
         private string message;
+
         private string schedulerStatus;
 
         #endregion Fields
@@ -23,15 +29,20 @@ namespace Ferretto.Common.Controls
         public StatusBarViewModel()
         {
             this.SchedulerStatus = nameof(Icons.SchedulerOffLine);
-            this.keepInfoTimer.Tick += new EventHandler(this.KeepInfoTimer_Tick);
+            this.keepInfoTimer.Tick += this.KeepInfoTimer_Tick;
             this.keepInfoTimer.Interval = new TimeSpan(0, 0, timeToKeepText);
 
             ServiceLocator.Current.GetInstance<IEventService>()
                .Subscribe((StatusPubSubEvent eventArgs) =>
                {
-                   NLog.LogManager
-                      .GetCurrentClassLogger()
-                      .Trace(string.Format("Displaying status message '{0}'.", eventArgs.Message));
+                   if (eventArgs.Exception != null)
+                   {
+                       this.logger.Error(eventArgs.Exception, "Displaying status error message.");
+                   }
+                   else
+                   {
+                       this.logger.Trace(string.Format("Displaying status message '{0}'.", eventArgs.Message));
+                   }
 
                    this.keepInfoTimer.Stop();
                    this.Message = eventArgs.Message;
