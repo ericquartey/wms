@@ -11,12 +11,14 @@ namespace Ferretto.Common.BusinessModels
     public enum DimensionType
     {
         Width,
+
         Height
     }
 
     public enum PositionType
     {
         X,
+
         Y
     }
 
@@ -61,9 +63,9 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Properties
 
-        public int X { get; set; }
+        public double X { get; set; }
 
-        public int Y { get; set; }
+        public double Y { get; set; }
 
         #endregion Properties
     }

@@ -4,13 +4,20 @@
     {
         #region Methods
 
-        void ExecuteVerticalHoming();
+        void Destroy();
+
         void ExecuteHorizontalHoming();
-        void ExecuteVerticalPosition(int target, float weight);
+
         void ExecuteHorizontalPosition();
-        bool[] GetSensorsStates();
+
+        void ExecuteVerticalHoming();
+
+        void ExecuteVerticalPosition(int target, float weight);
+
         float GetDrawerWeight();
 
-        #endregion Methods  
+        bool[] GetSensorsStates();
+
+        #endregion Methods
     }
-}   
+}

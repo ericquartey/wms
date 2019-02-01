@@ -25,9 +25,25 @@ namespace Ferretto.Common.Controls.Services
             this.Type = type;
         }
 
+        public StatusPubSubEvent(System.Exception exception, StatusType type = StatusType.Error)
+        {
+            if (exception == null)
+            {
+                throw new System.ArgumentNullException(nameof(exception));
+            }
+
+            this.Exception = exception;
+
+            this.Message = exception.Message;
+
+            this.Type = type;
+        }
+
         #endregion Constructors
 
         #region Properties
+
+        public System.Exception Exception { get; }
 
         public bool IsSchedulerOnline { get; set; }
 

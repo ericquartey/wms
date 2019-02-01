@@ -1,5 +1,4 @@
-﻿using Ferretto.Common.Common_Utils;
-using Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming;
+﻿using Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines
 {
@@ -7,7 +6,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
     {
         #region Fields
 
-        private MAS_InverterDriver.InverterDriver driver;
+        private FiniteStateMachines fsm;
 
         private IState state;
 
@@ -15,9 +14,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Constructors
 
-        public StateMachineVerticalHoming()
+        public StateMachineVerticalHoming(FiniteStateMachines fsm)
         {
-            this.driver = Singleton<MAS_InverterDriver.InverterDriver>.UniqueInstance;
+            this.fsm = fsm;
         }
 
         #endregion Constructors
@@ -42,38 +41,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         public void ExecuteOperation(IdOperation code)
         {
-            switch (code)
-            {
-                case IdOperation.HorizontalHome:
-                    {
-                        //TODO await driver.ExecuteAction("Horizontal Home");
-                        break;
-                    }
-                case IdOperation.SwitchHorizontalToVertical:
-                    {
-                        //TODO await driver.ExecuteAction("SwitchHorizontalToVertical");
-                        break;
-                    }
-                case IdOperation.VerticalHome:
-                    {
-                        //TODO await driver.ExecuteAction("Vertical Home");
-                        break;
-                    }
-                case IdOperation.SwitchVerticalToHorizontal:
-                    {
-                        //TODO await driver.ExecuteAction("SwitchVerticalToHorizontal");
-                        break;
-                    }
-                default:
-                    {
-                        break;
-                    }
-            }
+            this.fsm.MakeOperationByInverter(code);
         }
 
         public void Start()
         {
-            //TODO check the sensors before to set the initial state
+            // TODO check the sensors before to set the initial state
             this.state = new VerticalHomingUndoneState(this);
         }
 

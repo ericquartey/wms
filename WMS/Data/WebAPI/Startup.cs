@@ -60,12 +60,12 @@ namespace Ferretto.WMS.Data.WebAPI
                 });
 #endif
             }
-            else
+            else if (env.IsProduction())
             {
                 app.UseHsts();
-            }
 
-            app.UseHttpsRedirection();
+                app.UseHttpsRedirection();
+            }
 
             app.UseMvc();
         }
