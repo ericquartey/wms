@@ -1,12 +1,16 @@
-﻿namespace Ferretto.VW.MAS_FiniteStateMachines
+﻿using Ferretto.Common.Common_Utils;
+
+namespace Ferretto.VW.MAS_FiniteStateMachines
 {
     public interface IFiniteStateMachines
     {
         #region Methods
 
-        void DoHoming();
+        void Destroy();
 
-        void DoVerticalHoming();
+        void DoHoming(BroadcastDelegate broadcastDelegate);
+
+        void DoVerticalHoming(BroadcastDelegate broadcastDelegate);
 
         #endregion Methods
     }

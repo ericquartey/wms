@@ -1,6 +1,5 @@
 ﻿using System;
 using Ferretto.Common.Common_Utils;
-using Ferretto.VW.MAS_InverterDriver;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines
 {
@@ -29,7 +28,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Methods
 
-        public void DoHoming()
+        public void Destroy()
+        {
+            this.driver.Destroy();
+        }
+
+        public void DoHoming(BroadcastDelegate broadcastDelegate)
         {
             if (this.homing == null)
             {
@@ -46,7 +50,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.homing.DoAction(IdOperation.SwitchHorizontalToVertical);
         }
 
-        public void DoVerticalHoming()
+        public void DoVerticalHoming(BroadcastDelegate broadcastDelegate)
         {
             if (this.verticalHoming == null)
             {

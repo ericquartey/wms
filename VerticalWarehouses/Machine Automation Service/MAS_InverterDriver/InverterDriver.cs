@@ -23,24 +23,13 @@ namespace Ferretto.VW.MAS_InverterDriver
         #endregion Constructors
 
         #region Methods
-        public void ExecuteVerticalHoming()
+
+        public void Destroy()
         {
-            Ferretto.VW.InverterDriver.CalibrateAxis calibration = new CalibrateAxis();
-            calibration.SetInverterDriverInterface = this.driver;
-            calibration.Initialize();
-
-            calibration.ActualCalibrationAxis = CalibrationType.VERTICAL_CALIBRATION;
-            // Do the calibration
-            calibration.SetAxisOrigin();
-
+            this.driver.Terminate();
         }
 
         public void ExecuteHorizontalHoming()
-        {
-            return;
-        }
-
-        public void ExecuteVerticalPosition(int target, float weight)
         {
             return;
         }
@@ -50,14 +39,30 @@ namespace Ferretto.VW.MAS_InverterDriver
             return;
         }
 
-        public bool[] GetSensorsStates()
+        public void ExecuteVerticalHoming()
         {
-            return null;
+            var calibration = new CalibrateAxis();
+            calibration.SetInverterDriverInterface = this.driver;
+            calibration.Initialize();
+
+            calibration.ActualCalibrationAxis = CalibrationType.VERTICAL_CALIBRATION;
+            // Do the calibration
+            calibration.SetAxisOrigin();
+        }
+
+        public void ExecuteVerticalPosition(int target, float weight)
+        {
+            return;
         }
 
         public float GetDrawerWeight()
         {
             return 0.0f;
+        }
+
+        public bool[] GetSensorsStates()
+        {
+            return null;
         }
 
         #endregion Methods

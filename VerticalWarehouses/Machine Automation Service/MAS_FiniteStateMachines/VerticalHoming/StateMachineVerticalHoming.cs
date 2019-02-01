@@ -46,22 +46,22 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             {
                 case IdOperation.HorizontalHome:
                     {
-                        //TODO await driver.ExecuteAction("Horizontal Home");
+                        // TODO await driver.ExecuteAction("Horizontal Home");
                         break;
                     }
                 case IdOperation.SwitchHorizontalToVertical:
                     {
-                        //TODO await driver.ExecuteAction("SwitchHorizontalToVertical");
+                        // TODO await driver.ExecuteAction("SwitchHorizontalToVertical");
                         break;
                     }
                 case IdOperation.VerticalHome:
                     {
-                        //TODO await driver.ExecuteAction("Vertical Home");
+                        this.driver.ExecuteVerticalHoming();
                         break;
                     }
                 case IdOperation.SwitchVerticalToHorizontal:
                     {
-                        //TODO await driver.ExecuteAction("SwitchVerticalToHorizontal");
+                        // TODO await driver.ExecuteAction("SwitchVerticalToHorizontal");
                         break;
                     }
                 default:
@@ -73,7 +73,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         public void Start()
         {
-            //TODO check the sensors before to set the initial state
+            // TODO check the sensors before to set the initial state
             this.state = new VerticalHomingUndoneState(this);
         }
 
