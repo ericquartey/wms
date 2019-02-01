@@ -1,22 +1,48 @@
-﻿using Ferretto.Common.BusinessModels;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Controls;
+using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.Controls
 {
-    public class WmsBaseCompartment : Prism.Mvvm.BindableBase
+    public static class CompartmentExtensions
+    {
+        #region Methods
+
+        public static IEnumerable<WmsCompartmentViewModel> AsEnumerable(this ItemCollection listItems)
+        {
+            return listItems.Cast<WmsCompartmentViewModel>();
+        }
+
+        #endregion Methods
+    }
+
+    public class WmsCompartmentViewModel : Prism.Mvvm.BindableBase
     {
         #region Fields
 
         private string article;
+
         private int capacity;
+
         private string colorBorder;
+
         private string colorFill;
+
         private double height;
+
         private bool isReadOnly;
+
         private bool isSelectable;
+
         private bool isSelected;
+
         private double left;
+
         private int quantity;
+
         private double top;
+
         private double width;
 
         #endregion Fields
@@ -81,12 +107,6 @@ namespace Ferretto.Common.Controls
         {
             get => this.top;
             set => this.SetProperty(ref this.top, value);
-        }
-
-        public Tray Tray
-        {
-            get;
-            set;
         }
 
         public double Width
