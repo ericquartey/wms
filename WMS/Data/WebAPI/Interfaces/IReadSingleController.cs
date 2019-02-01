@@ -9,7 +9,7 @@ namespace Ferretto.WMS.Data.WebAPI.Interfaces
     {
         #region Methods
 
-        Task<ActionResult<T>> GetById(int id);
+        Task<ActionResult<T>> GetByIdAsync(int id);
 
         #endregion Methods
     }

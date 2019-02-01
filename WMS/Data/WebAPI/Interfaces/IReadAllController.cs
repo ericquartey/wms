@@ -9,7 +9,7 @@ namespace Ferretto.WMS.Data.WebAPI.Interfaces
     {
         #region Methods
 
-        Task<ActionResult<IEnumerable<T>>> GetAll();
+        Task<ActionResult<IEnumerable<T>>> GetAllAsync();
 
         #endregion Methods
     }

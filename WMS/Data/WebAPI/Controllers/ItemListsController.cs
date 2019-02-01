@@ -41,7 +41,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<ItemList>))]
         [ProducesResponseType(500, Type = typeof(string))]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ItemList>>> GetAll()
+        public async Task<ActionResult<IEnumerable<ItemList>>> GetAllAsync()
         {
             try
             {
@@ -59,7 +59,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(404)]
         [ProducesResponseType(500, Type = typeof(string))]
         [HttpGet("{id}")]
-        public async Task<ActionResult<ItemList>> GetById(int id)
+        public async Task<ActionResult<ItemList>> GetByIdAsync(int id)
         {
             try
             {

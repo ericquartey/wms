@@ -40,7 +40,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Mission>))]
-        public async Task<ActionResult<IEnumerable<Mission>>> GetAll()
+        public async Task<ActionResult<IEnumerable<Mission>>> GetAllAsync()
         {
             return this.Ok(await this.missionProvider.GetAllAsync());
         }
@@ -49,7 +49,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(404, Type = typeof(SerializableError))]
         [ProducesResponseType(500, Type = typeof(string))]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Mission>> GetById(int id)
+        public async Task<ActionResult<Mission>> GetByIdAsync(int id)
         {
             try
             {

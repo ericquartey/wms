@@ -36,7 +36,7 @@ namespace Ferretto.WMS.Data.Tests
 
                 #region Act
 
-                var actionResult = await controller.GetAll();
+                var actionResult = await controller.GetAllAsync();
 
                 #endregion Act
 
@@ -63,7 +63,7 @@ namespace Ferretto.WMS.Data.Tests
 
                 #region Act
 
-                var actionResult = await controller.GetById(1);
+                var actionResult = await controller.GetByIdAsync(1);
 
                 #endregion Act
 
@@ -90,7 +90,7 @@ namespace Ferretto.WMS.Data.Tests
 
                 #region Act
 
-                var actionResult = await controller.GetById(999);
+                var actionResult = await controller.GetByIdAsync(999);
 
                 #endregion Act
 
