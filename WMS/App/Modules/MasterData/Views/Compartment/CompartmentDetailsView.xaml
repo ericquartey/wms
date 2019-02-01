@@ -323,8 +323,13 @@
                                         IsReadOnly="{Binding ReadOnlyTray, Mode=OneWay}"
                                         SelectedItem="{Binding SelectedCompartmentTray, Mode=TwoWay}"
                                         ShowBackground="True"
-                                        Tray="{Binding Tray, Mode=OneWay}" />
-
+                                        RulerInfo="mm"
+                                        Compartments="{Binding Tray.Compartments}"
+                                        DimensionWidth="{Binding Tray.Dimension.Width}"
+                                        DimensionHeight="{Binding Tray.Dimension.Height}"
+                                        OriginX="{Binding Tray.Origin.X}"
+                                        OriginY="{Binding Tray.Origin.Y}"
+                                        />
                 </GroupBox>
 
             </Grid>
