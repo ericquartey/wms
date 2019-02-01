@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Ferretto.WMS.Data.WebAPI.Models
+namespace Ferretto.WMS.Data.Core.Models
 {
-    public class ItemList : Model<int>
+    public class ItemList : BaseModel<int>
     {
         #region Fields
 

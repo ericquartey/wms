@@ -1,6 +1,6 @@
-﻿namespace Ferretto.WMS.Data.WebAPI.Models
+﻿namespace Ferretto.WMS.Data.Core.Models
 {
-    public class AbcClass : Model<string>
+    public class MachineType : BaseModel<string>
     {
         #region Properties
 

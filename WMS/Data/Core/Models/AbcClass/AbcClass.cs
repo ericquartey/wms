@@ -1,6 +1,6 @@
-﻿namespace Ferretto.WMS.Data.WebAPI.Models
+﻿namespace Ferretto.WMS.Data.Core.Models
 {
-    public sealed class ItemCategory : Model<int>
+    public class AbcClass : BaseModel<string>
     {
         #region Properties
 

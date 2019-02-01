@@ -1,4 +1,4 @@
-﻿namespace Ferretto.WMS.Data.WebAPI.Models
+﻿namespace Ferretto.WMS.Data.Core.Models
 {
     public enum MissionStatus
     {

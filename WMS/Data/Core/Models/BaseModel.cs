@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
-namespace Ferretto.WMS.Data.WebAPI.Models
+namespace Ferretto.WMS.Data.Core.Models
 {
-    public class Model<TKey>
+    public class BaseModel<TKey>
     {
         #region Constructors
 
-        protected Model()
+        protected BaseModel()
         {
         }
 

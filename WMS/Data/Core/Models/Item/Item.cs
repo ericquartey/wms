@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace Ferretto.WMS.Data.WebAPI.Models
+namespace Ferretto.WMS.Data.Core.Models
 {
-    public class Item : Model<int>
+    public class Item : BaseModel<int>
     {
         #region Fields
-
-        private string abcClassDescription;
-
-        private string abcClassId;
 
         private int? averageWeight;
 
@@ -21,10 +15,6 @@ namespace Ferretto.WMS.Data.WebAPI.Models
         private int? height;
 
         private int? inventoryTolerance;
-
-        private string itemCategoryDescription;
-
-        private int? itemCategoryId;
 
         private int? length;
 
@@ -50,24 +40,9 @@ namespace Ferretto.WMS.Data.WebAPI.Models
 
         #region Properties
 
-        public string AbcClassDescription
-        {
-            get => this.abcClassDescription;
-            private set => this.abcClassDescription = value;
-        }
+        public string AbcClassDescription { get; set; }
 
-        [Newtonsoft.Json.JsonIgnore]
-        public IEnumerable<AbcClass> AbcClasses { get; set; }
-
-        public string AbcClassId
-        {
-            get => this.abcClassId;
-            set
-            {
-                this.abcClassId = value;
-                this.ComputeAbcClassDescription();
-            }
-        }
+        public string AbcClassId { get; set; }
 
         public int? AverageWeight
         {
@@ -109,24 +84,9 @@ namespace Ferretto.WMS.Data.WebAPI.Models
             set => this.inventoryTolerance = CheckIfStrictlyPositive(value);
         }
 
-        [Newtonsoft.Json.JsonIgnore]
-        public IEnumerable<ItemCategory> ItemCategories { get; set; }
+        public string ItemCategoryDescription { get; set; }
 
-        public string ItemCategoryDescription
-        {
-            get => this.itemCategoryDescription;
-            private set => this.itemCategoryDescription = value;
-        }
-
-        public int? ItemCategoryId
-        {
-            get => this.itemCategoryId;
-            set
-            {
-                this.itemCategoryId = value;
-                this.ComputeItemCategoryDescription();
-            }
-        }
+        public int? ItemCategoryId { get; set; }
 
         public DateTime? LastModificationDate { get; set; }
 
@@ -217,16 +177,6 @@ namespace Ferretto.WMS.Data.WebAPI.Models
         #endregion Properties
 
         #region Methods
-
-        private void ComputeAbcClassDescription()
-        {
-            this.AbcClassDescription = this.AbcClasses?.SingleOrDefault(c => c.Id == this.AbcClassId)?.Description;
-        }
-
-        private void ComputeItemCategoryDescription()
-        {
-            this.ItemCategoryDescription = this.ItemCategories?.SingleOrDefault(c => c.Id == this.itemCategoryId)?.Description;
-        }
 
         private void ComputeTotalAvailable()
         {
