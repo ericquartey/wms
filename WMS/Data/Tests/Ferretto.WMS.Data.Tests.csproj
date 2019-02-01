@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\EF\Ferretto.Common.EF.csproj" />
     <ProjectReference Include="..\..\..\Common\DataModels\Ferretto.Common.DataModels.csproj" />
     <ProjectReference Include="..\WebAPI\Ferretto.WMS.Data.WebAPI.csproj" />
   </ItemGroup>
