@@ -12,13 +12,13 @@ namespace Ferretto.Common.BLL.Interfaces
         Task<IEnumerable<TModel>> GetAllAsync(
           int take = 0,
           int skip = 0,
-          string where = null,
+          string whereExpression = null,
           IEnumerable<SortOption> orderBy = null,
-          string search = null);
+          string searchExpression = null);
 
         Task<int> GetAllCountAsync(
-          string where = null,
-          string search = null);
+          string whereExpression = null,
+          string searchExpression = null);
 
         Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName);
 

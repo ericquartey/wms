@@ -227,8 +227,8 @@ namespace Ferretto.Common.Controls
                 skip: e.Skip,
                 take: GetPageSize(),
                 orderBy: orderBy,
-                where: where?.ToString(),
-                search: search?.ToString());
+                whereExpression: where?.ToString(),
+                searchExpression: search?.ToString());
 
             return new FetchRowsResult(entities.Cast<object>().ToArray(), hasMoreRows: entities.Count() == GetPageSize());
         }

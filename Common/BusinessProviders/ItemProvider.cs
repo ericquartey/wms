@@ -53,13 +53,13 @@ namespace Ferretto.Common.BusinessProviders
         public async Task<IEnumerable<Item>> GetAllAsync(
             int take = 0,
             int skip = 0,
-            string where = null,
+            string whereExpression = null,
             IEnumerable<SortOption> orderBy = null,
-            string search = null)
+            string searchExpression = null)
         {
             var orderByString = orderBy != null ? string.Join(",", orderBy.Select(s => $"{s.PropertyName} {s.Direction}")) : null;
 
-            return (await this.itemsDataService.GetAllAsync(skip, take, where, orderByString, search))
+            return (await this.itemsDataService.GetAllAsync(skip, take, whereExpression, orderByString, searchExpression))
                 .Select(i => new Item
                 {
                     Id = i.Id,
@@ -97,9 +97,9 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotSupportedException();
         }
 
-        public async Task<int> GetAllCountAsync(string where = null, string search = null)
+        public async Task<int> GetAllCountAsync(string whereExpression = null, string searchExpression = null)
         {
-            return await this.itemsDataService.GetAllCountAsync(where, search);
+            return await this.itemsDataService.GetAllCountAsync(whereExpression, searchExpression);
         }
 
         public IQueryable<AllowedItemInCompartment> GetAllowedByCompartmentId(int compartmentId)
