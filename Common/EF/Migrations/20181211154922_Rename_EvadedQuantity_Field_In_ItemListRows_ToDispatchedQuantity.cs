@@ -4,46 +4,66 @@ namespace Ferretto.Common.EF.Migrations
 {
     public partial class Rename_EvadedQuantity_Field_In_ItemListRows_ToDispatchedQuantity : Migration
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.RenameColumn(
-                name: "EvadedQuantity",
-                table: "ItemListRows",
-                newName: "DispatchedQuantity");
+        #region Fields
 
-            migrationBuilder.AlterColumn<int>(
-                name: "PackageTypeId",
-                table: "ItemListRows",
-                nullable: true,
-                oldClrType: typeof(int));
+        private const string ItemListRowsTable = "ItemListRows";
 
-            migrationBuilder.AlterColumn<int>(
-                name: "MaterialStatusId",
-                table: "ItemListRows",
-                nullable: true,
-                oldClrType: typeof(int));
-        }
+        #endregion Fields
+
+        #region Methods
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.RenameColumn(
                 name: "DispatchedQuantity",
-                table: "ItemListRows",
+                table: ItemListRowsTable,
                 newName: "EvadedQuantity");
 
             migrationBuilder.AlterColumn<int>(
                 name: "PackageTypeId",
-                table: "ItemListRows",
+                table: ItemListRowsTable,
                 nullable: false,
                 oldClrType: typeof(int),
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<int>(
                 name: "MaterialStatusId",
-                table: "ItemListRows",
+                table: ItemListRowsTable,
                 nullable: false,
                 oldClrType: typeof(int),
                 oldNullable: true);
         }
+
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
+            migrationBuilder.RenameColumn(
+                name: "EvadedQuantity",
+                table: ItemListRowsTable,
+                newName: "DispatchedQuantity");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "PackageTypeId",
+                table: ItemListRowsTable,
+                nullable: true,
+                oldClrType: typeof(int));
+
+            migrationBuilder.AlterColumn<int>(
+                name: "MaterialStatusId",
+                table: ItemListRowsTable,
+                nullable: true,
+                oldClrType: typeof(int));
+        }
+
+        #endregion Methods
     }
 }

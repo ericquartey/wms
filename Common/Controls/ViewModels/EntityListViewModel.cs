@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Resources;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
@@ -17,6 +15,8 @@ namespace Ferretto.Common.Controls
         where TModel : IBusinessObject
     {
         #region Fields
+
+        protected Tile selectedFilterTile;
 
         private IEnumerable<IFilterDataSource<TModel>> filterDataSources;
 
@@ -31,8 +31,6 @@ namespace Ferretto.Common.Controls
         private ICommand refreshCommand;
 
         private object selectedFilterDataSource;
-
-        private Tile selectedFilterTile;
 
         private object selectedItem;
 
@@ -56,6 +54,11 @@ namespace Ferretto.Common.Controls
                 if (this.selectedItem == null)
                 {
                     return default(TModel);
+                }
+
+                if (this.selectedItem is TModel)
+                {
+                    return (TModel)this.selectedItem;
                 }
 
                 if ((this.selectedItem is DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread) == false)
@@ -86,10 +89,7 @@ namespace Ferretto.Common.Controls
                (this.refreshCommand = new DelegateCommand(
                this.ExecuteRefreshCommand));
 
-        [Display(Name = nameof(DesktopApp.SearchLabel), ResourceType = typeof(DesktopApp))]
-        public string SearchText { get; set; }
-
-        public Tile SelectedFilter
+        public virtual Tile SelectedFilter
         {
             get => this.selectedFilterTile;
             set
@@ -102,7 +102,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public object SelectedFilterDataSource
+        public virtual object SelectedFilterDataSource
         {
             get => this.selectedFilterDataSource;
             protected set => this.SetProperty(ref this.selectedFilterDataSource, value);
@@ -120,6 +120,8 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        protected IEnumerable<IFilterDataSource<TModel>> FilterDataSources => this.filterDataSources;
+
         #endregion Properties
 
         #region Methods
@@ -131,13 +133,13 @@ namespace Ferretto.Common.Controls
             this.SelectedFilterDataSource = oldFilterDataSource;
         }
 
-        public async Task UpdateFilterTilesCountsAsync()
+        public virtual async Task UpdateFilterTilesCountsAsync()
         {
             await Task.Run(() =>
             {
                 foreach (var filterTile in this.filterTiles)
                 {
-                    filterTile.Count = this.filterDataSources.Single(d => d.Key == filterTile.Key).GetDataCount();
+                    filterTile.Count = this.filterDataSources.Single(d => d.Key == filterTile.Key).GetDataCount?.Invoke();
                 }
             }).ConfigureAwait(true);
         }
@@ -162,15 +164,11 @@ namespace Ferretto.Common.Controls
             await this.UpdateFilterTilesCountsAsync();
         }
 
-        protected override void OnDisappear()
-        {
-            base.OnDisappear();
-        }
-
         protected override void OnDispose()
         {
             this.EventService.Unsubscribe<RefreshModelsPubSubEvent<TModel>>(this.modelRefreshSubscription);
             this.EventService.Unsubscribe<ModelChangedPubSubEvent<TModel>>(this.modelChangedEventSubscription);
+
             base.OnDispose();
         }
 

@@ -5,6 +5,7 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Practices.ServiceLocation;
+using NLog;
 
 namespace Ferretto.Common.Controls.Services
 {
@@ -16,6 +17,7 @@ namespace Ferretto.Common.Controls.Services
         private const int MaxRetryConnectionTimeout = 10000;
         private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
         private readonly string healthPath;
+        private readonly Logger logger;
         private readonly Random random = new Random();
         private readonly string url;
         private Microsoft.AspNetCore.SignalR.Client.HubConnection connection;
@@ -29,6 +31,7 @@ namespace Ferretto.Common.Controls.Services
         {
             this.url = ConfigurationManager.AppSettings["NotificationHubEndpoint"];
             this.healthPath = ConfigurationManager.AppSettings["NotificationHubStatus"];
+            this.logger = NLog.LogManager.GetCurrentClassLogger();
         }
 
         #endregion Constructors
@@ -50,9 +53,7 @@ namespace Ferretto.Common.Controls.Services
             {
                 var reconnectionTime = this.random.Next(0, MaxRetryConnectionTimeout);
 
-                NLog.LogManager
-                   .GetCurrentClassLogger()
-                   .Warn($"Connection failed. Retrying in {reconnectionTime / 1000} seconds...");
+                this.logger.Warn($"Connection failed. Retrying in {reconnectionTime / 1000} seconds...");
 
                 await Task.Delay(reconnectionTime);
 
@@ -62,36 +63,35 @@ namespace Ferretto.Common.Controls.Services
 
         private async Task ConnectAsync()
         {
-            NLog.LogManager
-               .GetCurrentClassLogger()
-               .Trace("Hub connecting...");
+            try
+            {
+                this.logger.Trace("Hub connecting...");
 
-            await this.connection.StartAsync();
+                await this.connection.StartAsync();
 
-            NLog.LogManager
-               .GetCurrentClassLogger()
-               .Trace("Hub connected.");
+                this.logger.Trace("Hub connected.");
 
-            await this.connection.SendAsync(HealthIsOnLineMessage);
+                await this.connection.SendAsync(HealthIsOnLineMessage);
 
-            NLog.LogManager
-               .GetCurrentClassLogger()
-               .Trace("Message to hub sent.");
+                this.logger.Trace("Message to hub sent.");
+            }
+            catch (Exception ex)
+            {
+                this.logger.Warn(ex, "Connection failed.");
+            }
         }
 
         private async Task InitializeAsync()
         {
             this.connection = new Microsoft.AspNetCore.SignalR.Client.HubConnectionBuilder()
-             .WithUrl(new Uri(new Uri(this.url), this.healthPath).AbsoluteUri)
-             .Build();
+                .WithUrl(new Uri(new Uri(this.url), this.healthPath).AbsoluteUri)
+                .Build();
 
             this.connection.On(HealthIsOnLineMessage, this.OnIsOnLine_MessageReceived);
 
             this.connection.Closed += async (error) =>
             {
-                NLog.LogManager
-                   .GetCurrentClassLogger()
-                   .Debug("Connection to hub closed.");
+                this.logger.Debug("Connection to hub closed.");
 
                 if (this.isConnected)
                 {
@@ -102,9 +102,7 @@ namespace Ferretto.Common.Controls.Services
 
                 var reconnectionTime = this.random.Next(0, MaxRetryConnectionTimeout);
 
-                NLog.LogManager
-                   .GetCurrentClassLogger()
-                   .Error(string.Format("Retrying connection in {0} seconds...", reconnectionTime / 1000));
+                this.logger.Error(string.Format("Retrying connection in {0} seconds...", reconnectionTime / 1000));
 
                 await Task.Delay(reconnectionTime);
                 await this.ConnectAsync();
@@ -115,9 +113,7 @@ namespace Ferretto.Common.Controls.Services
 
         private void OnIsOnLine_MessageReceived()
         {
-            NLog.LogManager
-               .GetCurrentClassLogger()
-               .Error(string.Format("Message {0} received from server", HealthIsOnLineMessage));
+            this.logger.Error(string.Format("Message {0} received from server", HealthIsOnLineMessage));
 
             this.isConnected = true;
             this.eventService.Invoke(new StatusPubSubEvent() { IsSchedulerOnline = true });

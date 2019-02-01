@@ -1,4 +1,4 @@
-﻿namespace Ferretto.WMS.Data.WebAPI.Models.Expressions
+﻿namespace Ferretto.Common.Utils.Expressions
 {
     public interface IExpression
     {

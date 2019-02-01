@@ -8,6 +8,11 @@ namespace Ferretto.Common.EF.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.DropColumn(
                 name: "IsCellPairingFixed",
                 table: "LoadingUnits");
@@ -44,6 +49,11 @@ namespace Ferretto.Common.EF.Migrations
 
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.DropColumn(
                 name: "CellPairing",
                 table: "LoadingUnits");

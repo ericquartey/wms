@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ferretto.WMS.Scheduler.WebAPI.Contracts;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.AutomationServiceMock
@@ -10,12 +9,14 @@ namespace Ferretto.WMS.AutomationServiceMock
     {
         #region Fields
 
-        private readonly IBaysService baysService;
+        private readonly IBaysSchedulerService baysSchedulerService;
 
         private readonly ILogger logger;
-        private readonly IMissionsService missionsService;
+
+        private readonly IMissionsSchedulerService missionsSchedulerService;
 
         private readonly Random random = new Random();
+
         private readonly IWakeupHubClient wakeupHubClient;
 
         #endregion Fields
@@ -25,12 +26,12 @@ namespace Ferretto.WMS.AutomationServiceMock
         public AutomationService(
             ILogger<AutomationService> logger,
             IWakeupHubClient wakeupHubClient,
-            IMissionsService missionsService,
-            IBaysService baysService)
+            IMissionsSchedulerService missionsSchedulerService,
+            IBaysSchedulerService baysSchedulerService)
         {
             this.logger = logger;
-            this.missionsService = missionsService;
-            this.baysService = baysService;
+            this.missionsSchedulerService = missionsSchedulerService;
+            this.baysSchedulerService = baysSchedulerService;
             this.wakeupHubClient = wakeupHubClient;
 
             this.wakeupHubClient.WakeupReceived += this.WakeupReceived;
@@ -51,7 +52,7 @@ namespace Ferretto.WMS.AutomationServiceMock
         public async Task NotifyUserLoginAsync(int bayId)
         {
             this.logger.LogInformation($"Notifying the scheduler that bay '{bayId}' is operational.");
-            await this.baysService.MarkAsOperationalAsync(bayId);
+            await this.baysSchedulerService.MarkAsOperationalAsync(bayId);
         }
 
         private async Task ExecuteMissionAsync(Mission mission)
@@ -65,12 +66,12 @@ namespace Ferretto.WMS.AutomationServiceMock
             if (success)
             {
                 this.logger.LogInformation($"Mission completed.");
-                await this.missionsService.CompleteAsync(new Mission());
+                await this.missionsSchedulerService.CompleteAsync(new Mission());
             }
             else
             {
                 this.logger.LogWarning($"Mission failed.");
-                await this.missionsService.AbortAsync(new Mission());
+                await this.missionsSchedulerService.AbortAsync(new Mission());
             }
         }
 

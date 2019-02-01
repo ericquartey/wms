@@ -8,7 +8,7 @@ namespace Ferretto.Common.Utils
         #region Fields
 
         private static readonly Regex ViewModelNameRegEx = new Regex(
-            $"^{Common.ASSEMBLY_QUALIFIEDNAME_PREFIX.Replace(".", "\\.")}\\.(?<moduleName>[^\\.]+)\\.(?<viewModelName>.+)",
+            $@"^{Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}\.(?<moduleName>[^\.]+)\.(?<viewModelName>.+)",
             RegexOptions.Compiled);
 
         private static readonly Regex ViewModelSuffixRegEx =
@@ -21,6 +21,11 @@ namespace Ferretto.Common.Utils
         public static string GetModelNameFromViewModelName(string viewModelName)
         {
             return ViewModelSuffixRegEx.Replace(viewModelName, string.Empty);
+        }
+
+        public static string GetViewModelName(string moduleName, string viewModel)
+        {
+            return $"{Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}.{moduleName}.{viewModel}";
         }
 
         public static(string moduleName, string viewModelName) GetViewModelNames(string viewModelName)
@@ -44,11 +49,6 @@ namespace Ferretto.Common.Utils
         public static string GetViewName(string moduleName, string viewModel)
         {
             return $"{Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}.{moduleName}.{viewModel}{Common.VIEW_SUFFIX}";
-        }
-
-        public static string GetViewModelName(string moduleName, string viewModel)
-        {
-            return $"{Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}.{moduleName}.{viewModel}";
         }
 
         public static string GetViewNameFromViewModelName(string viewModelName)
