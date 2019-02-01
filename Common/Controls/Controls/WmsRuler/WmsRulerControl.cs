@@ -23,9 +23,6 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty LittleMarkLengthProperty =
                     DependencyProperty.Register(nameof(LittleMarkLength), typeof(double), typeof(WmsRulerControl), new UIPropertyMetadata(8.0));
 
-        public static readonly DependencyProperty MarkLengthProperty =
-                    DependencyProperty.Register(nameof(MarkLength), typeof(double), typeof(WmsRulerControl), new UIPropertyMetadata(20.0));
-
         public static readonly DependencyProperty MiddleMarkLengthProperty =
                     DependencyProperty.Register(nameof(MiddleMarkLength), typeof(double), typeof(WmsRulerControl), new UIPropertyMetadata(14.0));
 
@@ -103,12 +100,6 @@ namespace Ferretto.Common.Controls
         {
             get => (double)this.GetValue(LittleMarkLengthProperty);
             set => this.SetValue(LittleMarkLengthProperty, value);
-        }
-
-        public double MarkLength
-        {
-            get => (double)this.GetValue(MarkLengthProperty);
-            set => this.SetValue(MarkLengthProperty, value);
         }
 
         public double MiddleMarkLength
@@ -202,8 +193,6 @@ namespace Ferretto.Common.Controls
             {
                 case Orientation.Horizontal:
                     {
-                        this.MarkLength = this.ActualHeight;
-
                         if (this.ActualWidth > 0 && this.Step > 0)
                         {
                             totalSteps = (int)(this.DimensionWidth / this.Step);
@@ -219,8 +208,6 @@ namespace Ferretto.Common.Controls
 
                 case Orientation.Vertical:
                     {
-                        this.MarkLength = this.ActualWidth;
-
                         if (this.ActualHeight > 0 && this.Step > 0)
                         {
                             totalSteps = (int)(this.DimensionHeight / this.Step);
@@ -331,7 +318,7 @@ namespace Ferretto.Common.Controls
             if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
             {
                 mark.XStart = this.ActualWidth;
-                mark.YStart = this.ActualHeight - this.MarkLength + halfOfHalf;
+                mark.YStart = halfOfHalf;
                 mark.YEnd = this.ActualHeight - halfOfHalf;
                 mark.XStart = (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left) ? mark.XStart + halfSize : this.ActualWidth - mark.XStart - halfSize;
                 mark.XEnd = mark.XStart;
@@ -339,7 +326,7 @@ namespace Ferretto.Common.Controls
             else
             {
                 mark.YStart = -halfSize;
-                mark.XStart = this.ActualWidth - this.MarkLength + halfOfHalf;
+                mark.XStart = halfOfHalf;
                 mark.XEnd = this.ActualWidth - halfOfHalf;
                 mark.YStart = (this.InfoRuler.OriginVertical == OriginVertical.Top) ? mark.YStart + halfSize : mark.YStart;
                 mark.YEnd = mark.YStart;
@@ -449,7 +436,7 @@ namespace Ferretto.Common.Controls
             if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
             {
                 mark.XStart = ConvertMillimetersToPixel(currentStep * this.Step, this.ActualWidth, this.DimensionWidth);
-                mark.YStart = this.ActualHeight - this.MarkLength + halfSize;
+                mark.YStart = halfSize;
                 mark.YEnd = this.ActualHeight - halfSize;
                 if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left)
                 {
@@ -467,7 +454,7 @@ namespace Ferretto.Common.Controls
             {
                 mark.YStart = ConvertMillimetersToPixel(currentStep * this.Step, this.ActualHeight, this.DimensionHeight);
 
-                mark.XStart = this.ActualWidth - this.MarkLength + halfSize;
+                mark.XStart = halfSize;
                 mark.XEnd = this.ActualWidth - halfSize;
                 if (this.InfoRuler.OriginVertical == OriginVertical.Top)
                 {
