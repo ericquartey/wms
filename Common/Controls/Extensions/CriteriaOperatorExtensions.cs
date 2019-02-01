@@ -2,13 +2,13 @@
 using DevExpress.Data.Filtering;
 using Ferretto.Common.Utils.Expressions;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.Common.Controls.Extensions
 {
-    public static class DevExpressExpressionExtensions
+    public static class CriteriaOperatorExtensions
     {
         #region Methods
 
-        public static IExpression BuildExpression(this CriteriaOperator filter)
+        public static IExpression AsIExpression(this CriteriaOperator filter)
         {
             if (filter is ConstantValue constantValue)
             {
@@ -26,27 +26,30 @@ namespace Ferretto.Common.Controls
             {
                 return new BinaryExpression(binaryOperator.OperatorType.ToString())
                 {
-                    LeftExpression = binaryOperator.LeftOperand.BuildExpression(),
-                    RightExpression = binaryOperator.RightOperand.BuildExpression()
+                    LeftExpression = binaryOperator.LeftOperand.AsIExpression(),
+                    RightExpression = binaryOperator.RightOperand.AsIExpression()
                 };
             }
             else if (filter is GroupOperator groupOperator)
             {
                 if (groupOperator.Operands.Count == 1)
                 {
-                    return groupOperator.Operands.Single().BuildExpression();
+                    return groupOperator.Operands.Single().AsIExpression();
                 }
                 else
                 {
                     return new BinaryExpression(groupOperator.OperatorType.ToString())
                     {
-                        LeftExpression = groupOperator.Operands.First().BuildExpression(),
-                        RightExpression = new GroupOperator(groupOperator.OperatorType, groupOperator.Operands.Skip(1)).BuildExpression()
+                        LeftExpression = groupOperator.Operands.First().AsIExpression(),
+                        RightExpression = new GroupOperator(groupOperator.OperatorType, groupOperator.Operands.Skip(1))
+                            .AsIExpression()
                     };
                 }
             }
-
-            return null;
+            else
+            {
+                return null;
+            }
         }
 
         #endregion Methods

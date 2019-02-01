@@ -20,33 +20,33 @@ namespace Ferretto.Common.Utils.Expressions
 
         #region Methods
 
-        public static IExpression BuildExpression(this string where)
+        public static IExpression AsIExpression(this string stringExpression)
         {
-            var match = BinaryNestedExpressionRegex.Match(where);
+            var match = BinaryNestedExpressionRegex.Match(stringExpression);
             if (match.Success)
             {
                 var operatorName = match.Groups["operator"].Value;
                 return new BinaryExpression(operatorName)
                 {
-                    LeftExpression = BuildExpression(match.Groups["left"].Value),
-                    RightExpression = BuildExpression(match.Groups["right"].Value)
+                    LeftExpression = AsIExpression(match.Groups["left"].Value),
+                    RightExpression = AsIExpression(match.Groups["right"].Value)
                 };
             }
             else
             {
-                match = BinaryExpressionRegex.Match(where);
+                match = BinaryExpressionRegex.Match(stringExpression);
                 if (match.Success)
                 {
                     var operatorName = match.Groups["operator"].Value;
                     return new BinaryExpression(operatorName)
                     {
-                        LeftExpression = BuildExpression(match.Groups["left"].Value),
-                        RightExpression = BuildExpression(match.Groups["right"].Value)
+                        LeftExpression = AsIExpression(match.Groups["left"].Value),
+                        RightExpression = AsIExpression(match.Groups["right"].Value)
                     };
                 }
                 else
                 {
-                    return new ValueExpression(where);
+                    return new ValueExpression(stringExpression);
                 }
             }
         }
