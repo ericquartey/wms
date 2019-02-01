@@ -16,7 +16,6 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
             this.driver = new VW.InverterDriver.InverterDriver();
 
-            // connect to inverter (device)
             this.driver.Initialize();
         }
 
@@ -46,7 +45,6 @@ namespace Ferretto.VW.MAS_InverterDriver
             calibration.Initialize();
 
             calibration.ActualCalibrationAxis = CalibrationType.VERTICAL_CALIBRATION;
-            // Do the calibration
             calibration.SetAxisOrigin();
         }
 
