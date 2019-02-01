@@ -1,11 +1,38 @@
-﻿namespace Ferretto.VW.MAS_InverterDriver
+﻿using Ferretto.VW.InverterDriver;
+
+namespace Ferretto.VW.MAS_InverterDriver
 {
     public class InverterDriver : IInverterDriver
     {
+        #region Fields
+
+        private Ferretto.VW.InverterDriver.InverterDriver driver;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public InverterDriver()
+        {
+            this.driver = new VW.InverterDriver.InverterDriver();
+
+            // connect to inverter (device)
+            this.driver.Initialize();
+        }
+
+        #endregion Constructors
+
         #region Methods
         public void ExecuteVerticalHoming()
         {
-            return;
+            Ferretto.VW.InverterDriver.CalibrateAxis calibration = new CalibrateAxis();
+            calibration.SetInverterDriverInterface = this.driver;
+            calibration.Initialize();
+
+            calibration.ActualCalibrationAxis = CalibrationType.VERTICAL_CALIBRATION;
+            // Do the calibration
+            calibration.SetAxisOrigin();
+
         }
 
         public void ExecuteHorizontalHoming()
@@ -18,10 +45,10 @@
             return;
         }
 
-       public void ExecuteHorizontalPosition()
-       {
+        public void ExecuteHorizontalPosition()
+        {
             return;
-       }
+        }
 
         public bool[] GetSensorsStates()
         {
