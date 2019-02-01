@@ -245,7 +245,7 @@
     </Style>
 
 
-    <Style TargetType="{x:Type dxe:ImageEdit}">
+    <Style TargetType="{x:Type wms:WmsImageEdit}">
         <Setter Property="MinHeight" Value="200" />
         <Setter Property="MinWidth" Value="190" />
         <Setter Property="ShowMenuMode" Value="Always" />

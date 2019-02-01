@@ -835,6 +835,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to placeholder.png.
+        /// </summary>
+        public static string PlaceHolder {
+            get {
+                return ResourceManager.GetString("PlaceHolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/down.png.
         /// </summary>
         public static string PutLists {

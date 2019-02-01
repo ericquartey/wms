@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MAS_DataLayer;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MAS_AutomationService.Controllers
@@ -10,10 +11,19 @@ namespace MAS_AutomationService.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private readonly IWriteLogService log;
+
+        public ValuesController(IWriteLogService log)
+        {
+            this.log = log;
+        }
+
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
+            this.log.LogWriting("Called ValueController.Get()");
+
             return new string[] { "value1", "value2" };
         }
 
@@ -21,6 +31,8 @@ namespace MAS_AutomationService.Controllers
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
+            this.log.LogWriting($"Called ValueController.Get({id})");
+
             return "value";
         }
 

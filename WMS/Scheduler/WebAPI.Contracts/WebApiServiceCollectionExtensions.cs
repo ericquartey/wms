@@ -9,11 +9,11 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
         public static IServiceCollection AddWebApiServices(
              this IServiceCollection serviceCollection, System.Uri baseUrl)
         {
-            serviceCollection.AddTransient<IItemsService>(s => new ItemsService(baseUrl.AbsoluteUri));
-            serviceCollection.AddTransient<IItemListsService>(s => new ItemListsService(baseUrl.AbsoluteUri));
-            serviceCollection.AddTransient<IItemListRowsService>(s => new ItemListRowsService(baseUrl.AbsoluteUri));
-            serviceCollection.AddTransient<IMissionsService>(s => new MissionsService(baseUrl.AbsoluteUri));
-            serviceCollection.AddTransient<IBaysService>(s => new BaysService(baseUrl.AbsoluteUri));
+            serviceCollection.AddTransient(s => SchedulerServiceFactory.GetService<IItemsSchedulerService>(baseUrl));
+            serviceCollection.AddTransient(s => SchedulerServiceFactory.GetService<IItemListsSchedulerService>(baseUrl));
+            serviceCollection.AddTransient(s => SchedulerServiceFactory.GetService<IItemListRowsSchedulerService>(baseUrl));
+            serviceCollection.AddTransient(s => SchedulerServiceFactory.GetService<IMissionsSchedulerService>(baseUrl));
+            serviceCollection.AddTransient(s => SchedulerServiceFactory.GetService<IBaysSchedulerService>(baseUrl));
 
             return serviceCollection;
         }

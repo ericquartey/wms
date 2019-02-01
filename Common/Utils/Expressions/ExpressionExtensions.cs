@@ -11,9 +11,45 @@ namespace Ferretto.Common.Utils.Expressions
            @"(?<operator>[^(]+)\((?<left>[^,]+),(?<right>[^)]+)\)",
            System.Text.RegularExpressions.RegexOptions.Compiled);
 
+        private static readonly System.Text.RegularExpressions.Regex BinaryNestedExpressionRegex =
+               new System.Text.RegularExpressions.Regex(
+           @"^(?<operator>\w+)\((?<left>(\w+)\((.+)\)),(?<right>(\w+)\((.+)\))\)$",
+           System.Text.RegularExpressions.RegexOptions.Compiled);
+
         #endregion Fields
 
         #region Methods
+
+        public static IExpression AsIExpression(this string stringExpression)
+        {
+            var match = BinaryNestedExpressionRegex.Match(stringExpression);
+            if (match.Success)
+            {
+                var operatorName = match.Groups["operator"].Value;
+                return new BinaryExpression(operatorName)
+                {
+                    LeftExpression = AsIExpression(match.Groups["left"].Value),
+                    RightExpression = AsIExpression(match.Groups["right"].Value)
+                };
+            }
+            else
+            {
+                match = BinaryExpressionRegex.Match(stringExpression);
+                if (match.Success)
+                {
+                    var operatorName = match.Groups["operator"].Value;
+                    return new BinaryExpression(operatorName)
+                    {
+                        LeftExpression = AsIExpression(match.Groups["left"].Value),
+                        RightExpression = AsIExpression(match.Groups["right"].Value)
+                    };
+                }
+                else
+                {
+                    return new ValueExpression(stringExpression);
+                }
+            }
+        }
 
         public static Expression GetLambdaBody<T>(this IExpression expression, ParameterExpression inParameter)
         {
@@ -80,24 +116,6 @@ namespace Ferretto.Common.Utils.Expressions
             }
 
             return null;
-        }
-
-        public static IExpression ParseExpression(this string where)
-        {
-            var match = BinaryExpressionRegex.Match(where);
-            if (match.Success)
-            {
-                var operatorName = match.Groups["operator"].Value;
-                return new BinaryExpression(operatorName)
-                {
-                    LeftExpression = ParseExpression(match.Groups["left"].Value),
-                    RightExpression = ParseExpression(match.Groups["right"].Value)
-                };
-            }
-            else
-            {
-                return new ValueExpression(where);
-            }
         }
 
         #endregion Methods

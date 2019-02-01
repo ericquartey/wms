@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <LanguageTargets>$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
+    <TargetFramework>net471</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>ZZ_AutomationServiceTESTPROJECT.App</StartupObject>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>Bin\Debug\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>Bin\Release\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="**\*.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="**\*.xaml" Exclude="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.1.0" />
+    <PackageReference Include="Prism.Core" Version="6.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
+
+</Project>

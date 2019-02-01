@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 using Ferretto.VW.Utils.Source;
+using System.Diagnostics;
 
 namespace Ferretto.VW.InstallationApp.ServiceUtilities
 {
@@ -31,6 +32,8 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
                 await Task.Delay(new Random().Next(0, 5) * 1000);
                 await this.connection.StartAsync();
             };
+
+            this.connection.StartAsync();
         }
 
         #endregion Constructors

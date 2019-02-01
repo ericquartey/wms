@@ -1,13 +1,21 @@
 ﻿<UserControl x:Class="Ferretto.Common.Controls.WmsImage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ctrls="clr-namespace:Ferretto.Common.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             d:DesignHeight="450"
-             d:DesignWidth="800"
              mc:Ignorable="d">
+    <Grid>
+        <Image x:Name="InnerImage"
+               Width="100"
+               Height="100"
+               Source="{Binding Source, Mode=OneWay}"
+               Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsImage}}, Path=HasImage, Converter={StaticResource BTVC}}" />
 
-    <Image x:Name="InnerImage"
-           Source="{Binding Source}" />
+        <Image Width="100"
+               Height="100"
+               Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/Images/placeholder.png"
+               Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsImage}}, Path=HasImage, Converter={StaticResource BTVIC}}" />
 
+    </Grid>
 </UserControl>

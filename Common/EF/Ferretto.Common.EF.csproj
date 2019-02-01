@@ -29,6 +29,14 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <DependentUpon>appsettings.json</DependentUpon>
     </Content>
+    <Content Include="appsettings.Production.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <DependentUpon>appsettings.json</DependentUpon>
+    </Content>
+    <Content Include="appsettings.Testing.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <DependentUpon>appsettings.json</DependentUpon>
+    </Content>
     <Content Include="appsettings.json">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>

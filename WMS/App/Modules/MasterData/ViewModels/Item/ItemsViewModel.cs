@@ -9,8 +9,6 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private ICommand filterCommand;
-
         private ICommand showDetailsCommand;
 
         private ICommand withdrawCommand;
@@ -19,21 +17,32 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public ICommand FilterCommand => this.filterCommand ??
-                       (this.filterCommand = new DelegateCommand(this.ExecuteFilterCommand));
-
         public ICommand ShowDetailsCommand => this.showDetailsCommand ??
-                                 (this.showDetailsCommand = new DelegateCommand(this.ExecuteShowDetailsCommand, this.CanShowDetailsCommand)
-           .ObservesProperty(() => this.CurrentItem));
+            (this.showDetailsCommand = new DelegateCommand(this.ExecuteShowDetailsCommand, this.CanShowDetailsCommand)
+                .ObservesProperty(() => this.CurrentItem));
 
         public ICommand WithdrawCommand => this.withdrawCommand ??
-                                                   (this.withdrawCommand = new DelegateCommand(
-                                                        this.ExecuteWithdraw,
-                                                        this.CanExecuteWithdraw).ObservesProperty(() => this.CurrentItem));
+            (this.withdrawCommand = new DelegateCommand(
+                this.ExecuteWithdraw,
+                this.CanExecuteWithdraw).ObservesProperty(() => this.CurrentItem));
 
         #endregion Properties
 
         #region Methods
+
+        protected override void ExecuteShowFiltersCommand()
+        {
+            var inputData = new FilterDialogData
+            {
+                FilteringContext = this.FilteringContext,
+                Filter = this.CustomFilter
+            };
+
+            this.NavigationService.Appear(
+                nameof(MasterData),
+                Common.Utils.Modules.MasterData.FILTERDIALOG,
+                inputData);
+        }
 
         private bool CanExecuteWithdraw()
         {
@@ -45,14 +54,12 @@ namespace Ferretto.WMS.Modules.MasterData
             return this.CurrentItem != null;
         }
 
-        private void ExecuteFilterCommand()
-        {
-            // TODO
-        }
-
         private void ExecuteShowDetailsCommand()
         {
-            this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.ITEMDETAILS, this.CurrentItem.Id);
+            this.HistoryViewService.Appear(
+                nameof(Modules.MasterData),
+                Common.Utils.Modules.MasterData.ITEMDETAILS,
+                this.CurrentItem.Id);
         }
 
         private void ExecuteWithdraw()

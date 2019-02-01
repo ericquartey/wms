@@ -11,7 +11,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     #pragma warning disable // Disable all warnings
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class ItemListsDataService : ServiceBase, IItemListsDataService
+    internal partial class ItemListsDataService : ServiceBase, IItemListsDataService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
@@ -254,7 +254,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class ItemsDataService : ServiceBase, IItemsDataService
+    internal partial class ItemsDataService : ServiceBase, IItemsDataService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
@@ -834,7 +834,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class MissionsDataService : ServiceBase, IMissionsDataService
+    internal partial class MissionsDataService : ServiceBase, IMissionsDataService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;

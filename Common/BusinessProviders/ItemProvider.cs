@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
@@ -17,9 +18,11 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly EnumerationProvider enumerationProvider;
 
+        private readonly IImageProvider imageProvider;
+
         private readonly WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService;
 
-        private readonly WMS.Scheduler.WebAPI.Contracts.IItemsService itemsService;
+        private readonly WMS.Scheduler.WebAPI.Contracts.IItemsSchedulerService itemsSchedulerService;
 
         #endregion Fields
 
@@ -28,13 +31,15 @@ namespace Ferretto.Common.BusinessProviders
         public ItemProvider(
             IDatabaseContextService dataContext,
             EnumerationProvider enumerationProvider,
+            IImageProvider imageProvider,
             WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService,
-            WMS.Scheduler.WebAPI.Contracts.IItemsService itemsService)
+            WMS.Scheduler.WebAPI.Contracts.IItemsSchedulerService itemsSchedulerService)
         {
             this.dataContext = dataContext;
-            this.itemsService = itemsService;
+            this.itemsSchedulerService = itemsSchedulerService;
             this.itemsDataService = itemsDataService;
             this.enumerationProvider = enumerationProvider;
+            this.imageProvider = imageProvider;
         }
 
         #endregion Constructors
@@ -53,13 +58,13 @@ namespace Ferretto.Common.BusinessProviders
         public async Task<IEnumerable<Item>> GetAllAsync(
             int take = 0,
             int skip = 0,
-            string where = null,
+            string whereExpression = null,
             IEnumerable<SortOption> orderBy = null,
-            string search = null)
+            string searchExpression = null)
         {
             var orderByString = orderBy != null ? string.Join(",", orderBy.Select(s => $"{s.PropertyName} {s.Direction}")) : null;
 
-            return (await this.itemsDataService.GetAllAsync(skip, take, where, orderByString, search))
+            return (await this.itemsDataService.GetAllAsync(skip, take, whereExpression, orderByString, searchExpression))
                 .Select(i => new Item
                 {
                     Id = i.Id,
@@ -97,9 +102,9 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotSupportedException();
         }
 
-        public async Task<int> GetAllCountAsync(string where = null, string search = null)
+        public async Task<int> GetAllCountAsync(string whereExpression = null, string searchExpression = null)
         {
-            return await this.itemsDataService.GetAllCountAsync(where, search);
+            return await this.itemsDataService.GetAllCountAsync(whereExpression, searchExpression);
         }
 
         public IQueryable<AllowedItemInCompartment> GetAllowedByCompartmentId(int compartmentId)
@@ -206,6 +211,8 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
+                var originalItem = await this.itemsDataService.GetByIdAsync(model.Id);
+
                 await this.itemsDataService.UpdateAsync(new WMS.Data.WebAPI.Contracts.Item
                 {
                     AbcClassId = model.AbcClassId,
@@ -233,6 +240,11 @@ namespace Ferretto.Common.BusinessProviders
                     Width = model.Width
                 });
 
+                if (originalItem.Image != model.Image)
+                {
+                    this.SaveImage(model.ImagePath);
+                }
+
                 return new OperationResult(true);
             }
             catch (Exception ex)
@@ -250,7 +262,7 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
-                await this.itemsService.WithdrawAsync(
+                await this.itemsSchedulerService.WithdrawAsync(
                    new WMS.Scheduler.WebAPI.Contracts.SchedulerRequest
                    {
                        IsInstant = true,
@@ -271,6 +283,11 @@ namespace Ferretto.Common.BusinessProviders
             {
                 return new OperationResult(ex);
             }
+        }
+
+        private void SaveImage(string imagePath)
+        {
+            this.imageProvider.SaveImage(imagePath);
         }
 
         #endregion Methods

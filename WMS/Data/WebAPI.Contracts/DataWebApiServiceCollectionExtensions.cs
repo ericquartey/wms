@@ -14,9 +14,9 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException(nameof(serviceCollection));
             }
 
-            serviceCollection.AddTransient<IItemsDataService>(s => new ItemsDataService(baseUrl.AbsoluteUri));
-            serviceCollection.AddTransient<IMissionsDataService>(s => new MissionsDataService(baseUrl.AbsoluteUri));
-            serviceCollection.AddTransient<IItemListsDataService>(s => new ItemListsDataService(baseUrl.AbsoluteUri));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IItemsDataService>(baseUrl));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IMissionsDataService>(baseUrl));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IItemListsDataService>(baseUrl));
 
             return serviceCollection;
         }

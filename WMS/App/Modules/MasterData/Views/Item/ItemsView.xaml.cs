@@ -1,4 +1,5 @@
-﻿using Ferretto.Common.Controls;
+﻿using Ferretto.Common.BusinessModels;
+using Ferretto.Common.Controls;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
@@ -9,18 +10,21 @@ namespace Ferretto.WMS.Modules.MasterData
         public ItemsView()
         {
             this.InitializeComponent();
+
+            this.DataContextChanged += this.ItemsView_DataContextChanged;
         }
 
         #endregion Constructors
 
         #region Methods
 
-        private void FilterEditor_FilterChanged(object sender, DevExpress.Xpf.Core.FilteringUI.FilterChangedEventArgs e)
+        private void ItemsView_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
         {
-            if (this.DataContext is ItemsViewModel viewModel)
+            if (e.NewValue is EntityPagedListViewModel<Item> viewModel)
             {
-                viewModel.CustomFilter = e.Filter;
-                e.Handled = true;
+                // pass the grid's filtering context to the view model
+                // so that view model's commands can use it
+                viewModel.FilteringContext = this.MainGridControl.FilteringContext;
             }
         }
 
