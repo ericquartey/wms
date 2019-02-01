@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Ferretto.WMS.Data.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ferretto.WMS.Data.WebAPI.Interfaces
@@ -7,7 +9,7 @@ namespace Ferretto.WMS.Data.WebAPI.Interfaces
     {
         #region Methods
 
-        ActionResult<T> GetById(int id);
+        Task<ActionResult<T>> GetById(int id);
 
         #endregion Methods
     }

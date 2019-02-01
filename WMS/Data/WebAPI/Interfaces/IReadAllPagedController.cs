@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Ferretto.WMS.Data.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ferretto.WMS.Data.WebAPI.Interfaces
@@ -7,8 +9,7 @@ namespace Ferretto.WMS.Data.WebAPI.Interfaces
     {
         #region Methods
 
-        ActionResult<IEnumerable<T>> GetAll(
-            int skip = 0,
+        Task<ActionResult<IEnumerable<Item>>> GetAll(int skip = 0,
             int take = int.MaxValue,
             string where = null,
             string orderBy = null,

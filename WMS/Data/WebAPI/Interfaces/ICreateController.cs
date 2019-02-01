@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ferretto.WMS.Data.WebAPI.Interfaces
 {
-    public interface ICreateController<in T>
+    public interface ICreateController<T>
     {
         #region Methods
 
-        Task<ActionResult> CreateAsync(T model);
+        Task<ActionResult<T>> CreateAsync(T model);
 
         #endregion Methods
     }

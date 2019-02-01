@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Ferretto.Common.DataModels;
 using Ferretto.WMS.Data.Core.Interfaces;
+using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,13 +12,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ItemListsController : ControllerBase,
-          IReadAllController<ItemList>,
-          IReadSingleController<ItemList>
+    public class BaysController : ControllerBase,
+        IReadAllController<Bay>,
+        IReadSingleController<Bay>
     {
         #region Fields
 
-        private readonly IItemListsProvider itemListsProvider;
+        private readonly IBayProvider bayProvider;
 
         private readonly ILogger logger;
 
@@ -26,44 +26,34 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Constructors
 
-        public ItemListsController(
-            ILogger<ItemListsController> logger,
-            IItemListsProvider itemListsProvider)
+        public BaysController(
+            ILogger<BaysController> logger,
+            IBayProvider bayProvider)
         {
             this.logger = logger;
-            this.itemListsProvider = itemListsProvider;
+            this.bayProvider = bayProvider;
         }
 
         #endregion Constructors
 
         #region Methods
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<ItemList>))]
-        [ProducesResponseType(500, Type = typeof(string))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Bay>))]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ItemList>>> GetAll()
+        public async Task<ActionResult<IEnumerable<Bay>>> GetAll()
         {
-            try
-            {
-                return this.Ok(await this.itemListsProvider.GetAllAsync());
-            }
-            catch (Exception ex)
-            {
-                var message = $"An error occurred while retrieving the requested entities.";
-                this.logger.LogError(ex, message);
-                return this.StatusCode(StatusCodes.Status500InternalServerError, message);
-            }
+            return this.Ok(await this.bayProvider.GetAllAsync());
         }
 
-        [ProducesResponseType(200, Type = typeof(ItemList))]
+        [ProducesResponseType(200, Type = typeof(Bay))]
         [ProducesResponseType(404)]
         [ProducesResponseType(500, Type = typeof(string))]
         [HttpGet("{id}")]
-        public async Task<ActionResult<ItemList>> GetById(int id)
+        public async Task<ActionResult<Bay>> GetById(int id)
         {
             try
             {
-                var result = await this.itemListsProvider.GetByIdAsync(id);
+                var result = await this.bayProvider.GetByIdAsync(id);
                 if (result == null)
                 {
                     var message = $"No entity with the specified id={id} exists.";

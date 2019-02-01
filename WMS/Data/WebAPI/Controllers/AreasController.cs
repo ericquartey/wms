@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Ferretto.WMS.Data.Core.Interfaces;
+using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -10,48 +14,88 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class AreasController : ControllerBase,
-        IReadAllController<Models.Area>,
-        IReadSingleController<Models.Area>
+        IReadAllController<Area>,
+        IReadSingleController<Area>
     {
         #region Fields
 
-        private readonly ILogger logger;
+        private readonly IAreaProvider areaProvider;
 
-        private readonly Models.IWarehouse warehouse;
+        private readonly IBayProvider bayProvider;
+
+        private readonly ILogger logger;
 
         #endregion Fields
 
         #region Constructors
 
         public AreasController(
-            IServiceProvider serviceProvider,
             ILogger<AreasController> logger,
-            Models.IWarehouse warehouse)
+            IAreaProvider areaProvider,
+            IBayProvider bayProvider)
         {
             this.logger = logger;
-            this.warehouse = warehouse;
+            this.areaProvider = areaProvider;
+            this.bayProvider = bayProvider;
         }
 
         #endregion Constructors
 
         #region Methods
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Models.Area>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Area>))]
+        [ProducesResponseType(500, Type = typeof(string))]
         [HttpGet]
-        public ActionResult<IEnumerable<Models.Area>> GetAll()
-        {
-            return this.Ok(this.warehouse.Areas);
-        }
-
-        [ProducesResponseType(200, Type = typeof(Models.Area))]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-        [HttpGet("{id}")]
-        public ActionResult<Models.Area> GetById(int id)
+        public async Task<ActionResult<IEnumerable<Area>>> GetAll()
         {
             try
             {
-                var result = this.warehouse.Areas.SingleOrDefault(a => a.Id == id);
+                return this.Ok(await this.areaProvider.GetAllAsync());
+            }
+            catch (Exception ex)
+            {
+                var message = $"An error occurred while retrieving the requested entities.";
+                this.logger.LogError(ex, message);
+                return this.StatusCode(StatusCodes.Status500InternalServerError, message);
+            }
+        }
+
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Bay>))]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500, Type = typeof(string))]
+        [HttpGet("{id}/bays")]
+        public async Task<ActionResult<IEnumerable<Bay>>> GetBays(int id)
+        {
+            try
+            {
+                var bays = await this.bayProvider.GetByAreaIdAsync(id);
+
+                if (!bays.Any())
+                {
+                    var message = $"No entity associated with the specified id={id} exists.";
+                    this.logger.LogWarning(message);
+                    return this.NotFound(message);
+                }
+
+                return this.Ok(bays);
+            }
+            catch (Exception ex)
+            {
+                var message = $"An error occurred while retrieving the requested entities associated with id={id}.";
+                this.logger.LogError(ex, message);
+                return this.StatusCode(StatusCodes.Status500InternalServerError, message);
+            }
+        }
+
+        [ProducesResponseType(200, Type = typeof(Area))]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500, Type = typeof(string))]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Area>> GetById(int id)
+        {
+            try
+            {
+                var result = await this.areaProvider.GetByIdAsync(id);
                 if (result == null)
                 {
                     var message = $"No entity with the specified id={id} exists.";
@@ -65,7 +109,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 var message = $"An error occurred while retrieving the requested entity with id={id}.";
                 this.logger.LogError(ex, message);
-                return this.BadRequest(message);
+                return this.StatusCode(StatusCodes.Status500InternalServerError, message);
             }
         }
 
