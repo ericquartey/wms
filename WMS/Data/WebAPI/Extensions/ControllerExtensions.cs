@@ -17,7 +17,7 @@ namespace Ferretto.WMS.Data.WebAPI.Extensions
             }
 
             var lambdaInParameter = Expression.Parameter(typeof(T), typeof(T).Name.ToLower());
-            var expression = where.ParseExpression();
+            var expression = where.AsIExpression();
             var lambdaBody = expression?.GetLambdaBody<T>(lambdaInParameter);
 
             return (Expression<Func<T, bool>>)Expression.Lambda(lambdaBody, lambdaInParameter);
