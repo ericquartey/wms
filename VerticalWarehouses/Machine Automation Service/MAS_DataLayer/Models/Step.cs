@@ -1,4 +1,6 @@
-﻿namespace MAS_DataLayer
+﻿using System.Collections.Generic;
+
+namespace MAS_DataLayer
 {
     public class Step
     {
