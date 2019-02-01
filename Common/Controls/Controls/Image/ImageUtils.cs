@@ -12,12 +12,6 @@ namespace Ferretto.Common.Controls
 {
     public class ImageUtils
     {
-        #region Fields
-
-        private static ImageSource placeholderImage = null;
-
-        #endregion Fields
-
         #region Methods
 
         public static ImageSource GetImage(IImageProvider imageService, string path)
@@ -40,18 +34,6 @@ namespace Ferretto.Common.Controls
             return !string.IsNullOrWhiteSpace(imagePath)
                 ? ImageUtils.GetImage(imageService, imagePath)
                 : null;
-        }
-
-        public static ImageSource RetrieveImageOrPlaceholder(IImageProvider imageService, string imagePath)
-        {
-            if (placeholderImage == null)
-            {
-                placeholderImage = ImageUtils.GetImage(imageService, Resources.Icons.PlaceHolder);
-            }
-
-            return !string.IsNullOrWhiteSpace(imagePath)
-                ? placeholderImage
-                : ImageUtils.GetImage(imageService, imagePath);
         }
 
         #endregion Methods

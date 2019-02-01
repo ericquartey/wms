@@ -214,9 +214,12 @@ namespace Ferretto.Common.BusinessProviders
             {
                 using (var dc = this.dataContext.Current)
                 {
-                   this.SaveImage(model.ImagePath);
-
                     var existingModel = dc.Items.Find(model.Id);
+
+                    if (existingModel.Image != model.Image)
+                    {
+                        this.SaveImage(model.ImagePath);
+                    }
 
                     dc.Entry(existingModel).CurrentValues.SetValues(model);
 
