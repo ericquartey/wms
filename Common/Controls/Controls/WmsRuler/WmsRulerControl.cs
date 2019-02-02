@@ -71,7 +71,7 @@ namespace Ferretto.Common.Controls
             this.infoRuler = new InfoRuler();
             this.UseLayoutRounding = false;
             this.SnapsToDevicePixels = false;
-            RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
+            RenderOptions.SetEdgeMode(this, EdgeMode.Unspecified);
         }
 
         #endregion Constructors
