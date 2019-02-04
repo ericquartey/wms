@@ -51,7 +51,7 @@
                             VerticalContentAlignment="Center"
                             Background="{DynamicResource VWAPP_BACKGROUND}"
                             BorderBrush="{DynamicResource VWAPP_CustomMachineModeToggleButton_BorderBrush_Normal}"
-                            BorderThickness="1">
+                            BorderThickness="1" Click="Button_Click">
                         <TextBlock FontSize="25"
                                    Foreground="{DynamicResource FerrettoPureWhite}"
                                    TextAlignment="Center">
