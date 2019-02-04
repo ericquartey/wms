@@ -533,7 +533,7 @@
     <value>Origine asse orizzontale</value>
   </data>
   <data name="Laser1Done" xml:space="preserve">
-    <value>Lase Barriera 1</value>
+    <value>Laser Barriera 1</value>
   </data>
   <data name="Laser2Done" xml:space="preserve">
     <value>Laser Barriera 2</value>
@@ -585,5 +585,11 @@
   </data>
   <data name="SettingInitialPosition" xml:space="preserve">
     <value>Impostazione della posizione iniziale ...</value>
+  </data>
+  <data name="VerticalOffsetVerify" xml:space="preserve">
+    <value>Verifica offset Verticale</value>
+  </data>
+  <data name="CellPositionDone" xml:space="preserve">
+    <value>Quote celle verificate</value>
   </data>
 </root>

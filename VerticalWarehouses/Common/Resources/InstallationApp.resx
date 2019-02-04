@@ -738,4 +738,10 @@
     <value>Cell correction [mm]:</value>
     <comment>Label text</comment>
   </data>
+  <data name="VerticalOffsetVerify" xml:space="preserve">
+    <value>Vertical Offset Verified</value>
+  </data>
+  <data name="CellPositionDone" xml:space="preserve">
+    <value>Cell position verified</value>
+  </data>
 </root>

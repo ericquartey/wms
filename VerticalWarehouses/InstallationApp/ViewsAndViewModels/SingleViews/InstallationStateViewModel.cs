@@ -13,6 +13,8 @@ namespace Ferretto.VW.InstallationApp
         public IUnityContainer Container;
         public DataManager Data;
         private bool isBeltBurnishingDone;
+        private bool isOffsetVerifyDone;
+        private bool isCellPositionDone;
         private bool isGate1Done;
         private bool isGate2Done;
         private bool isGate3Done;
@@ -41,6 +43,10 @@ namespace Ferretto.VW.InstallationApp
         #region Properties
 
         public Boolean IsBeltBurnishingDone { get => this.isBeltBurnishingDone; set => this.SetProperty(ref this.isBeltBurnishingDone, value); }
+
+        public Boolean IsOffsetVerifyDone { get => this.isOffsetVerifyDone; set => this.SetProperty(ref this.isOffsetVerifyDone, value); }
+
+        public Boolean IsCellPositionDone { get => this.isCellPositionDone; set => this.SetProperty(ref this.isCellPositionDone, value); }
 
         public Boolean IsGate1Done { get => this.isGate1Done; set => this.SetProperty(ref this.isGate1Done, value); }
 
