@@ -1,28 +1,39 @@
-﻿using System;
-
-namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
+﻿namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 {
     // Vertical homing is undone
-    public class VerticalHomingUndoneState : IState
+    public class VerticalHomingIdleState : IState
     {
         #region Fields
 
         private StateMachineVerticalHoming context;
 
+        private MAS_DataLayer.IWriteLogService data;
+
+        private MAS_InverterDriver.IInverterDriver driver;
+
         #endregion Fields
 
         #region Constructors
 
-        public VerticalHomingUndoneState(StateMachineVerticalHoming parent)
+        public VerticalHomingIdleState(StateMachineVerticalHoming parent, MAS_InverterDriver.IInverterDriver iDriver, MAS_DataLayer.IWriteLogService iWriteLogService)
         {
             this.context = parent;
+            this.driver = iDriver;
+            this.data = iWriteLogService;
+
+            this.data.LogWriting("Start vertical homing");
+
+            // launch the command
+            this.driver.ExecuteVerticalHoming();
+
+            this.context.ChangeState(new VerticalHomingDoneState(this.context, this.driver, this.data));
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public string Type => "Vertical Homing Undone State";
+        public string Type => "Vertical Homing Idle State";
 
         #endregion Properties
 
@@ -30,6 +41,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         public void DoAction(IdOperation code)
         {
+            /*
             switch (code)
             {
                 case IdOperation.HorizontalHome:
@@ -62,6 +74,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
                         break;
                     }
             }
+            */
         }
 
         #endregion Methods

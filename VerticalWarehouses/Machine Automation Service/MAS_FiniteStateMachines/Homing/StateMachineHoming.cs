@@ -43,7 +43,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         public void ExecuteOperation(IdOperation code)
         {
-            this.fsm.MakeOperationByInverter(code);
+            //this.fsm.MakeOperationByInverter(code);
         }
 
         public void Start()

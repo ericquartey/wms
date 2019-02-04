@@ -7,7 +7,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
     {
         #region Fields
 
-        private MAS_InverterDriver.InverterDriver driver;
+        private MAS_DataLayer.IWriteLogService data;
+
+        private MAS_InverterDriver.IInverterDriver driver;
+
+        //private DataLayerContext dtContext;
 
         private StateMachineHoming homing;
 
@@ -15,13 +19,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #endregion Fields
 
+        //private WriteLogService writeLog;
+
         #region Constructors
 
-        public FiniteStateMachines()
+        public FiniteStateMachines(MAS_InverterDriver.IInverterDriver iDriver, MAS_DataLayer.IWriteLogService iWriteLogService)
         {
-            this.driver = Singleton<MAS_InverterDriver.InverterDriver>.UniqueInstance;
+            this.driver = iDriver;  //Singleton<MAS_InverterDriver.InverterDriver>.UniqueInstance;
+            this.data = iWriteLogService;
+
             this.homing = new StateMachineHoming(this);
-            this.verticalHoming = new StateMachineVerticalHoming(this);
+            this.verticalHoming = new StateMachineVerticalHoming(this, this.driver, this.data);
+
+            //this.dtContext = new DataLayerContext();
+            //this.writeLog = new WriteLogService(this.dtContext);
         }
 
         #endregion Constructors
@@ -57,8 +68,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 throw new InvalidOperationException();
             }
 
+            this.data.LogWriting("Start");
+
             this.verticalHoming.Start();
             this.verticalHoming.DoAction(IdOperation.VerticalHome);
+
+            this.data.LogWriting("End homing");
         }
 
         public void MakeOperationByInverter(IdOperation code)

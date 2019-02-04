@@ -8,12 +8,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         void Destroy();
 
+        /// <summary>
+        /// Execute complete homing
+        /// </summary>
         void DoHoming(BroadcastDelegate broadcastDelegate);
 
+        /// <summary>
+        /// Execute vertical homing
+        /// </summary>
         void DoVerticalHoming(BroadcastDelegate broadcastDelegate);
 
-        void MakeOperationByInverter(IdOperation code);
-
         #endregion Methods
+
+        /*
+        void MakeOperationByInverter(IdOperation code);
+        */
     }
 }

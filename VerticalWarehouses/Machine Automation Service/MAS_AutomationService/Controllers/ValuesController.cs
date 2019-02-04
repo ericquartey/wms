@@ -1,21 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MAS_DataLayer;
+﻿using System.Collections.Generic;
+using Ferretto.VW.MAS_DataLayer;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MAS_AutomationService.Controllers
+namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        #region Fields
+
         private readonly IWriteLogService log;
+
+        #endregion Fields
+
+        #region Constructors
 
         public ValuesController(IWriteLogService log)
         {
             this.log = log;
+        }
+
+        #endregion Constructors
+
+        #region Methods
+
+        // DELETE api/values/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
         }
 
         // GET api/values
@@ -48,10 +61,6 @@ namespace MAS_AutomationService.Controllers
         {
         }
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        #endregion Methods
     }
 }

@@ -1,17 +1,40 @@
-﻿using System.Threading.Tasks;
-using Ferretto.Common.Common_Utils;
+﻿using Ferretto.Common.Common_Utils;
+using Ferretto.VW.MAS_FiniteStateMachines;
 
 namespace Ferretto.VW.MAS_MachineManager
 {
     public class MachineManager : IMachineManager
     {
-        //TODO private readonly FiniteStateMachines finiteStateMachines = Singleton<FiniteStateMachines>.UniqueInstance;
+        #region Fields
+
+        private readonly FiniteStateMachines finiteStateMachines;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public MachineManager()
+        {
+            //this.finiteStateMachines = Singleton<FiniteStateMachines>.UniqueInstance;
+        }
+
+        #endregion Constructors
 
         #region Methods
 
-        public async Task DoHoming(BroadcastDelegate broadcastDelegate)
+        public void Destroy()
         {
-            //TODO await this.finiteStateMachines.DoHoming(broadcastDelegate);
+            this.finiteStateMachines.Destroy();
+        }
+
+        public void DoHoming(BroadcastDelegate broadcastDelegate)
+        {
+            this.finiteStateMachines.DoHoming(broadcastDelegate);
+        }
+
+        public void DoVerticalHoming(BroadcastDelegate broadcastDelegate)
+        {
+            this.finiteStateMachines.DoVerticalHoming(broadcastDelegate);
         }
 
         #endregion Methods
