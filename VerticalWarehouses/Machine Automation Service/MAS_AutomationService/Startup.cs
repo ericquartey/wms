@@ -60,7 +60,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
             var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
 
-            services.AddDbContext<DataLayerContext>(options => options.UseSqlite(connectionString));
+            services.AddDbContext<DataLayerContext>(options => options.UseSqlite(connectionString), ServiceLifetime.Singleton);
 
             services.AddSingleton<IAutomationService, AutomationService>();
             services.AddSingleton<IWriteLogService, WriteLogService>();
