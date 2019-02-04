@@ -72,7 +72,7 @@ namespace Ferretto.Common.BLL.Tests
                 context.SaveChanges();
             }
 
-            #endregion Arrange
+            #endregion
 
             using (var context = this.CreateContext())
             {
@@ -85,14 +85,14 @@ namespace Ferretto.Common.BLL.Tests
 
                 var missions = await warehouse.CreateMissionsForPendingRequestsAsync();
 
-                #endregion Act
+                #endregion
 
                 #region Assert
 
                 Assert.AreEqual(1, missions.Count());
                 Assert.AreEqual(request2.RequestedQuantity, missions.First().Quantity);
 
-                #endregion Assert
+                #endregion
             }
         }
 
@@ -149,7 +149,7 @@ namespace Ferretto.Common.BLL.Tests
                 context.SaveChanges();
             }
 
-            #endregion Arrange
+            #endregion
 
             using (var context = this.CreateContext())
             {
@@ -162,7 +162,7 @@ namespace Ferretto.Common.BLL.Tests
 
                 var missions = await warehouse.CreateMissionsForPendingRequestsAsync();
 
-                #endregion Act
+                #endregion
 
                 #region Assert
 
@@ -174,10 +174,10 @@ namespace Ferretto.Common.BLL.Tests
                 Assert.AreEqual(compartment2.Id, missions.First().CompartmentId);
                 Assert.AreEqual(compartment2.Stock, missions.First().Quantity);
 
-                #endregion Assert
+                #endregion
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
+    <RootNamespace>Ferretto.VW.InverterDriver</RootNamespace>
+    <AssemblyName>Ferretto.VW.InverterDriver</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\InverterDriver\InverterDriver.csproj" />
+  </ItemGroup>
+
+</Project>

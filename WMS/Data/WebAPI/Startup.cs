@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+#if DEBUG
 using NSwag.AspNetCore;
+#endif
 
 namespace Ferretto.WMS.Data.WebAPI
 {
@@ -18,13 +20,13 @@ namespace Ferretto.WMS.Data.WebAPI
             this.Configuration = configuration;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public IConfiguration Configuration { get; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -37,12 +39,15 @@ namespace Ferretto.WMS.Data.WebAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
+#if DEBUG
                 app.UseSwaggerUi3WithApiExplorer(settings =>
                 {
                     settings.PostProcess = document =>
                     {
-                        document.Info.Version = "v1";
+                        var assembly = typeof(Startup).Assembly;
+                        var versionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+
+                        document.Info.Version = versionInfo.FileVersion;
                         document.Info.Title = "WMS Data API";
                         document.Info.Description = "REST API for the WMS Data Service";
                     };
@@ -51,13 +56,14 @@ namespace Ferretto.WMS.Data.WebAPI
 
                     settings.GeneratorSettings.DefaultEnumHandling = NJsonSchema.EnumHandling.String;
                 });
+#endif
             }
-            else
+            else if (env.IsProduction())
             {
                 app.UseHsts();
-            }
 
-            app.UseHttpsRedirection();
+                app.UseHttpsRedirection();
+            }
 
             app.UseMvc();
         }
@@ -78,6 +84,6 @@ namespace Ferretto.WMS.Data.WebAPI
             services.AddSignalR();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

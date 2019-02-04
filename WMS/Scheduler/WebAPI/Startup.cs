@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+#if DEBUG
 using NJsonSchema;
 using NSwag.AspNetCore;
+#endif
 
 namespace Ferretto.WMS.Scheduler.WebAPI
 {
@@ -21,26 +23,28 @@ namespace Ferretto.WMS.Scheduler.WebAPI
             this.Configuration = configuration;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public IConfiguration Configuration { get; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
         /// <summary>
         ///  This method gets called by the runtime.
         ///  Use this method to configure the HTTP request pipeline.
+        /// <param name="app"></param>
+        /// <param name="env"></param>
         /// </summary>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
+#if DEBUG
                 app.UseSwaggerUi3WithApiExplorer(settings =>
                 {
                     settings.PostProcess = document =>
@@ -54,13 +58,14 @@ namespace Ferretto.WMS.Scheduler.WebAPI
 
                     settings.GeneratorSettings.DefaultEnumHandling = EnumHandling.String;
                 });
+#endif
             }
-            else
+            else if (env.IsProduction())
             {
                 app.UseHsts();
-            }
 
-            app.UseHttpsRedirection();
+                app.UseHttpsRedirection();
+            }
 
             var wakeupHubEndpoint = this.Configuration["Hubs:WakeUp"];
             if (string.IsNullOrWhiteSpace(wakeupHubEndpoint) == false)
@@ -99,6 +104,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI
             services.AddSignalR();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

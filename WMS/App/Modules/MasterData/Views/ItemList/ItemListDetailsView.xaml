@@ -23,7 +23,7 @@
         <wms:DisplayNameConverter x:Key="DNC" />
 
         <DataTemplate x:Key="CellDisplayTemplateRequiredQuantity">
-            <TextBlock>
+            <TextBlock VerticalAlignment="Center">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource SFC}">
                         <Binding Source="{x:Static res:MasterData.QuantityWithUnitMeasure}" />
@@ -37,7 +37,7 @@
         </DataTemplate>
 
         <DataTemplate x:Key="CellDisplayTemplateDispatchedQuantity">
-            <TextBlock>
+            <TextBlock VerticalAlignment="Center">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource SFC}">
                         <Binding Source="{x:Static res:MasterData.QuantityWithUnitMeasure}" />
@@ -98,6 +98,12 @@
                                Content="{x:Static res:MasterData.ListExecute}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_play_arrow_black_24dp.png"
+                               GlyphSize="Custom" />
+
+            <wms:ActionBarItem Command="{Binding RefreshCommand}"
+                               Content="{x:Static res:General.Refresh}"
+                               CustomGlyphSize="24,24"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
                                GlyphSize="Custom" />
 
         </wms:ActionBar>

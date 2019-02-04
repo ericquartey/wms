@@ -22,7 +22,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool isBusy;
         private ICommand runListRowExecuteCommand;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -31,7 +31,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.Initialize();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -68,7 +68,7 @@ namespace Ferretto.WMS.Modules.MasterData
                          async () => await this.ExecuteListRowCommandAsync(),
                          this.CanExecuteListRowCommand));
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -133,6 +133,6 @@ namespace Ferretto.WMS.Modules.MasterData
             ((DelegateCommand)this.RunListRowExecuteCommand)?.RaiseCanExecuteChanged();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

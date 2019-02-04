@@ -6,6 +6,6 @@
 
         string Token { get; }
 
-        #endregion Properties
+        #endregion
     }
 }

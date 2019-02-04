@@ -5,7 +5,6 @@ namespace Ferretto.Common.DataModels
 {
     // Macchina
     public sealed class Machine : IDataModel
-
     {
         #region Properties
 
@@ -79,6 +78,6 @@ namespace Ferretto.Common.DataModels
 
         public long? TotalMaxWeight { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

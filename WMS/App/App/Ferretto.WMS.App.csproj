@@ -8,6 +8,8 @@
     <StartupObject />
     <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AssemblyVersion>0.2.0.0</AssemblyVersion>
+    <Copyright>copyright</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
@@ -47,10 +49,16 @@
     <Content Include="Images\*.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Update="App.Production.config">
+      <DependentUpon>App.config</DependentUpon>
+    </None>
+    <None Update="App.Testing.config">
+      <DependentUpon>App.config</DependentUpon>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DevExpress.Wpf.PrismAdapters" Version="18.2.3" />
+    <PackageReference Include="DevExpress.Wpf.PrismAdapters" Version="18.2.4" />
     <PackageReference Include="Unity.NLog" Version="1.0.2" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.2">
         <PrivateAssets>all</PrivateAssets>

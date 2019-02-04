@@ -1,10 +1,17 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib"                                        
                     xmlns:dxdst="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys">
 
+    <ctrls:ValueToRectConverter x:Key="VTRC" />
+    <ctrls:XyToPointConverter x:Key="XYTPC" />
+    
     <!--  colors - compartment  -->
     <Color x:Key="MediumBlue">#FF0288F7</Color>
+
+    <system:Double x:Key="TrayRulerSize">25</system:Double>
+    <FontFamily x:Key="TrayFont">Tahoma</FontFamily>
 
     <SolidColorBrush x:Key="TrayBackground"
                      Color="{DynamicResource PureWhite}" />
@@ -116,42 +123,131 @@
         </Setter>
     </Style>
 
-    <Style x:Key="CanvasListBox"
-           BasedOn="{StaticResource {dxdst:DefaultStyleThemeKey FullName=System.Windows.Controls.ListBox,
-                                                                ThemeName=Office2016White}}"
-           TargetType="{x:Type ListBox}">
-        <Setter Property="SnapsToDevicePixels" Value="true" />
+    <DrawingBrush x:Key="GridLines" Stretch="None" TileMode="Tile"  ViewportUnits="Absolute" RenderOptions.EdgeMode="Aliased" 
+                  Viewport="{Binding ElementName=TrayCanvas, Path=DataContext.StepPixel,  Converter={StaticResource VTRC}}">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Geometry>
+                            <GeometryGroup>
+                                <LineGeometry>
+                                    <LineGeometry.StartPoint>
+                                        <MultiBinding Converter="{StaticResource XYTPC}" >
+                                            <Binding  Path="DataContext.BackgroundStepStart" ElementName="TrayCanvas"/>
+                                            <Binding  Path="DataContext.BackgroundStepStart" ElementName="TrayCanvas"/>
+                                        </MultiBinding>
+                                    </LineGeometry.StartPoint>
+                                    <LineGeometry.EndPoint>
+                                        <MultiBinding Converter="{StaticResource XYTPC}" >
+                                            <Binding  Path="DataContext.BackgroundStepStart" ElementName="TrayCanvas"/>
+                                            <Binding  Path="DataContext.StepPixel" ElementName="TrayCanvas"/>
+                                        </MultiBinding>
+                                    </LineGeometry.EndPoint>
+                                </LineGeometry>
+                                <LineGeometry>
+                                    <LineGeometry.StartPoint>
+                                        <MultiBinding Converter="{StaticResource XYTPC}"  >
+                                            <Binding>
+                                                <Binding.Source>
+                                                    <system:Double>0.0</system:Double>
+                                                </Binding.Source>
+                                            </Binding>
+                                            <Binding  Path="DataContext.BackgroundStepStart" ElementName="TrayCanvas"/>
+                                        </MultiBinding>
+                                    </LineGeometry.StartPoint>
+                                    <LineGeometry.EndPoint>
+                                        <MultiBinding Converter="{StaticResource XYTPC}" >
+                                            <Binding  Path="DataContext.StepPixel" ElementName="TrayCanvas"/>
+                                            <Binding  Path="DataContext.BackgroundStepStart" ElementName="TrayCanvas"/>
+                                        </MultiBinding>
+                                    </LineGeometry.EndPoint>
+                                </LineGeometry>
+                                <LineGeometry>
+                                    <LineGeometry.StartPoint>
+                                        <MultiBinding Converter="{StaticResource XYTPC}" >
+                                            <Binding  Path="DataContext.BackgroundStepEnd" ElementName="TrayCanvas"/>
+                                            <Binding  Path="DataContext.BackgroundStepStart" ElementName="TrayCanvas"/>
+                                        </MultiBinding>
+                                    </LineGeometry.StartPoint>
+                                    <LineGeometry.EndPoint>
+                                        <MultiBinding Converter="{StaticResource XYTPC}" >
+                                            <Binding  Path="DataContext.BackgroundStepEnd" ElementName="TrayCanvas"/>
+                                            <Binding  Path="DataContext.StepPixel" ElementName="TrayCanvas"/>
+                                        </MultiBinding>
+                                    </LineGeometry.EndPoint>
+                                </LineGeometry>
+                                <LineGeometry>
+                                    <LineGeometry.StartPoint>
+                                        <MultiBinding Converter="{StaticResource XYTPC}">
+                                            <Binding  Path="DataContext.BackgroundStepStart" ElementName="TrayCanvas"/>
+                                            <Binding  Path="DataContext.BackgroundStepEnd" ElementName="TrayCanvas"/>
+                                        </MultiBinding>
+                                    </LineGeometry.StartPoint>
+                                    <LineGeometry.EndPoint>
+                                        <MultiBinding Converter="{StaticResource XYTPC}" >
+                                            <Binding  Path="DataContext.StepPixel" ElementName="TrayCanvas"/>
+                                            <Binding  Path="DataContext.BackgroundStepEnd" ElementName="TrayCanvas"/>
+                                        </MultiBinding>
+                                    </LineGeometry.EndPoint>
+                                </LineGeometry>
+                            </GeometryGroup>
+                        </GeometryDrawing.Geometry>
+                        <GeometryDrawing.Pen>
+                            <Pen Thickness="{Binding DataContext.PenSize, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Canvas}}"
+                                 Brush="{Binding DataContext.GridLinesColor, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Canvas}}"/>
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+
+    <Style x:Key="CanvasListBox" TargetType="{x:Type ListBox}">
+        <Setter Property="SnapsToDevicePixels" Value="False" />
         <Setter Property="OverridesDefaultStyle" Value="true" />
-        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
-        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
-        <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
         <Setter Property="MinWidth" Value="120" />
         <Setter Property="MinHeight" Value="95" />
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
-                    <ctrls:WmsTrayCanvas x:Name="TrayCanvas"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Top" />
+                    <Canvas x:Name="TrayCanvas"  DataContext="{Binding ElementName=CanvasListBoxControl}"
+                            RenderOptions.EdgeMode="Aliased"
+                            SnapsToDevicePixels="False"                            
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch">
+                        <Canvas.Style>
+                            <Style TargetType="Canvas">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=TrayCanvas, Path=DataContext.ShowBackground}" Value="True">
+                                        <Setter Property="Background" Value="{StaticResource GridLines}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=TrayCanvas, Path=DataContext.ShowBackground}" Value="False">
+                                        <Setter Property="Background" Value="{StaticResource TrayBackground}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Canvas.Style>
+                    </Canvas>
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
         <Setter Property="Template">
-
             <Setter.Value>
                 <ControlTemplate TargetType="ListBox">
-
                     <Border x:Name="ListBoxBorder"
                             Margin="0,0,0,0"
+                            Panel.ZIndex="999"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Panel.ZIndex="999"
                             BorderBrush="{DynamicResource CommonSecondaryMedium}"
-                            BorderThickness="1"
-                            SnapsToDevicePixels="True">
-
+                            BorderThickness="1"                            
+                            Height="{Binding ElementName=CanvasListBoxControl, Path=Height, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"
+                            Width="{Binding ElementName=CanvasListBoxControl, Path=Width, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }">
                         <ItemsPresenter Margin="0" />
-
                     </Border>
                     <ControlTemplate.Triggers>
                         <DataTrigger Binding="{Binding IsReadOnly}"

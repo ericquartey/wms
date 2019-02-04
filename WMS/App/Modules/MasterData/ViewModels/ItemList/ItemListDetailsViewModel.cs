@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -36,7 +37,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ICommand showDetailsListRowCommand;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -45,7 +46,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.Initialize();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -87,11 +88,11 @@ namespace Ferretto.WMS.Modules.MasterData
                        this.ExecuteShowDetailsListRowCommand,
                        this.CanExecuteShowDetailsListRowCommand).ObservesProperty(() => this.SelectedItemListRow));
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
-        public override void RefreshData()
+        public override void LoadRelatedData()
         {
             // TODO: implement method
         }
@@ -103,6 +104,11 @@ namespace Ferretto.WMS.Modules.MasterData
             ((DelegateCommand)this.ListRowExecuteCommand)?.RaiseCanExecuteChanged();
             ((DelegateCommand)this.ShowDetailsListRowCommand)?.RaiseCanExecuteChanged();
             ((DelegateCommand)this.AddListRowCommand)?.RaiseCanExecuteChanged();
+        }
+
+        protected override async Task ExecuteRefreshCommandAsync()
+        {
+            await this.LoadDataAsync();
         }
 
         protected override async Task ExecuteRevertCommand()
@@ -257,6 +263,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

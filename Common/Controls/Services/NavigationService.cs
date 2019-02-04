@@ -21,7 +21,7 @@ namespace Ferretto.Common.Controls.Services
         private readonly IRegionManager regionManager;
         private readonly Dictionary<string, ViewModelBind> registrations = new Dictionary<string, ViewModelBind>();
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -31,7 +31,7 @@ namespace Ferretto.Common.Controls.Services
             this.regionManager = regionManager;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -421,7 +421,7 @@ namespace Ferretto.Common.Controls.Services
             WmsMainDockLayoutManager.IsBusy(isBusy);
         }
 
-        #endregion Methods
+        #endregion
 
         #region Classes
 
@@ -436,7 +436,7 @@ namespace Ferretto.Common.Controls.Services
                 this.Ids = new List<string>();
             }
 
-            #endregion Constructors
+            #endregion
 
             #region Properties
 
@@ -446,7 +446,7 @@ namespace Ferretto.Common.Controls.Services
 
             public Type ViewModel { get; set; }
 
-            #endregion Properties
+            #endregion
 
             #region Methods
 
@@ -457,9 +457,9 @@ namespace Ferretto.Common.Controls.Services
                 return newId;
             }
 
-            #endregion Methods
+            #endregion
         }
 
-        #endregion Classes
+        #endregion
     }
 }

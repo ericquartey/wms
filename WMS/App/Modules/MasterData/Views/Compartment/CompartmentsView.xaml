@@ -42,7 +42,8 @@
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_info_outline_black_24dp.png"
                                    GlyphSize="Custom" />
-                <wms:ActionBarItem Content="{x:Static res:General.Refresh}"
+                <wms:ActionBarItem Command="{Binding RefreshCommand}"
+                                   Content="{x:Static res:General.Refresh}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
                                    GlyphSize="Custom" />
@@ -87,8 +88,26 @@
                                     FieldName="Sub2" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="Lot" />
-                    <dxg:GridColumn Width="50*"
-                                    FieldName="Stock" />
+
+                    <dxg:GridColumn Width="90*"
+                                    FieldName="Stock">
+                        <dxg:GridColumn.CellDisplayTemplate>
+                            <DataTemplate>
+                                <TextBlock VerticalAlignment="Center">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource SFC}">
+                                            <Binding Source="{x:Static res:MasterData.QuantityWithUnitMeasure}" />
+                                            <Binding Path="Data.Stock"
+                                                     TargetNullValue="" />
+                                            <Binding Path="Data.ItemMeasureUnit"
+                                                     TargetNullValue="" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellDisplayTemplate>
+                    </dxg:GridColumn>
+
                 </wms:WmsGridControl.Columns>
 
                 <wms:WmsGridControl.SortInfo>

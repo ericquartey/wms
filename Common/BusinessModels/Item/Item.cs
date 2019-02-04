@@ -24,7 +24,7 @@ namespace Ferretto.Common.BusinessModels
         private int totalStock;
         private int? width;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -168,6 +168,6 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.width, value);
         }
 
-        #endregion Properties
+        #endregion
     }
 }

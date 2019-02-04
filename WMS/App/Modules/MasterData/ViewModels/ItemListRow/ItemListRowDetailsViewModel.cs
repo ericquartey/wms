@@ -29,7 +29,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private object modelSelectionChangedSubscription;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -38,7 +38,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.Initialize();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -53,7 +53,7 @@ namespace Ferretto.WMS.Modules.MasterData
                                         this.ExecuteListRowCommand,
                                         this.CanExecuteListRowCommand));
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -62,6 +62,11 @@ namespace Ferretto.WMS.Modules.MasterData
             base.EvaluateCanExecuteCommands();
 
             ((DelegateCommand)this.ListRowExecuteCommand)?.RaiseCanExecuteChanged();
+        }
+
+        protected override async Task ExecuteRefreshCommandAsync()
+        {
+            await this.LoadDataAsync();
         }
 
         protected override async Task ExecuteRevertCommand()
@@ -173,6 +178,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

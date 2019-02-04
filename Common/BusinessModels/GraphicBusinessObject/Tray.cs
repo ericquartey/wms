@@ -17,13 +17,13 @@ namespace Ferretto.Common.BusinessModels
 
         private Dimension dimension;
 
-        #endregion Fields
+        #endregion
 
         #region Events
 
         public event EventHandler<CompartmentEventArgs> CompartmentChangedEvent;
 
-        #endregion Events
+        #endregion
 
         #region Properties
 
@@ -48,7 +48,7 @@ namespace Ferretto.Common.BusinessModels
 
         public Dimension RulerSize { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -69,7 +69,7 @@ namespace Ferretto.Common.BusinessModels
             var error = false;
             foreach (var compartment in compartmentDetails)
             {
-                //TODO: extreme check on compartment:
+                // TODO: extreme check on compartment:
                 //  1) bigger than tray
                 //  2) over tray position
                 this.compartments.Add(compartment);
@@ -83,7 +83,7 @@ namespace Ferretto.Common.BusinessModels
 
         public bool CanAddCompartment(ICompartment compartmentDetails, bool edit = false)
         {
-            //CHECK: exit from window
+            // CHECK: exit from window
             var xPositionFinal = compartmentDetails.XPosition + compartmentDetails.Width;
             var yPositionFinal = compartmentDetails.YPosition + compartmentDetails.Height;
             if (xPositionFinal > this.Dimension.Width || yPositionFinal > this.Dimension.Height)
@@ -120,7 +120,8 @@ namespace Ferretto.Common.BusinessModels
         private CompartmentDetails ConvertBulkCompartmentToCompartmentDetails(BulkCompartment bulk)
         {
             var compartment = new CompartmentDetails();
-            int row = 1, column = 1;
+            int row = 1;
+            int column = 1;
             if (bulk.Rows != 0)
             {
                 row = bulk.Rows;
@@ -183,6 +184,6 @@ namespace Ferretto.Common.BusinessModels
             return false;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

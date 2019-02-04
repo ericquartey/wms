@@ -11,27 +11,38 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         private const int timeToKeepText = 15;
+
+        private readonly System.Windows.Threading.DispatcherTimer keepInfoTimer = new System.Windows.Threading.DispatcherTimer();
+
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private string iconName;
-        private System.Windows.Threading.DispatcherTimer keepInfoTimer = new System.Windows.Threading.DispatcherTimer();
+
         private string message;
+
         private string schedulerStatus;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
         public StatusBarViewModel()
         {
             this.SchedulerStatus = nameof(Icons.SchedulerOffLine);
-            this.keepInfoTimer.Tick += new EventHandler(this.KeepInfoTimer_Tick);
+            this.keepInfoTimer.Tick += this.KeepInfoTimer_Tick;
             this.keepInfoTimer.Interval = new TimeSpan(0, 0, timeToKeepText);
 
             ServiceLocator.Current.GetInstance<IEventService>()
                .Subscribe((StatusPubSubEvent eventArgs) =>
                {
-                   NLog.LogManager
-                      .GetCurrentClassLogger()
-                      .Trace(string.Format("Displaying status message '{0}'.", eventArgs.Message));
+                   if (eventArgs.Exception != null)
+                   {
+                       this.logger.Error(eventArgs.Exception, "Displaying status error message.");
+                   }
+                   else
+                   {
+                       this.logger.Trace(string.Format("Displaying status message '{0}'.", eventArgs.Message));
+                   }
 
                    this.keepInfoTimer.Stop();
                    this.Message = eventArgs.Message;
@@ -41,7 +52,7 @@ namespace Ferretto.Common.Controls
                });
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -63,7 +74,7 @@ namespace Ferretto.Common.Controls
             set => this.SetProperty(ref this.schedulerStatus, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -79,6 +90,6 @@ namespace Ferretto.Common.Controls
             this.keepInfoTimer.Stop();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -7,58 +7,25 @@
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:myType="clr-namespace:Ferretto.VW.Utils.Source;assembly=Ferretto.VW.Utils"
                  xmlns:prism="http://prismlibrary.com/"
-                 xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
-                 Width="1024"
-                 Height="620"
+                 xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
                  prism:ViewModelLocator.AutoWireViewModel="True"
                  mc:Ignorable="d">
-    <DockPanel>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="80" />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="120" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0"
-                       Grid.Column="1"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.LSMTHorizontalEngineTitle}" />
-            <Grid Grid.Row="1"
-                  Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="3*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="7*" />
-                </Grid.ColumnDefinitions>
-                <custom:CustomLabelTextBlockControl Grid.Row="1"
-                                                    Grid.Column="0"
-                                                    ContentText="1235,2"
-                                                    LabelText="{x:Static res:InstallationApp.ActualPosition}" />
-                <custom:CustomLabelTextBlockControl Grid.Row="3"
-                                                    Grid.Column="0"
-                                                    ContentText="10%"
-                                                    LabelText="{x:Static res:InstallationApp.FeedRate}" />
-                <Button Grid.Row="1"
-                        Grid.Column="2"
-                        Content="{x:Static res:InstallationApp.Forward}"
-                        Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-                <Button Grid.Row="3"
-                        Grid.Column="2"
-                        Content="{x:Static res:InstallationApp.Backward}"
-                        Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-            </Grid>
-        </Grid>
-    </DockPanel>
+    <Grid Width="774"
+          Height="608">
+        <TextBlock 
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.LSMTHorizontalEngineTitle}" Margin="160,10,0,562" />
+        <custom:CustomLabelTextBlockControl
+                                                ContentText="1235,2"
+                                                LabelText="{x:Static res:InstallationApp.ActualPosition}" Margin="160,406,349,139" />
+        <custom:CustomLabelTextBlockControl
+                                                ContentText="10%"
+                                                LabelText="{x:Static res:InstallationApp.FeedRate}" Margin="160,162,349,383" />
+        <Button
+                    Content="{x:Static res:InstallationApp.Forward}"
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="475,162,134,383" />
+        <Button
+                    Content="{x:Static res:InstallationApp.Backward}"
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="475,406,134,139" />
+    </Grid>
 </myType:BaseView>

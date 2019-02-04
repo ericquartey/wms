@@ -29,6 +29,6 @@ namespace Ferretto.Common.DataModels
 
         public string Name { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

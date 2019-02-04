@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
+using Ferretto.WMS.Scheduler.WebAPI.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.Common.BusinessProviders
@@ -25,23 +26,23 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly ItemListRowProvider itemListRowProvider;
 
-        private readonly WMS.Scheduler.WebAPI.Contracts.IItemListsService itemListService;
+        private readonly IItemListsSchedulerService itemListsSchedulerService;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
         public ItemListProvider(
             IDatabaseContextService dataContext,
             ItemListRowProvider itemListRowProvider,
-            WMS.Scheduler.WebAPI.Contracts.IItemListsService itemListService)
+            IItemListsSchedulerService itemListsSchedulerService)
         {
             this.dataContext = dataContext;
             this.itemListRowProvider = itemListRowProvider;
-            this.itemListService = itemListService;
+            this.itemListsSchedulerService = itemListsSchedulerService;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -53,7 +54,7 @@ namespace Ferretto.Common.BusinessProviders
         {
             try
             {
-                await this.itemListService.ExecuteAsync(new WMS.Scheduler.WebAPI.Contracts.ListExecutionRequest { ListId = listId, AreaId = areaId, BayId = bayId });
+                await this.itemListsSchedulerService.ExecuteAsync(new WMS.Scheduler.WebAPI.Contracts.ListExecutionRequest { ListId = listId, AreaId = areaId, BayId = bayId });
 
                 return new OperationResult(true);
             }
@@ -216,7 +217,12 @@ namespace Ferretto.Common.BusinessProviders
         {
             try
             {
-                await this.itemListService.ExecuteAsync(new WMS.Scheduler.WebAPI.Contracts.ListExecutionRequest { ListId = listId, AreaId = areaId });
+                await this.itemListsSchedulerService.ExecuteAsync(
+                    new ListExecutionRequest
+                    {
+                        ListId = listId,
+                        AreaId = areaId
+                    });
 
                 return new OperationResult(true);
             }
@@ -258,6 +264,6 @@ namespace Ferretto.Common.BusinessProviders
              }).AsNoTracking();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

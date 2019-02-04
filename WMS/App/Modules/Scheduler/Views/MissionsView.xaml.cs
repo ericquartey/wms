@@ -11,6 +11,6 @@ namespace Ferretto.WMS.Modules.Scheduler
             this.InitializeComponent();
         }
 
-        #endregion Constructors
+        #endregion
     }
 }

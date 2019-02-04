@@ -53,7 +53,7 @@
             </wms:ActionBar>
 
             <wms:WmsTrayControl x:Name="TrayControl"
-                                Grid.Row="1"
+                                Grid.Row="1"                                
                                 Margin="0,10,0,0"
                                 IsCompartmentSelectable="{Binding IsSidePanelOpen}"
                                 IsReadOnly="{Binding IsSidePanelOpen}"
@@ -61,7 +61,16 @@
                                 SelectedItem="{Binding SelectedCompartmentTray, Mode=TwoWay}"
                                 ShowBackground="True"
                                 ShowRuler="True"
-                                Tray="{Binding Tray, Mode=OneWay}" />
+                                RulerInfo="mm"
+                                Compartments="{Binding Tray.Compartments}"
+                                DimensionWidth="{Binding Tray.Dimension.Width}"
+                                DimensionHeight="{Binding Tray.Dimension.Height}"
+                                OriginX="{Binding Tray.Origin.X}"
+                                OriginY="{Binding Tray.Origin.Y}"
+                                RulerFontSize="8"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                />
 
             <wms:WmsGridControl Grid.Row="2"
                                 MinHeight="50"
@@ -84,16 +93,20 @@
 
                 <wms:WmsGridControl.Columns>
                     <dxg:GridColumn Width="100*"
+                                    FieldName="ItemCode" />
+                    <dxg:GridColumn Width="250*"
+                                    FieldName="ItemDescription" />
+                    <dxg:GridColumn Width="100*"
                                     FieldName="Sub1" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="Sub2" />
                     <dxg:GridColumn Width="200*"
                                     FieldName="Lot" />
-                    <dxg:GridColumn Width="200*"
+                    <dxg:GridColumn Width="120*"
                                     FieldName="CompartmentStatusDescription" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="Stock" />
-                    <dxg:GridColumn Width="200*"
+                    <dxg:GridColumn Width="100*"
                                     CellDisplayTemplate="{DynamicResource BooleanCellTemplate}"
                                     FieldName="IsItemPairingFixed" />
                 </wms:WmsGridControl.Columns>

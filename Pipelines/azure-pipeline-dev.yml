@@ -1,0 +1,114 @@
+resources:
+- repo: self
+  clean: true
+
+queue:
+  name: Hosted VS2017
+  demands:
+  - msbuild
+  - visualstudio
+  - vstest
+
+trigger:
+  branches:
+    include:
+    - develop
+  paths:
+    exclude:
+    - VerticalWarehouses
+
+variables:
+  BuildPlatform: 'any cpu'
+  BuildConfiguration: 'debug'
+  CloudInitialCatalog: 'FerrettoWmsDb_Testing_$(Build.BuildId)'
+
+steps:
+
+- task: andrewlackenby.sql-toolkit.runsqlcommand.RunSqlCommand@2
+  displayName: 'Create cloud db'
+  inputs:
+    serverName: 'rd-ferrettogroup.database.windows.net'
+    databaseName: master
+    sqlCommand: 'CREATE DATABASE $(CloudInitialCatalog);'
+    userName: admin_rd_ferrettogroup
+    userPassword: Ferretto2019!
+    queryTimeout: 240
+
+
+- task: CopyFiles@2
+  displayName: 'Copy sources to staging directory'
+  inputs:
+    Contents: |
+     **
+     !**\.git\**
+     !**\*.png
+     !**\*.jpg
+    targetFolder: '$(Build.ArtifactStagingDirectory)\sources'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Common Sources'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)\sources'
+    ArtifactName: 'common_sources'
+
+
+- template: azure-pipeline-net4-nuget-template.yml
+
+
+- template: azure-pipeline-assembly-versioning-template.yml
+
+
+- task: VSBuild@1
+  displayName: 'Build solution WMS.App'
+  inputs:
+    solution: WMS.App.sln
+    msbuildArgs: '-v:normal'
+    platform: '$(BuildPlatform)'
+    configuration: '$(BuildConfiguration)'
+    msbuildArchitecture: x64
+
+
+- template: azure-pipeline-deploy-db-template.yml
+
+
+- task: VSTest@2
+  displayName: 'Run Tests'
+  inputs:
+    testAssemblyVer2: |
+     **\$(BuildConfiguration)\*test*.dll
+     !**\obj\**
+    codeCoverageEnabled: true
+    platform: '$(BuildPlatform)'
+    configuration: '$(BuildConfiguration)'
+
+
+- task: PublishSymbols@2
+  displayName: 'Publish symbols path'
+  inputs:
+    SearchPattern: '**\bin\**\*.pdb'
+    PublishSymbols: false
+
+  continueOnError: true
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to staging directory'
+  inputs:
+    SourceFolder: '$(system.defaultworkingdirectory)'
+    Contents: '**\bin\$(BuildConfiguration)\**'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+
+
+- template: azure-pipeline-publish-artifacts-template.yml
+
+
+- task: andrewlackenby.sql-toolkit.runsqlcommand.RunSqlCommand@2
+  displayName: 'Drop cloud db'
+  inputs:
+    serverName: 'rd-ferrettogroup.database.windows.net'
+    databaseName: master
+    sqlCommand: 'DROP DATABASE $(CloudInitialCatalog);'
+    userName: admin_rd_ferrettogroup
+    userPassword: Ferretto2019!
+    queryTimeout: 120
+    condition: always()

@@ -68,6 +68,6 @@ namespace Ferretto.Common.DataModels
 
         public int Weight { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

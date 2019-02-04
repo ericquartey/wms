@@ -17,7 +17,7 @@ namespace Ferretto.Common.BusinessModels
             }
 
             var fillRatio = (double)compartmentDetails.Stock / compartmentDetails.MaxCapacity.Value;
-            if (fillRatio == 0)
+            if (fillRatio <= 0)
             {
                 color = "#FF63BE7B";
             }
@@ -75,6 +75,6 @@ namespace Ferretto.Common.BusinessModels
 
         public ICompartment Selected { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

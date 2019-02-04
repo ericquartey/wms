@@ -13,7 +13,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
 
         private readonly ILogger logger;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -22,7 +22,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
             this.logger = logger;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -34,6 +34,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
             return this.Ok();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

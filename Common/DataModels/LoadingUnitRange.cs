@@ -17,6 +17,6 @@
 
         public int MinValue { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

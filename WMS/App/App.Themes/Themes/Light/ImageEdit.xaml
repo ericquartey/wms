@@ -14,7 +14,8 @@
                     xmlns:dxmvvmi="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
                     xmlns:dxtEx="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
                     xmlns:help="http://schemas.devexpress.com/winfx/2008/xaml/editors/internal"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls">
 
     <dx:BoolToVisibilityInverseConverter x:Key="inverseBoolToVisibilityConverter" />
     <dx:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
@@ -23,10 +24,9 @@
                      Color="#FFDADADA" />
 
     <SolidColorBrush x:Key="MenuBackground"
-                     Color="#313a51" />
-    <!--  TEST  247dd6  4d5a7c  -->
-    <sys:Double x:Key="{dxet:CameraControlThemeKey ResourceKey=SettingsMinWidth}">280</sys:Double>
+                     Color="#4d5a7c" />
 
+    <sys:Double x:Key="{dxet:CameraControlThemeKey ResourceKey=SettingsMinWidth}">280</sys:Double>
 
     <ControlTemplate x:Key="{dxet:ImageEditThemeKey ResourceKey=Template}"
                      TargetType="{x:Type dxe:ImageEdit}">
@@ -109,14 +109,14 @@
         <StackPanel x:Name="PART_MenuContent"
                     Orientation="Horizontal">
             <!--  BEGIN WPF  -->
-            <dxep:ImageEditCutToolButton />
-            <dxep:ImageEditCopyToolButton />
-            <dxep:ImageEditPasteToolButton />
-            <dxep:ImageEditClearToolButton />
-            <dxep:ImageEditToolSeparator />
             <dxep:ImageEditLoadToolButton />
-            <dxep:ImageEditSaveToolButton />
-            <dxep:ImageEditTakePictureButton />
+            <dxep:ImageEditClearToolButton />
+            <dxep:ImageEditCutToolButton Visibility="Collapsed" />
+            <dxep:ImageEditCopyToolButton Visibility="Collapsed" />
+            <dxep:ImageEditPasteToolButton Visibility="Collapsed" />
+            <dxep:ImageEditToolSeparator Visibility="Collapsed" />
+            <dxep:ImageEditSaveToolButton Visibility="Collapsed" />
+            <!--<dxep:ImageEditTakePictureButton Visibility="Collapsed" />-->
             <!--  END WPF  -->
             <!--ONLY SL
             <dxe:ImageEditClearToolButton />
@@ -244,10 +244,12 @@
         </Style.Setters>
     </Style>
 
-  
-    <Style TargetType="{x:Type dxe:ImageEdit}">
-        <Setter Property="ShowMenuMode" Value="Always"/>
-        <Setter Property="HorizontalAlignment" Value="Left"/>
+
+    <Style TargetType="{x:Type wms:WmsImageEdit}">
+        <Setter Property="MinHeight" Value="200" />
+        <Setter Property="MinWidth" Value="190" />
+        <Setter Property="ShowMenuMode" Value="Always" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="Template" Value="{DynamicResource {dxet:ImageEditThemeKey ResourceKey=Template}}" />
         <Setter Property="EditTemplate" Value="{DynamicResource {dxet:ImageEditThemeKey ResourceKey=EditTemplate}}" />
         <Setter Property="DisplayTemplate" Value="{DynamicResource {dxet:ImageEditThemeKey ResourceKey=EditTemplate}}" />

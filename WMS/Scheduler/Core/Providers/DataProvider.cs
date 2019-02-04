@@ -13,7 +13,7 @@ namespace Ferretto.WMS.Scheduler.Core
 
         private readonly DatabaseContext dataContext;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -22,7 +22,7 @@ namespace Ferretto.WMS.Scheduler.Core
             this.dataContext = context;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -295,6 +295,6 @@ namespace Ferretto.WMS.Scheduler.Core
             this.dataContext.SaveChanges();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Ferretto.WMS.Data.WebAPI.Models.Expressions;
+using System.Threading.Tasks;
+using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.Data.WebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -14,11 +16,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     {
         #region Fields
 
+        private const string CollectionErrorMessage = "An error occurred while retrieving the requested set of entities.";
+
         private readonly ILogger logger;
 
         private readonly Models.IWarehouse warehouse;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -30,15 +34,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             this.warehouse = warehouse;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Models.Item>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Item>))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]
         [HttpGet]
-        public ActionResult<IEnumerable<Models.Item>> GetAll(
+        public ActionResult<IEnumerable<Item>> GetAll(
             int skip = 0,
             int take = int.MaxValue,
             string where = null,
@@ -46,29 +50,74 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             string search = null)
         {
             this.logger.LogInformation(
-                $"Get All items (skip:{skip}, take:{take}, orderBy:'{orderBy}', where:'{where}', search:'{search}')");
+                $"Get Items (skip:{skip}, take:{take}, orderBy:'{orderBy}', where:'{where}', search:'{search}')");
 
-            var searchExpression = BuildSearchExpression(search);
+            try
+            {
+                var searchExpression = BuildSearchExpression(search);
 
-            var whereExpression = BuildWhereExpression<Models.Item>(where);
+                var whereExpression = BuildWhereExpression<Item>(where);
 
-            var transformedItems = this.ApplyTransform(
-                skip: skip,
-                take: take,
-                orderBy: orderBy,
-                where: whereExpression,
-                searchFunction: searchExpression,
-                entities: this.warehouse.Items.AsQueryable());
+                var transformedItems = this.ApplyTransform(
+                    skip: skip,
+                    take: take,
+                    orderBy: orderBy,
+                    where: whereExpression,
+                    searchFunction: searchExpression,
+                    entities: this.warehouse.Items.AsQueryable());
 
-            return transformedItems.ToArray();
+                return transformedItems.ToArray();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, CollectionErrorMessage);
+                return this.BadRequest(CollectionErrorMessage);
+            }
         }
 
-        [ProducesResponseType(200, Type = typeof(Models.Item))]
+        [ProducesResponseType(200, Type = typeof(int))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [HttpGet]
+        [Route("api/[controller]/count")]
+        public ActionResult<int> GetAllCount(
+            string where = null,
+            string search = null)
+        {
+            this.logger.LogInformation(
+                $"Get Items count (where:'{where}', search:'{search}')");
+
+            try
+            {
+                var searchExpression = BuildSearchExpression(search);
+
+                var whereExpression = BuildWhereExpression<Item>(where);
+
+                var transformedItems = this.ApplyTransform(
+                    skip: 0,
+                    take: int.MaxValue,
+                    orderBy: null,
+                    where: whereExpression,
+                    searchFunction: searchExpression,
+                    entities: this.warehouse.Items.AsQueryable());
+
+                return transformedItems.Count();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, CollectionErrorMessage);
+                return this.BadRequest(CollectionErrorMessage);
+            }
+        }
+
+        [ProducesResponseType(200, Type = typeof(Item))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]
         [HttpGet("{id}")]
         public ActionResult<Models.Item> GetById(int id)
         {
+            this.logger.LogInformation($"Get Item (id:{id})");
+
             try
             {
                 var result = this.warehouse.Items.SingleOrDefault(i => i.Id == id);
@@ -89,6 +138,70 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
+        [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [HttpGet]
+        [Route("api/[controller]/unique/{propertyName}")]
+        public ActionResult<object[]> GetUniqueValues(
+            string propertyName)
+        {
+            this.logger.LogInformation(
+               $"Get inique values (propertyName:'{propertyName})'");
+
+            try
+            {
+                var selectExpression = BuildSelectExpression<Item>(propertyName);
+
+                return this.warehouse.Items
+                    .AsQueryable()
+                    .Select(selectExpression)
+                    .Distinct()
+                    .ToArray();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, CollectionErrorMessage);
+                return this.BadRequest(CollectionErrorMessage);
+            }
+        }
+
+        [ProducesResponseType(200, Type = typeof(Models.Item))]
+        [ProducesResponseType(400, Type = typeof(string))]
+        [HttpPost]
+#pragma warning disable S3242 // Method parameters should be declared with base types
+        public async Task<ActionResult> UpdateAsync(Models.Item item)
+#pragma warning restore S3242 // Method parameters should be declared with base types
+        {
+            if (item == null)
+            {
+                return this.BadRequest();
+            }
+
+            this.logger.LogInformation($"Update Item (id:{item.Id})");
+
+            try
+            {
+                var existingItem = this.warehouse.Items.SingleOrDefault(i => i.Id == item.Id);
+                if (existingItem == null)
+                {
+                    var message = string.Format("No entity with the specified id={0} exists.", item.Id);
+                    this.logger.LogWarning(message);
+                    return this.NotFound(message);
+                }
+
+                var updatedItem = await this.warehouse.UpdateAsync(existingItem);
+
+                return this.Ok(updatedItem);
+            }
+            catch (Exception ex)
+            {
+                var message = string.Format("An error occurred while retrieving the requested entity with id={0}.", item.Id);
+                this.logger.LogError(ex, message);
+                return this.BadRequest(message);
+            }
+        }
+
         private static Expression<Func<Models.Item, bool>> BuildSearchExpression(string search)
         {
             if (string.IsNullOrWhiteSpace(search))
@@ -97,13 +210,28 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return (i) =>
-                i.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                (i.AbcClassDescription != null && i.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
                 ||
-                i.Description.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                (i.Description != null && i.Description.Contains(search, StringComparison.InvariantCultureIgnoreCase))
                 ||
-                i.ItemCategoryDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                (i.ItemCategoryDescription != null && i.ItemCategoryDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
                 ||
-                i.TotalAvailable.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
+                i.TotalAvailable.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase) == true;
+        }
+
+        private static Expression<Func<T, object>> BuildSelectExpression<T>(string propertyName)
+                            where T : class
+        {
+            if (string.IsNullOrWhiteSpace(propertyName))
+            {
+                return null;
+            }
+
+            var lambdaInParameter = Expression.Parameter(typeof(T), typeof(T).Name.ToLower());
+            var lambdaBody = Expression.Convert(
+                 Expression.Property(lambdaInParameter, propertyName), typeof(object));
+
+            return (Expression<Func<T, object>>)Expression.Lambda(lambdaBody, lambdaInParameter);
         }
 
         private static Expression<Func<T, bool>> BuildWhereExpression<T>(string where)
@@ -115,9 +243,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             var lambdaInParameter = Expression.Parameter(typeof(T), typeof(T).Name.ToLower());
 
-            var expression = where.BuildExpression();
+            var expression = where.AsIExpression();
 
-            var lambdaBody = expression?.GetLambdaBody<Models.Item>(lambdaInParameter);
+            var lambdaBody = expression?.GetLambdaBody<T>(lambdaInParameter);
 
             return (Expression<Func<T, bool>>)Expression.Lambda(lambdaBody, lambdaInParameter);
         }
@@ -159,6 +287,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return filteredItems;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

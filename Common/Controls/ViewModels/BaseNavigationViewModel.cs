@@ -13,7 +13,7 @@ namespace Ferretto.Common.Controls
         {
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Destructors
 
@@ -24,7 +24,7 @@ namespace Ferretto.Common.Controls
             this.Dispose(false);
         }
 
-        #endregion Destructors
+        #endregion
 
         #region Properties
 
@@ -42,7 +42,7 @@ namespace Ferretto.Common.Controls
 
         public string Token { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -114,6 +114,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

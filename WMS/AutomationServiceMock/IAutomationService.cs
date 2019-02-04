@@ -10,6 +10,6 @@ namespace Ferretto.WMS.AutomationServiceMock
 
         Task NotifyUserLoginAsync(int bayId);
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Ferretto.WMS.Data.WebAPI.Models
 {
@@ -12,6 +13,12 @@ namespace Ferretto.WMS.Data.WebAPI.Models
 
         IEnumerable<Mission> Missions { get; }
 
-        #endregion Properties
+        #endregion
+
+        #region Methods
+
+        Task<Item> UpdateAsync(Item item);
+
+        #endregion
     }
 }

@@ -12,6 +12,6 @@ namespace Ferretto.Common.Controls
             this.DataContext = new StatusBarViewModel();
         }
 
-        #endregion Constructors
+        #endregion
     }
 }

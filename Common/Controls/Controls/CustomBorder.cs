@@ -1,38 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using DevExpress.Data.Async.Helpers;
-using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.Controls
 {
     public class CustomBorder : Border
     {
+        #region Fields
+
+        private object dataContext;
+
+        #endregion
+
         #region Constructors
 
         public CustomBorder()
         {
+            this.DataContextChanged += this.CustomBorder_DataContextChanged;
             this.Loaded += this.CustomGrid_Loaded;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
-        private void CustomGrid_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private void CustomBorder_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
         {
-            try
+            if (e.NewValue != null)
             {
-                var dc = (ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.DataContext;
-                var m = dc.OriginalRow;
-                this.DataContext = m;
+                this.dataContext = e.NewValue;
             }
-            catch (Exception ex) { }
+            this.DataContext = null;
+            this.DataContextChanged -= this.CustomBorder_DataContextChanged;
         }
 
-        #endregion Methods
+        private void CustomGrid_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (this.dataContext is ReadonlyThreadSafeProxyForObjectFromAnotherThread dataContext)
+            {
+                var originalRow = dataContext.OriginalRow;
+                this.DataContext = originalRow;
+            }
+        }
+
+        #endregion
     }
 }

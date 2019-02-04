@@ -30,6 +30,8 @@ namespace Ferretto.Common.BusinessModels
 
         private int? itemId;
 
+        private string itemMeasureUnit;
+
         private string loadingUnitCode;
 
         private int loadingUnitId;
@@ -64,7 +66,7 @@ namespace Ferretto.Common.BusinessModels
 
         private int? yPosition;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -165,6 +167,12 @@ namespace Ferretto.Common.BusinessModels
         {
             get => this.itemId;
             set => this.SetProperty(ref this.itemId, value);
+        }
+
+        public string ItemMeasureUnit
+        {
+            get => this.itemMeasureUnit;
+            set => this.SetProperty(ref this.itemMeasureUnit, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentLastHandlingDate), ResourceType = typeof(BusinessObjects))]
@@ -335,7 +343,7 @@ namespace Ferretto.Common.BusinessModels
 
         private bool CanAddToLoadingUnit => this.LoadingUnit == null || this.LoadingUnit.CanAddCompartment(this);
 
-        #endregion Properties
+        #endregion
 
         #region Indexers
 
@@ -418,6 +426,6 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
-        #endregion Indexers
+        #endregion
     }
 }

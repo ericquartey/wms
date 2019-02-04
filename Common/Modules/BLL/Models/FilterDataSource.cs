@@ -46,9 +46,11 @@ namespace Ferretto.Common.Modules.BLL.Models
             this.KeyExpression = "Id";
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
+
+        public string Expression => null;
 
         public Func<IQueryable<TModel>> GetData { get; protected set; }
 
@@ -58,7 +60,9 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         public string Name { get; private set; }
 
-        #endregion Properties
+        public IPagedBusinessProvider<TModel> Provider => null;
+
+        #endregion
 
         #region Methods
 
@@ -67,6 +71,6 @@ namespace Ferretto.Common.Modules.BLL.Models
             return this.Name ?? base.ToString();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

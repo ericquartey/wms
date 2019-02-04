@@ -200,13 +200,13 @@
     <Resource Include="favicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Resources\Ferretto.Common.Resources.csproj">
-      <Project>{ec02d26c-f149-496c-bc7c-75d229b4333f}</Project>
-      <Name>Ferretto.Common.Resources</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ActionBlocks\ActionBlocks.csproj">
       <Project>{ecdc6d6c-e5d2-4ec3-9aac-6336c2048fff}</Project>
       <Name>ActionBlocks</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Resources\Ferretto.VW.Resources.csproj">
+      <Project>{8231f83a-40f0-49a8-a4cf-2f582d957350}</Project>
+      <Name>Ferretto.VW.Resources</Name>
     </ProjectReference>
     <ProjectReference Include="..\CustomControls\CustomControls.csproj">
       <Project>{3c8a3855-897a-4395-bf65-d9d597896a3e}</Project>

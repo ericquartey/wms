@@ -54,6 +54,12 @@
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_play_arrow_black_24dp.png"
                                GlyphSize="Custom" />
+
+            <wms:ActionBarItem Command="{Binding RefreshCommand}"
+                               Content="{x:Static res:General.Refresh}"
+                               CustomGlyphSize="24,24"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
+                               GlyphSize="Custom" />
         </wms:ActionBar>
 
         <ScrollViewer Grid.Row="1"
@@ -225,7 +231,7 @@
                                 <dxg:TableView>
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="RowDoubleClick">
-                                            <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.Model.Id, Mode=OneWay}"
+                                            <wms:WmsHistoryViewAppear Id="{Binding SelectedCompartment.Id, Mode=OneWay}"
                                                                       StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
                                                                       StartViewName="{x:Static modules:MasterData.COMPARTMENTDETAILS}" />
                                         </i:EventTrigger>
@@ -244,9 +250,17 @@
                                                 FieldName="Lot" />
                                 <dxg:GridColumn Width="200*"
                                                 FieldName="CompartmentStatusDescription" />
+                                <dxg:GridColumn Width="150*">
+                                    <dxg:GridColumn.FieldName>
+                                        <MultiBinding Converter="{StaticResource SFC}">
+                                            <Binding Source="{x:Static res:MasterData.QuantityWithUnitMeasure}" />
+                                            <Binding Source="{x:Static res:BusinessObjects.ItemStock}" />
+                                            <Binding Path="Model.MeasureUnitDescription"
+                                                     TargetNullValue="" />
+                                        </MultiBinding>
+                                    </dxg:GridColumn.FieldName>
+                                </dxg:GridColumn>
                                 <dxg:GridColumn Width="100*"
-                                                FieldName="Stock" />
-                                <dxg:GridColumn Width="200*"
                                                 CellDisplayTemplate="{DynamicResource BooleanCellTemplate}"
                                                 FieldName="IsItemPairingFixed" />
                             </wms:WmsGridControl.Columns>
@@ -274,11 +288,12 @@
                 <GroupBox Margin="20,0"
                           Header="{x:Static res:MasterData.OtherInformation}">
                     <StackPanel Orientation="Vertical">
-                        <wms:WmsImage MaxWidth="300"
-                                      MaxHeight="400"
-                                      BorderBrush="{DynamicResource CommonSecondaryLight}"
-                                      BorderThickness="1"
-                                      Path="{Binding Path=Model.Image}" />
+                        <wms:WmsImageEdit MaxWidth="300"
+                                          MaxHeight="400"
+                                          BorderBrush="{DynamicResource CommonSecondaryLight}"
+                                          BorderThickness="1"
+                                          Filename="{Binding Path=Model.Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          Path="{Binding Path=Model.ImagePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
                                       Content="{Binding Path=Model.CreationDate}" />

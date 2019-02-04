@@ -9,9 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 #else
 using System;
-using Microsoft.Extensions.Configuration;
 using System.IO;
 using System.Reflection;
+using Microsoft.Extensions.Configuration;
 #endif
 
 namespace Ferretto.Common.EF
@@ -20,22 +20,35 @@ namespace Ferretto.Common.EF
         "Major Code Smell",
         "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
         Justification = "Class Designed as part of the Entity Framework")]
-    public partial class DatabaseContext : DbContext
+    public class DatabaseContext : DbContext
     {
-        private const string ConnectionStringName = "WmsConnectionString";
+        protected const string ConnectionStringName = "WmsConnectionString";
+
         private const string DefaultApplicationSettingsFile = "appsettings.json";
+
+        private const string ParametrizedApplicationSettingsFile = "appsettings.{0}.json";
+
+        private const string NetcoreEnvironmentEnvVariable = "NETCORE_ENVIRONMENT";
+
+        private const string cloudInitialCatalogEnvVariable = "cloudInitialCatalog";
+
+        private static readonly System.Text.RegularExpressions.Regex ConnectionStringInitialCatalog =
+            new System.Text.RegularExpressions.Regex(
+                @"Initial Catalog=(?<dbname>[^;]+)",
+                System.Text.RegularExpressions.RegexOptions.Compiled);
 
         #region Constructors
 
         public DatabaseContext()
-        { }
+        {
+        }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -129,7 +142,7 @@ namespace Ferretto.Common.EF
 
         public virtual DbSet<SchedulerRequest> SchedulerRequests { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -142,7 +155,16 @@ namespace Ferretto.Common.EF
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.AddTimestamps();
-            return await base.SaveChangesAsync();
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+
+        protected static string GetSettingFileFromEnvironment()
+        {
+            var netcoreEnvironment = System.Environment.GetEnvironmentVariable(NetcoreEnvironmentEnvVariable);
+
+            return netcoreEnvironment != null
+                       ? string.Format(ParametrizedApplicationSettingsFile, netcoreEnvironment)
+                       : DefaultApplicationSettingsFile;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -167,13 +189,22 @@ namespace Ferretto.Common.EF
 
             optionsBuilder.UseSqlServer(configuration.ConnectionString);
 #else
+            var applicationSettingsFile = GetSettingFileFromEnvironment();
 
             var configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(DefaultApplicationSettingsFile, optional: false, reloadOnChange: false)
+                .AddJsonFile(applicationSettingsFile, optional: false, reloadOnChange: false)
                 .Build();
 
             var connectionString = configurationBuilder.GetConnectionString(ConnectionStringName);
+            var cloudInitialCatalog = Environment.GetEnvironmentVariable(cloudInitialCatalogEnvVariable);
+
+            if (cloudInitialCatalog != null)
+            {
+                connectionString = ConnectionStringInitialCatalog.Replace(
+                    connectionString,
+                    $"Initial Catalog={cloudInitialCatalog}");
+            }
 
             optionsBuilder.UseSqlServer(connectionString);
 #endif
@@ -237,8 +268,7 @@ namespace Ferretto.Common.EF
                 .Where(x =>
                     x.Entity is ITimestamped
                     &&
-                    (x.State == EntityState.Added || x.State == EntityState.Modified)
-                );
+                    (x.State == EntityState.Added || x.State == EntityState.Modified));
 
             var timeNow = System.DateTime.UtcNow;
 
@@ -255,6 +285,6 @@ namespace Ferretto.Common.EF
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

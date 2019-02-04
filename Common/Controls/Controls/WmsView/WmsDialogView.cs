@@ -36,7 +36,7 @@ namespace Ferretto.Common.Controls
 
         private readonly WmsViewType viewType;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -46,7 +46,7 @@ namespace Ferretto.Common.Controls
             this.Loaded += this.WMSView_Loaded;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -78,7 +78,7 @@ namespace Ferretto.Common.Controls
 
         public WmsViewType ViewType => this.viewType;
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -251,6 +251,6 @@ namespace Ferretto.Common.Controls
             this.LoadTheme(this.GetMode());
         }
 
-        #endregion Methods
+        #endregion
     }
 }

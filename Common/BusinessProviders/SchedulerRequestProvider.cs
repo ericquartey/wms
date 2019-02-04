@@ -22,7 +22,7 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly IDatabaseContextService dataContextService;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -32,7 +32,7 @@ namespace Ferretto.Common.BusinessProviders
             this.dataContextService = dataContextService;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -46,6 +46,7 @@ namespace Ferretto.Common.BusinessProviders
                 .Include(r => r.Bay)
                 .Include(r => r.Area)
                 .Include(r => r.Item)
+                .ThenInclude(i => i.MeasureUnit)
                 .Include(r => r.List)
                 .Include(r => r.ListRow)
                 .Include(r => r.LoadingUnit)
@@ -73,7 +74,9 @@ namespace Ferretto.Common.BusinessProviders
                     CreationDate = r.CreationDate,
                     LastModificationDate = r.LastModificationDate,
                     PackageTypeDescription = r.PackageType.Description,
-                    AreaDescription = r.Area.Name
+                    AreaDescription = r.Area.Name,
+
+                    ItemUnitMeasure = r.Item.MeasureUnit.Description
                 });
         }
 
@@ -138,6 +141,6 @@ namespace Ferretto.Common.BusinessProviders
                 }).AsNoTracking();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

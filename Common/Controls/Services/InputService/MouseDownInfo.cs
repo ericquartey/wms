@@ -13,7 +13,7 @@
             this.Data = data;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -29,6 +29,6 @@
 
         public object UIElementObj { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

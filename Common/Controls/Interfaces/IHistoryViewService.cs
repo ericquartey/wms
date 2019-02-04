@@ -14,6 +14,6 @@ namespace Ferretto.Common.Controls.Interfaces
 
         void Previous();
 
-        #endregion Methods
+        #endregion
     }
 }

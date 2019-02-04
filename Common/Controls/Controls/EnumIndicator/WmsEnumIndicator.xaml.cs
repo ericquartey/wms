@@ -32,7 +32,7 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty SymbolNameProperty = DependencyProperty.Register(
             nameof(SymbolName), typeof(string), typeof(WmsEnumIndicator), new PropertyMetadata(default(string)));
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -41,7 +41,7 @@ namespace Ferretto.Common.Controls
             this.InitializeComponent();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -87,7 +87,7 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(SymbolNameProperty, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -131,6 +131,6 @@ namespace Ferretto.Common.Controls
             control.textBlock.Text = control.EnumValue != null && control.EnumType != null && control.ShowText ? control.EnumValue.GetDisplayName(control.EnumType) : null;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

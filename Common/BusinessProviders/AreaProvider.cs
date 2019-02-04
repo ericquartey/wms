@@ -14,7 +14,7 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly IDatabaseContextService dataContext;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -23,7 +23,7 @@ namespace Ferretto.Common.BusinessProviders
             this.dataContext = dataContext;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -115,6 +115,6 @@ namespace Ferretto.Common.BusinessProviders
                 });
         }
 
-        #endregion Methods
+        #endregion
     }
 }

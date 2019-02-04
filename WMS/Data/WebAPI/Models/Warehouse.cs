@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
@@ -16,7 +17,7 @@ namespace Ferretto.WMS.Data.WebAPI.Models
 
         private readonly DatabaseContext dataContext;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -28,7 +29,7 @@ namespace Ferretto.WMS.Data.WebAPI.Models
             this.dataContext = context;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -42,7 +43,7 @@ namespace Ferretto.WMS.Data.WebAPI.Models
 
         public IEnumerable<Mission> Missions => this.GetValue(this.RetrieveMissions);
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -63,6 +64,22 @@ namespace Ferretto.WMS.Data.WebAPI.Models
             }
 
             return cacheEntry;
+        }
+
+        public async Task<Item> UpdateAsync(Item item)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            var existingModel = this.dataContext.Items.Find(item.Id);
+
+            this.dataContext.Entry(existingModel).CurrentValues.SetValues(item);
+
+            await this.dataContext.SaveChangesAsync();
+
+            return item;
         }
 
         private IEnumerable<ItemCategory> RetrieveItemCategories()
@@ -196,6 +213,6 @@ namespace Ferretto.WMS.Data.WebAPI.Models
                 .ToArray();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

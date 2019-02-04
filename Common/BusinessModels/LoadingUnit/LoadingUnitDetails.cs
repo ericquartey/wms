@@ -47,7 +47,7 @@ namespace Ferretto.Common.BusinessModels
 
         private int width;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -221,7 +221,7 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetIfStrictlyPositive(ref this.width, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -242,11 +242,6 @@ namespace Ferretto.Common.BusinessModels
             // TODO: add logic of dynamic scompartition
             //      n: is calculated number of compartment to add
             //      n: based on row/column
-            var n = 0;
-            for (var i = 0; i < n; i++)
-            {
-                this.AddCompartment(null);
-            }
         }
 
         public bool CanAddCompartment(ICompartment compartment)
@@ -326,6 +321,6 @@ namespace Ferretto.Common.BusinessModels
             return false;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

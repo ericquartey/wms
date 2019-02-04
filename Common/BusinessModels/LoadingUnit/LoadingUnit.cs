@@ -11,7 +11,7 @@ namespace Ferretto.Common.BusinessModels
         private int? cellFloor;
         private int? cellNumber;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -60,6 +60,6 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.LoadingUnitTypeDescription), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitTypeDescription { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

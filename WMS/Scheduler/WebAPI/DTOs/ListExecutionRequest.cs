@@ -14,6 +14,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI
         [Required]
         public int ListId { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

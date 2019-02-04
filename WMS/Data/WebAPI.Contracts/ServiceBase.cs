@@ -13,13 +13,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         {
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public Func<Task<string>> RetrieveAuthorizationToken { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -37,6 +37,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             return msg;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -29,7 +29,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private object selectedLoadingUnit;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -38,7 +38,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.Initialize();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -82,15 +82,20 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
-        public override void RefreshData()
+        public override void LoadRelatedData()
         {
             this.LoadingUnitsDataSource = this.Model != null
                 ? new DataSource<LoadingUnitDetails>(() => this.loadingUnitsProvider.GetByCellId(this.Model.Id))
                 : null;
+        }
+
+        protected override async Task ExecuteRefreshCommandAsync()
+        {
+            await this.LoadDataAsync();
         }
 
         protected override async Task ExecuteRevertCommand()
@@ -174,6 +179,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

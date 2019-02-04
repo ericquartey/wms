@@ -13,7 +13,7 @@ namespace Ferretto.Common.Controls
             this.IsCanceled = isCanceled;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -21,6 +21,6 @@ namespace Ferretto.Common.Controls
 
         public IBusinessObject Model { get; }
 
-        #endregion Properties
+        #endregion
     }
 }

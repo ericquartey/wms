@@ -4,7 +4,6 @@ namespace Ferretto.Common.DataModels
 {
     // Tipo Confezione
     public sealed class PackageType : IDataModel
-
     {
         #region Properties
 
@@ -20,6 +19,6 @@ namespace Ferretto.Common.DataModels
 
         public IEnumerable<SchedulerRequest> SchedulerRequests { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

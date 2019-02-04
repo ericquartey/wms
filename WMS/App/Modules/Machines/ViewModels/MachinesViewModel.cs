@@ -1,5 +1,7 @@
+using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls;
+using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.Machines
 {
@@ -12,6 +14,6 @@ namespace Ferretto.WMS.Modules.Machines
             this.FlattenDataSource = true;
         }
 
-        #endregion Constructors
+        #endregion
     }
 }

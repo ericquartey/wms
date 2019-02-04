@@ -209,4 +209,12 @@
   <data name="UnableToSaveChanges" xml:space="preserve">
     <value>Unable To SaveChanges</value>
   </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version: {0}</value>
+    <comment>Splash screen message</comment>
+  </data>
+  <data name="EmptyString" xml:space="preserve">
+    <value />
+    <comment>@invariant</comment>
+  </data>
 </root>

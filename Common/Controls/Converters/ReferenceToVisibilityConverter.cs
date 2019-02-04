@@ -20,7 +20,7 @@ namespace Ferretto.Common.Controls
             typeof(bool),
             typeof(ReferenceToVisibilityConverter));
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -36,7 +36,7 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(InvertProperty, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -62,6 +62,6 @@ namespace Ferretto.Common.Controls
             return null;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.Controls
 {
@@ -13,7 +14,7 @@ namespace Ferretto.Common.Controls
         private static readonly TimeSpan TimerInterval = new TimeSpan(0, 0, 0, 0, 200);
         private DateTime startTime;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -21,14 +22,15 @@ namespace Ferretto.Common.Controls
         {
             this.InitializeComponent();
 
-            this.Footer_Text.Text = SplashScreenService.Copyright;
+            this.copyrightText.Text = SplashScreenService.Copyright;
+            this.versionText.Text = string.Format(DesktopApp.Version, SplashScreenService.Version);
 
 #if DEBUG
             this.SetupTimer();
 #endif
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -48,6 +50,6 @@ namespace Ferretto.Common.Controls
             this.Timing.Text = $"{Common.Resources.DesktopApp.ElapsedTime}: {elapsedSeconds.ToString("#")}s";
         }
 
-        #endregion Methods
+        #endregion
     }
 }

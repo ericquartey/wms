@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -44,7 +45,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ICommand withdrawCommand;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -53,7 +54,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.Initialize();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -105,15 +106,20 @@ namespace Ferretto.WMS.Modules.MasterData
         public ICommand WithdrawCommand => this.withdrawCommand ??
             (this.withdrawCommand = new DelegateCommand(ExecuteWithdrawCommand));
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
-        public override void RefreshData()
+        public override void LoadRelatedData()
         {
             this.CompartmentsDataSource = this.Model != null
                 ? this.compartmentProvider.GetByLoadingUnitId(this.Model.Id).ToList()
                 : null;
+        }
+
+        protected override async Task ExecuteRefreshCommandAsync()
+        {
+            await this.LoadDataAsync();
         }
 
         protected override async Task ExecuteRevertCommand()
@@ -235,6 +241,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

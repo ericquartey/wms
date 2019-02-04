@@ -13,20 +13,35 @@ namespace Ferretto.VW.InstallationApp
         #region Fields
 
         public IUnityContainer Container;
+
         private int acceptableWeightTolerance;
+
         private DrawerWeightDetection drawerWeightDetection;
+
         private bool executeWeightRun;
+
         private ICommand exitFromViewCommand;
+
         private int feedRate;
+
         private int insertedWeight;
+
         private bool isSetBeginButtonActive = true;
+
         private bool isSetStopButtonActive = false;
+
         private int mesuredWeight;
-        private string noteText = Common.Resources.InstallationApp.WeightControl;
+
+        private string noteText = Resources.InstallationApp.WeightControl;
+
         private AutoResetEvent raiseRestorePositionEvent;
+
         private RegisteredWaitHandle regWaitForRestorePositionThread;
+
         private ICommand setBeginButtonCommand;
+
         private ICommand setStopButtonCommand;
+
         private int testRun;
 
         #endregion Fields
@@ -174,7 +189,7 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        private void WeightDetectionError(String error_Message)
+        private void WeightDetectionError(string error_Message)
         {
             throw new NotImplementedException();
         }

@@ -4,7 +4,6 @@ namespace Ferretto.Common.DataModels
 {
     // Classe Peso Udc
     public sealed class LoadingUnitWeightClass : IDataModel
-
     {
         #region Properties
 
@@ -18,6 +17,6 @@ namespace Ferretto.Common.DataModels
 
         public int MinWeight { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

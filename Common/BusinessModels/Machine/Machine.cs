@@ -118,6 +118,6 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.MachineTotalMaxWeight), ResourceType = typeof(BusinessObjects))]
         public long? TotalMaxWeight { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

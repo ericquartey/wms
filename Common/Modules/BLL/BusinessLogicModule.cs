@@ -3,6 +3,7 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.EF;
 using Ferretto.Common.Modules.BLL.Services;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Ferretto.WMS.Scheduler.WebAPI.Contracts;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
@@ -23,13 +24,13 @@ namespace Ferretto.Common.Modules.BLL
             this.Container = container;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public IUnityContainer Container { get; private set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -57,12 +58,9 @@ namespace Ferretto.Common.Modules.BLL
 
             this.Container.RegisterType<IDatabaseContextService, DatabaseContextService>();
 
-            var schedulerServiceEndPoint = ConfigurationManager.AppSettings["SchedulerServiceEndpoint"];
-            var dataServiceEndPoint = ConfigurationManager.AppSettings["DataServiceEndpoint"];
-            this.Container.RegisterType<IItemsService, ItemsService>(new InjectionConstructor(schedulerServiceEndPoint));
-            this.Container.RegisterType<IMissionsService, MissionsService>(new InjectionConstructor(dataServiceEndPoint));
-            this.Container.RegisterType<IItemListsService, ItemListsService>(new InjectionConstructor(schedulerServiceEndPoint));
-            this.Container.RegisterType<IItemListRowsService, ItemListRowsService>(new InjectionConstructor(schedulerServiceEndPoint));
+            this.RegisterSchedulerServiceEndpoints();
+
+            this.RegisterDataServiceEndpoints();
 
             this.Container.RegisterType<DatabaseContext, DatabaseContext>(new InjectionConstructor());
             this.Container.RegisterType<EnumerationProvider, EnumerationProvider>(new InjectionConstructor(new DatabaseContext()));
@@ -72,6 +70,23 @@ namespace Ferretto.Common.Modules.BLL
                .Trace("Module loaded.");
         }
 
-        #endregion Methods
+        private void RegisterDataServiceEndpoints()
+        {
+            var serviceEndPoint = new System.Uri(ConfigurationManager.AppSettings["DataServiceEndpoint"]);
+
+            this.Container.RegisterInstance(DataServiceFactory.GetService<IItemsDataService>(serviceEndPoint));
+        }
+
+        private void RegisterSchedulerServiceEndpoints()
+        {
+            var serviceEndPoint = new System.Uri(ConfigurationManager.AppSettings["SchedulerServiceEndpoint"]);
+
+            this.Container.RegisterInstance(SchedulerServiceFactory.GetService<IItemsSchedulerService>(serviceEndPoint));
+            this.Container.RegisterInstance(SchedulerServiceFactory.GetService<IMissionsSchedulerService>(serviceEndPoint));
+            this.Container.RegisterInstance(SchedulerServiceFactory.GetService<IItemListsSchedulerService>(serviceEndPoint));
+            this.Container.RegisterInstance(SchedulerServiceFactory.GetService<IItemListRowsSchedulerService>(serviceEndPoint));
+        }
+
+        #endregion
     }
 }

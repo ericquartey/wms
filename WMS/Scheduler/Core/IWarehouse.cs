@@ -13,6 +13,6 @@ namespace Ferretto.WMS.Scheduler.Core
 
         Task<SchedulerRequest> WithdrawAsync(SchedulerRequest request);
 
-        #endregion Methods
+        #endregion
     }
 }

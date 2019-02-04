@@ -18,7 +18,12 @@ namespace Ferretto.VW.ActionBlocks
         INVERTER_DRIVER_IO_ERROR       = 22,
         INVERTER_DRIVER_INTERNAL_ERROR = 23,
         INVERTER_DRIVER_UNKNOWN_ERROR  = 24,
+    }
 
-
+    public enum CalibrationType
+    {
+        // The two possible kinds of calibration
+        VERTICAL_CALIBRATION = 0,
+        HORIZONTAL_CALIBRATION = 1,
     }
 }

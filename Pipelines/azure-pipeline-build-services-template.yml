@@ -1,0 +1,16 @@
+
+steps:
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build WMS.Data.sln'
+  inputs:
+    projects: WMS.Data.sln
+    arguments: '--configuration $(BuildConfiguration)'
+
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build WMS.Scheduler.sln'
+  inputs:
+    projects: WMS.Scheduler.sln
+    arguments: '--configuration $(BuildConfiguration)'
+

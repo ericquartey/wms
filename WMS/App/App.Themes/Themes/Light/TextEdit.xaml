@@ -40,16 +40,16 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Label x:Name="TitleLabel"
-                   Style="{DynamicResource ControlLabelStyle}">
-                <Label.Content>
+            <wms:WmsLabel x:Name="TitleLabel"
+                          Style="{DynamicResource ControlLabelStyle}">
+                <wms:WmsLabel.Content>
                     <MultiBinding Converter="{StaticResource DNC}">
                         <Binding RelativeSource="{RelativeSource Self}" />
                         <Binding Path="DataContext"
                                  RelativeSource="{RelativeSource Self}" />
                     </MultiBinding>
-                </Label.Content>
-            </Label>
+                </wms:WmsLabel.Content>
+            </wms:WmsLabel>
             <dxn:Chrome Grid.Row="1"
                         RenderTemplate="{StaticResource {dxet:InplaceBaseEditThemeKey ResourceKey=TextEditBorderTemplate}}" />
             <ContentPresenter Grid.Row="1"

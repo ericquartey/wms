@@ -151,6 +151,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string EmptyString {
+            get {
+                return ResourceManager.GetString("EmptyString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Initializing Compartment module ....
         /// </summary>
         public static string InitializingCompartmentModule {
@@ -273,6 +282,15 @@ namespace Ferretto.Common.Resources {
         public static string UnableToSaveChanges {
             get {
                 return ResourceManager.GetString("UnableToSaveChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version: {0}.
+        /// </summary>
+        public static string Version {
+            get {
+                return ResourceManager.GetString("Version", resourceCulture);
             }
         }
     }

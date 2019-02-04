@@ -6,8 +6,72 @@ namespace Ferretto.Common.EF.Migrations
 {
     public partial class Add_Table_SchedulerRequests : Migration
     {
+        #region Fields
+
+        private const string SchedulerRequestsName = "SchedulerRequests";
+
+        #endregion
+
+        #region Methods
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
+            migrationBuilder.DropTable(
+                name: SchedulerRequestsName);
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreationDate",
+                table: "LoadingUnits",
+                nullable: false,
+                defaultValueSql: "GETDATE()",
+                oldClrType: typeof(DateTime),
+                oldDefaultValueSql: "GETUTCDATE()");
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreationDate",
+                table: "Items",
+                nullable: false,
+                defaultValueSql: "GETDATE()",
+                oldClrType: typeof(DateTime),
+                oldDefaultValueSql: "GETUTCDATE()");
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreationDate",
+                table: "ItemLists",
+                nullable: false,
+                defaultValueSql: "GETDATE()",
+                oldClrType: typeof(DateTime),
+                oldDefaultValueSql: "GETUTCDATE()");
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreationDate",
+                table: "ItemListRows",
+                nullable: false,
+                defaultValueSql: "GETDATE()",
+                oldClrType: typeof(DateTime),
+                oldDefaultValueSql: "GETUTCDATE()");
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreationDate",
+                table: "Compartments",
+                nullable: false,
+                defaultValueSql: "GETDATE()",
+                oldClrType: typeof(DateTime),
+                oldDefaultValueSql: "GETUTCDATE()");
+        }
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.AlterColumn<DateTime>(
                 name: "CreationDate",
                 table: "LoadingUnits",
@@ -177,50 +241,6 @@ namespace Ferretto.Common.EF.Migrations
                 column: "PackageTypeId");
         }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "SchedulerRequests");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "CreationDate",
-                table: "LoadingUnits",
-                nullable: false,
-                defaultValueSql: "GETDATE()",
-                oldClrType: typeof(DateTime),
-                oldDefaultValueSql: "GETUTCDATE()");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "CreationDate",
-                table: "Items",
-                nullable: false,
-                defaultValueSql: "GETDATE()",
-                oldClrType: typeof(DateTime),
-                oldDefaultValueSql: "GETUTCDATE()");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "CreationDate",
-                table: "ItemLists",
-                nullable: false,
-                defaultValueSql: "GETDATE()",
-                oldClrType: typeof(DateTime),
-                oldDefaultValueSql: "GETUTCDATE()");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "CreationDate",
-                table: "ItemListRows",
-                nullable: false,
-                defaultValueSql: "GETDATE()",
-                oldClrType: typeof(DateTime),
-                oldDefaultValueSql: "GETUTCDATE()");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "CreationDate",
-                table: "Compartments",
-                nullable: false,
-                defaultValueSql: "GETDATE()",
-                oldClrType: typeof(DateTime),
-                oldDefaultValueSql: "GETUTCDATE()");
-        }
+        #endregion
     }
 }
