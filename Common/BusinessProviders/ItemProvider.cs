@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
@@ -52,7 +53,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<Item> GetAll()
         {
-            throw new NotSupportedException();
+            return GetAllItemsWithAggregations(this.dataContext.Current);
         }
 
         public async Task<IEnumerable<Item>> GetAllAsync(
@@ -99,7 +100,10 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllCount()
         {
-            throw new NotSupportedException();
+            using (var dc = this.dataContext.Current)
+            {
+                return dc.Items.AsNoTracking().Count();
+            }
         }
 
         public async Task<int> GetAllCountAsync(string whereExpression = null, string searchExpression = null)
@@ -283,6 +287,74 @@ namespace Ferretto.Common.BusinessProviders
             {
                 return new OperationResult(ex);
             }
+        }
+
+        private static IQueryable<Item> GetAllItemsWithAggregations(
+            DatabaseContext context,
+            Expression<Func<DataModels.Item, bool>> whereFunc = null)
+        {
+            var actualWhereFunc = whereFunc ?? ((i) => true);
+
+            return context.Items
+               .AsNoTracking()
+               .Include(i => i.AbcClass)
+               .Include(i => i.ItemCategory)
+               .Include(i => i.MeasureUnit)
+               .Where(actualWhereFunc)
+               .GroupJoin(
+                   context.Compartments
+                       .AsNoTracking()
+                       .Where(c => c.ItemId != null)
+                       .GroupBy(c => c.ItemId)
+                       .Select(j => new
+                       {
+                           ItemId = j.Key,
+                           TotalStock = j.Sum(x => x.Stock),
+                           TotalReservedForPick = j.Sum(x => x.ReservedForPick),
+                           TotalReservedToStore = j.Sum(x => x.ReservedToStore)
+                       }),
+                   i => i.Id,
+                   c => c.ItemId,
+                   (i, c) => new
+                   {
+                       Item = i,
+                       CompartmentsAggregation = c
+                   })
+               .SelectMany(
+                   temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
+                   (a, b) => new Item
+                   {
+                       Id = a.Item.Id,
+                       AbcClassDescription = a.Item.AbcClass.Description,
+                       AverageWeight = a.Item.AverageWeight,
+                       CreationDate = a.Item.CreationDate,
+                       FifoTimePick = a.Item.FifoTimePick,
+                       FifoTimeStore = a.Item.FifoTimeStore,
+                       Height = a.Item.Height,
+                       Image = a.Item.Image,
+                       InventoryDate = a.Item.InventoryDate,
+                       InventoryTolerance = a.Item.InventoryTolerance,
+                       ManagementTypeDescription = a.Item.ManagementType.ToString(), // TODO change
+                       ItemCategoryDescription = a.Item.ItemCategory.Description,
+                       LastModificationDate = a.Item.LastModificationDate,
+                       LastPickDate = a.Item.LastPickDate,
+                       LastStoreDate = a.Item.LastStoreDate,
+                       Length = a.Item.Length,
+                       MeasureUnitDescription = a.Item.MeasureUnit.Description,
+                       PickTolerance = a.Item.PickTolerance,
+                       ReorderPoint = a.Item.ReorderPoint,
+                       ReorderQuantity = a.Item.ReorderQuantity,
+                       StoreTolerance = a.Item.StoreTolerance,
+                       Width = a.Item.Width,
+                       Code = a.Item.Code,
+                       Description = a.Item.Description,
+                       TotalReservedForPick = b != null ? b.TotalReservedForPick : 0,
+                       TotalReservedToStore = b != null ? b.TotalReservedToStore : 0,
+                       TotalStock = b != null ? b.TotalStock : 0,
+                       TotalAvailable = b != null
+                           ? (b.TotalStock + b.TotalReservedToStore - b.TotalReservedForPick)
+                           : 0,
+                   });
         }
 
         private void SaveImage(string imagePath)
