@@ -52,6 +52,6 @@ namespace Ferretto.Common.Controls.Extensions
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

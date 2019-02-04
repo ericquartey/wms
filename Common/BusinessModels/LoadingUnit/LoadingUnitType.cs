@@ -18,6 +18,6 @@ namespace Ferretto.Common.BusinessModels
 
         public int LoadingUnitWeightClassId { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

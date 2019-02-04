@@ -21,6 +21,6 @@ namespace Ferretto.Common.EF.Configurations
             builder.Property(m => m.Description).IsRequired();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

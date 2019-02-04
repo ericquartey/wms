@@ -12,7 +12,7 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly DatabaseContext dataContext;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -21,7 +21,7 @@ namespace Ferretto.Common.BusinessProviders
             this.dataContext = dataContext;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -131,6 +131,6 @@ namespace Ferretto.Common.BusinessProviders
                 .Select(x => new Enumeration(x.Id, x.Description));
         }
 
-        #endregion Methods
+        #endregion
     }
 }

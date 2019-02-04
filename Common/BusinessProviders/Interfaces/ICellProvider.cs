@@ -26,6 +26,6 @@ namespace Ferretto.Common.BusinessProviders
 
         bool HasAnyLoadingUnits(int cellId);
 
-        #endregion Methods
+        #endregion
     }
 }

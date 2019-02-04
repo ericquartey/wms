@@ -15,7 +15,7 @@ namespace Ferretto.WMS.App.Tests
         private Application application;
         private Window mainWindow;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -23,7 +23,7 @@ namespace Ferretto.WMS.App.Tests
 
         public TestContext TestContext { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -52,6 +52,6 @@ namespace Ferretto.WMS.App.Tests
                 this.application.GetWindow(Common.Resources.DesktopApp.Application_Title, InitializeOption.NoCache);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

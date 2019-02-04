@@ -10,7 +10,7 @@ namespace Ferretto.Common.EF.Migrations
 
         private const string SchedulerRequestsName = "SchedulerRequests";
 
-        #endregion Fields
+        #endregion
 
         #region Methods
 
@@ -241,6 +241,6 @@ namespace Ferretto.Common.EF.Migrations
                 column: "PackageTypeId");
         }
 
-        #endregion Methods
+        #endregion
     }
 }

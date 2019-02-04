@@ -13,7 +13,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ICommand withdrawCommand;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -26,7 +26,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.ExecuteWithdraw,
                 this.CanExecuteWithdraw).ObservesProperty(() => this.CurrentItem));
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -73,6 +73,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 });
         }
 
-        #endregion Methods
+        #endregion
     }
 }

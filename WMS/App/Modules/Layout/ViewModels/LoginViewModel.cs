@@ -29,7 +29,7 @@ namespace Ferretto.WMS.Modules.Layout
 
         private string validationError;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -43,7 +43,7 @@ namespace Ferretto.WMS.Modules.Layout
             this.User.PropertyChanged += this.OnItemPropertyChanged;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -84,7 +84,7 @@ namespace Ferretto.WMS.Modules.Layout
             set => this.SetProperty(ref this.validationError, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -158,6 +158,6 @@ namespace Ferretto.WMS.Modules.Layout
             ((DelegateCommand)this.LoginCommand)?.RaiseCanExecuteChanged();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

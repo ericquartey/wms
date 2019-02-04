@@ -6,7 +6,7 @@
 
         private int quantity;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -46,6 +46,6 @@
 
         public MissionType Type { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

@@ -36,7 +36,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         private int? width;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -174,7 +174,7 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.width = CheckIfStrictlyPositive(value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -183,6 +183,6 @@ namespace Ferretto.WMS.Data.Core.Models
             this.TotalAvailable = this.TotalStock + this.TotalReservedToStore - this.TotalReservedForPick;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -26,7 +26,7 @@ namespace Ferretto.Common.BusinessModels
 
         private int rowPriority;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -63,6 +63,6 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.ItemListRowPriority), ResourceType = typeof(BusinessObjects))]
         public int RowPriority { get => this.rowPriority; set => this.SetProperty(ref this.rowPriority, value); }
 
-        #endregion Properties
+        #endregion
     }
 }

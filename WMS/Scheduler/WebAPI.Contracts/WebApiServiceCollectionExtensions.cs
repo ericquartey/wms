@@ -18,6 +18,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
             return serviceCollection;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -8,7 +8,7 @@ namespace Ferretto.Common.EF.Migrations
 
         private const string ItemListRowsTable = "ItemListRows";
 
-        #endregion Fields
+        #endregion
 
         #region Methods
 
@@ -64,6 +64,6 @@ namespace Ferretto.Common.EF.Migrations
                 oldClrType: typeof(int));
         }
 
-        #endregion Methods
+        #endregion
     }
 }

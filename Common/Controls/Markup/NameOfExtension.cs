@@ -10,7 +10,7 @@ namespace Ferretto.Common.Controls
 
         public Type Type { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -24,6 +24,6 @@ namespace Ferretto.Common.Controls
             return this.Type.Name;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

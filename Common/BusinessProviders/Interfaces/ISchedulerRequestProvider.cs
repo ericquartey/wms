@@ -18,6 +18,6 @@ namespace Ferretto.Common.BusinessProviders
 
         int GetWithOperationTypeWithdrawalCount();
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -12,7 +12,7 @@ namespace Ferretto.Common.Utils.Expressions
             this.Direction = direction;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -20,7 +20,7 @@ namespace Ferretto.Common.Utils.Expressions
 
         public string PropertyName { get; private set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -29,6 +29,6 @@ namespace Ferretto.Common.Utils.Expressions
             return $"{this.PropertyName} {this.Direction}";
         }
 
-        #endregion Methods
+        #endregion
     }
 }

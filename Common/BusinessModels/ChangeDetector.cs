@@ -14,13 +14,13 @@ namespace Ferretto.Common.BusinessModels
         private bool isModified;
         private T snapshot;
 
-        #endregion Fields
+        #endregion
 
         #region Events
 
         public event EventHandler ModifiedChanged;
 
-        #endregion Events
+        #endregion
 
         #region Properties
 
@@ -37,7 +37,7 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -94,6 +94,6 @@ namespace Ferretto.Common.BusinessModels
             this.IsModified = this.modifiedProperties.Count > 0;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

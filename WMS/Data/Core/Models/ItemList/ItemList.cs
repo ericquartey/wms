@@ -12,7 +12,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         private int priority;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -44,6 +44,6 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.priority = CheckIfPositive(value);
         }
 
-        #endregion Properties
+        #endregion
     }
 }

@@ -6,7 +6,7 @@
 
         private int? count;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -24,7 +24,7 @@
 
         public string Name { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -33,6 +33,6 @@
             return this.Name ?? base.ToString();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

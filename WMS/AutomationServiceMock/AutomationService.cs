@@ -19,7 +19,7 @@ namespace Ferretto.WMS.AutomationServiceMock
 
         private readonly IWakeupHubClient wakeupHubClient;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -38,7 +38,7 @@ namespace Ferretto.WMS.AutomationServiceMock
             this.wakeupHubClient.NewMissionReceived += this.NewMissionReceived;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -89,6 +89,6 @@ namespace Ferretto.WMS.AutomationServiceMock
             this.logger.LogInformation($"Wakeup from Scheduler received.");
         }
 
-        #endregion Methods
+        #endregion
     }
 }

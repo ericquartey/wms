@@ -22,7 +22,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IMissionProvider missionProvider;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -34,7 +34,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             this.missionProvider = missionProvider;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -71,6 +71,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

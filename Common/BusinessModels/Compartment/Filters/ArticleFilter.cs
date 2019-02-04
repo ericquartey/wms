@@ -34,6 +34,6 @@ namespace Ferretto.Common.BusinessModels
 
         public ICompartment Selected { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

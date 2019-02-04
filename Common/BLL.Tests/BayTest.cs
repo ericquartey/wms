@@ -26,7 +26,7 @@ namespace Ferretto.Common.BLL.Tests
 
         private DataModels.LoadingUnit loadingUnit1;
 
-        #endregion Fields
+        #endregion
 
         #region Methods
 
@@ -109,7 +109,7 @@ namespace Ferretto.Common.BLL.Tests
                 context.SaveChanges();
             }
 
-            #endregion Arrange
+            #endregion
 
             using (var context = CreateContext())
             {
@@ -122,14 +122,14 @@ namespace Ferretto.Common.BLL.Tests
 
                 var missions = await warehouse.CreateMissionsForPendingRequestsAsync();
 
-                #endregion Act
+                #endregion
 
                 #region Assert
 
                 Assert.AreEqual(1, missions.Count());
                 Assert.AreEqual(this.bay1.Id, missions.First().BayId);
 
-                #endregion Assert
+                #endregion
             }
         }
 
@@ -191,7 +191,7 @@ namespace Ferretto.Common.BLL.Tests
                 context.SaveChanges();
             }
 
-            #endregion Arrange
+            #endregion
 
             using (var context = CreateContext())
             {
@@ -204,13 +204,13 @@ namespace Ferretto.Common.BLL.Tests
 
                 var missions = await warehouse.CreateMissionsForPendingRequestsAsync();
 
-                #endregion Act
+                #endregion
 
                 #region Assert
 
                 Assert.IsFalse(missions.Any());
 
-                #endregion Assert
+                #endregion
             }
         }
 
@@ -222,6 +222,6 @@ namespace Ferretto.Common.BLL.Tests
                     .Options);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

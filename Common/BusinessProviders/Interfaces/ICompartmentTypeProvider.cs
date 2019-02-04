@@ -9,6 +9,6 @@ namespace Ferretto.Common.BusinessProviders
 
         Task<OperationResult> AddAsync(CompartmentType model, int? itemId = null, int? maxCapacity = null);
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -22,6 +22,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
 
         public string Sub2 { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

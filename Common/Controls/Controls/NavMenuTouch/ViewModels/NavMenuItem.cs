@@ -37,7 +37,7 @@ namespace Ferretto.Common.Controls
             this.AddChild(item.Children, currBreadCrumb);
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -63,7 +63,7 @@ namespace Ferretto.Common.Controls
 
         public string ViewName { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -89,6 +89,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

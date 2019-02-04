@@ -16,6 +16,6 @@ namespace Ferretto.Common.Modules.BLL.Models
             this.KeyExpression = "Id";
         }
 
-        #endregion Constructors
+        #endregion
     }
 }

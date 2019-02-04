@@ -8,7 +8,7 @@ namespace Ferretto.Common.Utils.Menu
 
         private MainMenu menu;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -17,13 +17,13 @@ namespace Ferretto.Common.Utils.Menu
             this.Initialize();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public MainMenu Menu => this.menu;
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -131,6 +131,6 @@ namespace Ferretto.Common.Utils.Menu
                });
         }
 
-        #endregion Methods
+        #endregion
     }
 }

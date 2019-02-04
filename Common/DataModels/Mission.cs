@@ -65,6 +65,6 @@ namespace Ferretto.Common.DataModels
 
         public MissionType Type { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

@@ -38,6 +38,6 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.Machine), ResourceType = typeof(BusinessObjects))]
         public string MachineNickname { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

@@ -25,7 +25,7 @@ namespace Ferretto.Common.BLL.Tests
 
         protected DataModels.LoadingUnit LoadingUnit1 { get; private set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -71,6 +71,6 @@ namespace Ferretto.Common.BLL.Tests
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

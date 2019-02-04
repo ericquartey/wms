@@ -9,7 +9,7 @@ namespace Ferretto.Common.EF.Migrations
 
         private const string MissionsTable = "Missions";
 
-        #endregion Fields
+        #endregion
 
         #region Methods
 
@@ -316,6 +316,6 @@ namespace Ferretto.Common.EF.Migrations
                 onDelete: ReferentialAction.Restrict);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

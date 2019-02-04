@@ -78,6 +78,6 @@ namespace Ferretto.Common.DataModels
 
         public long? TotalMaxWeight { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

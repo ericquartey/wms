@@ -36,6 +36,6 @@ namespace Ferretto.Common.Controls
                 : null;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

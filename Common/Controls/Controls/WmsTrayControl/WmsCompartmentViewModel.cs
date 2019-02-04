@@ -14,7 +14,7 @@ namespace Ferretto.Common.Controls
             return listItems.Cast<WmsCompartmentViewModel>();
         }
 
-        #endregion Methods
+        #endregion
     }
 
     public class WmsCompartmentViewModel : Prism.Mvvm.BindableBase
@@ -45,7 +45,7 @@ namespace Ferretto.Common.Controls
 
         private double width;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -115,6 +115,6 @@ namespace Ferretto.Common.Controls
             set => this.SetProperty(ref this.width, value);
         }
 
-        #endregion Properties
+        #endregion
     }
 }

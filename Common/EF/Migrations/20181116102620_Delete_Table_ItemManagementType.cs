@@ -11,7 +11,7 @@ namespace Ferretto.Common.EF.Migrations
 
         private const string SchedulerRequestsTable = "SchedulerRequests";
 
-        #endregion Fields
+        #endregion
 
         #region Methods
 
@@ -114,6 +114,6 @@ namespace Ferretto.Common.EF.Migrations
                 defaultValue: string.Empty);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

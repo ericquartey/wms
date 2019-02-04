@@ -37,7 +37,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private Tray tray;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -46,7 +46,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.Initialize();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -86,7 +86,7 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.tray, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -223,6 +223,6 @@ namespace Ferretto.WMS.Modules.MasterData
             this.RaisePropertyChanged(nameof(this.SelectedCompartmentTray));
         }
 
-        #endregion Methods
+        #endregion
     }
 }

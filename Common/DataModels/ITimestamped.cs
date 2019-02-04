@@ -10,6 +10,6 @@ namespace Ferretto.Common.DataModels
 
         DateTime LastModificationDate { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

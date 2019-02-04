@@ -85,7 +85,7 @@ namespace Ferretto.Common.Controls.Services
             this.DoAction = action;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -117,7 +117,7 @@ namespace Ferretto.Common.Controls.Services
 
         public ModifierKeys ModifierKeySecond { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -146,6 +146,6 @@ namespace Ferretto.Common.Controls.Services
             return this.FormatString();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

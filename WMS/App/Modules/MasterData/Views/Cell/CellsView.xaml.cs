@@ -12,6 +12,6 @@ namespace Ferretto.WMS.Modules.MasterData
             this.InitializeComponent();
         }
 
-        #endregion Constructors
+        #endregion
     }
 }

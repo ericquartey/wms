@@ -12,7 +12,7 @@ namespace Ferretto.Common.BusinessModels
             this.Id = id;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -20,6 +20,6 @@ namespace Ferretto.Common.BusinessModels
 
         public int Id { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

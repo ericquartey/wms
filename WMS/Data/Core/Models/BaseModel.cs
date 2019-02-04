@@ -11,13 +11,13 @@ namespace Ferretto.WMS.Data.Core.Models
         {
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public TKey Id { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -61,6 +61,6 @@ namespace Ferretto.WMS.Data.Core.Models
             return value;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -13,7 +13,7 @@ namespace Ferretto.WMS.App
 
         private readonly IRegionManager regionManager;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -34,6 +34,6 @@ namespace Ferretto.WMS.App
             this.moduleManager.LoadModule(nameof(Common.Utils.Modules.Scheduler));
         }
 
-        #endregion Constructors
+        #endregion
     }
 }
