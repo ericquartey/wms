@@ -26,6 +26,6 @@ namespace Ferretto.Common.BusinessProviders
 
         public Task<OperationResult> SaveAsync(User model) => throw new NotSupportedException();
 
-        #endregion Methods
+        #endregion
     }
 }

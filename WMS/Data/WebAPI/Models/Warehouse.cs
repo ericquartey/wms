@@ -17,7 +17,7 @@ namespace Ferretto.WMS.Data.WebAPI.Models
 
         private readonly DatabaseContext dataContext;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -29,7 +29,7 @@ namespace Ferretto.WMS.Data.WebAPI.Models
             this.dataContext = context;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -43,7 +43,7 @@ namespace Ferretto.WMS.Data.WebAPI.Models
 
         public IEnumerable<Mission> Missions => this.GetValue(this.RetrieveMissions);
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -213,6 +213,6 @@ namespace Ferretto.WMS.Data.WebAPI.Models
                 .ToArray();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

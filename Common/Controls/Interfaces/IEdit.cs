@@ -10,6 +10,6 @@ namespace Ferretto.Common.Controls
 
         ICommand SaveCommand { get; }
 
-        #endregion Properties
+        #endregion
     }
 }

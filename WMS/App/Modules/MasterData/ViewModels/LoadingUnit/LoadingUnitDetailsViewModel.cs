@@ -45,7 +45,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ICommand withdrawCommand;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -54,7 +54,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.Initialize();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -106,7 +106,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public ICommand WithdrawCommand => this.withdrawCommand ??
             (this.withdrawCommand = new DelegateCommand(ExecuteWithdrawCommand));
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -241,6 +241,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

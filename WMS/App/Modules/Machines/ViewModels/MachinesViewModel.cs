@@ -14,6 +14,6 @@ namespace Ferretto.WMS.Modules.Machines
             this.FlattenDataSource = true;
         }
 
-        #endregion Constructors
+        #endregion
     }
 }

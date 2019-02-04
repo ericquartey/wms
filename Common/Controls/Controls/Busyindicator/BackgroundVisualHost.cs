@@ -25,13 +25,13 @@ namespace Ferretto.Common.Controls
 
         private ThreadedVisualHelper threadedHelper;
 
-        #endregion Fields
+        #endregion
 
         #region Delegates
 
         public delegate Visual CreateVisualContent();
 
-        #endregion Delegates
+        #endregion
 
         #region Properties
 
@@ -60,7 +60,7 @@ namespace Ferretto.Common.Controls
 
         protected override int VisualChildrenCount => this.hostVisual != null ? 1 : 0;
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -131,6 +131,6 @@ namespace Ferretto.Common.Controls
             this.Dispatcher.BeginInvoke(new Action(this.InvalidateMeasure), DispatcherPriority.Loaded);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

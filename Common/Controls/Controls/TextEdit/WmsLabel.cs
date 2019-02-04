@@ -15,13 +15,13 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty TitleProperty = DependencyProperty.RegisterAttached(
            nameof(Title), typeof(string), typeof(WmsLabel), new UIPropertyMetadata(OnTitleChanged));
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
         public string Title { get => (string)this.GetValue(TitleProperty); set => this.SetValue(TitleProperty, value); }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -29,6 +29,6 @@ namespace Ferretto.Common.Controls
         {
         }
 
-        #endregion Methods
+        #endregion
     }
 }

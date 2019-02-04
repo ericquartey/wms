@@ -35,6 +35,6 @@ namespace Ferretto.Common.DataModels
 
         public IEnumerable<SchedulerRequest> SchedulerRequests { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

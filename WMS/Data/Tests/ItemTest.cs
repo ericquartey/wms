@@ -147,6 +147,6 @@ namespace Ferretto.WMS.Data.Tests
             Assert.AreEqual(11, item.TotalAvailable);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

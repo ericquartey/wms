@@ -15,13 +15,13 @@ namespace Ferretto.WMS.Modules.Layout
             this.Inizialize();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public ObservableCollection<NavMenuItem> Items { get => this.menuItems; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -34,6 +34,6 @@ namespace Ferretto.WMS.Modules.Layout
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

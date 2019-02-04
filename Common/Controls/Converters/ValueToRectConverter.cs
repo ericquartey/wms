@@ -19,6 +19,6 @@ namespace Ferretto.Common.Controls
             throw new NotSupportedException();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

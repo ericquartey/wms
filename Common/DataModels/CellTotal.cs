@@ -21,6 +21,6 @@
 
         public int Id { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

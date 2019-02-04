@@ -17,13 +17,13 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty TextProperty = DependencyProperty.RegisterAttached(
            "Text", typeof(string), typeof(AdditionalInfo), new UIPropertyMetadata(OnTextChanged));
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
         public string NewValue { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -74,6 +74,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

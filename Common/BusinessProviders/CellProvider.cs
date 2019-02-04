@@ -25,7 +25,7 @@ cell => cell.CellStatusId == 1;
 
         private readonly EnumerationProvider enumerationProvider;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -37,7 +37,7 @@ cell => cell.CellStatusId == 1;
             this.enumerationProvider = enumerationProvider;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -244,6 +244,6 @@ cell => cell.CellStatusId == 1;
                     });
         }
 
-        #endregion Methods
+        #endregion
     }
 }

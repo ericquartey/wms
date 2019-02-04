@@ -46,6 +46,6 @@ namespace Ferretto.Common.DataModels
 
         public ItemListStatus Status { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

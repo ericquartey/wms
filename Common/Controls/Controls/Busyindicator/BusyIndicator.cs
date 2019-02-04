@@ -48,7 +48,7 @@ namespace Ferretto.Common.Controls
         private const string suffixStyle = "Style";
         private readonly BackgroundVisualHost busyHost = new BackgroundVisualHost();
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -69,7 +69,7 @@ namespace Ferretto.Common.Controls
             this.SetBinding(this.busyHost, BusyVerticalAlignmentProperty, BackgroundVisualHost.VerticalAlignmentProperty);
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -118,7 +118,7 @@ namespace Ferretto.Common.Controls
 
         protected override int VisualChildrenCount => this.Child != null ? 2 : 1;
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -211,6 +211,6 @@ namespace Ferretto.Common.Controls
             BindingOperations.SetBinding(obj, target, binding);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

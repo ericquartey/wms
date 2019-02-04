@@ -14,6 +14,6 @@ namespace Ferretto.WMS.Scheduler.Core
         IQueryable<T> OrderCompartmentsByManagementType<T>(IQueryable<T> compartments, ItemManagementType type)
             where T : IOrderableCompartment;
 
-        #endregion Methods
+        #endregion
     }
 }

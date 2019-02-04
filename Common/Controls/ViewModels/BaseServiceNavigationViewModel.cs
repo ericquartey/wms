@@ -12,7 +12,7 @@ namespace Ferretto.Common.Controls
         private readonly IHistoryViewService historyViewService = ServiceLocator.Current.GetInstance<IHistoryViewService>();
         private readonly INavigationService navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -22,7 +22,7 @@ namespace Ferretto.Common.Controls
 
         public INavigationService NavigationService => this.navigationService;
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -33,6 +33,6 @@ namespace Ferretto.Common.Controls
             base.Disappear();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

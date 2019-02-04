@@ -8,6 +8,6 @@
 
         void SaveImage(string originalPathImage);
 
-        #endregion Methods
+        #endregion
     }
 }

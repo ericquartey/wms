@@ -81,6 +81,6 @@ namespace Ferretto.Common.EF.Migrations
                 defaultValue: "");
         }
 
-        #endregion Methods
+        #endregion
     }
 }

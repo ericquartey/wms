@@ -36,7 +36,7 @@ namespace Ferretto.Common.BusinessModels
         private int totalAvailable;
         private int? width;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -232,6 +232,6 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetIfStrictlyPositive(ref this.width, value);
         }
 
-        #endregion Properties
+        #endregion
     }
 }

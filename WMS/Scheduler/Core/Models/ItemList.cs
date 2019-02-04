@@ -10,6 +10,6 @@ namespace Ferretto.WMS.Scheduler.Core
 
         public ListStatus Status { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

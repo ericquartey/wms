@@ -14,7 +14,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.DataContextChanged += this.ItemsView_DataContextChanged;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -28,6 +28,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

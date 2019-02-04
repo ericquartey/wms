@@ -27,7 +27,7 @@
 
         private readonly IImageProvider imageService;
 
-        #endregion Fields
+        #endregion
 
         private bool isUpdatingImage;
 
@@ -38,7 +38,7 @@
             this.imageService = ServiceLocator.Current.GetInstance<IImageProvider>();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -53,7 +53,7 @@
             set => this.SetValue(FilenameProperty, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -115,6 +115,6 @@
             return null;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

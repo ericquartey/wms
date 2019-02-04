@@ -25,6 +25,6 @@ namespace Ferretto.Common.DataModels
 
         public int? ZOffset { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

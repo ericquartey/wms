@@ -52,6 +52,6 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.CellZCoordinate), ResourceType = typeof(BusinessObjects))]
         public int? ZCoordinate { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

@@ -12,7 +12,7 @@ namespace Ferretto.Common.BLL.Tests
         private const int OtherBayId = 1000;
         private const int OtherLoadingUnitId = 1000;
 
-        #endregion Fields
+        #endregion
 
         #region Methods
 
@@ -51,7 +51,7 @@ namespace Ferretto.Common.BLL.Tests
                 context.SaveChanges();
             }
 
-            #endregion Arrange
+            #endregion
 
             using (var context = this.CreateContext())
             {
@@ -70,14 +70,14 @@ namespace Ferretto.Common.BLL.Tests
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
 
-                #endregion Act
+                #endregion
 
                 #region Assert
 
                 Assert.IsNotNull(acceptedRequest);
                 Assert.AreSame(compartment1.Sub1, acceptedRequest.Sub1);
 
-                #endregion Assert
+                #endregion
             }
         }
 
@@ -130,7 +130,7 @@ namespace Ferretto.Common.BLL.Tests
                 context.SaveChanges();
             }
 
-            #endregion Arrange
+            #endregion
 
             using (var context = this.CreateContext())
             {
@@ -148,13 +148,13 @@ namespace Ferretto.Common.BLL.Tests
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
 
-                #endregion Act
+                #endregion
 
                 #region Assert
 
                 Assert.IsNull(acceptedRequest);
 
-                #endregion Assert
+                #endregion
             }
         }
 
@@ -186,7 +186,7 @@ namespace Ferretto.Common.BLL.Tests
                 context.SaveChanges();
             }
 
-            #endregion Arrange
+            #endregion
 
             using (var context = this.CreateContext())
             {
@@ -205,13 +205,13 @@ namespace Ferretto.Common.BLL.Tests
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
 
-                #endregion Act
+                #endregion
 
                 #region Assert
 
                 Assert.IsNull(acceptedRequest);
 
-                #endregion Assert
+                #endregion
             }
         }
 
@@ -246,7 +246,7 @@ namespace Ferretto.Common.BLL.Tests
                 context.SaveChanges();
             }
 
-            #endregion Arrange
+            #endregion
 
             using (var context = this.CreateContext())
             {
@@ -265,7 +265,7 @@ namespace Ferretto.Common.BLL.Tests
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
 
-                #endregion Act
+                #endregion
 
                 #region Assert
 
@@ -278,7 +278,7 @@ namespace Ferretto.Common.BLL.Tests
                 Assert.AreEqual(compartment1.MaterialStatusId.Value, acceptedRequest.MaterialStatusId.Value);
                 Assert.AreSame(compartment1.RegistrationNumber, acceptedRequest.RegistrationNumber);
 
-                #endregion Assert
+                #endregion
             }
         }
 
@@ -350,7 +350,7 @@ namespace Ferretto.Common.BLL.Tests
                 context.SaveChanges();
             }
 
-            #endregion Arrange
+            #endregion
 
             using (var context = this.CreateContext())
             {
@@ -368,14 +368,14 @@ namespace Ferretto.Common.BLL.Tests
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
 
-                #endregion Act
+                #endregion
 
                 #region Assert
 
                 Assert.IsNotNull(acceptedRequest);
                 Assert.AreSame(compartments[compartments.Length - 1].Sub1, acceptedRequest.Sub1);
 
-                #endregion Assert
+                #endregion
             }
         }
 
@@ -406,7 +406,7 @@ namespace Ferretto.Common.BLL.Tests
                 context.SaveChanges();
             }
 
-            #endregion Arrange
+            #endregion
 
             using (var context = this.CreateContext())
             {
@@ -424,14 +424,14 @@ namespace Ferretto.Common.BLL.Tests
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
 
-                #endregion Act
+                #endregion
 
                 #region Assert
 
                 Assert.IsNotNull(acceptedRequest);
                 Assert.AreSame(compartment1.Sub1, acceptedRequest.Sub1);
 
-                #endregion Assert
+                #endregion
             }
         }
 
@@ -474,7 +474,7 @@ namespace Ferretto.Common.BLL.Tests
                 context.SaveChanges();
             }
 
-            #endregion Arrange
+            #endregion
 
             using (var context = this.CreateContext())
             {
@@ -492,14 +492,14 @@ namespace Ferretto.Common.BLL.Tests
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
 
-                #endregion Act
+                #endregion
 
                 #region Assert
 
                 Assert.IsNotNull(acceptedRequest);
                 Assert.AreSame(compartment1.Sub1, acceptedRequest.Sub1);
 
-                #endregion Assert
+                #endregion
             }
         }
 
@@ -552,7 +552,7 @@ namespace Ferretto.Common.BLL.Tests
                 context.SaveChanges();
             }
 
-            #endregion Arrange
+            #endregion
 
             using (var context = this.CreateContext())
             {
@@ -570,13 +570,13 @@ namespace Ferretto.Common.BLL.Tests
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
 
-                #endregion Act
+                #endregion
 
                 #region Assert
 
                 Assert.IsNull(acceptedRequest);
 
-                #endregion Assert
+                #endregion
             }
         }
 
@@ -653,7 +653,7 @@ namespace Ferretto.Common.BLL.Tests
                 context.SaveChanges();
             }
 
-            #endregion Arrange
+            #endregion
 
             using (var context = this.CreateContext())
             {
@@ -671,14 +671,14 @@ namespace Ferretto.Common.BLL.Tests
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
 
-                #endregion Act
+                #endregion
 
                 #region Assert
 
                 Assert.IsNotNull(acceptedRequest);
                 Assert.AreSame(compartments[compartments.Length - 1].Sub1, acceptedRequest.Sub1);
 
-                #endregion Assert
+                #endregion
             }
         }
 
@@ -743,7 +743,7 @@ namespace Ferretto.Common.BLL.Tests
                 context.SaveChanges();
             }
 
-            #endregion Arrange
+            #endregion
 
             using (var context = this.CreateContext())
             {
@@ -761,13 +761,13 @@ namespace Ferretto.Common.BLL.Tests
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
 
-                #endregion Act
+                #endregion
 
                 #region Assert
 
                 Assert.IsNull(acceptedRequest);
 
-                #endregion Assert
+                #endregion
             }
         }
 
@@ -830,7 +830,7 @@ namespace Ferretto.Common.BLL.Tests
                 context.SaveChanges();
             }
 
-            #endregion Arrange
+            #endregion
 
             using (var context = this.CreateContext())
             {
@@ -848,17 +848,17 @@ namespace Ferretto.Common.BLL.Tests
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
 
-                #endregion Act
+                #endregion
 
                 #region Assert
 
                 Assert.IsNotNull(acceptedRequest);
                 Assert.AreSame(compartment2.Sub1, acceptedRequest.Sub1);
 
-                #endregion Assert
+                #endregion
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

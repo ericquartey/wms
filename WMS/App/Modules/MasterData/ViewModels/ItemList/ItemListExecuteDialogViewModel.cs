@@ -24,7 +24,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private string validationError;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -33,7 +33,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.Initialize();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -76,7 +76,7 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.validationError, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -148,6 +148,6 @@ namespace Ferretto.WMS.Modules.MasterData
             ((DelegateCommand)this.RunListExecuteCommand)?.RaiseCanExecuteChanged();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

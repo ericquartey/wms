@@ -19,7 +19,7 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         private const int defaultPixelMax = 600;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -39,7 +39,7 @@ namespace Ferretto.Common.Modules.BLL.Services
         private static Uri ImageDirectoryUri =>
                                     new Uri(System.IO.Path.Combine(Environment.CurrentDirectory, ConfigurationManager.AppSettings["ImagesPath"] ?? defaultImagesDirectoryName));
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -145,6 +145,6 @@ namespace Ferretto.Common.Modules.BLL.Services
             return (y * DefaultPixelMax) / x;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

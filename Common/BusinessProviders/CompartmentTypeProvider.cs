@@ -14,7 +14,7 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly ItemCompartmentTypeProvider itemCompartmentTypeProvider;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -26,7 +26,7 @@ namespace Ferretto.Common.BusinessProviders
             this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -112,6 +112,6 @@ namespace Ferretto.Common.BusinessProviders
 
         public Task<OperationResult> SaveAsync(CompartmentType model) => throw new NotSupportedException();
 
-        #endregion Methods
+        #endregion
     }
 }

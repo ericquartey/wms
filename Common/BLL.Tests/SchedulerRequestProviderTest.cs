@@ -24,7 +24,7 @@ namespace Ferretto.Common.BLL.Tests
                 Type = OperationType.Insertion
             };
 
-            #endregion Arrange
+            #endregion
 
             using (var context = this.CreateContext())
             {
@@ -34,7 +34,7 @@ namespace Ferretto.Common.BLL.Tests
 
                 await Assert.ThrowsExceptionAsync<System.ArgumentException>(() => provider.FullyQualifyWithdrawalRequestAsync(request));
 
-                #endregion Act + Assert
+                #endregion
             }
         }
 
@@ -50,7 +50,7 @@ namespace Ferretto.Common.BLL.Tests
 
             SchedulerRequest request = null;
 
-            #endregion Arrange
+            #endregion
 
             using (var context = this.CreateContext())
             {
@@ -60,10 +60,10 @@ namespace Ferretto.Common.BLL.Tests
 
                 await Assert.ThrowsExceptionAsync<System.ArgumentNullException>(() => provider.FullyQualifyWithdrawalRequestAsync(request));
 
-                #endregion Act + Assert
+                #endregion
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

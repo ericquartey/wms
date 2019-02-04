@@ -48,7 +48,7 @@ namespace Ferretto.Common.EF
         {
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -142,7 +142,7 @@ namespace Ferretto.Common.EF
 
         public virtual DbSet<SchedulerRequest> SchedulerRequests { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -285,6 +285,6 @@ namespace Ferretto.Common.EF
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

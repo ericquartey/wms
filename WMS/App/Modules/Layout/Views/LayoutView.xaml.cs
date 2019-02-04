@@ -13,7 +13,7 @@ namespace Ferretto.WMS.Modules.Layout
             this.Loaded += LayoutView_Loaded;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -22,6 +22,6 @@ namespace Ferretto.WMS.Modules.Layout
             SplashScreenService.Hide();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

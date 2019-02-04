@@ -8,7 +8,7 @@ namespace Ferretto.Common.EF.Migrations
 
         private const string MissionsTable = "Missions";
 
-        #endregion Fields
+        #endregion
 
         #region Methods
 
@@ -85,6 +85,6 @@ namespace Ferretto.Common.EF.Migrations
                 defaultValueSql: "'N'");
         }
 
-        #endregion Methods
+        #endregion
     }
 }

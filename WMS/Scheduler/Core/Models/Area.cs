@@ -8,6 +8,6 @@ namespace Ferretto.WMS.Scheduler.Core
 
         public IEnumerable<Bay> Bays { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

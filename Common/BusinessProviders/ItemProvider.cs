@@ -25,7 +25,7 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly WMS.Scheduler.WebAPI.Contracts.IItemsSchedulerService itemsSchedulerService;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -43,7 +43,7 @@ namespace Ferretto.Common.BusinessProviders
             this.imageProvider = imageProvider;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -362,6 +362,6 @@ namespace Ferretto.Common.BusinessProviders
             this.imageProvider.SaveImage(imagePath);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

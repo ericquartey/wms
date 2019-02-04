@@ -10,6 +10,6 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.AreaDescription), ResourceType = typeof(BusinessObjects))]
         public string Name { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

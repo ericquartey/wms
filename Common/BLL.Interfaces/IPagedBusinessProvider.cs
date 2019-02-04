@@ -22,6 +22,6 @@ namespace Ferretto.Common.BLL.Interfaces
 
         Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName);
 
-        #endregion Methods
+        #endregion
     }
 }

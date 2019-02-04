@@ -12,7 +12,7 @@ namespace Ferretto.Common.Controls
             this.Children = new ObservableCollection<NavMenuItem>();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -20,6 +20,6 @@ namespace Ferretto.Common.Controls
 
         public string Info { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

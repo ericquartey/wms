@@ -30,7 +30,7 @@ namespace Ferretto.Common.Controls
 
         private bool isControlPressed = false;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -48,7 +48,7 @@ namespace Ferretto.Common.Controls
             this.inputService.BeginShortKeyNotify(this, (shortKey) => this.isControlPressed = (shortKey.ShortKey.ModifierKeyFirst == ModifierKeys.Control));
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -73,7 +73,7 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(StartViewNameProperty, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -248,6 +248,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

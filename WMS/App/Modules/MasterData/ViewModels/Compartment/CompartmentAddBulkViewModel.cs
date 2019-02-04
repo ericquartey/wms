@@ -14,7 +14,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -24,7 +24,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsValidationEnabled = false;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -67,6 +67,6 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = false;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

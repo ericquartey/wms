@@ -14,6 +14,6 @@ namespace Ferretto.Common.BusinessProviders
 
         Task<OperationResult> ScheduleForExecutionAsync(int listRowId, int areaId);
 
-        #endregion Methods
+        #endregion
     }
 }

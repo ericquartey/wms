@@ -11,7 +11,7 @@ namespace Ferretto.Common.Controls.Services
 
         private readonly string token;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -21,7 +21,7 @@ namespace Ferretto.Common.Controls.Services
             this.token = token;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -29,6 +29,6 @@ namespace Ferretto.Common.Controls.Services
 
         public string Token => this.token;
 
-        #endregion Properties
+        #endregion
     }
 }

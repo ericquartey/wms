@@ -9,7 +9,7 @@
             this.Format = $"{operatorName}({{0}})";
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -17,7 +17,7 @@
 
         public string Format { get; private set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -26,6 +26,6 @@
             return string.Format(this.Format, this.Expression?.ToString());
         }
 
-        #endregion Methods
+        #endregion
     }
 }

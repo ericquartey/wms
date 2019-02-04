@@ -19,6 +19,6 @@
 
         public decimal Ratio { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

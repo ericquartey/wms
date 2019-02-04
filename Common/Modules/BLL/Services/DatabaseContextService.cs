@@ -8,6 +8,6 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public DatabaseContext Current => new DatabaseContext();
 
-        #endregion Properties
+        #endregion
     }
 }

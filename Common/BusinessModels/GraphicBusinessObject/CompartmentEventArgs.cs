@@ -8,7 +8,7 @@ namespace Ferretto.Common.BusinessModels
 
         private readonly CompartmentDetails compartment;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -17,12 +17,12 @@ namespace Ferretto.Common.BusinessModels
             this.compartment = compartment;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public CompartmentDetails Compartment => this.compartment;
 
-        #endregion Properties
+        #endregion
     }
 }
