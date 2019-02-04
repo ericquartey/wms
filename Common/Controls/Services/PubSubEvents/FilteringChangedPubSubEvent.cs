@@ -12,7 +12,7 @@ namespace Ferretto.Common.Controls.Services
 
         private readonly FilteringUIContext filteringContext;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -22,7 +22,7 @@ namespace Ferretto.Common.Controls.Services
             this.filteringContext = filteringContext;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -32,6 +32,6 @@ namespace Ferretto.Common.Controls.Services
 
         public string Token { get; }
 
-        #endregion Properties
+        #endregion
     }
 }

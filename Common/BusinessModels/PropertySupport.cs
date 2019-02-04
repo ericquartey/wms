@@ -71,6 +71,6 @@ namespace Ferretto.Common.BusinessModels
             return memberExpression.Member.Name;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

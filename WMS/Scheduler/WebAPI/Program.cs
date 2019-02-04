@@ -15,7 +15,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI
 
         private const string ConsoleArgument = "--console";
 
-        #endregion Fields
+        #endregion
 
         #region Methods
 
@@ -70,6 +70,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

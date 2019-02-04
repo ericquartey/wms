@@ -10,6 +10,6 @@
 
         public const string REGION_MENU = "Menu";
 
-        #endregion Fields
+        #endregion
     }
 }

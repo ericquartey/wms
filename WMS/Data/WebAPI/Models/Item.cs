@@ -46,7 +46,7 @@ namespace Ferretto.WMS.Data.WebAPI.Models
 
         private int? width;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -214,7 +214,7 @@ namespace Ferretto.WMS.Data.WebAPI.Models
             set => this.width = CheckIfStrictlyPositive(value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -233,6 +233,6 @@ namespace Ferretto.WMS.Data.WebAPI.Models
             this.TotalAvailable = this.TotalStock + this.TotalReservedToStore - this.TotalReservedForPick;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

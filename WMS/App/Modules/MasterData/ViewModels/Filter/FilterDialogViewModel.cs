@@ -19,7 +19,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ICommand revertCommand;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -41,7 +41,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public ICommand RevertCommand => this.revertCommand ??
             (this.revertCommand = new DelegateCommand(this.ExecuteRevertCommand));
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -70,6 +70,6 @@ namespace Ferretto.WMS.Modules.MasterData
             this.Disappear();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

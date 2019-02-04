@@ -26,7 +26,7 @@ namespace Ferretto.WMS.Data.WebAPI
 
         private static MethodInfo thenByMethod;
 
-        #endregion Fields
+        #endregion
 
         #region Methods
 
@@ -185,6 +185,6 @@ namespace Ferretto.WMS.Data.WebAPI
             return thenByMethod.MakeGenericMethod(typeof(T), propertyType);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

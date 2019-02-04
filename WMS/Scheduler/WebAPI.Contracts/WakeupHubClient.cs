@@ -12,7 +12,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
         private const string WakeUpMessageName = "WakeUp";
         private readonly HubConnection connection;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -33,7 +33,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
             };
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Events
 
@@ -41,7 +41,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
 
         public event EventHandler<WakeUpEventArgs> WakeupReceived;
 
-        #endregion Events
+        #endregion
 
         #region Methods
 
@@ -60,6 +60,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
             this.WakeupReceived?.Invoke(this, new WakeUpEventArgs(user, message));
         }
 
-        #endregion Methods
+        #endregion
     }
 }

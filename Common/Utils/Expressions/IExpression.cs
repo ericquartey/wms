@@ -6,6 +6,6 @@
 
         string Format { get; }
 
-        #endregion Properties
+        #endregion
     }
 }

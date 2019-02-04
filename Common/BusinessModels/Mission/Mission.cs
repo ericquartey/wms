@@ -69,6 +69,6 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
         public MissionType Type { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

@@ -11,6 +11,6 @@ namespace Ferretto.WMS.App
             this.InitializeComponent();
         }
 
-        #endregion Constructors
+        #endregion
     }
 }

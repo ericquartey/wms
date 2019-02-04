@@ -14,7 +14,7 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty SymbolNameProperty = DependencyProperty.Register(
                  nameof(SymbolName), typeof(string), typeof(WmsIcon), new PropertyMetadata(default(string), new PropertyChangedCallback(OnSymbolNameChanged)));
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -25,7 +25,7 @@ namespace Ferretto.Common.Controls
             this.InnerImage.DataContext = new WmsIconViewModel();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -41,7 +41,7 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(SymbolNameProperty, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -61,6 +61,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

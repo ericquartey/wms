@@ -6,6 +6,6 @@ namespace Ferretto.WMS.Scheduler.Core
 
         public ItemManagementType ManagementType { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

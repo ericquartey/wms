@@ -42,7 +42,7 @@ namespace Ferretto.Common.BusinessModels
 
         private string shipmentUnitDescription;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -183,6 +183,6 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.shipmentUnitDescription, value);
         }
 
-        #endregion Properties
+        #endregion
     }
 }

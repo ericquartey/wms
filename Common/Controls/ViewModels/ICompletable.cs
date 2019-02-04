@@ -8,6 +8,6 @@ namespace Ferretto.Common.Controls
 
         event EventHandler<OperationEventArgs> OperationComplete;
 
-        #endregion Events
+        #endregion
     }
 }

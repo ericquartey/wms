@@ -10,7 +10,7 @@ namespace Ferretto.Common.BusinessModels
         private string login;
         private string password;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -28,6 +28,6 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.password, value);
         }
 
-        #endregion Properties
+        #endregion
     }
 }

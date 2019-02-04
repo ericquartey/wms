@@ -13,12 +13,12 @@ namespace Ferretto.WMS.Data.WebAPI.Models
 
         IEnumerable<Mission> Missions { get; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
         Task<Item> UpdateAsync(Item item);
 
-        #endregion Methods
+        #endregion
     }
 }

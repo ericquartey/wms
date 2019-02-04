@@ -16,7 +16,7 @@ namespace Ferretto.Common.Utils.Expressions
            @"^(?<operator>\w+)\((?<left>(\w+)\((.+)\)),(?<right>(\w+)\((.+)\))\)$",
            System.Text.RegularExpressions.RegexOptions.Compiled);
 
-        #endregion Fields
+        #endregion
 
         #region Methods
 
@@ -118,6 +118,6 @@ namespace Ferretto.Common.Utils.Expressions
             return null;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

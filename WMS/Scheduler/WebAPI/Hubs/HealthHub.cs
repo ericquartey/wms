@@ -16,6 +16,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Hubs
             return this.Clients.Caller.IsOnlineAsync();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

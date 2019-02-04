@@ -14,13 +14,13 @@ namespace Ferretto.WMS.Scheduler.Core
         {
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public int Id { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -94,6 +94,6 @@ namespace Ferretto.WMS.Scheduler.Core
             return false;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

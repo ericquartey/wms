@@ -15,6 +15,6 @@ namespace Ferretto.WMS.Scheduler.Core
             return serviceCollection;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

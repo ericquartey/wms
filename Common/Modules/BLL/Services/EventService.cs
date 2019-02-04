@@ -10,7 +10,7 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         private readonly IEventAggregator eventAggregator;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -19,7 +19,7 @@ namespace Ferretto.Common.Modules.BLL.Services
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -62,6 +62,6 @@ namespace Ferretto.Common.Modules.BLL.Services
             return this.eventAggregator.GetEvent<PubSubEvent<TEventArgs>>();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

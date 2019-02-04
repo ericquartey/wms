@@ -9,7 +9,7 @@ namespace Ferretto.Common.BusinessModels
 
         private int? maxCapacity;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -35,6 +35,6 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.maxCapacity, value);
         }
 
-        #endregion Properties
+        #endregion
     }
 }

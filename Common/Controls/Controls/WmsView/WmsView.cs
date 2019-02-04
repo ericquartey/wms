@@ -30,7 +30,7 @@ namespace Ferretto.Common.Controls
 
         private WmsHistoryView wmsHistoryView;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -40,7 +40,7 @@ namespace Ferretto.Common.Controls
             this.Loaded += this.WMSView_Loaded;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -80,7 +80,7 @@ namespace Ferretto.Common.Controls
 
         public WmsViewType ViewType => this.viewType;
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -192,6 +192,6 @@ namespace Ferretto.Common.Controls
             this.CheckToAddHistoryView();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

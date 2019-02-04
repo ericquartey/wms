@@ -9,7 +9,7 @@
             this.Value = value;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -17,7 +17,7 @@
 
         public string Value { get; private set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -26,6 +26,6 @@
             return string.Format(this.Format, this.Value);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

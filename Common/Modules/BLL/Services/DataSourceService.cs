@@ -360,6 +360,6 @@ namespace Ferretto.Common.Modules.BLL.Services
                     }.Cast<IFilterDataSource<TModel>>();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

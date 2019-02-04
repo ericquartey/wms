@@ -39,7 +39,7 @@ namespace Ferretto.Common.Controls.Services
             this.Type = type;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -53,6 +53,6 @@ namespace Ferretto.Common.Controls.Services
 
         public StatusType Type { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

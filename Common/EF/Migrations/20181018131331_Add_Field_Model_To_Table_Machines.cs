@@ -31,6 +31,6 @@ namespace Ferretto.Common.EF.Migrations
                 nullable: true);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

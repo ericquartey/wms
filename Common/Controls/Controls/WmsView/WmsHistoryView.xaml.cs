@@ -25,7 +25,7 @@ namespace Ferretto.Common.Controls
 
         private INavigableView viewToAdd;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -40,7 +40,7 @@ namespace Ferretto.Common.Controls
             this.viewToAdd = view;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -56,7 +56,7 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(StartViewNameProperty, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -162,6 +162,6 @@ namespace Ferretto.Common.Controls
             return parentWmsView?.Data;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

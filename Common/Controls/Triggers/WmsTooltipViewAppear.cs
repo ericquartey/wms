@@ -20,7 +20,7 @@
 
         public static readonly DependencyProperty TooltipProperty = DependencyProperty.Register(nameof(Tooltip), typeof(string), typeof(WmsTooltipViewAppear));
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -36,7 +36,7 @@
             set => this.SetValue(TooltipProperty, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -65,6 +65,6 @@
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

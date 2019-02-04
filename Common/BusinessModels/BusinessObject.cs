@@ -11,7 +11,7 @@ namespace Ferretto.Common.BusinessModels
 
         public int Id { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -60,6 +60,6 @@ namespace Ferretto.Common.BusinessModels
             return this.SetProperty(ref member, value, propertyName);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

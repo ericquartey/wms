@@ -117,6 +117,6 @@ namespace Feretto.Common.BLL.Tests
             Assert.IsFalse(loadingUnit.CanAddCompartment(compartment2));
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -23,6 +23,6 @@
 
         public int YPosition { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

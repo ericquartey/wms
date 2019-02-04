@@ -44,6 +44,6 @@ namespace Ferretto.WMS.Scheduler.Core
 
         public ItemListRowStatus ItemListRowStatus { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

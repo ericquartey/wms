@@ -23,6 +23,6 @@ namespace Ferretto.Common.BusinessProviders
 
         int GetAllVertimagModelXsCount();
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -45,6 +45,6 @@ namespace Ferretto.Common.DataModels
 
         public int? ZCoordinate { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

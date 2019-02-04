@@ -10,7 +10,7 @@
             this.Id = id;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -18,6 +18,6 @@
 
         public string Id { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

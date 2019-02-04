@@ -18,7 +18,7 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly IItemListRowsSchedulerService itemListRowsSchedulerService;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -32,7 +32,7 @@ namespace Ferretto.Common.BusinessProviders
             this.itemListRowsSchedulerService = itemListRowsSchedulerService;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -173,6 +173,6 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

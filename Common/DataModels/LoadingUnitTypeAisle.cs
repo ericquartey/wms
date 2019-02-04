@@ -13,6 +13,6 @@
 
         public int LoadingUnitTypeId { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

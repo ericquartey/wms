@@ -62,7 +62,7 @@ namespace Ferretto.Common.Controls
 
         private readonly InfoRuler infoRuler;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -74,7 +74,7 @@ namespace Ferretto.Common.Controls
             RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -158,7 +158,7 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(StepProperty, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -678,6 +678,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }
