@@ -44,7 +44,7 @@ namespace Ferretto.Common.Controls
 
         private ICommand showFiltersCommand;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -125,7 +125,7 @@ namespace Ferretto.Common.Controls
         public ICommand ShowFiltersCommand => this.showFiltersCommand ??
              (this.showFiltersCommand = new DelegateCommand(this.ExecuteShowFiltersCommand));
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -291,6 +291,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -9,6 +9,6 @@
 
         void Previous();
 
-        #endregion Methods
+        #endregion
     }
 }

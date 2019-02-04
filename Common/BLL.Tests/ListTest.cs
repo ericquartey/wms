@@ -102,7 +102,7 @@ namespace Ferretto.Common.BLL.Tests
                 context.SaveChanges();
             }
 
-            #endregion Arrange
+            #endregion
 
             using (var context = this.CreateContext())
             {
@@ -115,7 +115,7 @@ namespace Ferretto.Common.BLL.Tests
 
                 var requests = await warehouse.PrepareListForExecutionAsync(list1.Id, bay2.AreaId, bay2.Id);
 
-                #endregion Act
+                #endregion
 
                 #region Assert
 
@@ -153,10 +153,10 @@ namespace Ferretto.Common.BLL.Tests
                     context.Missions.Last().ItemListRowId,
                     "The last generated mission should refer to the row with lowest priority.");
 
-                #endregion Assert
+                #endregion
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

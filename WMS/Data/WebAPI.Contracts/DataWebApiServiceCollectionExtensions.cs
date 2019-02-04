@@ -21,6 +21,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             return serviceCollection;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

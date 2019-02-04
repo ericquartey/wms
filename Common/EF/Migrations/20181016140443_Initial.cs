@@ -1761,6 +1761,6 @@ namespace Ferretto.Common.EF.Migrations
                 column: "SourceCellId");
         }
 
-        #endregion Methods
+        #endregion
     }
 }

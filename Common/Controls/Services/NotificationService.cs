@@ -23,7 +23,7 @@ namespace Ferretto.Common.Controls.Services
         private Microsoft.AspNetCore.SignalR.Client.HubConnection connection;
         private bool isConnected;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -34,7 +34,7 @@ namespace Ferretto.Common.Controls.Services
             this.logger = NLog.LogManager.GetCurrentClassLogger();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -119,6 +119,6 @@ namespace Ferretto.Common.Controls.Services
             this.eventService.Invoke(new StatusPubSubEvent() { IsSchedulerOnline = true });
         }
 
-        #endregion Methods
+        #endregion
     }
 }

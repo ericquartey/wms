@@ -35,7 +35,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.NavigationService = navigationService;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -45,7 +45,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public IRegionManager RegionManager { get; private set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -114,6 +114,6 @@ namespace Ferretto.WMS.Modules.MasterData
             this.logger.Trace("Module loaded.");
         }
 
-        #endregion Methods
+        #endregion
     }
 }

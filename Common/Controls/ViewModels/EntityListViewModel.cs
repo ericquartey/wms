@@ -34,7 +34,7 @@ namespace Ferretto.Common.Controls
 
         private object selectedItem;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -43,7 +43,7 @@ namespace Ferretto.Common.Controls
             this.InitializeEvent();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -122,7 +122,7 @@ namespace Ferretto.Common.Controls
 
         protected IEnumerable<IFilterDataSource<TModel>> FilterDataSources => this.filterDataSources;
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -185,6 +185,6 @@ namespace Ferretto.Common.Controls
             this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<TModel>>(eventArgs => { this.LoadRelatedData(); });
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -24,6 +24,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
             throw new NotImplementedException();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

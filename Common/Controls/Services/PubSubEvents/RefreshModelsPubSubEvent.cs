@@ -8,7 +8,7 @@ namespace Ferretto.Common.Controls.Services
 
         private readonly object modelId;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -17,7 +17,7 @@ namespace Ferretto.Common.Controls.Services
             this.modelId = modelId;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -25,6 +25,6 @@ namespace Ferretto.Common.Controls.Services
 
         public string Token { get; }
 
-        #endregion Properties
+        #endregion
     }
 }

@@ -58,6 +58,6 @@ namespace Ferretto.Common.EF.Migrations
                 oldClrType: typeof(int));
         }
 
-        #endregion Methods
+        #endregion
     }
 }

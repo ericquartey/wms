@@ -61,7 +61,7 @@ namespace Ferretto.Common.Controls
 
         private const int WIDTHMARK = 1;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -198,7 +198,7 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(TrayWidthProperty, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -570,6 +570,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

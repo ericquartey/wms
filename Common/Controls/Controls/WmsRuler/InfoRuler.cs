@@ -16,6 +16,6 @@ namespace Ferretto.Common.Controls
 
         public OriginVertical OriginVertical { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

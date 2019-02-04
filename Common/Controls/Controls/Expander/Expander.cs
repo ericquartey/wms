@@ -20,7 +20,7 @@ namespace Ferretto.Common.Controls
         private Grid gridHeaderSite;
         private ToggleButton toggleButton;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -29,7 +29,7 @@ namespace Ferretto.Common.Controls
             this.Style = Application.Current.Resources["WmsExpanderStyle"] as Style;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -39,7 +39,7 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(HideToggleButtonProperty, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -83,6 +83,6 @@ namespace Ferretto.Common.Controls
             this.gridHeaderSite.Height = actualHeight;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

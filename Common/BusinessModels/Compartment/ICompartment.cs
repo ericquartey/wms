@@ -16,6 +16,6 @@ namespace Ferretto.Common.BusinessModels
 
         int? YPosition { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

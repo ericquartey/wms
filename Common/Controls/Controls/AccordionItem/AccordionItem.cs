@@ -31,7 +31,7 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty TitleHeaderProperty = DependencyProperty.Register(
                            nameof(TitleHeader), typeof(string), typeof(AccordionItem), new UIPropertyMetadata(string.Empty));
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -40,7 +40,7 @@ namespace Ferretto.Common.Controls
             this.IsExpanded = false;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -62,6 +62,6 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(TitleHeaderProperty, value);
         }
 
-        #endregion Properties
+        #endregion
     }
 }

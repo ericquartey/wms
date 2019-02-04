@@ -11,6 +11,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public FilteringUIContext FilteringContext { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

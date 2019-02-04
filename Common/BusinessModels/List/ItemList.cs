@@ -19,7 +19,7 @@ namespace Ferretto.Common.BusinessModels
         private ItemListType itemListType;
         private int priority;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -51,6 +51,6 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.ItemListPriority), ResourceType = typeof(BusinessObjects))]
         public int Priority { get => this.priority; set => this.SetProperty(ref this.priority, value); }
 
-        #endregion Properties
+        #endregion
     }
 }

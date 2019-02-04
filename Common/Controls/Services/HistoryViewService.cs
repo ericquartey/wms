@@ -17,7 +17,7 @@ namespace Ferretto.Common.Controls.Services
         private IWmsHistoryView currentHistoryView;
         private bool isControlPressed;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -26,7 +26,7 @@ namespace Ferretto.Common.Controls.Services
             this.inputService.BeginMouseNotify(this, this.OnMouseDown);
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -83,6 +83,6 @@ namespace Ferretto.Common.Controls.Services
             this.isControlPressed = false;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

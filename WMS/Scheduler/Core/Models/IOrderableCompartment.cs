@@ -10,6 +10,6 @@ namespace Ferretto.WMS.Scheduler.Core
 
         DateTime? FirstStoreDate { get; }
 
-        #endregion Properties
+        #endregion
     }
 }

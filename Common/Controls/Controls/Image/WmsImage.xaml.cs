@@ -20,7 +20,7 @@ namespace Ferretto.Common.Controls
 
         private readonly IImageProvider imageService;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -31,7 +31,7 @@ namespace Ferretto.Common.Controls
             this.imageService = ServiceLocator.Current.GetInstance<IImageProvider>();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -47,7 +47,7 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(PathProperty, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -60,6 +60,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -12,7 +12,7 @@ namespace Ferretto.WMS.Scheduler.Core
         private int reservedToStore;
         private int stock;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -70,6 +70,6 @@ namespace Ferretto.WMS.Scheduler.Core
 
         public string Sub2 { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

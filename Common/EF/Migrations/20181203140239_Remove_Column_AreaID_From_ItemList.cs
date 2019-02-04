@@ -53,6 +53,6 @@ namespace Ferretto.Common.EF.Migrations
                 table: "ItemLists");
         }
 
-        #endregion Methods
+        #endregion
     }
 }

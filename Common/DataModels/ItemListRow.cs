@@ -56,6 +56,6 @@ namespace Ferretto.Common.DataModels
 
         public string Sub2 { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

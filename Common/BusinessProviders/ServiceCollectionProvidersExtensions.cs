@@ -25,6 +25,6 @@ namespace Ferretto.Common.BusinessProviders
             return serviceCollection;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

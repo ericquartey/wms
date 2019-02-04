@@ -9,7 +9,7 @@
             this.OperatorName = operatorName;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -21,7 +21,7 @@
 
         public IExpression RightExpression { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -30,6 +30,6 @@
             return string.Format(this.Format, this.LeftExpression?.ToString(), this.RightExpression?.ToString());
         }
 
-        #endregion Methods
+        #endregion
     }
 }

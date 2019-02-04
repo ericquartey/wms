@@ -24,13 +24,13 @@ namespace Ferretto.Common.Modules.BLL
             this.Container = container;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public IUnityContainer Container { get; private set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -87,6 +87,6 @@ namespace Ferretto.Common.Modules.BLL
             this.Container.RegisterInstance(SchedulerServiceFactory.GetService<IItemListRowsSchedulerService>(serviceEndPoint));
         }
 
-        #endregion Methods
+        #endregion
     }
 }

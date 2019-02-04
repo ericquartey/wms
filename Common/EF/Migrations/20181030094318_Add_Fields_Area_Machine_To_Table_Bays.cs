@@ -83,6 +83,6 @@ namespace Ferretto.Common.EF.Migrations
                 onDelete: ReferentialAction.Restrict);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -19,7 +19,7 @@ namespace Ferretto.Common.Controls
             typeof(CustomMenuTileFlyoutPosition),
             new PropertyMetadata(OnSetEnabledChanged));
 
-        #endregion Fields
+        #endregion
 
         #region Methods
 
@@ -202,6 +202,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

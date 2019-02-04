@@ -14,7 +14,7 @@ namespace Ferretto.Common.Utils
         private static readonly Regex ViewModelSuffixRegEx =
                     new Regex($"{Common.VIEWMODEL_SUFFIX}$", RegexOptions.Compiled);
 
-        #endregion Fields
+        #endregion
 
         #region Methods
 
@@ -62,6 +62,6 @@ namespace Ferretto.Common.Utils
                    viewModelName.EndsWith(Common.VIEWMODEL_SUFFIX, StringComparison.InvariantCulture);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

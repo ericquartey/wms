@@ -6,6 +6,6 @@
 
         bool IsEnabled { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

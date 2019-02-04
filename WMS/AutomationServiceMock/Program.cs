@@ -67,6 +67,6 @@ namespace Ferretto.WMS.AutomationServiceMock
                 .Build();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

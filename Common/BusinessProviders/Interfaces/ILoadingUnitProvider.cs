@@ -32,6 +32,6 @@ namespace Ferretto.Common.BusinessProviders
 
         bool HasAnyCompartments(int loadingUnitId);
 
-        #endregion Methods
+        #endregion
     }
 }

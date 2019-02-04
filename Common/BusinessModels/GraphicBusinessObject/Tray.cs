@@ -17,13 +17,13 @@ namespace Ferretto.Common.BusinessModels
 
         private Dimension dimension;
 
-        #endregion Fields
+        #endregion
 
         #region Events
 
         public event EventHandler<CompartmentEventArgs> CompartmentChangedEvent;
 
-        #endregion Events
+        #endregion
 
         #region Properties
 
@@ -48,7 +48,7 @@ namespace Ferretto.Common.BusinessModels
 
         public Dimension RulerSize { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -184,6 +184,6 @@ namespace Ferretto.Common.BusinessModels
             return false;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

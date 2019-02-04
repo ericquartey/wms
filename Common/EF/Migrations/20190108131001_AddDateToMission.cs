@@ -43,6 +43,6 @@ namespace Ferretto.Common.EF.Migrations
                 defaultValueSql: "GETUTCDATE()");
         }
 
-        #endregion Methods
+        #endregion
     }
 }

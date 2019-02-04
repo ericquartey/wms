@@ -42,6 +42,6 @@
 
         public const string WITHDRAWDIALOG = "WithdrawDialogViewModel";
 
-        #endregion Fields
+        #endregion
     }
 }

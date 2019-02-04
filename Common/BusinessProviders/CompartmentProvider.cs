@@ -31,7 +31,7 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly EnumerationProvider enumerationProvider;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -45,7 +45,7 @@ namespace Ferretto.Common.BusinessProviders
             this.compartmentTypeProvider = compartmentTypeProvider;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -490,6 +490,6 @@ namespace Ferretto.Common.BusinessProviders
                .AsNoTracking();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -14,7 +14,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ICommand withdrawCommand;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -25,7 +25,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public ICommand WithdrawCommand => this.withdrawCommand ??
                 (this.withdrawCommand = new DelegateCommand(ExecuteWithdrawCommand));
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -44,6 +44,6 @@ namespace Ferretto.WMS.Modules.MasterData
             this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.ITEMLISTDETAILS, this.CurrentItem.Id);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

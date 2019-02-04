@@ -13,6 +13,6 @@ namespace Ferretto.Common.DataModels
 
         public IEnumerable<LoadingUnit> LoadingUnits { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

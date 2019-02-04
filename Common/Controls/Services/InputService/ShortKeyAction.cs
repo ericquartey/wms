@@ -11,7 +11,7 @@
             this.ShortKey = shortKey;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -23,6 +23,6 @@
 
         public object ViewModel { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

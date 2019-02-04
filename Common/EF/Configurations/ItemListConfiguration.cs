@@ -36,6 +36,6 @@ namespace Ferretto.Common.EF.Configurations
                  .HasConversion(x => (char)x, x => (ItemListType)Enum.ToObject(typeof(ItemListType), x));
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -74,6 +74,6 @@ namespace Ferretto.Common.EF.Configurations
                .OnDelete(DeleteBehavior.ClientSetNull);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

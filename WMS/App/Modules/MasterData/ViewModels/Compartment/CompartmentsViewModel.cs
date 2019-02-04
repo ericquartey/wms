@@ -11,7 +11,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ICommand showDetailsCommand;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -19,7 +19,7 @@ namespace Ferretto.WMS.Modules.MasterData
                           (this.showDetailsCommand = new DelegateCommand(this.ExecuteShowDetailsCommand, this.CanShowDetailsCommand)
             .ObservesProperty(() => this.CurrentItem));
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -33,6 +33,6 @@ namespace Ferretto.WMS.Modules.MasterData
             this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.ITEMLISTDETAILS, this.CurrentItem.Id);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

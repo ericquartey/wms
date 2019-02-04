@@ -6,6 +6,6 @@
 
         public string Description { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

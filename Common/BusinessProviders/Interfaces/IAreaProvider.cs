@@ -9,6 +9,6 @@ namespace Ferretto.Common.BusinessProviders
 
         IQueryable<Area> GetByItemIdAvailability(int id);
 
-        #endregion Methods
+        #endregion
     }
 }

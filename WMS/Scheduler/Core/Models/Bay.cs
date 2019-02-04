@@ -8,7 +8,7 @@
 
         public int LoadingUnitsBufferUsage { get; internal set; }
 
-        #endregion Properties
+        #endregion
 
         // TODO: should LoadingUnitsBufferSize this be a non-nullable?
     }

@@ -38,6 +38,6 @@ namespace Ferretto.Common.Controls.Interfaces
 
         void IsBusy(bool isBusy);
 
-        #endregion Methods
+        #endregion
     }
 }

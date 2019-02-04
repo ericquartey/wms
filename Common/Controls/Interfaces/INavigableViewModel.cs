@@ -12,7 +12,7 @@
 
         string Token { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -24,6 +24,6 @@
 
         void Dispose();
 
-        #endregion Methods
+        #endregion
     }
 }

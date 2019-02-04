@@ -13,7 +13,7 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty LabelProperty =
             DependencyProperty.Register(nameof(Label), typeof(string), typeof(ContentGroup));
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -23,7 +23,7 @@ namespace Ferretto.Common.Controls
             this.GridContentGroup.DataContext = this;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -39,6 +39,6 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(LabelProperty, value);
         }
 
-        #endregion Properties
+        #endregion
     }
 }

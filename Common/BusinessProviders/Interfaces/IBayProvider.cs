@@ -9,6 +9,6 @@ namespace Ferretto.Common.BusinessProviders
 
         IQueryable<Bay> GetByAreaId(int id);
 
-        #endregion Methods
+        #endregion
     }
 }

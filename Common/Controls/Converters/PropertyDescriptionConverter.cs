@@ -17,7 +17,7 @@ namespace Ferretto.Common.Controls
 
         public DependencyProperty Property { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -72,6 +72,6 @@ namespace Ferretto.Common.Controls
             throw new NotSupportedException();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

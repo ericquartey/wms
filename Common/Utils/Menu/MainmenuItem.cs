@@ -23,7 +23,7 @@ namespace Ferretto.Common.Utils.Menu
             this.Data = data;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -41,6 +41,6 @@ namespace Ferretto.Common.Utils.Menu
 
         public string ViewName { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

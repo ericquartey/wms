@@ -18,7 +18,7 @@ namespace Ferretto.Common.BusinessModels
         private ItemListRowDetails itemListRowDetails;
         private bool schedule;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -86,7 +86,7 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
-        #endregion Properties
+        #endregion
 
         #region Indexers
 
@@ -119,6 +119,6 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
-        #endregion Indexers
+        #endregion
     }
 }
