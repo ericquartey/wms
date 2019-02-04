@@ -44,7 +44,7 @@ namespace Ferretto.WMS.Data.Tests
 
         protected DataModels.MachineType MachineType1 { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -132,6 +132,6 @@ namespace Ferretto.WMS.Data.Tests
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

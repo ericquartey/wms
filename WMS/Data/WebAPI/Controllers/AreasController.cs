@@ -25,7 +25,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ILogger logger;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -39,7 +39,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             this.bayProvider = bayProvider;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -113,6 +113,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

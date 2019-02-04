@@ -29,6 +29,6 @@ namespace Ferretto.WMS.Data.Tests
             Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => item.Width = -1);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

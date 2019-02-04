@@ -45,19 +45,19 @@ namespace Ferretto.WMS.Data.Tests
                 context.Compartments.Add(compartment1);
                 context.SaveChanges();
 
-                #endregion Arrange
+                #endregion
 
                 #region Act
 
                 var actionResult = await controller.GetAreasWithAvailability(item1.Id);
 
-                #endregion Act
+                #endregion
 
                 #region Assert
 
                 Assert.IsInstanceOfType(actionResult.Result, typeof(NotFoundObjectResult));
 
-                #endregion Assert
+                #endregion
             }
         }
 
@@ -78,13 +78,13 @@ namespace Ferretto.WMS.Data.Tests
                 context.Compartments.Add(compartment2);
                 context.SaveChanges();
 
-                #endregion Arrange
+                #endregion
 
                 #region Act
 
                 var actionResult = await controller.GetAreasWithAvailability(item1.Id);
 
-                #endregion Act
+                #endregion
 
                 #region Assert
 
@@ -92,7 +92,7 @@ namespace Ferretto.WMS.Data.Tests
                 var resultAreas = (IEnumerable<Area>)((OkObjectResult)actionResult.Result).Value;
                 Assert.AreEqual(2, resultAreas.Count());
 
-                #endregion Assert
+                #endregion
             }
         }
 
@@ -113,13 +113,13 @@ namespace Ferretto.WMS.Data.Tests
                 context.Compartments.Add(compartment2);
                 context.SaveChanges();
 
-                #endregion Arrange
+                #endregion
 
                 #region Act
 
                 var actionResult = await controller.GetAreasWithAvailability(item1.Id);
 
-                #endregion Act
+                #endregion
 
                 #region Assert
 
@@ -127,7 +127,7 @@ namespace Ferretto.WMS.Data.Tests
                 var resultAreas = (IEnumerable<Area>)((OkObjectResult)actionResult.Result).Value;
                 Assert.AreEqual(1, resultAreas.Count());
 
-                #endregion Assert
+                #endregion
             }
         }
 
@@ -144,19 +144,19 @@ namespace Ferretto.WMS.Data.Tests
                 context.Items.Add(item1);
                 context.SaveChanges();
 
-                #endregion Arrange
+                #endregion
 
                 #region Act
 
                 var actionResult = await controller.GetAreasWithAvailability(item1.Id);
 
-                #endregion Act
+                #endregion
 
                 #region Assert
 
                 Assert.IsInstanceOfType(actionResult.Result, typeof(NotFoundObjectResult));
 
-                #endregion Assert
+                #endregion
             }
         }
 
@@ -168,6 +168,6 @@ namespace Ferretto.WMS.Data.Tests
                 new AreaProvider(context));
         }
 
-        #endregion Methods
+        #endregion
     }
 }

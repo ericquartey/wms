@@ -9,6 +9,6 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string Description { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

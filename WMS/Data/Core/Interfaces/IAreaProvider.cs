@@ -13,6 +13,6 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<IEnumerable<Area>> GetByItemIdAvailabilityAsync(int id);
 
-        #endregion Methods
+        #endregion
     }
 }

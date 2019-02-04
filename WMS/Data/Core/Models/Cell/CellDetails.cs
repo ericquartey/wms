@@ -20,7 +20,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         private int? zCoordinate;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -80,6 +80,6 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.zCoordinate = CheckIfPositive(value);
         }
 
-        #endregion Properties
+        #endregion
     }
 }

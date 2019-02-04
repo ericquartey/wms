@@ -12,6 +12,6 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<ItemList> GetByIdAsync(int id);
 
-        #endregion Methods
+        #endregion
     }
 }

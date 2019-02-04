@@ -11,6 +11,6 @@ namespace Ferretto.WMS.Data.Core.Interfaces.Base
 
         Task<int> GetAllCountAsync();
 
-        #endregion Methods
+        #endregion
     }
 }

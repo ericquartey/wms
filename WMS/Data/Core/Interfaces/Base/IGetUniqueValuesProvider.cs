@@ -8,6 +8,6 @@ namespace Ferretto.WMS.Data.Core.Interfaces.Base
 
         Task<object[]> GetUniqueValuesAsync(string propertyName);
 
-        #endregion Methods
+        #endregion
     }
 }

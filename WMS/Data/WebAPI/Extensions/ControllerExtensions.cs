@@ -23,6 +23,6 @@ namespace Ferretto.WMS.Data.WebAPI.Extensions
             return (Expression<Func<T, bool>>)Expression.Lambda(lambdaBody, lambdaInParameter);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

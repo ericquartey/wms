@@ -16,7 +16,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         private string machineTypeId;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -66,7 +66,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string RegistrationNumber { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -82,6 +82,6 @@ namespace Ferretto.WMS.Data.Core.Models
                 this.MachineTypes?.SingleOrDefault(m => m.Id == this.MachineTypeId)?.Description;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

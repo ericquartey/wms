@@ -17,7 +17,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly DatabaseContext dataContext;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -26,7 +26,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             this.dataContext = dataContext;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -192,6 +192,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                            });
         }
 
-        #endregion Methods
+        #endregion
     }
 }

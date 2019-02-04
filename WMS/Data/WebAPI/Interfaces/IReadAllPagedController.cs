@@ -16,6 +16,6 @@ namespace Ferretto.WMS.Data.WebAPI.Interfaces
             string orderBy = null,
             string search = null);
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -8,6 +8,6 @@ namespace Ferretto.WMS.Data.Core.Interfaces.Base
 
         Task<T> AddAsync(T model);
 
-        #endregion Methods
+        #endregion
     }
 }

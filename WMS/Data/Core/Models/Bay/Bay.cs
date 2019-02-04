@@ -6,7 +6,7 @@
 
         private int? loadingUnitsBufferSize;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -30,6 +30,6 @@
 
         public string MachineNickname { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

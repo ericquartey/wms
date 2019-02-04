@@ -28,6 +28,6 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<Item> UpdateAsync(Item item);
 
-        #endregion Methods
+        #endregion
     }
 }

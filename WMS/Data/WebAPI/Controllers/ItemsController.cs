@@ -30,7 +30,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ILogger logger;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -44,7 +44,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             this.areaProvider = areaProvider;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -241,6 +241,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 i.TotalAvailable.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase) == true;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

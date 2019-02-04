@@ -8,6 +8,6 @@ namespace Ferretto.WMS.Data.Core.Interfaces.Base
 
         Task<int> DeleteAsync(int id);
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -11,6 +11,6 @@ namespace Ferretto.WMS.Data.WebAPI.Interfaces
 
         Task<ActionResult<T>> GetByIdAsync(int id);
 
-        #endregion Methods
+        #endregion
     }
 }

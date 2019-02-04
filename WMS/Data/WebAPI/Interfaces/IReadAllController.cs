@@ -11,6 +11,6 @@ namespace Ferretto.WMS.Data.WebAPI.Interfaces
 
         Task<ActionResult<IEnumerable<T>>> GetAllAsync();
 
-        #endregion Methods
+        #endregion
     }
 }

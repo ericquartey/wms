@@ -14,7 +14,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -41,6 +41,6 @@ namespace Ferretto.WMS.Data.Core.Providers
             return (Expression<Func<TDataModel, object>>)Expression.Lambda(lambdaBody, lambdaInParameter);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

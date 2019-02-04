@@ -32,13 +32,13 @@ namespace Ferretto.WMS.Data.Tests
 
                 var controller = MockController(context);
 
-                #endregion Arrange
+                #endregion
 
                 #region Act
 
                 var actionResult = await controller.GetAllAsync();
 
-                #endregion Act
+                #endregion
 
                 #region Assert
 
@@ -46,7 +46,7 @@ namespace Ferretto.WMS.Data.Tests
                 var resultBays = (IEnumerable<Bay>)((OkObjectResult)actionResult.Result).Value;
                 Assert.AreEqual(2, resultBays.Count());
 
-                #endregion Assert
+                #endregion
             }
         }
 
@@ -59,13 +59,13 @@ namespace Ferretto.WMS.Data.Tests
 
                 var controller = MockController(context);
 
-                #endregion Arrange
+                #endregion
 
                 #region Act
 
                 var actionResult = await controller.GetByIdAsync(1);
 
-                #endregion Act
+                #endregion
 
                 #region Assert
 
@@ -73,7 +73,7 @@ namespace Ferretto.WMS.Data.Tests
                 var resultBay = (Bay)((OkObjectResult)actionResult.Result).Value;
                 Assert.AreEqual(1, resultBay.Id);
 
-                #endregion Assert
+                #endregion
             }
         }
 
@@ -86,19 +86,19 @@ namespace Ferretto.WMS.Data.Tests
 
                 var controller = MockController(context);
 
-                #endregion Arrange
+                #endregion
 
                 #region Act
 
                 var actionResult = await controller.GetByIdAsync(999);
 
-                #endregion Act
+                #endregion
 
                 #region Assert
 
                 Assert.IsInstanceOfType(actionResult.Result, typeof(NotFoundObjectResult));
 
-                #endregion Assert
+                #endregion
             }
         }
 
@@ -115,6 +115,6 @@ namespace Ferretto.WMS.Data.Tests
                 new BayProvider(context));
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -10,6 +10,6 @@ namespace Ferretto.WMS.Data.WebAPI.Interfaces
 
         Task<ActionResult<T>> UpdateAsync(T model);
 
-        #endregion Methods
+        #endregion
     }
 }

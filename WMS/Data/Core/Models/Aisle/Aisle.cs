@@ -10,6 +10,6 @@
 
         public string Name { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

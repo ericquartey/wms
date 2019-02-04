@@ -15,6 +15,6 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<IEnumerable<Cell>> GetByAreaIdAsync(int areaId);
 
-        #endregion Methods
+        #endregion
     }
 }

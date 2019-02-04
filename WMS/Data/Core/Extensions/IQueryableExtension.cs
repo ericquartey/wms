@@ -26,7 +26,7 @@ namespace Ferretto.WMS.Data.Core.Extensions
 
         private static MethodInfo thenByMethod;
 
-        #endregion Fields
+        #endregion
 
         #region Methods
 
@@ -229,6 +229,6 @@ namespace Ferretto.WMS.Data.Core.Extensions
             });
         }
 
-        #endregion Methods
+        #endregion
     }
 }

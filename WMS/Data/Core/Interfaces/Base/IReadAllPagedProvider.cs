@@ -20,6 +20,6 @@ namespace Ferretto.WMS.Data.Core.Interfaces.Base
             Expression<Func<T, bool>> whereExpression = null,
             Expression<Func<T, bool>> searchExpression = null);
 
-        #endregion Methods
+        #endregion
     }
 }
