@@ -98,6 +98,17 @@
   &lt;/TypePattern&gt;&#xD;
   &lt;TypePattern DisplayName="Default Pattern"&gt;&#xD;
     &lt;Region Name="Fields"&gt;&#xD;
+      &lt;Entry DisplayName="Constants"&gt;&#xD;
+        &lt;Entry.Match&gt;&#xD;
+          &lt;Kind Is="Constant" /&gt;&#xD;
+        &lt;/Entry.Match&gt;&#xD;
+        &lt;Entry.SortBy&gt;&#xD;
+          &lt;Static /&gt;&#xD;
+          &lt;Access /&gt;&#xD;
+          &lt;Readonly /&gt;&#xD;
+          &lt;Name /&gt;&#xD;
+        &lt;/Entry.SortBy&gt;&#xD;
+      &lt;/Entry&gt;&#xD;
       &lt;Entry DisplayName="Fields"&gt;&#xD;
         &lt;Entry.Match&gt;&#xD;
           &lt;Kind Is="Field" /&gt;&#xD;
