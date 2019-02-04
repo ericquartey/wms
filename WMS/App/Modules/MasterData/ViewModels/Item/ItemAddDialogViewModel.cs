@@ -1,0 +1,234 @@
+﻿using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BusinessModels;
+using Ferretto.Common.BusinessProviders;
+using Ferretto.Common.Controls;
+using Ferretto.Common.Controls.Interfaces;
+using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Modules.BLL.Models;
+using Microsoft.Practices.ServiceLocation;
+using Prism.Commands;
+
+namespace Ferretto.WMS.Modules.MasterData
+{
+    public class ItemAddDialogViewModel : DetailsViewModel<ItemDetails>, IRefreshDataEntityViewModel, IEdit
+    {
+        #region Fields
+
+        private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+
+        private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
+
+        private ICommand closeDialogCommand;
+
+        private IDataSource<Compartment> compartmentsDataSource;
+
+        private bool itemHasCompartments;
+
+        private object modelChangedEventSubscription;
+
+        private object modelRefreshSubscription;
+
+        private object modelSelectionChangedSubscription;
+
+        private object selectedCompartment;
+
+        private ICommand withdrawCommand;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public ItemAddDialogViewModel()
+        {
+            this.Initialize();
+        }
+
+        #endregion Constructors
+
+        #region Properties
+
+        public ICommand CloseDialogCommand => this.closeDialogCommand ??
+                                           (this.closeDialogCommand = new Prism.Commands.DelegateCommand(
+                               this.ExecuteCloseDialogCommand));
+
+        public IDataSource<Compartment> CompartmentsDataSource
+        {
+            get => this.compartmentsDataSource;
+            set => this.SetProperty(ref this.compartmentsDataSource, value);
+        }
+
+        public Compartment CurrentCompartment
+        {
+            get
+            {
+                if (this.selectedCompartment == null)
+                {
+                    return default(Compartment);
+                }
+
+                if ((this.selectedCompartment is DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread) == false)
+                {
+                    return default(Compartment);
+                }
+
+                return (Compartment)((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedCompartment).OriginalRow;
+            }
+        }
+
+        public bool ItemHasCompartments
+        {
+            get => this.itemHasCompartments;
+            set => this.SetProperty(ref this.itemHasCompartments, value);
+        }
+
+        public object SelectedCompartment
+        {
+            get => this.selectedCompartment;
+            set
+            {
+                this.SetProperty(ref this.selectedCompartment, value);
+                this.RaisePropertyChanged(nameof(this.CurrentCompartment));
+            }
+        }
+
+        public ICommand WithdrawCommand => this.withdrawCommand ??
+                                          (this.withdrawCommand = new DelegateCommand(
+                                               this.ExecuteWithdraw,
+                                               this.CanExecuteWithdraw));
+
+        #endregion Properties
+
+        #region Methods
+
+        public override void RefreshData()
+        {
+            this.CompartmentsDataSource = this.Model != null
+                ? new DataSource<Compartment>(() => this.compartmentProvider.GetByItemId(this.Model.Id))
+                : null;
+
+            this.EvaluateCanExecuteCommands();
+        }
+
+        protected override void EvaluateCanExecuteCommands()
+        {
+            base.EvaluateCanExecuteCommands();
+
+            ((DelegateCommand)this.WithdrawCommand)?.RaiseCanExecuteChanged();
+        }
+
+        protected override async Task ExecuteRevertCommand()
+        {
+            await this.LoadDataAsync();
+        }
+
+        protected override async Task ExecuteSaveCommand()
+        {
+            this.IsBusy = true;
+
+            var result = await this.itemProvider.SaveAsync(this.Model);
+            if (result.Success)
+            {
+                this.TakeModelSnapshot();
+
+                this.EventService.Invoke(new ModelChangedPubSubEvent<Item>(this.Model.Id));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+            }
+
+            this.IsBusy = false;
+        }
+
+        protected override async void OnAppear()
+        {
+            base.OnAppear();
+
+            await this.LoadDataAsync();
+        }
+
+        protected override void OnDispose()
+        {
+            this.EventService.Unsubscribe<RefreshModelsPubSubEvent<Item>>(this.modelRefreshSubscription);
+            this.EventService.Unsubscribe<ModelChangedPubSubEvent<Item>>(this.modelChangedEventSubscription);
+            this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<Item>>(this.modelSelectionChangedSubscription);
+            base.OnDispose();
+        }
+
+        private bool CanExecuteWithdraw()
+        {
+            return this.Model?.TotalAvailable > 0;
+        }
+
+        private void ExecuteCloseDialogCommand()
+        {
+            this.Disappear();
+        }
+
+        private void ExecuteWithdraw()
+        {
+            this.IsBusy = true;
+
+            this.NavigationService.Appear(
+                nameof(MasterData),
+                Common.Utils.Modules.MasterData.WITHDRAWDIALOG,
+                new
+                {
+                    Id = this.Model.Id
+                });
+
+            this.IsBusy = false;
+        }
+
+        private void Initialize()
+        {
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<Item>>(async eventArgs => await this.LoadDataAsync(), this.Token, true, true);
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<Item>>(async eventArgs => await this.LoadDataAsync());
+            this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<Item>>(
+                async eventArgs =>
+                {
+                    if (eventArgs.ModelId.HasValue)
+                    {
+                        this.Data = eventArgs.ModelId.Value;
+                        if (this.Data is int)
+                        {
+                            await this.LoadDataAsync();
+                        }
+                    }
+                    else
+                    {
+                        this.Model = null;
+                    }
+                },
+                this.Token,
+                true,
+                true);
+        }
+
+        private async Task LoadDataAsync()
+        {
+            try
+            {
+                this.IsBusy = true;
+
+                if (this.Data is int modelId)
+                {
+                    this.Model = await this.itemProvider.GetByIdAsync(modelId);
+                    this.ItemHasCompartments = this.itemProvider.HasAnyCompartments(modelId);
+                }
+
+                this.IsBusy = false;
+            }
+            catch
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
+            }
+        }
+
+        #endregion Methods
+    }
+}
