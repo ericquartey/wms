@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.driver.Destroy();
         }
 
-        public void DoHoming(BroadcastDelegate broadcastDelegate)
+        public void DoHoming()
         {
             if (this.homing == null)
             {
@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.homing.DoAction(IdOperation.SwitchHorizontalToVertical);
         }
 
-        public void DoVerticalHoming(BroadcastDelegate broadcastDelegate)
+        public void DoVerticalHoming()
         {
             if (this.verticalHoming == null)
             {

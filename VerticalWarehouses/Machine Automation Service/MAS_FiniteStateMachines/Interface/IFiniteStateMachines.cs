@@ -8,9 +8,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         void Destroy();
 
-        void DoHoming(BroadcastDelegate broadcastDelegate);
+        void DoHoming();
 
-        void DoVerticalHoming(BroadcastDelegate broadcastDelegate);
+        void DoVerticalHoming();
 
         void MakeOperationByInverter(IdOperation code);
 

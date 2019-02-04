@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MAS_DataLayer;
 using Microsoft.AspNetCore.Mvc;
+using Ferretto.VW.MAS_AutomationService;
 
 namespace MAS_AutomationService.Controllers
 {
@@ -11,11 +12,35 @@ namespace MAS_AutomationService.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        #region Fields
+
+        private readonly IAutomationService automationService;
+
         private readonly IWriteLogService log;
 
-        public ValuesController(IWriteLogService log)
+        #endregion Fields
+
+        #region Constructors
+
+        public ValuesController(IWriteLogService log, IAutomationService automationService)
         {
             this.log = log;
+            this.automationService = automationService;
+        }
+
+        #endregion Constructors
+
+        #region Methods
+
+        // DELETE api/values/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+        }
+
+        [HttpGet("HomingTest")]
+        public void ExecuteHoming()
+        {
         }
 
         // GET api/values
@@ -48,10 +73,6 @@ namespace MAS_AutomationService.Controllers
         {
         }
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        #endregion Methods
     }
 }

@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS_MissionScheduler
 
         void AddMission(Mission mission);
 
-        void DoHoming(BroadcastDelegate broadcastDelegate);
+        void DoHoming();
 
         #endregion Methods
     }

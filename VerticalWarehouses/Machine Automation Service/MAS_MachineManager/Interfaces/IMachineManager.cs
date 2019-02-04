@@ -6,7 +6,7 @@ namespace Ferretto.VW.MAS_MachineManager
     {
         #region Methods
 
-        void DoHoming(BroadcastDelegate broadcastDelegate);
+        void DoHoming();
 
         #endregion Methods
     }
