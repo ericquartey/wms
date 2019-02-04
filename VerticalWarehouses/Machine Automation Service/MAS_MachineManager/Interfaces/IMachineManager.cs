@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Ferretto.Common.Common_Utils;
+﻿using Ferretto.Common.Common_Utils;
 
 namespace Ferretto.VW.MAS_MachineManager
 {
@@ -7,7 +6,7 @@ namespace Ferretto.VW.MAS_MachineManager
     {
         #region Methods
 
-        Task DoHoming(BroadcastDelegate broadcastDelegate);
+        void DoHoming(BroadcastDelegate broadcastDelegate);
 
         #endregion Methods
     }
