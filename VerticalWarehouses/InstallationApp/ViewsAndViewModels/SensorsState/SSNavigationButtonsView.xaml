@@ -12,23 +12,17 @@
     <Grid Height="608"
           Margin="25,0,0,0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="20" />
-            <RowDefinition Height="510" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="500" />
             <RowDefinition Height="70" />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="1"
-                    VerticalAlignment="Center">
+                    VerticalAlignment="Top">
             <Button Command="{Binding VerticalButtonCommand}"
                     Content="{x:Static res:InstallationApp.VerticalAxis}"
                     Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
-            <Button Command="{Binding CradleButtonCommand}"
-                    Content="{x:Static res:InstallationApp.Cradle}"
-                    Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
             <Button Command="{Binding BaysButtonCommand}"
                     Content="{x:Static res:InstallationApp.Bays}"
-                    Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
-            <Button Command="{Binding GateButtonCommand}"
-                    Content="{x:Static res:InstallationApp.Gate}"
                     Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
             <Button Command="{Binding VariousButtonCommand}"
                     Content="{x:Static res:InstallationApp.VariousInputs}"

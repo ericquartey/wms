@@ -142,7 +142,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Bays.
+        ///   Cerca una stringa localizzata simile a Bays and height.
         /// </summary>
         public static string Bays {
             get {
@@ -808,11 +808,29 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a LU Present in Bay.
+        ///   Cerca una stringa localizzata simile a LU Present in Bay 1.
         /// </summary>
         public static string LuPresentInBay {
             get {
                 return ResourceManager.GetString("LuPresentInBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LU Present in Bay 2.
+        /// </summary>
+        public static string LuPresentInBay2 {
+            get {
+                return ResourceManager.GetString("LuPresentInBay2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LU Present in Bay 3.
+        /// </summary>
+        public static string LuPresentInBay3 {
+            get {
+                return ResourceManager.GetString("LuPresentInBay3", resourceCulture);
             }
         }
         
@@ -1375,7 +1393,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Vertical Axis.
+        ///   Cerca una stringa localizzata simile a Vertical and craddle.
         /// </summary>
         public static string VerticalAxis {
             get {

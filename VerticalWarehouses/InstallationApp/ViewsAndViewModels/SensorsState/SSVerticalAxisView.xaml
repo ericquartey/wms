@@ -12,19 +12,37 @@
                  mc:Ignorable="d">
     <Grid Width="774"
                  Height="608">
-        <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.VerticalAxis}" Margin="162,10,0,562" />
-        <custom:CustomSensorControl Margin="162,367,338,188"
-                                                LabelText="{x:Static res:InstallationApp.ZeroVerticalSensor}"
-                                                SensorState="{Binding ZeroVerticalSensor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
-            <custom:CustomSensorControl Margin="162,270,338,285"
-                                                LabelText="{x:Static res:InstallationApp.EmergencyEndRun}"
-                                                SensorState="{Binding EmergencyEndRun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
-        <custom:CustomSensorControl Margin="162,162,338,393"
-                                                LabelText="{x:Static res:InstallationApp.BrakeResistanceOvertemperature}"
-                                                SensorState="{Binding BrakeResistanceOvertemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,30,0,0"
+                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                     Text="{x:Static res:InstallationApp.VerticalAxis}"  />
+
+        <custom:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,100,0,0"
+                                      LabelText="{x:Static res:InstallationApp.EmergencyEndRun}"
+                                      SensorState="{Binding EmergencyEndRun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,140,0,0"
+                                      LabelText="{x:Static res:InstallationApp.ZeroVerticalSensor}"
+                                      SensorState="{Binding ZeroVerticalSensor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <TextBlock    HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="250,290,0,0"
+                      Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                      Text="{x:Static res:InstallationApp.Cradle}" />
+
+        <custom:CustomSensorControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,360,0,0"
+                                     LabelText="{x:Static res:InstallationApp.ZeroPawlSensor}"
+                                     SensorState="{Binding ZeroPawlSensor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,400,0,0"
+                                     LabelText="{x:Static res:InstallationApp.LuPresenceOnMachineCradleSide}"
+                                     SensorState="{Binding LuPresentInMachineSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,440,0,0"
+                                     LabelText="{x:Static res:InstallationApp.LuPresenceOnOperatorCradleSide}"
+                                     SensorState="{Binding LuPresentInOperatorSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
     </Grid>
 </myType:BaseView>

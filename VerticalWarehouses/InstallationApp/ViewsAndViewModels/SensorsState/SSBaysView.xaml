@@ -9,14 +9,27 @@
              xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
-    <Grid              Width="774"
+    <Grid    Width="774"
              Height="608">
-        <TextBlock
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.Bays}" Margin="160,10,0,562" />
-        <custom:CustomSensorControl Margin="160,270,364,285"
-                                                LabelText="{x:Static res:InstallationApp.LuPresentInBay}"
-                                                SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+        
+        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,30,0,0" 
+                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                     Text="{x:Static res:InstallationApp.Bays}"/>
+
+        <custom:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,100,0,0"
+                                      LabelText="{x:Static res:InstallationApp.LuPresentInBay}"
+                                      SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,140,0,0"
+                                      LabelText="{x:Static res:InstallationApp.LuPresentInBay2}"
+                                      SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,180,0,0"
+                                      LabelText="{x:Static res:InstallationApp.LuPresentInBay3}"
+                                      SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
     </Grid>
 </UserControl>

@@ -274,7 +274,7 @@
     <comment>Title - Button text</comment>
   </data>
   <data name="Bays" xml:space="preserve">
-    <value>Bays</value>
+    <value>Bays and height</value>
     <comment>Title - Button text</comment>
   </data>
   <data name="Cradle" xml:space="preserve">
@@ -290,7 +290,7 @@
     <comment>Title - Button text</comment>
   </data>
   <data name="VerticalAxis" xml:space="preserve">
-    <value>Vertical Axis</value>
+    <value>Vertical and craddle</value>
     <comment>Title - Button text</comment>
   </data>
   <data name="AntiIntrusionGate" xml:space="preserve">
@@ -330,7 +330,7 @@
     <comment>Sensor control text</comment>
   </data>
   <data name="LuPresentInBay" xml:space="preserve">
-    <value>LU Present in Bay</value>
+    <value>LU Present in Bay 1</value>
     <comment>Sensor control text</comment>
   </data>
   <data name="MicroCarterLeftSide" xml:space="preserve">
@@ -743,5 +743,13 @@
   </data>
   <data name="CellPositionDone" xml:space="preserve">
     <value>Cell position verified</value>
+  </data>
+  <data name="LuPresentInBay2" xml:space="preserve">
+    <value>LU Present in Bay 2</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="LuPresentInBay3" xml:space="preserve">
+    <value>LU Present in Bay 3</value>
+    <comment>Sensor control text</comment>
   </data>
 </root>
