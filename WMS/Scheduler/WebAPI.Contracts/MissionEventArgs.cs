@@ -11,12 +11,12 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
             this.Mission = mission;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public Mission Mission { get; private set; }
 
-        #endregion Properties
+        #endregion
     }
 }

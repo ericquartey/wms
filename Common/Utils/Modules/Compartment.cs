@@ -8,6 +8,6 @@
 
         public const string REGION_MAINCONTENT = "MainContent";
 
-        #endregion Fields
+        #endregion
     }
 }

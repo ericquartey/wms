@@ -6,6 +6,6 @@ namespace Ferretto.Common.Controls.Interfaces
 
         void LoadRelatedData();
 
-        #endregion Methods
+        #endregion
     }
 }

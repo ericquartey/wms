@@ -16,6 +16,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 parameterExpression);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

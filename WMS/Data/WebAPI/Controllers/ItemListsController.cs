@@ -16,7 +16,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly Models.IWarehouse warehouse;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -29,7 +29,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             this.warehouse = warehouse;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -68,6 +68,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

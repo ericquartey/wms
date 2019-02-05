@@ -1,4 +1,8 @@
 ﻿using Ferretto.VW.MAS_DataLayer;
+using Ferretto.VW.MAS_FiniteStateMachines;
+using Ferretto.VW.MAS_InverterDriver;
+using Ferretto.VW.MAS_MachineManager;
+using Ferretto.VW.MAS_MissionScheduler;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +18,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
         private const string ConnectionStringName = "AutomationService";
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -23,13 +27,13 @@ namespace Ferretto.VW.MAS_AutomationService
             this.Configuration = configuration;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public IConfiguration Configuration { get; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -56,11 +60,16 @@ namespace Ferretto.VW.MAS_AutomationService
 
             var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
 
-            services.AddDbContext<DataLayerContext>(options => options.UseSqlite(connectionString));
+            services.AddDbContext<DataLayerContext>(options => options.UseSqlite(connectionString), ServiceLifetime.Singleton);
 
-            services.AddTransient(typeof(IWriteLogService), typeof(WriteLogService));
+            services.AddSingleton<IAutomationService, AutomationService>();
+            services.AddSingleton<IWriteLogService, WriteLogService>();
+            services.AddSingleton<IMissionsScheduler, MissionsScheduler>();
+            services.AddSingleton<IMachineManager, MachineManager>();
+            services.AddSingleton<IFiniteStateMachines, FiniteStateMachines>();
+            services.AddSingleton<IInverterDriver, MAS_InverterDriver.InverterDriver>();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

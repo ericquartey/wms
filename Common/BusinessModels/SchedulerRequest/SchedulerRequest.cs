@@ -70,6 +70,6 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.CompartmentSub2), ResourceType = typeof(BusinessObjects))]
         public string Sub2 { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

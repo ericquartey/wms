@@ -13,6 +13,6 @@ namespace Ferretto.Common.DataModels
 
         public List<Machine> Machines { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

@@ -49,6 +49,6 @@ namespace Ferretto.Common.EF.Migrations
                 table: "Compartments");
         }
 
-        #endregion Methods
+        #endregion
     }
 }

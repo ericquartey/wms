@@ -10,28 +10,25 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private MAS_InverterDriver.IInverterDriver driver;
 
-        private FiniteStateMachines fsm;
-
         private IState state;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
-        public StateMachineVerticalHoming(FiniteStateMachines fsm, MAS_InverterDriver.IInverterDriver iDriver, MAS_DataLayer.IWriteLogService iWriteLogService)
+        public StateMachineVerticalHoming(MAS_InverterDriver.IInverterDriver iDriver, MAS_DataLayer.IWriteLogService iWriteLogService)
         {
-            this.fsm = fsm;
             this.driver = iDriver;
             this.data = iWriteLogService;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public string Type => this.state.Type;
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -40,10 +37,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.state = newState;
         }
 
+        /*
         public void DoAction(IdOperation code)
         {
             this.state.DoAction(code);
         }
+        */
 
         public void ExecuteOperation(IdOperation code)
         {
@@ -56,6 +55,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.state = new VerticalHomingIdleState(this, this.driver, this.data);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

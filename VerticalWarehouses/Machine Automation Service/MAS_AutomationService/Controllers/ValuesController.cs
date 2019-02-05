@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using Ferretto.VW.MAS_AutomationService;
 using Ferretto.VW.MAS_DataLayer;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Ferretto.VW.MAS_AutomationService.Controllers
+namespace MAS_AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -10,18 +11,21 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
     {
         #region Fields
 
+        private readonly IAutomationService automationService;
+
         private readonly IWriteLogService log;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
-        public ValuesController(IWriteLogService log)
+        public ValuesController(IWriteLogService log, IAutomationService automationService)
         {
             this.log = log;
+            this.automationService = automationService;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -29,6 +33,12 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+        [HttpGet("HomingTest")]
+        public void ExecuteHoming()
+        {
+            this.automationService.ExecuteHoming();
         }
 
         // GET api/values
@@ -61,6 +71,6 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         {
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -18,6 +18,6 @@ namespace Ferretto.Common.EF.Configurations
             builder.HasKey(c => c.Id);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

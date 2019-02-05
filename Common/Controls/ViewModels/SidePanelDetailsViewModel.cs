@@ -14,13 +14,13 @@ namespace Ferretto.Common.Controls
 
         private string title;
 
-        #endregion Fields
+        #endregion
 
         #region Events
 
         public event EventHandler<OperationEventArgs> OperationComplete;
 
-        #endregion Events
+        #endregion
 
         #region Properties
 
@@ -33,7 +33,7 @@ namespace Ferretto.Common.Controls
             set => this.SetProperty(ref this.title, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -47,6 +47,6 @@ namespace Ferretto.Common.Controls
             this.CompleteOperation(isCanceled: true);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

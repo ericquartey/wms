@@ -153,6 +153,6 @@ namespace Ferretto.Common.EF.Migrations
                 );
         }
 
-        #endregion Methods
+        #endregion
     }
 }

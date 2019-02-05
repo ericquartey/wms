@@ -20,6 +20,6 @@ namespace Ferretto.Common.BLL.Interfaces
 
         IPagedBusinessProvider<TModel> Provider { get; }
 
-        #endregion Properties
+        #endregion
     }
 }

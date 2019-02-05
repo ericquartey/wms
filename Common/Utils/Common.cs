@@ -11,6 +11,6 @@
         public const string VIEW_SUFFIX = "View";
         public const string VIEWMODEL_SUFFIX = "ViewModel";
 
-        #endregion Fields
+        #endregion
     }
 }

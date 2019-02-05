@@ -53,7 +53,7 @@ namespace Ferretto.Common.Controls
 
         public static readonly DependencyProperty ShowRulerProperty = DependencyProperty.Register(nameof(ShowRuler), typeof(bool), typeof(WmsTrayControl));
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -65,7 +65,7 @@ namespace Ferretto.Common.Controls
             this.Unloaded += this.WmsTrayControl_Unloaded;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -196,7 +196,7 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(ShowRulerProperty, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -214,6 +214,6 @@ namespace Ferretto.Common.Controls
             this.SizeChanged -= this.WmsTrayControl_SizeChanged;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

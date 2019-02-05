@@ -1,4 +1,4 @@
-﻿using Ferretto.Common.Common_Utils;
+﻿using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_FiniteStateMachines;
 
 namespace Ferretto.VW.MAS_MachineManager
@@ -7,36 +7,43 @@ namespace Ferretto.VW.MAS_MachineManager
     {
         #region Fields
 
-        private readonly FiniteStateMachines finiteStateMachines;
+        private readonly IFiniteStateMachines finiteStateMachines;
 
-        #endregion Fields
+        private readonly IWriteLogService writeLogService;
+
+        private int value;
+
+        #endregion
 
         #region Constructors
 
-        public MachineManager()
+        public MachineManager(IFiniteStateMachines finiteStateMachines, IWriteLogService writeLogService)
         {
-            //this.finiteStateMachines = Singleton<FiniteStateMachines>.UniqueInstance;
+            this.finiteStateMachines = finiteStateMachines;
+            this.writeLogService = writeLogService;
+
+            this.value = -1;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
-        public void Destroy()
+        public void DoHoming()
         {
-            this.finiteStateMachines.Destroy();
+            this.finiteStateMachines.DoHoming();
         }
 
-        public void DoHoming(BroadcastDelegate broadcastDelegate)
+        public void GetParam()
         {
-            this.finiteStateMachines.DoHoming(broadcastDelegate);
+            var retValue = this.value;
         }
 
-        public void DoVerticalHoming(BroadcastDelegate broadcastDelegate)
+        public void SetParam(int value)
         {
-            this.finiteStateMachines.DoVerticalHoming(broadcastDelegate);
+            this.value = value;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

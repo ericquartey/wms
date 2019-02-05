@@ -12,7 +12,7 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly IDatabaseContextService dataContextService;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -22,7 +22,7 @@ namespace Ferretto.Common.BusinessProviders
             this.dataContextService = dataContextService;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -83,6 +83,6 @@ namespace Ferretto.Common.BusinessProviders
 
         public Task<OperationResult> SaveAsync(ItemCompartmentType model) => throw new NotSupportedException();
 
-        #endregion Methods
+        #endregion
     }
 }

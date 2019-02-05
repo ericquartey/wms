@@ -19,7 +19,7 @@ namespace Ferretto.WMS.Modules.Layout
             this.RegionManager = regionManager;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -27,7 +27,7 @@ namespace Ferretto.WMS.Modules.Layout
 
         public IRegionManager RegionManager { get; private set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -66,6 +66,6 @@ namespace Ferretto.WMS.Modules.Layout
                .Trace("Module loaded.");
         }
 
-        #endregion Methods
+        #endregion
     }
 }

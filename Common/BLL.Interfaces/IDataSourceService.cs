@@ -9,6 +9,6 @@ namespace Ferretto.Common.BLL.Interfaces
         IEnumerable<IFilterDataSource<TModel>> GetAllFilters<TModel>(string viewModelName, object parameter = null)
             where TModel : IBusinessObject;
 
-        #endregion Methods
+        #endregion
     }
 }

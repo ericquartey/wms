@@ -14,6 +14,6 @@ namespace Ferretto.Common.BusinessModels
 
         public int? MaxCapacity { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

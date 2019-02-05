@@ -16,7 +16,7 @@ namespace Ferretto.Common.Controls
 
         private const string DisplayAttributeResourceTypeProperty = "ResourceType";
 
-        #endregion Fields
+        #endregion
 
         #region Methods
 
@@ -115,6 +115,6 @@ namespace Ferretto.Common.Controls
             return property;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

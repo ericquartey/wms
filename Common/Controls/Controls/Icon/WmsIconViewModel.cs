@@ -13,7 +13,7 @@ namespace Ferretto.Common.Controls
         private SolidColorBrush colorizeBrush;
         private ImageSource source;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -23,7 +23,7 @@ namespace Ferretto.Common.Controls
             set => this.SetProperty(ref this.source, this.ColorizeImage(value));
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -90,6 +90,6 @@ namespace Ferretto.Common.Controls
             };
         }
 
-        #endregion Methods
+        #endregion
     }
 }

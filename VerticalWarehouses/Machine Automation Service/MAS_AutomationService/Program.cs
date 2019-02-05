@@ -13,9 +13,11 @@ namespace Ferretto.VW.MAS_AutomationService
 
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            var webHost = CreateWebHostBuilder(args).Build();
+            var automationService = webHost.Services.GetService<IAutomationService>();
+            webHost.Run();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

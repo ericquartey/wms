@@ -30,7 +30,7 @@ namespace Ferretto.Common.BusinessModels
 
         public int Width { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 
     public class DoublePosition
@@ -41,7 +41,7 @@ namespace Ferretto.Common.BusinessModels
 
         public double Y { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 
     public class Line
@@ -56,7 +56,7 @@ namespace Ferretto.Common.BusinessModels
 
         public double YStart { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 
     public class Position
@@ -67,6 +67,6 @@ namespace Ferretto.Common.BusinessModels
 
         public double Y { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

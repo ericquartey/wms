@@ -17,7 +17,7 @@ namespace Ferretto.Common.BusinessModels
         private ItemDetails itemDetails;
         private int quantity;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -81,7 +81,7 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.ItemWithdrawSub2), ResourceType = typeof(BusinessObjects))]
         public string Sub2 { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Indexers
 
@@ -130,6 +130,6 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
-        #endregion Indexers
+        #endregion
     }
 }

@@ -19,7 +19,7 @@ namespace Ferretto.WMS.Modules.Scheduler
             this.NavigationService = navigationService;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -29,7 +29,7 @@ namespace Ferretto.WMS.Modules.Scheduler
 
         public IRegionManager RegionManager { get; private set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -49,6 +49,6 @@ namespace Ferretto.WMS.Modules.Scheduler
                .Trace("Module loaded.");
         }
 
-        #endregion Methods
+        #endregion
     }
 }

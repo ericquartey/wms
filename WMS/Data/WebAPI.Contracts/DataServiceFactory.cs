@@ -27,6 +27,6 @@
             return null;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

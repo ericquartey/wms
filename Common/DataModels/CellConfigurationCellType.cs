@@ -15,6 +15,6 @@
 
         public int Priority { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

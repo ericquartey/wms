@@ -29,7 +29,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private object selectedLoadingUnit;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -38,7 +38,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.Initialize();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -82,7 +82,7 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -179,6 +179,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

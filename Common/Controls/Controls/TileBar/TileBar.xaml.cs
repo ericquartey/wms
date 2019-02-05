@@ -14,7 +14,7 @@ namespace Ferretto.Common.Controls
             this.Loaded += this.TileBar_Loaded;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -35,6 +35,6 @@ namespace Ferretto.Common.Controls
             this.SelectFirstItem();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

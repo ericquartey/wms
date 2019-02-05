@@ -1,23 +1,15 @@
-﻿using Ferretto.Common.Common_Utils;
-
-namespace Ferretto.VW.MAS_MachineManager
+﻿namespace Ferretto.VW.MAS_MachineManager
 {
     public interface IMachineManager
     {
         #region Methods
 
-        void Destroy();
+        void DoHoming();
 
-        /// <summary>
-        /// Execute the complete homing operation.
-        /// </summary>
-        void DoHoming(BroadcastDelegate broadcastDelegate);
+        void GetParam();
 
-        /// <summary>
-        /// Execute the vertical homing operation.
-        /// </summary>
-        void DoVerticalHoming(BroadcastDelegate broadcastDelegate);
+        void SetParam(int value);
 
-        #endregion Methods
+        #endregion
     }
 }

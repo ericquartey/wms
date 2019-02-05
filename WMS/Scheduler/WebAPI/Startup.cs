@@ -23,13 +23,13 @@ namespace Ferretto.WMS.Scheduler.WebAPI
             this.Configuration = configuration;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public IConfiguration Configuration { get; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -104,6 +104,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI
             services.AddSignalR();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

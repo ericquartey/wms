@@ -62,7 +62,7 @@ namespace Ferretto.Common.Controls
 
         private readonly InfoRuler infoRuler;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -74,7 +74,7 @@ namespace Ferretto.Common.Controls
             RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -158,7 +158,7 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(StepProperty, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -344,7 +344,7 @@ namespace Ferretto.Common.Controls
                 throw new ArgumentNullException(nameof(m));
             }
 
-            var penSize = this.GetHalfSizeOfPen();
+            var penSize = this.GetSizeOfPen();
             var halfPenSize = this.GetHalfSizeOfPen();
             GuidelineSet guidelines = new GuidelineSet();
             guidelines.GuidelinesX.Add(m.XStart + halfPenSize);
@@ -655,7 +655,8 @@ namespace Ferretto.Common.Controls
 
         private double GetSizeOfPen()
         {
-            return WIDTH_MARK * VisualTreeHelper.GetDpi(this).PixelsPerDip;
+            var ma = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice;
+            return WIDTH_MARK / ma.M11;
         }
 
         private double GetStepPixelSize(int intervalMark)
@@ -678,6 +679,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

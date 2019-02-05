@@ -52,6 +52,6 @@ namespace Ferretto.Common.EF.Migrations
                 newName: "Priority");
         }
 
-        #endregion Methods
+        #endregion
     }
 }

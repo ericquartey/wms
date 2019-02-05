@@ -18,7 +18,7 @@ namespace Ferretto.Common.Controls.Services
 
         private static readonly Dictionary<string, List<ShortKey>> ViewShortKeys = new Dictionary<string, List<ShortKey>>();
 
-        #endregion Fields
+        #endregion
 
         #region Methods
 
@@ -64,7 +64,7 @@ namespace Ferretto.Common.Controls.Services
                 ServiceLocator.Current.GetInstance<INavigationService>().Appear(nameof(Utils.Modules.MasterData), Utils.Modules.MasterData.COMPARTMENTS);
             }));
 
-            #endregion ******* MAIN SHORTKEYS
+            #endregion
 
             #region ******* LOGINVIEW
 
@@ -80,7 +80,7 @@ namespace Ferretto.Common.Controls.Services
             }));
             ViewShortKeys.Add(MvvmNaming.GetViewModelName(nameof(Utils.Modules.Layout), Utils.Modules.Layout.LOGINVIEW), logiView);
 
-            #endregion ******* LOGINVIEW
+            #endregion
 
             #region ******* ITEMDETAILS
 
@@ -89,7 +89,7 @@ namespace Ferretto.Common.Controls.Services
             itemDetails.Add(new ShortKey(Key.R, false, ModifierKeys.Control, (v) => { ((IEdit)v.ViewModel).RevertCommand.Execute(null); }));
             ViewShortKeys.Add(MvvmNaming.GetViewModelName(nameof(Utils.Modules.MasterData), Utils.Modules.MasterData.ITEMDETAILS), itemDetails);
 
-            #endregion ******* ITEMDETAILS
+            #endregion
         }
 
         private static ShortKey Getkey(List<ShortKey> keys, ShortKey shortKey)
@@ -97,6 +97,6 @@ namespace Ferretto.Common.Controls.Services
             return keys.Where(s => s.Key == shortKey.Key && s.ModifierKeyFirst == shortKey.ModifierKeyFirst && s.ModifierKeySecond == shortKey.ModifierKeySecond).FirstOrDefault();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Ferretto.Common.Common_Utils;
-using System.Threading.Tasks;
 
 namespace Ferretto.VW.MAS_MissionScheduler
 {
@@ -9,8 +8,12 @@ namespace Ferretto.VW.MAS_MissionScheduler
 
         void AddMission(Mission mission);
 
-        Task DoHoming(BroadcastDelegate broadcastDelegate);
+        void DoHoming();
 
-        #endregion Methods
+        void Test01();
+
+        void Test02();
+
+        #endregion
     }
 }

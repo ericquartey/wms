@@ -15,6 +15,6 @@ namespace Ferretto.Common.BusinessProviders
 
         Task<OperationResult> WithdrawAsync(ItemWithdraw itemWithdraw);
 
-        #endregion Methods
+        #endregion
     }
 }

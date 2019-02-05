@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Ferretto.Common.Common_Utils;
+using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_MachineManager;
 
 namespace Ferretto.VW.MAS_MissionScheduler
@@ -10,11 +10,23 @@ namespace Ferretto.VW.MAS_MissionScheduler
     {
         #region Fields
 
-        private readonly MachineManager machineManager = Singleton<MachineManager>.UniqueInstance;
+        private readonly IMachineManager machineManager;
 
         private readonly Queue<Mission> missionsQueue = new Queue<Mission>();
 
-        #endregion Fields
+        private readonly IWriteLogService writeLogService;
+
+        #endregion
+
+        #region Constructors
+
+        public MissionsScheduler(IMachineManager machineManager, IWriteLogService writeLogService)
+        {
+            this.machineManager = machineManager;
+            this.writeLogService = writeLogService;
+        }
+
+        #endregion
 
         #region Methods
 
@@ -23,11 +35,21 @@ namespace Ferretto.VW.MAS_MissionScheduler
             throw new NotImplementedException();
         }
 
-        public async Task DoHoming(BroadcastDelegate broadcastDelegate)
+        public void DoHoming()
         {
-            this.machineManager.DoHoming(broadcastDelegate);
+            this.machineManager.DoHoming();
         }
 
-        #endregion Methods
+        public void Test01()
+        {
+            this.machineManager.SetParam(42);
+        }
+
+        public void Test02()
+        {
+            this.machineManager.GetParam();
+        }
+
+        #endregion
     }
 }

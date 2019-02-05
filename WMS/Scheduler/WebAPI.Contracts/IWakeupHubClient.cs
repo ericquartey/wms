@@ -11,12 +11,12 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
 
         event EventHandler<WakeUpEventArgs> WakeupReceived;
 
-        #endregion Events
+        #endregion
 
         #region Methods
 
         Task ConnectAsync();
 
-        #endregion Methods
+        #endregion
     }
 }

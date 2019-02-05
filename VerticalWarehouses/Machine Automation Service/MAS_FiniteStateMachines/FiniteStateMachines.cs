@@ -1,5 +1,4 @@
 ﻿using System;
-using Ferretto.Common.Common_Utils;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines
 {
@@ -11,31 +10,24 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private MAS_InverterDriver.IInverterDriver driver;
 
-        //private DataLayerContext dtContext;
-
         private StateMachineHoming homing;
 
         private StateMachineVerticalHoming verticalHoming;
 
-        #endregion Fields
-
-        //private WriteLogService writeLog;
+        #endregion
 
         #region Constructors
 
         public FiniteStateMachines(MAS_InverterDriver.IInverterDriver iDriver, MAS_DataLayer.IWriteLogService iWriteLogService)
         {
-            this.driver = iDriver;  //Singleton<MAS_InverterDriver.InverterDriver>.UniqueInstance;
+            this.driver = iDriver;
             this.data = iWriteLogService;
 
-            this.homing = new StateMachineHoming(this);
-            this.verticalHoming = new StateMachineVerticalHoming(this, this.driver, this.data);
-
-            //this.dtContext = new DataLayerContext();
-            //this.writeLog = new WriteLogService(this.dtContext);
+            this.homing = new StateMachineHoming(this.driver, this.data);
+            this.verticalHoming = new StateMachineVerticalHoming(this.driver, this.data);
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -44,7 +36,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.driver.Destroy();
         }
 
-        public void DoHoming(BroadcastDelegate broadcastDelegate)
+        /// <summary>
+        /// Execute complete homing.
+        /// <exception cref="InvalidOperationException">An <see cref="InvalidOperationException"/> is thrown if object is null.</exception>
+        /// </summary>
+        public void DoHoming()
         {
             if (this.homing == null)
             {
@@ -52,30 +48,38 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             }
 
             this.homing.Start();
-            this.homing.DoAction(IdOperation.SwitchVerticalToHorizontal);
-            this.homing.DoAction(IdOperation.HorizontalHome);
-            this.homing.DoAction(IdOperation.SwitchHorizontalToVertical);
-            this.homing.DoAction(IdOperation.VerticalHome);
-            this.homing.DoAction(IdOperation.SwitchVerticalToHorizontal);
-            this.homing.DoAction(IdOperation.HorizontalHome);
-            this.homing.DoAction(IdOperation.SwitchHorizontalToVertical);
+
+            //this.homing.DoAction(IdOperation.SwitchVerticalToHorizontal);
+            //this.homing.DoAction(IdOperation.HorizontalHome);
+            //this.homing.DoAction(IdOperation.SwitchHorizontalToVertical);
+            //this.homing.DoAction(IdOperation.VerticalHome);
+            //this.homing.DoAction(IdOperation.SwitchVerticalToHorizontal);
+            //this.homing.DoAction(IdOperation.HorizontalHome);
+            //this.homing.DoAction(IdOperation.SwitchHorizontalToVertical);
         }
 
-        public void DoVerticalHoming(BroadcastDelegate broadcastDelegate)
+        /// <summary>
+        /// Execute vertical homing.
+        /// <exception cref="InvalidOperationException">An <see cref="InvalidOperationException"/> is thrown if object is null.</exception>
+        /// </summary>
+        public void DoVerticalHoming()
         {
             if (this.verticalHoming == null)
             {
                 throw new InvalidOperationException();
             }
 
-            this.data.LogWriting("Start");
+            this.data.LogWriting("Do vertical homing");
 
             this.verticalHoming.Start();
-            this.verticalHoming.DoAction(IdOperation.VerticalHome);
+            //this.verticalHoming.DoAction(IdOperation.VerticalHome);
 
             this.data.LogWriting("End homing");
         }
 
+        #endregion
+
+        /*
         public void MakeOperationByInverter(IdOperation code)
         {
             switch (code)
@@ -106,7 +110,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                     }
             }
         }
-
-        #endregion Methods
+        */
     }
 }

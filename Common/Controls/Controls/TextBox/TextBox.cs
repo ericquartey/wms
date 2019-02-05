@@ -10,7 +10,7 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty IsMultilineProperty = DependencyProperty.Register(
                     nameof(IsMultiline), typeof(bool), typeof(TextBox), new PropertyMetadata(default(bool)));
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -20,6 +20,6 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(IsMultilineProperty, value);
         }
 
-        #endregion Properties
+        #endregion
     }
 }

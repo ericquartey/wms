@@ -11,6 +11,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Hubs
 
         Task WakeUpAsync(string user, string message);
 
-        #endregion Methods
+        #endregion
     }
 }

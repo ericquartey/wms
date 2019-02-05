@@ -11,7 +11,7 @@
 
         private MAS_InverterDriver.IInverterDriver driver;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -21,7 +21,7 @@
             this.driver = iDriver;
             this.data = iWriteLogService;
 
-            this.data.LogWriting("Start vertical homing");
+            this.data.LogWriting("Vertical homing state idle");
 
             // launch the command
             this.driver.ExecuteVerticalHoming();
@@ -29,19 +29,17 @@
             this.context.ChangeState(new VerticalHomingDoneState(this.context, this.driver, this.data));
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public string Type => "Vertical Homing Idle State";
 
-        #endregion Properties
+        #endregion
 
-        #region Methods
-
+        /*
         public void DoAction(IdOperation code)
         {
-            /*
             switch (code)
             {
                 case IdOperation.HorizontalHome:
@@ -74,9 +72,7 @@
                         break;
                     }
             }
-            */
         }
-
-        #endregion Methods
+        */
     }
 }

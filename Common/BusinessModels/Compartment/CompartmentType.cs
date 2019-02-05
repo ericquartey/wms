@@ -8,6 +8,6 @@
 
         public int? Width { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

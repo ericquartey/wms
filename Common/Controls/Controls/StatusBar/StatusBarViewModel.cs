@@ -22,7 +22,7 @@ namespace Ferretto.Common.Controls
 
         private string schedulerStatus;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -52,7 +52,7 @@ namespace Ferretto.Common.Controls
                });
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -74,7 +74,7 @@ namespace Ferretto.Common.Controls
             set => this.SetProperty(ref this.schedulerStatus, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -90,6 +90,6 @@ namespace Ferretto.Common.Controls
             this.keepInfoTimer.Stop();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -8,12 +8,12 @@ namespace Ferretto.Common.Controls.Interfaces
 
         bool FlattenDataSource { get; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
         Task UpdateFilterTilesCountsAsync();
 
-        #endregion Methods
+        #endregion
     }
 }

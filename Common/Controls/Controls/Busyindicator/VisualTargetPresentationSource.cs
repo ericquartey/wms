@@ -11,7 +11,7 @@ namespace Ferretto.Common.Controls
         private readonly VisualTarget visualTarget;
         private bool isDisposed = false;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -21,7 +21,7 @@ namespace Ferretto.Common.Controls
             this.AddSource();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -55,7 +55,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -70,6 +70,6 @@ namespace Ferretto.Common.Controls
             return this.visualTarget;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

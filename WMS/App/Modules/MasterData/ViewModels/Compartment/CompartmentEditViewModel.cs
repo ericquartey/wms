@@ -29,7 +29,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private IDataSource<Item> itemsDataSource;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -39,7 +39,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.ItemsDataSource = new DataSource<Item>(() => this.itemProvider.GetAll());
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -58,7 +58,7 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.itemsDataSource, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -168,6 +168,6 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = false;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

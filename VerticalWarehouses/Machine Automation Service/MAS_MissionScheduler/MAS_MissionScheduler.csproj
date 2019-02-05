@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Common_Utils\Common_Utils.csproj" />
+    <ProjectReference Include="..\MAS_DataLayer\MAS_DataLayer.csproj" />
     <ProjectReference Include="..\MAS_MachineManager\MAS_MachineManager.csproj" />
   </ItemGroup>
 

@@ -13,7 +13,7 @@ namespace Ferretto.Common.Controls.Services
 
         public static string Version => Assembly.GetEntryAssembly().GetName()?.Version?.ToString();
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -38,6 +38,6 @@ namespace Ferretto.Common.Controls.Services
             DXSplashScreen.Show<SplashScreen>();
         }
 
-        #endregion Methods
+        #endregion
     }
 }
