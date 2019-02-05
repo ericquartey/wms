@@ -670,7 +670,7 @@
     <comment>Label text</comment>
   </data>
   <data name="MachineDone" xml:space="preserve">
-    <value>Machine installed completely</value>
+    <value>Installation completed</value>
     <comment>Label text</comment>
   </data>
   <data name="Shape1Done" xml:space="preserve">

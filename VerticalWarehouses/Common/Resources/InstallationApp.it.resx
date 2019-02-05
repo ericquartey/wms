@@ -542,7 +542,7 @@
     <value>Puntatore Laser 3</value>
   </data>
   <data name="MachineDone" xml:space="preserve">
-    <value>Macchina installata completamente</value>
+    <value>Installazione completata</value>
   </data>
   <data name="Shape1Done" xml:space="preserve">
     <value>Controllo altezza baia 1</value>

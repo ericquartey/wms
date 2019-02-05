@@ -817,7 +817,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Machine installed completely.
+        ///   Cerca una stringa localizzata simile a Installation completed.
         /// </summary>
         public static string MachineDone {
             get {
