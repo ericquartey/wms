@@ -1,9 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace MAS_DataLayer.Migrations
+namespace Ferretto.VW.MAS_DataLayer.Migrations
 {
     public partial class InitialCreate : Migration
     {
+        #region Methods
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "Steps");
+
+            migrationBuilder.DropTable(
+                name: "Operations");
+        }
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -44,13 +55,6 @@ namespace MAS_DataLayer.Migrations
                 column: "OperationId");
         }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "Steps");
-
-            migrationBuilder.DropTable(
-                name: "Operations");
-        }
+        #endregion Methods
     }
 }

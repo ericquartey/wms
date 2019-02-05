@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
+﻿namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 {
     // Vertical homing is done
     public class VerticalHomingDoneState : IState
@@ -9,57 +7,29 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         private StateMachineVerticalHoming context;
 
-        #endregion Fields
+        private MAS_DataLayer.IWriteLogService data;
+
+        private MAS_InverterDriver.IInverterDriver driver;
+
+        #endregion
 
         #region Constructors
 
-        public VerticalHomingDoneState(StateMachineVerticalHoming parent)
+        public VerticalHomingDoneState(StateMachineVerticalHoming parent, MAS_InverterDriver.IInverterDriver iDriver, MAS_DataLayer.IWriteLogService iWriteLogService)
         {
             this.context = parent;
+            this.driver = iDriver;
+            this.data = iWriteLogService;
+
+            this.data.LogWriting("Vertical homing done state");
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public string Type => "Vertical Homing Done State";
 
-        #endregion Properties
-
-        #region Methods
-
-        public void DoAction(IdOperation code)
-        {
-            switch (code)
-            {
-                case IdOperation.HorizontalHome:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-                case IdOperation.SwitchHorizontalToVertical:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-                case IdOperation.SwitchVerticalToHorizontal:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-                case IdOperation.VerticalHome:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-                default:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-            }
-        }
-
-        #endregion Methods
+        #endregion
     }
 }

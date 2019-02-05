@@ -1,9 +1,9 @@
 ﻿using System;
-using Ferretto.VW.MAS_MachineManager;
-using System.Threading.Tasks;
-using Ferretto.Common.Common_Utils;
-using System.Collections;
 using System.Collections.Generic;
+using Ferretto.Common.Common_Utils;
+using Ferretto.VW.MAS_DataLayer;
+using Ferretto.VW.MAS_MachineManager;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS_MissionScheduler
 {
@@ -11,11 +11,28 @@ namespace Ferretto.VW.MAS_MissionScheduler
     {
         #region Fields
 
-        private readonly MachineManager machineManager = Singleton<MachineManager>.UniqueInstance;
+        private readonly IEventAggregator eventAggregator;
+
+        private readonly IMachineManager machineManager;
 
         private readonly Queue<Mission> missionsQueue = new Queue<Mission>();
 
-        #endregion Fields
+        private readonly IWriteLogService writeLogService;
+
+        #endregion
+
+        #region Constructors
+
+        public MissionsScheduler(IMachineManager machineManager, IWriteLogService writeLogService, IEventAggregator eventAggregator)
+        {
+            this.machineManager = machineManager;
+            this.writeLogService = writeLogService;
+            this.eventAggregator = eventAggregator;
+
+            this.eventAggregator.GetEvent<TestHomingEvent>().Subscribe(this.HandleHoming);
+        }
+
+        #endregion
 
         #region Methods
 
@@ -24,11 +41,16 @@ namespace Ferretto.VW.MAS_MissionScheduler
             throw new NotImplementedException();
         }
 
-        public async Task DoHoming(BroadcastDelegate broadcastDelegate)
+        public void DoHoming()
         {
-            await this.machineManager.DoHoming(broadcastDelegate);
+            this.machineManager.DoHoming();
         }
 
-        #endregion Methods
+        private void HandleHoming()
+        {
+            this.DoHoming();
+        }
+
+        #endregion
     }
 }
