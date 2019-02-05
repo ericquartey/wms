@@ -1,56 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Google.Protobuf.WellKnownTypes;
-
-namespace Ferretto.WMS.Data.Core.Models
+﻿namespace Ferretto.WMS.Data.Core.Models
 {
     public class Machine : BaseModel<int>
     {
         #region Fields
 
-        private int aisleId;
-
-        private string aisleName;
-
-        private string machineTypeDescription;
-
-        private string machineTypeId;
-
         #endregion
 
         #region Properties
 
-        public int AisleId
-        {
-            get => this.aisleId;
-            set
-            {
-                this.aisleId = value;
-                this.ComputeAisleDescription();
-            }
-        }
+        public int AisleId { get; set; }
 
-        public string AisleName
-        {
-            get => this.aisleName;
-            private set => this.aisleName = value;
-        }
+        public string AisleName { get; private set; }
 
-        public string MachineTypeDescription
-        {
-            get => this.machineTypeDescription;
-            private set => this.machineTypeDescription = value;
-        }
+        public string MachineTypeDescription { get; private set; }
 
-        public string MachineTypeId
-        {
-            get => this.machineTypeId;
-            set
-            {
-                this.machineTypeId = value;
-                this.ComputeMachineTypeDescription();
-            }
-        }
+        public string MachineTypeId { get; set; }
 
         public string Model { get; set; }
 
@@ -59,22 +23,6 @@ namespace Ferretto.WMS.Data.Core.Models
         public string Nickname { get; set; }
 
         public string RegistrationNumber { get; set; }
-
-        #endregion
-
-        #region Methods
-
-        private void ComputeAisleDescription()
-        {
-            var aisle = this.Aisles?.SingleOrDefault(a => a.Id == this.AisleId);
-            this.AisleName = $"{aisle?.AreaName} - {aisle?.Name}";
-        }
-
-        private void ComputeMachineTypeDescription()
-        {
-            this.MachineTypeDescription =
-                this.MachineTypes?.SingleOrDefault(m => m.Id == this.MachineTypeId)?.Description;
-        }
 
         #endregion
     }
