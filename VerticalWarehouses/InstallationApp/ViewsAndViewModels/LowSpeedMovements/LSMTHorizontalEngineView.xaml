@@ -12,20 +12,25 @@
                  mc:Ignorable="d">
     <Grid Width="774"
           Height="608">
-        <TextBlock 
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.LSMTHorizontalEngineTitle}" Margin="160,10,0,562" />
-        <custom:CustomLabelTextBlockControl
-                                                ContentText="1235,2"
-                                                LabelText="{x:Static res:InstallationApp.ActualPosition}" Margin="160,406,349,139" />
-        <custom:CustomLabelTextBlockControl
+
+        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,30,0,0"
+                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                     Text="{x:Static res:InstallationApp.LSMTHorizontalEngineTitle}"  />
+
+        <custom:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,160,0,0"
                                                 ContentText="10%"
-                                                LabelText="{x:Static res:InstallationApp.FeedRate}" Margin="160,162,349,383" />
-        <Button
+                                                LabelText="{x:Static res:InstallationApp.FeedRate}"  />
+
+        <custom:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,280,0,0"
+                                                ContentText="980,8"
+                                                LabelText="{x:Static res:InstallationApp.ActualPosition}"  />
+
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="450,160,0,0"
                     Content="{x:Static res:InstallationApp.Forward}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="475,162,134,383" />
-        <Button
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"  />
+
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="450,280,0,0"
                     Content="{x:Static res:InstallationApp.Backward}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="475,406,134,139" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
     </Grid>
 </myType:BaseView>

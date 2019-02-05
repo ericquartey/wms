@@ -166,11 +166,11 @@
     <comment>Title - Button text</comment>
   </data>
   <data name="LSMTGateEngineButton" xml:space="preserve">
-    <value>Gate Engine</value>
+    <value>Gate engine</value>
     <comment>Button text</comment>
   </data>
   <data name="LSMTGateEngineTitle" xml:space="preserve">
-    <value>Gate Engine Movements</value>
+    <value>Gate engine movements</value>
     <comment>Title</comment>
   </data>
   <data name="LSMTHorizontalEngineButton" xml:space="preserve">
@@ -178,7 +178,7 @@
     <comment>Button text</comment>
   </data>
   <data name="LSMTHorizontalEngineTitle" xml:space="preserve">
-    <value>Horizontal Engine Movements</value>
+    <value>Horizontal engine movements</value>
     <comment>Title</comment>
   </data>
   <data name="LSMTVerticalEngineButton" xml:space="preserve">
@@ -186,7 +186,7 @@
     <comment>Button text</comment>
   </data>
   <data name="LSMTVerticalEngineTitle" xml:space="preserve">
-    <value>Vertical Engine Movements</value>
+    <value>Vertical engine movements</value>
     <comment>Title</comment>
   </data>
   <data name="Manual" xml:space="preserve">
@@ -226,7 +226,7 @@
     <comment>Title - Button text</comment>
   </data>
   <data name="OriginVerticalAxis" xml:space="preserve">
-    <value>Origin Vertical Axis</value>
+    <value>Vertical axis origin</value>
     <comment>Title - Button text</comment>
   </data>
   <data name="SetOriginVerticalAxisCompleted" xml:space="preserve">

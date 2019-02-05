@@ -12,26 +12,31 @@
                  mc:Ignorable="d">
     <Grid Width="774"
           Height="608">
-        <TextBlock 
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.LSMTVerticalEngineTitle}" Margin="160,10,0,562" />
-        <custom:CustomLabelTextBlockControl
-                                                
-                                                ContentText="1235,2"
-                                                LabelText="{x:Static res:InstallationApp.ActualPosition}" Margin="160,162,379,383" />
-        <custom:CustomLabelTextBlockControl
-                                                
-                                                ContentText="10%"
-                                                LabelText="{x:Static res:InstallationApp.FeedRate}" Margin="160,402,379,143" />
-        <Button Name="VerticalEngineUp"
+
+        <TextBlock    VerticalAlignment="Top" HorizontalAlignment="Left" Margin="180,30,0,0" 
+                      Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                      Text="{x:Static res:InstallationApp.LSMTVerticalEngineTitle}" />
+
+        <custom:CustomLabelTextBlockControl  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="180,160,0,0"
+                                             ContentText="10%"
+                                             LabelText="{x:Static res:InstallationApp.FeedRate}"  />
+
+        <custom:CustomLabelTextBlockControl  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="180,280,0,0"            
+                                             ContentText="1235,2"
+                                             LabelText="{x:Static res:InstallationApp.ActualPosition}"  />
+
+        <Button     Name="VerticalEngineUp"
+                    VerticalAlignment="Top" HorizontalAlignment="Left" Margin="450,160,0,0"
                     Content="{x:Static res:InstallationApp.Up}"
                     PreviewMouseDown="MoveUpVerticalAxisHandler"
                     PreviewMouseUp="StopVerticalAxisHandler"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="475,162,134,383" />
-        <Button Name="VerticalEngineDown"
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"  />
+
+        <Button     Name="VerticalEngineDown"
+                    VerticalAlignment="Top" HorizontalAlignment="Left" Margin="450,280,0,0"
                     Content="{x:Static res:InstallationApp.Down}"
                     PreviewMouseDown="MoveDownVerticalAxisHandler"
                     PreviewMouseUp="StopVerticalAxisHandler"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="475,402,134,143" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"  />
     </Grid>
 </myType:BaseView>

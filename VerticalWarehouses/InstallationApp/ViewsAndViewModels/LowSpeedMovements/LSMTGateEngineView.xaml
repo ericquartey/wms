@@ -12,22 +12,28 @@
                  mc:Ignorable="d">
     <Grid Width="774"
           Height="608">
-        <TextBlock 
+        
+        <TextBlock     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="180,30,0,0"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.LSMTGateEngineTitle}" Margin="161,10,0,562" />
-        <custom:CustomLabelTextBlockControl Name="ActualPositionLabel"
-                                                    
-                                                    ContentText="1235,2"
-                                                    LabelText="{x:Static res:InstallationApp.ActualPosition}" Margin="161,402,359,143" />
-        <custom:CustomLabelTextBlockControl Name="FeedRateLabel"
-                                                    
-                                                    ContentText="10%"
-                                                    LabelText="{x:Static res:InstallationApp.FeedRate}" Margin="161,162,359,383" />
-        <Button Name="GateEngineUp"
-                        Content="{x:Static res:InstallationApp.Up}"
-                        Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="490,162,120,383" />
-        <Button Name="GateEngineDown"
-                        Content="{x:Static res:InstallationApp.Down}"
-                        Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="490,402,120,143" />
+                       Text="{x:Static res:InstallationApp.LSMTGateEngineTitle}"  />
+         
+        <custom:CustomLabelTextBlockControl   Name="FeedRateLabel"
+                                              HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,160,0,0"      
+                                              ContentText="10%"
+                                              LabelText="{x:Static res:InstallationApp.FeedRate}"  />
+       
+        <custom:CustomLabelTextBlockControl   Name="ActualPositionLabel"
+                                              HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,280,0,0"       
+                                              ContentText="Aperta"
+                                              LabelText="{x:Static res:InstallationApp.ActualPosition}" />
+        <Button    Name="GateEngineUp"
+                   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="450,160,0,0"
+                   Content="{x:Static res:InstallationApp.Up}"
+                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"  />
+        
+        <Button    Name="GateEngineDown"
+                   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="450,280,0,0"
+                   Content="{x:Static res:InstallationApp.Down}"
+                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
     </Grid>
 </myType:BaseView>

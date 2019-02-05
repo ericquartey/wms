@@ -50,7 +50,7 @@
 
         <custom:CustomInputFieldControlFocusable Grid.Row="1"
                                                  Width="200"
-                                                 HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,350,0,0"
+                                                 HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,330,0,0"
                                                  InputText="{Binding UserLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                  LabelText="{x:Static res:VWApp.UserLogin}"
                                                  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
