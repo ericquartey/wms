@@ -94,7 +94,7 @@ namespace Ferretto.Common.Controls
                 wmsDialog.Owner = Application.Current.MainWindow;
                 wmsDialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 
-                if (wmsDialog.Mode == WmsDialogType.Window)
+                if (wmsDialog.Mode == WmsDialogType.DialogWindow)
                 {
                     if (wmsDialog.Owner.WindowState != WindowState.Maximized)
                     {
@@ -198,21 +198,21 @@ namespace Ferretto.Common.Controls
             return token;
         }
 
-        private string GetMode()
+        private string GetThemeNameFromMode()
         {
             string theme = null;
             switch (this.Mode)
             {
-                case WmsDialogType.Popup:
-                    theme = "DialogPopup";
+                case WmsDialogType.DialogPopup:
+                    theme = nameof(WmsDialogType.DialogPopup);
                     break;
 
-                case WmsDialogType.Window:
-                    theme = "DialogWindow";
+                case WmsDialogType.DialogWindow:
+                    theme = nameof(WmsDialogType.DialogWindow);
                     break;
 
                 default:
-                    theme = "DialogWindow";
+                    theme = nameof(WmsDialogType.DialogWindow);
                     break;
             }
 
@@ -248,7 +248,7 @@ namespace Ferretto.Common.Controls
         {
             this.CheckDataContext();
 
-            this.LoadTheme(this.GetMode());
+            this.LoadTheme(this.GetThemeNameFromMode());
         }
 
         #endregion

@@ -12,6 +12,7 @@
                    Height="600"
                    d:DesignHeight="500"
                    d:DesignWidth="500"
+                   Mode="DialogPopup"
                    ResizeMode="NoResize"
                    SizeToContent="Height"
                    mc:Ignorable="d">

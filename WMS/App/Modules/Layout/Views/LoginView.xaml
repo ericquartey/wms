@@ -10,7 +10,7 @@
                    d:DesignHeight="600"
                    d:DesignWidth="700"
                    FocusedStart="LoginTB"
-                   Mode="Popup"
+                   Mode="DialogPopup"
                    ResizeMode="NoResize"
                    SizeToContent="Height"
                    mc:Ignorable="d">

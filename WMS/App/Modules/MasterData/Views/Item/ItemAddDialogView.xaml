@@ -18,7 +18,7 @@
                    d:DesignHeight="450"
                    d:DesignWidth="800"
                    AllowsTransparency="True"
-                   Mode="Window"
+                   Mode="DialogWindow"
                    Opacity="1"
                    ResizeMode="NoResize"
                    ShowInTaskbar="False"

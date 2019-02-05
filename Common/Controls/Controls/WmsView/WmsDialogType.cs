@@ -10,8 +10,8 @@ namespace Ferretto.Common.Controls
     {
         None,
 
-        Popup,
+        DialogPopup,
 
-        Window
+        DialogWindow
     }
 }
