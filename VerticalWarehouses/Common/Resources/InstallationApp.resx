@@ -274,7 +274,7 @@
     <comment>Title - Button text</comment>
   </data>
   <data name="Bays" xml:space="preserve">
-    <value>Bays and height</value>
+    <value>Bays and height control</value>
     <comment>Title - Button text</comment>
   </data>
   <data name="Cradle" xml:space="preserve">
@@ -294,7 +294,7 @@
     <comment>Title - Button text</comment>
   </data>
   <data name="AntiIntrusionGate" xml:space="preserve">
-    <value>Anti-Intrusion Gate</value>
+    <value>Anti intrusion gate bay 1</value>
     <comment>Sensor control text</comment>
   </data>
   <data name="BrakeResistanceOvertemperature" xml:space="preserve">
@@ -334,15 +334,15 @@
     <comment>Sensor control text</comment>
   </data>
   <data name="MicroCarterLeftSide" xml:space="preserve">
-    <value>Micro Carter Left Side</value>
+    <value>Micro carter left side bay 1</value>
     <comment>Sensor control text</comment>
   </data>
   <data name="MicroCarterRightSide" xml:space="preserve">
-    <value>Micro Carter Right Side </value>
+    <value>Micro carter right side  bay 1</value>
     <comment>Sensor control text</comment>
   </data>
   <data name="MushroomHeadButton" xml:space="preserve">
-    <value>Mushroom Head Button</value>
+    <value>Mushroom Emergency Button bay 1</value>
     <comment>Sensor control text</comment>
   </data>
   <data name="PawlEncoder" xml:space="preserve">
@@ -750,6 +750,74 @@
   </data>
   <data name="LuPresentInBay3" xml:space="preserve">
     <value>LU Present in Bay 3</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="HeightControlCheck1" xml:space="preserve">
+    <value>Height control bay 1</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="HeightControlCheck2" xml:space="preserve">
+    <value>Height control bay 2</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="HeightControlCheck3" xml:space="preserve">
+    <value>Height control bay 3</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="GateSensorABay1" xml:space="preserve">
+    <value>Gate sensor A bay 1</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="GateSensorBBay1" xml:space="preserve">
+    <value>Gate sensor B bay 1</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="GateSensorABay2" xml:space="preserve">
+    <value>Gate sensor A bay 2</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="GateSensorBBay2" xml:space="preserve">
+    <value>Gate sensor B bay 2</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="GateSensorABay3" xml:space="preserve">
+    <value>Gate sensor A bay 3</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="GateSensorBBay3" xml:space="preserve">
+    <value>Gate sensor B bay 3</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="MushroomHeadButton2" xml:space="preserve">
+    <value>Mushroom Emergency Button bay 2</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="MushroomHeadButton3" xml:space="preserve">
+    <value>Mushroom Emergency Button bay 3</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="MicroCarterLeftSide2" xml:space="preserve">
+    <value>Micro carter left side bay 2</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="MicroCarterLeftSide3" xml:space="preserve">
+    <value>Micro carter left side bay 3</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="MicroCarterRightSide2" xml:space="preserve">
+    <value>Micro carter right side bay 2</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="MicroCarterRightSide3" xml:space="preserve">
+    <value>Micro carter right side bay 3</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="AntiIntrusionGate2" xml:space="preserve">
+    <value>Anti intrusion gate bay 2</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="AntiIntrusionGate3" xml:space="preserve">
+    <value>Anti intrusion gate bay 3</value>
     <comment>Sensor control text</comment>
   </data>
 </root>

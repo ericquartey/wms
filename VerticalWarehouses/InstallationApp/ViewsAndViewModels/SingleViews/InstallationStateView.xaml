@@ -76,7 +76,7 @@
                                         LabelText="{x:Static res:InstallationApp.Laser3Done}"
                                         SensorState="{Binding IsLaserGate3Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
-        <custom:CustomSensorControl HorizontalAlignment="Left" VerticalAlignment="Top" Margin="600,520,0,0"
+        <custom:CustomSensorControl HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,520,0,0"
                                         LabelText="{x:Static res:InstallationApp.MachineDone}"
                                         SensorState="{Binding IsMachineDone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         Style="{StaticResource VWAPP_CustomSensorControlStyle}" />

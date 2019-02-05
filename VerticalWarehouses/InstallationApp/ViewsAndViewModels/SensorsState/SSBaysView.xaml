@@ -11,25 +11,71 @@
              mc:Ignorable="d">
     <Grid    Width="774"
              Height="608">
-        
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,30,0,0" 
+
+        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,30,0,0" 
                      Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                      Text="{x:Static res:InstallationApp.Bays}"/>
 
-        <custom:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,100,0,0"
+        <custom:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,110,0,0"
                                       LabelText="{x:Static res:InstallationApp.LuPresentInBay}"
                                       SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
 
-        <custom:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,140,0,0"
+        <custom:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,150,0,0"
+                                      LabelText="{x:Static res:InstallationApp.HeightControlCheck1}"
+                                      SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,190,0,0"
+                                      LabelText="{x:Static res:InstallationApp.GateSensorABay1}"
+                                      SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,230,0,0"
+                                      LabelText="{x:Static res:InstallationApp.GateSensorBBay1}"
+                                      SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,320,0,0"
                                       LabelText="{x:Static res:InstallationApp.LuPresentInBay2}"
                                       SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
 
-        <custom:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,180,0,0"
+        <custom:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,360,0,0"
+                                      LabelText="{x:Static res:InstallationApp.HeightControlCheck2}"
+                                      SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,400,0,0"
+                                      LabelText="{x:Static res:InstallationApp.GateSensorABay2}"
+                                      SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,440,0,0"
+                                      LabelText="{x:Static res:InstallationApp.GateSensorBBay2}"
+                                      SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="450,110,0,0"
                                       LabelText="{x:Static res:InstallationApp.LuPresentInBay3}"
                                       SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="450,150,0,0"
+                                      LabelText="{x:Static res:InstallationApp.HeightControlCheck3}"
+                                      SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="450,190,0,0"
+                                      LabelText="{x:Static res:InstallationApp.GateSensorABay3}"
+                                      SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="450,230,0,0"
+                                      LabelText="{x:Static res:InstallationApp.GateSensorBBay3}"
+                                      SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
 
     </Grid>
 </UserControl>

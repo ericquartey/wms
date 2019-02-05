@@ -88,11 +88,29 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Anti-Intrusion Gate.
+        ///   Cerca una stringa localizzata simile a Anti intrusion gate bay 1.
         /// </summary>
         public static string AntiIntrusionGate {
             get {
                 return ResourceManager.GetString("AntiIntrusionGate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Anti intrusion gate bay 2.
+        /// </summary>
+        public static string AntiIntrusionGate2 {
+            get {
+                return ResourceManager.GetString("AntiIntrusionGate2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Anti intrusion gate bay 3.
+        /// </summary>
+        public static string AntiIntrusionGate3 {
+            get {
+                return ResourceManager.GetString("AntiIntrusionGate3", resourceCulture);
             }
         }
         
@@ -142,7 +160,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Bays and height.
+        ///   Cerca una stringa localizzata simile a Bays and height control.
         /// </summary>
         public static string Bays {
             get {
@@ -583,6 +601,33 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a Gate sensor A bay 1.
+        /// </summary>
+        public static string GateSensorABay1 {
+            get {
+                return ResourceManager.GetString("GateSensorABay1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Gate sensor A bay 2.
+        /// </summary>
+        public static string GateSensorABay2 {
+            get {
+                return ResourceManager.GetString("GateSensorABay2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Gate sensor A bay 3.
+        /// </summary>
+        public static string GateSensorABay3 {
+            get {
+                return ResourceManager.GetString("GateSensorABay3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Gate Sensor B.
         /// </summary>
         public static string GateSensorB {
@@ -592,11 +637,65 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a Gate sensor B bay 1.
+        /// </summary>
+        public static string GateSensorBBay1 {
+            get {
+                return ResourceManager.GetString("GateSensorBBay1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Gate sensor B bay 2.
+        /// </summary>
+        public static string GateSensorBBay2 {
+            get {
+                return ResourceManager.GetString("GateSensorBBay2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Gate sensor B bay 3.
+        /// </summary>
+        public static string GateSensorBBay3 {
+            get {
+                return ResourceManager.GetString("GateSensorBBay3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Gate Set Up.
         /// </summary>
         public static string GateSetUp {
             get {
                 return ResourceManager.GetString("GateSetUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Height control bay 1.
+        /// </summary>
+        public static string HeightControlCheck1 {
+            get {
+                return ResourceManager.GetString("HeightControlCheck1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Height control bay 2.
+        /// </summary>
+        public static string HeightControlCheck2 {
+            get {
+                return ResourceManager.GetString("HeightControlCheck2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Height control bay 3.
+        /// </summary>
+        public static string HeightControlCheck3 {
+            get {
+                return ResourceManager.GetString("HeightControlCheck3", resourceCulture);
             }
         }
         
@@ -907,7 +1006,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Micro Carter Left Side.
+        ///   Cerca una stringa localizzata simile a Micro carter left side bay 1.
         /// </summary>
         public static string MicroCarterLeftSide {
             get {
@@ -916,11 +1015,47 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Micro Carter Right Side .
+        ///   Cerca una stringa localizzata simile a Micro carter left side bay 2.
+        /// </summary>
+        public static string MicroCarterLeftSide2 {
+            get {
+                return ResourceManager.GetString("MicroCarterLeftSide2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Micro carter left side bay 3.
+        /// </summary>
+        public static string MicroCarterLeftSide3 {
+            get {
+                return ResourceManager.GetString("MicroCarterLeftSide3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Micro carter right side  bay 1.
         /// </summary>
         public static string MicroCarterRightSide {
             get {
                 return ResourceManager.GetString("MicroCarterRightSide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Micro carter right side bay 2.
+        /// </summary>
+        public static string MicroCarterRightSide2 {
+            get {
+                return ResourceManager.GetString("MicroCarterRightSide2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Micro carter right side bay 3.
+        /// </summary>
+        public static string MicroCarterRightSide3 {
+            get {
+                return ResourceManager.GetString("MicroCarterRightSide3", resourceCulture);
             }
         }
         
@@ -970,11 +1105,29 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Mushroom Head Button.
+        ///   Cerca una stringa localizzata simile a Mushroom Emergency Button bay 1.
         /// </summary>
         public static string MushroomHeadButton {
             get {
                 return ResourceManager.GetString("MushroomHeadButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Mushroom Emergency Button bay 2.
+        /// </summary>
+        public static string MushroomHeadButton2 {
+            get {
+                return ResourceManager.GetString("MushroomHeadButton2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Mushroom Emergency Button bay 3.
+        /// </summary>
+        public static string MushroomHeadButton3 {
+            get {
+                return ResourceManager.GetString("MushroomHeadButton3", resourceCulture);
             }
         }
         

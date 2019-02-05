@@ -232,7 +232,7 @@
     <value>Stato Sensori</value>
   </data>
   <data name="Bays" xml:space="preserve">
-    <value>Baie e altezza</value>
+    <value>Baie e controllo altezza</value>
   </data>
   <data name="Cradle" xml:space="preserve">
     <value>Culla</value>
@@ -247,7 +247,7 @@
     <value>Elevatore e culla</value>
   </data>
   <data name="AntiIntrusionGate" xml:space="preserve">
-    <value>Barriera Anti-Intrusione</value>
+    <value>Barriera anti intrusione baia 1</value>
   </data>
   <data name="CradleEngineSelected" xml:space="preserve">
     <value>Motore Culla Selezionato</value>
@@ -274,13 +274,13 @@
     <value>Presenza UDC in Baia 1</value>
   </data>
   <data name="MicroCarterLeftSide" xml:space="preserve">
-    <value>Micro Carter Lato Sinistro</value>
+    <value>Micro carter lato sinistro baia 1</value>
   </data>
   <data name="MicroCarterRightSide" xml:space="preserve">
-    <value>Micro Carter Lato Destro</value>
+    <value>Micro carter lato destro baia 1</value>
   </data>
   <data name="MushroomHeadButton" xml:space="preserve">
-    <value>Bottone a Fungo</value>
+    <value>Fungo emergenza baia 1</value>
   </data>
   <data name="PawlEncoder" xml:space="preserve">
     <value>Encoder Nottolino</value>
@@ -597,5 +597,56 @@
   </data>
   <data name="LuPresentInBay3" xml:space="preserve">
     <value>Presenza UDC in Baia 3</value>
+  </data>
+  <data name="HeightControlCheck1" xml:space="preserve">
+    <value>Controllo altezza baia 1</value>
+  </data>
+  <data name="HeightControlCheck2" xml:space="preserve">
+    <value>Controllo altezza baia 2</value>
+  </data>
+  <data name="HeightControlCheck3" xml:space="preserve">
+    <value>Controllo altezza baia 3</value>
+  </data>
+  <data name="GateSensorABay1" xml:space="preserve">
+    <value>Sensore A barriera baia 1</value>
+  </data>
+  <data name="GateSensorBBay1" xml:space="preserve">
+    <value>Sensore B barriera baia 1</value>
+  </data>
+  <data name="GateSensorABay2" xml:space="preserve">
+    <value>Sensore A barriera baia 2</value>
+  </data>
+  <data name="GateSensorBBay2" xml:space="preserve">
+    <value>Sensore B barriera baia 2</value>
+  </data>
+  <data name="GateSensorABay3" xml:space="preserve">
+    <value>Sensore A barriera baia 3</value>
+  </data>
+  <data name="GateSensorBBay3" xml:space="preserve">
+    <value>Sensore B barriera baia 3</value>
+  </data>
+  <data name="MushroomHeadButton2" xml:space="preserve">
+    <value>Fungo emergenza baia 2</value>
+  </data>
+  <data name="MushroomHeadButton3" xml:space="preserve">
+    <value>Fungo emergenza baia 3</value>
+  </data>
+  <data name="MicroCarterLeftSide2" xml:space="preserve">
+    <value>Micro carter lato sinistro baia 2</value>
+  </data>
+  <data name="MicroCarterLeftSide3" xml:space="preserve">
+    <value>Micro carter lato sinistro baia 3</value>
+  </data>
+  <data name="MicroCarterRightSide2" xml:space="preserve">
+    <value>Micro carter lato destro baia 2</value>
+  </data>
+  <data name="MicroCarterRightSide3" xml:space="preserve">
+    <value>Micro carter lato destro baia 3</value>
+  </data>
+  <data name="AntiIntrusionGate2" xml:space="preserve">
+    <value>Barriera anti intrusione baia 2</value>
+  </data>
+  <data name="AntiIntrusionGate3" xml:space="preserve">
+    <value>Barriera anti intrusione baia 3</value>
   </data>
 </root>
