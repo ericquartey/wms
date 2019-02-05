@@ -41,6 +41,7 @@ namespace MAS_AutomationService.Controllers
         [HttpGet("HomingTest")]
         public void ExecuteHoming()
         {
+            this.automationService.ExecuteHoming();
         }
 
         // GET api/values
