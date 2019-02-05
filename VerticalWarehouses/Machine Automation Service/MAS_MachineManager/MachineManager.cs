@@ -11,8 +11,6 @@ namespace Ferretto.VW.MAS_MachineManager
 
         private readonly IWriteLogService writeLogService;
 
-        private int value;
-
         #endregion
 
         #region Constructors
@@ -21,17 +19,6 @@ namespace Ferretto.VW.MAS_MachineManager
         {
             this.finiteStateMachines = finiteStateMachines;
             this.writeLogService = writeLogService;
-
-            this.value = -1;
-        }
-
-        #endregion
-
-        #region Methods
-
-        public void DoHoming()
-        {
-            this.finiteStateMachines.DoHoming();
         }
 
         #endregion

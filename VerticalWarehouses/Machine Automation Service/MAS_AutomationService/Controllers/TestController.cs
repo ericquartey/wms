@@ -1,6 +1,5 @@
-﻿using Ferretto.Common.Common_Utils;
-using Ferretto.VW.MAS_DataLayer;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Ferretto.Common.Common_Utils;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_AutomationService
@@ -11,20 +10,14 @@ namespace Ferretto.VW.MAS_AutomationService
     {
         #region Fields
 
-        private readonly IAutomationService automationService;
-
         private readonly IEventAggregator eventAggregator;
-
-        private readonly IWriteLogService log;
 
         #endregion
 
         #region Constructors
 
-        public TestController(IWriteLogService log, IAutomationService automationService, IEventAggregator eventAggregator)
+        public TestController(IEventAggregator eventAggregator)
         {
-            this.log = log;
-            this.automationService = automationService;
             this.eventAggregator = eventAggregator;
         }
 
@@ -35,7 +28,7 @@ namespace Ferretto.VW.MAS_AutomationService
         [HttpGet("HomingTest")]
         public void ExecuteHoming()
         {
-            this.eventAggregator.GetEvent<TestHomingEvent>().Publish();
+            this.eventAggregator.GetEvent<WebAPI_ExecuteActionEvent>().Publish(WebAPI_Action.VerticalHoming);
         }
 
         #endregion
