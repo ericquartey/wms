@@ -2,6 +2,8 @@
 using Ferretto.VW.MAS_AutomationService;
 using Prism.Events;
 using Ferretto.Common.Common_Utils;
+using Microsoft.AspNetCore.Mvc;
+using Ferretto.VW.MAS_DataLayer;
 
 namespace MAS_AutomationService.Controllers
 {
@@ -41,7 +43,7 @@ namespace MAS_AutomationService.Controllers
         [HttpGet("HomingTest")]
         public void ExecuteHoming()
         {
-            this.eventAggregator.GetEvent<TestHomingEvent>().Publish("Homing");
+            this.eventAggregator.GetEvent<TestHomingEvent>().Publish();
         }
 
         // GET api/values
