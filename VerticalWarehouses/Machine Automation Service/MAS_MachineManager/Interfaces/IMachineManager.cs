@@ -2,10 +2,5 @@
 {
     public interface IMachineManager
     {
-        #region Methods
-
-        void DoHoming();
-
-        #endregion
     }
 }

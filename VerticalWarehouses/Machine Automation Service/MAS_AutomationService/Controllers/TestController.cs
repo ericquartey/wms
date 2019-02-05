@@ -11,20 +11,14 @@ namespace Ferretto.VW.MAS_AutomationService
     {
         #region Fields
 
-        private readonly IAutomationService automationService;
-
         private readonly IEventAggregator eventAggregator;
-
-        private readonly IWriteLogService log;
 
         #endregion
 
         #region Constructors
 
-        public TestController(IWriteLogService log, IAutomationService automationService, IEventAggregator eventAggregator)
+        public TestController(IEventAggregator eventAggregator)
         {
-            this.log = log;
-            this.automationService = automationService;
             this.eventAggregator = eventAggregator;
         }
 
