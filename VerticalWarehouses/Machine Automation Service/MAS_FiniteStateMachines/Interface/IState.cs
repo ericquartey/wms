@@ -7,7 +7,5 @@
         string Type { get; }
 
         #endregion
-
-        //void DoAction(IdOperation code);
     }
 }

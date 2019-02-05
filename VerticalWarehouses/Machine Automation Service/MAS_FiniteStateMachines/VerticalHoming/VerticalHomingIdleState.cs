@@ -36,43 +36,5 @@
         public string Type => "Vertical Homing Idle State";
 
         #endregion
-
-        /*
-        public void DoAction(IdOperation code)
-        {
-            switch (code)
-            {
-                case IdOperation.HorizontalHome:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-                case IdOperation.SwitchHorizontalToVertical:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-                case IdOperation.SwitchVerticalToHorizontal:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-                case IdOperation.VerticalHome:
-                    {
-                        // inverterDriver.VerticalHome();
-                        // await isOperationDone();
-                        this.context.ExecuteOperation(code);
-                        this.context.ChangeState(new VerticalHomingDoneState(this.context));
-
-                        break;
-                    }
-                default:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-            }
-        }
-        */
     }
 }

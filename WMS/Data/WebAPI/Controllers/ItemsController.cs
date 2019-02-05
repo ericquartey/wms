@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Ferretto.Common.Utils.Expressions;
-using Ferretto.WMS.Data.WebAPI.Models;
+using Ferretto.WMS.Data.Core.Interfaces;
+using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.WebAPI.Extensions;
+using Ferretto.WMS.Data.WebAPI.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -12,15 +15,20 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ItemsController : ControllerBase
+    public class ItemsController : ControllerBase,
+        IReadAllPagedController<Item>,
+        IReadSingleController<Item>,
+        IUpdateController<Item>
     {
         #region Fields
 
         private const string CollectionErrorMessage = "An error occurred while retrieving the requested set of entities.";
 
-        private readonly ILogger logger;
+        private readonly IAreaProvider areaProvider;
 
-        private readonly Models.IWarehouse warehouse;
+        private readonly IItemProvider itemProvider;
+
+        private readonly ILogger logger;
 
         #endregion
 
@@ -28,10 +36,12 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public ItemsController(
             ILogger<ItemsController> logger,
-            Models.IWarehouse warehouse)
+            IItemProvider itemProvider,
+            IAreaProvider areaProvider)
         {
             this.logger = logger;
-            this.warehouse = warehouse;
+            this.itemProvider = itemProvider;
+            this.areaProvider = areaProvider;
         }
 
         #endregion
@@ -40,9 +50,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<Item>))]
         [ProducesResponseType(400, Type = typeof(string))]
-        [ProducesResponseType(404, Type = typeof(string))]
         [HttpGet]
-        public ActionResult<IEnumerable<Item>> GetAll(
+        public async Task<ActionResult<IEnumerable<Item>>> GetAllAsync(
             int skip = 0,
             int take = int.MaxValue,
             string where = null,
@@ -55,18 +64,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             try
             {
                 var searchExpression = BuildSearchExpression(search);
+                var whereExpression = this.BuildWhereExpression<Item>(where);
 
-                var whereExpression = BuildWhereExpression<Item>(where);
-
-                var transformedItems = this.ApplyTransform(
-                    skip: skip,
-                    take: take,
-                    orderBy: orderBy,
-                    where: whereExpression,
-                    searchFunction: searchExpression,
-                    entities: this.warehouse.Items.AsQueryable());
-
-                return transformedItems.ToArray();
+                return this.Ok(
+                    await this.itemProvider.GetAllAsync(
+                        skip: skip,
+                        take: take,
+                        orderBy: orderBy,
+                        whereExpression: whereExpression,
+                        searchExpression: searchExpression));
             }
             catch (Exception ex)
             {
@@ -80,7 +86,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(404)]
         [HttpGet]
         [Route("api/[controller]/count")]
-        public ActionResult<int> GetAllCount(
+        public async Task<ActionResult<int>> GetAllCount(
             string where = null,
             string search = null)
         {
@@ -90,18 +96,86 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             try
             {
                 var searchExpression = BuildSearchExpression(search);
+                var whereExpression = this.BuildWhereExpression<Item>(where);
 
-                var whereExpression = BuildWhereExpression<Item>(where);
+                return await this.itemProvider.GetAllCountAsync(
+                    whereExpression,
+                    searchExpression);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, CollectionErrorMessage);
+                return this.BadRequest(CollectionErrorMessage);
+            }
+        }
 
-                var transformedItems = this.ApplyTransform(
-                    skip: 0,
-                    take: int.MaxValue,
-                    orderBy: null,
-                    where: whereExpression,
-                    searchFunction: searchExpression,
-                    entities: this.warehouse.Items.AsQueryable());
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Area>))]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500, Type = typeof(string))]
+        [HttpGet("{id}/areas_with_availability")]
+        public async Task<ActionResult<IEnumerable<Area>>> GetAreasWithAvailability(int id)
+        {
+            try
+            {
+                var areas = await this.areaProvider.GetByItemIdAvailabilityAsync(id);
+                if (!areas.Any())
+                {
+                    var message = $"No entity associated with the specified id={id} exists.";
+                    this.logger.LogWarning(message);
+                    return this.NotFound(message);
+                }
 
-                return transformedItems.Count();
+                return this.Ok(areas);
+            }
+            catch (Exception ex)
+            {
+                var message = $"An error occurred while retrieving the requested entities associated with id={id}.";
+                this.logger.LogError(ex, message);
+                return this.StatusCode(StatusCodes.Status500InternalServerError, message);
+            }
+        }
+
+        [ProducesResponseType(200, Type = typeof(Item))]
+        [ProducesResponseType(404, Type = typeof(string))]
+        [ProducesResponseType(500, Type = typeof(string))]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Item>> GetByIdAsync(int id)
+        {
+            this.logger.LogInformation($"Get Item (id:{id})");
+
+            try
+            {
+                var result = await this.itemProvider.GetByIdAsync(id);
+                if (result == null)
+                {
+                    var message = $"No entity with the specified id={id} exists.";
+                    this.logger.LogWarning(message);
+                    return this.NotFound(message);
+                }
+
+                return this.Ok(result);
+            }
+            catch (Exception ex)
+            {
+                var message = $"An error occurred while retrieving the requested entity with id={id}.";
+                this.logger.LogError(ex, message);
+                return this.StatusCode(StatusCodes.Status500InternalServerError, message);
+            }
+        }
+
+        [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
+        [ProducesResponseType(400)]
+        [HttpGet]
+        [Route("api/[controller]/unique/{propertyName}")]
+        public async Task<ActionResult<object[]>> GetUniqueValues(
+            string propertyName)
+        {
+            this.logger.LogInformation(
+               $"Get unique values (propertyName:'{propertyName})'");
+
+            try
+            {
+                return this.Ok(await this.itemProvider.GetUniqueValuesAsync(propertyName));
             }
             catch (Exception ex)
             {
@@ -113,96 +187,44 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(200, Type = typeof(Item))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]
-        [HttpGet("{id}")]
-        public ActionResult<Models.Item> GetById(int id)
-        {
-            this.logger.LogInformation($"Get Item (id:{id})");
-
-            try
-            {
-                var result = this.warehouse.Items.SingleOrDefault(i => i.Id == id);
-                if (result == null)
-                {
-                    var message = string.Format("No entity with the specified id={0} exists.", id);
-                    this.logger.LogWarning(message);
-                    return this.NotFound(message);
-                }
-
-                return this.Ok(result);
-            }
-            catch (Exception ex)
-            {
-                var message = string.Format("An error occurred while retrieving the requested entity with id={0}.", id);
-                this.logger.LogError(ex, message);
-                return this.BadRequest(message);
-            }
-        }
-
-        [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-        [HttpGet]
-        [Route("api/[controller]/unique/{propertyName}")]
-        public ActionResult<object[]> GetUniqueValues(
-            string propertyName)
-        {
-            this.logger.LogInformation(
-               $"Get inique values (propertyName:'{propertyName})'");
-
-            try
-            {
-                var selectExpression = BuildSelectExpression<Item>(propertyName);
-
-                return this.warehouse.Items
-                    .AsQueryable()
-                    .Select(selectExpression)
-                    .Distinct()
-                    .ToArray();
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, CollectionErrorMessage);
-                return this.BadRequest(CollectionErrorMessage);
-            }
-        }
-
-        [ProducesResponseType(200, Type = typeof(Models.Item))]
-        [ProducesResponseType(400, Type = typeof(string))]
+        [ProducesResponseType(500, Type = typeof(string))]
         [HttpPost]
-#pragma warning disable S3242 // Method parameters should be declared with base types
-        public async Task<ActionResult> UpdateAsync(Models.Item item)
-#pragma warning restore S3242 // Method parameters should be declared with base types
+        public async Task<ActionResult<Item>> UpdateAsync(Item model)
         {
-            if (item == null)
+            if (model == null)
             {
                 return this.BadRequest();
             }
 
-            this.logger.LogInformation($"Update Item (id:{item.Id})");
+            this.logger.LogInformation($"Update Item (id:{model.Id})");
 
             try
             {
-                var existingItem = this.warehouse.Items.SingleOrDefault(i => i.Id == item.Id);
-                if (existingItem == null)
+                var updatedModel = await this.itemProvider.UpdateAsync(model);
+                if (updatedModel == null)
                 {
-                    var message = string.Format("No entity with the specified id={0} exists.", item.Id);
+                    var message = $"No changes where applied to entity id={model.Id}.";
                     this.logger.LogWarning(message);
-                    return this.NotFound(message);
+                    return this.Ok(message);
                 }
 
-                var updatedItem = await this.warehouse.UpdateAsync(existingItem);
-
-                return this.Ok(updatedItem);
+                return this.Ok(updatedModel);
+            }
+            catch (ArgumentException ex)
+            {
+                var message = ex.Message;
+                this.logger.LogError(ex, message);
+                return this.NotFound(message);
             }
             catch (Exception ex)
             {
-                var message = string.Format("An error occurred while retrieving the requested entity with id={0}.", item.Id);
+                var message = $"An error occurred while retrieving the requested entity with id={model.Id}.";
                 this.logger.LogError(ex, message);
-                return this.BadRequest(message);
+                return this.StatusCode(StatusCodes.Status500InternalServerError, message);
             }
         }
 
-        private static Expression<Func<Models.Item, bool>> BuildSearchExpression(string search)
+        private static Expression<Func<Item, bool>> BuildSearchExpression(string search)
         {
             if (string.IsNullOrWhiteSpace(search))
             {
@@ -217,74 +239,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 (i.ItemCategoryDescription != null && i.ItemCategoryDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
                 ||
                 i.TotalAvailable.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase) == true;
-        }
-
-        private static Expression<Func<T, object>> BuildSelectExpression<T>(string propertyName)
-                            where T : class
-        {
-            if (string.IsNullOrWhiteSpace(propertyName))
-            {
-                return null;
-            }
-
-            var lambdaInParameter = Expression.Parameter(typeof(T), typeof(T).Name.ToLower());
-            var lambdaBody = Expression.Convert(
-                 Expression.Property(lambdaInParameter, propertyName), typeof(object));
-
-            return (Expression<Func<T, object>>)Expression.Lambda(lambdaBody, lambdaInParameter);
-        }
-
-        private static Expression<Func<T, bool>> BuildWhereExpression<T>(string where)
-        {
-            if (string.IsNullOrWhiteSpace(where))
-            {
-                return null;
-            }
-
-            var lambdaInParameter = Expression.Parameter(typeof(T), typeof(T).Name.ToLower());
-
-            var expression = where.AsIExpression();
-
-            var lambdaBody = expression?.GetLambdaBody<T>(lambdaInParameter);
-
-            return (Expression<Func<T, bool>>)Expression.Lambda(lambdaBody, lambdaInParameter);
-        }
-
-        private IQueryable<T> ApplyTransform<T>(
-            int skip,
-            int take,
-            string orderBy,
-            Expression<Func<T, bool>> where,
-            Expression<Func<T, bool>> searchFunction,
-            IQueryable<T> entities)
-        {
-            // TODO: if skip or take, then orderby should be defined (throw exception)
-            var filteredItems = entities;
-            if (where != null)
-            {
-                filteredItems = filteredItems.Where(where);
-            }
-
-            if (searchFunction != null)
-            {
-                filteredItems = filteredItems.Where(searchFunction);
-            }
-
-            filteredItems = this.ApplyOrderByClause(orderBy, filteredItems);
-
-            var skipValue = skip < 0 ? 0 : skip;
-            if (skipValue > 0)
-            {
-                filteredItems = filteredItems.Skip(skipValue);
-            }
-
-            var takeValue = take < 0 ? int.MaxValue : take;
-            if (takeValue != int.MaxValue)
-            {
-                filteredItems = filteredItems.Take(takeValue);
-            }
-
-            return filteredItems;
         }
 
         #endregion

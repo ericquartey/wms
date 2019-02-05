@@ -31,39 +31,5 @@
         public string Type => "Homing Done State";
 
         #endregion
-
-        /*
-        public void DoAction(IdOperation code)
-        {
-            switch (code)
-            {
-                case IdOperation.HorizontalHome:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-                case IdOperation.SwitchHorizontalToVertical:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-                case IdOperation.SwitchVerticalToHorizontal:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-                case IdOperation.VerticalHome:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-                default:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-            }
-        }
-        */
     }
 }

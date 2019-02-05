@@ -33,42 +33,5 @@
         public string Type => "Horizontal homing done";
 
         #endregion
-
-        /*
-        public void DoAction(IdOperation code)
-        {
-            switch (code)
-            {
-                case IdOperation.HorizontalHome:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-                case IdOperation.SwitchHorizontalToVertical:
-                    {
-                        //TODO inverterDriver.SwitchHorizToVert();
-                        //TODO await isOperationDone();
-                        this.context.ExecuteOperation(code);
-                        this.context.ChangeState(new VerticalSwitchDoneState(this.context));
-                        break;
-                    }
-                case IdOperation.SwitchVerticalToHorizontal:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-                case IdOperation.VerticalHome:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-                default:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-            }
-        }
-        */
     }
 }

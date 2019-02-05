@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
@@ -62,6 +63,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
             services.AddDbContext<DataLayerContext>(options => options.UseSqlite(connectionString), ServiceLifetime.Singleton);
 
+            services.AddSingleton<IEventAggregator, EventAggregator>();
             services.AddSingleton<IAutomationService, AutomationService>();
             services.AddSingleton<IWriteLogService, WriteLogService>();
             services.AddSingleton<IMissionsScheduler, MissionsScheduler>();

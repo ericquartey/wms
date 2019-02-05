@@ -36,42 +36,5 @@
         public string Type => "Homing Undone State";
 
         #endregion
-
-        /*
-        public void DoAction(IdOperation code)
-        {
-            switch (code)
-            {
-                case IdOperation.HorizontalHome:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-                case IdOperation.SwitchHorizontalToVertical:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-                case IdOperation.SwitchVerticalToHorizontal:
-                    {
-                        this.context.ExecuteOperation(code);
-                        //TODO inverterDriver.SwitchVertToHoriz();
-                        //TODO await isOperationDone();
-                        this.context.ChangeState(new HorizontalSwitchDoneState(this.context));
-                        break;
-                    }
-                case IdOperation.VerticalHome:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-                default:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-            }
-        }
-        */
     }
 }

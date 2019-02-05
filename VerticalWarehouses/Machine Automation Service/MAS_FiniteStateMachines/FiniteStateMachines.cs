@@ -48,14 +48,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             }
 
             this.homing.Start();
-
-            //this.homing.DoAction(IdOperation.SwitchVerticalToHorizontal);
-            //this.homing.DoAction(IdOperation.HorizontalHome);
-            //this.homing.DoAction(IdOperation.SwitchHorizontalToVertical);
-            //this.homing.DoAction(IdOperation.VerticalHome);
-            //this.homing.DoAction(IdOperation.SwitchVerticalToHorizontal);
-            //this.homing.DoAction(IdOperation.HorizontalHome);
-            //this.homing.DoAction(IdOperation.SwitchHorizontalToVertical);
         }
 
         /// <summary>
@@ -72,44 +64,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.data.LogWriting("Do vertical homing");
 
             this.verticalHoming.Start();
-            //this.verticalHoming.DoAction(IdOperation.VerticalHome);
 
             this.data.LogWriting("End homing");
         }
 
         #endregion
-
-        /*
-        public void MakeOperationByInverter(IdOperation code)
-        {
-            switch (code)
-            {
-                case IdOperation.HorizontalHome:
-                    {
-                        // TODO await driver.ExecuteAction("Horizontal Home");
-                        break;
-                    }
-                case IdOperation.SwitchHorizontalToVertical:
-                    {
-                        // TODO await driver.ExecuteAction("SwitchHorizontalToVertical");
-                        break;
-                    }
-                case IdOperation.VerticalHome:
-                    {
-                        this.driver.ExecuteVerticalHoming();
-                        break;
-                    }
-                case IdOperation.SwitchVerticalToHorizontal:
-                    {
-                        // TODO await driver.ExecuteAction("SwitchVerticalToHorizontal");
-                        break;
-                    }
-                default:
-                    {
-                        break;
-                    }
-            }
-        }
-        */
     }
 }

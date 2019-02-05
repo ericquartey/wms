@@ -17,9 +17,5 @@
         void DoVerticalHoming();
 
         #endregion
-
-        /*
-        void MakeOperationByInverter(IdOperation code);
-        */
     }
 }

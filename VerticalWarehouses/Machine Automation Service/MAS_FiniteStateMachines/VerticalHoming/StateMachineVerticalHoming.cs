@@ -37,16 +37,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.state = newState;
         }
 
-        /*
-        public void DoAction(IdOperation code)
-        {
-            this.state.DoAction(code);
-        }
-        */
-
         public void ExecuteOperation(IdOperation code)
         {
-            //this.fsm.MakeOperationByInverter(code);
         }
 
         public void Start()
