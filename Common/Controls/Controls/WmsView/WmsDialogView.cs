@@ -25,6 +25,12 @@ namespace Ferretto.Common.Controls
             typeof(WmsDialogView),
             new FrameworkPropertyMetadata(false, OnHeaderIsEnabledChanged));
 
+        public static readonly DependencyProperty ModeProperty = DependencyProperty.Register(
+            nameof(Mode),
+            typeof(WmsDialogType),
+            typeof(WmsDialogView),
+            new FrameworkPropertyMetadata(WmsDialogType.None));
+
         private readonly INavigationService
                     navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
 
@@ -36,10 +42,6 @@ namespace Ferretto.Common.Controls
 
         protected WmsDialogView()
         {
-            var dictionary = new ResourceDictionary();
-            var resourceUri = $"pack://application:,,,/{Utils.Common.ASSEMBLY_THEMENAME};Component/Themes/{Utils.Common.THEME_DEFAULTNAME}/{nameof(WmsDialogView)}.xaml";
-            dictionary.Source = new Uri(resourceUri, UriKind.Absolute);
-            this.Resources.MergedDictionaries.Add(dictionary);
             this.viewType = WmsViewType.Dialog;
             this.Loaded += this.WMSView_Loaded;
         }
@@ -66,6 +68,12 @@ namespace Ferretto.Common.Controls
 
         public string MapId { get; set; }
 
+        public WmsDialogType Mode
+        {
+            get => (WmsDialogType)this.GetValue(ModeProperty);
+            set => this.SetValue(ModeProperty, value);
+        }
+
         public string Token { get; set; }
 
         public WmsViewType ViewType => this.viewType;
@@ -85,6 +93,22 @@ namespace Ferretto.Common.Controls
             {
                 wmsDialog.Owner = Application.Current.MainWindow;
                 wmsDialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+
+                if (wmsDialog.Mode == WmsDialogType.DialogWindow)
+                {
+                    if (wmsDialog.Owner.WindowState != WindowState.Maximized)
+                    {
+                        wmsDialog.WindowStartupLocation = WindowStartupLocation.Manual;
+                        wmsDialog.Width = wmsDialog.Owner.ActualWidth;
+                        wmsDialog.Height = wmsDialog.Owner.ActualHeight;
+                        wmsDialog.Top = wmsDialog.Owner.Top;
+                        wmsDialog.Left = wmsDialog.Owner.Left;
+                    }
+                    else
+                    {
+                        wmsDialog.WindowState = WindowState.Maximized;
+                    }
+                }
             }
             else
             {
@@ -174,6 +198,27 @@ namespace Ferretto.Common.Controls
             return token;
         }
 
+        private string GetThemeNameFromMode()
+        {
+            string theme = null;
+            switch (this.Mode)
+            {
+                case WmsDialogType.DialogPopup:
+                    theme = nameof(WmsDialogType.DialogPopup);
+                    break;
+
+                case WmsDialogType.DialogWindow:
+                    theme = nameof(WmsDialogType.DialogWindow);
+                    break;
+
+                default:
+                    theme = nameof(WmsDialogType.DialogWindow);
+                    break;
+            }
+
+            return theme;
+        }
+
         private bool IsWrongDataContext()
         {
             if (this.DataContext == null)
@@ -191,9 +236,19 @@ namespace Ferretto.Common.Controls
             return !this.GetAttachedViewModel().Equals(dataContextName, System.StringComparison.Ordinal);
         }
 
+        private void LoadTheme(string theme)
+        {
+            var dictionary = new ResourceDictionary();
+            var resourceUri = $"pack://application:,,,/{Utils.Common.ASSEMBLY_THEMENAME};Component/Themes/{Utils.Common.THEME_DEFAULTNAME}/{theme}.xaml";
+            dictionary.Source = new Uri(resourceUri, UriKind.Absolute);
+            this.Resources.MergedDictionaries.Add(dictionary);
+        }
+
         private void WMSView_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             this.CheckDataContext();
+
+            this.LoadTheme(this.GetThemeNameFromMode());
         }
 
         #endregion

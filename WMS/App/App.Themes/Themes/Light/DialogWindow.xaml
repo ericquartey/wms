@@ -1,0 +1,66 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                    xmlns:dxbt="http://schemas.devexpress.com/winfx/2008/xaml/bars/themekeys"
+                    xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                    xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
+                    xmlns:local="clr-namespace:WpfAppDialog"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    mc:Ignorable="d">
+
+    <DataTemplate x:Key="{dxt:FloatingContainerThemeKey ThemeName=Office2016White, ResourceKey=FloatingContainerCaptionTemplate}">
+        <Grid x:Name="Root">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <dxc:FloatingContainerHeaderPanel Grid.Column="1">
+                <TextBlock x:Name="PART_Text"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="{DynamicResource WindowTitleFontSize}"
+                           FontWeight="Normal"
+                           Foreground="{DynamicResource OnCommonSecondaryMedium}"
+                           IsHitTestVisible="False"
+                           Text="{Binding Path=(dxc:FloatingContainer.FloatingContainer).Caption, RelativeSource={RelativeSource AncestorType=ContentPresenter}}" />
+            </dxc:FloatingContainerHeaderPanel>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="{dxt:FloatingContainerThemeKey ThemeName=Office2016White, ResourceKey=FloatingContainerTemplate}">
+        <Grid Background="Transparent"
+              SnapsToDevicePixels="True">
+
+            <Border x:Name="FloatingContainerBody"
+                    Height="Auto">
+                <Grid Margin="1,1,1,1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.3*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="0.3*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel x:Name="Block1"
+                                Grid.Row="0"
+                                Background="Black"
+                                Opacity="0.7" />
+                    <dxc:BackgroundPanel x:Name="PART_ContainerContent"
+                                         Grid.Row="1"
+                                         Background="Red"
+                                         Content="{Binding}" />
+                    <StackPanel x:Name="Block2"
+                                Grid.Row="2"
+                                Background="Black"
+                                Opacity="0.7" />
+
+                </Grid>
+            </Border>
+        </Grid>
+
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Path=(dx:FloatingContainer.IsActive)}"
+                         Value="False" />
+        </DataTemplate.Triggers>
+
+    </DataTemplate>
+</ResourceDictionary>
