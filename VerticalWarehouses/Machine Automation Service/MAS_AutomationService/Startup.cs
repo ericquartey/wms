@@ -9,6 +9,7 @@ using Ferretto.VW.MAS_FiniteStateMachines;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_MachineManager;
 using Ferretto.VW.MAS_MissionScheduler;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
@@ -18,7 +19,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
         private const string ConnectionStringName = "AutomationService";
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -27,13 +28,13 @@ namespace Ferretto.VW.MAS_AutomationService
             this.Configuration = configuration;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public IConfiguration Configuration { get; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -62,6 +63,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
             services.AddDbContext<DataLayerContext>(options => options.UseSqlite(connectionString), ServiceLifetime.Singleton);
 
+            services.AddSingleton<IEventAggregator, EventAggregator>();
             services.AddSingleton<IAutomationService, AutomationService>();
             services.AddSingleton<IWriteLogService, WriteLogService>();
             services.AddSingleton<IMissionsScheduler, MissionsScheduler>();
@@ -70,6 +72,6 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSingleton<IInverterDriver, MAS_InverterDriver.InverterDriver>();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

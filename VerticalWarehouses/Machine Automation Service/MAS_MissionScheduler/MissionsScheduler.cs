@@ -3,6 +3,7 @@ using Ferretto.VW.MAS_MachineManager;
 using Ferretto.Common.Common_Utils;
 using System.Collections.Generic;
 using MAS_DataLayer;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS_MissionScheduler
 {
@@ -10,23 +11,29 @@ namespace Ferretto.VW.MAS_MissionScheduler
     {
         #region Fields
 
+        private readonly IEventAggregator eventAggregator;
+
         private readonly IMachineManager machineManager;
 
         private readonly Queue<Mission> missionsQueue = new Queue<Mission>();
 
         private readonly IWriteLogService writeLogService;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
-        public MissionsScheduler(IMachineManager machineManager, IWriteLogService writeLogService)
+        public MissionsScheduler(IMachineManager machineManager, IWriteLogService writeLogService, IEventAggregator eventAggregator)
         {
             this.machineManager = machineManager;
             this.writeLogService = writeLogService;
+            this.eventAggregator = eventAggregator;
+
+            this.eventAggregator.GetEvent<TestHomingEvent>().Subscribe(this.HandleHoming, ThreadOption.BackgroundThread);
+            this.eventAggregator.GetEvent<TestHomingEvent>().Publish("Qualcosa\n");
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -40,6 +47,11 @@ namespace Ferretto.VW.MAS_MissionScheduler
             this.machineManager.DoHoming();
         }
 
-        #endregion Methods
+        private void HandleHoming(string s)
+        {
+            this.DoHoming();
+        }
+
+        #endregion
     }
 }
