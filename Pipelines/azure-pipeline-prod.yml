@@ -59,7 +59,7 @@ steps:
 - task: VSBuild@1
   displayName: 'Build solution WMS.App'
   inputs:
-    solution: WMS.App.sln
+    solution: 'WMS\WMS.App.sln'
     msbuildArgs: '-v:normal'
     platform: '$(BuildPlatform)'
     configuration: '$(BuildConfiguration)'
