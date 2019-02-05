@@ -36,9 +36,6 @@ namespace Ferretto.WMS.Data.Core.Models
             private set => this.aisleName = value;
         }
 
-        [Newtonsoft.Json.JsonIgnore]
-        public IEnumerable<Aisle> Aisles { get; set; }
-
         public string MachineTypeDescription
         {
             get => this.machineTypeDescription;
@@ -54,9 +51,6 @@ namespace Ferretto.WMS.Data.Core.Models
                 this.ComputeMachineTypeDescription();
             }
         }
-
-        [Newtonsoft.Json.JsonIgnore]
-        public IEnumerable<MachineType> MachineTypes { get; set; }
 
         public string Model { get; set; }
 
