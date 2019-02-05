@@ -236,7 +236,5 @@
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_highlight_off_black_36dp.png"
                                GlyphSize="Custom" />
         </wms:ActionBar>
-        <!--</Grid>-->
-        <!--</Border>-->
     </Grid>
 </wms:WmsDialogView>
