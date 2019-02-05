@@ -28,9 +28,6 @@ namespace Ferretto.VW.MAS_MissionScheduler
             this.machineManager = machineManager;
             this.writeLogService = writeLogService;
             this.eventAggregator = eventAggregator;
-
-            this.eventAggregator.GetEvent<TestHomingEvent>().Subscribe(this.HandleHoming, ThreadOption.BackgroundThread);
-            this.eventAggregator.GetEvent<TestHomingEvent>().Publish("Qualcosa\n");
         }
 
         #endregion

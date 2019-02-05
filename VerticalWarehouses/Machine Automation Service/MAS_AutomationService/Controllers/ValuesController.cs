@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using MAS_DataLayer;
 using Microsoft.AspNetCore.Mvc;
 using Ferretto.VW.MAS_AutomationService;
+using Prism.Events;
+using Ferretto.Common.Common_Utils;
 
 namespace MAS_AutomationService.Controllers
 {
@@ -18,17 +20,20 @@ namespace MAS_AutomationService.Controllers
 
         private readonly IWriteLogService log;
 
-        #endregion Fields
+        private IEventAggregator eventAggregator;
+
+        #endregion
 
         #region Constructors
 
-        public ValuesController(IWriteLogService log, IAutomationService automationService)
+        public ValuesController(IWriteLogService log, IAutomationService automationService, IEventAggregator eventAggregator)
         {
             this.log = log;
             this.automationService = automationService;
+            this.eventAggregator = eventAggregator;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -41,7 +46,7 @@ namespace MAS_AutomationService.Controllers
         [HttpGet("HomingTest")]
         public void ExecuteHoming()
         {
-            this.automationService.ExecuteHoming();
+            this.eventAggregator.GetEvent<TestHomingEvent>().Publish("Homing");
         }
 
         // GET api/values
@@ -74,6 +79,18 @@ namespace MAS_AutomationService.Controllers
         {
         }
 
-        #endregion Methods
+        [HttpGet("ReadNumber")]
+        public int ReadNumber()
+        {
+            return this.automationService.Number;
+        }
+
+        [HttpGet("WriteNumber")]
+        public void WriteNumber()
+        {
+            this.automationService.Number = 10;
+        }
+
+        #endregion
     }
 }
