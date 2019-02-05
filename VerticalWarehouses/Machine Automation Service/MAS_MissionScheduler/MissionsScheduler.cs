@@ -1,8 +1,8 @@
 ﻿using System;
-using Ferretto.VW.MAS_MachineManager;
-using Ferretto.Common.Common_Utils;
 using System.Collections.Generic;
-using MAS_DataLayer;
+using Ferretto.Common.Common_Utils;
+using Ferretto.VW.MAS_DataLayer;
+using Ferretto.VW.MAS_MachineManager;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_MissionScheduler
@@ -46,7 +46,7 @@ namespace Ferretto.VW.MAS_MissionScheduler
             this.machineManager.DoHoming();
         }
 
-        private void HandleHoming(string s)
+        private void HandleHoming()
         {
             this.DoHoming();
         }

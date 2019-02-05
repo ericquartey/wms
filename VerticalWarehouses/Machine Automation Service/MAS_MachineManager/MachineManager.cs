@@ -1,6 +1,5 @@
-﻿using Ferretto.Common.Common_Utils;
+﻿using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_FiniteStateMachines;
-using MAS_DataLayer;
 
 namespace Ferretto.VW.MAS_MachineManager
 {
@@ -12,7 +11,9 @@ namespace Ferretto.VW.MAS_MachineManager
 
         private readonly IWriteLogService writeLogService;
 
-        #endregion Fields
+        private int value;
+
+        #endregion
 
         #region Constructors
 
@@ -20,9 +21,11 @@ namespace Ferretto.VW.MAS_MachineManager
         {
             this.finiteStateMachines = finiteStateMachines;
             this.writeLogService = writeLogService;
+
+            this.value = -1;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -31,6 +34,6 @@ namespace Ferretto.VW.MAS_MachineManager
             this.finiteStateMachines.DoHoming();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

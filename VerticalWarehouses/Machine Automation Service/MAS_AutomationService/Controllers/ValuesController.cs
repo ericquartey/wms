@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MAS_DataLayer;
-using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
 using Ferretto.VW.MAS_AutomationService;
 using Prism.Events;
 using Ferretto.Common.Common_Utils;
@@ -77,18 +72,6 @@ namespace MAS_AutomationService.Controllers
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
-        }
-
-        [HttpGet("ReadNumber")]
-        public int ReadNumber()
-        {
-            return this.automationService.Number;
-        }
-
-        [HttpGet("WriteNumber")]
-        public void WriteNumber()
-        {
-            this.automationService.Number = 10;
         }
 
         #endregion

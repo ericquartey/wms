@@ -1,6 +1,4 @@
-﻿using Ferretto.Common.Common_Utils;
-
-namespace Ferretto.VW.MAS_MachineManager
+﻿namespace Ferretto.VW.MAS_MachineManager
 {
     public interface IMachineManager
     {
@@ -8,6 +6,6 @@ namespace Ferretto.VW.MAS_MachineManager
 
         void DoHoming();
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -19,6 +19,6 @@ namespace Ferretto.VW.MAS_AutomationService
             webHost.Run();
         }
 
-        #endregion Methods
+        #endregion
     }
 }
