@@ -488,7 +488,7 @@
     <value>Valore step [mm]:</value>
   </data>
   <data name="CellHeight" xml:space="preserve">
-    <value>Altezza cella attuale (mm):</value>
+    <value>Altezza cella attuale [mm]:</value>
   </data>
   <data name="CellsPanelControl" xml:space="preserve">
     <value>Controllo Pannelli Celle</value>
@@ -521,37 +521,37 @@
     <value>Rodaggio Cinghia</value>
   </data>
   <data name="Gate1Done" xml:space="preserve">
-    <value>Barriera 1</value>
+    <value>Serranda baia 1</value>
   </data>
   <data name="Gate2Done" xml:space="preserve">
-    <value>Barriera 2</value>
+    <value>Serranda baia 2</value>
   </data>
   <data name="Gate3Done" xml:space="preserve">
-    <value>Barriera 3</value>
+    <value>Serranda baia 3</value>
   </data>
   <data name="HorizontalAxisHomedDone" xml:space="preserve">
     <value>Origine asse orizzontale</value>
   </data>
   <data name="Laser1Done" xml:space="preserve">
-    <value>Laser Barriera 1</value>
+    <value>Puntatore Laser 1</value>
   </data>
   <data name="Laser2Done" xml:space="preserve">
-    <value>Laser Barriera 2</value>
+    <value>Puntatore Laser 2</value>
   </data>
   <data name="Laser3Done" xml:space="preserve">
-    <value>Laser Barriera 3</value>
+    <value>Puntatore Laser 3</value>
   </data>
   <data name="MachineDone" xml:space="preserve">
     <value>Macchina installata completamente</value>
   </data>
   <data name="Shape1Done" xml:space="preserve">
-    <value>Sagoma Barriera 1</value>
+    <value>Controllo altezza baia 1</value>
   </data>
   <data name="Shape2Done" xml:space="preserve">
-    <value>Sagoma Barriera 2</value>
+    <value>Controllo altezza baia 2</value>
   </data>
   <data name="Shape3Done" xml:space="preserve">
-    <value>Sagoma Barriera 3</value>
+    <value>Controllo altezza baia 3</value>
   </data>
   <data name="VerticalAxisHomedDone" xml:space="preserve">
     <value>Origine Asse Verticale</value>
@@ -563,7 +563,7 @@
     <value>Controllo Celle</value>
   </data>
   <data name="CellCorrection" xml:space="preserve">
-    <value>Correzione Cella[mm]:</value>
+    <value>Correzione Cella [mm]:</value>
   </data>
   <data name="MesuredInitialPosition" xml:space="preserve">
     <value>Posizione iniziale misurata [mm]:</value>
