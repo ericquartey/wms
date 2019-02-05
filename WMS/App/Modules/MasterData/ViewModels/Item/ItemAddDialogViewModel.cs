@@ -13,11 +13,9 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemAddDialogViewModel : DetailsViewModel<ItemDetails>, IRefreshDataEntityViewModel, IEdit
+    public class ItemAddDialogViewModel : DetailsViewModel<ItemDetails>
     {
         #region Fields
-
-        private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
@@ -27,17 +25,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool itemHasCompartments;
 
-        private object modelChangedEventSubscription;
-
-        private object modelRefreshSubscription;
-
-        private object modelSelectionChangedSubscription;
-
         private object selectedCompartment;
 
-        private ICommand withdrawCommand;
-
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -46,7 +36,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.Initialize();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -94,34 +84,18 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        public ICommand WithdrawCommand => this.withdrawCommand ??
-                                          (this.withdrawCommand = new DelegateCommand(
-                                               this.ExecuteWithdraw,
-                                               this.CanExecuteWithdraw));
-
-        #endregion Properties
+        #endregion
 
         #region Methods
 
-        public override void RefreshData()
+        protected override Task ExecuteRefreshCommandAsync()
         {
-            this.CompartmentsDataSource = this.Model != null
-                ? new DataSource<Compartment>(() => this.compartmentProvider.GetByItemId(this.Model.Id))
-                : null;
-
-            this.EvaluateCanExecuteCommands();
+            throw new System.NotSupportedException();
         }
 
-        protected override void EvaluateCanExecuteCommands()
+        protected override Task ExecuteRevertCommand()
         {
-            base.EvaluateCanExecuteCommands();
-
-            ((DelegateCommand)this.WithdrawCommand)?.RaiseCanExecuteChanged();
-        }
-
-        protected override async Task ExecuteRevertCommand()
-        {
-            await this.LoadDataAsync();
+            throw new System.NotSupportedException();
         }
 
         protected override async Task ExecuteSaveCommand()
@@ -144,91 +118,16 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = false;
         }
 
-        protected override async void OnAppear()
-        {
-            base.OnAppear();
-
-            await this.LoadDataAsync();
-        }
-
-        protected override void OnDispose()
-        {
-            this.EventService.Unsubscribe<RefreshModelsPubSubEvent<Item>>(this.modelRefreshSubscription);
-            this.EventService.Unsubscribe<ModelChangedPubSubEvent<Item>>(this.modelChangedEventSubscription);
-            this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<Item>>(this.modelSelectionChangedSubscription);
-            base.OnDispose();
-        }
-
-        private bool CanExecuteWithdraw()
-        {
-            return this.Model?.TotalAvailable > 0;
-        }
-
         private void ExecuteCloseDialogCommand()
         {
             this.Disappear();
         }
 
-        private void ExecuteWithdraw()
-        {
-            this.IsBusy = true;
-
-            this.NavigationService.Appear(
-                nameof(MasterData),
-                Common.Utils.Modules.MasterData.WITHDRAWDIALOG,
-                new
-                {
-                    Id = this.Model.Id
-                });
-
-            this.IsBusy = false;
-        }
-
         private void Initialize()
         {
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<Item>>(async eventArgs => await this.LoadDataAsync(), this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<Item>>(async eventArgs => await this.LoadDataAsync());
-            this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<Item>>(
-                async eventArgs =>
-                {
-                    if (eventArgs.ModelId.HasValue)
-                    {
-                        this.Data = eventArgs.ModelId.Value;
-                        if (this.Data is int)
-                        {
-                            await this.LoadDataAsync();
-                        }
-                    }
-                    else
-                    {
-                        this.Model = null;
-                    }
-                },
-                this.Token,
-                true,
-                true);
+            this.Data = null;
         }
 
-        private async Task LoadDataAsync()
-        {
-            try
-            {
-                this.IsBusy = true;
-
-                if (this.Data is int modelId)
-                {
-                    this.Model = await this.itemProvider.GetByIdAsync(modelId);
-                    this.ItemHasCompartments = this.itemProvider.HasAnyCompartments(modelId);
-                }
-
-                this.IsBusy = false;
-            }
-            catch
-            {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
-            }
-        }
-
-        #endregion Methods
+        #endregion
     }
 }
