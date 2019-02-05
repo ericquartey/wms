@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS_AutomationService
         {
             try
             {
-                this.eventAggregator.GetEvent<TestHomingEvent>().Publish("Qualcosa\n");
+                this.eventAggregator.GetEvent<TestHomingEvent>().Publish();
             }
             catch
             {

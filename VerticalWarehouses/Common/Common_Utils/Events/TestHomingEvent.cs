@@ -2,7 +2,7 @@
 
 namespace Ferretto.Common.Common_Utils
 {
-    public class TestHomingEvent : PubSubEvent<string>
+    public class TestHomingEvent : PubSubEvent
     {
     }
 }

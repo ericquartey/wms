@@ -34,16 +34,6 @@ namespace Ferretto.VW.MAS_MachineManager
             this.finiteStateMachines.DoHoming();
         }
 
-        public void GetParam()
-        {
-            var retValue = this.value;
-        }
-
-        public void SetParam(int value)
-        {
-            this.value = value;
-        }
-
         #endregion
     }
 }

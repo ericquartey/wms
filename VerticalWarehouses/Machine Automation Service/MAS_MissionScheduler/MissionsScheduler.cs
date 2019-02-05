@@ -46,7 +46,7 @@ namespace Ferretto.VW.MAS_MissionScheduler
             this.machineManager.DoHoming();
         }
 
-        private void HandleHoming(string s)
+        private void HandleHoming()
         {
             this.DoHoming();
         }

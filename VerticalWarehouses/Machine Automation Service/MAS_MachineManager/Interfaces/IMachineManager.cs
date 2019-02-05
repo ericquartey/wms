@@ -6,10 +6,6 @@
 
         void DoHoming();
 
-        void GetParam();
-
-        void SetParam(int value);
-
         #endregion
     }
 }
