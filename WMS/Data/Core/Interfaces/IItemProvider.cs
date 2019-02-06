@@ -1,4 +1,3 @@
-using System.Linq;
 using Ferretto.WMS.Data.Core.Interfaces.Base;
 using Ferretto.WMS.Data.Core.Models;
 
