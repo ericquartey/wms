@@ -39,7 +39,25 @@ steps:
     queryTimeout: 240
 
 
-- template: azure-pipeline-deploy-db-template.yml
+- script: 'dotnet ef database update --verbose'
+  workingDirectory: Common/EF
+  failOnStderr: true
+  displayName: 'dotnet ef database update'
+  continueOnError: true
+  env:
+    NETCORE_ENVIRONMENT: CloudBuild
+    cloudInitialCatalog: '$(CloudInitialCatalog)'
+
+
+- task: andrewlackenby.sql-toolkit.runsinglesqlscript.RunSingleSqlScript@2
+  displayName: 'Apply db seed'
+  inputs:
+    sqlScript: Common/EF/Seeds/Dev.InitDb.sql
+    serverName: 'rd-ferrettogroup.database.windows.net'
+    databaseName: '$(CloudInitialCatalog)'
+    userName: admin_rd_ferrettogroup
+    userPassword: Ferretto2019!
+    queryTimeout: 30
 
 
 - task: andrewlackenby.sql-toolkit.runsqlcommand.RunSqlCommand@2
