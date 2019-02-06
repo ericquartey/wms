@@ -1,4 +1,5 @@
 ﻿using Ferretto.Common.Common_Utils;
+using Microsoft.EntityFrameworkCore;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_DataLayer
@@ -26,10 +27,27 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Methods
 
-        public void LogWriting(string logMessage)
+        //public void LogWriting(string logMessage)
+        //{
+        //    this.dataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
+        //    this.dataContext.SaveChanges();
+        //}
+
+        public bool LogWriting(string logMessage)
         {
-            this.dataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
-            this.dataContext.SaveChanges();
+            bool updateOperation = true;
+
+            try
+            { 
+                this.dataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
+                this.dataContext.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                updateOperation = false;
+            }
+
+            return updateOperation;
         }
 
         public void LogWriting(WebAPI_Action webApiAction)

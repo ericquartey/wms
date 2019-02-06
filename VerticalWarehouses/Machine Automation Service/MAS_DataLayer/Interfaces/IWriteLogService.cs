@@ -6,7 +6,7 @@ namespace Ferretto.VW.MAS_DataLayer
     {
         #region Methods
 
-        void LogWriting(string logMessage);
+        bool LogWriting(string logMessage);
 
         void LogWriting(WebAPI_Action webApiAction);
 
