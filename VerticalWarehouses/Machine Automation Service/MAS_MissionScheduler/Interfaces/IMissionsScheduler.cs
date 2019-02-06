@@ -6,7 +6,7 @@ namespace Ferretto.VW.MAS_MissionScheduler
     {
         #region Methods
 
-        void AddMission(Mission mission);
+        bool AddMission(Mission mission);
 
         #endregion
     }

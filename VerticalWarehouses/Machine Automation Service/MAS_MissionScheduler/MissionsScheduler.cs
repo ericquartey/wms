@@ -34,9 +34,11 @@ namespace Ferretto.VW.MAS_MissionScheduler
 
         #region Methods
 
-        public void AddMission(Mission mission)
+        public bool AddMission(Mission mission)
         {
-            throw new NotImplementedException();
+            if (mission == null) throw new ArgumentNullException("Mission is null, cannot add a null item to the Mission Queue.\n");
+            this.missionsQueue.Enqueue(mission);
+            return true;
         }
 
         #endregion
