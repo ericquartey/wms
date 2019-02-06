@@ -57,12 +57,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ActionBlocks\ActionBlocks.csproj" />
+    <ProjectReference Include="..\ActionBlocks\Ferretto.VW.ActionBlocks.csproj" />
     <ProjectReference Include="..\Common\Resources\Ferretto.VW.Resources.csproj" />
-    <ProjectReference Include="..\CustomControls\CustomControls.csproj" />
-    <ProjectReference Include="..\InverterDriver\InverterDriver.csproj" />
+    <ProjectReference Include="..\CustomControls\Ferretto.VW.CustomControls.csproj" />
+    <ProjectReference Include="..\InverterDriver\Ferretto.VW.InverterDriver.csproj" />
     <ProjectReference Include="..\MathLib\MathLib.csproj" />
-    <ProjectReference Include="..\Navigation\Navigation.csproj" />
+    <ProjectReference Include="..\Navigation\Ferretto.VW.Navigation.csproj" />
     <ProjectReference Include="..\Utils\Utils.csproj" />
   </ItemGroup>
 

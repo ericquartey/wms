@@ -234,7 +234,7 @@ namespace Ferretto.VW.InvServer
             try
             {
                 var port = DEFAULT_PORT;
-
+#if NET4
                 // Creates one SocketPermission object for access restrictions
                 var permission = new SocketPermission(
                     NetworkAccess.Accept,     // Allowed to accept connections
@@ -245,7 +245,7 @@ namespace Ferretto.VW.InvServer
 
                 // Ensures the code to have permission to access a Socket
                 permission.Demand();
-
+#endif
                 // Resolves a host name to an IPHostEntry instance
                 var ipHost = Dns.GetHostEntry("");
                 logger.Log(LogLevel.Debug, String.Format("ipHost = {0}", ipHost.ToString()));
@@ -741,6 +741,6 @@ namespace Ferretto.VW.InvServer
             }
         }
 
-        #endregion Methods
+#endregion Methods
     }
 }

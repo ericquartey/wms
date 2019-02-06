@@ -209,13 +209,13 @@
       <Project>{8231f83a-40f0-49a8-a4cf-2f582d957350}</Project>
       <Name>Ferretto.VW.Resources</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CustomControls\CustomControls.csproj">
+    <ProjectReference Include="..\CustomControls\Ferretto.VW.CustomControls.csproj">
       <Project>{3c8a3855-897a-4395-bf65-d9d597896a3e}</Project>
-      <Name>CustomControls</Name>
+      <Name>Ferretto.VW.CustomControls</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Navigation\Navigation.csproj">
+    <ProjectReference Include="..\Navigation\Ferretto.VW.Navigation.csproj">
       <Project>{8f34417e-3c32-4694-91af-b286fbf0e1ac}</Project>
-      <Name>Navigation</Name>
+      <Name>Ferretto.VW.Navigation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utils\Utils.csproj">
       <Project>{eaeeeb73-e9e7-4cdf-b100-a433a33562e3}</Project>

@@ -126,13 +126,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ActionBlocks\ActionBlocks.csproj">
+    <ProjectReference Include="..\ActionBlocks\Ferretto.VW.ActionBlocks.csproj">
       <Project>{ecdc6d6c-e5d2-4ec3-9aac-6336c2048fff}</Project>
-      <Name>ActionBlocks</Name>
+      <Name>Ferretto.VW.ActionBlocks</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InverterDriver\InverterDriver.csproj">
+    <ProjectReference Include="..\InverterDriver\Ferretto.VW.InverterDriver.csproj">
       <Project>{119128d4-1776-427a-aec1-6da12b0ff813}</Project>
-      <Name>InverterDriver</Name>
+      <Name>Ferretto.VW.InverterDriver</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utils\Utils.csproj">
       <Project>{eaeeeb73-e9e7-4cdf-b100-a433a33562e3}</Project>

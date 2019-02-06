@@ -3,8 +3,6 @@
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
     <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
-    <RootNamespace>Ferretto.VW.InvServer</RootNamespace>
-    <AssemblyName>Ferretto.VW.InvServer</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,14 +10,9 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="NLog" Version="4.5.11" />
     <PackageReference Include="SonarAnalyzer" Version="6.6.0.3969" />
     <PackageReference Include="SonarAnalyzer.CSharp" Version="7.10.0.7896" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
   </ItemGroup>
-
-  <PropertyGroup Condition="$(TargetFramework.StartsWith('net4'))">
-    <DefineConstants>$(DefineConstants);NET4</DefineConstants>
-  </PropertyGroup>
 
 </Project>
