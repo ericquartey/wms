@@ -267,4 +267,7 @@
   <data name="UnableToLoadData" xml:space="preserve">
     <value>Unable to load data.</value>
   </data>
+  <data name="PropertyIsRequired" xml:space="preserve">
+    <value>The property {0} is required.</value>
+  </data>
 </root>
