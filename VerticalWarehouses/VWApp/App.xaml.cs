@@ -26,7 +26,7 @@ namespace Ferretto.VW.VWApp
 
         public Boolean MachineOk { get => this.machineOk; set => this.machineOk = value; }
 
-        public OperatorApp.MainWindow OperatorMainWindowInstance { get; set; }
+       
 
         public Skin Skin { get; set; } = Skin.Dark;
 

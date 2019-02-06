@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
         private readonly IEventAggregator eventAggregator;
 
-        #endregion
+        #endregion Fields
 
         #region Constructors
 
@@ -24,14 +24,13 @@ namespace Ferretto.VW.MAS_AutomationService
             this.automationService = automationService;
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Methods
 
         [HttpGet("AddMissionTest")]
         public void AddMission()
         {
-            this.automationService.
         }
 
         [HttpGet("HomingTest")]
@@ -40,6 +39,6 @@ namespace Ferretto.VW.MAS_AutomationService
             this.eventAggregator.GetEvent<WebAPI_ExecuteActionEvent>().Publish(WebAPI_Action.VerticalHoming);
         }
 
-        #endregion
+        #endregion Methods
     }
 }
