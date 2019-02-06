@@ -176,7 +176,7 @@
 
                     <dxg:GridColumn Width="65*"
                                     CellToolTipBinding="{Binding}"
-                                    FieldName="Details">
+                                    Header="{x:Static res:General.Details}">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
                                 <wms:WmsIcon Width="16"
