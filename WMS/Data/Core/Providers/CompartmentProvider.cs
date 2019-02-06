@@ -106,6 +106,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     model.Id = entry.Entity.Id;
                 }
 
+                scope.Complete();
                 return new SuccessOperationResult<CompartmentDetails>(model);
             }
         }
