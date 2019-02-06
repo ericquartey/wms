@@ -30,6 +30,51 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
+        public async Task<OperationResult<ItemDetails>> CreateAsync(ItemDetails model)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            var entry = await this.dataContext.Items.AddAsync(new Common.DataModels.Item
+            {
+                AbcClassId = model.AbcClassId,
+                AverageWeight = model.AverageWeight,
+                Code = model.Code,
+                Description = model.Description,
+                FifoTimePick = model.FifoTimePick,
+                FifoTimeStore = model.FifoTimeStore,
+                Height = model.Height,
+                Id = model.Id,
+                Image = model.Image,
+                InventoryDate = model.InventoryDate,
+                InventoryTolerance = model.InventoryTolerance,
+                ItemCategoryId = model.ItemCategoryId,
+                LastPickDate = model.LastPickDate,
+                LastStoreDate = model.LastStoreDate,
+                Length = model.Length,
+                ManagementType = (Common.DataModels.ItemManagementType)model.ManagementType,
+                MeasureUnitId = model.MeasureUnitId,
+                Note = model.Note,
+                PickTolerance = model.PickTolerance,
+                ReorderPoint = model.ReorderPoint,
+                ReorderQuantity = model.ReorderQuantity,
+                StoreTolerance = model.StoreTolerance,
+                Width = model.Width
+            });
+
+            var changedEntitiesCount = await this.dataContext.SaveChangesAsync();
+            if (changedEntitiesCount > 0)
+            {
+                model.Id = entry.Entity.Id;
+                model.CreationDate = entry.Entity.CreationDate;
+                model.LastModificationDate = entry.Entity.LastModificationDate;
+            }
+
+            return new SuccessOperationResult<ItemDetails>(model);
+        }
+
         public async Task<IEnumerable<Item>> GetAllAsync(
             int skip,
             int take,
@@ -64,7 +109,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     .CountAsync(c => c.ItemId == id);
 
             var result = await this.GetAllDetailsBase()
-                       .SingleOrDefaultAsync(i => i.Id == id);
+                             .SingleOrDefaultAsync(i => i.Id == id);
             result.CompartmentsCount = compartmentsCount;
             return result;
         }
@@ -74,7 +119,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return await GetUniqueValuesAsync(propertyName, this.dataContext.Items);
         }
 
-        public async Task<OperationResult<Item>> UpdateAsync(Item model)
+        public async Task<OperationResult<ItemDetails>> UpdateAsync(ItemDetails model)
         {
             if (model == null)
             {
@@ -85,13 +130,13 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             if (existingModel == null)
             {
-                return new NotFoundOperationResult<Item>();
+                return new NotFoundOperationResult<ItemDetails>();
             }
 
             this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
             await this.dataContext.SaveChangesAsync();
 
-            return new SuccessOperationResult<Item>(model);
+            return new SuccessOperationResult<ItemDetails>(model);
         }
 
         private IQueryable<Item> GetAllBase()
