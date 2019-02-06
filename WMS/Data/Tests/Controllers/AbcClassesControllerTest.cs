@@ -149,12 +149,6 @@ namespace Ferretto.WMS.Data.Tests
             }
         }
 
-        [TestInitialize]
-        public void Initialize()
-        {
-            this.InitializeDatabase();
-        }
-
         private static AbcClassesController MockController(DatabaseContext context)
         {
             return new AbcClassesController(
