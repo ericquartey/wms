@@ -64,7 +64,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(404)]
         [ProducesResponseType(500, Type = typeof(string))]
         [HttpGet("{id}/bays")]
-        public async Task<ActionResult<IEnumerable<Bay>>> GetBays(int id)
+        public async Task<ActionResult<IEnumerable<Bay>>> GetBaysAsync(int id)
         {
             try
             {
