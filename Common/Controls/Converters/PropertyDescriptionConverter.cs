@@ -61,7 +61,18 @@ namespace Ferretto.Common.Controls
             {
                 var type = control.DataContext.GetType();
                 var path = bindingExpression.ParentBinding.Path.Path;
-                return FormControl.RetrieveLocalizedFieldName(type, path);
+
+                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(type, path);
+
+                var isFieldRequired = FormControl.IsFieldRequired(type, path);
+
+                if (control is WmsLabel wmsLabel)
+                {
+                    wmsLabel.Label.Content = localizedFieldName;
+                    wmsLabel.WmsIcon.Visibility = isFieldRequired ? Visibility.Visible : Visibility.Collapsed;
+                }
+
+                return $"{localizedFieldName}";
             }
 
             return null;
