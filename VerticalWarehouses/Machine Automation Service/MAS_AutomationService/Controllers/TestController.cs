@@ -10,20 +10,29 @@ namespace Ferretto.VW.MAS_AutomationService
     {
         #region Fields
 
+        private readonly IAutomationService automationService;
+
         private readonly IEventAggregator eventAggregator;
 
         #endregion
 
         #region Constructors
 
-        public TestController(IEventAggregator eventAggregator)
+        public TestController(IEventAggregator eventAggregator, IAutomationService automationService)
         {
             this.eventAggregator = eventAggregator;
+            this.automationService = automationService;
         }
 
         #endregion
 
         #region Methods
+
+        [HttpGet("AddMissionTest")]
+        public void AddMission()
+        {
+            this.automationService.
+        }
 
         [HttpGet("HomingTest")]
         public void ExecuteHoming()
