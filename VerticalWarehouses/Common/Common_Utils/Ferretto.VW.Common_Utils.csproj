@@ -3,5 +3,9 @@
   <PropertyGroup>
     <TargetFrameworks>net471;netcoreapp2.1</TargetFrameworks>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Prism.Core" Version="7.1.0.431" />
+  </ItemGroup>
 
 </Project>
