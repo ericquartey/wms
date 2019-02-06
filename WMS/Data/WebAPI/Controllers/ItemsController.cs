@@ -82,7 +82,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(200, Type = typeof(int))]
-        [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [HttpGet]
         [Route("api/[controller]/count")]
