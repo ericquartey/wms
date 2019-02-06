@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ferretto.WMS.Data.WebAPI.Interfaces
 {
-    public interface IReadSingleController<T>
+    public interface IReadSingleController<TModel, in TKey>
     {
         #region Methods
 
-        Task<ActionResult<T>> GetByIdAsync(int id);
+        Task<ActionResult<TModel>> GetByIdAsync(TKey id);
 
         #endregion
     }

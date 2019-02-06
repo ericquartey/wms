@@ -14,7 +14,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     [ApiController]
     public class ItemListsController : ControllerBase,
           IReadAllController<ItemList>,
-          IReadSingleController<ItemList>
+          IReadSingleController<ItemList, int>
     {
         #region Fields
 
