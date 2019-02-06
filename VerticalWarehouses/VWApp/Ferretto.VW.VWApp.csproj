@@ -228,10 +228,6 @@
       <Project>{8f34417e-3c32-4694-91af-b286fbf0e1ac}</Project>
       <Name>Ferretto.VW.Navigation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OperatorApp\Ferretto.VW.OperatorApp.csproj">
-      <Project>{2ddc7447-9196-4c21-af86-502d0c952669}</Project>
-      <Name>Ferretto.VW.OperatorApp</Name>
-    </ProjectReference>
     <ProjectReference Include="..\RemoteIODriver\Ferretto.VW.RemoteIODriver.csproj">
       <Project>{65b277ef-77fd-4a89-b550-086df53be54c}</Project>
       <Name>Ferretto.VW.RemoteIODriver</Name>
