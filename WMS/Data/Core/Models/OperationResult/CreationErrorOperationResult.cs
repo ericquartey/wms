@@ -1,10 +1,10 @@
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class NotCreatedOperationResult<T> : OperationResult<T>
+    public class CreationErrorOperationResult<T> : OperationResult<T>
     {
         #region Constructors
 
-        public NotCreatedOperationResult()
+        public CreationErrorOperationResult()
             : base(false)
         {
         }

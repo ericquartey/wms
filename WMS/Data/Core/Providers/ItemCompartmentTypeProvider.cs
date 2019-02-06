@@ -60,7 +60,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             if (await this.dataContext.SaveChangesAsync() <= 0)
             {
-                return new NotCreatedOperationResult<ItemCompartmentType>();
+                return new CreationErrorOperationResult<ItemCompartmentType>();
             }
 
             return new SuccessOperationResult<ItemCompartmentType>(model);

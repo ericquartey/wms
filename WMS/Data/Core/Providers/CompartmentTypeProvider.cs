@@ -69,7 +69,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                     if (await this.dataContext.SaveChangesAsync() <= 0)
                     {
-                        return new NotCreatedOperationResult<CompartmentType>();
+                        return new CreationErrorOperationResult<CompartmentType>();
                     }
 
                     existingCompartmentType = entry.Entity;
@@ -85,7 +85,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                     if (!result.Success)
                     {
-                        return new NotCreatedOperationResult<CompartmentType>();
+                        return new CreationErrorOperationResult<CompartmentType>();
                     }
                 }
 

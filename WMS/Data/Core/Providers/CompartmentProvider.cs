@@ -51,7 +51,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     var result = await this.CreateAsync(compartment);
                     if (!result.Success)
                     {
-                        return new NotCreatedOperationResult<IEnumerable<CompartmentDetails>>();
+                        return new CreationErrorOperationResult<IEnumerable<CompartmentDetails>>();
                     }
 
                     compartment.Id = result.Entity.Id;
@@ -83,7 +83,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 if (!createCompartmentTypeResult.Success)
                 {
-                    return new NotCreatedOperationResult<CompartmentDetails>();
+                    return new CreationErrorOperationResult<CompartmentDetails>();
                 }
 
                 var entry = await this.dataContext.Compartments.AddAsync(new Common.DataModels.Compartment
