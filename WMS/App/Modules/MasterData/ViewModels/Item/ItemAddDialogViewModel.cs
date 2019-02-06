@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
@@ -13,13 +14,11 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemAddDialogViewModel : DetailsViewModel<ItemDetails>
+    public class ItemAddDialogViewModel : CreateViewModel<ItemDetails>
     {
         #region Fields
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
-
-        private ICommand closeDialogCommand;
 
         private IDataSource<Compartment> compartmentsDataSource;
 
@@ -29,20 +28,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #endregion
 
-        #region Constructors
-
-        public ItemAddDialogViewModel()
-        {
-            this.Initialize();
-        }
-
-        #endregion
-
         #region Properties
-
-        public ICommand CloseDialogCommand => this.closeDialogCommand ??
-                                           (this.closeDialogCommand = new Prism.Commands.DelegateCommand(
-                               this.ExecuteCloseDialogCommand));
 
         public IDataSource<Compartment> CompartmentsDataSource
         {
@@ -88,43 +74,37 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        protected override Task ExecuteRefreshCommandAsync()
+        protected override void ExecuteClearCommand()
         {
-            throw new System.NotSupportedException();
+            this.LoadData();
         }
 
-        protected override Task ExecuteRevertCommand()
+        // TODO: task 1256 -> protected override async Task ExecuteSaveCommand()
+        protected override Task ExecuteSaveCommand()
         {
-            throw new System.NotSupportedException();
+            this.IsValidationEnabled = true;
+            throw new NotImplementedException();
         }
 
-        protected override async Task ExecuteSaveCommand()
+        protected override void OnAppear()
         {
-            this.IsBusy = true;
+            base.OnAppear();
 
-            var result = await this.itemProvider.SaveAsync(this.Model);
-            if (result.Success)
+            this.LoadData();
+        }
+
+        private void LoadData()
+        {
+            try
             {
-                this.TakeModelSnapshot();
-
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
+                this.IsBusy = true;
+                this.Model = this.itemProvider.GetNew();
+                this.IsBusy = false;
             }
-            else
+            catch
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
             }
-
-            this.IsBusy = false;
-        }
-
-        private void ExecuteCloseDialogCommand()
-        {
-            this.Disappear();
-        }
-
-        private void Initialize()
-        {
-            this.Data = null;
         }
 
         #endregion
