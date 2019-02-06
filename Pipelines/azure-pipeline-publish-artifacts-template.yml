@@ -12,6 +12,6 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: on_premises_appconfig_transform'
   inputs:
-    PathtoPublish: WMS/App/App
+    PathtoPublish: 'WMS/App/App'
     ArtifactName: 'on_premises_appconfig_transform'
 

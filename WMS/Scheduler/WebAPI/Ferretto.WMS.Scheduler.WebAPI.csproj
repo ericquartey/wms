@@ -35,7 +35,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Common\BusinessModels\Ferretto.Common.BusinessModels.csproj" />
     <ProjectReference Include="..\..\..\Common\EF\Ferretto.Common.EF.csproj" />
     <ProjectReference Include="..\Core\Ferretto.WMS.Scheduler.Core.csproj" />
   </ItemGroup>

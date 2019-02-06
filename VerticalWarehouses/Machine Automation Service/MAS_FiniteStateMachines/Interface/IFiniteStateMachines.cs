@@ -1,4 +1,4 @@
-﻿using Ferretto.Common.Common_Utils;
+﻿using System;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines
 {
@@ -8,12 +8,18 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         void Destroy();
 
-        void DoHoming(BroadcastDelegate broadcastDelegate);
+        /// <summary>
+        /// Execute complete homing.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">An <see cref="InvalidOperationException"/> is thrown, if object is null.</exception>
+        void DoHoming();
 
-        void DoVerticalHoming(BroadcastDelegate broadcastDelegate);
+        /// <summary>
+        /// Execute vertical homing.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">An <see cref="InvalidOperationException"/> is thrown, if object is null.</exception>
+        void DoVerticalHoming();
 
-        void MakeOperationByInverter(IdOperation code);
-
-        #endregion Methods
+        #endregion
     }
 }

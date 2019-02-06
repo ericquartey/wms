@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MAS_DataLayer
+﻿namespace Ferretto.VW.MAS_DataLayer
 {
     public interface IWriteLogService
     {
+        #region Methods
+
         void LogWriting(string logMessage);
+
+        #endregion Methods
     }
 }

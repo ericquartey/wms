@@ -1,19 +1,26 @@
-﻿using System.Threading.Tasks;
-using Ferretto.Common.Common_Utils;
+﻿using Ferretto.VW.MAS_DataLayer;
+using Ferretto.VW.MAS_FiniteStateMachines;
 
 namespace Ferretto.VW.MAS_MachineManager
 {
     public class MachineManager : IMachineManager
     {
-        //TODO private readonly FiniteStateMachines finiteStateMachines = Singleton<FiniteStateMachines>.UniqueInstance;
+        #region Fields
 
-        #region Methods
+        private readonly IFiniteStateMachines finiteStateMachines;
 
-        public async Task DoHoming(BroadcastDelegate broadcastDelegate)
+        private readonly IWriteLogService writeLogService;
+
+        #endregion
+
+        #region Constructors
+
+        public MachineManager(IFiniteStateMachines finiteStateMachines, IWriteLogService writeLogService)
         {
-            //TODO await this.finiteStateMachines.DoHoming(broadcastDelegate);
+            this.finiteStateMachines = finiteStateMachines;
+            this.writeLogService = writeLogService;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

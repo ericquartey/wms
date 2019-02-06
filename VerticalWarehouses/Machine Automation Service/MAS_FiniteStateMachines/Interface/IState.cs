@@ -6,12 +6,6 @@
 
         string Type { get; }
 
-        #endregion Properties
-
-        #region Methods
-
-        void DoAction(IdOperation code);
-
-        #endregion Methods
+        #endregion
     }
 }

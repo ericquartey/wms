@@ -1,9 +1,9 @@
 ﻿using System;
-using Ferretto.VW.MAS_MachineManager;
-using System.Threading.Tasks;
-using Ferretto.Common.Common_Utils;
-using System.Collections;
 using System.Collections.Generic;
+using Ferretto.Common.Common_Utils;
+using Ferretto.VW.MAS_DataLayer;
+using Ferretto.VW.MAS_MachineManager;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS_MissionScheduler
 {
@@ -11,24 +11,36 @@ namespace Ferretto.VW.MAS_MissionScheduler
     {
         #region Fields
 
-        private readonly MachineManager machineManager = Singleton<MachineManager>.UniqueInstance;
+        private readonly IEventAggregator eventAggregator;
+
+        private readonly IMachineManager machineManager;
 
         private readonly Queue<Mission> missionsQueue = new Queue<Mission>();
 
-        #endregion Fields
+        private readonly IWriteLogService writeLogService;
+
+        #endregion
+
+        #region Constructors
+
+        public MissionsScheduler(IMachineManager machineManager, IWriteLogService writeLogService, IEventAggregator eventAggregator)
+        {
+            this.machineManager = machineManager;
+            this.writeLogService = writeLogService;
+            this.eventAggregator = eventAggregator;
+        }
+
+        #endregion
 
         #region Methods
 
-        public void AddMission(Mission mission)
+        public bool AddMission(Mission mission)
         {
-            throw new NotImplementedException();
+            if (mission == null) throw new ArgumentNullException("Mission is null, cannot add a null item to the Mission Queue.\n");
+            this.missionsQueue.Enqueue(mission);
+            return true;
         }
 
-        public async Task DoHoming(BroadcastDelegate broadcastDelegate)
-        {
-            await this.machineManager.DoHoming(broadcastDelegate);
-        }
-
-        #endregion Methods
+        #endregion
     }
 }

@@ -1,22 +1,62 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore;
+using Ferretto.Common.Common_Utils;
+using Prism.Events;
 
-namespace MAS_DataLayer
+namespace Ferretto.VW.MAS_DataLayer
 {
-
     public class WriteLogService : IWriteLogService
     {
-        private readonly DataLayerContext dataContext;
+        #region Fields
 
-        public WriteLogService(DataLayerContext dataContext)
+        private readonly DataLayerContext dataContext;
+        
+        #endregion Fields
+
+        #region Constructors
+
+        public WriteLogService(DataLayerContext dataContext, IEventAggregator eventAggregator)
         {
             this.dataContext = dataContext;
+
+            // Event Aggregator managment
+            WebAPI_ExecuteActionEvent webApiExecuteActionEvent = eventAggregator.GetEvent<WebAPI_ExecuteActionEvent>();
+            webApiExecuteActionEvent.Subscribe(LogWriting, ThreadOption.PublisherThread, false, logMessage => logMessage == WebAPI_Action.VerticalHoming);
         }
+
+        #endregion Constructors
+
+        #region Methods
 
         public void LogWriting(string logMessage)
         {
             this.dataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
             this.dataContext.SaveChanges();
         }
+
+        public void LogWriting(WebAPI_Action webApiAction)
+        {
+            string logMessage;
+
+            switch (webApiAction)
+            {
+                case WebAPI_Action.VerticalHoming:
+                    {
+                        logMessage = "Vertical Homing";
+
+                        break;
+                    }
+                default:
+                    {
+                        logMessage = "Unknown Action";
+
+                        break;
+                    }
+            }
+
+            this.dataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
+            this.dataContext.SaveChanges();
+        }
+
+        #endregion Methods
     }
 }

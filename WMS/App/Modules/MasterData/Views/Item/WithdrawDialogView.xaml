@@ -12,6 +12,7 @@
                    d:DesignHeight="500"
                    d:DesignWidth="500"
                    HeaderIsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}"
+                   Mode="DialogPopup"
                    ResizeMode="NoResize"
                    SizeToContent="Height"
                    mc:Ignorable="d">

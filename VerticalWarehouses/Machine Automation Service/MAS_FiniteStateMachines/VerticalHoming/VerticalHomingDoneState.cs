@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Ferretto.VW.MAS_DataLayer;
+using Ferretto.VW.MAS_InverterDriver;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 {
@@ -7,59 +9,34 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
     {
         #region Fields
 
+        private readonly IWriteLogService data;
+
+        private readonly IInverterDriver driver;
+
+        private readonly IEventAggregator eventAggregator;
+
         private StateMachineVerticalHoming context;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
-        public VerticalHomingDoneState(StateMachineVerticalHoming parent)
+        public VerticalHomingDoneState(StateMachineVerticalHoming parent, IInverterDriver iDriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
         {
             this.context = parent;
+            this.driver = iDriver;
+            this.data = iWriteLogService;
+            this.eventAggregator = eventAggregator;
+
+            this.data.LogWriting("Vertical homing done state");
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public string Type => "Vertical Homing Done State";
 
-        #endregion Properties
-
-        #region Methods
-
-        public void DoAction(IdOperation code)
-        {
-            switch (code)
-            {
-                case IdOperation.HorizontalHome:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-                case IdOperation.SwitchHorizontalToVertical:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-                case IdOperation.SwitchVerticalToHorizontal:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-                case IdOperation.VerticalHome:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-                default:
-                    {
-                        Console.WriteLine("Invalid operation");
-                        break;
-                    }
-            }
-        }
-
-        #endregion Methods
+        #endregion
     }
 }

@@ -32,7 +32,10 @@ namespace Ferretto.Common.Controls
 
         private void TileBar_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            this.SelectFirstItem();
+            if (this.SelectedItem == null)
+            {
+                this.SelectFirstItem();
+            }
         }
 
         #endregion

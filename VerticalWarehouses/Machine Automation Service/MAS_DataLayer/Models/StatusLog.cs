@@ -1,13 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace MAS_DataLayer
+﻿namespace Ferretto.VW.MAS_DataLayer
 {
-   
     public class StatusLog
     {
-        public int StatusLogId { get; set; }
+        #region Properties
 
         public string LogMessage { get; set; }
-    }
 
+        public int StatusLogId { get; set; }
+
+        #endregion Properties
+    }
 }

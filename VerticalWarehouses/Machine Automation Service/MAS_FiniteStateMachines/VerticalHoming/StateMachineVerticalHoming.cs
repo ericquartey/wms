@@ -1,31 +1,41 @@
-﻿using Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming;
+﻿using Ferretto.VW.MAS_DataLayer;
+using Ferretto.VW.MAS_InverterDriver;
+using Prism.Events;
 
-namespace Ferretto.VW.MAS_FiniteStateMachines
+namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 {
     public class StateMachineVerticalHoming : IState, IStateMachine
     {
         #region Fields
 
-        private FiniteStateMachines fsm;
+        private readonly IWriteLogService data;
+
+        private readonly IInverterDriver driver;
+
+        private readonly IEventAggregator eventAggregator;
 
         private IState state;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
-        public StateMachineVerticalHoming(FiniteStateMachines fsm)
+        public StateMachineVerticalHoming(IInverterDriver iDriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
         {
-            this.fsm = fsm;
+            this.driver = iDriver;
+            this.data = iWriteLogService;
+            this.eventAggregator = eventAggregator;
+
+            //this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public string Type => this.state.Type;
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -34,22 +44,23 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.state = newState;
         }
 
-        public void DoAction(IdOperation code)
-        {
-            this.state.DoAction(code);
-        }
-
         public void ExecuteOperation(IdOperation code)
         {
-            this.fsm.MakeOperationByInverter(code);
         }
 
         public void Start()
         {
             // TODO check the sensors before to set the initial state
-            this.state = new VerticalHomingUndoneState(this);
+            this.state = new VerticalHomingIdleState(this, this.driver, this.data, this.eventAggregator);
         }
 
-        #endregion Methods
+        #endregion
+
+        /*
+        private void notifyEventHandler(InverterDriver_Notification notification)
+        {
+            // do something
+        }
+        */
     }
 }

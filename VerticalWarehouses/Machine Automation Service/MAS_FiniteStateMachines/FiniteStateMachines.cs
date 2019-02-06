@@ -1,5 +1,9 @@
 ﻿using System;
 using Ferretto.Common.Common_Utils;
+using Ferretto.VW.MAS_DataLayer;
+using Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming;
+using Ferretto.VW.MAS_InverterDriver;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines
 {
@@ -7,24 +11,33 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
     {
         #region Fields
 
-        private MAS_InverterDriver.InverterDriver driver;
+        private readonly IWriteLogService data;
+
+        private readonly IInverterDriver driver;
+
+        private readonly IEventAggregator eventAggregator;
 
         private StateMachineHoming homing;
 
         private StateMachineVerticalHoming verticalHoming;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
-        public FiniteStateMachines()
+        public FiniteStateMachines(IInverterDriver iDriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
         {
-            this.driver = Singleton<MAS_InverterDriver.InverterDriver>.UniqueInstance;
-            this.homing = new StateMachineHoming(this);
-            this.verticalHoming = new StateMachineVerticalHoming(this);
+            this.driver = iDriver;
+            this.data = iWriteLogService;
+            this.eventAggregator = eventAggregator;
+
+            this.eventAggregator.GetEvent<WebAPI_ExecuteActionEvent>().Subscribe(this.doAction);
+
+            this.homing = new StateMachineHoming(this.driver, this.data);
+            this.verticalHoming = new StateMachineVerticalHoming(this.driver, this.data, this.eventAggregator);
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -33,56 +46,51 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.driver.Destroy();
         }
 
-        public void DoHoming(BroadcastDelegate broadcastDelegate)
+        /// <summary>
+        /// Execute complete homing.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">An <see cref="InvalidOperationException"/> is thrown, if object is null.</exception>
+        public void DoHoming()
         {
-            if (this.homing == null)
+            if (null == this.homing)
             {
                 throw new InvalidOperationException();
             }
 
-            this.homing.Start();
-            this.homing.DoAction(IdOperation.SwitchVerticalToHorizontal);
-            this.homing.DoAction(IdOperation.HorizontalHome);
-            this.homing.DoAction(IdOperation.SwitchHorizontalToVertical);
-            this.homing.DoAction(IdOperation.VerticalHome);
-            this.homing.DoAction(IdOperation.SwitchVerticalToHorizontal);
-            this.homing.DoAction(IdOperation.HorizontalHome);
-            this.homing.DoAction(IdOperation.SwitchHorizontalToVertical);
+            this.homing?.Start();
         }
 
-        public void DoVerticalHoming(BroadcastDelegate broadcastDelegate)
+        /// <summary>
+        /// Execute vertical homing.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">An <see cref="InvalidOperationException"/> is thrown, if object is null.</exception>
+        public void DoVerticalHoming()
         {
-            if (this.verticalHoming == null)
+            if (null == this.verticalHoming)
             {
                 throw new InvalidOperationException();
             }
 
-            this.verticalHoming.Start();
-            this.verticalHoming.DoAction(IdOperation.VerticalHome);
+            this.verticalHoming?.Start();
         }
 
-        public void MakeOperationByInverter(IdOperation code)
+        /// <summary>
+        /// Execute a requested action for finite state machines. Use the related state machine.
+        /// </summary>
+        /// <param name="actionId">A <see cref="WebAPI_Action"/> parameter related to the request</param>
+        /// <exception cref="InvalidOperationException">An <see cref="InvalidOperationException"/> is thrown, if object is null.</exception>
+        private void doAction(WebAPI_Action action)
         {
-            switch (code)
+            switch (action)
             {
-                case IdOperation.HorizontalHome:
+                case WebAPI_Action.VerticalHoming:
                     {
-                        // TODO await driver.ExecuteAction("Horizontal Home");
-                        break;
-                    }
-                case IdOperation.SwitchHorizontalToVertical:
-                    {
-                        // TODO await driver.ExecuteAction("SwitchHorizontalToVertical");
-                        break;
-                    }
-                case IdOperation.VerticalHome:
-                    {
-                        this.driver.ExecuteVerticalHoming();
-                        break;
-                    }
-                case IdOperation.SwitchVerticalToHorizontal:
-                    {
-                        // TODO await driver.ExecuteAction("SwitchVerticalToHorizontal");
+                        if (null == this.verticalHoming)
+                        {
+                            throw new InvalidOperationException();
+                        }
+
+                        this.verticalHoming?.Start();
                         break;
                     }
                 default:
@@ -92,6 +100,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }
