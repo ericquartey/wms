@@ -1,0 +1,92 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{7C870AE6-46DD-493B-BAD9-FDEFE22ECA1F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WMS", "WMS", "{C6AB2AE0-C101-4638-AC86-6B6BCB7ACCB2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.Resources", "..\Common\Resources\Ferretto.Common.Resources.csproj", "{EC02D26C-F149-496C-BC7C-75D229B4333F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Scheduler.WebAPI.Contracts", "Scheduler\WebAPI.Contracts\Ferretto.WMS.Scheduler.WebAPI.Contracts.csproj", "{57633D89-955F-4D65-A2FD-6920563D9F54}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Scheduler.WebAPI", "Scheduler\WebAPI\Ferretto.WMS.Scheduler.WebAPI.csproj", "{39183276-855C-4EEC-AA35-CA3F7A0E6E78}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FAF74787-129A-4EBD-BC08-972E2E1A777C} = {FAF74787-129A-4EBD-BC08-972E2E1A777C}
+		{57633D89-955F-4D65-A2FD-6920563D9F54} = {57633D89-955F-4D65-A2FD-6920563D9F54}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Scheduler.Core", "Scheduler\Core\Ferretto.WMS.Scheduler.Core.csproj", "{FAF74787-129A-4EBD-BC08-972E2E1A777C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.BLL.Interfaces", "..\Common\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj", "{2586C34C-DA26-4143-8359-21D8A42B8462}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.EF", "..\Common\EF\Ferretto.Common.EF.csproj", "{C32FD908-0388-4096-AF68-43BBEDB58725}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.DataModels", "..\Common\DataModels\Ferretto.Common.DataModels.csproj", "{1DA46E40-CF35-4458-9B2F-A6F6B3BA1C65}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Scheduler.Drivers.Vertimag", "Scheduler\Drivers.Vertimag\Ferretto.WMS.Scheduler.Drivers.Vertimag.csproj", "{6D9EB260-9249-4A4C-BF0F-030B647B3699}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.Utils", "..\Common\Utils\Ferretto.Common.Utils.csproj", "{6A5D5679-A30D-4619-86F7-9EC572EDCFEA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EC02D26C-F149-496C-BC7C-75D229B4333F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC02D26C-F149-496C-BC7C-75D229B4333F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC02D26C-F149-496C-BC7C-75D229B4333F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC02D26C-F149-496C-BC7C-75D229B4333F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57633D89-955F-4D65-A2FD-6920563D9F54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57633D89-955F-4D65-A2FD-6920563D9F54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57633D89-955F-4D65-A2FD-6920563D9F54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57633D89-955F-4D65-A2FD-6920563D9F54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39183276-855C-4EEC-AA35-CA3F7A0E6E78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39183276-855C-4EEC-AA35-CA3F7A0E6E78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39183276-855C-4EEC-AA35-CA3F7A0E6E78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39183276-855C-4EEC-AA35-CA3F7A0E6E78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAF74787-129A-4EBD-BC08-972E2E1A777C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAF74787-129A-4EBD-BC08-972E2E1A777C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAF74787-129A-4EBD-BC08-972E2E1A777C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAF74787-129A-4EBD-BC08-972E2E1A777C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2586C34C-DA26-4143-8359-21D8A42B8462}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2586C34C-DA26-4143-8359-21D8A42B8462}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2586C34C-DA26-4143-8359-21D8A42B8462}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2586C34C-DA26-4143-8359-21D8A42B8462}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C32FD908-0388-4096-AF68-43BBEDB58725}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C32FD908-0388-4096-AF68-43BBEDB58725}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C32FD908-0388-4096-AF68-43BBEDB58725}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C32FD908-0388-4096-AF68-43BBEDB58725}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DA46E40-CF35-4458-9B2F-A6F6B3BA1C65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DA46E40-CF35-4458-9B2F-A6F6B3BA1C65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DA46E40-CF35-4458-9B2F-A6F6B3BA1C65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DA46E40-CF35-4458-9B2F-A6F6B3BA1C65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D9EB260-9249-4A4C-BF0F-030B647B3699}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D9EB260-9249-4A4C-BF0F-030B647B3699}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D9EB260-9249-4A4C-BF0F-030B647B3699}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D9EB260-9249-4A4C-BF0F-030B647B3699}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A5D5679-A30D-4619-86F7-9EC572EDCFEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A5D5679-A30D-4619-86F7-9EC572EDCFEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A5D5679-A30D-4619-86F7-9EC572EDCFEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A5D5679-A30D-4619-86F7-9EC572EDCFEA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EC02D26C-F149-496C-BC7C-75D229B4333F} = {7C870AE6-46DD-493B-BAD9-FDEFE22ECA1F}
+		{57633D89-955F-4D65-A2FD-6920563D9F54} = {C6AB2AE0-C101-4638-AC86-6B6BCB7ACCB2}
+		{39183276-855C-4EEC-AA35-CA3F7A0E6E78} = {C6AB2AE0-C101-4638-AC86-6B6BCB7ACCB2}
+		{FAF74787-129A-4EBD-BC08-972E2E1A777C} = {C6AB2AE0-C101-4638-AC86-6B6BCB7ACCB2}
+		{2586C34C-DA26-4143-8359-21D8A42B8462} = {7C870AE6-46DD-493B-BAD9-FDEFE22ECA1F}
+		{C32FD908-0388-4096-AF68-43BBEDB58725} = {7C870AE6-46DD-493B-BAD9-FDEFE22ECA1F}
+		{1DA46E40-CF35-4458-9B2F-A6F6B3BA1C65} = {7C870AE6-46DD-493B-BAD9-FDEFE22ECA1F}
+		{6D9EB260-9249-4A4C-BF0F-030B647B3699} = {C6AB2AE0-C101-4638-AC86-6B6BCB7ACCB2}
+		{6A5D5679-A30D-4619-86F7-9EC572EDCFEA} = {7C870AE6-46DD-493B-BAD9-FDEFE22ECA1F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B998A0C5-DD2C-4088-9C42-300A146A4118}
+	EndGlobalSection
+EndGlobal
