@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
@@ -10,30 +11,55 @@ namespace Ferretto.Common.BusinessModels
         #region Fields
 
         private string abcClassId;
+
         private int? averageWeight;
+
         private string code;
+
         private DateTime creationDate;
+
         private string description;
+
         private int? fifoTimePick;
+
         private int? fifoTimeStore;
+
         private int? height;
+
         private string image;
+
         private string imagePath;
+
         private DateTime? inventoryDate;
+
         private int? inventoryTolerance;
+
         private int? itemCategoryId;
+
         private DateTime? lastModificationDate;
+
         private DateTime? lastPickDate;
+
         private DateTime? lastStoreDate;
+
         private int? length;
+
         private ItemManagementType managementType;
+
         private string measureUnitId;
+
         private string note;
+
         private int? pickTolerance;
+
         private int? reorderPoint;
+
         private int? reorderQuantity;
+
         private int? storeTolerance;
+
         private int totalAvailable;
+
         private int? width;
 
         #endregion
@@ -42,11 +68,18 @@ namespace Ferretto.Common.BusinessModels
 
         public IEnumerable<EnumerationString> AbcClassChoices { get; set; }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.AbcClass), ResourceType = typeof(BusinessObjects))]
         public string AbcClassId
         {
             get => this.abcClassId;
-            set => this.SetProperty(ref this.abcClassId, value);
+            set
+            {
+                if (this.SetProperty(ref this.abcClassId, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
         [Display(Name = nameof(BusinessObjects.ItemAverageWeight), ResourceType = typeof(BusinessObjects))]
@@ -56,11 +89,18 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetIfStrictlyPositive(ref this.averageWeight, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.ItemCode), ResourceType = typeof(BusinessObjects))]
         public string Code
         {
             get => this.code;
-            set => this.SetProperty(ref this.code, value);
+            set
+            {
+                if (this.SetProperty(ref this.code, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
         public IEnumerable<Compartment> Compartments { get; set; }
@@ -78,6 +118,15 @@ namespace Ferretto.Common.BusinessModels
             get => this.description;
             set => this.SetProperty(ref this.description, value);
         }
+
+        public override string Error => string.Join(Environment.NewLine, new[]
+            {
+                this[nameof(this.Code)],
+                this[nameof(this.ManagementType)],
+                this[nameof(this.AbcClassId)],
+            }
+          .Distinct()
+          .Where(s => !string.IsNullOrEmpty(s)));
 
         [Display(Name = nameof(BusinessObjects.ItemFifoPickTime), ResourceType = typeof(BusinessObjects))]
         public int? FifoTimePick
@@ -105,6 +154,7 @@ namespace Ferretto.Common.BusinessModels
             get => this.image;
             set => this.SetProperty(ref this.image, value);
         }
+
         public string ImagePath
         {
             get => this.imagePath;
@@ -162,11 +212,18 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetIfStrictlyPositive(ref this.length, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
         public ItemManagementType ManagementType
         {
             get => this.managementType;
-            set => this.SetProperty(ref this.managementType, value);
+            set
+            {
+                if (this.SetProperty(ref this.managementType, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
         public IEnumerable<Enumeration> ManagementTypeChoices { get; set; }
