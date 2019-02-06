@@ -86,7 +86,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(404)]
         [HttpGet]
         [Route("api/[controller]/count")]
-        public async Task<ActionResult<int>> GetAllCount(
+        public async Task<ActionResult<int>> GetAllCountAsync(
             string where = null,
             string search = null)
         {
@@ -113,7 +113,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(404)]
         [ProducesResponseType(500, Type = typeof(string))]
         [HttpGet("{id}/areas_with_availability")]
-        public async Task<ActionResult<IEnumerable<Area>>> GetAreasWithAvailability(int id)
+        public async Task<ActionResult<IEnumerable<Area>>> GetAreasWithAvailabilityAsync(int id)
         {
             try
             {
@@ -167,7 +167,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(400)]
         [HttpGet]
         [Route("api/[controller]/unique/{propertyName}")]
-        public async Task<ActionResult<object[]>> GetUniqueValues(
+        public async Task<ActionResult<object[]>> GetUniqueValuesAsync(
             string propertyName)
         {
             this.logger.LogInformation(

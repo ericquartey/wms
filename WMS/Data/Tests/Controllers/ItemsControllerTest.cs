@@ -49,7 +49,7 @@ namespace Ferretto.WMS.Data.Tests
 
                 #region Act
 
-                var actionResult = await controller.GetAreasWithAvailability(item1.Id);
+                var actionResult = await controller.GetAreasWithAvailabilityAsync(item1.Id);
 
                 #endregion
 
@@ -82,7 +82,7 @@ namespace Ferretto.WMS.Data.Tests
 
                 #region Act
 
-                var actionResult = await controller.GetAreasWithAvailability(item1.Id);
+                var actionResult = await controller.GetAreasWithAvailabilityAsync(item1.Id);
 
                 #endregion
 
@@ -117,7 +117,7 @@ namespace Ferretto.WMS.Data.Tests
 
                 #region Act
 
-                var actionResult = await controller.GetAreasWithAvailability(item1.Id);
+                var actionResult = await controller.GetAreasWithAvailabilityAsync(item1.Id);
 
                 #endregion
 
@@ -148,7 +148,7 @@ namespace Ferretto.WMS.Data.Tests
 
                 #region Act
 
-                var actionResult = await controller.GetAreasWithAvailability(item1.Id);
+                var actionResult = await controller.GetAreasWithAvailabilityAsync(item1.Id);
 
                 #endregion
 
