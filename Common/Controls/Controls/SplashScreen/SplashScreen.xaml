@@ -29,7 +29,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="45" />
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                     <RowDefinition Height="10" />
                 </Grid.RowDefinitions>
 
@@ -68,20 +68,27 @@
 
                 <DockPanel x:Name="Footer"
                            Grid.Row="5"
-                           Height="30"
+                           Height="20"
                            Margin="5,5,5,4">
-                    <StackPanel Orientation="Vertical">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
                         <TextBlock x:Name="copyrightText"
                                    HorizontalAlignment="Left"
                                    Foreground="#FF2D2D2D"
                                    Opacity="0.5"
                                    TextWrapping="Wrap" />
                         <TextBlock x:Name="versionText"
-                                   HorizontalAlignment="Left"
+                                   Grid.Column="2"
+                                   HorizontalAlignment="Right"
+                                   dx:PositionStackPanel.Position="Last"
                                    Foreground="#FF2D2D2D"
                                    Opacity="0.5"
                                    TextWrapping="Wrap" />
-                    </StackPanel>
+                    </Grid>
                 </DockPanel>
             </Grid>
         </Grid>
