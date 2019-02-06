@@ -332,3 +332,6 @@ ASALocalRun/
 
 *.stackdump
 *.bak
+
+# SQLite DataBase
+*.db

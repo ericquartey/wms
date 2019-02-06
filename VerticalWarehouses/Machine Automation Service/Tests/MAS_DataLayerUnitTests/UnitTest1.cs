@@ -6,12 +6,12 @@ using Moq;
 namespace MAS_DataLayerUnitTests
 {
     [TestClass]
-    public class UnitTest1
+    public class UnitTest1 : DBTest
     {
         [TestMethod]
         public void TestMethod1()
         {
-            using (var context = new this.CreateContext())
+            using (var context = this.CreateContext())
             {
                 // Arrange
                 bool updateFeedback = false;

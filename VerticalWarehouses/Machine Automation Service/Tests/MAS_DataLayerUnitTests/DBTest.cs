@@ -1,14 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Ferretto.VW.MAS_DataLayer;
+using Microsoft.EntityFrameworkCore;
 
 namespace MAS_DataLayerUnitTests
 {
     public abstract class DBTest
     {
 
-        protected DatabaseContext CreateContext()
+        protected DataLayerContext CreateContext()
         {
-            return new DatabaseContext(
-                new DbContextOptionsBuilder<DatabaseContext>()
+            return new DataLayerContext(
+                new DbContextOptionsBuilder<DataLayerContext>()
                     .UseInMemoryDatabase(databaseName: this.GetType().FullName)
                     .Options);
         }
@@ -18,7 +19,6 @@ namespace MAS_DataLayerUnitTests
 
             using (var context = this.CreateContext())
             {
-                context.Areas.Add(this.Area1);
 
                 context.SaveChanges();
             }
