@@ -12,8 +12,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\InverterDriver\Ferretto.VW.InverterDriver.csproj" />
-    <ProjectReference Include="..\MathLib\MathLib.csproj" />
-    <ProjectReference Include="..\RemoteIODriver\RemoteIODriver.csproj" />
+    <ProjectReference Include="..\MathLib\Ferretto.VW.MathLib.csproj" />
+    <ProjectReference Include="..\RemoteIODriver\Ferretto.VW.RemoteIODriver.csproj" />
   </ItemGroup>
 
 </Project>

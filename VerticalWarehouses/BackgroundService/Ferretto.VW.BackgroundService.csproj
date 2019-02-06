@@ -7,19 +7,10 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
-  
+
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="SonarAnalyzer" Version="6.6.0.3969" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.10.0.7896" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\RemoteIODriver\RemoteIODriver.csproj" />
+    <ProjectReference Include="..\RemoteIODriver\Ferretto.VW.RemoteIODriver.csproj" />
+    <ProjectReference Include="..\Utils\Ferretto.VW.Utils.csproj" />
     <!--ProjectReference Include="..\Utils\Utils.csproj" /-->
   </ItemGroup>
 

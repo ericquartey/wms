@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace Ferretto.VW.Utils.Source
+namespace Ferretto.VW.InstallationApp
 {
     public class BaseView : UserControl
     {

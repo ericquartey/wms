@@ -212,33 +212,33 @@
       <Project>{3c8a3855-897a-4395-bf65-d9d597896a3e}</Project>
       <Name>Ferretto.VW.CustomControls</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InstallationApp\InstallationApp.csproj">
+    <ProjectReference Include="..\InstallationApp\Ferretto.VW.InstallationApp.csproj">
       <Project>{1ec2e502-155d-48c0-82b9-961fb97149a3}</Project>
-      <Name>InstallationApp</Name>
+      <Name>Ferretto.VW.InstallationApp</Name>
     </ProjectReference>
     <ProjectReference Include="..\InverterDriver\Ferretto.VW.InverterDriver.csproj">
       <Project>{119128d4-1776-427a-aec1-6da12b0ff813}</Project>
       <Name>Ferretto.VW.InverterDriver</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MathLib\MathLib.csproj">
+    <ProjectReference Include="..\MathLib\Ferretto.VW.MathLib.csproj">
       <Project>{2f188460-af20-4b52-a19d-1a01941756d2}</Project>
-      <Name>MathLib</Name>
+      <Name>Ferretto.VW.MathLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\Navigation\Ferretto.VW.Navigation.csproj">
       <Project>{8f34417e-3c32-4694-91af-b286fbf0e1ac}</Project>
       <Name>Ferretto.VW.Navigation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OperatorApp\OperatorApp.csproj">
+    <ProjectReference Include="..\OperatorApp\Ferretto.VW.OperatorApp.csproj">
       <Project>{2ddc7447-9196-4c21-af86-502d0c952669}</Project>
-      <Name>OperatorApp</Name>
+      <Name>Ferretto.VW.OperatorApp</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RemoteIODriver\RemoteIODriver.csproj">
+    <ProjectReference Include="..\RemoteIODriver\Ferretto.VW.RemoteIODriver.csproj">
       <Project>{65b277ef-77fd-4a89-b550-086df53be54c}</Project>
-      <Name>RemoteIODriver</Name>
+      <Name>Ferretto.VW.RemoteIODriver</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Utils\Utils.csproj">
+    <ProjectReference Include="..\Utils\Ferretto.VW.Utils.csproj">
       <Project>{eaeeeb73-e9e7-4cdf-b100-a433a33562e3}</Project>
-      <Name>Utils</Name>
+      <Name>Ferretto.VW.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
