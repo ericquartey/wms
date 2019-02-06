@@ -1,25 +1,32 @@
-﻿namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
+﻿using Ferretto.VW.MAS_DataLayer;
+using Ferretto.VW.MAS_InverterDriver;
+using Prism.Events;
+
+namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 {
     // Vertical homing is done
     public class VerticalHomingDoneState : IState
     {
         #region Fields
 
+        private readonly IWriteLogService data;
+
+        private readonly IInverterDriver driver;
+
+        private readonly IEventAggregator eventAggregator;
+
         private StateMachineVerticalHoming context;
-
-        private MAS_DataLayer.IWriteLogService data;
-
-        private MAS_InverterDriver.IInverterDriver driver;
 
         #endregion
 
         #region Constructors
 
-        public VerticalHomingDoneState(StateMachineVerticalHoming parent, MAS_InverterDriver.IInverterDriver iDriver, MAS_DataLayer.IWriteLogService iWriteLogService)
+        public VerticalHomingDoneState(StateMachineVerticalHoming parent, IInverterDriver iDriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
         {
             this.context = parent;
             this.driver = iDriver;
             this.data = iWriteLogService;
+            this.eventAggregator = eventAggregator;
 
             this.data.LogWriting("Vertical homing done state");
         }

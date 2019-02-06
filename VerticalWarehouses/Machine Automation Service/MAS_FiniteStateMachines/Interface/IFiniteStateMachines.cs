@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS_FiniteStateMachines
+﻿using System;
+
+namespace Ferretto.VW.MAS_FiniteStateMachines
 {
     public interface IFiniteStateMachines
     {
@@ -9,11 +11,13 @@
         /// <summary>
         /// Execute complete homing.
         /// </summary>
+        /// <exception cref="InvalidOperationException">An <see cref="InvalidOperationException"/> is thrown, if object is null.</exception>
         void DoHoming();
 
         /// <summary>
         /// Execute vertical homing.
         /// </summary>
+        /// <exception cref="InvalidOperationException">An <see cref="InvalidOperationException"/> is thrown, if object is null.</exception>
         void DoVerticalHoming();
 
         #endregion

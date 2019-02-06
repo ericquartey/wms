@@ -36,17 +36,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Assets\*.*" />
+    <Content Remove="Fonts\*.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\*.*" />
+    <Resource Include="Fonts\*.*" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Common\Resources\Ferretto.VW.Resources.csproj" />
   </ItemGroup>
   
-  <ItemGroup>
-    <None Update="Fonts\*.*">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\*.*">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
 
 </Project>
 

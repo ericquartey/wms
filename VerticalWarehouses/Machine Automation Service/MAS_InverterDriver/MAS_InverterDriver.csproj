@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common_Utils\Ferretto.VW.Common_Utils.csproj" />
     <ProjectReference Include="..\..\InverterDriver\Ferretto.VW.InverterDriver.csproj" />
   </ItemGroup>
 
