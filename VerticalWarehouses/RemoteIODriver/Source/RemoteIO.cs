@@ -137,7 +137,9 @@ namespace Ferretto.VW.RemoteIODriver
         public void Connect()
         {
             this.client = new TcpClient(this.IPAddress, this.Port);
+#if NET4
             this.master = ModbusIpMaster.CreateIp(this.client);
+#endif
 
             // Power up the machine
             this.powerUp();
@@ -265,6 +267,6 @@ namespace Ferretto.VW.RemoteIODriver
             }
         }
 
-        #endregion Methods
+#endregion Methods
     }
 }
