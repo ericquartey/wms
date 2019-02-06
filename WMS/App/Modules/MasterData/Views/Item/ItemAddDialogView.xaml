@@ -213,8 +213,12 @@
                           Grid.Column="2"
                           Margin="60,0,0,0"
                           Header="{x:Static res:MasterData.ItemImage}">
-                    <dxe:ImageEdit Width="320"
-                                   Height="400" />
+                    <wms:WmsImageEdit Width="350"
+                                      Height="400"
+                                      BorderBrush="{DynamicResource CommonSecondaryLight}"
+                                      BorderThickness="1"
+                                      Filename="{Binding Path=Model.Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Path="{Binding Path=Model.ImagePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </GroupBox>
             </Grid>
         </ScrollViewer>
@@ -230,11 +234,25 @@
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_save_black_36dp.png"
                                GlyphSize="Custom" />
 
+            <wms:ActionBarItem Command="{Binding ClearCommand}"
+                               Content="{x:Static res:General.Clear}"
+                               CustomGlyphSize="36,36"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-erase-36.png"
+                               GlyphSize="Custom" />
+
+
             <wms:ActionBarItem Command="{Binding CloseDialogCommand}"
                                Content="{x:Static res:General.Cancel}"
                                CustomGlyphSize="36,36"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_highlight_off_black_36dp.png"
                                GlyphSize="Custom" />
         </wms:ActionBar>
+
+        <TextBlock Grid.Row="2"
+                   MaxWidth="500"
+                   HorizontalAlignment="Left"
+                   Style="{DynamicResource TextBlockErrorMessageStyle}"
+                   Text="{Binding Model.Error}"
+                   Visibility="{Binding IsValidationEnabled, Converter={StaticResource BTVC}}" />
     </Grid>
 </wms:WmsDialogView>
