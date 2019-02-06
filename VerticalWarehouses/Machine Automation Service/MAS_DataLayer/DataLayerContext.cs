@@ -1,26 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace MAS_DataLayer
+namespace Ferretto.VW.MAS_DataLayer
 {
     public class DataLayerContext : DbContext
     {
-        private const string DefaultApplicationSettingsFile = "appsettings.json";
+        #region Fields
+
         private const string ConnectionStringName = "AutomationService";
 
-        #region Properties
+        private const string DefaultApplicationSettingsFile = "appsettings.json";
 
-        public DbSet<Operation> Operations { get; set; }
-
-        public DbSet<StatusLog> StatusLogs { get; set; }
-
-        public DbSet<Step> Steps { get; set; }
-
-        #endregion Properties
+        #endregion Fields
 
         #region Constructors
 
@@ -34,6 +27,16 @@ namespace MAS_DataLayer
         }
 
         #endregion Constructors
+
+        #region Properties
+
+        public DbSet<Operation> Operations { get; set; }
+
+        public DbSet<StatusLog> StatusLogs { get; set; }
+
+        public DbSet<Step> Steps { get; set; }
+
+        #endregion Properties
 
         #region Methods
 
@@ -56,7 +59,7 @@ namespace MAS_DataLayer
 
             var connectionString = configurationBuilder.GetConnectionString(ConnectionStringName);
 
-            if(string.IsNullOrWhiteSpace(connectionString))
+            if (string.IsNullOrWhiteSpace(connectionString))
             {
                 throw new InvalidOperationException($"Unable to locate the connection string '{ConnectionStringName}'.");
             }
