@@ -16,6 +16,10 @@ namespace Ferretto.WMS.Data.WebAPI.Interfaces
             string orderBy = null,
             string search = null);
 
+        Task<ActionResult<int>> GetAllCountAsync(
+            string where = null,
+            string search = null);
+
         #endregion
     }
 }
