@@ -47,10 +47,6 @@
     <ProjectReference Include="..\Resources\Ferretto.Common.Resources.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Controls\Image\WmsImageEdit.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-  </ItemGroup>
+
 
 </Project>
