@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Ferretto.WMS.Data.WebAPI.Models;
+using System.Threading.Tasks;
+using Ferretto.WMS.Data.Core.Interfaces;
+using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.WebAPI.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -9,13 +12,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MissionsController : ControllerBase
+    public class MissionsController : ControllerBase,
+        IReadAllController<Mission>,
+        IReadSingleController<Mission>
     {
         #region Fields
 
         private readonly ILogger logger;
 
-        private readonly IWarehouse warehouse;
+        private readonly IMissionProvider missionProvider;
 
         #endregion
 
@@ -23,10 +28,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public MissionsController(
             ILogger<ItemsController> logger,
-            Models.IWarehouse warehouse)
+            IMissionProvider missionProvider)
         {
             this.logger = logger;
-            this.warehouse = warehouse;
+            this.missionProvider = missionProvider;
         }
 
         #endregion
@@ -35,25 +40,23 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Mission>))]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-        public ActionResult GetAll()
+        public async Task<ActionResult<IEnumerable<Mission>>> GetAllAsync()
         {
-            return this.Ok(this.warehouse.Missions);
+            return this.Ok(await this.missionProvider.GetAllAsync());
         }
 
         [ProducesResponseType(200, Type = typeof(Mission))]
-        [ProducesResponseType(400, Type = typeof(SerializableError))]
         [ProducesResponseType(404, Type = typeof(SerializableError))]
+        [ProducesResponseType(500, Type = typeof(string))]
         [HttpGet("{id}")]
-        public ActionResult GetById(int id)
+        public async Task<ActionResult<Mission>> GetByIdAsync(int id)
         {
             try
             {
-                var result = this.warehouse.Missions.SingleOrDefault(m => m.Id == id);
+                var result = await this.missionProvider.GetByIdAsync(id);
                 if (result == null)
                 {
-                    var message = string.Format("No entity with the specified id={0} exists.", id);
+                    var message = $"No entity with the specified id={id} exists.";
                     this.logger.LogWarning(message);
                     return this.NotFound(message);
                 }
@@ -62,9 +65,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                var message = string.Format("An error occurred while retrieving the requested entity with id={0}.", id);
+                var message = $"An error occurred while retrieving the requested entity with id={id}.";
                 this.logger.LogError(ex, message);
-                return this.BadRequest(message);
+                return this.StatusCode(StatusCodes.Status500InternalServerError, message);
             }
         }
 

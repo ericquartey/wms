@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MAS_DataLayer
+﻿namespace Ferretto.VW.MAS_DataLayer
 {
     public class Step
     {

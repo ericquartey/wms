@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MAS_DataLayer;
+﻿using System.Collections.Generic;
+using Ferretto.VW.MAS_AutomationService;
+using Prism.Events;
+using Ferretto.Common.Common_Utils;
 using Microsoft.AspNetCore.Mvc;
+using Ferretto.VW.MAS_DataLayer;
 
 namespace MAS_AutomationService.Controllers
 {
@@ -11,11 +11,39 @@ namespace MAS_AutomationService.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        #region Fields
+
+        private readonly IAutomationService automationService;
+
         private readonly IWriteLogService log;
 
-        public ValuesController(IWriteLogService log)
+        private IEventAggregator eventAggregator;
+
+        #endregion
+
+        #region Constructors
+
+        public ValuesController(IWriteLogService log, IAutomationService automationService, IEventAggregator eventAggregator)
         {
             this.log = log;
+            this.automationService = automationService;
+            this.eventAggregator = eventAggregator;
+        }
+
+        #endregion
+
+        #region Methods
+
+        // DELETE api/values/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+        }
+
+        [HttpGet("HomingTest")]
+        public void ExecuteHoming()
+        {
+            this.eventAggregator.GetEvent<TestHomingEvent>().Publish();
         }
 
         // GET api/values
@@ -48,10 +76,6 @@ namespace MAS_AutomationService.Controllers
         {
         }
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        #endregion
     }
 }
