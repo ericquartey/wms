@@ -1,22 +1,32 @@
-﻿using Ferretto.VW.InverterDriver;
+﻿using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.InverterDriver;
+using Ferretto.VW.MAS_InverterDriver.Interface;
+using Prism.Events;
+using Ferretto.VW.MAS_InverterDriver.ActionBlocks;
 
 namespace Ferretto.VW.MAS_InverterDriver
 {
-    public class InverterDriver : IInverterDriver
+    public delegate void EndEventHandler();
+    public delegate void ErrorEventHandler();
+
+    public partial class InverterDriver : IInverterDriver
     {
         #region Fields
-
+        
         private Ferretto.VW.InverterDriver.InverterDriver driver;
+        private readonly IEventAggregator eventAggregator;
+        private IInverterActions inverterAction;
 
         #endregion Fields
 
         #region Constructors
 
-        public InverterDriver()
+        public InverterDriver(IEventAggregator eventAggregator)
         {
-            this.driver = new VW.InverterDriver.InverterDriver();
 
+            this.driver = new VW.InverterDriver.InverterDriver();
             this.driver.Initialize();
+            this.eventAggregator = eventAggregator;
         }
 
         #endregion Constructors
@@ -36,16 +46,6 @@ namespace Ferretto.VW.MAS_InverterDriver
         public void ExecuteHorizontalPosition()
         {
             return;
-        }
-
-        public void ExecuteVerticalHoming()
-        {
-            var calibration = new CalibrateAxis();
-            calibration.SetInverterDriverInterface = this.driver;
-            calibration.Initialize();
-
-            calibration.ActualCalibrationAxis = CalibrationType.VERTICAL_CALIBRATION;
-            calibration.SetAxisOrigin();
         }
 
         public void ExecuteVerticalPosition(int target, float weight)

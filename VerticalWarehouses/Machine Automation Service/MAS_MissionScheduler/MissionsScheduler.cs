@@ -28,8 +28,6 @@ namespace Ferretto.VW.MAS_MissionScheduler
             this.machineManager = machineManager;
             this.writeLogService = writeLogService;
             this.eventAggregator = eventAggregator;
-
-            this.eventAggregator.GetEvent<TestHomingEvent>().Subscribe(this.HandleHoming);
         }
 
         #endregion
@@ -39,16 +37,6 @@ namespace Ferretto.VW.MAS_MissionScheduler
         public void AddMission(Mission mission)
         {
             throw new NotImplementedException();
-        }
-
-        public void DoHoming()
-        {
-            this.machineManager.DoHoming();
-        }
-
-        private void HandleHoming()
-        {
-            this.DoHoming();
         }
 
         #endregion
