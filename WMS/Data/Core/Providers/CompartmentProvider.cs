@@ -229,23 +229,23 @@ namespace Ferretto.WMS.Data.Core.Providers
             return await GetUniqueValuesAsync(propertyName, this.dataContext.Compartments);
         }
 
-        public async Task<OperationResult<Compartment>> UpdateAsync(Compartment model)
+        public async Task<OperationResult<CompartmentDetails>> UpdateAsync(CompartmentDetails model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.dataContext.Items.Find(model.Id);
+            var existingModel = this.dataContext.Compartments.Find(model.Id);
             if (existingModel == null)
             {
-                return new NotFoundOperationResult<Compartment>();
+                return new NotFoundOperationResult<CompartmentDetails>();
             }
 
             this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
             await this.dataContext.SaveChangesAsync();
 
-            return new SuccessOperationResult<Compartment>(model);
+            return new SuccessOperationResult<CompartmentDetails>(model);
         }
 
         private IQueryable<Compartment> GetAllBase()

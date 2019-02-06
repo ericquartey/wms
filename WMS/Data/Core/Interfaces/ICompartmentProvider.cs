@@ -9,7 +9,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
         ICreateProvider<CompartmentDetails>,
         IReadAllPagedProvider<Compartment>,
         IReadSingleProvider<CompartmentDetails, int>,
-        IUpdateProvider<Compartment>,
+        IUpdateProvider<CompartmentDetails>,
         IDeleteProvider,
         IGetUniqueValuesProvider
     {
