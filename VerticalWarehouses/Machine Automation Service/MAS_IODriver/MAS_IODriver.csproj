@@ -7,4 +7,8 @@
     <RootNamespace>Ferretto.VW.MAS_IODriver</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Prism.Core" Version="7.1.0.431" />
+  </ItemGroup>
+
 </Project>

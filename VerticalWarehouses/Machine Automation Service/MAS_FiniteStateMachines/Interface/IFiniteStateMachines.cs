@@ -1,6 +1,4 @@
-﻿using Ferretto.Common.Common_Utils;
-
-namespace Ferretto.VW.MAS_FiniteStateMachines
+﻿namespace Ferretto.VW.MAS_FiniteStateMachines
 {
     public interface IFiniteStateMachines
     {
@@ -8,12 +6,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         void Destroy();
 
-        void DoHoming(BroadcastDelegate broadcastDelegate);
+        /// <summary>
+        /// Execute complete homing.
+        /// </summary>
+        void DoHoming();
 
-        void DoVerticalHoming(BroadcastDelegate broadcastDelegate);
+        /// <summary>
+        /// Execute vertical homing.
+        /// </summary>
+        void DoVerticalHoming();
 
-        void MakeOperationByInverter(IdOperation code);
-
-        #endregion Methods
+        #endregion
     }
 }

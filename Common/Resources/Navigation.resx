@@ -255,4 +255,7 @@
   <data name="SchedulerRequest" xml:space="preserve">
     <value>Scheduler Request</value>
   </data>
+  <data name="ItemAdd" xml:space="preserve">
+    <value>Add Item</value>
+  </data>
 </root>

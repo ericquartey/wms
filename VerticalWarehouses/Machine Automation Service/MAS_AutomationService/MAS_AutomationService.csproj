@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -7,9 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="wwwroot\**" />
-    <Content Remove="wwwroot\**" />
-    <EmbeddedResource Remove="wwwroot\**" />
     <None Remove="wwwroot\**" />
   </ItemGroup>
 
@@ -17,10 +14,17 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.4" />
+    <PackageReference Include="Prism.Core" Version="7.1.0.431" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common_Utils\Ferretto.VW.Common_Utils.csproj" />
     <ProjectReference Include="..\MAS_DataLayer\MAS_DataLayer.csproj" />
+    <ProjectReference Include="..\MAS_FiniteStateMachines\MAS_FiniteStateMachines.csproj" />
+    <ProjectReference Include="..\MAS_InverterDriver\MAS_InverterDriver.csproj" />
+    <ProjectReference Include="..\MAS_IODriver\MAS_IODriver.csproj" />
+    <ProjectReference Include="..\MAS_MachineManager\MAS_MachineManager.csproj" />
+    <ProjectReference Include="..\MAS_MissionScheduler\MAS_MissionScheduler.csproj" />
   </ItemGroup>
 
   <ItemGroup>

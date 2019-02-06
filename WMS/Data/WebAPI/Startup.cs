@@ -1,4 +1,6 @@
 ﻿using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Interfaces;
+using Ferretto.WMS.Data.Core.Providers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -77,7 +79,15 @@ namespace Ferretto.WMS.Data.WebAPI
             services.AddDbContext<DatabaseContext>(
                 options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Ferretto.Common.EF")));
 
-            services.AddTransient<Models.IWarehouse, Models.Warehouse>();
+            services.AddTransient<IAbcClassProvider, AbcClassProvider>();
+            services.AddTransient<IAreaProvider, AreaProvider>();
+            services.AddTransient<IBayProvider, BayProvider>();
+            services.AddTransient<ICellProvider, CellProvider>();
+            services.AddTransient<ICellStatusProvider, CellStatusProvider>();
+            services.AddTransient<ICellTypeProvider, CellTypeProvider>();
+            services.AddTransient<IItemListsProvider, ItemListsProvider>();
+            services.AddTransient<IItemProvider, ItemProvider>();
+            services.AddTransient<IMissionProvider, MissionProvider>();
 
             services.AddMemoryCache();
 

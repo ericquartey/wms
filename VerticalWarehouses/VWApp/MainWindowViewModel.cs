@@ -135,8 +135,7 @@ namespace Ferretto.VW.VWApp
                     case "Operator":
                         if (this.installationCompleted)
                         {
-                            ((App)Application.Current).OperatorMainWindowInstance = new OperatorApp.MainWindow();
-                            ((App)Application.Current).OperatorMainWindowInstance.Show();
+                            // load operator app
                         }
                         else
                         {

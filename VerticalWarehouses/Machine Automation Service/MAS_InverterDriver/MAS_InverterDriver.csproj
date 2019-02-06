@@ -4,11 +4,15 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
     <RootNamespace>Ferretto.VW.InverterDriver</RootNamespace>
-    <AssemblyName>Ferretto.VW.InverterDriver</AssemblyName>
+    <AssemblyName>Ferretto.VW.MAS_InverterDriver</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\InverterDriver\InverterDriver.csproj" />
+    <PackageReference Include="Prism.Core" Version="7.1.0.431" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\InverterDriver\Ferretto.VW.InverterDriver.csproj" />
   </ItemGroup>
 
 </Project>

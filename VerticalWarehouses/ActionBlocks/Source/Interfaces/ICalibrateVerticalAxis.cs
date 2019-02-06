@@ -27,11 +27,6 @@
         void SetVAxisOrigin(int m, short ofs, short vFast, short vCreep);
 
         /// <summary>
-        /// Stop the routine.
-        /// </summary>
-        void StopInverter();
-
-        /// <summary>
         /// Terminate the Calibrate Vertical Axis routine.
         /// </summary>
         void Terminate();

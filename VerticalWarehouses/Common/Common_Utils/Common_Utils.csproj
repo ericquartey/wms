@@ -1,9 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-    <RootNamespace>Ferretto.VW.Common_Utils</RootNamespace>
-    <AssemblyName>Ferretto.VW.Common_Utils</AssemblyName>
-  </PropertyGroup>
-
-</Project>
