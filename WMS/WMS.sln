@@ -82,7 +82,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Data.WebAPI", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Data.WebAPI.Contracts", "Data\WebAPI.Contracts\Ferretto.WMS.Data.WebAPI.Contracts.csproj", "{7E74AA8E-0B5E-4D3B-ADD5-DED190AAA3EE}"
 	ProjectSection(ProjectDependencies) = postProject
-		{9CCFC95C-729B-4F26-81FB-FA320FFECE29} = {9CCFC95C-729B-4F26-81FB-FA320FFECE29}
+		{860F6E66-50E9-4C12-AEE5-96BA308293D5} = {860F6E66-50E9-4C12-AEE5-96BA308293D5}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Data.Tests", "Data\Tests\Ferretto.WMS.Data.Tests.csproj", "{A9EA288E-806A-42E9-A9AD-6C9CB325FB9B}"
