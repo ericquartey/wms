@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
+﻿using Ferretto.VW.Common_Utils.EventParameters;
+
+namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
     // The horizontal axis homing is done
     public class HorizontalHomingDoneState : IState
@@ -11,7 +13,7 @@
 
         private MAS_InverterDriver.IInverterDriver driver;
 
-        #endregion
+        #endregion Fields
 
         #region Constructors
 
@@ -21,17 +23,17 @@
             this.driver = iDriver;
             this.data = iWriteLogService;
 
-            this.data.LogWriting("Homing done state");
+            this.data.LogWriting(new Command_EventParameter(CommandType.ExecuteHoming));
 
             this.context.HorizontalHomingAlreadyDone = true;
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Properties
 
         public string Type => "Horizontal homing done";
 
-        #endregion
+        #endregion Properties
     }
 }

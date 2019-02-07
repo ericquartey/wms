@@ -1,8 +1,6 @@
 ﻿using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.InverterDriver;
-using Ferretto.VW.MAS_InverterDriver.Interface;
-using Prism.Events;
-using Ferretto.VW.MAS_InverterDriver.ActionBlocks;
+using Ferretto.VW.Common_Utils.EventParameters;
 
 namespace Ferretto.VW.MAS_InverterDriver
 {
@@ -12,9 +10,9 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         public void ExecuteVerticalHoming()
         {
-            if(this.inverterAction != null)
+            if (this.inverterAction != null)
             {
-                this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(InverterDriver_Notification.Error);
+                this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter());
             }
             var inverterAction = new ActionBlocks.CalibrateAxis();
             this.inverterAction = inverterAction;
@@ -26,18 +24,17 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             inverterAction.ActualCalibrationAxis = CalibrationType.VERTICAL_CALIBRATION;
             inverterAction.SetAxisOrigin();
-            
         }
 
         private void Calibration_ThrowErrorEvent()
         {
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(InverterDriver_Notification.Error);
+            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter());
             this.inverterAction.ErrorEvent -= this.Calibration_ThrowErrorEvent;
         }
 
         private void Calibration_ThrowEndEvent()
         {
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(InverterDriver_Notification.End);
+            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter());
             this.inverterAction.EndEvent -= this.Calibration_ThrowEndEvent;
         }
 

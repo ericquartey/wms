@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Ferretto.Common.Common_Utils;
 using Prism.Events;
+using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.EventParameters;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
@@ -36,7 +37,7 @@ namespace Ferretto.VW.MAS_AutomationService
         [HttpGet("HomingTest")]
         public void ExecuteHoming()
         {
-            this.eventAggregator.GetEvent<WebAPI_ExecuteActionEvent>().Publish(WebAPI_Action.VerticalHoming);
+            this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish(new Command_EventParameter(CommandType.ExecuteHoming));
         }
 
         #endregion Methods
