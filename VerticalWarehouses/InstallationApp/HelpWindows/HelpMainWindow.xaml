@@ -18,6 +18,9 @@
         <DataTemplate DataType="{x:Type viewmodels:CellsControlViewModel}">
             <local:CellsControlHelpView></local:CellsControlHelpView>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:ResolutionCalibrationVerticalAxisViewModel}">
+            <local:ResolutionCalibrationVerticalAxisHelpView></local:ResolutionCalibrationVerticalAxisHelpView>
+        </DataTemplate>
     </Window.Resources>
     <Grid Width="1024"
           Height="768"

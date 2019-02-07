@@ -121,4 +121,31 @@
   <data name="BeltBurnishingFunctionDescription" xml:space="preserve">
     <value>La procedura permette di effettuare una serie di cicli di spostamento dell'asse verticale fra due punti indicati nei dati di input. Il ciclo, quando avviato, prosegue o fino al raggiungimento dei cicli richiesti o alla pressione del tasto di fine.</value>
   </data>
+  <data name="ResolutionCalibrationFunctionDescription" xml:space="preserve">
+    <value>La funzione di calibrazione della risoluzione dell'asse verticale permette di tarare il corretto valore tramite misura sul campo aggiornando poi il valore di default proposto dal sistema. La procedura opera per passi successivi fino al corretto completamento.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialPositionHelp" xml:space="preserve">
+    <value>Se il campo e' editabile impostare la quota inferiore richiesta.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialStartHelp" xml:space="preserve">
+    <value>Il pulsante avvia la procedura con l'esecuzione dell'origine asse ed il successivo posizionamento alla quota indicata in precedenza.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalPositionHelp" xml:space="preserve">
+    <value>Se il campo e' editabile impostare la quota superiore richiesta.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalPosizionStartHelp" xml:space="preserve">
+    <value>Il pulsante avvia lo spostamento dell'asse alla quota superiore impostata in precedenza.</value>
+  </data>
+  <data name="ResolutionCalibrationMeasuredeValueHelp" xml:space="preserve">
+    <value>Impostare lo spostamento misurato dalla posizione iniziale a quella finale.</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep1" xml:space="preserve">
+    <value>Step 1 : posiziona asse alla quota iniziale</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep2" xml:space="preserve">
+    <value>Step 2 : posiziona asse alla quota superiore</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep3" xml:space="preserve">
+    <value>Step 3 : imposta la corsa effettuata</value>
+  </data>
 </root>

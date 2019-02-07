@@ -131,5 +131,86 @@ namespace Ferretto.VW.Resources {
                 return ResourceManager.GetString("BeltBurnishingUpLimit", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a .
+        /// </summary>
+        public static string ResolutionCalibrationFinalPositionHelp {
+            get {
+                return ResourceManager.GetString("ResolutionCalibrationFinalPositionHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a .
+        /// </summary>
+        public static string ResolutionCalibrationFinalPosizionStartHelp {
+            get {
+                return ResourceManager.GetString("ResolutionCalibrationFinalPosizionStartHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Resolution calibration function.
+        /// </summary>
+        public static string ResolutionCalibrationFunctionDescription {
+            get {
+                return ResourceManager.GetString("ResolutionCalibrationFunctionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a .
+        /// </summary>
+        public static string ResolutionCalibrationInitialPositionHelp {
+            get {
+                return ResourceManager.GetString("ResolutionCalibrationInitialPositionHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a .
+        /// </summary>
+        public static string ResolutionCalibrationInitialStartHelp {
+            get {
+                return ResourceManager.GetString("ResolutionCalibrationInitialStartHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a .
+        /// </summary>
+        public static string ResolutionCalibrationMeasuredeValueHelp {
+            get {
+                return ResourceManager.GetString("ResolutionCalibrationMeasuredeValueHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a .
+        /// </summary>
+        public static string VerticalResolutionCalibrationStep1 {
+            get {
+                return ResourceManager.GetString("VerticalResolutionCalibrationStep1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a .
+        /// </summary>
+        public static string VerticalResolutionCalibrationStep2 {
+            get {
+                return ResourceManager.GetString("VerticalResolutionCalibrationStep2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a .
+        /// </summary>
+        public static string VerticalResolutionCalibrationStep3 {
+            get {
+                return ResourceManager.GetString("VerticalResolutionCalibrationStep3", resourceCulture);
+            }
+        }
     }
 }

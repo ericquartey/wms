@@ -45,10 +45,11 @@
 
   <ItemGroup>
     <None Remove="CellsControlHelpView.xaml" />
-    <None Remove="HelpWindows\BeltBurnishingHelpView.xaml" />
+    <None Remove="HelpWindows\HelpBeltBurnishingView.xaml" />
     <None Remove="HelpWindows\HelpMainWindow.xaml" />
     <None Remove="HelpWindows\HelpPageBase.xaml" />
     <None Remove="HelpWindows\HelpPageBase_old.xaml" />
+    <None Remove="HelpWindows\HelpResolutionCalibrationVerticalAxisView.xaml" />
     <None Remove="MainWindowBackToIAPPButtonView.xaml" />
     <None Remove="ViewsAndViewModels\LowSpeedMovements\LSMTMainView.xaml" />
     <None Remove="ViewsAndViewModels\MainWindowBackToIAPPButtonView.xaml" />
@@ -77,13 +78,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="HelpWindows\HelpBeltBurnishingView.xaml.cs">
+      <DependentUpon>HelpBeltBurnishingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpCellsControlView.xaml.cs">
+      <DependentUpon>HelpCellsControlView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="HelpWindows\HelpPageBase_old.xaml.cs">
       <DependentUpon>HelpPageBase_old.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpResolutionCalibrationVerticalAxisView.xaml.cs">
+      <DependentUpon>HelpResolutionCalibrationVerticalAxisView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="HelpWindows\CellsControlHelpView.xaml">
+    <None Update="HelpWindows\HelpCellsControlView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
     <None Update="MainWindow.xaml">

@@ -31,12 +31,12 @@ namespace Ferretto.VW.InstallationApp
 
         private string desiredInitialPosition;
         private decimal desiredInitialPositionDec;
-        private bool isAcceptButtonActive = false;
-        private bool isMesuredInitialPositionHighlighted = false;
-        private bool isMesuredInitialPositionTextInputActive = false;
-        private bool isMesuredMovementHighlighted = false;
-        private bool isMesuredMovementTextInputActive = false;
-        private bool isMoveButtonActive = false;
+        private bool isAcceptButtonActive = true; //false
+        private bool isMesuredInitialPositionHighlighted = true; //false
+        private bool isMesuredInitialPositionTextInputActive = true; //false
+        private bool isMesuredMovementHighlighted = true; //false
+        private bool isMesuredMovementTextInputActive = true; //false
+        private bool isMoveButtonActive = true; //false
         private bool isSetPositionButtonActive = true;
         private string mesuredInitialPosition;
         private string mesuredLenght;
