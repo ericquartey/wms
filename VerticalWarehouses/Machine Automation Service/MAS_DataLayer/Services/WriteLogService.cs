@@ -1,5 +1,7 @@
-﻿using System;
-using Ferretto.Common.Common_Utils;
+﻿using Ferretto.Common.Common_Utils;
+using Ferretto.VW.Common_Utils.EventParameters;
+using Ferretto.VW.Common_Utils.Events;
+using Microsoft.EntityFrameworkCore;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_DataLayer
@@ -9,8 +11,8 @@ namespace Ferretto.VW.MAS_DataLayer
         #region Fields
 
         private readonly DataLayerContext dataContext;
-        
-        #endregion Fields
+
+        #endregion
 
         #region Constructors
 
@@ -18,31 +20,41 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             this.dataContext = dataContext;
 
-            // Event Aggregator managment
-            WebAPI_ExecuteActionEvent webApiExecuteActionEvent = eventAggregator.GetEvent<WebAPI_ExecuteActionEvent>();
-            webApiExecuteActionEvent.Subscribe(LogWriting, ThreadOption.PublisherThread, false, logMessage => logMessage == WebAPI_Action.VerticalHoming);
+            var webApiCommandEvent = eventAggregator.GetEvent<WebAPI_CommandEvent>();
+            webApiCommandEvent.Subscribe(this.LogWriting);
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
-        public void LogWriting(string logMessage)
+        public bool LogWriting(string logMessage)
         {
-            this.dataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
-            this.dataContext.SaveChanges();
+            bool updateOperation = true;
+
+            try
+            {
+                this.dataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
+                this.dataContext.SaveChanges();
+            }
+            catch (DbUpdateException exception)
+            {
+                updateOperation = false;
+                throw exception;
+            }
+
+            return updateOperation;
         }
 
-        public void LogWriting(WebAPI_Action webApiAction)
+        public void LogWriting(Command_EventParameter command_EventParameter)
         {
             string logMessage;
 
-            switch (webApiAction)
+            switch (command_EventParameter.CommandType)
             {
-                case WebAPI_Action.VerticalHoming:
+                case CommandType.ExecuteHoming:
                     {
                         logMessage = "Vertical Homing";
-
                         break;
                     }
                 default:
@@ -57,6 +69,6 @@ namespace Ferretto.VW.MAS_DataLayer
             this.dataContext.SaveChanges();
         }
 
-        #endregion Methods
+        #endregion
     }
 }
