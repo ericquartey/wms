@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.VW.SWEmulatorInver
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZZ_CellManagementTestApp", "ZZ_CellManagementTestApp\ZZ_CellManagementTestApp.csproj", "{981DC3E9-A331-4137-A5F5-C0D22FB5F0ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.VW.VWApp", "VWApp\Ferretto.VW.VWApp.csproj", "{F80020FF-8655-4999-90AD-C4711173D55D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.VWApp", "VWApp\Ferretto.VW.VWApp.csproj", "{F80020FF-8655-4999-90AD-C4711173D55D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1EC2E502-155D-48C0-82B9-961FB97149A3} = {1EC2E502-155D-48C0-82B9-961FB97149A3}
 	EndProjectSection
@@ -70,7 +70,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAS_FiniteStateMachinesUnit
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAS_AutomationServiceTests", "Machine Automation Service\Tests\MAS_AutomationServiceTests\MAS_AutomationServiceTests.csproj", "{AFE9B9C7-9466-4F4C-B0BC-AFBF1D0EF024}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAS_MissionSchedulerTests", "Machine Automation Service\Tests\MAS_MissionSchedulerTests\MAS_MissionSchedulerTests.csproj", "{BDFCDAA5-7D00-42C9-B101-690663AA82D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAS_MissionSchedulerTests", "Machine Automation Service\Tests\MAS_MissionSchedulerTests\MAS_MissionSchedulerTests.csproj", "{BDFCDAA5-7D00-42C9-B101-690663AA82D6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAS_DataLayerUnitTests", "Machine Automation Service\Tests\MAS_DataLayerUnitTests\MAS_DataLayerUnitTests.csproj", "{EE108859-79CC-4094-8D21-4BBFFE127D31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -418,6 +420,18 @@ Global
 		{BDFCDAA5-7D00-42C9-B101-690663AA82D6}.Release|x64.Build.0 = Release|Any CPU
 		{BDFCDAA5-7D00-42C9-B101-690663AA82D6}.Release|x86.ActiveCfg = Release|Any CPU
 		{BDFCDAA5-7D00-42C9-B101-690663AA82D6}.Release|x86.Build.0 = Release|Any CPU
+		{EE108859-79CC-4094-8D21-4BBFFE127D31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE108859-79CC-4094-8D21-4BBFFE127D31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE108859-79CC-4094-8D21-4BBFFE127D31}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EE108859-79CC-4094-8D21-4BBFFE127D31}.Debug|x64.Build.0 = Debug|Any CPU
+		{EE108859-79CC-4094-8D21-4BBFFE127D31}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EE108859-79CC-4094-8D21-4BBFFE127D31}.Debug|x86.Build.0 = Debug|Any CPU
+		{EE108859-79CC-4094-8D21-4BBFFE127D31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE108859-79CC-4094-8D21-4BBFFE127D31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE108859-79CC-4094-8D21-4BBFFE127D31}.Release|x64.ActiveCfg = Release|Any CPU
+		{EE108859-79CC-4094-8D21-4BBFFE127D31}.Release|x64.Build.0 = Release|Any CPU
+		{EE108859-79CC-4094-8D21-4BBFFE127D31}.Release|x86.ActiveCfg = Release|Any CPU
+		{EE108859-79CC-4094-8D21-4BBFFE127D31}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -453,8 +467,7 @@ Global
 		{CDC83818-9D4B-44CB-AD54-829C68929B4D} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
 		{0B141F04-7E28-4D45-AD86-DAD35D1C1C10} = {CDC83818-9D4B-44CB-AD54-829C68929B4D}
 		{33134CF0-A2FC-4DD3-BAFA-7A444DA532AD} = {CDC83818-9D4B-44CB-AD54-829C68929B4D}
-		{AFE9B9C7-9466-4F4C-B0BC-AFBF1D0EF024} = {CDC83818-9D4B-44CB-AD54-829C68929B4D}
-		{BDFCDAA5-7D00-42C9-B101-690663AA82D6} = {CDC83818-9D4B-44CB-AD54-829C68929B4D}
+		{EE108859-79CC-4094-8D21-4BBFFE127D31} = {CDC83818-9D4B-44CB-AD54-829C68929B4D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40395CF2-451B-48E4-A29A-0E8AE12146B4}
