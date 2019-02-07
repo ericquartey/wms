@@ -36,7 +36,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public async Task<OperationResult<IEnumerable<CompartmentDetails>>> AddRangeAsync(
+        public async Task<OperationResult<IEnumerable<CompartmentDetails>>> CreateRangeAsync(
             IEnumerable<CompartmentDetails> compartments)
         {
             if (compartments == null)
