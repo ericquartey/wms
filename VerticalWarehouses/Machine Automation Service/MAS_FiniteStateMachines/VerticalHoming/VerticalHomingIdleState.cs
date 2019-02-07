@@ -1,11 +1,11 @@
-﻿using Ferretto.VW.Common_Utils.Events;
+﻿using Ferretto.VW.Common_Utils.EventParameters;
+using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_InverterDriver;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 {
-    // Vertical homing is undone
     public class VerticalHomingIdleState : IState
     {
         #region Fields
@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         private StateMachineVerticalHoming context;
 
-        #endregion
+        #endregion Fields
 
         #region Constructors
 
@@ -29,32 +29,31 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
             this.data = iWriteLogService;
             this.eventAggregator = eventAggregator;
 
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
+            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.NotifyEventHandler);
 
-            // launch the command
             this.driver.ExecuteVerticalHoming();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Properties
 
         public string Type => "Vertical Homing Idle State";
 
-        #endregion
+        #endregion Properties
 
         #region Methods
 
-        private void notifyEventHandler(InverterDriver_Notification notification)
+        public void NotifyEventHandler(Notification_EventParameter notification)
         {
-            switch (notification)
+            switch (notification.OperationStatus)
             {
-                case InverterDriver_Notification.End:
+                case OperationStatus.End:
                     {
                         this.context.ChangeState(new VerticalHomingDoneState(this.context, this.driver, this.data, this.eventAggregator));
                         break;
                     }
-                case InverterDriver_Notification.Error:
+                case OperationStatus.Error:
                     {
                         break;
                     }
@@ -65,6 +64,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
             }
         }
 
-        #endregion
+        #endregion Methods
     }
 }
