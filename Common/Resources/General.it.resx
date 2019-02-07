@@ -228,4 +228,13 @@
   <data name="Filter" xml:space="preserve">
     <value>Filtra</value>
   </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Sì</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
 </root>

@@ -34,4 +34,8 @@
     <Folder Include="Migrations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common_Utils\Ferretto.VW.Common_Utils.csproj" />
+  </ItemGroup>
+
 </Project>

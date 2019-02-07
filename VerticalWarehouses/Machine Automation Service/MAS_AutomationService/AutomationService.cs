@@ -9,8 +9,6 @@ namespace Ferretto.VW.MAS_AutomationService
     {
         #region Fields
 
-        public int number = 5;
-
         private readonly IEventAggregator eventAggregator;
 
         private readonly IMissionsScheduler missionScheduler;
@@ -27,24 +25,13 @@ namespace Ferretto.VW.MAS_AutomationService
 
         #endregion
 
-        #region Properties
-
-        public Int32 Number { get => this.number; set => this.number = value; }
-
-        #endregion
-
         #region Methods
 
-        public void ExecuteHoming()
+        public bool AddMission(Mission mission)
         {
-            try
-            {
-                this.eventAggregator.GetEvent<TestHomingEvent>().Publish();
-            }
-            catch
-            {
-                throw new Exception();
-            }
+            if (mission == null) throw new ArgumentNullException();
+            this.missionScheduler.AddMission(mission);
+            return true;
         }
 
         #endregion
