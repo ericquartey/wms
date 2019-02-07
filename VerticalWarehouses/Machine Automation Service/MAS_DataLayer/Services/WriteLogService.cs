@@ -1,6 +1,7 @@
 ﻿using Ferretto.Common.Common_Utils;
 using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
+using Microsoft.EntityFrameworkCore;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_DataLayer
@@ -11,7 +12,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private readonly DataLayerContext dataContext;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -23,14 +24,26 @@ namespace Ferretto.VW.MAS_DataLayer
             webApiCommandEvent.Subscribe(this.LogWriting);
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
-        public void LogWriting(string message)
+        public bool LogWriting(string logMessage)
         {
-            this.dataContext.StatusLogs.Add(new StatusLog { LogMessage = message });
-            this.dataContext.SaveChanges();
+            bool updateOperation = true;
+
+            try
+            {
+                this.dataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
+                this.dataContext.SaveChanges();
+            }
+            catch (DbUpdateException exception)
+            {
+                updateOperation = false;
+                throw exception;
+            }
+
+            return updateOperation;
         }
 
         public void LogWriting(Command_EventParameter command_EventParameter)
@@ -56,6 +69,6 @@ namespace Ferretto.VW.MAS_DataLayer
             this.dataContext.SaveChanges();
         }
 
-        #endregion Methods
+        #endregion
     }
 }
