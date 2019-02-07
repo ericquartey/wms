@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
+﻿using Ferretto.VW.Common_Utils.EventParameters;
+
+namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
     // The vertical switch is done
     public class VerticalSwitchDoneState : IState
@@ -11,7 +13,7 @@
 
         private MAS_InverterDriver.IInverterDriver driver;
 
-        #endregion
+        #endregion Fields
 
         #region Constructors
 
@@ -21,15 +23,15 @@
             this.driver = iDriver;
             this.data = iWriteLogService;
 
-            this.data.LogWriting("Vertical switch done state");
+            this.data.LogWriting(new Command_EventParameter(CommandType.ExecuteHoming));
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Properties
 
         public string Type => "Vertical Switch Done";
 
-        #endregion
+        #endregion Properties
     }
 }

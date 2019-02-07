@@ -1,6 +1,7 @@
-﻿namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
+﻿using Ferretto.VW.Common_Utils.EventParameters;
+
+namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
-    // Idle
     public class HomingIdleState : IState
     {
         #region Fields
@@ -11,7 +12,7 @@
 
         private MAS_InverterDriver.IInverterDriver driver;
 
-        #endregion
+        #endregion Fields
 
         #region Constructors
 
@@ -21,20 +22,15 @@
             this.driver = iDriver;
             this.data = iWriteLogService;
 
-            this.data.LogWriting("Homing state idle");
-
-            // launch the command to switch the motor
-            // ... this.driver.ExecuteHorizontalHoming();
-
-            // this.context.ChangeState(new HorizontalSwitchDoneState(this.context, this.driver, this.data));
+            this.data.LogWriting(new Command_EventParameter(CommandType.ExecuteHoming));
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Properties
 
         public string Type => "Homing Undone State";
 
-        #endregion
+        #endregion Properties
     }
 }
