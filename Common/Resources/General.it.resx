@@ -237,4 +237,7 @@
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Pulisci</value>
+  </data>
 </root>

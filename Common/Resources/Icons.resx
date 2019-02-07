@@ -524,4 +524,7 @@
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_not_interested_black_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
+  <data name="RequiredField" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-asterisk-10.png</value>
+  </data>
 </root>
