@@ -1,5 +1,4 @@
-﻿using Ferretto.Common.Common_Utils;
-using Ferretto.VW.Common_Utils.EventParameters;
+﻿using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
 using Microsoft.EntityFrameworkCore;
 using Prism.Events;
@@ -30,7 +29,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public bool LogWriting(string logMessage)
         {
-            bool updateOperation = true;
+            var updateOperation = true;
 
             try
             {
