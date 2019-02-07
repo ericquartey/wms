@@ -179,10 +179,17 @@ namespace Ferretto.Common.BusinessProviders
                 TotalAvailable = item.TotalAvailable
             };
 
-            itemDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
-            itemDetails.MeasureUnitChoices = this.enumerationProvider.GetAllMeasureUnits();
-            itemDetails.ManagementTypeChoices = EnumerationProvider.GetAllItemManagementTypes();
-            itemDetails.ItemCategoryChoices = this.enumerationProvider.GetAllItemCategories();
+            this.AddEnumerations(itemDetails);
+
+            return itemDetails;
+        }
+
+        public ItemDetails GetNew()
+        {
+            var itemDetails = new ItemDetails();
+            itemDetails.ManagementType = ItemManagementType.FIFO;
+
+            this.AddEnumerations(itemDetails);
 
             return itemDetails;
         }
@@ -217,7 +224,7 @@ namespace Ferretto.Common.BusinessProviders
             {
                 var originalItem = await this.itemsDataService.GetByIdAsync(model.Id);
 
-                await this.itemsDataService.UpdateAsync(new WMS.Data.WebAPI.Contracts.Item
+                await this.itemsDataService.UpdateAsync(new WMS.Data.WebAPI.Contracts.ItemDetails
                 {
                     AbcClassId = model.AbcClassId,
                     AverageWeight = model.AverageWeight,
@@ -290,7 +297,7 @@ namespace Ferretto.Common.BusinessProviders
         }
 
         private static IQueryable<Item> GetAllItemsWithAggregations(
-            DatabaseContext context,
+                    DatabaseContext context,
             Expression<Func<DataModels.Item, bool>> whereFunc = null)
         {
             var actualWhereFunc = whereFunc ?? ((i) => true);
@@ -355,6 +362,14 @@ namespace Ferretto.Common.BusinessProviders
                            ? (b.TotalStock + b.TotalReservedToStore - b.TotalReservedForPick)
                            : 0,
                    });
+        }
+
+        private void AddEnumerations(ItemDetails itemDetails)
+        {
+            itemDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
+            itemDetails.MeasureUnitChoices = this.enumerationProvider.GetAllMeasureUnits();
+            itemDetails.ManagementTypeChoices = EnumerationProvider.GetAllItemManagementTypes();
+            itemDetails.ItemCategoryChoices = this.enumerationProvider.GetAllItemCategories();
         }
 
         private void SaveImage(string imagePath)

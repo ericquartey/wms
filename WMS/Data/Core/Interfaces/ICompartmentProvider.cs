@@ -15,7 +15,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     {
         #region Methods
 
-        Task<OperationResult<IEnumerable<CompartmentDetails>>> AddRangeAsync(
+        Task<OperationResult<IEnumerable<CompartmentDetails>>> CreateRangeAsync(
             IEnumerable<CompartmentDetails> compartments);
 
         Task<IEnumerable<AllowedItemInCompartment>> GetAllowedItemsAsync(int id);
