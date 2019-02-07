@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.Common.Common_Utils;
+﻿using Ferretto.Common.Common_Utils;
 using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
 using Prism.Events;
