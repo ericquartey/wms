@@ -60,6 +60,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.BusinessModels", "..\Common\BusinessModels\Ferretto.Common.BusinessModels.csproj", "{9B84A46F-1D02-4535-847F-A6872637BF54}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Scheduler.WebAPI.Contracts", "Scheduler\WebAPI.Contracts\Ferretto.WMS.Scheduler.WebAPI.Contracts.csproj", "{647737A6-13A2-4286-8BC8-57F1A5A45A1F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9CCFC95C-729B-4F26-81FB-FA320FFECE29} = {9CCFC95C-729B-4F26-81FB-FA320FFECE29}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.BusinessProviders", "..\Common\BusinessProviders\Ferretto.Common.BusinessProviders.csproj", "{559CD30F-4B1D-4B1B-ABF1-814EC0AB283A}"
 EndProject
@@ -78,6 +81,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Data.WebAPI", "Data\WebAPI\Ferretto.WMS.Data.WebAPI.csproj", "{860F6E66-50E9-4C12-AEE5-96BA308293D5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Data.WebAPI.Contracts", "Data\WebAPI.Contracts\Ferretto.WMS.Data.WebAPI.Contracts.csproj", "{7E74AA8E-0B5E-4D3B-ADD5-DED190AAA3EE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9CCFC95C-729B-4F26-81FB-FA320FFECE29} = {9CCFC95C-729B-4F26-81FB-FA320FFECE29}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Data.Tests", "Data\Tests\Ferretto.WMS.Data.Tests.csproj", "{A9EA288E-806A-42E9-A9AD-6C9CB325FB9B}"
 EndProject
@@ -85,7 +91,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Scheduler.WebA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.AutomationServiceMock", "AutomationServiceMock\Ferretto.WMS.AutomationServiceMock.csproj", "{6043D61C-F630-46E4-94FE-F03B8080A4F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Data.Core", "Data\Core\Ferretto.WMS.Data.Core.csproj", "{082CB603-6861-411A-8B15-7542CC995B15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Data.Core", "Data\Core\Ferretto.WMS.Data.Core.csproj", "{082CB603-6861-411A-8B15-7542CC995B15}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
