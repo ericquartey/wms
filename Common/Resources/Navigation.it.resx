@@ -258,4 +258,7 @@
   <data name="ItemAdd" xml:space="preserve">
     <value>Aggiungi Articolo</value>
   </data>
+  <data name="ItemListAdd" xml:space="preserve">
+    <value>Aggiungi Lista Articolo</value>
+  </data>
 </root>

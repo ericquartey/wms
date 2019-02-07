@@ -223,6 +223,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Item List.
+        /// </summary>
+        public static string ItemListAdd {
+            get {
+                return ResourceManager.GetString("ItemListAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List Execution.
         /// </summary>
         public static string ItemListExecution {
