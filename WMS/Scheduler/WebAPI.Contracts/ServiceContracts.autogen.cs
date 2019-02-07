@@ -12,11 +12,11 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     public partial interface IBaysSchedulerService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> MarkAsOperationalAsync(int? bayId);
+        System.Threading.Tasks.Task<FileResponse> MarkAsOperationalAsync(int bayId);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<FileResponse> MarkAsOperationalAsync(int? bayId, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FileResponse> MarkAsOperationalAsync(int bayId, System.Threading.CancellationToken cancellationToken);
     
     }
     
