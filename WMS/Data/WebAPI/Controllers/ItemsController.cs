@@ -149,7 +149,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(200, Type = typeof(Item))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]
-        [HttpPost]
+        [HttpPatch]
         public async Task<ActionResult<ItemDetails>> UpdateAsync(ItemDetails model)
         {
             if (model == null)
