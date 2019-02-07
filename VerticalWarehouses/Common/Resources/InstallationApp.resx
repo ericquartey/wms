@@ -381,8 +381,8 @@
     <value>Move</value>
     <comment>Button text</comment>
   </data>
-  <data name="SetPosition" xml:space="preserve">
-    <value>Set Position</value>
+  <data name="GoToInitialPosition" xml:space="preserve">
+    <value>Go to initial position</value>
     <comment>Button text</comment>
   </data>
   <data name="InitialPosition" xml:space="preserve">
@@ -410,7 +410,7 @@
     <comment>Label text</comment>
   </data>
   <data name="DesiredInitialPosition" xml:space="preserve">
-    <value>Desired initial position [mm]:</value>
+    <value>Initial position [mm]:</value>
     <comment>Label text</comment>
   </data>
   <data name="DesiredMovement" xml:space="preserve">
@@ -819,5 +819,17 @@
   <data name="AntiIntrusionGate3" xml:space="preserve">
     <value>Anti intrusion gate bay 3</value>
     <comment>Sensor control text</comment>
+  </data>
+  <data name="RequestedFinalPosition" xml:space="preserve">
+    <value>Final position</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="StartResolutionProcedure" xml:space="preserve">
+    <value>Start procedure</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="CloseProcedure" xml:space="preserve">
+    <value>Close procedure</value>
+    <comment>Button text</comment>
   </data>
 </root>

@@ -33,7 +33,7 @@
                                                      LabelText="{x:Static res:InstallationApp.CorrectOffset}"
                                                      Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
         <Button Command="{Binding SetPositionButtonCommand}"
-                    Content="{x:Static res:InstallationApp.SetPosition}"
+                    Content="{x:Static res:InstallationApp.GoToInitialPosition}"
                     IsEnabled="{Binding IsSetPositionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="646,100,209,440" />
         <Button Command="{Binding StepUpButtonCommand}"

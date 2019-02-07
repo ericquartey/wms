@@ -118,7 +118,7 @@ namespace Ferretto.VW.InstallationApp
             if (result)
             {
                 this.IsSetPositionButtonActive = true;
-                message = Resources.InstallationApp.SetPosition;
+                message = Resources.InstallationApp.GoToInitialPosition;
             }
             else
             {

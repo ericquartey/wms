@@ -308,10 +308,10 @@
     <comment>Title - Button text</comment>
   </data>
   <data name="SetOriginVerticalAxisCompleted" xml:space="preserve">
-    <value>L'origine dell'asse verticale non è impostata correttamente.</value>
+    <value>L'origine dell'asse verticale è stata effettuata correttamente.</value>
   </data>
   <data name="SetOriginVerticalAxisNotCompleted" xml:space="preserve">
-    <value>L'origine dell'asse verticale non è impostata.</value>
+    <value>L'origine dell'asse verticale non è stata effettuata.</value>
   </data>
   <data name="FeedRate" xml:space="preserve">
     <value>Feed rate:</value>
@@ -325,8 +325,8 @@
   <data name="Move" xml:space="preserve">
     <value>Sposta</value>
   </data>
-  <data name="SetPosition" xml:space="preserve">
-    <value>Posiziona</value>
+  <data name="GoToInitialPosition" xml:space="preserve">
+    <value>Vai a posizione iniziale</value>
   </data>
   <data name="InitialPosition" xml:space="preserve">
     <value>Posizione iniziale:</value>
@@ -347,7 +347,7 @@
     <value>Risoluzione attuale [imp/mm]:</value>
   </data>
   <data name="DesiredInitialPosition" xml:space="preserve">
-    <value>Posizione iniziale desiderata [mm]:</value>
+    <value>Posizione iniziale [mm]:</value>
   </data>
   <data name="DesiredMovement" xml:space="preserve">
     <value>Spostamento desiderato [mm]:</value>
@@ -365,7 +365,7 @@
     <value>Spostamento misurato [mm]:</value>
   </data>
   <data name="VerticalResolutionCalibration" xml:space="preserve">
-    <value>Risoluzione asse verticale</value>
+    <value>Calibrazione risoluzione asse verticale</value>
   </data>
   <data name="VerticalAxisCalibrating" xml:space="preserve">
     <value>Calibrando l'asse verticale...</value>
@@ -648,5 +648,14 @@
   </data>
   <data name="AntiIntrusionGate3" xml:space="preserve">
     <value>Barriera anti intrusione baia 3</value>
+  </data>
+  <data name="RequestedFinalPosition" xml:space="preserve">
+    <value>Posizione finale [mm]</value>
+  </data>
+  <data name="StartResolutionProcedure" xml:space="preserve">
+    <value>Avvia procedura</value>
+  </data>
+  <data name="CloseProcedure" xml:space="preserve">
+    <value>Chiudi procedura</value>
   </data>
 </root>

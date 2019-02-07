@@ -29,7 +29,7 @@
                                                 LabelText="{x:Static res:InstallationApp.CellCorrection}" />
         <Button Margin="645,158,0,380"
                     HorizontalAlignment="Left"
-                    Content="{x:Static res:InstallationApp.SetPosition}"
+                    Content="{x:Static res:InstallationApp.GoToInitialPosition}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         <Button Margin="645,233,0,303"
                     HorizontalAlignment="Left"

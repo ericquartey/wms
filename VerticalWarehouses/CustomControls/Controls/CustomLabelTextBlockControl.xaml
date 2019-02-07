@@ -7,10 +7,10 @@
              mc:Ignorable="d">
     <StackPanel x:Name="LayoutRoot"
                 VerticalAlignment="Center">
-        <TextBlock Margin="5,1,5,1"
+        <TextBlock Margin="0,1,5,1"
                    Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
                    Text="{Binding LabelText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <TextBlock Margin="5,3,5,5"
+        <TextBlock Margin="0,3,5,5"
                    Background="Transparent"
                    Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
                    Text="{Binding ContentText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

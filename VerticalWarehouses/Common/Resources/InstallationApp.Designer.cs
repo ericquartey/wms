@@ -250,6 +250,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a Close procedure.
+        /// </summary>
+        public static string CloseProcedure {
+            get {
+                return ResourceManager.GetString("CloseProcedure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Completed cicles:.
         /// </summary>
         public static string CompletedCicles {
@@ -367,7 +376,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Desired initial position [mm]:.
+        ///   Cerca una stringa localizzata simile a Initial position [mm]:.
         /// </summary>
         public static string DesiredInitialPosition {
             get {
@@ -669,6 +678,15 @@ namespace Ferretto.VW.Resources {
         public static string GateSetUp {
             get {
                 return ResourceManager.GetString("GateSetUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Go to initial position.
+        /// </summary>
+        public static string GoToInitialPosition {
+            get {
+                return ResourceManager.GetString("GoToInitialPosition", resourceCulture);
             }
         }
         
@@ -1267,6 +1285,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a Final position.
+        /// </summary>
+        public static string RequestedFinalPosition {
+            get {
+                return ResourceManager.GetString("RequestedFinalPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Required cicles:.
         /// </summary>
         public static string RequiredCicles {
@@ -1348,15 +1375,6 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Set Position.
-        /// </summary>
-        public static string SetPosition {
-            get {
-                return ResourceManager.GetString("SetPosition", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Cerca una stringa localizzata simile a Setting initial position....
         /// </summary>
         public static string SettingInitialPosition {
@@ -1416,6 +1434,15 @@ namespace Ferretto.VW.Resources {
         public static string Start {
             get {
                 return ResourceManager.GetString("Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Start procedure.
+        /// </summary>
+        public static string StartResolutionProcedure {
+            get {
+                return ResourceManager.GetString("StartResolutionProcedure", resourceCulture);
             }
         }
         
