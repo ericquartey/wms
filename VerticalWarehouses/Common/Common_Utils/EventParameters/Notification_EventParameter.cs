@@ -6,20 +6,28 @@ using System.Threading.Tasks;
 
 namespace Ferretto.VW.Common_Utils.EventParameters
 {
-    public class Notification_EventParameter
-    {
-        public OperationStatus OperationStatus { get; set; }
-        public OperationType OperationType { get; set; }
-    }
-
     public enum OperationStatus
     {
         Error,
+
         End
     }
 
     public enum OperationType
     {
         Homing
+    }
+
+    public class Notification_EventParameter
+    {
+        #region Properties
+
+        public string Description { get; set; }
+
+        public OperationStatus OperationStatus { get; set; }
+
+        public OperationType OperationType { get; set; }
+
+        #endregion
     }
 }
