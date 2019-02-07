@@ -422,7 +422,7 @@ namespace Ferretto.Common.BusinessModels
                         break;
                 }
 
-                return string.Empty;
+                return base[columnName];
             }
         }
 

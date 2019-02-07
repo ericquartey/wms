@@ -457,6 +457,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The property {0} is required..
+        /// </summary>
+        public static string PropertyIsRequired {
+            get {
+                return ResourceManager.GetString("PropertyIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The specified path is not contained in the image directory..
         /// </summary>
         public static string SpecifiedPathNotInConfiguredImageFolder {
