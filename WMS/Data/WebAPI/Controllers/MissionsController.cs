@@ -14,7 +14,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     [ApiController]
     public class MissionsController : ControllerBase,
         IReadAllController<Mission>,
-        IReadSingleController<Mission>
+        IReadSingleController<Mission, int>
     {
         #region Fields
 

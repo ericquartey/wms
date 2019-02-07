@@ -1,4 +1,4 @@
-﻿<myType:BaseView x:Class="Ferretto.VW.InstallationApp.LSMTGateEngineView"
+﻿<local:BaseView x:Class="Ferretto.VW.InstallationApp.LSMTGateEngineView"
                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
@@ -30,4 +30,4 @@
                         Content="{x:Static res:InstallationApp.Down}"
                         Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="490,402,120,143" />
     </Grid>
-</myType:BaseView>
+</local:BaseView>

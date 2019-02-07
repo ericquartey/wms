@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Ferretto.WMS.Data.Core.Models;
 
 namespace Ferretto.WMS.Data.Core.Interfaces.Base
 {
@@ -6,7 +7,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces.Base
     {
         #region Methods
 
-        Task<T> AddAsync(T model);
+        Task<OperationResult<T>> CreateAsync(T model);
 
         #endregion
     }

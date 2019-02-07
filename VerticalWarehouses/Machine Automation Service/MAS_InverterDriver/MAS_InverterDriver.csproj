@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
     <RootNamespace>Ferretto.VW.InverterDriver</RootNamespace>
-    <AssemblyName>Ferretto.VW.InverterDriver</AssemblyName>
+    <AssemblyName>Ferretto.VW.MAS_InverterDriver</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,7 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\InverterDriver\InverterDriver.csproj" />
+    <ProjectReference Include="..\..\Common\Common_Utils\Ferretto.VW.Common_Utils.csproj" />
+    <ProjectReference Include="..\..\InverterDriver\Ferretto.VW.InverterDriver.csproj" />
   </ItemGroup>
 
 </Project>

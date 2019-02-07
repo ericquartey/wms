@@ -1,16 +1,12 @@
-﻿namespace Ferretto.VW.MAS_AutomationService
+﻿using Ferretto.Common.Common_Utils;
+
+namespace Ferretto.VW.MAS_AutomationService
 {
     public interface IAutomationService
     {
-        #region Properties
-
-        int Number { get; set; }
-
-        #endregion
-
         #region Methods
 
-        void ExecuteHoming();
+        bool AddMission(Mission mission);
 
         #endregion
     }

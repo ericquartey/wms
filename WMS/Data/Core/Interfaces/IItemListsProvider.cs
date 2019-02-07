@@ -1,17 +1,13 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Ferretto.WMS.Data.Core.Interfaces.Base;
 using Ferretto.WMS.Data.Core.Models;
 
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
-    public interface IItemListsProvider
+    public interface IItemListsProvider :
+        IReadAllPagedProvider<ItemList>,
+        IReadSingleProvider<ItemListDetails, int>,
+        IUpdateProvider<ItemListDetails>,
+        IGetUniqueValuesProvider
     {
-        #region Methods
-
-        Task<IEnumerable<ItemList>> GetAllAsync();
-
-        Task<ItemList> GetByIdAsync(int id);
-
-        #endregion
     }
 }
