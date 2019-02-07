@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Ferretto.WMS.Data.Core.Interfaces.Base
 {
-    public interface IReadAllPagedProvider<T>
+    public interface IReadAllPagedAsyncProvider<T>
     {
         #region Methods
 

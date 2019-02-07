@@ -6,8 +6,8 @@ using Ferretto.WMS.Data.Core.Models;
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
     public interface IAreaProvider :
-        IReadAllProvider<Area>,
-        IReadSingleProvider<Area, int>
+        IReadAllAsyncProvider<Area>,
+        IReadSingleAsyncProvider<Area, int>
     {
         #region Methods
 

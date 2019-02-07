@@ -1,12 +1,13 @@
 using System.Threading.Tasks;
+using Ferretto.WMS.Data.Core.Models;
 
 namespace Ferretto.WMS.Data.Core.Interfaces.Base
 {
-    public interface IGetUniqueValuesProvider
+    public interface ICreateAsyncProvider<T>
     {
         #region Methods
 
-        Task<object[]> GetUniqueValuesAsync(string propertyName);
+        Task<OperationResult<T>> CreateAsync(T model);
 
         #endregion
     }

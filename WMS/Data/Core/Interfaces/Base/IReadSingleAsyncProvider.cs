@@ -1,13 +1,12 @@
 using System.Threading.Tasks;
-using Ferretto.WMS.Data.Core.Models;
 
 namespace Ferretto.WMS.Data.Core.Interfaces.Base
 {
-    public interface ICreateProvider<T>
+    public interface IReadSingleAsyncProvider<TModel, in TKey>
     {
         #region Methods
 
-        Task<OperationResult<T>> CreateAsync(T model);
+        Task<TModel> GetByIdAsync(TKey id);
 
         #endregion
     }
