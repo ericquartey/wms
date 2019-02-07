@@ -224,7 +224,7 @@ namespace Ferretto.Common.BusinessProviders
             {
                 var originalItem = await this.itemsDataService.GetByIdAsync(model.Id);
 
-                await this.itemsDataService.UpdateAsync(new WMS.Data.WebAPI.Contracts.Item
+                await this.itemsDataService.UpdateAsync(new WMS.Data.WebAPI.Contracts.ItemDetails
                 {
                     AbcClassId = model.AbcClassId,
                     AverageWeight = model.AverageWeight,
