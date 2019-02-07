@@ -4,7 +4,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dxa="http://schemas.devexpress.com/winfx/2008/xaml/accordion"
              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
-             xmlns:dxfui="http://schemas.devexpress.com/winfx/2008/xaml/core/filteringui"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -34,7 +33,6 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <wms:TileBar ItemsSource="{Binding Filters}"
@@ -53,26 +51,7 @@
                         <Border Margin="5"
                                 BorderBrush="LightGray"
                                 BorderThickness="1">
-                            <StackPanel>
-                                <ScrollViewer x:Name="FilterEditorContainer"
-                                              HorizontalScrollBarVisibility="Auto">
-                                    <dxfui:FilterEditorControl x:Name="filterEditor"
-                                                               Context="{Binding Path=FilteringContext, ElementName=MainGridControl}"
-                                                               FilterChanged="FilterEditor_FilterChanged"
-                                                               RespondToContextFiltersChanges="True"
-                                                               ShowCounts="True" />
-                                </ScrollViewer>
-                                <wms:ActionBar Margin="5"
-                                               HorizontalAlignment="Right"
-                                               Style="{DynamicResource ActionBarNotCustomizable}">
-                                    <wms:ActionBarItem Command="{Binding ClearFilterCommand}"
-                                                       Content="{x:Static res:General.Cancel}"
-                                                       CustomGlyphSize="18,18"
-                                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_clear_black_18dp.png"
-                                                       GlyphSize="Custom" />
-                                </wms:ActionBar>
-
-                            </StackPanel>
+                            <wms:WmsFilterControl FilteringContext="{Binding Path=FilteringContext, ElementName=MainGridControl}" />
                         </Border>
                     </wms:AccordionItem>
                 </dxa:AccordionControl>

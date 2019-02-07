@@ -16,7 +16,7 @@ using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
-    public class EntityPagedListViewModel<TModel> : EntityListViewModel<TModel>
+    public class EntityPagedListViewModel<TModel> : EntityListViewModel<TModel>, ICustomFilterViewModel
             where TModel : IBusinessObject
     {
         #region Fields
