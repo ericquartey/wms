@@ -59,9 +59,12 @@ namespace Ferretto.VW.MAS_AutomationService
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
+            //var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
 
-            services.AddDbContext<DataLayerContext>(options => options.UseSqlite(connectionString), ServiceLifetime.Singleton);
+            //var initialContext = new DataLayerContext(
+            //    new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(connectionString).Options);
+
+            services.AddDbContext<DataLayerContext>(options => options.UseInMemoryDatabase("InMemoryWorkingDB"), ServiceLifetime.Singleton);
 
             services.AddSingleton<IEventAggregator, EventAggregator>();
             services.AddSingleton<IAutomationService, AutomationService>();
@@ -70,6 +73,7 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSingleton<IMachineManager, MachineManager>();
             services.AddSingleton<IFiniteStateMachines, FiniteStateMachines>();
             services.AddSingleton<IInverterDriver, MAS_InverterDriver.InverterDriver>();
+            services.AddSingleton<IDataLayer, DataLayer>();
         }
 
         #endregion
