@@ -19,6 +19,11 @@ namespace Ferretto.Common.BusinessProviders
 
         public Task<User> GetByIdAsync(int id) => throw new NotSupportedException();
 
+        public User GetNew()
+        {
+            throw new NotImplementedException();
+        }
+
         public string IsValid(User user)
         {
             return string.Empty;
