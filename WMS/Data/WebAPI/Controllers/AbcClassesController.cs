@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
@@ -12,48 +12,58 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MissionsController : ControllerBase,
-        IReadAllController<Mission>,
-        IReadSingleController<Mission, int>
+    public class AbcClassesController : ControllerBase,
+        IReadAllController<AbcClass>,
+        IReadSingleController<AbcClass, string>
     {
         #region Fields
 
-        private readonly ILogger logger;
+        private readonly IAbcClassProvider abcClassProvider;
 
-        private readonly IMissionProvider missionProvider;
+        private readonly ILogger logger;
 
         #endregion
 
         #region Constructors
 
-        public MissionsController(
-            ILogger<ItemsController> logger,
-            IMissionProvider missionProvider)
+        public AbcClassesController(
+            ILogger<AbcClassesController> logger,
+            IAbcClassProvider abcClassProvider)
         {
             this.logger = logger;
-            this.missionProvider = missionProvider;
+            this.abcClassProvider = abcClassProvider;
         }
 
         #endregion
 
         #region Methods
 
-        [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Mission>))]
-        public async Task<ActionResult<IEnumerable<Mission>>> GetAllAsync()
-        {
-            return this.Ok(await this.missionProvider.GetAllAsync());
-        }
-
-        [ProducesResponseType(200, Type = typeof(Mission))]
-        [ProducesResponseType(404, Type = typeof(SerializableError))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<AbcClass>))]
         [ProducesResponseType(500, Type = typeof(string))]
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Mission>> GetByIdAsync(int id)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<AbcClass>>> GetAllAsync()
         {
             try
             {
-                var result = await this.missionProvider.GetByIdAsync(id);
+                return this.Ok(await this.abcClassProvider.GetAllAsync());
+            }
+            catch (Exception ex)
+            {
+                var message = $"An error occurred while retrieving the requested entities.";
+                this.logger.LogError(ex, message);
+                return this.StatusCode(StatusCodes.Status500InternalServerError, message);
+            }
+        }
+
+        [ProducesResponseType(200, Type = typeof(AbcClass))]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500, Type = typeof(string))]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<AbcClass>> GetByIdAsync(string id)
+        {
+            try
+            {
+                var result = await this.abcClassProvider.GetByIdAsync(id);
                 if (result == null)
                 {
                     var message = $"No entity with the specified id={id} exists.";

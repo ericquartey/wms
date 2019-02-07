@@ -14,7 +14,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     [ApiController]
     public class BaysController : ControllerBase,
         IReadAllController<Bay>,
-        IReadSingleController<Bay>
+        IReadSingleController<Bay, int>
     {
         #region Fields
 
