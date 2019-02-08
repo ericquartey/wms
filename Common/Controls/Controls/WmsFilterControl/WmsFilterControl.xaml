@@ -27,9 +27,9 @@
             Style="{DynamicResource ActionBarNotCustomizable}">
             <wms:ActionBarItem
                 Command="{Binding ClearFilterCommand}"
-                Content="{x:Static res:General.Cancel}"
+                Content="{x:Static res:General.Clear}"
                 CustomGlyphSize="18,18"
-                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_clear_black_18dp.png"
+                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-erase-36.png"
                 GlyphSize="Custom" />
         </wms:ActionBar>
 
