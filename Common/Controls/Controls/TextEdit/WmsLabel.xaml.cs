@@ -42,7 +42,10 @@ namespace Ferretto.Common.Controls
         {
             if (d is WmsLabel wmsLabel && e.NewValue is string title)
             {
-                ((Label)wmsLabel.GridWmsLabel.Children[0]).Content = title;
+                if (wmsLabel.GridWmsLabel.Children.Count > 0)
+                {
+                    ((Label)wmsLabel.GridWmsLabel.Children[0]).Content = title;
+                }
             }
         }
 
