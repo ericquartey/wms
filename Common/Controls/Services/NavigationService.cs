@@ -17,8 +17,11 @@ namespace Ferretto.Common.Controls.Services
         #region Fields
 
         private readonly IUnityContainer container;
+
         private readonly Dictionary<string, INavigableView> dialogs = new Dictionary<string, INavigableView>();
+
         private readonly IRegionManager regionManager;
+
         private readonly Dictionary<string, ViewModelBind> registrations = new Dictionary<string, ViewModelBind>();
 
         #endregion
@@ -37,7 +40,7 @@ namespace Ferretto.Common.Controls.Services
 
         public void Appear<TViewModel>()
         {
-            var(moduleName, viewModelName) = MvvmNaming.GetViewModelNames<TViewModel>();
+            var (moduleName, viewModelName) = MvvmNaming.GetViewModelNames<TViewModel>();
             this.Appear(moduleName, viewModelName);
         }
 
@@ -131,7 +134,7 @@ namespace Ferretto.Common.Controls.Services
             var viewModelBind = this.GetViewModelBind(fullViewName);
             if (viewModelBind != null)
             {
-                var instanceModuleViewName = this.GetNewModuleViewName(viewModelBind, fullViewName);
+                var instanceModuleViewName = GetNewModuleViewName(viewModelBind, fullViewName);
                 this.RegisterType(viewModelBind, instanceModuleViewName);
                 return instanceModuleViewName;
             }
@@ -146,7 +149,7 @@ namespace Ferretto.Common.Controls.Services
 
         public INavigableViewModel GetRegisteredViewModel(string mapId, object data)
         {
-            var viewModel = this.GetViewModelByMapId(mapId);
+            var viewModel = GetViewModelByMapId(mapId);
             viewModel.MapId = mapId;
             viewModel.Token = mapId;
             viewModel.Data = data;
@@ -197,6 +200,11 @@ namespace Ferretto.Common.Controls.Services
             }
 
             return null;
+        }
+
+        public void IsBusy(bool value)
+        {
+            WmsMainDockLayoutManager.IsBusy(value);
         }
 
         public void LoadModule(string moduleName)
@@ -275,6 +283,22 @@ namespace Ferretto.Common.Controls.Services
                 }));
         }
 
+        private static string GetNewModuleViewName(ViewModelBind viewModelBind, string moduleViewName)
+        {
+            var newRegId = viewModelBind.GetNewId();
+            return $"{moduleViewName}.{newRegId}";
+        }
+
+        private static INavigableViewModel GetViewModelByMapId(string mapId)
+        {
+            if (string.IsNullOrEmpty(mapId))
+            {
+                throw new ArgumentException("The argument cannot be null or empty.", nameof(mapId));
+            }
+
+            return ServiceLocator.Current.GetInstance<INavigableViewModel>(mapId);
+        }
+
         private void ActivateView(string moduleViewName, string instanceModuleViewName)
         {
             var region = this.regionManager.Regions[instanceModuleViewName];
@@ -312,19 +336,13 @@ namespace Ferretto.Common.Controls.Services
             }
 
             // Register new instance of same view type
-            instanceModuleViewName = this.GetNewModuleViewName(viewModelBind, moduleViewName);
+            instanceModuleViewName = GetNewModuleViewName(viewModelBind, moduleViewName);
             this.RegisterType(viewModelBind, instanceModuleViewName);
 
             // Map cloned type to current layout
             this.AddToRegion(instanceModuleViewName, data);
 
             return instanceModuleViewName;
-        }
-
-        private string GetNewModuleViewName(ViewModelBind viewModelBind, string moduleViewName)
-        {
-            var newRegId = viewModelBind.GetNewId();
-            return $"{moduleViewName}.{newRegId}";
         }
 
         private string GetNewRegistrationId<TItemsView, TItemsViewModel>()
@@ -379,16 +397,6 @@ namespace Ferretto.Common.Controls.Services
             return this.registrations.ContainsKey(fullViewName) ? this.registrations[fullViewName] : null;
         }
 
-        private INavigableViewModel GetViewModelByMapId(string mapId)
-        {
-            if (string.IsNullOrEmpty(mapId))
-            {
-                throw new ArgumentException("The argument cannot be null or empty.", nameof(mapId));
-            }
-
-            return ServiceLocator.Current.GetInstance<INavigableViewModel>(mapId);
-        }
-
         private void RegisterDialog(string moduleViewName, INavigableView registeredView)
         {
             this.dialogs.Add(moduleViewName, registeredView);
@@ -414,11 +422,6 @@ namespace Ferretto.Common.Controls.Services
             region.Deactivate(viewActive);
             this.regionManager.Regions[moduleRegionName].Remove(viewActive);
             this.regionManager.Regions.Remove(moduleRegionName);
-        }
-
-        public void IsBusy(bool isBusy)
-        {
-            WmsMainDockLayoutManager.IsBusy(isBusy);
         }
 
         #endregion
