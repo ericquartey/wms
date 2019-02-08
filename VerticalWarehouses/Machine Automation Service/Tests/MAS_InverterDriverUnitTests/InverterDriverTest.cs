@@ -15,21 +15,6 @@ namespace MAS_InverterDriverUnitTests
 
         public void InverterDriver()
         {
-            //--->Arrange
-            var eventAggregator = new Mock<IEventAggregator>().Object;
-
-            var inverterDriver = new NewInverterDriver(eventAggregator);
-
-            //--->Act
-
-
-            
-
-            //--->Assert
-            //Assert.IsTrue(inverterDriver.GetSensorsStates());
-
-
-
         }
 
         #endregion Method
