@@ -3,10 +3,7 @@
                     xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
                     xmlns:system="clr-namespace:System;assembly=mscorlib"                                        
                     xmlns:dxdst="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys">
-
-    <ctrls:ValueToRectConverter x:Key="VTRC" />
-    <ctrls:XyToPointConverter x:Key="XYTPC" />
-    
+   
     <!--  colors - compartment  -->
     <Color x:Key="MediumBlue">#FF0288F7</Color>
 
