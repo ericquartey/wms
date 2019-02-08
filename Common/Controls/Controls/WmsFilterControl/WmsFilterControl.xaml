@@ -12,14 +12,12 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-    <StackPanel>
+    <StackPanel x:Name="FilterStackPanel">
         <ScrollViewer x:Name="FilterEditorContainer" HorizontalScrollBarVisibility="Auto">
             <dxfui:FilterEditorControl
                 x:Name="filterEditor"
                 Context="{Binding Path=FilteringContext, ElementName=FilterControl}"
-                FilterChanged="FilterEditor_FilterChanged"
-                RespondToContextFiltersChanges="True"
-                ShowCounts="True" />
+                FilterChanged="FilterEditor_FilterChanged" />
         </ScrollViewer>
         <wms:ActionBar
             Margin="5"

@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using DevExpress.Data.Filtering;
 using DevExpress.Xpf.Core.FilteringUI;
 using Prism.Commands;
 
@@ -14,6 +15,9 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty FilteringContextProperty = DependencyProperty.Register(
                   nameof(FilteringContext), typeof(FilteringUIContext), typeof(WmsFilterControl));
 
+        public static readonly DependencyProperty FilterProperty = DependencyProperty.Register(
+                 nameof(Filter), typeof(CriteriaOperator), typeof(WmsFilterControl));
+
         private ICommand clearFilterCommand;
 
         #endregion
@@ -24,7 +28,7 @@ namespace Ferretto.Common.Controls
         {
             this.InitializeComponent();
 
-            this.DataContext = this;
+            this.FilterStackPanel.DataContext = this;
         }
 
         #endregion
@@ -34,6 +38,12 @@ namespace Ferretto.Common.Controls
         public ICommand ClearFilterCommand => this.clearFilterCommand ??
            (this.clearFilterCommand = new DelegateCommand(
                this.ExecuteClearFilterCommand));
+
+        public CriteriaOperator Filter
+        {
+            get => (CriteriaOperator)this.GetValue(FilterProperty);
+            set => this.SetValue(FilterProperty, value);
+        }
 
         public FilteringUIContext FilteringContext
         {
@@ -60,17 +70,14 @@ namespace Ferretto.Common.Controls
 
             filterControl.FilterChanged += this.FilterEditor_FilterChanged;
 
+            this.Filter = null;
             this.FilterEditorContainer.Content = filterControl;
         }
 
         private void FilterEditor_FilterChanged(object sender, FilterChangedEventArgs e)
         {
-            if (this.DataContext is ICustomFilterViewModel customFilterContext)
-            {
-                customFilterContext.CustomFilter = e.Filter;
-
-                e.Handled = true;
-            }
+            this.Filter = e.Filter;
+            e.Handled = true;
         }
 
         #endregion

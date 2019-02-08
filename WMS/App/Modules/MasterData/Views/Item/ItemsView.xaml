@@ -53,6 +53,7 @@
                                 BorderBrush="LightGray"
                                 BorderThickness="1">
                             <wms:WmsFilterControl MinWidth="250"
+                                                  Filter="{Binding CustomFilter, Mode=OneWayToSource}"
                                                   FilteringContext="{Binding Path=FilteringContext, ElementName=MainGridControl}" />
                         </Border>
                     </wms:AccordionItem>
