@@ -102,10 +102,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<IEnumerable<Area>>> GetAreasWithAvailabilityAsync(int id)
         {
             var areas = await this.areaProvider.GetByItemIdAvailabilityAsync(id);
-            if (!areas.Any())
-            {
-                return this.NotFound();
-            }
 
             return this.Ok(areas);
         }

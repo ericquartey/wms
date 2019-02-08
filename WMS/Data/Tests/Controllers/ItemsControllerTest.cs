@@ -55,7 +55,7 @@ namespace Ferretto.WMS.Data.Tests
 
                 #region Assert
 
-                Assert.IsInstanceOfType(actionResult.Result, typeof(NotFoundObjectResult));
+                Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
 
                 #endregion
             }
@@ -154,7 +154,9 @@ namespace Ferretto.WMS.Data.Tests
 
                 #region Assert
 
-                Assert.IsInstanceOfType(actionResult.Result, typeof(NotFoundObjectResult));
+                Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
+                var result = (IEnumerable<Area>)((OkObjectResult)actionResult.Result).Value;
+                Assert.AreEqual(0, result.Count());
 
                 #endregion
             }
