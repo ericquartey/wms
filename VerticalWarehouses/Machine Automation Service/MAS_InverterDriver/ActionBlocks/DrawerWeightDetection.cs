@@ -44,7 +44,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
         public float Weight { get; set; }
 
-        public Ferretto.VW.InverterDriver.InverterDriver SetInverterDriverInterface
+        public Ferretto.VW.InverterDriver.IInverterDriver SetInverterDriverInterface
         {
             set => this.drawerPositionController.SetInverterDriverInterface = value;
         }

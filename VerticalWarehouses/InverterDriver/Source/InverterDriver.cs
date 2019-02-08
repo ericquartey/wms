@@ -28,9 +28,7 @@ namespace Ferretto.VW.InverterDriver
         public const string IP_ADDR_INVERTER_DEFAULT = "169.254.231.248";
 
         public const int PORT_ADDR_INVERTER_DEFAULT = 17221;
-
-        public ActionType CurrentActionType;
-
+        
         private static readonly object lockFlags = new object();
 
         private static readonly object lockObj = new object();
@@ -142,6 +140,8 @@ namespace Ferretto.VW.InverterDriver
         #endregion Events
 
         #region Properties
+
+        public ActionType CurrentActionType { get; set; }
 
         /// <summary>
         /// Get brake resistance overtemperature-Digital value.
