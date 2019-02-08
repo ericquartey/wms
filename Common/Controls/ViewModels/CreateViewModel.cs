@@ -158,6 +158,11 @@ namespace Ferretto.Common.Controls
 
         protected abstract void ExecuteClearCommand();
 
+        protected void ExecuteCloseDialogCommand()
+        {
+            this.Disappear();
+        }
+
         protected abstract Task ExecuteSaveCommand();
 
         protected virtual void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -183,11 +188,6 @@ namespace Ferretto.Common.Controls
         private void ChangeDetector_ModifiedChanged(object sender, System.EventArgs e)
         {
             this.EvaluateCanExecuteCommands();
-        }
-
-        private void ExecuteCloseDialogCommand()
-        {
-            this.Disappear();
         }
 
         #endregion

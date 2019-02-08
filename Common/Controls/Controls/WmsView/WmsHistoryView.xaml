@@ -1,10 +1,11 @@
-﻿<ContentControl x:Class="Ferretto.Common.Controls.WmsHistoryView"
-                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                xmlns:wms="clr-namespace:Ferretto.Common.Controls"
-                mc:Ignorable="d">
+﻿<ContentControl
+    x:Class="Ferretto.Common.Controls.WmsHistoryView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wms="clr-namespace:Ferretto.Common.Controls"
+    mc:Ignorable="d">
     <ContentControl.Template>
         <ControlTemplate TargetType="wms:WmsHistoryView">
             <Grid>
@@ -12,23 +13,25 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
-                    <wms:ActionBar x:Name="actionBarHsitoryView"
-                                   Margin="7,12,0,0"
-                                   HorizontalAlignment="Left"
-                                   Panel.ZIndex="100"
-                                   Style="{DynamicResource ActionBarNotCustomizable}">
-                        <wms:ActionBarItem CustomGlyphSize="24,24"
-                                           Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_arrow_back_black_24dp.png"
-                                           GlyphSize="Custom"
-                                           ItemClick="BackViewClick" />
+                    <wms:ActionBar
+                        x:Name="actionBarHsitoryView"
+                        Margin="7,12,0,0"
+                        HorizontalAlignment="Left"
+                        Panel.ZIndex="100"
+                        Style="{DynamicResource ActionBarNotCustomizable}">
+                        <wms:ActionBarItem
+                            CustomGlyphSize="24,24"
+                            Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_arrow_back_black_24dp.png"
+                            GlyphSize="Custom"
+                            ItemClick="BackViewClick" />
                     </wms:ActionBar>
-                    <TextBlock Grid.Column="1"
-                               Margin="7,12,0,0"
-                               FontSize="{DynamicResource FontSizeMedium}"
-                               Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsHistoryView}}, Path=Content.SubTitle}" />
+                    <TextBlock
+                        Grid.Column="1"
+                        Margin="7,15,0,0"
+                        FontSize="{DynamicResource FontSizeMedium}"
+                        Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsHistoryView}}, Path=Content.SubTitle}" />
                 </Grid>
                 <ContentPresenter />
             </Grid>

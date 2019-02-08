@@ -2,9 +2,19 @@
 
 namespace Ferretto.Common.Controls
 {
-    public enum OriginHorizontal { Left, Right }
+    public enum OriginHorizontal
+    {
+        Left,
 
-    public enum OriginVertical { Top, Bottom }
+        Right
+    }
+
+    public enum OriginVertical
+    {
+        Top,
+
+        Bottom
+    }
 
     public class InfoRuler
     {
