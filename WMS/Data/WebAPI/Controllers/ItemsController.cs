@@ -83,7 +83,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(200, Type = typeof(int))]
         [ProducesResponseType(404)]
         [HttpGet]
-        [Route("api/[controller]/count")]
+        [Route("count")]
         public async Task<ActionResult<int>> GetAllCountAsync(
             string where = null,
             string search = null)
@@ -122,14 +122,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
         [HttpGet]
-        [Route("api/[controller]/unique/{propertyName}")]
+        [Route("unique/{propertyName}")]
         public async Task<ActionResult<object[]>> GetUniqueValuesAsync(
             string propertyName)
         {
             return this.Ok(await this.itemProvider.GetUniqueValuesAsync(propertyName));
         }
 
-        [ProducesResponseType(200, Type = typeof(Item))]
+        [ProducesResponseType(200, Type = typeof(ItemDetails))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]
         [HttpPatch]
