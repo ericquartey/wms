@@ -230,7 +230,7 @@
                           Header="{x:Static res:MasterData.CompartmentsLayoutOverview}"
                           Visibility="{Binding Model.LoadingUnitTypeHasCompartments, Converter={StaticResource BTVC}}">
                     <wms:WmsTrayControl Margin="0"
-                                        CanvasMinHeight="150"
+                                        MinHeight="150"
                                         IsCompartmentSelectable="{Binding IsCompartmentSelectableTray, Mode=OneWay}"
                                         IsReadOnly="{Binding ReadOnlyTray, Mode=OneWay}"
                                         SelectedColorFilterFunc="{Binding TrayColoringFunc, Mode=OneWay}"
