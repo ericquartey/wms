@@ -223,7 +223,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add Item List.
+        ///   Looks up a localized string similar to Add Items List.
         /// </summary>
         public static string ItemListAdd {
             get {
