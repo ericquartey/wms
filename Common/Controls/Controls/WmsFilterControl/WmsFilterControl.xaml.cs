@@ -1,8 +1,9 @@
-﻿using System.ComponentModel;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using DevExpress.Xpf.Core.FilteringUI;
+using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
@@ -11,7 +12,9 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         public static readonly DependencyProperty FilteringContextProperty = DependencyProperty.Register(
-                  nameof(FilteringContext), typeof(bool), typeof(WmsFilterControl));
+                  nameof(FilteringContext), typeof(FilteringUIContext), typeof(WmsFilterControl));
+
+        private ICommand clearFilterCommand;
 
         #endregion
 
@@ -21,22 +24,44 @@ namespace Ferretto.Common.Controls
         {
             this.InitializeComponent();
 
-            this.DataContextChanged += this.ItemsView_DataContextChanged;
+            this.DataContext = this;
         }
 
         #endregion
 
         #region Properties
 
-        public bool FilteringContext
+        public ICommand ClearFilterCommand => this.clearFilterCommand ??
+           (this.clearFilterCommand = new DelegateCommand(
+               this.ExecuteClearFilterCommand));
+
+        public FilteringUIContext FilteringContext
         {
-            get => (bool)this.GetValue(FilteringContextProperty);
+            get => (FilteringUIContext)this.GetValue(FilteringContextProperty);
             set => this.SetValue(FilteringContextProperty, value);
         }
 
         #endregion
 
         #region Methods
+
+        private void ExecuteClearFilterCommand()
+        {
+            if (this.FilterEditorContainer.Content is FilterEditorControl filterEditorControl)
+            {
+                filterEditorControl.FilterChanged -= this.FilterEditor_FilterChanged;
+            }
+
+            var filterControl = new FilterEditorControl();
+
+            filterControl.SetBinding(
+                FilterEditorControl.ContextProperty,
+                new Binding("FilteringContext"));
+
+            filterControl.FilterChanged += this.FilterEditor_FilterChanged;
+
+            this.FilterEditorContainer.Content = filterControl;
+        }
 
         private void FilterEditor_FilterChanged(object sender, FilterChangedEventArgs e)
         {
@@ -45,32 +70,6 @@ namespace Ferretto.Common.Controls
                 customFilterContext.CustomFilter = e.Filter;
 
                 e.Handled = true;
-            }
-        }
-
-        private void ItemsView_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
-        {
-            if (this.DataContext is INotifyPropertyChanged viewModel)
-            {
-                viewModel.PropertyChanged += this.ViewModel_PropertyChanged;
-            }
-        }
-
-        private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(ICustomFilterViewModel.IsFilterEditorVisible))
-            {
-                this.FilterEditorContainer.Content = null;
-
-                var filterControl = new FilterEditorControl();
-
-                filterControl.SetBinding(
-                    FilterEditorControl.ContextProperty,
-                    new Binding("FilteringContext"));
-
-                filterControl.FilterChanged += this.FilterEditor_FilterChanged;
-
-                this.FilterEditorContainer.Content = filterControl;
             }
         }
 

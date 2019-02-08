@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
     xmlns:wms="clr-namespace:Ferretto.Common.Controls"
+    x:Name="FilterControl"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -15,7 +16,7 @@
         <ScrollViewer x:Name="FilterEditorContainer" HorizontalScrollBarVisibility="Auto">
             <dxfui:FilterEditorControl
                 x:Name="filterEditor"
-                Context="{Binding Path=FilteringContext}"
+                Context="{Binding Path=FilteringContext, ElementName=FilterControl}"
                 FilterChanged="FilterEditor_FilterChanged"
                 RespondToContextFiltersChanges="True"
                 ShowCounts="True" />
