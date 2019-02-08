@@ -2,7 +2,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ferretto.VW.MAS_DataLayer;
 using Prism.Events;
 using Moq;
-using Ferretto.Common.Common_Utils;
 using Ferretto.VW.Common_Utils.Events;
 
 namespace MAS_DataLayerUnitTests

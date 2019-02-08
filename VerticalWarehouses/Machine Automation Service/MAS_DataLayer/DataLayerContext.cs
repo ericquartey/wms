@@ -36,6 +36,10 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public DbSet<Step> Steps { get; set; }
 
+        public DbSet<RuntimeValue> RuntimeValues { get; set; }
+
+        public DbSet<ConfigurationValue> ConfigurationValues { get; set; }
+
         #endregion Properties
 
         #region Methods

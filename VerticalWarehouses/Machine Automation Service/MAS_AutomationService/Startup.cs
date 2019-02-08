@@ -59,11 +59,6 @@ namespace Ferretto.VW.MAS_AutomationService
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            //var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
-
-            //var initialContext = new DataLayerContext(
-            //    new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(connectionString).Options);
-
             services.AddDbContext<DataLayerContext>(options => options.UseInMemoryDatabase("InMemoryWorkingDB"), ServiceLifetime.Singleton);
 
             services.AddSingleton<IEventAggregator, EventAggregator>();

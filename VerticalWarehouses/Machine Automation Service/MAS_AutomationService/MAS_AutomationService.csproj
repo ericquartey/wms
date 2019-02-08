@@ -28,10 +28,4 @@
     <ProjectReference Include="..\MAS_MissionScheduler\MAS_MissionScheduler.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Database\MachineAutomationService.db">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

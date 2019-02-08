@@ -8,8 +8,10 @@ using Microsoft.Extensions.Configuration;
 namespace MAS_DataLayerUnitTests
 {
     [TestClass]
-    public class DataLayerUnitTest : DBTest
+    public class DataLayerGetSetUnitTest : DBTest
     {
+        #region Methods
+
         [TestMethod]
         public void DataLayerTestMethod()
         {
@@ -20,13 +22,16 @@ namespace MAS_DataLayerUnitTests
                 // Insert the Mock here
                 mockConfiguration.Setup(s => s.GetConnectionString(It.IsAny<string>())).Returns("AutomationService");
 
-                new DataLayer( mockConfiguration.Object, context );
+                var dataLayer = new DataLayer(mockConfiguration.Object, context);
 
                 // Act
+                dataLayer.SetIntConfigurationValue(ConfigurationValueEnum.homingCreepSpeed, 5);
 
                 // Assert
-                Assert.IsFalse( context.Database.ProviderName.Equals("InMemory") );
+                Assert.IsFalse(dataLayer.GetIntConfigurationValue(ConfigurationValueEnum.homingCreepSpeed) == 5);
             }
         }
+
+        #endregion
     }
 }
