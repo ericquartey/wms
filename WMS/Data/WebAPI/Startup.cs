@@ -85,7 +85,7 @@ namespace Ferretto.WMS.Data.WebAPI
             services.AddTransient<ICellProvider, CellProvider>();
             services.AddTransient<ICellStatusProvider, CellStatusProvider>();
             services.AddTransient<ICellTypeProvider, CellTypeProvider>();
-            services.AddTransient<IItemListsProvider, ItemListsProvider>();
+            services.AddTransient<IItemListsProvider, ItemListProvider>();
             services.AddTransient<IItemProvider, ItemProvider>();
             services.AddTransient<IMissionProvider, MissionProvider>();
 
