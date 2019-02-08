@@ -12,36 +12,17 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
         #region Fields
 
         private const int DELAY_TIME = 500;
-
         private const int STEPS_NUMBER = 6;
-
         private const byte DATASET_INDEX = 0x05;
-
-        // The number of parameters to SetUp for the Vertical Calibration
         private const int SETUP_PARAMETERS_STEPS = 3;
-
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-
-        // Index for the calibration steps
         private int stepCounter;
-
-        // Inverter driver
         private Ferretto.VW.InverterDriver.InverterDriver inverterDriver;
-
         private ParameterID paramID = ParameterID.HOMING_MODE_PARAM;
-
         private byte systemIndex = 0x00;
-
         private object valParam = "";
-
-        // Variable to keep the end of the execution
         private bool stopExecution;
-
         private bool setupParameters;
-
-        // actualCalibrationAxis keep the actual calibration in execution,
-        // * 0: Vertical Calibration Axis
-        // * 1: Horizontal Calibration Axis
         private CalibrationType actualCalibrationAxis;
 
         #endregion Fields
@@ -55,9 +36,6 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
         #region Properties
 
-        /// <summary>
-        /// Set Inverter driver.
-        /// </summary>
         public Ferretto.VW.InverterDriver.InverterDriver SetInverterDriverInterface
         {
             set => this.inverterDriver = value;
@@ -73,12 +51,8 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
         #region Methods
 
-        /// <summary>
-        /// Initialize the Calibrate Vertical Axis routine.
-        /// </summary>
         public void Initialize()
         {
-            // Subscription to the event handlers
             this.inverterDriver.SelectTelegramDone_CalibrateVerticalAxis += this.SelectTelegram;
             this.inverterDriver.EnquiryTelegramDone_CalibrateVerticalAxis += this.EnquiryTelegram;
         }
@@ -92,10 +66,8 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
             while (setUpCounter < SETUP_PARAMETERS_STEPS)
             { 
-                // Select the operation
                 switch (setUpCounter)
                 {
-                    // Vertical Homing Parameters
                     case 0:
                     {
                         this.paramID = ParameterID.HOMING_ACCELERATION;
@@ -127,10 +99,10 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                     }
                 }
 
-                // Set request to inverter
                 var idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_INDEX, this.valParam);
 
-                logger.Log(LogLevel.Debug, String.Format(" --> SetVerticalHomingParameters: {0}. Set parameter to inverter::  paramID: {1}, value: {2:X}, DataSetIndex: {3}", setUpCounter, this.paramID.ToString(), this.valParam, DATASET_INDEX));
+                logger.Log(LogLevel.Debug, String.Format(" --> SetVerticalHomingParameters: {0}. Set parameter to inverter::  paramID: {1}, value: {2:X}, DataSetIndex: {3}",
+                           setUpCounter, this.paramID.ToString(), this.valParam, DATASET_INDEX));
 
                 this.checkExistStatus(idExitStatus);
 
@@ -140,9 +112,6 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             logger.Log(LogLevel.Debug, String.Format(" --> ... SetVerticalHomingParameters End"));
         }
 
-        /// <summary>
-        /// Start Calibrate Vertical Axis routine.
-        /// </summary>
         public void SetAxisOrigin()
         {
             this.stopExecution = false;
@@ -150,22 +119,22 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             this.setupParameters = false;
 
             this.stepCounter = 0;
-        
-            if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION) // Vertical Calibration
+
+            if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION)
+            {
                 this.inverterDriver.CurrentActionType = ActionType.CalibrateVerticalAxis;
-            else // Horizontal Calibration
+            }
+            else
+            {
                 this.inverterDriver.CurrentActionType = ActionType.CalibrateHorizontalAxis;
+            }
 
             logger.Log(LogLevel.Debug, "Start the routine for calibrate...");
             logger.Log(LogLevel.Debug, String.Format(" <-- SetAxisOrigin - Step: {0}", this.actualCalibrationAxis));
 
-            // Start the routine
             this.stepExecution();
         }
 
-        /// <summary>
-        /// Stop the routine.
-        /// </summary>
         public bool StopInverter()
         {
             bool result = true;
@@ -174,10 +143,14 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             {
                 this.paramID = ParameterID.CONTROL_WORD_PARAM;
 
-                if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION) // Vertical
-                    this.valParam = 0x0000; // 0000 0000 0000 0000
-                else // Horizontal
-                    this.valParam = 0x8000; // 1000 0000 0000 0000
+                if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION)
+                {
+                    this.valParam = 0x0000;
+                }
+                else
+                {
+                    this.valParam = 0x8000;
+                }
 
                 logger.Log(LogLevel.Debug, String.Format(" --> Send stop::  paramID: {0}, value: {1:X}", this.paramID.ToString(), this.valParam));
                 this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_INDEX, this.valParam);
@@ -192,12 +165,8 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             return result;
         }
 
-        /// <summary>
-        /// Terminate the Calibrate Vertical Axis routine.
-        /// </summary>
         public void Terminate()
         {
-            // Unsubscribe the event handlers
             this.inverterDriver.SelectTelegramDone_CalibrateVerticalAxis -= this.SelectTelegram;
             this.inverterDriver.EnquiryTelegramDone_CalibrateVerticalAxis -= this.EnquiryTelegram;
         }
@@ -230,15 +199,11 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                 }
 
                 logger.Log(LogLevel.Debug, "errorDescription = " + errorDescription.ToString());
-
-                // Send the error description to the UI
+            
                 ErrorEvent?.Invoke();
             }
         }
 
-        /// <summary>
-        /// Handle the enquiry telegram sent by the inverter.
-        /// </summary>
         private void EnquiryTelegram(object sender, EnquiryTelegramDoneEventArgs eventArgs)
         {
             var type = eventArgs.Type;
@@ -248,7 +213,6 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
             BitArray statusWordBA01;
 
-            // Variable to keep the right or wrong value of the status word
             var statusWordValue = false;
 
             switch (type)
@@ -272,7 +236,6 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
                 default:
                     {
-                        // In the case the var is not UInt16 or Int32, we take into account 0 as default value
                         statusWord = new byte[1];
                         statusWord = BitConverter.GetBytes(0);
 
@@ -284,13 +247,16 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             statusWordBA01 = new BitArray(statusWord01);
 
             logger.Log(LogLevel.Debug, String.Format(" <-- EnquiryTelegram - Step: {0} - {1}", stepCounter, this.actualCalibrationAxis));
-            logger.Log(LogLevel.Debug, String.Format("Bit 0: {0} - Bit 1: {1} - Bit 2: {2} - Bit 3: {3} - Bit 4: {4} - Bit 5: {5} - Bit 6: {6} - Bit 7: {7} - Bit 8: {8} - Bit 9: {9} - Bit 10: {10} - Bit 11: {11} - Bit 12: {12} - Bit 13: {13} - Bit 14: {14} - Bit 15: {15}", statusWordBA01[0], statusWordBA01[1], statusWordBA01[2], statusWordBA01[3], statusWordBA01[4], statusWordBA01[5], statusWordBA01[6], statusWordBA01[7], statusWordBA01[8], statusWordBA01[9], statusWordBA01[10], statusWordBA01[11], statusWordBA01[12], statusWordBA01[13], statusWordBA01[14], statusWordBA01[15]));
+
+            logger.Log(LogLevel.Debug, String.Format("Bit 0: {0} - Bit 1: {1} - Bit 2: {2} - Bit 3: {3} - Bit 4: {4} - Bit 5: {5} - Bit 6: {6} - Bit 7: {7}" +
+                " - Bit 8: {8} - Bit 9: {9} - Bit 10: {10} - Bit 11: {11} - Bit 12: {12} - Bit 13: {13} - Bit 14: {14} - Bit 15: {15}",
+                statusWordBA01[0], statusWordBA01[1], statusWordBA01[2], statusWordBA01[3], statusWordBA01[4], statusWordBA01[5], statusWordBA01[6], statusWordBA01[7],
+                statusWordBA01[8], statusWordBA01[9], statusWordBA01[10], statusWordBA01[11], statusWordBA01[12], statusWordBA01[13], statusWordBA01[14], statusWordBA01[15]));
 
             switch (this.stepCounter)
             {
                 case 0:
                     {
-                        // 0x0050
                         if (statusWordBA01[4] && statusWordBA01[6])
                         {
                             statusWordValue = true;
@@ -301,7 +267,6 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
                 case 1:
                     {
-                        // No check
                         statusWordValue = true;
 
                         break;
@@ -309,7 +274,6 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
                 case 2:
                     {
-                        // 0x0031
                         if (statusWordBA01[0] && statusWordBA01[4] && statusWordBA01[5])
                         {
                             statusWordValue = true;
@@ -320,7 +284,6 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
                 case 3:
                     {
-                        // 51 Dec = 0x0033
                         if (statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[4] && statusWordBA01[5])
                         {
                             statusWordValue = true;
@@ -331,7 +294,6 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
                 case 4:
                     {
-                        // Filter: 0xnn37
                         if (statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[2] && statusWordBA01[4] && statusWordBA01[5])
                         {
                             statusWordValue = true;
@@ -342,7 +304,6 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
                 case 5:
                     {
-                        // Filter: 0x1n37
                         if (statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[2] && statusWordBA01[4] && statusWordBA01[5] && statusWordBA01[12])
                         {
                             statusWordValue = true;
@@ -361,7 +322,6 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
             if (statusWordValue)
             {
-                // The StatusWord is correct, we can go on with another step of Engine Movement
                 this.stepCounter++;
 
                 if (this.stepCounter < STEPS_NUMBER)
@@ -373,7 +333,6 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                 {
                     logger.Log(LogLevel.Debug, "Calibration ended!!");
 
-                    // The calibrate vertical axis routine is ended
                     if (!this.stopExecution)
                     {
                         this.StopInverter();
@@ -391,13 +350,10 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
                 if (!this.stopExecution)
                 {
-                    // Just wait...
                     Thread.Sleep(DELAY_TIME);
 
-                    // New request to read the status Word
                     var idExitStatus = this.inverterDriver.SendRequest(this.paramID, this.systemIndex, DATASET_INDEX);
 
-                    // Just wait...
                     Thread.Sleep(DELAY_TIME);
 
                     this.checkExistStatus(idExitStatus);
@@ -405,20 +361,15 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             }
         }
 
-        /// <summary>
-        /// Handle the select telegram sent by the inverter.
-        /// </summary>
         private void SelectTelegram(object sender, SelectTelegramDoneEventArgs eventArgs)
         { 
             logger.Log(LogLevel.Debug, String.Format(" <-- SelectTelegram - Step: {0} - {1}", stepCounter, this.actualCalibrationAxis));
 
-            // During the SetUp Vertical Homing Parameters i don't need to do any control
             if (!setupParameters)
             { 
                 if (this.stepCounter < STEPS_NUMBER)
                 {
                     logger.Log(LogLevel.Debug, "Calibrate Vertical Operation = " + this.stepCounter);
-                    // There is not the need to check the Status Word value
                     if (this.stepCounter == 1)
                     {
                         this.stepCounter++;
@@ -431,10 +382,8 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                         this.inverterDriver.SendRequest(this.paramID, this.systemIndex, DATASET_INDEX);
                     }
                 }
-                else // When the steps are ended, the polling thread is being stopped
+                else
                 {
-                    // No other step to do, but it sends a signal to the UI about the end of the execution
-                    // true succeffully calibration ended
                     if (!this.stopExecution)
                     {
                         this.stopExecution = true;
@@ -442,7 +391,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                     }
                 }
             }
-            else // Up to now we don't check the value backed from the SelectTelegram
+            else
             {
                 logger.Log(LogLevel.Debug, "SetUp Parameters");
 
@@ -450,95 +399,108 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             }
         }
 
-        /// <summary>
-        /// Make execution for a given step.
-        /// </summary>
         private void stepExecution()
         {
             logger.Log(LogLevel.Debug, String.Format(" <-- stepExecution - Step: {0} - {1}", stepCounter, this.actualCalibrationAxis));
 
-            // Select the operation
             switch (stepCounter)
             {
-                // Homing mode sequence
-                case 0: // Disable Voltage
+                case 0: 
                     {
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
 
-                        if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION) // Vertical
-                            this.valParam = 0x0000; // 0000 0000 0000 0000
-                        else // Horizontal
-                            this.valParam = 0x8000; // 1000 0000 0000 0000
+                        if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION)
+                        {
+                            this.valParam = 0x0000;
+                        }
+                        else
+                        {
+                            this.valParam = 0x8000;
+                        }
 
                         break;
                     }
 
-                case 1: // Homing mode operation
+                case 1: 
                     {
                         this.paramID = ParameterID.SET_OPERATING_MODE_PARAM;
-                        this.valParam = 0x0006; // 0000 0110 for Horizontal and Vertical Homing
+                        this.valParam = 0x0006; 
 
                         break;
                     }
 
-                case 2: // Shut Down
+                case 2: 
                     {
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
 
-                        if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION) // Vertical
-                            this.valParam = 0x0006; // 0000 0000 0000 0110
-                        else // Horizontal
-                            this.valParam = 0x8006; // 1000 0000 0000 0110
+                        if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION)
+                        {
+                            this.valParam = 0x0006;
+                        }
+                        else
+                        {
+                            this.valParam = 0x8006;
+                        }
 
                         break;
                     }
 
-                case 3: // Switch On
+                case 3: 
                     {
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
 
-                        if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION) // Vertical
-                            this.valParam = 0x0007; // 0000 0000 0000 0111
-                        else // Horizontal
-                            this.valParam = 0x8007; // 1000 0000 0000 0111
+                        if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION)
+                        {
+                            this.valParam = 0x0007;
+                        }
+                        else
+                        {
+                            this.valParam = 0x8007;
+                        }
 
                         break;
                     }
 
-                case 4: // Enable Operation
+                case 4:
                     {
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
 
-                        if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION) // Vertical
-                            this.valParam = 0x000F; // 0000 0000 0000 1111
-                        else // Horizontal
-                            this.valParam = 0x800F; // 1000 0000 0000 1111
+                        if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION)
+                        {
+                            this.valParam = 0x000F;
+                        }
+                        else
+                        {
+                            this.valParam = 0x800F;
+                        }
 
                         break;
                     }
 
-                case 5: // Enable Operation and Starting Home
+                case 5: 
                     {
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
 
-                        if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION) // Vertical
-                            this.valParam = 0x001F; // 0000 0000 0001 1111
-                        else // Horizontal
-                            this.valParam = 0x801F; // 1000 0000 0001 1111
+                        if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION)
+                        {
+                            this.valParam = 0x001F;
+                        }
+                        else
+                        {
+                            this.valParam = 0x801F;
+                        }
 
                         break;
                     }
 
                 default:
                     {
-                        // Send the error description to the UI
                         ErrorEvent?.Invoke();
 
                         break;
                     }
             }
 
-            // Set request to inverter
             var idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_INDEX, this.valParam);
 
             logger.Log(LogLevel.Debug, String.Format(" --> StepExecution: {0}. Set parameter to inverter::  paramID: {1}, value: {2:X}", this.stepCounter, this.paramID.ToString(), this.valParam));

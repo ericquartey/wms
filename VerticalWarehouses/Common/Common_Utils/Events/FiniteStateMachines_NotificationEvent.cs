@@ -3,7 +3,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.Common_Utils.Events
 {
-    public class InverterDriver_NotificationEvent : PubSubEvent<Notification_EventParameter>
+    public class FiniteStateMachines_NotificationEvent : PubSubEvent<Notification_EventParameter>
     {
     }
 }

@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private readonly IWriteLogService data;
 
-        private readonly IInverterDriver driver;
+        private readonly INewInverterDriver driver;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -22,11 +22,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private StateMachineVerticalHoming verticalHoming;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
-        public FiniteStateMachines(IInverterDriver iDriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
+        public FiniteStateMachines(INewInverterDriver iDriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
         {
             this.driver = iDriver;
             this.data = iWriteLogService;
@@ -39,33 +39,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.verticalHoming = new StateMachineVerticalHoming(this.driver, this.data, this.eventAggregator);
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
         public void Destroy()
         {
             this.driver.Destroy();
-        }
-
-        public void DoHoming()
-        {
-            if (null == this.homing)
-            {
-                throw new ArgumentNullException();
-            }
-
-            this.homing?.Start();
-        }
-
-        public void DoVerticalHoming()
-        {
-            if (null == this.verticalHoming)
-            {
-                throw new ArgumentNullException();
-            }
-
-            this.verticalHoming?.Start();
         }
 
         public void DoAction(Command_EventParameter action)
@@ -87,6 +67,26 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             }
         }
 
-        #endregion Methods
+        public void DoHoming()
+        {
+            if (null == this.homing)
+            {
+                throw new ArgumentNullException();
+            }
+
+            this.homing.Start();
+        }
+
+        public void DoVerticalHoming()
+        {
+            if (null == this.verticalHoming)
+            {
+                throw new ArgumentNullException();
+            }
+
+            this.verticalHoming.Start();
+        }
+
+        #endregion
     }
 }

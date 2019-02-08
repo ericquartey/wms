@@ -7,15 +7,17 @@
              mc:Ignorable="d"
              x:Name="WmsTray">
 
-    <Grid Name="RootTrayGrid">
+    <Grid Name="RootTrayGrid" MinWidth="{Binding MinTrayWidth, ElementName=CanvasListBoxControl}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*"   />
         </Grid.ColumnDefinitions>
 
         <Label x:Name="UnitMetric"               
@@ -31,9 +33,8 @@
                FontWeight="Bold"
                FontFamily="{DynamicResource TrayFont}"
                Visibility="{Binding ShowRuler, Converter={StaticResource BTVC}}"/>
-        
+
         <ctrls:WmsRulerControl x:Name="HorizontalRulerControl"
-                               Margin="1 0 0 0"
                                Grid.Column="1"
                                Foreground="{Binding RulerForeground}"
                                ForegroundText="{Binding RulerForeground}"
@@ -49,14 +50,24 @@
                                Step="{Binding RulerStep}"
                                Height="{DynamicResource TrayRulerSize}"
                                Width="{Binding TrayWidth, ElementName=CanvasListBoxControl}"
+                               TrayWidth="{Binding TrayWidth, ElementName=CanvasListBoxControl}"
+                               TrayHeight="{Binding TrayHeight, ElementName=CanvasListBoxControl}"
                                FontFamily="{DynamicResource TrayFont}"                             
                                HorizontalAlignment="Left"                               
                                VerticalAlignment="Top"
                                BorderBrush="Black"        
                                Orientation="Horizontal"                              
                                Visibility="{Binding ShowRuler, Converter={StaticResource BTVC}}" />
-        <ctrls:WmsRulerControl x:Name="VerticalRulerControl"                               
-                               Margin="0 1 0 0"
+
+        <Rectangle Grid.Column="0" Grid.ColumnSpan="2"              
+                Fill="{DynamicResource CommonSecondaryMedium}"
+                Height="1"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Bottom"
+                Visibility="{Binding ShowRuler, Converter={StaticResource BTVIC}}"
+                />
+
+        <ctrls:WmsRulerControl x:Name="VerticalRulerControl"                                                                                       
                                Grid.Row="1"                               
                                Foreground="{Binding RulerForeground}"
                                ForegroundText="{Binding RulerForeground}"
@@ -69,7 +80,9 @@
                                ShowMiddleMark="{Binding ShowMiddleMark}"                                                              
                                OriginX="{Binding OriginX}"
                                OriginY="{Binding OriginY}"
-                               Step="{Binding RulerStep}"                               
+                               Step="{Binding RulerStep}"              
+                               TrayWidth="{Binding TrayWidth, ElementName=CanvasListBoxControl}"
+                               TrayHeight="{Binding TrayHeight, ElementName=CanvasListBoxControl}"
                                FontFamily="{DynamicResource TrayFont}"
                                Width="{DynamicResource TrayRulerSize}"                               
                                Height="{Binding TrayHeight, ElementName=CanvasListBoxControl}"                               
@@ -77,17 +90,25 @@
                                Orientation="Vertical"
                                HorizontalAlignment="Left"                                                    
                                Visibility="{Binding ShowRuler, Converter={StaticResource BTVC}}"/>
+
+        <Rectangle Grid.Row="0" Grid.RowSpan="2" 
+                   Fill="{DynamicResource CommonSecondaryMedium}"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Stretch"
+                   Width="1"                     
+                   Visibility="{Binding ShowRuler, Converter={StaticResource BTVIC}}"
+                   />
+
         <ctrls:WmsCanvasListBoxControl x:Name="CanvasListBoxControl"
                                        Grid.Row="1"
-                                       Grid.Column="1"                          
+                                       Grid.Column="1"                                                                                 
                                        IsEnabled="{Binding IsEnabled}"
                                        RulerSize="{DynamicResource TrayRulerSize}"
                                        DimensionWidth="{Binding DimensionWidth}"
                                        DimensionHeight="{Binding DimensionHeight}"
                                        OriginX="{Binding OriginX}"
                                        OriginY="{Binding OriginY}"
-                                       Step="{Binding RulerStep}"
-                                       MinHeight="{Binding Path=CanvasMinHeight, ElementName=WmsTray}"
+                                       Step="{Binding RulerStep}"                                       
                                        IsReadOnly="{Binding IsReadOnly}"
                                        IsCompartmentSelectable="{Binding IsCompartmentSelectable}"
                                        HorizontalAlignment="Left"
@@ -101,8 +122,5 @@
                                        ShowBackground="{Binding ShowBackground}"
                                        GridLinesColor="{Binding GridLinesColor}"
                                        Style="{DynamicResource CanvasListBox}" />
-
     </Grid>
-
 </UserControl>
-

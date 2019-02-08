@@ -106,8 +106,8 @@ namespace Ferretto.WMS.Data.Core.Extensions
                         $"Property {sortOption.PropertyName} does not exist on entity {typeof(T).Name}");
                 }
 
-                var expression = typeof(IQueryableExtension)
-                    .GetMethod(nameof(CreateSelectorExpression))
+                var expression = typeof(IQueryableExtension)?
+                    .GetMethod(nameof(CreateSelectorExpression), BindingFlags.Static | BindingFlags.NonPublic)?
                     .MakeGenericMethod(typeof(T), propertyType)
                     .Invoke(null, new object[] { sortOption.PropertyName });
 

@@ -80,10 +80,28 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         // TODO: task 1256 -> protected override async Task ExecuteSaveCommand()
-        protected override Task ExecuteSaveCommand()
+        protected override async Task ExecuteSaveCommand()
         {
             this.IsValidationEnabled = true;
-            throw new NotImplementedException();
+
+            this.IsBusy = true;
+
+            var result = await this.itemProvider.AddAsync(this.Model);
+            if (result.Success)
+            {
+                this.TakeModelSnapshot();
+
+                this.EventService.Invoke(new ModelChangedPubSubEvent<Item>(this.Model.Id));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
+
+                this.CloseDialogCommand.Execute(null);
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+            }
+
+            this.IsBusy = false;
         }
 
         protected override void OnAppear()

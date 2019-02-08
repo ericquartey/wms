@@ -6,10 +6,8 @@
 
         void ChangeState(IState newState);
 
-        void ExecuteOperation(IdOperation code);
-
         void Start();
 
-        #endregion Methods
+        #endregion
     }
 }
