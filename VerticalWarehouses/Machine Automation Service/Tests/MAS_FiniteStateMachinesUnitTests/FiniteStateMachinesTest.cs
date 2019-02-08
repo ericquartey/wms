@@ -16,7 +16,7 @@ namespace MAS_FiniteStateMachinesUnitTests
         [TestMethod]
         public void FiniteStateMachinesCreate()
         {
-            var inverterDriverMock = new Mock<IInverterDriver>();
+            var inverterDriverMock = new Mock<INewInverterDriver>();
             var writeLogServiceMock = new Mock<IWriteLogService>();
             var eventAggregatorMock = new Mock<IEventAggregator>();
             eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<WebAPI_CommandEvent>()).Returns(new WebAPI_CommandEvent());

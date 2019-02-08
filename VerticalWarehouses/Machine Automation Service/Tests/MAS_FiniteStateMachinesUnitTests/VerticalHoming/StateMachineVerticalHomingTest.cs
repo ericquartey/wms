@@ -16,7 +16,7 @@ namespace MAS_FiniteStateMachinesUnitTests
         [TestMethod]
         public void StateMachineVerticalHomingCreate()
         {
-            var inverterDriverMock = new Mock<IInverterDriver>();
+            var inverterDriverMock = new Mock<INewInverterDriver>();
             var writeLogServiceMock = new Mock<IWriteLogService>();
             var eventAggregatorMock = new Mock<IEventAggregator>();
 
@@ -28,7 +28,7 @@ namespace MAS_FiniteStateMachinesUnitTests
         [TestMethod]
         public void StateMachineVerticalHomingStartSuccess()
         {
-            var inverterDriverMock = new Mock<IInverterDriver>();
+            var inverterDriverMock = new Mock<INewInverterDriver>();
             var writeLogServiceMock = new Mock<IWriteLogService>();
             var eventAggregatorMock = new Mock<IEventAggregator>();
             var notifyDriverEvent = new InverterDriver_NotificationEvent();

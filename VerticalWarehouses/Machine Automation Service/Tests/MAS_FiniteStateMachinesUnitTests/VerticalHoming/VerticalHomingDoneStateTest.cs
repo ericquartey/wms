@@ -16,7 +16,7 @@ namespace MAS_FiniteStateMachinesUnitTests.VerticalHoming
         [TestMethod]
         public void VerticalHomingDoneStateTestCreate()
         {
-            var inverterDriverMock = new Mock<IInverterDriver>();
+            var inverterDriverMock = new Mock<INewInverterDriver>();
             var writeLogServiceMock = new Mock<IWriteLogService>();
             var eventAggregatorMock = new Mock<IEventAggregator>();
             var notifyFSMEvent = new FiniteStateMachines_NotificationEvent();

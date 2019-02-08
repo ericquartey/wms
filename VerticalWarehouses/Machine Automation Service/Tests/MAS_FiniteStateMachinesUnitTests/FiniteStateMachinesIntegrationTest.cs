@@ -17,7 +17,7 @@ namespace MAS_FiniteStateMachinesUnitTests
         [TestMethod]
         public void FiniteStateMachinesExecuteVerticalHoming_Success()
         {
-            var inverterDriverMock = new Mock<IInverterDriver>();
+            var inverterDriverMock = new Mock<INewInverterDriver>();
             var writeLogServiceMock = new Mock<IWriteLogService>();
             var eventAggregatorMock = new Mock<IEventAggregator>();
             var commandWebAPIEvent = new WebAPI_CommandEvent();
@@ -29,9 +29,8 @@ namespace MAS_FiniteStateMachinesUnitTests
 
             var fsm = new FiniteStateMachines(inverterDriverMock.Object, writeLogServiceMock.Object, eventAggregatorMock.Object);
 
-            // start vertical homing
             commandWebAPIEvent.Publish(new Command_EventParameter(CommandType.ExecuteHoming));
-            // end vertical homing occurs
+
             notifyDriverEvent.Publish(new Notification_EventParameter(OperationType.Homing, OperationStatus.End, "Home done", Verbosity.Info));
 
             Assert.IsNotNull(fsm.StateMachineVerticalHoming);
