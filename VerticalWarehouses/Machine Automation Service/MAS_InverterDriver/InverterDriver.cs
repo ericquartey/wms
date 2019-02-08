@@ -1,20 +1,17 @@
-﻿using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.InverterDriver;
-using Ferretto.VW.MAS_InverterDriver.Interface;
+﻿using Ferretto.VW.MAS_InverterDriver.Interface;
 using Prism.Events;
-using Ferretto.VW.MAS_InverterDriver.ActionBlocks;
 
 namespace Ferretto.VW.MAS_InverterDriver
 {
     public delegate void EndEventHandler();
     public delegate void ErrorEventHandler();
 
-    public partial class NewInverterDriver : IInverterDriver
+    public partial class NewInverterDriver : INewInverterDriver
     {
         #region Fields
 
        
-        private Ferretto.VW.InverterDriver.InverterDriver driver;
+        private InverterDriver.InverterDriver driver;
         private readonly IEventAggregator eventAggregator;
         private IInverterActions inverterAction;
 

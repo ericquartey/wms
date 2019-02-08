@@ -1,8 +1,6 @@
 ﻿using Ferretto.VW.Common_Utils.Events;
 using System.Collections.Generic;
-using Ferretto.VW.InverterDriver;
-using Ferretto.VW.MAS_InverterDriver.Interface;
-using Prism.Events;
+using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.MAS_InverterDriver.ActionBlocks;
 
 namespace Ferretto.VW.MAS_InverterDriver
@@ -15,9 +13,10 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
             if(this.inverterAction != null)
             {
-                this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(InverterDriver_Notification.Error);
+                this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
+                    (OperationType.Homing, OperationStatus.Error, "Inverter action has already defined", Verbosity.Info));
             }
-            var inverterAction = new ActionBlocks.HorizontalMovingDrawer();
+            var inverterAction = new HorizontalMovingDrawer();
             this.inverterAction = inverterAction;
 
             this.inverterAction.EndEvent += this.HorizontalPosition_ThrowEndEvent;
@@ -31,13 +30,17 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private void HorizontalPosition_ThrowErrorEvent()
         {
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(InverterDriver_Notification.Error);
+            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
+                (OperationType.Homing, OperationStatus.Error, "Internal inverter driver error", Verbosity.Info));
+
             this.inverterAction.ErrorEvent -= this.HorizontalPosition_ThrowErrorEvent;
         }
 
         private void HorizontalPosition_ThrowEndEvent()
         {
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(InverterDriver_Notification.End);
+            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
+                (OperationType.Homing, OperationStatus.End, "Horizontal position Ended", Verbosity.Info));
+
             this.inverterAction.EndEvent -= this.HorizontalPosition_ThrowEndEvent;
         }
 

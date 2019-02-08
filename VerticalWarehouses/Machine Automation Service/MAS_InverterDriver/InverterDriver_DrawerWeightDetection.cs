@@ -1,8 +1,5 @@
 ﻿using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.InverterDriver;
-using Ferretto.VW.MAS_InverterDriver.Interface;
-using Prism.Events;
-using Ferretto.VW.MAS_InverterDriver.ActionBlocks;
+using Ferretto.VW.Common_Utils.EventParameters;
 
 namespace Ferretto.VW.MAS_InverterDriver
 {
@@ -22,7 +19,8 @@ namespace Ferretto.VW.MAS_InverterDriver
                 this.weight = -1.0f;
                 if (this.inverterAction != null)
                 {
-                    this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(InverterDriver_Notification.Error);
+                  this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
+                      (OperationType.Homing, OperationStatus.Error, "Inverter action has already defined", Verbosity.Info));
                 }
                 var inverterAction = new ActionBlocks.DrawerWeightDetection();
                 this.inverterAction = inverterAction;
@@ -36,13 +34,17 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private void DrawerWeight_ThrowErrorEvent()
         {
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(InverterDriver_Notification.Error);
+            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
+                (OperationType.Homing, OperationStatus.Error, "Internal inverter driver error", Verbosity.Info));
+
             this.inverterAction.ErrorEvent -= this.DrawerWeight_ThrowErrorEvent;
         }
 
         private void DrawerWeight_ThrowEndEvent()
         {
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(InverterDriver_Notification.End);
+            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
+                (OperationType.Homing, OperationStatus.End, "Drawer weight detection Ended", Verbosity.Info));
+
             this.inverterAction.EndEvent -= this.DrawerWeight_ThrowEndEvent;
             if(this.inverterAction is ActionBlocks.DrawerWeightDetection)
             {

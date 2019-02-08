@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Ferretto.VW.MAS_InverterDriver
 {
-    public interface IInverterDriver
+    public interface INewInverterDriver
     {
         #region Methods
 
