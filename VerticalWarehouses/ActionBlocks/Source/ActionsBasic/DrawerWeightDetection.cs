@@ -21,13 +21,18 @@
         #region Fields
 
         private float acc;
+
         private float dec;
+
         private PositioningDrawer drawerPositionController;
+
         private bool executeWeighting;
+
         private float speed;
+
         private decimal target;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -43,7 +48,7 @@
             this.executeWeighting = false;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Events
 
@@ -53,7 +58,7 @@
         // [Error] event
         public event DrawerWeightDetectionErrorEventHandler ErrorEvent;
 
-        #endregion Events
+        #endregion
 
         #region Properties
 
@@ -78,7 +83,7 @@
             set => this.drawerPositionController.SetInverterDriverInterface = value;
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -160,8 +165,7 @@
         /// </summary>
         private float ConvertToWeight(long value)
         {
-            // TODO: Use a mathematical formula to get the weight from the Ic current
-            // Actually this formula is not provided
+            // TODO: Use the not-provided-yet mathematical formula to get the weight from the current LU
             return value;
         }
 
@@ -189,6 +193,6 @@
             this.ErrorEvent?.Invoke(error_Message);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS_DataLayer;
+﻿using Ferretto.VW.MAS_AutomationService.Hubs;
+using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_FiniteStateMachines;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_MachineManager;
@@ -50,6 +51,11 @@ namespace Ferretto.VW.MAS_AutomationService
                 app.UseHsts();
             }
 
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<InstallationHub>($"/installation-endpoint", options => { });
+            });
+
             app.UseHttpsRedirection();
             app.UseMvc();
         }
@@ -58,6 +64,7 @@ namespace Ferretto.VW.MAS_AutomationService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSignalR();
 
             var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
 
