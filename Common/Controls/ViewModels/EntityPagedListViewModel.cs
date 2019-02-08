@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using DevExpress.Data.Filtering;
 using DevExpress.Xpf.Core.FilteringUI;
 using DevExpress.Xpf.Data;
@@ -12,11 +11,10 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Extensions;
 using Ferretto.Common.Utils.Expressions;
 using NLog;
-using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
-    public class EntityPagedListViewModel<TModel> : EntityListViewModel<TModel>, ICustomFilterViewModel
+    public class EntityPagedListViewModel<TModel> : EntityListViewModel<TModel>
             where TModel : IBusinessObject
     {
         #region Fields
@@ -27,13 +25,9 @@ namespace Ferretto.Common.Controls
 
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private ICommand clearFilterCommand;
-
         private CriteriaOperator customFilter;
 
         private object dataSource;
-
-        private bool isFilterEditorVisible;
 
         private CriteriaOperator overallFilter;
 
@@ -44,9 +38,6 @@ namespace Ferretto.Common.Controls
         #endregion
 
         #region Properties
-
-        public ICommand ClearFilterCommand => this.clearFilterCommand ??
-                  (this.clearFilterCommand = new DelegateCommand(this.ExecuteClearFilterCommand));
 
         /// <summary>
         /// Gets or sets the filter set by the filter editor.
@@ -61,12 +52,6 @@ namespace Ferretto.Common.Controls
                     this.ComputeOverallFilter();
                 }
             }
-        }
-
-        public bool IsFilterEditorVisible
-        {
-            get => this.isFilterEditorVisible;
-            set => this.SetProperty(ref this.isFilterEditorVisible, value);
         }
 
         /// <summary>
@@ -125,13 +110,6 @@ namespace Ferretto.Common.Controls
         #endregion
 
         #region Methods
-
-        public void ExecuteClearFilterCommand()
-        {
-            this.IsFilterEditorVisible = false;
-            this.CustomFilter = null;
-            this.IsFilterEditorVisible = true;
-        }
 
         public override async Task UpdateFilterTilesCountsAsync()
         {
