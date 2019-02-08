@@ -10,7 +10,7 @@
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
     <PackageReference Include="NSwag.MSBuild" Version="11.20.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -38,7 +38,7 @@
     <Compile Remove="DataWebApiServiceCollectionExtensions.cs" />
   </ItemGroup>
 
-  <Target Name="NSwag" AfterTargets="Build" Condition=" '$(Configuration)' == 'debug' and '$(TargetFramework)' == 'netstandard2.0' and '$(Agent)' == '' ">
+  <Target Name="NSwag" AfterTargets="Build" Condition=" '$(Configuration)' == 'debug' and '$(TargetFramework)' == 'netcoreapp2.1' and '$(IsDesktopBuild)' == true ">
     <Copy SourceFiles="@(Reference)" DestinationFolder="$(OutDir)References" />
     <Exec Command="$(NSwagExe_Core21) run nswag.json /variables:Configuration=$(Configuration)" />
     <RemoveDir Directories="$(OutDir)References" />
