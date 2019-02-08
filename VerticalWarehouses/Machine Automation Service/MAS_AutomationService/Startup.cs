@@ -69,7 +69,10 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSingleton<IMissionsScheduler, MissionsScheduler>();
             services.AddSingleton<IMachineManager, MachineManager>();
             services.AddSingleton<IFiniteStateMachines, FiniteStateMachines>();
-            services.AddSingleton<IInverterDriver, MAS_InverterDriver.InverterDriver>();
+            services.AddSingleton<INewInverterDriver, NewInverterDriver>();
+
+            //TODO Old InverterDriver Registration to be removed after code refactoring completed
+            services.AddSingleton<InverterDriver.IInverterDriver, InverterDriver.InverterDriver>();
         }
 
         #endregion
