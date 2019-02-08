@@ -42,6 +42,10 @@ steps:
     ArtifactName: 'common_sources'
 
 
+- task: DotNetCoreInstaller@0
+  inputs:
+    version: '2.1.502'
+    
 - template: azure-pipeline-net4-nuget-template.yml
 
 
