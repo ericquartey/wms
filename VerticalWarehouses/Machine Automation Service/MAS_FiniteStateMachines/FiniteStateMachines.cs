@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.MAS_DataLayer;
@@ -18,9 +19,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private readonly IEventAggregator eventAggregator;
 
-        private StateMachineHoming homing;
+        private readonly StateMachineHoming homing;
 
-        private StateMachineVerticalHoming verticalHoming;
+        private readonly StateMachineVerticalHoming verticalHoming;
 
         #endregion
 
@@ -51,7 +52,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         public void Destroy()
         {
-            this.driver.Destroy();
+            try
+            {
+                this.driver.Destroy();
+            }
+            catch (Exception exc)
+            {
+                Debug.WriteLine("The inverter driver cannot be destroyed.");
+            }
         }
 
         public void DoAction(Command_EventParameter action)
