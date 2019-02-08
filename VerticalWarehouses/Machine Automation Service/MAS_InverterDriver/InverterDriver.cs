@@ -1,19 +1,17 @@
-﻿using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.InverterDriver;
-using Ferretto.VW.MAS_InverterDriver.Interface;
+﻿using Ferretto.VW.MAS_InverterDriver.Interface;
 using Prism.Events;
-using Ferretto.VW.MAS_InverterDriver.ActionBlocks;
 
 namespace Ferretto.VW.MAS_InverterDriver
 {
     public delegate void EndEventHandler();
     public delegate void ErrorEventHandler();
 
-    public partial class InverterDriver : IInverterDriver
+    public partial class NewInverterDriver : INewInverterDriver
     {
         #region Fields
-        
-        private Ferretto.VW.InverterDriver.InverterDriver driver;
+
+       
+        private InverterDriver.InverterDriver driver;
         private readonly IEventAggregator eventAggregator;
         private IInverterActions inverterAction;
 
@@ -21,10 +19,10 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         #region Constructors
 
-        public InverterDriver(IEventAggregator eventAggregator)
+        public NewInverterDriver(IEventAggregator eventAggregator)
         {
 
-            this.driver = new VW.InverterDriver.InverterDriver();
+            
             this.driver.Initialize();
             this.eventAggregator = eventAggregator;
         }
@@ -38,29 +36,21 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.driver.Terminate();
         }
 
-        public void ExecuteHorizontalHoming()
-        {
-            return;
-        }
-
-        public void ExecuteHorizontalPosition()
-        {
-            return;
-        }
-
-        public void ExecuteVerticalPosition(int target, float weight)
-        {
-            return;
-        }
-
-        public float GetDrawerWeight()
-        {
-            return 0.0f;
-        }
-
         public bool[] GetSensorsStates()
         {
-            return null;
+            if (null == this.driver)
+            {
+                return null;
+            }
+          
+            var sensors = new bool[5];
+            sensors[0] = this.driver.Brake_Resistance_Overtemperature;
+            sensors[1] = this.driver.Emergency_Stop;
+            sensors[2] = this.driver.Pawl_Sensor_Zero;
+            sensors[3] = this.driver.Udc_Presence_Cradle_Machine;
+            sensors[4] = this.driver.Udc_Presence_Cradle_Operator;
+
+            return sensors;
         }
 
         #endregion Methods

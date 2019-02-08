@@ -22,6 +22,11 @@ namespace Ferretto.Common.Utils.Expressions
 
         public static IExpression AsIExpression(this string stringExpression)
         {
+            if (stringExpression == null)
+            {
+                return null;
+            }
+
             var match = BinaryNestedExpressionRegex.Match(stringExpression);
             if (match.Success)
             {

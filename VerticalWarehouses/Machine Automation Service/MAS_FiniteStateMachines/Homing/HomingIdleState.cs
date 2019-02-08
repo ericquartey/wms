@@ -10,13 +10,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         private MAS_DataLayer.IWriteLogService data;
 
-        private MAS_InverterDriver.IInverterDriver driver;
+        private MAS_InverterDriver.INewInverterDriver driver;
 
         #endregion Fields
 
         #region Constructors
 
-        public HomingIdleState(StateMachineHoming parent, MAS_InverterDriver.IInverterDriver iDriver, MAS_DataLayer.IWriteLogService iWriteLogService)
+        public HomingIdleState(StateMachineHoming parent, MAS_InverterDriver.INewInverterDriver iDriver, MAS_DataLayer.IWriteLogService iWriteLogService)
         {
             this.context = parent;
             this.driver = iDriver;
