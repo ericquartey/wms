@@ -4,16 +4,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using DevExpress.Data.Filtering;
 using DevExpress.Xpf.Core.FilteringUI;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Extensions;
-using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Utils.Expressions;
 using NLog;
-using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
@@ -32,17 +29,11 @@ namespace Ferretto.Common.Controls
 
         private object dataSource;
 
-        private object filteringChangedSubscription;
-
-        private FilteringUIContext filteringContext;
-
         private CriteriaOperator overallFilter;
 
         private IPagedBusinessProvider<TModel> provider;
 
         private string searchText;
-
-        private ICommand showFiltersCommand;
 
         #endregion
 
@@ -61,12 +52,6 @@ namespace Ferretto.Common.Controls
                     this.ComputeOverallFilter();
                 }
             }
-        }
-
-        public FilteringUIContext FilteringContext
-        {
-            get => this.filteringContext;
-            set => this.SetProperty(ref this.filteringContext, value);
         }
 
         /// <summary>
@@ -122,9 +107,6 @@ namespace Ferretto.Common.Controls
             protected set => this.SetProperty(ref this.dataSource, value);
         }
 
-        public ICommand ShowFiltersCommand => this.showFiltersCommand ??
-             (this.showFiltersCommand = new DelegateCommand(this.ExecuteShowFiltersCommand));
-
         #endregion
 
         #region Methods
@@ -156,17 +138,8 @@ namespace Ferretto.Common.Controls
             // do nothing: derived classes can customize the behaviour of this command
         }
 
-        protected override void OnAppear()
-        {
-            base.OnAppear();
-
-            this.filteringChangedSubscription = this.EventService.Subscribe<FilteringChangedPubSubEvent>(
-                eventArgs => this.OnFilteringChanged(eventArgs), this.Token, true, true);
-        }
-
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<FilteringChangedPubSubEvent>(this.filteringChangedSubscription);
             (this.dataSource as InfiniteAsyncSource)?.Dispose();
 
             base.OnDispose();
@@ -186,11 +159,6 @@ namespace Ferretto.Common.Controls
         private static IEnumerable<SortOption> GetSortOrder(FetchRowsAsyncEventArgs e)
         {
             return e.SortOrder.Select(s => new SortOption(s.PropertyName, s.Direction));
-        }
-
-        private static void GetTotalSummaries(GetSummariesAsyncEventArgs e)
-        {
-            e.Result = Task.FromResult(Array.Empty<object>());
         }
 
         private static CriteriaOperator JoinFilters(CriteriaOperator operator1, CriteriaOperator operator2)
@@ -273,22 +241,9 @@ namespace Ferretto.Common.Controls
                 {
                     this.GetUniqueValues(e);
                 };
-
-                source.GetTotalSummaries += (o, e) =>
-                {
-                    GetTotalSummaries(e);
-                };
             }
 
             return source;
-        }
-
-        private void OnFilteringChanged(FilteringChangedPubSubEvent eventArgs)
-        {
-            if (eventArgs.FilteringContext == this.filteringContext)
-            {
-                this.CustomFilter = eventArgs.Filter;
-            }
         }
 
         #endregion
