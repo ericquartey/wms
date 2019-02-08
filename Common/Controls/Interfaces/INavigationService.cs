@@ -26,6 +26,8 @@ namespace Ferretto.Common.Controls.Interfaces
 
         INavigableViewModel GetViewModelFromActiveWindow();
 
+        void IsBusy(bool value);
+
         void LoadModule(string moduleName);
 
         void Register<TItemsView, TItemsViewModel>()
@@ -35,8 +37,6 @@ namespace Ferretto.Common.Controls.Interfaces
         INavigableViewModel RegisterAndGetViewModel(string viewName, string token, object data = null);
 
         void StartPresentation(Action operationBefore, Action operationAfter);
-
-        void IsBusy(bool isBusy);
 
         #endregion
     }

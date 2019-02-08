@@ -21,8 +21,9 @@ namespace Ferretto.Common.Controls.Services
 
         public StatusPubSubEvent(string message = null, StatusType type = StatusType.Info)
         {
-            this.Message = message?.Split(new[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries)[0];
             this.Type = type;
+            this.Message = message?
+                .Split(new[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries)[0];
         }
 
         public StatusPubSubEvent(System.Exception exception, StatusType type = StatusType.Error)
@@ -33,10 +34,9 @@ namespace Ferretto.Common.Controls.Services
             }
 
             this.Exception = exception;
-
-            this.Message = exception.Message;
-
             this.Type = type;
+            this.Message = exception.Message
+                .Split(new[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries)[0];
         }
 
         #endregion

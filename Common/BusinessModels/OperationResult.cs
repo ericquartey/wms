@@ -7,7 +7,7 @@ namespace Ferretto.Common.BusinessModels
         #region Constructors
 
         public OperationResult(Exception ex, int? entityId = null)
-            : this(false, entityId, ex.Message)
+            : this(false, entityId, ex?.Message)
         {
         }
 
