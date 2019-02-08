@@ -4,8 +4,8 @@ using Ferretto.WMS.Data.Core.Models;
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
     public interface IMaterialStatusProvider :
-        IReadAllProvider<MaterialStatus>,
-        IReadSingleProvider<MaterialStatus, int>
+        IReadAllAsyncProvider<MaterialStatus>,
+        IReadSingleAsyncProvider<MaterialStatus, int>
     {
     }
 }

@@ -15,7 +15,7 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
-        private readonly IDatabaseContextService dataContext;
+        private readonly IDatabaseContextService dataContextService;
 
         private readonly EnumerationProvider enumerationProvider;
 
@@ -30,13 +30,13 @@ namespace Ferretto.Common.BusinessProviders
         #region Constructors
 
         public ItemProvider(
-            IDatabaseContextService dataContext,
+            IDatabaseContextService dataContextService,
             EnumerationProvider enumerationProvider,
             IImageProvider imageProvider,
             WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService,
             WMS.Scheduler.WebAPI.Contracts.IItemsSchedulerService itemsSchedulerService)
         {
-            this.dataContext = dataContext;
+            this.dataContextService = dataContextService;
             this.itemsSchedulerService = itemsSchedulerService;
             this.itemsDataService = itemsDataService;
             this.enumerationProvider = enumerationProvider;
@@ -47,13 +47,64 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<OperationResult> AddAsync(ItemDetails model) => throw new NotSupportedException();
+        public async Task<OperationResult> AddAsync(ItemDetails model)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            try
+            {
+                using (var dataContext = this.dataContextService.Current)
+                {
+                    var entry = await dataContext.Items.AddAsync(new DataModels.Item
+                    {
+                        AbcClassId = model.AbcClassId,
+                        AverageWeight = model.AverageWeight,
+                        Code = model.Code,
+                        Description = model.Description,
+                        FifoTimePick = model.FifoTimePick,
+                        FifoTimeStore = model.FifoTimeStore,
+                        Height = model.Height,
+                        Id = model.Id,
+                        Image = model.Image,
+                        InventoryDate = model.InventoryDate,
+                        InventoryTolerance = model.InventoryTolerance,
+                        ItemCategoryId = model.ItemCategoryId,
+                        LastPickDate = model.LastPickDate,
+                        LastStoreDate = model.LastStoreDate,
+                        Length = model.Length,
+                        ManagementType = (DataModels.ItemManagementType)model.ManagementType,
+                        MeasureUnitId = model.MeasureUnitId,
+                        Note = model.Note,
+                        PickTolerance = model.PickTolerance,
+                        ReorderPoint = model.ReorderPoint,
+                        ReorderQuantity = model.ReorderQuantity,
+                        StoreTolerance = model.StoreTolerance,
+                        Width = model.Width
+                    });
+
+                    var changedEntitiesCount = await dataContext.SaveChangesAsync();
+                    if (changedEntitiesCount > 0)
+                    {
+                        model.Id = entry.Entity.Id;
+                    }
+                }
+
+                return new OperationResult(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(ex);
+            }
+        }
 
         public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
         public IQueryable<Item> GetAll()
         {
-            return GetAllItemsWithAggregations(this.dataContext.Current);
+            return GetAllItemsWithAggregations(this.dataContextService.Current);
         }
 
         public async Task<IEnumerable<Item>> GetAllAsync(
@@ -100,7 +151,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllCount()
         {
-            using (var dc = this.dataContext.Current)
+            using (var dc = this.dataContextService.Current)
             {
                 return dc.Items.AsNoTracking().Count();
             }
@@ -113,7 +164,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<AllowedItemInCompartment> GetAllowedByCompartmentId(int compartmentId)
         {
-            return this.dataContext.Current.Compartments
+            return this.dataContextService.Current.Compartments
                 .Where(c => c.Id == compartmentId)
                 .Include(c => c.CompartmentType)
                 .ThenInclude(ct => ct.ItemsCompartmentTypes)
@@ -207,7 +258,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public bool HasAnyCompartments(int itemId)
         {
-            using (var dc = this.dataContext.Current)
+            using (var dc = this.dataContextService.Current)
             {
                 return dc.Compartments.AsNoTracking().Any(c => c.ItemId == itemId);
             }

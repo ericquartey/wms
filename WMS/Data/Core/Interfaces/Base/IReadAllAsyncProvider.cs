@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Ferretto.WMS.Data.Core.Interfaces.Base
 {
-    public interface IReadAllProvider<T>
+    public interface IReadAllAsyncProvider<T>
     {
         #region Methods
 
