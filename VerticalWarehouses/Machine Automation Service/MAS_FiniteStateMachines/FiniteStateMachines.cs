@@ -18,9 +18,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private readonly IEventAggregator eventAggregator;
 
-        private StateMachineHoming homing;
+        private readonly StateMachineHoming homing;
 
-        private StateMachineVerticalHoming verticalHoming;
+        private readonly StateMachineVerticalHoming verticalHoming;
 
         #endregion
 

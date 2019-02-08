@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Ferretto.Common.Common_Utils;
 using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
@@ -32,6 +33,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
             var inverterNotificationEvent = this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>();
             inverterNotificationEvent.Subscribe(this.SendMessageToAllConnectedClients, ThreadOption.BackgroundThread, false, message => message.OperationStatus == OperationStatus.End);
+            this.TESTStartCycle();
         }
 
         #endregion
@@ -48,6 +50,18 @@ namespace Ferretto.VW.MAS_AutomationService
         public void SendMessageToAllConnectedClients(Notification_EventParameter eventParameter)
         {
             this.hub.Clients.All.OnSendMessageToAllConnectedClients(eventParameter.Description);
+        }
+
+        public async void TESTStartCycle()
+        {
+            while (true)
+            {
+                var message = new string[] { "pippo", "topolino", "pluto", "paperino", "minnie", "qui", "quo", "qua" };
+                var randomInt = new Random().Next(message.Length);
+                Console.WriteLine(message[randomInt]);
+                await this.hub.Clients.All.OnSendMessageToAllConnectedClients(message[randomInt]);
+                await Task.Delay(1000);
+            }
         }
 
         #endregion
