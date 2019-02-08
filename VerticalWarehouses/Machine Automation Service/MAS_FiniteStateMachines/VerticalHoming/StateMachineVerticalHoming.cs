@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         private readonly IWriteLogService data;
 
-        private readonly IInverterDriver driver;
+        private readonly INewInverterDriver driver;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Constructors
 
-        public StateMachineVerticalHoming(IInverterDriver iDriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
+        public StateMachineVerticalHoming(INewInverterDriver iDriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
         {
             this.driver = iDriver;
             this.data = iWriteLogService;

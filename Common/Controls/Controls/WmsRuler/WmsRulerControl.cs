@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -50,6 +49,11 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty StepProperty =
                     DependencyProperty.Register(nameof(Step), typeof(double), typeof(WmsRulerControl), new UIPropertyMetadata(100.0, OnStepChanged));
 
+        public static readonly DependencyProperty TrayHeightProperty = DependencyProperty.Register(nameof(TrayHeight), typeof(double), typeof(WmsRulerControl));
+
+        public static readonly DependencyProperty TrayWidthProperty =
+                               DependencyProperty.Register(nameof(TrayWidth), typeof(double), typeof(WmsRulerControl));
+
         private const int LITTLE_INTERVALMARKS = 10;
 
         private const int MIDDLE_INTERVALMARKS = 2;
@@ -62,6 +66,10 @@ namespace Ferretto.Common.Controls
 
         private readonly InfoRuler infoRuler;
 
+        private Pen pen;
+
+        private double penHalfSize;
+
         #endregion
 
         #region Constructors
@@ -71,7 +79,8 @@ namespace Ferretto.Common.Controls
             this.infoRuler = new InfoRuler();
             this.UseLayoutRounding = false;
             this.SnapsToDevicePixels = false;
-            RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
+            var target = this;
+            RenderOptions.SetEdgeMode(target, EdgeMode.Aliased);
         }
 
         #endregion
@@ -158,6 +167,18 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(StepProperty, value);
         }
 
+        public double TrayHeight
+        {
+            get => (double)this.GetValue(TrayHeightProperty);
+            set => this.SetValue(TrayHeightProperty, value);
+        }
+
+        public double TrayWidth
+        {
+            get => (double)this.GetValue(TrayWidthProperty);
+            set => this.SetValue(TrayWidthProperty, value);
+        }
+
         #endregion
 
         #region Methods
@@ -176,7 +197,7 @@ namespace Ferretto.Common.Controls
 
         public void SetHorizontal()
         {
-            if (this.OriginX == 0)
+            if (this.OriginX.Equals(0))
             {
                 this.InfoRuler.OriginHorizontal = OriginHorizontal.Left;
             }
@@ -228,10 +249,10 @@ namespace Ferretto.Common.Controls
                 !double.IsNegativeInfinity(totalSteps) &&
                 totalSteps != 0)
             {
+                this.InitializePen();
                 this.SetHorizontal();
                 this.SetVertical();
-                totalSteps = totalSteps + 1;
-                this.DrawRuler(drawingContext, totalSteps);
+                this.DrawMarkers(drawingContext, totalSteps);
             }
         }
 
@@ -273,7 +294,7 @@ namespace Ferretto.Common.Controls
             return pixelSize > (this.GetSizeOfPen() * factor);
         }
 
-        private bool CanShowText(int maxTextLenght)
+        private bool CanShowText(int maxTextLenght, double fontSize)
         {
             var pixelSize = this.GetStepPixelSize(1);
             var margin = this.GetSizeOfPen() * 2;
@@ -282,7 +303,7 @@ namespace Ferretto.Common.Controls
                     CultureInfo.CurrentUICulture,
                     FlowDirection.LeftToRight,
                     new Typeface(this.FontFamily.ToString()),
-                                 this.FontSize,
+                                 fontSize,
                                  this.ForegroundText,
                                  VisualTreeHelper.GetDpi(this).PixelsPerDip);
             return pixelSize > (ft.Width + margin);
@@ -291,83 +312,40 @@ namespace Ferretto.Common.Controls
         private void DrawBase(DrawingContext drawingContext)
         {
             var mark = new Line();
-            var offSet = this.GetHalfSizeOfPen();
-            var halfOfHalf = offSet / 2;
+            var sizeOfPen = this.GetSizeOfPen();
 
             if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
             {
-                mark.XStart = offSet;
-                mark.XEnd = this.ActualWidth;
-                mark.YStart = this.ActualHeight - halfOfHalf;
+                mark.YStart = this.ActualHeight - sizeOfPen;
                 mark.YEnd = mark.YStart;
+                mark.XStart = 0;
+                mark.XEnd = this.TrayWidth - sizeOfPen;
             }
             else
             {
-                mark.XStart = this.ActualWidth - halfOfHalf;
+                mark.XStart = this.ActualWidth - sizeOfPen;
                 mark.XEnd = mark.XStart;
-                mark.YStart = halfOfHalf;
-                mark.YEnd = this.ActualHeight - halfOfHalf;
+                mark.YStart = 0;
+                mark.YEnd = this.TrayHeight - sizeOfPen;
             }
 
-            this.DrawLine(drawingContext, mark);
-        }
-
-        private void DrawEndMark(DrawingContext drawingContext)
-        {
-            var mark = new Line();
-            var halfSize = this.GetHalfSizeOfPen();
-            var halfOfHalf = halfSize / 2;
-            if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
-            {
-                mark.XStart = this.ActualWidth;
-                mark.YStart = halfOfHalf;
-                mark.YEnd = this.ActualHeight - halfOfHalf;
-                mark.XStart = (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left) ? mark.XStart + halfSize : this.ActualWidth - mark.XStart - halfSize;
-                mark.XEnd = mark.XStart;
-            }
-            else
-            {
-                mark.YStart = -halfSize;
-                mark.XStart = halfOfHalf;
-                mark.XEnd = this.ActualWidth - halfOfHalf;
-                mark.YStart = (this.InfoRuler.OriginVertical == OriginVertical.Top) ? mark.YStart + halfSize : mark.YStart;
-                mark.YEnd = mark.YStart;
-            }
-
-            this.DrawLine(drawingContext, mark);
-        }
-
-        private void DrawLine(DrawingContext drawingContext, Line m)
-        {
-            if (m == null)
-            {
-                throw new ArgumentNullException(nameof(m));
-            }
-
-            var penSize = this.GetSizeOfPen();
-            var halfPenSize = this.GetHalfSizeOfPen();
-            GuidelineSet guidelines = new GuidelineSet();
-            guidelines.GuidelinesX.Add(m.XStart + halfPenSize);
-            guidelines.GuidelinesX.Add(m.XEnd + halfPenSize);
-            guidelines.GuidelinesY.Add(m.YStart + halfPenSize);
-            guidelines.GuidelinesY.Add(m.YEnd + halfPenSize);
-            drawingContext.PushGuidelineSet(guidelines);
-            var penScaled = new Pen
-            {
-                DashCap = PenLineCap.Square,
-                Brush = this.Foreground,
-                Thickness = penSize,
-                StartLineCap = PenLineCap.Square,
-                EndLineCap = PenLineCap.Square
-            };
-            drawingContext.DrawLine(penScaled, new Point(m.XStart, m.YStart), new Point(m.XEnd, m.YEnd));
-            drawingContext.Pop();
+            this.DrawSnappedLinesBetweenPoints(drawingContext, mark);
         }
 
         private void DrawLittleMark(DrawingContext drawingContext, int currentStep)
         {
-            var halfSize = this.GetHalfSizeOfPen();
-            var halfOfHalf = halfSize / 2;
+            double stepPixel = 0;
+            if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
+            {
+                stepPixel = ConvertMillimetersToPixel(this.Step, this.TrayWidth, this.DimensionWidth);
+            }
+            else
+            {
+                stepPixel = ConvertMillimetersToPixel(this.Step, this.TrayHeight, this.DimensionHeight);
+            }
+
+            var basePixelStart = stepPixel * currentStep;
+            var littlePixelStep = stepPixel / LITTLE_INTERVALMARKS;
             for (var j = 1; j < LITTLE_INTERVALMARKS; j++)
             {
                 if (j == LITTLE_INTERVALMARKS / 2)
@@ -378,152 +356,72 @@ namespace Ferretto.Common.Controls
                 var littleMark = new Line();
                 if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
                 {
-                    var temp = (currentStep * this.Step) + ((this.Step * j) / LITTLE_INTERVALMARKS);
-                    littleMark.XStart = ConvertMillimetersToPixel(temp, this.ActualWidth, this.DimensionWidth) + halfOfHalf;
-                    littleMark.XEnd = littleMark.XStart;
-                    littleMark.YStart = this.Height - this.LittleMarkLength + halfSize;
-                    littleMark.YEnd = this.Height - halfSize;
-                    if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left)
-                    {
-                        if (littleMark.XStart >= this.ActualWidth)
-                        {
-                            break;
-                        }
-                    }
-                    else if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
+                    littleMark.XStart = basePixelStart + (littlePixelStep * j);
+                    littleMark.YStart = this.ActualHeight - this.LittleMarkLength + this.penHalfSize;
+                    littleMark.YEnd = this.ActualHeight - this.penHalfSize;
+                    if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
                     {
                         littleMark.XStart = this.ActualWidth - littleMark.XStart;
-                        if (littleMark.XStart <= 0)
-                        {
-                            break;
-                        }
                     }
 
                     littleMark.XEnd = littleMark.XStart;
+                    if (littleMark.XEnd > this.ActualWidth)
+                    {
+                        return;
+                    }
                 }
                 else
                 {
-                    littleMark.XStart = this.ActualWidth - this.LittleMarkLength + halfSize;
-                    littleMark.XEnd = this.ActualWidth - halfSize;
-                    var temp = (currentStep * this.Step) + ((this.Step * j) / LITTLE_INTERVALMARKS);
-                    littleMark.YStart = ConvertMillimetersToPixel(temp, this.ActualHeight, this.DimensionHeight) + halfOfHalf;
+                    var pixelPosition = basePixelStart + (littlePixelStep * j);
+                    littleMark.YStart = (this.InfoRuler.OriginVertical == OriginVertical.Top) ? pixelPosition : this.ActualHeight - pixelPosition - 1;
+                    littleMark.XStart = this.ActualWidth - this.LittleMarkLength + this.penHalfSize;
+                    littleMark.XEnd = this.ActualWidth - this.penHalfSize - this.GetSizeOfPen();
                     littleMark.YEnd = littleMark.YStart;
-                    if (this.InfoRuler.OriginVertical == OriginVertical.Top)
+                    if (littleMark.YEnd > this.ActualHeight)
                     {
-                        if (littleMark.YStart >= this.ActualHeight)
-                        {
-                            break;
-                        }
+                        return;
                     }
-                    else if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
-                    {
-                        littleMark.YStart = this.ActualHeight - littleMark.YStart;
-                        if (littleMark.YStart <= 0)
-                        {
-                            break;
-                        }
-                    }
-
-                    littleMark.YEnd = littleMark.YStart;
                 }
 
-                this.DrawLine(drawingContext, littleMark);
+                this.DrawSnappedLinesBetweenPoints(drawingContext, littleMark);
             }
         }
 
         private void DrawMark(DrawingContext drawingContext, int currentStep)
         {
             var mark = new Line();
-            var halfSize = this.GetHalfSizeOfPen() / 2;
+            var sizeOfPen = this.GetSizeOfPen();
             if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
             {
-                mark.XStart = ConvertMillimetersToPixel(currentStep * this.Step, this.ActualWidth, this.DimensionWidth);
-                mark.YStart = halfSize;
-                mark.YEnd = this.ActualHeight - halfSize;
-                if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left)
-                {
-                    mark.XStart += halfSize;
-                }
-
+                mark.XStart = ConvertMillimetersToPixel(this.Step * currentStep, this.TrayWidth, this.DimensionWidth);
+                mark.YStart = this.penHalfSize;
+                mark.YEnd = this.ActualHeight - this.penHalfSize;
                 if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
                 {
-                    mark.XStart = this.ActualWidth - mark.XStart - halfSize;
+                    mark.XStart = this.ActualWidth - mark.XStart;
                 }
 
                 mark.XEnd = mark.XStart;
             }
             else
             {
-                mark.YStart = ConvertMillimetersToPixel(currentStep * this.Step, this.ActualHeight, this.DimensionHeight);
-
-                mark.XStart = halfSize;
-                mark.XEnd = this.ActualWidth - halfSize;
-                if (this.InfoRuler.OriginVertical == OriginVertical.Top)
-                {
-                    mark.YStart += halfSize;
-                }
-
-                if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
-                {
-                    mark.YStart = this.ActualHeight - mark.YStart - halfSize;
-                }
-
+                var offSet = ConvertMillimetersToPixel(this.Step * currentStep, this.TrayHeight, this.DimensionHeight);
+                mark.XStart = this.penHalfSize;
+                mark.XEnd = this.ActualWidth - this.penHalfSize;
+                mark.YStart = (this.InfoRuler.OriginVertical == OriginVertical.Top) ? offSet - 0 : this.ActualHeight - offSet - sizeOfPen;
                 mark.YEnd = mark.YStart;
             }
 
-            this.DrawLine(drawingContext, mark);
+            this.DrawSnappedLinesBetweenPoints(drawingContext, mark);
         }
 
-        private void DrawMiddleMark(DrawingContext drawingContext, int currentStep)
-        {
-            var middleMark = new Line();
-            var halfSize = this.GetHalfSizeOfPen();
-            var halfOfHalfSize = halfSize / 2;
-            var temp = (currentStep * this.Step) + (this.Step / 2);
-            if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
-            {
-                middleMark.XStart = ConvertMillimetersToPixel(temp, this.ActualWidth, this.DimensionWidth);
-                middleMark.YStart = this.Height - this.MiddleMarkLength + halfSize;
-                middleMark.YEnd = this.Height - halfSize;
-
-                if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left)
-                {
-                    middleMark.XStart += halfOfHalfSize;
-                }
-                else if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
-                {
-                    middleMark.XStart = this.ActualWidth - middleMark.XStart - halfSize;
-                }
-
-                middleMark.XEnd = middleMark.XStart;
-            }
-            else
-            {
-                middleMark.XStart = this.Width - this.MiddleMarkLength + halfSize;
-                middleMark.XEnd = this.Width - halfSize;
-                middleMark.YStart = ConvertMillimetersToPixel(temp, this.ActualHeight, this.DimensionHeight);
-                middleMark.YEnd = middleMark.YStart + halfSize;
-
-                if (this.InfoRuler.OriginVertical == OriginVertical.Top)
-                {
-                    middleMark.YStart += halfOfHalfSize;
-                }
-                else if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
-                {
-                    middleMark.YStart = this.ActualHeight - middleMark.YStart - halfOfHalfSize;
-                }
-
-                middleMark.YEnd = middleMark.YStart;
-            }
-
-            this.DrawLine(drawingContext, middleMark);
-        }
-
-        private void DrawRuler(DrawingContext drawingContext, int totalSteps)
+        private void DrawMarkers(DrawingContext drawingContext, int totalSteps)
         {
             var isBaseDrawVisible = false;
-            var canShowText = this.CanShowText(totalSteps);
-            var canShowMarks = this.CanBeShown(1, 20);
+            totalSteps = totalSteps + 1;
+            var fontSize = this.GetFontSize(totalSteps);
+            var canShowText = this.CanShowText(totalSteps, fontSize);
+            var canShowMarks = this.CanBeShown(1, 15);
             var canShowMiddleMarks = this.CanBeShown(MIDDLE_INTERVALMARKS, 13);
             var canShowLittleMarks = this.CanBeShown(LITTLE_INTERVALMARKS, 4);
 
@@ -531,7 +429,7 @@ namespace Ferretto.Common.Controls
             {
                 if (this.ShowInfo && canShowText)
                 {
-                    this.DrawText(drawingContext, currStep);
+                    this.DrawText(drawingContext, currStep, fontSize);
                 }
 
                 if (this.ShowMark)
@@ -545,8 +443,7 @@ namespace Ferretto.Common.Controls
                     isBaseDrawVisible = true;
                 }
 
-                if (this.ShowMiddleMark && canShowMiddleMarks &&
-                    currStep < (totalSteps - 1))
+                if (this.ShowMiddleMark && canShowMiddleMarks)
                 {
                     this.DrawMiddleMark(drawingContext, currStep);
                     isBaseDrawVisible = true;
@@ -558,27 +455,69 @@ namespace Ferretto.Common.Controls
                     isBaseDrawVisible = true;
                 }
             }
+
             if (isBaseDrawVisible)
             {
                 this.DrawBase(drawingContext);
             }
-
-            this.DrawEndMark(drawingContext);
         }
 
-        private void DrawText(DrawingContext drawingContext, int currentStep)
+        private void DrawMiddleMark(DrawingContext drawingContext, int currentStep)
         {
-            double margin = this.GetSizeOfPen() * 2;
+            var middleMark = new Line();
+            if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
+            {
+                var pixelStep = ConvertMillimetersToPixel(this.Step, this.TrayWidth, this.DimensionWidth);
+                middleMark.XStart = (pixelStep * currentStep) + (pixelStep / 2);
+                middleMark.YStart = this.Height - this.MiddleMarkLength + this.penHalfSize;
+                middleMark.YEnd = this.Height - this.penHalfSize;
+                if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
+                {
+                    middleMark.XStart = this.ActualWidth - middleMark.XStart;
+                }
+
+                middleMark.XEnd = middleMark.XStart;
+            }
+            else
+            {
+                var pixelStep = ConvertMillimetersToPixel(this.Step, this.TrayHeight, this.DimensionHeight);
+                var pixelPosition = (pixelStep * currentStep) + (pixelStep / 2);
+                middleMark.YStart = (this.InfoRuler.OriginVertical == OriginVertical.Top) ? pixelPosition : this.ActualHeight - (pixelPosition + 1);
+                middleMark.XStart = this.Width - this.MiddleMarkLength + this.penHalfSize;
+                middleMark.XEnd = this.Width - this.penHalfSize;
+                middleMark.YEnd = middleMark.YStart;
+            }
+
+            this.DrawSnappedLinesBetweenPoints(drawingContext, middleMark);
+        }
+
+        private void DrawSnappedLinesBetweenPoints(DrawingContext dc, Line mark)
+        {
+            var guidelineSet = new GuidelineSet();
+            guidelineSet.GuidelinesX.Add(mark.XStart);
+            guidelineSet.GuidelinesY.Add(mark.YStart);
+            guidelineSet.GuidelinesX.Add(mark.XEnd);
+            guidelineSet.GuidelinesY.Add(mark.YEnd);
+            dc.PushGuidelineSet(guidelineSet);
+            var points = new Point[2];
+            points[0] = new Point(mark.XStart + this.penHalfSize, mark.YStart + this.penHalfSize);
+            points[1] = new Point(mark.XEnd + this.penHalfSize, mark.YEnd + this.penHalfSize);
+            dc.DrawLine(this.pen, points[0], points[1]);
+            dc.Pop();
+        }
+
+        private void DrawText(DrawingContext drawingContext, int currentStep, double fontSize)
+        {
+            var margin = this.GetSizeOfPen() * 2;
             var ft = new FormattedText(
                     (currentStep * this.Step).ToString(CultureInfo.InvariantCulture),
                     CultureInfo.CurrentUICulture,
                     FlowDirection.LeftToRight,
                     new Typeface(this.FontFamily.ToString()),
-                                 this.FontSize,
+                                 fontSize,
                                  this.ForegroundText,
                                  VisualTreeHelper.GetDpi(this).PixelsPerDip);
             double startFrom = 0;
-            var toDraw = true;
 
             var position = new Position();
             if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
@@ -590,21 +529,17 @@ namespace Ferretto.Common.Controls
                 if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left)
                 {
                     position.X += margin;
-                    if (position.X + ft.Width >= this.ActualWidth)
-                    {
-                        toDraw = false;
-                    }
                 }
                 else if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
                 {
                     startFrom = this.ActualWidth;
                     position.X = startFrom - position.X - ft.Width;
                     position.X -= margin;
+                }
 
-                    if (position.X <= 0)
-                    {
-                        toDraw = false;
-                    }
+                if (position.X + ft.Width > this.ActualWidth)
+                {
+                    return;
                 }
             }
             else
@@ -615,37 +550,38 @@ namespace Ferretto.Common.Controls
                 if (this.InfoRuler.OriginVertical == OriginVertical.Top)
                 {
                     position.Y = position.Y + margin + ft.Width;
-                    if (position.Y + ft.Height >= this.ActualHeight)
-                    {
-                        toDraw = false;
-                    }
                 }
                 else if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
                 {
                     startFrom = this.ActualHeight;
                     position.Y = startFrom - position.Y;
                     position.Y -= OFFSET_BORDER;
-
-                    if (position.Y - ft.Width <= 0)
-                    {
-                        toDraw = false;
-                    }
                 }
 
-                if (toDraw)
+                if (position.Y + ft.Width > this.ActualHeight)
                 {
-                    drawingContext.PushTransform(new RotateTransform(-90, position.X, position.Y));
+                    return;
                 }
+
+                drawingContext.PushTransform(new RotateTransform(-90, position.X, position.Y));
             }
 
-            if (toDraw)
+            drawingContext.DrawText(ft, new Point(position.X, position.Y));
+            if (this.InfoRuler.OrientationRuler == Orientation.Vertical)
             {
-                drawingContext.DrawText(ft, new Point(position.X, position.Y));
-                if (this.InfoRuler.OrientationRuler == Orientation.Vertical)
-                {
-                    drawingContext.Pop();
-                }
+                drawingContext.Pop();
             }
+        }
+
+        private double GetFontSize(int totText)
+        {
+            double size = this.FontSize;
+            while (size > 5 && this.CanShowText(totText, size) == false)
+            {
+                size--;
+            }
+
+            return size;
         }
 
         private double GetHalfSizeOfPen()
@@ -667,9 +603,22 @@ namespace Ferretto.Common.Controls
             return ConvertMillimetersToPixel(size, barSize, dimension);
         }
 
+        private void InitializePen()
+        {
+            this.penHalfSize = this.GetHalfSizeOfPen();
+            this.pen = new Pen
+            {
+                DashCap = PenLineCap.Square,
+                Brush = this.Foreground,
+                Thickness = this.GetSizeOfPen(),
+                StartLineCap = PenLineCap.Square,
+                EndLineCap = PenLineCap.Square
+            };
+        }
+
         private void SetVertical()
         {
-            if (this.OriginY == 0)
+            if (this.OriginY.Equals(0))
             {
                 this.InfoRuler.OriginVertical = OriginVertical.Top;
             }
