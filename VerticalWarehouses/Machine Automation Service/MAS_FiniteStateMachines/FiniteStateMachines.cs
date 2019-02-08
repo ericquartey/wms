@@ -41,6 +41,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #endregion
 
+        #region Properties
+
+        public StateMachineVerticalHoming StateMachineVerticalHoming => this.verticalHoming;
+
+        #endregion
+
         #region Methods
 
         public void Destroy()
