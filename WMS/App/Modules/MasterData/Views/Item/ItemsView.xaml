@@ -35,7 +35,8 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <wms:TileBar ItemsSource="{Binding Filters}"
+                <wms:TileBar HorizontalAlignment="Right"
+                             ItemsSource="{Binding Filters}"
                              SelectedItem="{Binding SelectedFilter, Mode=OneWayToSource}" />
 
                 <dxa:AccordionControl Grid.Row="1"
@@ -51,7 +52,8 @@
                         <Border Margin="5"
                                 BorderBrush="LightGray"
                                 BorderThickness="1">
-                            <wms:WmsFilterControl FilteringContext="{Binding Path=FilteringContext, ElementName=MainGridControl}" />
+                            <wms:WmsFilterControl MinWidth="250"
+                                                  FilteringContext="{Binding Path=FilteringContext, ElementName=MainGridControl}" />
                         </Border>
                     </wms:AccordionItem>
                 </dxa:AccordionControl>
