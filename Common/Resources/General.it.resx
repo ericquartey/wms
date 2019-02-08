@@ -240,4 +240,7 @@
   <data name="Clear" xml:space="preserve">
     <value>Pulisci</value>
   </data>
+  <data name="Create" xml:space="preserve">
+    <value>Crea</value>
+  </data>
 </root>

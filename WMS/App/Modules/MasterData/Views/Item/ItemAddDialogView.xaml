@@ -229,9 +229,9 @@
                        Style="{DynamicResource ActionBarNotCustomizable}">
 
             <wms:ActionBarItem Command="{Binding SaveCommand}"
-                               Content="{x:Static res:General.Save}"
+                               Content="{x:Static res:General.Create}"
                                CustomGlyphSize="36,36"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_save_black_36dp.png"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-create-36.png"
                                GlyphSize="Custom" />
 
             <wms:ActionBarItem Command="{Binding ClearCommand}"
