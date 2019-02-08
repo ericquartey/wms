@@ -1,11 +1,11 @@
-﻿using Ferretto.VW.Common_Utils.Events;
+﻿using Ferretto.VW.Common_Utils.EventParameters;
+using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_InverterDriver;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 {
-    // Vertical homing is undone
     public class VerticalHomingIdleState : IState
     {
         #region Fields
@@ -31,7 +31,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
             this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
 
-            // launch the command
             this.driver.ExecuteVerticalHoming();
         }
 
@@ -45,16 +44,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Methods
 
-        private void notifyEventHandler(InverterDriver_Notification notification)
+        private void notifyEventHandler(Notification_EventParameter notification)
         {
-            switch (notification)
+            switch (notification.OperationStatus)
             {
-                case InverterDriver_Notification.End:
+                case OperationStatus.End:
                     {
                         this.context.ChangeState(new VerticalHomingDoneState(this.context, this.driver, this.data, this.eventAggregator));
                         break;
                     }
-                case InverterDriver_Notification.Error:
+                case OperationStatus.Error:
                     {
                         break;
                     }

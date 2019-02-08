@@ -1,10 +1,11 @@
-﻿using Ferretto.VW.MAS_DataLayer;
+﻿using Ferretto.VW.Common_Utils.EventParameters;
+using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_InverterDriver;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 {
-    // Vertical homing is done
     public class VerticalHomingDoneState : IState
     {
         #region Fields
@@ -28,7 +29,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
             this.data = iWriteLogService;
             this.eventAggregator = eventAggregator;
 
-            this.data.LogWriting("Vertical homing done state");
+            var notifyEvent = new Notification_EventParameter(OperationType.Homing, OperationStatus.End, "Homing done", Verbosity.Info);
+            this.eventAggregator.GetEvent<FiniteStateMachines_NotificationEvent>().Publish(notifyEvent);
+
+            this.data.LogWriting(new Command_EventParameter(CommandType.ExecuteHoming));
         }
 
         #endregion

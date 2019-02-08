@@ -40,8 +40,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <wms:WmsLabel x:Name="TitleLabel"
-                          Style="{DynamicResource ControlLabelStyle}">
+            <wms:WmsLabel x:Name="TitleLabel">
                 <wms:WmsLabel.Content>
                     <MultiBinding Converter="{StaticResource DNC}">
                         <Binding RelativeSource="{RelativeSource Self}" />

@@ -66,8 +66,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                                  Description = b.Description,
                                  LoadingUnitsBufferSize = b.LoadingUnitsBufferSize,
                                  BayTypeId = b.BayTypeId,
+                                 BayTypeDescription = b.BayType.Description,
                                  AreaId = b.AreaId,
+                                 AreaName = b.Area.Name,
                                  MachineId = b.MachineId,
+                                 MachineNickname = b.Machine.Nickname,
                              })
                              .ToArrayAsync();
         }

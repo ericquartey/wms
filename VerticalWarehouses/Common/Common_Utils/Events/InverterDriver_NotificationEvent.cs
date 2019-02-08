@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Ferretto.VW.Common_Utils.EventParameters;
 using Prism.Events;
 
 namespace Ferretto.VW.Common_Utils.Events
 {
-    public class InverterDriver_NotificationEvent : PubSubEvent<InverterDriver_Notification>
+    public class InverterDriver_NotificationEvent : PubSubEvent<Notification_EventParameter>
     {
-    }
-    public enum InverterDriver_Notification
-    {
-        Error,
-        End
-
     }
 }

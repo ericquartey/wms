@@ -1,5 +1,6 @@
 ﻿using System;
-using Ferretto.Common.Common_Utils;
+using Ferretto.VW.Common_Utils.EventParameters;
+using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming;
 using Ferretto.VW.MAS_InverterDriver;
@@ -31,7 +32,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.data = iWriteLogService;
             this.eventAggregator = eventAggregator;
 
-            this.eventAggregator.GetEvent<WebAPI_ExecuteActionEvent>().Subscribe(this.doAction);
+            var commandEvent = this.eventAggregator.GetEvent<WebAPI_CommandEvent>();
+            commandEvent.Subscribe(this.DoAction);
 
             this.homing = new StateMachineHoming(this.driver, this.data);
             this.verticalHoming = new StateMachineVerticalHoming(this.driver, this.data, this.eventAggregator);
@@ -46,58 +48,43 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.driver.Destroy();
         }
 
-        /// <summary>
-        /// Execute complete homing.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">An <see cref="InvalidOperationException"/> is thrown, if object is null.</exception>
+        public void DoAction(Command_EventParameter action)
+        {
+            switch (action.CommandType)
+            {
+                case CommandType.ExecuteHoming:
+                    {
+                        if (null == this.verticalHoming)
+                        {
+                            throw new ArgumentNullException();
+                        }
+
+                        this.verticalHoming.Start();
+                        break;
+                    }
+                default:
+                    break;
+            }
+        }
+
         public void DoHoming()
         {
             if (null == this.homing)
             {
-                throw new InvalidOperationException();
+                throw new ArgumentNullException();
             }
 
-            this.homing?.Start();
+            this.homing.Start();
         }
 
-        /// <summary>
-        /// Execute vertical homing.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">An <see cref="InvalidOperationException"/> is thrown, if object is null.</exception>
         public void DoVerticalHoming()
         {
             if (null == this.verticalHoming)
             {
-                throw new InvalidOperationException();
+                throw new ArgumentNullException();
             }
 
-            this.verticalHoming?.Start();
-        }
-
-        /// <summary>
-        /// Execute a requested action for finite state machines. Use the related state machine.
-        /// </summary>
-        /// <param name="actionId">A <see cref="WebAPI_Action"/> parameter related to the request</param>
-        /// <exception cref="InvalidOperationException">An <see cref="InvalidOperationException"/> is thrown, if object is null.</exception>
-        private void doAction(WebAPI_Action action)
-        {
-            switch (action)
-            {
-                case WebAPI_Action.VerticalHoming:
-                    {
-                        if (null == this.verticalHoming)
-                        {
-                            throw new InvalidOperationException();
-                        }
-
-                        this.verticalHoming?.Start();
-                        break;
-                    }
-                default:
-                    {
-                        break;
-                    }
-            }
+            this.verticalHoming.Start();
         }
 
         #endregion
