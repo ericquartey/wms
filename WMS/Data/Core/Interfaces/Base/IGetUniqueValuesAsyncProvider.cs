@@ -2,11 +2,11 @@ using System.Threading.Tasks;
 
 namespace Ferretto.WMS.Data.Core.Interfaces.Base
 {
-    public interface IDeleteProvider
+    public interface IGetUniqueValuesAsyncProvider
     {
         #region Methods
 
-        Task<int> DeleteAsync(int id);
+        Task<object[]> GetUniqueValuesAsync(string propertyName);
 
         #endregion
     }

@@ -18,7 +18,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     public class ItemsController : ControllerBase,
         ICreateController<ItemDetails>,
         IReadAllPagedController<Item>,
-        IReadSingleController<Item, int>,
+        IReadSingleController<ItemDetails, int>,
         IUpdateController<ItemDetails>
     {
         #region Fields
@@ -27,18 +27,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IItemProvider itemProvider;
 
-        private readonly ILogger logger;
-
         #endregion
 
         #region Constructors
 
         public ItemsController(
-            ILogger<ItemsController> logger,
             IItemProvider itemProvider,
             IAreaProvider areaProvider)
         {
-            this.logger = logger;
             this.itemProvider = itemProvider;
             this.areaProvider = areaProvider;
         }
@@ -87,14 +83,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(200, Type = typeof(int))]
         [ProducesResponseType(404)]
         [HttpGet]
-        [Route("api/[controller]/count")]
+        [Route("count")]
         public async Task<ActionResult<int>> GetAllCountAsync(
             string where = null,
             string search = null)
         {
-            this.logger.LogInformation(
-                $"Get Items count (where:'{where}', search:'{search}')");
-
             var searchExpression = BuildSearchExpression(search);
             var whereExpression = this.BuildWhereExpression<Item>(where);
 
@@ -109,29 +102,19 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<IEnumerable<Area>>> GetAreasWithAvailabilityAsync(int id)
         {
             var areas = await this.areaProvider.GetByItemIdAvailabilityAsync(id);
-            if (!areas.Any())
-            {
-                var message = $"No entity associated with the specified id={id} exists.";
-                this.logger.LogWarning(message);
-                return this.NotFound(message);
-            }
 
             return this.Ok(areas);
         }
 
-        [ProducesResponseType(200, Type = typeof(Item))]
+        [ProducesResponseType(200, Type = typeof(ItemDetails))]
         [ProducesResponseType(404, Type = typeof(string))]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Item>> GetByIdAsync(int id)
+        public async Task<ActionResult<ItemDetails>> GetByIdAsync(int id)
         {
-            this.logger.LogInformation($"Get Item (id:{id})");
-
             var result = await this.itemProvider.GetByIdAsync(id);
             if (result == null)
             {
-                var message = $"No entity with the specified id={id} exists.";
-                this.logger.LogWarning(message);
-                return this.NotFound(message);
+                return this.NotFound();
             }
 
             return this.Ok(result);
@@ -139,14 +122,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
         [HttpGet]
-        [Route("api/[controller]/unique/{propertyName}")]
+        [Route("unique/{propertyName}")]
         public async Task<ActionResult<object[]>> GetUniqueValuesAsync(
             string propertyName)
         {
             return this.Ok(await this.itemProvider.GetUniqueValuesAsync(propertyName));
         }
 
-        [ProducesResponseType(200, Type = typeof(Item))]
+        [ProducesResponseType(200, Type = typeof(ItemDetails))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]
         [HttpPatch]
@@ -187,7 +170,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 (i.ItemCategoryDescription != null &&
                  i.ItemCategoryDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
                 ||
-                i.TotalAvailable.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase) == true;
+                i.TotalAvailable.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
         #endregion
