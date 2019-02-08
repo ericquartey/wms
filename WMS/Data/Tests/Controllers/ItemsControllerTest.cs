@@ -163,7 +163,6 @@ namespace Ferretto.WMS.Data.Tests
         private static ItemsController MockController(DatabaseContext context)
         {
             return new ItemsController(
-                new Mock<ILogger<ItemsController>>().Object,
                 new ItemProvider(context),
                 new AreaProvider(context));
         }
