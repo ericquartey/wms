@@ -1,33 +1,35 @@
-﻿<local:BaseView x:Class="Ferretto.VW.InstallationApp.LSMTGateEngineView"
-                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                 xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
-                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                 xmlns:local="clr-namespace:Ferretto.VW.InstallationApp"
-                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                 xmlns:myType="clr-namespace:Ferretto.VW.Utils.Source;assembly=Ferretto.VW.Utils"
-                 xmlns:prism="http://prismlibrary.com/"
-                 xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
-                 prism:ViewModelLocator.AutoWireViewModel="True"
-                 mc:Ignorable="d">
+﻿<UserControl x:Class="Ferretto.VW.InstallationApp.LSMTGateEngineView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Ferretto.VW.InstallationApp"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:myType="clr-namespace:Ferretto.VW.Utils.Source;assembly=Ferretto.VW.Utils"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d">
     <Grid Width="774"
           Height="608">
-        <TextBlock 
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.LSMTGateEngineTitle}" Margin="161,10,0,562" />
+        <TextBlock Margin="161,10,0,562"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.LSMTGateEngineTitle}" />
         <custom:CustomLabelTextBlockControl Name="ActualPositionLabel"
-                                                    
-                                                    ContentText="1235,2"
-                                                    LabelText="{x:Static res:InstallationApp.ActualPosition}" Margin="161,402,359,143" />
+                                            Margin="161,402,359,143"
+                                            ContentText="1235,2"
+                                            LabelText="{x:Static res:InstallationApp.ActualPosition}" />
         <custom:CustomLabelTextBlockControl Name="FeedRateLabel"
-                                                    
-                                                    ContentText="10%"
-                                                    LabelText="{x:Static res:InstallationApp.FeedRate}" Margin="161,162,359,383" />
+                                            Margin="161,162,359,383"
+                                            ContentText="10%"
+                                            LabelText="{x:Static res:InstallationApp.FeedRate}" />
         <Button Name="GateEngineUp"
-                        Content="{x:Static res:InstallationApp.Up}"
-                        Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="490,162,120,383" />
+                Margin="490,162,120,383"
+                Content="{x:Static res:InstallationApp.Up}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         <Button Name="GateEngineDown"
-                        Content="{x:Static res:InstallationApp.Down}"
-                        Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="490,402,120,143" />
+                Margin="490,402,120,143"
+                Content="{x:Static res:InstallationApp.Down}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
     </Grid>
-</local:BaseView>
+</UserControl>

@@ -4,30 +4,30 @@ using Prism.Events;
 namespace Ferretto.VW.MAS_InverterDriver
 {
     public delegate void EndEventHandler();
+
     public delegate void ErrorEventHandler();
 
     public partial class NewInverterDriver : INewInverterDriver
     {
         #region Fields
 
-       
-        private InverterDriver.InverterDriver driver;
         private readonly IEventAggregator eventAggregator;
+
+        private InverterDriver.InverterDriver driver;
+
         private IInverterActions inverterAction;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
         public NewInverterDriver(IEventAggregator eventAggregator)
         {
-
-            
-            this.driver.Initialize();
+            //this.driver.Initialize();
             this.eventAggregator = eventAggregator;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 return null;
             }
-          
+
             var sensors = new bool[5];
             sensors[0] = this.driver.Brake_Resistance_Overtemperature;
             sensors[1] = this.driver.Emergency_Stop;
@@ -53,6 +53,6 @@ namespace Ferretto.VW.MAS_InverterDriver
             return sensors;
         }
 
-        #endregion Methods
+        #endregion
     }
 }
