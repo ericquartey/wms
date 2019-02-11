@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class ItemProvider : BaseProvider, IItemProvider
+    public class ItemProvider : IItemProvider
     {
         #region Fields
 
@@ -116,7 +116,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<object[]> GetUniqueValuesAsync(string propertyName)
         {
-            return await GetUniqueValuesAsync(propertyName, this.dataContext.Items);
+            return await this.GetUniqueValuesAsync(propertyName, this.dataContext.Items);
         }
 
         public async Task<OperationResult<ItemDetails>> UpdateAsync(ItemDetails model)
