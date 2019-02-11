@@ -3,7 +3,7 @@ using Ferretto.WMS.Data.Core.Models;
 
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
-    public interface IItemListsProvider :
+    public interface IItemListProvider :
         IReadAllPagedAsyncProvider<ItemList, int>,
         IReadSingleAsyncProvider<ItemListDetails, int>,
         IUpdateAsyncProvider<ItemListDetails, int>,
