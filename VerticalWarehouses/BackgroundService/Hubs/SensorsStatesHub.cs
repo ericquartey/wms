@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Ferretto.VW.Utils.Source;
 
@@ -21,6 +18,6 @@ namespace BackgroundService
             await this.Clients.All.OnSensorsChanged(sensor);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

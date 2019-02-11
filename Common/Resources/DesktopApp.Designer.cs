@@ -133,6 +133,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Custom Filter.
+        /// </summary>
+        public static string CustomFilter {
+            get {
+                return ResourceManager.GetString("CustomFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Initializing Entity Framework ... done..
         /// </summary>
         public static string DoneInitializingEntityFramework {

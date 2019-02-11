@@ -217,4 +217,7 @@
     <value />
     <comment>@invariant</comment>
   </data>
+  <data name="CustomFilter" xml:space="preserve">
+    <value>Custom Filter</value>
+  </data>
 </root>

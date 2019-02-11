@@ -8,7 +8,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private MAS_DataLayer.IWriteLogService data;
 
-        private MAS_InverterDriver.IInverterDriver driver;
+        private MAS_InverterDriver.INewInverterDriver driver;
 
         private IState state;
 
@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Constructors
 
-        public StateMachineHoming(MAS_InverterDriver.IInverterDriver iDriver, MAS_DataLayer.IWriteLogService iWriteLogService)
+        public StateMachineHoming(MAS_InverterDriver.INewInverterDriver iDriver, MAS_DataLayer.IWriteLogService iWriteLogService)
         {
             this.data = iWriteLogService;
             this.driver = iDriver;
