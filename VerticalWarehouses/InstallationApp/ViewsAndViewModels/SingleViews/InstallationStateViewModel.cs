@@ -11,23 +11,38 @@ namespace Ferretto.VW.InstallationApp
         #region Fields
 
         public IUnityContainer Container;
+
         public DataManager Data;
+
         private bool isBeltBurnishingDone;
+
         private bool isGate1Done;
+
         private bool isGate2Done;
+
         private bool isGate3Done;
+
         private bool isHorizontalHomingDone = false;
+
         private bool isLaserGate1Done;
+
         private bool isLaserGate2Done;
+
         private bool isLaserGate3Done;
+
         private bool isMachineDone;
+
         private bool isSetResolutionDone;
+
         private bool isShapeGate1Done;
+
         private bool isShapeGate2Done;
+
         private bool isShapeGate3Done;
+
         private bool isVerticalHomingDone = false;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -36,39 +51,39 @@ namespace Ferretto.VW.InstallationApp
             NavigationService.InstallationInfoChangedEventHandler += this.UpdateData;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
-        public Boolean IsBeltBurnishingDone { get => this.isBeltBurnishingDone; set => this.SetProperty(ref this.isBeltBurnishingDone, value); }
+        public bool IsBeltBurnishingDone { get => this.isBeltBurnishingDone; set => this.SetProperty(ref this.isBeltBurnishingDone, value); }
 
-        public Boolean IsGate1Done { get => this.isGate1Done; set => this.SetProperty(ref this.isGate1Done, value); }
+        public bool IsGate1Done { get => this.isGate1Done; set => this.SetProperty(ref this.isGate1Done, value); }
 
-        public Boolean IsGate2Done { get => this.isGate2Done; set => this.SetProperty(ref this.isGate2Done, value); }
+        public bool IsGate2Done { get => this.isGate2Done; set => this.SetProperty(ref this.isGate2Done, value); }
 
-        public Boolean IsGate3Done { get => this.isGate3Done; set => this.SetProperty(ref this.isGate3Done, value); }
+        public bool IsGate3Done { get => this.isGate3Done; set => this.SetProperty(ref this.isGate3Done, value); }
 
-        public Boolean IsHorizontalHomingDone { get => this.isHorizontalHomingDone; set => this.SetProperty(ref this.isHorizontalHomingDone, value); }
+        public bool IsHorizontalHomingDone { get => this.isHorizontalHomingDone; set => this.SetProperty(ref this.isHorizontalHomingDone, value); }
 
-        public Boolean IsLaserGate1Done { get => this.isLaserGate1Done; set => this.SetProperty(ref this.isLaserGate1Done, value); }
+        public bool IsLaserGate1Done { get => this.isLaserGate1Done; set => this.SetProperty(ref this.isLaserGate1Done, value); }
 
-        public Boolean IsLaserGate2Done { get => this.isLaserGate2Done; set => this.SetProperty(ref this.isLaserGate2Done, value); }
+        public bool IsLaserGate2Done { get => this.isLaserGate2Done; set => this.SetProperty(ref this.isLaserGate2Done, value); }
 
-        public Boolean IsLaserGate3Done { get => this.isLaserGate3Done; set => this.SetProperty(ref this.isLaserGate3Done, value); }
+        public bool IsLaserGate3Done { get => this.isLaserGate3Done; set => this.SetProperty(ref this.isLaserGate3Done, value); }
 
-        public Boolean IsMachineDone { get => this.isMachineDone; set => this.SetProperty(ref this.isMachineDone, value); }
+        public bool IsMachineDone { get => this.isMachineDone; set => this.SetProperty(ref this.isMachineDone, value); }
 
-        public Boolean IsSetResolutionDone { get => this.isSetResolutionDone; set => this.SetProperty(ref this.isSetResolutionDone, value); }
+        public bool IsSetResolutionDone { get => this.isSetResolutionDone; set => this.SetProperty(ref this.isSetResolutionDone, value); }
 
-        public Boolean IsShapeGate1Done { get => this.isShapeGate1Done; set => this.SetProperty(ref this.isShapeGate1Done, value); }
+        public bool IsShapeGate1Done { get => this.isShapeGate1Done; set => this.SetProperty(ref this.isShapeGate1Done, value); }
 
-        public Boolean IsShapeGate2Done { get => this.isShapeGate2Done; set => this.SetProperty(ref this.isShapeGate2Done, value); }
+        public bool IsShapeGate2Done { get => this.isShapeGate2Done; set => this.SetProperty(ref this.isShapeGate2Done, value); }
 
-        public Boolean IsShapeGate3Done { get => this.isShapeGate3Done; set => this.SetProperty(ref this.isShapeGate3Done, value); }
+        public bool IsShapeGate3Done { get => this.isShapeGate3Done; set => this.SetProperty(ref this.isShapeGate3Done, value); }
 
-        public Boolean IsVerticalHomingDone { get => this.isVerticalHomingDone; set => this.SetProperty(ref this.isVerticalHomingDone, value); }
+        public bool IsVerticalHomingDone { get => this.isVerticalHomingDone; set => this.SetProperty(ref this.isVerticalHomingDone, value); }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -112,6 +127,6 @@ namespace Ferretto.VW.InstallationApp
             this.IsVerticalHomingDone = this.Data.InstallationInfo.Origin_Y_Axis;
         }
 
-        #endregion Methods
+        #endregion
     }
 }
