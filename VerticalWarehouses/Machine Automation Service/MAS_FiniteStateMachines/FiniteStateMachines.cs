@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.MAS_DataLayer;
@@ -41,11 +42,30 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #endregion
 
+        #region Properties
+
+        public StateMachineVerticalHoming StateMachineVerticalHoming => this.verticalHoming;
+
+        #endregion
+
         #region Methods
 
         public void Destroy()
         {
-            this.driver.Destroy();
+            try
+            {
+                this.driver.Destroy();
+            }
+            catch (ArgumentNullException exc)
+            {
+                Debug.WriteLine("The inverter driver does not exist.");
+                throw new ArgumentNullException("The inverter driver does not exist.", exc);
+            }
+            catch (Exception exc)
+            {
+                Debug.WriteLine("Invalid operation.");
+                throw new Exception("Invalid operation", exc);
+            }
         }
 
         public void DoAction(Command_EventParameter action)

@@ -35,7 +35,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
         private long freq;
         private int initialPosition;
         private int initialSpeed;
-        private Ferretto.VW.InverterDriver.InverterDriver inverterDriver;
+        private Ferretto.VW.InverterDriver.IInverterDriver inverterDriver;
         private int nEntries;
         private int numberOfConditionTargetReachedSatisfied;
         private ParameterID paramID = ParameterID.POSITION_TARGET_POSITION_PARAM;
@@ -106,7 +106,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
         public bool EnableRetrivialCurrentPositionMode { get; set; }
 
-        public Ferretto.VW.InverterDriver.InverterDriver SetInverterDriverInterface
+        public Ferretto.VW.InverterDriver.IInverterDriver SetInverterDriverInterface
         {
             set => this.inverterDriver = value;
         }

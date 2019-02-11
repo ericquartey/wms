@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.MAS_InverterDriver.Interface;
+using Ferretto.VW.InverterDriver;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_InverterDriver
@@ -13,18 +14,20 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private readonly IEventAggregator eventAggregator;
 
-        private InverterDriver.InverterDriver driver;
+        private readonly IInverterDriver inverterDriver;
 
-        private IInverterActions inverterAction;
+        private  IInverterActions inverterAction;
 
         #endregion
 
         #region Constructors
 
-        public NewInverterDriver(IEventAggregator eventAggregator)
+        public NewInverterDriver(IEventAggregator eventAggregator, IInverterDriver inverterDriver)
         {
-            //this.driver.Initialize();
+            this.inverterDriver = inverterDriver;
             this.eventAggregator = eventAggregator;
+            this.inverterDriver.Initialize();
+            
         }
 
         #endregion
@@ -33,22 +36,22 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         public void Destroy()
         {
-            this.driver.Terminate();
+            this.inverterDriver.Terminate();
         }
 
         public bool[] GetSensorsStates()
         {
-            if (null == this.driver)
+            if (null == this.inverterDriver)
             {
                 return null;
             }
 
             var sensors = new bool[5];
-            sensors[0] = this.driver.Brake_Resistance_Overtemperature;
-            sensors[1] = this.driver.Emergency_Stop;
-            sensors[2] = this.driver.Pawl_Sensor_Zero;
-            sensors[3] = this.driver.Udc_Presence_Cradle_Machine;
-            sensors[4] = this.driver.Udc_Presence_Cradle_Operator;
+            sensors[0] = this.inverterDriver.Brake_Resistance_Overtemperature;
+            sensors[1] = this.inverterDriver.Emergency_Stop;
+            sensors[2] = this.inverterDriver.Pawl_Sensor_Zero;
+            sensors[3] = this.inverterDriver.Udc_Presence_Cradle_Machine;
+            sensors[4] = this.inverterDriver.Udc_Presence_Cradle_Operator;
 
             return sensors;
         }
