@@ -389,6 +389,32 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v9.0.0.0))")]
+    public partial interface IMachinesDataService
+    {
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Machine>> GetAllAsync(int? skip, int? take, string where, string orderBy, string search);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Machine>> GetAllAsync(int? skip, int? take, string where, string orderBy, string search, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<int> GetAllCountAsync(string where, string search);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<int> GetAllCountAsync(string where, string search, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Machine> GetByIdAsync(int id);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Machine> GetByIdAsync(int id, System.Threading.CancellationToken cancellationToken);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial interface IMaterialStatusesDataService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -1063,6 +1089,185 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class Machine : BaseModelOfInt32
+    {
+        [Newtonsoft.Json.JsonProperty("isOnLine", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsOnLine { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("actualWeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? ActualWeight { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("aisleId", Required = Newtonsoft.Json.Required.Always)]
+        public int AisleId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("aisleName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string AisleName { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("areaName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string AreaName { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("automaticTime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? AutomaticTime { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("buildDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTime? BuildDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("cradlesCount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CradlesCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("customerAddress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CustomerAddress { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("customerCity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CustomerCity { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("customerCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CustomerCode { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("customerCountry", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CustomerCountry { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("customerName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CustomerName { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("errorTime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? ErrorTime { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("fillRate", Required = Newtonsoft.Json.Required.Always)]
+        public int FillRate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("image", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Image { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("inputLoadingUnitsCount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? InputLoadingUnitsCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("installationDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTime? InstallationDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("lastPowerOn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTime? LastPowerOn { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("lastServiceDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTime? LastServiceDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("latitude", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? Latitude { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("loadingUnitsPerCradle", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LoadingUnitsPerCradle { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("longitude", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? Longitude { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("machineTypeDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string MachineTypeDescription { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("machineTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string MachineTypeId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("maintenanceStatus", Required = Newtonsoft.Json.Required.Always)]
+        public MaintenanceStatus MaintenanceStatus { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("manualTime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? ManualTime { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("missionTime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? MissionTime { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("model", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Model { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("movedLoadingUnitsCount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? MovedLoadingUnitsCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("nextServiceDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTime? NextServiceDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("nickname", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Nickname { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("outputLoadingUnitsCount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? OutputLoadingUnitsCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("powerOnTime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? PowerOnTime { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("registrationNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string RegistrationNumber { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
+        public MachineStatus Status { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("testDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTime? TestDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalMaxWeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? TotalMaxWeight { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static Machine FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Machine>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
+    public enum MaintenanceStatus
+    {
+        Valid = 0,
+    
+        Expiring = 1,
+    
+        Expired = 2,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
+    public enum MachineStatus
+    {
+        Automatic = 0,
+    
+        Manual = 1,
+    
+        Error = 2,
+    
+        Offline = 3,
+    
+    }
+    
+    /// <summary>Defines a serializable container for storing ModelState information.
+    /// This information is stored as key/value pairs.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class SerializableError : System.Collections.Generic.Dictionary<string, object>
+    {
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static SerializableError FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<SerializableError>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class MaterialStatus : BaseModelOfInt32
     {
         [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1190,32 +1395,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         Replace = 82,
     
         Put = 84,
-    
-    }
-    
-    /// <summary>Defines a serializable container for storing ModelState information.
-    /// This information is stored as key/value pairs.</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class SerializableError : System.Collections.Generic.Dictionary<string, object>
-    {
-        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
-    
-        [Newtonsoft.Json.JsonExtensionData]
-        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
-        {
-            get { return _additionalProperties; }
-            set { _additionalProperties = value; }
-        }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-        
-        public static SerializableError FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<SerializableError>(data);
-        }
     
     }
     

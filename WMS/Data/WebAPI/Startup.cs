@@ -99,6 +99,7 @@ namespace Ferretto.WMS.Data.WebAPI
             services.AddTransient<IItemProvider, ItemProvider>();
             services.AddTransient<ILoadingUnitStatusProvider, LoadingUnitStatusProvider>();
             services.AddTransient<ILoadingUnitTypeProvider, LoadingUnitTypeProvider>();
+            services.AddTransient<IMachineProvider, MachineProvider>();
             services.AddTransient<IMaterialStatusProvider, MaterialStatusProvider>();
             services.AddTransient<IMeasureUnitProvider, MeasureUnitProvider>();
             services.AddTransient<IMissionProvider, MissionProvider>();
