@@ -6,10 +6,10 @@ using Ferretto.WMS.Data.Core.Models;
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
     public interface ICompartmentProvider :
-        ICreateAsyncProvider<CompartmentDetails>,
-        IReadAllPagedAsyncProvider<Compartment>,
+        ICreateAsyncProvider<CompartmentDetails, int>,
+        IReadAllPagedAsyncProvider<Compartment, int>,
         IReadSingleAsyncProvider<CompartmentDetails, int>,
-        IUpdateAsyncProvider<CompartmentDetails>,
+        IUpdateAsyncProvider<CompartmentDetails, int>,
         IDeleteAsyncProvider,
         IGetUniqueValuesAsyncProvider
     {

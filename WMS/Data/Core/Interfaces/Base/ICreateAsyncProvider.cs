@@ -3,11 +3,12 @@ using Ferretto.WMS.Data.Core.Models;
 
 namespace Ferretto.WMS.Data.Core.Interfaces.Base
 {
-    public interface ICreateAsyncProvider<T>
+    public interface ICreateAsyncProvider<TModel, TKey>
+        where TModel : BaseModel<TKey>
     {
         #region Methods
 
-        Task<OperationResult<T>> CreateAsync(T model);
+        Task<OperationResult<TModel>> CreateAsync(TModel model);
 
         #endregion
     }

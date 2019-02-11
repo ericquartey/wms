@@ -4,9 +4,9 @@ using Ferretto.WMS.Data.Core.Models;
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
     public interface IItemListsProvider :
-        IReadAllPagedAsyncProvider<ItemList>,
+        IReadAllPagedAsyncProvider<ItemList, int>,
         IReadSingleAsyncProvider<ItemListDetails, int>,
-        IUpdateAsyncProvider<ItemListDetails>,
+        IUpdateAsyncProvider<ItemListDetails, int>,
         IGetUniqueValuesAsyncProvider
     {
     }

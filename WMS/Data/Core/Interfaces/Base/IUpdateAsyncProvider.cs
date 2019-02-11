@@ -3,11 +3,12 @@ using Ferretto.WMS.Data.Core.Models;
 
 namespace Ferretto.WMS.Data.Core.Interfaces.Base
 {
-    public interface IUpdateAsyncProvider<T>
+    public interface IUpdateAsyncProvider<TModel, TKey>
+        where TModel : BaseModel<TKey>
     {
         #region Methods
 
-        Task<OperationResult<T>> UpdateAsync(T model);
+        Task<OperationResult<TModel>> UpdateAsync(TModel model);
 
         #endregion
     }
