@@ -13,19 +13,19 @@
     <Grid Width="774"
           Height="608">
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,30,0,0"
+        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,30,0,0"
                      Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                      Text="{x:Static res:InstallationApp.LSMTHorizontalEngineTitle}"  />
 
-        <custom:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,160,0,0"
+        <custom:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,160,0,0"
                                                 ContentText="980,8"
                                                 LabelText="{x:Static res:InstallationApp.ActualPosition}"  />
 
-        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="450,160,0,0"
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,160,0,0"
                     Content="{x:Static res:InstallationApp.Forward}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"  />
 
-        <Button     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="450,280,0,0"
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="440,280,0,0"
                     Content="{x:Static res:InstallationApp.Backward}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
     </Grid>

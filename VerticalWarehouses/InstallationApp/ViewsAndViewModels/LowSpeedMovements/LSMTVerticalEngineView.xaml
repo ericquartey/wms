@@ -13,23 +13,23 @@
     <Grid Width="774"
           Height="608">
 
-        <TextBlock    VerticalAlignment="Top" HorizontalAlignment="Left" Margin="180,30,0,0" 
+        <TextBlock    VerticalAlignment="Top" HorizontalAlignment="Left" Margin="170,30,0,0" 
                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                       Text="{x:Static res:InstallationApp.LSMTVerticalEngineTitle}" />
 
-        <custom:CustomLabelTextBlockControl  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="180,160,0,0"            
+        <custom:CustomLabelTextBlockControl  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="170,160,0,0"            
                                              ContentText="1235,2"
                                              LabelText="{x:Static res:InstallationApp.ActualPosition}"  />
 
         <Button     Name="VerticalEngineUp"
-                    VerticalAlignment="Top" HorizontalAlignment="Left" Margin="450,160,0,0"
+                    VerticalAlignment="Top" HorizontalAlignment="Left" Margin="440,160,0,0"
                     Content="{x:Static res:InstallationApp.Up}"
                     PreviewMouseDown="MoveUpVerticalAxisHandler"
                     PreviewMouseUp="StopVerticalAxisHandler"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"  />
 
         <Button     Name="VerticalEngineDown"
-                    VerticalAlignment="Top" HorizontalAlignment="Left" Margin="450,280,0,0"
+                    VerticalAlignment="Top" HorizontalAlignment="Left" Margin="440,280,0,0"
                     Content="{x:Static res:InstallationApp.Down}"
                     PreviewMouseDown="MoveDownVerticalAxisHandler"
                     PreviewMouseUp="StopVerticalAxisHandler"

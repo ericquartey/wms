@@ -30,11 +30,11 @@
                                                   LabelText="{x:Static res:InstallationApp.StepValue}"
                                                   Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 
-        <custom:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="410,450,0,0"
+        <custom:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="410,430,0,0"
                                               ContentText="{Binding CurrentOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static res:InstallationApp.CurrentOffset}" />
 
-        <custom:CustomInputFieldControlFocusable   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="410,510,0,0"
+        <custom:CustomInputFieldControlFocusable   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="410,490,0,0"
                                                    InputText="{Binding CorrectOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static res:InstallationApp.CorrectOffset}"
                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />

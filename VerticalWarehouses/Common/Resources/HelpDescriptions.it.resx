@@ -143,7 +143,7 @@
     <value>Passo 1 : posiziona asse alla quota iniziale</value>
   </data>
   <data name="VerticalResolutionCalibrationStep2" xml:space="preserve">
-    <value>Passo 2 : posiziona asse alla quota superiore</value>
+    <value>Passo 2 : posiziona asse alla quota finale</value>
   </data>
   <data name="VerticalResolutionCalibrationStep3" xml:space="preserve">
     <value>Passo 3 : imposta la corsa effettuata</value>

@@ -12,22 +12,22 @@
                  mc:Ignorable="d">
     <Grid Width="774"
           Height="608">
-        
-        <TextBlock     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="180,30,0,0"
+
+        <TextBlock     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="170,30,0,0"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="{x:Static res:InstallationApp.LSMTGateEngineTitle}"  />
 
         <custom:CustomLabelTextBlockControl   Name="ActualPositionLabel"
-                                              HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,160,0,0"       
+                                              HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,160,0,0"       
                                               ContentText="Aperta"
                                               LabelText="{x:Static res:InstallationApp.ActualPosition}" />
         <Button    Name="GateEngineUp"
-                   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="450,160,0,0"
+                   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,160,0,0"
                    Content="{x:Static res:InstallationApp.Up}"
                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"  />
-        
+
         <Button    Name="GateEngineDown"
-                   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="450,280,0,0"
+                   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="440,280,0,0"
                    Content="{x:Static res:InstallationApp.Down}"
                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
     </Grid>
