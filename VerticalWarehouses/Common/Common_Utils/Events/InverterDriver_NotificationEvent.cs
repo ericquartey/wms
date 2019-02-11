@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ferretto.VW.Common_Utils.EventParameters;
+﻿using Ferretto.VW.Common_Utils.EventParameters;
 using Prism.Events;
 
 namespace Ferretto.VW.Common_Utils.Events

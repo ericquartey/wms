@@ -13,6 +13,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.4" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
   </ItemGroup>
@@ -25,12 +26,6 @@
     <ProjectReference Include="..\MAS_IODriver\MAS_IODriver.csproj" />
     <ProjectReference Include="..\MAS_MachineManager\MAS_MachineManager.csproj" />
     <ProjectReference Include="..\MAS_MissionScheduler\MAS_MissionScheduler.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Database\MachineAutomationService.db">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

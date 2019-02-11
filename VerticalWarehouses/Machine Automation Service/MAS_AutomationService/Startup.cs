@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS_DataLayer;
+﻿using Ferretto.VW.MAS_AutomationService.Hubs;
+using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_FiniteStateMachines;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_MachineManager;
@@ -50,17 +51,23 @@ namespace Ferretto.VW.MAS_AutomationService
                 app.UseHsts();
             }
 
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<InstallationHub>($"/installation-endpoint", options => { });
+            });
+
             app.UseHttpsRedirection();
             app.UseMvc();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
+
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSignalR();
 
             var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
-
             services.AddDbContext<DataLayerContext>(options => options.UseSqlite(connectionString), ServiceLifetime.Singleton);
 
             services.AddSingleton<IEventAggregator, EventAggregator>();
@@ -69,7 +76,10 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSingleton<IMissionsScheduler, MissionsScheduler>();
             services.AddSingleton<IMachineManager, MachineManager>();
             services.AddSingleton<IFiniteStateMachines, FiniteStateMachines>();
-            services.AddSingleton<IInverterDriver, MAS_InverterDriver.InverterDriver>();
+            services.AddSingleton<INewInverterDriver, NewInverterDriver>();
+
+            //TODO Old InverterDriver Registration to be removed after code refactoring completed
+            services.AddSingleton<InverterDriver.IInverterDriver, InverterDriver.InverterDriver >();
         }
 
         #endregion

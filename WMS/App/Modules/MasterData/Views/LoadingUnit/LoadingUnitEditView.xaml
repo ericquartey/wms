@@ -55,7 +55,7 @@
             <wms:WmsTrayControl x:Name="TrayControl"
                                 Grid.Row="1"                                
                                 Margin="0,10,0,0"
-                                IsCompartmentSelectable="{Binding IsSidePanelOpen}"
+                                IsCompartmentSelectable="{Binding IsSidePanelOpen, Converter={StaticResource BNC}}"
                                 IsReadOnly="{Binding IsSidePanelOpen}"
                                 SelectedColorFilterFunc="{Binding FilterColorFunc}"
                                 SelectedItem="{Binding SelectedCompartmentTray, Mode=TwoWay}"

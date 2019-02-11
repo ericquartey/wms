@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private const string DefaultApplicationSettingsFile = "appsettings.json";
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS_DataLayer
         {
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -35,6 +35,10 @@ namespace Ferretto.VW.MAS_DataLayer
         public DbSet<StatusLog> StatusLogs { get; set; }
 
         public DbSet<Step> Steps { get; set; }
+
+        public DbSet<RuntimeValue> RuntimeValues { get; set; }
+
+        public DbSet<ConfigurationValue> ConfigurationValues { get; set; }
 
         #endregion Properties
 
@@ -67,6 +71,6 @@ namespace Ferretto.VW.MAS_DataLayer
             optionsBuilder.UseSqlite(connectionString);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

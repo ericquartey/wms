@@ -12,39 +12,39 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         private readonly IWriteLogService data;
 
-        private readonly IInverterDriver driver;
+        private readonly INewInverterDriver driver;
 
         private readonly IEventAggregator eventAggregator;
 
         private StateMachineVerticalHoming context;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
-        public VerticalHomingIdleState(StateMachineVerticalHoming parent, IInverterDriver iDriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
+        public VerticalHomingIdleState(StateMachineVerticalHoming parent, INewInverterDriver iDriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
         {
             this.context = parent;
             this.driver = iDriver;
             this.data = iWriteLogService;
             this.eventAggregator = eventAggregator;
 
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.NotifyEventHandler);
+            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
 
             this.driver.ExecuteVerticalHoming();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public string Type => "Vertical Homing Idle State";
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
-        public void NotifyEventHandler(Notification_EventParameter notification)
+        private void notifyEventHandler(Notification_EventParameter notification)
         {
             switch (notification.OperationStatus)
             {
@@ -64,6 +64,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

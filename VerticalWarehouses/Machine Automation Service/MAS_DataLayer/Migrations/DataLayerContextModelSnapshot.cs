@@ -14,9 +14,22 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.1-servicing-10028");
+                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024");
 
-            modelBuilder.Entity("MAS_DataLayer.Operation", b =>
+            modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.ConfigurationValue", b =>
+                {
+                    b.Property<long>("VarName");
+
+                    b.Property<long>("VarType");
+
+                    b.Property<string>("VarValue");
+
+                    b.HasKey("VarName");
+
+                    b.ToTable("ConfigurationValues");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.Operation", b =>
                 {
                     b.Property<int>("OperationId")
                         .ValueGeneratedOnAdd();
@@ -28,7 +41,32 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                     b.ToTable("Operations");
                 });
 
-            modelBuilder.Entity("MAS_DataLayer.Step", b =>
+            modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.RuntimeValue", b =>
+                {
+                    b.Property<long>("VarName");
+
+                    b.Property<long>("VarType");
+
+                    b.Property<string>("VarValue");
+
+                    b.HasKey("VarName");
+
+                    b.ToTable("RuntimeValues");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.StatusLog", b =>
+                {
+                    b.Property<int>("StatusLogId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("LogMessage");
+
+                    b.HasKey("StatusLogId");
+
+                    b.ToTable("StatusLogs");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.Step", b =>
                 {
                     b.Property<int>("StepId")
                         .ValueGeneratedOnAdd();
@@ -42,9 +80,9 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                     b.ToTable("Steps");
                 });
 
-            modelBuilder.Entity("MAS_DataLayer.Step", b =>
+            modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.Step", b =>
                 {
-                    b.HasOne("MAS_DataLayer.Operation", "Operation")
+                    b.HasOne("Ferretto.VW.MAS_DataLayer.Operation", "Operation")
                         .WithMany("Steps")
                         .HasForeignKey("OperationId");
                 });

@@ -4,8 +4,8 @@ using Ferretto.WMS.Data.Core.Models;
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
     public interface IMissionProvider :
-        IReadAllProvider<Mission>,
-        IReadSingleProvider<Mission, int>
+        IReadAllAsyncProvider<Mission>,
+        IReadSingleAsyncProvider<Mission, int>
     {
     }
 }
