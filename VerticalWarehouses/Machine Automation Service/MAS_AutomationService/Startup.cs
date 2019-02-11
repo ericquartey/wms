@@ -62,12 +62,12 @@ namespace Ferretto.VW.MAS_AutomationService
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
+
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSignalR();
 
             var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
-
             services.AddDbContext<DataLayerContext>(options => options.UseSqlite(connectionString), ServiceLifetime.Singleton);
 
             services.AddSingleton<IEventAggregator, EventAggregator>();

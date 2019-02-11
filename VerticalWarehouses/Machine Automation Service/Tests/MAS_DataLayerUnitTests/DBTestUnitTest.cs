@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace MAS_DataLayerUnitTests
 {
     [TestClass]
-    public abstract class DBTest
+    public abstract class DBTestUnitTest
     {
         protected StatusLog StatusLog1 { get; set; }
         protected StatusLog StatusLog2 { get; set; }
