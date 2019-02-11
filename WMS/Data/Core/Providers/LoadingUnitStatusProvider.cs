@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class CellTypeProvider : ICellTypeProvider
+    public class LoadingUnitStatusProvider : ILoadingUnitStatusProvider
     {
         #region Fields
 
@@ -18,7 +18,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Constructors
 
-        public CellTypeProvider(DatabaseContext dataContext)
+        public LoadingUnitStatusProvider(DatabaseContext dataContext)
         {
             this.dataContext = dataContext;
         }
@@ -27,10 +27,10 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public async Task<IEnumerable<CellType>> GetAllAsync()
+        public async Task<IEnumerable<LoadingUnitStatus>> GetAllAsync()
         {
-            return await this.dataContext.CellTypes
-               .Select(c => new CellType
+            return await this.dataContext.LoadingUnitStatuses
+               .Select(c => new LoadingUnitStatus
                {
                    Id = c.Id,
                    Description = c.Description
@@ -40,18 +40,18 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<int> GetAllCountAsync()
         {
-            return await this.dataContext.CellTypes.CountAsync();
+            return await this.dataContext.LoadingUnitStatuses.CountAsync();
         }
 
-        public async Task<CellType> GetByIdAsync(int id)
+        public async Task<LoadingUnitStatus> GetByIdAsync(string id)
         {
-            return await this.dataContext.CellTypes
-                 .Select(c => new CellType
+            return await this.dataContext.LoadingUnitStatuses
+                 .Select(c => new LoadingUnitStatus
                  {
                      Id = c.Id,
                      Description = c.Description
                  })
-                 .SingleOrDefaultAsync(c => c.Id == id);
+                 .SingleOrDefaultAsync(l => l.Id == id);
         }
 
         #endregion

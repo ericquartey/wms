@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class CellTypeProvider : ICellTypeProvider
+    public class CellPositionProvider : ICellPositionProvider
     {
         #region Fields
 
@@ -18,7 +18,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Constructors
 
-        public CellTypeProvider(DatabaseContext dataContext)
+        public CellPositionProvider(DatabaseContext dataContext)
         {
             this.dataContext = dataContext;
         }
@@ -27,10 +27,10 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public async Task<IEnumerable<CellType>> GetAllAsync()
+        public async Task<IEnumerable<CellPosition>> GetAllAsync()
         {
-            return await this.dataContext.CellTypes
-               .Select(c => new CellType
+            return await this.dataContext.CellPositions
+               .Select(c => new CellPosition
                {
                    Id = c.Id,
                    Description = c.Description
@@ -40,13 +40,13 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<int> GetAllCountAsync()
         {
-            return await this.dataContext.CellTypes.CountAsync();
+            return await this.dataContext.CellPositions.CountAsync();
         }
 
-        public async Task<CellType> GetByIdAsync(int id)
+        public async Task<CellPosition> GetByIdAsync(int id)
         {
-            return await this.dataContext.CellTypes
-                 .Select(c => new CellType
+            return await this.dataContext.CellPositions
+                 .Select(c => new CellPosition
                  {
                      Id = c.Id,
                      Description = c.Description

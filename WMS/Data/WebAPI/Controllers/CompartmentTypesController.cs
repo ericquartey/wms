@@ -10,14 +10,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BaysController :
+    public class CompartmentTypesController :
         ControllerBase,
-        IReadAllController<Bay>,
-        IReadSingleController<Bay, int>
+        IReadAllController<CompartmentType>,
+        IReadSingleController<CompartmentType, int>
     {
         #region Fields
 
-        private readonly IBayProvider bayProvider;
+        private readonly ICompartmentTypeProvider compartmentTypeProvider;
 
         private readonly ILogger logger;
 
@@ -25,23 +25,23 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Constructors
 
-        public BaysController(
-            ILogger<BaysController> logger,
-            IBayProvider bayProvider)
+        public CompartmentTypesController(
+            ILogger<CompartmentTypesController> logger,
+            ICompartmentTypeProvider compartmentTypeProvider)
         {
             this.logger = logger;
-            this.bayProvider = bayProvider;
+            this.compartmentTypeProvider = compartmentTypeProvider;
         }
 
         #endregion
 
         #region Methods
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Bay>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<CompartmentType>))]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Bay>>> GetAllAsync()
+        public async Task<ActionResult<IEnumerable<CompartmentType>>> GetAllAsync()
         {
-            return this.Ok(await this.bayProvider.GetAllAsync());
+            return this.Ok(await this.compartmentTypeProvider.GetAllAsync());
         }
 
         [ProducesResponseType(200, Type = typeof(int))]
@@ -49,15 +49,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [Route("count")]
         public async Task<ActionResult<int>> GetAllCountAsync()
         {
-            return this.Ok(await this.bayProvider.GetAllCountAsync());
+            return this.Ok(await this.compartmentTypeProvider.GetAllCountAsync());
         }
 
-        [ProducesResponseType(200, Type = typeof(Bay))]
+        [ProducesResponseType(200, Type = typeof(CompartmentType))]
         [ProducesResponseType(404)]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Bay>> GetByIdAsync(int id)
+        public async Task<ActionResult<CompartmentType>> GetByIdAsync(int id)
         {
-            var result = await this.bayProvider.GetByIdAsync(id);
+            var result = await this.compartmentTypeProvider.GetByIdAsync(id);
             if (result == null)
             {
                 var message = $"No entity with the specified id={id} exists.";

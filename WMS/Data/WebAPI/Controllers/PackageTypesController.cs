@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
@@ -10,38 +10,38 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MissionsController :
+    public class PackageTypesController :
         ControllerBase,
-        IReadAllController<Mission>,
-        IReadSingleController<Mission, int>
+        IReadAllController<PackageType>,
+        IReadSingleController<PackageType, int>
     {
         #region Fields
 
-        private readonly ILogger logger;
+        private readonly IPackageTypeProvider packageTypeProvider;
 
-        private readonly IMissionProvider missionProvider;
+        private readonly ILogger logger;
 
         #endregion
 
         #region Constructors
 
-        public MissionsController(
-            ILogger<ItemsController> logger,
-            IMissionProvider missionProvider)
+        public PackageTypesController(
+            ILogger<PackageTypesController> logger,
+            IPackageTypeProvider packageTypeProvider)
         {
             this.logger = logger;
-            this.missionProvider = missionProvider;
+            this.packageTypeProvider = packageTypeProvider;
         }
 
         #endregion
 
         #region Methods
 
+        [ProducesResponseType(200, Type = typeof(IEnumerable<PackageType>))]
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Mission>))]
-        public async Task<ActionResult<IEnumerable<Mission>>> GetAllAsync()
+        public async Task<ActionResult<IEnumerable<PackageType>>> GetAllAsync()
         {
-            return this.Ok(await this.missionProvider.GetAllAsync());
+            return this.Ok(await this.packageTypeProvider.GetAllAsync());
         }
 
         [ProducesResponseType(200, Type = typeof(int))]
@@ -49,15 +49,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [Route("count")]
         public async Task<ActionResult<int>> GetAllCountAsync()
         {
-            return this.Ok(await this.missionProvider.GetAllCountAsync());
+            return this.Ok(await this.packageTypeProvider.GetAllCountAsync());
         }
 
-        [ProducesResponseType(200, Type = typeof(Mission))]
-        [ProducesResponseType(404, Type = typeof(SerializableError))]
+        [ProducesResponseType(200, Type = typeof(PackageType))]
+        [ProducesResponseType(404)]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Mission>> GetByIdAsync(int id)
+        public async Task<ActionResult<PackageType>> GetByIdAsync(int id)
         {
-            var result = await this.missionProvider.GetByIdAsync(id);
+            var result = await this.packageTypeProvider.GetByIdAsync(id);
             if (result == null)
             {
                 var message = $"No entity with the specified id={id} exists.";

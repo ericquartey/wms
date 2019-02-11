@@ -4,10 +4,10 @@ using Ferretto.WMS.Data.Core.Models;
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
     public interface IItemProvider :
-        ICreateAsyncProvider<ItemDetails>,
-        IReadAllPagedAsyncProvider<Item>,
+        ICreateAsyncProvider<ItemDetails, int>,
+        IReadAllPagedAsyncProvider<Item, int>,
         IReadSingleAsyncProvider<ItemDetails, int>,
-        IUpdateAsyncProvider<ItemDetails>,
+        IUpdateAsyncProvider<ItemDetails, int>,
         IGetUniqueValuesAsyncProvider
     {
     }

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
@@ -10,38 +10,38 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MissionsController :
+    public class CellStatusesController :
         ControllerBase,
-        IReadAllController<Mission>,
-        IReadSingleController<Mission, int>
+        IReadAllController<CellStatus>,
+        IReadSingleController<CellStatus, int>
     {
         #region Fields
 
-        private readonly ILogger logger;
+        private readonly ICellStatusProvider cellStatusProvider;
 
-        private readonly IMissionProvider missionProvider;
+        private readonly ILogger logger;
 
         #endregion
 
         #region Constructors
 
-        public MissionsController(
-            ILogger<ItemsController> logger,
-            IMissionProvider missionProvider)
+        public CellStatusesController(
+            ILogger<CellStatusesController> logger,
+            ICellStatusProvider cellStatusProvider)
         {
             this.logger = logger;
-            this.missionProvider = missionProvider;
+            this.cellStatusProvider = cellStatusProvider;
         }
 
         #endregion
 
         #region Methods
 
+        [ProducesResponseType(200, Type = typeof(IEnumerable<CellStatus>))]
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Mission>))]
-        public async Task<ActionResult<IEnumerable<Mission>>> GetAllAsync()
+        public async Task<ActionResult<IEnumerable<CellStatus>>> GetAllAsync()
         {
-            return this.Ok(await this.missionProvider.GetAllAsync());
+            return this.Ok(await this.cellStatusProvider.GetAllAsync());
         }
 
         [ProducesResponseType(200, Type = typeof(int))]
@@ -49,15 +49,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [Route("count")]
         public async Task<ActionResult<int>> GetAllCountAsync()
         {
-            return this.Ok(await this.missionProvider.GetAllCountAsync());
+            return this.Ok(await this.cellStatusProvider.GetAllCountAsync());
         }
 
-        [ProducesResponseType(200, Type = typeof(Mission))]
-        [ProducesResponseType(404, Type = typeof(SerializableError))]
+        [ProducesResponseType(200, Type = typeof(CellStatus))]
+        [ProducesResponseType(404)]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Mission>> GetByIdAsync(int id)
+        public async Task<ActionResult<CellStatus>> GetByIdAsync(int id)
         {
-            var result = await this.missionProvider.GetByIdAsync(id);
+            var result = await this.cellStatusProvider.GetByIdAsync(id);
             if (result == null)
             {
                 var message = $"No entity with the specified id={id} exists.";

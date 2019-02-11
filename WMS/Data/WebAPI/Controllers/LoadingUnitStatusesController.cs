@@ -10,14 +10,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BaysController :
+    public class LoadingUnitStatusesController :
         ControllerBase,
-        IReadAllController<Bay>,
-        IReadSingleController<Bay, int>
+        IReadAllController<LoadingUnitStatus>,
+        IReadSingleController<LoadingUnitStatus, string>
     {
         #region Fields
 
-        private readonly IBayProvider bayProvider;
+        private readonly ILoadingUnitStatusProvider loadingUnitStatusProvider;
 
         private readonly ILogger logger;
 
@@ -25,23 +25,23 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Constructors
 
-        public BaysController(
-            ILogger<BaysController> logger,
-            IBayProvider bayProvider)
+        public LoadingUnitStatusesController(
+            ILogger<LoadingUnitStatusesController> logger,
+            ILoadingUnitStatusProvider loadingUnitStatusProvider)
         {
             this.logger = logger;
-            this.bayProvider = bayProvider;
+            this.loadingUnitStatusProvider = loadingUnitStatusProvider;
         }
 
         #endregion
 
         #region Methods
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Bay>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<LoadingUnitStatus>))]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Bay>>> GetAllAsync()
+        public async Task<ActionResult<IEnumerable<LoadingUnitStatus>>> GetAllAsync()
         {
-            return this.Ok(await this.bayProvider.GetAllAsync());
+            return this.Ok(await this.loadingUnitStatusProvider.GetAllAsync());
         }
 
         [ProducesResponseType(200, Type = typeof(int))]
@@ -49,15 +49,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [Route("count")]
         public async Task<ActionResult<int>> GetAllCountAsync()
         {
-            return this.Ok(await this.bayProvider.GetAllCountAsync());
+            return this.Ok(await this.loadingUnitStatusProvider.GetAllCountAsync());
         }
 
-        [ProducesResponseType(200, Type = typeof(Bay))]
+        [ProducesResponseType(200, Type = typeof(LoadingUnitStatus))]
         [ProducesResponseType(404)]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Bay>> GetByIdAsync(int id)
+        public async Task<ActionResult<LoadingUnitStatus>> GetByIdAsync(string id)
         {
-            var result = await this.bayProvider.GetByIdAsync(id);
+            var result = await this.loadingUnitStatusProvider.GetByIdAsync(id);
             if (result == null)
             {
                 var message = $"No entity with the specified id={id} exists.";

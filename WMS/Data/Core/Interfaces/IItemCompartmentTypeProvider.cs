@@ -4,8 +4,8 @@ using Ferretto.WMS.Data.Core.Models;
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
     public interface IItemCompartmentTypeProvider :
-        ICreateAsyncProvider<ItemCompartmentType>,
-        IUpdateAsyncProvider<ItemCompartmentType>
+        ICreateAsyncProvider<ItemCompartmentType, int>,
+        IUpdateAsyncProvider<ItemCompartmentType, int>
     {
     }
 }
