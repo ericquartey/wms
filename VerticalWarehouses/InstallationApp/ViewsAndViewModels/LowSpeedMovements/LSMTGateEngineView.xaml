@@ -16,14 +16,9 @@
         <TextBlock     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="180,30,0,0"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="{x:Static res:InstallationApp.LSMTGateEngineTitle}"  />
-         
-        <custom:CustomLabelTextBlockControl   Name="FeedRateLabel"
-                                              HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,160,0,0"      
-                                              ContentText="10%"
-                                              LabelText="{x:Static res:InstallationApp.FeedRate}"  />
-       
+
         <custom:CustomLabelTextBlockControl   Name="ActualPositionLabel"
-                                              HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,280,0,0"       
+                                              HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,160,0,0"       
                                               ContentText="Aperta"
                                               LabelText="{x:Static res:InstallationApp.ActualPosition}" />
         <Button    Name="GateEngineUp"

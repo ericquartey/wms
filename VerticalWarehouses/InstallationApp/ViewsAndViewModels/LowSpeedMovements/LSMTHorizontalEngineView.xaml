@@ -18,10 +18,6 @@
                      Text="{x:Static res:InstallationApp.LSMTHorizontalEngineTitle}"  />
 
         <custom:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,160,0,0"
-                                                ContentText="10%"
-                                                LabelText="{x:Static res:InstallationApp.FeedRate}"  />
-
-        <custom:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,280,0,0"
                                                 ContentText="980,8"
                                                 LabelText="{x:Static res:InstallationApp.ActualPosition}"  />
 

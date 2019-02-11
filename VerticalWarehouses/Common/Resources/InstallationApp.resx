@@ -166,7 +166,7 @@
     <comment>Title - Button text</comment>
   </data>
   <data name="LSMTGateEngineButton" xml:space="preserve">
-    <value>Gate engine</value>
+    <value>Gate</value>
     <comment>Button text</comment>
   </data>
   <data name="LSMTGateEngineTitle" xml:space="preserve">
@@ -174,19 +174,19 @@
     <comment>Title</comment>
   </data>
   <data name="LSMTHorizontalEngineButton" xml:space="preserve">
-    <value>Horizontal Engine</value>
+    <value>Horizontal Axis</value>
     <comment>Button text</comment>
   </data>
   <data name="LSMTHorizontalEngineTitle" xml:space="preserve">
-    <value>Horizontal engine movements</value>
+    <value>Horizontal axis movements</value>
     <comment>Title</comment>
   </data>
   <data name="LSMTVerticalEngineButton" xml:space="preserve">
-    <value>Vertical Engine</value>
+    <value>Vertical Axis</value>
     <comment>Button text</comment>
   </data>
   <data name="LSMTVerticalEngineTitle" xml:space="preserve">
-    <value>Vertical engine movements</value>
+    <value>Vertical axis movements</value>
     <comment>Title</comment>
   </data>
   <data name="Manual" xml:space="preserve">
@@ -382,7 +382,7 @@
     <comment>Button text</comment>
   </data>
   <data name="GoToInitialPosition" xml:space="preserve">
-    <value>Go to initial position</value>
+    <value>Go to cell</value>
     <comment>Button text</comment>
   </data>
   <data name="InitialPosition" xml:space="preserve">
@@ -578,7 +578,7 @@
     <comment>Button text</comment>
   </data>
   <data name="ReferenceCellHeight" xml:space="preserve">
-    <value>Reference's cell height [mm]:</value>
+    <value>Reference's cell position [mm]:</value>
     <comment>Label text</comment>
   </data>
   <data name="ReferenceCellNumber" xml:space="preserve">
@@ -622,7 +622,7 @@
     <comment>Label text</comment>
   </data>
   <data name="Back" xml:space="preserve">
-    <value>Back</value>
+    <value>Backward</value>
     <comment>Title - Button text</comment>
   </data>
   <data name="Front" xml:space="preserve">
@@ -703,7 +703,7 @@
     <value>Axis Not Calibrated Yet</value>
   </data>
   <data name="CellsControl" xml:space="preserve">
-    <value>Cells  Control</value>
+    <value>Cells  position control</value>
     <comment>Title - Button text</comment>
   </data>
   <data name="MesuredInitialPosition" xml:space="preserve">
@@ -830,6 +830,10 @@
   </data>
   <data name="CloseProcedure" xml:space="preserve">
     <value>Close procedure</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LSMTElevator" xml:space="preserve">
+    <value>Elevator</value>
     <comment>Button text</comment>
   </data>
 </root>

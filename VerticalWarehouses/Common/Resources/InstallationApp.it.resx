@@ -160,22 +160,22 @@
     <value>Movimenti bassa velocità</value>
   </data>
   <data name="LSMTGateEngineButton" xml:space="preserve">
-    <value>Motore serranda</value>
+    <value>Serranda</value>
   </data>
   <data name="LSMTGateEngineTitle" xml:space="preserve">
     <value>Movimenti motore serranda</value>
   </data>
   <data name="LSMTHorizontalEngineButton" xml:space="preserve">
-    <value>Motore orizzontale</value>
+    <value>Asse orizzontale</value>
   </data>
   <data name="LSMTHorizontalEngineTitle" xml:space="preserve">
-    <value>Movimenti motore orizzontale</value>
+    <value>Movimenti asse orizzontale</value>
   </data>
   <data name="LSMTVerticalEngineButton" xml:space="preserve">
-    <value>Motore verticale</value>
+    <value>Asse verticale</value>
   </data>
   <data name="LSMTVerticalEngineTitle" xml:space="preserve">
-    <value>Movimenti motore verticale</value>
+    <value>Movimenti asse verticale</value>
   </data>
   <data name="Manual" xml:space="preserve">
     <value>Manu</value>
@@ -326,7 +326,7 @@
     <value>Sposta</value>
   </data>
   <data name="GoToInitialPosition" xml:space="preserve">
-    <value>Vai a posizione iniziale</value>
+    <value>Posiziona su cella</value>
   </data>
   <data name="InitialPosition" xml:space="preserve">
     <value>Posizione iniziale:</value>
@@ -404,7 +404,7 @@
     <value>Raggi attivati:</value>
   </data>
   <data name="CurrentHeight" xml:space="preserve">
-    <value>Altezza corrente [mm]:</value>
+    <value>Quota corrente [mm]:</value>
   </data>
   <data name="GateCalibrated" xml:space="preserve">
     <value>Barriera calibrata.</value>
@@ -431,7 +431,7 @@
     <value>Tolleranza (+/-) [mm]:</value>
   </data>
   <data name="VerticalOffsetCalibration" xml:space="preserve">
-    <value>Offset asse verticale</value>
+    <value>Calibrazione offset asse verticale</value>
   </data>
   <data name="WeightControl" xml:space="preserve">
     <value>Controllo peso</value>
@@ -473,7 +473,7 @@
     <value>Correggi</value>
   </data>
   <data name="ReferenceCellHeight" xml:space="preserve">
-    <value>Altezza cella di riferimento [mm]:</value>
+    <value>Quota cella di riferimento [mm]:</value>
   </data>
   <data name="ReferenceCellNumber" xml:space="preserve">
     <value>Numero cella di riferimento:</value>
@@ -488,13 +488,13 @@
     <value>Valore step [mm]:</value>
   </data>
   <data name="CellHeight" xml:space="preserve">
-    <value>Altezza cella attuale [mm]:</value>
+    <value>Quota cella selezionata [mm]:</value>
   </data>
   <data name="CellsPanelControl" xml:space="preserve">
     <value>Controllo pannelli celle</value>
   </data>
   <data name="CurrentCell" xml:space="preserve">
-    <value>Cella attuale:</value>
+    <value>Cella selezionata:</value>
   </data>
   <data name="CurrentPanel" xml:space="preserve">
     <value>Pannello attuale:</value>
@@ -506,7 +506,7 @@
     <value>Pannelli totali:</value>
   </data>
   <data name="Back" xml:space="preserve">
-    <value>Posteriore</value>
+    <value>Indietro</value>
   </data>
   <data name="Front" xml:space="preserve">
     <value>Anteriore</value>
@@ -560,7 +560,7 @@
     <value>Risoluzione asse verticale</value>
   </data>
   <data name="CellsControl" xml:space="preserve">
-    <value>Controllo celle</value>
+    <value>Controllo quote celle</value>
   </data>
   <data name="CellCorrection" xml:space="preserve">
     <value>Correzione cella [mm]:</value>
@@ -657,5 +657,8 @@
   </data>
   <data name="CloseProcedure" xml:space="preserve">
     <value>Chiudi procedura</value>
+  </data>
+  <data name="LSMTElevator" xml:space="preserve">
+    <value>Elevatore</value>
   </data>
 </root>

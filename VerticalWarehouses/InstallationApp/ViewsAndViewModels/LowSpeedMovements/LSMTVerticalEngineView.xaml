@@ -17,11 +17,7 @@
                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                       Text="{x:Static res:InstallationApp.LSMTVerticalEngineTitle}" />
 
-        <custom:CustomLabelTextBlockControl  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="180,160,0,0"
-                                             ContentText="10%"
-                                             LabelText="{x:Static res:InstallationApp.FeedRate}"  />
-
-        <custom:CustomLabelTextBlockControl  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="180,280,0,0"            
+        <custom:CustomLabelTextBlockControl  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="180,160,0,0"            
                                              ContentText="1235,2"
                                              LabelText="{x:Static res:InstallationApp.ActualPosition}"  />
 

@@ -142,7 +142,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Back.
+        ///   Cerca una stringa localizzata simile a Backward.
         /// </summary>
         public static string Back {
             get {
@@ -223,7 +223,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Cells  Control.
+        ///   Cerca una stringa localizzata simile a Cells  position control.
         /// </summary>
         public static string CellsControl {
             get {
@@ -682,7 +682,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Go to initial position.
+        ///   Cerca una stringa localizzata simile a Go to cell.
         /// </summary>
         public static string GoToInitialPosition {
             get {
@@ -853,7 +853,16 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Gate engine.
+        ///   Cerca una stringa localizzata simile a Elevator.
+        /// </summary>
+        public static string LSMTElevator {
+            get {
+                return ResourceManager.GetString("LSMTElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Gate.
         /// </summary>
         public static string LSMTGateEngineButton {
             get {
@@ -871,7 +880,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Horizontal Engine.
+        ///   Cerca una stringa localizzata simile a Horizontal Axis.
         /// </summary>
         public static string LSMTHorizontalEngineButton {
             get {
@@ -880,7 +889,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Horizontal engine movements.
+        ///   Cerca una stringa localizzata simile a Horizontal axis movements.
         /// </summary>
         public static string LSMTHorizontalEngineTitle {
             get {
@@ -889,7 +898,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Vertical Engine.
+        ///   Cerca una stringa localizzata simile a Vertical Axis.
         /// </summary>
         public static string LSMTVerticalEngineButton {
             get {
@@ -898,7 +907,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Vertical engine movements.
+        ///   Cerca una stringa localizzata simile a Vertical axis movements.
         /// </summary>
         public static string LSMTVerticalEngineTitle {
             get {
@@ -1258,7 +1267,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Reference&apos;s cell height [mm]:.
+        ///   Cerca una stringa localizzata simile a Reference&apos;s cell position [mm]:.
         /// </summary>
         public static string ReferenceCellHeight {
             get {
