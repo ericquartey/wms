@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         private readonly IEventAggregator eventAggregator;
 
-        private StateMachineVerticalHoming context;
+        private StateMachineVerticalHoming parent;
 
         #endregion
 
@@ -24,15 +24,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         public VerticalHomingDoneState(StateMachineVerticalHoming parent, INewInverterDriver iDriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
         {
-            this.context = parent;
+            this.parent = parent;
             this.driver = iDriver;
             this.data = iWriteLogService;
             this.eventAggregator = eventAggregator;
 
             var notifyEvent = new Notification_EventParameter(OperationType.Homing, OperationStatus.End, "Homing done", Verbosity.Info);
             this.eventAggregator.GetEvent<FiniteStateMachines_NotificationEvent>().Publish(notifyEvent);
-
-            this.data.LogWriting(new Command_EventParameter(CommandType.ExecuteHoming));
         }
 
         #endregion

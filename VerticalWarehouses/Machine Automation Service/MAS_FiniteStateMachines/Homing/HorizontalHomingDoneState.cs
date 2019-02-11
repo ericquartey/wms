@@ -1,4 +1,7 @@
 ﻿using Ferretto.VW.Common_Utils.EventParameters;
+using Ferretto.VW.MAS_DataLayer;
+using Ferretto.VW.MAS_InverterDriver;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
@@ -7,33 +10,36 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
     {
         #region Fields
 
-        private StateMachineHoming context;
+        private readonly IWriteLogService data;
 
-        private MAS_DataLayer.IWriteLogService data;
+        private readonly INewInverterDriver driver;
 
-        private MAS_InverterDriver.INewInverterDriver driver;
+        private readonly IEventAggregator eventAggregator;
 
-        #endregion Fields
+        private StateMachineHoming parent;
+
+        #endregion
 
         #region Constructors
 
-        public HorizontalHomingDoneState(StateMachineHoming parent, MAS_InverterDriver.INewInverterDriver iDriver, MAS_DataLayer.IWriteLogService iWriteLogService)
+        public HorizontalHomingDoneState(StateMachineHoming parent, INewInverterDriver iDriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
         {
-            this.context = parent;
+            this.parent = parent;
             this.driver = iDriver;
             this.data = iWriteLogService;
+            this.eventAggregator = eventAggregator;
 
             this.data.LogWriting(new Command_EventParameter(CommandType.ExecuteHoming));
 
-            this.context.HorizontalHomingAlreadyDone = true;
+            this.parent.HorizontalHomingAlreadyDone = true;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public string Type => "Horizontal homing done";
 
-        #endregion Properties
+        #endregion
     }
 }

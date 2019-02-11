@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             var commandEvent = this.eventAggregator.GetEvent<WebAPI_CommandEvent>();
             commandEvent.Subscribe(this.DoAction);
 
-            this.homing = new StateMachineHoming(this.driver, this.data);
+            this.homing = new StateMachineHoming(this.driver, this.data, this.eventAggregator);
             this.verticalHoming = new StateMachineVerticalHoming(this.driver, this.data, this.eventAggregator);
         }
 
@@ -74,12 +74,22 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             {
                 case CommandType.ExecuteHoming:
                     {
+                        /*
                         if (null == this.verticalHoming)
                         {
                             throw new ArgumentNullException();
                         }
 
                         this.verticalHoming.Start();
+                        break;
+                        */
+
+                        if (null == this.homing)
+                        {
+                            throw new ArgumentNullException();
+                        }
+
+                        this.homing.Start();
                         break;
                     }
                 default:

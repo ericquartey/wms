@@ -1,4 +1,7 @@
 ﻿using Ferretto.VW.Common_Utils.EventParameters;
+using Ferretto.VW.MAS_DataLayer;
+using Ferretto.VW.MAS_InverterDriver;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
@@ -6,31 +9,46 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
     {
         #region Fields
 
-        private StateMachineHoming context;
+        private readonly IWriteLogService data;
 
-        private MAS_DataLayer.IWriteLogService data;
+        private readonly INewInverterDriver driver;
 
-        private MAS_InverterDriver.INewInverterDriver driver;
+        private readonly IEventAggregator eventAggregator;
 
-        #endregion Fields
+        private StateMachineHoming parent;
+
+        #endregion
 
         #region Constructors
 
-        public HomingIdleState(StateMachineHoming parent, MAS_InverterDriver.INewInverterDriver iDriver, MAS_DataLayer.IWriteLogService iWriteLogService)
+        public HomingIdleState(StateMachineHoming parent, INewInverterDriver iDriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
         {
-            this.context = parent;
+            this.parent = parent;
             this.driver = iDriver;
             this.data = iWriteLogService;
+            this.eventAggregator = eventAggregator;
 
-            this.data.LogWriting(new Command_EventParameter(CommandType.ExecuteHoming));
+            //x this.data.LogWriting(new Command_EventParameter(CommandType.ExecuteHoming));
+
+            //this.eventAggregator.GetEvent<RemoteIO_NotificationEvent>().Subscribe(this.notifyEventHandler);
+
+            // execute switch horizontal
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
-        public string Type => "Homing Undone State";
+        public string Type => "Homing Idle State";
 
-        #endregion Properties
+        #endregion
+
+        #region Methods
+
+        private void notifyEventHandler(Notification_EventParameter notification)
+        {
+        }
+
+        #endregion
     }
 }
