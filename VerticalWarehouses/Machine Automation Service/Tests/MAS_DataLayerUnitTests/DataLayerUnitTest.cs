@@ -8,10 +8,10 @@ using Microsoft.Extensions.Configuration;
 namespace MAS_DataLayerUnitTests
 {
     [TestClass]
-    public class DataLayerUnitTest : DBTest
+    public class DataLayerUnitTest : DBTestUnitTest
     {
         [TestMethod]
-        public void DataLayerTestMethod()
+        public void TestMethodDataLayer()
         {
             using (var context = this.CreateContext())
             {

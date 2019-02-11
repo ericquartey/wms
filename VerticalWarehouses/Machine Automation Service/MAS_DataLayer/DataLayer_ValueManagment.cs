@@ -17,22 +17,22 @@ namespace Ferretto.VW.MAS_DataLayer
             var configurationValue = inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
 
             if (configurationValue != null)
-            { 
+            {
                 if (configurationValue.VarType == DataTypeEnum.integerType)
                 {
                     if (!Int32.TryParse(configurationValue.VarValue, out returnIntValue))
                     {
-                        throw new NotImplementedException("Data Layer Exception - Impossible convert the DB value to interger");
+                        throw new Exception("Data Layer Exception - Impossible convert the DB value to interger");
                     }
                 }
                 else
                 {
-                    throw new NotImplementedException("Data Layer Exception - Invalid Data Type");
+                    throw new Exception("Data Layer Exception - Invalid Data Type");
                 }
             }
             else
             {
-                throw new NotImplementedException("Data Layer Exception - Variable Not Found");
+                throw new Exception("Data Layer Exception - Variable Not Found");
             }
 
             return returnIntValue;
@@ -44,7 +44,30 @@ namespace Ferretto.VW.MAS_DataLayer
             // Confrontare il tipo nel DB con decimal
             // se diverso throw an exception creare l'eccezione Data layer Exception con Invalid Data Type
             // se uguale, converto il valore nle tipo e ritorno
-            throw new NotImplementedException();
+            decimal returnDecimalValue = 0;
+
+            var configurationValue = inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+
+            if (configurationValue != null)
+            {
+                if (configurationValue.VarType == DataTypeEnum.decimalType)
+                {
+                    if (!Decimal.TryParse(configurationValue.VarValue, out returnDecimalValue))
+                    {
+                        throw new Exception("Data Layer Exception - Impossible convert the DB value to decimal");
+                    }
+                }
+                else
+                {
+                    throw new Exception("Data Layer Exception - Invalid Data Type");
+                }
+            }
+            else
+            {
+                throw new Exception("Data Layer Exception - Variable Not Found");
+            }
+
+            return returnDecimalValue;
         }
 
         public string GetStringConfigurationValue(ConfigurationValueEnum configurationValueEnum)
@@ -53,7 +76,27 @@ namespace Ferretto.VW.MAS_DataLayer
             // Confrontare il tipo nel DB con string
             // se diverso throw an exception creare l'eccezione Data layer Exception con Invalid Data Type
             // se uguale, converto il valore nle tipo e ritorno
-            throw new NotImplementedException();
+            string returnStringValue = "";
+
+            var configurationValue = inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+
+            if (configurationValue != null)
+            {
+                if (configurationValue.VarType == DataTypeEnum.stringType)
+                {
+                    returnStringValue = configurationValue.VarValue;
+                }
+                else
+                {
+                    throw new Exception("Data Layer Exception - Invalid Data Type");
+                }
+            }
+            else
+            {
+                throw new Exception("Data Layer Exception - Variable Not Found");
+            }
+
+            return returnStringValue;
         }
 
         public int GetIntRuntimeValue(RuntimeValueEnum runtimeValueEnum)
@@ -103,6 +146,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
                 //Add new Employee to database
                 inMemoryDataContext.ConfigurationValues.Add(newConfigurationValue);
+                inMemoryDataContext.SaveChanges();
             }
             else // Update the existing record
             {
@@ -113,7 +157,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
                 else
                 {
-                    throw new NotImplementedException("Data Layer Exception - Invalid Data Type");
+                    throw new Exception("Data Layer Exception - Invalid Data Type");
                 }
             }
         }
@@ -126,7 +170,32 @@ namespace Ferretto.VW.MAS_DataLayer
             // se è diverso da int, throw exception "invalid data type"
             // se esiste lo aggiorno
             // se non esiste lo creo
-            throw new NotImplementedException();
+            var configurationValue = inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+
+            if (configurationValue == null) // Insert a new record
+            {
+                //Create new Variable in the DB
+                ConfigurationValue newConfigurationValue = new ConfigurationValue();
+                newConfigurationValue.VarName = configurationValueEnum;
+                newConfigurationValue.VarType = DataTypeEnum.decimalType;
+                newConfigurationValue.VarValue = value.ToString();
+
+                //Add new Employee to database
+                inMemoryDataContext.ConfigurationValues.Add(newConfigurationValue);
+                inMemoryDataContext.SaveChanges();
+            }
+            else // Update the existing record
+            {
+                if (configurationValue.VarType == DataTypeEnum.decimalType)
+                {
+                    configurationValue.VarValue = value.ToString();
+                    inMemoryDataContext.SaveChanges();
+                }
+                else
+                {
+                    throw new Exception("Data Layer Exception - Invalid Data Type");
+                }
+            }
         }
 
         public void SetStringConfigurationValue(ConfigurationValueEnum configurationValueEnum, string value)
@@ -137,7 +206,32 @@ namespace Ferretto.VW.MAS_DataLayer
             // se è diverso da int, throw exception "invalid data type"
             // se esiste lo aggiorno
             // se non esiste lo creo
-            throw new NotImplementedException();
+            var configurationValue = inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+
+            if (configurationValue == null) // Insert a new record
+            {
+                //Create new Variable in the DB
+                ConfigurationValue newConfigurationValue = new ConfigurationValue();
+                newConfigurationValue.VarName = configurationValueEnum;
+                newConfigurationValue.VarType = DataTypeEnum.stringType;
+                newConfigurationValue.VarValue = value;
+
+                //Add new Employee to database
+                inMemoryDataContext.ConfigurationValues.Add(newConfigurationValue);
+                inMemoryDataContext.SaveChanges();
+            }
+            else // Update the existing record
+            {
+                if (configurationValue.VarType == DataTypeEnum.stringType)
+                {
+                    configurationValue.VarValue = value;
+                    inMemoryDataContext.SaveChanges();
+                }
+                else
+                {
+                    throw new Exception("Data Layer Exception - Invalid Data Type");
+                }
+            }
         }
 
         public void SetIntRuntimeValue(RuntimeValueEnum runtimeValueEnum, int value)

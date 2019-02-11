@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 namespace MAS_DataLayerUnitTests
 {
     [TestClass]
-    public class DataLayerGetSetUnitTest : DBTest
+    public class DataLayerGetSetUnitTest : DBTestUnitTest
     {
         #region Methods
 
