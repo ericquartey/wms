@@ -6,6 +6,6 @@
 
         DatabaseContext Current { get; }
 
-        #endregion Properties
+        #endregion
     }
 }

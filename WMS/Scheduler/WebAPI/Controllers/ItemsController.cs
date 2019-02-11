@@ -17,7 +17,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
 
         private readonly Core.IWarehouse warehouse;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -29,7 +29,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
             this.warehouse = warehouse;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -72,6 +72,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

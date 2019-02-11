@@ -1,32 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Ferretto.VW.MAS_AutomationService.Hubs;
+using Ferretto.VW.MAS_DataLayer;
+using Ferretto.VW.MAS_FiniteStateMachines;
+using Ferretto.VW.MAS_InverterDriver;
+using Ferretto.VW.MAS_MachineManager;
+using Ferretto.VW.MAS_MissionScheduler;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Prism.Events;
 
-namespace MAS_AutomationService
+namespace Ferretto.VW.MAS_AutomationService
 {
     public class Startup
     {
+        #region Fields
+
+        private const string ConnectionStringName = "AutomationService";
+
+        #endregion
+
+        #region Constructors
+
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.Configuration = configuration;
         }
+
+        #endregion
+
+        #region Properties
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-        }
+        #endregion
+
+        #region Methods
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -40,8 +51,37 @@ namespace MAS_AutomationService
                 app.UseHsts();
             }
 
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<InstallationHub>($"/installation-endpoint", options => { });
+            });
+
             app.UseHttpsRedirection();
             app.UseMvc();
         }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+
+        {
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSignalR();
+
+            var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
+            services.AddDbContext<DataLayerContext>(options => options.UseSqlite(connectionString), ServiceLifetime.Singleton);
+
+            services.AddSingleton<IEventAggregator, EventAggregator>();
+            services.AddSingleton<IAutomationService, AutomationService>();
+            services.AddSingleton<IWriteLogService, WriteLogService>();
+            services.AddSingleton<IMissionsScheduler, MissionsScheduler>();
+            services.AddSingleton<IMachineManager, MachineManager>();
+            services.AddSingleton<IFiniteStateMachines, FiniteStateMachines>();
+            services.AddSingleton<INewInverterDriver, NewInverterDriver>();
+
+            //TODO Old InverterDriver Registration to be removed after code refactoring completed
+            services.AddSingleton<InverterDriver.IInverterDriver, InverterDriver.InverterDriver >();
+        }
+
+        #endregion
     }
 }

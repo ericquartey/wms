@@ -16,7 +16,7 @@ namespace Feretto.Common.Controls.Tests
 
         private INavigationService navigationService;
 
-        #endregion Fields
+        #endregion
 
         #region Methods
 
@@ -149,7 +149,7 @@ namespace Feretto.Common.Controls.Tests
                 registration.Name == expectedRegistrationName));
         }
 
-        #endregion Methods
+        #endregion
 
         #region Classes
 
@@ -175,7 +175,7 @@ namespace Feretto.Common.Controls.Tests
 
             public WmsViewType ViewType { get; }
 
-            #endregion Properties
+            #endregion
 
             #region Methods
 
@@ -184,7 +184,7 @@ namespace Feretto.Common.Controls.Tests
                 // TODO
             }
 
-            #endregion Methods
+            #endregion
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
@@ -203,7 +203,7 @@ namespace Feretto.Common.Controls.Tests
 
             public string Token { get; set; }
 
-            #endregion Properties
+            #endregion
 
             #region Methods
 
@@ -227,9 +227,9 @@ namespace Feretto.Common.Controls.Tests
                 // Test method. Implement dispose
             }
 
-            #endregion Methods
+            #endregion
         }
 
-        #endregion Classes
+        #endregion
     }
 }

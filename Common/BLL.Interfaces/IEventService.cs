@@ -36,6 +36,6 @@ namespace Ferretto.Common.BLL.Interfaces
         void Unsubscribe<T>(object subscriptionToken)
             where T : IPubSubEvent;
 
-        #endregion Methods
+        #endregion
     }
 }

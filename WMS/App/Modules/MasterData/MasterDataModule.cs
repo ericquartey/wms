@@ -3,6 +3,7 @@ using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
+using NLog;
 using Prism.Modularity;
 using Prism.Regions;
 #if DEBUG
@@ -23,6 +24,8 @@ namespace Ferretto.WMS.Modules.MasterData
     [ModuleDependency(nameof(Common.Utils.Modules.BusinessLogic))]
     public class MasterDataModule : IModule
     {
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+
         #region Constructors
 
         public MasterDataModule(IUnityContainer container, IRegionManager regionManager, INavigationService navigationService)
@@ -32,7 +35,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.NavigationService = navigationService;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -42,7 +45,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public IRegionManager RegionManager { get; private set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -50,12 +53,11 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingMasterDataModule);
 
-            NLog.LogManager
-               .GetCurrentClassLogger()
-               .Trace("Loading module ...");
+            this.logger.Trace("Loading module ...");
 
             this.NavigationService.Register<ItemsView, ItemsViewModel>();
             this.NavigationService.Register<ItemDetailsView, ItemDetailsViewModel>();
+            this.NavigationService.Register<ItemAddDialogView, ItemAddDialogViewModel>();
 
             this.NavigationService.Register<CellsView, CellsViewModel>();
             this.NavigationService.Register<CellDetailsView, CellDetailsViewModel>();
@@ -75,6 +77,8 @@ namespace Ferretto.WMS.Modules.MasterData
             this.NavigationService.Register<ItemListDetailsView, ItemListDetailsViewModel>();
 
             this.NavigationService.Register<ItemListRowDetailsView, ItemListRowDetailsViewModel>();
+
+            this.NavigationService.Register<FilterDialogView, FilterDialogViewModel>();
 
 #if DEBUG
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.CheckingDatabaseStructure);
@@ -108,11 +112,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
 #endif
 
-            NLog.LogManager
-               .GetCurrentClassLogger()
-               .Trace("Module loaded.");
+            this.logger.Trace("Module loaded.");
         }
 
-        #endregion Methods
+        #endregion
     }
 }

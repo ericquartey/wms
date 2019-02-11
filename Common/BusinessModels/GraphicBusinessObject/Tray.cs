@@ -17,13 +17,13 @@ namespace Ferretto.Common.BusinessModels
 
         private Dimension dimension;
 
-        #endregion Fields
+        #endregion
 
         #region Events
 
         public event EventHandler<CompartmentEventArgs> CompartmentChangedEvent;
 
-        #endregion Events
+        #endregion
 
         #region Properties
 
@@ -48,7 +48,7 @@ namespace Ferretto.Common.BusinessModels
 
         public Dimension RulerSize { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -98,7 +98,7 @@ namespace Ferretto.Common.BusinessModels
                     break;
                 }
 
-                var areCollisions = this.HasCollision(compartmentDetails, compartment);
+                var areCollisions = HasCollision(compartmentDetails, compartment);
                 if (areCollisions)
                 {
                     return false;
@@ -117,35 +117,13 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
-        private CompartmentDetails ConvertBulkCompartmentToCompartmentDetails(BulkCompartment bulk)
-        {
-            var compartment = new CompartmentDetails();
-            int row = 1;
-            int column = 1;
-            if (bulk.Rows != 0)
-            {
-                row = bulk.Rows;
-            }
-
-            if (bulk.Columns != 0)
-            {
-                column = bulk.Columns;
-            }
-
-            compartment.Width = bulk.Width * column;
-            compartment.Height = bulk.Height * row;
-            compartment.XPosition = bulk.XPosition;
-            compartment.YPosition = bulk.YPosition;
-            return compartment;
-        }
-
         /// <summary>
         /// Checks if the specified compartments are physically overlapping.
         /// </summary>
         /// <returns>
         /// True if the specified compartments are overlapping, False otherwise.
         /// </returns>
-        private bool HasCollision(ICompartment compartmentA, ICompartment compartmentB)
+        private static bool HasCollision(ICompartment compartmentA, ICompartment compartmentB)
         {
             var xAPositionFinal = compartmentA.XPosition + compartmentA.Width;
             var yAPositionFinal = compartmentA.YPosition + compartmentA.Height;
@@ -184,6 +162,28 @@ namespace Ferretto.Common.BusinessModels
             return false;
         }
 
-        #endregion Methods
+        private CompartmentDetails ConvertBulkCompartmentToCompartmentDetails(BulkCompartment bulk)
+        {
+            var compartment = new CompartmentDetails();
+            var row = 1;
+            var column = 1;
+            if (bulk.Rows != 0)
+            {
+                row = bulk.Rows;
+            }
+
+            if (bulk.Columns != 0)
+            {
+                column = bulk.Columns;
+            }
+
+            compartment.Width = bulk.Width * column;
+            compartment.Height = bulk.Height * row;
+            compartment.XPosition = bulk.XPosition;
+            compartment.YPosition = bulk.YPosition;
+            return compartment;
+        }
+
+        #endregion
     }
 }

@@ -13,6 +13,6 @@ namespace Ferretto.Common.DataModels
 
         public int Id { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

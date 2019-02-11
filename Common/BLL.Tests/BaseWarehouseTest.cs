@@ -25,12 +25,11 @@ namespace Ferretto.Common.BLL.Tests
 
         protected DataModels.LoadingUnit LoadingUnit1 { get; private set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
-        [TestCleanup]
-        protected virtual void CleanupDatabase()
+        protected void CleanupDatabase()
         {
             using (var context = this.CreateContext())
             {
@@ -46,8 +45,7 @@ namespace Ferretto.Common.BLL.Tests
                     .Options);
         }
 
-        [TestInitialize]
-        protected virtual void InitializeDatabase()
+        protected void InitializeDatabase()
         {
             this.Area1 = new DataModels.Area { Id = 1, Name = "Area #1" };
             this.Aisle1 = new DataModels.Aisle { Id = 1, AreaId = this.Area1.Id, Name = "Aisle #1" };
@@ -73,6 +71,6 @@ namespace Ferretto.Common.BLL.Tests
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

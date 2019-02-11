@@ -34,15 +34,17 @@
   <ItemGroup>
     <Content Remove="Icons\**\*.png" />
     <Content Remove="Images\**\*.png" />
+    <Content Remove="Images\**\*.jpg" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Icons\**\*.png" />
     <Resource Include="Images\**\*.png" />
+    <Resource Include="Images\**\*.jpg" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)\Common\Controls\Ferretto.Common.Controls.csproj" />
+    <ProjectReference Include="..\..\..\Common\Controls\Ferretto.Common.Controls.csproj" />
   </ItemGroup>
 
   <ItemGroup>

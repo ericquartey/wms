@@ -37,6 +37,6 @@ namespace Ferretto.Common.BusinessProviders
 
         bool HasAnyAllowedItem(int modelId);
 
-        #endregion Methods
+        #endregion
     }
 }

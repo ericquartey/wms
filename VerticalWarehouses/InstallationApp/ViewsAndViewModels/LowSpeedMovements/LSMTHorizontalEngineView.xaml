@@ -29,4 +29,4 @@
                     Content="{x:Static res:InstallationApp.Backward}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
     </Grid>
-</myType:BaseView>
+</local:BaseView>

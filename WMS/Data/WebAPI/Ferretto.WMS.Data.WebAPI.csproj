@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -39,6 +39,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\EF\Ferretto.Common.EF.csproj" />
+    <ProjectReference Include="..\..\..\Common\Utils\Ferretto.Common.Utils.csproj" />
+    <ProjectReference Include="..\Core\Ferretto.WMS.Data.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

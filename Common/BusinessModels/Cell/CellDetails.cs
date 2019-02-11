@@ -22,7 +22,7 @@ namespace Ferretto.Common.BusinessModels
         private int? yCoordinate;
         private int? zCoordinate;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -128,6 +128,6 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetIfPositive(ref this.zCoordinate, value);
         }
 
-        #endregion Properties
+        #endregion
     }
 }

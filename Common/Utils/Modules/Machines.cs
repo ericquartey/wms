@@ -8,6 +8,6 @@
 
         public const string MACHINES = "MachinesViewModel";
 
-        #endregion Fields
+        #endregion
     }
 }

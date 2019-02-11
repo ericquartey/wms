@@ -3,6 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
+    <AssemblyName>Ferretto.VW.MAS_IODriver</AssemblyName>
+    <RootNamespace>Ferretto.VW.MAS_IODriver</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Prism.Core" Version="7.1.0.431" />
+  </ItemGroup>
 
 </Project>

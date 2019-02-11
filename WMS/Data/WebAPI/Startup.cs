@@ -1,4 +1,6 @@
 ﻿using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Interfaces;
+using Ferretto.WMS.Data.Core.Providers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +13,10 @@ using NSwag.AspNetCore;
 
 namespace Ferretto.WMS.Data.WebAPI
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Major Code Smell",
+        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
+        Justification = "This class register services into container")]
     public class Startup
     {
         #region Constructors
@@ -20,13 +26,13 @@ namespace Ferretto.WMS.Data.WebAPI
             this.Configuration = configuration;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public IConfiguration Configuration { get; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -58,12 +64,12 @@ namespace Ferretto.WMS.Data.WebAPI
                 });
 #endif
             }
-            else
+            else if (env.IsProduction())
             {
                 app.UseHsts();
-            }
 
-            app.UseHttpsRedirection();
+                app.UseHttpsRedirection();
+            }
 
             app.UseMvc();
         }
@@ -77,13 +83,32 @@ namespace Ferretto.WMS.Data.WebAPI
             services.AddDbContext<DatabaseContext>(
                 options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Ferretto.Common.EF")));
 
-            services.AddTransient<Models.IWarehouse, Models.Warehouse>();
+            services.AddTransient<IAbcClassProvider, AbcClassProvider>();
+            services.AddTransient<IAreaProvider, AreaProvider>();
+            services.AddTransient<IBayProvider, BayProvider>();
+            services.AddTransient<ICellPositionProvider, CellPositionProvider>();
+            services.AddTransient<ICellProvider, CellProvider>();
+            services.AddTransient<ICellStatusProvider, CellStatusProvider>();
+            services.AddTransient<ICellTypeProvider, CellTypeProvider>();
+            services.AddTransient<ICompartmentProvider, CompartmentProvider>();
+            services.AddTransient<ICompartmentStatusProvider, CompartmentStatusProvider>();
+            services.AddTransient<ICompartmentTypeProvider, CompartmentTypeProvider>();
+            services.AddTransient<IItemCategoryProvider, ItemCategoryProvider>();
+            services.AddTransient<IItemCompartmentTypeProvider, ItemCompartmentTypeProvider>();
+            services.AddTransient<IItemListProvider, ItemListProvider>();
+            services.AddTransient<IItemProvider, ItemProvider>();
+            services.AddTransient<ILoadingUnitStatusProvider, LoadingUnitStatusProvider>();
+            services.AddTransient<ILoadingUnitTypeProvider, LoadingUnitTypeProvider>();
+            services.AddTransient<IMaterialStatusProvider, MaterialStatusProvider>();
+            services.AddTransient<IMeasureUnitProvider, MeasureUnitProvider>();
+            services.AddTransient<IMissionProvider, MissionProvider>();
+            services.AddTransient<IPackageTypeProvider, PackageTypeProvider>();
 
             services.AddMemoryCache();
 
             services.AddSignalR();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

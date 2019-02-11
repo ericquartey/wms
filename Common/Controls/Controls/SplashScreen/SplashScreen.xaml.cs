@@ -14,7 +14,7 @@ namespace Ferretto.Common.Controls
         private static readonly TimeSpan TimerInterval = new TimeSpan(0, 0, 0, 0, 200);
         private DateTime startTime;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -30,7 +30,7 @@ namespace Ferretto.Common.Controls
 #endif
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -50,6 +50,6 @@ namespace Ferretto.Common.Controls
             this.Timing.Text = $"{Common.Resources.DesktopApp.ElapsedTime}: {elapsedSeconds.ToString("#")}s";
         }
 
-        #endregion Methods
+        #endregion
     }
 }

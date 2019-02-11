@@ -19,12 +19,11 @@ trigger:
     - WMS
     include:
     - 'VerticalWarehouses\Panel PC User Interface'
-    - 'Common\Resources'
 
 variables:
   BuildPlatform: 'any cpu'
   BuildConfiguration: 'release'
-  TargetSolution: 'VerticalWarehouses.sln'
+  TargetSolution: 'VerticalWarehouses\VerticalWarehouses.sln'
 
 
 steps:

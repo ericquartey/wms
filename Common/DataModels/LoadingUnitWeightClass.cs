@@ -17,6 +17,6 @@ namespace Ferretto.Common.DataModels
 
         public int MinWeight { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

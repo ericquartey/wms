@@ -30,7 +30,7 @@ namespace Ferretto.Common.Controls
 
         private ICommand saveCommand;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -39,7 +39,7 @@ namespace Ferretto.Common.Controls
             this.changeDetector.ModifiedChanged += this.ChangeDetector_ModifiedChanged;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -108,7 +108,7 @@ namespace Ferretto.Common.Controls
                 async () => await this.ExecuteSaveCommand(),
                 this.CanExecuteSaveCommand));
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -209,6 +209,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

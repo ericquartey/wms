@@ -5,7 +5,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Threading;
-using Ferretto.VW.Utils;
 using NLog;
 
 namespace Ferretto.VW.InverterDriver
@@ -16,7 +15,7 @@ namespace Ferretto.VW.InverterDriver
     /// This class has an internal thread to manage the basic automation for the inverter.
     /// (see System.Net.Sockets.Socket class for the implementation details).
     /// </summary>
-    public class InverterDriver : IDriverBase, IDriver, IDisposable, IInverterDriver
+    public class InverterDriver : IDriver, IDisposable, IInverterDriver
     {
         #region Fields
 
@@ -29,9 +28,7 @@ namespace Ferretto.VW.InverterDriver
         public const string IP_ADDR_INVERTER_DEFAULT = "169.254.231.248";
 
         public const int PORT_ADDR_INVERTER_DEFAULT = 17221;
-
-        public ActionType CurrentActionType;
-
+        
         private static readonly object lockFlags = new object();
 
         private static readonly object lockObj = new object();
@@ -143,6 +140,8 @@ namespace Ferretto.VW.InverterDriver
         #endregion Events
 
         #region Properties
+
+        public ActionType CurrentActionType { get; set; }
 
         /// <summary>
         /// Get brake resistance overtemperature-Digital value.
@@ -340,6 +339,12 @@ namespace Ferretto.VW.InverterDriver
         #endregion Properties
 
         #region Methods
+
+        public class SocketPacket
+        {
+            public byte[] dataBuffer = new byte[1024];
+            public System.Net.Sockets.Socket thisSocket;
+        }
 
         /// <summary>
         /// Release resources.
@@ -667,15 +672,6 @@ namespace Ferretto.VW.InverterDriver
 
             try
             {
-                var permission = new SocketPermission(
-                    NetworkAccess.Connect,
-                    TransportType.Tcp,
-                    "",
-                    SocketPermission.AllPorts
-                );
-
-                permission.Demand();
-
                 var ipHost = Dns.GetHostEntry("");
                 var ipAddr = IPAddress.Parse(this.IPAddressToConnect);
                 var iPortNumber = this.PortAddressToConnect;

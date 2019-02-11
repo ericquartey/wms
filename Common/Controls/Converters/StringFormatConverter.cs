@@ -28,6 +28,6 @@ namespace Ferretto.Common.Controls
             throw new NotImplementedException();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -8,6 +8,6 @@ namespace Ferretto.Common.BusinessProviders
 
         string IsValid(User user);
 
-        #endregion Methods
+        #endregion
     }
 }

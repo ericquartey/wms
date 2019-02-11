@@ -461,4 +461,7 @@
   <data name="QuantityWithUnitMeasure" xml:space="preserve">
     <value>{0} [{1}]</value>
   </data>
+  <data name="ItemImage" xml:space="preserve">
+    <value>Immagine Articolo</value>
+  </data>
 </root>

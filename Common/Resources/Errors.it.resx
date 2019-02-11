@@ -255,4 +255,7 @@
   <data name="UnableToLoadData" xml:space="preserve">
     <value>Impossibile caricare i dati.</value>
   </data>
+  <data name="PropertyIsRequired" xml:space="preserve">
+    <value>La proprietà {0} è obbligatoria.</value>
+  </data>
 </root>

@@ -174,9 +174,9 @@
 
                 <wms:WmsGridControl.Columns>
 
-                    <dxg:GridColumn Width="80*"
+                    <dxg:GridColumn Width="90*"
                                     CellToolTipBinding="{Binding}"
-                                    FieldName="Details">
+                                    Header="{x:Static res:General.Details}">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
                                 <wms:WmsIcon Width="16"
@@ -267,8 +267,8 @@
                                     FieldName="ItemDescription" />
                     <dxg:GridColumn Width="200*"
                                     FieldName="ItemListDescription" />
-                    <dxg:GridColumn Width="190*"
-                                    FieldName="ListRowDescription" />
+                    <dxg:GridColumn Width="180*"
+                                    FieldName="ItemListRowDescription" />
                     <dxg:GridColumn Width="140*"
                                     FieldName="LoadingUnitDescription" />
                     <dxg:GridColumn Width="90*"

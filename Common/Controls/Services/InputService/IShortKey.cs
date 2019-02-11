@@ -6,6 +6,6 @@
 
         bool KeyPress(ShortKeyInfo shortKeyInfo);
 
-        #endregion Methods
+        #endregion
     }
 }

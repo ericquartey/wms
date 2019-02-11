@@ -37,7 +37,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private Tray tray;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -46,7 +46,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.Initialize();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -86,7 +86,7 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.tray, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -207,6 +207,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId);
                     this.Model = compartment;
                     this.InitializeTray(loadingUnit);
+                    this.SelectedCompartmentTray = this.Model;
                 }
 
                 this.IsBusy = false;
@@ -217,12 +218,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        private void SetSelectedCompartment()
-        {
-            this.selectedCompartmentTray = this.Model;
-            this.RaisePropertyChanged(nameof(this.SelectedCompartmentTray));
-        }
-
-        #endregion Methods
+        #endregion
     }
 }

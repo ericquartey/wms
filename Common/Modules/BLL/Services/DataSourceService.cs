@@ -212,26 +212,24 @@ namespace Ferretto.Common.Modules.BLL.Services
                                     where TModel : IBusinessObject
         {
             var itemsProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
-            var itemsCountProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
-            return new List<FilterDataSource<Item>>
+            return new List<PagedDataSource<Item>>
             {
-                new FilterDataSource<Item>(
+                new PagedDataSource<Item>(
                     "ItemsViewAll",
                     Resources.MasterData.ItemAll,
-                    () => itemsProvider.GetAll(),
-                    () => itemsCountProvider.GetAllCount()),
+                    itemsProvider),
 
-                new FilterDataSource<Item>(
+                new PagedDataSource<Item>(
                     "ItemsViewClassA",
                     Resources.MasterData.ItemClassA,
-                    () => itemsProvider.GetWithAClass(),
-                    () => itemsCountProvider.GetWithAClassCount()),
+                    itemsProvider,
+                    "[AbcClassDescription] == 'A Class'"),
 
-                new FilterDataSource<Item>(
+                new PagedDataSource<Item>(
                     "ItemsViewFIFO",
                     Resources.MasterData.ItemFIFO,
-                    () => itemsProvider.GetWithFifo(),
-                    () => itemsCountProvider.GetWithFifoCount())
+                    itemsProvider,
+                    "[ManagementType] == 'FIFO'")
             }.Cast<IFilterDataSource<TModel>>();
         }
 
@@ -362,6 +360,6 @@ namespace Ferretto.Common.Modules.BLL.Services
                     }.Cast<IFilterDataSource<TModel>>();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

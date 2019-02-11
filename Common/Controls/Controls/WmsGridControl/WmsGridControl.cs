@@ -33,7 +33,7 @@ namespace Ferretto.Common.Controls
 
         private IRefreshDataEntityViewModel wmsViewModel;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -49,7 +49,7 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(SelectedBusinessObjectProperty, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -121,6 +121,6 @@ namespace Ferretto.Common.Controls
                 this.eventService.Invoke(new ModelSelectionChangedPubSubEvent<IBusinessObject>(this.SelectedBusinessObject.Id, this.token));
             }
         }
-        #endregion Methods
+        #endregion
     }
 }

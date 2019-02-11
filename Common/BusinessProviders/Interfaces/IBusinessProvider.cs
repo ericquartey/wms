@@ -23,6 +23,6 @@ namespace Ferretto.Common.BusinessProviders
 
         Task<OperationResult> SaveAsync(TDetailsModel model);
 
-        #endregion Methods
+        #endregion
     }
 }

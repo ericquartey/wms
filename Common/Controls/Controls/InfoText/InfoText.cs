@@ -22,7 +22,7 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty IsPillVisibleProperty = DependencyProperty.Register(
             nameof(IsPillVisible), typeof(bool), typeof(InfoText), new PropertyMetadata(default(bool)));
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -64,7 +64,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -107,6 +107,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

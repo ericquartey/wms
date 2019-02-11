@@ -17,6 +17,6 @@ namespace Ferretto.Common.DataModels
 
         public int Width { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

@@ -37,7 +37,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ICommand showDetailsListRowCommand;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -46,7 +46,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.Initialize();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -88,7 +88,7 @@ namespace Ferretto.WMS.Modules.MasterData
                        this.ExecuteShowDetailsListRowCommand,
                        this.CanExecuteShowDetailsListRowCommand).ObservesProperty(() => this.SelectedItemListRow));
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -263,6 +263,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

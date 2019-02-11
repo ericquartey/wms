@@ -11,12 +11,12 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     #pragma warning disable // Disable all warnings
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class BaysService : ServiceBase, IBaysService
+    internal partial class BaysSchedulerService : ServiceBase, IBaysSchedulerService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public BaysService(string baseUrl)
+        public BaysSchedulerService(string baseUrl)
         {
             BaseUrl = baseUrl; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
@@ -41,21 +41,21 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<FileResponse> MarkAsOperationalAsync(int? bayId)
+        public System.Threading.Tasks.Task<FileResponse> MarkAsOperationalAsync(int bayId)
         {
             return MarkAsOperationalAsync(bayId, System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<FileResponse> MarkAsOperationalAsync(int? bayId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<FileResponse> MarkAsOperationalAsync(int bayId, System.Threading.CancellationToken cancellationToken)
         {
+            if (bayId == null)
+                throw new System.ArgumentNullException("bayId");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Bays/MarkAsOperational?");
-            if (bayId != null) 
-            {
-                urlBuilder_.Append("bayId=").Append(System.Uri.EscapeDataString(ConvertToString(bayId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
+            urlBuilder_.Append("bayId=").Append(System.Uri.EscapeDataString(ConvertToString(bayId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
             var client_ = new System.Net.Http.HttpClient();
@@ -149,12 +149,12 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class ItemListRowsService : ServiceBase, IItemListRowsService
+    internal partial class ItemListRowsSchedulerService : ServiceBase, IItemListRowsSchedulerService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public ItemListRowsService(string baseUrl)
+        public ItemListRowsSchedulerService(string baseUrl)
         {
             BaseUrl = baseUrl; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
@@ -464,12 +464,12 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class ItemListsService : ServiceBase, IItemListsService
+    internal partial class ItemListsSchedulerService : ServiceBase, IItemListsSchedulerService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public ItemListsService(string baseUrl)
+        public ItemListsSchedulerService(string baseUrl)
         {
             BaseUrl = baseUrl; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
@@ -605,12 +605,12 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class ItemsService : ServiceBase, IItemsService
+    internal partial class ItemsSchedulerService : ServiceBase, IItemsSchedulerService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public ItemsService(string baseUrl)
+        public ItemsSchedulerService(string baseUrl)
         {
             BaseUrl = baseUrl; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
@@ -759,12 +759,12 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class MissionsService : ServiceBase, IMissionsService
+    internal partial class MissionsSchedulerService : ServiceBase, IMissionsSchedulerService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MissionsService(string baseUrl)
+        public MissionsSchedulerService(string baseUrl)
         {
             BaseUrl = baseUrl; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 

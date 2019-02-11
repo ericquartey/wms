@@ -1,6 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Ferretto.WMS.Data.Core.Interfaces;
+using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.WebAPI.Extensions;
+using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -8,66 +13,100 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ItemListsController : ControllerBase
+    public class ItemListsController :
+        ControllerBase,
+        IReadAllPagedController<ItemList>,
+        IReadSingleController<ItemList, int>
     {
         #region Fields
 
+        private readonly IItemListProvider itemListProvider;
+
         private readonly ILogger logger;
 
-        private readonly Models.IWarehouse warehouse;
-
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
         public ItemListsController(
-            IServiceProvider serviceProvider,
             ILogger<ItemListsController> logger,
-            Models.IWarehouse warehouse)
+            IItemListProvider itemListProvider)
         {
             this.logger = logger;
-            this.warehouse = warehouse;
+            this.itemListProvider = itemListProvider;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Models.ItemList>))]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<ItemList>))]
         [HttpGet]
-        public ActionResult<IEnumerable<Models.ItemList>> GetAll()
+        public async Task<ActionResult<IEnumerable<ItemList>>> GetAllAsync(
+            int skip = 0,
+            int take = int.MaxValue,
+            string where = null,
+            string orderBy = null,
+            string search = null)
         {
-            return this.Ok(this.warehouse.Lists);
+            var searchExpression = BuildSearchExpression(search);
+            var whereExpression = this.BuildWhereExpression<ItemList>(where);
+
+            return this.Ok(
+                await this.itemListProvider.GetAllAsync(
+                    skip: skip,
+                    take: take,
+                    orderBy: orderBy,
+                    whereExpression: whereExpression,
+                    searchExpression: searchExpression));
         }
 
-        [ProducesResponseType(200, Type = typeof(Models.ItemList))]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(200, Type = typeof(int))]
+        [HttpGet]
+        [Route("api/[controller]/count")]
+        public async Task<ActionResult<int>> GetAllCountAsync(string where = null, string search = null)
+        {
+            var searchExpression = BuildSearchExpression(search);
+            var whereExpression = this.BuildWhereExpression<ItemList>(where);
+
+            return await this.itemListProvider.GetAllCountAsync(
+                       whereExpression,
+                       searchExpression);
+        }
+
+        [ProducesResponseType(200, Type = typeof(ItemList))]
         [ProducesResponseType(404)]
         [HttpGet("{id}")]
-        public ActionResult<Models.ItemList> GetById(int id)
+        public async Task<ActionResult<ItemList>> GetByIdAsync(int id)
         {
-            try
+            var result = await this.itemListProvider.GetByIdAsync(id);
+            if (result == null)
             {
-                var result = this.warehouse.Lists.SingleOrDefault(l => l.Id == id);
-                if (result == null)
-                {
-                    var message = string.Format("No entity with the specified id={0} exists.", id);
-                    this.logger.LogWarning(message);
-                    return this.NotFound(message);
-                }
+                var message = $"No entity with the specified id={id} exists.";
+                this.logger.LogWarning(message);
+                return this.NotFound(message);
+            }
 
-                return this.Ok(result);
-            }
-            catch (Exception ex)
-            {
-                var message = string.Format("An error occurred while retrieving the requested entity with id={0}.", id);
-                this.logger.LogError(ex, message);
-                return this.BadRequest(message);
-            }
+            return this.Ok(result);
         }
 
-        #endregion Methods
+        private static Expression<Func<ItemList, bool>> BuildSearchExpression(string search)
+        {
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                return null;
+            }
+
+            return i =>
+                (i.Code != null && i.Code.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                ||
+                (i.Description != null && i.Description.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                ||
+                i.ItemListItemsCount.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.ItemListRowsCount.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        #endregion
     }
 }

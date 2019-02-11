@@ -14,7 +14,7 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly IDatabaseContextService dataContext;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -23,7 +23,7 @@ namespace Ferretto.Common.BusinessProviders
             this.dataContext = dataContext;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -73,31 +73,7 @@ namespace Ferretto.Common.BusinessProviders
                 .Distinct();
         }
 
-        public async Task<OperationResult> SaveAsync(Area model)
-        {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            try
-            {
-                using (var dc = this.dataContext.Current)
-                {
-                    var existingModel = dc.Areas.Find(model.Id);
-
-                    dc.Entry(existingModel).CurrentValues.SetValues(model);
-
-                    var changedEntityCount = await dc.SaveChangesAsync();
-
-                    return new OperationResult(changedEntityCount > 0);
-                }
-            }
-            catch (Exception ex)
-            {
-                return new OperationResult(ex);
-            }
-        }
+        public Task<OperationResult> SaveAsync(Area model) => throw new NotSupportedException();
 
         private static IQueryable<Area> GetAllAreasWithFilter(
             DatabaseContext context,
@@ -115,6 +91,6 @@ namespace Ferretto.Common.BusinessProviders
                 });
         }
 
-        #endregion Methods
+        #endregion
     }
 }

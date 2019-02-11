@@ -40,6 +40,6 @@ namespace Ferretto.Common.Utils
             return displayName;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

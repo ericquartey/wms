@@ -14,7 +14,7 @@ namespace Ferretto.Common.Controls
 
         public object ValueOnTrue { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -35,6 +35,6 @@ namespace Ferretto.Common.Controls
             return null;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

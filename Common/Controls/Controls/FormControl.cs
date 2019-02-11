@@ -16,9 +16,28 @@ namespace Ferretto.Common.Controls
 
         private const string DisplayAttributeResourceTypeProperty = "ResourceType";
 
-        #endregion Fields
+        #endregion
 
         #region Methods
+
+        public static bool IsFieldRequired(Type type, string fieldName)
+        {
+            if (type == null || fieldName == null)
+            {
+                return false;
+            }
+
+            var property = GetProperty(type, fieldName);
+            if (property == null)
+            {
+                return false;
+            }
+
+            // locate the Required attribute
+            return property
+                .CustomAttributes
+                .Any(attr => attr.AttributeType == typeof(RequiredAttribute));
+        }
 
         public static string RetrieveLocalizedFieldName(Type type, string fieldName)
         {
@@ -115,6 +134,6 @@ namespace Ferretto.Common.Controls
             return property;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

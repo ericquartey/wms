@@ -219,6 +219,6 @@ namespace Feretto.Common.BLL.Tests
             Assert.AreEqual(8, tray.Compartments.Count);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

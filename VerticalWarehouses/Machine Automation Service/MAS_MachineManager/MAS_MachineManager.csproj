@@ -3,6 +3,18 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
+    <RootNamespace>Ferretto.VW.MAS_MachineManager</RootNamespace>
+    <AssemblyName>Ferretto.VW.MAS_MachineManager</AssemblyName>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Prism.Core" Version="7.1.0.431" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MAS_DataLayer\MAS_DataLayer.csproj" />
+    <ProjectReference Include="..\..\Common\Common_Utils\Ferretto.VW.Common_Utils.csproj" />
+    <ProjectReference Include="..\MAS_FiniteStateMachines\MAS_FiniteStateMachines.csproj" />
+  </ItemGroup>
 
 </Project>

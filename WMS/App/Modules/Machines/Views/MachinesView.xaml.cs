@@ -14,7 +14,7 @@ namespace Ferretto.WMS.Modules.Machines
             this.MainGridControl.AsyncOperationCompleted += this.MainGridControl_AsyncOperationCompleted;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -27,6 +27,6 @@ namespace Ferretto.WMS.Modules.Machines
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

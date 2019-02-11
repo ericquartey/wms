@@ -66,7 +66,7 @@ namespace Ferretto.Common.BusinessModels
 
         private int? yPosition;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -343,7 +343,7 @@ namespace Ferretto.Common.BusinessModels
 
         private bool CanAddToLoadingUnit => this.LoadingUnit == null || this.LoadingUnit.CanAddCompartment(this);
 
-        #endregion Properties
+        #endregion
 
         #region Indexers
 
@@ -422,10 +422,10 @@ namespace Ferretto.Common.BusinessModels
                         break;
                 }
 
-                return string.Empty;
+                return base[columnName];
             }
         }
 
-        #endregion Indexers
+        #endregion
     }
 }

@@ -7,7 +7,7 @@ namespace Ferretto.Common.BusinessModels
         #region Constructors
 
         public OperationResult(Exception ex, int? entityId = null)
-            : this(false, entityId, ex.Message)
+            : this(false, entityId, ex?.Message)
         {
         }
 
@@ -18,7 +18,7 @@ namespace Ferretto.Common.BusinessModels
             this.EntityId = entityId;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -28,6 +28,6 @@ namespace Ferretto.Common.BusinessModels
 
         public bool Success { get; private set; }
 
-        #endregion Properties
+        #endregion
     }
 }

@@ -61,6 +61,6 @@ namespace Ferretto.WMS.App
             navigationService.Appear(nameof(Common.Utils.Modules.Layout), Common.Utils.Modules.Layout.LOGINVIEW);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

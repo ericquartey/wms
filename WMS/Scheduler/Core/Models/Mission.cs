@@ -6,7 +6,7 @@ namespace Ferretto.WMS.Scheduler.Core
 
         private int quantity;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -46,6 +46,6 @@ namespace Ferretto.WMS.Scheduler.Core
 
         public MissionType Type { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

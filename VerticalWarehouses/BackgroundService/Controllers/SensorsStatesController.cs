@@ -14,7 +14,7 @@ namespace BackgroundService
 
         private readonly IHubContext<SensorsStatesHub, ISensorsStatesHub> hub;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -23,13 +23,13 @@ namespace BackgroundService
             this.hub = hub;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public SensorsStates LastSensorsStates { get; set; } = new SensorsStates();
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -61,19 +61,17 @@ namespace BackgroundService
                 this.LastSensorsStates.Sensor7 == tmp.Sensor7 &&
                 this.LastSensorsStates.Sensor8 == tmp.Sensor8)
                 {
-                    //Console.WriteLine("Sensors DIDN'T Change.");
                 }
                 else
                 {
-                    //Console.WriteLine("Sensors changed: TMP: " + tmp.Sensor1 + ", " + tmp.Sensor2 + ", " + tmp.Sensor3 + ", " + tmp.Sensor4 + ", " + tmp.Sensor5 + ", " + tmp.Sensor6 + ", " + tmp.Sensor7 + ", " + tmp.Sensor8);
-                    //Console.WriteLine("   LastSensorsStates: " + this.LastSensorsStates.Sensor1 + ", " + this.LastSensorsStates.Sensor2 + ", " + this.LastSensorsStates.Sensor3 + ", " + this.LastSensorsStates.Sensor4 + ", " + this.LastSensorsStates.Sensor5 + ", " + this.LastSensorsStates.Sensor6 + ", " + this.LastSensorsStates.Sensor7 + ", " + this.LastSensorsStates.Sensor8);
                     this.LastSensorsStates = tmp;
                     await this.hub.Clients.All.OnSensorsChanged(tmp);
                 }
+
                 await Task.Delay(20);
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

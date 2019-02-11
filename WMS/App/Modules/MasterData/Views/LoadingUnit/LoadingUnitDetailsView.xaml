@@ -230,13 +230,24 @@
                           Header="{x:Static res:MasterData.CompartmentsLayoutOverview}"
                           Visibility="{Binding Model.LoadingUnitTypeHasCompartments, Converter={StaticResource BTVC}}">
                     <wms:WmsTrayControl Margin="0"
-                                        CanvasMinHeight="150"
+                                        MinHeight="150"
                                         IsCompartmentSelectable="{Binding IsCompartmentSelectableTray, Mode=OneWay}"
                                         IsReadOnly="{Binding ReadOnlyTray, Mode=OneWay}"
                                         SelectedColorFilterFunc="{Binding TrayColoringFunc, Mode=OneWay}"
                                         SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"
                                         ShowBackground="True"
-                                        Tray="{Binding Tray, Mode=OneWay}" />
+                                        RulerInfo="mm"
+                                        Compartments="{Binding Tray.Compartments}"
+                                        DimensionWidth="{Binding Tray.Dimension.Width}"
+                                        DimensionHeight="{Binding Tray.Dimension.Height}"
+                                        OriginX="{Binding Tray.Origin.X}"
+                                        OriginY="{Binding Tray.Origin.Y}"                                        
+                                        ShowLittleMark="False"
+                                        ShowMark="True"
+                                        ShowMiddleMark="False"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        />
                 </GroupBox>
 
                 <GroupBox Grid.Row="3"

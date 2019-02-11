@@ -18,7 +18,7 @@ namespace Ferretto.Common.Controls
 
         private readonly AutoResetEvent sync = new AutoResetEvent(false);
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -38,7 +38,7 @@ namespace Ferretto.Common.Controls
             this.sync.WaitOne();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -48,7 +48,7 @@ namespace Ferretto.Common.Controls
 
         private Dispatcher Dispatcher { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -70,6 +70,6 @@ namespace Ferretto.Common.Controls
             source.Dispose();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

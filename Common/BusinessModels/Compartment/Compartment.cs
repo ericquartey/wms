@@ -11,7 +11,7 @@ namespace Ferretto.Common.BusinessModels
 
         private int stock;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -55,6 +55,6 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.CompartmentSub2), ResourceType = typeof(BusinessObjects))]
         public string Sub2 { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

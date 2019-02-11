@@ -8,7 +8,7 @@ namespace Ferretto.Common.DataModels
     {
         #region Properties
 
-        public virtual AbcClass AbcClass { get; set; }
+        public AbcClass AbcClass { get; set; }
 
         public string AbcClassId { get; set; }
 
@@ -38,7 +38,7 @@ namespace Ferretto.Common.DataModels
 
         public IEnumerable<ItemArea> ItemAreas { get; set; }
 
-        public virtual ItemCategory ItemCategory { get; set; }
+        public ItemCategory ItemCategory { get; set; }
 
         public int? ItemCategoryId { get; set; }
 
@@ -56,7 +56,7 @@ namespace Ferretto.Common.DataModels
 
         public ItemManagementType ManagementType { get; set; }
 
-        public virtual MeasureUnit MeasureUnit { get; set; }
+        public MeasureUnit MeasureUnit { get; set; }
 
         public string MeasureUnitId { get; set; }
 
@@ -76,6 +76,6 @@ namespace Ferretto.Common.DataModels
 
         public int? Width { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

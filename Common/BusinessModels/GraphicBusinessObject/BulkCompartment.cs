@@ -26,7 +26,7 @@ namespace Ferretto.Common.BusinessModels
 
         private int? yPosition;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -124,7 +124,7 @@ namespace Ferretto.Common.BusinessModels
 
         private bool CanAddToLoadingUnit => this.LoadingUnit == null || this.LoadingUnit.CanAddCompartment(this);
 
-        #endregion Properties
+        #endregion
 
         #region Indexers
 
@@ -210,7 +210,7 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
-        #endregion Indexers
+        #endregion
 
         #region Methods
 
@@ -253,6 +253,6 @@ namespace Ferretto.Common.BusinessModels
             return compartments;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

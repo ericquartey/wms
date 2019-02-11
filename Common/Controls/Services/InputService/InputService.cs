@@ -22,7 +22,7 @@ namespace Ferretto.Common.Controls.Services
         private FrameworkElement currentElement;
         private FrameworkElement currentHost;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -31,13 +31,13 @@ namespace Ferretto.Common.Controls.Services
             this.navigationService = navigationService;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public IInputElement FocusedElement => this.currentElement;
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -355,6 +355,6 @@ namespace Ferretto.Common.Controls.Services
             return isHandled;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

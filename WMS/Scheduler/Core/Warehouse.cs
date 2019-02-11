@@ -21,7 +21,7 @@ namespace Ferretto.WMS.Scheduler.Core
 
         private readonly ISchedulerRequestProvider schedulerRequestProvider;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -35,7 +35,7 @@ namespace Ferretto.WMS.Scheduler.Core
             this.schedulerRequestProvider = schedulerRequestProvider;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -268,6 +268,6 @@ namespace Ferretto.WMS.Scheduler.Core
             return null;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

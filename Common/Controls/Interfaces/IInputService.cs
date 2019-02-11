@@ -10,7 +10,7 @@ namespace Ferretto.Common.Controls.Interfaces
 
         IInputElement FocusedElement { get; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -28,6 +28,6 @@ namespace Ferretto.Common.Controls.Interfaces
 
         void Start();
 
-        #endregion Methods
+        #endregion
     }
 }

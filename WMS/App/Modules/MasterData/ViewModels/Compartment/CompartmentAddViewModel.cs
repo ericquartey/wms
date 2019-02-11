@@ -23,18 +23,19 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private IDataSource<Item> itemsDataSource;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
         public CompartmentAddViewModel()
         {
             this.Title = Common.Resources.MasterData.AddCompartment;
-            this.ItemsDataSource = new DataSource<Item>(() => this.itemProvider.GetAll());
+            this.ItemsDataSource = new DataSource<Item>(() =>
+                this.itemProvider.GetAll());
             this.IsValidationEnabled = false;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -50,7 +51,7 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.itemsDataSource, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -124,6 +125,6 @@ namespace Ferretto.WMS.Modules.MasterData
             base.Model_PropertyChanged(sender, e);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

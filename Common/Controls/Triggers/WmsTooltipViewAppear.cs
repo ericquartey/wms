@@ -1,16 +1,9 @@
 ﻿namespace Ferretto.Common.Controls
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Interactivity;
-    using DevExpress.Data.Async.Helpers;
-    using DevExpress.Xpf.Bars;
 
     public class WmsTooltipViewAppear : TriggerAction<ContentElement>
     {
@@ -20,7 +13,7 @@
 
         public static readonly DependencyProperty TooltipProperty = DependencyProperty.Register(nameof(Tooltip), typeof(string), typeof(WmsTooltipViewAppear));
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -36,11 +29,11 @@
             set => this.SetValue(TooltipProperty, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
-        protected override void Invoke(object args)
+        protected override void Invoke(object parameter)
         {
             if (this.Grid?.GetSelectedRowHandles().Count() == 1)
             {
@@ -52,10 +45,10 @@
                 {
                     var toolTip = new ToolTip();
 
-                    if (cell.ToolTip is ToolTip)
+                    if (cell.ToolTip is ToolTip cellTooltip)
                     {
-                        toolTip.Content = ((ToolTip)cell.ToolTip).Content;
-                        toolTip.ContentTemplate = ((ToolTip)cell.ToolTip).ContentTemplate;
+                        toolTip.Content = cellTooltip.Content;
+                        toolTip.ContentTemplate = cellTooltip.ContentTemplate;
                         toolTip.PlacementTarget = cell;
                         toolTip.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
                         toolTip.StaysOpen = false;
@@ -65,6 +58,6 @@
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }
