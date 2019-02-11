@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             this.inverterAction.EndEvent += this.PositioningDrawer_ThrowEndEvent;
             this.inverterAction.ErrorEvent += this.PositioningDrawer_ThrowErrorEvent;
-            inverterAction.SetInverterDriverInterface = this.driver;
+            inverterAction.SetInverterDriverInterface = this.inverterDriver;
             inverterAction.Initialize();
 
             inverterAction.MoveAlongVerticalAxisToPoint(targetPosition, vMax, acc, dec, weight, offset);

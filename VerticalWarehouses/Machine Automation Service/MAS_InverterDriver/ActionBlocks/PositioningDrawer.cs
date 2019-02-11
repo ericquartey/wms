@@ -55,7 +55,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
         private AutoResetEvent eventForTerminate;
         private int i = 0;
         private int initialPosition;
-        private InverterDriver.InverterDriver inverterDriver;
+        private InverterDriver.IInverterDriver inverterDriver;
         private ushort maxAnalogIc;
         private ParameterID paramID = ParameterID.POSITION_TARGET_POSITION_PARAM;
         private string positioningStep;
@@ -108,7 +108,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
         public ushort MaxAnalogIc => this.maxAnalogIc;
 
-        public Ferretto.VW.InverterDriver.InverterDriver SetInverterDriverInterface
+        public Ferretto.VW.InverterDriver.IInverterDriver SetInverterDriverInterface
         {
             set => this.inverterDriver = value;
         }

@@ -207,6 +207,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId);
                     this.Model = compartment;
                     this.InitializeTray(loadingUnit);
+                    this.SelectedCompartmentTray = this.Model;
                 }
 
                 this.IsBusy = false;
@@ -215,12 +216,6 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
             }
-        }
-
-        private void SetSelectedCompartment()
-        {
-            this.selectedCompartmentTray = this.Model;
-            this.RaisePropertyChanged(nameof(this.SelectedCompartmentTray));
         }
 
         #endregion
