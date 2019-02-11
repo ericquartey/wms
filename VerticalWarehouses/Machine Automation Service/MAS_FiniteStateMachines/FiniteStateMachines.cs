@@ -56,9 +56,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             {
                 this.driver.Destroy();
             }
+            catch (ArgumentNullException exc)
+            {
+                Debug.WriteLine("The inverter driver does not exist.");
+                throw new ArgumentNullException("The inverter driver does not exist.", exc);
+            }
             catch (Exception exc)
             {
-                Debug.WriteLine("The inverter driver cannot be destroyed.");
+                Debug.WriteLine("Invalid operation.");
+                throw new Exception("Invalid operation", exc);
             }
         }
 
