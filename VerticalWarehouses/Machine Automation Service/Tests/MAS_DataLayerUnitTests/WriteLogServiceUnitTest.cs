@@ -2,18 +2,17 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ferretto.VW.MAS_DataLayer;
 using Prism.Events;
 using Moq;
-using Ferretto.Common.Common_Utils;
 using Ferretto.VW.Common_Utils.Events;
 
 namespace MAS_DataLayerUnitTests
 {
     [TestClass]
-    public class UnitTest1 : DBTest
+    public class WriteLogServiceUnitTest : DBTestUnitTest
     {
         #region Methods
 
         [TestMethod]
-        public void TestMethod1()
+        public void TestMethodWriteLogService()
         {
             using (var context = this.CreateContext())
             {
