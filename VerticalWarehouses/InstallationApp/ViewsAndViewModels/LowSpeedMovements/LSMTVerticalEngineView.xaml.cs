@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Windows.Controls;
+using System.Windows.Input;
 using Ferretto.VW.Utils.Source;
 
 namespace Ferretto.VW.InstallationApp
@@ -6,7 +7,7 @@ namespace Ferretto.VW.InstallationApp
     /// <summary>
     /// Interaction logic for LSMTVerticalEngineView.xaml
     /// </summary>
-    public partial class LSMTVerticalEngineView : BaseView
+    public partial class LSMTVerticalEngineView : UserControl
     {
         #region Constructors
 
@@ -15,7 +16,7 @@ namespace Ferretto.VW.InstallationApp
             this.InitializeComponent();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -47,6 +48,6 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

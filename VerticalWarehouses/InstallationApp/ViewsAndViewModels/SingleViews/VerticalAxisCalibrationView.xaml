@@ -1,4 +1,4 @@
-﻿<local:BaseView x:Class="Ferretto.VW.InstallationApp.VerticalAxisCalibrationView"
+﻿<UserControl x:Class="Ferretto.VW.InstallationApp.VerticalAxisCalibrationView"
                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
@@ -45,4 +45,4 @@
                     IsEnabled="{Binding IsStopButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="541,256,319,284" />
     </Grid>
-</local:BaseView>
+</UserControl>
