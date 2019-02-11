@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             this.inverterAction.EndEvent += this.HorizontalPosition_ThrowEndEvent;
             this.inverterAction.ErrorEvent += this.HorizontalPosition_ThrowErrorEvent;
-            inverterAction.SetInverterDriverInterface = this.driver;
+            inverterAction.SetInverterDriverInterface = this.inverterDriver;
             inverterAction.Initialize();
 
             inverterAction.Run(target, speed, direction, profile);

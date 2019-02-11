@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             this.inverterAction.EndEvent += this.Calibration_ThrowEndEvent;
             this.inverterAction.ErrorEvent += this.Calibration_ThrowErrorEvent;
-            inverterAction.SetInverterDriverInterface = this.driver;
+            inverterAction.SetInverterDriverInterface = this.inverterDriver;
             inverterAction.Initialize();
 
             inverterAction.ActualCalibrationAxis = CalibrationType.VERTICAL_CALIBRATION;
@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             this.inverterAction.EndEvent += this.Calibration_ThrowEndEvent;
             this.inverterAction.ErrorEvent += this.Calibration_ThrowErrorEvent;
-            inverterAction.SetInverterDriverInterface = this.driver;
+            inverterAction.SetInverterDriverInterface = this.inverterDriver;
             inverterAction.Initialize();
 
             inverterAction.ActualCalibrationAxis = CalibrationType.HORIZONTAL_CALIBRATION;
