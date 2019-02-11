@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS_DataLayer;
+﻿using Ferretto.VW.MAS_AutomationService.Hubs;
+using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_FiniteStateMachines;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_MachineManager;
@@ -50,6 +51,11 @@ namespace Ferretto.VW.MAS_AutomationService
                 app.UseHsts();
             }
 
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<InstallationHub>($"/installation-endpoint", options => { });
+            });
+
             app.UseHttpsRedirection();
             app.UseMvc();
         }
@@ -59,6 +65,8 @@ namespace Ferretto.VW.MAS_AutomationService
 
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSignalR();
+
             var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
             services.AddDbContext<DataLayerContext>(options => options.UseSqlite(connectionString), ServiceLifetime.Singleton);
 
@@ -71,7 +79,7 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSingleton<INewInverterDriver, NewInverterDriver>();
 
             //TODO Old InverterDriver Registration to be removed after code refactoring completed
-            services.AddSingleton<InverterDriver.IInverterDriver, InverterDriver.InverterDriver>();
+            services.AddSingleton<InverterDriver.IInverterDriver, InverterDriver.InverterDriver >();
         }
 
         #endregion

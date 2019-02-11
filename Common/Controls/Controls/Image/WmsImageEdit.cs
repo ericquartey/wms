@@ -1,17 +1,10 @@
 ﻿namespace Ferretto.Common.Controls
 {
-    using System;
-    using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Windows;
-    using System.Windows.Controls;
     using System.Windows.Media;
     using DevExpress.Xpf.Core.Native;
     using DevExpress.Xpf.Editors;
-    using DevExpress.Xpf.Layout.Core;
     using Ferretto.Common.BLL.Interfaces;
     using Microsoft.Practices.ServiceLocation;
     using Microsoft.Win32;
@@ -20,16 +13,17 @@
     {
         #region Fields
 
-        public static readonly DependencyProperty PathProperty = DependencyProperty.Register(
-             nameof(Path), typeof(string), typeof(WmsImageEdit), new PropertyMetadata(default(string)));
         public static readonly DependencyProperty FilenameProperty = DependencyProperty.Register(
              nameof(Filename), typeof(string), typeof(WmsImageEdit), new PropertyMetadata(default(string), new PropertyChangedCallback(OnPathChanged)));
 
+        public static readonly DependencyProperty PathProperty = DependencyProperty.Register(
+                     nameof(Path), typeof(string), typeof(WmsImageEdit), new PropertyMetadata(default(string)));
+
         private readonly IImageProvider imageService;
 
-        #endregion
-
         private bool isUpdatingImage;
+
+        #endregion
 
         #region Constructors
 
@@ -42,15 +36,16 @@
 
         #region Properties
 
+        public string Filename
+        {
+            get => (string)this.GetValue(FilenameProperty);
+            set => this.SetValue(FilenameProperty, value);
+        }
+
         public string Path
         {
             get => (string)this.GetValue(PathProperty);
             set => this.SetValue(PathProperty, value);
-        }
-         public string Filename
-        {
-            get => (string)this.GetValue(FilenameProperty);
-            set => this.SetValue(FilenameProperty, value);
         }
 
         #endregion
@@ -59,7 +54,7 @@
 
         protected override void LoadCore()
         {
-            ImageSource image = this.LoadImage();
+            var image = this.LoadImage();
 
             if (image != null)
             {
@@ -76,7 +71,6 @@
             }
         }
 
-
         private static void OnPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is WmsImageEdit wmsImage)
@@ -86,7 +80,8 @@
                     wmsImage.isUpdatingImage = false;
                     return;
                 }
-                if(e.NewValue != null)
+
+                if (e.NewValue != null)
                 {
                     wmsImage.Source = ImageUtils.RetrieveImage(wmsImage.imageService, (string)e.NewValue);
                 }
@@ -95,23 +90,25 @@
 
         private ImageSource LoadImage()
         {
-            OpenFileDialog dlg = new OpenFileDialog();
+            var dlg = new OpenFileDialog();
             dlg.Filter = EditorLocalizer.GetString(EditorStringId.ImageEdit_OpenFileFilter);
+
             if (dlg.ShowDialog() == true)
             {
-                using (Stream stream = dlg.OpenFile())
+                using (var stream = dlg.OpenFile())
                 {
-                    if (stream is FileStream)
+                    if (stream is FileStream fileStream)
                     {
                         this.isUpdatingImage = true;
-                        this.Filename = System.IO.Path.GetFileName(((FileStream)stream).Name);
-                        this.Path = System.IO.Path.GetFullPath(((FileStream)stream).Name);
+                        this.Filename = System.IO.Path.GetFileName(fileStream.Name);
+                        this.Path = System.IO.Path.GetFullPath(fileStream.Name);
                     }
 
-                    MemoryStream ms = new MemoryStream(stream.GetDataFromStream());
+                    var ms = new MemoryStream(stream.GetDataFromStream());
                     return ImageHelper.CreateImageFromStream(ms);
                 }
             }
+
             return null;
         }
 

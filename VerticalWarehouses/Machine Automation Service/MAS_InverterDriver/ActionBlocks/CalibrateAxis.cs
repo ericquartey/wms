@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
         private const int SETUP_PARAMETERS_STEPS = 3;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private int stepCounter;
-        private Ferretto.VW.InverterDriver.InverterDriver inverterDriver;
+        private Ferretto.VW.InverterDriver.IInverterDriver inverterDriver;
         private ParameterID paramID = ParameterID.HOMING_MODE_PARAM;
         private byte systemIndex = 0x00;
         private object valParam = "";
@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
         #region Properties
 
-        public Ferretto.VW.InverterDriver.InverterDriver SetInverterDriverInterface
+        public Ferretto.VW.InverterDriver.IInverterDriver SetInverterDriverInterface
         {
             set => this.inverterDriver = value;
         }

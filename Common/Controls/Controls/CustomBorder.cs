@@ -29,6 +29,7 @@ namespace Ferretto.Common.Controls
             {
                 this.dataContext = e.NewValue;
             }
+
             this.DataContext = null;
             this.DataContextChanged -= this.CustomBorder_DataContextChanged;
         }

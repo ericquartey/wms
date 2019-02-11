@@ -9,8 +9,11 @@ namespace Ferretto.Common.BusinessModels
     /// <summary>
     /// Implementation of <see cref="INotifyPropertyChanged"/> to simplify models.
     /// </summary>
-    public abstract class BindableBase : INotifyPropertyChanged, IDataErrorInfo
+    public class BindableBase : INotifyPropertyChanged, IDataErrorInfo
     {
+        protected BindableBase()
+        { }
+
         /// <summary>
         /// Occurs when a property value changes.
         /// </summary>
