@@ -13,7 +13,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AreasController : ControllerBase,
+    public class AreasController :
+        ControllerBase,
         IReadAllController<Area>,
         IReadSingleController<Area, int>
     {
@@ -58,6 +59,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 this.logger.LogError(ex, message);
                 return this.StatusCode(StatusCodes.Status500InternalServerError, message);
             }
+        }
+
+        [ProducesResponseType(200, Type = typeof(int))]
+        [HttpGet]
+        [Route("count")]
+        public async Task<ActionResult<int>> GetAllCountAsync()
+        {
+            return this.Ok(await this.areaProvider.GetAllCountAsync());
         }
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<Bay>))]
