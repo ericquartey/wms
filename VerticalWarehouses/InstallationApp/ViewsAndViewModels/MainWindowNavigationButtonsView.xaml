@@ -1,4 +1,4 @@
-﻿<local:BaseView x:Class="Ferretto.VW.InstallationApp.MainWindowNavigationButtonsView"
+﻿<UserControl x:Class="Ferretto.VW.InstallationApp.MainWindowNavigationButtonsView"
                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
@@ -103,4 +103,4 @@
             </StackPanel>
         </ScrollViewer>
     </Grid>
-</local:BaseView>
+</UserControl>

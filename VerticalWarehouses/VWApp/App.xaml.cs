@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Configuration;
 using System.Windows;
-using Ferretto.VW.Utils.Source;
-using Ferretto.VW.Navigation;
-using Prism.Mvvm;
-using Microsoft.Practices.Unity;
 
 namespace Ferretto.VW.VWApp
 {
@@ -13,10 +9,10 @@ namespace Ferretto.VW.VWApp
         #region Fields
 
         private static readonly string JSON_GENERAL_INFO_PATH = string.Concat(Environment.CurrentDirectory, ConfigurationManager.AppSettings["GeneralInfoFilePath"]);
-        private static readonly string JSON_INSTALLATION_INFO_PATH = string.Concat(Environment.CurrentDirectory, ConfigurationManager.AppSettings["InstallationInfoFilePath"]);
-        private bool machineOk;
 
-        #endregion Fields
+        private static readonly string JSON_INSTALLATION_INFO_PATH = string.Concat(Environment.CurrentDirectory, ConfigurationManager.AppSettings["InstallationInfoFilePath"]);
+
+        #endregion
 
         #region Properties
 
@@ -24,13 +20,11 @@ namespace Ferretto.VW.VWApp
 
         public InstallationApp.MainWindowViewModel InstallationAppMainWindowViewModel { get; set; }
 
-        public Boolean MachineOk { get => this.machineOk; set => this.machineOk = value; }
-
-       
+        public bool MachineOk { get; set; }
 
         public Skin Skin { get; set; } = Skin.Dark;
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -59,8 +53,11 @@ namespace Ferretto.VW.VWApp
             bootstrapper.Run();
         }
 
-        #endregion Methods
+        #endregion
     }
 }
+
+
+
 
 public enum Skin { Light, Dark, Medium }
