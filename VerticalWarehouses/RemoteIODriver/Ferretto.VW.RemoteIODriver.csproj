@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="NLog" Version="4.5.11" />
-    <PackageReference Include="NModbus4" Version="2.1.0" />
+    <PackageReference Include="NModbus4" Version="3.0.0-alpha2" />
   </ItemGroup>
 
   <ItemGroup>
