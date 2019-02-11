@@ -98,62 +98,99 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BeltBurnishingUpLimit" xml:space="preserve">
-    <value></value>
+    <value>BeltBurnishingUpLimit</value>
+    <comment>Note text</comment>
   </data>
   <data name="BeltBurnishingDownLimit" xml:space="preserve">
-    <value></value>
+    <value>BeltBurnishingDownLimit</value>
+    <comment>Note text</comment>
   </data>
   <data name="BeltBurnishingRequiredCycles" xml:space="preserve">
-    <value></value>
+    <value>BeltBurnishingRequiredCycles</value>
+    <comment>Note text</comment>
   </data>
   <data name="BeltBurnishingCompletedCycles" xml:space="preserve">
-    <value></value>
+    <value>BeltBurnishingCompletedCycles</value>
+    <comment>Note text</comment>
   </data>
   <data name="BeltBurnishingActualPosition" xml:space="preserve">
-    <value></value>
+    <value>BeltBurnishingActualPosition</value>
+    <comment>Note text</comment>
   </data>
   <data name="BeltBurnishingStartCycle" xml:space="preserve">
-    <value></value>
+    <value>BeltBurnishingStartCycle</value>
+    <comment>Note text</comment>
   </data>
   <data name="BeltBurnishingStopCycle" xml:space="preserve">
-    <value></value>
+    <value>BeltBurnishingStopCycle</value>
+    <comment>Note text</comment>
   </data>
   <data name="BeltBurnishingFunctionDescription" xml:space="preserve">
-    <value></value>
+    <value>BeltBurnishingFunctionDescription</value>
+    <comment>Note text</comment>
   </data>
   <data name="ResolutionCalibrationFunctionDescription" xml:space="preserve">
-    <value>Resolution calibration function</value>
+    <value>ResolutionCalibrationFunctionDescription</value>
     <comment>Note text</comment>
   </data>
   <data name="ResolutionCalibrationInitialPositionHelp" xml:space="preserve">
-    <value></value>
+    <value>ResolutionCalibrationInitialPositionHelp</value>
     <comment>Note text</comment>
   </data>
   <data name="ResolutionCalibrationInitialStartHelp" xml:space="preserve">
-    <value></value>
+    <value>ResolutionCalibrationInitialStartHelp</value>
     <comment>Note text</comment>
   </data>
   <data name="ResolutionCalibrationFinalPositionHelp" xml:space="preserve">
-    <value></value>
+    <value>ResolutionCalibrationFinalPositionHelp</value>
     <comment>Note text</comment>
   </data>
   <data name="ResolutionCalibrationFinalPosizionStartHelp" xml:space="preserve">
-    <value></value>
+    <value>ResolutionCalibrationFinalPosizionStartHelp</value>
     <comment>Note text</comment>
   </data>
   <data name="ResolutionCalibrationMeasuredeValueHelp" xml:space="preserve">
-    <value></value>
+    <value>ResolutionCalibrationMeasuredeValueHelp</value>
     <comment>Note text</comment>
   </data>
   <data name="VerticalResolutionCalibrationStep1" xml:space="preserve">
-    <value></value>
+    <value>VerticalResolutionCalibrationStep1</value>
     <comment>Note text</comment>
   </data>
   <data name="VerticalResolutionCalibrationStep2" xml:space="preserve">
-    <value></value>
+    <value>VerticalResolutionCalibrationStep2</value>
     <comment>Note text</comment>
   </data>
   <data name="VerticalResolutionCalibrationStep3" xml:space="preserve">
-    <value></value>
+    <value>VerticalResolutionCalibrationStep3</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="VerticalResolutionCalibrationStep4" xml:space="preserve">
+    <value>VerticalResolutionCalibrationStep4</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="VerticalResolutionCalibrationStep5" xml:space="preserve">
+    <value>VerticalResolutionCalibrationStep5</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="ResolutionCalibrationActualResolutionHelp" xml:space="preserve">
+    <value>ResolutionCalibrationActualResolutionHelp</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="ResolutionCalibrationNewResolutionHelp" xml:space="preserve">
+    <value>ResolutionCalibrationNewResolutionHelp</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="ResolutionCalibrationAcceptNewResolution" xml:space="preserve">
+    <value>ResolutionCalibrationAcceptNewResolution</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="ResolutionCalibrationGoToInitialPosizion" xml:space="preserve">
+    <value>ResolutionCalibrationGoToInitialPosizion</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="ResolutionCalibrationCloseProcedure" xml:space="preserve">
+    <value>ResolutionCalibrationCloseProcedure</value>
+    <comment>Note text</comment>
   </data>
 </root>

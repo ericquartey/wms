@@ -61,7 +61,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a .
+        ///   Cerca una stringa localizzata simile a BeltBurnishingActualPosition.
         /// </summary>
         public static string BeltBurnishingActualPosition {
             get {
@@ -70,7 +70,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a .
+        ///   Cerca una stringa localizzata simile a BeltBurnishingCompletedCycles.
         /// </summary>
         public static string BeltBurnishingCompletedCycles {
             get {
@@ -79,7 +79,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a .
+        ///   Cerca una stringa localizzata simile a BeltBurnishingDownLimit.
         /// </summary>
         public static string BeltBurnishingDownLimit {
             get {
@@ -88,7 +88,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a .
+        ///   Cerca una stringa localizzata simile a BeltBurnishingFunctionDescription.
         /// </summary>
         public static string BeltBurnishingFunctionDescription {
             get {
@@ -97,7 +97,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a .
+        ///   Cerca una stringa localizzata simile a BeltBurnishingRequiredCycles.
         /// </summary>
         public static string BeltBurnishingRequiredCycles {
             get {
@@ -106,7 +106,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a .
+        ///   Cerca una stringa localizzata simile a BeltBurnishingStartCycle.
         /// </summary>
         public static string BeltBurnishingStartCycle {
             get {
@@ -115,7 +115,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a .
+        ///   Cerca una stringa localizzata simile a BeltBurnishingStopCycle.
         /// </summary>
         public static string BeltBurnishingStopCycle {
             get {
@@ -124,7 +124,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a .
+        ///   Cerca una stringa localizzata simile a BeltBurnishingUpLimit.
         /// </summary>
         public static string BeltBurnishingUpLimit {
             get {
@@ -133,7 +133,34 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a .
+        ///   Cerca una stringa localizzata simile a ResolutionCalibrationAcceptNewResolution.
+        /// </summary>
+        public static string ResolutionCalibrationAcceptNewResolution {
+            get {
+                return ResourceManager.GetString("ResolutionCalibrationAcceptNewResolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ResolutionCalibrationActualResolutionHelp.
+        /// </summary>
+        public static string ResolutionCalibrationActualResolutionHelp {
+            get {
+                return ResourceManager.GetString("ResolutionCalibrationActualResolutionHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ResolutionCalibrationCloseProcedure.
+        /// </summary>
+        public static string ResolutionCalibrationCloseProcedure {
+            get {
+                return ResourceManager.GetString("ResolutionCalibrationCloseProcedure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ResolutionCalibrationFinalPositionHelp.
         /// </summary>
         public static string ResolutionCalibrationFinalPositionHelp {
             get {
@@ -142,7 +169,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a .
+        ///   Cerca una stringa localizzata simile a ResolutionCalibrationFinalPosizionStartHelp.
         /// </summary>
         public static string ResolutionCalibrationFinalPosizionStartHelp {
             get {
@@ -151,7 +178,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Resolution calibration function.
+        ///   Cerca una stringa localizzata simile a ResolutionCalibrationFunctionDescription.
         /// </summary>
         public static string ResolutionCalibrationFunctionDescription {
             get {
@@ -160,7 +187,16 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a .
+        ///   Cerca una stringa localizzata simile a ResolutionCalibrationGoToInitialPosizion.
+        /// </summary>
+        public static string ResolutionCalibrationGoToInitialPosizion {
+            get {
+                return ResourceManager.GetString("ResolutionCalibrationGoToInitialPosizion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ResolutionCalibrationInitialPositionHelp.
         /// </summary>
         public static string ResolutionCalibrationInitialPositionHelp {
             get {
@@ -169,7 +205,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a .
+        ///   Cerca una stringa localizzata simile a ResolutionCalibrationInitialStartHelp.
         /// </summary>
         public static string ResolutionCalibrationInitialStartHelp {
             get {
@@ -178,7 +214,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a .
+        ///   Cerca una stringa localizzata simile a ResolutionCalibrationMeasuredeValueHelp.
         /// </summary>
         public static string ResolutionCalibrationMeasuredeValueHelp {
             get {
@@ -187,7 +223,16 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a .
+        ///   Cerca una stringa localizzata simile a ResolutionCalibrationNewResolutionHelp.
+        /// </summary>
+        public static string ResolutionCalibrationNewResolutionHelp {
+            get {
+                return ResourceManager.GetString("ResolutionCalibrationNewResolutionHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a VerticalResolutionCalibrationStep1.
         /// </summary>
         public static string VerticalResolutionCalibrationStep1 {
             get {
@@ -196,7 +241,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a .
+        ///   Cerca una stringa localizzata simile a VerticalResolutionCalibrationStep2.
         /// </summary>
         public static string VerticalResolutionCalibrationStep2 {
             get {
@@ -205,11 +250,29 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a .
+        ///   Cerca una stringa localizzata simile a VerticalResolutionCalibrationStep3.
         /// </summary>
         public static string VerticalResolutionCalibrationStep3 {
             get {
                 return ResourceManager.GetString("VerticalResolutionCalibrationStep3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a VerticalResolutionCalibrationStep4.
+        /// </summary>
+        public static string VerticalResolutionCalibrationStep4 {
+            get {
+                return ResourceManager.GetString("VerticalResolutionCalibrationStep4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a VerticalResolutionCalibrationStep5.
+        /// </summary>
+        public static string VerticalResolutionCalibrationStep5 {
+            get {
+                return ResourceManager.GetString("VerticalResolutionCalibrationStep5", resourceCulture);
             }
         }
     }

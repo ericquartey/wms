@@ -140,12 +140,33 @@
     <value>Impostare lo spostamento misurato dalla posizione iniziale a quella finale.</value>
   </data>
   <data name="VerticalResolutionCalibrationStep1" xml:space="preserve">
-    <value>Step 1 : posiziona asse alla quota iniziale</value>
+    <value>Passo 1 : posiziona asse alla quota iniziale</value>
   </data>
   <data name="VerticalResolutionCalibrationStep2" xml:space="preserve">
-    <value>Step 2 : posiziona asse alla quota superiore</value>
+    <value>Passo 2 : posiziona asse alla quota superiore</value>
   </data>
   <data name="VerticalResolutionCalibrationStep3" xml:space="preserve">
-    <value>Step 3 : imposta la corsa effettuata</value>
+    <value>Passo 3 : imposta la corsa effettuata</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep4" xml:space="preserve">
+    <value>Passo 4 : modifica la risoluzione teorica</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep5" xml:space="preserve">
+    <value>Passo 5 : riposiziona asse e chiude procedura</value>
+  </data>
+  <data name="ResolutionCalibrationActualResolutionHelp" xml:space="preserve">
+    <value>Visualizza la risoluzione attuale dell'asse</value>
+  </data>
+  <data name="ResolutionCalibrationNewResolutionHelp" xml:space="preserve">
+    <value>Visualizza il nuovo valore di risoluzione calcolato dalla procedura.</value>
+  </data>
+  <data name="ResolutionCalibrationAcceptNewResolution" xml:space="preserve">
+    <value>Sostituisce il valore precedente di risoluzione con il nuovo valore calcolato.</value>
+  </data>
+  <data name="ResolutionCalibrationGoToInitialPosizion" xml:space="preserve">
+    <value>Riporta l'asse nella posizione iniziale.</value>
+  </data>
+  <data name="ResolutionCalibrationCloseProcedure" xml:space="preserve">
+    <value>Effettua l'origine dell'asse e chiude la procedura.</value>
   </data>
 </root>
