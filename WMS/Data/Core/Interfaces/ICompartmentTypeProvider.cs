@@ -5,8 +5,8 @@ using Ferretto.WMS.Data.Core.Models;
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
     public interface ICompartmentTypeProvider :
-        ICreateAsyncProvider<CompartmentType>,
-        IReadAllAsyncProvider<CompartmentType>,
+        ICreateAsyncProvider<CompartmentType, int>,
+        IReadAllAsyncProvider<CompartmentType, int>,
         IReadSingleAsyncProvider<CompartmentType, int>
     {
         #region Methods
