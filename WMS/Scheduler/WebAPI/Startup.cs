@@ -1,6 +1,5 @@
 ﻿using Ferretto.Common.EF;
 using Ferretto.WMS.Scheduler.Core;
-using Ferretto.WMS.Scheduler.WebAPI.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +38,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI
         /// <param name="app"></param>
         /// <param name="env"></param>
         /// </summary>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public static void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -67,24 +66,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI
                 app.UseHttpsRedirection();
             }
 
-            var wakeupHubEndpoint = this.Configuration["Hubs:WakeUp"];
-            if (string.IsNullOrWhiteSpace(wakeupHubEndpoint) == false)
-            {
-                app.UseSignalR(routes =>
-                {
-                    routes.MapHub<WakeupHub>($"/{wakeupHubEndpoint}");
-                });
-            }
-
-            var healthHubEndpoint = this.Configuration["Hubs:Health"];
-            if (string.IsNullOrWhiteSpace(healthHubEndpoint) == false)
-            {
-                app.UseSignalR(routes =>
-                {
-                    routes.MapHub<HealthHub>($"/{healthHubEndpoint}");
-                });
-            }
-
             app.UseMvc();
         }
 
@@ -97,7 +78,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI
             services.AddDbContext<DatabaseContext>(
                 options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Ferretto.Common.EF")));
 
-            services.AddCoreBusinessProviders();
+            services.AddSchedulerProviders();
 
             services.AddTransient<IWarehouse, Warehouse>();
 

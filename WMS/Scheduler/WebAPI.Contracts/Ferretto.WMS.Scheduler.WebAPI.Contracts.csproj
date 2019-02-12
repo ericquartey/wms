@@ -40,6 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\EF\Ferretto.Common.EF.csproj" />
     <ProjectReference Include="..\Core\Ferretto.WMS.Scheduler.Core.csproj" />
   </ItemGroup>
 

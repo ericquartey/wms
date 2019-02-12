@@ -40,7 +40,7 @@ namespace Ferretto.WMS.Data.WebAPI
         ///  This method gets called by the runtime.
         ///  Use this method to configure the HTTP request pipeline.
         /// </summary>
-        public static void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -69,6 +69,24 @@ namespace Ferretto.WMS.Data.WebAPI
                 app.UseHsts();
 
                 app.UseHttpsRedirection();
+            }
+
+            var wakeupHubEndpoint = this.Configuration["Hubs:WakeUp"];
+            if (string.IsNullOrWhiteSpace(wakeupHubEndpoint) == false)
+            {
+                app.UseSignalR(routes =>
+                {
+                    routes.MapHub<WakeupHub>($"/{wakeupHubEndpoint}");
+                });
+            }
+
+            var healthHubEndpoint = this.Configuration["Hubs:Health"];
+            if (string.IsNullOrWhiteSpace(healthHubEndpoint) == false)
+            {
+                app.UseSignalR(routes =>
+                {
+                    routes.MapHub<HealthHub>($"/{healthHubEndpoint}");
+                });
             }
 
             app.UseMvc();
