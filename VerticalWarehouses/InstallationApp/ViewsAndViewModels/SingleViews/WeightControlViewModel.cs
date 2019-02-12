@@ -78,12 +78,12 @@ namespace Ferretto.VW.InstallationApp
 
         public void SubscribeMethodToEvent()
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         private void BeginButtonCommandMethod()
@@ -94,7 +94,7 @@ namespace Ferretto.VW.InstallationApp
 
         private void StopButtonCommandMethod()
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         #endregion
