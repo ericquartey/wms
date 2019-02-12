@@ -23,6 +23,8 @@ namespace Ferretto.VW.MAS_DataLayer
 
             this.dataContext.Database.EnsureCreated();
 
+            this.dataContext.Database.Migrate();
+
             webApiCommandEvent.Subscribe(this.LogWriting);
         }
 
@@ -42,6 +44,7 @@ namespace Ferretto.VW.MAS_DataLayer
             catch (DbUpdateException exception)
             {
                 updateOperation = false;
+
                 throw exception;
             }
 
