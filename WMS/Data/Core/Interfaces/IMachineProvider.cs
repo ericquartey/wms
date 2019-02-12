@@ -5,7 +5,8 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 {
     public interface IMachineProvider :
         IReadAllPagedAsyncProvider<Machine, int>,
-        IReadSingleAsyncProvider<Machine, int>
+        IReadSingleAsyncProvider<Machine, int>,
+        IGetUniqueValuesAsyncProvider
     {
     }
 }

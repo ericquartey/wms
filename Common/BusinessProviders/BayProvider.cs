@@ -84,6 +84,11 @@ namespace Ferretto.Common.BusinessProviders
                    .SingleAsync();
         }
 
+        public Bay GetNew()
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<OperationResult> SaveAsync(Bay model) => throw new NotSupportedException();
 
         private static IQueryable<Bay> GetAllBaysWithFilter(

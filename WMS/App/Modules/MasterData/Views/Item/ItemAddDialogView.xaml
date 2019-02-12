@@ -50,7 +50,7 @@
         <TextBlock Grid.Column="1"
                    Margin="14,12,0,0"
                    FontSize="{DynamicResource FontSizeMedium}"
-                   Text="Add Item" />
+                   Text="{x:Static res:Navigation.ItemAdd}" />
 
         <ScrollViewer Grid.Row="1"
                       Margin="10,0,10,10"

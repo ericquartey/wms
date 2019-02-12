@@ -62,6 +62,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                        .SingleOrDefaultAsync(i => i.Id == id);
         }
 
+        public async Task<object[]> GetUniqueValuesAsync(string propertyName)
+        {
+            return await this.GetUniqueValuesAsync(propertyName, this.dataContext.Machines);
+        }
+
         private IQueryable<Machine> GetAllBase()
         {
             return this.dataContext.Machines

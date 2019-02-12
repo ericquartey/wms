@@ -11,8 +11,6 @@ namespace Ferretto.Common.BusinessProviders
 
         IQueryable<AllowedItemInCompartment> GetAllowedByCompartmentId(int compartmentId);
 
-        ItemDetails GetNew();
-
         bool HasAnyCompartments(int itemId);
 
         Task<OperationResult> WithdrawAsync(ItemWithdraw itemWithdraw);

@@ -22,6 +22,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IBayProvider bayProvider;
 
+        private readonly ICellProvider cellProvider;
+
         private readonly ILogger logger;
 
         #endregion
@@ -31,11 +33,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public AreasController(
             ILogger<AreasController> logger,
             IAreaProvider areaProvider,
-            IBayProvider bayProvider)
+            IBayProvider bayProvider,
+            ICellProvider cellProvider)
         {
             this.logger = logger;
             this.areaProvider = areaProvider;
             this.bayProvider = bayProvider;
+            this.cellProvider = cellProvider;
         }
 
         #endregion
@@ -95,6 +99,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return this.Ok(result);
+        }
+
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Cell>))]
+        [HttpGet("{id}/cells")]
+        public async Task<ActionResult<IEnumerable<Cell>>> GetCellsAsync(int id)
+        {
+            return this.Ok(await this.cellProvider.GetByAreaIdAsync(id));
         }
 
         #endregion

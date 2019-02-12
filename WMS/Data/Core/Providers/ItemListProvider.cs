@@ -92,7 +92,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         private IQueryable<ItemList> GetAllBase()
         {
             return this.dataContext.ItemLists
-                .AsNoTracking()
                 .Include(i => i.ItemListRows)
                 .Select(i => new ItemList
                 {
