@@ -268,6 +268,7 @@ namespace Ferretto.VW.InstallationApp
             }
             catch
             {
+                // TODO
             }
         }
 

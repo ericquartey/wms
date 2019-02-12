@@ -23,7 +23,6 @@ namespace Ferretto.VW.VWApp
         {
             var catalog = (ModuleCatalog)this.ModuleCatalog;
             catalog.AddModule(typeof(InstallationAppModule));
-            catalog.AddModule(typeof(ActionsModule));
         }
 
         protected override void ConfigureViewModelLocator()

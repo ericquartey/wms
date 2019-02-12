@@ -1,18 +1,25 @@
 ﻿using System;
 using System.Linq;
+using Ferretto.VW.Common_Utils;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
     public partial class DataLayer : IDataLayer
     {
+        private const string CONVERSION_EXCEPTION = "Data Layer Exception - An error happened during the conversion";
 
-        public int GetIntConfigurationValue(ConfigurationValueEnum configurationValueEnum)
+        private const string INVALID_DATA_EXCEPTION = "Data Layer Exception - Invalid Data Type";
+
+        private const string VAR_NOT_FOUND_EXCEPTION = "Data Layer Exception - Variable Not Found";
+
+        public int GetIntegerConfigurationValue(ConfigurationValueEnum configurationValueEnum)
         {
-            // Cercare la var nel DB
-            // Confrontare il tipo nel DB con int
-            // se diverso throw an exception creare l'eccezione Data layer Exception con Invalid Data Type
-            // se uguale, converto il valore nel tipo e ritorno
-            int returnIntValue = 0;
+            // Comments to keep until the method won't be tested
+            // Search the var in the DB
+            // Check if the type in the DB is integer
+            // If it is not integer i throw an exception for "Invalid Data Type"
+            // If they are the same i convert the return value
+            int returnIntegerValue = 0;
 
             var configurationValue = inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
 
@@ -20,30 +27,31 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 if (configurationValue.VarType == DataTypeEnum.integerType)
                 {
-                    if (!Int32.TryParse(configurationValue.VarValue, out returnIntValue))
+                    if (!Int32.TryParse(configurationValue.VarValue, out returnIntegerValue))
                     {
-                        throw new Exception("Data Layer Exception - Impossible convert the DB value to interger");
+                        throw new ExceptionsUtils(CONVERSION_EXCEPTION);
                     }
                 }
                 else
                 {
-                    throw new Exception("Data Layer Exception - Invalid Data Type");
+                    throw new ExceptionsUtils(INVALID_DATA_EXCEPTION);
                 }
             }
             else
             {
-                throw new Exception("Data Layer Exception - Variable Not Found");
+                throw new ExceptionsUtils(VAR_NOT_FOUND_EXCEPTION);
             }
 
-            return returnIntValue;
+            return returnIntegerValue;
         }
 
         public decimal GetDecimalConfigurationValue(ConfigurationValueEnum configurationValueEnum)
         {
-            // Cercare la var nel DB
-            // Confrontare il tipo nel DB con decimal
-            // se diverso throw an exception creare l'eccezione Data layer Exception con Invalid Data Type
-            // se uguale, converto il valore nle tipo e ritorno
+            // Comments to keep until the method won't be tested
+            // Search the var in the DB
+            // Check if the type in the DB is decimal
+            // If it is not decimal i throw an exception for "Invalid Data Type"
+            // If they are the same i convert the return value
             decimal returnDecimalValue = 0;
 
             var configurationValue = inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
@@ -54,17 +62,17 @@ namespace Ferretto.VW.MAS_DataLayer
                 {
                     if (!Decimal.TryParse(configurationValue.VarValue, out returnDecimalValue))
                     {
-                        throw new Exception("Data Layer Exception - Impossible convert the DB value to decimal");
+                        throw new ExceptionsUtils(CONVERSION_EXCEPTION);
                     }
                 }
                 else
                 {
-                    throw new Exception("Data Layer Exception - Invalid Data Type");
+                    throw new ExceptionsUtils(INVALID_DATA_EXCEPTION);
                 }
             }
             else
             {
-                throw new Exception("Data Layer Exception - Variable Not Found");
+                throw new ExceptionsUtils(VAR_NOT_FOUND_EXCEPTION);
             }
 
             return returnDecimalValue;
@@ -72,10 +80,11 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public string GetStringConfigurationValue(ConfigurationValueEnum configurationValueEnum)
         {
-            // Cercare la var nel DB
-            // Confrontare il tipo nel DB con string
-            // se diverso throw an exception creare l'eccezione Data layer Exception con Invalid Data Type
-            // se uguale, converto il valore nle tipo e ritorno
+            // Comments to keep until the method won't be tested
+            // Search the var in the DB
+            // Check if the type in the DB is string
+            // If it is not string i throw an exception for "Invalid Data Type"
+            // If they are the same i convert the return value
             string returnStringValue = "";
 
             var configurationValue = inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
@@ -88,67 +97,135 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
                 else
                 {
-                    throw new Exception("Data Layer Exception - Invalid Data Type");
+                    throw new ExceptionsUtils(INVALID_DATA_EXCEPTION);
                 }
             }
             else
             {
-                throw new Exception("Data Layer Exception - Variable Not Found");
+                throw new ExceptionsUtils(VAR_NOT_FOUND_EXCEPTION);
             }
 
             return returnStringValue;
         }
 
-        public int GetIntRuntimeValue(RuntimeValueEnum runtimeValueEnum)
+        public int GetIntegerRuntimeValue(RuntimeValueEnum runtimeValueEnum)
         {
-            // Cercare la var nel DB
-            // Confrontare il tipo nel DB con int
-            // se diverso throw an exception creare l'eccezione Data layer Exception con Invalid Data Type
-            // se uguale, converto il valore nle tipo e ritorno
-            throw new NotImplementedException();
+            // Comments to keep until the method won't be tested
+            // Search the var in the DB
+            // Check if the type in the DB is integer
+            // If it is not decimal i throw an exception for "Invalid Data Type"
+            // If they are the same i convert the return value
+            int returnIntegerValue = 0;
+
+            var runtimeValue = inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
+
+            if (runtimeValue != null)
+            {
+                if (runtimeValue.VarType == DataTypeEnum.integerType)
+                {
+                    if (!Int32.TryParse(runtimeValue.VarValue, out returnIntegerValue))
+                    {
+                        throw new ExceptionsUtils(CONVERSION_EXCEPTION);
+                    }
+                }
+                else
+                {
+                    throw new ExceptionsUtils(INVALID_DATA_EXCEPTION);
+                }
+            }
+            else
+            {
+                throw new ExceptionsUtils(VAR_NOT_FOUND_EXCEPTION);
+            }
+
+            return returnIntegerValue;
         }
 
         public decimal GetDecimalRuntimeValue(RuntimeValueEnum runtimeValueEnum)
         {
-            // Cercare la var nel DB
-            // Confrontare il tipo nel DB con decimal
-            // se diverso throw an exception creare l'eccezione Data layer Exception con Invalid Data Type
-            // se uguale, converto il valore nle tipo e ritorno
-            throw new NotImplementedException();
+            // Comments to keep until the method won't be tested
+            // Search the var in the DB
+            // Check if the type in the DB is decimal
+            // If it is not decimal i throw an exception for "Invalid Data Type"
+            // If they are the same i convert the return value
+            decimal returnDecimalValue = 0;
+
+            var runtimeValue = inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
+
+            if (runtimeValue != null)
+            {
+                if (runtimeValue.VarType == DataTypeEnum.decimalType)
+                {
+                    if (!Decimal.TryParse(runtimeValue.VarValue, out returnDecimalValue))
+                    {
+                        throw new ExceptionsUtils(CONVERSION_EXCEPTION);
+                    }
+                }
+                else
+                {
+                    throw new ExceptionsUtils(INVALID_DATA_EXCEPTION);
+                }
+            }
+            else
+            {
+                throw new ExceptionsUtils(VAR_NOT_FOUND_EXCEPTION);
+            }
+
+            return returnDecimalValue;
         }
 
         public string GetStringRuntimeValue(RuntimeValueEnum runtimeValueEnum)
         {
-            // Cercare la var nel DB
-            // Confrontare il tipo nel DB con string
-            // se diverso throw an exception creare l'eccezione Data layer Exception con Invalid Data Type
-            // se uguale, converto il valore nle tipo e ritorno
-            throw new NotImplementedException();
+            // Comments to keep until the method won't be tested
+            // Search the var in the DB
+            // Check if the type in the DB is string
+            // If it is not string i throw an exception for "Invalid Data Type"
+            // If they are the same i convert the return value
+            string returnStringValue = "";
+
+            var runtimeValue = inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
+
+            if (runtimeValue != null)
+            {
+                if (runtimeValue.VarType == DataTypeEnum.stringType)
+                {
+                    returnStringValue = runtimeValue.VarValue;
+                }
+                else
+                {
+                    throw new ExceptionsUtils(INVALID_DATA_EXCEPTION);
+                }
+            }
+            else
+            {
+                throw new ExceptionsUtils(VAR_NOT_FOUND_EXCEPTION);
+            }
+
+            return returnStringValue;
         }
 
-        public void SetIntConfigurationValue(ConfigurationValueEnum configurationValueEnum, int value)
+        public void SetIntegerConfigurationValue(ConfigurationValueEnum configurationValueEnum, int value)
         {
-            // Ricevo un valore in input
-            // cerco se esite nel DB la var
-            // se esiste controllo il tipo del record
-            // se è diverso da int, throw exception "invalid data type"
-            // se esiste lo aggiorno
-            // se non esiste lo creo
+            // Comments to keep until the method won't be tested
+            // Get an input value
+            // DB var search in DB
+            // if the var exist check the type in the record
+            // if the type is different from integer, throw an invalid data type excpetion
+            // if the var exist i update it
+            // if the var doesn't exist i create it
             var configurationValue = inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
 
-            if (configurationValue == null) // Insert a new record
+            if (configurationValue == null)
             {
-                //Create new Variable in the DB
                 ConfigurationValue newConfigurationValue = new ConfigurationValue();
                 newConfigurationValue.VarName = configurationValueEnum;
                 newConfigurationValue.VarType = DataTypeEnum.integerType;
                 newConfigurationValue.VarValue = value.ToString();
 
-                //Add new Employee to database
                 inMemoryDataContext.ConfigurationValues.Add(newConfigurationValue);
                 inMemoryDataContext.SaveChanges();
             }
-            else // Update the existing record
+            else
             {
                 if (configurationValue.VarType == DataTypeEnum.integerType)
                 {
@@ -157,34 +234,33 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
                 else
                 {
-                    throw new Exception("Data Layer Exception - Invalid Data Type");
+                    throw new ExceptionsUtils(INVALID_DATA_EXCEPTION);
                 }
             }
         }
 
         public void SetDecimalConfigurationValue(ConfigurationValueEnum configurationValueEnum, decimal value)
         {
-            // Ricevo un valore in input
-            // cerco se esite nel DB la var
-            // se esiste controllo il tipo del record
-            // se è diverso da int, throw exception "invalid data type"
-            // se esiste lo aggiorno
-            // se non esiste lo creo
+            // Comments to keep until the method won't be tested
+            // Get an input value
+            // DB var search in DB
+            // if the var exist check the type in the record
+            // if the type is different from decimal, throw an invalid data type excpetion
+            // if the var exist i update it
+            // if the var doesn't exist i create it
             var configurationValue = inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
 
-            if (configurationValue == null) // Insert a new record
+            if (configurationValue == null)
             {
-                //Create new Variable in the DB
                 ConfigurationValue newConfigurationValue = new ConfigurationValue();
                 newConfigurationValue.VarName = configurationValueEnum;
                 newConfigurationValue.VarType = DataTypeEnum.decimalType;
                 newConfigurationValue.VarValue = value.ToString();
 
-                //Add new Employee to database
                 inMemoryDataContext.ConfigurationValues.Add(newConfigurationValue);
                 inMemoryDataContext.SaveChanges();
             }
-            else // Update the existing record
+            else
             {
                 if (configurationValue.VarType == DataTypeEnum.decimalType)
                 {
@@ -193,34 +269,33 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
                 else
                 {
-                    throw new Exception("Data Layer Exception - Invalid Data Type");
+                    throw new ExceptionsUtils(INVALID_DATA_EXCEPTION);
                 }
             }
         }
 
         public void SetStringConfigurationValue(ConfigurationValueEnum configurationValueEnum, string value)
         {
-            // Ricevo un valore in input
-            // cerco se esite nel DB la var
-            // se esiste controllo il tipo del record
-            // se è diverso da int, throw exception "invalid data type"
-            // se esiste lo aggiorno
-            // se non esiste lo creo
+            // Comments to keep until the method won't be tested
+            // Get an input value
+            // DB var search in DB
+            // if the var exist check the type in the record
+            // if the type is different from string, throw an invalid data type excpetion
+            // if the var exist i update it
+            // if the var doesn't exist i create it
             var configurationValue = inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
 
             if (configurationValue == null) // Insert a new record
             {
-                //Create new Variable in the DB
                 ConfigurationValue newConfigurationValue = new ConfigurationValue();
                 newConfigurationValue.VarName = configurationValueEnum;
                 newConfigurationValue.VarType = DataTypeEnum.stringType;
                 newConfigurationValue.VarValue = value;
 
-                //Add new Employee to database
                 inMemoryDataContext.ConfigurationValues.Add(newConfigurationValue);
                 inMemoryDataContext.SaveChanges();
             }
-            else // Update the existing record
+            else
             {
                 if (configurationValue.VarType == DataTypeEnum.stringType)
                 {
@@ -229,42 +304,120 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
                 else
                 {
-                    throw new Exception("Data Layer Exception - Invalid Data Type");
+                    throw new ExceptionsUtils(INVALID_DATA_EXCEPTION);
                 }
             }
         }
 
-        public void SetIntRuntimeValue(RuntimeValueEnum runtimeValueEnum, int value)
+        public void SetIntegerRuntimeValue(RuntimeValueEnum runtimeValueEnum, int value)
         {
-            // Ricevo un valore in input
-            // cerco se esite nel DB la var
-            // se esiste controllo il tipo del record
-            // se è diverso da int, throw exception "invalid data type"
-            // se esiste lo aggiorno
-            // se non esiste lo creo
-            throw new NotImplementedException();
+            // Comments to keep until the method won't be tested
+            // Get an input value
+            // DB var search in DB
+            // if the var exist check the type in the record
+            // if the type is different from int, throw an invalid data type excpetion
+            // if the var exist i update it
+            // if the var doesn't exist i create it
+            var runtimeValue = inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
+
+            if (runtimeValue == null) // Insert a new record
+            {
+                //Create new record in the DB
+                RuntimeValue newRuntimeValue = new RuntimeValue();
+                newRuntimeValue.VarName = runtimeValueEnum;
+                newRuntimeValue.VarType = DataTypeEnum.integerType;
+                newRuntimeValue.VarValue = value.ToString();
+
+                //Add new Employee to database
+                inMemoryDataContext.RuntimeValues.Add(newRuntimeValue);
+                inMemoryDataContext.SaveChanges();
+            }
+            else // Update the existing record
+            {
+                if (runtimeValue.VarType == DataTypeEnum.integerType)
+                {
+                    runtimeValue.VarValue = value.ToString();
+                    inMemoryDataContext.SaveChanges();
+                }
+                else
+                {
+                    throw new ExceptionsUtils(INVALID_DATA_EXCEPTION);
+                }
+            }
         }
 
         public void SetDecimalRuntimeValue(RuntimeValueEnum runtimeValueEnum, decimal value)
         {
-            // Ricevo un valore in input
-            // cerco se esite nel DB la var
-            // se esiste controllo il tipo del record
-            // se è diverso da int, throw exception "invalid data type"
-            // se esiste lo aggiorno
-            // se non esiste lo creo
-            throw new NotImplementedException();
+            // Comments to keep until the method won't be tested
+            // Get an input value
+            // DB var search in DB
+            // if the var exist check the type in the record
+            // if the type is different from decimal, throw an invalid data type excpetion
+            // if the var exist i update it
+            // if the var doesn't exist i create it
+            var runtimeValue = inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
+
+            if (runtimeValue == null)
+            {
+                //Create new record in the DB
+                RuntimeValue newRuntimeValue = new RuntimeValue();
+                newRuntimeValue.VarName = runtimeValueEnum;
+                newRuntimeValue.VarType = DataTypeEnum.decimalType;
+                newRuntimeValue.VarValue = value.ToString();
+
+                //Add new Employee to database
+                inMemoryDataContext.RuntimeValues.Add(newRuntimeValue);
+                inMemoryDataContext.SaveChanges();
+            }
+            else // Update the existing record
+            {
+                if (runtimeValue.VarType == DataTypeEnum.decimalType)
+                {
+                    runtimeValue.VarValue = value.ToString();
+                    inMemoryDataContext.SaveChanges();
+                }
+                else
+                {
+                    throw new ExceptionsUtils(INVALID_DATA_EXCEPTION);
+                }
+            }
         }
 
         public void SetStringRuntimeValue(RuntimeValueEnum runtimeValueEnum, string value)
         {
-            // Ricevo un valore in input
-            // cerco se esite nel DB la var
-            // se esiste controllo il tipo del record
-            // se è diverso da int, throw exception "invalid data type"
-            // se esiste lo aggiorno
-            // se non esiste lo creo
-            throw new NotImplementedException();
+            // Comments to keep until the method won't be tested
+            // Get an input value
+            // DB var search in DB
+            // if the var exist check the type in the record
+            // if the type is different from string, throw an invalid data type excpetion
+            // if the var exist i update it
+            // if the var doesn't exist i create it
+            var runtimeValue = inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
+
+            if (runtimeValue == null)
+            {
+                //Create new record in the DB
+                RuntimeValue newRuntimeValue = new RuntimeValue();
+                newRuntimeValue.VarName = runtimeValueEnum;
+                newRuntimeValue.VarType = DataTypeEnum.stringType;
+                newRuntimeValue.VarValue = value;
+
+                //Add new Employee to database
+                inMemoryDataContext.RuntimeValues.Add(newRuntimeValue);
+                inMemoryDataContext.SaveChanges();
+            }
+            else // Update the existing record
+            {
+                if (runtimeValue.VarType == DataTypeEnum.stringType)
+                {
+                    runtimeValue.VarValue = value;
+                    inMemoryDataContext.SaveChanges();
+                }
+                else
+                {
+                    throw new ExceptionsUtils(INVALID_DATA_EXCEPTION);
+                }
+            }
         }
     }
 }
