@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.MAS_DataLayer;
@@ -14,19 +15,19 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private readonly IWriteLogService data;
 
-        private readonly IInverterDriver driver;
+        private readonly INewInverterDriver driver;
 
         private readonly IEventAggregator eventAggregator;
 
-        private StateMachineHoming homing;
+        private readonly StateMachineHoming homing;
 
-        private StateMachineVerticalHoming verticalHoming;
+        private readonly StateMachineVerticalHoming verticalHoming;
 
         #endregion
 
         #region Constructors
 
-        public FiniteStateMachines(IInverterDriver iDriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
+        public FiniteStateMachines(INewInverterDriver iDriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
         {
             this.driver = iDriver;
             this.data = iWriteLogService;
@@ -41,11 +42,30 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #endregion
 
+        #region Properties
+
+        public StateMachineVerticalHoming StateMachineVerticalHoming => this.verticalHoming;
+
+        #endregion
+
         #region Methods
 
         public void Destroy()
         {
-            this.driver.Destroy();
+            try
+            {
+                this.driver.Destroy();
+            }
+            catch (ArgumentNullException exc)
+            {
+                Debug.WriteLine("The inverter driver does not exist.");
+                throw new ArgumentNullException("The inverter driver does not exist.", exc);
+            }
+            catch (Exception exc)
+            {
+                Debug.WriteLine("Invalid operation.");
+                throw new Exception("Invalid operation", exc);
+            }
         }
 
         public void DoAction(Command_EventParameter action)

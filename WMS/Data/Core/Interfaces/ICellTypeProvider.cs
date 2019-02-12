@@ -4,8 +4,8 @@ using Ferretto.WMS.Data.Core.Models;
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
     public interface ICellTypeProvider :
-        IReadAllProvider<CellType>,
-        IReadSingleProvider<CellType, int>
+        IReadAllAsyncProvider<CellType, int>,
+        IReadSingleAsyncProvider<CellType, int>
     {
     }
 }

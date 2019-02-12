@@ -8,32 +8,38 @@ namespace Ferretto.VW.InstallationApp
         #region Fields
 
         private int activeRaysQuantity;
-        private double currentHeight;
-        private double gateCorrection;
-        private string noteText;
-        private int speed;
-        private double systemError;
-        private double tolerance;
 
-        #endregion Fields
+        private decimal currentHeight;
+
+        private decimal gateCorrection;
+
+        private string noteText;
+
+        private int speed;
+
+        private decimal systemError;
+
+        private decimal tolerance;
+
+        #endregion
 
         #region Properties
 
-        public Int32 ActiveRaysQuantity { get => this.activeRaysQuantity; set => this.SetProperty(ref this.activeRaysQuantity, value); }
+        public int ActiveRaysQuantity { get => this.activeRaysQuantity; set => this.SetProperty(ref this.activeRaysQuantity, value); }
 
-        public Double CurrentHeight { get => this.currentHeight; set => this.SetProperty(ref this.currentHeight, value); }
+        public decimal CurrentHeight { get => this.currentHeight; set => this.SetProperty(ref this.currentHeight, value); }
 
-        public Double GateCorrection { get => this.gateCorrection; set => this.SetProperty(ref this.gateCorrection, value); }
+        public decimal GateCorrection { get => this.gateCorrection; set => this.SetProperty(ref this.gateCorrection, value); }
 
-        public String NoteText { get => this.noteText; set => this.SetProperty(ref this.noteText, value); }
+        public string NoteText { get => this.noteText; set => this.SetProperty(ref this.noteText, value); }
 
-        public Int32 Speed { get => this.speed; set => this.SetProperty(ref this.speed, value); }
+        public int Speed { get => this.speed; set => this.SetProperty(ref this.speed, value); }
 
-        public Double SystemError { get => this.systemError; set => this.SetProperty(ref this.systemError, value); }
+        public decimal SystemError { get => this.systemError; set => this.SetProperty(ref this.systemError, value); }
 
-        public Double Tolerance { get => this.tolerance; set => this.SetProperty(ref this.tolerance, value); }
+        public decimal Tolerance { get => this.tolerance; set => this.SetProperty(ref this.tolerance, value); }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -52,6 +58,6 @@ namespace Ferretto.VW.InstallationApp
             throw new NotImplementedException();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

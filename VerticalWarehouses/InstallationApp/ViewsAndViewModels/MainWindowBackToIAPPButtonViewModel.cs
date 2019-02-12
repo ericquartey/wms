@@ -11,11 +11,14 @@ namespace Ferretto.VW.InstallationApp
         #region Fields
 
         private Visibility cancelButtonVisibility = Visibility.Hidden;
+
         private IUnityContainer container;
+
         private bool isBackButtonActive = true;
+
         private bool isCancelButtonActive = false;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -25,11 +28,11 @@ namespace Ferretto.VW.InstallationApp
 
         public Visibility CancelButtonVisibility { get => this.cancelButtonVisibility; set => this.SetProperty(ref this.cancelButtonVisibility, value); }
 
-        public Boolean IsBackButtonActive { get => this.isBackButtonActive; set => this.SetProperty(ref this.isBackButtonActive, value); }
+        public bool IsBackButtonActive { get => this.isBackButtonActive; set => this.SetProperty(ref this.isBackButtonActive, value); }
 
-        public Boolean IsCancelButtonActive { get => this.isCancelButtonActive; set => this.SetProperty(ref this.isCancelButtonActive, value); }
+        public bool IsCancelButtonActive { get => this.isCancelButtonActive; set => this.SetProperty(ref this.isCancelButtonActive, value); }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -49,6 +52,6 @@ namespace Ferretto.VW.InstallationApp
             this.container = _container;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

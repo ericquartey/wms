@@ -6,8 +6,8 @@ using Ferretto.WMS.Data.Core.Models;
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
     public interface ICellProvider :
-        IReadAllPagedProvider<Cell>,
-        IReadSingleProvider<CellDetails, int>
+        IReadAllPagedAsyncProvider<Cell, int>,
+        IReadSingleAsyncProvider<CellDetails, int>
     {
         #region Methods
 

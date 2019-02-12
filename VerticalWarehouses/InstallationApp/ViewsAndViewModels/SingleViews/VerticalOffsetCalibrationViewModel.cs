@@ -13,36 +13,40 @@ namespace Ferretto.VW.InstallationApp
         #region Fields
 
         public IUnityContainer Container;
-        private readonly float acc = 1;
-
-        private readonly float dec = 1;
-
-        private readonly short offset = 1;
-        private readonly float vMax = 1;
-
-        private readonly float w = 1;
 
         private string correctOffset;
+
         private ICommand correctOffsetButtonCommand;
+
         private string currentHeight;
+
         private int currentOffset;
+
         private ICommand exitFromViewCommand;
-        private bool isCorrectOffsetButtonActive = false;
+
+        private bool isCorrectOffsetButtonActive;
+
         private bool isSetPositionButtonActive = true;
-        private bool isStepDownButtonActive = false;
-        private bool isStepUpButtonActive = false;
-        private readonly DispatcherTimer dispatcherTimer = new DispatcherTimer();
+
+        private bool isStepDownButtonActive;
+
+        private bool isStepUpButtonActive;
+
         private string noteString = Resources.InstallationApp.VerticalOffsetCalibration;
-        private short offsetValue;
-        private PositioningDrawer positioningDrawerInstance;
+
         private string referenceCellHeight;
+
         private string referenceCellNumber;
+
         private ICommand setPositionButtonCommand;
+
         private ICommand stepDownButtonCommand;
+
         private ICommand stepUpButtonCommand;
+
         private string stepValue;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -51,7 +55,7 @@ namespace Ferretto.VW.InstallationApp
             this.NoteString = Resources.InstallationApp.VerticalOffsetCalibration;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -65,17 +69,15 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand ExitFromViewCommand => this.exitFromViewCommand ?? (this.exitFromViewCommand = new DelegateCommand(this.ExitFromViewMethod));
 
-        public Boolean IsCorrectOffsetButtonActive { get => this.isCorrectOffsetButtonActive; set => this.SetProperty(ref this.isCorrectOffsetButtonActive, value); }
+        public bool IsCorrectOffsetButtonActive { get => this.isCorrectOffsetButtonActive; set => this.SetProperty(ref this.isCorrectOffsetButtonActive, value); }
 
-        public Boolean IsSetPositionButtonActive { get => this.isSetPositionButtonActive; set => this.SetProperty(ref this.isSetPositionButtonActive, value); }
+        public bool IsSetPositionButtonActive { get => this.isSetPositionButtonActive; set => this.SetProperty(ref this.isSetPositionButtonActive, value); }
 
-        public Boolean IsStepDownButtonActive { get => this.isStepDownButtonActive; set => this.SetProperty(ref this.isStepDownButtonActive, value); }
+        public bool IsStepDownButtonActive { get => this.isStepDownButtonActive; set => this.SetProperty(ref this.isStepDownButtonActive, value); }
 
-        public Boolean IsStepUpButtonActive { get => this.isStepUpButtonActive; set => this.SetProperty(ref this.isStepUpButtonActive, value); }
+        public bool IsStepUpButtonActive { get => this.isStepUpButtonActive; set => this.SetProperty(ref this.isStepUpButtonActive, value); }
 
-        public String NoteString { get => this.noteString; set => this.SetProperty(ref this.noteString, value); }
-
-        public short Offset => this.offsetValue;
+        public string NoteString { get => this.noteString; set => this.SetProperty(ref this.noteString, value); }
 
         public string ReferenceCellHeight { get => this.referenceCellHeight; set => this.SetProperty(ref this.referenceCellHeight, value); }
 
@@ -89,21 +91,18 @@ namespace Ferretto.VW.InstallationApp
 
         public string StepValue { get => this.stepValue; set => this.SetProperty(ref this.stepValue, value); }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
         public void CorrectOffsetButtonCommandMethod()
         {
-            this.CorrectOffset = Convert.ToString(this.CurrentOffset);
-            short.TryParse(this.CorrectOffset, out this.offsetValue);
+            // TODO implement missing feature
         }
 
         public void ExitFromViewMethod()
         {
-            // Unsubscribe methods
-            this.UnSubscribeMethodFromEvent();
-            this.dispatcherTimer.Stop();
+            throw new NotImplementedException();
         }
 
         public void InitializeViewModel(IUnityContainer _container)
@@ -113,91 +112,34 @@ namespace Ferretto.VW.InstallationApp
 
         public void PositioningDone(bool result)
         {
-            var message = "";
-
-            if (result)
-            {
-                this.IsSetPositionButtonActive = true;
-                message = Resources.InstallationApp.SetPosition;
-            }
-            else
-            {
-                message = "Set Positioning not Done";
-            }
-
-            this.NoteString = message;
-            this.positioningDrawerInstance.Stop();
-
-            this.IsStepUpButtonActive = true;
-            this.IsStepDownButtonActive = true;
-            this.IsCorrectOffsetButtonActive = true;
+            // TODO implement missing feature
         }
 
         public void SetPositionButtonCommandMethod()
         {
-            short.TryParse(this.ReferenceCellHeight, out var x);
-
-            this.isSetPositionButtonActive = false;
-            this.NoteString = Resources.InstallationApp.VerticalOffsetCalibration;
-
-            this.dispatcherTimer.Tick += this.DispatcherTimer_Tick;
-            this.dispatcherTimer.Interval = new TimeSpan(350);
-            this.dispatcherTimer.Start();
-
-            this.positioningDrawerInstance.EnableRetrivialCurrentPositionMode = true;
-            this.positioningDrawerInstance.AbsoluteMovement = true;
-            this.positioningDrawerInstance.MoveAlongVerticalAxisToPoint(x, this.vMax, this.acc, this.dec, this.w, this.offset);
-        }
-
-        private void DispatcherTimer_Tick(Object sender, EventArgs e)
-        {
-            this.CurrentHeight = Convert.ToString(this.positioningDrawerInstance.CurrentPosition);
+            // TODO implement missing feature
         }
 
         public void StepDownButtonCommandMethod()
         {
-            short.TryParse(this.StepValue, out var x);
-
-            this.positioningDrawerInstance.AbsoluteMovement = false;
-            this.positioningDrawerInstance.MoveAlongVerticalAxisToPoint(-x, this.vMax, this.acc, this.dec, this.w, this.offset);
-
-            this.CurrentOffset -= x;
+            // TODO implement missing feature
         }
 
         public void StepUpButtonCommandMethod()
         {
-            short.TryParse(this.StepValue, out var x);
-
-            this.positioningDrawerInstance.AbsoluteMovement = false;
-            this.positioningDrawerInstance.MoveAlongVerticalAxisToPoint(x, this.vMax, this.acc, this.dec, this.w, this.offset);
-
-            this.CurrentOffset += x;
+            // TODO implement missing feature
         }
 
         public void SubscribeMethodToEvent()
         {
-            this.positioningDrawerInstance = (PositioningDrawer)this.Container.Resolve<IPositioningDrawer>();
-            if (this.positioningDrawerInstance != null)
-            {
-                this.positioningDrawerInstance.ThrowEndEvent += this.PositioningDone;
-                this.positioningDrawerInstance.ThrowErrorEvent += this.PositioningError;
-            }
+            // TODO implement missing feature
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            if (this.positioningDrawerInstance != null)
-            {
-                this.positioningDrawerInstance.ThrowErrorEvent -= this.PositioningError;
-                this.positioningDrawerInstance.ThrowEndEvent -= this.PositioningDone;
-            }
+            // TODO implement missing feature
         }
 
-        private void PositioningError(String error_Message)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion Methods
+        #endregion
     }
 }

@@ -14,7 +14,7 @@ namespace BackgroundService
 
         private readonly IHubContext<SensorsStatesHub, ISensorsStatesHub> hub;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -23,13 +23,13 @@ namespace BackgroundService
             this.hub = hub;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public SensorsStates LastSensorsStates { get; set; } = new SensorsStates();
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -67,10 +67,11 @@ namespace BackgroundService
                     this.LastSensorsStates = tmp;
                     await this.hub.Clients.All.OnSensorsChanged(tmp);
                 }
+
                 await Task.Delay(20);
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

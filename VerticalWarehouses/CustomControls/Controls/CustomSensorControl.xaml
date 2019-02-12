@@ -7,15 +7,15 @@
              mc:Ignorable="d">
     <StackPanel x:Name="LayoutRoot"
                 Orientation="Horizontal">
-        <Grid Width="30"
-              Height="30">
-            <Ellipse Width="30"
-                     Height="30"
+        <Grid Width="24"
+              Height="24">
+            <Ellipse Width="24"
+                     Height="24"
                      HorizontalAlignment="Center"
                      VerticalAlignment="Center"
                      Fill="{DynamicResource VWAPP_CustomControlSensor_BulletBackground_Normal}" />
-            <Ellipse Width="28"
-                     Height="28"
+            <Ellipse Width="22"
+                     Height="22"
                      HorizontalAlignment="Center"
                      VerticalAlignment="Center"
                      Fill="{Binding BulletColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

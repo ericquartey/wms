@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -12,7 +10,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MissionsController : ControllerBase,
+    public class MissionsController :
+        ControllerBase,
         IReadAllController<Mission>,
         IReadSingleController<Mission, int>
     {
@@ -45,30 +44,28 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(await this.missionProvider.GetAllAsync());
         }
 
+        [ProducesResponseType(200, Type = typeof(int))]
+        [HttpGet]
+        [Route("count")]
+        public async Task<ActionResult<int>> GetAllCountAsync()
+        {
+            return this.Ok(await this.missionProvider.GetAllCountAsync());
+        }
+
         [ProducesResponseType(200, Type = typeof(Mission))]
         [ProducesResponseType(404, Type = typeof(SerializableError))]
-        [ProducesResponseType(500, Type = typeof(string))]
         [HttpGet("{id}")]
         public async Task<ActionResult<Mission>> GetByIdAsync(int id)
         {
-            try
+            var result = await this.missionProvider.GetByIdAsync(id);
+            if (result == null)
             {
-                var result = await this.missionProvider.GetByIdAsync(id);
-                if (result == null)
-                {
-                    var message = $"No entity with the specified id={id} exists.";
-                    this.logger.LogWarning(message);
-                    return this.NotFound(message);
-                }
+                var message = $"No entity with the specified id={id} exists.";
+                this.logger.LogWarning(message);
+                return this.NotFound(message);
+            }
 
-                return this.Ok(result);
-            }
-            catch (Exception ex)
-            {
-                var message = $"An error occurred while retrieving the requested entity with id={id}.";
-                this.logger.LogError(ex, message);
-                return this.StatusCode(StatusCodes.Status500InternalServerError, message);
-            }
+            return this.Ok(result);
         }
 
         #endregion
