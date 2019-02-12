@@ -37,6 +37,20 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
+        [ProducesResponseType(200, Type = typeof(Bay))]
+        [HttpPost("{id}/activate")]
+        public async Task<ActionResult<IEnumerable<Bay>>> ActivateAsync(int id)
+        {
+            return this.Ok(await this.bayProvider.ActivateAsync(id));
+        }
+
+        [ProducesResponseType(200, Type = typeof(Bay))]
+        [HttpPost("{id}/deactivate")]
+        public async Task<ActionResult<IEnumerable<Bay>>> DeactivateAsync(int id)
+        {
+            return this.Ok(await this.bayProvider.DeactivateAsync(id));
+        }
+
         [ProducesResponseType(200, Type = typeof(IEnumerable<Bay>))]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Bay>>> GetAllAsync()
@@ -66,20 +80,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return this.Ok(result);
-        }
-
-        [ProducesResponseType(200, Type = typeof(string))]
-        [HttpPost("{id}/activate")]
-        public async Task<ActionResult<IEnumerable<Bay>>> MarkAsActive(int id)
-        {
-            return this.Ok(await this.bayProvider.Activate(id));
-        }
-
-        [ProducesResponseType(200, Type = typeof(string))]
-        [HttpPost("{id}/disconnect")]
-        public async Task<ActionResult<IEnumerable<Bay>>> MarkAsIdle(int id)
-        {
-            return this.Ok(await this.bayProvider.Disconnect(id));
         }
 
         #endregion

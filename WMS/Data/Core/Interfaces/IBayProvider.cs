@@ -11,6 +11,10 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     {
         #region Methods
 
+        Task<OperationResult<Bay>> ActivateAsync(int id);
+
+        Task<OperationResult<Bay>> DeactivateAsync(int id);
+
         Task<IEnumerable<Bay>> GetByAreaIdAsync(int id);
 
         #endregion

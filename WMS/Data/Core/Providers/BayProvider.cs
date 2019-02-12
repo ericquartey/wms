@@ -27,6 +27,36 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
+        public async Task<OperationResult<Bay>> ActivateAsync(int id)
+        {
+            var bay = this.dataContext.Bays.Find(id);
+            if (bay == null)
+            {
+                return new NotFoundOperationResult<Bay>();
+            }
+
+            bay.IsActive = true;
+
+            await this.dataContext.SaveChangesAsync();
+
+            return new SuccessOperationResult<Bay>();
+        }
+
+        public async Task<OperationResult<Bay>> DeactivateAsync(int id)
+        {
+            var bay = this.dataContext.Bays.Find(id);
+            if (bay == null)
+            {
+                return new NotFoundOperationResult<Bay>();
+            }
+
+            bay.IsActive = false;
+
+            await this.dataContext.SaveChangesAsync();
+
+            return new SuccessOperationResult<Bay>();
+        }
+
         public async Task<IEnumerable<Bay>> GetAllAsync()
         {
             return await this.dataContext.Bays
