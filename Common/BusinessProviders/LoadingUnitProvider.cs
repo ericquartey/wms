@@ -27,7 +27,7 @@ namespace Ferretto.Common.BusinessProviders
         private static readonly Expression<Func<DataModels.LoadingUnit, bool>> StatusUsedFilter =
             lu => lu.LoadingUnitStatusId == "U"; // STATUS Used
 
-        private readonly IAbcClassesProvider abcClassesProvider;
+        private readonly IAbcClassProvider abcClassProvider;
 
         private readonly ICellProvider cellProvider;
 
@@ -46,13 +46,13 @@ namespace Ferretto.Common.BusinessProviders
             ICompartmentProvider compartmentProvider,
             IDatabaseContextService dataContext,
             EnumerationProvider enumerationProvider,
-            IAbcClassesProvider abcClassesProvider)
+            IAbcClassProvider abcClassProvider)
         {
             this.cellProvider = cellProvider;
             this.compartmentProvider = compartmentProvider;
             this.dataContext = dataContext;
             this.enumerationProvider = enumerationProvider;
-            this.abcClassesProvider = abcClassesProvider;
+            this.abcClassProvider = abcClassProvider;
         }
 
         #endregion
@@ -190,7 +190,7 @@ namespace Ferretto.Common.BusinessProviders
                 })
                 .SingleAsync();
 
-            loadingUnitDetails.AbcClassChoices = await this.abcClassesProvider.GetAllAsync();
+            loadingUnitDetails.AbcClassChoices = await this.abcClassProvider.GetAllAsync();
             loadingUnitDetails.CellPositionChoices = this.enumerationProvider.GetAllCellPositions();
             loadingUnitDetails.LoadingUnitStatusChoices = this.enumerationProvider.GetAllLoadingUnitStatuses();
             loadingUnitDetails.LoadingUnitTypeChoices = this.enumerationProvider.GetAllLoadingUnitTypes();

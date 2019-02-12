@@ -16,7 +16,7 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
-        private readonly IAbcClassesProvider abcClassesProvider;
+        private readonly IAbcClassProvider abcClassProvider;
 
         private readonly IDatabaseContextService dataContextService;
 
@@ -38,14 +38,14 @@ namespace Ferretto.Common.BusinessProviders
             IImageProvider imageProvider,
             WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService,
             WMS.Scheduler.WebAPI.Contracts.IItemsSchedulerService itemsSchedulerService,
-            IAbcClassesProvider abcClassesProvider)
+            IAbcClassProvider abcClassProvider)
         {
             this.dataContextService = dataContextService;
             this.itemsSchedulerService = itemsSchedulerService;
             this.itemsDataService = itemsDataService;
             this.enumerationProvider = enumerationProvider;
             this.imageProvider = imageProvider;
-            this.abcClassesProvider = abcClassesProvider;
+            this.abcClassProvider = abcClassProvider;
         }
 
         #endregion
@@ -56,7 +56,7 @@ namespace Ferretto.Common.BusinessProviders
         {
             if (itemDetails != null)
             {
-                itemDetails.AbcClassChoices = await this.abcClassesProvider.GetAllAsync();
+                itemDetails.AbcClassChoices = await this.abcClassProvider.GetAllAsync();
                 itemDetails.MeasureUnitChoices = this.enumerationProvider.GetAllMeasureUnits();
                 itemDetails.ManagementTypeChoices = EnumerationProvider.GetAllItemManagementTypes();
                 itemDetails.ItemCategoryChoices = this.enumerationProvider.GetAllItemCategories();

@@ -21,7 +21,7 @@ cell => cell.CellStatusId == 1;
         private static readonly Expression<Func<DataModels.Cell, bool>> StatusFullFilter =
                    cell => cell.CellStatusId == 3;
 
-        private readonly IAbcClassesProvider abcClassesProvider;
+        private readonly IAbcClassProvider abcClassProvider;
 
         private readonly IDatabaseContextService dataContext;
 
@@ -34,11 +34,11 @@ cell => cell.CellStatusId == 1;
         public CellProvider(
             IDatabaseContextService context,
             EnumerationProvider enumerationProvider,
-            IAbcClassesProvider abcClassesProvider)
+            IAbcClassProvider abcClassProvider)
         {
             this.dataContext = context;
             this.enumerationProvider = enumerationProvider;
-            this.abcClassesProvider = abcClassesProvider;
+            this.abcClassProvider = abcClassProvider;
         }
 
         #endregion
@@ -115,7 +115,7 @@ cell => cell.CellStatusId == 1;
                 })
                 .SingleAsync();
 
-            cellDetails.AbcClassChoices = await this.abcClassesProvider.GetAllAsync();
+            cellDetails.AbcClassChoices = await this.abcClassProvider.GetAllAsync();
             cellDetails.AisleChoices = this.enumerationProvider.GetAislesByAreaId(cellDetails.AreaId);
             cellDetails.CellStatusChoices = this.enumerationProvider.GetAllCellStatuses();
             cellDetails.CellTypeChoices = this.enumerationProvider.GetAllCellTypes();
