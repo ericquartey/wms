@@ -37,6 +37,22 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
+        [ProducesResponseType(200, Type = typeof(Mission))]
+        [ProducesResponseType(404, Type = typeof(string))]
+        [HttpPost("{id}/abort")]
+        public Task<ActionResult<Mission>> Abort(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        [ProducesResponseType(200, Type = typeof(Mission))]
+        [ProducesResponseType(404, Type = typeof(string))]
+        [HttpPost("{id}/complete")]
+        public Task<ActionResult<Mission>> Complete(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Mission>))]
         public async Task<ActionResult<IEnumerable<Mission>>> GetAllAsync()
@@ -53,7 +69,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(200, Type = typeof(Mission))]
-        [ProducesResponseType(404, Type = typeof(SerializableError))]
+        [ProducesResponseType(404, Type = typeof(string))]
         [HttpGet("{id}")]
         public async Task<ActionResult<Mission>> GetByIdAsync(int id)
         {
