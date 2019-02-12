@@ -40,6 +40,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\EF\Ferretto.Common.EF.csproj" />
     <ProjectReference Include="..\..\..\Common\Utils\Ferretto.Common.Utils.csproj" />
+    <ProjectReference Include="..\..\Scheduler\Core\Ferretto.WMS.Scheduler.Core.csproj" />
     <ProjectReference Include="..\Core\Ferretto.WMS.Data.Core.csproj" />
   </ItemGroup>
 
