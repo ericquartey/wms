@@ -22,6 +22,8 @@
 
         public const string ITEMDETAILS = "ItemDetailsViewModel";
 
+        public const string ITEMLISTADDDIALOG = "ItemListAddDialogViewModel";
+
         public const string ITEMLISTDETAILS = "ItemListDetailsViewModel";
 
         public const string ITEMLISTROWDETAILS = "ItemListRowDetailsViewModel";

@@ -119,6 +119,11 @@ cell => cell.CellStatusId == 1;
             return cellDetails;
         }
 
+        public CellDetails GetNew()
+        {
+            throw new NotImplementedException();
+        }
+
         public IQueryable<Cell> GetWithClassA()
         {
             return GetAllCellsWithFilter(this.dataContext.Current, ClassAFilter);
