@@ -37,20 +37,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 Common.Utils.Modules.MasterData.ITEMADDDIALOG);
         }
 
-        protected override void ExecuteShowFiltersCommand()
-        {
-            var inputData = new FilterDialogData
-            {
-                FilteringContext = this.FilteringContext,
-                Filter = this.CustomFilter
-            };
-
-            this.NavigationService.Appear(
-                nameof(MasterData),
-                Common.Utils.Modules.MasterData.FILTERDIALOG,
-                inputData);
-        }
-
         private bool CanExecuteWithdraw()
         {
             return this.CurrentItem?.TotalAvailable > 0;
