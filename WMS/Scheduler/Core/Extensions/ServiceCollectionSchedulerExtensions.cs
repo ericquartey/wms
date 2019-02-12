@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Ferretto.WMS.Scheduler.Core
+namespace Ferretto.WMS.Scheduler.Core.Extensions
 {
     public static class ServiceCollectionSchedulerExtensions
     {
         #region Methods
 
-        public static IServiceCollection AddSchedulerProviders(
+        public static IServiceCollection AddSchedulerServiceProviders(
                  this IServiceCollection serviceCollection)
         {
             serviceCollection.AddTransient<IDataProvider, DataProvider>();
