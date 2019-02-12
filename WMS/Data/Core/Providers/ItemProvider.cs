@@ -104,7 +104,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             var compartmentsCount =
                 await this.dataContext.Compartments
-                    .AsNoTracking()
                     .CountAsync(c => c.ItemId == id);
 
             var result = await this.GetAllDetailsBase()
@@ -141,12 +140,10 @@ namespace Ferretto.WMS.Data.Core.Providers
         private IQueryable<Item> GetAllBase()
         {
             return this.dataContext.Items
-                .AsNoTracking()
                 .Include(i => i.AbcClass)
                 .Include(i => i.ItemCategory)
                 .GroupJoin(
                     this.dataContext.Compartments
-                        .AsNoTracking()
                         .Where(c => c.ItemId != null)
                         .GroupBy(c => c.ItemId)
                         .Select(j => new
@@ -204,7 +201,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Include(i => i.MeasureUnit)
                 .GroupJoin(
                     this.dataContext.Compartments
-                        .AsNoTracking()
                         .Where(c => c.ItemId != null)
                         .GroupBy(c => c.ItemId)
                         .Select(j => new

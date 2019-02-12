@@ -20,7 +20,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         ICreateController<ItemDetails>,
         IReadAllPagedController<Item>,
         IReadSingleController<ItemDetails, int>,
-        IUpdateController<ItemDetails>
+        IUpdateController<ItemDetails>,
+        IGetUniqueValuesController
     {
         #region Fields
 
