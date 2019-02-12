@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
@@ -9,7 +8,6 @@ using Ferretto.WMS.Data.WebAPI.Extensions;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
@@ -153,6 +151,26 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return this.Ok(result.Entity);
+        }
+
+        [ProducesResponseType(201, Type = typeof(Core.SchedulerRequest))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(422)]
+        [HttpPost(nameof(Withdraw))]
+        public async Task<IActionResult> Withdraw([FromBody] Core.SchedulerRequest request)
+        {
+            if (request == null)
+            {
+                return this.BadRequest();
+            }
+
+            var acceptedRequest = await this.warehouse.WithdrawAsync(request);
+            if (acceptedRequest == null)
+            {
+                return this.UnprocessableEntity(this.ModelState);
+            }
+
+            return this.CreatedAtAction(nameof(this.Withdraw), new { id = acceptedRequest.Id }, acceptedRequest);
         }
 
         private static Expression<Func<Item, bool>> BuildSearchExpression(string search)
