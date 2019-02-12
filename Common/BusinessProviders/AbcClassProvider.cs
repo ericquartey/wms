@@ -7,7 +7,7 @@ using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
 {
-    public class AbcClassesProvider : IAbcClassesProvider
+    public class AbcClassProvider : IAbcClassProvider
     {
         #region Fields
 

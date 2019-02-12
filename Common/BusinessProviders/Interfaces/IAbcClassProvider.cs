@@ -6,7 +6,7 @@ using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
 {
-    public interface IAbcClassesProvider : IReadAllAsyncProvider<EnumerationString>
+    public interface IAbcClassProvider : IReadAllAsyncProvider<EnumerationString>
     {
     }
 }
