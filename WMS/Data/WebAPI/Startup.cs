@@ -1,5 +1,6 @@
 ﻿using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Providers;
+using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Scheduler.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -42,6 +43,16 @@ namespace Ferretto.WMS.Data.WebAPI
         /// </summary>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            if (app == null)
+            {
+                throw new System.ArgumentNullException(nameof(app));
+            }
+
+            if (env == null)
+            {
+                throw new System.ArgumentNullException(nameof(env));
+            }
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
