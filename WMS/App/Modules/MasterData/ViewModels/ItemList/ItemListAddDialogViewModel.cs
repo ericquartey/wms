@@ -14,11 +14,11 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemAddDialogViewModel : CreateViewModel<ItemDetails>
+    public class ItemListAddDialogViewModel : CreateViewModel<ItemListDetails>
     {
         #region Fields
 
-        private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
+        private readonly IItemListProvider itemListProvider = ServiceLocator.Current.GetInstance<IItemListProvider>();
 
         #endregion
 
@@ -30,28 +30,10 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         // TODO: task 1256 -> protected override async Task ExecuteSaveCommand()
-        protected override async Task ExecuteSaveCommand()
+        protected override Task ExecuteSaveCommand()
         {
             this.IsValidationEnabled = true;
-
-            this.IsBusy = true;
-
-            var result = await this.itemProvider.AddAsync(this.Model);
-            if (result.Success)
-            {
-                this.TakeModelSnapshot();
-
-                this.EventService.Invoke(new ModelChangedPubSubEvent<Item>(this.Model.Id));
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
-
-                this.CloseDialogCommand.Execute(null);
-            }
-            else
-            {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
-            }
-
-            this.IsBusy = false;
+            throw new NotImplementedException();
         }
 
         protected override void OnAppear()
@@ -66,7 +48,7 @@ namespace Ferretto.WMS.Modules.MasterData
             try
             {
                 this.IsBusy = true;
-                this.Model = this.itemProvider.GetNew();
+                this.Model = this.itemListProvider.GetNew();
             }
             catch
             {

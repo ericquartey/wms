@@ -73,6 +73,11 @@ namespace Ferretto.Common.BusinessProviders
                 .Distinct();
         }
 
+        public Area GetNew()
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<OperationResult> SaveAsync(Area model) => throw new NotSupportedException();
 
         private static IQueryable<Area> GetAllAreasWithFilter(

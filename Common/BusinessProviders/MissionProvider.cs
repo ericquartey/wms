@@ -94,6 +94,11 @@ namespace Ferretto.Common.BusinessProviders
 
         public Task<MissionDetails> GetByIdAsync(int id) => throw new NotSupportedException();
 
+        public MissionDetails GetNew()
+        {
+            throw new NotSupportedException();
+        }
+
         public IQueryable<Mission> GetWithStatusCompleted()
         {
             return GetAllMissionsWithAggregations(this.dataContextService.Current, StatusCompletedFilter);
