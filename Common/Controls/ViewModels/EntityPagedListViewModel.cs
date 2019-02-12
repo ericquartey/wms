@@ -114,7 +114,7 @@ namespace Ferretto.Common.Controls
 
         public async Task<object[]> GetUniqueValuesAsync(string propertyName)
         {
-            return (await this.GetUniqueValuesAsync(propertyName)).ToArray();
+            return (await this.Provider.GetUniqueValuesAsync(propertyName)).ToArray();
         }
 
         public override async Task UpdateFilterTilesCountsAsync()
