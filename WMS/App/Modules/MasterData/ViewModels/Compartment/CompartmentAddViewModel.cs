@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
@@ -30,8 +31,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public CompartmentAddViewModel()
         {
             this.Title = Common.Resources.MasterData.AddCompartment;
-            this.ItemsDataSource = new DataSource<Item>(() =>
-                this.itemProvider.GetAll());
+
             this.IsValidationEnabled = false;
         }
 
@@ -123,6 +123,28 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             base.Model_PropertyChanged(sender, e);
+        }
+
+        protected override async void OnAppearAsync()
+        {
+            await this.LoadDataAsync();
+            base.OnAppearAsync();
+        }
+
+        private async Task LoadDataAsync()
+        {
+            try
+            {
+                this.IsBusy = true;
+                var items = await this.itemProvider.GetAllAsync(0, 0);
+                this.ItemsDataSource = new DataSource<Item>(() => items.AsQueryable());
+
+                this.IsBusy = false;
+            }
+            catch
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
+            }
         }
 
         #endregion

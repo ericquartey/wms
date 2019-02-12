@@ -45,7 +45,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        protected override void OnAppear()
+        protected override void OnAppearAsync()
         {
             if (this.Data is FilterDialogData filterDialogData)
             {

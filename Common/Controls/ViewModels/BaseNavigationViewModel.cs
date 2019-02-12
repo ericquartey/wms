@@ -48,7 +48,7 @@ namespace Ferretto.Common.Controls
 
         public void Appear()
         {
-            this.OnAppear();
+            this.OnAppearAsync();
         }
 
         public virtual bool CanDisappear()
@@ -72,7 +72,7 @@ namespace Ferretto.Common.Controls
             return false;
         }
 
-        protected virtual void OnAppear()
+        protected virtual void OnAppearAsync()
         {
             // Nothing to do here.
             // Derived classes can implement custom logic overriding this method.

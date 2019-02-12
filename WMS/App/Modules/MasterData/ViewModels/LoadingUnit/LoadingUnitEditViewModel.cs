@@ -141,10 +141,10 @@ namespace Ferretto.WMS.Modules.MasterData
                 : null;
         }
 
-        protected override async void OnAppear()
+        protected override async void OnAppearAsync()
         {
             await this.LoadDataAsync();
-            base.OnAppear();
+            base.OnAppearAsync();
         }
 
         private async void ActiveSideViewModel_OperationComplete(object sender, OperationEventArgs e)

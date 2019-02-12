@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
@@ -94,10 +95,10 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = false;
         }
 
-        protected override async void OnAppear()
+        protected override async void OnAppearAsync()
         {
             await this.LoadDataAsync();
-            base.OnAppear();
+            base.OnAppearAsync();
         }
 
         protected override void OnDispose()
@@ -164,10 +165,12 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.IsBusy = true;
 
                     this.Model = await this.itemListRowProvider.GetByIdAsync(modelId);
-
-                    this.ItemsDataSource = this.Model != null
-                    ? new DataSource<Item>(() => this.itemProvider.GetAll())
-                    : null;
+                    this.ItemsDataSource = null;
+                    if (this.Model != null)
+                    {
+                        var items = await this.itemProvider.GetAllAsync(0, 0);
+                        this.ItemsDataSource = new DataSource<Item>(() => items.AsQueryable());
+                    }
 
                     this.IsBusy = false;
                 }
