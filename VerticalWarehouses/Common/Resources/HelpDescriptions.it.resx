@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
+  <!-- 
 		Microsoft ResX Schema
 
 		Version 1.3
@@ -58,44 +58,115 @@
 			: using a System.ComponentModel.TypeConverter
 			: and then encoded with base64 encoding.
 	-->
-	
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>1.3</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BeltBurnishingUpLimit" xml:space="preserve">
+    <value>Il campo indica il valore della quota superiore richiesta dal test. Impostare il valore solo se il campo risulta editabile.</value>
+  </data>
+  <data name="BeltBurnishingDownLimit" xml:space="preserve">
+    <value>Il campo indica il valore della quota inferiore richiesta dal test. Impostare il valore solo se il campo risulta editabile.</value>
+  </data>
+  <data name="BeltBurnishingRequiredCycles" xml:space="preserve">
+    <value>Impostare il numero di cicli richiesti.</value>
+  </data>
+  <data name="BeltBurnishingCompletedCycles" xml:space="preserve">
+    <value>Visualizza il numero di cicli attualmente completati.</value>
+  </data>
+  <data name="BeltBurnishingActualPosition" xml:space="preserve">
+    <value>Il campo indica la posizione corrente dell'asse.</value>
+  </data>
+  <data name="BeltBurnishingStartCycle" xml:space="preserve">
+    <value>Avvia il test. Il test continua fino al raggiungimento del numero di cicli richiesti o fino alla pressione del tasto di arresto.</value>
+  </data>
+  <data name="BeltBurnishingStopCycle" xml:space="preserve">
+    <value>Arresta il test. Il ciclo si arresta al termine del movimento corrente. La pressione del tasto di avvio ciclo riprende l'esecuzione del test fino a completamento.</value>
+  </data>
+  <data name="BeltBurnishingFunctionDescription" xml:space="preserve">
+    <value>La procedura permette di effettuare una serie di cicli di spostamento dell'asse verticale fra due punti indicati nei dati di input. Il ciclo, quando avviato, prosegue o fino al raggiungimento dei cicli richiesti o alla pressione del tasto di fine.</value>
+  </data>
+  <data name="ResolutionCalibrationFunctionDescription" xml:space="preserve">
+    <value>La funzione di calibrazione della risoluzione dell'asse verticale permette di tarare il corretto valore tramite misura sul campo aggiornando poi il valore di default proposto dal sistema. La procedura opera per passi successivi fino al corretto completamento.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialPositionHelp" xml:space="preserve">
+    <value>Se il campo e' editabile impostare la quota inferiore richiesta.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialStartHelp" xml:space="preserve">
+    <value>Il pulsante avvia la procedura con l'esecuzione dell'origine asse ed il successivo posizionamento alla quota indicata in precedenza.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalPositionHelp" xml:space="preserve">
+    <value>Se il campo e' editabile impostare la quota superiore richiesta.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalPosizionStartHelp" xml:space="preserve">
+    <value>Il pulsante avvia lo spostamento dell'asse alla quota superiore impostata in precedenza.</value>
+  </data>
+  <data name="ResolutionCalibrationMeasuredeValueHelp" xml:space="preserve">
+    <value>Impostare lo spostamento misurato dalla posizione iniziale a quella finale.</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep1" xml:space="preserve">
+    <value>Passo 1 : posiziona asse alla quota iniziale</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep2" xml:space="preserve">
+    <value>Passo 2 : posiziona asse alla quota finale</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep3" xml:space="preserve">
+    <value>Passo 3 : imposta la corsa effettuata</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep4" xml:space="preserve">
+    <value>Passo 4 : modifica la risoluzione teorica</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep5" xml:space="preserve">
+    <value>Passo 5 : riposiziona asse e chiude procedura</value>
+  </data>
+  <data name="ResolutionCalibrationActualResolutionHelp" xml:space="preserve">
+    <value>Visualizza la risoluzione attuale dell'asse</value>
+  </data>
+  <data name="ResolutionCalibrationNewResolutionHelp" xml:space="preserve">
+    <value>Visualizza il nuovo valore di risoluzione calcolato dalla procedura.</value>
+  </data>
+  <data name="ResolutionCalibrationAcceptNewResolution" xml:space="preserve">
+    <value>Sostituisce il valore precedente di risoluzione con il nuovo valore calcolato.</value>
+  </data>
+  <data name="ResolutionCalibrationGoToInitialPosizion" xml:space="preserve">
+    <value>Riporta l'asse nella posizione iniziale.</value>
+  </data>
+  <data name="ResolutionCalibrationCloseProcedure" xml:space="preserve">
+    <value>Effettua l'origine dell'asse e chiude la procedura.</value>
+  </data>
 </root>

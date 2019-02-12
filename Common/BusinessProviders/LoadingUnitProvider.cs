@@ -204,6 +204,11 @@ namespace Ferretto.Common.BusinessProviders
             return loadingUnitDetails;
         }
 
+        public LoadingUnitDetails GetNew()
+        {
+            throw new NotImplementedException();
+        }
+
         public IQueryable<LoadingUnit> GetWithAreaManual()
         {
             return GetAllLoadingUnitsWithAggregations(this.dataContext.Current, AreaManualFilter);

@@ -26,7 +26,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Constructors
 
         public MissionsController(
-            ILogger<ItemsController> logger,
+            ILogger<MissionsController> logger,
             IMissionProvider missionProvider)
         {
             this.logger = logger;

@@ -11,32 +11,46 @@
              mc:Ignorable="d">
     <Grid Height="608"
           Width="1024">
-        <TextBlock Grid.Row="0"
-                   Margin="150,10,0,562"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.Gate1Control}" />
 
-        <custom:CustomInputFieldControlFocusable Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" Margin="150,170,499,375"
-                                                 LabelText="{x:Static res:InstallationApp.RequiredCicles}" />
-        <custom:CustomInputFieldControlFocusable Margin="150,260,549,284"
+        <TextBlock   Grid.Row="0"
+                     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="260,30,0,0"
+                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                     Text="{x:Static res:InstallationApp.Gate1Control}" />
+
+        <custom:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="260,170,0,0"
+                                                  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" 
+                                                  LabelText="{x:Static res:InstallationApp.RequiredCicles}" />
+
+        <custom:CustomInputFieldControlFocusable HorizontalAlignment="Left" VerticalAlignment="Top" Margin="560,170,0,0"
                                                  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
                                                  LabelText="{x:Static res:InstallationApp.DelayBetweenCicles}" />
-        <custom:CustomLabelTextBlockControl Margin="150,350,549,195"
-                                            LabelText="{x:Static res:InstallationApp.CompletedCicles}" />
+
+        <custom:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="260,300,0,0"
+                                              LabelText="{x:Static res:InstallationApp.CompletedCicles}" />
+
         <ContentControl Name="SensorRegionContentControl"
+                        HorizontalAlignment="Left" VerticalAlignment="Top" Margin="560,240,0,0" 
                         Width="200"
-                        Height="200"
-                        Margin="570,213,254,195" />
+                        Height="180" />
 
         <Button Grid.Column="0"
-                Margin="150,465,0,75"
-                HorizontalAlignment="Left"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="560,450,0,0"
                 Content="{x:Static res:InstallationApp.Start}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        <Button Margin="570,465,0,75"
-                HorizontalAlignment="Left"
+
+        <Button HorizontalAlignment="Left" VerticalAlignment="Top" Margin="260,450,0,0"
                 Content="{x:Static res:InstallationApp.Stop}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+
+        <custom:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="560,290,0,0"
+                                      LabelText="{x:Static res:InstallationApp.GateSensorABay1}"
+                                      SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="560,330,0,0"
+                                      LabelText="{x:Static res:InstallationApp.GateSensorBBay1}"
+                                      SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
 
     </Grid>
 </UserControl>

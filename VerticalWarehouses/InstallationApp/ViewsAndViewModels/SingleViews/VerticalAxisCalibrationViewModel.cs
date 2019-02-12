@@ -2,14 +2,6 @@
 using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
-using Ferretto.VW.Navigation;
-using Ferretto.VW.Utils.Source;
-using System.Threading;
-using Ferretto.VW.Utils.Source.Configuration;
-using System.Threading.Tasks;
-using Ferretto.VW.ActionBlocks;
-using Ferretto.VW.InverterDriver;
-using System.Diagnostics;
 using Microsoft.Practices.Unity;
 
 namespace Ferretto.VW.InstallationApp
@@ -20,9 +12,7 @@ namespace Ferretto.VW.InstallationApp
 
         public IUnityContainer Container;
 
-        private CalibrateVerticalAxis calibrateVerticalAxis;
-
-        private bool enableStartButton = true;
+        private bool isStartButtonActive = true;
 
         private bool isStopButtonActive;
 
@@ -32,8 +22,6 @@ namespace Ferretto.VW.InstallationApp
 
         private string offset;
 
-        private bool originProcedureCanceled;
-
         private string resolution;
 
         private ICommand startButtonCommand;
@@ -42,7 +30,7 @@ namespace Ferretto.VW.InstallationApp
 
         private string upperBound;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -51,70 +39,62 @@ namespace Ferretto.VW.InstallationApp
             InputsCorrectionControlEventHandler += this.CheckInputsCorrectness;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Delegates
 
         public delegate void CheckCorrectnessOnPropertyChangedEventHandler();
 
-        #endregion Delegates
+        #endregion
 
         #region Events
 
         public event CheckCorrectnessOnPropertyChangedEventHandler InputsCorrectionControlEventHandler;
 
-        #endregion Events
+        #endregion
 
         #region Properties
 
-        public Boolean EnableStartButton { get => this.enableStartButton; set => this.SetProperty(ref this.enableStartButton, value); }
+        public bool IsStartButtonActive { get => this.isStartButtonActive; set => this.SetProperty(ref this.isStartButtonActive, value); }
 
-        public Boolean IsStopButtonActive { get => this.isStopButtonActive; set => this.SetProperty(ref this.isStopButtonActive, value); }
+        public bool IsStopButtonActive { get => this.isStopButtonActive; set => this.SetProperty(ref this.isStopButtonActive, value); }
 
-        public String LowerBound { get => this.lowerBound; set { this.SetProperty(ref this.lowerBound, value); this.InputsCorrectionControlEventHandler(); } }
+        public string LowerBound { get => this.lowerBound; set { this.SetProperty(ref this.lowerBound, value); this.InputsCorrectionControlEventHandler(); } }
 
-        public String NoteString { get => this.noteString; set => this.SetProperty(ref this.noteString, value); }
+        public string NoteString { get => this.noteString; set => this.SetProperty(ref this.noteString, value); }
 
-        public String Offset { get => this.offset; set { this.SetProperty(ref this.offset, value); this.InputsCorrectionControlEventHandler(); } }
+        public string Offset { get => this.offset; set { this.SetProperty(ref this.offset, value); this.InputsCorrectionControlEventHandler(); } }
 
-        public String Resolution { get => this.resolution; set { this.SetProperty(ref this.resolution, value); this.InputsCorrectionControlEventHandler(); } }
+        public string Resolution { get => this.resolution; set { this.SetProperty(ref this.resolution, value); this.InputsCorrectionControlEventHandler(); } }
 
         public ICommand StartButtonCommand => this.startButtonCommand ?? (this.startButtonCommand = new DelegateCommand(this.ExecuteStartButtonCommand));
 
         public ICommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(() => this.StopButtonMethod()));
 
-        public String UpperBound { get => this.upperBound; set { this.SetProperty(ref this.upperBound, value); this.InputsCorrectionControlEventHandler(); } }
+        public string UpperBound { get => this.upperBound; set { this.SetProperty(ref this.upperBound, value); this.InputsCorrectionControlEventHandler(); } }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
         public void ExitFromViewMethod()
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         public void InitializeViewModel(IUnityContainer _container)
         {
             this.Container = _container;
-            this.calibrateVerticalAxis = (CalibrateVerticalAxis)this.Container.Resolve<ICalibrateVerticalAxis>();
         }
 
         public void SubscribeMethodToEvent()
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            throw new NotImplementedException();
-        }
-
-        private void Calibration()
-        {
-            this.EnableStartButton = true;
-            this.IsStopButtonActive = false;
-            this.NoteString = Resources.InstallationApp.SetOriginVerticalAxisCompleted;
+            // TODO
         }
 
         private void CheckInputsCorrectness()
@@ -123,48 +103,32 @@ namespace Ferretto.VW.InstallationApp
                 int.TryParse(this.Offset, out var _offset) &&
                 int.TryParse(this.Resolution, out var _resolution) &&
                 int.TryParse(this.UpperBound, out var _upperBound))
-            { //TODO: DEFINE AND INSERT VALIDATION LOGIC IN HERE. THESE PROPOSITIONS ARE TEMPORARY
+            { // TODO: DEFINE AND INSERT VALIDATION LOGIC IN HERE. THESE PROPOSITIONS ARE TEMPORARY
                 if (_lowerBound > 0 && _lowerBound < _upperBound && _upperBound > 0 && _resolution > 0 && _offset > 0)
                 {
-                    this.EnableStartButton = true;
+                    this.IsStartButtonActive = true;
                 }
                 else
                 {
-                    this.EnableStartButton = false;
+                    this.IsStartButtonActive = false;
                 }
             }
             else
             {
-                this.EnableStartButton = false;
+                this.IsStartButtonActive = false;
             }
         }
 
         private void ExecuteStartButtonCommand()
         {
-            this.calibrateVerticalAxis = (CalibrateVerticalAxis)this.Container.Resolve<ICalibrateVerticalAxis>();
-            this.calibrateVerticalAxis.Initialize();
-            if (this.calibrateVerticalAxis != null)
-            {
-                int m = 5;
-                short ofs = 1;
-                short vFast = 1;
-                short vCreep = 1;
-
-                this.EnableStartButton = false;
-                this.IsStopButtonActive = true;
-
-                this.calibrateVerticalAxis.ThrowEndEvent += this.Calibration;
-                this.NoteString = Resources.InstallationApp.VerticalAxisCalibrating;
-                this.calibrateVerticalAxis.SetVAxisOrigin(m, ofs, vFast, vCreep);
-            }
+            // TODO implementa feature
         }
 
         private void StopButtonMethod()
         {
             this.NoteString = Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
-            this.originProcedureCanceled = true;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

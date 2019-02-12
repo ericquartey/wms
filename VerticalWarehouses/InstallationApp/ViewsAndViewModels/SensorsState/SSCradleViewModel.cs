@@ -7,38 +7,40 @@ namespace Ferretto.VW.InstallationApp
         #region Fields
 
         private bool luPresentiInMachineSide;
+
         private bool luPresentInOperatorSide = true;
+
         private bool zeroPawlSensor;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
-        public System.Boolean LuPresentiInMachineSide { get => this.luPresentiInMachineSide; set => this.SetProperty(ref this.luPresentiInMachineSide, value); }
+        public bool LuPresentiInMachineSide { get => this.luPresentiInMachineSide; set => this.SetProperty(ref this.luPresentiInMachineSide, value); }
 
-        public System.Boolean LuPresentInOperatorSide { get => this.luPresentInOperatorSide; set => this.SetProperty(ref this.luPresentInOperatorSide, value); }
+        public bool LuPresentInOperatorSide { get => this.luPresentInOperatorSide; set => this.SetProperty(ref this.luPresentInOperatorSide, value); }
 
-        public System.Boolean ZeroPawlSensor { get => this.zeroPawlSensor; set => this.SetProperty(ref this.zeroPawlSensor, value); }
+        public bool ZeroPawlSensor { get => this.zeroPawlSensor; set => this.SetProperty(ref this.zeroPawlSensor, value); }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
         public void ExitFromViewMethod()
         {
-            throw new System.NotImplementedException();
+            // TODO
         }
 
         public void SubscribeMethodToEvent()
         {
-            throw new System.NotImplementedException();
+            // TODO
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            throw new System.NotImplementedException();
+            // TODO
         }
 
-        #endregion Methods
+        #endregion
     }
 }

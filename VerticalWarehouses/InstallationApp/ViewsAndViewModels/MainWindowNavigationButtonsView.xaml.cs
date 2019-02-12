@@ -12,7 +12,7 @@ namespace Ferretto.VW.InstallationApp
     /// <summary>
     /// Interaction logic for MainWindowNavigationButtonsView.xaml
     /// </summary>
-    public partial class MainWindowNavigationButtonsView : BaseView
+    public partial class MainWindowNavigationButtonsView : UserControl
     {
         #region Constructors
 
@@ -22,7 +22,7 @@ namespace Ferretto.VW.InstallationApp
             this.NavigationButtonScrollViewer.AddHandler(ScrollViewer.ScrollChangedEvent, new ScrollChangedEventHandler(this.CheckVerticalOffset), true);
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -62,6 +62,6 @@ namespace Ferretto.VW.InstallationApp
             //TODO: scroll up and down nav button height
         }
 
-        #endregion Methods
+        #endregion
     }
 }

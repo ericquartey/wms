@@ -133,6 +133,11 @@ namespace Ferretto.Common.BusinessProviders
             return itemListDetails;
         }
 
+        public ItemListDetails GetNew()
+        {
+            return new ItemListDetails();
+        }
+
         public IQueryable<ItemList> GetWithStatusCompleted(ItemListType? type)
         {
             var filter = BuildFilter(type, ItemListStatus.Completed);
