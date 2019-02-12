@@ -28,14 +28,14 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty OrientationProperty =
                     DependencyProperty.Register(nameof(Orientation), typeof(Orientation), typeof(WmsRulerControl), new FrameworkPropertyMetadata(OnOrientationChanged));
 
-        public static readonly DependencyProperty OriginXProperty =
-            DependencyProperty.Register(nameof(OriginX), typeof(double), typeof(WmsRulerControl), new UIPropertyMetadata(0.0, OnOriginXChanged));
+        public static readonly DependencyProperty OriginHorizontalProperty =
+                               DependencyProperty.Register(nameof(OriginHorizontal), typeof(OriginHorizontal), typeof(WmsRulerControl), new FrameworkPropertyMetadata(OriginHorizontal.Left));
 
-        public static readonly DependencyProperty OriginYProperty =
-            DependencyProperty.Register(nameof(OriginY), typeof(double), typeof(WmsRulerControl), new UIPropertyMetadata(0.0, OnOriginYChanged));
+        public static readonly DependencyProperty OriginVerticalProperty =
+                               DependencyProperty.Register(nameof(OriginVertical), typeof(OriginVertical), typeof(WmsRulerControl), new FrameworkPropertyMetadata(OriginVertical.Top));
 
         public static readonly DependencyProperty ShowInfoProperty = DependencyProperty.Register(
-            nameof(ShowInfo), typeof(bool), typeof(WmsRulerControl), new FrameworkPropertyMetadata(true));
+                                    nameof(ShowInfo), typeof(bool), typeof(WmsRulerControl), new FrameworkPropertyMetadata(true));
 
         public static readonly DependencyProperty ShowLittleMarkProperty = DependencyProperty.Register(
        nameof(ShowLittleMark), typeof(bool), typeof(WmsRulerControl), new FrameworkPropertyMetadata(true));
@@ -64,7 +64,7 @@ namespace Ferretto.Common.Controls
 
         private const double WIDTH_MARK = 1;
 
-        private readonly InfoRuler infoRuler;
+        // private readonly InfoRuler infoRuler;
 
         private Pen pen;
 
@@ -76,7 +76,7 @@ namespace Ferretto.Common.Controls
 
         public WmsRulerControl()
         {
-            this.infoRuler = new InfoRuler();
+            //this.infoRuler = new InfoRuler();
             this.UseLayoutRounding = false;
             this.SnapsToDevicePixels = false;
             var target = this;
@@ -105,8 +105,6 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(ForegroundTextProperty, value);
         }
 
-        public InfoRuler InfoRuler => this.infoRuler;
-
         public double LittleMarkLength
         {
             get => (double)this.GetValue(LittleMarkLengthProperty);
@@ -125,16 +123,16 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(OrientationProperty, value);
         }
 
-        public double OriginX
+        public OriginHorizontal OriginHorizontal
         {
-            get => (double)this.GetValue(OriginXProperty);
-            set => this.SetValue(OriginXProperty, value);
+            get => (OriginHorizontal)this.GetValue(OriginHorizontalProperty);
+            set => this.SetValue(OriginHorizontalProperty, value);
         }
 
-        public double OriginY
+        public OriginVertical OriginVertical
         {
-            get => (double)this.GetValue(OriginYProperty);
-            set => this.SetValue(OriginYProperty, value);
+            get => (OriginVertical)this.GetValue(OriginVerticalProperty);
+            set => this.SetValue(OriginVerticalProperty, value);
         }
 
         public bool ShowInfo
@@ -195,24 +193,12 @@ namespace Ferretto.Common.Controls
             this.Arrange(new Rect(this.DesiredSize));
         }
 
-        public void SetHorizontal()
-        {
-            if (this.OriginX.Equals(0))
-            {
-                this.InfoRuler.OriginHorizontal = OriginHorizontal.Left;
-            }
-            else
-            {
-                this.InfoRuler.OriginHorizontal = OriginHorizontal.Right;
-            }
-        }
-
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
             var totalSteps = 0;
 
-            switch (this.InfoRuler.OrientationRuler)
+            switch (this.Orientation)
             {
                 case Orientation.Horizontal:
                     {
@@ -250,17 +236,17 @@ namespace Ferretto.Common.Controls
                 totalSteps != 0)
             {
                 this.InitializePen();
-                this.SetHorizontal();
-                this.SetVertical();
+                this.OriginHorizontal = OriginHorizontal.Left;
+                this.OriginVertical = OriginVertical.Top;
                 this.DrawMarkers(drawingContext, totalSteps);
             }
         }
 
         private static void OnOrientationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsRulerControl rulerControl)
+            if (d is WmsRulerControl ruler)
             {
-                rulerControl.InfoRuler.OrientationRuler = (Orientation)e.NewValue;
+                ruler.Redraw();
             }
         }
 
@@ -268,7 +254,7 @@ namespace Ferretto.Common.Controls
         {
             if (d is WmsRulerControl ruler && e.NewValue is double v)
             {
-                ruler.UpdateLayout();
+                ruler.Redraw();
             }
         }
 
@@ -314,7 +300,7 @@ namespace Ferretto.Common.Controls
             var mark = new Line();
             var sizeOfPen = this.GetSizeOfPen();
 
-            if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
+            if (this.Orientation == Orientation.Horizontal)
             {
                 mark.YStart = this.ActualHeight - sizeOfPen;
                 mark.YEnd = mark.YStart;
@@ -335,7 +321,7 @@ namespace Ferretto.Common.Controls
         private void DrawLittleMark(DrawingContext drawingContext, int currentStep)
         {
             double stepPixel = 0;
-            if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
+            if (this.Orientation == Orientation.Horizontal)
             {
                 stepPixel = ConvertMillimetersToPixel(this.Step, this.TrayWidth, this.DimensionWidth);
             }
@@ -354,12 +340,12 @@ namespace Ferretto.Common.Controls
                 }
 
                 var littleMark = new Line();
-                if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
+                if (this.Orientation == Orientation.Horizontal)
                 {
                     littleMark.XStart = basePixelStart + (littlePixelStep * j);
                     littleMark.YStart = this.ActualHeight - this.LittleMarkLength + this.penHalfSize;
                     littleMark.YEnd = this.ActualHeight - this.penHalfSize;
-                    if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
+                    if (this.OriginHorizontal == OriginHorizontal.Right)
                     {
                         littleMark.XStart = this.ActualWidth - littleMark.XStart;
                     }
@@ -373,7 +359,7 @@ namespace Ferretto.Common.Controls
                 else
                 {
                     var pixelPosition = basePixelStart + (littlePixelStep * j);
-                    littleMark.YStart = (this.InfoRuler.OriginVertical == OriginVertical.Top) ? pixelPosition : this.ActualHeight - pixelPosition - 1;
+                    littleMark.YStart = (this.OriginVertical == OriginVertical.Top) ? pixelPosition : this.ActualHeight - pixelPosition - 1;
                     littleMark.XStart = this.ActualWidth - this.LittleMarkLength + this.penHalfSize;
                     littleMark.XEnd = this.ActualWidth - this.penHalfSize - this.GetSizeOfPen();
                     littleMark.YEnd = littleMark.YStart;
@@ -391,12 +377,12 @@ namespace Ferretto.Common.Controls
         {
             var mark = new Line();
             var sizeOfPen = this.GetSizeOfPen();
-            if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
+            if (this.Orientation == Orientation.Horizontal)
             {
                 mark.XStart = ConvertMillimetersToPixel(this.Step * currentStep, this.TrayWidth, this.DimensionWidth);
                 mark.YStart = this.penHalfSize;
                 mark.YEnd = this.ActualHeight - this.penHalfSize;
-                if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
+                if (this.OriginHorizontal == OriginHorizontal.Right)
                 {
                     mark.XStart = this.ActualWidth - mark.XStart;
                 }
@@ -408,7 +394,7 @@ namespace Ferretto.Common.Controls
                 var offSet = ConvertMillimetersToPixel(this.Step * currentStep, this.TrayHeight, this.DimensionHeight);
                 mark.XStart = this.penHalfSize;
                 mark.XEnd = this.ActualWidth - this.penHalfSize;
-                mark.YStart = (this.InfoRuler.OriginVertical == OriginVertical.Top) ? offSet - 0 : this.ActualHeight - offSet - sizeOfPen;
+                mark.YStart = (this.OriginVertical == OriginVertical.Top) ? offSet - 0 : this.ActualHeight - offSet - sizeOfPen;
                 mark.YEnd = mark.YStart;
             }
 
@@ -465,13 +451,13 @@ namespace Ferretto.Common.Controls
         private void DrawMiddleMark(DrawingContext drawingContext, int currentStep)
         {
             var middleMark = new Line();
-            if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
+            if (this.Orientation == Orientation.Horizontal)
             {
                 var pixelStep = ConvertMillimetersToPixel(this.Step, this.TrayWidth, this.DimensionWidth);
                 middleMark.XStart = (pixelStep * currentStep) + (pixelStep / 2);
                 middleMark.YStart = this.Height - this.MiddleMarkLength + this.penHalfSize;
                 middleMark.YEnd = this.Height - this.penHalfSize;
-                if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
+                if (this.OriginHorizontal == OriginHorizontal.Right)
                 {
                     middleMark.XStart = this.ActualWidth - middleMark.XStart;
                 }
@@ -482,7 +468,7 @@ namespace Ferretto.Common.Controls
             {
                 var pixelStep = ConvertMillimetersToPixel(this.Step, this.TrayHeight, this.DimensionHeight);
                 var pixelPosition = (pixelStep * currentStep) + (pixelStep / 2);
-                middleMark.YStart = (this.InfoRuler.OriginVertical == OriginVertical.Top) ? pixelPosition : this.ActualHeight - (pixelPosition + 1);
+                middleMark.YStart = (this.OriginVertical == OriginVertical.Top) ? pixelPosition : this.ActualHeight - (pixelPosition + 1);
                 middleMark.XStart = this.Width - this.MiddleMarkLength + this.penHalfSize;
                 middleMark.XEnd = this.Width - this.penHalfSize;
                 middleMark.YEnd = middleMark.YStart;
@@ -519,18 +505,18 @@ namespace Ferretto.Common.Controls
                                  VisualTreeHelper.GetDpi(this).PixelsPerDip);
             double startFrom = 0;
 
-            var position = new Position();
-            if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
+            var position = new Point(0, 0);
+            if (this.Orientation == Orientation.Horizontal)
             {
                 var temp = currentStep * this.Step;
                 position.X = ConvertMillimetersToPixel(temp, this.ActualWidth, this.DimensionWidth);
 
                 position.Y = this.ActualHeight / TEXT_OFFSET_FACTOR;
-                if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left)
+                if (this.OriginHorizontal == OriginHorizontal.Left)
                 {
                     position.X += margin;
                 }
-                else if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
+                else if (this.OriginHorizontal == OriginHorizontal.Right)
                 {
                     startFrom = this.ActualWidth;
                     position.X = startFrom - position.X - ft.Width;
@@ -547,11 +533,11 @@ namespace Ferretto.Common.Controls
                 position.X = this.ActualWidth / TEXT_OFFSET_FACTOR;
                 var temp = currentStep * this.Step;
                 position.Y = ConvertMillimetersToPixel(temp, this.ActualHeight, this.DimensionHeight);
-                if (this.InfoRuler.OriginVertical == OriginVertical.Top)
+                if (this.OriginVertical == OriginVertical.Top)
                 {
                     position.Y = position.Y + margin + ft.Width;
                 }
-                else if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
+                else if (this.OriginVertical == OriginVertical.Bottom)
                 {
                     startFrom = this.ActualHeight;
                     position.Y = startFrom - position.Y;
@@ -567,7 +553,7 @@ namespace Ferretto.Common.Controls
             }
 
             drawingContext.DrawText(ft, new Point(position.X, position.Y));
-            if (this.InfoRuler.OrientationRuler == Orientation.Vertical)
+            if (this.Orientation == Orientation.Vertical)
             {
                 drawingContext.Pop();
             }
@@ -597,8 +583,8 @@ namespace Ferretto.Common.Controls
 
         private double GetStepPixelSize(int intervalMark)
         {
-            var dimension = (this.InfoRuler.OrientationRuler == Orientation.Horizontal) ? this.DimensionWidth : this.DimensionHeight;
-            var barSize = (this.InfoRuler.OrientationRuler == Orientation.Horizontal) ? this.ActualWidth : this.ActualHeight;
+            var dimension = (this.Orientation == Orientation.Horizontal) ? this.DimensionWidth : this.DimensionHeight;
+            var barSize = (this.Orientation == Orientation.Horizontal) ? this.ActualWidth : this.ActualHeight;
             var size = this.Step / intervalMark;
             return ConvertMillimetersToPixel(size, barSize, dimension);
         }
@@ -614,18 +600,6 @@ namespace Ferretto.Common.Controls
                 StartLineCap = PenLineCap.Square,
                 EndLineCap = PenLineCap.Square
             };
-        }
-
-        private void SetVertical()
-        {
-            if (this.OriginY.Equals(0))
-            {
-                this.InfoRuler.OriginVertical = OriginVertical.Top;
-            }
-            else
-            {
-                this.InfoRuler.OriginVertical = OriginVertical.Bottom;
-            }
         }
 
         #endregion

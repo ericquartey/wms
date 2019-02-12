@@ -40,14 +40,13 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ICompartment selectedCompartmentTray;
 
-        private Tray tray;
-
         #endregion
 
         #region Constructors
 
         public LoadingUnitEditViewModel()
         {
+            this.loadingUnit = new LoadingUnitDetails();
             this.HideSidePanel();
         }
 
@@ -112,6 +111,8 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
+        public LoadingUnitDetails LoadingUnitDetails => this.loadingUnit;
+
         public bool LoadingUnitHasCompartments
         {
             get => this.loadingUnitHasCompartments;
@@ -122,12 +123,6 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             get => this.selectedCompartmentTray;
             set => this.SetProperty(ref this.selectedCompartmentTray, value);
-        }
-
-        public Tray Tray
-        {
-            get => this.tray;
-            set => this.SetProperty(ref this.tray, value);
         }
 
         #endregion
@@ -212,22 +207,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void InitializeTray()
         {
-            this.tray = new Tray
-            {
-                Dimension = new Dimension
-                {
-                    Height = this.LoadingUnit.Length,
-                    Width = this.LoadingUnit.Width
-                },
-                LoadingUnitId = this.LoadingUnit.Id,
-            };
-
-            if (this.LoadingUnit.Compartments != null)
-            {
-                this.tray.AddCompartmentsRange(this.LoadingUnit.Compartments);
-            }
-
-            this.RaisePropertyChanged(nameof(this.Tray));
+            this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));
         }
 
         private async Task LoadDataAsync()

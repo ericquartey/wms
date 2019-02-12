@@ -325,11 +325,9 @@
                                         SelectedItem="{Binding SelectedCompartmentTray, Mode=TwoWay}"
                                         ShowBackground="True"
                                         RulerInfo="mm"
-                                        Compartments="{Binding Tray.Compartments}"
-                                        DimensionWidth="{Binding Tray.Dimension.Width}"
-                                        DimensionHeight="{Binding Tray.Dimension.Height}"
-                                        OriginX="{Binding Tray.Origin.X}"
-                                        OriginY="{Binding Tray.Origin.Y}"
+                                        Compartments="{Binding LoadingUnitDetails.Compartments}"
+                                        DimensionWidth="{Binding LoadingUnitDetails.Width}"
+                                        DimensionHeight="{Binding LoadingUnitDetails.Length}"
                                         />
                 </GroupBox>
 
