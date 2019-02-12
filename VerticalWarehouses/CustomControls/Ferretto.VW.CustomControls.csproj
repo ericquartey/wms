@@ -48,6 +48,12 @@
   <ItemGroup>
     <ProjectReference Include="..\Common\Resources\Ferretto.VW.Resources.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Controls\CustomMainWindowServiceButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
   
 
 </Project>

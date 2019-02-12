@@ -7,9 +7,5 @@
   <ItemGroup>
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-  </ItemGroup>
 
 </Project>
