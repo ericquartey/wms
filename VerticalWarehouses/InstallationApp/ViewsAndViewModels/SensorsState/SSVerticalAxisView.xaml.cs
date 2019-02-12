@@ -19,7 +19,7 @@ namespace Ferretto.VW.InstallationApp
     /// <summary>
     /// Interaction logic for SSVerticalAxisView.xaml
     /// </summary>
-    public partial class SSVerticalAxisView : BaseView
+    public partial class SSVerticalAxisView : UserControl
     {
         #region Constructors
 
@@ -28,6 +28,6 @@ namespace Ferretto.VW.InstallationApp
             this.InitializeComponent();
         }
 
-        #endregion Constructors
+        #endregion
     }
 }

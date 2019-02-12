@@ -68,7 +68,7 @@ namespace Ferretto.Common.Controls
             typeof(WmsCanvasListBoxControl), new FrameworkPropertyMetadata(OnSelectedCompartmentChanged));
 
         public static readonly DependencyProperty ShowBackgroundProperty = DependencyProperty.Register(nameof(ShowBackground),
-            typeof(bool), typeof(WmsCanvasListBoxControl), new FrameworkPropertyMetadata(OnShowBackgroundChanged));
+            typeof(bool), typeof(WmsCanvasListBoxControl), new FrameworkPropertyMetadata(true, OnShowBackgroundChanged));
 
         public static readonly DependencyProperty StepPixelProperty = DependencyProperty.Register(nameof(StepPixel), typeof(double), typeof(WmsCanvasListBoxControl));
 
@@ -83,6 +83,8 @@ namespace Ferretto.Common.Controls
 
         public static readonly DependencyProperty TrayWidthProperty =
                                DependencyProperty.Register(nameof(TrayWidth), typeof(double), typeof(WmsCanvasListBoxControl));
+
+        private const int BORDEROFFSET = -1;
 
         private const string DEFAULTBACKGROUND = "CommonSecondaryMedium";
 
@@ -420,26 +422,25 @@ namespace Ferretto.Common.Controls
         {
             base.OnRender(drawingContext);
 
-            if (this.StepPixel.Equals(0))
+            var penSize = this.GetSizeOfPen();
+            var pen = new Pen
             {
-                return;
-            }
+                DashCap = PenLineCap.Square,
+                Thickness = penSize,
+                StartLineCap = PenLineCap.Square,
+                EndLineCap = PenLineCap.Square
+            };
+
+            var points = this.GetBordersPoints();
+            pen.Brush = Application.Current.Resources[DEFAULTBACKGROUND] as Brush;
+            DrawSnappedLinesBetweenPoints(drawingContext, pen, penSize, points.ToArray());
 
             if (this.ShowBackground == false)
             {
                 return;
             }
 
-            var penSize = this.GetSizeOfPen();
-            var pen = new Pen
-            {
-                DashCap = PenLineCap.Square,
-                Brush = this.GridLinesColor,
-                Thickness = penSize,
-                StartLineCap = PenLineCap.Square,
-                EndLineCap = PenLineCap.Square
-            };
-
+            points.Clear();
             var stepXPixel = ConvertMillimetersToPixel(this.Step, this.TrayWidth, this.DimensionWidth);
             var stepYPixel = ConvertMillimetersToPixel(this.Step, this.TrayHeight, this.DimensionHeight);
 
@@ -474,15 +475,7 @@ namespace Ferretto.Common.Controls
                 }
             }
 
-            points.Add(new Point(-1, this.ActualHeight));
-            points.Add(new Point(this.TrayWidth, this.ActualHeight));
-            DrawSnappedLinesBetweenPoints(drawingContext, pen, penSize, points.ToArray());
-
-            points.Clear();
-            points.Add(new Point(this.TrayWidth, -1));
-            points.Add(new Point(this.TrayWidth, this.ActualHeight));
-            pen.Brush = Application.Current.Resources[DEFAULTBACKGROUND] as Brush;
-
+            pen.Brush = this.GridLinesColor;
             DrawSnappedLinesBetweenPoints(drawingContext, pen, penSize, points.ToArray());
         }
 
@@ -582,6 +575,27 @@ namespace Ferretto.Common.Controls
             {
                 wmsCanvasListBox.SetControlSize();
             }
+        }
+
+        private List<Point> GetBordersPoints()
+        {
+            var points = new List<Point>();
+            if (this.ShowBackground == false)
+            {
+                points.Add(new Point(BORDEROFFSET, BORDEROFFSET));
+                points.Add(new Point(this.TrayWidth, BORDEROFFSET));
+
+                points.Add(new Point(BORDEROFFSET, BORDEROFFSET));
+                points.Add(new Point(BORDEROFFSET, this.ActualHeight));
+            }
+
+            points.Add(new Point(this.TrayWidth, 0));
+            points.Add(new Point(this.TrayWidth, this.ActualHeight));
+
+            points.Add(new Point(0, this.ActualHeight));
+            points.Add(new Point(this.TrayWidth, this.ActualHeight));
+
+            return points;
         }
 
         private double GetSizeOfPen()

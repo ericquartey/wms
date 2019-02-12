@@ -20,7 +20,7 @@ namespace Ferretto.VW.InstallationApp
     /// <summary>
     /// Interaction logic for LSMTGateEngineView.xaml
     /// </summary>
-    public partial class LSMTGateEngineView : BaseView
+    public partial class LSMTGateEngineView : UserControl
     {
         #region Constructors
 
@@ -29,6 +29,6 @@ namespace Ferretto.VW.InstallationApp
             this.InitializeComponent();
         }
 
-        #endregion Constructors
+        #endregion
     }
 }

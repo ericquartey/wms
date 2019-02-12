@@ -323,7 +323,7 @@
                                         IsCompartmentSelectable="{Binding IsCompartmentSelectableTray, Mode=OneWay}"
                                         IsReadOnly="{Binding ReadOnlyTray, Mode=OneWay}"
                                         SelectedItem="{Binding SelectedCompartmentTray, Mode=TwoWay}"
-                                        ShowBackground="True"
+                                        ShowBackground="False"
                                         RulerInfo="mm"
                                         Compartments="{Binding LoadingUnitDetails.Compartments}"
                                         DimensionWidth="{Binding LoadingUnitDetails.Width}"

@@ -13,16 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.InstallationApp.HelpWindows
 {
     /// <summary>
-    /// Interaction logic for BeltBurnishingHelpView.xaml
+    /// Logica di interazione per ResolutionCalibrationVerticalAxisHelpView.xaml
     /// </summary>
-    public partial class BeltBurnishingHelpView : UserControl
+    public partial class ResolutionCalibrationVerticalAxisHelpView : UserControl
     {
-        public BeltBurnishingHelpView()
+        public ResolutionCalibrationVerticalAxisHelpView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

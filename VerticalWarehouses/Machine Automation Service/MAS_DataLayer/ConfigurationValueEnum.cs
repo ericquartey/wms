@@ -4,5 +4,6 @@
     {
         homingCreepSpeed,
         homingFastSpeed,
+        resolution,
     }
 }

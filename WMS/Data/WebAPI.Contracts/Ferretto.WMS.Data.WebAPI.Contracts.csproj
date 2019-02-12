@@ -4,6 +4,7 @@
     <TargetFrameworks>netstandard2.0;netcoreapp2.1;net471</TargetFrameworks>
      <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+     <Configurations>Debug;Release;Autogen</Configurations>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net471'">
@@ -38,7 +39,7 @@
     <Compile Remove="DataWebApiServiceCollectionExtensions.cs" />
   </ItemGroup>
 
-  <Target Name="NSwag" AfterTargets="Build" Condition=" '$(Configuration)' == 'debug' and '$(TargetFramework)' == 'netcoreapp2.1' and '$(IsDesktopBuild)' == true ">
+  <Target Name="NSwag" BeforeTargets="Build" Condition=" '$(Configuration)' == 'autogen' and $(TargetFramework.StartsWith('netcore')) ">
     <Copy SourceFiles="@(Reference)" DestinationFolder="$(OutDir)References" />
     <Exec Command="$(NSwagExe_Core21) run nswag.json /variables:Configuration=$(Configuration)" />
     <RemoveDir Directories="$(OutDir)References" />

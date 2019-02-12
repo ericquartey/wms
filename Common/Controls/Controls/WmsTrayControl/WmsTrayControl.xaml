@@ -50,6 +50,7 @@
                                Width="{Binding TrayWidth, ElementName=CanvasListBoxControl}"
                                TrayWidth="{Binding TrayWidth, ElementName=CanvasListBoxControl}"
                                TrayHeight="{Binding TrayHeight, ElementName=CanvasListBoxControl}"
+                               CurrentFontSize="{Binding CurrentFontSize, ElementName=VerticalRulerControl, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                FontFamily="{DynamicResource TrayFont}"                             
                                HorizontalAlignment="Left"                               
                                VerticalAlignment="Top"
@@ -58,14 +59,6 @@
                                OriginHorizontal="{Binding OriginHorizontal}"
                                OriginVertical="{Binding OriginVertical}"
                                Visibility="{Binding ShowRuler, Converter={StaticResource BTVC}}" />
-
-        <Rectangle Grid.Column="0" Grid.ColumnSpan="2"              
-                Fill="{DynamicResource CommonSecondaryMedium}"
-                Height="1"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Bottom"
-                Visibility="{Binding ShowRuler, Converter={StaticResource BTVIC}}"
-                />
 
         <ctrls:WmsRulerControl x:Name="VerticalRulerControl"                                                                                       
                                Grid.Row="1"                               
@@ -81,7 +74,8 @@
                                Step="{Binding RulerStep}"              
                                TrayWidth="{Binding TrayWidth, ElementName=CanvasListBoxControl}"
                                TrayHeight="{Binding TrayHeight, ElementName=CanvasListBoxControl}"
-                               FontFamily="{DynamicResource TrayFont}"
+                               FontFamily="{DynamicResource TrayFont}"                               
+                               CurrentFontSize="{Binding CurrentFontSize, ElementName=HorizontalRulerControl, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                Width="{DynamicResource TrayRulerSize}"                               
                                Height="{Binding TrayHeight, ElementName=CanvasListBoxControl}"                               
                                VerticalAlignment="Top"                               
@@ -90,14 +84,6 @@
                                OriginHorizontal="{Binding OriginHorizontal}"
                                OriginVertical="{Binding OriginVertical}"
                                Visibility="{Binding ShowRuler, Converter={StaticResource BTVC}}"/>
-
-        <Rectangle Grid.Row="0" Grid.RowSpan="2" 
-                   Fill="{DynamicResource CommonSecondaryMedium}"
-                   HorizontalAlignment="Right"
-                   VerticalAlignment="Stretch"
-                   Width="1"                     
-                   Visibility="{Binding ShowRuler, Converter={StaticResource BTVIC}}"
-                   />
 
         <ctrls:WmsCanvasListBoxControl x:Name="CanvasListBoxControl"
                                        Grid.Row="1"

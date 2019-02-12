@@ -11,23 +11,42 @@ namespace Ferretto.VW.InstallationApp
         #region Fields
 
         public IUnityContainer Container;
-        public DataManager Data;
-        private bool isBeltBurnishingDone;
-        private bool isGate1Done;
-        private bool isGate2Done;
-        private bool isGate3Done;
-        private bool isHorizontalHomingDone = false;
-        private bool isLaserGate1Done;
-        private bool isLaserGate2Done;
-        private bool isLaserGate3Done;
-        private bool isMachineDone;
-        private bool isSetResolutionDone;
-        private bool isShapeGate1Done;
-        private bool isShapeGate2Done;
-        private bool isShapeGate3Done;
-        private bool isVerticalHomingDone = false;
 
-        #endregion Fields
+        public DataManager Data;
+
+        private bool isBeltBurnishingDone;
+
+        private bool isCellPositionDone;
+
+        private bool isHorizontalHomingDone;
+
+        private bool isLaserShutter1Done;
+
+        private bool isLaserShutter2Done;
+
+        private bool isLaserShutter3Done;
+
+        private bool isMachineDone;
+
+        private bool isOffsetVerifyDone;
+
+        private bool isSetResolutionDone;
+
+        private bool isShapeShutter1Done;
+
+        private bool isShapeShutter2Done;
+
+        private bool isShapeShutter3Done;
+
+        private bool isShutter1InstallationProcedureDone;
+
+        private bool isShutter2InstallationProcedureDone;
+
+        private bool isShutter3InstallationProcedureDone;
+
+        private bool isVerticalHomingDone;
+
+        #endregion
 
         #region Constructors
 
@@ -36,45 +55,49 @@ namespace Ferretto.VW.InstallationApp
             NavigationService.InstallationInfoChangedEventHandler += this.UpdateData;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
-        public Boolean IsBeltBurnishingDone { get => this.isBeltBurnishingDone; set => this.SetProperty(ref this.isBeltBurnishingDone, value); }
+        public bool IsBeltBurnishingDone { get => this.isBeltBurnishingDone; set => this.SetProperty(ref this.isBeltBurnishingDone, value); }
 
-        public Boolean IsGate1Done { get => this.isGate1Done; set => this.SetProperty(ref this.isGate1Done, value); }
+        public bool IsCellPositionDone { get => this.isCellPositionDone; set => this.SetProperty(ref this.isCellPositionDone, value); }
 
-        public Boolean IsGate2Done { get => this.isGate2Done; set => this.SetProperty(ref this.isGate2Done, value); }
+        public bool IsHorizontalHomingDone { get => this.isHorizontalHomingDone; set => this.SetProperty(ref this.isHorizontalHomingDone, value); }
 
-        public Boolean IsGate3Done { get => this.isGate3Done; set => this.SetProperty(ref this.isGate3Done, value); }
+        public bool IsLaserShutter1Done { get => this.isLaserShutter1Done; set => this.SetProperty(ref this.isLaserShutter1Done, value); }
 
-        public Boolean IsHorizontalHomingDone { get => this.isHorizontalHomingDone; set => this.SetProperty(ref this.isHorizontalHomingDone, value); }
+        public bool IsLaserShutter2Done { get => this.isLaserShutter2Done; set => this.SetProperty(ref this.isLaserShutter2Done, value); }
 
-        public Boolean IsLaserGate1Done { get => this.isLaserGate1Done; set => this.SetProperty(ref this.isLaserGate1Done, value); }
+        public bool IsLaserShutter3Done { get => this.isLaserShutter3Done; set => this.SetProperty(ref this.isLaserShutter3Done, value); }
 
-        public Boolean IsLaserGate2Done { get => this.isLaserGate2Done; set => this.SetProperty(ref this.isLaserGate2Done, value); }
+        public bool IsMachineDone { get => this.isMachineDone; set => this.SetProperty(ref this.isMachineDone, value); }
 
-        public Boolean IsLaserGate3Done { get => this.isLaserGate3Done; set => this.SetProperty(ref this.isLaserGate3Done, value); }
+        public bool IsOffsetVerifyDone { get => this.isOffsetVerifyDone; set => this.SetProperty(ref this.isOffsetVerifyDone, value); }
 
-        public Boolean IsMachineDone { get => this.isMachineDone; set => this.SetProperty(ref this.isMachineDone, value); }
+        public bool IsSetResolutionDone { get => this.isSetResolutionDone; set => this.SetProperty(ref this.isSetResolutionDone, value); }
 
-        public Boolean IsSetResolutionDone { get => this.isSetResolutionDone; set => this.SetProperty(ref this.isSetResolutionDone, value); }
+        public bool IsShapeShutter1Done { get => this.isShapeShutter1Done; set => this.SetProperty(ref this.isShapeShutter1Done, value); }
 
-        public Boolean IsShapeGate1Done { get => this.isShapeGate1Done; set => this.SetProperty(ref this.isShapeGate1Done, value); }
+        public bool IsShapeShutter2Done { get => this.isShapeShutter2Done; set => this.SetProperty(ref this.isShapeShutter2Done, value); }
 
-        public Boolean IsShapeGate2Done { get => this.isShapeGate2Done; set => this.SetProperty(ref this.isShapeGate2Done, value); }
+        public bool IsShapeShutter3Done { get => this.isShapeShutter3Done; set => this.SetProperty(ref this.isShapeShutter3Done, value); }
 
-        public Boolean IsShapeGate3Done { get => this.isShapeGate3Done; set => this.SetProperty(ref this.isShapeGate3Done, value); }
+        public bool IsShutter1InstallationProcedureDone { get => this.isShutter1InstallationProcedureDone; set => this.SetProperty(ref this.isShutter1InstallationProcedureDone, value); }
 
-        public Boolean IsVerticalHomingDone { get => this.isVerticalHomingDone; set => this.SetProperty(ref this.isVerticalHomingDone, value); }
+        public bool IsShutter2InstallationProcedureDone { get => this.isShutter2InstallationProcedureDone; set => this.SetProperty(ref this.isShutter2InstallationProcedureDone, value); }
 
-        #endregion Properties
+        public bool IsShutter3InstallationProcedureDone { get => this.isShutter3InstallationProcedureDone; set => this.SetProperty(ref this.isShutter3InstallationProcedureDone, value); }
+
+        public bool IsVerticalHomingDone { get => this.isVerticalHomingDone; set => this.SetProperty(ref this.isVerticalHomingDone, value); }
+
+        #endregion
 
         #region Methods
 
         public void ExitFromViewMethod()
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         public void InitializeViewModel(IUnityContainer _container)
@@ -86,32 +109,32 @@ namespace Ferretto.VW.InstallationApp
 
         public void SubscribeMethodToEvent()
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         private void UpdateData()
         {
             this.IsBeltBurnishingDone = this.Data.InstallationInfo.Belt_Burnishing;
-            this.IsGate1Done = this.Data.InstallationInfo.Ok_Gate1;
-            this.IsGate2Done = this.Data.InstallationInfo.Ok_Gate2;
-            this.IsGate3Done = this.Data.InstallationInfo.Ok_Gate3;
+            this.IsShutter1InstallationProcedureDone = this.Data.InstallationInfo.Ok_Gate1;
+            this.IsShutter2InstallationProcedureDone = this.Data.InstallationInfo.Ok_Gate2;
+            this.IsShutter3InstallationProcedureDone = this.Data.InstallationInfo.Ok_Gate3;
             this.IsHorizontalHomingDone = this.Data.InstallationInfo.Origin_X_Axis;
-            this.IsLaserGate1Done = this.Data.InstallationInfo.Ok_Laser1;
-            this.IsLaserGate2Done = this.Data.InstallationInfo.Ok_Laser2;
-            this.IsLaserGate3Done = this.Data.InstallationInfo.Ok_Laser3;
+            this.IsLaserShutter1Done = this.Data.InstallationInfo.Ok_Laser1;
+            this.IsLaserShutter2Done = this.Data.InstallationInfo.Ok_Laser2;
+            this.IsLaserShutter3Done = this.Data.InstallationInfo.Ok_Laser3;
             this.IsMachineDone = this.Data.InstallationInfo.Machine_Ok;
-            this.IsShapeGate1Done = this.Data.InstallationInfo.Ok_Shape1;
-            this.IsShapeGate2Done = this.Data.InstallationInfo.Ok_Shape2;
-            this.IsShapeGate3Done = this.Data.InstallationInfo.Ok_Shape3;
+            this.IsShapeShutter1Done = this.Data.InstallationInfo.Ok_Shape1;
+            this.IsShapeShutter2Done = this.Data.InstallationInfo.Ok_Shape2;
+            this.IsShapeShutter3Done = this.Data.InstallationInfo.Ok_Shape3;
             this.IsSetResolutionDone = this.Data.InstallationInfo.Set_Y_Resolution;
             this.IsVerticalHomingDone = this.Data.InstallationInfo.Origin_Y_Axis;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

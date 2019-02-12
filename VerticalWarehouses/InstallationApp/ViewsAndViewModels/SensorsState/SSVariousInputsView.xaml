@@ -11,36 +11,74 @@
              mc:Ignorable="d">
     <Grid              Width="774"
              Height="608">
-        <TextBlock Grid.Row="0"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.VariousInputs}" Margin="160,10,0,562" />
-        <custom:CustomSensorControl Margin="160,522,400,38"
-                                            LabelText="{x:Static res:InstallationApp.SecurityFunctionActive}"
-                                            SensorState="{Binding SecurityFunctionActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
-        <custom:CustomSensorControl Margin="160,85,400,475"
-                                            LabelText="{x:Static res:InstallationApp.MushroomHeadButton}"
-                                            SensorState="{Binding MushroomHeadButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
-        <custom:CustomSensorControl Margin="0,155,400,405"
-                                            LabelText="{x:Static res:InstallationApp.MicroCarterLeftSide}"
-                                            SensorState="{Binding MicroCarterLeftSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            Style="{StaticResource VWAPP_CustomSensorControlStyle}" HorizontalAlignment="Right" Width="214" />
-        <custom:CustomSensorControl Margin="160,230,400,330"
-                                            LabelText="{x:Static res:InstallationApp.MicroCarterRightSide}"
-                                            SensorState="{Binding MicroCarterRightSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
-        <custom:CustomSensorControl Margin="160,301,400,259"
-                                            LabelText="{x:Static res:InstallationApp.AntiIntrusionGate}"
-                                            SensorState="{Binding AntiIntrusionGate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
-        <custom:CustomSensorControl Margin="160,375,400,185"
-                                            LabelText="{x:Static res:InstallationApp.ElevatorEngineSelected}"
-                                            SensorState="{Binding ElevatorEngineSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
-        <custom:CustomSensorControl Margin="160,450,400,110"
-                                            LabelText="{x:Static res:InstallationApp.CradleEngineSelected}"
-                                            SensorState="{Binding CradleEngineSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+        <TextBlock   Grid.Row="0"
+                     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,30,0,0" 
+                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                     Text="{x:Static res:InstallationApp.VariousInputs}"/>
+
+        <custom:CustomSensorControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,110,0,0"
+                                       LabelText="{x:Static res:InstallationApp.SecurityFunctionActive}"
+                                       SensorState="{Binding SecurityFunctionActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,190,0,0"
+                                       LabelText="{x:Static res:InstallationApp.MushroomHeadButton}"
+                                       SensorState="{Binding MushroomHeadButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,230,0,0"
+                                       LabelText="{x:Static res:InstallationApp.MicroCarterLeftSide}"
+                                       SensorState="{Binding MicroCarterLeftSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,270,0,0"
+                                       LabelText="{x:Static res:InstallationApp.MicroCarterRightSide}"
+                                       SensorState="{Binding MicroCarterRightSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,310,0,0"
+                                       LabelText="{x:Static res:InstallationApp.AntiIntrusionGate}"
+                                       SensorState="{Binding AntiIntrusionGate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="450,190,0,0"
+                                       LabelText="{x:Static res:InstallationApp.MushroomHeadButton2}"
+                                       SensorState="{Binding MushroomHeadButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="450,230,0,0"
+                                       LabelText="{x:Static res:InstallationApp.MicroCarterLeftSide2}"
+                                       SensorState="{Binding MicroCarterLeftSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="450,270,0,0"
+                                       LabelText="{x:Static res:InstallationApp.MicroCarterRightSide2}"
+                                       SensorState="{Binding MicroCarterRightSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="450,310,0,0"
+                                       LabelText="{x:Static res:InstallationApp.AntiIntrusionGate2}"
+                                       SensorState="{Binding AntiIntrusionGate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,390,0,0"
+                                       LabelText="{x:Static res:InstallationApp.MushroomHeadButton3}"
+                                       SensorState="{Binding MushroomHeadButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,430,0,0"
+                                       LabelText="{x:Static res:InstallationApp.MicroCarterLeftSide3}"
+                                       SensorState="{Binding MicroCarterLeftSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,470,0,0"
+                                       LabelText="{x:Static res:InstallationApp.MicroCarterRightSide3}"
+                                       SensorState="{Binding MicroCarterRightSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,510,0,0"
+                                       LabelText="{x:Static res:InstallationApp.AntiIntrusionGate3}"
+                                       SensorState="{Binding AntiIntrusionGate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
     </Grid>
 </UserControl>
