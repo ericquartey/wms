@@ -416,7 +416,7 @@
     <value>La barriera è fuori tolleranza</value>
   </data>
   <data name="Gate1HeightControl" xml:space="preserve">
-    <value>Controllo altezza barriera 1</value>
+    <value>Regolazione barriera misura altezza cassetto baia 1</value>
   </data>
   <data name="PanelsControl" xml:space="preserve">
     <value>Controllo pannelli</value>
@@ -428,7 +428,7 @@
     <value>Errore di sistema [mm]:</value>
   </data>
   <data name="Tolerance" xml:space="preserve">
-    <value>Tolleranza (+/-) [mm]:</value>
+    <value>Tolleranza richiesta (+/-) [mm]:</value>
   </data>
   <data name="VerticalOffsetCalibration" xml:space="preserve">
     <value>Calibrazione offset asse verticale</value>
@@ -437,13 +437,13 @@
     <value>Controllo peso</value>
   </data>
   <data name="Gate2HeightControl" xml:space="preserve">
-    <value>Controllo altezza barriera 2</value>
+    <value>Regolazione barriera misura altezza cassetto baia 2</value>
   </data>
   <data name="Gate3HeightControl" xml:space="preserve">
-    <value>Controllo altezza barriera 3</value>
+    <value>Regolazione barriera misura altezza cassetto baia 3</value>
   </data>
   <data name="GateHeightControl" xml:space="preserve">
-    <value>Controllo altezza barriera</value>
+    <value>Barriera misura altezza </value>
   </data>
   <data name="AcceptableWeightTolerance" xml:space="preserve">
     <value>Tolleranza peso accettabile [%]:</value>

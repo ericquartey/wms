@@ -503,7 +503,7 @@
   </data>
   <data name="Gate1HeightControl" xml:space="preserve">
     <value>Gate 1 Height Control</value>
-    <comment>Title - Button text</comment>
+    <comment>Title</comment>
   </data>
   <data name="PanelsControl" xml:space="preserve">
     <value>Panels Control</value>
@@ -531,11 +531,11 @@
   </data>
   <data name="Gate2HeightControl" xml:space="preserve">
     <value>Gate 2 Height Control</value>
-    <comment>Title - Button text</comment>
+    <comment>Title</comment>
   </data>
   <data name="Gate3HeightControl" xml:space="preserve">
     <value>Gate 3 Height Control</value>
-    <comment>Title - Button text</comment>
+    <comment>Title</comment>
   </data>
   <data name="GateHeightControl" xml:space="preserve">
     <value>Gate Height Control</value>
