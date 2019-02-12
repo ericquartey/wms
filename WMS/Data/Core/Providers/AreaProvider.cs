@@ -30,7 +30,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<Aisle>> GetAislesAsync(int id)
         {
             return await this.dataContext.Aisles
-                       .AsNoTracking()
                        .Include(a => a.Area)
                        .Where(a => a.AreaId == id)
                        .OrderBy(a => a.Area.Name)
@@ -38,6 +37,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                        .Select(a => new Aisle
                        {
                            Name = a.Name,
+                           AreaId = a.AreaId,
                            AreaName = a.Area.Name,
                        })
                        .ToArrayAsync();
