@@ -1,11 +1,12 @@
 ﻿using Ferretto.VW.Common_Utils.EventParameters;
+using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_InverterDriver;
+using Ferretto.VW.MAS_IODriver;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
-    // The vertical axis homing is done
     public class VerticalHomingDoneState : IState
     {
         #region Fields
@@ -16,25 +17,25 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly INewRemoteIODriver remoteIODriver;
+
         private StateMachineHoming parent;
 
         #endregion
 
         #region Constructors
 
-        public VerticalHomingDoneState(StateMachineHoming parent, INewInverterDriver iDriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
+        public VerticalHomingDoneState(StateMachineHoming parent, INewInverterDriver iDriver, INewRemoteIODriver remoteIODriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
         {
             this.parent = parent;
             this.driver = iDriver;
+            this.remoteIODriver = remoteIODriver;
             this.data = iWriteLogService;
             this.eventAggregator = eventAggregator;
 
-            //x this.data.LogWriting(new Command_EventParameter(CommandType.ExecuteHoming));
+            this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
 
-            //this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
-
-            // execute switch vertical
-            // this.remoteIO.SwitchVerticalToHorizontal();
+            this.remoteIODriver.SwitchVerticalToHorizontal();
         }
 
         #endregion
@@ -49,25 +50,25 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         private void notifyEventHandler(Notification_EventParameter notification)
         {
-            //if (notification.OperationType == OperationType.Switch)
-            //{
-            //    switch (notification.OperationStatus)
-            //    {
-            //        case OperationStatus.End:
-            //            {
-            //                this.parent.ChangeState(new HorizontalSwitchDoneState(this.parent, this.driver, this.data, this.eventAggregator));
-            //                break;
-            //            }
-            //        case OperationStatus.Error:
-            //            {
-            //                break;
-            //            }
-            //        default:
-            //            {
-            //                break;
-            //            }
-            //    }
-            //}
+            if (notification.OperationType == OperationType.SwitchVerticalToHorizontal)
+            {
+                switch (notification.OperationStatus)
+                {
+                    case OperationStatus.End:
+                        {
+                            this.parent.ChangeState(new HorizontalSwitchDoneState(this.parent, this.driver, this.remoteIODriver, this.data, this.eventAggregator));
+                            break;
+                        }
+                    case OperationStatus.Error:
+                        {
+                            break;
+                        }
+                    default:
+                        {
+                            break;
+                        }
+                }
+            }
         }
 
         #endregion

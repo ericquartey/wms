@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_FiniteStateMachines.Homing;
 using Ferretto.VW.MAS_InverterDriver;
+using Ferretto.VW.MAS_IODriver;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines
@@ -15,15 +16,18 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly INewRemoteIODriver remoteIODriver;
+
         private IState state;
 
         #endregion
 
         #region Constructors
 
-        public StateMachineHoming(INewInverterDriver iDriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
+        public StateMachineHoming(INewInverterDriver driver, INewRemoteIODriver remoteIODriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
         {
-            this.driver = iDriver;
+            this.driver = driver;
+            this.remoteIODriver = remoteIODriver;
             this.data = iWriteLogService;
             this.eventAggregator = eventAggregator;
         }
@@ -31,6 +35,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         #endregion
 
         #region Properties
+
+        public bool HomingComplete { get; set; }
 
         public bool HorizontalHomingAlreadyDone { get; set; }
 
@@ -48,9 +54,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         public void Start()
         {
             this.HorizontalHomingAlreadyDone = false;
+            this.HomingComplete = false;
 
-            //TODO check the sensors before to set the initial state
-            this.state = new HomingIdleState(this, this.driver, this.data, this.eventAggregator);
+            this.state = new HomingIdleState(this, this.driver, this.remoteIODriver, this.data, this.eventAggregator);
         }
 
         #endregion

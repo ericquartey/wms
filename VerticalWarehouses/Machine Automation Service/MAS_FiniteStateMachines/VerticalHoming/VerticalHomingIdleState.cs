@@ -22,10 +22,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Constructors
 
-        public VerticalHomingIdleState(StateMachineVerticalHoming parent, INewInverterDriver iDriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
+        public VerticalHomingIdleState(StateMachineVerticalHoming parent, INewInverterDriver driver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
         {
             this.parent = parent;
-            this.driver = iDriver;
+            this.driver = driver;
             this.data = iWriteLogService;
             this.eventAggregator = eventAggregator;
 

@@ -2,11 +2,11 @@
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_InverterDriver;
+using Ferretto.VW.MAS_IODriver;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
-    // The vertical switch is done
     public class VerticalSwitchDoneState : IState
     {
         #region Fields
@@ -17,20 +17,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly INewRemoteIODriver remoteIODriver;
+
         private StateMachineHoming parent;
 
         #endregion
 
         #region Constructors
 
-        public VerticalSwitchDoneState(StateMachineHoming parent, INewInverterDriver iDriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
+        public VerticalSwitchDoneState(StateMachineHoming parent, INewInverterDriver iDriver, INewRemoteIODriver remoteIODriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
         {
             this.parent = parent;
             this.driver = iDriver;
+            this.remoteIODriver = remoteIODriver;
             this.data = iWriteLogService;
             this.eventAggregator = eventAggregator;
-
-            //x this.data.LogWriting(new Command_EventParameter(CommandType.ExecuteHoming));
 
             this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
 
@@ -53,7 +54,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             {
                 case OperationStatus.End:
                     {
-                        this.parent.ChangeState(new VerticalHomingDoneState(this.parent, this.driver, this.data, this.eventAggregator));
+                        if (notification.Description == "Vertical Calibration Ended")
+                        {
+                            this.parent.ChangeState(new VerticalHomingDoneState(this.parent, this.driver, this.remoteIODriver, this.data, this.eventAggregator));
+                        }
                         break;
                     }
                 case OperationStatus.Error:
