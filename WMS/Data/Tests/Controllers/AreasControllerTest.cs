@@ -261,7 +261,8 @@ namespace Ferretto.WMS.Data.Tests
             return new AreasController(
                 new Mock<ILogger<AreasController>>().Object,
                 new AreaProvider(context),
-                new BayProvider(context));
+                new BayProvider(context),
+                new CellProvider(context));
         }
 
         #endregion
