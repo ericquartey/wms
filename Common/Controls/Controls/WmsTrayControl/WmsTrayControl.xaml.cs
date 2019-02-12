@@ -30,10 +30,10 @@ namespace Ferretto.Common.Controls
             nameof(IsReadOnly), typeof(bool), typeof(WmsTrayControl));
 
         public static readonly DependencyProperty OriginHorizontalProperty =
-               DependencyProperty.Register(nameof(OriginHorizontal), typeof(OriginHorizontal), typeof(WmsTrayControl));
+               DependencyProperty.Register(nameof(OriginHorizontal), typeof(OriginHorizontal), typeof(WmsTrayControl), new FrameworkPropertyMetadata(OriginHorizontal.Left));
 
         public static readonly DependencyProperty OriginVerticalProperty =
-                       DependencyProperty.Register(nameof(OriginVertical), typeof(OriginVertical), typeof(WmsTrayControl));
+                       DependencyProperty.Register(nameof(OriginVertical), typeof(OriginVertical), typeof(WmsTrayControl), new FrameworkPropertyMetadata(OriginVertical.Bottom));
 
         public static readonly DependencyProperty RulerFontSizeProperty = DependencyProperty.Register(nameof(RulerFontSize), typeof(int), typeof(WmsTrayControl),
                                                 new UIPropertyMetadata(8));

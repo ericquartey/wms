@@ -32,7 +32,7 @@ namespace Ferretto.Common.Controls
                                DependencyProperty.Register(nameof(OriginHorizontal), typeof(OriginHorizontal), typeof(WmsRulerControl), new FrameworkPropertyMetadata(OriginHorizontal.Left));
 
         public static readonly DependencyProperty OriginVerticalProperty =
-                               DependencyProperty.Register(nameof(OriginVertical), typeof(OriginVertical), typeof(WmsRulerControl), new FrameworkPropertyMetadata(OriginVertical.Top));
+                               DependencyProperty.Register(nameof(OriginVertical), typeof(OriginVertical), typeof(WmsRulerControl), new FrameworkPropertyMetadata(OriginVertical.Bottom));
 
         public static readonly DependencyProperty ShowInfoProperty = DependencyProperty.Register(
                                     nameof(ShowInfo), typeof(bool), typeof(WmsRulerControl), new FrameworkPropertyMetadata(true));

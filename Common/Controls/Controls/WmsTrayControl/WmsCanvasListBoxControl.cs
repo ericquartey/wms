@@ -44,10 +44,10 @@ namespace Ferretto.Common.Controls
                      DependencyProperty.Register(nameof(MinTrayWidth), typeof(double), typeof(WmsCanvasListBoxControl));
 
         public static readonly DependencyProperty OriginHorizontalProperty =
-                       DependencyProperty.Register(nameof(OriginHorizontal), typeof(OriginHorizontal), typeof(WmsCanvasListBoxControl));
+                       DependencyProperty.Register(nameof(OriginHorizontal), typeof(OriginHorizontal), typeof(WmsCanvasListBoxControl), new FrameworkPropertyMetadata(OriginHorizontal.Left));
 
         public static readonly DependencyProperty OriginVerticalProperty =
-                       DependencyProperty.Register(nameof(OriginVertical), typeof(OriginVertical), typeof(WmsCanvasListBoxControl));
+                       DependencyProperty.Register(nameof(OriginVertical), typeof(OriginVertical), typeof(WmsCanvasListBoxControl), new FrameworkPropertyMetadata(OriginVertical.Bottom));
 
         public static readonly DependencyProperty ParentHeightProperty =
                             DependencyProperty.Register(nameof(ParentHeight), typeof(double), typeof(WmsCanvasListBoxControl), new UIPropertyMetadata(0.0));
