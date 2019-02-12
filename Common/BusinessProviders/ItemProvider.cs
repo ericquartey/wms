@@ -52,12 +52,15 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public async Task AddEnumerations(ItemDetails itemDetails)
+        public async Task AddEnumerationsAsync(ItemDetails itemDetails)
         {
-            itemDetails.AbcClassChoices = await this.abcClassesProvider.GetAllAsync();
-            itemDetails.MeasureUnitChoices = this.enumerationProvider.GetAllMeasureUnits();
-            itemDetails.ManagementTypeChoices = EnumerationProvider.GetAllItemManagementTypes();
-            itemDetails.ItemCategoryChoices = this.enumerationProvider.GetAllItemCategories();
+            if (itemDetails != null)
+            {
+                itemDetails.AbcClassChoices = await this.abcClassesProvider.GetAllAsync();
+                itemDetails.MeasureUnitChoices = this.enumerationProvider.GetAllMeasureUnits();
+                itemDetails.ManagementTypeChoices = EnumerationProvider.GetAllItemManagementTypes();
+                itemDetails.ItemCategoryChoices = this.enumerationProvider.GetAllItemCategories();
+            }
         }
 
         public async Task<IOperationResult> CreateAsync(ItemDetails model)
@@ -230,7 +233,7 @@ namespace Ferretto.Common.BusinessProviders
                 TotalAvailable = item.TotalAvailable
             };
 
-            await this.AddEnumerations(itemDetails);
+            await this.AddEnumerationsAsync(itemDetails);
 
             return itemDetails;
         }
@@ -240,7 +243,7 @@ namespace Ferretto.Common.BusinessProviders
             var itemDetails = new ItemDetails();
             itemDetails.ManagementType = ItemManagementType.FIFO;
 
-            await this.AddEnumerations(itemDetails);
+            await this.AddEnumerationsAsync(itemDetails);
 
             return itemDetails;
         }

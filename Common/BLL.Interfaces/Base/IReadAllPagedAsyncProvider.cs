@@ -11,8 +11,8 @@ namespace Ferretto.Common.BLL.Interfaces.Base
         #region Methods
 
         Task<IEnumerable<T>> GetAllAsync(
-            int skip,
-            int take,
+            int skip = 0,
+            int take = 0,
             IEnumerable<SortOption> orderBy = null,
             IExpression whereExpression = null,
             IExpression searchExpression = null);
