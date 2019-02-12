@@ -38,7 +38,7 @@
     <Compile Remove="DataWebApiServiceCollectionExtensions.cs" />
   </ItemGroup>
 
-  <Target Name="NSwag" AfterTargets="Build" Condition=" '$(Configuration)' == 'debug' and '$(TargetFramework)' == 'netcoreapp2.1' and '$(IsDesktopBuild)' == true ">
+  <Target Name="NSwag" AfterTargets="Build" Condition=" '$(Configuration)' == 'debug' and '$(TargetFramework)' == 'netcoreapp2.1'">
     <Copy SourceFiles="@(Reference)" DestinationFolder="$(OutDir)References" />
     <Exec Command="$(NSwagExe_Core21) run nswag.json /variables:Configuration=$(Configuration)" />
     <RemoveDir Directories="$(OutDir)References" />

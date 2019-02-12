@@ -46,7 +46,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 FifoTimePick = model.FifoTimePick,
                 FifoTimeStore = model.FifoTimeStore,
                 Height = model.Height,
-                Id = model.Id,
                 Image = model.Image,
                 InventoryDate = model.InventoryDate,
                 InventoryTolerance = model.InventoryTolerance,
