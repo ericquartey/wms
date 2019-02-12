@@ -15,6 +15,10 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private const string CELL_NOT_FOUND_EXCEPTION = "Data Layer Exception - Cell Not Found";
 
+        private const string DB_UPDATE_EXCEPTION = "Data Layer Exception - DB Update Exception";
+
+        private const string APPLICATION_EXCEPTION = "Data Layer Exception - Constractor Error";
+
         #region Properties
 
         public IConfiguration Configuration { get; }
@@ -48,11 +52,11 @@ namespace Ferretto.VW.MAS_DataLayer
             }
             catch (DbUpdateException exDB)
             {
-                throw new NotImplementedException("Data Layer Exception - Update Exception");
+                throw new ExceptionsUtils(DB_UPDATE_EXCEPTION);
             }
             catch (ApplicationException exApp)
             {
-                throw new NotImplementedException("Data Layer Exception - Application Exception");
+                throw new ExceptionsUtils(APPLICATION_EXCEPTION);
             }
         }
 
