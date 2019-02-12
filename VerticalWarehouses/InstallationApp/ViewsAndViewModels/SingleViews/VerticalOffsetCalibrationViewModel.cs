@@ -102,7 +102,7 @@ namespace Ferretto.VW.InstallationApp
 
         public void ExitFromViewMethod()
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         public void InitializeViewModel(IUnityContainer _container)
