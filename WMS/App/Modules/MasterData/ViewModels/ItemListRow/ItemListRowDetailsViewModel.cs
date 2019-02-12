@@ -95,10 +95,10 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = false;
         }
 
-        protected override async void OnAppearAsync()
+        protected override async Task OnAppearAsync()
         {
             await this.LoadDataAsync();
-            base.OnAppearAsync();
+            await base.OnAppearAsync();
         }
 
         protected override void OnDispose()
@@ -165,11 +165,14 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.IsBusy = true;
 
                     this.Model = await this.itemListRowProvider.GetByIdAsync(modelId);
-                    this.ItemsDataSource = null;
                     if (this.Model != null)
                     {
-                        var items = await this.itemProvider.GetAllAsync(0, 0);
+                        var items = await this.itemProvider.GetAllAsync();
                         this.ItemsDataSource = new DataSource<Item>(() => items.AsQueryable());
+                    }
+                    else
+                    {
+                        this.ItemsDataSource = null;
                     }
 
                     this.IsBusy = false;

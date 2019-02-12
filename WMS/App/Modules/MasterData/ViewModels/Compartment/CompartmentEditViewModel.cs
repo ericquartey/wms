@@ -130,9 +130,9 @@ namespace Ferretto.WMS.Modules.MasterData
             base.Model_PropertyChanged(sender, e);
         }
 
-        protected override async void OnAppearAsync()
+        protected override async Task OnAppearAsync()
         {
-            base.OnAppearAsync();
+            await base.OnAppearAsync();
             await this.LoadDataAsync();
         }
 

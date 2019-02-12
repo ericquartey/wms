@@ -110,8 +110,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        protected override async void OnAppearAsync()
+        protected override async Task OnAppearAsync()
         {
+            await base.OnAppearAsync();
             var modelId = (int?)this.Data.GetType().GetProperty("Id")?.GetValue(this.Data);
             if (!modelId.HasValue)
             {

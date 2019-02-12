@@ -17,7 +17,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Constructors
 
-        public AbcClassesProvider(WMS.Data.WebAPI.Contracts.IAbcClassesDataService abcClassesDataService)
+        public AbcClassProvider(WMS.Data.WebAPI.Contracts.IAbcClassesDataService abcClassesDataService)
         {
             this.abcClassesDataService = abcClassesDataService;
         }

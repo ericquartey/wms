@@ -16,10 +16,15 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly IAreaProvider areaProvider = ServiceLocator.Current.GetInstance<IAreaProvider>();
+
         private readonly IBayProvider bayProvider = ServiceLocator.Current.GetInstance<IBayProvider>();
+
         private readonly IItemListProvider itemListProvider = ServiceLocator.Current.GetInstance<IItemListProvider>();
+
         private ItemListExecutionRequest executionRequest;
+
         private bool isBusy;
+
         private ICommand runListExecuteCommand;
 
         private string validationError;
@@ -80,8 +85,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        protected override async void OnAppearAsync()
+        protected override async Task OnAppearAsync()
         {
+            await base.OnAppearAsync();
+
             var modelId = (int?)this.Data.GetType().GetProperty("Id")?.GetValue(this.Data);
             if (!modelId.HasValue)
             {
