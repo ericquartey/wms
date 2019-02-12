@@ -36,9 +36,9 @@ namespace Ferretto.WMS.Modules.MasterData
             throw new NotImplementedException();
         }
 
-        protected override void OnAppear()
+        protected override void OnAppearAsync()
         {
-            base.OnAppear();
+            base.OnAppearAsync();
 
             this.LoadData();
         }
