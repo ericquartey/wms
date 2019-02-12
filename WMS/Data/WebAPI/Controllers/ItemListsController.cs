@@ -16,7 +16,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     public class ItemListsController :
         ControllerBase,
         IReadAllPagedController<ItemList>,
-        IReadSingleController<ItemList, int>
+        IReadSingleController<ItemList, int>,
+        IGetUniqueValuesController
     {
         #region Fields
 
@@ -88,6 +89,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return this.Ok(result);
+        }
+
+        [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
+        [HttpGet]
+        [Route("unique/{propertyName}")]
+        public async Task<ActionResult<object[]>> GetUniqueValuesAsync(
+            string propertyName)
+        {
+            return this.Ok(await this.itemListProvider.GetUniqueValuesAsync(propertyName));
         }
 
         private static Expression<Func<ItemList, bool>> BuildSearchExpression(string search)
