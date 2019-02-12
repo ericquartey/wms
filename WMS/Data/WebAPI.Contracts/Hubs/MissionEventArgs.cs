@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
 {

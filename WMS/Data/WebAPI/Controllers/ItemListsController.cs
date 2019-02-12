@@ -44,7 +44,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(422)]
-        public async Task<ActionResult> Execute(ListExecutionRequest request)
+        public async Task<ActionResult> Execute(Scheduler.Core.ListExecutionRequest request)
         {
             if (request == null)
             {

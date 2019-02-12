@@ -39,6 +39,10 @@
     <Compile Remove="DataWebApiServiceCollectionExtensions.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Ferretto.WMS.Data.Core.csproj" />
+  </ItemGroup>
+
   <Target Name="NSwag" BeforeTargets="Build" Condition=" '$(Configuration)' == 'autogen' and $(TargetFramework.StartsWith('netcore')) ">
     <Copy SourceFiles="@(Reference)" DestinationFolder="$(OutDir)References" />
     <Exec Command="$(NSwagExe_Core21) run nswag.json /variables:Configuration=$(Configuration)" />

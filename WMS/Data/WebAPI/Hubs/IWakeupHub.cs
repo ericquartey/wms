@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.WMS.Scheduler.Core;
 
-namespace Ferretto.WMS.Scheduler.WebAPI.Hubs
+namespace Ferretto.WMS.Data.WebAPI.Hubs
 {
     public interface IWakeupHub
     {

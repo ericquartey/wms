@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
@@ -9,7 +10,9 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
         #region Fields
 
         private const string NotifyNewMissionMessageName = "NotifyNewMission";
+
         private const string WakeUpMessageName = "WakeUp";
+
         private readonly HubConnection connection;
 
         #endregion

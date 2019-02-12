@@ -153,11 +153,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result.Entity);
         }
 
-        [ProducesResponseType(201, Type = typeof(Core.SchedulerRequest))]
+        [ProducesResponseType(201, Type = typeof(Scheduler.Core.SchedulerRequest))]
         [ProducesResponseType(400)]
         [ProducesResponseType(422)]
         [HttpPost(nameof(Withdraw))]
-        public async Task<IActionResult> Withdraw([FromBody] Core.SchedulerRequest request)
+        public async Task<IActionResult> Withdraw([FromBody] Scheduler.Core.SchedulerRequest request)
         {
             if (request == null)
             {

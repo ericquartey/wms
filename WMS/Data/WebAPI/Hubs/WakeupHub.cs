@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 
-namespace Ferretto.WMS.Scheduler.WebAPI.Hubs
+namespace Ferretto.WMS.Data.WebAPI.Hubs
 {
     public class WakeupHub : Hub<IWakeupHub>
     {

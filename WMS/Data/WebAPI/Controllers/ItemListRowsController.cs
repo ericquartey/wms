@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
+namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -13,21 +13,17 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
 
         private readonly ILogger logger;
 
-        private readonly IServiceProvider serviceProvider;
-
-        private readonly Core.IWarehouse warehouse;
+        private readonly Scheduler.Core.IWarehouse warehouse;
 
         #endregion
 
         #region Constructors
 
         public ItemListRowsController(
-            IServiceProvider serviceProvider,
             ILogger<ItemListRowsController> logger,
-            Core.IWarehouse warehouse)
+            Scheduler.Core.IWarehouse warehouse)
         {
             this.logger = logger;
-            this.serviceProvider = serviceProvider;
             this.warehouse = warehouse;
         }
 
@@ -39,7 +35,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(422)]
-        public async Task<ActionResult> Execute(ListRowExecutionRequest request)
+        public async Task<ActionResult> Execute(Scheduler.Core.ListRowExecutionRequest request)
         {
             if (request == null)
             {
