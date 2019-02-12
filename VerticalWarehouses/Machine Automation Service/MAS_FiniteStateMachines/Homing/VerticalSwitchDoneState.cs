@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.Common_Utils.EventParameters;
+using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_InverterDriver;
 using Prism.Events;
@@ -29,7 +30,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.data = iWriteLogService;
             this.eventAggregator = eventAggregator;
 
-            this.data.LogWriting(new Command_EventParameter(CommandType.ExecuteHoming));
+            //x this.data.LogWriting(new Command_EventParameter(CommandType.ExecuteHoming));
+
+            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
+
+            this.driver.ExecuteVerticalHoming();
         }
 
         #endregion
@@ -37,6 +42,30 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         #region Properties
 
         public string Type => "Vertical Switch Done";
+
+        #endregion
+
+        #region Methods
+
+        private void notifyEventHandler(Notification_EventParameter notification)
+        {
+            switch (notification.OperationStatus)
+            {
+                case OperationStatus.End:
+                    {
+                        this.parent.ChangeState(new VerticalHomingDoneState(this.parent, this.driver, this.data, this.eventAggregator));
+                        break;
+                    }
+                case OperationStatus.Error:
+                    {
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
+        }
 
         #endregion
     }

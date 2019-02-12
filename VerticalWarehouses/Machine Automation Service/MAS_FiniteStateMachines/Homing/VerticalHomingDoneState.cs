@@ -29,7 +29,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.data = iWriteLogService;
             this.eventAggregator = eventAggregator;
 
-            this.data.LogWriting(new Command_EventParameter(CommandType.ExecuteHoming));
+            //x this.data.LogWriting(new Command_EventParameter(CommandType.ExecuteHoming));
+
+            //this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
+
+            // execute switch vertical
+            // this.remoteIO.SwitchVerticalToHorizontal();
         }
 
         #endregion
@@ -37,6 +42,33 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         #region Properties
 
         public string Type => "Vertical Homing Done";
+
+        #endregion
+
+        #region Methods
+
+        private void notifyEventHandler(Notification_EventParameter notification)
+        {
+            //if (notification.OperationType == OperationType.Switch)
+            //{
+            //    switch (notification.OperationStatus)
+            //    {
+            //        case OperationStatus.End:
+            //            {
+            //                this.parent.ChangeState(new HorizontalSwitchDoneState(this.parent, this.driver, this.data, this.eventAggregator));
+            //                break;
+            //            }
+            //        case OperationStatus.Error:
+            //            {
+            //                break;
+            //            }
+            //        default:
+            //            {
+            //                break;
+            //            }
+            //    }
+            //}
+        }
 
         #endregion
     }
