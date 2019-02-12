@@ -18,6 +18,7 @@ namespace Ferretto.WMS.Data.Core.Extensions
             if (services != null)
             {
                 services.AddTransient<IAbcClassProvider, AbcClassProvider>();
+                services.AddTransient<IAisleProvider, AisleProvider>();
                 services.AddTransient<IAreaProvider, AreaProvider>();
                 services.AddTransient<IBayProvider, BayProvider>();
                 services.AddTransient<ICellPositionProvider, CellPositionProvider>();
@@ -31,6 +32,7 @@ namespace Ferretto.WMS.Data.Core.Extensions
                 services.AddTransient<IItemCompartmentTypeProvider, ItemCompartmentTypeProvider>();
                 services.AddTransient<IItemListProvider, ItemListProvider>();
                 services.AddTransient<IItemProvider, ItemProvider>();
+                services.AddTransient<ILoadingUnitProvider, LoadingUnitProvider>();
                 services.AddTransient<ILoadingUnitStatusProvider, LoadingUnitStatusProvider>();
                 services.AddTransient<ILoadingUnitTypeProvider, LoadingUnitTypeProvider>();
                 services.AddTransient<IMachineProvider, MachineProvider>();

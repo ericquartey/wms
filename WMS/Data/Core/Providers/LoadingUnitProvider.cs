@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class LoadingUnitProvider : ILoadingUnitProvider
+    internal class LoadingUnitProvider : ILoadingUnitProvider
     {
         #region Fields
 

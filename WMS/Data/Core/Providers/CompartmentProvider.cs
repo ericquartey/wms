@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class CompartmentProvider : ICompartmentProvider
+    internal class CompartmentProvider : ICompartmentProvider
     {
         #region Fields
 
@@ -35,33 +35,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         #endregion
 
         #region Methods
-
-        public async Task<OperationResult<IEnumerable<CompartmentDetails>>> CreateRangeAsync(
-            IEnumerable<CompartmentDetails> compartments)
-        {
-            if (compartments == null)
-            {
-                throw new ArgumentNullException(nameof(compartments));
-            }
-
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-            {
-                foreach (var compartment in compartments)
-                {
-                    var result = await this.CreateAsync(compartment);
-                    if (!result.Success)
-                    {
-                        return new CreationErrorOperationResult<IEnumerable<CompartmentDetails>>();
-                    }
-
-                    compartment.Id = result.Entity.Id;
-                    compartment.CreationDate = result.Entity.CreationDate;
-                }
-
-                scope.Complete();
-                return new SuccessOperationResult<IEnumerable<CompartmentDetails>>(compartments);
-            }
-        }
 
         public async Task<OperationResult<CompartmentDetails>> CreateAsync(CompartmentDetails model)
         {
@@ -108,6 +81,33 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 scope.Complete();
                 return new SuccessOperationResult<CompartmentDetails>(model);
+            }
+        }
+
+        public async Task<OperationResult<IEnumerable<CompartmentDetails>>> CreateRangeAsync(
+                    IEnumerable<CompartmentDetails> compartments)
+        {
+            if (compartments == null)
+            {
+                throw new ArgumentNullException(nameof(compartments));
+            }
+
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                foreach (var compartment in compartments)
+                {
+                    var result = await this.CreateAsync(compartment);
+                    if (!result.Success)
+                    {
+                        return new CreationErrorOperationResult<IEnumerable<CompartmentDetails>>();
+                    }
+
+                    compartment.Id = result.Entity.Id;
+                    compartment.CreationDate = result.Entity.CreationDate;
+                }
+
+                scope.Complete();
+                return new SuccessOperationResult<IEnumerable<CompartmentDetails>>(compartments);
             }
         }
 
