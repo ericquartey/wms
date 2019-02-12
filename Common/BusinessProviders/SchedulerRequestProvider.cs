@@ -90,6 +90,11 @@ namespace Ferretto.Common.BusinessProviders
 
         public Task<SchedulerRequest> GetByIdAsync(int id) => throw new NotSupportedException();
 
+        public SchedulerRequest GetNew()
+        {
+            throw new NotSupportedException();
+        }
+
         public IQueryable<SchedulerRequest> GetWithOperationTypeInsertion()
         {
             return GetAllRequestsWithAggregations(this.dataContextService.Current, OperationInsertFilter);

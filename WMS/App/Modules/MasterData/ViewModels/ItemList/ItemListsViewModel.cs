@@ -32,6 +32,13 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
+        protected override void ExecuteAddCommand()
+        {
+            this.NavigationService.Appear(
+                nameof(MasterData),
+                Common.Utils.Modules.MasterData.ITEMLISTADDDIALOG);
+        }
+
         private bool CanExecuteListCommand()
         {
             if (this.CurrentItem != null)
