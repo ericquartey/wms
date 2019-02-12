@@ -661,4 +661,10 @@
   <data name="LSMTElevator" xml:space="preserve">
     <value>Elevatore</value>
   </data>
+  <data name="NextPanel" xml:space="preserve">
+    <value>Pannello successivo</value>
+  </data>
+  <data name="PanelsControlDescription" xml:space="preserve">
+    <value>Verifica posizione pannelli mensola</value>
+  </data>
 </root>

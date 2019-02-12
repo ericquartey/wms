@@ -1177,6 +1177,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a Nex panel.
+        /// </summary>
+        public static string NextPanel {
+            get {
+                return ResourceManager.GetString("NextPanel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Off.
         /// </summary>
         public static string Off {
@@ -1254,6 +1263,15 @@ namespace Ferretto.VW.Resources {
         public static string PanelsControl {
             get {
                 return ResourceManager.GetString("PanelsControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Panels control procedure.
+        /// </summary>
+        public static string PanelsControlDescription {
+            get {
+                return ResourceManager.GetString("PanelsControlDescription", resourceCulture);
             }
         }
         

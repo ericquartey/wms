@@ -836,4 +836,12 @@
     <value>Elevator</value>
     <comment>Button text</comment>
   </data>
+  <data name="NextPanel" xml:space="preserve">
+    <value>Nex panel</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="PanelsControlDescription" xml:space="preserve">
+    <value>Panels control procedure</value>
+    <comment>Title</comment>
+  </data>
 </root>
