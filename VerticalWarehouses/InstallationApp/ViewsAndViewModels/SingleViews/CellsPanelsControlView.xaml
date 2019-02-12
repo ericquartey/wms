@@ -40,7 +40,7 @@
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         <Button Margin="645,220,0,318"
                     HorizontalAlignment="Left"
-                    Content="{x:Static res:InstallationApp.SetPosition}"
+                    Content="{x:Static res:InstallationApp.GoToInitialPosition}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         <Button Margin="645,310,0,228"
                     HorizontalAlignment="Left"

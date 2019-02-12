@@ -2,23 +2,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.WMS.Data.Core.Models;
 
 namespace Ferretto.WMS.Data.Core.Interfaces.Base
 {
-    public interface IReadAllPagedAsyncProvider<T>
+    public interface IReadAllPagedAsyncProvider<TModel, TKey>
+        where TModel : BaseModel<TKey>
     {
         #region Methods
 
-        Task<IEnumerable<T>> GetAllAsync(
+        Task<IEnumerable<TModel>> GetAllAsync(
             int skip,
             int take,
             string orderBy = null,
-            Expression<Func<T, bool>> whereExpression = null,
-            Expression<Func<T, bool>> searchExpression = null);
+            Expression<Func<TModel, bool>> whereExpression = null,
+            Expression<Func<TModel, bool>> searchExpression = null);
 
         Task<int> GetAllCountAsync(
-            Expression<Func<T, bool>> whereExpression = null,
-            Expression<Func<T, bool>> searchExpression = null);
+            Expression<Func<TModel, bool>> whereExpression = null,
+            Expression<Func<TModel, bool>> searchExpression = null);
 
         #endregion
     }

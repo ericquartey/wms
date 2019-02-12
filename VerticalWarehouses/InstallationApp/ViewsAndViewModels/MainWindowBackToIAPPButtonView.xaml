@@ -17,18 +17,21 @@
                     Margin="0,0,10,0"
                     FlowDirection="RightToLeft"
                     Orientation="Horizontal">
-            <Button Margin="2,10"
+            
+            <Button Margin="10,0,0,0"
                     VerticalAlignment="Center"
                     Command="{Binding BackButtonCommand}"
                     Content="{x:Static res:InstallationApp.Back}"
                     IsEnabled="{Binding IsBackButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Height="60" />
-            <Button Margin="2,10,2,0"
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"/>
+            
+            <Button Margin="30,0,0,0"
+                    VerticalAlignment="Center"
                     Command="{Binding CancelButtonCommand}"
                     Content="{x:Static res:General.Cancel}"
                     IsEnabled="{Binding IsCancelButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"
-                    Visibility="{Binding CancelButtonVisibility, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="60" VerticalAlignment="Top" Width="161" />
+                    Visibility="{Binding CancelButtonVisibility, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
         </StackPanel>
     </Grid>
 </UserControl>

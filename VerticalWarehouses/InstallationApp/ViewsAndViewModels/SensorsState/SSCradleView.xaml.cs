@@ -1,11 +1,12 @@
-﻿using Ferretto.VW.Utils.Source;
+﻿using System.Windows.Controls;
+using Ferretto.VW.Utils.Source;
 
 namespace Ferretto.VW.InstallationApp
 {
     /// <summary>
     /// Interaction logic for SSCradleView.xaml
     /// </summary>
-    public partial class SSCradleView : BaseView
+    public partial class SSCradleView : UserControl
     {
         #region Constructors
 
@@ -14,6 +15,6 @@ namespace Ferretto.VW.InstallationApp
             this.InitializeComponent();
         }
 
-        #endregion Constructors
+        #endregion
     }
 }

@@ -6,7 +6,7 @@ using Ferretto.WMS.Data.Core.Models;
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
     public interface IBayProvider :
-        IReadAllAsyncProvider<Bay>,
+        IReadAllAsyncProvider<Bay, int>,
         IReadSingleAsyncProvider<Bay, int>
     {
         #region Methods

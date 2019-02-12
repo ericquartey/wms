@@ -9,44 +9,61 @@
              xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
-    <Grid              Width="1024"
+    <Grid    Width="1024"
              Height="608">
-        <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.VerticalOffsetCalibration}" Margin="160,10,0,562" />
 
-        <custom:CustomInputFieldControlFocusable Margin="160,405,544,135"
-                                                     InputText="{Binding ReferenceCellHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     LabelText="{x:Static res:InstallationApp.ReferenceCellHeight}"
-                                                     Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
-        <custom:CustomLabelTextBlockControl Margin="160,332,544,208"
-                                                ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
-        <custom:CustomInputFieldControlFocusable Margin="160,231,544,309"
-                                                     InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     LabelText="{x:Static res:InstallationApp.StepValue}"
-                                                     Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
-        <custom:CustomLabelTextBlockControl Margin="160,163,544,377"
-                                                ContentText="{Binding CurrentOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.CurrentOffset}" />
-        <custom:CustomInputFieldControlFocusable Margin="160,90,544,450"
-                                                     InputText="{Binding CorrectOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     LabelText="{x:Static res:InstallationApp.CorrectOffset}"
-                                                     Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
-        <Button Command="{Binding SetPositionButtonCommand}"
-                    Content="{x:Static res:InstallationApp.SetPosition}"
-                    IsEnabled="{Binding IsSetPositionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="646,100,209,440" />
-        <Button Command="{Binding StepUpButtonCommand}"
-                    Content="{x:Static res:InstallationApp.StepUp}"
-                    IsEnabled="{Binding IsStepUpButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="646,207,209,333" />
-        <Button Command="{Binding StepDownButtonCommand}"
-                    Content="{x:Static res:InstallationApp.StepDown}"
-                    IsEnabled="{Binding IsStepDownButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="646,280,209,260" />
-        <Button Command="{Binding CorrectOffsetButtonCommand}"
-                    Content="{x:Static res:InstallationApp.DoCorrectOffset}"
-                    IsEnabled="{Binding IsCorrectOffsetButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="646,405,209,135" />
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,30,0,0" 
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.VerticalOffsetCalibration}" />
+
+        <custom:CustomInputFieldControlFocusable   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="410,120,0,0"
+                                                   InputText="{Binding ReferenceCellHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   LabelText="{x:Static res:InstallationApp.ReferenceCellHeight}"
+                                                   Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+
+        <custom:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="410,290,0,0"
+                                              ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
+
+        <custom:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,290,0,0"
+                                                  InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  LabelText="{x:Static res:InstallationApp.StepValue}"
+                                                  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+
+        <custom:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="410,430,0,0"
+                                              ContentText="{Binding CurrentOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static res:InstallationApp.CurrentOffset}" />
+
+        <custom:CustomInputFieldControlFocusable   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="410,490,0,0"
+                                                   InputText="{Binding CorrectOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   LabelText="{x:Static res:InstallationApp.CorrectOffset}"
+                                                   Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+
+        <Button   Command="{Binding SetPositionButtonCommand}"
+                  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="680,120,0,0"
+                  Content="{x:Static res:InstallationApp.GoToInitialPosition}"
+                  IsEnabled="{Binding IsSetPositionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"  />
+
+        <Button   Command="{Binding StepUpButtonCommand}"
+                  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="680,250,0,0"
+                  Content="{x:Static res:InstallationApp.StepUp}"
+                  IsEnabled="{Binding IsStepUpButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"  />
+
+        <Button   Command="{Binding StepDownButtonCommand}"
+                  HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="680,320,0,0"
+                  Content="{x:Static res:InstallationApp.StepDown}"
+                  IsEnabled="{Binding IsStepDownButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+
+        <Button   Command="{Binding CorrectOffsetButtonCommand}"
+                  HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="680,450,0,0"
+                  Content="{x:Static res:InstallationApp.DoCorrectOffset}"
+                  IsEnabled="{Binding IsCorrectOffsetButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <custom:CustomLabelTextBlockControl    ContentText="{Binding CurrentCell, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,120,0,0"
+            LabelText="{x:Static res:InstallationApp.CurrentCell}"  />
     </Grid>
 </UserControl>

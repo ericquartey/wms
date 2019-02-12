@@ -4,27 +4,23 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignWidth="100"
              d:DesignHeight="60"
-             d:DesignWidth="120"
              mc:Ignorable="d">
 
     <Button Name="LayoutRoot"
-            Width="120"
+            Width="100"
             Height="60"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Command="{Binding CustomCommand}"
             Template="{StaticResource VWAPP_CustomMachineOnMarchToggleButton_ControlTemplate}">
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="80" />
-                <ColumnDefinition Width="40" />
-            </Grid.ColumnDefinitions>
-            <Rectangle Grid.Column="1"
-                       Width="40"
-                       Height="58"
-                       Fill="{Binding RectangleBrush, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBlock Grid.Column="0"
+            <Grid.RowDefinitions>
+                <RowDefinition Height="47" />
+                <RowDefinition Height="13" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        FontFamily="{DynamicResource VWAPP_ActionButton_FontFamily_Normal}"
@@ -32,6 +28,10 @@
                        Foreground="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
                        Text="{Binding MachineOnMarchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                        TextAlignment="Center" />
+            <Rectangle Grid.Row="1"
+                       Width="98"
+                       Height="12"
+                       Fill="{Binding RectangleBrush, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
     </Button>
 </UserControl>

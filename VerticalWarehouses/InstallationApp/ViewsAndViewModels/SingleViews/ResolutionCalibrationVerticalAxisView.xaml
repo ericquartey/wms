@@ -9,53 +9,71 @@
              xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources">
     <Grid Width="1024"
           Height="608">
-        <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.VerticalResolutionCalibration}" Margin="159,10,0,562" />
-        <custom:CustomInputFieldControlFocusable Highlighted="False"
-                                                         InputScope="Number"
-                                                         InputText="{Binding DesiredInitialPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                         LabelText="{x:Static res:InstallationApp.DesiredInitialPosition}"
-                                                         Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" Margin="159,385,545,141" />
-        <custom:CustomInputFieldControlFocusable Highlighted="{Binding IsMesuredInitialPositionHighlighted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                         InputScope="Number"
-                                                         InputText="{Binding MesuredInitialPosition, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
-                                                         IsEnabled="{Binding IsMesuredInitialPositionTextInputActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                         LabelText="{x:Static res:InstallationApp.MesuredInitialPosition}"
-                                                         Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" Margin="159,297,545,229" />
-        <custom:CustomInputFieldControlFocusable Highlighted="{Binding Input2Highlighted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                         InputScope="Number"
-                                                         InputText="{Binding RepositionLenght, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                         LabelText="{x:Static res:InstallationApp.DesiredMovement}"
-                                                         Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" Margin="159,190,545,337" />
-        <custom:CustomInputFieldControlFocusable Highlighted="{Binding IsMesuredMovementHighlighted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+
+        <TextBlock    HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="140,30,0,0" 
+                      Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                      Text="{x:Static res:InstallationApp.VerticalResolutionCalibration}" />
+
+        <custom:CustomInputFieldControlFocusable         HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="420,119,0,0"
+                                                         Highlighted="{Binding IsMesuredMovementHighlighted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                          InputScope="Number"
                                                          InputText="{Binding MesuredLenght, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
                                                          IsEnabled="{Binding IsMesuredLenghtTextInputActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                          LabelText="{x:Static res:InstallationApp.MesuredMovement}"
-                                                         Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" Margin="159,103,545,424" />
-        <custom:CustomLabelTextBlockControl ContentText="{Binding CurrentResolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    LabelText="{x:Static res:InstallationApp.CurrentResolution}" Margin="680,88,24,439" />
-        <custom:CustomLabelTextBlockControl ContentText="{Binding NewResolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    LabelText="{x:Static res:InstallationApp.NewResolution}" Margin="680,175,24,351" />
-        <Button HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
+                                                         Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"  />
+
+        <custom:CustomInputFieldControlFocusable         HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="140,119,0,0" 
+                                                         Highlighted="False"
+                                                         InputScope="Number"
+                                                         InputText="{Binding DesiredInitialPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         LabelText="{x:Static res:InstallationApp.DesiredInitialPosition}"
+                                                         Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+
+        <custom:CustomInputFieldControlFocusable         HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="140,394,0,0"
+                                                         Highlighted="{Binding IsMesuredInitialPositionHighlighted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         InputScope="Number"
+                                                         InputText="{Binding MesuredInitialPosition, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+                                                         IsEnabled="{Binding IsMesuredInitialPositionTextInputActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         LabelText="{x:Static res:InstallationApp.RequestedFinalPosition}"
+                                                         Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"  />
+
+        <custom:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="420,324,0,0" 
+                                              ContentText="{Binding CurrentResolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static res:InstallationApp.CurrentResolution}"/>
+
+        <custom:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="420,394,0,0"
+                                              ContentText="{Binding NewResolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static res:InstallationApp.NewResolution}" />
+
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,199,0,0"
                     Command="{Binding SetPositionButtonCommand}"
-                    Content="{x:Static res:InstallationApp.SetPosition}"
+                    Content="{x:Static res:InstallationApp.StartResolutionProcedure}"
                     IsEnabled="{Binding IsSetPositionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="680,262,0,273" Height="73" Width="160" />
-        <Button HorizontalAlignment="Left"
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="140,474,0,0"
                     Command="{Binding MoveButtonCommand}"
                     Content="{x:Static res:InstallationApp.Move}"
                     IsEnabled="{Binding IsMoveButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="680,341,0,192" Width="160" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Button HorizontalAlignment="Left"
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="420,474,0,0"
                     Command="{Binding AcceptButtonCommand}"
                     Content="{x:Static res:General.Accept}"
                     IsEnabled="{Binding IsAcceptButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="680,445,0,88" Width="160" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <custom:CustomLabelTextBlockControl ContentText="{Binding NoteString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            LabelText="{x:Static res:InstallationApp.Output}" Margin="159,467,545,60" />
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="700,375,0,0"
+                    Command="{Binding SetPositionButtonCommand}"
+                    Content="{x:Static res:InstallationApp.GoToInitialPosition}"
+                    IsEnabled="{Binding IsSetPositionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="700,474,0,0"
+                    Command="{Binding SetPositionButtonCommand}"
+                    Content="{x:Static res:InstallationApp.CloseProcedure}"
+                    IsEnabled="{Binding IsSetPositionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+
     </Grid>
 </UserControl>
