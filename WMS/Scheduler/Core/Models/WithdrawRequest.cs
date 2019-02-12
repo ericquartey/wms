@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
+namespace Ferretto.WMS.Scheduler.Core
 {
     public class WithdrawRequest
     {

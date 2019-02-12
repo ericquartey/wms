@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Ferretto.WMS.Scheduler.WebAPI
+namespace Ferretto.WMS.Scheduler.Core
 {
     public class ListRowExecutionRequest
     {
