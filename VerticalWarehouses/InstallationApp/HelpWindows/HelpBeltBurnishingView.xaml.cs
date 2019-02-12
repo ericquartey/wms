@@ -12,22 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Ferretto.VW.Utils.Source;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.InstallationApp.HelpWindows
 {
     /// <summary>
-    /// Interaction logic for SSVerticalAxisView.xaml
+    /// Interaction logic for BeltBurnishingHelpView.xaml
     /// </summary>
-    public partial class SSVerticalAxisView : UserControl
+    public partial class BeltBurnishingHelpView : UserControl
     {
-        #region Constructors
-
-        public SSVerticalAxisView()
+        public BeltBurnishingHelpView()
         {
             this.InitializeComponent();
         }
-
-        #endregion
     }
 }

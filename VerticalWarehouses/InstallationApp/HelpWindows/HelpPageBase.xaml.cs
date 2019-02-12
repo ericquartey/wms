@@ -13,20 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.InstallationApp.HelpWindows
 {
     /// <summary>
-    /// Interaction logic for CellsControlHelpView.xaml
+    /// Logica di interazione per HelpPageBase.xaml
     /// </summary>
-    public partial class CellsControlHelpView : UserControl
+    public partial class HelpPageBase : UserControl
     {
-        #region Constructors
-
-        public CellsControlHelpView()
+        public HelpPageBase()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
-
-        #endregion Constructors
     }
 }

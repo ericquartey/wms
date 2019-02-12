@@ -8,7 +8,6 @@ using System.Windows.Input;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.Navigation;
 using Ferretto.VW.Utils.Source;
-using Ferretto.VW.InstallationApp;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -83,15 +82,11 @@ namespace Ferretto.VW.InstallationApp
 
         private ICommand gate3HeightControlNavigationButtonCommand;
 
-        private ICommand gateHeightControlButtonCommand;
-
         private ICommand gates1ControlNavigationButtonCommand;
 
         private ICommand gates2ControlNavigationButtonCommand;
 
         private ICommand gates3ControlNavigationButtonCommand;
-
-        private ICommand gatesControlButtonCommand;
 
         private ICommand installationStateButtonCommand;
 
@@ -221,9 +216,9 @@ namespace Ferretto.VW.InstallationApp
 
         public BindableBase ContentRegionCurrentViewModel { get => this.contentRegionCurrentViewModel; set => this.SetProperty(ref this.contentRegionCurrentViewModel, value); }
 
-        public Boolean MachineModeSelectionBool { get => this.machineModeSelectionBool; set => this.SetProperty(ref this.machineModeSelectionBool, value); }
+        public bool MachineModeSelectionBool { get => this.machineModeSelectionBool; set => this.SetProperty(ref this.machineModeSelectionBool, value); }
 
-        public Boolean MachineOnMarchSelectionBool { get => this.machineOnMarchSelectionBool; set => this.SetProperty(ref this.machineOnMarchSelectionBool, value); }
+        public bool MachineOnMarchSelectionBool { get => this.machineOnMarchSelectionBool; set => this.SetProperty(ref this.machineOnMarchSelectionBool, value); }
 
         public BindableBase NavigationRegionCurrentViewModel { get => this.navigationRegionCurrentViewModel; set => this.SetProperty(ref this.navigationRegionCurrentViewModel, value); }
 
@@ -231,9 +226,9 @@ namespace Ferretto.VW.InstallationApp
 
         public BindableBase ExitViewButtonRegionCurrentViewModel { get => this.exitViewButtonRegionCurrentViewModel; set => this.SetProperty(ref this.exitViewButtonRegionCurrentViewModel, value); }
 
-        public Boolean IsExitViewButtonRegionExpanded { get => this.isExitViewButtonRegionExpanded; set => this.SetProperty(ref this.isExitViewButtonRegionExpanded, value); }
+        public bool IsExitViewButtonRegionExpanded { get => this.isExitViewButtonRegionExpanded; set => this.SetProperty(ref this.isExitViewButtonRegionExpanded, value); }
 
-        public Boolean IsPopupOpen { get => this.isPopupOpen; set => this.SetProperty(ref this.isPopupOpen, value); }
+        public bool IsPopupOpen { get => this.isPopupOpen; set => this.SetProperty(ref this.isPopupOpen, value); }
 
         public ICommand OpenClosePopupCommand => this.openClosePopupCommand ?? (this.openClosePopupCommand = new DelegateCommand(() => this.IsPopupOpen = !this.IsPopupOpen));
 

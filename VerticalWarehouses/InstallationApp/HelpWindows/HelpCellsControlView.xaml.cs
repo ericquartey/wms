@@ -12,22 +12,21 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Ferretto.VW.Utils.Source;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.InstallationApp.HelpWindows
 {
     /// <summary>
-    /// Interaction logic for SSVerticalAxisView.xaml
+    /// Interaction logic for CellsControlHelpView.xaml
     /// </summary>
-    public partial class SSVerticalAxisView : UserControl
+    public partial class CellsControlHelpView : UserControl
     {
         #region Constructors
 
-        public SSVerticalAxisView()
+        public CellsControlHelpView()
         {
             this.InitializeComponent();
         }
 
-        #endregion
+        #endregion Constructors
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Prism.Mvvm;
-using System.Collections.Generic;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -9,13 +8,13 @@ namespace Ferretto.VW.InstallationApp
 
         private bool luPresentInBay;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
-        public System.Boolean LuPresentInBay { get => this.luPresentInBay; set => this.SetProperty(ref this.luPresentInBay, value); }
+        public bool LuPresentInBay { get => this.luPresentInBay; set => this.SetProperty(ref this.luPresentInBay, value); }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -34,6 +33,6 @@ namespace Ferretto.VW.InstallationApp
             throw new System.NotImplementedException();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

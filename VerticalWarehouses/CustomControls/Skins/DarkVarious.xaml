@@ -14,6 +14,11 @@
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
     <SolidColorBrush x:Key="VWAPP_ViewTitleViewTextBlock_Foreground_Normal"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
+    <SolidColorBrush x:Key="VWAPP_HelpTextBlock_Foreground_Normal"
+                     Color="{DynamicResource ColorFerrettoGreen}" />
+    <SolidColorBrush x:Key="VWAPP_HelpStepTextBlock_Foreground_Normal"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+
 
     <SolidColorBrush x:Key="VWAPP_CCInput_Foreground_Normal"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
