@@ -93,5 +93,10 @@ namespace Ferretto.VW.InstallationApp
         }
 
         #endregion Methods
+
+        private void Button_Click(Object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

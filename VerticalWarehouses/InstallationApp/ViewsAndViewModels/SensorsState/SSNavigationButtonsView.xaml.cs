@@ -2,13 +2,14 @@
 using Ferretto.VW.Navigation;
 using System.Windows.Input;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Ferretto.VW.InstallationApp
 {
     /// <summary>
     /// Interaction logic for SSNavigationButtonsView.xaml
     /// </summary>
-    public partial class SSNavigationButtonsView : BaseView
+    public partial class SSNavigationButtonsView : UserControl
     {
         #region Constructors
 
@@ -17,6 +18,6 @@ namespace Ferretto.VW.InstallationApp
             this.InitializeComponent();
         }
 
-        #endregion Constructors
+        #endregion
     }
 }

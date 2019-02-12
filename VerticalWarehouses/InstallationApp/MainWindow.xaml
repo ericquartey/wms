@@ -21,20 +21,21 @@
         <Grid.RowDefinitions>
             <RowDefinition Name="upperRow"
                            Height="80" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="608" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="280" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Border Grid.Column="0"
                     Background="{DynamicResource VWAPP_BACKGROUND}"
                     BorderThickness="0">
-                <Image Width="200"
-                       Height="60"
-                       Margin="15,10,0,0"
+                <Image Width="250"
+                       Height="50"
+                       VerticalAlignment="Top" HorizontalAlignment="Left"
+                       Margin="10,15,0,0"
                        Source="{DynamicResource Ferretto_Logo}"
                        Stretch="Uniform" />
             </Border>
@@ -42,16 +43,16 @@
                     Background="{DynamicResource VWAPP_BACKGROUND}"
                     BorderThickness="0">
                 <StackPanel FlowDirection="RightToLeft"
-                            Orientation="Horizontal">
+                            Orientation="Horizontal" ScrollViewer.CanContentScroll="True">
                     <Button Width="60"
                             Height="60"
-                            Margin="5,0,0,0"
+                            Margin="10,0,10,0"
                             Command="{Binding OpenHelpWindow}"
                             VerticalContentAlignment="Center"
                             Background="{DynamicResource VWAPP_BACKGROUND}"
                             BorderBrush="{DynamicResource VWAPP_CustomMachineModeToggleButton_BorderBrush_Normal}"
-                            BorderThickness="1">
-                        <TextBlock FontSize="45"                                  
+                            BorderThickness="1" Click="Button_Click">
+                        <TextBlock FontSize="25"
                                    Foreground="{DynamicResource FerrettoPureWhite}"
                                    TextAlignment="Center">
                             ?
@@ -62,7 +63,8 @@
                                                     OpenClosePopupCommand="{Binding OpenClosePopupCommand}"
                                                     UserText="Installer" />
                     <Image Height="30"
-                           Margin="2,10,20,12"
+                           HorizontalAlignment="Center"
+                           Margin="10,0,10,0"
                            Source="/Ferretto.VW.CustomControls;Component/Assets/ic_account_circle_black_48dp.png" />
                     <custom:CustomMachineModeToggleButton Name="MachineModeControl"
                                                           CustomCommand="{Binding MachineModeCustomCommand}"
@@ -75,6 +77,10 @@
                                                              Style="{StaticResource VWAPP_CustomMachineOnMarchToggleButtonStyle}" />
                     <custom:CustomMainWindowErrorButton Margin="10,0,0,0"
                                                         ContentText="Error"
+                                                        CustomCommand="{Binding ErrorButtonCommand}"
+                                                        Visibility="Visible"/>
+                    <custom:CustomMainWindowServiceButton Margin="10,0,0,0"
+                                                         ContentText="Service"
                                                         CustomCommand="{Binding ErrorButtonCommand}" />
                 </StackPanel>
             </Border>
