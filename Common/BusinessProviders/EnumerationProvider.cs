@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
@@ -44,13 +45,6 @@ namespace Ferretto.Common.BusinessProviders
                 .Select(a => new Enumeration(
                     a.Id,
                     $"{a.Area.Name} - {a.Name}"));
-        }
-
-        public IQueryable<EnumerationString> GetAllAbcClasses()
-        {
-            return this.dataContext.AbcClasses
-                .AsNoTracking()
-                .Select(x => new EnumerationString(x.Id, x.Description));
         }
 
         public IQueryable<Enumeration> GetAllCellPositions()
