@@ -44,7 +44,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(201, Type = typeof(ActionResult<ItemDetails>))]
+        [ProducesResponseType(201, Type = typeof(ItemDetails))]
         [ProducesResponseType(400)]
         [HttpPost]
         public async Task<ActionResult<ItemDetails>> CreateAsync(ItemDetails model)
