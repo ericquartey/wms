@@ -18,11 +18,11 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isCellPositionDone;
 
-        private bool isGate1Done;
+        private bool isGate1InstallationProcedureDone;
 
-        private bool isGate2Done;
+        private bool isGate2InstallationProcedureDone;
 
-        private bool isGate3Done;
+        private bool isGate3InstallationProcedureDone;
 
         private bool isHorizontalHomingDone;
 
@@ -63,11 +63,11 @@ namespace Ferretto.VW.InstallationApp
 
         public bool IsCellPositionDone { get => this.isCellPositionDone; set => this.SetProperty(ref this.isCellPositionDone, value); }
 
-        public bool IsGate1Done { get => this.isGate1Done; set => this.SetProperty(ref this.isGate1Done, value); }
+        public bool IsGate1InstallationProcedureDone { get => this.isGate1InstallationProcedureDone; set => this.SetProperty(ref this.isGate1InstallationProcedureDone, value); }
 
-        public bool IsGate2Done { get => this.isGate2Done; set => this.SetProperty(ref this.isGate2Done, value); }
+        public bool IsGate2InstallationProcedureDone { get => this.isGate2InstallationProcedureDone; set => this.SetProperty(ref this.isGate2InstallationProcedureDone, value); }
 
-        public bool IsGate3Done { get => this.isGate3Done; set => this.SetProperty(ref this.isGate3Done, value); }
+        public bool IsGate3InstallationProcedureDone { get => this.isGate3InstallationProcedureDone; set => this.SetProperty(ref this.isGate3InstallationProcedureDone, value); }
 
         public bool IsHorizontalHomingDone { get => this.isHorizontalHomingDone; set => this.SetProperty(ref this.isHorizontalHomingDone, value); }
 
@@ -120,9 +120,9 @@ namespace Ferretto.VW.InstallationApp
         private void UpdateData()
         {
             this.IsBeltBurnishingDone = this.Data.InstallationInfo.Belt_Burnishing;
-            this.IsGate1Done = this.Data.InstallationInfo.Ok_Gate1;
-            this.IsGate2Done = this.Data.InstallationInfo.Ok_Gate2;
-            this.IsGate3Done = this.Data.InstallationInfo.Ok_Gate3;
+            this.IsGate1InstallationProcedureDone = this.Data.InstallationInfo.Ok_Gate1;
+            this.IsGate2InstallationProcedureDone = this.Data.InstallationInfo.Ok_Gate2;
+            this.IsGate3InstallationProcedureDone = this.Data.InstallationInfo.Ok_Gate3;
             this.IsHorizontalHomingDone = this.Data.InstallationInfo.Origin_X_Axis;
             this.IsLaserGate1Done = this.Data.InstallationInfo.Ok_Laser1;
             this.IsLaserGate2Done = this.Data.InstallationInfo.Ok_Laser2;
