@@ -2,13 +2,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Core.Providers;
 using Ferretto.WMS.Data.WebAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using DataModels = Ferretto.Common.DataModels;
 
 namespace Ferretto.WMS.Data.Tests
@@ -165,8 +164,8 @@ namespace Ferretto.WMS.Data.Tests
         private static ItemsController MockController(DatabaseContext context)
         {
             return new ItemsController(
-                new ItemProvider(context),
-                new AreaProvider(context));
+                ProviderFactory.Get<IItemProvider>(context),
+                ProviderFactory.Get<IAreaProvider>(context));
         }
 
         #endregion

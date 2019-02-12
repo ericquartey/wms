@@ -10,11 +10,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class CompartmentTypeProvider : ICompartmentTypeProvider
+    internal class CompartmentTypeProvider : ICompartmentTypeProvider
     {
         #region Fields
 
         private readonly DatabaseContext dataContext;
+
         private readonly IItemCompartmentTypeProvider itemCompartmentTypeProvider;
 
         #endregion

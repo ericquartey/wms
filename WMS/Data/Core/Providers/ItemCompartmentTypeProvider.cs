@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class ItemCompartmentTypeProvider : IItemCompartmentTypeProvider
+    internal class ItemCompartmentTypeProvider : IItemCompartmentTypeProvider
     {
         #region Fields
 

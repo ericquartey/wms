@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class MachineProvider : IMachineProvider
+    internal class MachineProvider : IMachineProvider
     {
         #region Fields
 

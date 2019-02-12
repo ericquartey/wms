@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class CellProvider : ICellProvider
+    internal class CellProvider : ICellProvider
     {
         #region Fields
 

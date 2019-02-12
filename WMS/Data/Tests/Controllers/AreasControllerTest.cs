@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Core.Providers;
 using Ferretto.WMS.Data.WebAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -260,8 +261,8 @@ namespace Ferretto.WMS.Data.Tests
         {
             return new AreasController(
                 new Mock<ILogger<AreasController>>().Object,
-                new AreaProvider(context),
-                new BayProvider(context));
+                ProviderFactory.Get<IAreaProvider>(context),
+                ProviderFactory.Get<IBayProvider>(context));
         }
 
         #endregion

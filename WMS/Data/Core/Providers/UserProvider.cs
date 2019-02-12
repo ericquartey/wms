@@ -7,7 +7,7 @@ using Ferretto.WMS.Data.Core.Models;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class UserProvider : IUserProvider
+    internal class UserProvider : IUserProvider
     {
         #region Methods
 

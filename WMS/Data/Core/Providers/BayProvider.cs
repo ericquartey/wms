@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class BayProvider : IBayProvider
+    internal class BayProvider : IBayProvider
     {
         #region Fields
 
