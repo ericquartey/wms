@@ -1,6 +1,6 @@
-﻿using Ferretto.Common.EF;
-using Ferretto.WMS.Data.Core.Interfaces;
+﻿using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Providers;
+using Ferretto.WMS.Scheduler.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -106,6 +106,8 @@ namespace Ferretto.WMS.Data.WebAPI
             services.AddTransient<IPackageTypeProvider, PackageTypeProvider>();
 
             services.AddMemoryCache();
+
+            services.AddSchedulerProviders();
 
             services.AddSignalR();
         }

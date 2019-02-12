@@ -2,11 +2,11 @@
 
 namespace Ferretto.WMS.Scheduler.Core
 {
-    public static class ServiceCollectionCoreExtensions
+    public static class ServiceCollectionSchedulerExtensions
     {
         #region Methods
 
-        public static IServiceCollection AddCoreBusinessProviders(
+        public static IServiceCollection AddSchedulerProviders(
                  this IServiceCollection serviceCollection)
         {
             serviceCollection.AddTransient<IDataProvider, DataProvider>();
