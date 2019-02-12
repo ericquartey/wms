@@ -10,8 +10,11 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
+        public static readonly DependencyProperty CurrentFontSizeProperty =
+                    DependencyProperty.Register(nameof(CurrentFontSize), typeof(double), typeof(WmsRulerControl), new UIPropertyMetadata(OnCurrentFontSizeChanged));
+
         public static readonly DependencyProperty DimensionHeightProperty =
-            DependencyProperty.Register(nameof(DimensionHeight), typeof(double), typeof(WmsRulerControl), new UIPropertyMetadata(0.0));
+                    DependencyProperty.Register(nameof(DimensionHeight), typeof(double), typeof(WmsRulerControl), new UIPropertyMetadata(0.0));
 
         public static readonly DependencyProperty DimensionWidthProperty =
             DependencyProperty.Register(nameof(DimensionWidth), typeof(double), typeof(WmsRulerControl), new UIPropertyMetadata(0.0));
@@ -86,6 +89,12 @@ namespace Ferretto.Common.Controls
         #endregion
 
         #region Properties
+
+        public double CurrentFontSize
+        {
+            get => (double)this.GetValue(CurrentFontSizeProperty);
+            set => this.SetValue(CurrentFontSizeProperty, value);
+        }
 
         public double DimensionHeight
         {
@@ -190,9 +199,7 @@ namespace Ferretto.Common.Controls
 
         public void Redraw()
         {
-            var size = new Size(this.ActualWidth, this.ActualHeight);
-            Application.Current.MainWindow.Measure(size);
-            this.Arrange(new Rect(this.DesiredSize));
+            this.InvalidateVisual();
         }
 
         public void SetHorizontal()
@@ -253,6 +260,16 @@ namespace Ferretto.Common.Controls
                 this.SetHorizontal();
                 this.SetVertical();
                 this.DrawMarkers(drawingContext, totalSteps);
+            }
+        }
+
+        private static void OnCurrentFontSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is WmsRulerControl ruler &&
+                e.NewValue is double currentFontSize &&
+                currentFontSize.Equals(ruler.FontSize) == false)
+            {
+                ruler.Redraw();
             }
         }
 
@@ -419,8 +436,8 @@ namespace Ferretto.Common.Controls
         {
             var isBaseDrawVisible = false;
             totalSteps = totalSteps + 1;
-            var fontSize = this.GetFontSize(totalSteps);
-            var canShowText = this.CanShowText(totalSteps, fontSize);
+            this.CurrentFontSize = this.GetFontSize(totalSteps);
+            var canShowText = this.CanShowText(totalSteps, this.CurrentFontSize);
             var canShowMarks = this.CanBeShown(1, 15);
             var canShowMiddleMarks = this.CanBeShown(MIDDLE_INTERVALMARKS, 13);
             var canShowLittleMarks = this.CanBeShown(LITTLE_INTERVALMARKS, 4);
@@ -429,7 +446,7 @@ namespace Ferretto.Common.Controls
             {
                 if (this.ShowInfo && canShowText)
                 {
-                    this.DrawText(drawingContext, currStep, fontSize);
+                    this.DrawText(drawingContext, currStep, this.CurrentFontSize);
                 }
 
                 if (this.ShowMark)
@@ -575,7 +592,7 @@ namespace Ferretto.Common.Controls
 
         private double GetFontSize(int totText)
         {
-            double size = this.FontSize;
+            var size = (this.CurrentFontSize > 0 && this.CurrentFontSize < this.FontSize) ? this.CurrentFontSize : this.FontSize;
             while (size > 5 && this.CanShowText(totText, size) == false)
             {
                 size--;

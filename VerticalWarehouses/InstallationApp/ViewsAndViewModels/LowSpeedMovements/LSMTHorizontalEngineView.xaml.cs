@@ -1,10 +1,11 @@
-﻿
+﻿using System.Windows.Controls;
+
 namespace Ferretto.VW.InstallationApp
 {
     /// <summary>
     /// Interaction logic for LSMTHorizontalEngineView.xaml
     /// </summary>
-    public partial class LSMTHorizontalEngineView : BaseView
+    public partial class LSMTHorizontalEngineView : UserControl
     {
         #region Constructors
 
@@ -13,6 +14,6 @@ namespace Ferretto.VW.InstallationApp
             this.InitializeComponent();
         }
 
-        #endregion Constructors
+        #endregion
     }
 }
