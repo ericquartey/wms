@@ -40,6 +40,43 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
+        [HttpPost(nameof(Execute))]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(422)]
+        public async Task<ActionResult> Execute(ListExecutionRequest request)
+        {
+            if (request == null)
+            {
+                return this.BadRequest();
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
+            try
+            {
+                var acceptedRequest = await this.warehouse.PrepareListForExecutionAsync(request.ListId, request.AreaId, request.BayId);
+                if (acceptedRequest == null)
+                {
+                    this.logger.LogWarning($"Request of execution for list (id={request.ListId}) could not be processed.");
+
+                    return this.UnprocessableEntity(this.ModelState);
+                }
+
+                this.logger.LogInformation($"Request of execution for list (id={request.ListId}) was accepted.");
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, $"An error occurred while processing the execution request for list (id={request.ListId}).");
+                return this.BadRequest(ex.Message);
+            }
+
+            return this.Ok();
+        }
+
         [ProducesResponseType(200, Type = typeof(IEnumerable<ItemList>))]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ItemList>>> GetAllAsync(
