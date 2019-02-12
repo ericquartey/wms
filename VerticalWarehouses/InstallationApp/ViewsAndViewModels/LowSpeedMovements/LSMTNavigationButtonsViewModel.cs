@@ -10,11 +10,14 @@ namespace Ferretto.VW.InstallationApp
         #region Fields
 
         private IUnityContainer container;
+
         private ICommand gateEngineButtonCommand;
+
         private ICommand horizontalEngineButtonCommand;
+
         private ICommand verticalEngineButtonCommand;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -24,13 +27,13 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand VerticalEngineButtonCommand => this.verticalEngineButtonCommand ?? (this.verticalEngineButtonCommand = new DelegateCommand(() => ((LSMTMainViewModel)this.container.Resolve<ILSMTMainViewModel>()).LSMTContentRegionCurrentViewModel = (LSMTVerticalEngineViewModel)this.container.Resolve<ILSMTVerticalEngineViewModel>()));
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
         public void ExitFromViewMethod()
         {
-            throw new System.NotImplementedException();
+            // TODO
         }
 
         public void InitializeViewModel(IUnityContainer _container)
@@ -40,14 +43,14 @@ namespace Ferretto.VW.InstallationApp
 
         public void SubscribeMethodToEvent()
         {
-            throw new System.NotImplementedException();
+            // TODO
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            throw new System.NotImplementedException();
+            // TODO
         }
 
-        #endregion Methods
+        #endregion
     }
 }

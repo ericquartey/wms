@@ -24,7 +24,7 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isGate3Done;
 
-        private bool isHorizontalHomingDone = false;
+        private bool isHorizontalHomingDone;
 
         private bool isLaserGate1Done;
 
@@ -44,7 +44,7 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isShapeGate3Done;
 
-        private bool isVerticalHomingDone = false;
+        private bool isVerticalHomingDone;
 
         #endregion
 
@@ -61,9 +61,9 @@ namespace Ferretto.VW.InstallationApp
 
         public bool IsBeltBurnishingDone { get => this.isBeltBurnishingDone; set => this.SetProperty(ref this.isBeltBurnishingDone, value); }
 
-        public Boolean IsCellPositionDone { get => this.isCellPositionDone; set => this.SetProperty(ref this.isCellPositionDone, value); }
+        public bool IsCellPositionDone { get => this.isCellPositionDone; set => this.SetProperty(ref this.isCellPositionDone, value); }
 
-        public Boolean IsGate1Done { get => this.isGate1Done; set => this.SetProperty(ref this.isGate1Done, value); }
+        public bool IsGate1Done { get => this.isGate1Done; set => this.SetProperty(ref this.isGate1Done, value); }
 
         public bool IsGate2Done { get => this.isGate2Done; set => this.SetProperty(ref this.isGate2Done, value); }
 
@@ -79,7 +79,7 @@ namespace Ferretto.VW.InstallationApp
 
         public bool IsMachineDone { get => this.isMachineDone; set => this.SetProperty(ref this.isMachineDone, value); }
 
-        public Boolean IsOffsetVerifyDone { get => this.isOffsetVerifyDone; set => this.SetProperty(ref this.isOffsetVerifyDone, value); }
+        public bool IsOffsetVerifyDone { get => this.isOffsetVerifyDone; set => this.SetProperty(ref this.isOffsetVerifyDone, value); }
 
         public bool IsSetResolutionDone { get => this.isSetResolutionDone; set => this.SetProperty(ref this.isSetResolutionDone, value); }
 
@@ -97,7 +97,7 @@ namespace Ferretto.VW.InstallationApp
 
         public void ExitFromViewMethod()
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         public void InitializeViewModel(IUnityContainer _container)
@@ -109,12 +109,12 @@ namespace Ferretto.VW.InstallationApp
 
         public void SubscribeMethodToEvent()
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         private void UpdateData()
