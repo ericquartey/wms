@@ -1,36 +1,40 @@
-﻿<local:BaseView
-    x:Class="Ferretto.VW.InstallationApp.LSMTHorizontalEngineView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:Ferretto.VW.InstallationApp"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:myType="clr-namespace:Ferretto.VW.Utils.Source;assembly=Ferretto.VW.Utils"
-    xmlns:prism="http://prismlibrary.com/"
-    xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
-    prism:ViewModelLocator.AutoWireViewModel="True"
-    mc:Ignorable="d">
-    <Grid Width="774" Height="608">
-        <TextBlock
-            Margin="160,10,0,562"
-            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-            Text="{x:Static res:InstallationApp.LSMTHorizontalEngineTitle}" />
-        <custom:CustomLabelTextBlockControl
-            Margin="160,406,349,139"
-            ContentText="1235,2"
-            LabelText="{x:Static res:InstallationApp.ActualPosition}" />
-        <custom:CustomLabelTextBlockControl
-            Margin="160,162,349,383"
-            ContentText="10%"
-            LabelText="{x:Static res:InstallationApp.FeedRate}" />
-        <Button
-            Margin="475,162,134,383"
-            Content="{x:Static res:InstallationApp.Forward}"
-            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        <Button
-            Margin="475,406,134,139"
-            Content="{x:Static res:InstallationApp.Backward}"
-            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+﻿<UserControl x:Class="Ferretto.VW.InstallationApp.LSMTHorizontalEngineView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Ferretto.VW.InstallationApp"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:myType="clr-namespace:Ferretto.VW.Utils.Source;assembly=Ferretto.VW.Utils"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d">
+    <Grid Width="774"
+          Height="608">
+
+        <TextBlock Margin="170,30,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.LSMTHorizontalEngineTitle}" />
+
+        <custom:CustomLabelTextBlockControl Margin="170,160,0,0"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Top"
+                                            ContentText="980,8"
+                                            LabelText="{x:Static res:InstallationApp.ActualPosition}" />
+
+        <Button Margin="440,160,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="{x:Static res:InstallationApp.Forward}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+
+        <Button Margin="440,280,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="{x:Static res:InstallationApp.Backward}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
     </Grid>
-</local:BaseView>
+</UserControl>

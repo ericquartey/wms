@@ -6,14 +6,22 @@ namespace Ferretto.VW.InstallationApp
 {
     public class LSMTVerticalEngineViewModel : BindableBase, IViewModel, ILSMTVerticalEngineViewModel
     {
+        #region Fields
+
         public IUnityContainer Container;
-        public PositioningDrawer PositioningDrawer;
+
+        #endregion
 
         #region Methods
 
         public void ExitFromViewMethod()
         {
             throw new System.NotImplementedException();
+        }
+
+        public void InitializeViewModel(IUnityContainer _container)
+        {
+            this.Container = _container;
         }
 
         public void SubscribeMethodToEvent()
@@ -26,12 +34,6 @@ namespace Ferretto.VW.InstallationApp
             throw new System.NotImplementedException();
         }
 
-        public void InitializeViewModel(IUnityContainer _container)
-        {
-            this.Container = _container;
-            this.PositioningDrawer = (PositioningDrawer)this.Container.Resolve<IPositioningDrawer>();
-        }
-
-        #endregion Methods
+        #endregion
     }
 }

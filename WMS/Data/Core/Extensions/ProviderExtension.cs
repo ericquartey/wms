@@ -2,31 +2,27 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.WMS.Data.Core.Interfaces.Base;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ferretto.WMS.Data.Core.Providers
+namespace Ferretto.WMS.Data.Core.Extensions
 {
-    public class BaseProvider
+    public static class ProviderExtension
     {
-        #region Constructors
-
-        protected BaseProvider()
-        {
-        }
-
-        #endregion
-
         #region Methods
 
-        protected static async Task<object[]> GetUniqueValuesAsync<TDataModel>(string propertyName, IQueryable<TDataModel> dbSet)
+        public static async Task<object[]> GetUniqueValuesAsync<TDataModel>(
+            this IGetUniqueValuesAsyncProvider provider,
+            string propertyName,
+            IQueryable<TDataModel> dbSet)
             where TDataModel : class
         {
-            var selectExpression = BuildSelectExpression<TDataModel>(propertyName);
+            var selectExpression = DoBuildSelectExpression<TDataModel>(propertyName);
 
             return await dbSet.Select(selectExpression).Distinct().ToArrayAsync();
         }
 
-        private static Expression<Func<TDataModel, object>> BuildSelectExpression<TDataModel>(string propertyName)
+        private static Expression<Func<TDataModel, object>> DoBuildSelectExpression<TDataModel>(string propertyName)
             where TDataModel : class
         {
             if (string.IsNullOrWhiteSpace(propertyName))

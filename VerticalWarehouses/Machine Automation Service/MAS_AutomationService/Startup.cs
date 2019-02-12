@@ -2,6 +2,7 @@
 using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_FiniteStateMachines;
 using Ferretto.VW.MAS_InverterDriver;
+using Ferretto.VW.MAS_IODriver;
 using Ferretto.VW.MAS_MachineManager;
 using Ferretto.VW.MAS_MissionScheduler;
 using Microsoft.AspNetCore.Builder;
@@ -77,9 +78,13 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSingleton<IMachineManager, MachineManager>();
             services.AddSingleton<IFiniteStateMachines, FiniteStateMachines>();
             services.AddSingleton<INewInverterDriver, NewInverterDriver>();
+            services.AddSingleton<INewRemoteIODriver, NewRemoteIODriver>();
 
             //TODO Old InverterDriver Registration to be removed after code refactoring completed
             services.AddSingleton<InverterDriver.IInverterDriver, InverterDriver.InverterDriver >();
+
+            //TODO Old RemoteIODriver Registration to be removed after code refactoring completed
+            services.AddSingleton<RemoteIODriver.IRemoteIO, RemoteIODriver.RemoteIO>();
         }
 
         #endregion

@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Ferretto.VW.InstallationApp"
+             xmlns:local="clr-namespace:Ferretto.VW.InstallationApp.HelpWindows"
+        xmlns:viewmodels="clr-namespace:Ferretto.VW.InstallationApp"
              Width="1024"
              Height="768"
              mc:Ignorable="d"
@@ -11,11 +12,14 @@
              WindowStartupLocation="CenterScreen"
              WindowStyle="None">
     <Window.Resources>
-        <DataTemplate DataType="{x:Type local:BeltBurnishingViewModel}">
+        <DataTemplate DataType="{x:Type viewmodels:BeltBurnishingViewModel}">
             <local:BeltBurnishingHelpView></local:BeltBurnishingHelpView>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type local:CellsControlViewModel}">
+        <DataTemplate DataType="{x:Type viewmodels:CellsControlViewModel}">
             <local:CellsControlHelpView></local:CellsControlHelpView>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:ResolutionCalibrationVerticalAxisViewModel}">
+            <local:ResolutionCalibrationVerticalAxisHelpView></local:ResolutionCalibrationVerticalAxisHelpView>
         </DataTemplate>
     </Window.Resources>
     <Grid Width="1024"

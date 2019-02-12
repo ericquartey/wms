@@ -22,53 +22,61 @@
         </Grid.RowDefinitions>
         <Image Grid.Row="0"
                Grid.Column="0"
-               Width="200"
-               Height="60"
-               Margin="50,10,0,0"
-               HorizontalAlignment="Left"
+               Width="250"
+               Height="50"
+               VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,0,0,0"
                Source="{DynamicResource Ferretto_Logo}"
-               Stretch="Uniform" />
+               Stretch="Fill" />
+
         <Image Grid.Row="1"
-               Margin="455,60,0,50"
+               Width="340"
+               Height="530"
+               Stretch="Fill"
+               VerticalAlignment="Top" HorizontalAlignment="Left"  Margin="530,60,0,0"
                Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/background_machine.png" />
+
         <TextBlock Grid.Row="1"
-                   Margin="10,70,0,558"
-                   HorizontalAlignment="Left"
+                   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,70,0,0"
                    Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
-                   Text="{Binding MachineModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                   Text="Macchina" />
+        <!-- ="{Binding MachineModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" -->
+
         <TextBlock Grid.Row="1"
-                   Margin="81,155,0,509"
-                   HorizontalAlignment="Left"
+                   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,160,0,0"
                    Style="{StaticResource VWAPP_SplashScreenSubTitleTextBlockStyle}"
-                   Text="{Binding SerialNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                   Text="Seriale"/>
+        <!--="{Binding SerialNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" / -->
+
+
         <custom:CustomInputFieldControlFocusable Grid.Row="1"
                                                  Width="200"
-                                                 Margin="55,162,0,401"
-                                                 HorizontalAlignment="Left"
+                                                 HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,330,0,0"
                                                  InputText="{Binding UserLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                  LabelText="{x:Static res:VWApp.UserLogin}"
                                                  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+
         <custom:CustomInputFieldControlFocusable Grid.Row="1"
                                                  Width="200"
-                                                 Margin="50,243,0,325"
-                                                 HorizontalAlignment="Left"
+                                                 HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,400,0,0"
                                                  InputText="{Binding PasswordLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:VWApp.PasswordLogin}"
                                                  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
-        <Button Grid.Row="1"
-                Margin="55,385,0,194"
-                HorizontalAlignment="Left"
-                Command="{Binding LoginButtonCommand}"
-                Content="{x:Static res:General.Login}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+
         <Button Grid.Row="0"
-                Margin="850,0,0,0"
+                VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,15,0"
                 Command="{Binding SwitchOffCommand}"
                 Content="{x:Static res:VWApp.SwitchOff}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+
+        <Button Grid.Row="1"
+                VerticalAlignment="Top" HorizontalAlignment="Left" Margin="100,530,0,0"
+                Command="{Binding LoginButtonCommand}"
+                Content="{x:Static res:General.Login}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+
         <TextBlock Grid.Row="2"
                    Height="40"
-                   Margin="10,2,0,2"
+                   Margin="100,2,0,0"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Left"
                    Style="{StaticResource VWAPP_ViewErrorTextBlockStyle}"
