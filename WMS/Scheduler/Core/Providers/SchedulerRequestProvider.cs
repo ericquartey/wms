@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.EF;
@@ -6,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Scheduler.Core
 {
-    public class SchedulerRequestProvider : ISchedulerRequestProvider
+    internal class SchedulerRequestProvider : ISchedulerRequestProvider
     {
         #region Fields
 
@@ -24,6 +25,11 @@ namespace Ferretto.WMS.Scheduler.Core
         #endregion
 
         #region Methods
+
+        public Task CreateRangeAsync(IEnumerable<SchedulerRequest> requests)
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task<SchedulerRequest> FullyQualifyWithdrawalRequestAsync(SchedulerRequest schedulerRequest)
         {
@@ -183,6 +189,65 @@ namespace Ferretto.WMS.Scheduler.Core
                     Sub1 = c.Sub1,
                     Sub2 = c.Sub2,
                 });
+        }
+
+        /// <summary>
+        /// Gets all the pending requests that:
+        /// - are not completed (dispatched qty is not equal to requested qty)
+        /// - are already allocated to a bay
+        /// - the allocated bay has buffer to accept new missions
+        /// - are associated to a list that is in execution
+        ///
+        /// Requests are sorted by:
+        /// - Instant first
+        /// - All others after, giving priority to the lists ones that are already started
+        ///
+        /// </summary>
+        /// <returns>A Task representing the asynchronous operation.</returns>
+        public async Task<IEnumerable<SchedulerRequest>> GetRequestsToProcessAsync()
+        {
+            return await this.dataContext.SchedulerRequests
+               .Include(r => r.List)
+               .Include(r => r.ListRow)
+               .Include(r => r.Bay)
+               .ThenInclude(b => b.Missions)
+               .Where(r =>
+                    r.BayId.HasValue
+                    &&
+                    r.RequestedQuantity > r.DispatchedQuantity
+                    &&
+                    r.Bay.LoadingUnitsBufferSize > r.Bay.Missions.Count
+                    &&
+                    (r.ListRowId.HasValue == false || r.ListRow.Status == Common.DataModels.ItemListRowStatus.Executing)
+                    &&
+                    (r.ListId.HasValue == false || r.List.Status == Common.DataModels.ItemListStatus.Executing))
+               .OrderBy(r => r.ListId.HasValue ? r.List.Priority : int.MaxValue)
+               .ThenBy(r => r.ListRowId.HasValue ? r.ListRow.Priority : int.MaxValue)
+               .Select(r => new SchedulerRequest
+               {
+                   Id = r.Id,
+                   AreaId = r.AreaId,
+                   BayId = r.BayId,
+                   CreationDate = r.CreationDate,
+                   IsInstant = r.IsInstant,
+                   ListStatus = r.List != null ? (ListStatus)r.List.Status : ListStatus.NotSpecified,
+                   ListRowStatus = r.ListRow != null ? (ListRowStatus)r.ListRow.Status : ListRowStatus.NotSpecified,
+                   ItemId = r.ItemId,
+                   ListId = r.ListId,
+                   ListRowId = r.ListRowId,
+                   LoadingUnitId = r.LoadingUnitId,
+                   LoadingUnitTypeId = r.LoadingUnitTypeId,
+                   Lot = r.Lot,
+                   Type = (OperationType)r.OperationType,
+                   MaterialStatusId = r.MaterialStatusId,
+                   PackageTypeId = r.PackageTypeId,
+                   RegistrationNumber = r.RegistrationNumber,
+                   RequestedQuantity = r.RequestedQuantity,
+                   DispatchedQuantity = r.DispatchedQuantity,
+                   Sub1 = r.Sub1,
+                   Sub2 = r.Sub2
+               })
+               .ToArrayAsync();
         }
 
         public IQueryable<T> OrderCompartmentsByManagementType<T>(IQueryable<T> compartments, ItemManagementType type)

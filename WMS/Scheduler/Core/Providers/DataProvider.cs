@@ -187,19 +187,6 @@ namespace Ferretto.WMS.Scheduler.Core
             this.dataContext.SaveChanges();
         }
 
-        public void Update(ItemListRow row)
-        {
-            if (row == null)
-            {
-                throw new ArgumentNullException(nameof(row));
-            }
-
-            var existingRow = this.dataContext.ItemListRows.Find(row.Id);
-            this.dataContext.Entry(existingRow).CurrentValues.SetValues(row);
-
-            this.dataContext.SaveChanges();
-        }
-
         #endregion
     }
 }
