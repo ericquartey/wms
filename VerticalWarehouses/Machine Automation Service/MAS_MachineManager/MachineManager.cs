@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_FiniteStateMachines;
 using System.Collections.Generic;
+using System;
 
 namespace Ferretto.VW.MAS_MachineManager
 {
@@ -12,9 +13,9 @@ namespace Ferretto.VW.MAS_MachineManager
 
         private readonly IFiniteStateMachines finiteStateMachines;
 
-        private readonly decimal resolution;
-
         private List<int> cellList;
+
+        private decimal resolution;
 
         #endregion
 
@@ -24,8 +25,26 @@ namespace Ferretto.VW.MAS_MachineManager
         {
             this.finiteStateMachines = finiteStateMachines;
             this.dataLayer = dataLayer;
-            this.resolution = dataLayer.GetDecimalConfigurationValue(ConfigurationValueEnum.homingCreepSpeed);
-            // this.cellList = dataLayer.GetCellList();
+            this.resolution = dataLayer.GetDecimalConfigurationValue(ConfigurationValueEnum.resolution);
+            //this.cellList = dataLayer.GetCellList();
+        }
+
+        #endregion
+
+        #region Methods
+
+        private int GetCellAltitudeInImpulse(int cellID)
+        {
+            if (!(cellID >= 0 && cellID <= this.cellList.Count))
+            {
+                throw new ArgumentOutOfRangeException("Given CellID is negative or larger than the number of cells.");
+            }
+            return Decimal.ToInt32(this.cellList[cellID] * this.resolution);
+        }
+
+        private void UpdateResolution()
+        {
+            this.resolution = this.dataLayer.GetDecimalConfigurationValue(ConfigurationValueEnum.resolution);
         }
 
         #endregion

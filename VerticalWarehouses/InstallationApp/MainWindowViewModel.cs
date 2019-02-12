@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Net;
 using System.Windows;
@@ -34,7 +35,9 @@ namespace Ferretto.VW.InstallationApp
 
         public static SensorsStates States;
 
-        private SensorsStatesHubClient client;
+        private InstallationHubClient installationClient;
+
+        private SensorsStatesHubClient sensorsClient;
 
         private BindableBase contentRegionCurrentViewModel;
 
@@ -57,6 +60,10 @@ namespace Ferretto.VW.InstallationApp
         public IUnityContainer Container;
 
         private readonly HelpMainWindow helpWindow = new HelpMainWindow();
+
+        private string internalMessages;
+
+        private string messageFromServer;
 
         #endregion Constants, Statics & Others
 
@@ -90,6 +97,10 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand OpenClosePopupCommand => this.openClosePopupCommand ?? (this.openClosePopupCommand = new DelegateCommand(() => this.IsPopupOpen = !this.IsPopupOpen));
 
+        public string InternalMessages { get => this.internalMessages; set => this.internalMessages = value; }
+
+        public string MessageFromServer { get => this.messageFromServer; set => this.messageFromServer = value; }
+
         #endregion Other Properties
 
         #region Methods
@@ -118,10 +129,10 @@ namespace Ferretto.VW.InstallationApp
         {
             try
             {
-                this.client = new SensorsStatesHubClient(URL, SERVICE_PATH);
-                await this.client.ConnectAsync();
+                this.sensorsClient = new SensorsStatesHubClient(URL, SERVICE_PATH);
+                await this.sensorsClient.ConnectAsync();
 
-                this.client.SensorsStatesChanged += this.Client_SensorsStatesChanged;
+                this.sensorsClient.SensorsStatesChanged += this.Client_SensorsStatesChanged;
                 this.Get(SENSOR_INITIALIZER_URL);
             }
             catch
@@ -159,6 +170,27 @@ namespace Ferretto.VW.InstallationApp
             this.ContentRegionCurrentViewModel = (IdleViewModel)this.Container.Resolve<IIdleViewModel>();
             this.ConnectMethod();
             this.InitializeEvents();
+        }
+
+        private async void ConnectToInstallationHubMethod()
+        {
+            try
+            {
+                this.installationClient = new InstallationHubClient("http://localhost:5000", "/installation-endpoint");
+                await this.installationClient.ConnectAsync();
+                this.installationClient.ReceivedMessageToAllConnectedClients += this.Client_ReceivedMessageToAllConnectedClients;
+                installationClient.connection.Closed += async (error) => InternalMessages = "Not Connected";
+                this.InternalMessages = "Connected!";
+            }
+            catch (Exception exception)
+            {
+                this.InternalMessages = "Not Connected!";
+            }
+        }
+
+        private void Client_ReceivedMessageToAllConnectedClients(object sender, string message)
+        {
+            this.MessageFromServer = message;
         }
 
         #endregion Methods
