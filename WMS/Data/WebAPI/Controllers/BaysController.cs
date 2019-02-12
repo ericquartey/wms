@@ -68,6 +68,20 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result);
         }
 
+        [ProducesResponseType(200, Type = typeof(string))]
+        [HttpPost("{id}/activate")]
+        public async Task<ActionResult<IEnumerable<Bay>>> MarkAsActive(int id)
+        {
+            return this.Ok(await this.bayProvider.Activate(id));
+        }
+
+        [ProducesResponseType(200, Type = typeof(string))]
+        [HttpPost("{id}/disconnect")]
+        public async Task<ActionResult<IEnumerable<Bay>>> MarkAsIdle(int id)
+        {
+            return this.Ok(await this.bayProvider.Disconnect(id));
+        }
+
         #endregion
     }
 }
