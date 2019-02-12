@@ -16,6 +16,8 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isBeltBurnishingDone;
 
+        private bool isCellPositionDone;
+
         private bool isGate1Done;
 
         private bool isGate2Done;
@@ -31,6 +33,8 @@ namespace Ferretto.VW.InstallationApp
         private bool isLaserGate3Done;
 
         private bool isMachineDone;
+
+        private bool isOffsetVerifyDone;
 
         private bool isSetResolutionDone;
 
@@ -57,8 +61,6 @@ namespace Ferretto.VW.InstallationApp
 
         public bool IsBeltBurnishingDone { get => this.isBeltBurnishingDone; set => this.SetProperty(ref this.isBeltBurnishingDone, value); }
 
-        public Boolean IsOffsetVerifyDone { get => this.isOffsetVerifyDone; set => this.SetProperty(ref this.isOffsetVerifyDone, value); }
-
         public Boolean IsCellPositionDone { get => this.isCellPositionDone; set => this.SetProperty(ref this.isCellPositionDone, value); }
 
         public Boolean IsGate1Done { get => this.isGate1Done; set => this.SetProperty(ref this.isGate1Done, value); }
@@ -76,6 +78,8 @@ namespace Ferretto.VW.InstallationApp
         public bool IsLaserGate3Done { get => this.isLaserGate3Done; set => this.SetProperty(ref this.isLaserGate3Done, value); }
 
         public bool IsMachineDone { get => this.isMachineDone; set => this.SetProperty(ref this.isMachineDone, value); }
+
+        public Boolean IsOffsetVerifyDone { get => this.isOffsetVerifyDone; set => this.SetProperty(ref this.isOffsetVerifyDone, value); }
 
         public bool IsSetResolutionDone { get => this.isSetResolutionDone; set => this.SetProperty(ref this.isSetResolutionDone, value); }
 
