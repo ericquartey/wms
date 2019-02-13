@@ -6,15 +6,15 @@ namespace Ferretto.VW.MAS_DataLayer
 {
     public partial class DataLayer : IDataLayer
     {
-        private readonly DataLayerContext inMemoryDataContext;
+        #region Fields
 
         private const string ConnectionStringName = "AutomationService";
 
-        #region Properties
-
-        public IConfiguration Configuration { get; }
+        private readonly DataLayerContext inMemoryDataContext;
 
         #endregion
+
+        #region Constructors
 
         public DataLayer(IConfiguration configuration, DataLayerContext inMemoryDataContext)
         {
@@ -29,9 +29,9 @@ namespace Ferretto.VW.MAS_DataLayer
                 var initialContext = new DataLayerContext(
                     new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(connectionString).Options);
 
-                initialContext.Database.EnsureCreated();
+                //initialContext.Database.EnsureCreated();
 
-                foreach(var configurationValue in initialContext.ConfigurationValues)
+                foreach (var configurationValue in initialContext.ConfigurationValues)
                 {
                     this.inMemoryDataContext.ConfigurationValues.Add(configurationValue);
                 }
@@ -44,10 +44,18 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 throw new NotImplementedException("Data Layer Exception - Update Exception");
             }
-            catch(ApplicationException exApp)
+            catch (ApplicationException exApp)
             {
                 throw new NotImplementedException("Data Layer Exception - Application Exception");
             }
         }
+
+        #endregion
+
+        #region Properties
+
+        public IConfiguration Configuration { get; }
+
+        #endregion
     }
 }

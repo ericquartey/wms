@@ -25,6 +25,7 @@ namespace Ferretto.VW.MAS_MachineManager
         {
             this.finiteStateMachines = finiteStateMachines;
             this.dataLayer = dataLayer;
+            this.dataLayer.SetDecimalConfigurationValue(ConfigurationValueEnum.resolution, 100m);
             this.resolution = dataLayer.GetDecimalConfigurationValue(ConfigurationValueEnum.resolution);
             //this.cellList = dataLayer.GetCellList();
         }
