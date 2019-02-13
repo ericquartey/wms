@@ -39,7 +39,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(201, Type = typeof(IEnumerable<LoadingUnitDetails>))]
+        [ProducesResponseType(201, Type = typeof(LoadingUnitDetails))]
         [ProducesResponseType(400)]
         [HttpPost]
         public async Task<ActionResult<LoadingUnitDetails>> CreateAsync(LoadingUnitDetails model)
