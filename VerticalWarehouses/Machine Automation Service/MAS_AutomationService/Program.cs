@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS_AutomationService
         public static void Main(string[] args)
         {
             var webHost = CreateWebHostBuilder(args).Build();
-            var automationService = webHost.Services.GetService<IAutomationService>();
+            //var automationService = webHost.Services.GetService<IAutomationService>();
             webHost.Run();
         }
 

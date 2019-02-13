@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 var initialContext = new DataLayerContext(
                     new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(connectionString).Options);
 
-                initialContext.Database.EnsureCreated();
+                initialContext.Database.Migrate();
 
                 foreach(var configurationValue in initialContext.ConfigurationValues)
                 {

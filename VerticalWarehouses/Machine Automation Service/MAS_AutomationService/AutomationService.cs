@@ -1,19 +1,27 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.Common.Common_Utils;
 using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
 using Ferretto.VW.MAS_MissionScheduler;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Hosting;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
-    public class AutomationService : IAutomationService
+    public class AutomationService : BackgroundService, IAutomationService
     {
         #region Fields
+
+        private readonly ManualResetEventSlim actionRequest;
+
+        private readonly ConcurrentQueue<AutomationService_CommandMessage> actionQueue;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -31,8 +39,9 @@ namespace Ferretto.VW.MAS_AutomationService
             this.eventAggregator = eventAggregator;
             this.hub = hub;
 
-            var inverterNotificationEvent = this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>();
-            inverterNotificationEvent.Subscribe(this.SendMessageToAllConnectedClients, ThreadOption.BackgroundThread, false, message => message.OperationStatus == OperationStatus.End);
+            this.actionRequest = new ManualResetEventSlim( false );
+
+            this.actionQueue = new ConcurrentQueue<AutomationService_CommandMessage>();
         }
 
         #endregion
@@ -64,5 +73,47 @@ namespace Ferretto.VW.MAS_AutomationService
         }
 
         #endregion
+
+        protected override Task ExecuteAsync( CancellationToken stoppingToken )
+        {
+            var inverterNotificationEvent = this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>();
+            inverterNotificationEvent.Subscribe( this.SendMessageToAllConnectedClients, ThreadOption.BackgroundThread, false, message => message.OperationStatus == OperationStatus.End );
+
+            do
+            {
+                try
+                {
+                    this.actionRequest.Wait( Timeout.Infinite, stoppingToken );
+                }
+                catch (OperationCanceledException ex)
+                {
+                    return Task.CompletedTask;
+                }
+
+                this.actionRequest.Reset();
+
+                AutomationService_CommandMessage receivedAction;
+
+                while (this.actionQueue.TryDequeue( out receivedAction ))
+                {
+                    switch (receivedAction.AutomationCommand)
+                    {
+                        case AutomationCommandType.HorizontalHoming:
+                            break;
+                    }
+                }
+
+            } while (!stoppingToken.IsCancellationRequested);
+
+            return StopAsync( stoppingToken );
+        }
+
+        public new Task StopAsync( CancellationToken stoppingToken )
+        {
+            var returnValue = base.StopAsync( stoppingToken );
+
+            return returnValue;
+        }
+
     }
 }

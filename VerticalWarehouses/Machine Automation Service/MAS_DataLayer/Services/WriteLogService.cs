@@ -19,6 +19,8 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             this.dataContext = dataContext;
 
+            this.dataContext.Database.Migrate();
+
             var webApiCommandEvent = eventAggregator.GetEvent<WebAPI_CommandEvent>();
             webApiCommandEvent.Subscribe(this.LogWriting);
         }
