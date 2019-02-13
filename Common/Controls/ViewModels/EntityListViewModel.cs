@@ -158,9 +158,9 @@ namespace Ferretto.Common.Controls
             this.LoadRelatedData();
         }
 
-        protected override async void OnAppear()
+        protected override async Task OnAppearAsync()
         {
-            base.OnAppear();
+            await base.OnAppearAsync();
 
             try
             {

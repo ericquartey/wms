@@ -65,6 +65,8 @@ namespace Ferretto.Common.Modules.BLL
             this.Container.RegisterType<DatabaseContext, DatabaseContext>(new InjectionConstructor());
             this.Container.RegisterType<EnumerationProvider, EnumerationProvider>(new InjectionConstructor(new DatabaseContext()));
 
+            this.Container.RegisterType<IAbcClassProvider, AbcClassProvider>();
+
             NLog.LogManager
                .GetCurrentClassLogger()
                .Trace("Module loaded.");
@@ -75,6 +77,7 @@ namespace Ferretto.Common.Modules.BLL
             var serviceEndPoint = new System.Uri(ConfigurationManager.AppSettings["DataServiceEndpoint"]);
 
             this.Container.RegisterInstance(DataServiceFactory.GetService<IItemsDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<IAbcClassesDataService>(serviceEndPoint));
         }
 
         private void RegisterSchedulerServiceEndpoints()

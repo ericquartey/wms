@@ -24,9 +24,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        protected override void ExecuteClearCommand()
+        protected override async void ExecuteClearCommand()
         {
-            this.LoadData();
+            await this.LoadDataAsync();
         }
 
         // TODO: task 1256 -> protected override async Task ExecuteSaveCommand()
@@ -36,7 +36,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.IsBusy = true;
 
-            var result = await this.itemProvider.AddAsync(this.Model);
+            var result = await this.itemProvider.CreateAsync(this.Model);
             if (result.Success)
             {
                 this.TakeModelSnapshot();
@@ -54,19 +54,20 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = false;
         }
 
-        protected override void OnAppear()
+        protected override async Task OnAppearAsync()
         {
-            base.OnAppear();
+            await base.OnAppearAsync();
 
-            this.LoadData();
+            await this.LoadDataAsync();
         }
 
-        private void LoadData()
+        private async Task LoadDataAsync()
         {
             try
             {
                 this.IsBusy = true;
-                this.Model = this.itemProvider.GetNew();
+                this.Model = await this.itemProvider.GetNewAsync();
+                this.IsBusy = false;
             }
             catch
             {
