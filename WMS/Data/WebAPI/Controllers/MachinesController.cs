@@ -16,7 +16,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     public class MachinesController :
         ControllerBase,
         IReadAllPagedController<Machine>,
-        IReadSingleController<Machine, int>
+        IReadSingleController<Machine, int>,
+        IGetUniqueValuesController
     {
         #region Fields
 
@@ -94,6 +95,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result);
         }
 
+        [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
+        [HttpGet]
+        [Route("unique/{propertyName}")]
+        public async Task<ActionResult<object[]>> GetUniqueValuesAsync(
+            string propertyName)
+        {
+            return this.Ok(await this.machineProvider.GetUniqueValuesAsync(propertyName));
+        }
+
         private static Expression<Func<Machine, bool>> BuildSearchExpression(string search)
         {
             if (string.IsNullOrWhiteSpace(search))
@@ -101,26 +111,26 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return null;
             }
 
-            return (i) =>
-                (i.AisleName != null &&
-                 i.AisleName.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+            return (m) =>
+                (m.AisleName != null &&
+                 m.AisleName.Contains(search, StringComparison.InvariantCultureIgnoreCase))
                 ||
-                (i.AreaName != null &&
-                 i.AreaName.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                (m.AreaName != null &&
+                 m.AreaName.Contains(search, StringComparison.InvariantCultureIgnoreCase))
                 ||
-                (i.MachineTypeDescription != null &&
-                 i.MachineTypeDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                (m.MachineTypeDescription != null &&
+                 m.MachineTypeDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
                 ||
-                (i.Model != null &&
-                 i.Model.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                (m.Model != null &&
+                 m.Model.Contains(search, StringComparison.InvariantCultureIgnoreCase))
                 ||
-                (i.Nickname != null &&
-                 i.Nickname.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                (m.Nickname != null &&
+                 m.Nickname.Contains(search, StringComparison.InvariantCultureIgnoreCase))
                 ||
-                (i.RegistrationNumber != null &&
-                 i.RegistrationNumber.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                (m.RegistrationNumber != null &&
+                 m.RegistrationNumber.Contains(search, StringComparison.InvariantCultureIgnoreCase))
                 ||
-                i.FillRate.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
+                m.FillRate.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
         #endregion
