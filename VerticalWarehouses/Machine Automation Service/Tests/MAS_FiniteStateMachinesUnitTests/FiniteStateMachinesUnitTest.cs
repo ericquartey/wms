@@ -11,12 +11,13 @@ using Prism.Events;
 namespace MAS_FiniteStateMachinesUnitTests
 {
     [TestClass]
-    public class FiniteStateMachinesIntegrationTest
+    public class FiniteStateMachinesUnitTest
     {
         #region Methods
 
         [TestMethod]
-        public void FiniteStateMachinesExecuteVerticalHoming_Success()
+        [TestCategory("Unit")]
+        public void TestFiniteStateMachines_ExecuteVerticalHoming_Success()
         {
             var inverterDriverMock = new Mock<INewInverterDriver>();
             var remoteIODriverMock = new Mock<INewRemoteIODriver>();
@@ -38,7 +39,21 @@ namespace MAS_FiniteStateMachinesUnitTests
             notifyDriverEvent.Publish(new Notification_EventParameter(OperationType.Homing, OperationStatus.End, "Home done", Verbosity.Info));
 
             Assert.IsNotNull(fsm.StateMachineVerticalHoming);
-            //Assert.AreEqual(fsm.StateMachineVerticalHoming.Type, "Vertical Homing Done State");
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void TestFiniteStateMachinesCreate()
+        {
+            var inverterDriverMock = new Mock<INewInverterDriver>();
+            var remoteIODriverMock = new Mock<INewRemoteIODriver>();
+            var writeLogServiceMock = new Mock<IWriteLogService>();
+            var eventAggregatorMock = new Mock<IEventAggregator>();
+            eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<WebAPI_CommandEvent>()).Returns(new WebAPI_CommandEvent());
+
+            var fsm = new FiniteStateMachines(inverterDriverMock.Object, remoteIODriverMock.Object, writeLogServiceMock.Object, eventAggregatorMock.Object);
+
+            Assert.IsNotNull(fsm);
         }
 
         #endregion
