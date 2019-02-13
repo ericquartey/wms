@@ -77,7 +77,7 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand AddCommand => this.addCommand ??
-            (this.addCommand = new DelegateCommand(this.ExecuteAddCompartmentCommand));
+            (this.addCommand = new DelegateCommand(async () => await this.ExecuteAddCompartmentCommandAsync()));
 
         public ICommand BulkAddCommand => this.bulkAddCommand ??
             (this.bulkAddCommand = new DelegateCommand(this.ExecuteBulkAddCommand));
@@ -174,11 +174,11 @@ namespace Ferretto.WMS.Modules.MasterData
             return this.selectedCompartmentTray != null;
         }
 
-        private void ExecuteAddCompartmentCommand()
+        private async Task ExecuteAddCompartmentCommandAsync()
         {
             this.SelectedCompartmentTray = null;
 
-            var model = this.compartmentProvider.GetNew();
+            var model = await this.compartmentProvider.GetNewAsync();
             model.LoadingUnitId = this.loadingUnit.Id;
             model.LoadingUnit = this.loadingUnit;
 
