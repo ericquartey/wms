@@ -29,17 +29,16 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(
             nameof(IsReadOnly), typeof(bool), typeof(WmsTrayControl));
 
-        public static readonly DependencyProperty OriginXProperty = DependencyProperty.Register(
-            nameof(OriginX), typeof(double), typeof(WmsTrayControl));
+        public static readonly DependencyProperty OriginHorizontalProperty =
+               DependencyProperty.Register(nameof(OriginHorizontal), typeof(OriginHorizontal), typeof(WmsTrayControl), new FrameworkPropertyMetadata(OriginHorizontal.Left));
 
-        public static readonly DependencyProperty OriginYProperty = DependencyProperty.Register(
-            nameof(OriginY), typeof(double), typeof(WmsTrayControl));
+        public static readonly DependencyProperty OriginVerticalProperty =
+                       DependencyProperty.Register(nameof(OriginVertical), typeof(OriginVertical), typeof(WmsTrayControl), new FrameworkPropertyMetadata(OriginVertical.Bottom));
 
         public static readonly DependencyProperty RulerFontSizeProperty = DependencyProperty.Register(nameof(RulerFontSize), typeof(int), typeof(WmsTrayControl),
-                                new UIPropertyMetadata(8));
+                                                new UIPropertyMetadata(8));
 
-        public static readonly DependencyProperty RulerForegroundProperty =
-                                                                                DependencyProperty.Register(nameof(RulerForeground), typeof(Brush), typeof(WmsTrayControl), new UIPropertyMetadata(Brushes.Gray));
+        public static readonly DependencyProperty RulerForegroundProperty = DependencyProperty.Register(nameof(RulerForeground), typeof(Brush), typeof(WmsTrayControl), new UIPropertyMetadata(Brushes.Gray));
 
         public static readonly DependencyProperty RulerInfoProperty = DependencyProperty.Register(
                                                                                                        nameof(RulerInfo), typeof(string), typeof(WmsTrayControl));
@@ -129,16 +128,16 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(IsReadOnlyProperty, value);
         }
 
-        public double OriginX
+        public OriginHorizontal OriginHorizontal
         {
-            get => (double)this.GetValue(OriginXProperty);
-            set => this.SetValue(OriginXProperty, value);
+            get => (OriginHorizontal)this.GetValue(OriginHorizontalProperty);
+            set => this.SetValue(OriginHorizontalProperty, value);
         }
 
-        public double OriginY
+        public OriginVertical OriginVertical
         {
-            get => (double)this.GetValue(OriginYProperty);
-            set => this.SetValue(OriginYProperty, value);
+            get => (OriginVertical)this.GetValue(OriginVerticalProperty);
+            set => this.SetValue(OriginVerticalProperty, value);
         }
 
         public int RulerFontSize

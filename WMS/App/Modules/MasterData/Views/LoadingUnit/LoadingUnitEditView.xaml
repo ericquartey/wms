@@ -15,7 +15,7 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              EnableHistoryView="True"
-             SubTitle="{Binding LoadingUnit.Code, StringFormat={x:Static res:Title.LoadingUnitEditView}}"
+             SubTitle="{Binding LoadingUnitDetails.Code, StringFormat={x:Static res:Title.LoadingUnitEditView}}"
              mc:Ignorable="d">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -40,7 +40,7 @@
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/ic_edit_black_24dp.png"
                                    GlyphSize="Custom" />
-                <wms:ActionBarItem Command="{Binding AddCommand, IsAsync=True}"
+                <wms:ActionBarItem Command="{Binding AddCommand}"
                                    Content="{x:Static res:MasterData.AddCompartment}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_add_box_black_24dp.png"
@@ -51,25 +51,23 @@
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/ic_photo_size_select_small_black_24dp.png"
                                    GlyphSize="Custom" />
             </wms:ActionBar>
-
             <wms:WmsTrayControl x:Name="TrayControl"
                                 Grid.Row="1"
                                 Margin="0,10,0,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch"
-                                Compartments="{Binding Tray.Compartments}"
-                                DimensionHeight="{Binding Tray.Dimension.Height}"
-                                DimensionWidth="{Binding Tray.Dimension.Width}"
-                                IsCompartmentSelectable="{Binding IsSidePanelOpen, Converter={StaticResource BNC}}"
-                                IsReadOnly="{Binding IsSidePanelOpen}"
-                                OriginX="{Binding Tray.Origin.X}"
-                                OriginY="{Binding Tray.Origin.Y}"
-                                RulerFontSize="8"
-                                RulerInfo="mm"
+                                IsCompartmentSelectable="{Binding IsSidePanelOpen, Converter={StaticResource BNC}}"                                
                                 SelectedColorFilterFunc="{Binding FilterColorFunc}"
                                 SelectedItem="{Binding SelectedCompartmentTray, Mode=TwoWay}"
                                 ShowBackground="True"
-                                ShowRuler="True" />
+                                ShowRuler="True"
+                                RulerInfo="mm"
+                                IsReadOnly="{Binding IsSidePanelOpen}"
+                                Compartments="{Binding LoadingUnitDetails.Compartments}"
+                                DimensionWidth="{Binding LoadingUnitDetails.Width}"
+                                DimensionHeight="{Binding LoadingUnitDetails.Length}"
+                                RulerFontSize="8"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                />
 
             <wms:WmsGridControl Grid.Row="2"
                                 MinHeight="50"

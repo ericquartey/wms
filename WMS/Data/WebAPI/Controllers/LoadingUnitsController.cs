@@ -23,6 +23,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     {
         #region Fields
 
+        private readonly ICompartmentProvider compartmentProvider;
+
         private readonly ILoadingUnitProvider loadingUnitProvider;
 
         #endregion
@@ -30,16 +32,18 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Constructors
 
         public LoadingUnitsController(
-            ILoadingUnitProvider loadingUnitProvider)
+            ILoadingUnitProvider loadingUnitProvider,
+            ICompartmentProvider compartmentProvider)
         {
             this.loadingUnitProvider = loadingUnitProvider;
+            this.compartmentProvider = compartmentProvider;
         }
 
         #endregion
 
         #region Methods
 
-        [ProducesResponseType(201, Type = typeof(IEnumerable<LoadingUnitDetails>))]
+        [ProducesResponseType(201, Type = typeof(LoadingUnitDetails))]
         [ProducesResponseType(400)]
         [HttpPost]
         public async Task<ActionResult<LoadingUnitDetails>> CreateAsync(LoadingUnitDetails model)
@@ -55,7 +59,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<LoadingUnit>))]
-        [ProducesResponseType(400, Type = typeof(string))]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LoadingUnit>>> GetAllAsync(
             int skip = 0,
@@ -78,8 +81,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(200, Type = typeof(int))]
         [ProducesResponseType(404)]
-        [HttpGet]
-        [Route("count")]
+        [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync(
             string where = null,
             string search = null)
@@ -93,7 +95,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(200, Type = typeof(LoadingUnitDetails))]
-        [ProducesResponseType(404, Type = typeof(string))]
+        [ProducesResponseType(404)]
         [HttpGet("{id}")]
         public async Task<ActionResult<LoadingUnitDetails>> GetByIdAsync(int id)
         {
@@ -106,9 +108,18 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result);
         }
 
+        [ProducesResponseType(200, Type = typeof(IEnumerable<CompartmentDetails>))]
+        [ProducesResponseType(404)]
+        [HttpGet("{id}/compartments")]
+        public async Task<ActionResult<IEnumerable<CompartmentDetails>>> GetCompartments(int id)
+        {
+            var compartments = await this.compartmentProvider.GetByLoadingUnitIdAsync(id);
+
+            return this.Ok(compartments);
+        }
+
         [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
-        [HttpGet]
-        [Route("unique/{propertyName}")]
+        [HttpGet("unique/{propertyName}")]
         public async Task<ActionResult<object[]>> GetUniqueValuesAsync(
             string propertyName)
         {
@@ -116,8 +127,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(200, Type = typeof(LoadingUnitDetails))]
-        [ProducesResponseType(400, Type = typeof(string))]
-        [ProducesResponseType(404, Type = typeof(string))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         [HttpPatch]
         public async Task<ActionResult<LoadingUnitDetails>> UpdateAsync(LoadingUnitDetails model)
         {
