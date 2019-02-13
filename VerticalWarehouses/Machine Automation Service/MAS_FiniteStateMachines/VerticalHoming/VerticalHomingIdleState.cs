@@ -16,16 +16,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         private readonly IEventAggregator eventAggregator;
 
-        private StateMachineVerticalHoming context;
+        private StateMachineVerticalHoming parent;
 
         #endregion
 
         #region Constructors
 
-        public VerticalHomingIdleState(StateMachineVerticalHoming parent, INewInverterDriver iDriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
+        public VerticalHomingIdleState(StateMachineVerticalHoming parent, INewInverterDriver driver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
         {
-            this.context = parent;
-            this.driver = iDriver;
+            this.parent = parent;
+            this.driver = driver;
             this.data = iWriteLogService;
             this.eventAggregator = eventAggregator;
 
@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
             {
                 case OperationStatus.End:
                     {
-                        this.context.ChangeState(new VerticalHomingDoneState(this.context, this.driver, this.data, this.eventAggregator));
+                        this.parent.ChangeState(new VerticalHomingDoneState(this.parent, this.driver, this.data, this.eventAggregator));
                         break;
                     }
                 case OperationStatus.Error:

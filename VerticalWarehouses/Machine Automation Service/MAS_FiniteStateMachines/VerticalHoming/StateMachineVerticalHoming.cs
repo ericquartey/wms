@@ -20,9 +20,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Constructors
 
-        public StateMachineVerticalHoming(INewInverterDriver iDriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
+        public StateMachineVerticalHoming(INewInverterDriver driver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
         {
-            this.driver = iDriver;
+            this.driver = driver;
             this.data = iWriteLogService;
             this.eventAggregator = eventAggregator;
         }
@@ -44,7 +44,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         public void Start()
         {
-            // TODO check the sensors before to set the initial state
             this.state = new VerticalHomingIdleState(this, this.driver, this.data, this.eventAggregator);
         }
 
