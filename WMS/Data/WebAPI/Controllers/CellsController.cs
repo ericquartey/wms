@@ -42,7 +42,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Methods
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<Cell>))]
-        [ProducesResponseType(400, Type = typeof(string))]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Cell>>> GetAllAsync(
             int skip = 0,
@@ -65,8 +64,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(200, Type = typeof(int))]
         [ProducesResponseType(404)]
-        [HttpGet]
-        [Route("count")]
+        [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync(
             string where = null,
             string search = null)
@@ -80,7 +78,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(200, Type = typeof(CellDetails))]
-        [ProducesResponseType(404, Type = typeof(string))]
+        [ProducesResponseType(404)]
         [HttpGet("{id}")]
         public async Task<ActionResult<CellDetails>> GetByIdAsync(int id)
         {
@@ -101,16 +99,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
-        [HttpGet]
-        [Route("unique/{propertyName}")]
+        [HttpGet("unique/{propertyName}")]
         public async Task<ActionResult<object[]>> GetUniqueValuesAsync(string propertyName)
         {
             return this.Ok(await this.cellProvider.GetUniqueValuesAsync(propertyName));
         }
 
         [ProducesResponseType(200, Type = typeof(CellDetails))]
-        [ProducesResponseType(400, Type = typeof(string))]
-        [ProducesResponseType(404, Type = typeof(string))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         [HttpPatch]
         public async Task<ActionResult<CellDetails>> UpdateAsync(CellDetails model)
         {
