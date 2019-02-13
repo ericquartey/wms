@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 
@@ -26,7 +27,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public async Task<OperationResult> AddAsync(ItemCompartmentType model)
+        public async Task<IOperationResult> AddAsync(ItemCompartmentType model)
         {
             if (model == null)
             {
@@ -86,7 +87,7 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotSupportedException();
         }
 
-        public Task<OperationResult> SaveAsync(ItemCompartmentType model) => throw new NotSupportedException();
+        public Task<IOperationResult> SaveAsync(ItemCompartmentType model) => throw new NotSupportedException();
 
         #endregion
     }

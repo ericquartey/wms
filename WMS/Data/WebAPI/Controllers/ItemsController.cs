@@ -27,6 +27,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IAreaProvider areaProvider;
 
+        private readonly ICompartmentProvider compartmentProvider;
+
         private readonly IItemProvider itemProvider;
 
         #endregion
@@ -35,17 +37,19 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public ItemsController(
             IItemProvider itemProvider,
-            IAreaProvider areaProvider)
+            IAreaProvider areaProvider,
+            ICompartmentProvider compartmentProvider)
         {
             this.itemProvider = itemProvider;
             this.areaProvider = areaProvider;
+            this.compartmentProvider = compartmentProvider;
         }
 
         #endregion
 
         #region Methods
 
-        [ProducesResponseType(201, Type = typeof(IEnumerable<ItemDetails>))]
+        [ProducesResponseType(201, Type = typeof(ItemDetails))]
         [ProducesResponseType(400)]
         [HttpPost]
         public async Task<ActionResult<ItemDetails>> CreateAsync(ItemDetails model)
@@ -84,8 +88,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(200, Type = typeof(int))]
         [ProducesResponseType(404)]
-        [HttpGet]
-        [Route("count")]
+        [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync(
             string where = null,
             string search = null)
@@ -108,8 +111,18 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(areas);
         }
 
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Compartment>))]
+        [ProducesResponseType(404)]
+        [HttpGet("{id}/compartments")]
+        public async Task<ActionResult<IEnumerable<Compartment>>> GetCompartments(int id)
+        {
+            var compartments = await this.compartmentProvider.GetByItemIdAsync(id);
+
+            return this.Ok(compartments);
+        }
+
         [ProducesResponseType(200, Type = typeof(ItemDetails))]
-        [ProducesResponseType(404, Type = typeof(string))]
+        [ProducesResponseType(404)]
         [HttpGet("{id}")]
         public async Task<ActionResult<ItemDetails>> GetByIdAsync(int id)
         {
@@ -123,8 +136,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
-        [HttpGet]
-        [Route("unique/{propertyName}")]
+        [HttpGet("unique/{propertyName}")]
         public async Task<ActionResult<object[]>> GetUniqueValuesAsync(
             string propertyName)
         {
@@ -132,8 +144,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(200, Type = typeof(ItemDetails))]
-        [ProducesResponseType(400, Type = typeof(string))]
-        [ProducesResponseType(404, Type = typeof(string))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         [HttpPatch]
         public async Task<ActionResult<ItemDetails>> UpdateAsync(ItemDetails model)
         {
