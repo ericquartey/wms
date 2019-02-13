@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSignalR();
 
             var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
-            services.AddDbContext<DataLayerContext>(options => options.UseSqlite(connectionString), ServiceLifetime.Singleton);
+            services.AddDbContext<DataLayerContext>(options => options.UseInMemoryDatabase("InMemoryWorkingDB"), ServiceLifetime.Singleton);
 
             services.AddSingleton<IEventAggregator, EventAggregator>();
             services.AddSingleton<IAutomationService, AutomationService>();
@@ -79,6 +79,7 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSingleton<IFiniteStateMachines, FiniteStateMachines>();
             services.AddSingleton<INewInverterDriver, NewInverterDriver>();
             services.AddSingleton<INewRemoteIODriver, NewRemoteIODriver>();
+            services.AddSingleton<IDataLayer, DataLayer>();
 
             //TODO Old InverterDriver Registration to be removed after code refactoring completed
             services.AddSingleton<InverterDriver.IInverterDriver, InverterDriver.InverterDriver >();

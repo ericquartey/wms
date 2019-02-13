@@ -97,6 +97,7 @@ namespace Ferretto.WMS.Data.WebAPI
             services.AddTransient<IItemCategoryProvider, ItemCategoryProvider>();
             services.AddTransient<IItemCompartmentTypeProvider, ItemCompartmentTypeProvider>();
             services.AddTransient<IItemListProvider, ItemListProvider>();
+            services.AddTransient<IItemListRowProvider, ItemListRowProvider>();
             services.AddTransient<IItemProvider, ItemProvider>();
             services.AddTransient<ILoadingUnitProvider, LoadingUnitProvider>();
             services.AddTransient<ILoadingUnitStatusProvider, LoadingUnitStatusProvider>();
