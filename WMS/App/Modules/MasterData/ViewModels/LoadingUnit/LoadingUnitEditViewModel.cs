@@ -99,18 +99,6 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.isSidePanelOpen, value);
         }
 
-        public LoadingUnitDetails LoadingUnit
-        {
-            get => this.loadingUnit;
-            set
-            {
-                if (this.SetProperty(ref this.loadingUnit, value))
-                {
-                    this.LoadRelatedData();
-                }
-            }
-        }
-
         public LoadingUnitDetails LoadingUnitDetails => this.loadingUnit;
 
         public bool LoadingUnitHasCompartments
@@ -205,17 +193,13 @@ namespace Ferretto.WMS.Modules.MasterData
             this.ActiveSideViewModel = null;
         }
 
-        private void InitializeTray()
-        {
-            this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));
-        }
-
         private async Task LoadDataAsync()
         {
             if (this.Data is int modelId)
             {
-                this.LoadingUnit = await this.loadingUnitProvider.GetByIdAsync(modelId);
-                this.InitializeTray();
+                this.loadingUnit = await this.loadingUnitProvider.GetByIdAsync(modelId);
+                this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));
+                this.LoadRelatedData();
             }
         }
 

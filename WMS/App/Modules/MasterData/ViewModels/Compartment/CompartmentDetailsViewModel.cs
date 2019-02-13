@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
@@ -169,13 +168,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 true);
         }
 
-        private void InitializeTray()
-        {
-            this.readOnlyTray = true;
-            this.RaisePropertyChanged(nameof(this.ReadOnlyTray));
-            this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));
-        }
-
         private async Task LoadDataAsync()
         {
             try
@@ -187,7 +179,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     var compartment = await this.compartmentProvider.GetByIdAsync(modelId);
                     this.loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId);
                     this.Model = compartment;
-                    this.InitializeTray();
+                    this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));
                     this.SelectedCompartmentTray = this.Model;
                 }
 

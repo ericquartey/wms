@@ -231,8 +231,7 @@
                           Header="{x:Static res:MasterData.CompartmentsLayoutOverview}"
                           Visibility="{Binding Model.LoadingUnitTypeHasCompartments, Converter={StaticResource BTVC}}">
                     <wms:WmsTrayControl                                     
-                                        IsCompartmentSelectable="{Binding IsCompartmentSelectableTray, Mode=OneWay}"
-                                        IsReadOnly="{Binding ReadOnlyTray, Mode=OneWay}"
+                                        IsCompartmentSelectable="{Binding IsCompartmentSelectableTray, Mode=OneWay}"                                        
                                         SelectedColorFilterFunc="{Binding TrayColoringFunc, Mode=OneWay}"
                                         SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"
                                         ShowBackground="True"

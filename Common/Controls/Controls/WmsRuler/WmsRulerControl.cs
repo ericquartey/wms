@@ -275,29 +275,32 @@ namespace Ferretto.Common.Controls
 
         private void DrawBase(DrawingContext drawingContext)
         {
-            var mark = new Line();
+            var pointStart = new Point(0, 0);
+            var pointEnd = new Point(0, 0);
             var sizeOfPen = this.GetSizeOfPen();
 
             if (this.Orientation == Orientation.Horizontal)
             {
-                mark.YStart = this.ActualHeight - sizeOfPen;
-                mark.YEnd = mark.YStart;
-                mark.XStart = 0;
-                mark.XEnd = this.TrayWidth - sizeOfPen;
+                pointStart.Y = this.ActualHeight - sizeOfPen;
+                pointEnd.Y = pointStart.Y;
+                pointStart.X = 0;
+                pointEnd.X = this.TrayWidth - sizeOfPen;
             }
             else
             {
-                mark.XStart = this.ActualWidth - sizeOfPen;
-                mark.XEnd = mark.XStart;
-                mark.YStart = 0;
-                mark.YEnd = this.TrayHeight - sizeOfPen;
+                pointStart.X = this.ActualWidth - sizeOfPen;
+                pointEnd.X = pointStart.X;
+                pointStart.Y = 0;
+                pointEnd.Y = this.TrayHeight - sizeOfPen;
             }
 
-            this.DrawSnappedLinesBetweenPoints(drawingContext, mark);
+            this.DrawSnappedLinesBetweenPoints(drawingContext, pointStart, pointEnd);
         }
 
         private void DrawLittleMark(DrawingContext drawingContext, int currentStep)
         {
+            var littleMarkStart = new Point(0, 0);
+            var littleMarkEnd = new Point(0, 0);
             double stepPixel = 0;
             if (this.Orientation == Orientation.Horizontal)
             {
@@ -316,67 +319,70 @@ namespace Ferretto.Common.Controls
                 {
                     continue;
                 }
-
-                var littleMark = new Line();
                 if (this.Orientation == Orientation.Horizontal)
                 {
-                    littleMark.XStart = basePixelStart + (littlePixelStep * j);
-                    littleMark.YStart = this.Height - this.LittleMarkLength + this.penHalfSize;
-                    littleMark.YEnd = this.Height - this.penHalfSize;
+                    littleMarkStart.X = basePixelStart + (littlePixelStep * j);
+                    littleMarkStart.Y = this.Height - this.LittleMarkLength + this.penHalfSize;
+                    littleMarkEnd.Y = this.Height - this.penHalfSize;
                     if (this.OriginHorizontal == OriginHorizontal.Right)
                     {
-                        littleMark.XStart = this.ActualWidth - littleMark.XStart;
+                        littleMarkStart.X = this.ActualWidth - littleMarkStart.X;
                     }
 
-                    littleMark.XEnd = littleMark.XStart;
-                    if (littleMark.XEnd > this.ActualWidth)
-                    {
-                        return;
-                    }
+                    littleMarkEnd.X = littleMarkStart.X;
                 }
                 else
                 {
                     var pixelPosition = basePixelStart + (littlePixelStep * j);
-                    littleMark.YStart = (this.OriginVertical == OriginVertical.Top) ? pixelPosition : this.ActualHeight - pixelPosition - 1;
-                    littleMark.XStart = this.Width - this.LittleMarkLength + this.penHalfSize;
-                    littleMark.XEnd = this.Width - this.penHalfSize - this.GetSizeOfPen();
-                    littleMark.YEnd = littleMark.YStart;
-                    if (littleMark.YEnd > this.ActualHeight)
-                    {
-                        return;
-                    }
+                    littleMarkStart.Y = (this.OriginVertical == OriginVertical.Top) ? pixelPosition : this.ActualHeight - pixelPosition - 1;
+                    littleMarkStart.X = this.Width - this.LittleMarkLength + this.penHalfSize;
+                    littleMarkEnd.X = this.Width - this.penHalfSize - this.GetSizeOfPen();
+                    littleMarkEnd.Y = littleMarkStart.Y;
                 }
 
-                this.DrawSnappedLinesBetweenPoints(drawingContext, littleMark);
+                if (littleMarkEnd.X < 0 ||
+                    littleMarkEnd.X > this.ActualWidth)
+                {
+                    return;
+                }
+
+                if (littleMarkEnd.Y < 0 ||
+                    littleMarkEnd.Y > this.ActualHeight)
+                {
+                    return;
+                }
+
+                this.DrawSnappedLinesBetweenPoints(drawingContext, littleMarkStart, littleMarkEnd);
             }
         }
 
         private void DrawMark(DrawingContext drawingContext, int currentStep)
         {
-            var mark = new Line();
+            var littleMarkStart = new Point(0, 0);
+            var littleMarkEnd = new Point(0, 0);
             var sizeOfPen = this.GetSizeOfPen();
             if (this.Orientation == Orientation.Horizontal)
             {
-                mark.XStart = ConvertMillimetersToPixel(this.Step * currentStep, this.TrayWidth, this.DimensionWidth);
-                mark.YStart = this.penHalfSize;
-                mark.YEnd = this.ActualHeight - this.penHalfSize;
+                littleMarkStart.X = ConvertMillimetersToPixel(this.Step * currentStep, this.TrayWidth, this.DimensionWidth);
+                littleMarkStart.Y = this.penHalfSize;
+                littleMarkEnd.Y = this.ActualHeight - this.penHalfSize;
                 if (this.OriginHorizontal == OriginHorizontal.Right)
                 {
-                    mark.XStart = this.ActualWidth - mark.XStart;
+                    littleMarkStart.X = this.ActualWidth - littleMarkStart.X;
                 }
 
-                mark.XEnd = mark.XStart;
+                littleMarkEnd.X = littleMarkStart.X;
             }
             else
             {
                 var offSet = ConvertMillimetersToPixel(this.Step * currentStep, this.TrayHeight, this.DimensionHeight);
-                mark.XStart = this.penHalfSize;
-                mark.XEnd = this.ActualWidth - this.penHalfSize;
-                mark.YStart = (this.OriginVertical == OriginVertical.Top) ? offSet - 0 : this.ActualHeight - offSet - sizeOfPen;
-                mark.YEnd = mark.YStart;
+                littleMarkStart.X = this.penHalfSize;
+                littleMarkEnd.X = this.ActualWidth - this.penHalfSize;
+                littleMarkStart.Y = (this.OriginVertical == OriginVertical.Top) ? offSet - 0 : this.ActualHeight - offSet - sizeOfPen;
+                littleMarkEnd.Y = littleMarkStart.Y;
             }
 
-            this.DrawSnappedLinesBetweenPoints(drawingContext, mark);
+            this.DrawSnappedLinesBetweenPoints(drawingContext, littleMarkStart, littleMarkEnd);
         }
 
         private void DrawMarkers(DrawingContext drawingContext, int totalSteps)
@@ -428,44 +434,45 @@ namespace Ferretto.Common.Controls
 
         private void DrawMiddleMark(DrawingContext drawingContext, int currentStep)
         {
-            var middleMark = new Line();
+            var littleMarkStart = new Point(0, 0);
+            var littleMarkEnd = new Point(0, 0);
             if (this.Orientation == Orientation.Horizontal)
             {
                 var pixelStep = ConvertMillimetersToPixel(this.Step, this.TrayWidth, this.DimensionWidth);
-                middleMark.XStart = (pixelStep * currentStep) + (pixelStep / 2);
-                middleMark.YStart = this.Height - this.MiddleMarkLength + this.penHalfSize;
-                middleMark.YEnd = this.Height - this.penHalfSize;
+                littleMarkStart.X = (pixelStep * currentStep) + (pixelStep / 2);
+                littleMarkStart.Y = this.Height - this.MiddleMarkLength + this.penHalfSize;
+                littleMarkEnd.Y = this.Height - this.penHalfSize;
                 if (this.OriginHorizontal == OriginHorizontal.Right)
                 {
-                    middleMark.XStart = this.ActualWidth - middleMark.XStart;
+                    littleMarkStart.X = this.ActualWidth - littleMarkStart.X;
                 }
 
-                middleMark.XEnd = middleMark.XStart;
+                littleMarkEnd.X = littleMarkStart.X;
             }
             else
             {
                 var pixelStep = ConvertMillimetersToPixel(this.Step, this.TrayHeight, this.DimensionHeight);
                 var pixelPosition = (pixelStep * currentStep) + (pixelStep / 2);
-                middleMark.YStart = (this.OriginVertical == OriginVertical.Top) ? pixelPosition : this.ActualHeight - (pixelPosition + 1);
-                middleMark.XStart = this.Width - this.MiddleMarkLength + this.penHalfSize;
-                middleMark.XEnd = this.Width - this.penHalfSize;
-                middleMark.YEnd = middleMark.YStart;
+                littleMarkStart.Y = (this.OriginVertical == OriginVertical.Top) ? pixelPosition : this.ActualHeight - (pixelPosition + 1);
+                littleMarkStart.X = this.Width - this.MiddleMarkLength + this.penHalfSize;
+                littleMarkEnd.X = this.Width - this.penHalfSize;
+                littleMarkEnd.Y = littleMarkStart.Y;
             }
 
-            this.DrawSnappedLinesBetweenPoints(drawingContext, middleMark);
+            this.DrawSnappedLinesBetweenPoints(drawingContext, littleMarkStart, littleMarkEnd);
         }
 
-        private void DrawSnappedLinesBetweenPoints(DrawingContext dc, Line mark)
+        private void DrawSnappedLinesBetweenPoints(DrawingContext dc, Point pointStart, Point pointEnd)
         {
             var guidelineSet = new GuidelineSet();
-            guidelineSet.GuidelinesX.Add(mark.XStart);
-            guidelineSet.GuidelinesY.Add(mark.YStart);
-            guidelineSet.GuidelinesX.Add(mark.XEnd);
-            guidelineSet.GuidelinesY.Add(mark.YEnd);
+            guidelineSet.GuidelinesX.Add(pointStart.X);
+            guidelineSet.GuidelinesY.Add(pointStart.Y);
+            guidelineSet.GuidelinesX.Add(pointEnd.X);
+            guidelineSet.GuidelinesY.Add(pointEnd.Y);
             dc.PushGuidelineSet(guidelineSet);
             var points = new Point[2];
-            points[0] = new Point(mark.XStart + this.penHalfSize, mark.YStart + this.penHalfSize);
-            points[1] = new Point(mark.XEnd + this.penHalfSize, mark.YEnd + this.penHalfSize);
+            points[0] = new Point(pointStart.X + this.penHalfSize, pointStart.Y + this.penHalfSize);
+            points[1] = new Point(pointEnd.X + this.penHalfSize, pointEnd.Y + this.penHalfSize);
             dc.DrawLine(this.pen, points[0], points[1]);
             dc.Pop();
         }

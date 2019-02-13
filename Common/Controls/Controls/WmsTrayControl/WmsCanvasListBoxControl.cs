@@ -403,7 +403,7 @@ namespace Ferretto.Common.Controls
                     Height = compartment.Height ?? 0,
                     Left = compartment.XPosition ?? 0,
                     Top = compartment.YPosition ?? 0,
-                    ColorFill = this.SelectedColorFilterFunc?.Invoke(compartment, this.SelectedCompartment) ?? Application.Current.Resources[DEFAULTCOMPARTMENTCOLOR].ToString(),
+                    ColorFill = this.GetColorFilter(compartment),
                     IsReadOnly = this.IsReadOnly,
                     IsSelectable = this.IsCompartmentSelectable
                 };
@@ -412,6 +412,18 @@ namespace Ferretto.Common.Controls
             }
 
             this.ItemsSource = newItems;
+        }
+
+        private string GetColorFilter(ICompartment compartment)
+        {
+            var colorFill = Application.Current.Resources[DEFAULTCOMPARTMENTCOLOR].ToString();
+            if (this.IsReadOnly == false &&
+                this.SelectedColorFilterFunc != null)
+            {
+                colorFill = this.SelectedColorFilterFunc.Invoke(compartment, this.SelectedCompartment);
+            }
+
+            return colorFill;
         }
 
         public void UpdateIsReadOnly()
@@ -423,6 +435,7 @@ namespace Ferretto.Common.Controls
 
             foreach (var compartment in this.Items.AsEnumerable())
             {
+                compartment.ColorFill = this.GetColorFilter(compartment.CompartmentDetails);
                 compartment.IsReadOnly = this.IsReadOnly;
             }
         }

@@ -198,7 +198,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private void InitializeTray()
         {
             this.loadingUnit = this.Model;
-            this.ReadOnlyTray = true;
             this.IsCompartmentSelectableTray = true;
             this.TrayColoringFunc = new FillingFilter().ColorFunc;
             this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));
