@@ -10,9 +10,6 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty CurrentFontSizeProperty =
-                    DependencyProperty.Register(nameof(CurrentFontSize), typeof(double), typeof(WmsRulerControl), new UIPropertyMetadata(OnCurrentFontSizeChanged));
-
         public static readonly DependencyProperty DimensionHeightProperty =
                     DependencyProperty.Register(nameof(DimensionHeight), typeof(double), typeof(WmsRulerControl), new UIPropertyMetadata(0.0));
 
@@ -67,8 +64,6 @@ namespace Ferretto.Common.Controls
 
         private const double WIDTH_MARK = 1;
 
-        // private readonly InfoRuler infoRuler;
-
         private Pen pen;
 
         private double penHalfSize;
@@ -79,7 +74,6 @@ namespace Ferretto.Common.Controls
 
         public WmsRulerControl()
         {
-            //this.infoRuler = new InfoRuler();
             this.UseLayoutRounding = false;
             this.SnapsToDevicePixels = false;
             var target = this;
@@ -89,12 +83,6 @@ namespace Ferretto.Common.Controls
         #endregion
 
         #region Properties
-
-        public double CurrentFontSize
-        {
-            get => (double)this.GetValue(CurrentFontSizeProperty);
-            set => this.SetValue(CurrentFontSizeProperty, value);
-        }
 
         public double DimensionHeight
         {
@@ -115,6 +103,7 @@ namespace Ferretto.Common.Controls
         }
 
         public double LittleMarkLength
+
         {
             get => (double)this.GetValue(LittleMarkLengthProperty);
             set => this.SetValue(LittleMarkLengthProperty, value);
@@ -243,41 +232,13 @@ namespace Ferretto.Common.Controls
                 totalSteps != 0)
             {
                 this.InitializePen();
-                this.OriginHorizontal = OriginHorizontal.Left;
-                this.OriginVertical = OriginVertical.Top;
                 this.DrawMarkers(drawingContext, totalSteps);
-            }
-        }
-
-        private static void OnCurrentFontSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is WmsRulerControl ruler &&
-                e.NewValue is double currentFontSize &&
-                currentFontSize.Equals(ruler.FontSize) == false)
-            {
-                ruler.Redraw();
             }
         }
 
         private static void OnOrientationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is WmsRulerControl ruler)
-            {
-                ruler.Redraw();
-            }
-        }
-
-        private static void OnOriginXChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is WmsRulerControl ruler && e.NewValue is double v)
-            {
-                ruler.Redraw();
-            }
-        }
-
-        private static void OnOriginYChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is WmsRulerControl ruler && e.NewValue is double v)
             {
                 ruler.Redraw();
             }
@@ -360,8 +321,8 @@ namespace Ferretto.Common.Controls
                 if (this.Orientation == Orientation.Horizontal)
                 {
                     littleMark.XStart = basePixelStart + (littlePixelStep * j);
-                    littleMark.YStart = this.ActualHeight - this.LittleMarkLength + this.penHalfSize;
-                    littleMark.YEnd = this.ActualHeight - this.penHalfSize;
+                    littleMark.YStart = this.Height - this.LittleMarkLength + this.penHalfSize;
+                    littleMark.YEnd = this.Height - this.penHalfSize;
                     if (this.OriginHorizontal == OriginHorizontal.Right)
                     {
                         littleMark.XStart = this.ActualWidth - littleMark.XStart;
@@ -377,8 +338,8 @@ namespace Ferretto.Common.Controls
                 {
                     var pixelPosition = basePixelStart + (littlePixelStep * j);
                     littleMark.YStart = (this.OriginVertical == OriginVertical.Top) ? pixelPosition : this.ActualHeight - pixelPosition - 1;
-                    littleMark.XStart = this.ActualWidth - this.LittleMarkLength + this.penHalfSize;
-                    littleMark.XEnd = this.ActualWidth - this.penHalfSize - this.GetSizeOfPen();
+                    littleMark.XStart = this.Width - this.LittleMarkLength + this.penHalfSize;
+                    littleMark.XEnd = this.Width - this.penHalfSize - this.GetSizeOfPen();
                     littleMark.YEnd = littleMark.YStart;
                     if (littleMark.YEnd > this.ActualHeight)
                     {
@@ -422,8 +383,8 @@ namespace Ferretto.Common.Controls
         {
             var isBaseDrawVisible = false;
             totalSteps = totalSteps + 1;
-            this.CurrentFontSize = this.GetFontSize(totalSteps);
-            var canShowText = this.CanShowText(totalSteps, this.CurrentFontSize);
+            var currentFontSize = this.GetFontSize();
+            var canShowText = this.CanShowText(totalSteps, currentFontSize);
             var canShowMarks = this.CanBeShown(1, 15);
             var canShowMiddleMarks = this.CanBeShown(MIDDLE_INTERVALMARKS, 13);
             var canShowLittleMarks = this.CanBeShown(LITTLE_INTERVALMARKS, 4);
@@ -432,7 +393,7 @@ namespace Ferretto.Common.Controls
             {
                 if (this.ShowInfo && canShowText)
                 {
-                    this.DrawText(drawingContext, currStep, this.CurrentFontSize);
+                    this.DrawText(drawingContext, currStep, currentFontSize);
                 }
 
                 if (this.ShowMark)
@@ -576,10 +537,12 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        private double GetFontSize(int totText)
+        private double GetFontSize()
         {
-            var size = (this.CurrentFontSize > 0 && this.CurrentFontSize < this.FontSize) ? this.CurrentFontSize : this.FontSize;
-            while (size > 5 && this.CanShowText(totText, size) == false)
+            var max = (this.DimensionHeight > this.DimensionWidth) ? this.DimensionHeight : this.DimensionWidth;
+            var maxText = (int)(max / this.Step);
+            var size = this.FontSize;
+            while (size > 5 && this.CanShowText(maxText, size) == false)
             {
                 size--;
             }

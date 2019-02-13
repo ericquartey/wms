@@ -225,12 +225,12 @@
 
                 <GroupBox Grid.Row="2"
                           Grid.Column="0"
-                          Grid.ColumnSpan="2"
-                          Margin="0"
+                          Grid.ColumnSpan="2"                          
+                          VerticalAlignment="Stretch"
+                          MinHeight="190"
                           Header="{x:Static res:MasterData.CompartmentsLayoutOverview}"
                           Visibility="{Binding Model.LoadingUnitTypeHasCompartments, Converter={StaticResource BTVC}}">
-                    <wms:WmsTrayControl Margin="0"
-                                        MinHeight="150"
+                    <wms:WmsTrayControl                                     
                                         IsCompartmentSelectable="{Binding IsCompartmentSelectableTray, Mode=OneWay}"
                                         IsReadOnly="{Binding ReadOnlyTray, Mode=OneWay}"
                                         SelectedColorFilterFunc="{Binding TrayColoringFunc, Mode=OneWay}"
@@ -244,7 +244,7 @@
                                         ShowMark="True"
                                         ShowMiddleMark="False"
                                         HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"                        
                                         />
                 </GroupBox>
 

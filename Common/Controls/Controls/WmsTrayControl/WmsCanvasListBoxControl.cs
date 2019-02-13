@@ -70,6 +70,9 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty ShowBackgroundProperty = DependencyProperty.Register(nameof(ShowBackground),
             typeof(bool), typeof(WmsCanvasListBoxControl), new FrameworkPropertyMetadata(true, OnShowBackgroundChanged));
 
+        public static readonly DependencyProperty ShowRulerProperty = DependencyProperty.Register(nameof(ShowRuler), typeof(bool), typeof(WmsCanvasListBoxControl),
+                                                                                                            new UIPropertyMetadata(true, OnShowRulerPropertyChanged));
+
         public static readonly DependencyProperty StepPixelProperty = DependencyProperty.Register(nameof(StepPixel), typeof(double), typeof(WmsCanvasListBoxControl));
 
         public static readonly DependencyProperty StepProperty =
@@ -221,6 +224,12 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(ShowBackgroundProperty, value);
         }
 
+        public bool ShowRuler
+        {
+            get => (bool)this.GetValue(ShowRulerProperty);
+            set => this.SetValue(ShowRulerProperty, value);
+        }
+
         public double Step
         {
             get => (double)this.GetValue(StepProperty);
@@ -265,7 +274,7 @@ namespace Ferretto.Common.Controls
         {
             var ret = new Point { X = compartmentOrigin.X, Y = compartmentOrigin.Y };
 
-            if (originHorizontal == OriginHorizontal.Left && originVertical == OriginVertical.Top)
+            if (originHorizontal == OriginHorizontal.Left && originVertical == OriginVertical.Bottom)
             {
                 ret.Y = (int)dimensionHeight - compartmentOrigin.Y - heightCompartment;
             }
@@ -273,7 +282,7 @@ namespace Ferretto.Common.Controls
             {
                 ret.X = dimensionWidth - compartmentOrigin.X - widthCompartment;
             }
-            else if (originHorizontal == OriginHorizontal.Right && originVertical == OriginVertical.Top)
+            else if (originHorizontal == OriginHorizontal.Right && originVertical == OriginVertical.Bottom)
             {
                 ret.X = dimensionWidth - compartmentOrigin.X - widthCompartment;
                 ret.Y = dimensionHeight - compartmentOrigin.Y - heightCompartment;
@@ -445,7 +454,6 @@ namespace Ferretto.Common.Controls
             var stepYPixel = ConvertMillimetersToPixel(this.Step, this.TrayHeight, this.DimensionHeight);
 
             var posY = this.OriginVertical == OriginVertical.Top ? stepYPixel : this.ActualHeight - stepYPixel - OFFSET;
-            var points = new List<Point>();
             while (posY > 0 && posY < this.TrayHeight)
             {
                 points.Add(new Point(0, posY));
@@ -569,6 +577,14 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        private static void OnShowRulerPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is WmsCanvasListBoxControl wmsCanvasListBox)
+            {
+                wmsCanvasListBox.UpdateLayout();
+            }
+        }
+
         private static void OnStepChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is WmsCanvasListBoxControl wmsCanvasListBox)
@@ -580,7 +596,7 @@ namespace Ferretto.Common.Controls
         private List<Point> GetBordersPoints()
         {
             var points = new List<Point>();
-            if (this.ShowBackground == false)
+            if (this.ShowRuler == false)
             {
                 points.Add(new Point(BORDEROFFSET, BORDEROFFSET));
                 points.Add(new Point(this.TrayWidth, BORDEROFFSET));
