@@ -165,7 +165,12 @@ namespace Ferretto.WMS.Data.Tests
         {
             return new ItemsController(
                 ProviderFactory.Get<IItemProvider>(context),
-                ProviderFactory.Get<IAreaProvider>(context));
+                ProviderFactory.Get<IAreaProvider>(context)
+                new CompartmentProvider(
+                    context,
+                    new CompartmentTypeProvider(
+                        context,
+                        new ItemCompartmentTypeProvider(context))));
         }
 
         #endregion

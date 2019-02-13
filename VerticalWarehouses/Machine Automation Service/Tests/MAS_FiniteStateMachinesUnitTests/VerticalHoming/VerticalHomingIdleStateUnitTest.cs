@@ -10,12 +10,29 @@ using Prism.Events;
 namespace MAS_FiniteStateMachinesUnitTests.VerticalHoming
 {
     [TestClass]
-    public class VerticalHomingIdleStateTest
+    public class VerticalHomingIdleStateUnitTest
     {
         #region Methods
 
         [TestMethod]
-        public void VerticalHomingIdleStateTest_TransitionToStateDone_Success()
+        [TestCategory("Unit")]
+        public void TestVerticalHomingIdleState_Create()
+        {
+            var inverterDriverMock = new Mock<INewInverterDriver>();
+            var writeLogServiceMock = new Mock<IWriteLogService>();
+            var eventAggregatorMock = new Mock<IEventAggregator>();
+            var notifyDriverEvent = new InverterDriver_NotificationEvent();
+            eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<InverterDriver_NotificationEvent>()).Returns(notifyDriverEvent);
+            var stateMachine = new StateMachineVerticalHoming(inverterDriverMock.Object, writeLogServiceMock.Object, eventAggregatorMock.Object);
+
+            var state = new VerticalHomingIdleState(stateMachine, inverterDriverMock.Object, writeLogServiceMock.Object, eventAggregatorMock.Object);
+
+            Assert.IsNotNull(state);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void TestVerticalHomingIdleState_TransitionToStateDone_Success()
         {
             var inverterDriverMock = new Mock<INewInverterDriver>();
             var writeLogServiceMock = new Mock<IWriteLogService>();
@@ -31,21 +48,6 @@ namespace MAS_FiniteStateMachinesUnitTests.VerticalHoming
             notifyDriverEvent.Publish(new Notification_EventParameter(OperationType.Homing, OperationStatus.End, "Home done", Verbosity.Info));
 
             Assert.AreEqual(stateMachine.Type, "Vertical Homing Done State");
-        }
-
-        [TestMethod]
-        public void VerticalHomingIdleStateTestCreate()
-        {
-            var inverterDriverMock = new Mock<INewInverterDriver>();
-            var writeLogServiceMock = new Mock<IWriteLogService>();
-            var eventAggregatorMock = new Mock<IEventAggregator>();
-            var notifyDriverEvent = new InverterDriver_NotificationEvent();
-            eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<InverterDriver_NotificationEvent>()).Returns(notifyDriverEvent);
-            var stateMachine = new StateMachineVerticalHoming(inverterDriverMock.Object, writeLogServiceMock.Object, eventAggregatorMock.Object);
-
-            var state = new VerticalHomingIdleState(stateMachine, inverterDriverMock.Object, writeLogServiceMock.Object, eventAggregatorMock.Object);
-
-            Assert.IsNotNull(state);
         }
 
         #endregion

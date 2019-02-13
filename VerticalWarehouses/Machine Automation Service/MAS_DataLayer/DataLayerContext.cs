@@ -40,6 +40,8 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public DbSet<ConfigurationValue> ConfigurationValues { get; set; }
 
+        public DbSet<Cell> Cells { get; set; }
+
         #endregion Properties
 
         #region Methods

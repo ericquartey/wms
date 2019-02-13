@@ -62,6 +62,8 @@ namespace Ferretto.Common.Modules.BLL
             this.Container.RegisterType<DatabaseContext, DatabaseContext>(new InjectionConstructor());
             this.Container.RegisterType<EnumerationProvider, EnumerationProvider>(new InjectionConstructor(new DatabaseContext()));
 
+            this.Container.RegisterType<IAbcClassProvider, AbcClassProvider>();
+
             NLog.LogManager
                .GetCurrentClassLogger()
                .Trace("Module loaded.");

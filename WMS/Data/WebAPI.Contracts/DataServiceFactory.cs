@@ -26,6 +26,9 @@
 
                 case var service when service == typeof(IMissionsDataService):
                     return new MissionsDataService(baseUrl.AbsoluteUri) as T;
+
+                case var service when service == typeof(IAbcClassesDataService):
+                    return new AbcClassesDataService(baseUrl.AbsoluteUri) as T;
             }
 
             return null;

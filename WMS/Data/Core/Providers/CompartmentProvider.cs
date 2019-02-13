@@ -111,15 +111,17 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
-        public async Task<int> DeleteAsync(int id)
+        public async Task<OperationResult<CompartmentDetails>> DeleteAsync(int id)
         {
             var existingModel = this.dataContext.Compartments.Find(id);
-            if (existingModel != null)
+            if (existingModel == null)
             {
-                this.dataContext.Remove(existingModel);
+                return new NotFoundOperationResult<CompartmentDetails>();
             }
 
-            return await this.dataContext.SaveChangesAsync();
+            this.dataContext.Remove(existingModel);
+            await this.dataContext.SaveChangesAsync();
+            return new SuccessOperationResult<CompartmentDetails>();
         }
 
         public async Task<IEnumerable<Compartment>> GetAllAsync(
