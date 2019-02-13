@@ -25,14 +25,14 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
         private bool setupParameters;
         private CalibrationType actualCalibrationAxis;
 
-        #endregion Fields
+        #endregion
 
         #region Events
 
         public event EndEventHandler EndEvent;
         public event ErrorEventHandler ErrorEvent;
 
-        #endregion Events
+        #endregion
 
         #region Properties
 
@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             get => this.actualCalibrationAxis;
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -508,6 +508,6 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             this.checkExistStatus(idExitStatus);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

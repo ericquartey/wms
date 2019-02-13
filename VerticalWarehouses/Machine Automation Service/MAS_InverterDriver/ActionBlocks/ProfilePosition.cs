@@ -12,7 +12,7 @@
             this.Deceleration = deceleration;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -21,6 +21,6 @@
         public int Quote { get; set; }
         public int Speed { get; private set; }
 
-        #endregion Properties
+        #endregion
     }
 }

@@ -23,6 +23,6 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         bool[] GetSensorsStates();
 
-        #endregion Methods
+        #endregion
     }
 }
