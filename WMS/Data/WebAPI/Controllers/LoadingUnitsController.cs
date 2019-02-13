@@ -23,6 +23,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     {
         #region Fields
 
+        private readonly ICompartmentProvider compartmentProvider;
+
         private readonly ILoadingUnitProvider loadingUnitProvider;
 
         #endregion
@@ -30,9 +32,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Constructors
 
         public LoadingUnitsController(
-            ILoadingUnitProvider loadingUnitProvider)
+            ILoadingUnitProvider loadingUnitProvider,
+            ICompartmentProvider compartmentProvider)
         {
             this.loadingUnitProvider = loadingUnitProvider;
+            this.compartmentProvider = compartmentProvider;
         }
 
         #endregion
@@ -102,6 +106,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return this.Ok(result);
+        }
+
+        [ProducesResponseType(200, Type = typeof(IEnumerable<CompartmentDetails>))]
+        [ProducesResponseType(404)]
+        [HttpGet("{id}/compartments")]
+        public async Task<ActionResult<IEnumerable<CompartmentDetails>>> GetCompartments(int id)
+        {
+            var compartments = await this.compartmentProvider.GetByLoadingUnitIdAsync(id);
+
+            return this.Ok(compartments);
         }
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]

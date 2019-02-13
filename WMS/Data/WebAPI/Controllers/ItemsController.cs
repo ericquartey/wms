@@ -27,6 +27,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IAreaProvider areaProvider;
 
+        private readonly ICompartmentProvider compartmentProvider;
+
         private readonly IItemProvider itemProvider;
 
         #endregion
@@ -35,10 +37,12 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public ItemsController(
             IItemProvider itemProvider,
-            IAreaProvider areaProvider)
+            IAreaProvider areaProvider,
+            ICompartmentProvider compartmentProvider)
         {
             this.itemProvider = itemProvider;
             this.areaProvider = areaProvider;
+            this.compartmentProvider = compartmentProvider;
         }
 
         #endregion
@@ -105,6 +109,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var areas = await this.areaProvider.GetByItemIdAvailabilityAsync(id);
 
             return this.Ok(areas);
+        }
+
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Compartment>))]
+        [ProducesResponseType(404)]
+        [HttpGet("{id}/compartments")]
+        public async Task<ActionResult<IEnumerable<Compartment>>> GetCompartments(int id)
+        {
+            var compartments = await this.compartmentProvider.GetByItemIdAsync(id);
+
+            return this.Ok(compartments);
         }
 
         [ProducesResponseType(200, Type = typeof(ItemDetails))]
