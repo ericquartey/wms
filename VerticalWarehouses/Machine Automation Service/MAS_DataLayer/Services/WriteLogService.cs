@@ -23,8 +23,6 @@ namespace Ferretto.VW.MAS_DataLayer
 
             this.dataContext.Database.EnsureCreated();
 
-            this.dataContext.Database.Migrate();
-
             webApiCommandEvent.Subscribe(this.LogWriting);
         }
 
