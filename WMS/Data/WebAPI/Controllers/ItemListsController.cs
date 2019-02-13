@@ -6,7 +6,6 @@ using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Extensions;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -14,15 +13,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ItemListsController : ControllerBase,
+    public class ItemListsController :
+        ControllerBase,
         IReadAllPagedController<ItemList>,
-        IReadSingleController<ItemList, int>
+        IReadSingleController<ItemList, int>,
+        IGetUniqueValuesController
     {
         #region Fields
 
-        private const string CollectionErrorMessage = "An error occurred while retrieving the requested set of entities.";
-
-        private readonly IItemListsProvider itemListsProvider;
+        private readonly IItemListProvider itemListProvider;
 
         private readonly ILogger logger;
 
@@ -32,10 +31,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public ItemListsController(
             ILogger<ItemListsController> logger,
-            IItemListsProvider itemListsProvider)
+            IItemListProvider itemListProvider)
         {
             this.logger = logger;
-            this.itemListsProvider = itemListsProvider;
+            this.itemListProvider = itemListProvider;
         }
 
         #endregion
@@ -43,7 +42,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Methods
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<ItemList>))]
-        [ProducesResponseType(500, Type = typeof(string))]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ItemList>>> GetAllAsync(
             int skip = 0,
@@ -52,73 +50,54 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             string orderBy = null,
             string search = null)
         {
-            try
-            {
-                var searchExpression = BuildSearchExpression(search);
-                var whereExpression = this.BuildWhereExpression<ItemList>(where);
+            var searchExpression = BuildSearchExpression(search);
+            var whereExpression = this.BuildWhereExpression<ItemList>(where);
 
-                return this.Ok(
-                    await this.itemListsProvider.GetAllAsync(
-                        skip: skip,
-                        take: take,
-                        orderBy: orderBy,
-                        whereExpression: whereExpression,
-                        searchExpression: searchExpression));
-            }
-            catch (Exception ex)
-            {
-                var message = $"An error occurred while retrieving the requested entities.";
-                this.logger.LogError(ex, message);
-                return this.StatusCode(StatusCodes.Status500InternalServerError, message);
-            }
+            return this.Ok(
+                await this.itemListProvider.GetAllAsync(
+                    skip: skip,
+                    take: take,
+                    orderBy: orderBy,
+                    whereExpression: whereExpression,
+                    searchExpression: searchExpression));
         }
 
         [ProducesResponseType(200, Type = typeof(int))]
-        [ProducesResponseType(404)]
         [HttpGet]
         [Route("api/[controller]/count")]
         public async Task<ActionResult<int>> GetAllCountAsync(string where = null, string search = null)
         {
-            try
-            {
-                var searchExpression = BuildSearchExpression(search);
-                var whereExpression = this.BuildWhereExpression<ItemList>(where);
+            var searchExpression = BuildSearchExpression(search);
+            var whereExpression = this.BuildWhereExpression<ItemList>(where);
 
-                return await this.itemListsProvider.GetAllCountAsync(
-                           whereExpression,
-                           searchExpression);
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, CollectionErrorMessage);
-                return this.BadRequest(CollectionErrorMessage);
-            }
+            return await this.itemListProvider.GetAllCountAsync(
+                       whereExpression,
+                       searchExpression);
         }
 
         [ProducesResponseType(200, Type = typeof(ItemList))]
         [ProducesResponseType(404)]
-        [ProducesResponseType(500, Type = typeof(string))]
         [HttpGet("{id}")]
         public async Task<ActionResult<ItemList>> GetByIdAsync(int id)
         {
-            try
+            var result = await this.itemListProvider.GetByIdAsync(id);
+            if (result == null)
             {
-                var result = await this.itemListsProvider.GetByIdAsync(id);
-                if (result == null)
-                {
-                    var message = $"No entity with the specified id={id} exists.";
-                    this.logger.LogWarning(message);
-                    return this.NotFound(message);
-                }
+                var message = $"No entity with the specified id={id} exists.";
+                this.logger.LogWarning(message);
+                return this.NotFound(message);
+            }
 
-                return this.Ok(result);
-            }
-            catch (Exception ex)
-            {
-                var message = $"An error occurred while retrieving the requested entity with id={id}.";
-                this.logger.LogError(ex, message);
-                return this.StatusCode(StatusCodes.Status500InternalServerError, message);
-            }
+            return this.Ok(result);
+        }
+
+        [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
+        [HttpGet]
+        [Route("unique/{propertyName}")]
+        public async Task<ActionResult<object[]>> GetUniqueValuesAsync(
+            string propertyName)
+        {
+            return this.Ok(await this.itemListProvider.GetUniqueValuesAsync(propertyName));
         }
 
         private static Expression<Func<ItemList, bool>> BuildSearchExpression(string search)

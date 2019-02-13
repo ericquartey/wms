@@ -19,7 +19,7 @@ namespace Ferretto.VW.InstallationApp
     /// <summary>
     /// Interaction logic for VerticalAxisCalibrationView.xaml
     /// </summary>
-    public partial class VerticalAxisCalibrationView : BaseView
+    public partial class VerticalAxisCalibrationView : UserControl
     {
         #region Constructors
 
@@ -28,6 +28,6 @@ namespace Ferretto.VW.InstallationApp
             this.InitializeComponent();
         }
 
-        #endregion Constructors
+        #endregion
     }
 }

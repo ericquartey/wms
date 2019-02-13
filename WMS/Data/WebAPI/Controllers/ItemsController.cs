@@ -15,11 +15,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ItemsController : ControllerBase,
+    public class ItemsController :
+        ControllerBase,
         ICreateController<ItemDetails>,
         IReadAllPagedController<Item>,
         IReadSingleController<ItemDetails, int>,
-        IUpdateController<ItemDetails>
+        IUpdateController<ItemDetails>,
+        IGetUniqueValuesController
     {
         #region Fields
 

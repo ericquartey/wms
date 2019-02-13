@@ -8,38 +8,40 @@ namespace Ferretto.VW.InstallationApp
         #region Fields
 
         private bool brakeResistanceOvertemperature = true;
+
         private bool emergencyEndRun;
+
         private bool zeroVerticalSensor = true;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
-        public System.Boolean BrakeResistanceOvertemperature { get => this.brakeResistanceOvertemperature; set => this.SetProperty(ref this.brakeResistanceOvertemperature, value); }
+        public bool BrakeResistanceOvertemperature { get => this.brakeResistanceOvertemperature; set => this.SetProperty(ref this.brakeResistanceOvertemperature, value); }
 
-        public System.Boolean EmergencyEndRun { get => this.emergencyEndRun; set => this.SetProperty(ref this.emergencyEndRun, value); }
+        public bool EmergencyEndRun { get => this.emergencyEndRun; set => this.SetProperty(ref this.emergencyEndRun, value); }
 
-        public System.Boolean ZeroVerticalSensor { get => this.zeroVerticalSensor; set => this.SetProperty(ref this.zeroVerticalSensor, value); }
+        public bool ZeroVerticalSensor { get => this.zeroVerticalSensor; set => this.SetProperty(ref this.zeroVerticalSensor, value); }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
         public void ExitFromViewMethod()
         {
-            throw new System.NotImplementedException();
+            // TODO
         }
 
         public void SubscribeMethodToEvent()
         {
-            throw new System.NotImplementedException();
+            // TODO
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            throw new System.NotImplementedException();
+            // TODO
         }
 
-        #endregion Methods
+        #endregion
     }
 }

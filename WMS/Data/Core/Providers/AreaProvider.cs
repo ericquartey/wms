@@ -27,15 +27,31 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
+        public async Task<IEnumerable<Aisle>> GetAislesAsync(int id)
+        {
+            return await this.dataContext.Aisles
+                       .Include(a => a.Area)
+                       .Where(a => a.AreaId == id)
+                       .OrderBy(a => a.Area.Name)
+                       .ThenBy(a => a.Name)
+                       .Select(a => new Aisle
+                       {
+                           Name = a.Name,
+                           AreaId = a.AreaId,
+                           AreaName = a.Area.Name,
+                       })
+                       .ToArrayAsync();
+        }
+
         public async Task<IEnumerable<Area>> GetAllAsync()
         {
             return await this.dataContext.Areas
-               .Select(a => new Area
-               {
-                   Id = a.Id,
-                   Name = a.Name
-               })
-               .ToArrayAsync();
+                       .Select(a => new Area
+                       {
+                           Id = a.Id,
+                           Name = a.Name
+                       })
+                       .ToArrayAsync();
         }
 
         public async Task<int> GetAllCountAsync()
@@ -43,38 +59,38 @@ namespace Ferretto.WMS.Data.Core.Providers
             return await this.dataContext.Areas.CountAsync();
         }
 
-        public async Task<IEnumerable<Area>> GetByItemIdAvailabilityAsync(int id)
-        {
-            return await this.dataContext.Compartments
-                             .Include(c => c.LoadingUnit)
-                             .ThenInclude(l => l.Cell)
-                             .ThenInclude(c => c.Aisle)
-                             .ThenInclude(a => a.Area)
-                             .Where(c => c.ItemId == id)
-                             .Where(c => (c.Stock - c.ReservedForPick + c.ReservedToStore) > 0)
-                             .Select(c => new
-                             {
-                                 Id = c.LoadingUnit.Cell.Aisle.AreaId,
-                                 Name = c.LoadingUnit.Cell.Aisle.Area.Name,
-                             })
-                             .Distinct()
-                             .Select(c => new Area
-                             {
-                                 Id = c.Id,
-                                 Name = c.Name,
-                             })
-                             .ToArrayAsync();
-        }
-
         public async Task<Area> GetByIdAsync(int id)
         {
             return await this.dataContext.Areas
-                 .Select(a => new Area
-                 {
-                     Id = a.Id,
-                     Name = a.Name
-                 })
-                 .SingleOrDefaultAsync(a => a.Id == id);
+                       .Select(a => new Area
+                       {
+                           Id = a.Id,
+                           Name = a.Name
+                       })
+                       .SingleOrDefaultAsync(a => a.Id == id);
+        }
+
+        public async Task<IEnumerable<Area>> GetByItemIdAvailabilityAsync(int id)
+        {
+            return await this.dataContext.Compartments
+                       .Include(c => c.LoadingUnit)
+                       .ThenInclude(l => l.Cell)
+                       .ThenInclude(c => c.Aisle)
+                       .ThenInclude(a => a.Area)
+                       .Where(c => c.ItemId == id)
+                       .Where(c => (c.Stock - c.ReservedForPick + c.ReservedToStore) > 0)
+                       .Select(c => new
+                       {
+                           Id = c.LoadingUnit.Cell.Aisle.AreaId,
+                           Name = c.LoadingUnit.Cell.Aisle.Area.Name,
+                       })
+                       .Distinct()
+                       .Select(c => new Area
+                       {
+                           Id = c.Id,
+                           Name = c.Name,
+                       })
+                       .ToArrayAsync();
         }
 
         #endregion

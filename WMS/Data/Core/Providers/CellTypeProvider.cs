@@ -51,7 +51,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                      Id = c.Id,
                      Description = c.Description
                  })
-                 .SingleOrDefaultAsync(a => a.Id == id);
+                 .SingleOrDefaultAsync(c => c.Id == id);
         }
 
         #endregion

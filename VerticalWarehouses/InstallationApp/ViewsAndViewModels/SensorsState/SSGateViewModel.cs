@@ -7,35 +7,36 @@ namespace Ferretto.VW.InstallationApp
         #region Fields
 
         private bool gateSensorA;
+
         private bool gateSensorB = true;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
-        public System.Boolean GateSensorA { get => this.gateSensorA; set => this.SetProperty(ref this.gateSensorA, value); }
+        public bool GateSensorA { get => this.gateSensorA; set => this.SetProperty(ref this.gateSensorA, value); }
 
-        public System.Boolean GateSensorB { get => this.gateSensorB; set => this.SetProperty(ref this.gateSensorB, value); }
+        public bool GateSensorB { get => this.gateSensorB; set => this.SetProperty(ref this.gateSensorB, value); }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
         public void ExitFromViewMethod()
         {
-            throw new System.NotImplementedException();
+            // TODO
         }
 
         public void SubscribeMethodToEvent()
         {
-            throw new System.NotImplementedException();
+            // TODO
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            throw new System.NotImplementedException();
+            // TODO
         }
 
-        #endregion Methods
+        #endregion
     }
 }

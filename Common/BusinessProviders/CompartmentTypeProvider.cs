@@ -110,6 +110,11 @@ namespace Ferretto.Common.BusinessProviders
 
         public Task<CompartmentType> GetByIdAsync(int id) => throw new NotSupportedException();
 
+        public CompartmentType GetNew()
+        {
+            throw new NotSupportedException();
+        }
+
         public Task<OperationResult> SaveAsync(CompartmentType model) => throw new NotSupportedException();
 
         #endregion

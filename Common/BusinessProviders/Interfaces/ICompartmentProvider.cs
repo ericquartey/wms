@@ -17,8 +17,6 @@ namespace Ferretto.Common.BusinessProviders
 
         Task<int?> GetMaxCapacityAsync(int? width, int? height, int itemId);
 
-        CompartmentDetails GetNew();
-
         IQueryable<Compartment> GetWithStatusAvailable();
 
         int GetWithStatusAvailableCount();

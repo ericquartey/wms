@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class ItemListsProvider : BaseProvider, IItemListsProvider
+    public class ItemListProvider : IItemListProvider
     {
         #region Fields
 
@@ -21,7 +21,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Constructors
 
-        public ItemListsProvider(DatabaseContext dataContext)
+        public ItemListProvider(DatabaseContext dataContext)
         {
             this.dataContext = dataContext;
         }
@@ -64,7 +64,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<object[]> GetUniqueValuesAsync(string propertyName)
         {
-            return await GetUniqueValuesAsync(
+            return await this.GetUniqueValuesAsync(
                        propertyName,
                        this.dataContext.ItemLists);
         }
@@ -92,7 +92,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         private IQueryable<ItemList> GetAllBase()
         {
             return this.dataContext.ItemLists
-                .AsNoTracking()
                 .Include(i => i.ItemListRows)
                 .Select(i => new ItemList
                 {

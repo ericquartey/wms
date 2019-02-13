@@ -10,13 +10,18 @@ namespace Ferretto.VW.InstallationApp
         #region Fields
 
         private ICommand baysButtonCommand;
+
         private IUnityContainer container;
+
         private ICommand cradleButtonCommand;
+
         private ICommand gateButtonCommand;
+
         private ICommand variousButtonCommand;
+
         private ICommand verticalButtonCommand;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -30,13 +35,13 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand VerticalButtonCommand => this.verticalButtonCommand ?? (this.verticalButtonCommand = new DelegateCommand(() => ((SSMainViewModel)this.container.Resolve<ISSMainViewModel>()).SSContentRegionCurrentViewModel = (SSVerticalAxisViewModel)this.container.Resolve<ISSVerticalAxisViewModel>()));
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
         public void ExitFromViewMethod()
         {
-            throw new System.NotImplementedException();
+            // TODO
         }
 
         public void InitializeViewModel(IUnityContainer _container)
@@ -46,14 +51,14 @@ namespace Ferretto.VW.InstallationApp
 
         public void SubscribeMethodToEvent()
         {
-            throw new System.NotImplementedException();
+            // TODO
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            throw new System.NotImplementedException();
+            // TODO
         }
 
-        #endregion Methods
+        #endregion
     }
 }

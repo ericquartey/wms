@@ -1,11 +1,7 @@
 ﻿using System.Windows;
-using Ferretto.VW.ActionBlocks;
 using Ferretto.VW.ActionBlocks.Source.ActionsBasic;
 using Ferretto.VW.InstallationApp;
-using Ferretto.VW.InverterDriver;
-using Ferretto.VW.MathLib;
 using Ferretto.VW.Navigation;
-using Ferretto.VW.RemoteIODriver;
 using Ferretto.VW.Utils.Source;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
@@ -27,7 +23,6 @@ namespace Ferretto.VW.VWApp
         {
             var catalog = (ModuleCatalog)this.ModuleCatalog;
             catalog.AddModule(typeof(InstallationAppModule));
-            catalog.AddModule(typeof(ActionsModule));
         }
 
         protected override void ConfigureViewModelLocator()
@@ -62,7 +57,6 @@ namespace Ferretto.VW.VWApp
             this.BindViewModelToView<IVerticalOffsetCalibrationViewModel, VerticalOffsetCalibrationView>();
             this.BindViewModelToView<IWeightControlViewModel, WeightControlView>();
             this.BindViewModelToView<IMainWindowViewModel, InstallationApp.MainWindow>();
-            //this.BindViewModelToView<IMainWindowViewModel, Ferretto.VW.InstallationApp.HelpMainWindow>();
         }
 
         protected override DependencyObject CreateShell()
@@ -70,9 +64,6 @@ namespace Ferretto.VW.VWApp
             NavigationService.InitializeEvents();
             NavigationService.ChangeSkinToDarkEventHandler += (Application.Current as App).ChangeSkin;
             this.InitializeData();
-            this.InitializeInverter();
-            this.InitializeIODevice();
-            this.InitializeActions();
             this.InitializeMainWindow();
 
             return (MainWindow)this.Container.Resolve<IMainWindow>();
@@ -84,37 +75,10 @@ namespace Ferretto.VW.VWApp
             Application.Current.MainWindow.Show();
         }
 
-        private void InitializeActions()
-        {
-            var positioning = new PositioningDrawer();
-            var drawerWeightDetection = new DrawerWeightDetection();
-            var converter = new Converter();
-            var calibrateVertical = new CalibrateVerticalAxis();
-            var switchMotors = new SwitchMotors();
-
-            this.Container.RegisterInstance<IPositioningDrawer>(positioning);
-            this.Container.RegisterInstance<IDrawerWeightDetection>(drawerWeightDetection);
-            this.Container.RegisterInstance<IConverter>(converter);
-            this.Container.RegisterInstance<ICalibrateVerticalAxis>(calibrateVertical);
-            this.Container.RegisterInstance<ISwitchMotors>(switchMotors);
-        }
-
         private void InitializeData()
         {
             var data = new DataManager();
             this.Container.RegisterInstance<IDataManager>(data);
-        }
-
-        private void InitializeInverter()
-        {
-            var inverter = new InverterDriver.InverterDriver();
-            this.Container.RegisterInstance<IInverterDriver>(inverter);
-        }
-
-        private void InitializeIODevice()
-        {
-            var remIO = new RemoteIODriver.RemoteIO();
-            this.Container.RegisterInstance<IRemoteIO>(remIO);
         }
 
         private void InitializeMainWindow()
@@ -126,6 +90,6 @@ namespace Ferretto.VW.VWApp
             this.Container.RegisterInstance<IMainWindow>(MainWindowVInstance);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

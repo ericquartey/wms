@@ -111,6 +111,11 @@ namespace Ferretto.Common.BusinessProviders
 
         public Task<MachineDetails> GetByIdAsync(int id) => throw new NotSupportedException();
 
+        public MachineDetails GetNew()
+        {
+            throw new NotSupportedException();
+        }
+
         public async Task<OperationResult> SaveAsync(MachineDetails model)
         {
             if (model == null)

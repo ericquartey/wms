@@ -1,15 +1,14 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Ferretto.WMS.Data.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ferretto.WMS.Data.WebAPI.Interfaces
 {
-    public interface ICountAllController
+    public interface IGetUniqueValuesController
     {
         #region Methods
 
-        Task<ActionResult<int>> GetAllCountAsync();
+        Task<ActionResult<object[]>> GetUniqueValuesAsync(string propertyName);
 
         #endregion
     }

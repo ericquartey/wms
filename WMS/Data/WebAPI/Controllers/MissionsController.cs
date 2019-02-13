@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.WebAPI.Extensions;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -12,9 +13,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MissionsController : ControllerBase,
-        IReadAllController<Mission>,
-        IReadSingleController<Mission, int>
+    public class MissionsController :
+        ControllerBase,
+        IReadAllPagedController<Mission>,
+        IReadSingleController<Mission, int>,
+        IGetUniqueValuesController
     {
         #region Fields
 
@@ -27,7 +30,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Constructors
 
         public MissionsController(
-            ILogger<ItemsController> logger,
+            ILogger<MissionsController> logger,
             IMissionProvider missionProvider)
         {
             this.logger = logger;
@@ -38,37 +41,90 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Mission>))]
-        public async Task<ActionResult<IEnumerable<Mission>>> GetAllAsync()
+        [ProducesResponseType(400, Type = typeof(string))]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Mission>>> GetAllAsync(
+            int skip = 0,
+            int take = int.MaxValue,
+            string where = null,
+            string orderBy = null,
+            string search = null)
         {
-            return this.Ok(await this.missionProvider.GetAllAsync());
+            var searchExpression = BuildSearchExpression(search);
+            var whereExpression = this.BuildWhereExpression<Mission>(where);
+
+            return this.Ok(
+                await this.missionProvider.GetAllAsync(
+                    skip,
+                    take,
+                    orderBy,
+                    whereExpression,
+                    searchExpression));
+        }
+
+        [ProducesResponseType(200, Type = typeof(int))]
+        [ProducesResponseType(404)]
+        [HttpGet]
+        [Route("count")]
+        public async Task<ActionResult<int>> GetAllCountAsync(
+            string where = null,
+            string search = null)
+        {
+            var searchExpression = BuildSearchExpression(search);
+            var whereExpression = this.BuildWhereExpression<Mission>(where);
+
+            return await this.missionProvider.GetAllCountAsync(
+                       whereExpression,
+                       searchExpression);
         }
 
         [ProducesResponseType(200, Type = typeof(Mission))]
         [ProducesResponseType(404, Type = typeof(SerializableError))]
-        [ProducesResponseType(500, Type = typeof(string))]
         [HttpGet("{id}")]
         public async Task<ActionResult<Mission>> GetByIdAsync(int id)
         {
-            try
+            var result = await this.missionProvider.GetByIdAsync(id);
+            if (result == null)
             {
-                var result = await this.missionProvider.GetByIdAsync(id);
-                if (result == null)
-                {
-                    var message = $"No entity with the specified id={id} exists.";
-                    this.logger.LogWarning(message);
-                    return this.NotFound(message);
-                }
+                var message = $"No entity with the specified id={id} exists.";
+                this.logger.LogWarning(message);
+                return this.NotFound(message);
+            }
 
-                return this.Ok(result);
-            }
-            catch (Exception ex)
+            return this.Ok(result);
+        }
+
+        [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
+        [HttpGet]
+        [Route("unique/{propertyName}")]
+        public async Task<ActionResult<object[]>> GetUniqueValuesAsync(
+            string propertyName)
+        {
+            return this.Ok(await this.missionProvider.GetUniqueValuesAsync(propertyName));
+        }
+
+        private static Expression<Func<Mission, bool>> BuildSearchExpression(string search)
+        {
+            if (string.IsNullOrWhiteSpace(search))
             {
-                var message = $"An error occurred while retrieving the requested entity with id={id}.";
-                this.logger.LogError(ex, message);
-                return this.StatusCode(StatusCodes.Status500InternalServerError, message);
+                return null;
             }
+
+            return (m) =>
+                (m.Lot != null &&
+                 m.Lot.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                ||
+                (m.RegistrationNumber != null &&
+                 m.RegistrationNumber.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                ||
+                (m.Sub1 != null &&
+                 m.Sub1.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                ||
+                (m.Sub2 != null &&
+                 m.Sub2.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                ||
+                m.Quantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
         #endregion

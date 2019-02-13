@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class ItemProvider : BaseProvider, IItemProvider
+    public class ItemProvider : IItemProvider
     {
         #region Fields
 
@@ -46,7 +46,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 FifoTimePick = model.FifoTimePick,
                 FifoTimeStore = model.FifoTimeStore,
                 Height = model.Height,
-                Id = model.Id,
                 Image = model.Image,
                 InventoryDate = model.InventoryDate,
                 InventoryTolerance = model.InventoryTolerance,
@@ -105,7 +104,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             var compartmentsCount =
                 await this.dataContext.Compartments
-                    .AsNoTracking()
                     .CountAsync(c => c.ItemId == id);
 
             var result = await this.GetAllDetailsBase()
@@ -116,7 +114,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<object[]> GetUniqueValuesAsync(string propertyName)
         {
-            return await GetUniqueValuesAsync(propertyName, this.dataContext.Items);
+            return await this.GetUniqueValuesAsync(propertyName, this.dataContext.Items);
         }
 
         public async Task<OperationResult<ItemDetails>> UpdateAsync(ItemDetails model)
@@ -142,12 +140,10 @@ namespace Ferretto.WMS.Data.Core.Providers
         private IQueryable<Item> GetAllBase()
         {
             return this.dataContext.Items
-                .AsNoTracking()
                 .Include(i => i.AbcClass)
                 .Include(i => i.ItemCategory)
                 .GroupJoin(
                     this.dataContext.Compartments
-                        .AsNoTracking()
                         .Where(c => c.ItemId != null)
                         .GroupBy(c => c.ItemId)
                         .Select(j => new
@@ -205,7 +201,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Include(i => i.MeasureUnit)
                 .GroupJoin(
                     this.dataContext.Compartments
-                        .AsNoTracking()
                         .Where(c => c.ItemId != null)
                         .GroupBy(c => c.ItemId)
                         .Select(j => new

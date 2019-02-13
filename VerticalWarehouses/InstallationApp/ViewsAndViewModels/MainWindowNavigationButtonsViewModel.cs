@@ -11,23 +11,36 @@ namespace Ferretto.VW.InstallationApp
         #region Fields
 
         public IUnityContainer Container;
-        public DataManager data;
+
         private bool isBeltBurnishingButtonActive;
+
         private bool isCellsControlButtonActive;
+
         private bool isCellsPanelControlButtonActive;
+
         private bool isDownScrollButtonActive = true;
+
         private bool isGateControlButtonActive = true;
+
         private bool isGateHeightControlButtonActive = true;
+
         private bool isInstallationStateButtonActive = true;
+
         private bool isLowSpeedMovementsTestButtonActive = true;
+
         private bool isOriginVerticalAxisButtonActive = true;
+
         private bool isSensorsStateButtonActive = true;
+
         private bool isSetYResolutionButtonActive;
+
         private bool isUpScrollButtonActive = true;
+
         private bool isVerticalOffsetCalibrationButtonActive = true;
+
         private bool isWeightControlButtonActive = true;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -38,46 +51,45 @@ namespace Ferretto.VW.InstallationApp
             NavigationService.ExitViewEventHandler += this.UpdateDataFromDataManager;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
-        public Boolean IsBeltBurnishingButtonActive { get => this.isBeltBurnishingButtonActive; set => this.SetProperty(ref this.isBeltBurnishingButtonActive, value); }
+        public bool IsBeltBurnishingButtonActive { get => this.isBeltBurnishingButtonActive; set => this.SetProperty(ref this.isBeltBurnishingButtonActive, value); }
 
-        public Boolean IsCellsControlButtonActive { get => this.isCellsControlButtonActive; set => this.SetProperty(ref this.isCellsControlButtonActive, value); }
+        public bool IsCellsControlButtonActive { get => this.isCellsControlButtonActive; set => this.SetProperty(ref this.isCellsControlButtonActive, value); }
 
-        public Boolean IsCellsPanelControlButtonActive { get => this.isCellsPanelControlButtonActive; set => this.SetProperty(ref this.isCellsPanelControlButtonActive, value); }
+        public bool IsCellsPanelControlButtonActive { get => this.isCellsPanelControlButtonActive; set => this.SetProperty(ref this.isCellsPanelControlButtonActive, value); }
 
-        public Boolean IsDownScrollButtonActive { get => this.isDownScrollButtonActive; set => this.SetProperty(ref this.isDownScrollButtonActive, value); }
+        public bool IsDownScrollButtonActive { get => this.isDownScrollButtonActive; set => this.SetProperty(ref this.isDownScrollButtonActive, value); }
 
-        public Boolean IsGateControlButtonActive { get => this.isGateControlButtonActive; set => this.SetProperty(ref this.isGateControlButtonActive, value); }
+        public bool IsGateControlButtonActive { get => this.isGateControlButtonActive; set => this.SetProperty(ref this.isGateControlButtonActive, value); }
 
-        public Boolean IsGateHeightControlButtonActive { get => this.isGateHeightControlButtonActive; set => this.SetProperty(ref this.isGateHeightControlButtonActive, value); }
+        public bool IsGateHeightControlButtonActive { get => this.isGateHeightControlButtonActive; set => this.SetProperty(ref this.isGateHeightControlButtonActive, value); }
 
-        public Boolean IsInstallationStateButtonActive { get => this.isInstallationStateButtonActive; set => this.SetProperty(ref this.isInstallationStateButtonActive, value); }
+        public bool IsInstallationStateButtonActive { get => this.isInstallationStateButtonActive; set => this.SetProperty(ref this.isInstallationStateButtonActive, value); }
 
-        public Boolean IsLowSpeedMovementsTestButtonActive { get => this.isLowSpeedMovementsTestButtonActive; set => this.SetProperty(ref this.isLowSpeedMovementsTestButtonActive, value); }
+        public bool IsLowSpeedMovementsTestButtonActive { get => this.isLowSpeedMovementsTestButtonActive; set => this.SetProperty(ref this.isLowSpeedMovementsTestButtonActive, value); }
 
-        public Boolean IsOriginVerticalAxisButtonActive { get => this.isOriginVerticalAxisButtonActive; set => this.SetProperty(ref this.isOriginVerticalAxisButtonActive, value); }
+        public bool IsOriginVerticalAxisButtonActive { get => this.isOriginVerticalAxisButtonActive; set => this.SetProperty(ref this.isOriginVerticalAxisButtonActive, value); }
 
-        public Boolean IsSensorsStateButtonActive { get => this.isSensorsStateButtonActive; set => this.SetProperty(ref this.isSensorsStateButtonActive, value); }
+        public bool IsSensorsStateButtonActive { get => this.isSensorsStateButtonActive; set => this.SetProperty(ref this.isSensorsStateButtonActive, value); }
 
-        public Boolean IsSetYResolutionButtonActive { get => this.isSetYResolutionButtonActive; set => this.SetProperty(ref this.isSetYResolutionButtonActive, value); }
+        public bool IsSetYResolutionButtonActive { get => this.isSetYResolutionButtonActive; set => this.SetProperty(ref this.isSetYResolutionButtonActive, value); }
 
-        public Boolean IsUpScrollButtonActive { get => this.isUpScrollButtonActive; set => this.SetProperty(ref this.isUpScrollButtonActive, value); }
+        public bool IsUpScrollButtonActive { get => this.isUpScrollButtonActive; set => this.SetProperty(ref this.isUpScrollButtonActive, value); }
 
-        public Boolean IsVerticalOffsetCalibrationButtonActive { get => this.isVerticalOffsetCalibrationButtonActive; set => this.SetProperty(ref this.isVerticalOffsetCalibrationButtonActive, value); }
+        public bool IsVerticalOffsetCalibrationButtonActive { get => this.isVerticalOffsetCalibrationButtonActive; set => this.SetProperty(ref this.isVerticalOffsetCalibrationButtonActive, value); }
 
-        public Boolean IsWeightControlButtonActive { get => this.isWeightControlButtonActive; set => this.SetProperty(ref this.isWeightControlButtonActive, value); }
+        public bool IsWeightControlButtonActive { get => this.isWeightControlButtonActive; set => this.SetProperty(ref this.isWeightControlButtonActive, value); }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
         public void InitializeViewModel(IUnityContainer _container)
         {
             this.Container = _container;
-            this.data = (DataManager)this.Container.Resolve<IDataManager>();
             this.UpdateDataFromDataManager();
         }
 
@@ -108,15 +120,15 @@ namespace Ferretto.VW.InstallationApp
             this.IsLowSpeedMovementsTestButtonActive = true;
             this.IsGateControlButtonActive = true;
             this.IsOriginVerticalAxisButtonActive = true;
-            this.IsBeltBurnishingButtonActive = this.data.InstallationInfo.Belt_Burnishing;
-            this.IsSetYResolutionButtonActive = this.data.InstallationInfo.Set_Y_Resolution;
-            this.IsGateHeightControlButtonActive = true; //TODO: Reference value missing in InstallationInfo file
-            this.IsWeightControlButtonActive = true; //TODO: Reference value missing in InstallationInfo file
-            this.IsVerticalOffsetCalibrationButtonActive = true; //TODO: Reference value missing in InstallationInfo file
-            this.IsCellsPanelControlButtonActive = true; //TODO: Reference value missing in InstallationInfo file
-            this.IsCellsControlButtonActive = true; //TODO: Reference value missing in InstallationInfo file
+            this.IsBeltBurnishingButtonActive = false;
+            this.IsSetYResolutionButtonActive = false;
+            this.IsGateHeightControlButtonActive = true; // TODO: Reference value missing in InstallationInfo file
+            this.IsWeightControlButtonActive = true; // TODO: Reference value missing in InstallationInfo file
+            this.IsVerticalOffsetCalibrationButtonActive = true; // TODO: Reference value missing in InstallationInfo file
+            this.IsCellsPanelControlButtonActive = true; // TODO: Reference value missing in InstallationInfo file
+            this.IsCellsControlButtonActive = true; // TODO: Reference value missing in InstallationInfo file
         }
 
-        #endregion Methods
+        #endregion
     }
 }

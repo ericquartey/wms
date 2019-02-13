@@ -9,7 +9,9 @@
 
     public enum OperationType
     {
-        Homing
+        Homing,
+        SwitchVerticalToHorizontal,
+        SwitchHorizontalToVertical
     }
 
     public enum Verbosity

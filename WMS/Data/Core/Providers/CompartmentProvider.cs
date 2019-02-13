@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class CompartmentProvider : BaseProvider, ICompartmentProvider
+    public class CompartmentProvider : ICompartmentProvider
     {
         #region Fields
 
@@ -174,7 +174,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                         ItemCategoryDescription = ict.Item.ItemCategory.Description,
                         Image = ict.Item.Image,
                     })
-                .AsNoTracking()
                 .ToArrayAsync();
         }
 
@@ -188,7 +187,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     .Include(c => c.CompartmentType)
                     .ThenInclude(ct => ct.ItemsCompartmentTypes)
                     .SelectMany(c => c.CompartmentType.ItemsCompartmentTypes)
-                    .AsNoTracking()
                     .CountAsync();
 
             var result = await this.GetAllDetailsBase()
@@ -227,7 +225,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<object[]> GetUniqueValuesAsync(string propertyName)
         {
-            return await GetUniqueValuesAsync(propertyName, this.dataContext.Compartments);
+            return await this.GetUniqueValuesAsync(propertyName, this.dataContext.Compartments);
         }
 
         public async Task<OperationResult<CompartmentDetails>> UpdateAsync(CompartmentDetails model)
@@ -279,8 +277,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     XPosition = c.XPosition,
                     YPosition = c.YPosition,
                     LoadingUnitId = c.LoadingUnitId,
-                })
-                .AsNoTracking();
+                });
         }
 
         private IQueryable<CompartmentDetails> GetAllDetailsBase()

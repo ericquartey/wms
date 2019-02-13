@@ -1,12 +1,31 @@
-﻿using Ferretto.VW.Common_Utils.Events;
+﻿using Ferretto.VW.Common_Utils.EventParameters;
+using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.InverterDriver;
-using Ferretto.VW.Common_Utils.EventParameters;
 
 namespace Ferretto.VW.MAS_InverterDriver
 {
     public partial class NewInverterDriver
     {
         #region Methods
+
+        public void ExecuteHorizontalHoming()
+        {
+            if (this.inverterAction != null)
+            {
+                this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
+                    (OperationType.Homing, OperationStatus.Error, "Inverter action has already defined", Verbosity.Info));
+            }
+            var inverterAction = new ActionBlocks.CalibrateAxis();
+            this.inverterAction = inverterAction;
+
+            this.inverterAction.EndEvent += this.HorizontalCalibration_ThrowEndEvent;
+            this.inverterAction.ErrorEvent += this.HorizontalCalibration_ThrowErrorEvent;
+            inverterAction.SetInverterDriverInterface = this.inverterDriver;
+            inverterAction.Initialize();
+
+            inverterAction.ActualCalibrationAxis = CalibrationType.HORIZONTAL_CALIBRATION;
+            inverterAction.SetAxisOrigin();
+        }
 
         public void ExecuteVerticalHoming()
         {
@@ -18,8 +37,8 @@ namespace Ferretto.VW.MAS_InverterDriver
             var inverterAction = new ActionBlocks.CalibrateAxis();
             this.inverterAction = inverterAction;
 
-            this.inverterAction.EndEvent += this.Calibration_ThrowEndEvent;
-            this.inverterAction.ErrorEvent += this.Calibration_ThrowErrorEvent;
+            this.inverterAction.EndEvent += this.VerticalCalibration_ThrowEndEvent;
+            this.inverterAction.ErrorEvent += this.VerticalCalibration_ThrowErrorEvent;
             inverterAction.SetInverterDriverInterface = this.inverterDriver;
             inverterAction.Initialize();
 
@@ -27,49 +46,38 @@ namespace Ferretto.VW.MAS_InverterDriver
             inverterAction.SetAxisOrigin();
         }
 
-        public void ExecuteHorizontalHoming()
+        private void HorizontalCalibration_ThrowEndEvent()
         {
-            if (this.inverterAction != null)
-            {
-                this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish( new Notification_EventParameter
-                    (OperationType.Homing,OperationStatus.Error,"Inverter action has already defined", Verbosity.Info));
-            }
-            var inverterAction = new ActionBlocks.CalibrateAxis();
-            this.inverterAction = inverterAction;
+            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
+                (OperationType.Homing, OperationStatus.End, "Horizontal Calibration Ended", Verbosity.Info));
 
-            this.inverterAction.EndEvent += this.Calibration_ThrowEndEvent;
-            this.inverterAction.ErrorEvent += this.Calibration_ThrowErrorEvent;
-            inverterAction.SetInverterDriverInterface = this.inverterDriver;
-            inverterAction.Initialize();
-
-            inverterAction.ActualCalibrationAxis = CalibrationType.HORIZONTAL_CALIBRATION;
-            inverterAction.SetAxisOrigin();
+            this.inverterAction.EndEvent -= this.HorizontalCalibration_ThrowEndEvent;
         }
 
-        private void Calibration_ThrowErrorEvent()
+        private void HorizontalCalibration_ThrowErrorEvent()
         {
             this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
                 (OperationType.Homing, OperationStatus.Error, "Internal inverter driver error", Verbosity.Info));
 
-            this.inverterAction.ErrorEvent -= this.Calibration_ThrowErrorEvent;
+            this.inverterAction.ErrorEvent -= this.HorizontalCalibration_ThrowErrorEvent;
         }
 
-        private void Calibration_ThrowEndEvent()
+        private void VerticalCalibration_ThrowEndEvent()
         {
-            if (((ActionBlocks.CalibrateAxis)this.inverterAction).ActualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION)
-            {
-                this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
-                    (OperationType.Homing, OperationStatus.End, "Vertival Calibration Ended", Verbosity.Info));
-            }
-            else
-            {
-                this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
-                    (OperationType.Homing, OperationStatus.End, "Horizontal Calibration Ended", Verbosity.Info));
-            }
+            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
+                (OperationType.Homing, OperationStatus.End, "Vertical Calibration Ended", Verbosity.Info));
 
-            this.inverterAction.EndEvent -= this.Calibration_ThrowEndEvent;
+            this.inverterAction.EndEvent -= this.VerticalCalibration_ThrowEndEvent;
         }
 
-        #endregion Methods
+        private void VerticalCalibration_ThrowErrorEvent()
+        {
+            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
+                (OperationType.Homing, OperationStatus.Error, "Internal inverter driver error", Verbosity.Info));
+
+            this.inverterAction.ErrorEvent -= this.VerticalCalibration_ThrowErrorEvent;
+        }
+
+        #endregion
     }
 }

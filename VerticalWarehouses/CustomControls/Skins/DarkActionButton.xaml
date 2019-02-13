@@ -25,7 +25,7 @@
     <SolidColorBrush x:Key="VWAPP_ActionButton_Background_Disabled"
                      Color="Transparent" />
     <SolidColorBrush x:Key="VWAPP_ActionButton_BorderBrush_Disabled"
-                     Color="Transparent" />
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
     <SolidColorBrush x:Key="VWAPP_ActionButton_Foreground_Disabled"
                      Color="{DynamicResource EDBGrayE}" />
 
