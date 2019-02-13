@@ -7,5 +7,11 @@
         string Type { get; }
 
         #endregion
+
+        #region Methods
+
+        void Stop();
+
+        #endregion
     }
 }

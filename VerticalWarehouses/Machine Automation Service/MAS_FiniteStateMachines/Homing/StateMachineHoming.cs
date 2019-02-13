@@ -59,6 +59,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.state = new HomingIdleState(this, this.driver, this.remoteIODriver, this.data, this.eventAggregator);
         }
 
+        public void Stop()
+        {
+            this.state.Stop();
+        }
+
         #endregion
     }
 }

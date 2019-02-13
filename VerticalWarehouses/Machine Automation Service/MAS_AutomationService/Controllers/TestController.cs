@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Prism.Events;
+﻿using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.Common_Utils.EventParameters;
+using Microsoft.AspNetCore.Mvc;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
         private readonly IEventAggregator eventAggregator;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS_AutomationService
             this.automationService = automationService;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -40,6 +40,12 @@ namespace Ferretto.VW.MAS_AutomationService
             this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish(new Command_EventParameter(CommandType.ExecuteHoming));
         }
 
-        #endregion Methods
+        [HttpGet("HomingStop")]
+        public void ExecuteStopHoming()
+        {
+            this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish(new Command_EventParameter(CommandType.ExecuteStopHoming));
+        }
+
+        #endregion
     }
 }

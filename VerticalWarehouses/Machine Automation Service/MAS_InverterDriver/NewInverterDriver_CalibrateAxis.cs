@@ -8,6 +8,28 @@ namespace Ferretto.VW.MAS_InverterDriver
     {
         #region Methods
 
+        public void ExecuteHomingStop()
+        {
+            if (this.inverterAction == null)
+            {
+                this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
+                    (OperationType.Homing, OperationStatus.Error, "Stop Homing operation failed", Verbosity.Info));
+            }
+
+            ((ActionBlocks.CalibrateAxis)this.inverterAction).StopInverter();
+            if (((ActionBlocks.CalibrateAxis)this.inverterAction).ActualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION)
+            {
+                this.inverterAction.EndEvent -= this.HorizontalCalibration_ThrowEndEvent;
+                this.inverterAction.ErrorEvent -= this.HorizontalCalibration_ThrowErrorEvent;
+            }
+            else
+            {
+                this.inverterAction.EndEvent -= this.VerticalCalibration_ThrowEndEvent;
+                this.inverterAction.ErrorEvent -= this.VerticalCalibration_ThrowErrorEvent;
+            }
+            this.inverterAction = null;
+        }
+
         public void ExecuteHorizontalHoming()
         {
             if (this.inverterAction != null)
@@ -52,6 +74,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 (OperationType.Homing, OperationStatus.End, "Horizontal Calibration Ended", Verbosity.Info));
 
             this.inverterAction.EndEvent -= this.HorizontalCalibration_ThrowEndEvent;
+            this.inverterAction = null;
         }
 
         private void HorizontalCalibration_ThrowErrorEvent()
@@ -68,6 +91,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 (OperationType.Homing, OperationStatus.End, "Vertical Calibration Ended", Verbosity.Info));
 
             this.inverterAction.EndEvent -= this.VerticalCalibration_ThrowEndEvent;
+            this.inverterAction = null;
         }
 
         private void VerticalCalibration_ThrowErrorEvent()

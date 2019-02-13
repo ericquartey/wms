@@ -32,6 +32,27 @@ namespace MAS_FiniteStateMachinesUnitTests.VerticalHoming
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void TestVerticalHomingIdleState_Stop()
+        {
+            var inverterDriverMock = new Mock<INewInverterDriver>();
+            var writeLogServiceMock = new Mock<IWriteLogService>();
+            var eventAggregatorMock = new Mock<IEventAggregator>();
+            var notifyDriverEvent = new InverterDriver_NotificationEvent();
+            var notifyFSMEvent = new FiniteStateMachines_NotificationEvent();
+            eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<InverterDriver_NotificationEvent>()).Returns(notifyDriverEvent);
+            eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<FiniteStateMachines_NotificationEvent>()).Returns(notifyFSMEvent);
+
+            var stateMachine = new StateMachineVerticalHoming(inverterDriverMock.Object, writeLogServiceMock.Object, eventAggregatorMock.Object);
+
+            var state = new VerticalHomingIdleState(stateMachine, inverterDriverMock.Object, writeLogServiceMock.Object, eventAggregatorMock.Object);
+
+            state.Stop();
+
+            Assert.AreEqual(state.Type, "Vertical Homing Idle State");
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void TestVerticalHomingIdleState_TransitionToStateDone_Success()
         {
             var inverterDriverMock = new Mock<INewInverterDriver>();

@@ -44,6 +44,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Methods
 
+        public void Stop()
+        {
+            this.driver.ExecuteHomingStop();
+
+            var notifyEvent = new Notification_EventParameter(OperationType.Homing, OperationStatus.Stopped, "Homing stopped", Verbosity.Info);
+            this.eventAggregator.GetEvent<FiniteStateMachines_NotificationEvent>().Publish(notifyEvent);
+        }
+
         private void notifyEventHandler(Notification_EventParameter notification)
         {
             switch (notification.OperationStatus)

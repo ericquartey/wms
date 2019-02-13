@@ -84,6 +84,19 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         }
 
                         this.homing.Start();
+                        //this.verticalHoming.Start();
+                        break;
+                    }
+
+                case CommandType.ExecuteStopHoming:
+                    {
+                        if (null == this.homing)
+                        {
+                            throw new ArgumentNullException();
+                        }
+
+                        this.homing.Stop();
+                        //this.verticalHoming.Stop();
                         break;
                     }
                 default:

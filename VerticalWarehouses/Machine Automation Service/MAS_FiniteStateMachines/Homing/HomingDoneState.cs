@@ -50,6 +50,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Methods
 
+        public void Stop()
+        {
+        }
+
         private void notifyEventHandler(Notification_EventParameter notification)
         {
             if (notification.OperationType == OperationType.SwitchHorizontalToVertical)
