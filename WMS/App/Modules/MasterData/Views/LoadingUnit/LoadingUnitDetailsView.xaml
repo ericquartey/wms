@@ -79,7 +79,7 @@
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_save_black_24dp.png"
                                GlyphSize="Custom" />
-            <wms:ActionBarItem Command="{Binding RevertCommand, IsAsync=True}"
+            <wms:ActionBarItem Command="{Binding RevertCommand}"
                                Content="{x:Static res:General.Revert}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_undo_black_24dp.png"
@@ -225,26 +225,24 @@
 
                 <GroupBox Grid.Row="2"
                           Grid.Column="0"
-                          Grid.ColumnSpan="2"                          
-                          VerticalAlignment="Stretch"
+                          Grid.ColumnSpan="2"
                           MinHeight="190"
+                          VerticalAlignment="Stretch"
                           Header="{x:Static res:MasterData.CompartmentsLayoutOverview}"
                           Visibility="{Binding Model.LoadingUnitTypeHasCompartments, Converter={StaticResource BTVC}}">
-                    <wms:WmsTrayControl                                     
-                                        IsCompartmentSelectable="{Binding IsCompartmentSelectableTray, Mode=OneWay}"                                        
+                    <wms:WmsTrayControl HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        Compartments="{Binding LoadingUnitDetails.Compartments}"
+                                        DimensionHeight="{Binding LoadingUnitDetails.Length}"
+                                        DimensionWidth="{Binding LoadingUnitDetails.Width}"
+                                        IsCompartmentSelectable="{Binding IsCompartmentSelectableTray, Mode=OneWay}"
+                                        RulerInfo="mm"
                                         SelectedColorFilterFunc="{Binding TrayColoringFunc, Mode=OneWay}"
                                         SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"
                                         ShowBackground="True"
-                                        RulerInfo="mm"
-                                        Compartments="{Binding LoadingUnitDetails.Compartments}"
-                                        DimensionWidth="{Binding LoadingUnitDetails.Width}"
-                                        DimensionHeight="{Binding LoadingUnitDetails.Length}"
                                         ShowLittleMark="False"
                                         ShowMark="True"
-                                        ShowMiddleMark="False"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Stretch"                        
-                                        />
+                                        ShowMiddleMark="False" />
                 </GroupBox>
 
                 <GroupBox Grid.Row="3"

@@ -30,12 +30,12 @@
         <wms:ActionBar Margin="10,10,10,0"
                        HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
-            <wms:ActionBarItem Command="{Binding SaveCommand, IsAsync=True}"
+            <wms:ActionBarItem Command="{Binding SaveCommand}"
                                Content="{x:Static res:General.Save}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_save_black_24dp.png"
                                GlyphSize="Custom" />
-            <wms:ActionBarItem Command="{Binding RevertCommand, IsAsync=True}"
+            <wms:ActionBarItem Command="{Binding RevertCommand}"
                                Content="{x:Static res:General.Revert}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_undo_black_24dp.png"
@@ -319,14 +319,13 @@
                           Header="{x:Static res:MasterData.CompartmentPosition}"
                           Visibility="{Binding Compartment.LoadingUnitHasCompartments, Converter={StaticResource BTVC}}">
 
-                    <wms:WmsTrayControl IsCompartmentSelectable="{Binding IsCompartmentSelectableTray, Mode=OneWay}"                                      
-                                        SelectedItem="{Binding SelectedCompartmentTray, Mode=TwoWay}"
-                                        ShowBackground="False"
-                                        RulerInfo="mm"
-                                        Compartments="{Binding LoadingUnitDetails.Compartments}"
-                                        DimensionWidth="{Binding LoadingUnitDetails.Width}"
+                    <wms:WmsTrayControl Compartments="{Binding LoadingUnitDetails.Compartments}"
                                         DimensionHeight="{Binding LoadingUnitDetails.Length}"
-                                        />
+                                        DimensionWidth="{Binding LoadingUnitDetails.Width}"
+                                        IsCompartmentSelectable="{Binding IsCompartmentSelectableTray, Mode=OneWay}"
+                                        RulerInfo="mm"
+                                        SelectedItem="{Binding SelectedCompartmentTray, Mode=TwoWay}"
+                                        ShowBackground="False" />
                 </GroupBox>
 
             </Grid>
