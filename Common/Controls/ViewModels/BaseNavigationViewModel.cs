@@ -79,7 +79,7 @@ namespace Ferretto.Common.Controls
         {
             // Nothing to do here.
             // Derived classes can implement custom logic overriding this method.
-            await new Task(() => { });
+            await Task.Run(() => { });
         }
 
         protected virtual void OnDisappear()
