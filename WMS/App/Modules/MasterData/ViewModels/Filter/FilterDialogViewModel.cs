@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System.Windows.Input;
 using DevExpress.Data.Filtering;
 using DevExpress.Xpf.Core.FilteringUI;
@@ -45,8 +46,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        protected override void OnAppear()
+        protected override async Task OnAppearAsync()
         {
+            await base.OnAppearAsync();
+
             if (this.Data is FilterDialogData filterDialogData)
             {
                 this.FilteringContext = filterDialogData.FilteringContext;

@@ -1,0 +1,189 @@
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Ferretto.WMS.Data.Core.Interfaces;
+using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.WebAPI.Extensions;
+using Ferretto.WMS.Data.WebAPI.Interfaces;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Ferretto.WMS.Data.WebAPI.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class LoadingUnitsController :
+        ControllerBase,
+        ICreateController<LoadingUnitDetails>,
+        IReadAllPagedController<LoadingUnit>,
+        IReadSingleController<LoadingUnitDetails, int>,
+        IUpdateController<LoadingUnitDetails>,
+        IGetUniqueValuesController
+    {
+        #region Fields
+
+        private readonly ICompartmentProvider compartmentProvider;
+
+        private readonly ILoadingUnitProvider loadingUnitProvider;
+
+        #endregion
+
+        #region Constructors
+
+        public LoadingUnitsController(
+            ILoadingUnitProvider loadingUnitProvider,
+            ICompartmentProvider compartmentProvider)
+        {
+            this.loadingUnitProvider = loadingUnitProvider;
+            this.compartmentProvider = compartmentProvider;
+        }
+
+        #endregion
+
+        #region Methods
+
+        [ProducesResponseType(201, Type = typeof(LoadingUnitDetails))]
+        [ProducesResponseType(400)]
+        [HttpPost]
+        public async Task<ActionResult<LoadingUnitDetails>> CreateAsync(LoadingUnitDetails model)
+        {
+            var result = await this.loadingUnitProvider.CreateAsync(model);
+
+            if (!result.Success)
+            {
+                return this.BadRequest();
+            }
+
+            return this.Created(this.Request.GetUri(), result.Entity);
+        }
+
+        [ProducesResponseType(200, Type = typeof(IEnumerable<LoadingUnit>))]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<LoadingUnit>>> GetAllAsync(
+            int skip = 0,
+            int take = int.MaxValue,
+            string where = null,
+            string orderBy = null,
+            string search = null)
+        {
+            var searchExpression = BuildSearchExpression(search);
+            var whereExpression = this.BuildWhereExpression<LoadingUnit>(where);
+
+            return this.Ok(
+                await this.loadingUnitProvider.GetAllAsync(
+                    skip,
+                    take,
+                    orderBy,
+                    whereExpression,
+                    searchExpression));
+        }
+
+        [ProducesResponseType(200, Type = typeof(int))]
+        [ProducesResponseType(404)]
+        [HttpGet("count")]
+        public async Task<ActionResult<int>> GetAllCountAsync(
+            string where = null,
+            string search = null)
+        {
+            var searchExpression = BuildSearchExpression(search);
+            var whereExpression = this.BuildWhereExpression<LoadingUnit>(where);
+
+            return await this.loadingUnitProvider.GetAllCountAsync(
+                       whereExpression,
+                       searchExpression);
+        }
+
+        [ProducesResponseType(200, Type = typeof(LoadingUnitDetails))]
+        [ProducesResponseType(404)]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<LoadingUnitDetails>> GetByIdAsync(int id)
+        {
+            var result = await this.loadingUnitProvider.GetByIdAsync(id);
+            if (result == null)
+            {
+                return this.NotFound();
+            }
+
+            return this.Ok(result);
+        }
+
+        [ProducesResponseType(200, Type = typeof(IEnumerable<CompartmentDetails>))]
+        [ProducesResponseType(404)]
+        [HttpGet("{id}/compartments")]
+        public async Task<ActionResult<IEnumerable<CompartmentDetails>>> GetCompartments(int id)
+        {
+            var compartments = await this.compartmentProvider.GetByLoadingUnitIdAsync(id);
+
+            return this.Ok(compartments);
+        }
+
+        [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
+        [HttpGet("unique/{propertyName}")]
+        public async Task<ActionResult<object[]>> GetUniqueValuesAsync(
+            string propertyName)
+        {
+            return this.Ok(await this.loadingUnitProvider.GetUniqueValuesAsync(propertyName));
+        }
+
+        [ProducesResponseType(200, Type = typeof(LoadingUnitDetails))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [HttpPatch]
+        public async Task<ActionResult<LoadingUnitDetails>> UpdateAsync(LoadingUnitDetails model)
+        {
+            if (model == null)
+            {
+                return this.BadRequest();
+            }
+
+            var result = await this.loadingUnitProvider.UpdateAsync(model);
+            if (!result.Success)
+            {
+                if (result is NotFoundOperationResult<LoadingUnitDetails>)
+                {
+                    return this.NotFound();
+                }
+
+                return this.BadRequest();
+            }
+
+            return this.Ok(result.Entity);
+        }
+
+        private static Expression<Func<LoadingUnit, bool>> BuildSearchExpression(string search)
+        {
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                return null;
+            }
+
+            return (l) =>
+                (l.AbcClassDescription != null &&
+                 l.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                ||
+                (l.AisleName != null &&
+                 l.AisleName.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                ||
+                (l.AreaName != null &&
+                 l.AreaName.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                ||
+                (l.CellPositionDescription != null &&
+                 l.CellPositionDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                ||
+                (l.LoadingUnitStatusDescription != null &&
+                 l.LoadingUnitStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                ||
+                (l.LoadingUnitTypeDescription != null &&
+                 l.LoadingUnitTypeDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                ||
+                l.CellColumn.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                l.CellFloor.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                l.CellNumber.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        #endregion
+    }
+}

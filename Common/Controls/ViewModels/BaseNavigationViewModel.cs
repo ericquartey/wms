@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Prism.Mvvm;
@@ -48,7 +49,9 @@ namespace Ferretto.Common.Controls
 
         public void Appear()
         {
-            this.OnAppear();
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            this.OnAppearAsync();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
         public virtual bool CanDisappear()
@@ -72,10 +75,11 @@ namespace Ferretto.Common.Controls
             return false;
         }
 
-        protected virtual void OnAppear()
+        protected virtual async Task OnAppearAsync()
         {
             // Nothing to do here.
             // Derived classes can implement custom logic overriding this method.
+            await new Task(() => { });
         }
 
         protected virtual void OnDisappear()

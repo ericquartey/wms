@@ -1,29 +1,35 @@
-﻿namespace Ferretto.VW.MAS_DataLayer
+﻿using System.Collections.Generic;
+
+namespace Ferretto.VW.MAS_DataLayer
 {
     public interface IDataLayer
     {
-        int GetIntConfigurationValue(ConfigurationValueEnum configurationValueEnum);
+        int GetIntegerConfigurationValue(ConfigurationValueEnum configurationValueEnum);
 
         decimal GetDecimalConfigurationValue(ConfigurationValueEnum configurationValueEnum);
 
         string GetStringConfigurationValue(ConfigurationValueEnum configurationValueEnum);
 
-        int GetIntRuntimeValue(RuntimeValueEnum runtimeValueEnum);
+        int GetIntegerRuntimeValue(RuntimeValueEnum runtimeValueEnum);
 
         decimal GetDecimalRuntimeValue(RuntimeValueEnum runtimeValueEnum);
 
         string GetStringRuntimeValue(RuntimeValueEnum runtimeValueEnum);
 
-        void SetIntConfigurationValue(ConfigurationValueEnum configurationValueEnum, int value);
+        void SetIntegerConfigurationValue(ConfigurationValueEnum configurationValueEnum, int value);
 
         void SetDecimalConfigurationValue(ConfigurationValueEnum configurationValueEnum, decimal value);
 
         void SetStringConfigurationValue(ConfigurationValueEnum configurationValueEnum, string value);
 
-        void SetIntRuntimeValue(RuntimeValueEnum runtimeValueEnum, int value);
+        void SetIntegerRuntimeValue(RuntimeValueEnum runtimeValueEnum, int value);
 
         void SetDecimalRuntimeValue(RuntimeValueEnum runtimeValueEnum, decimal value);
 
         void SetStringRuntimeValue(RuntimeValueEnum runtimeValueEnum, string value);
+
+        List<Cell> GetCellList();
+
+        bool SetCellList(List<Cell> listCells);
     }
 }

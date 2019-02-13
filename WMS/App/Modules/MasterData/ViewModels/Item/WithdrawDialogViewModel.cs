@@ -16,15 +16,25 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly IAreaProvider areaProvider = ServiceLocator.Current.GetInstance<IAreaProvider>();
+
         private readonly IBayProvider bayProvider = ServiceLocator.Current.GetInstance<IBayProvider>();
+
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
+
         private bool advancedWithdraw;
+
         private ICommand advancedWithdrawCommand;
+
         private bool isBusy;
+
         private ItemWithdraw itemWithdraw;
+
         private ICommand runWithdrawCommand;
+
         private ICommand simpleWithdrawCommand;
+
         private bool validationEnabled;
+
         private string validationError;
 
         #endregion
@@ -100,8 +110,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        protected override async void OnAppear()
+        protected override async Task OnAppearAsync()
         {
+            await base.OnAppearAsync();
             var modelId = (int?)this.Data.GetType().GetProperty("Id")?.GetValue(this.Data);
             if (!modelId.HasValue)
             {
@@ -184,6 +195,7 @@ namespace Ferretto.WMS.Modules.MasterData
                                                        this.bayProvider.GetByAreaId(this.ItemWithdraw.AreaId.Value) :
                                                        null;
                     break;
+
                 case nameof(this.ItemWithdraw.ItemDetails):
                     this.ItemWithdraw.AreaChoices = this.ItemWithdraw.ItemDetails != null ?
                                                         this.areaProvider.GetByItemIdAvailability(this.ItemWithdraw.ItemDetails.Id) :

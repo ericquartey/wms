@@ -18,6 +18,8 @@ namespace Ferretto.Common.Controls
 
         protected Tile selectedFilterTile;
 
+        private ICommand addCommand;
+
         private IEnumerable<IFilterDataSource<TModel>> filterDataSources;
 
         private IEnumerable<Tile> filterTiles;
@@ -46,6 +48,9 @@ namespace Ferretto.Common.Controls
         #endregion
 
         #region Properties
+
+        public ICommand AddCommand => this.addCommand ??
+              (this.addCommand = new DelegateCommand(this.ExecuteAddCommand));
 
         public TModel CurrentItem
         {
@@ -144,14 +149,18 @@ namespace Ferretto.Common.Controls
             }).ConfigureAwait(true);
         }
 
+        protected virtual void ExecuteAddCommand()
+        {
+        }
+
         protected void ExecuteRefreshCommand()
         {
             this.LoadRelatedData();
         }
 
-        protected override async void OnAppear()
+        protected override async Task OnAppearAsync()
         {
-            base.OnAppear();
+            await base.OnAppearAsync();
 
             try
             {

@@ -4,6 +4,11 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         #region Constructors
 
+        public SuccessOperationResult()
+            : base(true)
+        {
+        }
+
         public SuccessOperationResult(T model)
             : base(true, model)
         {

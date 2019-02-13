@@ -111,15 +111,17 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
-        public async Task<int> DeleteAsync(int id)
+        public async Task<OperationResult<CompartmentDetails>> DeleteAsync(int id)
         {
             var existingModel = this.dataContext.Compartments.Find(id);
-            if (existingModel != null)
+            if (existingModel == null)
             {
-                this.dataContext.Remove(existingModel);
+                return new NotFoundOperationResult<CompartmentDetails>();
             }
 
-            return await this.dataContext.SaveChangesAsync();
+            this.dataContext.Remove(existingModel);
+            await this.dataContext.SaveChangesAsync();
+            return new SuccessOperationResult<CompartmentDetails>();
         }
 
         public async Task<IEnumerable<Compartment>> GetAllAsync(
@@ -174,7 +176,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                         ItemCategoryDescription = ict.Item.ItemCategory.Description,
                         Image = ict.Item.Image,
                     })
-                .AsNoTracking()
                 .ToArrayAsync();
         }
 
@@ -188,7 +189,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     .Include(c => c.CompartmentType)
                     .ThenInclude(ct => ct.ItemsCompartmentTypes)
                     .SelectMany(c => c.CompartmentType.ItemsCompartmentTypes)
-                    .AsNoTracking()
                     .CountAsync();
 
             var result = await this.GetAllDetailsBase()
@@ -279,8 +279,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     XPosition = c.XPosition,
                     YPosition = c.YPosition,
                     LoadingUnitId = c.LoadingUnitId,
-                })
-                .AsNoTracking();
+                });
         }
 
         private IQueryable<CompartmentDetails> GetAllDetailsBase()

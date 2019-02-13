@@ -1,39 +1,91 @@
 ﻿using Ferretto.VW.Common_Utils.EventParameters;
+using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.MAS_DataLayer;
+using Ferretto.VW.MAS_InverterDriver;
+using Ferretto.VW.MAS_IODriver;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
-    // The horizontal axis homing is done
     public class HorizontalHomingDoneState : IState
     {
         #region Fields
 
-        private StateMachineHoming context;
+        private readonly IWriteLogService data;
 
-        private MAS_DataLayer.IWriteLogService data;
+        private readonly INewInverterDriver driver;
 
-        private MAS_InverterDriver.INewInverterDriver driver;
+        private readonly IEventAggregator eventAggregator;
 
-        #endregion Fields
+        private readonly INewRemoteIODriver remoteIODriver;
+
+        private StateMachineHoming parent;
+
+        #endregion
 
         #region Constructors
 
-        public HorizontalHomingDoneState(StateMachineHoming parent, MAS_InverterDriver.INewInverterDriver iDriver, MAS_DataLayer.IWriteLogService iWriteLogService)
+        public HorizontalHomingDoneState(StateMachineHoming parent, INewInverterDriver iDriver, INewRemoteIODriver remoteIODriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
         {
-            this.context = parent;
+            this.parent = parent;
             this.driver = iDriver;
+            this.remoteIODriver = remoteIODriver;
             this.data = iWriteLogService;
+            this.eventAggregator = eventAggregator;
 
-            this.data.LogWriting(new Command_EventParameter(CommandType.ExecuteHoming));
+            if (!this.parent.HorizontalHomingAlreadyDone)
+            {
+                this.parent.HorizontalHomingAlreadyDone = true;
 
-            this.context.HorizontalHomingAlreadyDone = true;
+                this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
+
+                this.remoteIODriver.SwitchHorizontalToVertical();
+            }
+            else
+            {
+                this.parent.ChangeState(new HomingDoneState(this.parent, this.driver, this.remoteIODriver, this.data, this.eventAggregator));
+            }
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public string Type => "Horizontal homing done";
 
-        #endregion Properties
+        #endregion
+
+        #region Methods
+
+        private void notifyEventHandler(Notification_EventParameter notification)
+        {
+            if (notification.OperationType == OperationType.SwitchHorizontalToVertical)
+            {
+                switch (notification.OperationStatus)
+                {
+                    case OperationStatus.End:
+                        {
+                            this.parent.ChangeState(new VerticalSwitchDoneState(this.parent, this.driver, this.remoteIODriver, this.data, this.eventAggregator));
+
+                            break;
+                        }
+                    case OperationStatus.Error:
+                        {
+                            break;
+                        }
+                    default:
+                        {
+                            break;
+                        }
+                }
+            }
+
+            if (this.parent.HorizontalHomingAlreadyDone)
+            {
+                this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Unsubscribe(this.notifyEventHandler);
+            }
+        }
+
+        #endregion
     }
 }

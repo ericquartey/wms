@@ -2,6 +2,8 @@
 {
     public enum ItemListType
     {
+        NotSpecified,
+
         Pick = 'P',
 
         Put = 'U',

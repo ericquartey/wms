@@ -84,6 +84,7 @@ namespace Ferretto.WMS.Data.WebAPI
                 options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Ferretto.Common.EF")));
 
             services.AddTransient<IAbcClassProvider, AbcClassProvider>();
+            services.AddTransient<IAisleProvider, AisleProvider>();
             services.AddTransient<IAreaProvider, AreaProvider>();
             services.AddTransient<IBayProvider, BayProvider>();
             services.AddTransient<ICellPositionProvider, CellPositionProvider>();
@@ -96,7 +97,9 @@ namespace Ferretto.WMS.Data.WebAPI
             services.AddTransient<IItemCategoryProvider, ItemCategoryProvider>();
             services.AddTransient<IItemCompartmentTypeProvider, ItemCompartmentTypeProvider>();
             services.AddTransient<IItemListProvider, ItemListProvider>();
+            services.AddTransient<IItemListRowProvider, ItemListRowProvider>();
             services.AddTransient<IItemProvider, ItemProvider>();
+            services.AddTransient<ILoadingUnitProvider, LoadingUnitProvider>();
             services.AddTransient<ILoadingUnitStatusProvider, LoadingUnitStatusProvider>();
             services.AddTransient<ILoadingUnitTypeProvider, LoadingUnitTypeProvider>();
             services.AddTransient<IMachineProvider, MachineProvider>();
