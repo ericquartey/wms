@@ -9,12 +9,13 @@ using Prism.Events;
 namespace MAS_FiniteStateMachinesUnitTests.VerticalHoming
 {
     [TestClass]
-    public class VerticalHomingDoneStateTest
+    public class VerticalHomingDoneStateUnitTest
     {
         #region Methods
 
         [TestMethod]
-        public void VerticalHomingDoneStateTestCreate()
+        [TestCategory("Unit")]
+        public void TestVerticalHomingDoneState_Create()
         {
             var inverterDriverMock = new Mock<INewInverterDriver>();
             var writeLogServiceMock = new Mock<IWriteLogService>();
