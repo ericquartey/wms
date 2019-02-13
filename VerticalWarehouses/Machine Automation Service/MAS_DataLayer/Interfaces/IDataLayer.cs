@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS_DataLayer
+﻿using System.Collections.Generic;
+
+namespace Ferretto.VW.MAS_DataLayer
 {
     public interface IDataLayer
     {
@@ -25,5 +27,9 @@
         void SetDecimalRuntimeValue(RuntimeValueEnum runtimeValueEnum, decimal value);
 
         void SetStringRuntimeValue(RuntimeValueEnum runtimeValueEnum, string value);
+
+        List<Cell> GetCellList();
+
+        bool SetCellList(List<Cell> listCells);
     }
 }
