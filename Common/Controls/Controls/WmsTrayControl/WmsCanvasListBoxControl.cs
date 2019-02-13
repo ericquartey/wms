@@ -43,16 +43,14 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty MinTrayWidthProperty =
                      DependencyProperty.Register(nameof(MinTrayWidth), typeof(double), typeof(WmsCanvasListBoxControl));
 
-        public static readonly DependencyProperty OriginXProperty = DependencyProperty.Register(nameof(OriginX), typeof(double), typeof(WmsCanvasListBoxControl), new UIPropertyMetadata(0.0));
+        public static readonly DependencyProperty OriginHorizontalProperty =
+                       DependencyProperty.Register(nameof(OriginHorizontal), typeof(OriginHorizontal), typeof(WmsCanvasListBoxControl), new FrameworkPropertyMetadata(OriginHorizontal.Left));
 
-        /// <summary>
-        /// Tray Origin Y;
-        /// </summary>
-        public static readonly DependencyProperty OriginYProperty =
-            DependencyProperty.Register(nameof(OriginY), typeof(double), typeof(WmsCanvasListBoxControl), new UIPropertyMetadata(0.0));
+        public static readonly DependencyProperty OriginVerticalProperty =
+                       DependencyProperty.Register(nameof(OriginVertical), typeof(OriginVertical), typeof(WmsCanvasListBoxControl), new FrameworkPropertyMetadata(OriginVertical.Bottom));
 
         public static readonly DependencyProperty ParentHeightProperty =
-            DependencyProperty.Register(nameof(ParentHeight), typeof(double), typeof(WmsCanvasListBoxControl), new UIPropertyMetadata(0.0));
+                            DependencyProperty.Register(nameof(ParentHeight), typeof(double), typeof(WmsCanvasListBoxControl), new UIPropertyMetadata(0.0));
 
         public static readonly DependencyProperty ParentWidthProperty =
             DependencyProperty.Register(nameof(ParentWidth), typeof(double), typeof(WmsCanvasListBoxControl), new UIPropertyMetadata(0.0));
@@ -71,6 +69,9 @@ namespace Ferretto.Common.Controls
 
         public static readonly DependencyProperty ShowBackgroundProperty = DependencyProperty.Register(nameof(ShowBackground),
             typeof(bool), typeof(WmsCanvasListBoxControl), new FrameworkPropertyMetadata(true, OnShowBackgroundChanged));
+
+        public static readonly DependencyProperty ShowRulerProperty = DependencyProperty.Register(nameof(ShowRuler), typeof(bool), typeof(WmsCanvasListBoxControl),
+                                                                                                            new UIPropertyMetadata(true, OnShowRulerPropertyChanged));
 
         public static readonly DependencyProperty StepPixelProperty = DependencyProperty.Register(nameof(StepPixel), typeof(double), typeof(WmsCanvasListBoxControl));
 
@@ -168,16 +169,16 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(MinTrayWidthProperty, value);
         }
 
-        public double OriginX
+        public OriginHorizontal OriginHorizontal
         {
-            get => (double)this.GetValue(OriginXProperty);
-            set => this.SetValue(OriginXProperty, value);
+            get => (OriginHorizontal)this.GetValue(OriginHorizontalProperty);
+            set => this.SetValue(OriginHorizontalProperty, value);
         }
 
-        public double OriginY
+        public OriginVertical OriginVertical
         {
-            get => (double)this.GetValue(OriginYProperty);
-            set => this.SetValue(OriginYProperty, value);
+            get => (OriginVertical)this.GetValue(OriginVerticalProperty);
+            set => this.SetValue(OriginVerticalProperty, value);
         }
 
         public double ParentHeight
@@ -223,6 +224,12 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(ShowBackgroundProperty, value);
         }
 
+        public bool ShowRuler
+        {
+            get => (bool)this.GetValue(ShowRulerProperty);
+            set => this.SetValue(ShowRulerProperty, value);
+        }
+
         public double Step
         {
             get => (double)this.GetValue(StepProperty);
@@ -262,20 +269,20 @@ namespace Ferretto.Common.Controls
             return mm > 0 ? (pixel * value / mm) : value;
         }
 
-        public static Position ConvertWithStandardOrigin(Position compartmentOrigin, double originX, double originY,
+        public static Point ConvertWithStandardOrigin(Point compartmentOrigin, OriginHorizontal originHorizontal, OriginVertical originVertical,
                                                          double dimensionWidth, double dimensionHeight, int widthCompartment, int heightCompartment)
         {
-            var ret = new Position { X = compartmentOrigin.X, Y = compartmentOrigin.Y };
+            var ret = new Point { X = compartmentOrigin.X, Y = compartmentOrigin.Y };
 
-            if (originX.Equals(0) && originY.Equals(dimensionHeight))
+            if (originHorizontal == OriginHorizontal.Left && originVertical == OriginVertical.Bottom)
             {
                 ret.Y = (int)dimensionHeight - compartmentOrigin.Y - heightCompartment;
             }
-            else if (originX.Equals(dimensionWidth) && originY.Equals(0))
+            else if (originHorizontal == OriginHorizontal.Right && originVertical == OriginVertical.Top)
             {
                 ret.X = dimensionWidth - compartmentOrigin.X - widthCompartment;
             }
-            else if (originX.Equals(dimensionWidth) && originY.Equals(dimensionHeight))
+            else if (originHorizontal == OriginHorizontal.Right && originVertical == OriginVertical.Bottom)
             {
                 ret.X = dimensionWidth - compartmentOrigin.X - widthCompartment;
                 ret.Y = dimensionHeight - compartmentOrigin.Y - heightCompartment;
@@ -396,7 +403,7 @@ namespace Ferretto.Common.Controls
                     Height = compartment.Height ?? 0,
                     Left = compartment.XPosition ?? 0,
                     Top = compartment.YPosition ?? 0,
-                    ColorFill = this.SelectedColorFilterFunc?.Invoke(compartment, this.SelectedCompartment) ?? Application.Current.Resources[DEFAULTCOMPARTMENTCOLOR].ToString(),
+                    ColorFill = this.GetColorFilter(compartment),
                     IsReadOnly = this.IsReadOnly,
                     IsSelectable = this.IsCompartmentSelectable
                 };
@@ -405,6 +412,18 @@ namespace Ferretto.Common.Controls
             }
 
             this.ItemsSource = newItems;
+        }
+
+        private string GetColorFilter(ICompartment compartment)
+        {
+            var colorFill = Application.Current.Resources[DEFAULTCOMPARTMENTCOLOR].ToString();
+            if (this.IsReadOnly == false &&
+                this.SelectedColorFilterFunc != null)
+            {
+                colorFill = this.SelectedColorFilterFunc.Invoke(compartment, this.SelectedCompartment);
+            }
+
+            return colorFill;
         }
 
         public void UpdateIsReadOnly()
@@ -416,6 +435,7 @@ namespace Ferretto.Common.Controls
 
             foreach (var compartment in this.Items.AsEnumerable())
             {
+                compartment.ColorFill = this.GetColorFilter(compartment.CompartmentDetails);
                 compartment.IsReadOnly = this.IsReadOnly;
             }
         }
@@ -446,12 +466,12 @@ namespace Ferretto.Common.Controls
             var stepXPixel = ConvertMillimetersToPixel(this.Step, this.TrayWidth, this.DimensionWidth);
             var stepYPixel = ConvertMillimetersToPixel(this.Step, this.TrayHeight, this.DimensionHeight);
 
-            var posY = (this.OriginY.Equals(0)) ? stepYPixel : this.ActualHeight - stepYPixel - OFFSET;
+            var posY = this.OriginVertical == OriginVertical.Top ? stepYPixel : this.ActualHeight - stepYPixel - OFFSET;
             while (posY > 0 && posY < this.TrayHeight)
             {
                 points.Add(new Point(0, posY));
                 points.Add(new Point(this.TrayWidth, posY));
-                if (this.OriginY.Equals(0))
+                if (this.OriginVertical == OriginVertical.Top)
                 {
                     posY += stepYPixel;
                 }
@@ -461,14 +481,12 @@ namespace Ferretto.Common.Controls
                 }
             }
 
-            var isOriginZero = this.OriginX.Equals(0);
-            var posX = isOriginZero ? stepXPixel : this.ActualWidth - stepXPixel - OFFSET;
+            var posX = this.OriginHorizontal == OriginHorizontal.Left ? stepXPixel : this.ActualWidth - stepXPixel - OFFSET;
             while (posX > 0 && posX < this.TrayWidth)
             {
                 points.Add(new Point(posX, 0));
                 points.Add(new Point(posX, this.TrayHeight));
-                var isOriginXZero = this.OriginX == 0;
-                if (isOriginXZero)
+                if (this.OriginHorizontal == OriginHorizontal.Left)
                 {
                     posX += stepXPixel;
                 }
@@ -572,6 +590,14 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        private static void OnShowRulerPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is WmsCanvasListBoxControl wmsCanvasListBox)
+            {
+                wmsCanvasListBox.UpdateLayout();
+            }
+        }
+
         private static void OnStepChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is WmsCanvasListBoxControl wmsCanvasListBox)
@@ -583,7 +609,7 @@ namespace Ferretto.Common.Controls
         private List<Point> GetBordersPoints()
         {
             var points = new List<Point>();
-            if (this.ShowBackground == false)
+            if (this.ShowRuler == false)
             {
                 points.Add(new Point(BORDEROFFSET, BORDEROFFSET));
                 points.Add(new Point(this.TrayWidth, BORDEROFFSET));
@@ -620,7 +646,7 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            var compartmentOrigin = new Position
+            var compartmentOrigin = new Point
             {
                 X = compartment.CompartmentDetails.XPosition.Value,
                 Y = compartment.CompartmentDetails.YPosition.Value
@@ -628,8 +654,8 @@ namespace Ferretto.Common.Controls
 
             var convertedCompartmentOrigin = ConvertWithStandardOrigin(
                 compartmentOrigin,
-                this.OriginX,
-                this.OriginY,
+                this.OriginHorizontal,
+                this.OriginVertical,
                 this.DimensionWidth,
                 this.DimensionHeight,
                 (int)compartment.CompartmentDetails.Width,
