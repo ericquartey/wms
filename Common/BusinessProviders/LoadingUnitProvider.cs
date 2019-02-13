@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
@@ -29,13 +30,17 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly IAbcClassProvider abcClassProvider;
 
+        private readonly ICellPositionProvider cellPositionProvider;
+
         private readonly ICellProvider cellProvider;
 
         private readonly ICompartmentProvider compartmentProvider;
 
         private readonly IDatabaseContextService dataContext;
 
-        private readonly EnumerationProvider enumerationProvider;
+        private readonly ILoadingUnitStatusProvider loadingUnitStatusProvider;
+
+        private readonly ILoadingUnitTypeProvider loadingUnitTypeProvider;
 
         #endregion
 
@@ -45,21 +50,25 @@ namespace Ferretto.Common.BusinessProviders
             ICellProvider cellProvider,
             ICompartmentProvider compartmentProvider,
             IDatabaseContextService dataContext,
-            EnumerationProvider enumerationProvider,
-            IAbcClassProvider abcClassProvider)
+            IAbcClassProvider abcClassProvider,
+            ICellPositionProvider cellPositionProvider,
+            ILoadingUnitStatusProvider loadingUnitStatusProvider,
+            ILoadingUnitTypeProvider loadingUnitTypeProvider)
         {
             this.cellProvider = cellProvider;
             this.compartmentProvider = compartmentProvider;
             this.dataContext = dataContext;
-            this.enumerationProvider = enumerationProvider;
             this.abcClassProvider = abcClassProvider;
+            this.cellPositionProvider = cellPositionProvider;
+            this.loadingUnitStatusProvider = loadingUnitStatusProvider;
+            this.loadingUnitTypeProvider = loadingUnitTypeProvider;
         }
 
         #endregion
 
         #region Methods
 
-        public Task<OperationResult> AddAsync(LoadingUnitDetails model) => throw new NotSupportedException();
+        public Task<IOperationResult> AddAsync(LoadingUnitDetails model) => throw new NotSupportedException();
 
         public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
@@ -191,9 +200,9 @@ namespace Ferretto.Common.BusinessProviders
                 .SingleAsync();
 
             loadingUnitDetails.AbcClassChoices = await this.abcClassProvider.GetAllAsync();
-            loadingUnitDetails.CellPositionChoices = this.enumerationProvider.GetAllCellPositions();
-            loadingUnitDetails.LoadingUnitStatusChoices = this.enumerationProvider.GetAllLoadingUnitStatuses();
-            loadingUnitDetails.LoadingUnitTypeChoices = this.enumerationProvider.GetAllLoadingUnitTypes();
+            loadingUnitDetails.CellPositionChoices = await this.cellPositionProvider.GetAllAsync();
+            loadingUnitDetails.LoadingUnitStatusChoices = await this.loadingUnitStatusProvider.GetAllAsync();
+            loadingUnitDetails.LoadingUnitTypeChoices = await this.loadingUnitTypeProvider.GetAllAsync();
             foreach (var compartment in this.compartmentProvider.GetByLoadingUnitId(id))
             {
                 loadingUnitDetails.AddCompartment(compartment);
@@ -282,7 +291,7 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public async Task<OperationResult> SaveAsync(LoadingUnitDetails model)
+        public async Task<IOperationResult> SaveAsync(LoadingUnitDetails model)
         {
             if (model == null)
             {

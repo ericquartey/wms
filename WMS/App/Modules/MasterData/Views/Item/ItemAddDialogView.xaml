@@ -234,7 +234,7 @@
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-create-36.png"
                                GlyphSize="Custom" />
 
-            <wms:ActionBarItem Command="{Binding ClearCommand, IsAsync=True}"
+            <wms:ActionBarItem Command="{Binding ClearCommand}"
                                Content="{x:Static res:General.Clear}"
                                CustomGlyphSize="36,36"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-erase-36.png"

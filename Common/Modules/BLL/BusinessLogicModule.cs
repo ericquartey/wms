@@ -56,6 +56,19 @@ namespace Ferretto.Common.Modules.BLL
             this.Container.RegisterType<IMissionProvider, MissionProvider>();
             this.Container.RegisterType<ISchedulerRequestProvider, SchedulerRequestProvider>();
 
+            this.Container.RegisterType<IAbcClassProvider, AbcClassProvider>();
+            this.Container.RegisterType<ICellPositionProvider, CellPositionProvider>();
+            this.Container.RegisterType<ICellStatusProvider, CellStatusProvider>();
+            this.Container.RegisterType<ICellTypeProvider, CellTypeProvider>();
+            this.Container.RegisterType<ICompartmentStatusProvider, CompartmentStatusProvider>();
+            this.Container.RegisterType<ICompartmentTypeProvider, CompartmentTypeProvider>();
+            this.Container.RegisterType<IItemCategoryProvider, ItemCategoryProvider>();
+            this.Container.RegisterType<ILoadingUnitStatusProvider, LoadingUnitStatusProvider>();
+            this.Container.RegisterType<ILoadingUnitTypeProvider, LoadingUnitTypeProvider>();
+            this.Container.RegisterType<IMaterialStatusProvider, MaterialStatusProvider>();
+            this.Container.RegisterType<IMeasureUnitProvider, MeasureUnitProvider>();
+            this.Container.RegisterType<IPackageTypeProvider, PackageTypeProvider>();
+
             this.Container.RegisterType<IDatabaseContextService, DatabaseContextService>();
 
             this.RegisterSchedulerServiceEndpoints();
@@ -77,7 +90,19 @@ namespace Ferretto.Common.Modules.BLL
             var serviceEndPoint = new System.Uri(ConfigurationManager.AppSettings["DataServiceEndpoint"]);
 
             this.Container.RegisterInstance(DataServiceFactory.GetService<IItemsDataService>(serviceEndPoint));
+
             this.Container.RegisterInstance(DataServiceFactory.GetService<IAbcClassesDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<ICellPositionsDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<ICellStatusesDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<ICellTypesDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<ICompartmentStatusesDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<ICompartmentTypesDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<IItemCategoriesDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitStatusesDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitTypesDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<IMaterialStatusesDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<IMeasureUnitsDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<IPackageTypesDataService>(serviceEndPoint));
         }
 
         private void RegisterSchedulerServiceEndpoints()

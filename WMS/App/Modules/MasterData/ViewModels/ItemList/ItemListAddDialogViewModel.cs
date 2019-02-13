@@ -38,7 +38,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async Task OnAppearAsync()
         {
-            await base.OnAppearAsync();
+            await base.OnAppearAsync().ConfigureAwait(true);
 
             this.LoadData();
         }
