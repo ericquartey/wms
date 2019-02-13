@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
-using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -98,6 +98,21 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             return requests;
         }
 
+        public async Task<IOperationResult<ItemList>> UpdateAsync(ItemList model)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            var existingList = this.databaseContext.ItemLists.Find(model.Id);
+            this.databaseContext.Entry(existingList).CurrentValues.SetValues(model);
+
+            await this.databaseContext.SaveChangesAsync();
+
+            return new SuccessOperationResult<ItemList>(model);
+        }
+
         private async Task<IEnumerable<SchedulerRequest>> BuildRequestsAsync(ItemList list, ListExecutionRequest executionRequest)
         {
             var requests = new List<SchedulerRequest>(list.Rows.Count());
@@ -147,21 +162,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             }
 
             return requests;
-        }
-
-        private async Task<OperationResult<ItemList>> UpdateAsync(ItemList model)
-        {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            var existingList = this.databaseContext.ItemLists.Find(model.Id);
-            this.databaseContext.Entry(existingList).CurrentValues.SetValues(model);
-
-            await this.databaseContext.SaveChangesAsync();
-
-            return new SuccessOperationResult<ItemList>(model);
         }
 
         #endregion

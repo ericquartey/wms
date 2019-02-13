@@ -2,11 +2,11 @@
 
 namespace Ferretto.WMS.Scheduler.Core.Interfaces
 {
-    public interface IItemSchedulerProvider
+    public interface ICompartmentSchedulerProvider
     {
         #region Methods
 
-        Task<Item> GetByIdAsync(int itemId);
+        Task<Compartment> UpdateAsync(Compartment compartment);
 
         #endregion
     }

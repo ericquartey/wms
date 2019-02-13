@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
-using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
 
 namespace Ferretto.WMS.Scheduler.Core.Providers
@@ -24,7 +24,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         #region Methods
 
-        public async Task<OperationResult<ItemListRow>> UpdateAsync(ItemListRow model)
+        public async Task<IOperationResult<ItemListRow>> UpdateAsync(ItemListRow model)
         {
             if (model == null)
             {

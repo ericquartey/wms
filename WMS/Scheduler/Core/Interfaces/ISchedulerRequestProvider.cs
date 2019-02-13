@@ -8,7 +8,9 @@ namespace Ferretto.WMS.Scheduler.Core
     {
         #region Methods
 
-        Task CreateRangeAsync(IEnumerable<SchedulerRequest> requests);
+        Task<SchedulerRequest> CreateAsync(SchedulerRequest model);
+
+        Task<IEnumerable<SchedulerRequest>> CreateRangeAsync(IEnumerable<SchedulerRequest> models);
 
         Task<SchedulerRequest> FullyQualifyWithdrawalRequestAsync(SchedulerRequest schedulerRequest);
 
@@ -18,6 +20,10 @@ namespace Ferretto.WMS.Scheduler.Core
 
         IQueryable<T> OrderCompartmentsByManagementType<T>(IQueryable<T> compartments, ItemManagementType type)
                     where T : IOrderableCompartment;
+
+        Task<SchedulerRequest> UpdateAsync(SchedulerRequest request);
+
+        Task<SchedulerRequest> WithdrawAsync(SchedulerRequest request);
 
         #endregion
     }

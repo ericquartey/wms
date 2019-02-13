@@ -13,6 +13,8 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
     {
         #region Fields
 
+        private readonly ICompartmentSchedulerProvider compartmentSchedulerProvider;
+
         private readonly DatabaseContext databaseContext;
 
         private readonly IItemSchedulerProvider itemSchedulerProvider;
@@ -28,12 +30,14 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
         public MissionSchedulerProvider(
             DatabaseContext databaseContext,
             ISchedulerRequestProvider schedulerRequestProvider,
+            ICompartmentSchedulerProvider compartmentSchedulerProvider,
             IItemSchedulerProvider itemSchedulerProvider,
             ILogger<MissionSchedulerProvider> logger)
         {
             this.databaseContext = databaseContext;
             this.logger = logger;
             this.schedulerRequestProvider = schedulerRequestProvider;
+            this.compartmentSchedulerProvider = compartmentSchedulerProvider;
             this.itemSchedulerProvider = itemSchedulerProvider;
         }
 
@@ -63,17 +67,17 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     switch (request.Type)
                     {
                         case OperationType.Withdrawal:
-                            missions = await this.CreateMissionsFromRequest(request);
+                            missions = await this.CreateMissionsFromRequestAsync(request);
                             break;
 
                         case OperationType.Insertion:
-                            throw new NotImplementedException();
+                            throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because insertion requests are not yet implemented.");
 
                         case OperationType.Replacement:
-                            throw new NotImplementedException();
+                            throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because replacement requests are not yet implemented.");
 
                         case OperationType.Reorder:
-                            throw new NotImplementedException();
+                            throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because reorder requests are not yet implemented.");
 
                         default:
                             throw new InvalidOperationException($"Cannot process scheduler request id={request.Id} because operation type cannot be understood.");
@@ -86,7 +90,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             }
         }
 
-        private async Task<IEnumerable<Mission>> CreateMissionsFromRequest(SchedulerRequest request)
+        private async Task<IEnumerable<Mission>> CreateMissionsFromRequestAsync(SchedulerRequest request)
         {
             var item = await this.itemSchedulerProvider.GetByIdAsync(request.ItemId);
 
@@ -111,8 +115,8 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     compartment.ReservedForPick += quantityToExtractFromCompartment;
                     request.DispatchedQuantity += quantityToExtractFromCompartment;
 
-                    await this.dataProvider.Update(compartment);
-                    await this.dataProvider.Update(request);
+                    await this.compartmentSchedulerProvider.UpdateAsync(compartment);
+                    await this.schedulerRequestProvider.UpdateAsync(request);
 
                     var mission = new Mission
                     {
@@ -143,6 +147,33 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             this.logger.LogDebug($"Scheduler Request (id={request.Id}): a total of {missions.Count} mission(s) were created.");
 
             return missions;
+        }
+
+        private async Task CreateRangeAsync(IEnumerable<Mission> models)
+        {
+            var missions = models.Select(
+                m => new Common.DataModels.Mission
+                {
+                    BayId = m.BayId,
+                    CellId = m.CellId,
+                    CompartmentId = m.CompartmentId,
+                    ItemId = m.ItemId,
+                    ItemListId = m.ItemListId,
+                    ItemListRowId = m.ItemListRowId,
+                    LoadingUnitId = m.LoadingUnitId,
+                    MaterialStatusId = m.MaterialStatusId,
+                    PackageTypeId = m.PackageTypeId,
+
+                    // TODO: add Priority field
+                    RegistrationNumber = m.RegistrationNumber,
+                    RequiredQuantity = m.Quantity,
+                    Status = (Common.DataModels.MissionStatus)m.Status,
+                    Sub1 = m.Sub1,
+                    Sub2 = m.Sub2,
+                    Type = (Common.DataModels.MissionType)m.Type
+                });
+
+            await this.databaseContext.Missions.AddRangeAsync(missions);
         }
 
         #endregion

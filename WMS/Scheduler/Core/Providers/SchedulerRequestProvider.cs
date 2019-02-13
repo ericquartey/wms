@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Ferretto.Common.EF;
+using Ferretto.WMS.Scheduler.Core.Interfaces;
+using Ferretto.WMS.Scheduler.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
-namespace Ferretto.WMS.Scheduler.Core
+namespace Ferretto.WMS.Scheduler.Core.Providers
 {
     internal class SchedulerRequestProvider : ISchedulerRequestProvider
     {
@@ -13,22 +17,54 @@ namespace Ferretto.WMS.Scheduler.Core
 
         private readonly DatabaseContext dataContext;
 
+        private readonly ILogger<SchedulerRequestProvider> logger;
+
+        private readonly IMissionSchedulerProvider missionSchedulerProvider;
+
         #endregion
 
         #region Constructors
 
-        public SchedulerRequestProvider(DatabaseContext dataContext)
+        public SchedulerRequestProvider(
+            DatabaseContext dataContext,
+            ILogger<SchedulerRequestProvider> logger,
+            IMissionSchedulerProvider missionSchedulerProvider)
         {
             this.dataContext = dataContext;
+            this.logger = logger;
+            this.missionSchedulerProvider = missionSchedulerProvider;
         }
 
         #endregion
 
         #region Methods
 
-        public Task CreateRangeAsync(IEnumerable<SchedulerRequest> requests)
+        public async Task<SchedulerRequest> CreateAsync(SchedulerRequest model)
         {
-            throw new NotImplementedException();
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            var entry = this.dataContext.SchedulerRequests.Add(
+                CreateDataModel(model));
+
+            if (await this.dataContext.SaveChangesAsync() > 0)
+            {
+                model.Id = entry.Entity.Id;
+                return model;
+            }
+
+            return null;
+        }
+
+        public async Task<IEnumerable<SchedulerRequest>> CreateRangeAsync(IEnumerable<SchedulerRequest> models)
+        {
+            var requests = models.Select(r => CreateDataModel(r));
+
+            await this.dataContext.AddRangeAsync(requests);
+
+            return models;
         }
 
         public async Task<SchedulerRequest> FullyQualifyWithdrawalRequestAsync(SchedulerRequest schedulerRequest)
@@ -272,48 +308,62 @@ namespace Ferretto.WMS.Scheduler.Core
             }
         }
 
-        public int Save(SchedulerRequest model)
+        public async Task<SchedulerRequest> UpdateAsync(SchedulerRequest request)
         {
-            if (model == null)
+            if (request == null)
             {
-                throw new ArgumentNullException(nameof(model));
+                throw new ArgumentNullException(nameof(request));
             }
 
-            lock (this.dataContext)
-            {
-                var existingModel = this.dataContext.Areas.Find(model.Id);
+            var existingModel = this.dataContext.SchedulerRequests.Find(request.Id);
+            this.dataContext.Entry(existingModel).CurrentValues.SetValues(request);
 
-                this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+            await this.dataContext.SaveChangesAsync();
 
-                return this.dataContext.SaveChanges();
-            }
+            return request;
         }
 
-        #endregion
-
-        #region Classes
-
-        private class CompartmentSet : IOrderableCompartment
+        public async Task<SchedulerRequest> WithdrawAsync(SchedulerRequest request)
         {
-            #region Properties
+            SchedulerRequest qualifiedRequest = null;
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                qualifiedRequest = await this.FullyQualifyWithdrawalRequestAsync(request);
+                if (qualifiedRequest != null)
+                {
+                    await this.CreateAsync(qualifiedRequest);
 
-            public int Availability { get; set; }
+                    scope.Complete();
+                    this.logger.LogDebug($"Scheduler Request (id={qualifiedRequest.Id}): Withdrawal for item={qualifiedRequest.ItemId} was accepted and stored.");
+                }
+            }
 
-            public DateTime? FirstStoreDate { get; set; }
+            await this.missionSchedulerProvider.CreateForPendingRequestsAsync();
 
-            public string Lot { get; set; }
+            return qualifiedRequest;
+        }
 
-            public int? MaterialStatusId { get; set; }
-
-            public int? PackageTypeId { get; set; }
-
-            public string RegistrationNumber { get; set; }
-
-            public string Sub1 { get; set; }
-
-            public string Sub2 { get; set; }
-
-            #endregion
+        private static Common.DataModels.SchedulerRequest CreateDataModel(SchedulerRequest model)
+        {
+            return new Common.DataModels.SchedulerRequest
+            {
+                AreaId = model.AreaId,
+                BayId = model.BayId,
+                IsInstant = model.IsInstant,
+                ItemId = model.ItemId,
+                ListId = model.ListId,
+                ListRowId = model.ListRowId,
+                LoadingUnitId = model.LoadingUnitId,
+                LoadingUnitTypeId = model.LoadingUnitTypeId,
+                Lot = model.Lot,
+                MaterialStatusId = model.MaterialStatusId,
+                PackageTypeId = model.PackageTypeId,
+                RegistrationNumber = model.RegistrationNumber,
+                OperationType = (Common.DataModels.OperationType)(int)model.Type,
+                RequestedQuantity = model.RequestedQuantity,
+                Sub1 = model.Sub1,
+                Sub2 = model.Sub2
+            };
         }
 
         #endregion

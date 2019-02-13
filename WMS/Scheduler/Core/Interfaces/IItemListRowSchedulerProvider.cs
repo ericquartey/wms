@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.WMS.Data.Core.Models;
+using Ferretto.Common.BLL.Interfaces;
 
 namespace Ferretto.WMS.Scheduler.Core.Interfaces
 {
@@ -7,7 +7,7 @@ namespace Ferretto.WMS.Scheduler.Core.Interfaces
     {
         #region Methods
 
-        Task<OperationResult<ItemListRow>> UpdateAsync(ItemListRow model);
+        Task<IOperationResult<ItemListRow>> UpdateAsync(ItemListRow model);
 
         #endregion
     }
