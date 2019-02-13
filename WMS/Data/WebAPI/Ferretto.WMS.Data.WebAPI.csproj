@@ -19,18 +19,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Autogen|AnyCPU'">
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Content Remove="nswag.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="nswag.json" />
-  </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
@@ -56,7 +44,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\EF\Ferretto.Common.EF.csproj" />
     <ProjectReference Include="..\..\..\Common\Utils\Ferretto.Common.Utils.csproj" />
@@ -86,10 +74,10 @@
     <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
-  <Target Name="NSwag" AfterTargets="Build" Condition=" '$(Configuration)' == 'autogen' and $(TargetFramework.StartsWith('netcore')) ">
-    <Copy SourceFiles="@(Reference)" DestinationFolder="$(OutDir)References" />
-    <Exec Command="$(NSwagExe_Core21) run nswag.json /variables:Configuration=$(Configuration)" />
-    <RemoveDir Directories="$(OutDir)References" />
-  </Target>
+    <Target Name="NSwag" AfterTargets="Build" Condition=" '$(Configuration)' == 'autogen' and $(TargetFramework.StartsWith('netcore')) ">
+        <Copy SourceFiles="@(Reference)" DestinationFolder="$(OutDir)References" />
+        <Exec Command="$(NSwagExe_Core21) run nswag.json /variables:Configuration=$(Configuration)" />
+        <RemoveDir Directories="$(OutDir)References" />
+    </Target>
 
 </Project>

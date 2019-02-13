@@ -1,5 +1,11 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.WMS.Data.Core.Interfaces;
+using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.WebAPI.Extensions;
+using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -7,13 +13,17 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ItemListRowsController : ControllerBase
+    public class ItemListRowsController :
+        ControllerBase,
+        IReadAllPagedController<ItemListRow>,
+        IReadSingleController<ItemListRowDetails, int>,
+        IGetUniqueValuesController
     {
         #region Fields
 
-        private readonly ILogger logger;
+        private readonly IItemListRowProvider itemListRowProvider;
 
-        private readonly Scheduler.Core.IWarehouse warehouse;
+        private readonly ILogger logger;
 
         #endregion
 
@@ -21,51 +31,100 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public ItemListRowsController(
             ILogger<ItemListRowsController> logger,
-            Scheduler.Core.IWarehouse warehouse)
+            IItemListRowProvider itemListRowProvider)
         {
             this.logger = logger;
-            this.warehouse = warehouse;
+            this.itemListRowProvider = itemListRowProvider;
         }
 
         #endregion
 
         #region Methods
 
-        [HttpPost(nameof(Execute))]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(422)]
-        public async Task<ActionResult> Execute(Scheduler.Core.ListRowExecutionRequest request)
+        [ProducesResponseType(200, Type = typeof(IEnumerable<ItemListRow>))]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ItemListRow>>> GetAllAsync(
+            int skip = 0,
+            int take = int.MaxValue,
+            string where = null,
+            string orderBy = null,
+            string search = null)
         {
-            if (request == null)
+            var searchExpression = BuildSearchExpression(search);
+            var whereExpression = this.BuildWhereExpression<ItemListRow>(where);
+
+            return this.Ok(
+                await this.itemListRowProvider.GetAllAsync(
+                    skip: skip,
+                    take: take,
+                    orderBy: orderBy,
+                    whereExpression: whereExpression,
+                    searchExpression: searchExpression));
+        }
+
+        [ProducesResponseType(200, Type = typeof(int))]
+        [HttpGet]
+        [Route("api/[controller]/count")]
+        public async Task<ActionResult<int>> GetAllCountAsync(string where = null, string search = null)
+        {
+            var searchExpression = BuildSearchExpression(search);
+            var whereExpression = this.BuildWhereExpression<ItemListRow>(where);
+
+            return await this.itemListRowProvider.GetAllCountAsync(
+                       whereExpression,
+                       searchExpression);
+        }
+
+        [ProducesResponseType(200, Type = typeof(ItemListRowDetails))]
+        [ProducesResponseType(404)]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ItemListRowDetails>> GetByIdAsync(int id)
+        {
+            var result = await this.itemListRowProvider.GetByIdAsync(id);
+            if (result == null)
             {
-                return this.BadRequest();
+                var message = $"No entity with the specified id={id} exists.";
+                this.logger.LogWarning(message);
+                return this.NotFound(message);
             }
 
-            if (!this.ModelState.IsValid)
+            return this.Ok(result);
+        }
+
+        [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
+        [HttpGet]
+        [Route("unique/{propertyName}")]
+        public async Task<ActionResult<object[]>> GetUniqueValuesAsync(
+            string propertyName)
+        {
+            return this.Ok(await this.itemListRowProvider.GetUniqueValuesAsync(propertyName));
+        }
+
+        private static Expression<Func<ItemListRow, bool>> BuildSearchExpression(string search)
+        {
+            if (string.IsNullOrWhiteSpace(search))
             {
-                return this.BadRequest(this.ModelState);
+                return null;
             }
 
-            try
-            {
-                var acceptedRequest = await this.warehouse.PrepareListRowForExecutionAsync(request.ListRowId, request.AreaId, request.BayId);
-                if (acceptedRequest == null)
-                {
-                    this.logger.LogWarning($"Request of execution for list row (id={request.ListRowId}) could not be processed.");
-
-                    return this.UnprocessableEntity(this.ModelState);
-                }
-
-                this.logger.LogInformation($"Request of execution for list row (id={request.ListRowId}) was accepted.");
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, $"An error occurred while processing the execution request for list row (id={request.ListRowId}).");
-                return this.BadRequest(ex.Message);
-            }
-
-            return this.Ok();
+            return (i) =>
+                (i.Code != null &&
+                 i.Code.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                ||
+                (i.ItemDescription != null &&
+                 i.ItemDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                ||
+                (i.ItemUnitMeasure != null &&
+                 i.ItemUnitMeasure.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                ||
+                (i.MaterialStatusDescription != null &&
+                 i.MaterialStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                ||
+                i.DispatchedQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.RequiredQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.RowPriority.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
         #endregion

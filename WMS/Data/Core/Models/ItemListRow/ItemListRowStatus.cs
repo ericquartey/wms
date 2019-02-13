@@ -1,17 +1,17 @@
 ﻿namespace Ferretto.WMS.Data.Core.Models
 {
-    public enum MissionStatus
+    public enum ItemListRowStatus
     {
         NotSpecified,
 
-        New = 'N',
-
         Waiting = 'W',
 
-        Executing = 'X',
+        Executing = 'E',
 
         Completed = 'C',
 
-        Error = 'E'
+        Incomplete = 'I',
+
+        Suspended = 'S'
     }
 }
