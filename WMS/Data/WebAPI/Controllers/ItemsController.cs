@@ -95,7 +95,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(200, Type = typeof(int))]
-        [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404)]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync(
