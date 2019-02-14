@@ -65,7 +65,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<Item>))]
-        [ProducesResponseType(400, Type = typeof(string))]
+        [ProducesResponseType(400)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Item>>> GetAllAsync(
             int skip = 0,
@@ -114,7 +114,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<Compartment>))]
         [ProducesResponseType(404)]
         [HttpGet("{id}/compartments")]
-        public async Task<ActionResult<IEnumerable<Compartment>>> GetCompartments(int id)
+        public async Task<ActionResult<IEnumerable<Compartment>>> GetCompartmentsAsync(int id)
         {
             var compartments = await this.compartmentProvider.GetByItemIdAsync(id);
 

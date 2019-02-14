@@ -111,7 +111,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<CompartmentDetails>))]
         [ProducesResponseType(404)]
         [HttpGet("{id}/compartments")]
-        public async Task<ActionResult<IEnumerable<CompartmentDetails>>> GetCompartments(int id)
+        public async Task<ActionResult<IEnumerable<CompartmentDetails>>> GetCompartmentsAsync(int id)
         {
             var compartments = await this.compartmentProvider.GetByLoadingUnitIdAsync(id);
 
