@@ -30,6 +30,43 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
+        public async Task<OperationResult<ItemListRowDetails>> CreateAsync(ItemListRowDetails model)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            var entry = await this.dataContext.ItemListRows.AddAsync(new Common.DataModels.ItemListRow
+            {
+                Code = model.Code,
+                DispatchedQuantity = model.DispatchedQuantity,
+                ItemId = model.ItemId,
+                ItemListId = model.ItemListId,
+                Lot = model.Lot,
+                MaterialStatusId = model.MaterialStatusId,
+                PackageTypeId = model.PackageTypeId,
+                Priority = model.RowPriority,
+                RegistrationNumber = model.RegistrationNumber,
+                RequiredQuantity = model.RequiredQuantity,
+                Status = (Common.DataModels.ItemListRowStatus)model.ItemListRowStatus,
+                Sub1 = model.Sub1,
+                Sub2 = model.Sub2
+            });
+
+            var changedEntitiesCount = await this.dataContext.SaveChangesAsync();
+            if (changedEntitiesCount > 0)
+            {
+                model.Id = entry.Entity.Id;
+                model.CompletionDate = entry.Entity.CompletionDate;
+                model.CreationDate = entry.Entity.CreationDate;
+                model.LastExecutionDate = entry.Entity.LastExecutionDate;
+                model.LastModificationDate = entry.Entity.LastModificationDate;
+            }
+
+            return new SuccessOperationResult<ItemListRowDetails>(model);
+        }
+
         public async Task<IEnumerable<ItemListRow>> GetAllAsync(
             int skip,
             int take,

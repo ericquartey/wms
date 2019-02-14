@@ -6,6 +6,7 @@ using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Extensions;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -15,8 +16,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     [ApiController]
     public class ItemListRowsController :
         ControllerBase,
+        ICreateController<ItemListRowDetails>,
         IReadAllPagedController<ItemListRow>,
         IReadSingleController<ItemListRowDetails, int>,
+        IUpdateController<ItemListRowDetails>,
         IGetUniqueValuesController
     {
         #region Fields
@@ -40,6 +43,21 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #endregion
 
         #region Methods
+
+        [ProducesResponseType(201, Type = typeof(ItemListRowDetails))]
+        [ProducesResponseType(400)]
+        [HttpPost]
+        public async Task<ActionResult<ItemListRowDetails>> CreateAsync(ItemListRowDetails model)
+        {
+            var result = await this.itemListRowProvider.CreateAsync(model);
+
+            if (!result.Success)
+            {
+                return this.BadRequest();
+            }
+
+            return this.Created(this.Request.GetUri(), result.Entity);
+        }
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<ItemListRow>))]
         [HttpGet]
@@ -96,6 +114,31 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             string propertyName)
         {
             return this.Ok(await this.itemListRowProvider.GetUniqueValuesAsync(propertyName));
+        }
+
+        [ProducesResponseType(200, Type = typeof(ItemListRowDetails))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [HttpPatch]
+        public async Task<ActionResult<ItemListRowDetails>> UpdateAsync(ItemListRowDetails model)
+        {
+            if (model == null)
+            {
+                return this.BadRequest();
+            }
+
+            var result = await this.itemListRowProvider.UpdateAsync(model);
+            if (!result.Success)
+            {
+                if (result is NotFoundOperationResult<ItemListRowDetails>)
+                {
+                    return this.NotFound();
+                }
+
+                return this.BadRequest();
+            }
+
+            return this.Ok(result.Entity);
         }
 
         private static Expression<Func<ItemListRow, bool>> BuildSearchExpression(string search)
