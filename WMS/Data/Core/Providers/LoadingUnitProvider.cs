@@ -75,26 +75,24 @@ namespace Ferretto.WMS.Data.Core.Providers
             int skip,
             int take,
             string orderBy = null,
-            Expression<Func<LoadingUnit, bool>> whereExpression = null,
+            IExpression whereExpression = null,
             Expression<Func<LoadingUnit, bool>> searchExpression = null)
         {
             return await this.GetAllBase()
-                       .ApplyTransform(
+                       .ToArrayAsync(
                            skip,
                            take,
                            orderBy,
                            whereExpression,
-                           searchExpression)
-                       .ToArrayAsync();
+                           searchExpression);
         }
 
         public async Task<int> GetAllCountAsync(
-            Expression<Func<LoadingUnit, bool>> whereExpression = null,
+            IExpression whereExpression = null,
             Expression<Func<LoadingUnit, bool>> searchExpression = null)
         {
             return await this.GetAllBase()
-                       .ApplyTransform(whereExpression, searchExpression)
-                       .CountAsync();
+                       .CountAsync(whereExpression, searchExpression);
         }
 
         public async Task<IEnumerable<LoadingUnitDetails>> GetByCellIdAsync(int id)

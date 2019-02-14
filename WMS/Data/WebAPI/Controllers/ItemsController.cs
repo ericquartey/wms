@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.WebAPI.Extensions;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -79,7 +79,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             try
             {
                 var searchExpression = BuildSearchExpression(search);
-                var whereExpression = this.BuildWhereExpression<Item>(where);
+                var whereExpression = where.AsIExpression();
 
                 return this.Ok(
                     await this.itemProvider.GetAllAsync(
@@ -106,7 +106,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             try
             {
                 var searchExpression = BuildSearchExpression(search);
-                var whereExpression = this.BuildWhereExpression<Item>(where);
+                var whereExpression = where.AsIExpression();
 
                 return await this.itemProvider.GetAllCountAsync(
                            whereExpression,

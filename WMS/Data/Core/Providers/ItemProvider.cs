@@ -80,26 +80,24 @@ namespace Ferretto.WMS.Data.Core.Providers
             int skip,
             int take,
             string orderBy = null,
-            Expression<Func<Item, bool>> whereExpression = null,
+            IExpression whereExpression = null,
             Expression<Func<Item, bool>> searchExpression = null)
         {
             return await this.GetAllBase()
-                       .ApplyTransform(
+                       .ToArrayAsync(
                            skip,
                            take,
                            orderBy,
                            whereExpression,
-                           searchExpression)
-                       .ToArrayAsync();
+                           searchExpression);
         }
 
         public async Task<int> GetAllCountAsync(
-            Expression<Func<Item, bool>> whereExpression = null,
+            IExpression whereExpression = null,
             Expression<Func<Item, bool>> searchExpression = null)
         {
             return await this.GetAllBase()
-                       .ApplyTransform(whereExpression, searchExpression)
-                       .CountAsync();
+                       .CountAsync(whereExpression, searchExpression);
         }
 
         public async Task<ItemDetails> GetByIdAsync(int id)
@@ -139,11 +137,18 @@ namespace Ferretto.WMS.Data.Core.Providers
             return new SuccessOperationResult<ItemDetails>(model);
         }
 
-        private IQueryable<Item> GetAllBase()
+        private IQueryable<Item> GetAllBase(
+            Expression<Func<Common.DataModels.Item, bool>> whereExpression = null,
+            Expression<Func<Common.DataModels.Item, bool>> searchExpression = null)
         {
+            var actualWhereFunc = whereExpression ?? ((i) => true);
+            var actualSearchFunc = searchExpression ?? ((i) => true);
+
             return this.dataContext.Items
                 .Include(i => i.AbcClass)
                 .Include(i => i.ItemCategory)
+                .Where(actualWhereFunc)
+                .Where(actualSearchFunc)
                 .GroupJoin(
                     this.dataContext.Compartments
                         .Where(c => c.ItemId != null)
@@ -197,10 +202,17 @@ namespace Ferretto.WMS.Data.Core.Providers
                     });
         }
 
-        private IQueryable<ItemDetails> GetAllDetailsBase()
+        private IQueryable<ItemDetails> GetAllDetailsBase(
+            Expression<Func<Common.DataModels.Item, bool>> whereExpression = null,
+            Expression<Func<Common.DataModels.Item, bool>> searchExpression = null)
         {
+            var actualWhereFunc = whereExpression ?? ((i) => true);
+            var actualSearchFunc = searchExpression ?? ((i) => true);
+
             return this.dataContext.Items
                 .Include(i => i.MeasureUnit)
+                .Where(actualWhereFunc)
+                .Where(actualSearchFunc)
                 .GroupJoin(
                     this.dataContext.Compartments
                         .Where(c => c.ItemId != null)
