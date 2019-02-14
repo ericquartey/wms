@@ -75,35 +75,12 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSingleton<IEventAggregator, EventAggregator>();
             services.AddSingleton<IAutomationService, AutomationService>();
 
-
-
-
-
-
             services.AddSingleton<IDataLayer, DataLayer>(provider => new DataLayer(
                 provider.GetService<IConfiguration>(),
                 provider.GetService<DataLayerContext>(),
                 provider.GetService<IEventAggregator>()));
 
             services.AddSingleton<IWriteLogService, DataLayer>(provider => provider.GetService<IDataLayer>() as DataLayer);
-
-
-
-
-
-
-
-
-
-
-
-            //services.AddSingleton<IWriteLogService, DataLayer>(provider => new DataLayer(
-            //    provider.GetService<IConfiguration>(),
-            //    provider.GetService<DataLayerContext>(),
-            //    provider.GetService<IEventAggregator>()));
-
-            //services.AddSingleton<IDataLayer, DataLayer>(provider => provider.GetService<IWriteLogService>() as DataLayer);
-
 
             services.AddSingleton<IMissionsScheduler, MissionsScheduler>();
             services.AddSingleton<IMachineManager, MachineManager>();
