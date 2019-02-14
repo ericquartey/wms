@@ -43,6 +43,6 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.inverterAction.EndEvent -= this.PositioningDrawer_ThrowEndEvent;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

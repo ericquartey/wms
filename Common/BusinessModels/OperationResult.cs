@@ -1,8 +1,9 @@
 ﻿using System;
+using Ferretto.Common.BLL.Interfaces;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public class OperationResult
+    public class OperationResult : IOperationResult
     {
         #region Constructors
 

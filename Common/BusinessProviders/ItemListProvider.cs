@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Scheduler.WebAPI.Contracts;
@@ -46,7 +47,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<OperationResult> AddAsync(ItemListDetails model) => throw new NotSupportedException();
+        public Task<IOperationResult> AddAsync(ItemListDetails model) => throw new NotSupportedException();
 
         public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
@@ -192,7 +193,7 @@ namespace Ferretto.Common.BusinessProviders
             return this.dataContext.Current.ItemLists.AsNoTracking().Count(TypePutFilter);
         }
 
-        public async Task<OperationResult> SaveAsync(ItemListDetails model)
+        public async Task<IOperationResult> SaveAsync(ItemListDetails model)
         {
             if (model == null)
             {
