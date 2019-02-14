@@ -65,7 +65,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<Item>))]
-        [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(400)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Item>>> GetAllAsync(
@@ -95,6 +94,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(200, Type = typeof(int))]
+        [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404)]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync(
