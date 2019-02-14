@@ -11,38 +11,43 @@
              mc:Ignorable="d">
     <Grid    Width="1024"
              Height="608">
-        <TextBlock
+
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="250,30,0,0"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.WeightControl}" Margin="160,10,0,562" />
-        <custom:CustomInputFieldControlFocusable Margin="160,113,544,427"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
-                                                     InputText="{Binding InsertedWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     LabelText="{x:Static res:InstallationApp.InsertedWeight}" />
-        <custom:CustomLabelTextBlockControl
+                   Text="{x:Static res:InstallationApp.WeightControl}"  />
+
+        <custom:CustomInputFieldControlFocusable   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="600,120,0,0"
+                                                   Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                   InputText="{Binding InsertedWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   LabelText="{x:Static res:InstallationApp.InsertedWeight}" />
+
+        <custom:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="250,120,0,0" 
                                                 ContentText="{Binding AcceptableWeightTolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.AcceptableWeightTolerance}" Margin="160,186,544,354" />
-        <custom:CustomInputFieldControlFocusable Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
-                                                     Margin="160,254,544,286"
+                                                LabelText="{x:Static res:InstallationApp.AcceptableWeightTolerance}" />
+
+        <custom:CustomInputFieldControlFocusable     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,210,0,0"
+                                                     Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
                                                      InputText="{Binding TestRun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                      LabelText="{x:Static res:InstallationApp.TestRun}" />
-        <custom:CustomInputFieldControlFocusable Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
-                                                     Margin="160,311,544,229"
-                                                     InputText="{Binding FeedRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     LabelText="{x:Static res:InstallationApp.FeedRate}" />
-        <custom:CustomLabelTextBlockControl
+
+        <custom:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="600,210,0,0"
                                                 ContentText="{Binding MesuredWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.MesuredWeight}" Margin="160,384,544,156" />
-        <custom:CustomLabelTextBlockControl
+                                                LabelText="{x:Static res:InstallationApp.MesuredWeight}"  />
+
+        <custom:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="250,320,0,0" Width="500"
                                                 ContentText="{Binding NoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.Output}" Margin="160,457,544,83" />
-        <Button Content="{x:Static res:InstallationApp.Start}"
+                                                LabelText="{x:Static res:InstallationApp.Output}" />
+
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="600,460,0,0"
+                    Content="{x:Static res:InstallationApp.Start}"
                     Command="{Binding SetBeginButtonCommand}"
                     IsEnabled="{Binding IsSetBeginButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="485,113,374,427" />
-        <Button
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"  />
+
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="250,460,0,0"
                     Content="{x:Static res:InstallationApp.Stop}"
                     Command="{Binding SetStopButtonCommand}"
                     IsEnabled="{Binding IsSetStopButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="485,418,374,122" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"  />
     </Grid>
 </UserControl>

@@ -12,11 +12,11 @@ namespace Ferretto.VW.InstallationApp
 
         public IUnityContainer Container;
 
-        private bool isBeltBurnishingButtonActive;
+        private bool isBeltBurnishingButtonActive = true;
 
-        private bool isCellsControlButtonActive;
+        private bool isCellsControlButtonActive = true;
 
-        private bool isCellsPanelControlButtonActive;
+        private bool isCellsPanelControlButtonActive = true;
 
         private bool isDownScrollButtonActive = true;
 
@@ -32,7 +32,7 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isSensorsStateButtonActive = true;
 
-        private bool isSetYResolutionButtonActive;
+        private bool isSetYResolutionButtonActive = true;
 
         private bool isUpScrollButtonActive = true;
 
@@ -120,8 +120,8 @@ namespace Ferretto.VW.InstallationApp
             this.IsLowSpeedMovementsTestButtonActive = true;
             this.IsGateControlButtonActive = true;
             this.IsOriginVerticalAxisButtonActive = true;
-            this.IsBeltBurnishingButtonActive = false;
-            this.IsSetYResolutionButtonActive = false;
+            this.IsBeltBurnishingButtonActive = true;
+            this.IsSetYResolutionButtonActive = true;
             this.IsGateHeightControlButtonActive = true; // TODO: Reference value missing in InstallationInfo file
             this.IsWeightControlButtonActive = true; // TODO: Reference value missing in InstallationInfo file
             this.IsVerticalOffsetCalibrationButtonActive = true; // TODO: Reference value missing in InstallationInfo file

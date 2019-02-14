@@ -304,7 +304,7 @@
     <value>Sensore zero asse verticale</value>
   </data>
   <data name="GateControl" xml:space="preserve">
-    <value>Controllo barriere</value>
+    <value>Test serranda</value>
     <comment>Title - Button text</comment>
   </data>
   <data name="SetOriginVerticalAxisCompleted" xml:space="preserve">
@@ -314,7 +314,7 @@
     <value>L'origine dell'asse verticale non è stata effettuata.</value>
   </data>
   <data name="FeedRate" xml:space="preserve">
-    <value>Feed rate:</value>
+    <value>Feed rate %:</value>
   </data>
   <data name="OriginVerticalAxis" xml:space="preserve">
     <value>Origine asse verticale</value>
@@ -392,7 +392,7 @@
     <value>Cicli richiesti:</value>
   </data>
   <data name="Gate1Control" xml:space="preserve">
-    <value>Controllo barriera 1</value>
+    <value>Test serranda baia 1</value>
   </data>
   <data name="Gate2Control" xml:space="preserve">
     <value>Controllo barriera 2</value>
@@ -461,7 +461,7 @@
     <value>Il peso misurato è fuori tolleranza.</value>
   </data>
   <data name="TestRun" xml:space="preserve">
-    <value>Test corsa:</value>
+    <value>Corsa di test [mm]:</value>
   </data>
   <data name="CorrectOffset" xml:space="preserve">
     <value>Offset corretto [mm]:</value>
