@@ -1,4 +1,6 @@
-﻿using Microsoft.Practices.Unity;
+﻿using Ferretto.VW.InstallationApp.ServiceUtilities;
+using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
+using Microsoft.Practices.Unity;
 using Prism.Modularity;
 
 namespace Ferretto.VW.InstallationApp
@@ -48,6 +50,7 @@ namespace Ferretto.VW.InstallationApp
             var weightControlVMInstance = new WeightControlViewModel();
             var mainWindowVMInstance = new MainWindowViewModel();
             var helpMainWindowInstance = new HelpMainWindow();
+            var installationHubClient = new InstallationHubClient("localhost://61656", "/installation-endpoint");
 
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
             this.container.RegisterInstance<IBeltBurnishingViewModel>(beltBurnishingVMInstance);
@@ -81,6 +84,7 @@ namespace Ferretto.VW.InstallationApp
             this.container.RegisterInstance<IWeightControlViewModel>(weightControlVMInstance);
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
             this.container.RegisterInstance<IHelpMainWindow>(helpMainWindowInstance);
+            this.container.RegisterInstance<IInstallationHubClient>(installationHubClient);
 
             lSMTNavigationButtonsVMInstance.InitializeViewModel(this.container);
             lSMTMainVMInstance.InitializeViewModel(this.container);

@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
             this.dataContext.Database.EnsureCreated();
 
-            webApiCommandEvent.Subscribe(this.LogWriting);
+            //webApiCommandEvent.Subscribe(this.LogWriting);
         }
 
         #endregion

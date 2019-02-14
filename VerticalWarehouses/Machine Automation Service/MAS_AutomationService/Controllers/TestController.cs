@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
         private readonly IEventAggregator eventAggregator;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS_AutomationService
             this.automationService = automationService;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -40,6 +40,12 @@ namespace Ferretto.VW.MAS_AutomationService
             this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish(new Command_EventParameter(CommandType.ExecuteHoming));
         }
 
-        #endregion Methods
+        [HttpGet("StopFSM")]
+        public void StopFiniteStateMachine()
+        {
+            this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish(new Command_EventParameter(CommandType.StopAction));
+        }
+
+        #endregion
     }
 }

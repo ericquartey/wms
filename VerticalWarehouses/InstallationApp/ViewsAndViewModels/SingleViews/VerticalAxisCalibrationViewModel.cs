@@ -3,6 +3,10 @@ using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
 using Microsoft.Practices.Unity;
+using Ferretto.VW.InstallationApp.ServiceUtilities;
+using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
+using System.Net;
+using System.IO;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -11,6 +15,8 @@ namespace Ferretto.VW.InstallationApp
         #region Fields
 
         public IUnityContainer Container;
+
+        private InstallationHubClient installationClient;
 
         private bool isStartButtonActive = true;
 
@@ -85,16 +91,45 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer _container)
         {
             this.Container = _container;
+            this.installationClient = (InstallationHubClient)this.Container.Resolve<IInstallationHubClient>();
         }
 
         public void SubscribeMethodToEvent()
         {
-            // TODO
+            try
+            {
+                this.installationClient.ConnectAsync();
+                this.installationClient.ReceivedMessageToAllConnectedClients += this.UpdateNoteString;
+                this.NoteString = "Connected to Installation Hub";
+            }
+            catch (ArgumentNullException nullException)
+            {
+                if (this.installationClient == null)
+                {
+                    this.installationClient = (InstallationHubClient)this.Container.Resolve<IInstallationHubClient>();
+                    this.installationClient.ConnectAsync();
+                    this.installationClient.ReceivedMessageToAllConnectedClients += this.UpdateNoteString;
+                }
+                else
+                {
+                    throw nullException;
+                }
+            }
+            catch (Exception exception)
+            {
+                this.NoteString = "Did not connect to Installation Hub";
+                throw exception;
+            }
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            // TODO
+            this.installationClient.DisconnectAsync();
+        }
+
+        public void UpdateNoteString(object sender, string message)
+        {
+            this.NoteString = message;
         }
 
         private void CheckInputsCorrectness()
@@ -104,14 +139,7 @@ namespace Ferretto.VW.InstallationApp
                 int.TryParse(this.Resolution, out var _resolution) &&
                 int.TryParse(this.UpperBound, out var _upperBound))
             { // TODO: DEFINE AND INSERT VALIDATION LOGIC IN HERE. THESE PROPOSITIONS ARE TEMPORARY
-                if (_lowerBound > 0 && _lowerBound < _upperBound && _upperBound > 0 && _resolution > 0 && _offset > 0)
-                {
-                    this.IsStartButtonActive = true;
-                }
-                else
-                {
-                    this.IsStartButtonActive = false;
-                }
+                this.IsStartButtonActive = (_lowerBound > 0 && _lowerBound < _upperBound && _upperBound > 0 && _resolution > 0 && _offset > 0) ? true : false;
             }
             else
             {
@@ -121,7 +149,22 @@ namespace Ferretto.VW.InstallationApp
 
         private void ExecuteStartButtonCommand()
         {
-            // TODO implementa feature
+            try
+            {
+                var request = (HttpWebRequest)WebRequest.Create("localhost://5000/api/Test/HomingTest");
+                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+
+                using (var response = (HttpWebResponse)request.GetResponse())
+                using (var stream = response.GetResponseStream())
+                using (var reader = new StreamReader(stream))
+                {
+                    reader.ReadToEnd();
+                }
+            }
+            catch (Exception exception)
+            {
+                this.NoteString = "Couldn't get response from this http get request.";
+            }
         }
 
         private void StopButtonMethod()

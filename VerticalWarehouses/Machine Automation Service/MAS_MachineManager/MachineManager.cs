@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS_MachineManager
             this.dataLayer = dataLayer;
             this.dataLayer.SetDecimalConfigurationValue(ConfigurationValueEnum.resolution, 100m);
             this.resolution = dataLayer.GetDecimalConfigurationValue(ConfigurationValueEnum.resolution);
-            //this.cellList = dataLayer.GetCellList();
+            // this.cellList = dataLayer.GetCellList();
         }
 
         #endregion
@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS_MachineManager
             {
                 throw new ArgumentOutOfRangeException("Given CellID is negative or larger than the number of cells.");
             }
-            return Decimal.ToInt32(this.cellList[cellID] * this.resolution);
+            return Decimal.ToInt32(this.cellList[cellID] * this.resolution); // TODO this.cellList[cellID].Coord
         }
 
         private void UpdateResolution()

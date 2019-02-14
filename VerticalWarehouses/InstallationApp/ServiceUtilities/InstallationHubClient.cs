@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Ferretto.VW.InstallationApp.ServiceUtilities
 {
-    internal class InstallationHubClient
+    internal class InstallationHubClient : IInstallationHubClient
     {
         #region Fields
 
@@ -48,6 +45,11 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
         public async Task ConnectAsync()
         {
             await this.connection.StartAsync();
+        }
+
+        public async Task DisconnectAsync()
+        {
+            await this.connection.DisposeAsync();
         }
 
         private void OnSendMessageToAllConnectedClients(string message)

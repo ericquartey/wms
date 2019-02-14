@@ -1,15 +1,8 @@
-﻿using System.Configuration;
-using System.Diagnostics;
-using System.IO;
-using System.Net;
-using System.Windows;
+﻿using System.Diagnostics;
 using System.Windows.Input;
-using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.Navigation;
-using Ferretto.VW.Utils.Source;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
-using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -240,6 +233,8 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand VerticalAxisCalibrationButtonCommand => this.verticalAxisCalibrationButtonCommand ?? (this.verticalAxisCalibrationButtonCommand = new DelegateCommand(() =>
         {
+            NavigationService.GoToViewEventHandler += ((VerticalAxisCalibrationViewModel)this.Container.Resolve<IVerticalAxisCalibrationViewModel>()).SubscribeMethodToEvent;
+            NavigationService.ExitViewEventHandler += ((VerticalAxisCalibrationViewModel)this.Container.Resolve<IVerticalAxisCalibrationViewModel>()).UnSubscribeMethodFromEvent;
             NavigationService.RaiseGoToViewEvent();
             this.ContentRegionCurrentViewModel = (VerticalAxisCalibrationViewModel)this.Container.Resolve<IVerticalAxisCalibrationViewModel>();
         }));
