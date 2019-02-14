@@ -30,13 +30,17 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly IAbcClassProvider abcClassProvider;
 
+        private readonly ICellPositionProvider cellPositionProvider;
+
         private readonly ICellProvider cellProvider;
 
         private readonly ICompartmentProvider compartmentProvider;
 
         private readonly IDatabaseContextService dataContext;
 
-        private readonly EnumerationProvider enumerationProvider;
+        private readonly ILoadingUnitStatusProvider loadingUnitStatusProvider;
+
+        private readonly ILoadingUnitTypeProvider loadingUnitTypeProvider;
 
         #endregion
 
@@ -46,14 +50,18 @@ namespace Ferretto.Common.BusinessProviders
             ICellProvider cellProvider,
             ICompartmentProvider compartmentProvider,
             IDatabaseContextService dataContext,
-            EnumerationProvider enumerationProvider,
-            IAbcClassProvider abcClassProvider)
+            IAbcClassProvider abcClassProvider,
+            ICellPositionProvider cellPositionProvider,
+            ILoadingUnitStatusProvider loadingUnitStatusProvider,
+            ILoadingUnitTypeProvider loadingUnitTypeProvider)
         {
             this.cellProvider = cellProvider;
             this.compartmentProvider = compartmentProvider;
             this.dataContext = dataContext;
-            this.enumerationProvider = enumerationProvider;
             this.abcClassProvider = abcClassProvider;
+            this.cellPositionProvider = cellPositionProvider;
+            this.loadingUnitStatusProvider = loadingUnitStatusProvider;
+            this.loadingUnitTypeProvider = loadingUnitTypeProvider;
         }
 
         #endregion
@@ -192,9 +200,9 @@ namespace Ferretto.Common.BusinessProviders
                 .SingleAsync();
 
             loadingUnitDetails.AbcClassChoices = await this.abcClassProvider.GetAllAsync();
-            loadingUnitDetails.CellPositionChoices = this.enumerationProvider.GetAllCellPositions();
-            loadingUnitDetails.LoadingUnitStatusChoices = this.enumerationProvider.GetAllLoadingUnitStatuses();
-            loadingUnitDetails.LoadingUnitTypeChoices = this.enumerationProvider.GetAllLoadingUnitTypes();
+            loadingUnitDetails.CellPositionChoices = await this.cellPositionProvider.GetAllAsync();
+            loadingUnitDetails.LoadingUnitStatusChoices = await this.loadingUnitStatusProvider.GetAllAsync();
+            loadingUnitDetails.LoadingUnitTypeChoices = await this.loadingUnitTypeProvider.GetAllAsync();
             foreach (var compartment in this.compartmentProvider.GetByLoadingUnitId(id))
             {
                 loadingUnitDetails.AddCompartment(compartment);

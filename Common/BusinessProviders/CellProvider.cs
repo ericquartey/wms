@@ -24,6 +24,10 @@ cell => cell.CellStatusId == 1;
 
         private readonly IAbcClassProvider abcClassProvider;
 
+        private readonly ICellStatusProvider cellStatusProvider;
+
+        private readonly ICellTypeProvider cellTypeProvider;
+
         private readonly IDatabaseContextService dataContext;
 
         private readonly EnumerationProvider enumerationProvider;
@@ -35,11 +39,15 @@ cell => cell.CellStatusId == 1;
         public CellProvider(
             IDatabaseContextService context,
             EnumerationProvider enumerationProvider,
-            IAbcClassProvider abcClassProvider)
+            IAbcClassProvider abcClassProvider,
+            ICellStatusProvider cellStatusProvider,
+            ICellTypeProvider cellTypeProvider)
         {
             this.dataContext = context;
             this.enumerationProvider = enumerationProvider;
             this.abcClassProvider = abcClassProvider;
+            this.cellStatusProvider = cellStatusProvider;
+            this.cellTypeProvider = cellTypeProvider;
         }
 
         #endregion
@@ -118,8 +126,8 @@ cell => cell.CellStatusId == 1;
 
             cellDetails.AbcClassChoices = await this.abcClassProvider.GetAllAsync();
             cellDetails.AisleChoices = this.enumerationProvider.GetAislesByAreaId(cellDetails.AreaId);
-            cellDetails.CellStatusChoices = this.enumerationProvider.GetAllCellStatuses();
-            cellDetails.CellTypeChoices = this.enumerationProvider.GetAllCellTypes();
+            cellDetails.CellStatusChoices = await this.cellStatusProvider.GetAllAsync();
+            cellDetails.CellTypeChoices = await this.cellTypeProvider.GetAllAsync();
 
             return cellDetails;
         }

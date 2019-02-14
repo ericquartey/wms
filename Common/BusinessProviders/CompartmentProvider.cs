@@ -26,11 +26,15 @@ namespace Ferretto.Common.BusinessProviders
         private static readonly Expression<Func<DataModels.Compartment, bool>> StatusExpiredFilter =
            compartment => compartment.MaterialStatusId == 3;
 
-        private readonly CompartmentTypeProvider compartmentTypeProvider;
+        private readonly ICompartmentStatusProvider compartmentStatusProvider;
+
+        private readonly ICompartmentTypeProvider compartmentTypeProvider;
 
         private readonly IDatabaseContextService dataContextService;
 
-        private readonly EnumerationProvider enumerationProvider;
+        private readonly IMaterialStatusProvider materialStatusProvider;
+
+        private readonly IPackageTypeProvider packageTypeProvider;
 
         #endregion
 
@@ -38,12 +42,16 @@ namespace Ferretto.Common.BusinessProviders
 
         public CompartmentProvider(
             IDatabaseContextService dataContextService,
-            EnumerationProvider enumerationProvider,
-            CompartmentTypeProvider compartmentTypeProvider)
+            ICompartmentStatusProvider compartmentStatusProvider,
+            ICompartmentTypeProvider compartmentTypeProvider,
+            IPackageTypeProvider packageTypeProvider,
+            IMaterialStatusProvider materialStatusProvider)
         {
             this.dataContextService = dataContextService;
-            this.enumerationProvider = enumerationProvider;
             this.compartmentTypeProvider = compartmentTypeProvider;
+            this.compartmentStatusProvider = compartmentStatusProvider;
+            this.packageTypeProvider = packageTypeProvider;
+            this.materialStatusProvider = materialStatusProvider;
         }
 
         #endregion
@@ -235,10 +243,10 @@ namespace Ferretto.Common.BusinessProviders
                })
                .SingleAsync();
 
-                compartmentDetails.CompartmentStatusChoices = this.enumerationProvider.GetAllCompartmentStatuses();
-                compartmentDetails.CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes();
-                compartmentDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
-                compartmentDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
+                compartmentDetails.CompartmentStatusChoices = await this.compartmentStatusProvider.GetAllAsync();
+                compartmentDetails.CompartmentTypeChoices = await this.compartmentTypeProvider.GetAllAsync();
+                compartmentDetails.MaterialStatusChoices = await this.materialStatusProvider.GetAllAsync();
+                compartmentDetails.PackageTypeChoices = await this.packageTypeProvider.GetAllAsync();
 
                 return compartmentDetails;
             }
@@ -336,12 +344,21 @@ namespace Ferretto.Common.BusinessProviders
 
         public CompartmentDetails GetNew()
         {
+            throw new NotImplementedException();
+        }
+
+        public async Task<CompartmentDetails> GetNewAsync()
+        {
+            var compartmentStatus = await this.compartmentStatusProvider.GetAllAsync();
+            var compartmentType = await this.compartmentTypeProvider.GetAllAsync();
+            var packageType = await this.packageTypeProvider.GetAllAsync();
+            var materialStatus = await this.materialStatusProvider.GetAllAsync();
             return new CompartmentDetails
             {
-                CompartmentStatusChoices = this.enumerationProvider.GetAllCompartmentStatuses(),
-                CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes(),
-                MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses(),
-                PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes()
+                CompartmentStatusChoices = compartmentStatus,
+                CompartmentTypeChoices = compartmentType,
+                MaterialStatusChoices = materialStatus,
+                PackageTypeChoices = packageType
             };
         }
 

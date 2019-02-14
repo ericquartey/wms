@@ -112,14 +112,14 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async Task OnAppearAsync()
         {
-            await base.OnAppearAsync();
+            await base.OnAppearAsync().ConfigureAwait(true);
             var modelId = (int?)this.Data.GetType().GetProperty("Id")?.GetValue(this.Data);
             if (!modelId.HasValue)
             {
                 return;
             }
 
-            this.ItemWithdraw.ItemDetails = await this.itemProvider.GetByIdAsync(modelId.Value);
+            this.ItemWithdraw.ItemDetails = await this.itemProvider.GetByIdAsync(modelId.Value).ConfigureAwait(true);
         }
 
         protected override void OnDispose()

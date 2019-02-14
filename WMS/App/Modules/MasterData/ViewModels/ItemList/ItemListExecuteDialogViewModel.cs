@@ -87,7 +87,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async Task OnAppearAsync()
         {
-            await base.OnAppearAsync();
+            await base.OnAppearAsync().ConfigureAwait(true);
 
             var modelId = (int?)this.Data.GetType().GetProperty("Id")?.GetValue(this.Data);
             if (!modelId.HasValue)
@@ -95,7 +95,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 return;
             }
 
-            this.executionRequest.ItemListDetails = await this.itemListProvider.GetByIdAsync(modelId.Value);
+            this.executionRequest.ItemListDetails = await this.itemListProvider.GetByIdAsync(modelId.Value).ConfigureAwait(true);
             this.executionRequest.AreaChoices = this.areaProvider.GetAll();
             this.executionRequest.PropertyChanged += this.OnAreaIdChanged;
         }

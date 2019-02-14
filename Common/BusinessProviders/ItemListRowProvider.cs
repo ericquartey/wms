@@ -14,9 +14,14 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly IDatabaseContextService dataContextService;
 
+      
         private readonly EnumerationProvider enumerationProvider;
 
         private readonly WMS.Data.WebAPI.Contracts.IItemListRowsDataService itemListRowDataService;
+
+        private readonly IMaterialStatusProvider materialStatusProvider;
+
+        private readonly IPackageTypeProvider packageTypeProvider;
 
         #endregion
 
@@ -24,12 +29,18 @@ namespace Ferretto.Common.BusinessProviders
 
         public ItemListRowProvider(
             IDatabaseContextService dataContextService,
+            IItemListRowsSchedulerService itemListRowsSchedulerService,
+            IMaterialStatusProvider materialStatusProvider,
+            IPackageTypeProvider packageTypeProvider,
             EnumerationProvider enumerationProvider,
             WMS.Data.WebAPI.Contracts.IItemListRowsDataService itemListRowDataService)
         {
             this.dataContextService = dataContextService;
             this.enumerationProvider = enumerationProvider;
             this.itemListRowDataService = itemListRowDataService;
+            this.itemListRowsSchedulerService = itemListRowsSchedulerService;
+            this.packageTypeProvider = packageTypeProvider;
+            this.materialStatusProvider = materialStatusProvider;
         }
 
         #endregion
@@ -98,8 +109,8 @@ namespace Ferretto.Common.BusinessProviders
                     ItemUnitMeasure = lr.Item.MeasureUnit.Description
                 }).SingleAsync();
 
-            itemListRowDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
-            itemListRowDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
+            itemListRowDetails.MaterialStatusChoices = await this.materialStatusProvider.GetAllAsync();
+            itemListRowDetails.PackageTypeChoices = await this.packageTypeProvider.GetAllAsync();
 
             return itemListRowDetails;
         }

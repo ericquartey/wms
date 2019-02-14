@@ -160,7 +160,8 @@ namespace Ferretto.Common.Controls
 
         protected override async Task OnAppearAsync()
         {
-            await base.OnAppearAsync();
+            // TODO: check cycle because OnAppear is Async
+            // await base.OnAppearAsync();
 
             try
             {
@@ -172,7 +173,7 @@ namespace Ferretto.Common.Controls
                     Name = filterDataSource.Name
                 }).ToList());
 
-                await this.UpdateFilterTilesCountsAsync();
+                await this.UpdateFilterTilesCountsAsync().ConfigureAwait(true);
             }
             catch (System.Exception ex)
             {

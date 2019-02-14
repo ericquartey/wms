@@ -19,11 +19,15 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly IDatabaseContextService dataContextService;
 
-        private readonly EnumerationProvider enumerationProvider;
-
         private readonly IImageProvider imageProvider;
 
+        private readonly IItemCategoryProvider itemCategoryProvider;
+
         private readonly WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService;
+
+        private readonly WMS.Scheduler.WebAPI.Contracts.IItemsSchedulerService itemsSchedulerService;
+
+        private readonly IMeasureUnitProvider measureUnitProvider;
 
         #endregion
 
@@ -31,16 +35,19 @@ namespace Ferretto.Common.BusinessProviders
 
         public ItemProvider(
             IDatabaseContextService dataContextService,
-            EnumerationProvider enumerationProvider,
             IImageProvider imageProvider,
             WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService,
-            IAbcClassProvider abcClassProvider)
+            WMS.Scheduler.WebAPI.Contracts.IItemsSchedulerService itemsSchedulerService,
+            IAbcClassProvider abcClassProvider,
+            IItemCategoryProvider itemCategoryProvider,
+            IMeasureUnitProvider measureUnitProvider)
         {
             this.dataContextService = dataContextService;
             this.itemsDataService = itemsDataService;
-            this.enumerationProvider = enumerationProvider;
             this.imageProvider = imageProvider;
             this.abcClassProvider = abcClassProvider;
+            this.itemCategoryProvider = itemCategoryProvider;
+            this.measureUnitProvider = measureUnitProvider;
         }
 
         #endregion
@@ -52,9 +59,9 @@ namespace Ferretto.Common.BusinessProviders
             if (itemDetails != null)
             {
                 itemDetails.AbcClassChoices = await this.abcClassProvider.GetAllAsync();
-                itemDetails.MeasureUnitChoices = this.enumerationProvider.GetAllMeasureUnits();
+                itemDetails.MeasureUnitChoices = await this.measureUnitProvider.GetAllAsync();
                 itemDetails.ManagementTypeChoices = EnumerationProvider.GetAllItemManagementTypes();
-                itemDetails.ItemCategoryChoices = this.enumerationProvider.GetAllItemCategories();
+                itemDetails.ItemCategoryChoices = await this.itemCategoryProvider.GetAllAsync();
             }
         }
 

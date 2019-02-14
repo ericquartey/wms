@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
@@ -11,6 +13,8 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
+        private readonly WMS.Data.WebAPI.Contracts.ICompartmentTypesDataService compartmentTypesDataService;
+
         private readonly IDatabaseContextService dataContext;
 
         private readonly ItemCompartmentTypeProvider itemCompartmentTypeProvider;
@@ -21,10 +25,12 @@ namespace Ferretto.Common.BusinessProviders
 
         public CompartmentTypeProvider(
             IDatabaseContextService context,
-            ItemCompartmentTypeProvider itemCompartmentTypeProvider)
+            ItemCompartmentTypeProvider itemCompartmentTypeProvider,
+            WMS.Data.WebAPI.Contracts.ICompartmentTypesDataService compartmentTypesDataService)
         {
             this.dataContext = context;
             this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
+            this.compartmentTypesDataService = compartmentTypesDataService;
         }
 
         #endregion
@@ -103,17 +109,15 @@ namespace Ferretto.Common.BusinessProviders
             return this.AddAsync(model, null, null);
         }
 
-        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
-
-        public IQueryable<CompartmentType> GetAll() => throw new NotSupportedException();
-
-        public int GetAllCount() => throw new NotSupportedException();
-
-        public Task<CompartmentType> GetByIdAsync(int id) => throw new NotSupportedException();
-
-        public CompartmentType GetNew()
+        public async Task<IEnumerable<Enumeration>> GetAllAsync()
         {
-            throw new NotSupportedException();
+            return (await this.compartmentTypesDataService.GetAllAsync())
+                .Select(c => new Enumeration(c.Id, string.Format(Resources.MasterData.CompartmentTypeListFormat, c.Width, c.Height)));
+        }
+
+        public async Task<int> GetAllCountAsync()
+        {
+            return await this.compartmentTypesDataService.GetAllCountAsync();
         }
 
         public Task<IOperationResult<CompartmentType>> SaveAsync(CompartmentType model) => throw new NotSupportedException();

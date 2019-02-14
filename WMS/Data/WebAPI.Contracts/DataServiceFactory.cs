@@ -29,6 +29,39 @@
 
                 case var service when service == typeof(IAbcClassesDataService):
                     return new AbcClassesDataService(baseUrl.AbsoluteUri) as T;
+
+                case var service when service == typeof(ICellPositionsDataService):
+                    return new CellPositionsDataService(baseUrl.AbsoluteUri) as T;
+
+                case var service when service == typeof(ICellStatusesDataService):
+                    return new CellStatusesDataService(baseUrl.AbsoluteUri) as T;
+
+                case var service when service == typeof(ICellTypesDataService):
+                    return new CellTypesDataService(baseUrl.AbsoluteUri) as T;
+
+                case var service when service == typeof(ICompartmentStatusesDataService):
+                    return new CompartmentStatusesDataService(baseUrl.AbsoluteUri) as T;
+
+                case var service when service == typeof(ICompartmentTypesDataService):
+                    return new CompartmentTypesDataService(baseUrl.AbsoluteUri) as T;
+
+                case var service when service == typeof(IItemCategoriesDataService):
+                    return new ItemCategoriesDataService(baseUrl.AbsoluteUri) as T;
+
+                case var service when service == typeof(ILoadingUnitStatusesDataService):
+                    return new LoadingUnitStatusesDataService(baseUrl.AbsoluteUri) as T;
+
+                case var service when service == typeof(ILoadingUnitTypesDataService):
+                    return new LoadingUnitTypesDataService(baseUrl.AbsoluteUri) as T;
+
+                case var service when service == typeof(IMaterialStatusesDataService):
+                    return new MaterialStatusesDataService(baseUrl.AbsoluteUri) as T;
+
+                case var service when service == typeof(IMeasureUnitsDataService):
+                    return new MeasureUnitsDataService(baseUrl.AbsoluteUri) as T;
+
+                case var service when service == typeof(IPackageTypesDataService):
+                    return new PackageTypesDataService(baseUrl.AbsoluteUri) as T;
             }
 
             return null;
