@@ -6,6 +6,7 @@ using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Extensions;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
+using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -23,6 +24,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IItemListProvider itemListProvider;
 
+        private readonly IItemListSchedulerProvider itemListSchedulerProvider;
+
         private readonly ILogger logger;
 
         #endregion
@@ -31,10 +34,12 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public ItemListsController(
             ILogger<ItemListsController> logger,
-            IItemListProvider itemListProvider)
+            IItemListProvider itemListProvider,
+            IItemListSchedulerProvider itemListSchedulerProvider)
         {
             this.logger = logger;
             this.itemListProvider = itemListProvider;
+            this.itemListSchedulerProvider = itemListSchedulerProvider;
         }
 
         #endregion
@@ -59,7 +64,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             try
             {
-                var acceptedRequest = await this.warehouse.PrepareListForExecutionAsync(request.ListId, request.AreaId, request.BayId);
+                var acceptedRequest = await this.itemListSchedulerProvider.PrepareForExecutionAsync(request);
                 if (acceptedRequest == null)
                 {
                     this.logger.LogWarning($"Request of execution for list (id={request.ListId}) could not be processed.");

@@ -29,6 +29,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IItemProvider itemProvider;
 
+        private readonly Scheduler.Core.ISchedulerRequestProvider schedulerRequestProvider;
+
         #endregion
 
         #region Constructors
@@ -36,11 +38,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public ItemsController(
             IItemProvider itemProvider,
             IAreaProvider areaProvider,
+            Scheduler.Core.ISchedulerRequestProvider schedulerRequestProvider,
             ICompartmentProvider compartmentProvider)
         {
             this.itemProvider = itemProvider;
             this.areaProvider = areaProvider;
             this.compartmentProvider = compartmentProvider;
+            this.schedulerRequestProvider = schedulerRequestProvider;
         }
 
         #endregion
@@ -177,7 +181,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.BadRequest();
             }
 
-            var acceptedRequest = await this.warehouse.WithdrawAsync(request);
+            var acceptedRequest = await this.schedulerRequestProvider.WithdrawAsync(request);
             if (acceptedRequest == null)
             {
                 return this.UnprocessableEntity(this.ModelState);
