@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Ferretto.WMS.Data.Core.Interfaces.Base;
+using Ferretto.Common.BLL.Interfaces.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Extensions
