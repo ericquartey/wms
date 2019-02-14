@@ -141,10 +141,17 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result);
         }
 
+        [ProducesResponseType(200, Type = typeof(IEnumerable<AllowedItemInCompartment>))]
+        [HttpGet("{id}/allowed_items")]
+        public async Task<ActionResult<IEnumerable<AllowedItemInCompartment>>> GetAllowedItemsAsync(int id)
+        {
+            return this.Ok(await this.compartmentProvider.GetAllowedItemsAsync(id));
+        }
+
         [ProducesResponseType(200, Type = typeof(int?))]
         [ProducesResponseType(400)]
         [HttpGet("max_capacity")]
-        public async Task<ActionResult<int?>> GetMaxCapacity(int width, int height, int itemId)
+        public async Task<ActionResult<int?>> GetMaxCapacityAsync(int width, int height, int itemId)
         {
             return this.Ok(await this.compartmentProvider.GetMaxCapacityAsync(width, height, itemId));
         }
