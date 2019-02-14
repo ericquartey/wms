@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
+using Ferretto.Common.BLL.Interfaces.Base;
 
 namespace Ferretto.Common.BLL.Interfaces
 {
-    public interface IFilterDataSource<TModel>
-        where TModel : IBusinessObject
+    public interface IFilterDataSource<TModel, TKey>
+        where TModel : IModel<TKey>
     {
         #region Properties
 
@@ -18,7 +19,7 @@ namespace Ferretto.Common.BLL.Interfaces
 
         string Name { get; }
 
-        IPagedBusinessProvider<TModel> Provider { get; }
+        IPagedBusinessProvider<TModel, TKey> Provider { get; }
 
         #endregion
     }

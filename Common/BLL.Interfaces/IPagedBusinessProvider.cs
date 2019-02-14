@@ -1,14 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Ferretto.Common.BLL.Interfaces.Base;
-using Ferretto.Common.Utils.Expressions;
+﻿using Ferretto.Common.BLL.Interfaces.Base;
 
 namespace Ferretto.Common.BLL.Interfaces
 {
-    public interface IPagedBusinessProvider<TModel> :
-        IReadAllPagedAsyncProvider<TModel>,
+    public interface IPagedBusinessProvider<TModel, TKey> :
+        IReadAllPagedAsyncProvider<TModel, TKey>,
         IGetUniqueValuesAsyncProvider
-        where TModel : IBusinessObject
+        where TModel : IModel<TKey>
     {
     }
 }
