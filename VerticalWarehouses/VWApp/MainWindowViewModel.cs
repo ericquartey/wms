@@ -54,7 +54,7 @@ namespace Ferretto.VW.VWApp
 
         private string userLogin = "Installer";
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -62,7 +62,7 @@ namespace Ferretto.VW.VWApp
         {
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -84,13 +84,13 @@ namespace Ferretto.VW.VWApp
 
         public String UserLogin { get => this.userLogin; set => this.SetProperty(ref this.userLogin, value); }
 
-        #endregion Properties
+        #endregion
 
         #region Indexers
 
         public string this[string columnName] => this.Validate(columnName);
 
-        #endregion Indexers
+        #endregion
 
         #region Methods
 
@@ -120,8 +120,6 @@ namespace Ferretto.VW.VWApp
 
         private void ExecuteLoginButtonCommand()
         {
-            //this.InitializeRemoteIOConnection(); // without service
-            //this.InitializeInverterConnection();
             if (this.CheckInputCorrectness(this.UserLogin, this.PasswordLogin))
             {
                 switch (this.UserLogin)
@@ -135,7 +133,6 @@ namespace Ferretto.VW.VWApp
                     case "Operator":
                         if (this.installationCompleted)
                         {
-                            // load operator app
                         }
                         else
                         {
@@ -206,6 +203,6 @@ namespace Ferretto.VW.VWApp
             return validationMessage;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

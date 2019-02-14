@@ -98,7 +98,9 @@ namespace Ferretto.VW.InstallationApp
         {
             try
             {
+                this.installationClient.InitializeInstallationHubClient("https://localhost://5001", "/automation-endpoint");
                 this.installationClient.ConnectAsync();
+
                 this.installationClient.ReceivedMessageToAllConnectedClients += this.UpdateNoteString;
                 this.NoteString = "Connected to Installation Hub";
             }
@@ -151,7 +153,7 @@ namespace Ferretto.VW.InstallationApp
         {
             try
             {
-                var request = (HttpWebRequest)WebRequest.Create("localhost://5000/api/Test/HomingTest");
+                var request = (HttpWebRequest)WebRequest.Create("https://localhost:5001/api/Test/HomingTest");
                 request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 
                 using (var response = (HttpWebResponse)request.GetResponse())

@@ -2,6 +2,7 @@
 using Prism.Events;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.EventParameters;
+using Ferretto.VW.MAS_DataLayer;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
@@ -19,7 +20,11 @@ namespace Ferretto.VW.MAS_AutomationService
 
         #region Constructors
 
-        public TestController(IEventAggregator eventAggregator, IAutomationService automationService)
+        public TestController(
+            IEventAggregator eventAggregator,
+            IAutomationService automationService,
+            IDataLayer dataLayer,
+            IWriteLogService writeLogService)
         {
             this.eventAggregator = eventAggregator;
             this.automationService = automationService;

@@ -15,21 +15,8 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
 
         #region Constructors
 
-        public InstallationHubClient(string url, string sensorStatePath)
+        public InstallationHubClient()
         {
-            this.connection = new HubConnectionBuilder()
-              .WithUrl(new Uri(new Uri(url), sensorStatePath).AbsoluteUri)
-              .Build();
-
-            this.connection.On<string>("OnSendMessageToAllConnectedClients", this.OnSendMessageToAllConnectedClients);
-
-            this.connection.Closed += async (error) =>
-            {
-                await Task.Delay(new Random().Next(0, 5) * 1000);
-                await this.connection.StartAsync();
-            };
-
-            this.connection.StartAsync();
         }
 
         #endregion
@@ -50,6 +37,23 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
         public async Task DisconnectAsync()
         {
             await this.connection.DisposeAsync();
+        }
+
+        public void InitializeInstallationHubClient(string url, string sensorStatePath)
+        {
+            this.connection = new HubConnectionBuilder()
+              .WithUrl(new Uri(new Uri(url), sensorStatePath).AbsoluteUri)
+              .Build();
+
+            this.connection.On<string>("OnSendMessageToAllConnectedClients", this.OnSendMessageToAllConnectedClients);
+
+            this.connection.Closed += async (error) =>
+            {
+                await Task.Delay(new Random().Next(0, 5) * 1000);
+                await this.connection.StartAsync();
+            };
+
+            this.connection.StartAsync();
         }
 
         private void OnSendMessageToAllConnectedClients(string message)

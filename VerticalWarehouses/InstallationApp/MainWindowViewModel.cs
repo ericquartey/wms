@@ -37,8 +37,6 @@ namespace Ferretto.VW.InstallationApp
 
         private InstallationHubClient installationClient;
 
-        private SensorsStatesHubClient sensorsClient;
-
         private BindableBase contentRegionCurrentViewModel;
 
         private BindableBase navigationRegionCurrentViewModel;
@@ -119,26 +117,8 @@ namespace Ferretto.VW.InstallationApp
             return "";
         }
 
-        private void Client_SensorsStatesChanged(object sender, SensorsStatesEventArgs e)
-        {
-            States = e.SensorsStates;
-            this.RaiseSensorsStatesChangedEvent();
-        }
-
         private async void ConnectMethod()
         {
-            try
-            {
-                this.sensorsClient = new SensorsStatesHubClient(URL, SERVICE_PATH);
-                await this.sensorsClient.ConnectAsync();
-
-                this.sensorsClient.SensorsStatesChanged += this.Client_SensorsStatesChanged;
-                this.Get(SENSOR_INITIALIZER_URL);
-            }
-            catch
-            {
-                // TODO
-            }
         }
 
         private void InitializeEvents()
@@ -176,7 +156,8 @@ namespace Ferretto.VW.InstallationApp
         {
             try
             {
-                this.installationClient = new InstallationHubClient("http://localhost:5000", "/installation-endpoint");
+                this.installationClient = new InstallationHubClient();
+                this.installationClient.InitializeInstallationHubClient("http://localhost:5000", "/installation-endpoint");
                 await this.installationClient.ConnectAsync();
                 this.installationClient.ReceivedMessageToAllConnectedClients += this.Client_ReceivedMessageToAllConnectedClients;
                 installationClient.connection.Closed += async (error) => InternalMessages = "Not Connected";

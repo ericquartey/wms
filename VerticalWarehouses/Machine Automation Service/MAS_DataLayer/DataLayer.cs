@@ -3,26 +3,43 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Ferretto.VW.Common_Utils;
+using Ferretto.VW.Common_Utils.EventParameters;
+using Ferretto.VW.Common_Utils.Events;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
-    public partial class DataLayer : IDataLayer
+    public partial class DataLayer : IDataLayer, IWriteLogService
     {
-        #region Fields
+        private readonly DataLayerContext inMemoryDataContext;
 
-        private const string CELL_NOT_FOUND_EXCEPTION = "Data Layer Exception - Cell Not Found";
+        private readonly IEventAggregator eventAggregator;
 
         private const string ConnectionStringName = "AutomationService";
 
-        private readonly DataLayerContext inMemoryDataContext;
+        private const string CELL_NOT_FOUND_EXCEPTION = "Data Layer Exception - Cell Not Found";
+
+        #region Properties
+
+        public IConfiguration Configuration { get; }
 
         #endregion
 
-        #region Constructors
-
-        public DataLayer(IConfiguration configuration, DataLayerContext inMemoryDataContext)
+        public DataLayer(IConfiguration configuration, DataLayerContext inMemoryDataContext, IEventAggregator eventAggregator)
         {
+            if (inMemoryDataContext == null)
+            {
+                throw new DataLayerException(DataLayerExceptionEnum.DATALAYER_CONTEXT_EXCEPTION);
+            }
+
+            if (eventAggregator == null)
+            {
+                throw new DataLayerException(DataLayerExceptionEnum.EVENTAGGREGATOR_EXCEPTION);
+            }
+
             this.inMemoryDataContext = inMemoryDataContext;
+
+            this.eventAggregator = eventAggregator;
 
             this.Configuration = configuration;
 
@@ -51,15 +68,12 @@ namespace Ferretto.VW.MAS_DataLayer
             this.inMemoryDataContext.SaveChanges();
 
             initialContext.Dispose();
+
+            // The old WriteLogService
+            var webApiCommandEvent = eventAggregator.GetEvent<WebAPI_CommandEvent>();
+
+            webApiCommandEvent.Subscribe(this.LogWriting);
         }
-
-        #endregion
-
-        #region Properties
-
-        public IConfiguration Configuration { get; }
-
-        #endregion
 
         #region Methods
 
@@ -80,17 +94,17 @@ namespace Ferretto.VW.MAS_DataLayer
             bool setCellList = true;
 
             if (listCells != null)
-            {
-                foreach (var cell in listCells)
+            { 
+                foreach(var cell in listCells)
                 {
                     var inMemoryCellCurrentValue = inMemoryDataContext.Cells.FirstOrDefault(s => s.CellId == cell.CellId);
 
                     if (inMemoryCellCurrentValue != null)
                     {
-                        inMemoryCellCurrentValue.Coord = cell.Coord;
+                        inMemoryCellCurrentValue.Coord    = cell.Coord;
                         inMemoryCellCurrentValue.Priority = cell.Priority;
-                        inMemoryCellCurrentValue.Side = cell.Side;
-                        inMemoryCellCurrentValue.Status = cell.Status;
+                        inMemoryCellCurrentValue.Side     = cell.Side;
+                        inMemoryCellCurrentValue.Status   = cell.Status;
 
                         inMemoryDataContext.SaveChanges();
                     }
@@ -106,6 +120,46 @@ namespace Ferretto.VW.MAS_DataLayer
             }
 
             return setCellList;
+        }
+
+        public bool LogWriting(string logMessage)
+        {
+            var updateOperation = true;
+
+            try
+            {
+                this.inMemoryDataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
+                this.inMemoryDataContext.SaveChanges();
+            }
+            catch (DbUpdateException exception)
+            {
+                updateOperation = false;
+            }
+
+            return updateOperation;
+        }
+
+        public void LogWriting(Command_EventParameter command_EventParameter)
+        {
+            string logMessage;
+
+            switch (command_EventParameter.CommandType)
+            {
+                case CommandType.ExecuteHoming:
+                    {
+                        logMessage = "Vertical Homing";
+                        break;
+                    }
+                default:
+                    {
+                        logMessage = "Unknown Action";
+
+                        break;
+                    }
+            }
+
+            this.inMemoryDataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
+            this.inMemoryDataContext.SaveChanges();
         }
 
         #endregion
