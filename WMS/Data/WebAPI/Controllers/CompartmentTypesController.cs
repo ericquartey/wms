@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -36,6 +37,24 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #endregion
 
         #region Methods
+
+        [ProducesResponseType(201, Type = typeof(CompartmentType))]
+        [ProducesResponseType(400)]
+        [HttpPost]
+        public async Task<ActionResult<CompartmentType>> CreateAsync(
+            CompartmentType model,
+            int? itemId,
+            int? maxCapacity)
+        {
+            var result = await this.compartmentTypeProvider.CreateAsync(model, itemId, maxCapacity);
+
+            if (!result.Success)
+            {
+                return this.BadRequest();
+            }
+
+            return this.Created(this.Request.GetUri(), result.Entity);
+        }
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<CompartmentType>))]
         [HttpGet]

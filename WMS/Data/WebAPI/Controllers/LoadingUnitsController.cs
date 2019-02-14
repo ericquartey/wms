@@ -59,6 +59,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<LoadingUnit>))]
+        [ProducesResponseType(400, Type = typeof(string))]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LoadingUnit>>> GetAllAsync(
             int skip = 0,
@@ -67,31 +68,46 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             string orderBy = null,
             string search = null)
         {
-            var searchExpression = BuildSearchExpression(search);
-            var whereExpression = this.BuildWhereExpression<LoadingUnit>(where);
+            try
+            {
+                var searchExpression = BuildSearchExpression(search);
+                var whereExpression = this.BuildWhereExpression<LoadingUnit>(where);
 
-            return this.Ok(
-                await this.loadingUnitProvider.GetAllAsync(
-                    skip,
-                    take,
-                    orderBy,
-                    whereExpression,
-                    searchExpression));
+                return this.Ok(
+                    await this.loadingUnitProvider.GetAllAsync(
+                        skip,
+                        take,
+                        orderBy,
+                        whereExpression,
+                        searchExpression));
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
         [ProducesResponseType(200, Type = typeof(int))]
+        [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404)]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync(
             string where = null,
             string search = null)
         {
-            var searchExpression = BuildSearchExpression(search);
-            var whereExpression = this.BuildWhereExpression<LoadingUnit>(where);
+            try
+            {
+                var searchExpression = BuildSearchExpression(search);
+                var whereExpression = this.BuildWhereExpression<LoadingUnit>(where);
 
-            return await this.loadingUnitProvider.GetAllCountAsync(
-                       whereExpression,
-                       searchExpression);
+                return await this.loadingUnitProvider.GetAllCountAsync(
+                           whereExpression,
+                           searchExpression);
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
         [ProducesResponseType(200, Type = typeof(LoadingUnitDetails))]
@@ -111,7 +127,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<CompartmentDetails>))]
         [ProducesResponseType(404)]
         [HttpGet("{id}/compartments")]
-        public async Task<ActionResult<IEnumerable<CompartmentDetails>>> GetCompartments(int id)
+        public async Task<ActionResult<IEnumerable<CompartmentDetails>>> GetCompartmentsAsync(int id)
         {
             var compartments = await this.compartmentProvider.GetByLoadingUnitIdAsync(id);
 
@@ -159,23 +175,17 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return (l) =>
-                (l.AbcClassDescription != null &&
-                 l.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                l.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (l.AisleName != null &&
-                 l.AisleName.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                l.AisleName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (l.AreaName != null &&
-                 l.AreaName.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                l.AreaName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (l.CellPositionDescription != null &&
-                 l.CellPositionDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                l.CellPositionDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (l.LoadingUnitStatusDescription != null &&
-                 l.LoadingUnitStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                l.LoadingUnitStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (l.LoadingUnitTypeDescription != null &&
-                 l.LoadingUnitTypeDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                l.LoadingUnitTypeDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                 l.CellColumn.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||

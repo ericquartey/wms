@@ -107,6 +107,8 @@ namespace Ferretto.WMS.Data.WebAPI
             services.AddTransient<IMeasureUnitProvider, MeasureUnitProvider>();
             services.AddTransient<IMissionProvider, MissionProvider>();
             services.AddTransient<IPackageTypeProvider, PackageTypeProvider>();
+            services.AddTransient<ISchedulerRequestProvider, SchedulerRequestProvider>();
+            services.AddTransient<IUserProvider, UserProvider>();
 
             services.AddMemoryCache();
 
