@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +28,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<OperationResult> AddAsync(Bay model) => throw new NotSupportedException();
+        public Task<IOperationResult> AddAsync(Bay model) => throw new NotSupportedException();
 
         public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
@@ -89,7 +90,7 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotImplementedException();
         }
 
-        public Task<OperationResult> SaveAsync(Bay model) => throw new NotSupportedException();
+        public Task<IOperationResult> SaveAsync(Bay model) => throw new NotSupportedException();
 
         private static IQueryable<Bay> GetAllBaysWithFilter(
             DatabaseContext context,
