@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Transactions;
 using Ferretto.Common.EF;
+using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
@@ -128,26 +129,24 @@ namespace Ferretto.WMS.Data.Core.Providers
             int skip,
             int take,
             string orderBy = null,
-            Expression<Func<Compartment, bool>> whereExpression = null,
+            IExpression whereExpression = null,
             Expression<Func<Compartment, bool>> searchExpression = null)
         {
             return await this.GetAllBase()
-                       .ApplyTransform(
+                       .ToArrayAsync(
                            skip,
                            take,
                            orderBy,
                            whereExpression,
-                           searchExpression)
-                       .ToArrayAsync();
+                           searchExpression);
         }
 
         public async Task<int> GetAllCountAsync(
-            Expression<Func<Compartment, bool>> whereExpression = null,
+            IExpression whereExpression = null,
             Expression<Func<Compartment, bool>> searchExpression = null)
         {
             return await this.GetAllBase()
-                       .ApplyTransform(whereExpression, searchExpression)
-                       .CountAsync();
+                       .CountAsync(whereExpression, searchExpression);
         }
 
         public async Task<IEnumerable<AllowedItemInCompartment>> GetAllowedItemsAsync(int id)
