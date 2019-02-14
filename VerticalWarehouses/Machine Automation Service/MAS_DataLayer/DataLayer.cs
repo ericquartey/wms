@@ -15,10 +15,6 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private const string CELL_NOT_FOUND_EXCEPTION = "Data Layer Exception - Cell Not Found";
 
-        private const string DB_UPDATE_EXCEPTION = "Data Layer Exception - DB Update Exception";
-
-        private const string APPLICATION_EXCEPTION = "Data Layer Exception - Constractor Error";
-
         #region Properties
 
         public IConfiguration Configuration { get; }
@@ -27,37 +23,35 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public DataLayer(IConfiguration configuration, DataLayerContext inMemoryDataContext)
         {
-            try
+            this.inMemoryDataContext = inMemoryDataContext;
+
+            this.Configuration = configuration;
+
+            var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
+
+            var initialContext = new DataLayerContext(
+                new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(connectionString).Options);
+
+            if (initialContext == null)
             {
-                this.inMemoryDataContext = inMemoryDataContext;
-
-                this.Configuration = configuration;
-
-                var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
-
-                var initialContext = new DataLayerContext(
-                    new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(connectionString).Options);
-
-                initialContext.Database.EnsureCreated();
-                initialContext.Database.Migrate();
-
-                foreach (var configurationValue in initialContext.ConfigurationValues)
-                {
-                    this.inMemoryDataContext.ConfigurationValues.Add(configurationValue);
-                }
-
-                this.inMemoryDataContext.SaveChanges();
-
-                initialContext.Dispose();
+                throw new DataLayerException(DataLayerExceptionEnum.DATALAYER_CONTEXT_EXCEPTION);
             }
-            catch (DbUpdateException exDB)
+
+            initialContext.Database.Migrate();
+
+            if (!initialContext.ConfigurationValues.Any())
             {
-                throw new ExceptionsUtils(DB_UPDATE_EXCEPTION);
+                //TODO reovery database from permanent storage
             }
-            catch (ApplicationException exApp)
+
+            foreach (var configurationValue in initialContext.ConfigurationValues)
             {
-                throw new ExceptionsUtils(APPLICATION_EXCEPTION);
+                this.inMemoryDataContext.ConfigurationValues.Add(configurationValue);
             }
+
+            this.inMemoryDataContext.SaveChanges();
+
+            initialContext.Dispose();
         }
 
         public List<Cell> GetCellList()
@@ -76,37 +70,30 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             bool setCellList = true;
 
-            if (listCells == null)
-            {
-                setCellList = false;
+            if (listCells != null)
+            { 
+                foreach(var cell in listCells)
+                {
+                    var inMemoryCellCurrentValue = inMemoryDataContext.Cells.FirstOrDefault(s => s.CellId == cell.CellId);
+
+                    if (inMemoryCellCurrentValue != null)
+                    {
+                        inMemoryCellCurrentValue.Coord    = cell.Coord;
+                        inMemoryCellCurrentValue.Priority = cell.Priority;
+                        inMemoryCellCurrentValue.Side     = cell.Side;
+                        inMemoryCellCurrentValue.Status   = cell.Status;
+
+                        inMemoryDataContext.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new DataLayerException(CELL_NOT_FOUND_EXCEPTION);
+                    }
+                }
             }
             else
             {
-                try
-                { 
-                    foreach(var cell in listCells)
-                    {
-                        var inMemoryCellCurrentValue = inMemoryDataContext.Cells.FirstOrDefault(s => s.CellId == cell.CellId);
-
-                        if (inMemoryCellCurrentValue != null)
-                        {
-                            inMemoryCellCurrentValue.Coord    = cell.Coord;
-                            inMemoryCellCurrentValue.Priority = cell.Priority;
-                            inMemoryCellCurrentValue.Side     = cell.Side;
-                            inMemoryCellCurrentValue.Status   = cell.Status;
-
-                            inMemoryDataContext.SaveChanges();
-                        }
-                        else
-                        {
-                            throw new ExceptionsUtils(CELL_NOT_FOUND_EXCEPTION);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    setCellList = false;
-                }
+                setCellList = false;
             }
 
             return setCellList;
