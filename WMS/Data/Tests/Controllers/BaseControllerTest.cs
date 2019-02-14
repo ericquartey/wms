@@ -1,5 +1,7 @@
 using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DataModels = Ferretto.Common.DataModels;
 
@@ -8,7 +10,15 @@ namespace Ferretto.WMS.Data.Tests
     [TestClass]
     public abstract class BaseControllerTest
     {
+        #region Fields
+
+        private ServiceProvider serviceProvider;
+
+        #endregion
+
         #region Properties
+
+        public ServiceProvider ServiceProvider => this.serviceProvider;
 
         protected DataModels.Aisle Aisle1 { get; set; }
 
@@ -58,14 +68,23 @@ namespace Ferretto.WMS.Data.Tests
 
         protected DatabaseContext CreateContext()
         {
-            return new DatabaseContext(
-                new DbContextOptionsBuilder<DatabaseContext>()
-                    .UseInMemoryDatabase(databaseName: this.GetType().FullName)
-                    .Options);
+            return this.serviceProvider.GetService<DatabaseContext>();
+        }
+
+        protected void CreateServices()
+        {
+            var services = new ServiceCollection();
+            services.AddDataServiceProviders();
+
+            services.AddDbContext<DatabaseContext>(options => options.UseInMemoryDatabase(databaseName: typeof(BaseControllerTest).FullName));
+
+            this.serviceProvider = services.BuildServiceProvider();
         }
 
         protected virtual void InitializeDatabase()
         {
+            this.CreateServices();
+
             this.Area1 = new DataModels.Area { Id = 1, Name = "Area #1" };
             this.Area2 = new DataModels.Area { Id = 2, Name = "Area #2" };
             this.Aisle1 = new DataModels.Aisle { Id = 1, AreaId = this.Area1.Id, Name = "Aisle #1" };

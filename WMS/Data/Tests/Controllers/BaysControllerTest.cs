@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Core.Providers;
 using Ferretto.WMS.Data.WebAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -30,7 +29,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -57,7 +56,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -84,7 +83,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -108,11 +107,13 @@ namespace Ferretto.WMS.Data.Tests
             this.InitializeDatabase();
         }
 
-        private static BaysController MockController(DatabaseContext context)
+        private BaysController MockController()
         {
+            var bayProvider = this.ServiceProvider.GetService(typeof(IBayProvider)) as IBayProvider;
+
             return new BaysController(
                 new Mock<ILogger<BaysController>>().Object,
-                new BayProvider(context));
+                bayProvider);
         }
 
         #endregion
