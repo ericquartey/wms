@@ -3,11 +3,12 @@ using System.Threading.Tasks;
 
 namespace Ferretto.Common.BLL.Interfaces.Base
 {
-    public interface IReadAllAsyncProvider<T>
+    public interface IReadAllAsyncProvider<TModel, TKey>
+        where TModel : IModel<TKey>
     {
         #region Methods
 
-        Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<TModel>> GetAllAsync();
 
         Task<int> GetAllCountAsync();
 
