@@ -59,6 +59,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<ItemList>))]
+        [ProducesResponseType(400, Type = typeof(string))]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ItemList>>> GetAllAsync(
             int skip = 0,
@@ -67,28 +68,43 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             string orderBy = null,
             string search = null)
         {
-            var searchExpression = BuildSearchExpression(search);
-            var whereExpression = this.BuildWhereExpression<ItemList>(where);
+            try
+            {
+                var searchExpression = BuildSearchExpression(search);
+                var whereExpression = this.BuildWhereExpression<ItemList>(where);
 
-            return this.Ok(
-                await this.itemListProvider.GetAllAsync(
-                    skip: skip,
-                    take: take,
-                    orderBy: orderBy,
-                    whereExpression: whereExpression,
-                    searchExpression: searchExpression));
+                return this.Ok(
+                    await this.itemListProvider.GetAllAsync(
+                        skip: skip,
+                        take: take,
+                        orderBy: orderBy,
+                        whereExpression: whereExpression,
+                        searchExpression: searchExpression));
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
         [ProducesResponseType(200, Type = typeof(int))]
+        [ProducesResponseType(400, Type = typeof(string))]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync(string where = null, string search = null)
         {
-            var searchExpression = BuildSearchExpression(search);
-            var whereExpression = this.BuildWhereExpression<ItemList>(where);
+            try
+            {
+                var searchExpression = BuildSearchExpression(search);
+                var whereExpression = this.BuildWhereExpression<ItemList>(where);
 
-            return await this.itemListProvider.GetAllCountAsync(
-                       whereExpression,
-                       searchExpression);
+                return await this.itemListProvider.GetAllCountAsync(
+                           whereExpression,
+                           searchExpression);
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
         [ProducesResponseType(200, Type = typeof(ItemListDetails))]

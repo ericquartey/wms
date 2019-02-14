@@ -46,31 +46,46 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             string orderBy = null,
             string search = null)
         {
-            var searchExpression = BuildSearchExpression(search);
-            var whereExpression = this.BuildWhereExpression<SchedulerRequest>(where);
+            try
+            {
+                var searchExpression = BuildSearchExpression(search);
+                var whereExpression = this.BuildWhereExpression<SchedulerRequest>(where);
 
-            return this.Ok(
-                await this.schedulerRequestProvider.GetAllAsync(
-                    skip,
-                    take,
-                    orderBy,
-                    whereExpression,
-                    searchExpression));
+                return this.Ok(
+                    await this.schedulerRequestProvider.GetAllAsync(
+                        skip,
+                        take,
+                        orderBy,
+                        whereExpression,
+                        searchExpression));
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
         [ProducesResponseType(200, Type = typeof(int))]
+        [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404)]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync(
             string where = null,
             string search = null)
         {
-            var searchExpression = BuildSearchExpression(search);
-            var whereExpression = this.BuildWhereExpression<SchedulerRequest>(where);
+            try
+            {
+                var searchExpression = BuildSearchExpression(search);
+                var whereExpression = this.BuildWhereExpression<SchedulerRequest>(where);
 
-            return await this.schedulerRequestProvider.GetAllCountAsync(
-                       whereExpression,
-                       searchExpression);
+                return await this.schedulerRequestProvider.GetAllCountAsync(
+                           whereExpression,
+                           searchExpression);
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
         [ProducesResponseType(200, Type = typeof(SchedulerRequest))]

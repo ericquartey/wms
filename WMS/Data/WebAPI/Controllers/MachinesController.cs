@@ -42,6 +42,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Methods
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<Machine>))]
+        [ProducesResponseType(400, Type = typeof(string))]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Machine>>> GetAllAsync(
             int skip = 0,
@@ -50,31 +51,46 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             string orderBy = null,
             string search = null)
         {
-            var searchExpression = BuildSearchExpression(search);
-            var whereExpression = this.BuildWhereExpression<Machine>(where);
+            try
+            {
+                var searchExpression = BuildSearchExpression(search);
+                var whereExpression = this.BuildWhereExpression<Machine>(where);
 
-            return this.Ok(
-                await this.machineProvider.GetAllAsync(
-                    skip,
-                    take,
-                    orderBy,
-                    whereExpression,
-                    searchExpression));
+                return this.Ok(
+                    await this.machineProvider.GetAllAsync(
+                        skip,
+                        take,
+                        orderBy,
+                        whereExpression,
+                        searchExpression));
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
         [ProducesResponseType(200, Type = typeof(int))]
+        [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404)]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync(
             string where = null,
             string search = null)
         {
-            var searchExpression = BuildSearchExpression(search);
-            var whereExpression = this.BuildWhereExpression<Machine>(where);
+            try
+            {
+                var searchExpression = BuildSearchExpression(search);
+                var whereExpression = this.BuildWhereExpression<Machine>(where);
 
-            return await this.machineProvider.GetAllCountAsync(
-                       whereExpression,
-                       searchExpression);
+                return await this.machineProvider.GetAllCountAsync(
+                           whereExpression,
+                           searchExpression);
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
         [ProducesResponseType(200, Type = typeof(Machine))]
