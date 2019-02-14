@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
@@ -49,7 +50,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public async Task<OperationResult> AddAsync(CompartmentDetails model)
+        public async Task<IOperationResult<CompartmentDetails>> AddAsync(CompartmentDetails model)
         {
             if (model == null)
             {
@@ -97,16 +98,16 @@ namespace Ferretto.Common.BusinessProviders
 
                     model.LoadingUnit?.Compartments.Add(model);
 
-                    return new OperationResult(true);
+                    return new OperationResult<CompartmentDetails>(true);
                 }
             }
             catch (Exception ex)
             {
-                return new OperationResult(false, description: ex.Message);
+                return new OperationResult<CompartmentDetails>(ex);
             }
         }
 
-        public async Task<OperationResult> AddRangeAsync(IEnumerable<ICompartment> compartments)
+        public async Task<IOperationResult<ICompartment>> AddRangeAsync(IEnumerable<ICompartment> compartments)
         {
             if (compartments == null)
             {
@@ -123,7 +124,7 @@ namespace Ferretto.Common.BusinessProviders
                 }
             }
 
-            return new OperationResult(true);
+            return new OperationResult<CompartmentDetails>(true);
         }
 
         public async Task<int> DeleteAsync(int id)
@@ -410,7 +411,7 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public async Task<OperationResult> SaveAsync(CompartmentDetails model)
+        public async Task<IOperationResult<CompartmentDetails>> SaveAsync(CompartmentDetails model)
         {
             if (model == null)
             {
@@ -447,12 +448,12 @@ namespace Ferretto.Common.BusinessProviders
 
                     await dataContext.SaveChangesAsync();
 
-                    return new OperationResult(true);
+                    return new OperationResult<CompartmentDetails>(true);
                 }
             }
             catch (Exception ex)
             {
-                return new OperationResult(ex);
+                return new OperationResult<CompartmentDetails>(ex);
             }
         }
 

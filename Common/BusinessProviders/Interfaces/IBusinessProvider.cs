@@ -1,17 +1,17 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BusinessModels;
+using Ferretto.Common.BLL.Interfaces.Base;
 
 namespace Ferretto.Common.BusinessProviders
 {
-    public interface IBusinessProvider<out TModel, TDetailsModel>
-        where TModel : IBusinessObject
-        where TDetailsModel : IBusinessObject
+    public interface IBusinessProvider<out TModel, TDetailsModel, TKey>
+        where TModel : IModel<TKey>
+        where TDetailsModel : IModel<TKey>
     {
         #region Methods
 
-        Task<OperationResult> AddAsync(TDetailsModel model);
+        Task<IOperationResult<TDetailsModel>> AddAsync(TDetailsModel model);
 
         Task<int> DeleteAsync(int id);
 
@@ -23,7 +23,7 @@ namespace Ferretto.Common.BusinessProviders
 
         TDetailsModel GetNew();
 
-        Task<OperationResult> SaveAsync(TDetailsModel model);
+        Task<IOperationResult<TDetailsModel>> SaveAsync(TDetailsModel model);
 
         #endregion
     }

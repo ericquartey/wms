@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 
@@ -26,7 +27,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public async Task<OperationResult> AddAsync(ItemCompartmentType model)
+        public async Task<IOperationResult<ItemCompartmentType>> AddAsync(ItemCompartmentType model)
         {
             if (model == null)
             {
@@ -55,7 +56,7 @@ namespace Ferretto.Common.BusinessProviders
                         var changedEntitiesCount = await dataContext.SaveChangesAsync();
                         if (changedEntitiesCount <= 0)
                         {
-                            return new OperationResult(false);
+                            return new OperationResult<ItemCompartmentType>(false);
                         }
                     }
                     else
@@ -64,12 +65,12 @@ namespace Ferretto.Common.BusinessProviders
                         await dataContext.SaveChangesAsync();
                     }
 
-                    return new OperationResult(true);
+                    return new OperationResult<ItemCompartmentType>(true);
                 }
             }
             catch (Exception ex)
             {
-                return new OperationResult(ex);
+                return new OperationResult<ItemCompartmentType>(ex);
             }
         }
 
@@ -86,7 +87,7 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotSupportedException();
         }
 
-        public Task<OperationResult> SaveAsync(ItemCompartmentType model) => throw new NotSupportedException();
+        public Task<IOperationResult<ItemCompartmentType>> SaveAsync(ItemCompartmentType model) => throw new NotSupportedException();
 
         #endregion
     }

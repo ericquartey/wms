@@ -3,7 +3,7 @@ using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
 {
-    public interface IAreaProvider : IBusinessProvider<Area, Area>
+    public interface IAreaProvider : IBusinessProvider<Area, Area, int>
     {
         #region Methods
 

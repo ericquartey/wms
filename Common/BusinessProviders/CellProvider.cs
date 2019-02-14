@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
@@ -45,7 +46,7 @@ cell => cell.CellStatusId == 1;
 
         #region Methods
 
-        public Task<OperationResult> AddAsync(CellDetails model) => throw new NotSupportedException();
+        public Task<IOperationResult<CellDetails>> AddAsync(CellDetails model) => throw new NotSupportedException();
 
         public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
@@ -175,7 +176,7 @@ cell => cell.CellStatusId == 1;
             }
         }
 
-        public async Task<OperationResult> SaveAsync(CellDetails model)
+        public async Task<IOperationResult<CellDetails>> SaveAsync(CellDetails model)
         {
             if (model == null)
             {

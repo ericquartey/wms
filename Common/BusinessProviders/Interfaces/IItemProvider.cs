@@ -7,11 +7,11 @@ using Ferretto.Common.BusinessModels;
 namespace Ferretto.Common.BusinessProviders
 {
     public interface IItemProvider :
-        IPagedBusinessProvider<Item>,
-        ICreateAsyncProvider<ItemDetails>,
+        IPagedBusinessProvider<Item, int>,
+        ICreateAsyncProvider<ItemDetails, int>,
         IReadSingleAsyncProvider<ItemDetails, int>,
-        IUpdateAsyncProvider<ItemDetails>,
-        IDeleteAsyncProvider
+        IUpdateAsyncProvider<ItemDetails, int>,
+        IDeleteAsyncProvider<ItemDetails, int>
     {
         #region Methods
 
@@ -21,7 +21,7 @@ namespace Ferretto.Common.BusinessProviders
 
         bool HasAnyCompartments(int itemId);
 
-        Task<IOperationResult> WithdrawAsync(ItemWithdraw itemWithdraw);
+        Task<IOperationResult<SchedulerRequest>> WithdrawAsync(ItemWithdraw itemWithdraw);
 
         #endregion
     }

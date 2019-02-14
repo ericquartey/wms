@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
@@ -38,7 +37,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public static int Save(MissionDetails model) => throw new NotSupportedException();
 
-        public Task<OperationResult> AddAsync(MissionDetails model) => throw new NotSupportedException();
+        public Task<IOperationResult<MissionDetails>> AddAsync(MissionDetails model) => throw new NotSupportedException();
 
         public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
@@ -119,7 +118,7 @@ namespace Ferretto.Common.BusinessProviders
             return this.dataContextService.Current.Missions.AsNoTracking().Count(StatusNewFilter);
         }
 
-        public Task<OperationResult> SaveAsync(MissionDetails model) => throw new NotSupportedException();
+        public Task<IOperationResult<MissionDetails>> SaveAsync(MissionDetails model) => throw new NotSupportedException();
 
         private static IQueryable<Mission> GetAllMissionsWithAggregations(DatabaseContext context, Expression<Func<DataModels.Mission, bool>> whereFunc = null)
         {

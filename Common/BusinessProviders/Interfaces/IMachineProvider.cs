@@ -3,7 +3,7 @@ using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
 {
-    public interface IMachineProvider : IBusinessProvider<Machine, MachineDetails>
+    public interface IMachineProvider : IBusinessProvider<Machine, MachineDetails, int>
     {
         #region Methods
 

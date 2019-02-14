@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
-using Ferretto.WMS.Scheduler.WebAPI.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.Common.BusinessProviders
@@ -16,7 +16,7 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly EnumerationProvider enumerationProvider;
 
-        private readonly IItemListRowsSchedulerService itemListRowsSchedulerService;
+        private readonly WMS.Data.WebAPI.Contracts.IItemListRowsDataService itemListRowDataService;
 
         #endregion
 
@@ -25,38 +25,38 @@ namespace Ferretto.Common.BusinessProviders
         public ItemListRowProvider(
             IDatabaseContextService dataContextService,
             EnumerationProvider enumerationProvider,
-            IItemListRowsSchedulerService itemListRowsSchedulerService)
+            WMS.Data.WebAPI.Contracts.IItemListRowsDataService itemListRowDataService)
         {
             this.dataContextService = dataContextService;
             this.enumerationProvider = enumerationProvider;
-            this.itemListRowsSchedulerService = itemListRowsSchedulerService;
+            this.itemListRowDataService = itemListRowDataService;
         }
 
         #endregion
 
         #region Methods
 
-        public Task<OperationResult> AddAsync(ItemListRowDetails model) => throw new NotSupportedException();
+        public Task<IOperationResult<ItemListRowDetails>> AddAsync(ItemListRowDetails model) => throw new NotSupportedException();
 
         public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
-        public async Task<OperationResult> ExecuteImmediatelyAsync(int listRowId, int areaId, int bayId)
+        public async Task<IOperationResult<ItemListRow>> ExecuteImmediatelyAsync(int listRowId, int areaId, int bayId)
         {
             try
             {
-                await this.itemListRowsSchedulerService.ExecuteAsync(
-                    new ListRowExecutionRequest
+                await this.itemListRowDataService.ExecuteAsync(
+                    new WMS.Data.WebAPI.Contracts.ItemListRowExecutionRequest
                     {
                         ListRowId = listRowId,
                         AreaId = areaId,
                         BayId = bayId
                     });
 
-                return new OperationResult(true);
+                return new OperationResult<ItemListRow>(true);
             }
             catch (Exception ex)
             {
-                return new OperationResult(ex);
+                return new OperationResult<ItemListRow>(ex);
             }
         }
 
@@ -133,7 +133,7 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotImplementedException();
         }
 
-        public async Task<OperationResult> SaveAsync(ItemListRowDetails model)
+        public async Task<IOperationResult<ItemListRowDetails>> SaveAsync(ItemListRowDetails model)
         {
             if (model == null)
             {
@@ -150,31 +150,31 @@ namespace Ferretto.Common.BusinessProviders
 
                     var changedEntityCount = await dataContext.SaveChangesAsync();
 
-                    return new OperationResult(changedEntityCount > 0);
+                    return new OperationResult<ItemListRowDetails>(changedEntityCount > 0);
                 }
             }
             catch (Exception ex)
             {
-                return new OperationResult(ex);
+                return new OperationResult<ItemListRowDetails>(ex);
             }
         }
 
-        public async Task<OperationResult> ScheduleForExecutionAsync(int listRowId, int areaId)
+        public async Task<IOperationResult<ItemListRow>> ScheduleForExecutionAsync(int listRowId, int areaId)
         {
             try
             {
-                await this.itemListRowsSchedulerService
-                    .ExecuteAsync(new ListRowExecutionRequest
+                await this.itemListRowDataService
+                    .ExecuteAsync(new WMS.Data.WebAPI.Contracts.ListRowExecutionRequest
                     {
                         ListRowId = listRowId,
                         AreaId = areaId
                     });
 
-                return new OperationResult(true);
+                return new OperationResult<ItemListRow>(true);
             }
             catch (Exception ex)
             {
-                return new OperationResult(ex);
+                return new OperationResult<ItemListRow>(ex);
             }
         }
 

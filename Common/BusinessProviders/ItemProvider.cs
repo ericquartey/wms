@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
@@ -26,8 +25,6 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService;
 
-        private readonly WMS.Scheduler.WebAPI.Contracts.IItemsSchedulerService itemsSchedulerService;
-
         #endregion
 
         #region Constructors
@@ -37,11 +34,9 @@ namespace Ferretto.Common.BusinessProviders
             EnumerationProvider enumerationProvider,
             IImageProvider imageProvider,
             WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService,
-            WMS.Scheduler.WebAPI.Contracts.IItemsSchedulerService itemsSchedulerService,
             IAbcClassProvider abcClassProvider)
         {
             this.dataContextService = dataContextService;
-            this.itemsSchedulerService = itemsSchedulerService;
             this.itemsDataService = itemsDataService;
             this.enumerationProvider = enumerationProvider;
             this.imageProvider = imageProvider;
@@ -63,7 +58,7 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public async Task<IOperationResult> CreateAsync(ItemDetails model)
+        public async Task<IOperationResult<ItemDetails>> CreateAsync(ItemDetails model)
         {
             if (model == null)
             {
@@ -100,11 +95,11 @@ namespace Ferretto.Common.BusinessProviders
 
                 model.Id = item.Id;
 
-                return new OperationResult(true);
+                return new OperationResult<ItemDetails>(true);
             }
             catch (Exception ex)
             {
-                return new OperationResult(ex);
+                return new OperationResult<ItemDetails>(ex);
             }
         }
 
@@ -115,7 +110,7 @@ namespace Ferretto.Common.BusinessProviders
             int take = 0,
             IEnumerable<SortOption> orderBy = null,
             IExpression whereExpression = null,
-            IExpression searchExpression = null)
+            Expression<Func<Item, bool>> searchExpression = null)
         {
             var orderByString = orderBy != null ? string.Join(",", orderBy.Select(s => $"{s.PropertyName} {s.Direction}")) : null;
 
@@ -160,7 +155,9 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public async Task<int> GetAllCountAsync(IExpression whereExpression = null, IExpression searchExpression = null)
+        public async Task<int> GetAllCountAsync(
+            IExpression whereExpression = null,
+            Expression<Func<Item, bool>> searchExpression = null)
         {
             return await this.itemsDataService.GetAllCountAsync(whereExpression?.ToString(), searchExpression?.ToString());
         }
@@ -267,7 +264,7 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public async Task<IOperationResult> UpdateAsync(ItemDetails model)
+        public async Task<IOperationResult<ItemDetails>> UpdateAsync(ItemDetails model)
         {
             if (model == null)
             {
@@ -310,15 +307,15 @@ namespace Ferretto.Common.BusinessProviders
                     this.SaveImage(model.ImagePath);
                 }
 
-                return new OperationResult(true);
+                return new OperationResult<ItemDetails>(true);
             }
             catch (Exception ex)
             {
-                return new OperationResult(ex);
+                return new OperationResult<ItemDetails>(ex);
             }
         }
 
-        public async Task<IOperationResult> WithdrawAsync(ItemWithdraw itemWithdraw)
+        public async Task<IOperationResult<SchedulerRequest>> WithdrawAsync(ItemWithdraw itemWithdraw)
         {
             if (itemWithdraw == null)
             {
@@ -327,11 +324,11 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
-                await this.itemsSchedulerService.WithdrawAsync(
-                   new WMS.Scheduler.WebAPI.Contracts.SchedulerRequest
+                await this.itemsDataService.WithdrawAsync(
+                   new WMS.Data.WebAPI.Contracts.SchedulerRequest
                    {
                        IsInstant = true,
-                       Type = WMS.Scheduler.WebAPI.Contracts.OperationType.Withdrawal,
+                       Type = WMS.Data.WebAPI.Contracts.OperationType.Withdrawal,
                        ItemId = itemWithdraw.ItemDetails.Id,
                        BayId = itemWithdraw.BayId,
                        AreaId = itemWithdraw.AreaId.Value,
@@ -342,11 +339,11 @@ namespace Ferretto.Common.BusinessProviders
                        Sub2 = itemWithdraw.Sub2,
                    });
 
-                return new OperationResult(true);
+                return new OperationResult<SchedulerRequest>(true);
             }
             catch (Exception ex)
             {
-                return new OperationResult(ex);
+                return new OperationResult<SchedulerRequest>(ex);
             }
         }
 

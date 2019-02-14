@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
@@ -9,7 +10,7 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Methods
 
-        public Task<OperationResult> AddAsync(User model) => throw new NotSupportedException();
+        public Task<IOperationResult<User>> AddAsync(User model) => throw new NotSupportedException();
 
         public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
@@ -29,7 +30,7 @@ namespace Ferretto.Common.BusinessProviders
             return string.Empty;
         }
 
-        public Task<OperationResult> SaveAsync(User model) => throw new NotSupportedException();
+        public Task<IOperationResult<User>> SaveAsync(User model) => throw new NotSupportedException();
 
         #endregion
     }

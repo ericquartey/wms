@@ -1,10 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
 {
-    public interface ILoadingUnitProvider : IBusinessProvider<LoadingUnit, LoadingUnitDetails>
+    public interface ILoadingUnitProvider : IBusinessProvider<LoadingUnit, LoadingUnitDetails, int>
     {
         #region Methods
 

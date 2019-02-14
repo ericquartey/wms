@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
@@ -59,7 +60,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<OperationResult> AddAsync(LoadingUnitDetails model) => throw new NotSupportedException();
+        public Task<IOperationResult<LoadingUnitDetails>> AddAsync(LoadingUnitDetails model) => throw new NotSupportedException();
 
         public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
@@ -282,7 +283,7 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public async Task<OperationResult> SaveAsync(LoadingUnitDetails model)
+        public async Task<IOperationResult<LoadingUnitDetails>> SaveAsync(LoadingUnitDetails model)
         {
             if (model == null)
             {
@@ -305,12 +306,12 @@ namespace Ferretto.Common.BusinessProviders
 
                     var changedEntityCount = await dc.SaveChangesAsync();
 
-                    return new OperationResult(changedEntityCount > 0);
+                    return new OperationResult<LoadingUnitDetails>(changedEntityCount > 0);
                 }
             }
             catch (Exception ex)
             {
-                return new OperationResult(ex);
+                return new OperationResult<LoadingUnitDetails>(ex);
             }
         }
 
