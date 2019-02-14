@@ -50,7 +50,7 @@ namespace Ferretto.VW.InstallationApp
             var weightControlVMInstance = new WeightControlViewModel();
             var mainWindowVMInstance = new MainWindowViewModel();
             var helpMainWindowInstance = new HelpMainWindow();
-            var installationHubClient = new InstallationHubClient("localhost://61656", "/installation-endpoint");
+            var installationHubClient = new InstallationHubClient("localhost://5000", "/installation-endpoint");
 
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
             this.container.RegisterInstance<IBeltBurnishingViewModel>(beltBurnishingVMInstance);

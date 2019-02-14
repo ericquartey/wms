@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,12 @@ cell => cell.CellStatusId == 1;
         private static readonly Expression<Func<DataModels.Cell, bool>> StatusFullFilter =
                    cell => cell.CellStatusId == 3;
 
+        private readonly IAbcClassProvider abcClassProvider;
+
+        private readonly ICellStatusProvider cellStatusProvider;
+
+        private readonly ICellTypeProvider cellTypeProvider;
+
         private readonly IDatabaseContextService dataContext;
 
         private readonly EnumerationProvider enumerationProvider;
@@ -31,17 +38,23 @@ cell => cell.CellStatusId == 1;
 
         public CellProvider(
             IDatabaseContextService context,
-            EnumerationProvider enumerationProvider)
+            EnumerationProvider enumerationProvider,
+            IAbcClassProvider abcClassProvider,
+            ICellStatusProvider cellStatusProvider,
+            ICellTypeProvider cellTypeProvider)
         {
             this.dataContext = context;
             this.enumerationProvider = enumerationProvider;
+            this.abcClassProvider = abcClassProvider;
+            this.cellStatusProvider = cellStatusProvider;
+            this.cellTypeProvider = cellTypeProvider;
         }
 
         #endregion
 
         #region Methods
 
-        public Task<OperationResult> AddAsync(CellDetails model) => throw new NotSupportedException();
+        public Task<IOperationResult> AddAsync(CellDetails model) => throw new NotSupportedException();
 
         public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
@@ -111,10 +124,10 @@ cell => cell.CellStatusId == 1;
                 })
                 .SingleAsync();
 
-            cellDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
+            cellDetails.AbcClassChoices = await this.abcClassProvider.GetAllAsync();
             cellDetails.AisleChoices = this.enumerationProvider.GetAislesByAreaId(cellDetails.AreaId);
-            cellDetails.CellStatusChoices = this.enumerationProvider.GetAllCellStatuses();
-            cellDetails.CellTypeChoices = this.enumerationProvider.GetAllCellTypes();
+            cellDetails.CellStatusChoices = await this.cellStatusProvider.GetAllAsync();
+            cellDetails.CellTypeChoices = await this.cellTypeProvider.GetAllAsync();
 
             return cellDetails;
         }
@@ -171,7 +184,7 @@ cell => cell.CellStatusId == 1;
             }
         }
 
-        public async Task<OperationResult> SaveAsync(CellDetails model)
+        public async Task<IOperationResult> SaveAsync(CellDetails model)
         {
             if (model == null)
             {

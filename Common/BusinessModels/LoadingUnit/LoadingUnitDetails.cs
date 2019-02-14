@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
 using System.Linq;
 using Ferretto.Common.Resources;
 
@@ -190,7 +191,7 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.note, value);
         }
 
-        public Position OriginTray { get; set; }
+        public Point OriginTray { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitOtherCycleCount), ResourceType = typeof(BusinessObjects))]
         public int OtherCycleCount { get; set; }

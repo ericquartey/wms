@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private float weight;
 
-        #endregion Fields
+        #endregion
 
 
         #region Methods
@@ -62,6 +62,6 @@ namespace Ferretto.VW.MAS_InverterDriver
         }
 
 
-        #endregion Methods
+        #endregion
     }
 }

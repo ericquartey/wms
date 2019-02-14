@@ -8,6 +8,7 @@ using DevExpress.Data.Filtering;
 using DevExpress.Xpf.Core.FilteringUI;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.Controls.Extensions;
 using Ferretto.Common.Utils.Expressions;
 using NLog;
@@ -15,7 +16,7 @@ using NLog;
 namespace Ferretto.Common.Controls
 {
     public class EntityPagedListViewModel<TModel> : EntityListViewModel<TModel>
-            where TModel : IBusinessObject
+       where TModel : IBusinessObject
     {
         #region Fields
 
@@ -111,6 +112,11 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
+        public async Task<object[]> GetUniqueValuesAsync(string propertyName)
+        {
+            return (await this.Provider.GetUniqueValuesAsync(propertyName)).ToArray();
+        }
+
         public override async Task UpdateFilterTilesCountsAsync()
         {
             foreach (var filterTile in this.Filters)
@@ -119,13 +125,12 @@ namespace Ferretto.Common.Controls
 
                 if (filterDataSource.Provider != null)
                 {
-                    string whereExpression = null;
+                    IExpression whereExpression = null;
 
                     if (filterDataSource.Expression != null)
                     {
                         whereExpression = CriteriaOperator.Parse(filterDataSource.Expression)
-                            .AsIExpression()
-                            .ToString();
+                            .AsIExpression();
                     }
 
                     filterTile.Count = await filterDataSource.Provider.GetAllCountAsync(whereExpression);
@@ -195,8 +200,8 @@ namespace Ferretto.Common.Controls
                 skip: e.Skip,
                 take: GetPageSize(),
                 orderBy: orderBy,
-                whereExpression: where?.ToString(),
-                searchExpression: search?.ToString());
+                whereExpression: where,
+                searchExpression: search);
 
             return new FetchRowsResult(entities.Cast<object>().ToArray(), hasMoreRows: entities.Count() == GetPageSize());
         }
@@ -216,11 +221,6 @@ namespace Ferretto.Common.Controls
                     e.Result = this.GetUniqueValuesAsync(propertyInfo.Name);
                 }
             }
-        }
-
-        private async Task<object[]> GetUniqueValuesAsync(string propertyName)
-        {
-            return (await this.Provider.GetUniqueValuesAsync(propertyName)).ToArray();
         }
 
         private InfiniteAsyncSource InitializeSource()

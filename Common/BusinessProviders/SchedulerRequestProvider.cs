@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +37,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<OperationResult> AddAsync(SchedulerRequest model) => throw new NotSupportedException();
+        public Task<IOperationResult> AddAsync(SchedulerRequest model) => throw new NotSupportedException();
 
         public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
@@ -115,7 +116,7 @@ namespace Ferretto.Common.BusinessProviders
             return this.dataContextService.Current.SchedulerRequests.AsNoTracking().Count(OperationWithdrawFilter);
         }
 
-        public Task<OperationResult> SaveAsync(SchedulerRequest model)
+        public Task<IOperationResult> SaveAsync(SchedulerRequest model)
         {
             throw new NotSupportedException();
         }

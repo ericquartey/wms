@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Scheduler.WebAPI.Contracts;
@@ -14,9 +15,11 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly IDatabaseContextService dataContextService;
 
-        private readonly EnumerationProvider enumerationProvider;
-
         private readonly IItemListRowsSchedulerService itemListRowsSchedulerService;
+
+        private readonly IMaterialStatusProvider materialStatusProvider;
+
+        private readonly IPackageTypeProvider packageTypeProvider;
 
         #endregion
 
@@ -24,19 +27,21 @@ namespace Ferretto.Common.BusinessProviders
 
         public ItemListRowProvider(
             IDatabaseContextService dataContextService,
-            EnumerationProvider enumerationProvider,
-            IItemListRowsSchedulerService itemListRowsSchedulerService)
+            IItemListRowsSchedulerService itemListRowsSchedulerService,
+            IMaterialStatusProvider materialStatusProvider,
+        IPackageTypeProvider packageTypeProvider)
         {
             this.dataContextService = dataContextService;
-            this.enumerationProvider = enumerationProvider;
             this.itemListRowsSchedulerService = itemListRowsSchedulerService;
+            this.packageTypeProvider = packageTypeProvider;
+            this.materialStatusProvider = materialStatusProvider;
         }
 
         #endregion
 
         #region Methods
 
-        public Task<OperationResult> AddAsync(ItemListRowDetails model) => throw new NotSupportedException();
+        public Task<IOperationResult> AddAsync(ItemListRowDetails model) => throw new NotSupportedException();
 
         public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
 
@@ -98,8 +103,8 @@ namespace Ferretto.Common.BusinessProviders
                     ItemUnitMeasure = lr.Item.MeasureUnit.Description
                 }).SingleAsync();
 
-            itemListRowDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
-            itemListRowDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
+            itemListRowDetails.MaterialStatusChoices = await this.materialStatusProvider.GetAllAsync();
+            itemListRowDetails.PackageTypeChoices = await this.packageTypeProvider.GetAllAsync();
 
             return itemListRowDetails;
         }
@@ -133,7 +138,7 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotImplementedException();
         }
 
-        public async Task<OperationResult> SaveAsync(ItemListRowDetails model)
+        public async Task<IOperationResult> SaveAsync(ItemListRowDetails model)
         {
             if (model == null)
             {

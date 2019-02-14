@@ -42,6 +42,7 @@ namespace Ferretto.VW.MAS_DataLayer
             catch (DbUpdateException exception)
             {
                 updateOperation = false;
+
                 throw exception;
             }
 
