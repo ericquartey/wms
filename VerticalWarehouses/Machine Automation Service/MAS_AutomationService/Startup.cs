@@ -71,15 +71,45 @@ namespace Ferretto.VW.MAS_AutomationService
             var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
             services.AddDbContext<DataLayerContext>(options => options.UseInMemoryDatabase("InMemoryWorkingDB"), ServiceLifetime.Singleton);
 
+            
             services.AddSingleton<IEventAggregator, EventAggregator>();
             services.AddSingleton<IAutomationService, AutomationService>();
-            services.AddSingleton<IWriteLogService, WriteLogService>();
+
+
+
+
+
+
+            services.AddSingleton<IDataLayer, DataLayer>(provider => new DataLayer(
+                provider.GetService<IConfiguration>(),
+                provider.GetService<DataLayerContext>(),
+                provider.GetService<IEventAggregator>()));
+
+            services.AddSingleton<IWriteLogService, DataLayer>(provider => provider.GetService<IDataLayer>() as DataLayer);
+
+
+
+
+
+
+
+
+
+
+
+            //services.AddSingleton<IWriteLogService, DataLayer>(provider => new DataLayer(
+            //    provider.GetService<IConfiguration>(),
+            //    provider.GetService<DataLayerContext>(),
+            //    provider.GetService<IEventAggregator>()));
+
+            //services.AddSingleton<IDataLayer, DataLayer>(provider => provider.GetService<IWriteLogService>() as DataLayer);
+
+
             services.AddSingleton<IMissionsScheduler, MissionsScheduler>();
             services.AddSingleton<IMachineManager, MachineManager>();
             services.AddSingleton<IFiniteStateMachines, FiniteStateMachines>();
             services.AddSingleton<INewInverterDriver, NewInverterDriver>();
             services.AddSingleton<INewRemoteIODriver, NewRemoteIODriver>();
-            services.AddSingleton<IDataLayer, DataLayer>();
 
             //TODO Old InverterDriver Registration to be removed after code refactoring completed
             services.AddSingleton<InverterDriver.IInverterDriver, InverterDriver.InverterDriver >();
