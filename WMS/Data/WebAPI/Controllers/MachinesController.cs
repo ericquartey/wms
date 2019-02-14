@@ -109,23 +109,17 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return (m) =>
-                (m.AisleName != null &&
-                 m.AisleName.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                m.AisleName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (m.AreaName != null &&
-                 m.AreaName.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                m.AreaName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (m.MachineTypeDescription != null &&
-                 m.MachineTypeDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                m.MachineTypeDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (m.Model != null &&
-                 m.Model.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                m.Model.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (m.Nickname != null &&
-                 m.Nickname.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                m.Nickname.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (m.RegistrationNumber != null &&
-                 m.RegistrationNumber.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                m.RegistrationNumber.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                 m.FillRate.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }

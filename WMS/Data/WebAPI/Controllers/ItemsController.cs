@@ -176,13 +176,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return (i) =>
-                (i.AbcClassDescription != null &&
-                 i.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                i.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (i.Description != null && i.Description.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                i.Description.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (i.ItemCategoryDescription != null &&
-                 i.ItemCategoryDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                i.ItemCategoryDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                 i.TotalAvailable.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }

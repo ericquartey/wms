@@ -189,29 +189,21 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return (c) =>
-                (c.CompartmentStatusDescription != null &&
-                 c.CompartmentStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.CompartmentStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (c.ItemDescription != null &&
-                 c.ItemDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.ItemDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (c.ItemMeasureUnit != null &&
-                 c.ItemMeasureUnit.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.ItemMeasureUnit.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (c.LoadingUnitCode != null &&
-                 c.LoadingUnitCode.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.LoadingUnitCode.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (c.Lot != null &&
-                 c.Lot.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.Lot.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (c.MaterialStatusDescription != null &&
-                 c.MaterialStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.MaterialStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (c.Sub1 != null &&
-                 c.Sub1.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.Sub1.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (c.Sub2 != null &&
-                 c.Sub2.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.Sub2.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                 c.Stock.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }

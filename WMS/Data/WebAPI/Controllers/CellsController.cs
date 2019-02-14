@@ -138,23 +138,17 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return (c) =>
-                (c.AbcClassDescription != null &&
-                 c.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (c.AisleName != null &&
-                 c.AisleName.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.AisleName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (c.AreaName != null &&
-                 c.AreaName.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.AreaName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (c.LoadingUnitsDescription != null &&
-                 c.LoadingUnitsDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.LoadingUnitsDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (c.Status != null &&
-                 c.Status.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.Status.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (c.Type != null &&
-                 c.Type.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.Type.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                 c.Column.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
