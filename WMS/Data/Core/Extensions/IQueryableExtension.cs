@@ -5,7 +5,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Ferretto.Common.Utils.Expressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Extensions
 {
@@ -13,10 +15,11 @@ namespace Ferretto.WMS.Data.Core.Extensions
     {
         #region Fields
 
-        private static readonly System.Text.RegularExpressions.Regex OrderByRegex =
-            new System.Text.RegularExpressions.Regex(
+        private static readonly Regex OrderByRegex =
+            new Regex(
                 $@"(?<{nameof(SortOption.PropertyName)}>[^\s]+)\s+(?<{nameof(SortOption.Direction)}>({nameof(ListSortDirection.Ascending)}|{nameof(ListSortDirection.Descending)}))(,\s*)?",
-                System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                RegexOptions.Compiled |
+                RegexOptions.IgnoreCase);
 
         private static MethodInfo orderByDescendingMethod;
 
@@ -30,55 +33,45 @@ namespace Ferretto.WMS.Data.Core.Extensions
 
         #region Methods
 
-        public static IQueryable<T> ApplyTransform<T>(
-            this IQueryable<T> entities,
-            Expression<Func<T, bool>> whereExpression,
-            Expression<Func<T, bool>> searchExpression)
+        public static async Task<int> CountAsync<TModel>(
+            this IQueryable<TModel> entities,
+            IExpression whereExpression,
+            Expression<Func<TModel, bool>> searchExpression)
         {
-            return ApplyTransform(
-                entities,
-                skip: 0,
-                take: int.MaxValue,
-                orderBy: null,
-                whereExpression: whereExpression,
-                searchExpression: searchExpression);
+            var isAsyncQueryable = whereExpression.ContainsOnlyTypeProperties<TModel>();
+
+            var result = await ApplyTransformAsync(
+                       entities,
+                       0,
+                       int.MaxValue,
+                       null,
+                       whereExpression,
+                       searchExpression,
+                       isAsyncQueryable);
+
+            return isAsyncQueryable ? await result.CountAsync() : result.Count();
         }
 
-        public static IQueryable<T> ApplyTransform<T>(
-            this IQueryable<T> entities,
+        public static async Task<IEnumerable<TModel>> ToArrayAsync<TModel>(
+            this IQueryable<TModel> entities,
             int skip,
             int take,
             string orderBy,
-            Expression<Func<T, bool>> whereExpression,
-            Expression<Func<T, bool>> searchExpression)
+            IExpression whereExpression,
+            Expression<Func<TModel, bool>> searchExpression)
         {
-            // TODO: if skip or take, then orderby should be defined (throw exception)
-            var filteredItems = entities;
-            if (whereExpression != null)
-            {
-                filteredItems = filteredItems.Where(whereExpression);
-            }
+            var isAsyncQueryable = whereExpression.ContainsOnlyTypeProperties<TModel>();
 
-            if (searchExpression != null)
-            {
-                filteredItems = filteredItems.Where(searchExpression);
-            }
+            var result = await ApplyTransformAsync(
+                       entities,
+                       skip,
+                       take,
+                       orderBy,
+                       whereExpression,
+                       searchExpression,
+                       isAsyncQueryable);
 
-            filteredItems = ApplyOrderByClause(orderBy, filteredItems);
-
-            var skipValue = skip < 0 ? 0 : skip;
-            if (skipValue > 0)
-            {
-                filteredItems = filteredItems.Skip(skipValue);
-            }
-
-            var takeValue = take < 0 ? int.MaxValue : take;
-            if (takeValue != int.MaxValue)
-            {
-                filteredItems = filteredItems.Take(takeValue);
-            }
-
-            return filteredItems;
+            return isAsyncQueryable ? await result.ToArrayAsync() : result.ToArray();
         }
 
         private static IQueryable<T> ApplyOrderByClause<T>(string orderBy, IQueryable<T> entities)
@@ -114,15 +107,14 @@ namespace Ferretto.WMS.Data.Core.Extensions
                 MethodInfo methodInstance;
                 if (sortOption.Direction == ListSortDirection.Ascending)
                 {
-                    methodInstance = firstOrdering ?
-                        GetOrderByMethod<T>(propertyType) :
-                        GetThenByMethod<T>(propertyType);
+                    methodInstance =
+                        firstOrdering ? GetOrderByMethod<T>(propertyType) : GetThenByMethod<T>(propertyType);
                 }
                 else
                 {
-                    methodInstance = firstOrdering ?
-                       GetOrderByDescendingMethod<T>(propertyType) :
-                       GetThenByDescendingMethod<T>(propertyType);
+                    methodInstance = firstOrdering
+                                         ? GetOrderByDescendingMethod<T>(propertyType)
+                                         : GetThenByDescendingMethod<T>(propertyType);
                 }
 
                 firstOrdering = false;
@@ -130,6 +122,54 @@ namespace Ferretto.WMS.Data.Core.Extensions
             }
 
             return orderedEntities;
+        }
+
+        private static async Task<IQueryable<TModel>> ApplyTransformAsync<TModel>(
+            IQueryable<TModel> entities,
+            int skip,
+            int take,
+            string orderBy,
+            IExpression whereExpression,
+            Expression<Func<TModel, bool>> searchExpression,
+            bool containsOnlyTypeProperties)
+        {
+            var filteredItems = entities;
+
+            if (whereExpression != null)
+            {
+                var lambdaWhereExpression = whereExpression.BuildLambdaExpression<TModel>();
+
+                if (!containsOnlyTypeProperties)
+                {
+                    filteredItems = (await filteredItems.ToArrayAsync()).AsQueryable().Where(lambdaWhereExpression);
+                }
+                else
+                {
+                    filteredItems = filteredItems.Where(lambdaWhereExpression);
+                }
+            }
+
+            // TODO: if skip or take, then orderby should be defined (throw exception)
+            if (searchExpression != null)
+            {
+                filteredItems = filteredItems.Where(searchExpression);
+            }
+
+            filteredItems = ApplyOrderByClause(orderBy, filteredItems);
+
+            var skipValue = skip < 0 ? 0 : skip;
+            if (skipValue > 0)
+            {
+                filteredItems = filteredItems.Skip(skipValue);
+            }
+
+            var takeValue = take < 0 ? int.MaxValue : take;
+            if (takeValue != int.MaxValue)
+            {
+                filteredItems = filteredItems.Take(takeValue);
+            }
+
+            return filteredItems;
         }
 
         private static Expression<Func<T, TResult>> CreateSelectorExpression<T, TResult>(string propertyName)
@@ -146,11 +186,11 @@ namespace Ferretto.WMS.Data.Core.Extensions
                 const string methodName = nameof(Queryable.OrderByDescending);
 
                 orderByDescendingMethod = typeof(Queryable)
-                                          .GetMethods(BindingFlags.Static | BindingFlags.Public)
-                                          .Single(m =>
-                                                      m.Name == methodName
-                                                      &&
-                                                      m.GetParameters().Count() == 2);
+                    .GetMethods(BindingFlags.Static | BindingFlags.Public)
+                    .Single(m =>
+                                m.Name == methodName
+                                &&
+                                m.GetParameters().Count() == 2);
             }
 
             return orderByDescendingMethod.MakeGenericMethod(typeof(T), propertyType);
@@ -163,11 +203,11 @@ namespace Ferretto.WMS.Data.Core.Extensions
                 const string methodName = nameof(Queryable.OrderBy);
 
                 orderByMethod = typeof(Queryable)
-                                .GetMethods(BindingFlags.Static | BindingFlags.Public)
-                                .Single(m =>
-                                            m.Name == methodName
-                                            &&
-                                            m.GetParameters().Count() == 2);
+                    .GetMethods(BindingFlags.Static | BindingFlags.Public)
+                    .Single(m =>
+                                m.Name == methodName
+                                &&
+                                m.GetParameters().Count() == 2);
             }
 
             return orderByMethod.MakeGenericMethod(typeof(T), propertyType);
@@ -180,11 +220,11 @@ namespace Ferretto.WMS.Data.Core.Extensions
                 const string methodName = nameof(Queryable.ThenByDescending);
 
                 thenByDescendingMethod = typeof(Queryable)
-                                         .GetMethods(BindingFlags.Static | BindingFlags.Public)
-                                         .Single(m =>
-                                                     m.Name == methodName
-                                                     &&
-                                                     m.GetParameters().Count() == 2);
+                    .GetMethods(BindingFlags.Static | BindingFlags.Public)
+                    .Single(m =>
+                                m.Name == methodName
+                                &&
+                                m.GetParameters().Count() == 2);
             }
 
             return thenByDescendingMethod.MakeGenericMethod(typeof(T), propertyType);
@@ -197,11 +237,11 @@ namespace Ferretto.WMS.Data.Core.Extensions
                 const string methodName = nameof(Queryable.ThenBy);
 
                 thenByMethod = typeof(Queryable)
-                               .GetMethods(BindingFlags.Static | BindingFlags.Public)
-                               .Single(m =>
-                                           m.Name == methodName
-                                           &&
-                                           m.GetParameters().Count() == 2);
+                    .GetMethods(BindingFlags.Static | BindingFlags.Public)
+                    .Single(m =>
+                                m.Name == methodName
+                                &&
+                                m.GetParameters().Count() == 2);
             }
 
             return thenByMethod.MakeGenericMethod(typeof(T), propertyType);

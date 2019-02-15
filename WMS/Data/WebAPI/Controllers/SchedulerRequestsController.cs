@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.WebAPI.Extensions;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -49,7 +49,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             try
             {
                 var searchExpression = BuildSearchExpression(search);
-                var whereExpression = this.BuildWhereExpression<SchedulerRequest>(where);
+                var whereExpression = where.AsIExpression();
 
                 return this.Ok(
                     await this.schedulerRequestProvider.GetAllAsync(
@@ -76,7 +76,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             try
             {
                 var searchExpression = BuildSearchExpression(search);
-                var whereExpression = this.BuildWhereExpression<SchedulerRequest>(where);
+                var whereExpression = where.AsIExpression();
 
                 return await this.schedulerRequestProvider.GetAllCountAsync(
                            whereExpression,
@@ -103,10 +103,18 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
+        [ProducesResponseType(400)]
         [HttpGet("unique/{propertyName}")]
         public async Task<ActionResult<object[]>> GetUniqueValuesAsync(string propertyName)
         {
-            return this.Ok(await this.schedulerRequestProvider.GetUniqueValuesAsync(propertyName));
+            try
+            {
+                return this.Ok(await this.schedulerRequestProvider.GetUniqueValuesAsync(propertyName));
+            }
+            catch (InvalidOperationException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
         private static Expression<Func<SchedulerRequest, bool>> BuildSearchExpression(string search)

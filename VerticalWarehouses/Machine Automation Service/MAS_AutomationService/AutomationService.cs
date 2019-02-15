@@ -31,8 +31,9 @@ namespace Ferretto.VW.MAS_AutomationService
             this.eventAggregator = eventAggregator;
             this.hub = hub;
 
-            var inverterNotificationEvent = this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>();
+            var inverterNotificationEvent = this.eventAggregator.GetEvent<FiniteStateMachines_NotificationEvent>();
             inverterNotificationEvent.Subscribe(this.SendMessageToAllConnectedClients, ThreadOption.BackgroundThread, false, message => message.OperationStatus == OperationStatus.End);
+            this.TESTStartCycle();
         }
 
         #endregion

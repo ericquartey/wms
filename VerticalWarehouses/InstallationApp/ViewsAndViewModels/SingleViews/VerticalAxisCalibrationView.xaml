@@ -49,7 +49,7 @@
         <Button     VerticalAlignment="Top" HorizontalAlignment="Left" Margin="600,450,0,0"
                     Command="{Binding StartButtonCommand}"
                     Content="{x:Static res:InstallationApp.Start}"
-                    IsEnabled="{Binding EnableStartButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    IsEnabled="{Binding IsStartButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"  />
     </Grid>
 </UserControl>

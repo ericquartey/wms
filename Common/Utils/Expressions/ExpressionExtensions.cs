@@ -22,6 +22,19 @@ namespace Ferretto.Common.Utils.Expressions
 
         #region Methods
 
+        public static Expression<Func<TModel, bool>> BuildLambdaExpression<TModel>(this IExpression where)
+        {
+            if (where == null)
+            {
+                return null;
+            }
+
+            var lambdaInParameter = Expression.Parameter(typeof(TModel), typeof(TModel).Name.ToLower());
+            var lambdaBody = where?.GetLambdaBody<TModel>(lambdaInParameter);
+
+            return (Expression<Func<TModel, bool>>)Expression.Lambda(lambdaBody, lambdaInParameter);
+        }
+
         public static IExpression AsIExpression(this string stringExpression)
         {
             if (stringExpression == null)
@@ -58,6 +71,28 @@ namespace Ferretto.Common.Utils.Expressions
             }
         }
 
+        public static bool ContainsOnlyTypeProperties<TDataModel>(
+            this IExpression expression)
+        {
+            switch (expression)
+            {
+                case UnaryExpression v:
+                    return ContainsOnlyTypeProperties<TDataModel>(v.Expression);
+
+                case BinaryExpression v:
+                    return ContainsOnlyTypeProperties<TDataModel>(v.LeftExpression) &&
+                           ContainsOnlyTypeProperties<TDataModel>(v.RightExpression);
+
+                case ValueExpression v:
+                    var propertyName = v.Value;
+
+                    return typeof(TDataModel).GetProperty(propertyName) != null;
+
+                default:
+                    return false;
+            }
+        }
+
         public static Expression GetLambdaBody<TInParameter>(
             this IExpression expression,
             ParameterExpression inParameter)
@@ -77,7 +112,8 @@ namespace Ferretto.Common.Utils.Expressions
                         return GetLambdaEqualityExpression<TInParameter>(inParameter, binaryExpression);
 
                     default:
-                        throw new NotSupportedException($"The specified operator '{binaryExpression.OperatorName}' is not supported");
+                        throw new NotSupportedException(
+                            $"The specified operator '{binaryExpression.OperatorName}' is not supported");
                 }
             }
             else if (expression is ValueExpression valueExpression)
