@@ -4,7 +4,9 @@
     {
         ExecuteHoming,
 
-        ExecuteStopHoming
+        ExecuteStopHoming,
+
+        StopAction
     }
 
     public class Command_EventParameter

@@ -1,31 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
-using Ferretto.VW.Utils.Source;
-using System.Diagnostics;
 
 namespace Ferretto.VW.InstallationApp.ServiceUtilities
 {
-    public class SensorsStatesHubClient
+    public class InstallationHubClient
     {
         #region Fields
 
-        private readonly HubConnection connection;
+        public HubConnection connection;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
-        public SensorsStatesHubClient(string url, string sensorStatePath)
+        public InstallationHubClient(string url, string sensorStatePath)
         {
             this.connection = new HubConnectionBuilder()
               .WithUrl(new Uri(new Uri(url), sensorStatePath).AbsoluteUri)
               .Build();
 
-            this.connection.On<SensorsStates>("OnSensorsChanged", this.OnSensorsChanged);
+            this.connection.On<string>("OnSendMessageToAllConnectedClients", this.OnSendMessageToAllConnectedClients);
 
             this.connection.Closed += async (error) =>
             {
@@ -36,13 +31,13 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
             this.connection.StartAsync();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Events
 
-        public event EventHandler<SensorsStatesEventArgs> SensorsStatesChanged;
+        public event EventHandler<string> ReceivedMessageToAllConnectedClients;
 
-        #endregion Events
+        #endregion
 
         #region Methods
 
@@ -51,11 +46,16 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
             await this.connection.StartAsync();
         }
 
-        private void OnSensorsChanged(SensorsStates sensors)
+        public async Task DisconnectAsync()
         {
-            this.SensorsStatesChanged?.Invoke(this, new SensorsStatesEventArgs(sensors));
+            await this.connection.DisposeAsync();
         }
 
-        #endregion Methods
+        private void OnSendMessageToAllConnectedClients(string message)
+        {
+            this.ReceivedMessageToAllConnectedClients?.Invoke(this, message);
+        }
+
+        #endregion
     }
 }
