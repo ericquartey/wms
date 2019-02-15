@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.WebAPI.Extensions;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -92,6 +92,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<Compartment>))]
+        [ProducesResponseType(400, Type = typeof(string))]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Compartment>>> GetAllAsync(
             int skip = 0,
@@ -100,31 +101,46 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             string orderBy = null,
             string search = null)
         {
-            var searchExpression = BuildSearchExpression(search);
-            var whereExpression = this.BuildWhereExpression<Compartment>(where);
+            try
+            {
+                var searchExpression = BuildSearchExpression(search);
+                var whereExpression = where.AsIExpression();
 
-            return this.Ok(
-                await this.compartmentProvider.GetAllAsync(
-                    skip,
-                    take,
-                    orderBy,
-                    whereExpression,
-                    searchExpression));
+                return this.Ok(
+                    await this.compartmentProvider.GetAllAsync(
+                        skip,
+                        take,
+                        orderBy,
+                        whereExpression,
+                        searchExpression));
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
         [ProducesResponseType(200, Type = typeof(int))]
+        [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404)]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync(
             string where = null,
             string search = null)
         {
-            var searchExpression = BuildSearchExpression(search);
-            var whereExpression = this.BuildWhereExpression<Compartment>(where);
+            try
+            {
+                var searchExpression = BuildSearchExpression(search);
+                var whereExpression = where.AsIExpression();
 
-            return await this.compartmentProvider.GetAllCountAsync(
-                       whereExpression,
-                       searchExpression);
+                return await this.compartmentProvider.GetAllCountAsync(
+                           whereExpression,
+                           searchExpression);
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
         [ProducesResponseType(200, Type = typeof(CompartmentDetails))]
@@ -141,10 +157,17 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result);
         }
 
+        [ProducesResponseType(200, Type = typeof(IEnumerable<AllowedItemInCompartment>))]
+        [HttpGet("{id}/allowed_items")]
+        public async Task<ActionResult<IEnumerable<AllowedItemInCompartment>>> GetAllowedItemsAsync(int id)
+        {
+            return this.Ok(await this.compartmentProvider.GetAllowedItemsAsync(id));
+        }
+
         [ProducesResponseType(200, Type = typeof(int?))]
         [ProducesResponseType(400)]
         [HttpGet("max_capacity")]
-        public async Task<ActionResult<int?>> GetMaxCapacity(int width, int height, int itemId)
+        public async Task<ActionResult<int?>> GetMaxCapacityAsync(int width, int height, int itemId)
         {
             return this.Ok(await this.compartmentProvider.GetMaxCapacityAsync(width, height, itemId));
         }
@@ -189,29 +212,21 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return (c) =>
-                (c.CompartmentStatusDescription != null &&
-                 c.CompartmentStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.CompartmentStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (c.ItemDescription != null &&
-                 c.ItemDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.ItemDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (c.ItemMeasureUnit != null &&
-                 c.ItemMeasureUnit.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.ItemMeasureUnit.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (c.LoadingUnitCode != null &&
-                 c.LoadingUnitCode.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.LoadingUnitCode.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (c.Lot != null &&
-                 c.Lot.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.Lot.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (c.MaterialStatusDescription != null &&
-                 c.MaterialStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.MaterialStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (c.Sub1 != null &&
-                 c.Sub1.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.Sub1.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (c.Sub2 != null &&
-                 c.Sub2.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.Sub2.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                 c.Stock.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }

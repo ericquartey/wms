@@ -6,12 +6,6 @@ namespace Ferretto.VW.MAS_DataLayer
 {
     public partial class DataLayer : IDataLayer
     {
-        private const string CONVERSION_EXCEPTION = "Data Layer Exception - An error happened during the conversion";
-
-        private const string INVALID_DATA_EXCEPTION = "Data Layer Exception - Invalid Data Type";
-
-        private const string VAR_NOT_FOUND_EXCEPTION = "Data Layer Exception - Variable Not Found";
-
         public int GetIntegerConfigurationValue(ConfigurationValueEnum configurationValueEnum)
         {
             // Comments to keep until the method won't be tested
@@ -29,17 +23,17 @@ namespace Ferretto.VW.MAS_DataLayer
                 {
                     if (!Int32.TryParse(configurationValue.VarValue, out returnIntegerValue))
                     {
-                        throw new ExceptionsUtils(CONVERSION_EXCEPTION);
+                        throw new InMemoryDataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
                     }
                 }
                 else
                 {
-                    throw new ExceptionsUtils(INVALID_DATA_EXCEPTION);
+                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
                 }
             }
             else
             {
-                throw new ExceptionsUtils(VAR_NOT_FOUND_EXCEPTION);
+                throw new ArgumentNullException();
             }
 
             return returnIntegerValue;
@@ -62,17 +56,17 @@ namespace Ferretto.VW.MAS_DataLayer
                 {
                     if (!Decimal.TryParse(configurationValue.VarValue, out returnDecimalValue))
                     {
-                        throw new ExceptionsUtils(CONVERSION_EXCEPTION);
+                        throw new InMemoryDataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
                     }
                 }
                 else
                 {
-                    throw new ExceptionsUtils(INVALID_DATA_EXCEPTION);
+                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
                 }
             }
             else
             {
-                throw new ExceptionsUtils(VAR_NOT_FOUND_EXCEPTION);
+                throw new ArgumentNullException();
             }
 
             return returnDecimalValue;
@@ -97,12 +91,12 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
                 else
                 {
-                    throw new ExceptionsUtils(INVALID_DATA_EXCEPTION);
+                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
                 }
             }
             else
             {
-                throw new ExceptionsUtils(VAR_NOT_FOUND_EXCEPTION);
+                throw new ArgumentNullException();
             }
 
             return returnStringValue;
@@ -125,17 +119,17 @@ namespace Ferretto.VW.MAS_DataLayer
                 {
                     if (!Int32.TryParse(runtimeValue.VarValue, out returnIntegerValue))
                     {
-                        throw new ExceptionsUtils(CONVERSION_EXCEPTION);
+                        throw new InMemoryDataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
                     }
                 }
                 else
                 {
-                    throw new ExceptionsUtils(INVALID_DATA_EXCEPTION);
+                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
                 }
             }
             else
             {
-                throw new ExceptionsUtils(VAR_NOT_FOUND_EXCEPTION);
+                throw new ArgumentNullException();
             }
 
             return returnIntegerValue;
@@ -158,17 +152,17 @@ namespace Ferretto.VW.MAS_DataLayer
                 {
                     if (!Decimal.TryParse(runtimeValue.VarValue, out returnDecimalValue))
                     {
-                        throw new ExceptionsUtils(CONVERSION_EXCEPTION);
+                        throw new InMemoryDataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
                     }
                 }
                 else
                 {
-                    throw new ExceptionsUtils(INVALID_DATA_EXCEPTION);
+                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
                 }
             }
             else
             {
-                throw new ExceptionsUtils(VAR_NOT_FOUND_EXCEPTION);
+                throw new ArgumentNullException();
             }
 
             return returnDecimalValue;
@@ -193,12 +187,12 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
                 else
                 {
-                    throw new ExceptionsUtils(INVALID_DATA_EXCEPTION);
+                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
                 }
             }
             else
             {
-                throw new ExceptionsUtils(VAR_NOT_FOUND_EXCEPTION);
+                throw new ArgumentNullException();
             }
 
             return returnStringValue;
@@ -234,7 +228,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
                 else
                 {
-                    throw new ExceptionsUtils(INVALID_DATA_EXCEPTION);
+                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
                 }
             }
         }
@@ -269,7 +263,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
                 else
                 {
-                    throw new ExceptionsUtils(INVALID_DATA_EXCEPTION);
+                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
                 }
             }
         }
@@ -285,7 +279,7 @@ namespace Ferretto.VW.MAS_DataLayer
             // if the var doesn't exist i create it
             var configurationValue = inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
 
-            if (configurationValue == null) // Insert a new record
+            if (configurationValue == null)
             {
                 ConfigurationValue newConfigurationValue = new ConfigurationValue();
                 newConfigurationValue.VarName = configurationValueEnum;
@@ -304,7 +298,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
                 else
                 {
-                    throw new ExceptionsUtils(INVALID_DATA_EXCEPTION);
+                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
                 }
             }
         }
@@ -320,19 +314,17 @@ namespace Ferretto.VW.MAS_DataLayer
             // if the var doesn't exist i create it
             var runtimeValue = inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
 
-            if (runtimeValue == null) // Insert a new record
+            if (runtimeValue == null)
             {
-                //Create new record in the DB
                 RuntimeValue newRuntimeValue = new RuntimeValue();
                 newRuntimeValue.VarName = runtimeValueEnum;
                 newRuntimeValue.VarType = DataTypeEnum.integerType;
                 newRuntimeValue.VarValue = value.ToString();
 
-                //Add new Employee to database
                 inMemoryDataContext.RuntimeValues.Add(newRuntimeValue);
                 inMemoryDataContext.SaveChanges();
             }
-            else // Update the existing record
+            else
             {
                 if (runtimeValue.VarType == DataTypeEnum.integerType)
                 {
@@ -341,7 +333,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
                 else
                 {
-                    throw new ExceptionsUtils(INVALID_DATA_EXCEPTION);
+                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
                 }
             }
         }
@@ -359,17 +351,15 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (runtimeValue == null)
             {
-                //Create new record in the DB
                 RuntimeValue newRuntimeValue = new RuntimeValue();
                 newRuntimeValue.VarName = runtimeValueEnum;
                 newRuntimeValue.VarType = DataTypeEnum.decimalType;
                 newRuntimeValue.VarValue = value.ToString();
 
-                //Add new Employee to database
                 inMemoryDataContext.RuntimeValues.Add(newRuntimeValue);
                 inMemoryDataContext.SaveChanges();
             }
-            else // Update the existing record
+            else
             {
                 if (runtimeValue.VarType == DataTypeEnum.decimalType)
                 {
@@ -378,7 +368,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
                 else
                 {
-                    throw new ExceptionsUtils(INVALID_DATA_EXCEPTION);
+                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
                 }
             }
         }
@@ -396,17 +386,15 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (runtimeValue == null)
             {
-                //Create new record in the DB
                 RuntimeValue newRuntimeValue = new RuntimeValue();
                 newRuntimeValue.VarName = runtimeValueEnum;
                 newRuntimeValue.VarType = DataTypeEnum.stringType;
                 newRuntimeValue.VarValue = value;
 
-                //Add new Employee to database
                 inMemoryDataContext.RuntimeValues.Add(newRuntimeValue);
                 inMemoryDataContext.SaveChanges();
             }
-            else // Update the existing record
+            else
             {
                 if (runtimeValue.VarType == DataTypeEnum.stringType)
                 {
@@ -415,7 +403,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
                 else
                 {
-                    throw new ExceptionsUtils(INVALID_DATA_EXCEPTION);
+                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
                 }
             }
         }
