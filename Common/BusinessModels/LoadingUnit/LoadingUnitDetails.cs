@@ -106,6 +106,8 @@ namespace Ferretto.Common.BusinessModels
 
         public BindingList<ICompartment> Compartments => this.compartments;
 
+        public int CompartmentsCount { get; set; }
+
         [Display(Name = nameof(BusinessObjects.LoadingUnitCreationDate), ResourceType = typeof(BusinessObjects))]
         public DateTime CreationDate { get; set; }
 
