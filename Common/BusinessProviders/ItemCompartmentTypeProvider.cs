@@ -11,23 +11,23 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
-        private readonly IDatabaseContextService dataContextService;
+        private readonly WMS.Data.WebAPI.Contracts.IItemCompartmentTypesDataService itemCompartmentTypesDataService;
 
         #endregion
 
         #region Constructors
 
         public ItemCompartmentTypeProvider(
-            IDatabaseContextService dataContextService)
+            WMS.Data.WebAPI.Contracts.IItemCompartmentTypesDataService itemCompartmentTypesDataService)
         {
-            this.dataContextService = dataContextService;
+            this.itemCompartmentTypesDataService = itemCompartmentTypesDataService;
         }
 
         #endregion
 
         #region Methods
 
-        public async Task<IOperationResult> AddAsync(ItemCompartmentType model)
+        public async Task<IOperationResult> CreateAsync(ItemCompartmentType model)
         {
             if (model == null)
             {
@@ -36,58 +36,22 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
-                using (var dataContext = this.dataContextService.Current)
+                var itemCompartmentType = await this.itemCompartmentTypesDataService.CreateAsync(new WMS.Data.WebAPI.Contracts.ItemCompartmentType
                 {
-                    var itemCompartmentType = dataContext.ItemsCompartmentTypes
-                    .SingleOrDefault(ict =>
-                        ict.CompartmentTypeId == model.CompartmentTypeId
-                        &&
-                        ict.ItemId == model.ItemId);
+                    CompartmentTypeId = model.CompartmentTypeId,
+                    ItemId = model.ItemId,
+                    MaxCapacity = model.MaxCapacity
+                });
 
-                    if (itemCompartmentType == null)
-                    {
-                        dataContext.ItemsCompartmentTypes.Add(new DataModels.ItemCompartmentType
-                        {
-                            CompartmentTypeId = model.CompartmentTypeId,
-                            ItemId = model.ItemId,
-                            MaxCapacity = model.MaxCapacity
-                        });
+                model.Id = itemCompartmentType.Id;
 
-                        var changedEntitiesCount = await dataContext.SaveChangesAsync();
-                        if (changedEntitiesCount <= 0)
-                        {
-                            return new OperationResult(false);
-                        }
-                    }
-                    else
-                    {
-                        dataContext.Entry(itemCompartmentType).CurrentValues.SetValues(model);
-                        await dataContext.SaveChangesAsync();
-                    }
-
-                    return new OperationResult(true);
-                }
+                return new OperationResult(true);
             }
             catch (Exception ex)
             {
-                return new OperationResult(ex);
+                return new OperationResult(false, description: ex.Message);
             }
         }
-
-        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
-
-        public IQueryable<ItemCompartmentType> GetAll() => throw new NotSupportedException();
-
-        public int GetAllCount() => throw new NotSupportedException();
-
-        public Task<ItemCompartmentType> GetByIdAsync(int id) => throw new NotSupportedException();
-
-        public ItemCompartmentType GetNew()
-        {
-            throw new NotSupportedException();
-        }
-
-        public Task<IOperationResult> SaveAsync(ItemCompartmentType model) => throw new NotSupportedException();
 
         #endregion
     }
