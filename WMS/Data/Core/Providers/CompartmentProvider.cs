@@ -226,7 +226,10 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<object[]> GetUniqueValuesAsync(string propertyName)
         {
-            return await this.GetUniqueValuesAsync(propertyName, this.dataContext.Compartments);
+            return await this.GetUniqueValuesAsync(
+                       propertyName,
+                       this.dataContext.Compartments,
+                       this.GetAllBase());
         }
 
         public async Task<OperationResult<CompartmentDetails>> UpdateAsync(CompartmentDetails model)
