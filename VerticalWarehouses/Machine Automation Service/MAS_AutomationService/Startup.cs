@@ -68,15 +68,14 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSignalR();
 
-            var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
             services.AddDbContext<DataLayerContext>(options => options.UseInMemoryDatabase("InMemoryWorkingDB"), ServiceLifetime.Singleton);
 
-            
             services.AddSingleton<IEventAggregator, EventAggregator>();
             services.AddSingleton<IAutomationService, AutomationService>();
 
+            var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
             services.AddSingleton<IDataLayer, DataLayer>(provider => new DataLayer(
-                provider.GetService<IConfiguration>(),
+                connectionString,
                 provider.GetService<DataLayerContext>(),
                 provider.GetService<IEventAggregator>()));
 
@@ -89,7 +88,7 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSingleton<INewRemoteIODriver, NewRemoteIODriver>();
 
             //TODO Old InverterDriver Registration to be removed after code refactoring completed
-            services.AddSingleton<InverterDriver.IInverterDriver, InverterDriver.InverterDriver >();
+            services.AddSingleton<InverterDriver.IInverterDriver, InverterDriver.InverterDriver>();
 
             //TODO Old RemoteIODriver Registration to be removed after code refactoring completed
             services.AddSingleton<RemoteIODriver.IRemoteIO, RemoteIODriver.RemoteIO>();
