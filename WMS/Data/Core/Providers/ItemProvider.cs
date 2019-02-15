@@ -113,7 +113,10 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<object[]> GetUniqueValuesAsync(string propertyName)
         {
-            return await this.GetUniqueValuesAsync(propertyName, this.dataContext.Items);
+            return await this.GetUniqueValuesAsync(
+                       propertyName,
+                       this.dataContext.Items,
+                       this.GetAllBase());
         }
 
         public async Task<OperationResult<ItemDetails>> UpdateAsync(ItemDetails model)
