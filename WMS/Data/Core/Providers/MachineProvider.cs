@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.EF;
+using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
@@ -34,26 +35,24 @@ namespace Ferretto.WMS.Data.Core.Providers
             int skip,
             int take,
             string orderBy = null,
-            Expression<Func<Machine, bool>> whereExpression = null,
+            IExpression whereExpression = null,
             Expression<Func<Machine, bool>> searchExpression = null)
         {
             return await this.GetAllBase()
-                       .ApplyTransform(
+                       .ToArrayAsync(
                            skip,
                            take,
                            orderBy,
                            whereExpression,
-                           searchExpression)
-                       .ToArrayAsync();
+                           searchExpression);
         }
 
         public async Task<int> GetAllCountAsync(
-            Expression<Func<Machine, bool>> whereExpression = null,
+            IExpression whereExpression = null,
             Expression<Func<Machine, bool>> searchExpression = null)
         {
             return await this.GetAllBase()
-                       .ApplyTransform(whereExpression, searchExpression)
-                       .CountAsync();
+                       .CountAsync(whereExpression, searchExpression);
         }
 
         public async Task<Machine> GetByIdAsync(int id)
@@ -64,7 +63,10 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<object[]> GetUniqueValuesAsync(string propertyName)
         {
-            return await this.GetUniqueValuesAsync(propertyName, this.dataContext.Machines);
+            return await this.GetUniqueValuesAsync(
+                       propertyName,
+                       this.dataContext.Machines,
+                       this.GetAllBase());
         }
 
         private IQueryable<Machine> GetAllBase()

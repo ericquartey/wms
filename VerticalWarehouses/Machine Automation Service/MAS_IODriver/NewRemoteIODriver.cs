@@ -97,7 +97,6 @@ namespace Ferretto.VW.MAS_IODriver
             this.remoteIO.Outputs = digitalOutput;
             Thread.Sleep(DELAY_TIME);
 
-            // The calibrate horizontal axis routine is ended
             this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Publish(new Notification_EventParameter(OperationType.SwitchVerticalToHorizontal, OperationStatus.End, "Switch Vertical to Horizontal Ended", Verbosity.Info));
         }
 
@@ -121,7 +120,6 @@ namespace Ferretto.VW.MAS_IODriver
             this.remoteIO.Outputs = digitalOutput;
             Thread.Sleep(DELAY_TIME);
 
-            // The calibrate horizontal axis routine is ended
             this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Publish(new Notification_EventParameter(OperationType.SwitchHorizontalToVertical, OperationStatus.End, "Switch Horizontal to Vertical Ended", Verbosity.Info));
         }
 

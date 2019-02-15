@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Transactions;
 using Ferretto.Common.EF;
+using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
@@ -111,41 +112,41 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
-        public async Task<int> DeleteAsync(int id)
+        public async Task<OperationResult<CompartmentDetails>> DeleteAsync(int id)
         {
             var existingModel = this.dataContext.Compartments.Find(id);
-            if (existingModel != null)
+            if (existingModel == null)
             {
-                this.dataContext.Remove(existingModel);
+                return new NotFoundOperationResult<CompartmentDetails>();
             }
 
-            return await this.dataContext.SaveChangesAsync();
+            this.dataContext.Remove(existingModel);
+            await this.dataContext.SaveChangesAsync();
+            return new SuccessOperationResult<CompartmentDetails>();
         }
 
         public async Task<IEnumerable<Compartment>> GetAllAsync(
             int skip,
             int take,
             string orderBy = null,
-            Expression<Func<Compartment, bool>> whereExpression = null,
+            IExpression whereExpression = null,
             Expression<Func<Compartment, bool>> searchExpression = null)
         {
             return await this.GetAllBase()
-                       .ApplyTransform(
+                       .ToArrayAsync(
                            skip,
                            take,
                            orderBy,
                            whereExpression,
-                           searchExpression)
-                       .ToArrayAsync();
+                           searchExpression);
         }
 
         public async Task<int> GetAllCountAsync(
-            Expression<Func<Compartment, bool>> whereExpression = null,
+            IExpression whereExpression = null,
             Expression<Func<Compartment, bool>> searchExpression = null)
         {
             return await this.GetAllBase()
-                       .ApplyTransform(whereExpression, searchExpression)
-                       .CountAsync();
+                       .CountAsync(whereExpression, searchExpression);
         }
 
         public async Task<IEnumerable<AllowedItemInCompartment>> GetAllowedItemsAsync(int id)
@@ -225,7 +226,10 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<object[]> GetUniqueValuesAsync(string propertyName)
         {
-            return await this.GetUniqueValuesAsync(propertyName, this.dataContext.Compartments);
+            return await this.GetUniqueValuesAsync(
+                       propertyName,
+                       this.dataContext.Compartments,
+                       this.GetAllBase());
         }
 
         public async Task<OperationResult<CompartmentDetails>> UpdateAsync(CompartmentDetails model)

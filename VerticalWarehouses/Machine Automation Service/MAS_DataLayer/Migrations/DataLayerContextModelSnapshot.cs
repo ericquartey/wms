@@ -16,6 +16,24 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.4-rtm-31024");
 
+            modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.Cell", b =>
+                {
+                    b.Property<int>("CellId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Coord");
+
+                    b.Property<int>("Priority");
+
+                    b.Property<long>("Side");
+
+                    b.Property<long>("Status");
+
+                    b.HasKey("CellId");
+
+                    b.ToTable("Cells");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.ConfigurationValue", b =>
                 {
                     b.Property<long>("VarName");

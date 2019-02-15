@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
         private float speed;
         private int target;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -26,14 +26,14 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             this.executeWeighting = false;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Events
 
         public event EndEventHandler EndEvent;
         public event ErrorEventHandler ErrorEvent;
 
-        #endregion Events
+        #endregion
 
         #region Properties
 
@@ -49,7 +49,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             set => this.drawerPositionController.SetInverterDriverInterface = value;
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -123,6 +123,6 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             this.ErrorEvent?.Invoke();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

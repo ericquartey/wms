@@ -47,14 +47,14 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
         private byte systemIndex = 0x00;
         private int targetPosition;
 
-        #endregion Fields
+        #endregion
 
         #region Events
 
         public event EndEventHandler EndEvent;
         public event ErrorEventHandler ErrorEvent;
 
-        #endregion Events
+        #endregion
 
         #region Enums
 
@@ -98,7 +98,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             WARNING_2 = 15
         }
 
-        #endregion Enums
+        #endregion
 
         #region Properties
 
@@ -111,7 +111,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             set => this.inverterDriver = value;
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -627,9 +627,9 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
         private void SelectTelegram(Object sender, SelectTelegramDoneEventArgs eventArgs)
         {
-            //  TODO
+            //TODO
         }
 
-        #endregion Methods
+        #endregion
     }
 }

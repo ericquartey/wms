@@ -136,11 +136,11 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = false;
         }
 
-        protected override async void OnAppear()
+        protected override async Task OnAppearAsync()
         {
-            base.OnAppear();
+            await base.OnAppearAsync().ConfigureAwait(true);
 
-            await this.LoadDataAsync();
+            await this.LoadDataAsync().ConfigureAwait(true);
         }
 
         protected override void OnDispose()

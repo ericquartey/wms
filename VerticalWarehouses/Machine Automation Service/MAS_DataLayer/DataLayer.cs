@@ -1,14 +1,23 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Ferretto.VW.Common_Utils;
+using Ferretto.VW.Common_Utils.EventParameters;
+using Ferretto.VW.Common_Utils.Events;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
-    public partial class DataLayer : IDataLayer
+    public partial class DataLayer : IDataLayer, IWriteLogService
     {
         private readonly DataLayerContext inMemoryDataContext;
 
+        private readonly IEventAggregator eventAggregator;
+
         private const string ConnectionStringName = "AutomationService";
+
+        private const string CELL_NOT_FOUND_EXCEPTION = "Data Layer Exception - Cell Not Found";
 
         #region Properties
 
@@ -16,38 +25,143 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #endregion
 
-        public DataLayer(IConfiguration configuration, DataLayerContext inMemoryDataContext)
+        public DataLayer(IConfiguration configuration, DataLayerContext inMemoryDataContext, IEventAggregator eventAggregator)
         {
+            if (inMemoryDataContext == null)
+            {
+                throw new DataLayerException(DataLayerExceptionEnum.DATALAYER_CONTEXT_EXCEPTION);
+            }
+
+            if (eventAggregator == null)
+            {
+                throw new DataLayerException(DataLayerExceptionEnum.EVENTAGGREGATOR_EXCEPTION);
+            }
+
+            this.inMemoryDataContext = inMemoryDataContext;
+
+            this.eventAggregator = eventAggregator;
+
+            this.Configuration = configuration;
+
+            var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
+
+            var initialContext = new DataLayerContext(
+                new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(connectionString).Options);
+
+            if (initialContext == null)
+            {
+                throw new DataLayerException(DataLayerExceptionEnum.DATALAYER_CONTEXT_EXCEPTION);
+            }
+
+            initialContext.Database.Migrate();
+
+            if (!initialContext.ConfigurationValues.Any())
+            {
+                //TODO reovery database from permanent storage
+            }
+
+            foreach (var configurationValue in initialContext.ConfigurationValues)
+            {
+                this.inMemoryDataContext.ConfigurationValues.Add(configurationValue);
+            }
+
+            this.inMemoryDataContext.SaveChanges();
+
+            initialContext.Dispose();
+
+            // The old WriteLogService
+            var webApiCommandEvent = eventAggregator.GetEvent<WebAPI_CommandEvent>();
+
+            webApiCommandEvent.Subscribe(this.LogWriting);
+        }
+
+        #region Methods
+
+        public List<Cell> GetCellList()
+        {
+            List<Cell> listCells = new List<Cell>();
+
+            foreach (var cell in inMemoryDataContext.Cells)
+            {
+                listCells.Add(cell);
+            }
+
+            return listCells;
+        }
+
+        public bool SetCellList(List<Cell> listCells)
+        {
+            bool setCellList = true;
+
+            if (listCells != null)
+            { 
+                foreach(var cell in listCells)
+                {
+                    var inMemoryCellCurrentValue = inMemoryDataContext.Cells.FirstOrDefault(s => s.CellId == cell.CellId);
+
+                    if (inMemoryCellCurrentValue != null)
+                    {
+                        inMemoryCellCurrentValue.Coord    = cell.Coord;
+                        inMemoryCellCurrentValue.Priority = cell.Priority;
+                        inMemoryCellCurrentValue.Side     = cell.Side;
+                        inMemoryCellCurrentValue.Status   = cell.Status;
+
+                        inMemoryDataContext.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new DataLayerException(CELL_NOT_FOUND_EXCEPTION);
+                    }
+                }
+            }
+            else
+            {
+                setCellList = false;
+            }
+
+            return setCellList;
+        }
+
+        public bool LogWriting(string logMessage)
+        {
+            var updateOperation = true;
+
             try
             {
-                this.inMemoryDataContext = inMemoryDataContext;
-
-                this.Configuration = configuration;
-
-                var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
-
-                var initialContext = new DataLayerContext(
-                    new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(connectionString).Options);
-
-                initialContext.Database.Migrate();
-
-                foreach(var configurationValue in initialContext.ConfigurationValues)
-                {
-                    this.inMemoryDataContext.ConfigurationValues.Add(configurationValue);
-                }
-
+                this.inMemoryDataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
                 this.inMemoryDataContext.SaveChanges();
+            }
+            catch (DbUpdateException exception)
+            {
+                updateOperation = false;
+            }
 
-                initialContext.Dispose();
-            }
-            catch (DbUpdateException exDB)
-            {
-                throw new NotImplementedException("Data Layer Exception - Update Exception");
-            }
-            catch(ApplicationException exApp)
-            {
-                throw new NotImplementedException("Data Layer Exception - Application Exception");
-            }
+            return updateOperation;
         }
+
+        public void LogWriting(Command_EventParameter command_EventParameter)
+        {
+            string logMessage;
+
+            switch (command_EventParameter.CommandType)
+            {
+                case CommandType.ExecuteHoming:
+                    {
+                        logMessage = "Vertical Homing";
+                        break;
+                    }
+                default:
+                    {
+                        logMessage = "Unknown Action";
+
+                        break;
+                    }
+            }
+
+            this.inMemoryDataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
+            this.inMemoryDataContext.SaveChanges();
+        }
+
+        #endregion
     }
 }

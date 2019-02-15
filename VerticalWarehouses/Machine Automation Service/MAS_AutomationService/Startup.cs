@@ -72,8 +72,9 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSignalR();
 
             var connectionString = this.Configuration.GetConnectionString( ConnectionStringName );
-            services.AddDbContext<DataLayerContext>( options => options.UseSqlite( connectionString ), ServiceLifetime.Singleton );
+            services.AddDbContext<DataLayerContext>(options => options.UseInMemoryDatabase("InMemoryWorkingDB"), ServiceLifetime.Singleton);
 
+            
             services.AddHostedService<MissionsScheduler>();
             services.AddHostedService<AutomationService>();
             services.AddHostedService<MachineManager>();
@@ -82,7 +83,14 @@ namespace Ferretto.VW.MAS_AutomationService
 
             services.AddSingleton<IEventAggregator, EventAggregator>();
 
-            services.AddSingleton<IWriteLogService, WriteLogService>();
+
+            services.AddSingleton<IDataLayer, DataLayer>(provider => new DataLayer(
+                provider.GetService<IConfiguration>(),
+                provider.GetService<DataLayerContext>(),
+                provider.GetService<IEventAggregator>()));
+
+            services.AddSingleton<IWriteLogService, DataLayer>(provider => provider.GetService<IDataLayer>() as DataLayer);
+
             services.AddSingleton<INewInverterDriver, NewInverterDriver>();
             services.AddSingleton<INewRemoteIODriver, NewRemoteIODriver>();
 

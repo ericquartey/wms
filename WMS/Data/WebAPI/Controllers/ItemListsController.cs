@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.WebAPI.Extensions;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
@@ -15,33 +15,51 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     [ApiController]
     public class ItemListsController :
         ControllerBase,
+        ICreateController<ItemListDetails>,
         IReadAllPagedController<ItemList>,
-        IReadSingleController<ItemList, int>,
+        IReadSingleController<ItemListDetails, int>,
+        IUpdateController<ItemListDetails>,
         IGetUniqueValuesController
     {
         #region Fields
 
         private readonly IItemListProvider itemListProvider;
 
-        private readonly ILogger logger;
+        private readonly IItemListRowProvider itemListRowProvider;
 
         #endregion
 
         #region Constructors
 
         public ItemListsController(
-            ILogger<ItemListsController> logger,
-            IItemListProvider itemListProvider)
+            IItemListProvider itemListProvider,
+            IItemListRowProvider itemListRowProvider)
         {
-            this.logger = logger;
             this.itemListProvider = itemListProvider;
+            this.itemListRowProvider = itemListRowProvider;
         }
 
         #endregion
 
         #region Methods
 
+        [ProducesResponseType(201, Type = typeof(ItemListDetails))]
+        [ProducesResponseType(400)]
+        [HttpPost]
+        public async Task<ActionResult<ItemListDetails>> CreateAsync(ItemListDetails model)
+        {
+            var result = await this.itemListProvider.CreateAsync(model);
+
+            if (!result.Success)
+            {
+                return this.BadRequest();
+            }
+
+            return this.Created(this.Request.GetUri(), result.Entity);
+        }
+
         [ProducesResponseType(200, Type = typeof(IEnumerable<ItemList>))]
+        [ProducesResponseType(400, Type = typeof(string))]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ItemList>>> GetAllAsync(
             int skip = 0,
@@ -50,54 +68,112 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             string orderBy = null,
             string search = null)
         {
-            var searchExpression = BuildSearchExpression(search);
-            var whereExpression = this.BuildWhereExpression<ItemList>(where);
+            try
+            {
+                var searchExpression = BuildSearchExpression(search);
+                var whereExpression = where.AsIExpression();
 
-            return this.Ok(
-                await this.itemListProvider.GetAllAsync(
-                    skip: skip,
-                    take: take,
-                    orderBy: orderBy,
-                    whereExpression: whereExpression,
-                    searchExpression: searchExpression));
+                return this.Ok(
+                    await this.itemListProvider.GetAllAsync(
+                        skip: skip,
+                        take: take,
+                        orderBy: orderBy,
+                        whereExpression: whereExpression,
+                        searchExpression: searchExpression));
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
         [ProducesResponseType(200, Type = typeof(int))]
-        [HttpGet]
-        [Route("api/[controller]/count")]
+        [ProducesResponseType(400, Type = typeof(string))]
+        [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync(string where = null, string search = null)
         {
-            var searchExpression = BuildSearchExpression(search);
-            var whereExpression = this.BuildWhereExpression<ItemList>(where);
+            try
+            {
+                var searchExpression = BuildSearchExpression(search);
+                var whereExpression = where.AsIExpression();
 
-            return await this.itemListProvider.GetAllCountAsync(
-                       whereExpression,
-                       searchExpression);
+                return await this.itemListProvider.GetAllCountAsync(
+                           whereExpression,
+                           searchExpression);
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
-        [ProducesResponseType(200, Type = typeof(ItemList))]
+        [ProducesResponseType(200, Type = typeof(ItemListDetails))]
         [ProducesResponseType(404)]
         [HttpGet("{id}")]
-        public async Task<ActionResult<ItemList>> GetByIdAsync(int id)
+        public async Task<ActionResult<ItemListDetails>> GetByIdAsync(int id)
         {
-            var result = await this.itemListProvider.GetByIdAsync(id);
+            var result = await this.itemListRowProvider.GetByIdAsync(id);
             if (result == null)
             {
-                var message = $"No entity with the specified id={id} exists.";
-                this.logger.LogWarning(message);
-                return this.NotFound(message);
+                return this.NotFound();
+            }
+
+            return this.Ok(result);
+        }
+
+        [ProducesResponseType(200, Type = typeof(ItemListRow))]
+        [ProducesResponseType(404)]
+        [HttpGet("{id}/rows")]
+        public async Task<ActionResult<ItemListRow>> GetRowsAsync(int id)
+        {
+            var result = await this.itemListRowProvider.GetByItemListIdAsync(id);
+            if (result == null)
+            {
+                return this.NotFound();
             }
 
             return this.Ok(result);
         }
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
-        [HttpGet]
-        [Route("unique/{propertyName}")]
+        [ProducesResponseType(400)]
+        [HttpGet("unique/{propertyName}")]
         public async Task<ActionResult<object[]>> GetUniqueValuesAsync(
             string propertyName)
         {
-            return this.Ok(await this.itemListProvider.GetUniqueValuesAsync(propertyName));
+            try
+            {
+                return this.Ok(await this.itemListProvider.GetUniqueValuesAsync(propertyName));
+            }
+            catch (InvalidOperationException e)
+            {
+                return this.BadRequest(e.Message);
+            }
+        }
+
+        [ProducesResponseType(200, Type = typeof(ItemListDetails))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [HttpPatch]
+        public async Task<ActionResult<ItemListDetails>> UpdateAsync(ItemListDetails model)
+        {
+            if (model == null)
+            {
+                return this.BadRequest();
+            }
+
+            var result = await this.itemListProvider.UpdateAsync(model);
+            if (!result.Success)
+            {
+                if (result is NotFoundOperationResult<ItemListDetails>)
+                {
+                    return this.NotFound();
+                }
+
+                return this.BadRequest();
+            }
+
+            return this.Ok(result.Entity);
         }
 
         private static Expression<Func<ItemList, bool>> BuildSearchExpression(string search)
@@ -108,9 +184,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return i =>
-                (i.Code != null && i.Code.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                i.Code.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (i.Description != null && i.Description.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                i.Description.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                 i.ItemListItemsCount.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||

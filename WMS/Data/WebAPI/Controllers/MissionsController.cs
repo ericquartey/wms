@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.WebAPI.Extensions;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -51,32 +51,46 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             string orderBy = null,
             string search = null)
         {
-            var searchExpression = BuildSearchExpression(search);
-            var whereExpression = this.BuildWhereExpression<Mission>(where);
+            try
+            {
+                var searchExpression = BuildSearchExpression(search);
+                var whereExpression = where.AsIExpression();
 
-            return this.Ok(
-                await this.missionProvider.GetAllAsync(
-                    skip,
-                    take,
-                    orderBy,
-                    whereExpression,
-                    searchExpression));
+                return this.Ok(
+                    await this.missionProvider.GetAllAsync(
+                        skip,
+                        take,
+                        orderBy,
+                        whereExpression,
+                        searchExpression));
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
         [ProducesResponseType(200, Type = typeof(int))]
+        [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404)]
-        [HttpGet]
-        [Route("count")]
+        [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync(
             string where = null,
             string search = null)
         {
-            var searchExpression = BuildSearchExpression(search);
-            var whereExpression = this.BuildWhereExpression<Mission>(where);
+            try
+            {
+                var searchExpression = BuildSearchExpression(search);
+                var whereExpression = where.AsIExpression();
 
-            return await this.missionProvider.GetAllCountAsync(
-                       whereExpression,
-                       searchExpression);
+                return await this.missionProvider.GetAllCountAsync(
+                           whereExpression,
+                           searchExpression);
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
         [ProducesResponseType(200, Type = typeof(Mission))]
@@ -96,12 +110,19 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
-        [HttpGet]
-        [Route("unique/{propertyName}")]
+        [ProducesResponseType(400)]
+        [HttpGet("unique/{propertyName}")]
         public async Task<ActionResult<object[]>> GetUniqueValuesAsync(
             string propertyName)
         {
-            return this.Ok(await this.missionProvider.GetUniqueValuesAsync(propertyName));
+            try
+            {
+                return this.Ok(await this.missionProvider.GetUniqueValuesAsync(propertyName));
+            }
+            catch (InvalidOperationException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
         private static Expression<Func<Mission, bool>> BuildSearchExpression(string search)
@@ -112,17 +133,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return (m) =>
-                (m.Lot != null &&
-                 m.Lot.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                m.Lot.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (m.RegistrationNumber != null &&
-                 m.RegistrationNumber.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                m.RegistrationNumber.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (m.Sub1 != null &&
-                 m.Sub1.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                m.Sub1.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (m.Sub2 != null &&
-                 m.Sub2.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                m.Sub2.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                 m.Quantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }

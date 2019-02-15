@@ -27,6 +27,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool isCompartmentSelectableTray;
 
+        private LoadingUnitDetails loadingUnit;
+
         private bool loadingUnitHasCompartments;
 
         private object modelChangedEventSubscription;
@@ -38,8 +40,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool readOnlyTray;
 
         private CompartmentDetails selectedCompartment;
-
-        private Tray tray;
 
         private Func<ICompartment, ICompartment, string> trayColoringFunc;
 
@@ -73,6 +73,8 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.isCompartmentSelectableTray, value);
         }
 
+        public LoadingUnitDetails LoadingUnitDetails => this.loadingUnit;
+
         public bool LoadingUnitHasCompartments
         {
             get => this.loadingUnitHasCompartments;
@@ -89,12 +91,6 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             get => this.selectedCompartment;
             set => this.SetProperty(ref this.selectedCompartment, value);
-        }
-
-        public Tray Tray
-        {
-            get => this.tray;
-            set => this.SetProperty(ref this.tray, value);
         }
 
         public Func<ICompartment, ICompartment, string> TrayColoringFunc
@@ -147,10 +143,10 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = false;
         }
 
-        protected override async void OnAppear()
+        protected override async Task OnAppearAsync()
         {
-            await this.LoadDataAsync();
-            base.OnAppear();
+            await this.LoadDataAsync().ConfigureAwait(true);
+            await base.OnAppearAsync().ConfigureAwait(true);
         }
 
         protected override void OnDispose()
@@ -174,6 +170,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
+            this.loadingUnit = new LoadingUnitDetails();
             this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<LoadingUnit>>(
                 async eventArgs => { await this.LoadDataAsync(); }, this.Token, true, true);
 
@@ -200,24 +197,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void InitializeTray()
         {
-            var newTray = new Tray
-            {
-                Dimension = new Dimension
-                {
-                    Height = this.Model.Length,
-                    Width = this.Model.Width
-                }
-            };
-
-            if (this.Model.Compartments != null)
-            {
-                newTray.AddCompartmentsRange(this.Model.Compartments);
-            }
-
-            this.Tray = newTray;
-            this.ReadOnlyTray = true;
+            this.loadingUnit = this.Model;
             this.IsCompartmentSelectableTray = true;
             this.TrayColoringFunc = new FillingFilter().ColorFunc;
+            this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));
         }
 
         private async Task LoadDataAsync()
@@ -231,7 +214,6 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.Model = await this.loadingUnitProvider.GetByIdAsync(modelId);
                     this.LoadingUnitHasCompartments = this.loadingUnitProvider.HasAnyCompartments(modelId);
                     this.InitializeTray();
-
                     this.IsBusy = false;
                 }
                 catch

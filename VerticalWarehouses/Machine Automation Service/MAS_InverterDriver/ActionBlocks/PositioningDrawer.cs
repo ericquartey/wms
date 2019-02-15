@@ -66,14 +66,14 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
         private float vMax;
         private int x;
 
-        #endregion Fields
+        #endregion
 
         #region Events
 
         public event EndEventHandler EndEvent;
         public event ErrorEventHandler ErrorEvent;
 
-        #endregion Events
+        #endregion
 
         #region Properties
 
@@ -113,7 +113,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             set => this.inverterDriver = value;
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -602,6 +602,6 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             this.CtrExistStatus(idExitStatus);
         }
 
-        #endregion Methods
+        #endregion
     }
 }
