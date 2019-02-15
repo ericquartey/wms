@@ -9,93 +9,81 @@ using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Mvvm;
 
-#if CODEMAID
-    // disable codemaid region messer in this file
-#endif
-
 namespace Ferretto.VW.InstallationApp
 {
-    public delegate void ClickedOnMachineOnMarchEvent();
-
     public delegate void ClickedOnMachineModeEvent();
+
+    public delegate void ClickedOnMachineOnMarchEvent();
 
     public delegate void SensorsStatesChangedEvent();
 
     public partial class MainWindowViewModel : BindableBase, IMainWindowViewModel, IViewModelRequiresContainer
     {
-        #region Constants, Statics & Others
-
-        private static readonly string SENSOR_INITIALIZER_URL = ConfigurationManager.AppSettings["SensorsStatesInitializer"];
-
-        private static readonly string SERVICE_PATH = ConfigurationManager.AppSettings["SensorsStatesHubPath"];
-
-        private static readonly string URL = ConfigurationManager.AppSettings["ServiceURL"];
-
-        public static SensorsStates States;
-
-        private BindableBase contentRegionCurrentViewModel;
-
-        private BindableBase navigationRegionCurrentViewModel;
-
-        private BindableBase exitViewButtonRegionCurrentViewModel;
-
-        private bool machineModeSelectionBool = false;
-
-        private bool machineOnMarchSelectionBool = false;
-
-        private Visibility isNavigationButtonRegionExpanded = Visibility.Visible;
-
-        private bool isExitViewButtonRegionExpanded = false;
-
-        private bool isPopupOpen = false;
-
-        private ICommand openClosePopupCommand;
+        #region Fields
 
         public IUnityContainer Container;
 
         private readonly HelpMainWindow helpWindow = new HelpMainWindow();
 
+        private BindableBase contentRegionCurrentViewModel;
+
+        private BindableBase exitViewButtonRegionCurrentViewModel;
+
         private string internalMessages;
+
+        private bool isExitViewButtonRegionExpanded;
+
+        private Visibility isNavigationButtonRegionExpanded = Visibility.Visible;
+
+        private bool isPopupOpen;
+
+        private bool machineModeSelectionBool;
+
+        private bool machineOnMarchSelectionBool;
 
         private string messageFromServer;
 
-        #endregion Constants, Statics & Others
+        private BindableBase navigationRegionCurrentViewModel;
+
+        private ICommand openClosePopupCommand;
+
+        #endregion
 
         #region Events
 
-        public static event SensorsStatesChangedEvent SensorsStatesChangedEventHandler;
+        public static event ClickedOnMachineModeEvent ClickedOnMachineModeEventHandler;
 
         public static event ClickedOnMachineOnMarchEvent ClickedOnMachineOnMarchEventHandler;
 
-        public static event ClickedOnMachineModeEvent ClickedOnMachineModeEventHandler;
+        public static event SensorsStatesChangedEvent SensorsStatesChangedEventHandler;
 
-        #endregion Events
+        #endregion
 
-        #region Other Properties
+        #region Properties
 
         public BindableBase ContentRegionCurrentViewModel { get => this.contentRegionCurrentViewModel; set => this.SetProperty(ref this.contentRegionCurrentViewModel, value); }
+
+        public BindableBase ExitViewButtonRegionCurrentViewModel { get => this.exitViewButtonRegionCurrentViewModel; set => this.SetProperty(ref this.exitViewButtonRegionCurrentViewModel, value); }
+
+        public string InternalMessages { get => this.internalMessages; set => this.internalMessages = value; }
+
+        public bool IsExitViewButtonRegionExpanded { get => this.isExitViewButtonRegionExpanded; set => this.SetProperty(ref this.isExitViewButtonRegionExpanded, value); }
+
+        public Visibility IsNavigationButtonRegionExpanded { get => this.isNavigationButtonRegionExpanded; set => this.SetProperty(ref this.isNavigationButtonRegionExpanded, value); }
+
+        public bool IsPopupOpen { get => this.isPopupOpen; set => this.SetProperty(ref this.isPopupOpen, value); }
 
         public bool MachineModeSelectionBool { get => this.machineModeSelectionBool; set => this.SetProperty(ref this.machineModeSelectionBool, value); }
 
         public bool MachineOnMarchSelectionBool { get => this.machineOnMarchSelectionBool; set => this.SetProperty(ref this.machineOnMarchSelectionBool, value); }
 
+        public string MessageFromServer { get => this.messageFromServer; set => this.messageFromServer = value; }
+
         public BindableBase NavigationRegionCurrentViewModel { get => this.navigationRegionCurrentViewModel; set => this.SetProperty(ref this.navigationRegionCurrentViewModel, value); }
-
-        public Visibility IsNavigationButtonRegionExpanded { get => this.isNavigationButtonRegionExpanded; set => this.SetProperty(ref this.isNavigationButtonRegionExpanded, value); }
-
-        public BindableBase ExitViewButtonRegionCurrentViewModel { get => this.exitViewButtonRegionCurrentViewModel; set => this.SetProperty(ref this.exitViewButtonRegionCurrentViewModel, value); }
-
-        public bool IsExitViewButtonRegionExpanded { get => this.isExitViewButtonRegionExpanded; set => this.SetProperty(ref this.isExitViewButtonRegionExpanded, value); }
-
-        public bool IsPopupOpen { get => this.isPopupOpen; set => this.SetProperty(ref this.isPopupOpen, value); }
 
         public ICommand OpenClosePopupCommand => this.openClosePopupCommand ?? (this.openClosePopupCommand = new DelegateCommand(() => this.IsPopupOpen = !this.IsPopupOpen));
 
-        public string InternalMessages { get => this.internalMessages; set => this.internalMessages = value; }
-
-        public string MessageFromServer { get => this.messageFromServer; set => this.messageFromServer = value; }
-
-        #endregion Other Properties
+        #endregion
 
         #region Methods
 
@@ -111,6 +99,16 @@ namespace Ferretto.VW.InstallationApp
                 return reader.ReadToEnd();
             }
             return "";
+        }
+
+        public void InitializeViewModel(IUnityContainer _container)
+        {
+            this.Container = _container;
+            this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.Container.Resolve<IMainWindowNavigationButtonsViewModel>();
+            this.ExitViewButtonRegionCurrentViewModel = null;
+            this.ContentRegionCurrentViewModel = (IdleViewModel)this.Container.Resolve<IIdleViewModel>();
+            this.ConnectMethod();
+            this.InitializeEvents();
         }
 
         private async void ConnectMethod()
@@ -132,22 +130,10 @@ namespace Ferretto.VW.InstallationApp
             SensorsStatesChangedEventHandler += () => { };
         }
 
-        private void RaiseSensorsStatesChangedEvent() => SensorsStatesChangedEventHandler();
-
         private void RaiseClickedOnMachineModeEvent() => ClickedOnMachineModeEventHandler();
 
         private void RaiseClickedOnMachineOnMarchEvent() => ClickedOnMachineOnMarchEventHandler();
 
-        public void InitializeViewModel(IUnityContainer _container)
-        {
-            this.Container = _container;
-            this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.Container.Resolve<IMainWindowNavigationButtonsViewModel>();
-            this.ExitViewButtonRegionCurrentViewModel = null;
-            this.ContentRegionCurrentViewModel = (IdleViewModel)this.Container.Resolve<IIdleViewModel>();
-            this.ConnectMethod();
-            this.InitializeEvents();
-        }
-
-        #endregion Methods
+        #endregion
     }
 }
