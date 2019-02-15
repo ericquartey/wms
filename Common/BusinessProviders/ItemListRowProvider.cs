@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
+using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Scheduler.WebAPI.Contracts;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,9 +15,11 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
-        private readonly IDatabaseContextService dataContextService;
+        private readonly WMS.Data.WebAPI.Contracts.IItemListRowsDataService itemListRowsDataService;
 
         private readonly IItemListRowsSchedulerService itemListRowsSchedulerService;
+
+        private readonly WMS.Data.WebAPI.Contracts.IItemListsDataService itemListsDataService;
 
         private readonly IMaterialStatusProvider materialStatusProvider;
 
@@ -26,24 +30,68 @@ namespace Ferretto.Common.BusinessProviders
         #region Constructors
 
         public ItemListRowProvider(
-            IDatabaseContextService dataContextService,
             IItemListRowsSchedulerService itemListRowsSchedulerService,
             IMaterialStatusProvider materialStatusProvider,
-        IPackageTypeProvider packageTypeProvider)
+            IPackageTypeProvider packageTypeProvider,
+            WMS.Data.WebAPI.Contracts.IItemListRowsDataService itemListRowsDataService,
+            WMS.Data.WebAPI.Contracts.IItemListsDataService itemListsDataService)
         {
-            this.dataContextService = dataContextService;
             this.itemListRowsSchedulerService = itemListRowsSchedulerService;
             this.packageTypeProvider = packageTypeProvider;
             this.materialStatusProvider = materialStatusProvider;
+            this.itemListRowsDataService = itemListRowsDataService;
+            this.itemListsDataService = itemListsDataService;
         }
 
         #endregion
 
         #region Methods
 
-        public Task<IOperationResult> AddAsync(ItemListRowDetails model) => throw new NotSupportedException();
+        public async Task<IOperationResult> CreateAsync(ItemListRowDetails model)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
 
-        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
+            try
+            {
+                var itemListRow = await this.itemListRowsDataService.CreateAsync(new WMS.Data.WebAPI.Contracts.ItemListRowDetails
+                {
+                    Id = model.Id,
+                    Code = model.Code,
+                    RowPriority = model.RowPriority,
+                    ItemId = model.ItemId,
+                    RequiredQuantity = model.RequiredQuantity,
+                    DispatchedQuantity = model.DispatchedQuantity,
+                    ItemListRowStatus = (WMS.Data.WebAPI.Contracts.ItemListRowStatus)model.ItemListRowStatus,
+                    ItemDescription = model.ItemDescription,
+                    CreationDate = model.CreationDate,
+                    ItemListCode = model.ItemListCode,
+                    ItemListDescription = model.ItemListDescription,
+                    ItemListType = (WMS.Data.WebAPI.Contracts.ItemListType)model.ItemListType,
+                    ItemListStatus = (WMS.Data.WebAPI.Contracts.ItemListStatus)model.ItemListStatus,
+                    CompletionDate = model.CompletionDate,
+                    LastExecutionDate = model.LastExecutionDate,
+                    LastModificationDate = model.LastModificationDate,
+                    Lot = model.Lot,
+                    RegistrationNumber = model.RegistrationNumber,
+                    Sub1 = model.Sub1,
+                    Sub2 = model.Sub2,
+                    PackageTypeId = model.PackageTypeId,
+                    MaterialStatusId = model.MaterialStatusId,
+                    ItemUnitMeasure = model.ItemUnitMeasure,
+                });
+
+                model.Id = itemListRow.Id;
+
+                return new OperationResult(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(ex);
+            }
+        }
 
         public async Task<OperationResult> ExecuteImmediatelyAsync(int listRowId, int areaId, int bayId)
         {
@@ -65,103 +113,98 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public IQueryable<BusinessModels.ItemListRow> GetAll() => throw new NotSupportedException();
-
-        public int GetAllCount() => throw new NotSupportedException();
-
-        public async Task<ItemListRowDetails> GetByIdAsync(int id)
+        public async Task<IEnumerable<BusinessModels.ItemListRow>> GetAllAsync(
+            int skip = 0,
+            int take = 0,
+            IEnumerable<SortOption> orderBy = null,
+            IExpression whereExpression = null,
+            IExpression searchExpression = null)
         {
-            var itemListRowDetails = await this.dataContextService.Current.ItemListRows
-                .Include(lr => lr.ItemList)
-                .Include(lr => lr.Item)
-                .ThenInclude(i => i.MeasureUnit)
-                .Where(lr => lr.Id == id)
-                .Select(lr => new ItemListRowDetails
-                {
-                    Id = lr.Id,
-                    Code = lr.Code,
-                    RowPriority = lr.Priority,
-                    ItemId = lr.Item.Id,
-                    RequiredQuantity = lr.RequiredQuantity,
-                    DispatchedQuantity = lr.DispatchedQuantity,
-                    ItemListRowStatus = (BusinessModels.ItemListRowStatus)lr.Status,
-                    ItemDescription = lr.Item.Description,
-                    CreationDate = lr.CreationDate,
-                    ItemListCode = lr.ItemList.Code,
-                    ItemListDescription = lr.ItemList.Description,
-                    ItemListType = (ItemListType)lr.ItemList.ItemListType,
-                    ItemListStatus = (ItemListStatus)lr.ItemList.Status,
-                    CompletionDate = lr.CompletionDate,
-                    LastExecutionDate = lr.LastExecutionDate,
-                    LastModificationDate = lr.LastModificationDate,
-                    Lot = lr.Lot,
-                    RegistrationNumber = lr.RegistrationNumber,
-                    Sub1 = lr.Sub1,
-                    Sub2 = lr.Sub2,
-                    PackageTypeId = lr.PackageTypeId,
-                    MaterialStatusId = lr.MaterialStatusId,
-                    ItemUnitMeasure = lr.Item.MeasureUnit.Description
-                }).SingleAsync();
+            var orderByString = orderBy != null ? string.Join(",", orderBy.Select(s => $"{s.PropertyName} {s.Direction}")) : null;
 
-            itemListRowDetails.MaterialStatusChoices = await this.materialStatusProvider.GetAllAsync();
-            itemListRowDetails.PackageTypeChoices = await this.packageTypeProvider.GetAllAsync();
-
-            return itemListRowDetails;
-        }
-
-        public IQueryable<BusinessModels.ItemListRow> GetByItemListId(int id)
-        {
-            var itemListRows = this.dataContextService.Current.ItemListRows
-                .Include(l => l.MaterialStatus)
-                .Include(l => l.Item)
-                .ThenInclude(i => i.MeasureUnit)
-                .Where(l => l.ItemListId == id)
+            return (await this.itemListRowsDataService.GetAllAsync(skip, take, whereExpression?.ToString(), orderByString, searchExpression?.ToString()))
                 .Select(l => new BusinessModels.ItemListRow
                 {
                     Id = l.Id,
                     Code = l.Code,
-                    RowPriority = l.Priority,
-                    ItemDescription = l.Item.Description,
+                    DispatchedQuantity = l.DispatchedQuantity,
+                    ItemDescription = l.ItemDescription,
+                    ItemListRowStatus = (BusinessModels.ItemListRowStatus)l.ItemListRowStatus,
+                    ItemUnitMeasure = l.ItemUnitMeasure,
+                    MaterialStatusDescription = l.MaterialStatusDescription,
+                    RequiredQuantity = l.RequiredQuantity,
+                    RowPriority = l.RowPriority,
+                    CreationDate = l.CreationDate
+                });
+        }
+
+        public async Task<int> GetAllCountAsync(IExpression whereExpression = null, IExpression searchExpression = null)
+        {
+            return await this.itemListRowsDataService.GetAllCountAsync(whereExpression?.ToString(), searchExpression?.ToString());
+        }
+
+        public async Task<ItemListRowDetails> GetByIdAsync(int id)
+        {
+            var itemListRow = await this.itemListRowsDataService.GetByIdAsync(id);
+
+            var materialStatusChoices = await this.materialStatusProvider.GetAllAsync();
+            var packageTypeChoices = await this.packageTypeProvider.GetAllAsync();
+
+            return new ItemListRowDetails
+            {
+                Id = itemListRow.Id,
+                Code = itemListRow.Code,
+                RowPriority = itemListRow.RowPriority,
+                ItemId = itemListRow.ItemId,
+                RequiredQuantity = itemListRow.RequiredQuantity,
+                DispatchedQuantity = itemListRow.DispatchedQuantity,
+                ItemListRowStatus = (BusinessModels.ItemListRowStatus)itemListRow.ItemListRowStatus,
+                ItemDescription = itemListRow.ItemDescription,
+                CreationDate = itemListRow.CreationDate,
+                ItemListCode = itemListRow.ItemListCode,
+                ItemListDescription = itemListRow.ItemListDescription,
+                ItemListType = (ItemListType)itemListRow.ItemListType,
+                ItemListStatus = (ItemListStatus)itemListRow.ItemListStatus,
+                CompletionDate = itemListRow.CompletionDate,
+                LastExecutionDate = itemListRow.LastExecutionDate,
+                LastModificationDate = itemListRow.LastModificationDate,
+                Lot = itemListRow.Lot,
+                RegistrationNumber = itemListRow.RegistrationNumber,
+                Sub1 = itemListRow.Sub1,
+                Sub2 = itemListRow.Sub2,
+                PackageTypeId = itemListRow.PackageTypeId,
+                MaterialStatusId = itemListRow.MaterialStatusId,
+                ItemUnitMeasure = itemListRow.ItemUnitMeasure,
+                MaterialStatusChoices = materialStatusChoices,
+                PackageTypeChoices = packageTypeChoices
+            };
+        }
+
+        public async Task<IEnumerable<BusinessModels.ItemListRow>> GetByItemListIdAsync(int id)
+        {
+            // TODO GetRows: return IENUMERABLE
+            var l = await this.itemListsDataService.GetRowsAsync(id);
+            return new List<BusinessModels.ItemListRow>
+            {
+                new BusinessModels.ItemListRow
+                {
+                    Id = l.Id,
+                    Code = l.Code,
+                    RowPriority = l.RowPriority,
+                    ItemDescription = l.ItemDescription,
                     RequiredQuantity = l.RequiredQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
-                    ItemListRowStatus = (BusinessModels.ItemListRowStatus)l.Status,
-                    MaterialStatusDescription = l.MaterialStatus.Description,
+                    ItemListRowStatus = (BusinessModels.ItemListRowStatus)l.ItemListRowStatus,
+                    MaterialStatusDescription = l.MaterialStatusDescription,
                     CreationDate = l.CreationDate,
-                    ItemUnitMeasure = l.Item.MeasureUnit.Description
-                }).AsNoTracking();
-
-            return itemListRows;
-        }
-
-        public ItemListRowDetails GetNew()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IOperationResult> SaveAsync(ItemListRowDetails model)
-        {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            try
-            {
-                using (var dataContext = this.dataContextService.Current)
-                {
-                    var existingModel = dataContext.ItemListRows.Find(model.Id);
-
-                    dataContext.Entry(existingModel).CurrentValues.SetValues(model);
-
-                    var changedEntityCount = await dataContext.SaveChangesAsync();
-
-                    return new OperationResult(changedEntityCount > 0);
+                    ItemUnitMeasure = l.ItemUnitMeasure
                 }
-            }
-            catch (Exception ex)
-            {
-                return new OperationResult(ex);
-            }
+            };
+        }
+
+        public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
+        {
+            return await this.itemListRowsDataService.GetUniqueValuesAsync(propertyName);
         }
 
         public async Task<OperationResult> ScheduleForExecutionAsync(int listRowId, int areaId)
@@ -174,6 +217,50 @@ namespace Ferretto.Common.BusinessProviders
                         ListRowId = listRowId,
                         AreaId = areaId
                     });
+
+                return new OperationResult(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(ex);
+            }
+        }
+
+        public async Task<IOperationResult> UpdateAsync(ItemListRowDetails model)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            try
+            {
+                await this.itemListRowsDataService.CreateAsync(new WMS.Data.WebAPI.Contracts.ItemListRowDetails
+                {
+                    Id = model.Id,
+                    Code = model.Code,
+                    RowPriority = model.RowPriority,
+                    ItemId = model.ItemId,
+                    RequiredQuantity = model.RequiredQuantity,
+                    DispatchedQuantity = model.DispatchedQuantity,
+                    ItemListRowStatus = (WMS.Data.WebAPI.Contracts.ItemListRowStatus)model.ItemListRowStatus,
+                    ItemDescription = model.ItemDescription,
+                    CreationDate = model.CreationDate,
+                    ItemListCode = model.ItemListCode,
+                    ItemListDescription = model.ItemListDescription,
+                    ItemListType = (WMS.Data.WebAPI.Contracts.ItemListType)model.ItemListType,
+                    ItemListStatus = (WMS.Data.WebAPI.Contracts.ItemListStatus)model.ItemListStatus,
+                    CompletionDate = model.CompletionDate,
+                    LastExecutionDate = model.LastExecutionDate,
+                    LastModificationDate = model.LastModificationDate,
+                    Lot = model.Lot,
+                    RegistrationNumber = model.RegistrationNumber,
+                    Sub1 = model.Sub1,
+                    Sub2 = model.Sub2,
+                    PackageTypeId = model.PackageTypeId,
+                    MaterialStatusId = model.MaterialStatusId,
+                    ItemUnitMeasure = model.ItemUnitMeasure,
+                });
 
                 return new OperationResult(true);
             }
