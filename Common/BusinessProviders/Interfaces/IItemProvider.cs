@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Base;
@@ -15,11 +16,9 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Methods
 
-        IQueryable<AllowedItemInCompartment> GetAllowedByCompartmentId(int compartmentId);
+        Task<IEnumerable<AllowedItemInCompartment>> GetAllowedByCompartmentIdAsync(int compartmentId);
 
         Task<ItemDetails> GetNewAsync();
-
-        bool HasAnyCompartments(int itemId);
 
         Task<IOperationResult> WithdrawAsync(ItemWithdraw itemWithdraw);
 
