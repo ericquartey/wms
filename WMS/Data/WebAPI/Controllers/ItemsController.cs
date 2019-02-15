@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.WebAPI.Extensions;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
@@ -65,7 +63,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<Item>))]
-        [ProducesResponseType(400, Type = typeof(string))]
+        [ProducesResponseType(400)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Item>>> GetAllAsync(
             int skip = 0,
@@ -74,31 +72,46 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             string orderBy = null,
             string search = null)
         {
-            var searchExpression = BuildSearchExpression(search);
-            var whereExpression = this.BuildWhereExpression<Item>(where);
+            try
+            {
+                var searchExpression = BuildSearchExpression(search);
+                var whereExpression = where.AsIExpression();
 
-            return this.Ok(
-                await this.itemProvider.GetAllAsync(
-                    skip,
-                    take,
-                    orderBy,
-                    whereExpression,
-                    searchExpression));
+                return this.Ok(
+                    await this.itemProvider.GetAllAsync(
+                        skip,
+                        take,
+                        orderBy,
+                        whereExpression,
+                        searchExpression));
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
         [ProducesResponseType(200, Type = typeof(int))]
+        [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404)]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync(
             string where = null,
             string search = null)
         {
-            var searchExpression = BuildSearchExpression(search);
-            var whereExpression = this.BuildWhereExpression<Item>(where);
+            try
+            {
+                var searchExpression = BuildSearchExpression(search);
+                var whereExpression = where.AsIExpression();
 
-            return await this.itemProvider.GetAllCountAsync(
-                       whereExpression,
-                       searchExpression);
+                return await this.itemProvider.GetAllCountAsync(
+                           whereExpression,
+                           searchExpression);
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<Area>))]
@@ -114,7 +127,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<Compartment>))]
         [ProducesResponseType(404)]
         [HttpGet("{id}/compartments")]
-        public async Task<ActionResult<IEnumerable<Compartment>>> GetCompartments(int id)
+        public async Task<ActionResult<IEnumerable<Compartment>>> GetCompartmentsAsync(int id)
         {
             var compartments = await this.compartmentProvider.GetByItemIdAsync(id);
 
@@ -176,13 +189,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return (i) =>
-                (i.AbcClassDescription != null &&
-                 i.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                i.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (i.Description != null && i.Description.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                i.Description.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (i.ItemCategoryDescription != null &&
-                 i.ItemCategoryDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                i.ItemCategoryDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                 i.TotalAvailable.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }

@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.WebAPI.Extensions;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,6 +42,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Methods
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<Cell>))]
+        [ProducesResponseType(400, Type = typeof(string))]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Cell>>> GetAllAsync(
             int skip = 0,
@@ -50,31 +51,46 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             string orderBy = null,
             string search = null)
         {
-            var searchExpression = BuildSearchExpression(search);
-            var whereExpression = this.BuildWhereExpression<Cell>(where);
+            try
+            {
+                var searchExpression = BuildSearchExpression(search);
+                var whereExpression = where.AsIExpression();
 
-            return this.Ok(
-                await this.cellProvider.GetAllAsync(
-                    skip,
-                    take,
-                    orderBy,
-                    whereExpression,
-                    searchExpression));
+                return this.Ok(
+                    await this.cellProvider.GetAllAsync(
+                        skip,
+                        take,
+                        orderBy,
+                        whereExpression,
+                        searchExpression));
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
         [ProducesResponseType(200, Type = typeof(int))]
+        [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404)]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync(
             string where = null,
             string search = null)
         {
-            var searchExpression = BuildSearchExpression(search);
-            var whereExpression = this.BuildWhereExpression<Cell>(where);
+            try
+            {
+                var searchExpression = BuildSearchExpression(search);
+                var whereExpression = where.AsIExpression();
 
-            return await this.cellProvider.GetAllCountAsync(
-                       whereExpression,
-                       searchExpression);
+                return await this.cellProvider.GetAllCountAsync(
+                           whereExpression,
+                           searchExpression);
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
         [ProducesResponseType(200, Type = typeof(CellDetails))]
@@ -138,23 +154,17 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return (c) =>
-                (c.AbcClassDescription != null &&
-                 c.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (c.AisleName != null &&
-                 c.AisleName.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.AisleName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (c.AreaName != null &&
-                 c.AreaName.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.AreaName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (c.LoadingUnitsDescription != null &&
-                 c.LoadingUnitsDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.LoadingUnitsDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (c.Status != null &&
-                 c.Status.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.Status.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (c.Type != null &&
-                 c.Type.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                c.Type.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                 c.Column.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
