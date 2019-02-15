@@ -42,14 +42,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
             this.state = newState;
         }
 
+        public void MakeOperation()
+        {
+            this.state?.MakeOperation();
+        }
+
         public void Start()
         {
             this.state = new VerticalHomingIdleState(this, this.driver, this.data, this.eventAggregator);
+            this.state.MakeOperation();
         }
 
         public void Stop()
         {
-            this.state.Stop();
+            this.state?.Stop();
         }
 
         #endregion

@@ -50,6 +50,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Methods
 
+        public void MakeOperation()
+        {
+        }
+
         public void Stop()
         {
         }
@@ -77,6 +81,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                         }
                 }
             }
+
+            this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Unsubscribe(this.notifyEventHandler);
         }
 
         #endregion

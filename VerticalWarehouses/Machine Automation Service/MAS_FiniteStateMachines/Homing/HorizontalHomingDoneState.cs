@@ -35,11 +35,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
             if (!this.parent.HorizontalHomingAlreadyDone)
             {
-                this.parent.HorizontalHomingAlreadyDone = true;
-
                 this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
-
-                this.remoteIODriver.SwitchHorizontalToVertical();
             }
             else
             {
@@ -57,8 +53,19 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Methods
 
+        public void MakeOperation()
+        {
+            if (!this.parent.HorizontalHomingAlreadyDone)
+            {
+                this.parent.HorizontalHomingAlreadyDone = true;
+                this.remoteIODriver.SwitchHorizontalToVertical();
+            }
+        }
+
         public void Stop()
         {
+            this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Unsubscribe(this.notifyEventHandler);
+
             var notifyEvent = new Notification_EventParameter(OperationType.Homing, OperationStatus.Stopped, "Homing stopped", Verbosity.Info);
             this.eventAggregator.GetEvent<FiniteStateMachines_NotificationEvent>().Publish(notifyEvent);
         }
@@ -72,6 +79,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                     case OperationStatus.End:
                         {
                             this.parent.ChangeState(new VerticalSwitchDoneState(this.parent, this.driver, this.remoteIODriver, this.data, this.eventAggregator));
+                            this.parent.MakeOperation();
 
                             break;
                         }
@@ -86,10 +94,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 }
             }
 
-            if (this.parent.HorizontalHomingAlreadyDone)
-            {
-                this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Unsubscribe(this.notifyEventHandler);
-            }
+            this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Unsubscribe(this.notifyEventHandler);
         }
 
         #endregion

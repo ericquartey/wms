@@ -30,8 +30,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
             this.eventAggregator = eventAggregator;
 
             this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
-
-            this.driver.ExecuteVerticalHoming();
         }
 
         #endregion
@@ -44,9 +42,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Methods
 
+        public void MakeOperation()
+        {
+            this.driver.ExecuteVerticalHoming();
+        }
+
         public void Stop()
         {
             this.driver.ExecuteHomingStop();
+
+            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Unsubscribe(this.notifyEventHandler);
 
             var notifyEvent = new Notification_EventParameter(OperationType.Homing, OperationStatus.Stopped, "Homing stopped", Verbosity.Info);
             this.eventAggregator.GetEvent<FiniteStateMachines_NotificationEvent>().Publish(notifyEvent);

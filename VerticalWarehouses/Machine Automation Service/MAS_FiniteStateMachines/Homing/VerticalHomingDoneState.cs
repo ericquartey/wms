@@ -34,8 +34,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.eventAggregator = eventAggregator;
 
             this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
-
-            this.remoteIODriver.SwitchVerticalToHorizontal();
         }
 
         #endregion
@@ -48,8 +46,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Methods
 
+        public void MakeOperation()
+        {
+            this.remoteIODriver.SwitchVerticalToHorizontal();
+        }
+
         public void Stop()
         {
+            this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Unsubscribe(this.notifyEventHandler);
+
             var notifyEvent = new Notification_EventParameter(OperationType.Homing, OperationStatus.Stopped, "Homing stopped", Verbosity.Info);
             this.eventAggregator.GetEvent<FiniteStateMachines_NotificationEvent>().Publish(notifyEvent);
         }
@@ -63,6 +68,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                     case OperationStatus.End:
                         {
                             this.parent.ChangeState(new HorizontalSwitchDoneState(this.parent, this.driver, this.remoteIODriver, this.data, this.eventAggregator));
+                            this.parent.MakeOperation();
+
                             break;
                         }
                     case OperationStatus.Error:
@@ -75,6 +82,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                         }
                 }
             }
+
+            this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Unsubscribe(this.notifyEventHandler);
         }
 
         #endregion

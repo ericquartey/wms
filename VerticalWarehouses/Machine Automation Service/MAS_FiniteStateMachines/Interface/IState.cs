@@ -4,12 +4,23 @@
     {
         #region Properties
 
+        /// <summary>
+        /// Get the type of state (string description).
+        /// </summary>
         string Type { get; }
 
         #endregion
 
         #region Methods
 
+        /// <summary>
+        /// Make the operation required by the current state.
+        /// </summary>
+        void MakeOperation();
+
+        /// <summary>
+        /// Stop operation for the state.
+        /// </summary>
         void Stop();
 
         #endregion

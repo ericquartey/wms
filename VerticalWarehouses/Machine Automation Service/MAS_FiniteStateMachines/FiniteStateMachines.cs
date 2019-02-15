@@ -48,6 +48,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Properties
 
+        public StateMachineHoming StateMachineHoming => this.homing;
+
         public StateMachineVerticalHoming StateMachineVerticalHoming => this.verticalHoming;
 
         #endregion
@@ -84,7 +86,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         }
 
                         this.homing.Start();
-                        //this.verticalHoming.Start();
                         break;
                     }
 
@@ -96,7 +97,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         }
 
                         this.homing.Stop();
-                        //this.verticalHoming.Stop();
                         break;
                     }
                 default:

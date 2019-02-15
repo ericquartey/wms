@@ -34,8 +34,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.eventAggregator = eventAggregator;
 
             this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
-
-            this.driver.ExecuteHorizontalHoming();
         }
 
         #endregion
@@ -48,9 +46,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Methods
 
+        public void MakeOperation()
+        {
+            this.driver.ExecuteHorizontalHoming();
+        }
+
         public void Stop()
         {
             this.driver.ExecuteHomingStop();
+
+            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Unsubscribe(this.notifyEventHandler);
 
             var notifyEvent = new Notification_EventParameter(OperationType.Homing, OperationStatus.Stopped, "Homing stopped", Verbosity.Info);
             this.eventAggregator.GetEvent<FiniteStateMachines_NotificationEvent>().Publish(notifyEvent);
@@ -65,6 +70,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                         if (notification.Description == "Horizontal Calibration Ended" && !this.parent.HomingComplete)
                         {
                             this.parent.ChangeState(new HorizontalHomingDoneState(this.parent, this.driver, this.remoteIODriver, this.data, this.eventAggregator));
+                            this.parent.MakeOperation();
                         }
                         break;
                     }
@@ -77,6 +83,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                         break;
                     }
             }
+
+            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Unsubscribe(this.notifyEventHandler);
         }
 
         #endregion

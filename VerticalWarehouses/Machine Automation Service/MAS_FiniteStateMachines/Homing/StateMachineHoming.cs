@@ -51,17 +51,23 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.state = newState;
         }
 
+        public void MakeOperation()
+        {
+            this.state?.MakeOperation();
+        }
+
         public void Start()
         {
             this.HorizontalHomingAlreadyDone = false;
             this.HomingComplete = false;
 
             this.state = new HomingIdleState(this, this.driver, this.remoteIODriver, this.data, this.eventAggregator);
+            this.state.MakeOperation();
         }
 
         public void Stop()
         {
-            this.state.Stop();
+            this.state?.Stop();
         }
 
         #endregion
