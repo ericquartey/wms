@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
@@ -86,10 +87,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public override void LoadRelatedData()
+        public override async void LoadRelatedData()
         {
+            var loadingUnit = await this.loadingUnitsProvider.GetByCellIdAsync(this.Model.Id);
             this.LoadingUnitsDataSource = this.Model != null
-                ? new DataSource<LoadingUnitDetails>(() => this.loadingUnitsProvider.GetByCellId(this.Model.Id))
+                ? new DataSource<LoadingUnitDetails>(() => loadingUnit.AsQueryable<LoadingUnitDetails>())
                 : null;
         }
 
@@ -107,7 +109,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.IsBusy = true;
 
-            var result = await this.cellProvider.SaveAsync(this.Model);
+            var result = await this.cellProvider.UpdateAsync(this.Model);
             if (result.Success)
             {
                 this.TakeModelSnapshot();
@@ -169,7 +171,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 if (this.Data is int modelId)
                 {
                     this.Model = await this.cellProvider.GetByIdAsync(modelId);
-                    this.CellHasLoadingUnits = this.cellProvider.HasAnyLoadingUnits(modelId);
+                    this.CellHasLoadingUnits = this.Model.LoadingUnitsCount > 0 ? true : false;
                 }
 
                 this.IsBusy = false;

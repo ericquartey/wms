@@ -184,7 +184,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.ItemWithdraw = new ItemWithdraw();
         }
 
-        private void OnItemWithdrawPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private async void OnItemWithdrawPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             ((DelegateCommand)this.RunWithdrawCommand)?.RaiseCanExecuteChanged();
 
@@ -192,13 +192,13 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 case nameof(this.ItemWithdraw.AreaId):
                     this.ItemWithdraw.BayChoices = this.ItemWithdraw.AreaId.HasValue ?
-                                                       this.bayProvider.GetByAreaId(this.ItemWithdraw.AreaId.Value) :
+                                                       await this.bayProvider.GetByAreaIdAsync(this.ItemWithdraw.AreaId.Value) :
                                                        null;
                     break;
 
                 case nameof(this.ItemWithdraw.ItemDetails):
                     this.ItemWithdraw.AreaChoices = this.ItemWithdraw.ItemDetails != null ?
-                                                        this.areaProvider.GetByItemIdAvailability(this.ItemWithdraw.ItemDetails.Id) :
+                                                        await this.areaProvider.GetAreasWithAvailabilityAsync(this.ItemWithdraw.ItemDetails.Id) :
                                                         null;
                     break;
             }
