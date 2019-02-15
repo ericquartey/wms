@@ -3,6 +3,9 @@ using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
 using Microsoft.Practices.Unity;
+using Ferretto.VW.InstallationApp.ServiceUtilities;
+using System.Net;
+using System.IO;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -11,6 +14,8 @@ namespace Ferretto.VW.InstallationApp
         #region Fields
 
         public IUnityContainer Container;
+
+        private InstallationHubClient installationHubClient;
 
         private bool isStartButtonActive = true;
 
@@ -36,7 +41,7 @@ namespace Ferretto.VW.InstallationApp
 
         public VerticalAxisCalibrationViewModel()
         {
-            InputsCorrectionControlEventHandler += this.CheckInputsCorrectness;
+            this.InputsCorrectionControlEventHandler += this.CheckInputsCorrectness;
         }
 
         #endregion
@@ -82,19 +87,51 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void InitializeViewModel(IUnityContainer _container)
+        public void InitializeViewModel(IUnityContainer container)
         {
-            this.Container = _container;
+            this.Container = container;
         }
 
-        public void SubscribeMethodToEvent()
+        public async void SubscribeMethodToEvent()
         {
-            // TODO
+            try
+            {
+                this.installationHubClient = new InstallationHubClient("http://localhost:5000", "/installation-endpoint");
+                await this.installationHubClient.ConnectAsync();
+
+                this.installationHubClient.ReceivedMessageToAllConnectedClients += this.UpdateNoteString;
+                this.installationHubClient.connection.Closed += async (error) => this.NoteString = "Not Connected";
+                this.NoteString = "Connected to Installation Hub";
+            }
+            catch (ArgumentNullException)
+            {
+                if (this.installationHubClient == null)
+                {
+                    this.installationHubClient = new InstallationHubClient("http://localhost:5000", "/installation-endpoint");
+                    await this.installationHubClient.ConnectAsync();
+                    this.installationHubClient.ReceivedMessageToAllConnectedClients += this.UpdateNoteString;
+                    this.NoteString = "Connected to Installation Hub";
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            catch (Exception)
+            {
+                this.NoteString = "Did not connect to Installation Hub";
+                throw;
+            }
         }
 
-        public void UnSubscribeMethodFromEvent()
+        public async void UnSubscribeMethodFromEvent()
         {
-            // TODO
+            await this.installationHubClient.DisconnectAsync();
+        }
+
+        public void UpdateNoteString(object sender, string message)
+        {
+            this.NoteString = message;
         }
 
         private void CheckInputsCorrectness()
@@ -104,14 +141,7 @@ namespace Ferretto.VW.InstallationApp
                 int.TryParse(this.Resolution, out var _resolution) &&
                 int.TryParse(this.UpperBound, out var _upperBound))
             { // TODO: DEFINE AND INSERT VALIDATION LOGIC IN HERE. THESE PROPOSITIONS ARE TEMPORARY
-                if (_lowerBound > 0 && _lowerBound < _upperBound && _upperBound > 0 && _resolution > 0 && _offset > 0)
-                {
-                    this.IsStartButtonActive = true;
-                }
-                else
-                {
-                    this.IsStartButtonActive = false;
-                }
+                this.IsStartButtonActive = (_lowerBound > 0 && _lowerBound < _upperBound && _upperBound > 0 && _resolution > 0 && _offset > 0) ? true : false;
             }
             else
             {
@@ -121,7 +151,27 @@ namespace Ferretto.VW.InstallationApp
 
         private void ExecuteStartButtonCommand()
         {
-            // TODO implementa feature
+            try
+            {
+                var request = (HttpWebRequest)WebRequest.Create("https://localhost:5001/api/Test/HomingTest");
+                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+
+                using (var response = (HttpWebResponse)request.GetResponse())
+                using (var stream = response.GetResponseStream())
+                using (var reader = new StreamReader(stream))
+                {
+                    this.NoteString = reader.ReadToEnd();
+                }
+            }
+            catch (Exception)
+            {
+                this.NoteString = "Couldn't get response from this http get request.";
+                throw;
+            }
+            catch
+            {
+                this.NoteString = "Couldn't get response from this http get request.";
+            }
         }
 
         private void StopButtonMethod()

@@ -6,19 +6,28 @@ using System.Threading.Tasks;
 
 namespace Ferretto.VW.Common_Utils.EventParameters
 {
+    public enum CommandType
+    {
+        ExecuteHoming,
+
+        StopAction
+    }
+
     public class Command_EventParameter
     {
-        public CommandType CommandType { get; set; }
+        #region Constructors
 
         public Command_EventParameter(CommandType commandType)
         {
             this.CommandType = commandType;
         }
-    }
 
-    public enum CommandType
-    {
-        ExecuteHoming,
-        AddMission
+        #endregion
+
+        #region Properties
+
+        public CommandType CommandType { get; set; }
+
+        #endregion
     }
 }

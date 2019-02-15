@@ -1,7 +1,5 @@
 ﻿using Prism.Mvvm;
-using Ferretto.VW.Utils.Source;
 using Ferretto.VW.Navigation;
-using System;
 using Microsoft.Practices.Unity;
 
 namespace Ferretto.VW.InstallationApp

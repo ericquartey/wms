@@ -43,10 +43,17 @@ namespace Ferretto.VW.MAS_AutomationService
             this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish( missionMessage );
         }
 
-        [HttpGet( "HomingTest" )]
-        public void ExecuteHoming()
+        [HttpGet("HomingTest")]
+        public string ExecuteHoming()
         {
-            this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish( new Command_EventParameter( CommandType.ExecuteHoming ) );
+            this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish(new Command_EventParameter(CommandType.ExecuteHoming));
+            return "Execute Homing Done!";
+        }
+
+        [HttpGet("StopFSM")]
+        public void StopFiniteStateMachine()
+        {
+            this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish(new Command_EventParameter(CommandType.StopAction));
         }
 
         #endregion
