@@ -50,7 +50,6 @@ namespace Ferretto.VW.InstallationApp
             var weightControlVMInstance = new WeightControlViewModel();
             var mainWindowVMInstance = new MainWindowViewModel();
             var helpMainWindowInstance = new HelpMainWindow();
-            var installationHubClient = new InstallationHubClient();
 
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
             this.container.RegisterInstance<IBeltBurnishingViewModel>(beltBurnishingVMInstance);
@@ -84,7 +83,6 @@ namespace Ferretto.VW.InstallationApp
             this.container.RegisterInstance<IWeightControlViewModel>(weightControlVMInstance);
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
             this.container.RegisterInstance<IHelpMainWindow>(helpMainWindowInstance);
-            this.container.RegisterInstance<IInstallationHubClient>(installationHubClient);
 
             lSMTNavigationButtonsVMInstance.InitializeViewModel(this.container);
             lSMTMainVMInstance.InitializeViewModel(this.container);

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using System.IO;
 using System.Net;
 using System.Windows;
 using System.Windows.Input;
-using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.Navigation;
 using Ferretto.VW.Utils.Source;
 using Microsoft.Practices.Unity;
@@ -34,8 +32,6 @@ namespace Ferretto.VW.InstallationApp
         private static readonly string URL = ConfigurationManager.AppSettings["ServiceURL"];
 
         public static SensorsStates States;
-
-        private InstallationHubClient installationClient;
 
         private BindableBase contentRegionCurrentViewModel;
 
@@ -150,28 +146,6 @@ namespace Ferretto.VW.InstallationApp
             this.ContentRegionCurrentViewModel = (IdleViewModel)this.Container.Resolve<IIdleViewModel>();
             this.ConnectMethod();
             this.InitializeEvents();
-        }
-
-        private async void ConnectToInstallationHubMethod()
-        {
-            try
-            {
-                this.installationClient = new InstallationHubClient();
-                this.installationClient.InitializeInstallationHubClient("http://localhost:5000", "/installation-endpoint");
-                await this.installationClient.ConnectAsync();
-                this.installationClient.ReceivedMessageToAllConnectedClients += this.Client_ReceivedMessageToAllConnectedClients;
-                installationClient.connection.Closed += async (error) => InternalMessages = "Not Connected";
-                this.InternalMessages = "Connected!";
-            }
-            catch (Exception exception)
-            {
-                this.InternalMessages = "Not Connected!";
-            }
-        }
-
-        private void Client_ReceivedMessageToAllConnectedClients(object sender, string message)
-        {
-            this.MessageFromServer = message;
         }
 
         #endregion Methods

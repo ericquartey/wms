@@ -6,17 +6,20 @@ using System.Threading.Tasks;
 
 namespace Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces
 {
-    public interface IInstallationHubClient
+    public interface IAutomationHubClient
     {
         #region Events
 
-        event EventHandler<InstallationHubEventArgs> ReceivedMessageToAllConnectedClients;
+        // HACK changed installationHubEventArgs with string
+        event EventHandler<AutomationHubEventArgs> ReceivedMessageToAllConnectedClients;
 
         #endregion
 
         #region Methods
 
         Task ConnectAsync();
+
+        Task DisconnectAsync();
 
         #endregion
     }

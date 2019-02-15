@@ -4,7 +4,6 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Microsoft.Practices.Unity;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
-using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using System.Net;
 using System.IO;
 
@@ -16,7 +15,7 @@ namespace Ferretto.VW.InstallationApp
 
         public IUnityContainer Container;
 
-        private InstallationHubClient installationClient;
+        private InstallationHubClient installationHubClient;
 
         private bool isStartButtonActive = true;
 
@@ -42,7 +41,7 @@ namespace Ferretto.VW.InstallationApp
 
         public VerticalAxisCalibrationViewModel()
         {
-            InputsCorrectionControlEventHandler += this.CheckInputsCorrectness;
+            this.InputsCorrectionControlEventHandler += this.CheckInputsCorrectness;
         }
 
         #endregion
@@ -88,45 +87,46 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void InitializeViewModel(IUnityContainer _container)
+        public void InitializeViewModel(IUnityContainer container)
         {
-            this.Container = _container;
-            this.installationClient = (InstallationHubClient)this.Container.Resolve<IInstallationHubClient>();
+            this.Container = container;
         }
 
-        public void SubscribeMethodToEvent()
+        public async void SubscribeMethodToEvent()
         {
             try
             {
-                this.installationClient.InitializeInstallationHubClient("https://localhost://5001", "/automation-endpoint");
-                this.installationClient.ConnectAsync();
+                this.installationHubClient = new InstallationHubClient("http://localhost:5000", "/installation-endpoint");
+                await this.installationHubClient.ConnectAsync();
 
-                this.installationClient.ReceivedMessageToAllConnectedClients += this.UpdateNoteString;
+                this.installationHubClient.ReceivedMessageToAllConnectedClients += this.UpdateNoteString;
+                this.installationHubClient.connection.Closed += async (error) => this.NoteString = "Not Connected";
                 this.NoteString = "Connected to Installation Hub";
             }
-            catch (ArgumentNullException nullException)
+            catch (ArgumentNullException)
             {
-                if (this.installationClient == null)
+                if (this.installationHubClient == null)
                 {
-                    this.installationClient = (InstallationHubClient)this.Container.Resolve<IInstallationHubClient>();
-                    this.installationClient.ConnectAsync();
-                    this.installationClient.ReceivedMessageToAllConnectedClients += this.UpdateNoteString;
+                    this.installationHubClient = new InstallationHubClient("http://localhost:5000", "/installation-endpoint");
+                    await this.installationHubClient.ConnectAsync();
+                    this.installationHubClient.ReceivedMessageToAllConnectedClients += this.UpdateNoteString;
+                    this.NoteString = "Connected to Installation Hub";
                 }
                 else
                 {
-                    throw nullException;
+                    throw;
                 }
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 this.NoteString = "Did not connect to Installation Hub";
-                throw exception;
+                throw;
             }
         }
 
-        public void UnSubscribeMethodFromEvent()
+        public async void UnSubscribeMethodFromEvent()
         {
-            this.installationClient.DisconnectAsync();
+            await this.installationHubClient.DisconnectAsync();
         }
 
         public void UpdateNoteString(object sender, string message)
@@ -160,10 +160,15 @@ namespace Ferretto.VW.InstallationApp
                 using (var stream = response.GetResponseStream())
                 using (var reader = new StreamReader(stream))
                 {
-                    reader.ReadToEnd();
+                    this.NoteString = reader.ReadToEnd();
                 }
             }
-            catch (Exception exception)
+            catch (Exception)
+            {
+                this.NoteString = "Couldn't get response from this http get request.";
+                throw;
+            }
+            catch
             {
                 this.NoteString = "Couldn't get response from this http get request.";
             }
