@@ -15,6 +15,7 @@ namespace MAS_MissionSchedulerTests
         #region Methods
 
         [TestMethod]
+        [TestCategory("Unit")]
         public void TestAddMission()
         {
             var machineManagerMock = new Mock<IMachineManager>().Object;
