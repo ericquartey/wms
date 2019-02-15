@@ -13,22 +13,45 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly WMS.Data.WebAPI.Contracts.IAislesDataService aislesDataService;
 
+        private readonly WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService;
+
         #endregion
 
         #region Constructors
 
-        public AisleProvider(WMS.Data.WebAPI.Contracts.IAislesDataService aislesDataService)
+        public AisleProvider(
+            WMS.Data.WebAPI.Contracts.IAislesDataService aislesDataService,
+            WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService)
         {
             this.aislesDataService = aislesDataService;
+            this.areasDataService = areasDataService;
         }
 
         #endregion
+
+        #region Properties
 
         public int AreaId { get; set; }
 
         public string AreaName { get; set; }
 
         public string Name { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        public async Task<IEnumerable<Aisle>> GetAislesByAreaIdAsync(int areaId)
+        {
+            return (await this.areasDataService.GetAislesAsync(areaId))
+                .Select(a => new Aisle
+                {
+                    Id = a.Id,
+                    AreaId = a.AreaId,
+                    AreaName = a.AreaName,
+                    Name = a.Name
+                });
+        }
 
         public async Task<IEnumerable<Aisle>> GetAllAsync()
         {
@@ -52,5 +75,7 @@ namespace Ferretto.Common.BusinessProviders
                 Name = aisle.Name
             };
         }
+
+        #endregion
     }
 }
