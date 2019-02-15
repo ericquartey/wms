@@ -57,31 +57,29 @@ namespace Ferretto.Common.Modules.BLL.Services
             where TModel : IBusinessObject
         {
             var cellProvider = ServiceLocator.Current.GetInstance<ICellProvider>();
-            var cellCountProvider = ServiceLocator.Current.GetInstance<ICellProvider>();
 
-            return new List<FilterDataSource<Cell>>
+            return new List<PagedDataSource<Cell>>
             {
-                new FilterDataSource<Cell>(
+                new PagedDataSource<Cell>(
                     "CellsViewAll",
                     Resources.MasterData.CellAll,
-                    () => cellProvider.GetAll(),
-                    () => cellCountProvider.GetAllCount()),
+                    cellProvider),
 
-                new FilterDataSource<Cell>(
+                 new PagedDataSource<Cell>(
                     "CellStatusEmpty",
                     Resources.MasterData.CellStatusEmpty,
-                    () => cellProvider.GetWithStatusEmpty(),
-                    () => cellCountProvider.GetWithStatusEmptyCount()),
-                new FilterDataSource<Cell>(
+                    cellProvider,
+                    "[Status] == 'Empty'"),
+                 new PagedDataSource<Cell>(
                     "CellStatusFull",
                     Resources.MasterData.CellStatusFull,
-                    () => cellProvider.GetWithStatusFull(),
-                    () => cellCountProvider.GetWithStatusFullCount()),
-                new FilterDataSource<Cell>(
+                    cellProvider,
+                    "[Status] == 'Full'"),
+                 new PagedDataSource<Cell>(
                     "CellClassA",
                     Resources.MasterData.CellClassA,
-                    () => cellProvider.GetWithClassA(),
-                    () => cellCountProvider.GetWithClassACount()),
+                   cellProvider,
+                    "[AbcClassDescription] == 'A Class'")
             }.Cast<IFilterDataSource<TModel>>();
         }
 
@@ -89,36 +87,34 @@ namespace Ferretto.Common.Modules.BLL.Services
             where TModel : IBusinessObject
         {
             var compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
-            var compartmentCountProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
 
-            return new List<FilterDataSource<Compartment>>
+            return new List<PagedDataSource<Compartment>>
             {
-                new FilterDataSource<Compartment>(
+                new PagedDataSource<Compartment>(
                     "CompartmentsViewAll",
                     Resources.MasterData.CompartmentAll,
-                    () => compartmentProvider.GetAll(),
-                    () => compartmentCountProvider.GetAllCount()),
+                    compartmentProvider),
 
-                new FilterDataSource<Compartment>(
+                new PagedDataSource<Compartment>(
                     "CompartmentStatusAvailable",
                     Resources.MasterData.CompartmentStatusAvailable,
-                    () => compartmentProvider.GetWithStatusAvailable(),
-                    () => compartmentCountProvider.GetWithStatusAvailableCount()),
-                new FilterDataSource<Compartment>(
+                    compartmentProvider,
+                    "[MaterialStatusId] == 1"),
+                new PagedDataSource<Compartment>(
                     "CompartmentStatusAwaiting",
                     Resources.MasterData.CompartmentStatusAwaiting,
-                    () => compartmentProvider.GetWithStatusAwaiting(),
-                    () => compartmentCountProvider.GetWithStatusAwaitingCount()),
-                new FilterDataSource<Compartment>(
+                    compartmentProvider,
+                    "[MaterialStatusId] == 2"),
+                new PagedDataSource<Compartment>(
                     "CompartmentStatusExpired",
                     Resources.MasterData.CompartmentStatusExpired,
-                    () => compartmentProvider.GetWithStatusExpired(),
-                    () => compartmentCountProvider.GetWithStatusExpiredCount()),
-                new FilterDataSource<Compartment>(
+                    compartmentProvider,
+                    "[MaterialStatusId] == 3"),
+                new PagedDataSource<Compartment>(
                     "CompartmentStatusBlocked",
                     Resources.MasterData.CompartmentStatusBlocked,
-                    () => compartmentProvider.GetWithStatusBlocked(),
-                    () => compartmentCountProvider.GetWithStatusBlockedCount()),
+                    compartmentProvider,
+                    "[MaterialStatusId] == 4"),
             }.Cast<IFilterDataSource<TModel>>();
         }
 
@@ -126,7 +122,6 @@ namespace Ferretto.Common.Modules.BLL.Services
             where TModel : IBusinessObject
         {
             var itemListProvider = ServiceLocator.Current.GetInstance<IItemListProvider>();
-            var itemListCountProvider = ServiceLocator.Current.GetInstance<IItemListProvider>();
 
             var type = parameter;
             if (parameter != null && Enum.IsDefined(typeof(ItemListType), (int)(char)parameter))
@@ -134,76 +129,77 @@ namespace Ferretto.Common.Modules.BLL.Services
                 type = (ItemListType)Enum.ToObject(typeof(ItemListType), parameter);
             }
 
-            var listFilters = new List<FilterDataSource<ItemList>>();
+            var listFilters = new List<PagedDataSource<ItemList>>();
             switch (type)
             {
                 case ItemListType.Pick:
                     listFilters.Add(
-                        new FilterDataSource<ItemList>(
+                        new PagedDataSource<ItemList>(
                             "ItemListViewTypePick",
                             Resources.MasterData.ItemListsTypePick,
-                            () => itemListProvider.GetWithTypePick(),
-                            () => itemListCountProvider.GetWithTypePickCount()));
+                            itemListProvider,
+                            "[Type] == 'Pick'"));
                     break;
 
                 case ItemListType.Put:
                     listFilters.Add(
-                        new FilterDataSource<ItemList>(
+                        new PagedDataSource<ItemList>(
                             "ItemListViewTypePut",
                             Resources.MasterData.ItemListsTypePut,
-                            () => itemListProvider.GetWithTypePut(),
-                            () => itemListCountProvider.GetWithTypePutCount()));
+                            itemListProvider,
+                            "[Type] == 'Put'"));
                     break;
 
                 case ItemListType.Inventory:
                     listFilters.Add(
-                        new FilterDataSource<ItemList>(
+                        new PagedDataSource<ItemList>(
                             "ItemListViewTypeInventory",
                             Resources.MasterData.ItemListsTypeInventory,
-                            () => itemListProvider.GetWithTypeInventory(),
-                            () => itemListCountProvider.GetWithTypeInventoryCount()));
+                            itemListProvider,
+                            "[Type] == 'Inventory'"));
                     break;
 
                 default:
-                    listFilters.Add(new FilterDataSource<ItemList>(
+                    listFilters.Add(new PagedDataSource<ItemList>(
                                         "ItemListViewAll",
                                         Resources.MasterData.ItemListAll,
-                                        () => itemListProvider.GetAll(),
-                                        () => itemListCountProvider.GetAllCount()));
+                                        itemListProvider));
                     listFilters.Add(
-                        new FilterDataSource<ItemList>(
+                        new PagedDataSource<ItemList>(
                             "ItemListViewTypePick",
                             Resources.MasterData.ItemListsTypePick,
-                            () => itemListProvider.GetWithTypePick(),
-                            () => itemListCountProvider.GetWithTypePickCount()));
+                            itemListProvider,
+                            "[ItemListType] == '1'"));
                     listFilters.Add(
-                        new FilterDataSource<ItemList>(
+                        new PagedDataSource<ItemList>(
                             "ItemListViewTypePut",
                             Resources.MasterData.ItemListsTypePut,
-                            () => itemListProvider.GetWithTypePut(),
-                            () => itemListCountProvider.GetWithTypePutCount()));
+                            itemListProvider,
+                            "[Type] == 'Put'"));
                     listFilters.Add(
-                        new FilterDataSource<ItemList>(
+                        new PagedDataSource<ItemList>(
                             "ItemListViewTypeInventory",
                             Resources.MasterData.ItemListsTypeInventory,
-                            () => itemListProvider.GetWithTypeInventory(),
-                            () => itemListCountProvider.GetWithTypeInventoryCount()));
+                            itemListProvider,
+                            "[Type] == '2'"));
                     break;
             }
 
-            listFilters.Add(
-                new FilterDataSource<ItemList>(
-                    "ItemListViewStatusWaiting",
-                    Resources.MasterData.ItemListStatusWaiting,
-                    () => itemListProvider.GetWithStatusWaiting((ItemListType?)type),
-                    () => itemListCountProvider.GetWithStatusWaitingCount((ItemListType?)type)));
+            var typeFilter = type != null ? $" && [ItemListType] == '{type}'" : string.Empty;
 
             listFilters.Add(
-                new FilterDataSource<ItemList>(
+                new PagedDataSource<ItemList>(
+                    "ItemListViewStatusWaiting",
+                    Resources.MasterData.ItemListStatusWaiting,
+                    itemListProvider,
+                    $"[ItemListStatus] == 'Waiting' {typeFilter}"));
+
+            listFilters.Add(
+                new PagedDataSource<ItemList>(
                     "ItemListViewStatusCompleted",
                     Resources.MasterData.ItemListStatusCompleted,
-                    () => itemListProvider.GetWithStatusCompleted((ItemListType?)type),
-                    () => itemListCountProvider.GetWithStatusCompletedCount((ItemListType?)type)));
+                    itemListProvider,
+                    $"[Status] == 'Completed' {typeFilter}'"));
 
             return listFilters.Cast<IFilterDataSource<TModel>>();
         }
@@ -237,42 +233,40 @@ namespace Ferretto.Common.Modules.BLL.Services
                     where TModel : IBusinessObject
         {
             var loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
-            var loadingUnitCountProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
 
-            return new List<FilterDataSource<LoadingUnit>>
+            return new List<PagedDataSource<LoadingUnit>>
             {
-                new FilterDataSource<LoadingUnit>(
+                new PagedDataSource<LoadingUnit>(
                     "LoadingUnitsViewAll",
                     Resources.MasterData.LoadingUnitAll,
-                    () => loadingUnitProvider.GetAll(),
-                    () => loadingUnitCountProvider.GetAllCount()),
+                    loadingUnitProvider),
 
-                new FilterDataSource<LoadingUnit>(
+                new PagedDataSource<LoadingUnit>(
                     "LoadingUnitsViewAreaManual",
                     Resources.MasterData.LoadingUnitAreaManual,
-                    () => loadingUnitProvider.GetWithAreaManual(),
-                    () => loadingUnitCountProvider.GetWithAreaManualCount()),
-                new FilterDataSource<LoadingUnit>(
+                    loadingUnitProvider,
+                    "[CellPosition] == '1'"),
+                new PagedDataSource<LoadingUnit>(
                     "LoadingUnitsViewAreaVertimag",
                     Resources.MasterData.LoadingUnitAreaVertimag,
-                    () => loadingUnitProvider.GetWithAreaVertimag(),
-                    () => loadingUnitCountProvider.GetWithAreaVertimagCount()),
+                    loadingUnitProvider,
+                    "[CellPosition] == '2'"),
 
-                new FilterDataSource<LoadingUnit>(
+                new PagedDataSource<LoadingUnit>(
                     "LoadingUnitsViewStatusAvailable",
                     Resources.MasterData.LoadingUnitStatusAvailable,
-                    () => loadingUnitProvider.GetWithStatusAvailable(),
-                    () => loadingUnitCountProvider.GetWithStatusAvailableCount()),
-                new FilterDataSource<LoadingUnit>(
+                    loadingUnitProvider,
+                    "[LoadingUnitStatusId] == 'A'"),
+                new PagedDataSource<LoadingUnit>(
                     "LoadingUnitsViewStatusBlocked",
                     Resources.MasterData.LoadingUnitStatusBlocked,
-                    () => loadingUnitProvider.GetWithStatusBlocked(),
-                    () => loadingUnitCountProvider.GetWithStatusBlockedCount()),
-                new FilterDataSource<LoadingUnit>(
+                    loadingUnitProvider,
+                    "[LoadingUnitStatusId] == 'B'"),
+                new PagedDataSource<LoadingUnit>(
                     "LoadingUnitsViewStatusUsed",
                     Resources.MasterData.LoadingUnitStatusUsed,
-                    () => loadingUnitProvider.GetWithStatusUsed(),
-                    () => loadingUnitCountProvider.GetWithStatusUsedCount()),
+                    loadingUnitProvider,
+                    "[LoadingUnitStatusId] == 'U'"),
             }.Cast<IFilterDataSource<TModel>>();
         }
 
@@ -280,27 +274,36 @@ namespace Ferretto.Common.Modules.BLL.Services
                             where TModel : IBusinessObject
         {
             var machineProvider = ServiceLocator.Current.GetInstance<IMachineProvider>();
-            var machineCountProvider = ServiceLocator.Current.GetInstance<IMachineProvider>();
 
-            return new List<FilterDataSource<Machine>>
+            return new List<PagedDataSource<Machine>>
             {
-                new FilterDataSource<Machine>(
+                new PagedDataSource<Machine>(
                     "MachinesViewAll",
                     Resources.Machines.MachineAll,
-                    () => machineProvider.GetAll(),
-                    () => machineCountProvider.GetAllCount()),
+                    machineProvider),
 
-                new FilterDataSource<Machine>(
+                // new PagedDataSource<Machine>(
+                //    "MachinesViewVertimagXS",
+                //    Resources.Machines.MachineVertimagXS,
+                //    machineProvider,
+                //    "UPPER([MachineTypeDescription]) == '%TRASLO%'"),
+
+                // new PagedDataSource<Machine>(
+                //    "MachinesViewVertimagXS",
+                //    Resources.Machines.MachineVertimagXS,
+                //    machineProvider,
+                //    "UPPER([MachineTypeDescription]) == '%VERTIMAG%'"),
+                new PagedDataSource<Machine>(
                     "MachinesViewVertimagXS",
                     Resources.Machines.MachineVertimagXS,
-                    () => machineProvider.GetAllVertimagModelXs(),
-                    () => machineCountProvider.GetAllVertimagModelXsCount()),
+                    machineProvider,
+                    "[Model] == '%VARIANT-M%'"),
 
-                new FilterDataSource<Machine>(
+                new PagedDataSource<Machine>(
                     "MachinesViewVertimagM",
                     Resources.Machines.MachineVertimagM,
-                    () => machineProvider.GetAllVertimagModelM(),
-                    () => machineCountProvider.GetAllVertimagModelMCount())
+                    machineProvider,
+                    "[Model] == '%VARIANT-M%'")
             }.Cast<IFilterDataSource<TModel>>();
         }
 
@@ -308,27 +311,25 @@ namespace Ferretto.Common.Modules.BLL.Services
                     where TModel : IBusinessObject
         {
             var missionProvider = ServiceLocator.Current.GetInstance<IMissionProvider>();
-            var missionCountProvider = ServiceLocator.Current.GetInstance<IMissionProvider>();
 
-            return new List<FilterDataSource<Mission>>
+            return new List<PagedDataSource<Mission>>
             {
-                new FilterDataSource<Mission>(
+                new PagedDataSource<Mission>(
                     "MissionViewAll",
                     Resources.Scheduler.MissionAll,
-                    () => missionProvider.GetAll(),
-                    () => missionCountProvider.GetAllCount()),
+                    missionProvider),
 
-                new FilterDataSource<Mission>(
+                new PagedDataSource<Mission>(
                     "MissionViewStatusCompleted",
                     Resources.Scheduler.MissionStatusCompleted,
-                    () => missionProvider.GetWithStatusCompleted(),
-                    () => missionCountProvider.GetWithStatusCompletedCount()),
+                    missionProvider,
+                    "[Status] == 'C'"),
 
-                new FilterDataSource<Mission>(
+                new PagedDataSource<Mission>(
                     "MissionViewStatusNew",
                     Resources.Scheduler.MissionStatusNew,
-                    () => missionProvider.GetWithStatusNew(),
-                    () => missionCountProvider.GetWithStatusNewCount())
+                    missionProvider,
+                    "[Status] == 'N'")
             }.Cast<IFilterDataSource<TModel>>();
         }
 
@@ -336,27 +337,25 @@ namespace Ferretto.Common.Modules.BLL.Services
                                             where TModel : IBusinessObject
         {
             var schedulerRequestProvider = ServiceLocator.Current.GetInstance<ISchedulerRequestProvider>();
-            var schedulerRequestCountProvider = ServiceLocator.Current.GetInstance<ISchedulerRequestProvider>();
 
-            return new List<FilterDataSource<SchedulerRequest>>
+            return new List<PagedDataSource<SchedulerRequest>>
                     {
-                        new FilterDataSource<SchedulerRequest>(
+                        new PagedDataSource<SchedulerRequest>(
                             "SchedulerRequestViewAll",
                             Resources.Scheduler.SchedulerRequestViewAll,
-                            () => schedulerRequestProvider.GetAll(),
-                            () => schedulerRequestCountProvider.GetAllCount()),
+                            schedulerRequestProvider),
 
-                        new FilterDataSource<SchedulerRequest>(
+                        new PagedDataSource<SchedulerRequest>(
                             "SchedulerRequestOperationInsert",
                             Resources.Scheduler.SchedulerRequestOperationInsert,
-                            () => schedulerRequestProvider.GetWithOperationTypeInsertion(),
-                            () => schedulerRequestCountProvider.GetWithOperationTypeInsertionCount()),
+                            schedulerRequestProvider,
+                           "[OperationType] == 'I'"),
 
-                        new FilterDataSource<SchedulerRequest>(
+                        new PagedDataSource<SchedulerRequest>(
                             "SchedulerRequestOperationWithdraw",
                             Resources.Scheduler.SchedulerRequestOperationWithdraw,
-                            () => schedulerRequestProvider.GetWithOperationTypeWithdrawal(),
-                            () => schedulerRequestCountProvider.GetWithOperationTypeWithdrawalCount())
+                            schedulerRequestProvider,
+                            "[OperationType] == 'W'")
                     }.Cast<IFilterDataSource<TModel>>();
         }
 
