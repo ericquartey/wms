@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Models;
 
 namespace Ferretto.WMS.Data.Core.Interfaces.Base
@@ -15,11 +16,11 @@ namespace Ferretto.WMS.Data.Core.Interfaces.Base
             int skip,
             int take,
             string orderBy = null,
-            Expression<Func<TModel, bool>> whereExpression = null,
+            IExpression whereExpression = null,
             Expression<Func<TModel, bool>> searchExpression = null);
 
         Task<int> GetAllCountAsync(
-            Expression<Func<TModel, bool>> whereExpression = null,
+            IExpression whereExpression = null,
             Expression<Func<TModel, bool>> searchExpression = null);
 
         #endregion

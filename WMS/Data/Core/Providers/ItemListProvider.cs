@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.EF;
+using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
@@ -30,30 +31,63 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
+        public async Task<OperationResult<ItemListDetails>> CreateAsync(ItemListDetails model)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            var entry = await this.dataContext.ItemLists.AddAsync(new Common.DataModels.ItemList
+            {
+                Code = model.Code,
+                CustomerOrderCode = model.CustomerOrderCode,
+                CustomerOrderDescription = model.CustomerOrderDescription,
+                Description = model.Description,
+                ItemListType = (Common.DataModels.ItemListType)model.ItemListType,
+                Job = model.Job,
+                Priority = model.Priority,
+                ShipmentUnitAssociated = model.ShipmentUnitAssociated,
+                ShipmentUnitCode = model.ShipmentUnitCode,
+                ShipmentUnitDescription = model.ShipmentUnitDescription,
+                Status = (Common.DataModels.ItemListStatus)model.ItemListStatus,
+            });
+
+            var changedEntitiesCount = await this.dataContext.SaveChangesAsync();
+            if (changedEntitiesCount > 0)
+            {
+                model.Id = entry.Entity.Id;
+                model.CreationDate = entry.Entity.CreationDate;
+                model.LastModificationDate = entry.Entity.LastModificationDate;
+                model.ExecutionEndDate = entry.Entity.ExecutionEndDate;
+                model.FirstExecutionDate = entry.Entity.FirstExecutionDate;
+            }
+
+            return new SuccessOperationResult<ItemListDetails>(model);
+        }
+
         public async Task<IEnumerable<ItemList>> GetAllAsync(
             int skip,
             int take,
             string orderBy = null,
-            Expression<Func<ItemList, bool>> whereExpression = null,
+            IExpression whereExpression = null,
             Expression<Func<ItemList, bool>> searchExpression = null)
         {
             return await this.GetAllBase()
-                       .ApplyTransform(
+                       .ToArrayAsync(
                            skip,
                            take,
                            orderBy,
                            whereExpression,
-                           searchExpression)
-                       .ToArrayAsync();
+                           searchExpression);
         }
 
         public async Task<int> GetAllCountAsync(
-            Expression<Func<ItemList, bool>> whereExpression = null,
+            IExpression whereExpression = null,
             Expression<Func<ItemList, bool>> searchExpression = null)
         {
             return await this.GetAllBase()
-                       .ApplyTransform(whereExpression, searchExpression)
-                       .CountAsync();
+                       .CountAsync(whereExpression, searchExpression);
         }
 
         public async Task<ItemListDetails> GetByIdAsync(int id)
@@ -66,7 +100,8 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             return await this.GetUniqueValuesAsync(
                        propertyName,
-                       this.dataContext.ItemLists);
+                       this.dataContext.ItemLists,
+                       this.GetAllBase());
         }
 
         public async Task<OperationResult<ItemListDetails>> UpdateAsync(ItemListDetails model)

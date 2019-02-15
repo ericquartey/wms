@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.EF;
+using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
@@ -34,26 +35,24 @@ namespace Ferretto.WMS.Data.Core.Providers
             int skip,
             int take,
             string orderBy = null,
-            Expression<Func<Mission, bool>> whereExpression = null,
+            IExpression whereExpression = null,
             Expression<Func<Mission, bool>> searchExpression = null)
         {
             return await this.GetAllBase()
-                       .ApplyTransform(
+                       .ToArrayAsync(
                            skip,
                            take,
                            orderBy,
                            whereExpression,
-                           searchExpression)
-                       .ToArrayAsync();
+                           searchExpression);
         }
 
         public async Task<int> GetAllCountAsync(
-            Expression<Func<Mission, bool>> whereExpression = null,
+            IExpression whereExpression = null,
             Expression<Func<Mission, bool>> searchExpression = null)
         {
             return await this.GetAllBase()
-                       .ApplyTransform(whereExpression, searchExpression)
-                       .CountAsync();
+                       .CountAsync(whereExpression, searchExpression);
         }
 
         public async Task<Mission> GetByIdAsync(int id)
@@ -64,31 +63,61 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<object[]> GetUniqueValuesAsync(string propertyName)
         {
-            return await this.GetUniqueValuesAsync(propertyName, this.dataContext.Missions);
+            return await this.GetUniqueValuesAsync(
+                       propertyName,
+                       this.dataContext.Missions,
+                       this.GetAllBase());
         }
 
         private IQueryable<Mission> GetAllBase()
         {
             return this.dataContext.Missions
+                .Include(m => m.Bay)
+                .Include(m => m.Item)
+                .ThenInclude(i => i.MeasureUnit)
+                .Include(m => m.ItemList)
+                .Include(m => m.ItemListRow)
+                .Include(m => m.LoadingUnit)
+                .Include(m => m.Cell)
+                .ThenInclude(c => c.Aisle)
+                .Include(m => m.MaterialStatus)
+                .Include(m => m.PackageType)
+                .Include(m => m.Compartment)
+                .ThenInclude(c => c.CompartmentType)
                 .Select(m => new Mission
                 {
-                    Id = m.Id,
+                    BayDescription = m.Bay.Description,
                     BayId = m.BayId,
+                    CellAisleName = m.Cell.Aisle.Name,
                     CellId = m.CellId,
                     CompartmentId = m.CompartmentId,
-                    Lot = m.Lot,
+                    CompartmentTypeWidth = m.Compartment.CompartmentType.Width,
+                    CompartmentTypeHeight = m.Compartment.CompartmentType.Height,
+                    CreationDate = m.CreationDate,
+                    Id = m.Id,
+                    ItemDescription = m.Item.Description,
                     ItemId = m.ItemId,
+                    ItemListDescription = m.ItemList.Description,
                     ItemListId = m.ItemListId,
+                    ItemListRowCode = m.ItemListRow.Code,
                     ItemListRowId = m.ItemListRowId,
+                    ItemMeasureUnitDescription = m.Item.MeasureUnit.Description,
+                    LastModificationDate = m.LastModificationDate,
+                    LoadingUnitCode = m.LoadingUnit.Code,
                     LoadingUnitId = m.LoadingUnitId,
+                    Lot = m.Lot,
+                    MaterialStatusDescription = m.MaterialStatus.Description,
                     MaterialStatusId = m.MaterialStatusId,
+                    PackageTypeDescription = m.PackageType.Description,
                     PackageTypeId = m.PackageTypeId,
+                    Priority = m.Priority,
                     Quantity = m.RequiredQuantity,
                     RegistrationNumber = m.RegistrationNumber,
+                    RequiredQuantity = m.RequiredQuantity,
                     Status = (MissionStatus)m.Status,
                     Sub1 = m.Sub1,
                     Sub2 = m.Sub2,
-                    Type = (MissionType)m.Type
+                    Type = (MissionType)m.Type,
                 });
         }
 
