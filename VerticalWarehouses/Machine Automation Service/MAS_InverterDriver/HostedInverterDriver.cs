@@ -1,44 +1,50 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.MAS_InverterDriver;
-using Ferretto.VW.MAS_InverterDriver.ActionBlocks;
 using Microsoft.Extensions.Hosting;
 using Prism.Events;
 
 namespace Ferretto.VW.InverterDriver
 {
-    public class HostedInverterDriver : BackgroundService, INewInverterDriver
+    public class HostedInverterDriver : BackgroundService
     {
+        #region Fields
+
         private const int HEARTBEAT_TIMEOUT = 300;
-        private readonly ManualResetEventSlim priorityInverterCommandReceived;
-        private readonly ManualResetEventSlim inverterCommandReceived;
-        private readonly ManualResetEventSlim driverCommandReceived;
 
-        private readonly ConcurrentQueue<InverterDriver_CommandMessage> priorityQueue;
-
-        private readonly ConcurrentQueue<InverterDriver_CommandMessage> commandQueue;
-
-        private readonly ConcurrentQueue<InverterDriver_CommandMessage> driverCommandQueue;
-
-        private Socket receiveSocket;
-
-        private Task inverterSendTask;
-
-        private Task inverterReceiveTask;
-
-        private Timer heartBeatTimer;
+        private readonly ConcurrentQueue<Event_Message> commandQueue;
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly ManualResetEventSlim inverterCommandReceived;
+
         private readonly IInverterDriver inverterDriver;
 
-        public HostedInverterDriver( IEventAggregator eventAggregator, IInverterDriver inverterDriver)
+        private readonly ConcurrentQueue<Event_Message> messageQueue;
+
+        private readonly ManualResetEventSlim messageReceived;
+
+        private readonly ManualResetEventSlim priorityInverterCommandReceived;
+
+        private readonly ConcurrentQueue<Event_Message> priorityQueue;
+
+        private Timer heartBeatTimer;
+
+        private Task inverterReceiveTask;
+
+        private Task inverterSendTask;
+
+        private Socket receiveSocket;
+
+        #endregion
+
+        #region Constructors
+
+        public HostedInverterDriver( IEventAggregator eventAggregator, IInverterDriver inverterDriver )
         {
             this.inverterDriver = inverterDriver;
             this.eventAggregator = eventAggregator;
@@ -46,15 +52,47 @@ namespace Ferretto.VW.InverterDriver
 
             this.priorityInverterCommandReceived = new ManualResetEventSlim( false );
             this.inverterCommandReceived = new ManualResetEventSlim( false );
-            this.driverCommandReceived = new ManualResetEventSlim( false );
+            this.messageReceived = new ManualResetEventSlim( false );
 
-            this.priorityQueue = new ConcurrentQueue<InverterDriver_CommandMessage>();
-            this.commandQueue = new ConcurrentQueue<InverterDriver_CommandMessage>();
-            this.driverCommandQueue = new ConcurrentQueue<InverterDriver_CommandMessage>();
+            this.priorityQueue = new ConcurrentQueue<Event_Message>();
+            this.commandQueue = new ConcurrentQueue<Event_Message>();
+            this.messageQueue = new ConcurrentQueue<Event_Message>();
 
+            var webApiMessagEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
+            webApiMessagEvent.Subscribe( ( message ) =>
+                {
+                    this.messageQueue.Enqueue( message );
+                    this.messageReceived.Set();
+                },
+                ThreadOption.PublisherThread,
+                false,
+                message => message.Source == MessageActor.FiniteStateMachines );
         }
 
-        protected override Task ExecuteAsync( CancellationToken stoppingToken )
+        #endregion
+
+        #region Methods
+
+        public new void Dispose()
+        {
+            base.Dispose();
+
+            this.heartBeatTimer?.Dispose();
+        }
+
+        public override Task StopAsync( CancellationToken stoppingToken )
+        {
+            var returnValue = base.StopAsync( stoppingToken );
+
+            return returnValue;
+        }
+
+        protected override async Task ExecuteAsync( CancellationToken stoppingToken )
+        {
+            await Task.Run( () => HostedInverterDriverTaskFunction( stoppingToken ), stoppingToken );
+        }
+
+        private Task HostedInverterDriverTaskFunction( CancellationToken stoppingToken )
         {
             //=== create the heartbeat timer
             this.heartBeatTimer?.Dispose();
@@ -66,45 +104,49 @@ namespace Ferretto.VW.InverterDriver
 
             //=== create and start the receiving Task
             this.inverterReceiveTask?.Dispose();
-            this.inverterReceiveTask = Task.Run( () => ReceiveInverterData( stoppingToken ), stoppingToken);
+            this.inverterReceiveTask = Task.Run( () => ReceiveInverterData( stoppingToken ), stoppingToken );
 
             //=== This will be the command receiving Task from state machine
             do
             {
                 try
                 {
-                    this.driverCommandReceived.Wait( Timeout.Infinite, stoppingToken );
+                    this.messageReceived.Wait( Timeout.Infinite, stoppingToken );
                 }
-                catch (OperationCanceledException ex)
+                catch(OperationCanceledException ex)
                 {
-                    return Task.CompletedTask;
+                    return Task.FromException( ex );
                 }
 
-                this.driverCommandReceived.Reset();
+                this.messageReceived.Reset();
 
                 //=== Identify message and start relevant state machine
-                InverterDriver_CommandMessage receivedCommand;
+                Event_Message receivedMessage;
 
-                while (this.driverCommandQueue.TryDequeue( out receivedCommand ))
+                while(this.messageQueue.TryDequeue( out receivedMessage ))
                 {
-                    switch (receivedCommand.InverterCommand)
+                    switch(receivedMessage.Type)
                     {
-                        case CommandType.HorizontalHoming:
+                        case MessageType.StartAction:
+                            this.commandQueue.Enqueue( receivedMessage );
+                            this.inverterCommandReceived.Set();
                             //=== Create and Run Horizontal Homing State Machine
                             break;
                     }
                 }
-
-            } while (stoppingToken.IsCancellationRequested);
+            } while(stoppingToken.IsCancellationRequested);
 
             return Task.CompletedTask;
         }
 
-        public override Task StopAsync( CancellationToken stoppingToken )
+        private void ProcessCommand()
         {
-            var returnValue = base.StopAsync( stoppingToken );
+            //TODO Create relevant state machine to send commands to the inverter
+        }
 
-            return returnValue;
+        private void ProcessPriorityCommand()
+        {
+            //TODO Send single message high priority messages to the inverter
         }
 
         private async void ReceiveInverterData( CancellationToken stoppingToken )
@@ -127,16 +169,24 @@ namespace Ferretto.VW.InverterDriver
                     await Task.Delay( 2000 );
                     //=== Parse Buffer
                 }
-                catch (OperationCanceledException ex)
+                catch(OperationCanceledException ex)
                 {
                     return;
                 }
-            } while (stoppingToken.IsCancellationRequested);
+
+                this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish( new Event_Message() );
+            } while(stoppingToken.IsCancellationRequested);
         }
 
-        private void SendInverterCommand( CancellationToken cancellationToken)
+        private void SendHeartBeat( object state )
         {
-            ManualResetEventSlim cancellationEventSlim = new ManualResetEventSlim(false);
+            this.priorityQueue.Enqueue( new Event_Message() );
+            this.priorityInverterCommandReceived.Set();
+        }
+
+        private void SendInverterCommand( CancellationToken cancellationToken )
+        {
+            ManualResetEventSlim cancellationEventSlim = new ManualResetEventSlim( false );
 
             cancellationToken.Register( () => cancellationEventSlim.Set() );
 
@@ -148,7 +198,7 @@ namespace Ferretto.VW.InverterDriver
             do
             {
                 var handleIndex = WaitHandle.WaitAny( commandHandles, Timeout.Infinite );
-                switch (handleIndex)
+                switch(handleIndex)
                 {
                     case 0:
                         this.priorityInverterCommandReceived.Reset();
@@ -163,67 +213,9 @@ namespace Ferretto.VW.InverterDriver
                     case 2:
                         return;
                 }
-
-            } while (!cancellationToken.IsCancellationRequested);
+            } while(!cancellationToken.IsCancellationRequested);
         }
 
-        private void ProcessCommand()
-        {
-        }
-
-        private void ProcessPriorityCommand()
-        {
-        }
-
-        private void SendHeartBeat( object state )
-        {
-            this.priorityQueue.Enqueue( new InverterDriver_CommandMessage {InverterCommand = CommandType.HeartBeat } );
-            this.priorityInverterCommandReceived.Set();
-        }
-
-        public new void Dispose()
-        {
-            base.Dispose();
-
-            this.heartBeatTimer?.Dispose();
-        }
-
-        public void Destroy()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ExecuteHorizontalHoming()
-        {
-            this.driverCommandQueue.Enqueue( new InverterDriver_CommandMessage { InverterCommand = CommandType.HorizontalHoming } );
-            this.driverCommandReceived.Set();
-        }
-
-        public void ExecuteHorizontalPosition( int target, int speed, int direction, List<ProfilePosition> profile )
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ExecuteVerticalHoming()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ExecuteVerticalPosition( int targetPosition, float vMax, float acc, float dec, float weight, short offset )
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ExecuteDrawerWeight( int targetPosition, float vMax, float acc, float dec )
-        {
-            throw new NotImplementedException();
-        }
-
-        public float GetDrawerWeight => throw new NotImplementedException();
-
-        public Boolean[] GetSensorsStates()
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
     }
 }

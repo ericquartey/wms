@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
         #region Constructors
 
-        public Startup(IConfiguration configuration)
+        public Startup( IConfiguration configuration )
         {
             this.Configuration = configuration;
         }
@@ -44,9 +44,9 @@ namespace Ferretto.VW.MAS_AutomationService
         #region Methods
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure( IApplicationBuilder app, IHostingEnvironment env )
         {
-            if (env.IsDevelopment())
+            if(env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -55,43 +55,39 @@ namespace Ferretto.VW.MAS_AutomationService
                 app.UseHsts();
             }
 
-            app.UseSignalR(routes =>
-            {
-                routes.MapHub<InstallationHub>($"/installation-endpoint", options => { });
-            });
+            app.UseSignalR( routes =>
+             {
+                 routes.MapHub<InstallationHub>( $"/installation-endpoint", options => { } );
+             } );
 
             app.UseHttpsRedirection();
             app.UseMvc();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices( IServiceCollection services )
 
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion( CompatibilityVersion.Version_2_1 );
             services.AddSignalR();
 
-            var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
-            services.AddDbContext<DataLayerContext>(options => options.UseSqlite(connectionString), ServiceLifetime.Singleton);
+            var connectionString = this.Configuration.GetConnectionString( ConnectionStringName );
+            services.AddDbContext<DataLayerContext>( options => options.UseSqlite( connectionString ), ServiceLifetime.Singleton );
 
-            //services.AddHostedService<HostedInverterDriver>();
-            //services.AddHostedService<AutomationService>();
-            services.AddSingleton<IHostedService, HostedInverterDriver>();
-            
+            services.AddHostedService<MissionsScheduler>();
+            services.AddHostedService<AutomationService>();
+            services.AddHostedService<MachineManager>();
+            services.AddHostedService<FiniteStateMachines>();
+            services.AddHostedService<HostedInverterDriver>();
+
             services.AddSingleton<IEventAggregator, EventAggregator>();
-            //services.AddSingleton<IAutomationService, AutomationService>();
-            services.AddSingleton<IWriteLogService, WriteLogService>();
 
-            services.AddSingleton<IHostedService, AutomationService>();
-            services.AddSingleton<IAutomationService>( x => x.GetRequiredService<AutomationService>() );
-            services.AddSingleton<IMissionsScheduler, MissionsScheduler>();
-            services.AddSingleton<IMachineManager, MachineManager>();
-            services.AddSingleton<IFiniteStateMachines, FiniteStateMachines>();
+            services.AddSingleton<IWriteLogService, WriteLogService>();
             services.AddSingleton<INewInverterDriver, NewInverterDriver>();
             services.AddSingleton<INewRemoteIODriver, NewRemoteIODriver>();
 
             //TODO Old InverterDriver Registration to be removed after code refactoring completed
-            services.AddSingleton<InverterDriver.IInverterDriver, InverterDriver.InverterDriver >();
+            services.AddSingleton<IInverterDriver, InverterDriver.InverterDriver>();
 
             //TODO Old RemoteIODriver Registration to be removed after code refactoring completed
             services.AddSingleton<RemoteIODriver.IRemoteIO, RemoteIODriver.RemoteIO>();

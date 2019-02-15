@@ -12,9 +12,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MAS_DataLayer\MAS_DataLayer.csproj" />
     <ProjectReference Include="..\..\Common\Common_Utils\Ferretto.VW.Common_Utils.csproj" />
-    <ProjectReference Include="..\MAS_MachineManager\MAS_MachineManager.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Extensions.Hosting.Abstractions">
+      <HintPath>..\..\..\..\..\..\..\Users\Admin\.nuget\packages\microsoft.extensions.hosting.abstractions\2.1.1\lib\netstandard2.0\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

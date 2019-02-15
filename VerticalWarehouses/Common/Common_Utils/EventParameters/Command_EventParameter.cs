@@ -18,6 +18,7 @@ namespace Ferretto.VW.Common_Utils.EventParameters
 
     public enum CommandType
     {
-        ExecuteHoming
+        ExecuteHoming,
+        AddMission
     }
 }

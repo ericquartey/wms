@@ -2,44 +2,53 @@
 using Prism.Events;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.EventParameters;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
-    [Route("api/[controller]")]
+    [Route( "api/[controller]" )]
     [ApiController]
     public class TestController
     {
         #region Fields
 
-        private readonly IAutomationService automationService;
-
         private readonly IEventAggregator eventAggregator;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
-        public TestController(IEventAggregator eventAggregator, IAutomationService automationService)
+        public TestController( IEventAggregator eventAggregator )
         {
             this.eventAggregator = eventAggregator;
-            this.automationService = automationService;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
-        [HttpGet("AddMissionTest")]
+        [HttpGet( "AddMissionTest" )]
         public void AddMission()
         {
+            MissionData missionData = new MissionData();
+
+            Event_Message missionMessage = new Event_Message( missionData,
+                "Test Mission",
+                MessageActor.AutomationService,
+                MessageActor.WebAPI,
+                MessageStatus.Start,
+                MessageType.AddMission,
+                MessageVerbosity.Debug );
+            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish( missionMessage );
         }
 
-        [HttpGet("HomingTest")]
+        [HttpGet( "HomingTest" )]
         public void ExecuteHoming()
         {
-            this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish(new Command_EventParameter(CommandType.ExecuteHoming));
+            this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish( new Command_EventParameter( CommandType.ExecuteHoming ) );
         }
 
-        #endregion Methods
+        #endregion
     }
 }
