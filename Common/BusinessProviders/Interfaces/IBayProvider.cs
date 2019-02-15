@@ -1,13 +1,17 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
 {
-    public interface IBayProvider : IBusinessProvider<Bay, Bay>
+    public interface IBayProvider : IReadAllAsyncProvider<Bay>,
+        IReadSingleAsyncProvider<Bay, int>
     {
         #region Methods
 
-        IQueryable<Bay> GetByAreaId(int id);
+        Task<IEnumerable<Bay>> GetByAreaIdAsync(int id);
 
         #endregion
     }
