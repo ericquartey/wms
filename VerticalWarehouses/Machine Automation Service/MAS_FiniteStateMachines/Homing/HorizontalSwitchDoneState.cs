@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_IODriver;
@@ -25,7 +26,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Constructors
 
-        public HorizontalSwitchDoneState(StateMachineHoming parent, INewInverterDriver iDriver, INewRemoteIODriver remoteIODriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
+        public HorizontalSwitchDoneState( StateMachineHoming parent, INewInverterDriver iDriver, INewRemoteIODriver remoteIODriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator )
         {
             this.parent = parent;
             this.driver = iDriver;
@@ -33,7 +34,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.data = iWriteLogService;
             this.eventAggregator = eventAggregator;
 
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
+            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe( this.notifyEventHandler );
 
             this.driver.ExecuteHorizontalHoming();
         }
@@ -48,15 +49,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Methods
 
-        private void notifyEventHandler(Notification_EventParameter notification)
+        public void NotifyMessage( Event_Message message )
         {
-            switch (notification.OperationStatus)
+            throw new System.NotImplementedException();
+        }
+
+        private void notifyEventHandler( Notification_EventParameter notification )
+        {
+            switch(notification.OperationStatus)
             {
                 case OperationStatus.End:
                     {
-                        if (notification.Description == "Horizontal Calibration Ended" && !this.parent.HomingComplete)
+                        if(notification.Description == "Horizontal Calibration Ended" && !this.parent.HomingComplete)
                         {
-                            this.parent.ChangeState(new HorizontalHomingDoneState(this.parent, this.driver, this.remoteIODriver, this.data, this.eventAggregator));
+                            this.parent.ChangeState( new HorizontalHomingDoneState( this.parent, this.driver, this.remoteIODriver, this.data, this.eventAggregator ) );
                         }
                         break;
                     }
