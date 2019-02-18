@@ -171,6 +171,9 @@
                     <dxg:GridColumn AllowSorting="True"
                                     AllowedBinaryFilters="Equals,DoesNotEqual"
                                     FieldName="RegistrationNumber" />
+                    <dxg:GridColumn AllowSorting="True"
+                                    AllowedBinaryFilters="Equals,DoesNotEqual"
+                                    FieldName="Model" />
                 </wms:WmsGridControl.Columns>
 
                 <wms:WmsGridControl.SortInfo>
