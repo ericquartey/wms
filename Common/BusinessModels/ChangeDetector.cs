@@ -48,7 +48,7 @@ namespace Ferretto.Common.BusinessModels
 
         public void TakeSnapshot(T newInstance)
         {
-            if (this.instance != newInstance)
+            if (!this.instance.Equals(newInstance))
             {
                 if (this.instance != null)
                 {

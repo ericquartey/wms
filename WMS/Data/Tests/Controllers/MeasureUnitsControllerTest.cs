@@ -13,7 +13,7 @@ using Moq;
 namespace Ferretto.WMS.Data.Tests
 {
     [TestClass]
-    public class AbcClassesControllerTest : BaseControllerTest
+    public class MeasureUnitsControllerTest : BaseControllerTest
     {
         #region Methods
 
@@ -31,12 +31,14 @@ namespace Ferretto.WMS.Data.Tests
                 #region Arrange
 
                 var controller = MockController(context);
-                var abcClass1 = new Common.DataModels.AbcClass { Id = "A", Description = "A Class" };
-                var abcClass2 = new Common.DataModels.AbcClass { Id = "B", Description = "B Class" };
-                var abcClass3 = new Common.DataModels.AbcClass { Id = "C", Description = "C Class" };
-                context.AbcClasses.Add(abcClass1);
-                context.AbcClasses.Add(abcClass2);
-                context.AbcClasses.Add(abcClass3);
+                var measureUnit1 = new Common.DataModels.MeasureUnit { Id = "A", Description = "Measure Unit #A" };
+                var measureUnit2 = new Common.DataModels.MeasureUnit { Id = "B", Description = "Measure Unit #B" };
+                var measureUnit3 = new Common.DataModels.MeasureUnit { Id = "C", Description = "Measure Unit #C" };
+                var measureUnit4 = new Common.DataModels.MeasureUnit { Id = "D", Description = "Measure Unit #D" };
+                context.MeasureUnits.Add(measureUnit1);
+                context.MeasureUnits.Add(measureUnit2);
+                context.MeasureUnits.Add(measureUnit3);
+                context.MeasureUnits.Add(measureUnit4);
                 context.SaveChanges();
 
                 #endregion
@@ -51,7 +53,7 @@ namespace Ferretto.WMS.Data.Tests
 
                 Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
                 var result = (int)((OkObjectResult)actionResult.Result).Value;
-                Assert.AreEqual(3, result);
+                Assert.AreEqual(4, result);
 
                 #endregion
             }
@@ -92,12 +94,14 @@ namespace Ferretto.WMS.Data.Tests
                 #region Arrange
 
                 var controller = MockController(context);
-                var abcClass1 = new Common.DataModels.AbcClass { Id = "A", Description = "A Class" };
-                var abcClass2 = new Common.DataModels.AbcClass { Id = "B", Description = "B Class" };
-                var abcClass3 = new Common.DataModels.AbcClass { Id = "C", Description = "C Class" };
-                context.AbcClasses.Add(abcClass1);
-                context.AbcClasses.Add(abcClass2);
-                context.AbcClasses.Add(abcClass3);
+                var measureUnit1 = new Common.DataModels.MeasureUnit { Id = "A", Description = "Measure Unit #A" };
+                var measureUnit2 = new Common.DataModels.MeasureUnit { Id = "B", Description = "Measure Unit #B" };
+                var measureUnit3 = new Common.DataModels.MeasureUnit { Id = "C", Description = "Measure Unit #C" };
+                var measureUnit4 = new Common.DataModels.MeasureUnit { Id = "D", Description = "Measure Unit #D" };
+                context.MeasureUnits.Add(measureUnit1);
+                context.MeasureUnits.Add(measureUnit2);
+                context.MeasureUnits.Add(measureUnit3);
+                context.MeasureUnits.Add(measureUnit4);
                 context.SaveChanges();
 
                 #endregion
@@ -111,8 +115,8 @@ namespace Ferretto.WMS.Data.Tests
                 #region Assert
 
                 Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
-                var result = (IEnumerable<AbcClass>)((OkObjectResult)actionResult.Result).Value;
-                Assert.AreEqual(3, result.Count());
+                var result = (IEnumerable<MeasureUnit>)((OkObjectResult)actionResult.Result).Value;
+                Assert.AreEqual(4, result.Count());
 
                 #endregion
             }
@@ -138,7 +142,7 @@ namespace Ferretto.WMS.Data.Tests
                 #region Assert
 
                 Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
-                var result = (IEnumerable<AbcClass>)((OkObjectResult)actionResult.Result).Value;
+                var result = (IEnumerable<MeasureUnit>)((OkObjectResult)actionResult.Result).Value;
                 Assert.AreEqual(0, result.Count());
 
                 #endregion
@@ -153,12 +157,14 @@ namespace Ferretto.WMS.Data.Tests
                 #region Arrange
 
                 var controller = MockController(context);
-                var abcClass1 = new Common.DataModels.AbcClass { Id = "A", Description = "A Class" };
-                var abcClass2 = new Common.DataModels.AbcClass { Id = "B", Description = "B Class" };
-                var abcClass3 = new Common.DataModels.AbcClass { Id = "C", Description = "C Class" };
-                context.AbcClasses.Add(abcClass1);
-                context.AbcClasses.Add(abcClass2);
-                context.AbcClasses.Add(abcClass3);
+                var measureUnit1 = new Common.DataModels.MeasureUnit { Id = "A", Description = "Measure Unit #A" };
+                var measureUnit2 = new Common.DataModels.MeasureUnit { Id = "B", Description = "Measure Unit #B" };
+                var measureUnit3 = new Common.DataModels.MeasureUnit { Id = "C", Description = "Measure Unit #C" };
+                var measureUnit4 = new Common.DataModels.MeasureUnit { Id = "D", Description = "Measure Unit #D" };
+                context.MeasureUnits.Add(measureUnit1);
+                context.MeasureUnits.Add(measureUnit2);
+                context.MeasureUnits.Add(measureUnit3);
+                context.MeasureUnits.Add(measureUnit4);
                 context.SaveChanges();
 
                 #endregion
@@ -173,11 +179,11 @@ namespace Ferretto.WMS.Data.Tests
                 #region Assert
 
                 Assert.IsInstanceOfType(actionResult1.Result, typeof(OkObjectResult));
-                var result1 = (AbcClass)((OkObjectResult)actionResult1.Result).Value;
+                var result1 = (MeasureUnit)((OkObjectResult)actionResult1.Result).Value;
                 Assert.AreEqual("A", result1.Id);
 
                 Assert.IsInstanceOfType(actionResult2.Result, typeof(OkObjectResult));
-                var result2 = (AbcClass)((OkObjectResult)actionResult2.Result).Value;
+                var result2 = (MeasureUnit)((OkObjectResult)actionResult2.Result).Value;
                 Assert.AreEqual("B", result2.Id);
 
                 #endregion
@@ -209,11 +215,11 @@ namespace Ferretto.WMS.Data.Tests
             }
         }
 
-        private static AbcClassesController MockController(DatabaseContext context)
+        private static MeasureUnitsController MockController(DatabaseContext context)
         {
-            return new AbcClassesController(
-                new Mock<ILogger<AbcClassesController>>().Object,
-                new AbcClassProvider(context));
+            return new MeasureUnitsController(
+                new Mock<ILogger<MeasureUnitsController>>().Object,
+                new MeasureUnitProvider(context));
         }
 
         #endregion
