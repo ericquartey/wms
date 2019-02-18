@@ -182,11 +182,8 @@ namespace Ferretto.Common.BusinessProviders
 
         public async Task<IEnumerable<BusinessModels.ItemListRow>> GetByItemListIdAsync(int id)
         {
-            // TODO GetRows: return IENUMERABLE
-            var l = await this.itemListsDataService.GetRowsAsync(id);
-            return new List<BusinessModels.ItemListRow>
-            {
-                new BusinessModels.ItemListRow
+            return (await this.itemListsDataService.GetRowsAsync(id))
+                .Select(l => new BusinessModels.ItemListRow
                 {
                     Id = l.Id,
                     Code = l.Code,
@@ -198,8 +195,7 @@ namespace Ferretto.Common.BusinessProviders
                     MaterialStatusDescription = l.MaterialStatusDescription,
                     CreationDate = l.CreationDate,
                     ItemUnitMeasure = l.ItemUnitMeasure
-                }
-            };
+                });
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
