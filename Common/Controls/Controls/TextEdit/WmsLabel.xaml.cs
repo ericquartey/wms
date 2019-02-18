@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -91,7 +92,7 @@ namespace Ferretto.Common.Controls
             }
 
             this.TitleLabel.ToolTip = null;
-            if (this.defaultControlWidth == 0)
+            if (this.defaultControlWidth.Equals(0))
             {
                 this.adjustSizeAfterFirstUpdate = true;
                 this.SetInitialSizeToAdjustTitle(parentGrid);
@@ -139,15 +140,15 @@ namespace Ferretto.Common.Controls
         private string GetTextSize(double maxTextWidth)
         {
             var posChar = (this.Title.Length < STARTMAXLENGTHCHECK) ? this.Title.Length : STARTMAXLENGTHCHECK;
-            var currText = this.Title.Substring(0, posChar);
+            StringBuilder currText = new StringBuilder(this.Title.Substring(0, posChar));
             while (posChar < this.Title.Length)
             {
-                currText += this.Title[posChar];
-                if (this.GetTextWidth(currText) > maxTextWidth)
+                currText.Append(this.Title[posChar]);
+                if (this.GetTextWidth(currText.ToString()) > maxTextWidth)
                 {
-                    if (this.Title.Equals(currText, StringComparison.Ordinal) == false)
+                    if (this.Title.Equals(currText.ToString(), StringComparison.Ordinal) == false)
                     {
-                        currText += TRIMTEXT;
+                        currText.Append(TRIMTEXT);
                     }
 
                     break;
@@ -156,7 +157,7 @@ namespace Ferretto.Common.Controls
                 posChar++;
             }
 
-            return currText;
+            return currText.ToString();
         }
 
         private double GetTextWidth(string text) => new FormattedText(text, System.Threading.Thread.CurrentThread.CurrentCulture,
