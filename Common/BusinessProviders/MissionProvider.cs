@@ -52,21 +52,20 @@ namespace Ferretto.Common.BusinessProviders
                     Status = (MissionStatus)m.Status,
                     Type = (MissionType)m.Type,
 
-                    // TODO
-                    // CreationDate = m.CreationDate,
-                    // LastModificationDate = m.LastModificationDate,
-                    // BayDescription = m.BayDescription,
-                    // ItemDescription = m.ItemDescription,
-                    // ItemListDescription = m.ItemListDescription,
-                    // ItemListRowDescription = m.ItemListRowCode,
-                    // LoadingUnitDescription = m.LoadingUnitCode,
-                    // Priority = m.Priority,
-                    // RequiredQuantity = m.RequiredQuantity,
-                    // CellDescription = m.CellDescription,
-                    // CompartmentType = m.CompartmentType,
-                    // ItemUnitMeasure = m.ItemUnitMeasure,
-                    // MaterialStatusDescription = m.MaterialStatusDescription,
-                    // PackageTypeDescription = m.PackageTypeDescription
+                    CreationDate = m.CreationDate,
+                    LastModificationDate = m.LastModificationDate,
+                    BayDescription = m.BayDescription,
+                    ItemDescription = m.ItemDescription,
+                    ItemListDescription = m.ItemListDescription,
+                    ItemListRowDescription = m.ItemListRowCode,
+                    LoadingUnitDescription = m.LoadingUnitCode,
+                    Priority = m.Priority,
+                    RequiredQuantity = m.RequiredQuantity,
+                    CellDescription = m.CellAisleName,
+                    CompartmentType = string.Format(Common.Resources.MasterData.CompartmentTypeListFormatReduced, m.CompartmentTypeWidth, m.CompartmentTypeHeight),
+                    ItemUnitMeasure = m.ItemMeasureUnitDescription,
+                    MaterialStatusDescription = m.MaterialStatusDescription,
+                    PackageTypeDescription = m.PackageTypeDescription
                 });
         }
 
@@ -89,21 +88,20 @@ namespace Ferretto.Common.BusinessProviders
                 Status = (MissionStatus)mission.Status,
                 Type = (MissionType)mission.Type,
 
-                // TODO
-                // CreationDate = mission.CreationDate,
-                // LastModificationDate = mission.LastModificationDate,
-                // BayDescription = mission.BayDescription,
-                // ItemDescription = mission.ItemDescription,
-                // ItemListDescription = mission.ItemListDescription,
-                // ItemListRowDescription = mission.ItemListRowCode,
-                // LoadingUnitDescription = mission.LoadingUnitCode,
-                // Priority = mission.Priority,
-                // RequiredQuantity = mission.RequiredQuantity,
-                // CellDescription = mission.CellDescription,
-                // CompartmentType = mission.CompartmentType,
-                // ItemUnitMeasure = mission.ItemUnitMeasure,
-                // MaterialStatusDescription = mission.MaterialStatusDescription,
-                // PackageTypeDescription = mission.PackageTypeDescription
+                CreationDate = mission.CreationDate,
+                LastModificationDate = mission.LastModificationDate,
+                BayDescription = mission.BayDescription,
+                ItemDescription = mission.ItemDescription,
+                ItemListDescription = mission.ItemListDescription,
+                ItemListRowDescription = mission.ItemListRowCode,
+                LoadingUnitDescription = mission.LoadingUnitCode,
+                Priority = mission.Priority,
+                RequiredQuantity = mission.RequiredQuantity,
+                CellDescription = mission.CellAisleName,
+                CompartmentType = string.Format(Common.Resources.MasterData.CompartmentTypeListFormatReduced, mission.CompartmentTypeWidth, mission.CompartmentTypeHeight),
+                ItemUnitMeasure = mission.ItemMeasureUnitDescription,
+                MaterialStatusDescription = mission.MaterialStatusDescription,
+                PackageTypeDescription = mission.PackageTypeDescription
             };
         }
 
