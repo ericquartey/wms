@@ -36,6 +36,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                        .ThenBy(a => a.Name)
                        .Select(a => new Aisle
                        {
+                           Id = a.Id,
                            Name = a.Name,
                            AreaId = a.AreaId,
                            AreaName = a.Area.Name,
