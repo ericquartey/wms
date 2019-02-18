@@ -160,6 +160,8 @@ namespace Ferretto.Common.BusinessProviders
                 FirstExecutionDate = itemList.FirstExecutionDate,
                 ExecutionEndDate = itemList.ExecutionEndDate,
                 ItemListTypeDescription = itemList.ItemListTypeDescription,
+                CanAddNewRow = itemList.CanAddNewRow,
+                CanBeExecuted = itemList.CanBeExecuted
             };
         }
 
