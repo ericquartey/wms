@@ -112,7 +112,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ItemListDetails>> GetByIdAsync(int id)
         {
-            var result = await this.itemListRowProvider.GetByIdAsync(id);
+            var result = await this.itemListProvider.GetByIdAsync(id);
             if (result == null)
             {
                 return this.NotFound();
