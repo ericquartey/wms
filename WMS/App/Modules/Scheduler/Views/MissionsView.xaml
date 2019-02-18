@@ -212,7 +212,6 @@
                         </dxg:GridColumn.CellTemplate>
                         <dxg:GridColumn.CellToolTipTemplate>
                             <DataTemplate>
-                                <wms:CustomBorder x:Name="CustomBorder">
                                     <Grid MinWidth="400"
                                           MaxHeight="350"
                                           Margin="8,0,0,0">
@@ -280,7 +279,6 @@
                                             </GroupBox>
                                         </Border>
                                     </Grid>
-                                </wms:CustomBorder>
                             </DataTemplate>
                         </dxg:GridColumn.CellToolTipTemplate>
                     </dxg:GridColumn>
