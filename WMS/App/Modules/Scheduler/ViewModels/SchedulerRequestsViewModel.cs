@@ -10,7 +10,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.Scheduler
 {
-    public class SchedulerRequestsViewModel : EntityListViewModel<SchedulerRequest>
+    public class SchedulerRequestsViewModel : EntityPagedListViewModel<SchedulerRequest>
     {
     }
 }
