@@ -1,19 +1,20 @@
 ﻿using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Base;
 
 namespace Ferretto.Common.Controls.Services
 {
-    public class ModelChangedPubSubEvent<TModel> : Prism.Events.PubSubEvent, IPubSubEvent
-        where TModel : IBusinessObject
+    public class ModelChangedPubSubEvent<TModel, TKey> : Prism.Events.PubSubEvent, IPubSubEvent
+        where TModel : IModel<TKey>
     {
         #region Fields
 
-        private readonly object modelId;
+        private readonly TKey modelId;
 
         #endregion
 
         #region Constructors
 
-        public ModelChangedPubSubEvent(object modelId)
+        public ModelChangedPubSubEvent(TKey modelId)
         {
             this.modelId = modelId;
         }
@@ -22,7 +23,7 @@ namespace Ferretto.Common.Controls.Services
 
         #region Properties
 
-        public object ModelId => this.modelId;
+        public TKey ModelId => this.modelId;
 
         public string Token { get; }
 

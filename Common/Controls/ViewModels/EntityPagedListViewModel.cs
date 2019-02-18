@@ -15,8 +15,8 @@ using NLog;
 
 namespace Ferretto.Common.Controls
 {
-    public class EntityPagedListViewModel<TModel> : EntityListViewModel<TModel>
-       where TModel : IBusinessObject
+    public class EntityPagedListViewModel<TModel, TKey> : EntityListViewModel<TModel, TKey>
+       where TModel : IModel<TKey>
     {
         #region Fields
 
@@ -32,7 +32,7 @@ namespace Ferretto.Common.Controls
 
         private CriteriaOperator overallFilter;
 
-        private IPagedBusinessProvider<TModel> provider;
+        private IPagedBusinessProvider<TModel, TKey> provider;
 
         private string searchText;
 
@@ -65,7 +65,7 @@ namespace Ferretto.Common.Controls
             set => this.SetProperty(ref this.overallFilter, value);
         }
 
-        public IPagedBusinessProvider<TModel> Provider
+        public IPagedBusinessProvider<TModel, TKey> Provider
         {
             get => this.provider;
             set
@@ -194,7 +194,7 @@ namespace Ferretto.Common.Controls
             var orderBy = GetSortOrder(e);
 
             var where = this.overallFilter?.AsIExpression();
-            var search = this.searchText?.AsIExpression();
+            var search = this.searchText;
 
             var entities = await this.provider.GetAllAsync(
                 skip: e.Skip,

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
@@ -11,8 +12,8 @@ using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
-    public class EntityListViewModel<TModel> : BaseServiceNavigationViewModel, IEntityListViewModel
-        where TModel : IBusinessObject
+    public class EntityListViewModel<TModel, TKey> : BaseServiceNavigationViewModel, IEntityListViewModel
+        where TModel : IModel<TKey>
     {
         #region Fields
 
@@ -20,7 +21,7 @@ namespace Ferretto.Common.Controls
 
         private ICommand addCommand;
 
-        private IEnumerable<IFilterDataSource<TModel>> filterDataSources;
+        private IEnumerable<IFilterDataSource<TModel, TKey>> filterDataSources;
 
         private IEnumerable<Tile> filterTiles;
 
@@ -125,7 +126,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        protected IEnumerable<IFilterDataSource<TModel>> FilterDataSources => this.filterDataSources;
+        protected IEnumerable<IFilterDataSource<TModel, TKey>> FilterDataSources => this.filterDataSources;
 
         #endregion
 
@@ -166,7 +167,7 @@ namespace Ferretto.Common.Controls
             try
             {
                 var dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
-                this.filterDataSources = dataSourceService.GetAllFilters<TModel>(this.GetType().Name, this.Data);
+                this.filterDataSources = dataSourceService.GetAllFilters<TModel, TKey>(this.GetType().Name, this.Data);
                 this.filterTiles = new BindingList<Tile>(this.filterDataSources.Select(filterDataSource => new Tile
                 {
                     Key = filterDataSource.Key,
@@ -184,7 +185,7 @@ namespace Ferretto.Common.Controls
         protected override void OnDispose()
         {
             this.EventService.Unsubscribe<RefreshModelsPubSubEvent<TModel>>(this.modelRefreshSubscription);
-            this.EventService.Unsubscribe<ModelChangedPubSubEvent<TModel>>(this.modelChangedEventSubscription);
+            this.EventService.Unsubscribe<ModelChangedPubSubEvent<TModel, TKey>>(this.modelChangedEventSubscription);
 
             base.OnDispose();
         }
@@ -192,7 +193,7 @@ namespace Ferretto.Common.Controls
         private void InitializeEvent()
         {
             this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<TModel>>(eventArgs => { this.LoadRelatedData(); }, this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<TModel>>(eventArgs => { this.LoadRelatedData(); });
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<TModel, TKey>>(eventArgs => { this.LoadRelatedData(); });
         }
 
         #endregion
