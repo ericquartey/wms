@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
@@ -71,7 +70,7 @@ namespace Ferretto.Common.BusinessProviders
                         }
                         else
                         {
-                            return new OperationResult(false);
+                            return new OperationResult<CompartmentType>(false);
                         }
                     }
 
@@ -91,16 +90,16 @@ namespace Ferretto.Common.BusinessProviders
                         }
                         else
                         {
-                            return new OperationResult(false);
+                            return new OperationResult<CompartmentType>(false);
                         }
                     }
 
-                    return new OperationResult(true, entityId: compartmentType.Id);
+                    return new OperationResult<CompartmentType>(true, new CompartmentType { Id = compartmentType.Id });
                 }
             }
             catch (Exception ex)
             {
-                return new OperationResult(ex);
+                return new OperationResult<CompartmentType>(ex);
             }
         }
 
@@ -119,8 +118,6 @@ namespace Ferretto.Common.BusinessProviders
         {
             return await this.compartmentTypesDataService.GetAllCountAsync();
         }
-
-        public Task<IOperationResult<CompartmentType>> SaveAsync(CompartmentType model) => throw new NotSupportedException();
 
         #endregion
     }

@@ -80,7 +80,7 @@ namespace Ferretto.Common.BusinessProviders
 
                     if (result.Success == false)
                     {
-                        return result;
+                        return new OperationResult<CompartmentDetails>(false);
                     }
 
                     var entry = dataContext.Compartments.Add(new DataModels.Compartment
@@ -88,7 +88,7 @@ namespace Ferretto.Common.BusinessProviders
                         XPosition = model.XPosition,
                         YPosition = model.YPosition,
                         LoadingUnitId = model.LoadingUnitId,
-                        CompartmentTypeId = result.EntityId.Value,
+                        CompartmentTypeId = result.Entity.Id,
                         IsItemPairingFixed = model.IsItemPairingFixed,
                         Stock = model.Stock,
                         ReservedForPick = model.ReservedForPick,
@@ -449,10 +449,10 @@ namespace Ferretto.Common.BusinessProviders
 
                     if (result.Success == false)
                     {
-                        return result;
+                        return new OperationResult<CompartmentDetails>(false);
                     }
 
-                    var compartmentType = dataContext.CompartmentTypes.Find(result.EntityId);
+                    var compartmentType = dataContext.CompartmentTypes.Find(result.Entity.Id);
                     model.CompartmentTypeId = compartmentType.Id;
 
                     var existingModel = dataContext.Compartments.Find(model.Id);

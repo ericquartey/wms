@@ -25,8 +25,6 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService;
 
-        private readonly WMS.Scheduler.WebAPI.Contracts.IItemsSchedulerService itemsSchedulerService;
-
         private readonly IMeasureUnitProvider measureUnitProvider;
 
         #endregion
@@ -37,7 +35,6 @@ namespace Ferretto.Common.BusinessProviders
             IDatabaseContextService dataContextService,
             IImageProvider imageProvider,
             WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService,
-            WMS.Scheduler.WebAPI.Contracts.IItemsSchedulerService itemsSchedulerService,
             IAbcClassProvider abcClassProvider,
             IItemCategoryProvider itemCategoryProvider,
             IMeasureUnitProvider measureUnitProvider)
@@ -110,11 +107,11 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
+        public Task<IOperationResult<ItemDetails>> DeleteAsync(int id) => throw new NotSupportedException();
 
         public async Task<IEnumerable<Item>> GetAllAsync(
-            int skip = 0,
-            int take = 0,
+            int skip,
+            int take,
             IEnumerable<SortOption> orderBy = null,
             IExpression whereExpression = null,
             Expression<Func<Item, bool>> searchExpression = null)

@@ -14,9 +14,6 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly IDatabaseContextService dataContextService;
 
-      
-        private readonly EnumerationProvider enumerationProvider;
-
         private readonly WMS.Data.WebAPI.Contracts.IItemListRowsDataService itemListRowDataService;
 
         private readonly IMaterialStatusProvider materialStatusProvider;
@@ -29,16 +26,12 @@ namespace Ferretto.Common.BusinessProviders
 
         public ItemListRowProvider(
             IDatabaseContextService dataContextService,
-            IItemListRowsSchedulerService itemListRowsSchedulerService,
             IMaterialStatusProvider materialStatusProvider,
             IPackageTypeProvider packageTypeProvider,
-            EnumerationProvider enumerationProvider,
             WMS.Data.WebAPI.Contracts.IItemListRowsDataService itemListRowDataService)
         {
             this.dataContextService = dataContextService;
-            this.enumerationProvider = enumerationProvider;
             this.itemListRowDataService = itemListRowDataService;
-            this.itemListRowsSchedulerService = itemListRowsSchedulerService;
             this.packageTypeProvider = packageTypeProvider;
             this.materialStatusProvider = materialStatusProvider;
         }
@@ -56,7 +49,7 @@ namespace Ferretto.Common.BusinessProviders
             try
             {
                 await this.itemListRowDataService.ExecuteAsync(
-                    new WMS.Data.WebAPI.Contracts.ItemListRowExecutionRequest
+                    new WMS.Data.WebAPI.Contracts.ListRowExecutionRequest
                     {
                         ListRowId = listRowId,
                         AreaId = areaId,

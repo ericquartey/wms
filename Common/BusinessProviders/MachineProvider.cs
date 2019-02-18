@@ -139,7 +139,7 @@ namespace Ferretto.Common.BusinessProviders
             }
             catch (Exception ex)
             {
-                return new OperationResult(ex);
+                return new OperationResult<MachineDetails>(ex);
             }
         }
 

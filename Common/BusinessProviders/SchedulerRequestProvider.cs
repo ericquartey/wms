@@ -114,7 +114,7 @@ namespace Ferretto.Common.BusinessProviders
             return this.dataContextService.Current.SchedulerRequests.AsNoTracking().Count(OperationWithdrawFilter);
         }
 
-        public Task<OperationResult<SchedulerRequest>> SaveAsync(SchedulerRequest model)
+        public Task<IOperationResult<SchedulerRequest>> SaveAsync(SchedulerRequest model)
         {
             throw new NotSupportedException();
         }

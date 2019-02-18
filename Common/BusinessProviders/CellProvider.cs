@@ -201,12 +201,12 @@ cell => cell.CellStatusId == 1;
 
                     var changedEntityCount = await dc.SaveChangesAsync();
 
-                    return new OperationResult(changedEntityCount > 0);
+                    return new OperationResult<CellDetails>(changedEntityCount > 0);
                 }
             }
             catch (Exception ex)
             {
-                return new OperationResult(ex);
+                return new OperationResult<CellDetails>(ex);
             }
         }
 
