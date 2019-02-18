@@ -17,8 +17,6 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly WMS.Data.WebAPI.Contracts.IAbcClassesDataService abcClassesDataService;
 
-        private readonly IAisleProvider aisleProvider;
-
         private readonly WMS.Data.WebAPI.Contracts.IAislesDataService aislesDataService;
 
         private readonly WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService;
@@ -34,7 +32,6 @@ namespace Ferretto.Common.BusinessProviders
         #region Constructors
 
         public CellProvider(
-            IAisleProvider aisleProvider,
             ICellStatusProvider cellStatusProvider,
             ICellTypeProvider cellTypeProvider,
             WMS.Data.WebAPI.Contracts.ICellsDataService cellsDataService,
@@ -42,7 +39,6 @@ namespace Ferretto.Common.BusinessProviders
             WMS.Data.WebAPI.Contracts.IAislesDataService aislesDataService,
             WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService)
         {
-            this.aisleProvider = aisleProvider;
             this.cellStatusProvider = cellStatusProvider;
             this.cellTypeProvider = cellTypeProvider;
             this.cellsDataService = cellsDataService;
@@ -55,8 +51,20 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
+        public async Task<IEnumerable<Aisle>> GetAislesByAreaIdAsync(int areaId)
+        {
+            return (await this.areasDataService.GetAislesAsync(areaId))
+                .Select(a => new Aisle
+                {
+                    Id = a.Id,
+                    AreaId = a.AreaId,
+                    AreaName = a.AreaName,
+                    Name = a.Name
+                });
+        }
+
         public async Task<IEnumerable<Cell>> GetAllAsync(
-            int skip = 0,
+                    int skip = 0,
             int take = 0,
             IEnumerable<SortOption> orderBy = null,
             IExpression whereExpression = null,
@@ -113,7 +121,7 @@ namespace Ferretto.Common.BusinessProviders
 
             var abcClass = await this.abcClassesDataService.GetAllAsync();
             var abcClassChoices = abcClass.Select(abc => new EnumerationString(abc.Id, abc.Description));
-            var aisles = await this.aisleProvider.GetAislesByAreaIdAsync(cell.AreaId);
+            var aisles = await this.GetAislesByAreaIdAsync(cell.AreaId);
             var aisleChoices = aisles.Select(aisle => new Enumeration(aisle.Id, aisle.Name));
             var cellStatusChoices = await this.cellStatusProvider.GetAllAsync();
             var cellTypeChoices = await this.cellTypeProvider.GetAllAsync();

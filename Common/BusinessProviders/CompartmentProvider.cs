@@ -129,7 +129,6 @@ namespace Ferretto.Common.BusinessProviders
                 throw new ArgumentNullException(nameof(model));
             }
 
-            // TODO: add transaction management
             try
             {
                 var compartment = await this.compartmentsDataService.CreateAsync(new WMS.Data.WebAPI.Contracts.CompartmentDetails

@@ -49,7 +49,7 @@ namespace Ferretto.Common.BusinessProviders
             }
             catch (Exception ex)
             {
-                return new OperationResult(false, description: ex.Message);
+                return new OperationResult(ex);
             }
         }
 

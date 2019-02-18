@@ -29,16 +29,6 @@ namespace Ferretto.Common.BusinessProviders
 
         #endregion
 
-        #region Properties
-
-        public int AreaId { get; set; }
-
-        public string AreaName { get; set; }
-
-        public string Name { get; set; }
-
-        #endregion
-
         #region Methods
 
         public async Task<IEnumerable<Aisle>> GetAislesByAreaIdAsync(int areaId)
@@ -56,7 +46,13 @@ namespace Ferretto.Common.BusinessProviders
         public async Task<IEnumerable<Aisle>> GetAllAsync()
         {
             return (await this.aislesDataService.GetAllAsync())
-                .Select(c => new Aisle { });
+                .Select(a => new Aisle
+                {
+                    Id = a.Id,
+                    AreaId = a.AreaId,
+                    AreaName = a.AreaName,
+                    Name = a.Name
+                });
         }
 
         public async Task<int> GetAllCountAsync()
