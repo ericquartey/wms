@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Linq;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Base;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class PagedDataSource<TModel> : IFilterDataSource<TModel>
-        where TModel : IBusinessObject
+    public class PagedDataSource<TModel, TKey> : IFilterDataSource<TModel, TKey>
+        where TModel : IModel<TKey>
     {
         #region Constructors
 
-        public PagedDataSource(string key, string name, IPagedBusinessProvider<TModel> provider, string expression)
+        public PagedDataSource(string key, string name, IPagedBusinessProvider<TModel, TKey> provider, string expression)
         {
             this.Key = key;
             this.Name = name;
@@ -17,7 +18,7 @@ namespace Ferretto.Common.Modules.BLL.Models
             this.Expression = expression;
         }
 
-        public PagedDataSource(string key, string name, IPagedBusinessProvider<TModel> provider)
+        public PagedDataSource(string key, string name, IPagedBusinessProvider<TModel, TKey> provider)
             : this(key, name, provider, expression: null)
         {
         }
@@ -36,7 +37,7 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         public string Name { get; }
 
-        public IPagedBusinessProvider<TModel> Provider { get; }
+        public IPagedBusinessProvider<TModel, TKey> Provider { get; }
 
         #endregion
 

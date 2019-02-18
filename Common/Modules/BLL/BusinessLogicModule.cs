@@ -117,7 +117,6 @@ namespace Ferretto.Common.Modules.BLL
             this.Container.RegisterInstance(DataServiceFactory.GetService<IMaterialStatusesDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<IMeasureUnitsDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<IPackageTypesDataService>(serviceEndPoint));
-
         }
 
         #endregion
