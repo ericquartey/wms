@@ -15,8 +15,7 @@ namespace MAS_DataLayerUnitTests
         #region Methods
 
         [TestMethod]
-        // [ExpectedException(typeof(ArgumentNullException), "Argument null exception.")]
-        public void TestMethodWriteLogService()
+        public void TestMethodDataLayer()
         {
             using (var context = this.CreateContext())
             {
