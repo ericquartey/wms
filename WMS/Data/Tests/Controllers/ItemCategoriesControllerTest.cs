@@ -13,7 +13,7 @@ using Moq;
 namespace Ferretto.WMS.Data.Tests
 {
     [TestClass]
-    public class AbcClassesControllerTest : BaseControllerTest
+    public class ItemCategoriesControllerTest : BaseControllerTest
     {
         #region Methods
 
@@ -31,12 +31,14 @@ namespace Ferretto.WMS.Data.Tests
                 #region Arrange
 
                 var controller = MockController(context);
-                var abcClass1 = new Common.DataModels.AbcClass { Id = "A", Description = "A Class" };
-                var abcClass2 = new Common.DataModels.AbcClass { Id = "B", Description = "B Class" };
-                var abcClass3 = new Common.DataModels.AbcClass { Id = "C", Description = "C Class" };
-                context.AbcClasses.Add(abcClass1);
-                context.AbcClasses.Add(abcClass2);
-                context.AbcClasses.Add(abcClass3);
+                var itemCategory1 = new Common.DataModels.ItemCategory { Id = 1, Description = "Item Category #1" };
+                var itemCategory2 = new Common.DataModels.ItemCategory { Id = 2, Description = "Item Category #2" };
+                var itemCategory3 = new Common.DataModels.ItemCategory { Id = 3, Description = "Item Category #3" };
+                var itemCategory4 = new Common.DataModels.ItemCategory { Id = 4, Description = "Item Category #4" };
+                context.ItemCategories.Add(itemCategory1);
+                context.ItemCategories.Add(itemCategory2);
+                context.ItemCategories.Add(itemCategory3);
+                context.ItemCategories.Add(itemCategory4);
                 context.SaveChanges();
 
                 #endregion
@@ -51,7 +53,7 @@ namespace Ferretto.WMS.Data.Tests
 
                 Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
                 var result = (int)((OkObjectResult)actionResult.Result).Value;
-                Assert.AreEqual(3, result);
+                Assert.AreEqual(4, result);
 
                 #endregion
             }
@@ -92,12 +94,14 @@ namespace Ferretto.WMS.Data.Tests
                 #region Arrange
 
                 var controller = MockController(context);
-                var abcClass1 = new Common.DataModels.AbcClass { Id = "A", Description = "A Class" };
-                var abcClass2 = new Common.DataModels.AbcClass { Id = "B", Description = "B Class" };
-                var abcClass3 = new Common.DataModels.AbcClass { Id = "C", Description = "C Class" };
-                context.AbcClasses.Add(abcClass1);
-                context.AbcClasses.Add(abcClass2);
-                context.AbcClasses.Add(abcClass3);
+                var itemCategory1 = new Common.DataModels.ItemCategory { Id = 1, Description = "Item Category #1" };
+                var itemCategory2 = new Common.DataModels.ItemCategory { Id = 2, Description = "Item Category #2" };
+                var itemCategory3 = new Common.DataModels.ItemCategory { Id = 3, Description = "Item Category #3" };
+                var itemCategory4 = new Common.DataModels.ItemCategory { Id = 4, Description = "Item Category #4" };
+                context.ItemCategories.Add(itemCategory1);
+                context.ItemCategories.Add(itemCategory2);
+                context.ItemCategories.Add(itemCategory3);
+                context.ItemCategories.Add(itemCategory4);
                 context.SaveChanges();
 
                 #endregion
@@ -111,8 +115,8 @@ namespace Ferretto.WMS.Data.Tests
                 #region Assert
 
                 Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
-                var result = (IEnumerable<AbcClass>)((OkObjectResult)actionResult.Result).Value;
-                Assert.AreEqual(3, result.Count());
+                var result = (IEnumerable<ItemCategory>)((OkObjectResult)actionResult.Result).Value;
+                Assert.AreEqual(4, result.Count());
 
                 #endregion
             }
@@ -138,7 +142,7 @@ namespace Ferretto.WMS.Data.Tests
                 #region Assert
 
                 Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
-                var result = (IEnumerable<AbcClass>)((OkObjectResult)actionResult.Result).Value;
+                var result = (IEnumerable<ItemCategory>)((OkObjectResult)actionResult.Result).Value;
                 Assert.AreEqual(0, result.Count());
 
                 #endregion
@@ -153,32 +157,34 @@ namespace Ferretto.WMS.Data.Tests
                 #region Arrange
 
                 var controller = MockController(context);
-                var abcClass1 = new Common.DataModels.AbcClass { Id = "A", Description = "A Class" };
-                var abcClass2 = new Common.DataModels.AbcClass { Id = "B", Description = "B Class" };
-                var abcClass3 = new Common.DataModels.AbcClass { Id = "C", Description = "C Class" };
-                context.AbcClasses.Add(abcClass1);
-                context.AbcClasses.Add(abcClass2);
-                context.AbcClasses.Add(abcClass3);
+                var itemCategory1 = new Common.DataModels.ItemCategory { Id = 1, Description = "Item Category #1" };
+                var itemCategory2 = new Common.DataModels.ItemCategory { Id = 2, Description = "Item Category #2" };
+                var itemCategory3 = new Common.DataModels.ItemCategory { Id = 3, Description = "Item Category #3" };
+                var itemCategory4 = new Common.DataModels.ItemCategory { Id = 4, Description = "Item Category #4" };
+                context.ItemCategories.Add(itemCategory1);
+                context.ItemCategories.Add(itemCategory2);
+                context.ItemCategories.Add(itemCategory3);
+                context.ItemCategories.Add(itemCategory4);
                 context.SaveChanges();
 
                 #endregion
 
                 #region Act
 
-                var actionResult1 = await controller.GetByIdAsync("A");
-                var actionResult2 = await controller.GetByIdAsync("B");
+                var actionResult1 = await controller.GetByIdAsync(1);
+                var actionResult2 = await controller.GetByIdAsync(2);
 
                 #endregion
 
                 #region Assert
 
                 Assert.IsInstanceOfType(actionResult1.Result, typeof(OkObjectResult));
-                var result1 = (AbcClass)((OkObjectResult)actionResult1.Result).Value;
-                Assert.AreEqual("A", result1.Id);
+                var result1 = (ItemCategory)((OkObjectResult)actionResult1.Result).Value;
+                Assert.AreEqual(1, result1.Id);
 
                 Assert.IsInstanceOfType(actionResult2.Result, typeof(OkObjectResult));
-                var result2 = (AbcClass)((OkObjectResult)actionResult2.Result).Value;
-                Assert.AreEqual("B", result2.Id);
+                var result2 = (ItemCategory)((OkObjectResult)actionResult2.Result).Value;
+                Assert.AreEqual(2, result2.Id);
 
                 #endregion
             }
@@ -197,7 +203,7 @@ namespace Ferretto.WMS.Data.Tests
 
                 #region Act
 
-                var actionResult = await controller.GetByIdAsync("A");
+                var actionResult = await controller.GetByIdAsync(1);
 
                 #endregion
 
@@ -209,11 +215,11 @@ namespace Ferretto.WMS.Data.Tests
             }
         }
 
-        private static AbcClassesController MockController(DatabaseContext context)
+        private static ItemCategoriesController MockController(DatabaseContext context)
         {
-            return new AbcClassesController(
-                new Mock<ILogger<AbcClassesController>>().Object,
-                new AbcClassProvider(context));
+            return new ItemCategoriesController(
+                new Mock<ILogger<ItemCategoriesController>>().Object,
+                new ItemCategoryProvider(context));
         }
 
         #endregion
