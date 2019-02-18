@@ -32,7 +32,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public async Task<OperationResult<CellDetails>> CreateAsync(CellDetails model)
+        public async Task<IOperationResult<CellDetails>> CreateAsync(CellDetails model)
         {
             if (model == null)
             {
@@ -67,7 +67,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<Cell>> GetAllAsync(
             int skip,
             int take,
-            string orderBy = null,
+            IEnumerable<SortOption> orderBy = null,
             IExpression whereExpression = null,
             Expression<Func<Cell, bool>> searchExpression = null)
         {
@@ -172,12 +172,12 @@ namespace Ferretto.WMS.Data.Core.Providers
                        .SingleOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<object[]> GetUniqueValuesAsync(string propertyName)
+        public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.GetUniqueValuesAsync(propertyName, this.dataContext.Cells);
         }
 
-        public async Task<OperationResult<CellDetails>> UpdateAsync(CellDetails model)
+        public async Task<IOperationResult<CellDetails>> UpdateAsync(CellDetails model)
         {
             if (model == null)
             {

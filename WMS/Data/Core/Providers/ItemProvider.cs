@@ -32,7 +32,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public async Task<OperationResult<ItemDetails>> CreateAsync(ItemDetails model)
+        public async Task<IOperationResult<ItemDetails>> CreateAsync(ItemDetails model)
         {
             if (model == null)
             {
@@ -79,7 +79,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<Item>> GetAllAsync(
             int skip,
             int take,
-            string orderBy = null,
+            IEnumerable<SortOption> orderBy = null,
             IExpression whereExpression = null,
             Expression<Func<Item, bool>> searchExpression = null)
         {
@@ -112,12 +112,12 @@ namespace Ferretto.WMS.Data.Core.Providers
             return result;
         }
 
-        public async Task<object[]> GetUniqueValuesAsync(string propertyName)
+        public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.GetUniqueValuesAsync(propertyName, this.dataContext.Items);
         }
 
-        public async Task<OperationResult<ItemDetails>> UpdateAsync(ItemDetails model)
+        public async Task<IOperationResult<ItemDetails>> UpdateAsync(ItemDetails model)
         {
             if (model == null)
             {

@@ -38,7 +38,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public async Task<OperationResult<CompartmentDetails>> CreateAsync(CompartmentDetails model)
+        public async Task<IOperationResult<CompartmentDetails>> CreateAsync(CompartmentDetails model)
         {
             if (model == null)
             {
@@ -86,7 +86,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
-        public async Task<OperationResult<IEnumerable<CompartmentDetails>>> CreateRangeAsync(
+        public async Task<IOperationResult<IEnumerable<CompartmentDetails>>> CreateRangeAsync(
                     IEnumerable<CompartmentDetails> compartments)
         {
             if (compartments == null)
@@ -113,7 +113,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
-        public async Task<OperationResult<CompartmentDetails>> DeleteAsync(int id)
+        public async Task<IOperationResult<CompartmentDetails>> DeleteAsync(int id)
         {
             var existingModel = this.dataContext.Compartments.Find(id);
             if (existingModel == null)
@@ -129,7 +129,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<Compartment>> GetAllAsync(
             int skip,
             int take,
-            string orderBy = null,
+            IEnumerable<SortOption> orderBy = null,
             IExpression whereExpression = null,
             Expression<Func<Compartment, bool>> searchExpression = null)
         {
@@ -225,12 +225,12 @@ namespace Ferretto.WMS.Data.Core.Providers
             return compartmentType?.MaxCapacity;
         }
 
-        public async Task<object[]> GetUniqueValuesAsync(string propertyName)
+        public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.GetUniqueValuesAsync(propertyName, this.dataContext.Compartments);
         }
 
-        public async Task<OperationResult<CompartmentDetails>> UpdateAsync(CompartmentDetails model)
+        public async Task<IOperationResult<CompartmentDetails>> UpdateAsync(CompartmentDetails model)
         {
             if (model == null)
             {

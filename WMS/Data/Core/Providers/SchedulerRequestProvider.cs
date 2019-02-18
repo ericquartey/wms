@@ -34,7 +34,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<SchedulerRequest>> GetAllAsync(
             int skip,
             int take,
-            string orderBy = null,
+            IEnumerable<SortOption> orderBy = null,
             IExpression whereExpression = null,
             Expression<Func<SchedulerRequest, bool>> searchExpression = null)
         {
@@ -62,7 +62,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return result;
         }
 
-        public async Task<object[]> GetUniqueValuesAsync(string propertyName)
+        public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.GetUniqueValuesAsync(propertyName, this.dataContext.SchedulerRequests);
         }

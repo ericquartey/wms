@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class ItemListRowProvider : IItemListRowProvider
+    internal class ItemListRowProvider : IItemListRowProvider
     {
         #region Fields
 
@@ -32,7 +32,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public async Task<OperationResult<ItemListRowDetails>> CreateAsync(ItemListRowDetails model)
+        public async Task<IOperationResult<ItemListRowDetails>> CreateAsync(ItemListRowDetails model)
         {
             if (model == null)
             {
@@ -72,7 +72,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<ItemListRow>> GetAllAsync(
             int skip,
             int take,
-            string orderBy = null,
+            IEnumerable<SortOption> orderBy = null,
             IExpression whereExpression = null,
             Expression<Func<ItemListRow, bool>> searchExpression = null)
         {
@@ -106,14 +106,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                        .ToArrayAsync();
         }
 
-        public async Task<object[]> GetUniqueValuesAsync(string propertyName)
+        public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.GetUniqueValuesAsync(
                        propertyName,
                        this.dataContext.ItemListRows);
         }
 
-        public async Task<OperationResult<ItemListRowDetails>> UpdateAsync(ItemListRowDetails model)
+        public async Task<IOperationResult<ItemListRowDetails>> UpdateAsync(ItemListRowDetails model)
         {
             if (model == null)
             {

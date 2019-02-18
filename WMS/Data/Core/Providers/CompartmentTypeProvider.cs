@@ -35,12 +35,12 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public async Task<OperationResult<CompartmentType>> CreateAsync(CompartmentType model)
+        public async Task<IOperationResult<CompartmentType>> CreateAsync(CompartmentType model)
         {
             return await this.CreateAsync(model, null, null);
         }
 
-        public async Task<OperationResult<CompartmentType>> CreateAsync(
+        public async Task<IOperationResult<CompartmentType>> CreateAsync(
             CompartmentType model,
             int? itemId,
             int? maxCapacity)
@@ -125,7 +125,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                        .SingleOrDefaultAsync(a => a.Id == id);
         }
 
-        private async Task<OperationResult<ItemCompartmentType>> CreateOrUpdateItemCompartmentTypeAsync(
+        private async Task<IOperationResult<ItemCompartmentType>> CreateOrUpdateItemCompartmentTypeAsync(
             int itemId,
             int? maxCapacity,
             int compartmentTypeId)
