@@ -5,6 +5,8 @@
            TargetType="Label">
         <Setter Property="Margin" Value="0,12,0,0" />
         <Setter Property="Padding" Value="0,1,0,1" />
+        <Setter Property="Height" Value="22" />
+        <Setter Property="VerticalContentAlignment" Value="Bottom" />
         <Style.Triggers>
             <Trigger Property="Content" Value="">
                 <Setter Property="Visibility" Value="Collapsed" />

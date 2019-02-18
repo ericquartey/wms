@@ -8,13 +8,12 @@
 
     <Grid x:Name="GridWmsLabel">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <Label x:Name="Label"
-               Content=""
-               Style="{DynamicResource ControlLabelStyle}" />
-        <wms:WmsIcon x:Name="WmsIcon"
+        <Label x:Name="TitleLabel"               
+               Style="{DynamicResource ControlLabelStyle}"   />
+        <wms:WmsIcon x:Name="WmsIcon"                     
                      Grid.Column="1"
                      Width="10"
                      Height="10"

@@ -68,8 +68,8 @@ namespace Ferretto.Common.Controls
 
                 if (control is WmsLabel wmsLabel)
                 {
-                    wmsLabel.Label.Content = localizedFieldName;
-                    wmsLabel.WmsIcon.Visibility = isFieldRequired ? Visibility.Visible : Visibility.Collapsed;
+                    wmsLabel.Title = localizedFieldName;
+                    wmsLabel.ShowIcon(isFieldRequired);
                 }
 
                 return $"{localizedFieldName}";
