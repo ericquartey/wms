@@ -133,6 +133,78 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGCCompleted.
+        /// </summary>
+        public static string HelpGCCompleted {
+            get {
+                return ResourceManager.GetString("HelpGCCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGCDelay.
+        /// </summary>
+        public static string HelpGCDelay {
+            get {
+                return ResourceManager.GetString("HelpGCDelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGCDescription.
+        /// </summary>
+        public static string HelpGCDescription {
+            get {
+                return ResourceManager.GetString("HelpGCDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGCRequiredCycles.
+        /// </summary>
+        public static string HelpGCRequiredCycles {
+            get {
+                return ResourceManager.GetString("HelpGCRequiredCycles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGCSensorA.
+        /// </summary>
+        public static string HelpGCSensorA {
+            get {
+                return ResourceManager.GetString("HelpGCSensorA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGCSensorB.
+        /// </summary>
+        public static string HelpGCSensorB {
+            get {
+                return ResourceManager.GetString("HelpGCSensorB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGCStartButton.
+        /// </summary>
+        public static string HelpGCStartButton {
+            get {
+                return ResourceManager.GetString("HelpGCStartButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGCStopButton.
+        /// </summary>
+        public static string HelpGCStopButton {
+            get {
+                return ResourceManager.GetString("HelpGCStopButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpInstallationStateDescription.
         /// </summary>
         public static string HelpInstallationStateDescription {

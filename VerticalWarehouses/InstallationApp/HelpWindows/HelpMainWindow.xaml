@@ -37,6 +37,10 @@
             <local:HelpLowSpeedMovements></local:HelpLowSpeedMovements>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewmodels:Gate1ControlViewModel}">
+            <local:HelpGateControl></local:HelpGateControl>
+        </DataTemplate>
+
 
     </Window.Resources>
     <Grid Width="1024"

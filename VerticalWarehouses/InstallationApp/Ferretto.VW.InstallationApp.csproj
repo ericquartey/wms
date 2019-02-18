@@ -39,6 +39,7 @@
   <ItemGroup>
     <None Remove="CellsControlHelpView.xaml" />
     <None Remove="HelpWindows\HelpBeltBurnishingView.xaml" />
+    <None Remove="HelpWindows\HelpGateControl.xaml" />
     <None Remove="HelpWindows\HelpInstallationState.xaml" />
     <None Remove="HelpWindows\HelpLowSpeedMovements.xaml" />
     <None Remove="HelpWindows\HelpMainWindow.xaml" />
@@ -83,6 +84,9 @@
     </Compile>
     <Compile Update="HelpWindows\HelpLowSpeedMovements.xaml.cs">
       <DependentUpon>HelpLowSpeedMovements.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpGateControl.xaml.cs">
+      <DependentUpon>HelpGateControl.xaml</DependentUpon>
     </Compile>
     <Compile Update="HelpWindows\HelpSensorState.xaml.cs">
       <DependentUpon>HelpSensorState.xaml</DependentUpon>

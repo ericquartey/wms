@@ -205,4 +205,28 @@
   <data name="HelpLSMTMoveDown" xml:space="preserve">
     <value>Pulsante di movimento indietro, discesa o chiusura in base alla parte selezionata</value>
   </data>
+  <data name="HelpGCDescription" xml:space="preserve">
+    <value>Permette di effettuare una serie di test ripetitivi per la serranda di chiusura della baia selezionata. E' possibile impostare un tempo di attesa fra due movimenti consecutivi. La procedura termina al raggiungimento del numero di cicli impostati o all'uscita.</value>
+  </data>
+  <data name="HelpGCRequiredCycles" xml:space="preserve">
+    <value>Impostare il numero di cicli richiesti.</value>
+  </data>
+  <data name="HelpGCDelay" xml:space="preserve">
+    <value>Imposta il tempo di ritardo fra due cicli consecutivi.</value>
+  </data>
+  <data name="HelpGCCompleted" xml:space="preserve">
+    <value>Indica il numero di cicli attualmente completati.</value>
+  </data>
+  <data name="HelpGCSensorA" xml:space="preserve">
+    <value>Stato del sensore A della barriera.</value>
+  </data>
+  <data name="HelpGCSensorB" xml:space="preserve">
+    <value>Stato del sensore B della barriera.</value>
+  </data>
+  <data name="HelpGCStartButton" xml:space="preserve">
+    <value>Avvia l'inizio dei test richiesti. Il pulsante e' attivo se il numero di cicli richiesti e' maggiore di zero.</value>
+  </data>
+  <data name="HelpGCStopButton" xml:space="preserve">
+    <value>Arresta il ciclo al completamento del movimento corrente. La successiva pressione del pulsante di avvio riprende il ciclo da dove arrivato.</value>
+  </data>
 </root>

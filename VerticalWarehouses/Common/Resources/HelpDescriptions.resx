@@ -241,4 +241,36 @@
     <value>HelpLSMTMoveDown</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpGCDescription" xml:space="preserve">
+    <value>HelpGCDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpGCRequiredCycles" xml:space="preserve">
+    <value>HelpGCRequiredCycles</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGCDelay" xml:space="preserve">
+    <value>HelpGCDelay</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGCCompleted" xml:space="preserve">
+    <value>HelpGCCompleted</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGCSensorA" xml:space="preserve">
+    <value>HelpGCSensorA</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGCSensorB" xml:space="preserve">
+    <value>HelpGCSensorB</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGCStartButton" xml:space="preserve">
+    <value>HelpGCStartButton</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGCStopButton" xml:space="preserve">
+    <value>HelpGCStopButton</value>
+    <comment>Note text</comment>
+  </data>
 </root>
