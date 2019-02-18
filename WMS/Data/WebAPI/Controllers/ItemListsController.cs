@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
-using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
@@ -26,10 +28,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IItemListProvider itemListProvider;
 
+        private readonly IItemListRowProvider itemListRowProvider;
+
         private readonly IItemListSchedulerProvider itemListSchedulerProvider;
 
         private readonly ILogger logger;
-        private readonly IItemListRowProvider itemListRowProvider;
 
         #endregion
 
@@ -37,11 +40,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public ItemListsController(
             ILogger<ItemListsController> logger,
-            IItemListProvider itemListProvider,
             IItemListSchedulerProvider itemListSchedulerProvider,
             IItemListProvider itemListProvider,
             IItemListRowProvider itemListRowProvider)
         {
+            this.logger = logger;
             this.itemListProvider = itemListProvider;
             this.itemListRowProvider = itemListRowProvider;
             this.itemListSchedulerProvider = itemListSchedulerProvider;
@@ -50,6 +53,21 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #endregion
 
         #region Methods
+
+        [ProducesResponseType(201, Type = typeof(ItemListDetails))]
+        [ProducesResponseType(400)]
+        [HttpPost]
+        public async Task<ActionResult<ItemListDetails>> CreateAsync(ItemListDetails model)
+        {
+            var result = await this.itemListProvider.CreateAsync(model);
+
+            if (!result.Success)
+            {
+                return this.BadRequest();
+            }
+
+            return this.Created(this.Request.GetUri(), result.Entity);
+        }
 
         [HttpPost(nameof(Execute))]
         [ProducesResponseType(200)]
@@ -88,21 +106,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok();
         }
 
-        [ProducesResponseType(201, Type = typeof(ItemListDetails))]
-        [ProducesResponseType(400)]
-        [HttpPost]
-        public async Task<ActionResult<ItemListDetails>> CreateAsync(ItemListDetails model)
-        {
-            var result = await this.itemListProvider.CreateAsync(model);
-
-            if (!result.Success)
-            {
-                return this.BadRequest();
-            }
-
-            return this.Created(this.Request.GetUri(), result.Entity);
-        }
-
         [ProducesResponseType(200, Type = typeof(IEnumerable<ItemList>))]
         [ProducesResponseType(400, Type = typeof(string))]
         [HttpGet]
@@ -117,12 +120,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 var searchExpression = BuildSearchExpression(search);
                 var whereExpression = where.AsIExpression();
+                var orderByExpression = orderBy.ParseSortOptions();
 
                 return this.Ok(
                     await this.itemListProvider.GetAllAsync(
                         skip: skip,
                         take: take,
-                        orderBy: orderBy,
+                        orderBy: orderByExpression,
                         whereExpression: whereExpression,
                         searchExpression: searchExpression));
             }

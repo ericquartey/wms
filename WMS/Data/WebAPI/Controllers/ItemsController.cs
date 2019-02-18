@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
@@ -80,12 +81,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 var searchExpression = BuildSearchExpression(search);
                 var whereExpression = where.AsIExpression();
+                var orderByExpression = orderBy.ParseSortOptions();
 
                 return this.Ok(
                     await this.itemProvider.GetAllAsync(
                         skip,
                         take,
-                        orderBy,
+                        orderByExpression,
                         whereExpression,
                         searchExpression));
             }
@@ -128,16 +130,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(areas);
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Compartment>))]
-        [ProducesResponseType(404)]
-        [HttpGet("{id}/compartments")]
-        public async Task<ActionResult<IEnumerable<Compartment>>> GetCompartmentsAsync(int id)
-        {
-            var compartments = await this.compartmentProvider.GetByItemIdAsync(id);
-
-            return this.Ok(compartments);
-        }
-
         [ProducesResponseType(200, Type = typeof(ItemDetails))]
         [ProducesResponseType(404)]
         [HttpGet("{id}")]
@@ -150,6 +142,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return this.Ok(result);
+        }
+
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Compartment>))]
+        [ProducesResponseType(404)]
+        [HttpGet("{id}/compartments")]
+        public async Task<ActionResult<IEnumerable<Compartment>>> GetCompartmentsAsync(int id)
+        {
+            var compartments = await this.compartmentProvider.GetByItemIdAsync(id);
+
+            return this.Ok(compartments);
         }
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]

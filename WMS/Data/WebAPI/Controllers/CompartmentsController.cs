@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
@@ -105,12 +106,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 var searchExpression = BuildSearchExpression(search);
                 var whereExpression = where.AsIExpression();
+                var orderByExpression = orderBy.ParseSortOptions();
 
                 return this.Ok(
                     await this.compartmentProvider.GetAllAsync(
                         skip,
                         take,
-                        orderBy,
+                        orderByExpression,
                         whereExpression,
                         searchExpression));
             }
@@ -143,6 +145,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
+        [ProducesResponseType(200, Type = typeof(IEnumerable<AllowedItemInCompartment>))]
+        [HttpGet("{id}/allowed_items")]
+        public async Task<ActionResult<IEnumerable<AllowedItemInCompartment>>> GetAllowedItemsAsync(int id)
+        {
+            return this.Ok(await this.compartmentProvider.GetAllowedItemsAsync(id));
+        }
+
         [ProducesResponseType(200, Type = typeof(CompartmentDetails))]
         [ProducesResponseType(404)]
         [HttpGet("{id}")]
@@ -155,13 +164,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return this.Ok(result);
-        }
-
-        [ProducesResponseType(200, Type = typeof(IEnumerable<AllowedItemInCompartment>))]
-        [HttpGet("{id}/allowed_items")]
-        public async Task<ActionResult<IEnumerable<AllowedItemInCompartment>>> GetAllowedItemsAsync(int id)
-        {
-            return this.Ok(await this.compartmentProvider.GetAllowedItemsAsync(id));
         }
 
         [ProducesResponseType(200, Type = typeof(int?))]
