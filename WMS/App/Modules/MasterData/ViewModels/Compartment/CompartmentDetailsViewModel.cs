@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
@@ -86,13 +87,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public override void LoadRelatedData()
+        public async override void LoadRelatedData()
         {
+            var items = await this.itemProvider.GetAllowedByCompartmentIdAsync(this.Model.Id);
             this.AllowedItemsDataSource = this.Model != null
-                ? new DataSource<AllowedItemInCompartment>(() => this.itemProvider.GetAllowedByCompartmentId(this.Model.Id))
+                ? new DataSource<AllowedItemInCompartment>(items.AsQueryable<AllowedItemInCompartment>)
                 : null;
 
-            this.LoadingUnitsDataSource = new DataSource<LoadingUnit>(() => this.loadingUnitProvider.GetAll());
+            var loadingUnits = await this.loadingUnitProvider.GetAllAsync();
+            this.LoadingUnitsDataSource = new DataSource<LoadingUnit>(loadingUnits.AsQueryable);
 
             base.LoadRelatedData();
         }
@@ -111,7 +114,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.IsBusy = true;
 
-            var result = await this.compartmentProvider.SaveAsync(this.Model);
+            var result = await this.compartmentProvider.UpdateAsync(this.Model);
             if (result.Success)
             {
                 this.TakeModelSnapshot();

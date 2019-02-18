@@ -73,7 +73,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.IsBusy = true;
 
-            var result = await this.compartmentProvider.AddAsync(this.Model);
+            var result = await this.compartmentProvider.CreateAsync(this.Model);
             if (result.Success)
             {
                 this.TakeModelSnapshot();
