@@ -31,8 +31,8 @@
                       IsExpanded="True">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <wms:TileBar HorizontalAlignment="Right"
                              ItemsSource="{Binding Filters}"

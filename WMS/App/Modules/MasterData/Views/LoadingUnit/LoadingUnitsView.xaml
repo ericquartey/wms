@@ -29,6 +29,10 @@
                       ExpandDirection="Left"
                       IsExpanded="True">
             <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
                 <wms:TileBar ItemsSource="{Binding Filters}"
                              SelectedItem="{Binding SelectedFilter, Mode=OneWayToSource}" />
 
@@ -83,6 +87,7 @@
                                 MaxHeight="5000"
                                 Margin="3"
                                 CurrentItem="{Binding SelectedItem, Mode=TwoWay}"
+                                FixedFilter="{Binding OverallFilter, Mode=OneWay}"
                                 ItemsSource="{Binding SelectedFilterDataSource, Mode=OneWay}"
                                 ShowBorder="False">
                 <wms:WmsGridControl.View>
