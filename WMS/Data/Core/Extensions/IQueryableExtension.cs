@@ -52,11 +52,33 @@ namespace Ferretto.WMS.Data.Core.Extensions
             return isAsyncQueryable ? await result.CountAsync() : result.Count();
         }
 
+        public static IEnumerable<SortOption> ParseSortOptions(this string orderBy)
+        {
+            if (orderBy == null)
+            {
+                return Array.Empty<SortOption>();
+            }
+
+            var matches = OrderByRegex.Matches(orderBy);
+
+            return matches.Cast<Match>().Select(match =>
+            {
+                var propertyName = match.Groups[nameof(SortOption.PropertyName)].Value;
+
+                var direction = (ListSortDirection)Enum.Parse(
+                    typeof(ListSortDirection),
+                    match.Groups[nameof(SortOption.Direction)].Value,
+                    true);
+
+                return new SortOption(propertyName, direction);
+            });
+        }
+
         public static async Task<IEnumerable<TModel>> ToArrayAsync<TModel>(
-            this IQueryable<TModel> entities,
+                    this IQueryable<TModel> entities,
             int skip,
             int take,
-            string orderBy,
+            IEnumerable<SortOption> orderBy,
             IExpression whereExpression,
             Expression<Func<TModel, bool>> searchExpression)
         {
@@ -74,16 +96,9 @@ namespace Ferretto.WMS.Data.Core.Extensions
             return isAsyncQueryable ? await result.ToArrayAsync() : result.ToArray();
         }
 
-        private static IQueryable<T> ApplyOrderByClause<T>(string orderBy, IQueryable<T> entities)
+        private static IQueryable<T> ApplyOrderByClause<T>(IEnumerable<SortOption> sortOptions, IQueryable<T> entities)
         {
-            if (string.IsNullOrWhiteSpace(orderBy))
-            {
-                return entities;
-            }
-
             var orderedEntities = entities;
-
-            var sortOptions = ParseOrderByString(orderBy);
 
             var firstOrdering = true;
             foreach (var sortOption in sortOptions)
@@ -128,7 +143,7 @@ namespace Ferretto.WMS.Data.Core.Extensions
             IQueryable<TModel> entities,
             int skip,
             int take,
-            string orderBy,
+            IEnumerable<SortOption> orderBy,
             IExpression whereExpression,
             Expression<Func<TModel, bool>> searchExpression,
             bool containsOnlyTypeProperties)
@@ -245,28 +260,6 @@ namespace Ferretto.WMS.Data.Core.Extensions
             }
 
             return thenByMethod.MakeGenericMethod(typeof(T), propertyType);
-        }
-
-        private static IEnumerable<SortOption> ParseOrderByString(string orderBy)
-        {
-            if (orderBy == null)
-            {
-                return Array.Empty<SortOption>();
-            }
-
-            var matches = OrderByRegex.Matches(orderBy);
-
-            return matches.Cast<Match>().Select(match =>
-            {
-                var propertyName = match.Groups[nameof(SortOption.PropertyName)].Value;
-
-                var direction = (ListSortDirection)Enum.Parse(
-                    typeof(ListSortDirection),
-                    match.Groups[nameof(SortOption.Direction)].Value,
-                    true);
-
-                return new SortOption(propertyName, direction);
-            });
         }
 
         #endregion
