@@ -1,7 +1,6 @@
 ﻿using System;
 using Ferretto.Common.Common_Utils;
-using Ferretto.VW.MAS_DataLayer;
-using Ferretto.VW.MAS_MachineManager;
+using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.MAS_MissionScheduler;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -15,15 +14,17 @@ namespace MAS_MissionSchedulerTests
         #region Methods
 
         [TestMethod]
+        [TestCategory( "Unit" )]
         public void TestAddMission()
         {
-            var machineManagerMock = new Mock<IMachineManager>().Object;
-            var writeLogServiceMock = new Mock<IWriteLogService>().Object;
-            var eventAggregatorMock = new Mock<IEventAggregator>().Object;
-            var missionScheduler = new MissionsScheduler(machineManagerMock, writeLogServiceMock, eventAggregatorMock);
+            var eventAggregatorMock = new Mock<IEventAggregator>();
+            var machineAutomationService_Event = new MachineAutomationService_Event();
+            eventAggregatorMock.Setup( aggregator => aggregator.GetEvent<MachineAutomationService_Event>() ).Returns( machineAutomationService_Event );
 
-            Assert.ThrowsException<ArgumentNullException>(() => missionScheduler.AddMission(null));
-            Assert.IsTrue(missionScheduler.AddMission(new Mission()));
+            var missionScheduler = new MissionsScheduler( eventAggregatorMock.Object );
+
+            Assert.ThrowsException<ArgumentNullException>( () => missionScheduler.AddMission( null ) );
+            Assert.IsTrue( missionScheduler.AddMission( new Mission() ) );
         }
 
         #endregion

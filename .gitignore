@@ -335,3 +335,7 @@ ASALocalRun/
 
 # SQLite DataBase
 *.db
+*.db-journal
+
+# Other Files
+*.zip

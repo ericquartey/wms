@@ -128,11 +128,19 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
+        [ProducesResponseType(400)]
         [HttpGet("unique/{propertyName}")]
         public async Task<ActionResult<object[]>> GetUniqueValuesAsync(
             string propertyName)
         {
-            return this.Ok(await this.missionProvider.GetUniqueValuesAsync(propertyName));
+            try
+            {
+                return this.Ok(await this.missionProvider.GetUniqueValuesAsync(propertyName));
+            }
+            catch (InvalidOperationException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
         private static Expression<Func<Mission, bool>> BuildSearchExpression(string search)

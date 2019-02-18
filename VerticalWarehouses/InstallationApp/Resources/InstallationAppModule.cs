@@ -1,4 +1,6 @@
-﻿using Microsoft.Practices.Unity;
+﻿using Ferretto.VW.InstallationApp.ServiceUtilities;
+using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
+using Microsoft.Practices.Unity;
 using Prism.Modularity;
 
 namespace Ferretto.VW.InstallationApp

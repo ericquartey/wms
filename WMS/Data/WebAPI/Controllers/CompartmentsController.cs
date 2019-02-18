@@ -175,10 +175,18 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
+        [ProducesResponseType(400)]
         [HttpGet("unique/{propertyName}")]
         public async Task<ActionResult<object[]>> GetUniqueValuesAsync(string propertyName)
         {
-            return this.Ok(await this.compartmentProvider.GetUniqueValuesAsync(propertyName));
+            try
+            {
+                return this.Ok(await this.compartmentProvider.GetUniqueValuesAsync(propertyName));
+            }
+            catch (InvalidOperationException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
         [ProducesResponseType(200, Type = typeof(CompartmentDetails))]
