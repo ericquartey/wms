@@ -39,6 +39,7 @@
   <ItemGroup>
     <None Remove="CellsControlHelpView.xaml" />
     <None Remove="HelpWindows\HelpBeltBurnishingView.xaml" />
+    <None Remove="HelpWindows\HelpInstallationState.xaml" />
     <None Remove="HelpWindows\HelpMainWindow.xaml" />
     <None Remove="HelpWindows\HelpPageBase.xaml" />
     <None Remove="HelpWindows\HelpPageBase_old.xaml" />
@@ -75,6 +76,9 @@
     </Compile>
     <Compile Update="HelpWindows\HelpCellsControlView.xaml.cs">
       <DependentUpon>HelpCellsControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpInstallationState.xaml.cs">
+      <DependentUpon>HelpInstallationState.xaml</DependentUpon>
     </Compile>
     <Compile Update="HelpWindows\HelpPageBase_old.xaml.cs">
       <DependentUpon>HelpPageBase_old.xaml</DependentUpon>
