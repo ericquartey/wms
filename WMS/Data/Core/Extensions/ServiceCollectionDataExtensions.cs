@@ -41,6 +41,8 @@ namespace Ferretto.WMS.Data.Core.Extensions
                 services.AddTransient<IMeasureUnitProvider, MeasureUnitProvider>();
                 services.AddTransient<IMissionProvider, MissionProvider>();
                 services.AddTransient<IPackageTypeProvider, PackageTypeProvider>();
+                services.AddTransient<ISchedulerRequestProvider, SchedulerRequestProvider>();
+                services.AddTransient<IUserProvider, UserProvider>();
             }
 
             return services;
