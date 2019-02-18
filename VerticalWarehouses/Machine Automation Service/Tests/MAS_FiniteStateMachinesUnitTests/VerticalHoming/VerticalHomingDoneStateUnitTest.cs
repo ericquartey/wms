@@ -14,19 +14,19 @@ namespace MAS_FiniteStateMachinesUnitTests.VerticalHoming
         #region Methods
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [TestCategory( "Unit" )]
         public void TestVerticalHomingDoneState_Create()
         {
             var inverterDriverMock = new Mock<INewInverterDriver>();
             var writeLogServiceMock = new Mock<IWriteLogService>();
             var eventAggregatorMock = new Mock<IEventAggregator>();
             var notifyFSMEvent = new FiniteStateMachines_NotificationEvent();
-            eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<FiniteStateMachines_NotificationEvent>()).Returns(notifyFSMEvent);
-            var stateMachine = new StateMachineVerticalHoming(inverterDriverMock.Object, writeLogServiceMock.Object, eventAggregatorMock.Object);
+            eventAggregatorMock.Setup( aggregator => aggregator.GetEvent<FiniteStateMachines_NotificationEvent>() ).Returns( notifyFSMEvent );
+            var stateMachine = new StateMachineVerticalHoming( inverterDriverMock.Object, eventAggregatorMock.Object );
 
-            var state = new VerticalHomingDoneState(stateMachine, inverterDriverMock.Object, writeLogServiceMock.Object, eventAggregatorMock.Object);
+            var state = new VerticalHomingDoneState( stateMachine, inverterDriverMock.Object, eventAggregatorMock.Object );
 
-            Assert.IsNotNull(state);
+            Assert.IsNotNull( state );
         }
 
         #endregion
