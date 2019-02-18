@@ -193,4 +193,32 @@
     <value>ResolutionCalibrationCloseProcedure</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpInstallationStateDescription" xml:space="preserve">
+    <value>HelpInstallationStateDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpInstallationStateToDo" xml:space="preserve">
+    <value>HelpInstallationStateToDo</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpInstallationStateDone" xml:space="preserve">
+    <value>HelpInstallationStateDone</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpSSTitle" xml:space="preserve">
+    <value>HelpSSTitle</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="HelpSSDescription" xml:space="preserve">
+    <value>HelpSSDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpSSStateOn" xml:space="preserve">
+    <value>HelpSSStateOn</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpSSStateOff" xml:space="preserve">
+    <value>HelpSSStateOff</value>
+    <comment>Note text</comment>
+  </data>
 </root>

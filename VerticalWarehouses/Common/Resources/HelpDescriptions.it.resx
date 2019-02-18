@@ -169,4 +169,25 @@
   <data name="ResolutionCalibrationCloseProcedure" xml:space="preserve">
     <value>Effettua l'origine dell'asse e chiude la procedura.</value>
   </data>
+  <data name="HelpInstallationStateDescription" xml:space="preserve">
+    <value>Visualizza lo stato corrente dell'installazione. Le parti gia' completate sono evidenziate in verde mentre quelle da completare o da fare sono in grigio. Alcune procedure sono possibili solo dopo avere correttamente completato quelle propedeutiche.</value>
+  </data>
+  <data name="HelpInstallationStateToDo" xml:space="preserve">
+    <value>L'indicatore in grigio indica una procedura ancora da fare</value>
+  </data>
+  <data name="HelpInstallationStateDone" xml:space="preserve">
+    <value>Lìndicatore in verde indica una procedura correttamente completata.</value>
+  </data>
+  <data name="HelpSSTitle" xml:space="preserve">
+    <value>Visualizzazione stato sensori</value>
+  </data>
+  <data name="HelpSSDescription" xml:space="preserve">
+    <value>Le varie pagine permettono la visualizzazione dello stato sensori presenti nelle varie parti costituenti la macchina. La visualizzazione avviene in tempo reale e cambia al variare dello stato dei vari sensori.</value>
+  </data>
+  <data name="HelpSSStateOn" xml:space="preserve">
+    <value>Il colore verde indica lo stato attivo del sensore.</value>
+  </data>
+  <data name="HelpSSStateOff" xml:space="preserve">
+    <value>Il colore grigio indica lo stato non attivo del sensore.</value>
+  </data>
 </root>

@@ -35,16 +35,17 @@
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
                      Width="670" Height="50"
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.BeltBurnishingFunctionDescription}" />
+                     Text="{x:Static res:HelpDescriptions.HelpInstallationStateDescription}" />
         
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,140,0,0"
                      Width="260" Height="70"
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.BeltBurnishingUpLimit}" />
+                     Text="{x:Static res:HelpDescriptions.HelpInstallationStateToDo}" />
+        
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,220,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.BeltBurnishingUpLimit}" />
+                     Width="260" Height="70"
+                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                     Text="{x:Static res:HelpDescriptions.HelpInstallationStateDone}" />
 
     </Grid>
 </UserControl>

@@ -133,6 +133,69 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpInstallationStateDescription.
+        /// </summary>
+        public static string HelpInstallationStateDescription {
+            get {
+                return ResourceManager.GetString("HelpInstallationStateDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpInstallationStateDone.
+        /// </summary>
+        public static string HelpInstallationStateDone {
+            get {
+                return ResourceManager.GetString("HelpInstallationStateDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpInstallationStateToDo.
+        /// </summary>
+        public static string HelpInstallationStateToDo {
+            get {
+                return ResourceManager.GetString("HelpInstallationStateToDo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpSSDescription.
+        /// </summary>
+        public static string HelpSSDescription {
+            get {
+                return ResourceManager.GetString("HelpSSDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpSSStateOff.
+        /// </summary>
+        public static string HelpSSStateOff {
+            get {
+                return ResourceManager.GetString("HelpSSStateOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpSSStateOn.
+        /// </summary>
+        public static string HelpSSStateOn {
+            get {
+                return ResourceManager.GetString("HelpSSStateOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpSSTitle.
+        /// </summary>
+        public static string HelpSSTitle {
+            get {
+                return ResourceManager.GetString("HelpSSTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a ResolutionCalibrationAcceptNewResolution.
         /// </summary>
         public static string ResolutionCalibrationAcceptNewResolution {

@@ -29,6 +29,11 @@
             <local:HelpInstallationState></local:HelpInstallationState>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewmodels:SSMainViewModel}">
+            <local:HelpSensorState></local:HelpSensorState>
+        </DataTemplate>
+
+
     </Window.Resources>
     <Grid Width="1024"
           Height="768"
