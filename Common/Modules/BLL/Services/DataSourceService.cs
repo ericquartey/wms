@@ -99,22 +99,22 @@ namespace Ferretto.Common.Modules.BLL.Services
                     "CompartmentStatusAvailable",
                     Resources.MasterData.CompartmentStatusAvailable,
                     compartmentProvider,
-                    "[MaterialStatusId] == 1"),
+                    "[MaterialStatusDescription] == 'Available'"),
                 new PagedDataSource<Compartment>(
                     "CompartmentStatusAwaiting",
                     Resources.MasterData.CompartmentStatusAwaiting,
                     compartmentProvider,
-                    "[MaterialStatusId] == 2"),
+                    "[MaterialStatusDescription] == 'Awaiting'"),
                 new PagedDataSource<Compartment>(
                     "CompartmentStatusExpired",
                     Resources.MasterData.CompartmentStatusExpired,
                     compartmentProvider,
-                    "[MaterialStatusId] == 3"),
+                    "[MaterialStatusDescription] == 'Expired'"),
                 new PagedDataSource<Compartment>(
                     "CompartmentStatusBlocked",
                     Resources.MasterData.CompartmentStatusBlocked,
                     compartmentProvider,
-                    "[MaterialStatusId] == 4"),
+                    "[MaterialStatusDescription] == 'Blocked'"),
             }.Cast<IFilterDataSource<TModel>>();
         }
 
@@ -138,7 +138,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                             "ItemListViewTypePick",
                             Resources.MasterData.ItemListsTypePick,
                             itemListProvider,
-                            "[Type] == 'Pick'"));
+                            $"[ItemListType] == '{ItemListType.Pick}'"));
                     break;
 
                 case ItemListType.Put:
@@ -147,7 +147,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                             "ItemListViewTypePut",
                             Resources.MasterData.ItemListsTypePut,
                             itemListProvider,
-                            "[Type] == 'Put'"));
+                            $"[ItemListType] == '{ItemListType.Put}'"));
                     break;
 
                 case ItemListType.Inventory:
@@ -156,7 +156,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                             "ItemListViewTypeInventory",
                             Resources.MasterData.ItemListsTypeInventory,
                             itemListProvider,
-                            "[Type] == 'Inventory'"));
+                            $"[ItemListType] == '{ItemListType.Inventory}'"));
                     break;
 
                 default:
@@ -169,19 +169,19 @@ namespace Ferretto.Common.Modules.BLL.Services
                             "ItemListViewTypePick",
                             Resources.MasterData.ItemListsTypePick,
                             itemListProvider,
-                            "[ItemListType] == '1'"));
+                            $"[ItemListType] == '{ItemListType.Pick}'"));
                     listFilters.Add(
                         new PagedDataSource<ItemList>(
                             "ItemListViewTypePut",
                             Resources.MasterData.ItemListsTypePut,
                             itemListProvider,
-                            "[Type] == 'Put'"));
+                            $"[ItemListType] == '{ItemListType.Put}'"));
                     listFilters.Add(
                         new PagedDataSource<ItemList>(
                             "ItemListViewTypeInventory",
                             Resources.MasterData.ItemListsTypeInventory,
                             itemListProvider,
-                            "[Type] == '2'"));
+                            $"[ItemListType] == '{ItemListType.Inventory}'"));
                     break;
             }
 
@@ -192,14 +192,14 @@ namespace Ferretto.Common.Modules.BLL.Services
                     "ItemListViewStatusWaiting",
                     Resources.MasterData.ItemListStatusWaiting,
                     itemListProvider,
-                    $"[ItemListStatus] == 'Waiting' {typeFilter}"));
+                    $"[ItemListStatus] == '{ItemListStatus.Waiting}' {typeFilter}"));
 
             listFilters.Add(
                 new PagedDataSource<ItemList>(
                     "ItemListViewStatusCompleted",
                     Resources.MasterData.ItemListStatusCompleted,
                     itemListProvider,
-                    $"[Status] == 'Completed' {typeFilter}'"));
+                    $"[ItemListStatus] == '{ItemListStatus.Completed}' {typeFilter}"));
 
             return listFilters.Cast<IFilterDataSource<TModel>>();
         }
@@ -225,7 +225,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                     "ItemsViewFIFO",
                     Resources.MasterData.ItemFIFO,
                     itemsProvider,
-                    "[ManagementType] == 'FIFO'")
+                    $"[ManagementType] == '{ItemManagementType.FIFO}'")
             }.Cast<IFilterDataSource<TModel>>();
         }
 
@@ -245,28 +245,28 @@ namespace Ferretto.Common.Modules.BLL.Services
                     "LoadingUnitsViewAreaManual",
                     Resources.MasterData.LoadingUnitAreaManual,
                     loadingUnitProvider,
-                    "[CellPosition] == '1'"),
+                    $"[AreaName] == 'Manual Area'"),
                 new PagedDataSource<LoadingUnit>(
                     "LoadingUnitsViewAreaVertimag",
                     Resources.MasterData.LoadingUnitAreaVertimag,
                     loadingUnitProvider,
-                    "[CellPosition] == '2'"),
+                    "[AreaName] == 'Vertimag Area'"),
 
                 new PagedDataSource<LoadingUnit>(
                     "LoadingUnitsViewStatusAvailable",
                     Resources.MasterData.LoadingUnitStatusAvailable,
                     loadingUnitProvider,
-                    "[LoadingUnitStatusId] == 'A'"),
+                    "[LoadingUnitStatusDescription] == 'Available'"),
                 new PagedDataSource<LoadingUnit>(
                     "LoadingUnitsViewStatusBlocked",
                     Resources.MasterData.LoadingUnitStatusBlocked,
                     loadingUnitProvider,
-                    "[LoadingUnitStatusId] == 'B'"),
+                    "[LoadingUnitStatusDescription] == 'Blocked'"),
                 new PagedDataSource<LoadingUnit>(
                     "LoadingUnitsViewStatusUsed",
                     Resources.MasterData.LoadingUnitStatusUsed,
                     loadingUnitProvider,
-                    "[LoadingUnitStatusId] == 'U'"),
+                    "[LoadingUnitStatusDescription] == 'Used'"),
             }.Cast<IFilterDataSource<TModel>>();
         }
 
@@ -297,13 +297,13 @@ namespace Ferretto.Common.Modules.BLL.Services
                     "MachinesViewVertimagXS",
                     Resources.Machines.MachineVertimagXS,
                     machineProvider,
-                    "[Model] == '%VARIANT-M%'"),
+                    "[Model] == 'VMAG/ver-2018/variant-XS/depth-103'"),
 
                 new PagedDataSource<Machine>(
                     "MachinesViewVertimagM",
                     Resources.Machines.MachineVertimagM,
                     machineProvider,
-                    "[Model] == '%VARIANT-M%'")
+                    "[Model] == 'VMAG/ver-2018/variant-M/depth-84'")
             }.Cast<IFilterDataSource<TModel>>();
         }
 
@@ -323,13 +323,13 @@ namespace Ferretto.Common.Modules.BLL.Services
                     "MissionViewStatusCompleted",
                     Resources.Scheduler.MissionStatusCompleted,
                     missionProvider,
-                    "[Status] == 'C'"),
+                    $"[Status] == '{MissionStatus.Completed}'"),
 
                 new PagedDataSource<Mission>(
                     "MissionViewStatusNew",
                     Resources.Scheduler.MissionStatusNew,
                     missionProvider,
-                    "[Status] == 'N'")
+                    $"[Status] == '{MissionStatus.New}'")
             }.Cast<IFilterDataSource<TModel>>();
         }
 
@@ -349,13 +349,13 @@ namespace Ferretto.Common.Modules.BLL.Services
                             "SchedulerRequestOperationInsert",
                             Resources.Scheduler.SchedulerRequestOperationInsert,
                             schedulerRequestProvider,
-                           "[OperationType] == 'I'"),
+                            $"[OperationType] == '{OperationType.Insertion}'"),
 
                         new PagedDataSource<SchedulerRequest>(
                             "SchedulerRequestOperationWithdraw",
                             Resources.Scheduler.SchedulerRequestOperationWithdraw,
                             schedulerRequestProvider,
-                            "[OperationType] == 'W'")
+                            $"[OperationType] == '{OperationType.Withdrawal}'")
                     }.Cast<IFilterDataSource<TModel>>();
         }
 
