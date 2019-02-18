@@ -1,6 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Ferretto.Common.BusinessModels;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Ferretto.WMS.Scheduler.Tests
+namespace Ferretto.Common.BLL.Tests
 {
     [TestClass]
     public class LoadingUnitTest
