@@ -12,22 +12,16 @@ namespace Ferretto.VW.VWApp
             this.InitializeComponent();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
         protected override void OnClosed(EventArgs e)
         {
-            ((MainWindowViewModel)this.DataContext).switchMotors?.Terminate();
-            ((MainWindowViewModel)this.DataContext).DrawerWeightDetection?.Terminate();
-            ((MainWindowViewModel)this.DataContext).PositioningDrawer?.Terminate();
-            ((MainWindowViewModel)this.DataContext).CalibrateVerticalAxis?.Terminate();
-            ((MainWindowViewModel)this.DataContext).Inverter?.Terminate();
-            ((MainWindowViewModel)this.DataContext).remoteIO?.Disconnect();
             Application.Current.Shutdown();
             base.OnClosed(e);
         }
 
-        #endregion Methods
+        #endregion
     }
 }
