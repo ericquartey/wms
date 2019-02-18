@@ -21,13 +21,11 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly IAbcClassProvider abcClassProvider;
 
+        private readonly WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService;
+
         private readonly ICellPositionProvider cellPositionProvider;
 
-        private readonly ICellProvider cellProvider;
-
         private readonly WMS.Data.WebAPI.Contracts.ICellsDataService cellsDataService;
-
-        private readonly ICompartmentProvider compartmentProvider;
 
         private readonly WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService;
 
@@ -40,23 +38,21 @@ namespace Ferretto.Common.BusinessProviders
         #region Constructors
 
         public LoadingUnitProvider(
-            ICellProvider cellProvider,
-            ICompartmentProvider compartmentProvider,
             IAbcClassProvider abcClassProvider,
             ICellPositionProvider cellPositionProvider,
             ILoadingUnitStatusProvider loadingUnitStatusProvider,
             ILoadingUnitTypeProvider loadingUnitTypeProvider,
             WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService,
-            WMS.Data.WebAPI.Contracts.ICellsDataService cellsDataService)
+            WMS.Data.WebAPI.Contracts.ICellsDataService cellsDataService,
+            WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService)
         {
-            this.cellProvider = cellProvider;
-            this.compartmentProvider = compartmentProvider;
             this.abcClassProvider = abcClassProvider;
             this.cellPositionProvider = cellPositionProvider;
             this.loadingUnitStatusProvider = loadingUnitStatusProvider;
             this.loadingUnitTypeProvider = loadingUnitTypeProvider;
             this.loadingUnitsDataService = loadingUnitsDataService;
             this.cellsDataService = cellsDataService;
+            this.areasDataService = areasDataService;
         }
 
         #endregion
@@ -195,7 +191,7 @@ namespace Ferretto.Common.BusinessProviders
             var cellPositionChoices = await this.cellPositionProvider.GetAllAsync();
             var loadingUnitStatusChoices = await this.loadingUnitStatusProvider.GetAllAsync();
             var loadingUnitTypeChoices = await this.loadingUnitTypeProvider.GetAllAsync();
-            var cellChoices = await this.cellProvider.GetByAreaIdAsync(loadingUnit.AreaId);
+            var cellChoices = await this.GetCellsByAreaIdAsync(loadingUnit.AreaId);
 
             var l = new LoadingUnitDetails
             {
@@ -238,12 +234,61 @@ namespace Ferretto.Common.BusinessProviders
                 CellChoices = cellChoices
             };
 
-            foreach (var compartment in await this.compartmentProvider.GetByLoadingUnitIdAsync(id))
+            foreach (var compartment in await this.GetCompartmentsByLoadingUnitIdAsync(id))
             {
                 l.AddCompartment(compartment);
             }
 
             return l;
+        }
+
+        public async Task<IEnumerable<Enumeration>> GetCellsByAreaIdAsync(int areaId)
+        {
+            return (await this.areasDataService.GetCellsAsync(areaId))
+                .Select(c => new Enumeration(
+                    c.Id,
+                    $"{c.AreaName} - {c.AisleName} - Cell {c.Number} (Floor {c.Floor}, Column {c.Column}, {c.Side})")); // TODO: localize string
+        }
+
+        public async Task<IEnumerable<CompartmentDetails>> GetCompartmentsByLoadingUnitIdAsync(int id)
+        {
+            return (await this.loadingUnitsDataService.GetCompartmentsAsync(id))
+                .Select(c => new CompartmentDetails
+                {
+                    Id = c.Id,
+                    LoadingUnitCode = c.LoadingUnitCode,
+                    CompartmentTypeId = c.CompartmentTypeId,
+                    ItemCode = c.ItemCode,
+                    ItemDescription = c.ItemDescription,
+                    Sub1 = c.Sub1,
+                    Sub2 = c.Sub2,
+                    MaterialStatusId = c.MaterialStatusId,
+                    FifoTime = c.FifoTime,
+                    PackageTypeId = c.PackageTypeId,
+                    Lot = c.Lot,
+                    RegistrationNumber = c.RegistrationNumber,
+                    MaxCapacity = c.MaxCapacity,
+                    Stock = c.Stock,
+                    ReservedForPick = c.ReservedForPick,
+                    ReservedToStore = c.ReservedToStore,
+                    CompartmentStatusId = c.CompartmentStatusId,
+                    CompartmentStatusDescription = c.CompartmentStatusDescription,
+                    CreationDate = c.CreationDate,
+                    LastHandlingDate = c.LastHandlingDate,
+                    InventoryDate = c.InventoryDate,
+                    FirstStoreDate = c.FirstStoreDate,
+                    LastStoreDate = c.LastStoreDate,
+                    LastPickDate = c.LastPickDate,
+                    Width = c.HasRotation ? c.Height : c.Width,
+                    Height = c.HasRotation ? c.Width : c.Height,
+                    XPosition = c.XPosition,
+                    YPosition = c.YPosition,
+                    LoadingUnitId = c.LoadingUnitId,
+                    ItemId = c.ItemId,
+                    IsItemPairingFixed = c.IsItemPairingFixed,
+                    LoadingUnitHasCompartments = c.LoadingUnitHasCompartments,
+                    ItemMeasureUnit = c.ItemMeasureUnit
+                });
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)

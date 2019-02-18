@@ -23,6 +23,12 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
+        private readonly IAbcClassProvider abcClassProvider;
+
+        private readonly WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService;
+
+        private readonly ICellPositionProvider cellPositionProvider;
+
         private readonly WMS.Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService;
 
         private readonly ICompartmentStatusProvider compartmentStatusProvider;
@@ -31,9 +37,11 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService;
 
-        private readonly ILoadingUnitProvider loadingUnitProvider;
-
         private readonly WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService;
+
+        private readonly ILoadingUnitStatusProvider loadingUnitStatusProvider;
+
+        private readonly ILoadingUnitTypeProvider loadingUnitTypeProvider;
 
         private readonly IMaterialStatusProvider materialStatusProvider;
 
@@ -48,20 +56,28 @@ namespace Ferretto.Common.BusinessProviders
             ICompartmentTypeProvider compartmentTypeProvider,
             IPackageTypeProvider packageTypeProvider,
             IMaterialStatusProvider materialStatusProvider,
+            IAbcClassProvider abcClassProvider,
+            ICellPositionProvider cellPositionProvider,
+            ILoadingUnitStatusProvider loadingUnitStatusProvider,
+            ILoadingUnitTypeProvider loadingUnitTypeProvider,
             WMS.Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService,
             WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService,
             WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService,
-            ILoadingUnitProvider loadingUnitProvider)
+            WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService)
         {
             this.compartmentsDataService = compartmentsDataService;
             this.itemsDataService = itemsDataService;
             this.loadingUnitsDataService = loadingUnitsDataService;
+            this.areasDataService = areasDataService;
 
+            this.abcClassProvider = abcClassProvider;
+            this.cellPositionProvider = cellPositionProvider;
             this.compartmentTypeProvider = compartmentTypeProvider;
             this.compartmentStatusProvider = compartmentStatusProvider;
             this.packageTypeProvider = packageTypeProvider;
             this.materialStatusProvider = materialStatusProvider;
-            this.loadingUnitProvider = loadingUnitProvider;
+            this.loadingUnitStatusProvider = loadingUnitStatusProvider;
+            this.loadingUnitTypeProvider = loadingUnitTypeProvider;
         }
 
         #endregion
@@ -200,7 +216,7 @@ namespace Ferretto.Common.BusinessProviders
             var materialStatusChoices = await this.materialStatusProvider.GetAllAsync();
             var packageTypeChoices = await this.packageTypeProvider.GetAllAsync();
 
-            var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId);
+            var loadingUnit = await this.GetLoadingUnitByIdAsync(compartment.LoadingUnitId);
 
             return new CompartmentDetails
             {
@@ -302,6 +318,73 @@ namespace Ferretto.Common.BusinessProviders
                     LoadingUnitHasCompartments = c.LoadingUnitHasCompartments,
                     ItemMeasureUnit = c.ItemMeasureUnit
                 });
+        }
+
+        public async Task<IEnumerable<Enumeration>> GetCellsByAreaIdAsync(int areaId)
+        {
+            return (await this.areasDataService.GetCellsAsync(areaId))
+                .Select(c => new Enumeration(
+                    c.Id,
+                    $"{c.AreaName} - {c.AisleName} - Cell {c.Number} (Floor {c.Floor}, Column {c.Column}, {c.Side})")); // TODO: localize string
+        }
+
+        public async Task<LoadingUnitDetails> GetLoadingUnitByIdAsync(int id)
+        {
+            var loadingUnit = await this.loadingUnitsDataService.GetByIdAsync(id);
+
+            var abcClassChoices = await this.abcClassProvider.GetAllAsync();
+            var cellPositionChoices = await this.cellPositionProvider.GetAllAsync();
+            var loadingUnitStatusChoices = await this.loadingUnitStatusProvider.GetAllAsync();
+            var loadingUnitTypeChoices = await this.loadingUnitTypeProvider.GetAllAsync();
+            var cellChoices = await this.GetCellsByAreaIdAsync(loadingUnit.AreaId);
+
+            var l = new LoadingUnitDetails
+            {
+                Id = loadingUnit.Id,
+                Code = loadingUnit.Code,
+                AbcClassId = loadingUnit.AbcClassId,
+                AbcClassDescription = loadingUnit.AbcClassDescription,
+                CellPositionId = loadingUnit.CellPositionId,
+                CellPositionDescription = loadingUnit.CellPositionDescription,
+                LoadingUnitStatusId = loadingUnit.LoadingUnitStatusId,
+                LoadingUnitStatusDescription = loadingUnit.LoadingUnitStatusDescription,
+                LoadingUnitTypeId = loadingUnit.LoadingUnitTypeId,
+                LoadingUnitTypeDescription = loadingUnit.LoadingUnitTypeDescription,
+                Width = loadingUnit.Width,
+                Length = loadingUnit.Length,
+                Note = loadingUnit.Note,
+                IsCellPairingFixed = loadingUnit.IsCellPairingFixed,
+                ReferenceType = (ReferenceType)loadingUnit.ReferenceType,
+                Height = loadingUnit.Height,
+                Weight = loadingUnit.Weight,
+                HandlingParametersCorrection = loadingUnit.HandlingParametersCorrection,
+                LoadingUnitTypeHasCompartments = loadingUnit.LoadingUnitTypeHasCompartments,
+                CreationDate = loadingUnit.CreationDate,
+                LastHandlingDate = loadingUnit.LastHandlingDate,
+                InventoryDate = loadingUnit.InventoryDate,
+                LastPickDate = loadingUnit.LastPickDate,
+                LastStoreDate = loadingUnit.LastStoreDate,
+                InCycleCount = loadingUnit.InCycleCount,
+                OutCycleCount = loadingUnit.OutCycleCount,
+                OtherCycleCount = loadingUnit.OtherCycleCount,
+                CellId = loadingUnit.CellId,
+                AisleId = loadingUnit.AisleId,
+                AreaId = loadingUnit.AreaId,
+                CompartmentsCount = loadingUnit.CompartmentsCount,
+
+                AbcClassChoices = abcClassChoices,
+                CellPositionChoices = cellPositionChoices,
+                LoadingUnitStatusChoices = loadingUnitStatusChoices,
+                LoadingUnitTypeChoices = loadingUnitTypeChoices,
+                CellChoices = cellChoices
+            };
+
+            foreach (var compartment in await this.GetByLoadingUnitIdAsync(id))
+            {
+                l.AddCompartment(compartment);
+            }
+
+            return l;
         }
 
         public async Task<int?> GetMaxCapacityAsync(int? width, int? height, int itemId)
