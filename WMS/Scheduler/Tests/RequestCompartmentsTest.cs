@@ -2,7 +2,7 @@
 using Ferretto.WMS.Scheduler.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Ferretto.Common.BLL.Tests
+namespace Ferretto.WMS.Scheduler.Tests
 {
     [TestClass]
     public class RequestCompartmentsTest : BaseWarehouseTest
@@ -10,6 +10,7 @@ namespace Ferretto.Common.BLL.Tests
         #region Fields
 
         private const int OtherBayId = 1000;
+
         private const int OtherLoadingUnitId = 1000;
 
         #endregion
@@ -35,7 +36,7 @@ namespace Ferretto.Common.BLL.Tests
 
             var sub1 = "S1";
 
-            var compartment1 = new DataModels.Compartment
+            var compartment1 = new Common.DataModels.Compartment
             {
                 Id = 1,
                 ItemId = this.Item1.Id,
@@ -57,7 +58,7 @@ namespace Ferretto.Common.BLL.Tests
             {
                 #region Act
 
-                var provider = new SchedulerRequestProvider(context);
+                var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
 
                 var schedulerRequest = new SchedulerRequest
                 {
@@ -94,7 +95,7 @@ namespace Ferretto.Common.BLL.Tests
 
             var sub1 = "S1";
 
-            var compartment1 = new DataModels.Compartment
+            var compartment1 = new Common.DataModels.Compartment
             {
                 Id = 1,
                 ItemId = this.Item1.Id,
@@ -103,7 +104,7 @@ namespace Ferretto.Common.BLL.Tests
                 Stock = 10,
             };
 
-            var compartment2 = new DataModels.Compartment
+            var compartment2 = new Common.DataModels.Compartment
             {
                 Id = 2,
                 ItemId = this.Item1.Id,
@@ -112,13 +113,13 @@ namespace Ferretto.Common.BLL.Tests
                 Stock = 10,
             };
 
-            var request1 = new DataModels.SchedulerRequest
+            var request1 = new Common.DataModels.SchedulerRequest
             {
                 Id = 1,
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 RequestedQuantity = compartment1.Stock,
-                OperationType = DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
             using (var context = this.CreateContext())
@@ -136,7 +137,7 @@ namespace Ferretto.Common.BLL.Tests
             {
                 #region Act
 
-                var provider = new SchedulerRequestProvider(context);
+                var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
 
                 var schedulerRequest = new SchedulerRequest
                 {
@@ -170,7 +171,7 @@ namespace Ferretto.Common.BLL.Tests
 
             var sub1 = "S1";
 
-            var compartment1 = new DataModels.Compartment
+            var compartment1 = new Common.DataModels.Compartment
             {
                 Id = 1,
                 ItemId = this.Item1.Id,
@@ -192,7 +193,7 @@ namespace Ferretto.Common.BLL.Tests
             {
                 #region Act
 
-                var provider = new SchedulerRequestProvider(context);
+                var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
 
                 var schedulerRequest = new SchedulerRequest
                 {
@@ -225,7 +226,7 @@ namespace Ferretto.Common.BLL.Tests
         {
             #region Arrange
 
-            var compartment1 = new DataModels.Compartment
+            var compartment1 = new Common.DataModels.Compartment
             {
                 Id = 1,
                 ItemId = this.Item1.Id,
@@ -252,7 +253,7 @@ namespace Ferretto.Common.BLL.Tests
             {
                 #region Act
 
-                var provider = new SchedulerRequestProvider(context);
+                var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
 
                 var schedulerRequest = new SchedulerRequest
                 {
@@ -305,7 +306,7 @@ namespace Ferretto.Common.BLL.Tests
 
             var compartments = new[]
             {
-                new DataModels.Compartment
+                new Common.DataModels.Compartment
                 {
                     Id = 1,
                     ItemId = this.ItemFifo.Id,
@@ -314,7 +315,7 @@ namespace Ferretto.Common.BLL.Tests
                     Stock = 10,
                     FirstStoreDate = System.DateTime.Now.AddHours(-1)
                 },
-                new DataModels.Compartment
+                new Common.DataModels.Compartment
                 {
                     Id = 2,
                     ItemId = this.ItemFifo.Id,
@@ -323,7 +324,7 @@ namespace Ferretto.Common.BLL.Tests
                     Stock = 10,
                     FirstStoreDate = System.DateTime.Now.AddHours(-3)
                 },
-                new DataModels.Compartment
+                new Common.DataModels.Compartment
                 {
                     Id = 3,
                     ItemId = this.ItemFifo.Id,
@@ -332,7 +333,7 @@ namespace Ferretto.Common.BLL.Tests
                     Stock = 10,
                     FirstStoreDate = System.DateTime.Now.AddHours(-2)
                 },
-                new DataModels.Compartment
+                new Common.DataModels.Compartment
                 {
                     Id = 4,
                     ItemId = this.ItemFifo.Id,
@@ -356,7 +357,7 @@ namespace Ferretto.Common.BLL.Tests
             {
                 #region Act
 
-                var provider = new SchedulerRequestProvider(context);
+                var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
 
                 var schedulerRequest = new SchedulerRequest
                 {
@@ -390,7 +391,7 @@ namespace Ferretto.Common.BLL.Tests
         {
             #region Arrange
 
-            var compartment1 = new DataModels.Compartment
+            var compartment1 = new Common.DataModels.Compartment
             {
                 Id = 1,
                 ItemId = this.Item1.Id,
@@ -412,7 +413,7 @@ namespace Ferretto.Common.BLL.Tests
             {
                 #region Act
 
-                var provider = new SchedulerRequestProvider(context);
+                var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
 
                 var schedulerRequest = new SchedulerRequest
                 {
@@ -448,7 +449,7 @@ namespace Ferretto.Common.BLL.Tests
 
             var sub1 = "S1";
 
-            var compartment1 = new DataModels.Compartment
+            var compartment1 = new Common.DataModels.Compartment
             {
                 Id = 1,
                 ItemId = this.Item1.Id,
@@ -457,13 +458,13 @@ namespace Ferretto.Common.BLL.Tests
                 Stock = 10,
             };
 
-            var request1 = new DataModels.SchedulerRequest
+            var request1 = new Common.DataModels.SchedulerRequest
             {
                 Id = 1,
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 RequestedQuantity = 3,
-                OperationType = DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
             using (var context = this.CreateContext())
@@ -480,7 +481,7 @@ namespace Ferretto.Common.BLL.Tests
             {
                 #region Act
 
-                var provider = new SchedulerRequestProvider(context);
+                var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
 
                 var schedulerRequest = new SchedulerRequest
                 {
@@ -516,7 +517,7 @@ namespace Ferretto.Common.BLL.Tests
 
             var sub1 = "S1";
 
-            var compartment1 = new DataModels.Compartment
+            var compartment1 = new Common.DataModels.Compartment
             {
                 Id = 1,
                 ItemId = this.Item1.Id,
@@ -525,22 +526,22 @@ namespace Ferretto.Common.BLL.Tests
                 Stock = 10,
             };
 
-            var request1 = new DataModels.SchedulerRequest
+            var request1 = new Common.DataModels.SchedulerRequest
             {
                 Id = 1,
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 RequestedQuantity = 5,
-                OperationType = DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
-            var request2 = new DataModels.SchedulerRequest
+            var request2 = new Common.DataModels.SchedulerRequest
             {
                 Id = 2,
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 RequestedQuantity = 5,
-                OperationType = DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
             using (var context = this.CreateContext())
@@ -558,7 +559,7 @@ namespace Ferretto.Common.BLL.Tests
             {
                 #region Act
 
-                var provider = new SchedulerRequestProvider(context);
+                var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
 
                 var schedulerRequest = new SchedulerRequest
                 {
@@ -599,7 +600,7 @@ namespace Ferretto.Common.BLL.Tests
 
             var compartments = new[]
             {
-                new DataModels.Compartment
+                new Common.DataModels.Compartment
                 {
                     Id = 1,
                     ItemId = this.ItemVolume.Id,
@@ -608,7 +609,7 @@ namespace Ferretto.Common.BLL.Tests
                     Stock = 2,
                     FirstStoreDate = now.AddHours(-1)
                 },
-                new DataModels.Compartment
+                new Common.DataModels.Compartment
                 {
                     Id = 2,
                     ItemId = this.ItemVolume.Id,
@@ -617,7 +618,7 @@ namespace Ferretto.Common.BLL.Tests
                     Stock = 2,
                     FirstStoreDate = now.AddHours(-3)
                 },
-                new DataModels.Compartment
+                new Common.DataModels.Compartment
                 {
                     Id = 3,
                     ItemId = this.ItemVolume.Id,
@@ -626,7 +627,7 @@ namespace Ferretto.Common.BLL.Tests
                     Stock = 2,
                     FirstStoreDate = now.AddHours(-1)
                 },
-                new DataModels.Compartment
+                new Common.DataModels.Compartment
                 {
                     Id = 4,
                     ItemId = this.ItemVolume.Id,
@@ -635,7 +636,7 @@ namespace Ferretto.Common.BLL.Tests
                     Stock = 1,
                     FirstStoreDate = now.AddHours(-1)
                 },
-                new DataModels.Compartment
+                new Common.DataModels.Compartment
                 {
                     Id = 5,
                     ItemId = this.ItemVolume.Id,
@@ -659,7 +660,7 @@ namespace Ferretto.Common.BLL.Tests
             {
                 #region Act
 
-                var provider = new SchedulerRequestProvider(context);
+                var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
 
                 var schedulerRequest = new SchedulerRequest
                 {
@@ -697,7 +698,7 @@ namespace Ferretto.Common.BLL.Tests
             var subX = "SX";
             var subZ = "SZ";
 
-            var compartment1 = new DataModels.Compartment
+            var compartment1 = new Common.DataModels.Compartment
             {
                 Id = 1,
                 ItemId = this.Item1.Id,
@@ -706,7 +707,7 @@ namespace Ferretto.Common.BLL.Tests
                 Stock = 10,
             };
 
-            var compartment2 = new DataModels.Compartment
+            var compartment2 = new Common.DataModels.Compartment
             {
                 Id = 2,
                 ItemId = this.Item1.Id,
@@ -715,22 +716,22 @@ namespace Ferretto.Common.BLL.Tests
                 Stock = 10,
             };
 
-            var request1 = new DataModels.SchedulerRequest
+            var request1 = new Common.DataModels.SchedulerRequest
             {
                 Id = 1,
                 ItemId = this.Item1.Id,
                 Sub1 = subX,
                 RequestedQuantity = 9,
-                OperationType = DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
-            var request2 = new DataModels.SchedulerRequest
+            var request2 = new Common.DataModels.SchedulerRequest
             {
                 Id = 2,
                 ItemId = this.Item1.Id,
                 Sub1 = subZ,
                 RequestedQuantity = 9,
-                OperationType = DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
             using (var context = this.CreateContext())
@@ -749,7 +750,7 @@ namespace Ferretto.Common.BLL.Tests
             {
                 #region Act
 
-                var provider = new SchedulerRequestProvider(context);
+                var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
 
                 var schedulerRequest = new SchedulerRequest
                 {
@@ -784,7 +785,7 @@ namespace Ferretto.Common.BLL.Tests
 
             var sub1 = "S1";
 
-            var compartment1 = new DataModels.Compartment
+            var compartment1 = new Common.DataModels.Compartment
             {
                 Id = 1,
                 ItemId = this.Item1.Id,
@@ -793,7 +794,7 @@ namespace Ferretto.Common.BLL.Tests
                 Stock = 10,
             };
 
-            var compartment2 = new DataModels.Compartment
+            var compartment2 = new Common.DataModels.Compartment
             {
                 Id = 2,
                 ItemId = this.Item1.Id,
@@ -802,22 +803,22 @@ namespace Ferretto.Common.BLL.Tests
                 Stock = 10,
             };
 
-            var request1 = new DataModels.SchedulerRequest
+            var request1 = new Common.DataModels.SchedulerRequest
             {
                 Id = 1,
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 RequestedQuantity = compartment1.Stock,
-                OperationType = DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
-            var request2 = new DataModels.SchedulerRequest
+            var request2 = new Common.DataModels.SchedulerRequest
             {
                 Id = 2,
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 RequestedQuantity = compartment2.Stock / 2,
-                OperationType = DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
             using (var context = this.CreateContext())
@@ -836,7 +837,7 @@ namespace Ferretto.Common.BLL.Tests
             {
                 #region Act
 
-                var provider = new SchedulerRequestProvider(context);
+                var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
 
                 var schedulerRequest = new SchedulerRequest
                 {

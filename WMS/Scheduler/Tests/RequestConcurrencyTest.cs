@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.WMS.Scheduler.Core;
+using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Ferretto.Common.BLL.Tests
+namespace Ferretto.WMS.Scheduler.Tests
 {
     [TestClass]
     public class RequestConcurrencyTest : BaseWarehouseTest
@@ -35,14 +35,14 @@ namespace Ferretto.Common.BLL.Tests
         {
             #region Arrange
 
-            var compartment1 = new DataModels.Compartment
+            var compartment1 = new Common.DataModels.Compartment
             {
                 ItemId = this.ItemFifo.Id,
                 LoadingUnitId = this.LoadingUnit1.Id,
                 Stock = 10
             };
 
-            var request1 = new DataModels.SchedulerRequest
+            var request1 = new Common.DataModels.SchedulerRequest
             {
                 ItemId = this.ItemFifo.Id,
                 AreaId = this.Area1.Id,
@@ -50,17 +50,17 @@ namespace Ferretto.Common.BLL.Tests
                 IsInstant = true,
                 RequestedQuantity = 15,
                 DispatchedQuantity = 15,
-                OperationType = DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
-            var request2 = new DataModels.SchedulerRequest
+            var request2 = new Common.DataModels.SchedulerRequest
             {
                 ItemId = this.ItemFifo.Id,
                 AreaId = this.Area1.Id,
                 BayId = this.Bay1.Id,
                 IsInstant = true,
                 RequestedQuantity = 5,
-                OperationType = DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
             using (var context = this.CreateContext())
@@ -78,12 +78,9 @@ namespace Ferretto.Common.BLL.Tests
             {
                 #region Act
 
-                var warehouse = new Warehouse(
-                    new DataProvider(context),
-                    new SchedulerRequestProvider(context),
-                    new Mock<ILogger<Warehouse>>().Object);
+                var missionProvider = this.ServiceProvider.GetService(typeof(IMissionSchedulerProvider)) as IMissionSchedulerProvider;
 
-                var missions = await warehouse.CreateMissionsForPendingRequestsAsync();
+                var missions = await missionProvider.CreateForPendingRequestsAsync();
 
                 #endregion
 
@@ -112,7 +109,7 @@ namespace Ferretto.Common.BLL.Tests
 
             var now = System.DateTime.Now;
 
-            var compartment1 = new DataModels.Compartment
+            var compartment1 = new Common.DataModels.Compartment
             {
                 Id = 1,
                 ItemId = this.ItemFifo.Id,
@@ -121,7 +118,7 @@ namespace Ferretto.Common.BLL.Tests
                 FirstStoreDate = now.AddDays(-1)
             };
 
-            var compartment2 = new DataModels.Compartment
+            var compartment2 = new Common.DataModels.Compartment
             {
                 Id = 2,
                 ItemId = this.ItemFifo.Id,
@@ -130,14 +127,14 @@ namespace Ferretto.Common.BLL.Tests
                 FirstStoreDate = now.AddDays(-2)
             };
 
-            var request1 = new DataModels.SchedulerRequest
+            var request1 = new Common.DataModels.SchedulerRequest
             {
                 ItemId = this.ItemFifo.Id,
                 AreaId = this.Area1.Id,
                 BayId = this.Bay1.Id,
                 IsInstant = true,
                 RequestedQuantity = 15,
-                OperationType = DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
             using (var context = this.CreateContext())

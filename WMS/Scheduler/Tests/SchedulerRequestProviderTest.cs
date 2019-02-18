@@ -2,7 +2,7 @@
 using Ferretto.WMS.Scheduler.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Ferretto.Common.BLL.Tests
+namespace Ferretto.WMS.Scheduler.Tests
 {
     [TestClass]
     public class SchedulerRequestProviderTest : BaseWarehouseTest
@@ -30,6 +30,7 @@ namespace Ferretto.Common.BLL.Tests
             {
                 #region Act + Assert
 
+                this.ServiceProvider.GetService
                 var provider = new SchedulerRequestProvider(context);
 
                 await Assert.ThrowsExceptionAsync<System.ArgumentException>(() => provider.FullyQualifyWithdrawalRequestAsync(request));

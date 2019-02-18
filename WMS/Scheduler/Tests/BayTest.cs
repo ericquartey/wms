@@ -1,30 +1,26 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.Common.EF;
-using Ferretto.WMS.Scheduler.Core;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
-namespace Ferretto.Common.BLL.Tests
+namespace Ferretto.WMS.Scheduler.Tests
 {
     [TestClass]
-    public class BayTest
+    public class BayTest : BaseWarehouseTest
     {
         #region Fields
 
-        private DataModels.Aisle aisle1;
+        private Common.DataModels.Aisle aisle1;
 
-        private DataModels.Area area1;
+        private Common.DataModels.Area area1;
 
-        private DataModels.Bay bay1;
+        private Common.DataModels.Bay bay1;
 
-        private DataModels.Cell cell1;
+        private Common.DataModels.Cell cell1;
 
-        private DataModels.Item itemFifo;
+        private Common.DataModels.Item itemFifo;
 
-        private DataModels.LoadingUnit loadingUnit1;
+        private Common.DataModels.LoadingUnit loadingUnit1;
 
         #endregion
 
@@ -33,24 +29,21 @@ namespace Ferretto.Common.BLL.Tests
         [TestCleanup]
         public void Cleanup()
         {
-            using (var context = CreateContext())
-            {
-                context.Database.EnsureDeleted();
-            }
+            this.CleanupDatabase();
         }
 
         [TestInitialize]
         public void Initialize()
         {
-            this.area1 = new DataModels.Area { Id = 1 };
-            this.aisle1 = new DataModels.Aisle { Id = 1, AreaId = this.area1.Id };
-            this.cell1 = new DataModels.Cell { Id = 1, AisleId = this.aisle1.Id };
-            this.loadingUnit1 = new DataModels.LoadingUnit { Id = 1, CellId = this.cell1.Id };
-            this.bay1 = new DataModels.Bay { Id = 1, AreaId = this.area1.Id, LoadingUnitsBufferSize = 2 };
+            this.area1 = new Common.DataModels.Area { Id = 1 };
+            this.aisle1 = new Common.DataModels.Aisle { Id = 1, AreaId = this.area1.Id };
+            this.cell1 = new Common.DataModels.Cell { Id = 1, AisleId = this.aisle1.Id };
+            this.loadingUnit1 = new Common.DataModels.LoadingUnit { Id = 1, CellId = this.cell1.Id };
+            this.bay1 = new Common.DataModels.Bay { Id = 1, AreaId = this.area1.Id, LoadingUnitsBufferSize = 2 };
 
-            this.itemFifo = new DataModels.Item { Id = 1, ManagementType = DataModels.ItemManagementType.FIFO };
+            this.itemFifo = new Common.DataModels.Item { Id = 1, ManagementType = Common.DataModels.ItemManagementType.FIFO };
 
-            using (var context = CreateContext())
+            using (var context = this.CreateContext())
             {
                 context.Areas.Add(this.area1);
                 context.Aisles.Add(this.aisle1);
@@ -75,14 +68,14 @@ namespace Ferretto.Common.BLL.Tests
         {
             #region Arrange
 
-            var mission1 = new DataModels.Mission
+            var mission1 = new Common.DataModels.Mission
             {
                 BayId = this.bay1.Id,
                 RequiredQuantity = 1,
-                Status = DataModels.MissionStatus.New
+                Status = Common.DataModels.MissionStatus.New
             };
 
-            var compartment1 = new DataModels.Compartment
+            var compartment1 = new Common.DataModels.Compartment
             {
                 ItemId = this.itemFifo.Id,
                 LoadingUnitId = this.loadingUnit1.Id,
@@ -90,17 +83,17 @@ namespace Ferretto.Common.BLL.Tests
                 ReservedForPick = mission1.RequiredQuantity
             };
 
-            var request1 = new DataModels.SchedulerRequest
+            var request1 = new Common.DataModels.SchedulerRequest
             {
                 ItemId = this.itemFifo.Id,
                 AreaId = this.area1.Id,
                 BayId = this.bay1.Id,
                 IsInstant = true,
                 RequestedQuantity = 5,
-                OperationType = DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
-            using (var context = CreateContext())
+            using (var context = this.CreateContext())
             {
                 context.Compartments.Add(compartment1);
                 context.Missions.Add(mission1);
@@ -111,16 +104,13 @@ namespace Ferretto.Common.BLL.Tests
 
             #endregion
 
-            using (var context = CreateContext())
+            using (var context = this.CreateContext())
             {
                 #region Act
 
-                var warehouse = new Warehouse(
-                    new DataProvider(context),
-                    new SchedulerRequestProvider(context),
-                    new Mock<ILogger<Warehouse>>().Object);
+                var missionProvider = this.ServiceProvider.GetService(typeof(IMissionSchedulerProvider)) as IMissionSchedulerProvider;
 
-                var missions = await warehouse.CreateMissionsForPendingRequestsAsync();
+                var missions = await missionProvider.CreateForPendingRequestsAsync();
 
                 #endregion
 
@@ -145,7 +135,7 @@ namespace Ferretto.Common.BLL.Tests
         {
             #region Arrange
 
-            var request1 = new DataModels.SchedulerRequest
+            var request1 = new Common.DataModels.SchedulerRequest
             {
                 Id = 1,
                 ItemId = this.itemFifo.Id,
@@ -153,26 +143,26 @@ namespace Ferretto.Common.BLL.Tests
                 BayId = this.bay1.Id,
                 IsInstant = true,
                 RequestedQuantity = 5,
-                OperationType = DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
-            var mission1 = new DataModels.Mission
+            var mission1 = new Common.DataModels.Mission
             {
                 Id = 1,
                 BayId = this.bay1.Id,
                 RequiredQuantity = 1,
-                Status = DataModels.MissionStatus.New
+                Status = Common.DataModels.MissionStatus.New
             };
 
-            var mission2 = new DataModels.Mission
+            var mission2 = new Common.DataModels.Mission
             {
                 Id = 2,
                 BayId = this.bay1.Id,
                 RequiredQuantity = 1,
-                Status = DataModels.MissionStatus.New
+                Status = Common.DataModels.MissionStatus.New
             };
 
-            var compartment1 = new DataModels.Compartment
+            var compartment1 = new Common.DataModels.Compartment
             {
                 Id = 1,
                 ItemId = this.itemFifo.Id,
@@ -181,7 +171,7 @@ namespace Ferretto.Common.BLL.Tests
                 ReservedForPick = mission1.RequiredQuantity + mission2.RequiredQuantity
             };
 
-            using (var context = CreateContext())
+            using (var context = this.CreateContext())
             {
                 context.Compartments.Add(compartment1);
                 context.Missions.Add(mission1);
@@ -193,16 +183,13 @@ namespace Ferretto.Common.BLL.Tests
 
             #endregion
 
-            using (var context = CreateContext())
+            using (var context = this.CreateContext())
             {
                 #region Act
 
-                var warehouse = new Warehouse(
-                    new DataProvider(context),
-                    new SchedulerRequestProvider(context),
-                    new Mock<ILogger<Warehouse>>().Object);
+                var missionProvider = this.ServiceProvider.GetService(typeof(IMissionSchedulerProvider)) as IMissionSchedulerProvider;
 
-                var missions = await warehouse.CreateMissionsForPendingRequestsAsync();
+                var missions = await missionProvider.CreateForPendingRequestsAsync();
 
                 #endregion
 
@@ -212,14 +199,6 @@ namespace Ferretto.Common.BLL.Tests
 
                 #endregion
             }
-        }
-
-        private static DatabaseContext CreateContext()
-        {
-            return new DatabaseContext(
-                new DbContextOptionsBuilder<DatabaseContext>()
-                    .UseInMemoryDatabase(databaseName: "test_database")
-                    .Options);
         }
 
         #endregion

@@ -1,11 +1,10 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.WMS.Scheduler.Core;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Ferretto.Common.BLL.Tests
+namespace Ferretto.WMS.Scheduler.Tests
 {
     [TestClass]
     public class ListTest : BaseWarehouseTest
@@ -39,51 +38,51 @@ namespace Ferretto.Common.BLL.Tests
 
             var listId = 1;
 
-            var bay2 = new DataModels.Bay
+            var bay2 = new Common.DataModels.Bay
             {
                 Id = 2,
                 AreaId = this.Area1.Id,
                 LoadingUnitsBufferSize = 10
             };
 
-            var row1 = new DataModels.ItemListRow
+            var row1 = new Common.DataModels.ItemListRow
             {
                 Id = 1,
                 ItemId = this.ItemFifo.Id,
                 RequiredQuantity = 10,
                 ItemListId = listId,
-                Status = DataModels.ItemListRowStatus.Waiting,
+                Status = Common.DataModels.ItemListRowStatus.Waiting,
                 Priority = 3
             };
 
-            var row2 = new DataModels.ItemListRow
+            var row2 = new Common.DataModels.ItemListRow
             {
                 Id = 2,
                 ItemId = this.ItemFifo.Id,
                 RequiredQuantity = 10,
                 ItemListId = listId,
-                Status = DataModels.ItemListRowStatus.Waiting,
+                Status = Common.DataModels.ItemListRowStatus.Waiting,
                 Priority = 1,
             };
 
-            var row3 = new DataModels.ItemListRow
+            var row3 = new Common.DataModels.ItemListRow
             {
                 Id = 3,
                 ItemId = this.ItemFifo.Id,
                 RequiredQuantity = 10,
                 ItemListId = listId,
-                Status = DataModels.ItemListRowStatus.Waiting,
+                Status = Common.DataModels.ItemListRowStatus.Waiting,
                 Priority = 2
             };
 
-            var list1 = new DataModels.ItemList
+            var list1 = new Common.DataModels.ItemList
             {
                 Id = listId,
                 ItemListRows = new[] { row1, row2, row3 },
-                Status = DataModels.ItemListStatus.Waiting
+                Status = Common.DataModels.ItemListStatus.Waiting
             };
 
-            var compartment1 = new DataModels.Compartment
+            var compartment1 = new Common.DataModels.Compartment
             {
                 ItemId = this.ItemFifo.Id,
                 LoadingUnitId = this.LoadingUnit1.Id,
