@@ -2,7 +2,7 @@
 
 namespace Ferretto.Common.BusinessModels
 {
-    public class ArticleFilter : IFilter
+    public class MaterialStatusFilter : IFilter
     {
         #region Properties
 
@@ -10,25 +10,22 @@ namespace Ferretto.Common.BusinessModels
         {
             var compartmentDetails = compartment as CompartmentDetails;
             var selectedDetails = selected as CompartmentDetails;
-            var color = "Orange";
             if (selectedDetails != null && compartmentDetails != null)
             {
-                if ((compartmentDetails.MaterialStatusId != 0 || compartment == selected)
-                    &&
-                    compartmentDetails.MaterialStatusId == selectedDetails.MaterialStatusId)
+                if (compartmentDetails.MaterialStatusId == selectedDetails.MaterialStatusId)
                 {
-                    color = "#76FF03";
+                    return "#76FF03";
                 }
                 else
                 {
-                    color = "#90A4AE";
+                    return "#90A4AE";
                 }
             }
 
-            return color;
+            return "Orange";
         };
 
-        public string Description => "Article";
+        public string Description => "MaterialStatus";
 
         public int Id => 1;
 
