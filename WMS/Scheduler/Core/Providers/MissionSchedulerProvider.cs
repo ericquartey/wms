@@ -90,6 +90,21 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             }
         }
 
+        public async Task<Mission> UpdateAsync(Mission mission)
+        {
+            if (mission == null)
+            {
+                throw new ArgumentNullException(nameof(mission));
+            }
+
+            var existingModel = this.databaseContext.Missions.Find(mission.Id);
+            this.databaseContext.Entry(existingModel).CurrentValues.SetValues(mission);
+
+            await this.databaseContext.SaveChangesAsync();
+
+            return mission;
+        }
+
         private async Task<IEnumerable<Mission>> CreateMissionsFromRequestAsync(SchedulerRequest request)
         {
             var item = await this.itemSchedulerProvider.GetByIdAsync(request.ItemId);
