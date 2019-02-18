@@ -10,7 +10,7 @@ using Prism.Events;
 namespace MAS_DataLayerUnitTests
 {
     [TestClass]
-    public class WriteLogServiceUnitTest : DBTestUnitTest
+    public class DataLayerUnitTest : DBUnitTest
     {
         #region Methods
 
