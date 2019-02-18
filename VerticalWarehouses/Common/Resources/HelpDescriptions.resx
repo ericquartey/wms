@@ -221,4 +221,24 @@
     <value>HelpSSStateOff</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpLSMTTitle" xml:space="preserve">
+    <value>HelpLSMTTitle</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="HelpLSMTDescription" xml:space="preserve">
+    <value>HelpLSMTDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpLSMTActualPosition" xml:space="preserve">
+    <value>HelpLSMTActualPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLSMTMoveUp" xml:space="preserve">
+    <value>HelpLSMTMoveUp</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLSMTMoveDown" xml:space="preserve">
+    <value>HelpLSMTMoveDown</value>
+    <comment>Note text</comment>
+  </data>
 </root>

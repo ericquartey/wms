@@ -190,4 +190,19 @@
   <data name="HelpSSStateOff" xml:space="preserve">
     <value>Il colore grigio indica lo stato non attivo del sensore.</value>
   </data>
+  <data name="HelpLSMTTitle" xml:space="preserve">
+    <value>Comandi manuali a bassa velocita'.</value>
+  </data>
+  <data name="HelpLSMTDescription" xml:space="preserve">
+    <value>Permette di effettuare il movimento dei vari assi a bassa velocita. E' impostato uno spazio di movimento ridotto in entrambe le direzioni. Il testo dei pulsanti cambia in base al movimento richiesto.</value>
+  </data>
+  <data name="HelpLSMTActualPosition" xml:space="preserve">
+    <value>Indica lo posizione corrente o lo stato per quelle parti che hanno solo posizioni discrete.</value>
+  </data>
+  <data name="HelpLSMTMoveUp" xml:space="preserve">
+    <value>Pulsante di movimento avanti, salita o apertura in base alla parte selezionata</value>
+  </data>
+  <data name="HelpLSMTMoveDown" xml:space="preserve">
+    <value>Pulsante di movimento indietro, discesa o chiusura in base alla parte selezionata</value>
+  </data>
 </root>

@@ -160,6 +160,51 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLSMTActualPosition.
+        /// </summary>
+        public static string HelpLSMTActualPosition {
+            get {
+                return ResourceManager.GetString("HelpLSMTActualPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLSMTDescription.
+        /// </summary>
+        public static string HelpLSMTDescription {
+            get {
+                return ResourceManager.GetString("HelpLSMTDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLSMTMoveDown.
+        /// </summary>
+        public static string HelpLSMTMoveDown {
+            get {
+                return ResourceManager.GetString("HelpLSMTMoveDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLSMTMoveUp.
+        /// </summary>
+        public static string HelpLSMTMoveUp {
+            get {
+                return ResourceManager.GetString("HelpLSMTMoveUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLSMTTitle.
+        /// </summary>
+        public static string HelpLSMTTitle {
+            get {
+                return ResourceManager.GetString("HelpLSMTTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpSSDescription.
         /// </summary>
         public static string HelpSSDescription {
