@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.WMS.Scheduler.Core;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -68,6 +69,12 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
+            var missionProvider = this.ServiceProvider
+                .GetService(typeof(IMissionSchedulerProvider)) as IMissionSchedulerProvider;
+
+            var requestProvider = this.ServiceProvider
+                .GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
+
             var mission1 = new Common.DataModels.Mission
             {
                 BayId = this.bay1.Id,
@@ -108,9 +115,8 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var missionProvider = this.ServiceProvider.GetService(typeof(IMissionSchedulerProvider)) as IMissionSchedulerProvider;
-
-                var missions = await missionProvider.CreateForPendingRequestsAsync();
+                var requests = await requestProvider.GetRequestsToProcessAsync();
+                var missions = await missionProvider.CreateForRequestsAsync(requests);
 
                 #endregion
 
@@ -134,6 +140,12 @@ namespace Ferretto.WMS.Scheduler.Tests
         public async Task OneFullBay()
         {
             #region Arrange
+
+            var missionProvider = this.ServiceProvider
+                .GetService(typeof(IMissionSchedulerProvider)) as IMissionSchedulerProvider;
+
+            var requestProvider = this.ServiceProvider
+                .GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
 
             var request1 = new Common.DataModels.SchedulerRequest
             {
@@ -187,9 +199,8 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var missionProvider = this.ServiceProvider.GetService(typeof(IMissionSchedulerProvider)) as IMissionSchedulerProvider;
-
-                var missions = await missionProvider.CreateForPendingRequestsAsync();
+                var requests = await requestProvider.GetRequestsToProcessAsync();
+                var missions = await missionProvider.CreateForRequestsAsync(requests);
 
                 #endregion
 

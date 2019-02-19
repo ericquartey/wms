@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.WMS.Scheduler.Core;
+using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ferretto.WMS.Scheduler.Tests

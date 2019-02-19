@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Core.Providers;
 using Ferretto.WMS.Data.WebAPI.Controllers;
@@ -30,7 +31,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var cellType1 = new Common.DataModels.CellType { Id = 1, Description = "Cell Type #1" };
                 var cellType2 = new Common.DataModels.CellType { Id = 2, Description = "Cell Type #2" };
                 var cellType3 = new Common.DataModels.CellType { Id = 3, Description = "Cell Type #3" };
@@ -66,7 +67,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -93,7 +94,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var cellType1 = new Common.DataModels.CellType { Id = 1, Description = "Cell Type #1" };
                 var cellType2 = new Common.DataModels.CellType { Id = 2, Description = "Cell Type #2" };
                 var cellType3 = new Common.DataModels.CellType { Id = 3, Description = "Cell Type #3" };
@@ -129,7 +130,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -156,7 +157,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var cellType1 = new Common.DataModels.CellType { Id = 1, Description = "Cell Type #1" };
                 var cellType2 = new Common.DataModels.CellType { Id = 2, Description = "Cell Type #2" };
                 var cellType3 = new Common.DataModels.CellType { Id = 3, Description = "Cell Type #3" };
@@ -197,7 +198,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -215,11 +216,11 @@ namespace Ferretto.WMS.Data.Tests
             }
         }
 
-        private static CellTypesController MockController(DatabaseContext context)
+        private CellTypesController MockController()
         {
             return new CellTypesController(
                 new Mock<ILogger<CellTypesController>>().Object,
-                new CellTypeProvider(context));
+                this.ServiceProvider.GetService(typeof(ICellTypeProvider)) as ICellTypeProvider);
         }
 
         #endregion

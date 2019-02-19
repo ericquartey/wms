@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Core.Providers;
 using Ferretto.WMS.Data.WebAPI.Controllers;
@@ -30,7 +31,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var compartmentType1 = new Common.DataModels.CompartmentType { Id = 1, Height = 1, Width = 2 };
                 var compartmentType2 = new Common.DataModels.CompartmentType { Id = 2, Height = 1, Width = 2 };
                 var compartmentType3 = new Common.DataModels.CompartmentType { Id = 3, Height = 1, Width = 2 };
@@ -66,7 +67,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -93,7 +94,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var compartmentType1 = new Common.DataModels.CompartmentType { Id = 1, Height = 1, Width = 2 };
                 var compartmentType2 = new Common.DataModels.CompartmentType { Id = 2, Height = 1, Width = 2 };
                 var compartmentType3 = new Common.DataModels.CompartmentType { Id = 3, Height = 1, Width = 2 };
@@ -129,7 +130,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -156,7 +157,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var compartmentType1 = new Common.DataModels.CompartmentType { Id = 1, Height = 1, Width = 2 };
                 var compartmentType2 = new Common.DataModels.CompartmentType { Id = 2, Height = 1, Width = 2 };
                 var compartmentType3 = new Common.DataModels.CompartmentType { Id = 3, Height = 1, Width = 2 };
@@ -197,7 +198,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -215,13 +216,11 @@ namespace Ferretto.WMS.Data.Tests
             }
         }
 
-        private static CompartmentTypesController MockController(DatabaseContext context)
+        private CompartmentTypesController MockController()
         {
             return new CompartmentTypesController(
                 new Mock<ILogger<CompartmentTypesController>>().Object,
-                new CompartmentTypeProvider(
-                    context,
-                    new ItemCompartmentTypeProvider(context)));
+                this.ServiceProvider.GetService(typeof(ICompartmentTypeProvider)) as ICompartmentTypeProvider);
         }
 
         #endregion

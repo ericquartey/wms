@@ -27,7 +27,7 @@ namespace Ferretto.WMS.Scheduler.Tests
         [TestProperty(
             "Description",
            @"GIVEN a list with prioritized rows \
-                AND some compartments that can satisfy the list \
+                AND a set of compartments that can satisfy the list \
                WHEN the new list is requested for execution \
                THEN a new set of requests is generated
                 AND the total amount of items for each row is covered by the requests
@@ -36,7 +36,8 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var listProvider = this.ServiceProvider.GetService(typeof(IItemListSchedulerProvider)) as IItemListSchedulerProvider;
+            var listProvider = this.ServiceProvider
+                .GetService(typeof(IItemListSchedulerProvider)) as IItemListSchedulerProvider;
 
             var listId = 1;
 

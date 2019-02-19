@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Core.Providers;
 using Ferretto.WMS.Data.WebAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -30,7 +29,8 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
+
                 var itemCategory1 = new Common.DataModels.ItemCategory { Id = 1, Description = "Item Category #1" };
                 var itemCategory2 = new Common.DataModels.ItemCategory { Id = 2, Description = "Item Category #2" };
                 var itemCategory3 = new Common.DataModels.ItemCategory { Id = 3, Description = "Item Category #3" };
@@ -66,7 +66,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -93,7 +93,8 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
+
                 var itemCategory1 = new Common.DataModels.ItemCategory { Id = 1, Description = "Item Category #1" };
                 var itemCategory2 = new Common.DataModels.ItemCategory { Id = 2, Description = "Item Category #2" };
                 var itemCategory3 = new Common.DataModels.ItemCategory { Id = 3, Description = "Item Category #3" };
@@ -129,7 +130,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -156,7 +157,8 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
+
                 var itemCategory1 = new Common.DataModels.ItemCategory { Id = 1, Description = "Item Category #1" };
                 var itemCategory2 = new Common.DataModels.ItemCategory { Id = 2, Description = "Item Category #2" };
                 var itemCategory3 = new Common.DataModels.ItemCategory { Id = 3, Description = "Item Category #3" };
@@ -197,7 +199,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -215,11 +217,13 @@ namespace Ferretto.WMS.Data.Tests
             }
         }
 
-        private static ItemCategoriesController MockController(DatabaseContext context)
+        private ItemCategoriesController MockController()
         {
-            return new ItemCategoriesController(
-                new Mock<ILogger<ItemCategoriesController>>().Object,
-                new ItemCategoryProvider(context));
+            var logger = new Mock<ILogger<ItemCategoriesController>>().Object;
+
+            var itemCategoryProvider = this.ServiceProvider.GetService(typeof(IItemCategoryProvider)) as IItemCategoryProvider;
+
+            return new ItemCategoriesController(logger, itemCategoryProvider);
         }
 
         #endregion

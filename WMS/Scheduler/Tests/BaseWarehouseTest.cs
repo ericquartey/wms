@@ -17,8 +17,6 @@ namespace Ferretto.WMS.Scheduler.Tests
 
         #region Properties
 
-        public ServiceProvider ServiceProvider => this.serviceProvider;
-
         protected Common.DataModels.Aisle Aisle1 { get; private set; }
 
         protected Common.DataModels.Area Area1 { get; private set; }
@@ -35,9 +33,25 @@ namespace Ferretto.WMS.Scheduler.Tests
 
         protected Common.DataModels.LoadingUnit LoadingUnit1 { get; private set; }
 
+        protected ServiceProvider ServiceProvider => this.serviceProvider ?? (this.serviceProvider = CreateServices());
+
         #endregion
 
         #region Methods
+
+        protected static ServiceProvider CreateServices()
+        {
+            var databaseName = typeof(BaseWarehouseTest).FullName;
+
+            var services = new ServiceCollection();
+            services.AddSchedulerServiceProviders();
+
+            services.AddDbContext<DatabaseContext>(
+                options => options.UseInMemoryDatabase(databaseName),
+                ServiceLifetime.Transient);
+
+            return services.BuildServiceProvider();
+        }
 
         protected void CleanupDatabase()
         {
@@ -49,22 +63,12 @@ namespace Ferretto.WMS.Scheduler.Tests
 
         protected DatabaseContext CreateContext()
         {
-            return this.serviceProvider.GetService<DatabaseContext>();
-        }
-
-        protected void CreateServices()
-        {
-            var services = new ServiceCollection();
-            services.AddSchedulerServiceProviders();
-
-            services.AddDbContext<DatabaseContext>(options => options.UseInMemoryDatabase(databaseName: this.GetType().FullName));
-
-            this.serviceProvider = services.BuildServiceProvider();
+            return this.ServiceProvider.GetService<DatabaseContext>();
         }
 
         protected void InitializeDatabase()
         {
-            this.CreateServices();
+            CreateServices();
 
             this.Area1 = new Common.DataModels.Area { Id = 1, Name = "Area #1" };
             this.Aisle1 = new Common.DataModels.Aisle { Id = 1, AreaId = this.Area1.Id, Name = "Aisle #1" };

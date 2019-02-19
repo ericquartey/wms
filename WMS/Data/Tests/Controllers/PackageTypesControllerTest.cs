@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Core.Providers;
 using Ferretto.WMS.Data.WebAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -30,7 +29,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var packageType1 = new Common.DataModels.PackageType { Id = 1, Description = "Package Type #1" };
                 var packageType2 = new Common.DataModels.PackageType { Id = 2, Description = "Package Type #2" };
                 var packageType3 = new Common.DataModels.PackageType { Id = 3, Description = "Package Type #3" };
@@ -66,7 +65,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -93,7 +92,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var packageType1 = new Common.DataModels.PackageType { Id = 1, Description = "Package Type #1" };
                 var packageType2 = new Common.DataModels.PackageType { Id = 2, Description = "Package Type #2" };
                 var packageType3 = new Common.DataModels.PackageType { Id = 3, Description = "Package Type #3" };
@@ -129,7 +128,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -156,7 +155,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var packageType1 = new Common.DataModels.PackageType { Id = 1, Description = "Package Type #1" };
                 var packageType2 = new Common.DataModels.PackageType { Id = 2, Description = "Package Type #2" };
                 var packageType3 = new Common.DataModels.PackageType { Id = 3, Description = "Package Type #3" };
@@ -197,7 +196,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -215,11 +214,14 @@ namespace Ferretto.WMS.Data.Tests
             }
         }
 
-        private static PackageTypesController MockController(DatabaseContext context)
+        private PackageTypesController MockController()
         {
+            var logger = new Mock<ILogger<PackageTypesController>>().Object;
+            var packageTypeProvider = this.ServiceProvider.GetService(typeof(IPackageTypeProvider)) as IPackageTypeProvider;
+
             return new PackageTypesController(
-                new Mock<ILogger<PackageTypesController>>().Object,
-                new PackageTypeProvider(context));
+                logger,
+                packageTypeProvider);
         }
 
         #endregion

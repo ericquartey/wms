@@ -49,9 +49,9 @@ namespace Ferretto.WMS.Data.Tests
 
         protected Common.DataModels.Cell Cell6 { get; set; }
 
-        protected Common.DataModels.CellType CellType1 { get; set; }
-
         protected Common.DataModels.CellStatus CellStatus1 { get; set; }
+
+        protected Common.DataModels.CellType CellType1 { get; set; }
 
         protected Common.DataModels.LoadingUnit LoadingUnit1 { get; set; }
 
@@ -65,37 +65,41 @@ namespace Ferretto.WMS.Data.Tests
 
         protected Common.DataModels.MachineType MachineType1 { get; set; }
 
+        protected ServiceProvider ServiceProvider => this.serviceProvider ?? (this.serviceProvider = CreateServices());
+
         #endregion
 
         #region Methods
+
+        protected static ServiceProvider CreateServices()
+        {
+            var databaseName = typeof(BaseControllerTest).FullName;
+
+            var services = new ServiceCollection();
+            services.AddDataServiceProviders();
+
+            services.AddDbContext<DatabaseContext>(
+                options => options.UseInMemoryDatabase(databaseName),
+                ServiceLifetime.Transient);
+
+            return services.BuildServiceProvider();
+        }
 
         protected void CleanupDatabase()
         {
             using (var context = this.CreateContext())
             {
-                context.Database.EnsureDeleted();
+                // ciao
             }
         }
 
         protected DatabaseContext CreateContext()
         {
-            return this.serviceProvider.GetService<DatabaseContext>();
-        }
-
-        protected void CreateServices()
-        {
-            var services = new ServiceCollection();
-            services.AddDataServiceProviders();
-
-            services.AddDbContext<DatabaseContext>(options => options.UseInMemoryDatabase(databaseName: typeof(BaseControllerTest).FullName));
-
-            this.serviceProvider = services.BuildServiceProvider();
+            return this.ServiceProvider.GetService<DatabaseContext>();
         }
 
         protected virtual void InitializeDatabase()
         {
-            this.CreateServices();
-
             this.AbcClass1 = new Common.DataModels.AbcClass { Id = "A", Description = "A Class" };
             this.Area1 = new Common.DataModels.Area { Id = 1, Name = "Area #1" };
             this.Area2 = new Common.DataModels.Area { Id = 2, Name = "Area #2" };
@@ -112,13 +116,13 @@ namespace Ferretto.WMS.Data.Tests
             this.Cell5 = new Common.DataModels.Cell { Id = 5, AisleId = this.Aisle2.Id, AbcClassId = this.AbcClass1.Id, CellTypeId = this.CellType1.Id, CellStatusId = this.CellStatus1.Id };
             this.Cell6 = new Common.DataModels.Cell { Id = 6, AisleId = this.Aisle2.Id, AbcClassId = this.AbcClass1.Id, CellTypeId = this.CellType1.Id, CellStatusId = this.CellStatus1.Id };
             this.LoadingUnit1 = new Common.DataModels.LoadingUnit
-                { Id = 1, Code = "Loading Unit #1", CellId = this.Cell1.Id };
+            { Id = 1, Code = "Loading Unit #1", CellId = this.Cell1.Id };
             this.LoadingUnit2 = new Common.DataModels.LoadingUnit
-                { Id = 2, Code = "Loading Unit #2", CellId = this.Cell2.Id };
+            { Id = 2, Code = "Loading Unit #2", CellId = this.Cell2.Id };
             this.LoadingUnit3 = new Common.DataModels.LoadingUnit
-                { Id = 3, Code = "Loading Unit #3", CellId = this.Cell3.Id };
+            { Id = 3, Code = "Loading Unit #3", CellId = this.Cell3.Id };
             this.LoadingUnit4 = new Common.DataModels.LoadingUnit
-                { Id = 4, Code = "Loading Unit #4", CellId = this.Cell4.Id };
+            { Id = 4, Code = "Loading Unit #4", CellId = this.Cell4.Id };
             this.MachineType1 = new Common.DataModels.MachineType { Id = "T", Description = "Machine Type #1" };
             this.BayType1 = new Common.DataModels.BayType { Id = "T", Description = "Bay Type #1" };
             this.Machine1 = new Common.DataModels.Machine

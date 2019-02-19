@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Core.Providers;
 using Ferretto.WMS.Data.WebAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -30,7 +29,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var loadingUnitType1 = new Common.DataModels.LoadingUnitType { Id = 1, Description = "Loading Unit Type #1" };
                 var loadingUnitType2 = new Common.DataModels.LoadingUnitType { Id = 2, Description = "Loading Unit Type #2" };
                 var loadingUnitType3 = new Common.DataModels.LoadingUnitType { Id = 3, Description = "Loading Unit Type #3" };
@@ -66,7 +65,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -93,7 +92,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var loadingUnitType1 = new Common.DataModels.LoadingUnitType { Id = 1, Description = "Loading Unit Type #1" };
                 var loadingUnitType2 = new Common.DataModels.LoadingUnitType { Id = 2, Description = "Loading Unit Type #2" };
                 var loadingUnitType3 = new Common.DataModels.LoadingUnitType { Id = 3, Description = "Loading Unit Type #3" };
@@ -129,7 +128,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -156,7 +155,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var loadingUnitType1 = new Common.DataModels.LoadingUnitType { Id = 1, Description = "Loading Unit Type #1" };
                 var loadingUnitType2 = new Common.DataModels.LoadingUnitType { Id = 2, Description = "Loading Unit Type #2" };
                 var loadingUnitType3 = new Common.DataModels.LoadingUnitType { Id = 3, Description = "Loading Unit Type #3" };
@@ -197,7 +196,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -215,11 +214,11 @@ namespace Ferretto.WMS.Data.Tests
             }
         }
 
-        private static LoadingUnitTypesController MockController(DatabaseContext context)
+        private LoadingUnitTypesController MockController()
         {
             return new LoadingUnitTypesController(
                 new Mock<ILogger<LoadingUnitTypesController>>().Object,
-                new LoadingUnitTypeProvider(context));
+                this.ServiceProvider.GetService(typeof(ILoadingUnitTypeProvider)) as ILoadingUnitTypeProvider);
         }
 
         #endregion

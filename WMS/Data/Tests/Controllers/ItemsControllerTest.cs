@@ -163,7 +163,7 @@ namespace Ferretto.WMS.Data.Tests
         {
             var itemProvider = this.ServiceProvider.GetService(typeof(IItemProvider)) as IItemProvider;
             var areaProvider = this.ServiceProvider.GetService(typeof(IAreaProvider)) as IAreaProvider;
-            var schedulerRequestProvider = this.ServiceProvider.GetService(typeof(Scheduler.Core.ISchedulerRequestProvider)) as Scheduler.Core.ISchedulerRequestProvider;
+            var schedulerRequestProvider = this.ServiceProvider.GetService(typeof(Scheduler.Core.Interfaces.ISchedulerRequestProvider)) as Scheduler.Core.Interfaces.ISchedulerRequestProvider;
             var compartmentProvider = this.ServiceProvider.GetService(typeof(ICompartmentProvider)) as ICompartmentProvider;
 
             return new ItemsController(

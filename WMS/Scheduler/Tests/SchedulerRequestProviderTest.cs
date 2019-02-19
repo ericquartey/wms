@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.WMS.Scheduler.Core;
+using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ferretto.WMS.Scheduler.Tests
@@ -19,7 +20,9 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
+            var provider = this.ServiceProvider
+                .GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
+
             var request = new SchedulerRequest
             {
                 Type = OperationType.Insertion
