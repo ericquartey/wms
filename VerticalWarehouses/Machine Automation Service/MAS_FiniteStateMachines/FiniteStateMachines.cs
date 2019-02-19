@@ -125,7 +125,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         public void DoVerticalHoming()
         {
-            if (null == this.verticalHoming)
+            if (this.verticalHoming == null)
             {
                 throw new ArgumentNullException();
             }
