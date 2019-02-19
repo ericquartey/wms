@@ -6,22 +6,26 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
     {
         #region Fields
 
-        private readonly T model;
+        private readonly T entity;
 
         #endregion
 
         #region Constructors
 
-        public SuccessOperationResult(T model)
+        public SuccessOperationResult(T entity)
         {
-            this.model = model;
+            this.entity = entity;
         }
 
         #endregion
 
         #region Properties
 
-        public T Model => this.model;
+        public string Description => throw new System.NotImplementedException();
+
+        public T Entity => this.entity;
+
+        public bool Success => throw new System.NotImplementedException();
 
         #endregion
     }
