@@ -212,7 +212,7 @@
     <value>Impostare il numero di cicli richiesti.</value>
   </data>
   <data name="HelpGCDelay" xml:space="preserve">
-    <value>Imposta il tempo di ritardo fra due cicli consecutivi.</value>
+    <value>Impostare il tempo di ritardo fra due cicli consecutivi.</value>
   </data>
   <data name="HelpGCCompleted" xml:space="preserve">
     <value>Indica il numero di cicli attualmente completati.</value>
@@ -227,6 +227,30 @@
     <value>Avvia l'inizio dei test richiesti. Il pulsante e' attivo se il numero di cicli richiesti e' maggiore di zero.</value>
   </data>
   <data name="HelpGCStopButton" xml:space="preserve">
-    <value>Arresta il ciclo al completamento del movimento corrente. La successiva pressione del pulsante di avvio riprende il ciclo da dove arrivato.</value>
+    <value>Arresta il ciclo al completamento del movimento corrente. La successiva pressione del pulsante di avvio riprende il test dal ciclo successivo a quello arrestato.</value>
+  </data>
+  <data name="HelpVACDescription" xml:space="preserve">
+    <value>La procedura permette di effettuare l'origine dell'asse verticale al termine del quale viene settata la posizione corrente indicata dal valore di offset. La procedura e' propedeutica per la realizzazione di altre funzioni che richiedono lo spostamento a quota dell'asse.</value>
+  </data>
+  <data name="HelpVACDownLimit" xml:space="preserve">
+    <value>Limite di movimento inferiore.</value>
+  </data>
+  <data name="HelpVACUpLimit" xml:space="preserve">
+    <value>Limite di movimento superiore.</value>
+  </data>
+  <data name="HelpVACOffset" xml:space="preserve">
+    <value>Valore attuale di offset. Al termine della origine asse la quota attuale e' impostata a questo valore.</value>
+  </data>
+  <data name="HelpVACResolution" xml:space="preserve">
+    <value>Risoluzione attuale dell'asse.</value>
+  </data>
+  <data name="HelpVACFinalResult" xml:space="preserve">
+    <value>Riporta l'esito finale della procedura.</value>
+  </data>
+  <data name="HelpVacStart" xml:space="preserve">
+    <value>Avvia la procedura di origine dell'asse verticale.</value>
+  </data>
+  <data name="HelpVACStop" xml:space="preserve">
+    <value>Arresta la procedura di origine dell'asse verticale.</value>
   </data>
 </root>

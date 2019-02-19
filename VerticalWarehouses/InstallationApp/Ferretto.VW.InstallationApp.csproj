@@ -46,6 +46,7 @@
     <None Remove="HelpWindows\HelpPageBase.xaml" />
     <None Remove="HelpWindows\HelpResolutionCalibrationVerticalAxisView.xaml" />
     <None Remove="HelpWindows\HelpSensorState.xaml" />
+    <None Remove="HelpWindows\HelpVerticalAxisCalibration.xaml" />
     <None Remove="MainWindowBackToIAPPButtonView.xaml" />
     <None Remove="ViewsAndViewModels\LowSpeedMovements\LSMTMainView.xaml" />
     <None Remove="ViewsAndViewModels\MainWindowBackToIAPPButtonView.xaml" />
@@ -87,6 +88,9 @@
     </Compile>
     <Compile Update="HelpWindows\HelpGateControl.xaml.cs">
       <DependentUpon>HelpGateControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpVerticalAxisCalibration.xaml.cs">
+      <DependentUpon>HelpVerticalAxisCalibration.xaml</DependentUpon>
     </Compile>
     <Compile Update="HelpWindows\HelpSensorState.xaml.cs">
       <DependentUpon>HelpSensorState.xaml</DependentUpon>

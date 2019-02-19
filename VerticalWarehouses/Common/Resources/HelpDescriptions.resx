@@ -273,4 +273,36 @@
     <value>HelpGCStopButton</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpVACDescription" xml:space="preserve">
+    <value>HelpVACDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpVACDownLimit" xml:space="preserve">
+    <value>HelpVACDownLimit</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVACUpLimit" xml:space="preserve">
+    <value>HelpVACUpLimit</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVACOffset" xml:space="preserve">
+    <value>HelpVACOffset</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVACResolution" xml:space="preserve">
+    <value>HelpVACResolution</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVACFinalResult" xml:space="preserve">
+    <value>HelpVACFinalResult</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVacStart" xml:space="preserve">
+    <value>HelpVacStart</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVACStop" xml:space="preserve">
+    <value>HelpVACStop</value>
+    <comment>Note text</comment>
+  </data>
 </root>

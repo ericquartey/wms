@@ -41,6 +41,10 @@
             <local:HelpGateControl></local:HelpGateControl>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewmodels:VerticalAxisCalibrationViewModel}">
+            <local:HelpVerticalAxisCalibration></local:HelpVerticalAxisCalibration>
+        </DataTemplate>
+
 
     </Window.Resources>
     <Grid Width="1024"

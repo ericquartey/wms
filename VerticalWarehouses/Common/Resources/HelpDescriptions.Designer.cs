@@ -313,6 +313,78 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVACDescription.
+        /// </summary>
+        public static string HelpVACDescription {
+            get {
+                return ResourceManager.GetString("HelpVACDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVACDownLimit.
+        /// </summary>
+        public static string HelpVACDownLimit {
+            get {
+                return ResourceManager.GetString("HelpVACDownLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVACFinalResult.
+        /// </summary>
+        public static string HelpVACFinalResult {
+            get {
+                return ResourceManager.GetString("HelpVACFinalResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVACOffset.
+        /// </summary>
+        public static string HelpVACOffset {
+            get {
+                return ResourceManager.GetString("HelpVACOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVACResolution.
+        /// </summary>
+        public static string HelpVACResolution {
+            get {
+                return ResourceManager.GetString("HelpVACResolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVacStart.
+        /// </summary>
+        public static string HelpVacStart {
+            get {
+                return ResourceManager.GetString("HelpVacStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVACStop.
+        /// </summary>
+        public static string HelpVACStop {
+            get {
+                return ResourceManager.GetString("HelpVACStop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVACUpLimit.
+        /// </summary>
+        public static string HelpVACUpLimit {
+            get {
+                return ResourceManager.GetString("HelpVACUpLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a ResolutionCalibrationAcceptNewResolution.
         /// </summary>
         public static string ResolutionCalibrationAcceptNewResolution {
