@@ -23,7 +23,7 @@ trigger:
 variables:
   BuildPlatform: 'any cpu'
   BuildConfiguration: 'debug'
-    TargetSolution: 'WMS\WMS.App.sln'
+  TargetSolution: 'WMS\WMS.App.sln'
 
 steps:
 
