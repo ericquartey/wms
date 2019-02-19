@@ -106,6 +106,8 @@ namespace Ferretto.Common.BusinessModels
 
         public BindingList<ICompartment> Compartments => this.compartments;
 
+        public int CompartmentsCount { get; set; }
+
         [Display(Name = nameof(BusinessObjects.LoadingUnitCreationDate), ResourceType = typeof(BusinessObjects))]
         public DateTime CreationDate { get; set; }
 
@@ -228,6 +230,11 @@ namespace Ferretto.Common.BusinessModels
 
         public void AddCompartment(ICompartment compartmentDetails)
         {
+            if (compartmentDetails == null)
+            {
+                throw new ArgumentNullException(nameof(compartmentDetails));
+            }
+
             if (this.CanAddCompartment(compartmentDetails))
             {
                 this.compartments.Add(compartmentDetails);
@@ -236,13 +243,6 @@ namespace Ferretto.Common.BusinessModels
             {
                 throw new ArgumentException(string.Format(Resources.Errors.LoadingUnitOverlappingCompartment, compartmentDetails.Id, this.Id));
             }
-        }
-
-        public void AddDynamicCompartments(int row, int column, int xPosition, int yPosition, int width, int height)
-        {
-            // TODO: add logic of dynamic scompartition
-            //      n: is calculated number of compartment to add
-            //      n: based on row/column
         }
 
         public bool CanAddCompartment(ICompartment compartment)

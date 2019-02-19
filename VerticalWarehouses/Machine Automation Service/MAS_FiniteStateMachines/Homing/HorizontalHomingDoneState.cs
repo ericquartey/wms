@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_IODriver;
@@ -60,6 +61,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 this.parent.HorizontalHomingAlreadyDone = true;
                 this.remoteIODriver.SwitchHorizontalToVertical();
             }
+        }
+
+        public void NotifyMessage(Event_Message message)
+        {
+            throw new System.NotImplementedException();
         }
 
         public void Stop()

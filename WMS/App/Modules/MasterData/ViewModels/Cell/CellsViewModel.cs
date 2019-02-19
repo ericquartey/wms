@@ -6,7 +6,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class CellsViewModel : EntityListViewModel<Cell>
+    public class CellsViewModel : EntityPagedListViewModel<Cell>
     {
         #region Fields
 

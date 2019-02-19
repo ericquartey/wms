@@ -11,22 +11,21 @@ namespace Ferretto.Common.BusinessModels
             var compartmentDetails = compartment as CompartmentDetails;
             var selectedDetails = selected as CompartmentDetails;
 
-            var color = "Blue";
             if (selectedDetails != null && compartmentDetails != null)
             {
                 if (compartment == selected
                     &&
                     compartmentDetails.IsItemPairingFixed == selectedDetails.IsItemPairingFixed)
                 {
-                    color = "#76FF03";
+                    return "#76FF03";
                 }
                 else
                 {
-                    color = "#90A4AE";
+                    return "#90A4AE";
                 }
             }
 
-            return color;
+            return "Blue";
         };
 
         public string Description => "Compartment";

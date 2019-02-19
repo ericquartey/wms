@@ -431,7 +431,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
             switch (this.stepCounter)
             {
-                case 0:
+                case 0: //TODO Disable Voltage
                     {
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
 
@@ -447,7 +447,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                         break;
                     }
 
-                case 1:
+                case 1: //TODO Homing Mode Operation
                     {
                         this.paramID = ParameterID.SET_OPERATING_MODE_PARAM;
                         this.valParam = 0x0006;
@@ -455,7 +455,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                         break;
                     }
 
-                case 2:
+                case 2: //TODO Shut Down
                     {
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
 
@@ -471,7 +471,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                         break;
                     }
 
-                case 3:
+                case 3: //TODO Switch On
                     {
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
 
@@ -487,7 +487,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                         break;
                     }
 
-                case 4:
+                case 4: //TODO Enable Operation
                     {
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
 
@@ -503,7 +503,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                         break;
                     }
 
-                case 5:
+                case 5: //TODO Starting Home
                     {
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
 
@@ -519,7 +519,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                         break;
                     }
 
-                default:
+                default: //TODO Error
                     {
                         ErrorEvent?.Invoke();
 

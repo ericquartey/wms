@@ -2,41 +2,29 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
 {
-    public interface ICompartmentProvider : IBusinessProvider<Compartment, CompartmentDetails>
+    public interface ICompartmentProvider :
+        IPagedBusinessProvider<Compartment>,
+        IReadSingleAsyncProvider<CompartmentDetails, int>,
+        ICreateAsyncProvider<CompartmentDetails>,
+        IUpdateAsyncProvider<CompartmentDetails>,
+        IDeleteAsyncProvider
     {
         #region Methods
 
         Task<IOperationResult> AddRangeAsync(IEnumerable<ICompartment> compartments);
 
-        IQueryable<Compartment> GetByItemId(int id);
+        Task<IEnumerable<Compartment>> GetByItemIdAsync(int id);
 
-        IQueryable<CompartmentDetails> GetByLoadingUnitId(int id);
+        Task<IEnumerable<CompartmentDetails>> GetByLoadingUnitIdAsync(int id);
 
         Task<int?> GetMaxCapacityAsync(int? width, int? height, int itemId);
 
         Task<CompartmentDetails> GetNewAsync();
-
-        IQueryable<Compartment> GetWithStatusAvailable();
-
-        int GetWithStatusAvailableCount();
-
-        IQueryable<Compartment> GetWithStatusAwaiting();
-
-        int GetWithStatusAwaitingCount();
-
-        IQueryable<Compartment> GetWithStatusBlocked();
-
-        int GetWithStatusBlockedCount();
-
-        IQueryable<Compartment> GetWithStatusExpired();
-
-        int GetWithStatusExpiredCount();
-
-        bool HasAnyAllowedItem(int modelId);
 
         #endregion
     }

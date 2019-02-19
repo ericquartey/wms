@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
+using Ferretto.Common.Utils.Expressions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.Common.BusinessProviders
@@ -15,136 +16,98 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
-        private static readonly Expression<Func<DataModels.Mission, bool>> StatusCompletedFilter =
-            mission => (char)mission.Status == (char)MissionStatus.Completed;
-
-        private static readonly Expression<Func<DataModels.Mission, bool>> StatusNewFilter =
-            mission => (char)mission.Status == (char)MissionStatus.New;
-
-        private readonly IDatabaseContextService dataContextService;
+        private readonly WMS.Data.WebAPI.Contracts.IMissionsDataService missionsDataService;
 
         #endregion
 
         #region Constructors
 
         public MissionProvider(
-            IDatabaseContextService dataContextService)
+            WMS.Data.WebAPI.Contracts.IMissionsDataService missionsDataService)
         {
-            this.dataContextService = dataContextService;
+            this.missionsDataService = missionsDataService;
         }
 
         #endregion
 
         #region Methods
 
-        public static int Save(MissionDetails model) => throw new NotSupportedException();
-
-        public Task<IOperationResult> AddAsync(MissionDetails model) => throw new NotSupportedException();
-
-        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
-
-        public IQueryable<Mission> GetAll()
+        public async Task<IEnumerable<Mission>> GetAllAsync(
+            int skip = 0,
+            int take = 0,
+            IEnumerable<SortOption> orderBy = null,
+            IExpression whereExpression = null,
+            IExpression searchExpression = null)
         {
-            return this.dataContextService.Current.Missions
-                 .Include(m => m.Bay)
-                 .Include(m => m.Cell)
-                 .ThenInclude(c => c.Aisle)
-                .Include(m => m.Item)
-                .ThenInclude(i => i.MeasureUnit)
-                .Include(m => m.ItemList)
-                .Include(m => m.ItemListRow)
-                .Include(m => m.LoadingUnit)
-                .Include(m => m.MaterialStatus)
-                .Include(m => m.PackageType)
-                .Include(m => m.Compartment)
-                .ThenInclude(c => c.CompartmentType)
+            var orderByString = orderBy != null ? string.Join(",", orderBy.Select(s => $"{s.PropertyName} {s.Direction}")) : null;
+
+            return (await this.missionsDataService.GetAllAsync(skip, take, whereExpression?.ToString(), orderByString, searchExpression?.ToString()))
                 .Select(m => new Mission
                 {
-                    BayDescription = m.Bay.Description,
-                    ItemDescription = m.Item.Description,
-                    ItemListDescription = m.ItemList.Description,
-                    ItemListRowDescription = m.ItemListRow.Code,
-                    LoadingUnitDescription = m.LoadingUnit.Code,
-                    Priority = m.Priority,
-                    RequiredQuantity = m.RequiredQuantity,
+                    Lot = m.Lot,
+                    Id = m.Id,
+                    Sub1 = m.Sub1,
+                    Sub2 = m.Sub2,
+                    RegistrationNumber = m.RegistrationNumber,
                     Status = (MissionStatus)m.Status,
                     Type = (MissionType)m.Type,
 
                     CreationDate = m.CreationDate,
                     LastModificationDate = m.LastModificationDate,
-                    RegistrationNumber = m.RegistrationNumber,
-                    Lot = m.Lot,
-                    CellDescription = m.Cell.Aisle.Name,
-                    CompartmentType = string.Format(Common.Resources.MasterData.CompartmentTypeListFormatReduced, m.Compartment.CompartmentType.Width, m.Compartment.CompartmentType.Height),
-                    MaterialStatusDescription = m.MaterialStatus.Description,
-                    PackageTypeDescription = m.PackageType.Description,
-                    Sub1 = m.Sub1,
-                    Sub2 = m.Sub2,
-
-                    ItemUnitMeasure = m.Item.MeasureUnit.Description
+                    BayDescription = m.BayDescription,
+                    ItemDescription = m.ItemDescription,
+                    ItemListDescription = m.ItemListDescription,
+                    ItemListRowDescription = m.ItemListRowCode,
+                    LoadingUnitDescription = m.LoadingUnitCode,
+                    Priority = m.Priority,
+                    RequiredQuantity = m.RequiredQuantity,
+                    CellDescription = m.CellAisleName,
+                    CompartmentType = string.Format(Common.Resources.MasterData.CompartmentTypeListFormatReduced, m.CompartmentTypeWidth, m.CompartmentTypeHeight),
+                    ItemUnitMeasure = m.ItemMeasureUnitDescription,
+                    MaterialStatusDescription = m.MaterialStatusDescription,
+                    PackageTypeDescription = m.PackageTypeDescription
                 });
         }
 
-        public int GetAllCount()
+        public async Task<int> GetAllCountAsync(IExpression whereExpression = null, IExpression searchExpression = null)
         {
-            using (var dataContext = this.dataContextService.Current)
+            return await this.missionsDataService.GetAllCountAsync(whereExpression?.ToString(), searchExpression?.ToString());
+        }
+
+        public async Task<Mission> GetByIdAsync(int id)
+        {
+            var mission = await this.missionsDataService.GetByIdAsync(id);
+
+            return new Mission
             {
-                return dataContext.Missions.Count();
-            }
+                Lot = mission.Lot,
+                Id = mission.Id,
+                Sub1 = mission.Sub1,
+                Sub2 = mission.Sub2,
+                RegistrationNumber = mission.RegistrationNumber,
+                Status = (MissionStatus)mission.Status,
+                Type = (MissionType)mission.Type,
+
+                CreationDate = mission.CreationDate,
+                LastModificationDate = mission.LastModificationDate,
+                BayDescription = mission.BayDescription,
+                ItemDescription = mission.ItemDescription,
+                ItemListDescription = mission.ItemListDescription,
+                ItemListRowDescription = mission.ItemListRowCode,
+                LoadingUnitDescription = mission.LoadingUnitCode,
+                Priority = mission.Priority,
+                RequiredQuantity = mission.RequiredQuantity,
+                CellDescription = mission.CellAisleName,
+                CompartmentType = string.Format(Common.Resources.MasterData.CompartmentTypeListFormatReduced, mission.CompartmentTypeWidth, mission.CompartmentTypeHeight),
+                ItemUnitMeasure = mission.ItemMeasureUnitDescription,
+                MaterialStatusDescription = mission.MaterialStatusDescription,
+                PackageTypeDescription = mission.PackageTypeDescription
+            };
         }
 
-        public Task<MissionDetails> GetByIdAsync(int id) => throw new NotSupportedException();
-
-        public MissionDetails GetNew()
+        public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
-            throw new NotSupportedException();
-        }
-
-        public IQueryable<Mission> GetWithStatusCompleted()
-        {
-            return GetAllMissionsWithAggregations(this.dataContextService.Current, StatusCompletedFilter);
-        }
-
-        public int GetWithStatusCompletedCount()
-        {
-            return this.dataContextService.Current.Missions.AsNoTracking().Count(StatusCompletedFilter);
-        }
-
-        public IQueryable<Mission> GetWithStatusNew()
-        {
-            return GetAllMissionsWithAggregations(this.dataContextService.Current, StatusNewFilter);
-        }
-
-        public int GetWithStatusNewCount()
-        {
-            return this.dataContextService.Current.Missions.AsNoTracking().Count(StatusNewFilter);
-        }
-
-        public Task<IOperationResult> SaveAsync(MissionDetails model) => throw new NotSupportedException();
-
-        private static IQueryable<Mission> GetAllMissionsWithAggregations(DatabaseContext context, Expression<Func<DataModels.Mission, bool>> whereFunc = null)
-        {
-            var actualWhereFunc = whereFunc ?? ((i) => true);
-
-            return context.Missions
-             .Where(actualWhereFunc)
-             .Include(m => m.Bay)
-             .Include(m => m.Item)
-             .Include(m => m.ItemList)
-             .Include(m => m.ItemListRow)
-             .Include(m => m.LoadingUnit)
-             .Select(m => new Mission
-             {
-                 BayDescription = m.Bay.Description,
-                 ItemDescription = m.Item.Description,
-                 ItemListDescription = m.ItemList.Description,
-                 ItemListRowDescription = m.ItemListRow.Code,
-                 LoadingUnitDescription = m.LoadingUnit.Code,
-                 Priority = m.Priority,
-                 RequiredQuantity = m.RequiredQuantity,
-                 Status = (MissionStatus)m.Status,
-                 Type = (MissionType)m.Type
-             }).AsNoTracking();
+            return await this.missionsDataService.GetUniqueValuesAsync(propertyName);
         }
 
         #endregion

@@ -16,8 +16,19 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
 
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<IItemsDataService>(baseUrl));
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<IMissionsDataService>(baseUrl));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ISchedulerRequestsDataService>(baseUrl));
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<IItemListsDataService>(baseUrl));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IItemListRowsDataService>(baseUrl));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ICellsDataService>(baseUrl));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IAreasDataService>(baseUrl));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IAislesDataService>(baseUrl));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IItemListsDataService>(baseUrl));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ILoadingUnitsDataService>(baseUrl));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IMachinesDataService>(baseUrl));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ICompartmentsDataService>(baseUrl));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IUsersDataService>(baseUrl));
 
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IItemCompartmentTypesDataService>(baseUrl));
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<IAbcClassesDataService>(baseUrl));
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<ICellPositionsDataService>(baseUrl));
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<ICellStatusesDataService>(baseUrl));

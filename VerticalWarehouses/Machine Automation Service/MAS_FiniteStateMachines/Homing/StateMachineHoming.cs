@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS_DataLayer;
+﻿using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_FiniteStateMachines.Homing;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_IODriver;
@@ -24,11 +25,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Constructors
 
-        public StateMachineHoming(INewInverterDriver driver, INewRemoteIODriver remoteIODriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
+        public StateMachineHoming(INewInverterDriver driver, INewRemoteIODriver remoteIODriver, IEventAggregator eventAggregator)
         {
             this.driver = driver;
             this.remoteIODriver = remoteIODriver;
-            this.data = iWriteLogService;
+            this.data = null;
             this.eventAggregator = eventAggregator;
         }
 
@@ -46,7 +47,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Methods
 
-        public void ChangeState(IState newState)
+        public void ChangeState(IState newState, Event_Message message = null)
         {
             this.state = newState;
         }
@@ -54,6 +55,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         public void MakeOperation()
         {
             this.state?.MakeOperation();
+        }
+
+        public void NotifyMessage(Event_Message message)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void PublishMessage(Event_Message message)
+        {
+            throw new System.NotImplementedException();
         }
 
         public void Start()

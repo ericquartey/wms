@@ -53,17 +53,9 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.areaName, value);
         }
 
-        public bool CanAddNewRow
-        {
-            get => this.itemListStatus != ItemListStatus.Completed;
-        }
+        public bool CanAddNewRow { get; set; }
 
-        public bool CanBeExecuted
-        {
-            get => this.itemListStatus == ItemListStatus.Incomplete
-                    || this.itemListStatus == ItemListStatus.Suspended
-                    || this.itemListStatus == ItemListStatus.Waiting;
-        }
+        public bool CanBeExecuted { get; set; }
 
         [Required]
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]

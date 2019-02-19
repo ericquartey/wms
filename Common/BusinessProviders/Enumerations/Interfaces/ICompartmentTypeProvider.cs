@@ -8,11 +8,12 @@ using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
 {
-    public interface ICompartmentTypeProvider : IReadAllAsyncProvider<Enumeration>
+    public interface ICompartmentTypeProvider :
+        IReadAllAsyncProvider<Enumeration>
     {
         #region Methods
 
-        Task<IOperationResult> AddAsync(CompartmentType model, int? itemId = null, int? maxCapacity = null);
+        Task<IOperationResult> CreateAsync(CompartmentType model, int? itemId = null, int? maxCapacity = null);
 
         #endregion
     }

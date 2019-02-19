@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
+using Ferretto.Common.Utils.Expressions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.Common.BusinessProviders
@@ -15,136 +16,97 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
-        private static readonly Expression<Func<DataModels.SchedulerRequest, bool>> OperationInsertFilter =
-            request => (char)request.OperationType == (char)OperationType.Insertion;
-
-        private static readonly Expression<Func<DataModels.SchedulerRequest, bool>> OperationWithdrawFilter =
-            request => (char)request.OperationType == (char)OperationType.Withdrawal;
-
-        private readonly IDatabaseContextService dataContextService;
+        private readonly WMS.Data.WebAPI.Contracts.ISchedulerRequestsDataService schedulerRequestsDataService;
 
         #endregion
 
         #region Constructors
 
         public SchedulerRequestProvider(
-            IDatabaseContextService dataContextService)
+            WMS.Data.WebAPI.Contracts.ISchedulerRequestsDataService schedulerRequestsDataService)
         {
-            this.dataContextService = dataContextService;
+            this.schedulerRequestsDataService = schedulerRequestsDataService;
         }
 
         #endregion
 
         #region Methods
 
-        public Task<IOperationResult> AddAsync(SchedulerRequest model) => throw new NotSupportedException();
-
-        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
-
-        public IQueryable<SchedulerRequest> GetAll()
+        public async Task<IEnumerable<SchedulerRequest>> GetAllAsync(
+            int skip = 0,
+            int take = 0,
+            IEnumerable<SortOption> orderBy = null,
+            IExpression whereExpression = null,
+            IExpression searchExpression = null)
         {
-            return this.dataContextService.Current.SchedulerRequests
-                .Include(r => r.Bay)
-                .Include(r => r.Area)
-                .Include(r => r.Item)
-                .ThenInclude(i => i.MeasureUnit)
-                .Include(r => r.List)
-                .Include(r => r.ListRow)
-                .Include(r => r.LoadingUnit)
-                .Include(r => r.LoadingUnitType)
-                .Include(m => m.MaterialStatus)
-                .Include(m => m.PackageType)
+            var orderByString = orderBy != null ? string.Join(",", orderBy.Select(s => $"{s.PropertyName} {s.Direction}")) : null;
+
+            return (await this.schedulerRequestsDataService.GetAllAsync(skip, take, whereExpression?.ToString(), orderByString, searchExpression?.ToString()))
                 .Select(r => new SchedulerRequest
                 {
-                    BayDescription = r.Bay.Description,
-                    ItemDescription = r.Item.Description,
-                    ListDescription = r.List.Description,
-                    ListRowDescription = r.ListRow.Code,
-                    LoadingUnitDescription = r.LoadingUnit.Code,
+                    BayDescription = r.BayDescription,
+                    ItemDescription = r.ItemDescription,
+                    ListDescription = r.ListDescription,
+                    ListRowDescription = r.ListRowDescription,
+                    LoadingUnitDescription = r.LoadingUnitDescription,
                     IsInstant = r.IsInstant,
                     RequestedQuantity = r.RequestedQuantity,
                     OperationType = (OperationType)r.OperationType,
 
-                    LoadingUnitTypeDescription = r.LoadingUnitType.Description,
+                    LoadingUnitTypeDescription = r.LoadingUnitTypeDescription,
                     RegistrationNumber = r.RegistrationNumber,
                     Lot = r.Lot,
                     DispatchedQuantity = r.DispatchedQuantity,
-                    MaterialStatusDescription = r.MaterialStatus.Description,
+                    MaterialStatusDescription = r.MaterialStatusDescription,
                     Sub1 = r.Sub1,
                     Sub2 = r.Sub2,
                     CreationDate = r.CreationDate,
                     LastModificationDate = r.LastModificationDate,
-                    PackageTypeDescription = r.PackageType.Description,
-                    AreaDescription = r.Area.Name,
+                    PackageTypeDescription = r.PackageTypeDescription,
+                    AreaDescription = r.AreaDescription,
 
-                    ItemUnitMeasure = r.Item.MeasureUnit.Description
+                    ItemUnitMeasure = r.ItemUnitMeasure
                 });
         }
 
-        public int GetAllCount()
+        public async Task<int> GetAllCountAsync(IExpression whereExpression = null, IExpression searchExpression = null)
         {
-            using (var dataContext = this.dataContextService.Current)
+            return await this.schedulerRequestsDataService.GetAllCountAsync(whereExpression?.ToString(), searchExpression?.ToString());
+        }
+
+        public async Task<SchedulerRequest> GetByIdAsync(int id)
+        {
+            var schedulerRequest = await this.schedulerRequestsDataService.GetByIdAsync(id);
+            return new SchedulerRequest
             {
-                return dataContext.SchedulerRequests.Count();
-            }
+                BayDescription = schedulerRequest.BayDescription,
+                ItemDescription = schedulerRequest.ItemDescription,
+                ListDescription = schedulerRequest.ListDescription,
+                ListRowDescription = schedulerRequest.ListRowDescription,
+                LoadingUnitDescription = schedulerRequest.LoadingUnitDescription,
+                IsInstant = schedulerRequest.IsInstant,
+                RequestedQuantity = schedulerRequest.RequestedQuantity,
+                OperationType = (OperationType)schedulerRequest.OperationType,
+
+                LoadingUnitTypeDescription = schedulerRequest.LoadingUnitTypeDescription,
+                RegistrationNumber = schedulerRequest.RegistrationNumber,
+                Lot = schedulerRequest.Lot,
+                DispatchedQuantity = schedulerRequest.DispatchedQuantity,
+                MaterialStatusDescription = schedulerRequest.MaterialStatusDescription,
+                Sub1 = schedulerRequest.Sub1,
+                Sub2 = schedulerRequest.Sub2,
+                CreationDate = schedulerRequest.CreationDate,
+                LastModificationDate = schedulerRequest.LastModificationDate,
+                PackageTypeDescription = schedulerRequest.PackageTypeDescription,
+                AreaDescription = schedulerRequest.AreaDescription,
+
+                ItemUnitMeasure = schedulerRequest.ItemUnitMeasure
+            };
         }
 
-        public Task<SchedulerRequest> GetByIdAsync(int id) => throw new NotSupportedException();
-
-        public SchedulerRequest GetNew()
+        public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
-            throw new NotSupportedException();
-        }
-
-        public IQueryable<SchedulerRequest> GetWithOperationTypeInsertion()
-        {
-            return GetAllRequestsWithAggregations(this.dataContextService.Current, OperationInsertFilter);
-        }
-
-        public int GetWithOperationTypeInsertionCount()
-        {
-            return this.dataContextService.Current.SchedulerRequests.AsNoTracking().Count(OperationInsertFilter);
-        }
-
-        public IQueryable<SchedulerRequest> GetWithOperationTypeWithdrawal()
-        {
-            return GetAllRequestsWithAggregations(this.dataContextService.Current, OperationWithdrawFilter);
-        }
-
-        public int GetWithOperationTypeWithdrawalCount()
-        {
-            return this.dataContextService.Current.SchedulerRequests.AsNoTracking().Count(OperationWithdrawFilter);
-        }
-
-        public Task<IOperationResult> SaveAsync(SchedulerRequest model)
-        {
-            throw new NotSupportedException();
-        }
-
-        private static IQueryable<SchedulerRequest> GetAllRequestsWithAggregations(DatabaseContext context, Expression<Func<DataModels.SchedulerRequest, bool>> whereFunc = null)
-        {
-            var actualWhereFunc = whereFunc ?? ((i) => true);
-
-            return context.SchedulerRequests
-                .Where(actualWhereFunc)
-                .Include(r => r.Bay)
-                .Include(r => r.Item)
-                .Include(r => r.List)
-                .Include(r => r.ListRow)
-                .Include(r => r.LoadingUnit)
-                .Include(r => r.LoadingUnitType)
-                .Select(r => new SchedulerRequest
-                {
-                    BayDescription = r.Bay.Description,
-                    ItemDescription = r.Item.Description,
-                    ListDescription = r.List.Description,
-                    ListRowDescription = r.ListRow.Code,
-                    LoadingUnitDescription = r.LoadingUnit.Code,
-                    IsInstant = r.IsInstant,
-                    RequestedQuantity = r.RequestedQuantity,
-                    OperationType = (OperationType)r.OperationType,
-                    LoadingUnitTypeDescription = r.LoadingUnitType.Description
-                }).AsNoTracking();
+            return await this.schedulerRequestsDataService.GetUniqueValuesAsync(propertyName);
         }
 
         #endregion

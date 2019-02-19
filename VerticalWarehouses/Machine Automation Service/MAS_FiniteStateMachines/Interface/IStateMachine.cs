@@ -1,24 +1,21 @@
-﻿namespace Ferretto.VW.MAS_FiniteStateMachines
+﻿using Ferretto.VW.Common_Utils.Messages;
+
+namespace Ferretto.VW.MAS_FiniteStateMachines
 {
     public interface IStateMachine
     {
         #region Methods
 
-        /// <summary>
-        /// Change the state.
-        /// </summary>
-        /// <param name="newState">The new state.</param>
-        void ChangeState(IState newState);
+        void ChangeState(IState newState, Event_Message message = null);
+
+        void NotifyMessage(Event_Message message);
+
+        void PublishMessage(Event_Message message);
 
         /// <summary>
         /// Start operation.
         /// </summary>
         void Start();
-
-        /// <summary>
-        /// Stop operation.
-        /// </summary>
-        void Stop();
 
         #endregion
     }

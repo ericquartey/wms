@@ -79,7 +79,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.IsBusy = true;
 
-            var result = await this.itemListRowProvider.SaveAsync(this.Model);
+            var result = await this.itemListRowProvider.UpdateAsync(this.Model);
             if (result.Success)
             {
                 this.TakeModelSnapshot();

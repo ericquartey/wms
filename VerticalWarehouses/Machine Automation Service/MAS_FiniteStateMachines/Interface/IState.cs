@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS_FiniteStateMachines
+﻿using Ferretto.VW.Common_Utils.Messages;
+
+namespace Ferretto.VW.MAS_FiniteStateMachines
 {
     public interface IState
     {
@@ -17,6 +19,8 @@
         /// Make the operation required by the current state.
         /// </summary>
         void MakeOperation();
+
+        void NotifyMessage(Event_Message message);
 
         /// <summary>
         /// Stop operation for the state.

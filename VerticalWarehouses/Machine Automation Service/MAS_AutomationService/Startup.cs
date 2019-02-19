@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS_AutomationService.Hubs;
+﻿using Ferretto.VW.InverterDriver;
+using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_FiniteStateMachines;
 using Ferretto.VW.MAS_InverterDriver;
@@ -11,7 +12,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Prism.Events;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
@@ -71,20 +74,20 @@ namespace Ferretto.VW.MAS_AutomationService
             var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
             services.AddDbContext<DataLayerContext>(options => options.UseInMemoryDatabase("InMemoryWorkingDB"), ServiceLifetime.Singleton);
 
-            
-            services.AddSingleton<IEventAggregator, EventAggregator>();
-            services.AddSingleton<IAutomationService, AutomationService>();
+            services.AddHostedService<AutomationService>();
+            services.AddHostedService<MissionsScheduler>();
+            services.AddHostedService<MachineManager>();
+            services.AddHostedService<FiniteStateMachines>();
+            services.AddHostedService<HostedInverterDriver>();
 
+            services.AddSingleton<IEventAggregator, EventAggregator>();
             services.AddSingleton<IDataLayer, DataLayer>(provider => new DataLayer(
-                provider.GetService<IConfiguration>(),
+               connectionString,
                 provider.GetService<DataLayerContext>(),
                 provider.GetService<IEventAggregator>()));
 
             services.AddSingleton<IWriteLogService, DataLayer>(provider => provider.GetService<IDataLayer>() as DataLayer);
 
-            services.AddSingleton<IMissionsScheduler, MissionsScheduler>();
-            services.AddSingleton<IMachineManager, MachineManager>();
-            services.AddSingleton<IFiniteStateMachines, FiniteStateMachines>();
             services.AddSingleton<INewInverterDriver, NewInverterDriver>();
             services.AddSingleton<INewRemoteIODriver, NewRemoteIODriver>();
 

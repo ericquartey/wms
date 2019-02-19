@@ -18,7 +18,7 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly IAbcClassProvider abcClassProvider;
 
-        private readonly IDatabaseContextService dataContextService;
+        private readonly WMS.Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService;
 
         private readonly IImageProvider imageProvider;
 
@@ -35,17 +35,17 @@ namespace Ferretto.Common.BusinessProviders
         #region Constructors
 
         public ItemProvider(
-            IDatabaseContextService dataContextService,
             IImageProvider imageProvider,
             WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService,
+            WMS.Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService,
             WMS.Scheduler.WebAPI.Contracts.IItemsSchedulerService itemsSchedulerService,
             IAbcClassProvider abcClassProvider,
             IItemCategoryProvider itemCategoryProvider,
             IMeasureUnitProvider measureUnitProvider)
         {
-            this.dataContextService = dataContextService;
             this.itemsSchedulerService = itemsSchedulerService;
             this.itemsDataService = itemsDataService;
+            this.compartmentsDataService = compartmentsDataService;
             this.imageProvider = imageProvider;
             this.abcClassProvider = abcClassProvider;
             this.itemCategoryProvider = itemCategoryProvider;
@@ -62,7 +62,8 @@ namespace Ferretto.Common.BusinessProviders
             {
                 itemDetails.AbcClassChoices = await this.abcClassProvider.GetAllAsync();
                 itemDetails.MeasureUnitChoices = await this.measureUnitProvider.GetAllAsync();
-                itemDetails.ManagementTypeChoices = EnumerationProvider.GetAllItemManagementTypes();
+                itemDetails.ManagementTypeChoices = ((ItemManagementType[])Enum.GetValues(typeof(ItemManagementType)))
+                    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
                 itemDetails.ItemCategoryChoices = await this.itemCategoryProvider.GetAllAsync();
             }
         }
@@ -99,7 +100,8 @@ namespace Ferretto.Common.BusinessProviders
                     ReorderPoint = model.ReorderPoint,
                     ReorderQuantity = model.ReorderQuantity,
                     StoreTolerance = model.StoreTolerance,
-                    Width = model.Width
+                    Width = model.Width,
+                    CompartmentsCount = model.CompartmentsCount
                 });
 
                 model.Id = item.Id;
@@ -156,44 +158,24 @@ namespace Ferretto.Common.BusinessProviders
                 });
         }
 
-        public int GetAllCount()
-        {
-            using (var dc = this.dataContextService.Current)
-            {
-                return dc.Items.AsNoTracking().Count();
-            }
-        }
-
         public async Task<int> GetAllCountAsync(IExpression whereExpression = null, IExpression searchExpression = null)
         {
             return await this.itemsDataService.GetAllCountAsync(whereExpression?.ToString(), searchExpression?.ToString());
         }
 
-        public IQueryable<AllowedItemInCompartment> GetAllowedByCompartmentId(int compartmentId)
+        public async Task<IEnumerable<AllowedItemInCompartment>> GetAllowedByCompartmentIdAsync(int compartmentId)
         {
-            return this.dataContextService.Current.Compartments
-                .Where(c => c.Id == compartmentId)
-                .Include(c => c.CompartmentType)
-                .ThenInclude(ct => ct.ItemsCompartmentTypes)
-                .ThenInclude(ict => ict.Item)
-                .ThenInclude(i => i.AbcClass)
-                .Include(c => c.CompartmentType)
-                .ThenInclude(ct => ct.ItemsCompartmentTypes)
-                .ThenInclude(ict => ict.Item)
-                .ThenInclude(i => i.ItemCategory)
-                .SelectMany(
-                    c => c.CompartmentType.ItemsCompartmentTypes,
-                    (c, ict) => new AllowedItemInCompartment
-                    {
-                        Id = ict.Item.Id,
-                        Code = ict.Item.Code,
-                        Description = ict.Item.Description,
-                        MaxCapacity = ict.MaxCapacity,
-                        AbcClassDescription = ict.Item.AbcClass.Description,
-                        ItemCategoryDescription = ict.Item.ItemCategory.Description,
-                        Image = ict.Item.Image,
-                    })
-                .AsNoTracking();
+            return (await this.compartmentsDataService.GetAllowedItemsAsync(compartmentId))
+                .Select(ict => new AllowedItemInCompartment
+                {
+                    Id = ict.Id,
+                    Code = ict.Code,
+                    Description = ict.Description,
+                    MaxCapacity = ict.MaxCapacity,
+                    AbcClassDescription = ict.AbcClassDescription,
+                    ItemCategoryDescription = ict.ItemCategoryDescription,
+                    Image = ict.Image,
+                });
         }
 
         public async Task<ItemDetails> GetByIdAsync(int id)
@@ -225,6 +207,7 @@ namespace Ferretto.Common.BusinessProviders
                 StoreTolerance = item.StoreTolerance,
                 InventoryTolerance = item.InventoryTolerance,
                 AverageWeight = item.AverageWeight,
+                CompartmentsCount = item.CompartmentsCount,
 
                 Image = item.Image,
 
@@ -263,14 +246,6 @@ namespace Ferretto.Common.BusinessProviders
             return await this.itemsDataService.GetUniqueValuesAsync(propertyName);
         }
 
-        public bool HasAnyCompartments(int itemId)
-        {
-            using (var dc = this.dataContextService.Current)
-            {
-                return dc.Compartments.AsNoTracking().Any(c => c.ItemId == itemId);
-            }
-        }
-
         public async Task<IOperationResult> UpdateAsync(ItemDetails model)
         {
             if (model == null)
@@ -306,7 +281,8 @@ namespace Ferretto.Common.BusinessProviders
                     ReorderPoint = model.ReorderPoint,
                     ReorderQuantity = model.ReorderQuantity,
                     StoreTolerance = model.StoreTolerance,
-                    Width = model.Width
+                    Width = model.Width,
+                    CompartmentsCount = model.CompartmentsCount
                 });
 
                 if (originalItem.Image != model.Image)
