@@ -69,14 +69,16 @@
                                   DisplayMember="Name"
                                   EditValue="{Binding ExecutionRequest.AreaId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   IsTextEditable="False"
-                                  ItemsSource="{Binding ExecutionRequest.AreaChoices}" />
+                                  ItemsSource="{Binding ExecutionRequest.AreaChoices}"
+                                  wms:ShowTitle.Show="True"/>
 
                     <wms:ComboBox x:Name="SelectedBay"
                                   Grid.Column="2"
                                   EditValue="{Binding ExecutionRequest.BayId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   IsTextEditable="False"
                                   ItemsSource="{Binding ExecutionRequest.BayChoices}"
-                                  Visibility="{Binding ExecutionRequest.Schedule, Converter={StaticResource BTVIC}}" />
+                                  Visibility="{Binding ExecutionRequest.Schedule, Converter={StaticResource BTVIC}}"
+                                  wms:ShowTitle.Show="True"/>
                 </Grid>
                 <StackPanel Orientation="Horizontal">
                     <dxe:ToggleSwitch Margin="0,20,10,0"

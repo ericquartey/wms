@@ -3,7 +3,6 @@
 
     <Style x:Key="ControlLabelStyle"
            TargetType="Label">
-        <Setter Property="Margin" Value="0,12,0,0" />
         <Setter Property="Padding" Value="0,1,0,1" />
         <Setter Property="Height" Value="22" />
         <Setter Property="VerticalContentAlignment" Value="Bottom" />
