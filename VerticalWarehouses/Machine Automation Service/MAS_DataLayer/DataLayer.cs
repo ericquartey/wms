@@ -1,29 +1,27 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Ferretto.VW.Common_Utils;
 using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
     public partial class DataLayer : IDataLayer, IWriteLogService
     {
-        private readonly DataLayerContext inMemoryDataContext;
-
-        private readonly IEventAggregator eventAggregator;
+        #region Fields
 
         private const string ConnectionStringName = "AutomationService";
 
-        private const string CELL_NOT_FOUND_EXCEPTION = "Data Layer Exception - Cell Not Found";
+        private readonly IEventAggregator eventAggregator;
 
-        #region Properties
-
-        public IConfiguration Configuration { get; }
+        private readonly DataLayerContext inMemoryDataContext;
 
         #endregion
+
+        #region Constructors
 
         public DataLayer(IConfiguration configuration, DataLayerContext inMemoryDataContext, IEventAggregator eventAggregator)
         {
@@ -75,51 +73,74 @@ namespace Ferretto.VW.MAS_DataLayer
             webApiCommandEvent.Subscribe(this.LogWriting);
         }
 
+        #endregion
+
+        #region Properties
+
+        public IConfiguration Configuration { get; }
+
+        #endregion
+
         #region Methods
 
-        public List<Cell> GetCellList()
+        // drawerHeight: Drawer Height in mm
+        public List<Cell> GetCellList(int drawerHeight)
         {
-            List<Cell> listCells = new List<Cell>();
+            var listCellsEven = new List<Cell>();
+            var listCellsOdd = new List<Cell>();
 
-            foreach (var cell in inMemoryDataContext.Cells)
+            //for (int i = 0; i < cm.Cells.Count; i += 2) //odd ID cell's index
+            //{
+            //    if (cm.Cells[i].Status == 0)
+            //    {
+            //        int tmp = GetLastUpperNotDisabledCellIndex(cm, i);
+            //        var cb = new CellBlock(i + 1, tmp + 1, counter);
+            //        cm.Blocks.Add(cb);
+            //        counter++;
+            //        i = tmp;
+            //    }
+            //}
+            //for (int i = 1; i < cm.Cells.Count; i += 2)//even ID cell's index
+            //{
+            //    if (cm.Cells[index].Status == 0)
+            //    {
+            //        int tmp = GetLastUpperNotDisabledCellIndex(cm, i);
+            //        var cb = new CellBlock(index + 1, tmp + 1, counter);
+            //        cm.Blocks.Add(cb);
+            //        counter++;
+            //        i = tmp;
+            //    }
+            //}
+
+            var cellEven = 0;
+            var cellOdd = 0;
+
+            //this.inMemoryDataContext.Cells
+            //    .OrderBy(cell => cell.CellId)
+            //    .Select(cell =>
+            //    {
+            //        return new Cell { };
+            //    });
+
+            foreach (var cell in this.inMemoryDataContext.Cells.OrderBy(cell => cell.CellId))
             {
-                listCells.Add(cell);
-            }
-
-            return listCells;
-        }
-
-        public bool SetCellList(List<Cell> listCells)
-        {
-            bool setCellList = true;
-
-            if (listCells != null)
-            { 
-                foreach(var cell in listCells)
+                if ((int)cell.Status % 2 == 0) // Even
                 {
-                    var inMemoryCellCurrentValue = inMemoryDataContext.Cells.FirstOrDefault(s => s.CellId == cell.CellId);
-
-                    if (inMemoryCellCurrentValue != null)
-                    {
-                        inMemoryCellCurrentValue.Coord    = cell.Coord;
-                        inMemoryCellCurrentValue.Priority = cell.Priority;
-                        inMemoryCellCurrentValue.Side     = cell.Side;
-                        inMemoryCellCurrentValue.Status   = cell.Status;
-
-                        inMemoryDataContext.SaveChanges();
-                    }
-                    else
-                    {
-                        throw new DataLayerException(CELL_NOT_FOUND_EXCEPTION);
-                    }
+                    listCellsEven.Add(cell);
+                    cellEven++;
                 }
-            }
-            else
-            {
-                setCellList = false;
+                else // Odd
+                {
+                    listCellsOdd.Add(cell);
+                    cellOdd++;
+                }
+
+                //if ()
+                //{
+                //}
             }
 
-            return setCellList;
+            return listCellsEven; // Anche Odd
         }
 
         public bool LogWriting(string logMessage)
@@ -160,6 +181,39 @@ namespace Ferretto.VW.MAS_DataLayer
 
             this.inMemoryDataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
             this.inMemoryDataContext.SaveChanges();
+        }
+
+        public bool SetCellList(List<Cell> listCells)
+        {
+            var setCellList = true;
+
+            if (listCells != null)
+            {
+                foreach (var cell in listCells)
+                {
+                    var inMemoryCellCurrentValue = this.inMemoryDataContext.Cells.FirstOrDefault(s => s.CellId == cell.CellId);
+
+                    if (inMemoryCellCurrentValue != null)
+                    {
+                        inMemoryCellCurrentValue.Coord = cell.Coord;
+                        inMemoryCellCurrentValue.Priority = cell.Priority;
+                        inMemoryCellCurrentValue.Side = cell.Side;
+                        inMemoryCellCurrentValue.Status = cell.Status;
+
+                        this.inMemoryDataContext.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new InMemoryDataLayerException(DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION);
+                    }
+                }
+            }
+            else
+            {
+                setCellList = false;
+            }
+
+            return setCellList;
         }
 
         #endregion
