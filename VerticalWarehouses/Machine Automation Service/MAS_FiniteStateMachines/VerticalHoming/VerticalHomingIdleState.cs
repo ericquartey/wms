@@ -70,6 +70,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
                     }
                 case OperationStatus.Error:
                     {
+                        this.parent.ChangeState(new VerticalHomingErrorState(this.parent, this.driver, this.eventAggregator));
                         break;
                     }
                 default:
