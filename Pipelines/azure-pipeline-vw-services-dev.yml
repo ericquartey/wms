@@ -14,11 +14,13 @@ trigger:
     include:
     - develop
   paths:
+    include:
+    - '*'
+    - 'VerticalWarehouses\Machine Automation Service'
     exclude:
     - Common
     - WMS
-    include:
-    - 'VerticalWarehouses\Machine Automation Service'
+    - VerticalWarehouses
 
 variables:
   BuildConfiguration: 'Debug'

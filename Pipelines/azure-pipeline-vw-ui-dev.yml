@@ -13,11 +13,13 @@ trigger:
     include:
     - develop
   paths:
+    include:
+    - '*'
+    - 'VerticalWarehouses\Panel PC User Interface'
     exclude:
     - Common
     - WMS
-    include:
-    - 'VerticalWarehouses\Panel PC User Interface'
+    - VerticalWarehouses
 
 variables:
   BuildPlatform: 'any cpu'
