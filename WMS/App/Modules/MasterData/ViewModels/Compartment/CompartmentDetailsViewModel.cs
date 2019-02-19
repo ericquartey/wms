@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using DevExpress.Mvvm;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
@@ -20,6 +23,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
 
         private IDataSource<AllowedItemInCompartment> allowedItemsDataSource;
+
+        private ICommand editCommand;
 
         private bool isCompartmentSelectableTray;
 
@@ -56,6 +61,9 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.allowedItemsDataSource, value);
         }
 
+        public ICommand EditCommand => this.editCommand ??
+                               (this.editCommand = new DelegateCommand(this.ExecuteEditCommand));
+
         public bool IsCompartmentSelectableTray
         {
             get => this.isCompartmentSelectableTray;
@@ -86,13 +94,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public override void LoadRelatedData()
+        public async override void LoadRelatedData()
         {
+            var items = await this.itemProvider.GetAllowedByCompartmentIdAsync(this.Model.Id);
             this.AllowedItemsDataSource = this.Model != null
-                ? new DataSource<AllowedItemInCompartment>(() => this.itemProvider.GetAllowedByCompartmentId(this.Model.Id))
+                ? new DataSource<AllowedItemInCompartment>(items.AsQueryable<AllowedItemInCompartment>)
                 : null;
 
-            this.LoadingUnitsDataSource = new DataSource<LoadingUnit>(() => this.loadingUnitProvider.GetAll());
+            var loadingUnits = await this.loadingUnitProvider.GetAllAsync();
+            this.LoadingUnitsDataSource = new DataSource<LoadingUnit>(loadingUnits.AsQueryable);
 
             base.LoadRelatedData();
         }
@@ -111,7 +121,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.IsBusy = true;
 
-            var result = await this.compartmentProvider.SaveAsync(this.Model);
+            var result = await this.compartmentProvider.UpdateAsync(this.Model);
             if (result.Success)
             {
                 this.TakeModelSnapshot();
@@ -139,6 +149,12 @@ namespace Ferretto.WMS.Modules.MasterData
             this.EventService.Unsubscribe<ModelChangedPubSubEvent<Compartment>>(this.modelChangedEventSubscription);
             this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<Compartment>>(this.modelSelectionChangedSubscription);
             base.OnDispose();
+        }
+
+        private void ExecuteEditCommand()
+        {
+            var args = new LoadingUnitArgs { LoadingUnitId = this.Model.LoadingUnitId, CompartmentId = this.Model.Id };
+            this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.LOADINGUNITEDIT, args);
         }
 
         private void Initialize()
@@ -182,6 +198,8 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));
                     this.SelectedCompartmentTray = this.Model;
                 }
+
+                this.LoadRelatedData();
 
                 this.IsBusy = false;
             }

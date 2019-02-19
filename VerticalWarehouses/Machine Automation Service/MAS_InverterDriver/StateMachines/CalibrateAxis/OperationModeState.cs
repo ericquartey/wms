@@ -3,9 +3,9 @@ using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.InverterDriver;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS_InverterDriver
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 {
-    public class HomingModeOperationState : IState
+    public class OperationModeState : IState
     {
         #region Fields
 
@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         #region Constructors
 
-        public HomingModeOperationState(StateMachineCalibrateAxis stateMachineCalibrateAxis, IInverterDriver inverterDriver, IEventAggregator eventAggregator)
+        public OperationModeState(StateMachineCalibrateAxis stateMachineCalibrateAxis, IInverterDriver inverterDriver, IEventAggregator eventAggregator)
         {
             this.inverterDriver = inverterDriver;
             this.eventAggregator = eventAggregator;
@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         #region Properties
 
-        public string Type => "Homing Mode Operation State";
+        public string Type => "Operation Mode State";
 
         #endregion
 

@@ -18,7 +18,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Methods
 
-        public abstract void NotifyMessage( Event_Message message );
+        public abstract void MakeOperation();
+
+        public abstract void NotifyMessage(Event_Message message);
+
+        public abstract void Stop();
 
         #endregion
     }

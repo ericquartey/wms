@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         decimal GetDecimalRuntimeValue(RuntimeValueEnum runtimeValueEnum);
 
-        int GetFreeBlockPosition(int drawerHeight);
+        decimal GetFreeBlockPosition(int drawerHeight);
 
         int GetIntegerConfigurationValue(ConfigurationValueEnum configurationValueEnum);
 

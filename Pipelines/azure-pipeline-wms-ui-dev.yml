@@ -16,36 +16,17 @@ trigger:
   paths:
     exclude:
     - VerticalWarehouses
-    
+    - WMS\Data
+    - WMS\Scheduler
+
 
 variables:
   BuildPlatform: 'any cpu'
   BuildConfiguration: 'debug'
+  TargetSolution: 'WMS\WMS.App.sln'
 
 steps:
 
-- task: CopyFiles@2
-  displayName: 'Copy sources to staging directory'
-  inputs:
-    Contents: |
-     **
-     !**\.git\**
-     !**\*.png
-     !**\*.jpg
-    targetFolder: '$(Build.ArtifactStagingDirectory)\sources'
-
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Common Sources'
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)\sources'
-    ArtifactName: 'common_sources'
-
-
-- task: DotNetCoreInstaller@0
-  inputs:
-    version: '2.1.502'
-    
 - template: azure-pipeline-net4-nuget-template.yml
 
 
@@ -55,7 +36,7 @@ steps:
 - task: VSBuild@1
   displayName: 'Build solution WMS.App'
   inputs:
-    solution: 'WMS\WMS.App.sln'
+    solution: '$(TargetSolution)'
     msbuildArgs: '-v:normal'
     platform: '$(BuildPlatform)'
     configuration: '$(BuildConfiguration)'
