@@ -96,6 +96,9 @@ namespace Ferretto.VW.MAS_MissionsManager
 
                         case MessageType.HorizontalHoming:
                             break;
+
+                        default:
+                            throw new InvalidOperationException("Type of message unmanaged.");
                     }
                 }
             } while (!stoppingToken.IsCancellationRequested);
