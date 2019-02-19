@@ -106,10 +106,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public override void LoadRelatedData()
+        public override async void LoadRelatedData()
         {
             this.CompartmentsDataSource = this.Model != null
-                ? this.compartmentProvider.GetByLoadingUnitId(this.Model.Id).ToList()
+                ? await this.compartmentProvider.GetByLoadingUnitIdAsync(this.Model.Id)
                 : null;
         }
 
@@ -127,7 +127,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.IsBusy = true;
 
-            var result = await this.loadingUnitProvider.SaveAsync(this.Model);
+            var result = await this.loadingUnitProvider.UpdateAsync(this.Model);
             if (result.Success)
             {
                 this.TakeModelSnapshot();
@@ -212,7 +212,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.IsBusy = true;
 
                     this.Model = await this.loadingUnitProvider.GetByIdAsync(modelId);
-                    this.LoadingUnitHasCompartments = this.loadingUnitProvider.HasAnyCompartments(modelId);
+                    this.LoadingUnitHasCompartments = this.Model.CompartmentsCount > 0 ? true : false;
                     this.InitializeTray();
                     this.IsBusy = false;
                 }

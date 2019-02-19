@@ -88,7 +88,7 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.executionRequest.ItemListRowDetails = await this.itemListRowProvider.GetByIdAsync(modelId.Value).ConfigureAwait(true);
-            this.executionRequest.AreaChoices = this.areaProvider.GetAll();
+            this.executionRequest.AreaChoices = await this.areaProvider.GetAllAsync();
             this.executionRequest.PropertyChanged += this.OnAreaIdChanged;
         }
 
@@ -126,12 +126,12 @@ namespace Ferretto.WMS.Modules.MasterData
             this.ExecutionRequest = new ItemListRowExecutionRequest();
         }
 
-        private void OnAreaIdChanged(object sender, PropertyChangedEventArgs e)
+        private async void OnAreaIdChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(this.executionRequest.AreaId) &&
                 this.executionRequest.AreaId.HasValue)
             {
-                this.executionRequest.BayChoices = this.bayProvider.GetByAreaId(this.ExecutionRequest.AreaId.Value);
+                this.executionRequest.BayChoices = await this.bayProvider.GetByAreaIdAsync(this.ExecutionRequest.AreaId.Value);
             }
         }
 

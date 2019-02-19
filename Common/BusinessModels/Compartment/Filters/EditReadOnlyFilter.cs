@@ -8,11 +8,10 @@ namespace Ferretto.Common.BusinessModels
 
         public Func<ICompartment, ICompartment, string> ColorFunc => (compartment, selected) =>
         {
-            var color = "#e6e6e6";
-            return color;
+            return "#e6e6e6";
         };
 
-        public string Description => "Compartment";
+        public string Description => "EditReadOnly";
 
         public int Id => 2;
 

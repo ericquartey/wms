@@ -112,7 +112,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ItemListDetails>> GetByIdAsync(int id)
         {
-            var result = await this.itemListRowProvider.GetByIdAsync(id);
+            var result = await this.itemListProvider.GetByIdAsync(id);
             if (result == null)
             {
                 return this.NotFound();
@@ -121,10 +121,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result);
         }
 
-        [ProducesResponseType(200, Type = typeof(ItemListRow))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<ItemListRow>))]
         [ProducesResponseType(404)]
         [HttpGet("{id}/rows")]
-        public async Task<ActionResult<ItemListRow>> GetRowsAsync(int id)
+        public async Task<ActionResult<IEnumerable<ItemListRow>>> GetRowsAsync(int id)
         {
             var result = await this.itemListRowProvider.GetByItemListIdAsync(id);
             if (result == null)

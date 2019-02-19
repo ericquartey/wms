@@ -1,36 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
 {
-    public interface ILoadingUnitProvider : IBusinessProvider<LoadingUnit, LoadingUnitDetails>
+    public interface ILoadingUnitProvider :
+        IPagedBusinessProvider<LoadingUnit>,
+        IReadSingleAsyncProvider<LoadingUnitDetails, int>,
+        ICreateAsyncProvider<LoadingUnitDetails>,
+        IUpdateAsyncProvider<LoadingUnitDetails>
     {
         #region Methods
 
-        IQueryable<LoadingUnitDetails> GetByCellId(int id);
-
-        IQueryable<LoadingUnit> GetWithAreaManual();
-
-        int GetWithAreaManualCount();
-
-        IQueryable<LoadingUnit> GetWithAreaVertimag();
-
-        int GetWithAreaVertimagCount();
-
-        IQueryable<LoadingUnit> GetWithStatusAvailable();
-
-        int GetWithStatusAvailableCount();
-
-        IQueryable<LoadingUnit> GetWithStatusBlocked();
-
-        int GetWithStatusBlockedCount();
-
-        IQueryable<LoadingUnit> GetWithStatusUsed();
-
-        int GetWithStatusUsedCount();
-
-        bool HasAnyCompartments(int loadingUnitId);
+        Task<IEnumerable<LoadingUnitDetails>> GetByCellIdAsync(int id);
 
         #endregion
     }

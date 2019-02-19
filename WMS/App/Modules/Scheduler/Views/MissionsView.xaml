@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxa="http://schemas.devexpress.com/winfx/2008/xaml/accordion"
              xmlns:dxdst="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
@@ -87,8 +88,32 @@
                       ExpandDirection="Left"
                       IsExpanded="True">
             <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
                 <wms:TileBar ItemsSource="{Binding Filters}"
                              SelectedItem="{Binding SelectedFilter, Mode=OneWayToSource}" />
+
+                <dxa:AccordionControl Grid.Row="1"
+                                      Background="Transparent"
+                                      BorderThickness="0"
+                                      IsCollapseButtonVisible="False"
+                                      RootItemExpandButtonPosition="Left">
+                    <wms:AccordionItem FontSize="12"
+                                       FontWeight="Normal"
+                                       IsExpandButtonVisible="True"
+                                       IsToggleVisible="False"
+                                       TitleHeader="{x:Static res:DesktopApp.CustomFilter}">
+                        <Border Margin="5"
+                                BorderBrush="LightGray"
+                                BorderThickness="1">
+                            <wms:WmsFilterControl MinWidth="250"
+                                                  Filter="{Binding CustomFilter, Mode=OneWayToSource}"
+                                                  FilteringContext="{Binding Path=FilteringContext, ElementName=MainGridControl}" />
+                        </Border>
+                    </wms:AccordionItem>
+                </dxa:AccordionControl>
             </Grid>
         </wms:Expander>
 
@@ -119,6 +144,7 @@
                                 MaxWidth="2000"
                                 MaxHeight="5000"
                                 CurrentItem="{Binding SelectedItem, Mode=TwoWay}"
+                                FixedFilter="{Binding OverallFilter, Mode=OneWay}"
                                 ItemsSource="{Binding SelectedFilterDataSource, Mode=OneWay}"
                                 ShowBorder="False">
                 <wms:WmsGridControl.Resources>
@@ -186,7 +212,6 @@
                         </dxg:GridColumn.CellTemplate>
                         <dxg:GridColumn.CellToolTipTemplate>
                             <DataTemplate>
-                                <wms:CustomBorder x:Name="CustomBorder">
                                     <Grid MinWidth="400"
                                           MaxHeight="350"
                                           Margin="8,0,0,0">
@@ -254,29 +279,46 @@
                                             </GroupBox>
                                         </Border>
                                     </Grid>
-                                </wms:CustomBorder>
                             </DataTemplate>
                         </dxg:GridColumn.CellToolTipTemplate>
                     </dxg:GridColumn>
 
                     <dxg:GridColumn Width="120*"
+                                    AllowSorting="True"
+                                    AllowedBinaryFilters="Equals,DoesNotEqual"
                                     FieldName="Status" />
                     <dxg:GridColumn Width="140*"
+                                    AllowSorting="True"
+                                    AllowedBinaryFilters="Equals,DoesNotEqual"
                                     FieldName="BayDescription" />
                     <dxg:GridColumn Width="370*"
+                                    AllowSorting="True"
+                                    AllowedBinaryFilters="Equals,DoesNotEqual"
                                     FieldName="ItemDescription" />
                     <dxg:GridColumn Width="200*"
+                                    AllowSorting="True"
+                                    AllowedBinaryFilters="Equals,DoesNotEqual"
                                     FieldName="ItemListDescription" />
                     <dxg:GridColumn Width="180*"
+                                    AllowSorting="True"
+                                    AllowedBinaryFilters="Equals,DoesNotEqual"
                                     FieldName="ItemListRowDescription" />
                     <dxg:GridColumn Width="140*"
+                                    AllowSorting="True"
+                                    AllowedBinaryFilters="Equals,DoesNotEqual"
                                     FieldName="LoadingUnitDescription" />
                     <dxg:GridColumn Width="90*"
+                                    AllowSorting="True"
+                                    AllowedBinaryFilters="Equals,DoesNotEqual"
                                     FieldName="Priority" />
                     <dxg:GridColumn Width="90*"
+                                    AllowSorting="True"
+                                    AllowedBinaryFilters="Equals,DoesNotEqual"
                                     CellDisplayTemplate="{StaticResource CellDisplayTemplateQuantity}"
                                     FieldName="RequiredQuantity" />
                     <dxg:GridColumn Width="120*"
+                                    AllowSorting="True"
+                                    AllowedBinaryFilters="Equals,DoesNotEqual"
                                     FieldName="Type" />
                 </wms:WmsGridControl.Columns>
 

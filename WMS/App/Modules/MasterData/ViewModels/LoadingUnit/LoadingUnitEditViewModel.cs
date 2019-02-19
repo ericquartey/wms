@@ -117,10 +117,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public void LoadRelatedData()
+        public async void LoadRelatedData()
         {
             this.CompartmentsDataSource = this.loadingUnit != null
-                ? this.compartmentProvider.GetByLoadingUnitId(this.loadingUnit.Id).ToList()
+                ? await this.compartmentProvider.GetByLoadingUnitIdAsync(this.loadingUnit.Id)
                 : null;
         }
 
