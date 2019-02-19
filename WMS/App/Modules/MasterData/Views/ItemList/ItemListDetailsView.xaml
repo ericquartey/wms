@@ -381,17 +381,13 @@
                               Margin="20,0"
                               Header="{x:Static res:MasterData.OtherInformation}">
                         <StackPanel Orientation="Vertical">
-                            <wms:InfoText HorizontalAlignment="Left"
-                                          HorizontalContentAlignment="Left"
+                            <wms:InfoText HorizontalAlignment="Left"                                          
                                           Content="{Binding Path=Model.CreationDate}" />
                             <wms:InfoText HorizontalAlignment="Left"
-                                          HorizontalContentAlignment="Left"
                                           Content="{Binding Path=Model.LastModificationDate}" />
                             <wms:InfoText HorizontalAlignment="Left"
-                                          HorizontalContentAlignment="Left"
                                           Content="{Binding Path=Model.FirstExecutionDate}" />
-                            <wms:InfoText HorizontalAlignment="Left"
-                                          HorizontalContentAlignment="Left"
+                            <wms:InfoText HorizontalAlignment="Left"                                          
                                           Content="{Binding Path=Model.ExecutionEndDate}" />
                         </StackPanel>
 
