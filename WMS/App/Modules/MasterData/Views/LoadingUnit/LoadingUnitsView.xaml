@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dxa="http://schemas.devexpress.com/winfx/2008/xaml/accordion"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -62,105 +63,125 @@
 
         <Grid Grid.Column="1">
 
-            <wms:ActionBar HorizontalAlignment="Left"
-                           Style="{DynamicResource ActionBarOverlayedWithGrid}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="200" />
+                </Grid.ColumnDefinitions>
 
-                <wms:ActionBarItem Command="{Binding ShowDetailsCommand}"
-                                   Content="{x:Static res:General.ShowDetails}"
-                                   CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_info_outline_black_24dp.png"
-                                   GlyphSize="Custom" />
-                <wms:ActionBarItem Command="{Binding WithdrawCommand}"
-                                   Content="{x:Static res:MasterData.Withdraw}"
-                                   CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_play_arrow_black_24dp.png"
-                                   GlyphSize="Custom" />
-                <wms:ActionBarItem Command="{Binding RefreshCommand}"
-                                   Content="{x:Static res:General.Refresh}"
-                                   CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
-                                   GlyphSize="Custom" />
-            </wms:ActionBar>
+                <wms:ActionBar Margin="5"
+                               HorizontalAlignment="Left"
+                               Style="{DynamicResource ActionBarOverlayedWithGrid}">
 
-            <wms:WmsGridControl x:Name="MainGridControl"
-                                MaxWidth="2000"
-                                MaxHeight="5000"
-                                Margin="3"
-                                CurrentItem="{Binding SelectedItem, Mode=TwoWay}"
-                                FixedFilter="{Binding OverallFilter, Mode=OneWay}"
-                                ItemsSource="{Binding SelectedFilterDataSource, Mode=OneWay}"
-                                ShowBorder="False">
-                <wms:WmsGridControl.View>
-                    <dxg:TableView SearchPanelHorizontalAlignment="Right"
-                                   ShowFilterPanelMode="ShowAlways"
-                                   ShowSearchPanelMode="Always">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="RowDoubleClick">
-                                <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentItem.Id, Mode=OneWay}"
-                                                          StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
-                                                          StartViewName="{x:Static modules:MasterData.LOADINGUNITDETAILS}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </dxg:TableView>
+                    <wms:ActionBarItem Command="{Binding ShowDetailsCommand}"
+                                       Content="{x:Static res:General.ShowDetails}"
+                                       CustomGlyphSize="24,24"
+                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_info_outline_black_24dp.png"
+                                       GlyphSize="Custom" />
+                    <wms:ActionBarItem Command="{Binding WithdrawCommand}"
+                                       Content="{x:Static res:MasterData.Withdraw}"
+                                       CustomGlyphSize="24,24"
+                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_play_arrow_black_24dp.png"
+                                       GlyphSize="Custom" />
+                    <wms:ActionBarItem Command="{Binding RefreshCommand}"
+                                       Content="{x:Static res:General.Refresh}"
+                                       CustomGlyphSize="24,24"
+                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
+                                       GlyphSize="Custom" />
+                </wms:ActionBar>
 
-                </wms:WmsGridControl.View>
+                <dxe:TextEdit Grid.Column="2"
+                              Margin="8"
+                              EditValue="{Binding SearchText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged, Delay=200}"
+                              NullText="{x:Static res:General.Search}"
+                              ShowNullText="True" />
 
-                <wms:WmsGridControl.Columns>
-                    <dxg:GridColumn Width="80*"
-                                    AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
-                                    FieldName="AreaName" />
-                    <dxg:GridColumn Width="80*"
-                                    AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
-                                    FieldName="AisleName" />
-                    <dxg:GridColumn Width="100*"
-                                    AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
-                                    FieldName="Code" />
-                    <dxg:GridColumn Width="250*"
-                                    AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
-                                    FieldName="LoadingUnitTypeDescription" />
-                    <dxg:GridColumn Width="100*"
-                                    AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
-                                    FieldName="LoadingUnitStatusDescription" />
-                    <dxg:GridColumn Width="80*"
-                                    AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
-                                    FieldName="AbcClassDescription" />
-                    <dxg:GridColumn Width="80*"
-                                    AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
-                                    FieldName="CellFloor" />
-                    <dxg:GridColumn Width="80*"
-                                    AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
-                                    FieldName="CellColumn" />
-                    <dxg:GridColumn Width="80*"
-                                    AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
-                                    FieldName="CellSide" />
-                    <dxg:GridColumn Width="80*"
-                                    AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
-                                    FieldName="CellNumber" />
-                    <dxg:GridColumn Width="150*"
-                                    AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
-                                    FieldName="CellPositionDescription" />
-                </wms:WmsGridControl.Columns>
+                <wms:WmsGridControl x:Name="MainGridControl"
+                                    Grid.Row="1"
+                                    Grid.ColumnSpan="3"
+                                    MaxWidth="2000"
+                                    MaxHeight="5000"
+                                    Margin="3"
+                                    CurrentItem="{Binding SelectedItem, Mode=TwoWay}"
+                                    FixedFilter="{Binding OverallFilter, Mode=OneWay}"
+                                    ItemsSource="{Binding SelectedFilterDataSource, Mode=OneWay}"
+                                    ShowBorder="False">
+                    <wms:WmsGridControl.View>
+                        <dxg:TableView SearchPanelHorizontalAlignment="Right"
+                                       ShowFilterPanelMode="Never"
+                                       ShowSearchPanelMode="Never">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="RowDoubleClick">
+                                    <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentItem.Id, Mode=OneWay}"
+                                                              StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
+                                                              StartViewName="{x:Static modules:MasterData.LOADINGUNITDETAILS}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </dxg:TableView>
 
-                <wms:WmsGridControl.SortInfo>
-                    <dxg:GridSortInfo FieldName="AreaName"
-                                      SortOrder="Ascending" />
-                    <dxg:GridSortInfo FieldName="AisleName"
-                                      SortOrder="Ascending" />
-                </wms:WmsGridControl.SortInfo>
+                    </wms:WmsGridControl.View>
 
-            </wms:WmsGridControl>
+                    <wms:WmsGridControl.Columns>
+                        <dxg:GridColumn Width="80*"
+                                        AllowSorting="True"
+                                        AllowedBinaryFilters="Equals,DoesNotEqual"
+                                        FieldName="AreaName" />
+                        <dxg:GridColumn Width="80*"
+                                        AllowSorting="True"
+                                        AllowedBinaryFilters="Equals,DoesNotEqual"
+                                        FieldName="AisleName" />
+                        <dxg:GridColumn Width="100*"
+                                        AllowSorting="True"
+                                        AllowedBinaryFilters="Equals,DoesNotEqual"
+                                        FieldName="Code" />
+                        <dxg:GridColumn Width="250*"
+                                        AllowSorting="True"
+                                        AllowedBinaryFilters="Equals,DoesNotEqual"
+                                        FieldName="LoadingUnitTypeDescription" />
+                        <dxg:GridColumn Width="100*"
+                                        AllowSorting="True"
+                                        AllowedBinaryFilters="Equals,DoesNotEqual"
+                                        FieldName="LoadingUnitStatusDescription" />
+                        <dxg:GridColumn Width="80*"
+                                        AllowSorting="True"
+                                        AllowedBinaryFilters="Equals,DoesNotEqual"
+                                        FieldName="AbcClassDescription" />
+                        <dxg:GridColumn Width="80*"
+                                        AllowSorting="True"
+                                        AllowedBinaryFilters="Equals,DoesNotEqual"
+                                        FieldName="CellFloor" />
+                        <dxg:GridColumn Width="80*"
+                                        AllowSorting="True"
+                                        AllowedBinaryFilters="Equals,DoesNotEqual"
+                                        FieldName="CellColumn" />
+                        <dxg:GridColumn Width="80*"
+                                        AllowSorting="True"
+                                        AllowedBinaryFilters="Equals,DoesNotEqual"
+                                        FieldName="CellSide" />
+                        <dxg:GridColumn Width="80*"
+                                        AllowSorting="True"
+                                        AllowedBinaryFilters="Equals,DoesNotEqual"
+                                        FieldName="CellNumber" />
+                        <dxg:GridColumn Width="150*"
+                                        AllowSorting="True"
+                                        AllowedBinaryFilters="Equals,DoesNotEqual"
+                                        FieldName="CellPositionDescription" />
+                    </wms:WmsGridControl.Columns>
+
+                    <wms:WmsGridControl.SortInfo>
+                        <dxg:GridSortInfo FieldName="AreaName"
+                                          SortOrder="Ascending" />
+                        <dxg:GridSortInfo FieldName="AisleName"
+                                          SortOrder="Ascending" />
+                    </wms:WmsGridControl.SortInfo>
+
+                </wms:WmsGridControl>
+            </Grid>
         </Grid>
-
     </Grid>
 </wms:WmsView>
