@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -104,7 +103,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             try
             {
-                var searchExpression = BuildSearchExpression(search);
                 var whereExpression = where.AsIExpression();
                 var orderByExpression = orderBy.ParseSortOptions();
 
@@ -114,7 +112,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                         take,
                         orderByExpression,
                         whereExpression,
-                        searchExpression));
+                        search));
             }
             catch (NotSupportedException e)
             {
@@ -132,12 +130,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             try
             {
-                var searchExpression = BuildSearchExpression(search);
                 var whereExpression = where.AsIExpression();
 
                 return await this.compartmentProvider.GetAllCountAsync(
                            whereExpression,
-                           searchExpression);
+                           search);
             }
             catch (NotSupportedException e)
             {
@@ -212,33 +209,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return this.Ok(result.Entity);
-        }
-
-        private static Expression<Func<Compartment, bool>> BuildSearchExpression(string search)
-        {
-            if (string.IsNullOrWhiteSpace(search))
-            {
-                return null;
-            }
-
-            return (c) =>
-                c.CompartmentStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.ItemDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.ItemMeasureUnit.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.LoadingUnitCode.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Lot.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.MaterialStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Sub1.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Sub2.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Stock.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
         #endregion

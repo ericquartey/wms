@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -30,7 +29,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IItemProvider itemProvider;
 
-        private readonly Scheduler.Core.ISchedulerRequestProvider schedulerRequestProvider;
+        private readonly Scheduler.Core.Interfaces.ISchedulerRequestProvider schedulerRequestProvider;
 
         #endregion
 
@@ -39,7 +38,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public ItemsController(
             IItemProvider itemProvider,
             IAreaProvider areaProvider,
-            Scheduler.Core.ISchedulerRequestProvider schedulerRequestProvider,
+            Scheduler.Core.Interfaces.ISchedulerRequestProvider schedulerRequestProvider,
             ICompartmentProvider compartmentProvider)
         {
             this.itemProvider = itemProvider;
@@ -79,7 +78,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             try
             {
-                var searchExpression = BuildSearchExpression(search);
                 var whereExpression = where.AsIExpression();
                 var orderByExpression = orderBy.ParseSortOptions();
 
@@ -89,7 +87,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                         take,
                         orderByExpression,
                         whereExpression,
-                        searchExpression));
+                        search));
             }
             catch (NotSupportedException e)
             {
@@ -107,12 +105,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             try
             {
-                var searchExpression = BuildSearchExpression(search);
                 var whereExpression = where.AsIExpression();
 
                 return await this.itemProvider.GetAllCountAsync(
                            whereExpression,
-                           searchExpression);
+                           search);
             }
             catch (NotSupportedException e)
             {
@@ -213,23 +210,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return this.CreatedAtAction(nameof(this.Withdraw), new { id = acceptedRequest.Id }, acceptedRequest);
-        }
-
-        private static Expression<Func<Item, bool>> BuildSearchExpression(string search)
-        {
-            if (string.IsNullOrWhiteSpace(search))
-            {
-                return null;
-            }
-
-            return (i) =>
-                i.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.Description.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.ItemCategoryDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.TotalAvailable.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
         #endregion
