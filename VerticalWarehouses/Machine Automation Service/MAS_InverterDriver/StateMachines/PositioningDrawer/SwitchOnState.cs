@@ -3,9 +3,9 @@ using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.InverterDriver;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS_InverterDriver
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PositioningDrawer
 {
-    public class DisableVoltageState : IState
+    public class SwitchOnState : IState
     {
         #region Fields
 
@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private readonly IInverterDriver inverterDriver;
 
-        private readonly StateMachineCalibrateAxis stateMachineCalibrateAxis;
+        private readonly StateMachinePositioningDrawer stateMachinePositioningDrawer;
 
         private readonly ParameterID paramID = ParameterID.HOMING_MODE_PARAM;
 
@@ -27,21 +27,21 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         #region Constructors
 
-        public DisableVoltageState(StateMachineCalibrateAxis stateMachineCalibrateAxis, IInverterDriver inverterDriver, IEventAggregator eventAggregator)
+        public SwitchOnState(StateMachinePositioningDrawer stateMachinePositioningDrawer, IInverterDriver inverterDriver, IEventAggregator eventAggregator)
         {
             this.inverterDriver = inverterDriver;
             this.eventAggregator = eventAggregator;
-            this.stateMachineCalibrateAxis = stateMachineCalibrateAxis;
+            this.stateMachinePositioningDrawer = stateMachinePositioningDrawer;
 
             this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
-            
+
         }
 
         #endregion
 
         #region Properties
 
-        public string Type => "Disable Voltage State";
+        public string Type => "Switch On State";
 
         #endregion
 
@@ -57,13 +57,13 @@ namespace Ferretto.VW.MAS_InverterDriver
                     {
                         if (result == InverterDriverExitStatus.Success)
                         {
-                            this.stateMachineCalibrateAxis.ChangeState(new HomingModeOperationState(stateMachineCalibrateAxis, inverterDriver, eventAggregator));
+                            this.stateMachinePositioningDrawer.ChangeState(new EnabledOperationState(stateMachinePositioningDrawer, inverterDriver, eventAggregator));
                         }
                         break;
                     }
                 case OperationStatus.Error:
                     {
-                        this.stateMachineCalibrateAxis.ChangeState(new ErrorState(stateMachineCalibrateAxis, inverterDriver, eventAggregator));
+                        this.stateMachinePositioningDrawer.ChangeState(new ErrorState(stateMachinePositioningDrawer, inverterDriver, eventAggregator));
 
                         break;
                     }
@@ -72,8 +72,6 @@ namespace Ferretto.VW.MAS_InverterDriver
                         break;
                     }
             }
-
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Unsubscribe(this.notifyEventHandler);
         }
 
         #endregion

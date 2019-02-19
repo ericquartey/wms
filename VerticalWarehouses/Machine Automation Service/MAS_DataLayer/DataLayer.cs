@@ -1,31 +1,30 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Ferretto.VW.Common_Utils;
 using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
     public partial class DataLayer : IDataLayer, IWriteLogService
     {
-        private readonly DataLayerContext inMemoryDataContext;
-
-        private readonly IEventAggregator eventAggregator;
+        #region Fields
 
         private const string ConnectionStringName = "AutomationService";
 
-        private const string CELL_NOT_FOUND_EXCEPTION = "Data Layer Exception - Cell Not Found";
+        private readonly IEventAggregator eventAggregator;
 
-        #region Properties
-
-        public IConfiguration Configuration { get; }
+        private readonly DataLayerContext inMemoryDataContext;
 
         #endregion
 
-        public DataLayer(IConfiguration configuration, DataLayerContext inMemoryDataContext, IEventAggregator eventAggregator)
+        #region Constructors
+
+        public DataLayer(string connectionString, DataLayerContext inMemoryDataContext, IEventAggregator eventAggregator)
         {
             if (inMemoryDataContext == null)
             {
@@ -41,33 +40,23 @@ namespace Ferretto.VW.MAS_DataLayer
 
             this.eventAggregator = eventAggregator;
 
-            this.Configuration = configuration;
-
-            var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
-
-            var initialContext = new DataLayerContext(
-                new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(connectionString).Options);
-
-            if (initialContext == null)
+            using (var initialContext = new DataLayerContext(
+                new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(connectionString).Options))
             {
-                throw new DataLayerException(DataLayerExceptionEnum.DATALAYER_CONTEXT_EXCEPTION);
+                initialContext.Database.Migrate();
+
+                if (!initialContext.ConfigurationValues.Any())
+                {
+                    //TODO reovery database from permanent storage
+                }
+
+                foreach (var configurationValue in initialContext.ConfigurationValues)
+                {
+                    this.inMemoryDataContext.ConfigurationValues.Add(configurationValue);
+                }
+
+                this.inMemoryDataContext.SaveChanges();
             }
-
-            initialContext.Database.Migrate();
-
-            if (!initialContext.ConfigurationValues.Any())
-            {
-                //TODO reovery database from permanent storage
-            }
-
-            foreach (var configurationValue in initialContext.ConfigurationValues)
-            {
-                this.inMemoryDataContext.ConfigurationValues.Add(configurationValue);
-            }
-
-            this.inMemoryDataContext.SaveChanges();
-
-            initialContext.Dispose();
 
             // The old WriteLogService
             var webApiCommandEvent = eventAggregator.GetEvent<WebAPI_CommandEvent>();
@@ -75,51 +64,26 @@ namespace Ferretto.VW.MAS_DataLayer
             webApiCommandEvent.Subscribe(this.LogWriting);
         }
 
+        #endregion
+
+        #region Properties
+
+        public IConfiguration Configuration { get; }
+
+        #endregion
+
         #region Methods
 
         public List<Cell> GetCellList()
         {
-            List<Cell> listCells = new List<Cell>();
+            var listCells = new List<Cell>();
 
-            foreach (var cell in inMemoryDataContext.Cells)
+            foreach (var cell in this.inMemoryDataContext.Cells)
             {
                 listCells.Add(cell);
             }
 
             return listCells;
-        }
-
-        public bool SetCellList(List<Cell> listCells)
-        {
-            bool setCellList = true;
-
-            if (listCells != null)
-            { 
-                foreach(var cell in listCells)
-                {
-                    var inMemoryCellCurrentValue = inMemoryDataContext.Cells.FirstOrDefault(s => s.CellId == cell.CellId);
-
-                    if (inMemoryCellCurrentValue != null)
-                    {
-                        inMemoryCellCurrentValue.Coord    = cell.Coord;
-                        inMemoryCellCurrentValue.Priority = cell.Priority;
-                        inMemoryCellCurrentValue.Side     = cell.Side;
-                        inMemoryCellCurrentValue.Status   = cell.Status;
-
-                        inMemoryDataContext.SaveChanges();
-                    }
-                    else
-                    {
-                        throw new DataLayerException(CELL_NOT_FOUND_EXCEPTION);
-                    }
-                }
-            }
-            else
-            {
-                setCellList = false;
-            }
-
-            return setCellList;
         }
 
         public bool LogWriting(string logMessage)
@@ -160,6 +124,37 @@ namespace Ferretto.VW.MAS_DataLayer
 
             this.inMemoryDataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
             this.inMemoryDataContext.SaveChanges();
+        }
+
+        public bool SetCellList(List<Cell> listCells)
+        {
+            var setCellList = false;
+
+            if (listCells != null)
+            {
+                setCellList = true;
+
+                foreach (var cell in listCells)
+                {
+                    var inMemoryCellCurrentValue = this.inMemoryDataContext.Cells.FirstOrDefault(s => s.CellId == cell.CellId);
+
+                    if (inMemoryCellCurrentValue != null)
+                    {
+                        inMemoryCellCurrentValue.Coord = cell.Coord;
+                        inMemoryCellCurrentValue.Priority = cell.Priority;
+                        inMemoryCellCurrentValue.Side = cell.Side;
+                        inMemoryCellCurrentValue.Status = cell.Status;
+
+                        this.inMemoryDataContext.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new ArgumentNullException();
+                    }
+                }
+            }
+
+            return setCellList;
         }
 
         #endregion

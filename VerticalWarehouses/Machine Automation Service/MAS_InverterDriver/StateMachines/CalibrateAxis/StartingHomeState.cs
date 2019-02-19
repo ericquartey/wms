@@ -3,7 +3,7 @@ using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.InverterDriver;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS_InverterDriver
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 {
     public class StartingHomeState : IState
     {

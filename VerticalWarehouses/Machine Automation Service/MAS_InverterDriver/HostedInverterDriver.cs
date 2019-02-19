@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Exceptions;
 using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.InverterDriver.Interface;
 using Microsoft.Extensions.Hosting;
 using Prism.Events;
 
@@ -16,13 +19,13 @@ namespace Ferretto.VW.InverterDriver
 
         private const int HEARTBEAT_TIMEOUT = 300;
 
+        private const int InverterPortNumber = 17221;
+
         private readonly ConcurrentQueue<Event_Message> commandQueue;
 
         private readonly IEventAggregator eventAggregator;
 
         private readonly ManualResetEventSlim inverterCommandReceived;
-
-        private readonly IInverterDriver inverterDriver;
 
         private readonly ConcurrentQueue<Event_Message> messageQueue;
 
@@ -31,6 +34,8 @@ namespace Ferretto.VW.InverterDriver
         private readonly ManualResetEventSlim priorityInverterCommandReceived;
 
         private readonly ConcurrentQueue<Event_Message> priorityQueue;
+
+        private readonly ISocketTransport socketTransport;
 
         private Timer heartBeatTimer;
 
@@ -44,11 +49,10 @@ namespace Ferretto.VW.InverterDriver
 
         #region Constructors
 
-        public HostedInverterDriver( IEventAggregator eventAggregator, IInverterDriver inverterDriver )
+        public HostedInverterDriver( IEventAggregator eventAggregator, ISocketTransport socketTransport )
         {
-            this.inverterDriver = inverterDriver;
+            this.socketTransport = socketTransport;
             this.eventAggregator = eventAggregator;
-            this.inverterDriver.Initialize();
 
             this.priorityInverterCommandReceived = new ManualResetEventSlim( false );
             this.inverterCommandReceived = new ManualResetEventSlim( false );
@@ -151,25 +155,31 @@ namespace Ferretto.VW.InverterDriver
 
         private async void ReceiveInverterData( CancellationToken stoppingToken )
         {
-            //var inverterAddress = IPAddress.Parse( "169.254.231.248" );
-            //var inverterPortNumber = 17221;
-            //this.receiveSocket = new Socket( inverterAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp );
-            //this.receiveSocket.SetSocketOption( SocketOptionLevel.IP, SocketOptionName.ReuseAddress, true);
-            //var inverterEndPoint = new IPEndPoint( inverterAddress, inverterPortNumber );
+            this.socketTransport.Configure( IPAddress.Parse( "169.254.231.248" ), InverterPortNumber );
 
-            //this.receiveSocket.Connect( inverterEndPoint );
+            bool connectionCompleted;
+            try
+            {
+                connectionCompleted = await this.socketTransport.ConnectAsync();
+            }
+            catch(Exception Ex)
+            {
+                throw new InverterDriverException( $"Exception {Ex.Message} while Connecting Receiver Socket Transport", Ex );
+            }
 
-            //Memory<byte> receiveBuffer = new Memory<byte>(new byte[1024]);
+            if(!connectionCompleted)
+            {
+                throw new InverterDriverException( "Socket Transport failed to connect" );
+            }
 
+            byte[] inverterData;
             do
             {
                 try
                 {
-                    //await this.receiveSocket.ReceiveAsync( receiveBuffer, SocketFlags.None, stoppingToken );
-                    await Task.Delay( 2000 );
-                    //=== Parse Buffer
+                    inverterData = await this.socketTransport.ReadAsync( stoppingToken );
                 }
-                catch(OperationCanceledException ex)
+                catch(OperationCanceledException)
                 {
                     return;
                 }
