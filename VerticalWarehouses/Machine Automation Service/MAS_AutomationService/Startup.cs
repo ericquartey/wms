@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.InverterDriver;
+using Ferretto.VW.InverterDriver.Interface;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_FiniteStateMachines;
@@ -90,6 +91,8 @@ namespace Ferretto.VW.MAS_AutomationService
 
             services.AddSingleton<INewInverterDriver, NewInverterDriver>();
             services.AddSingleton<INewRemoteIODriver, NewRemoteIODriver>();
+
+            services.AddSingleton<ISocketTransport, SocketTransport>();
 
             //TODO Old InverterDriver Registration to be removed after code refactoring completed
             services.AddSingleton<InverterDriver.IInverterDriver, InverterDriver.InverterDriver>();
