@@ -45,18 +45,18 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         #region Methods
 
-        public async Task<IEnumerable<Mission>> CreateForPendingRequestsAsync()
+        public async Task<IEnumerable<Mission>> CreateForRequestsAsync(IEnumerable<SchedulerRequest> requests)
         {
+            if (!requests.Any())
+            {
+                this.logger.LogDebug($"No scheduler requests are available for processing at the moment.");
+
+                return new List<Mission>();
+            }
+
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 IEnumerable<Mission> missions = new List<Mission>();
-
-                var requests = await this.schedulerRequestProvider.GetRequestsToProcessAsync();
-                if (requests.Any() == false)
-                {
-                    this.logger.LogDebug($"No more scheduler requests are available for processing at the moment.");
-                    return missions;
-                }
 
                 this.logger.LogDebug($"A total of {requests.Count()} requests need to be processed.");
 
@@ -113,10 +113,11 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             var availableCompartments = true;
             while (request.QuantityLeftToDispatch > 0 && availableCompartments)
             {
-                var compartments = this.schedulerRequestProvider.GetCandidateWithdrawalCompartments(request);
+                var compartments = this.compartmentSchedulerProvider
+                    .GetCandidateWithdrawalCompartments(request);
 
-                var orderedCompartments =
-                    this.schedulerRequestProvider.OrderCompartmentsByManagementType(compartments, item.ManagementType);
+                var orderedCompartments = this.compartmentSchedulerProvider
+                    .OrderCompartmentsByManagementType(compartments, item.ManagementType);
 
                 var compartment = orderedCompartments.FirstOrDefault();
                 if (compartment == null)
@@ -189,6 +190,8 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 });
 
             await this.databaseContext.Missions.AddRangeAsync(missions);
+
+            await this.databaseContext.SaveChangesAsync();
         }
 
         #endregion

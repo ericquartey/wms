@@ -15,10 +15,12 @@ namespace Ferretto.WMS.Scheduler.Core.Extensions
         public static IServiceCollection AddSchedulerServiceProviders(
                  this IServiceCollection serviceCollection)
         {
-            serviceCollection.AddTransient<ISchedulerRequestProvider, SchedulerRequestProvider>();
-            serviceCollection.AddTransient<IItemListSchedulerProvider, ItemListSchedulerProvider>();
-            serviceCollection.AddTransient<IMissionSchedulerProvider, MissionSchedulerProvider>();
+            serviceCollection.AddTransient<ICompartmentSchedulerProvider, CompartmentSchedulerProvider>();
             serviceCollection.AddTransient<IItemListRowSchedulerProvider, ItemListRowSchedulerProvider>();
+            serviceCollection.AddTransient<IItemListSchedulerProvider, ItemListSchedulerProvider>();
+            serviceCollection.AddTransient<IItemSchedulerProvider, ItemSchedulerProvider>();
+            serviceCollection.AddTransient<IMissionSchedulerProvider, MissionSchedulerProvider>();
+            serviceCollection.AddTransient<ISchedulerRequestProvider, SchedulerRequestProvider>();
 
             return serviceCollection;
         }

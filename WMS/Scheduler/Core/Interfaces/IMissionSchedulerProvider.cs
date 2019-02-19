@@ -7,7 +7,7 @@ namespace Ferretto.WMS.Scheduler.Core.Interfaces
     {
         #region Methods
 
-        Task<IEnumerable<Mission>> CreateForPendingRequestsAsync();
+        Task<IEnumerable<Mission>> CreateForRequestsAsync(IEnumerable<SchedulerRequest> requests);
 
         #endregion
     }

@@ -93,7 +93,8 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 scope.Complete();
             }
 
-            await this.missionSchedulerProvider.CreateForPendingRequestsAsync();
+            var requestsToProcess = await this.schedulerRequestProvider.GetRequestsToProcessAsync();
+            await this.missionSchedulerProvider.CreateForRequestsAsync(requestsToProcess);
 
             return requests;
         }

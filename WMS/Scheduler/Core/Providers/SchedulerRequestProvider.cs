@@ -15,11 +15,11 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
     {
         #region Fields
 
+        private readonly ICompartmentSchedulerProvider compartmentSchedulerProvider;
+
         private readonly DatabaseContext dataContext;
 
         private readonly ILogger<SchedulerRequestProvider> logger;
-
-        private readonly IMissionSchedulerProvider missionSchedulerProvider;
 
         #endregion
 
@@ -28,11 +28,11 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
         public SchedulerRequestProvider(
             DatabaseContext dataContext,
             ILogger<SchedulerRequestProvider> logger,
-            IMissionSchedulerProvider missionSchedulerProvider)
+            ICompartmentSchedulerProvider compartmentSchedulerProvider)
         {
             this.dataContext = dataContext;
             this.logger = logger;
-            this.missionSchedulerProvider = missionSchedulerProvider;
+            this.compartmentSchedulerProvider = compartmentSchedulerProvider;
         }
 
         #endregion
@@ -63,6 +63,8 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             var requests = models.Select(r => CreateDataModel(r));
 
             await this.dataContext.AddRangeAsync(requests);
+
+            await this.dataContext.SaveChangesAsync();
 
             return models;
         }
@@ -147,7 +149,8 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 .Select(i => new { i.Id, i.ManagementType })
                 .SingleAsync(i => i.Id == schedulerRequest.ItemId);
 
-            var orderedCompartmentSets = this.OrderCompartmentsByManagementType(compartmentSets, (ItemManagementType)item.ManagementType);
+            var orderedCompartmentSets = this.compartmentSchedulerProvider
+                .OrderCompartmentsByManagementType(compartmentSets, (ItemManagementType)item.ManagementType);
 
             return await orderedCompartmentSets
                   .Select(
@@ -161,70 +164,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                       Sub2 = c.Sub2
                   })
               .FirstOrDefaultAsync();
-        }
-
-        /// <summary>
-        /// Gets all compartments in the specified area/bay that have availability for the specified item.
-        /// </summary>
-        /// <param name="schedulerRequest"></param>
-        /// <returns>The unsorted set of compartments matching the specified request.</returns>
-        public IQueryable<Compartment> GetCandidateWithdrawalCompartments(SchedulerRequest schedulerRequest)
-        {
-            if (schedulerRequest == null)
-            {
-                throw new ArgumentNullException(nameof(schedulerRequest));
-            }
-
-            if (schedulerRequest.Type != OperationType.Withdrawal)
-            {
-                throw new ArgumentException("Only withdrawal requests are supported.", nameof(schedulerRequest));
-            }
-
-            return this.dataContext.Compartments
-                .Include(c => c.LoadingUnit)
-                .ThenInclude(l => l.Cell)
-                .ThenInclude(c => c.Aisle)
-                .ThenInclude(a => a.Area)
-                .ThenInclude(a => a.Bays)
-                .Where(c =>
-                    c.ItemId == schedulerRequest.ItemId
-                    &&
-                    c.Lot == schedulerRequest.Lot
-                    &&
-                    c.MaterialStatusId == schedulerRequest.MaterialStatusId
-                    &&
-                    c.MaterialStatusId == schedulerRequest.PackageTypeId
-                    &&
-                    c.RegistrationNumber == schedulerRequest.RegistrationNumber
-                    &&
-                    c.Sub1 == schedulerRequest.Sub1
-                    &&
-                    c.Sub2 == schedulerRequest.Sub2
-                    &&
-                    (c.Stock - c.ReservedForPick + c.ReservedToStore) > 0
-                    &&
-                    (schedulerRequest.BayId.HasValue == false || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == schedulerRequest.BayId))
-                    &&
-                    (c.LoadingUnit.Cell.Aisle.AreaId == schedulerRequest.AreaId))
-                .Select(c => new Compartment
-                {
-                    AreaId = c.LoadingUnit.Cell.Aisle.AreaId,
-                    CellId = c.LoadingUnit.CellId,
-                    FifoTime = c.FifoTime,
-                    FirstStoreDate = c.FirstStoreDate,
-                    Id = c.Id,
-                    ItemId = c.ItemId.Value,
-                    LoadingUnitId = c.LoadingUnitId,
-                    Lot = c.Lot,
-                    MaterialStatusId = c.MaterialStatusId,
-                    PackageTypeId = c.PackageTypeId,
-                    RegistrationNumber = c.RegistrationNumber,
-                    ReservedForPick = c.ReservedForPick,
-                    ReservedToStore = c.ReservedToStore,
-                    Stock = c.Stock,
-                    Sub1 = c.Sub1,
-                    Sub2 = c.Sub2,
-                });
         }
 
         /// <summary>
@@ -286,28 +225,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                .ToArrayAsync();
         }
 
-        public IQueryable<T> OrderCompartmentsByManagementType<T>(IQueryable<T> compartments, ItemManagementType type)
-                where T : IOrderableCompartment
-        {
-            switch (type)
-            {
-                case ItemManagementType.FIFO:
-                    return compartments
-                        .OrderBy(c => c.FirstStoreDate)
-                        .ThenBy(c => c.Availability);
-
-                case ItemManagementType.Volume:
-                    return compartments
-                        .OrderBy(c => c.Availability)
-                        .ThenBy(c => c.FirstStoreDate);
-
-                default:
-                    throw new ArgumentException(
-                        $"Unable to interpret enumeration value for {nameof(ItemManagementType)}",
-                        nameof(type));
-            }
-        }
-
         public async Task<SchedulerRequest> UpdateAsync(SchedulerRequest request)
         {
             if (request == null)
@@ -338,7 +255,14 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 }
             }
 
-            await this.missionSchedulerProvider.CreateForPendingRequestsAsync();
+            // this should not be done here
+#pragma warning disable S125 // Sections of code should not be commented out
+            /*
+                        var requestsToProcess = await this.GetRequestsToProcessAsync();
+                        await this.missionSchedulerProvider.CreateForRequestsAsync(requestsToProcess);
+                        */
+
+#pragma warning restore S125 // Sections of code should not be commented out
 
             return qualifiedRequest;
         }
