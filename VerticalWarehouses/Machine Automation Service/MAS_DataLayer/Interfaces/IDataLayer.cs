@@ -1,16 +1,19 @@
 ﻿using System.Collections.Generic;
 
+/// <summary>
+///
+/// </summary>
 namespace Ferretto.VW.MAS_DataLayer
 {
     public interface IDataLayer
     {
         #region Methods
 
-        List<Cell> GetCellList(int drawerHeight);
-
         decimal GetDecimalConfigurationValue(ConfigurationValueEnum configurationValueEnum);
 
         decimal GetDecimalRuntimeValue(RuntimeValueEnum runtimeValueEnum);
+
+        int GetFreeBlockPosition(int drawerHeight);
 
         int GetIntegerConfigurationValue(ConfigurationValueEnum configurationValueEnum);
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.Common_Utils;
 using Ferretto.VW.Common_Utils.EventParameters;
@@ -83,64 +84,77 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Methods
 
-        // drawerHeight: Drawer Height in mm
-        public List<Cell> GetCellList(int drawerHeight)
+        // TEMP - hypothesis: a bay corresponds to some unusable cells
+        public int GetFreeBlockPosition(int drawerHeight)
         {
-            var listCellsEven = new List<Cell>();
-            var listCellsOdd = new List<Cell>();
+            var cellSpicing = this.GetIntegerConfigurationValue(ConfigurationValueEnum.cellSpicing);
 
-            //for (int i = 0; i < cm.Cells.Count; i += 2) //odd ID cell's index
-            //{
-            //    if (cm.Cells[i].Status == 0)
-            //    {
-            //        int tmp = GetLastUpperNotDisabledCellIndex(cm, i);
-            //        var cb = new CellBlock(i + 1, tmp + 1, counter);
-            //        cm.Blocks.Add(cb);
-            //        counter++;
-            //        i = tmp;
-            //    }
-            //}
-            //for (int i = 1; i < cm.Cells.Count; i += 2)//even ID cell's index
-            //{
-            //    if (cm.Cells[index].Status == 0)
-            //    {
-            //        int tmp = GetLastUpperNotDisabledCellIndex(cm, i);
-            //        var cb = new CellBlock(index + 1, tmp + 1, counter);
-            //        cm.Blocks.Add(cb);
-            //        counter++;
-            //        i = tmp;
-            //    }
-            //}
+            // INFO
+            // Drawer height conversion to the cell number
+            // Ceiling to round a double to the upper integer
+            var cellNumber = (int)Math.Ceiling((decimal)drawerHeight / cellSpicing);
 
-            var cellEven = 0;
-            var cellOdd = 0;
+            var blockHeight = 0; // INFO - Cell number
+            var cellEven = new Cell();
+            var cellOdd = new Cell();
 
-            //this.inMemoryDataContext.Cells
-            //    .OrderBy(cell => cell.CellId)
-            //    .Select(cell =>
-            //    {
-            //        return new Cell { };
-            //    });
+            var cellCounterEven = 0;
+            var cellCounterOdd = 0;
 
             foreach (var cell in this.inMemoryDataContext.Cells.OrderBy(cell => cell.CellId))
             {
-                if ((int)cell.Status % 2 == 0) // Even
+                if (cell.Side == Side.FrontEven)
                 {
-                    listCellsEven.Add(cell);
-                    cellEven++;
+                    if (cell.Status == Status.Disabled || cell.Status == Status.Free)
+                    {
+                        // INFO It is the first Free Cell, it could be the beginning of a block
+                        if (cellCounterEven == 0 && cell.Status == Status.Free)
+                        {
+                            cellEven = cell;
+                        }
+
+                        // INFO Add a new cell to the current block
+                        cellCounterEven++;
+                    }
+                    // INFO - if we find a Unusable or Occupied block, we have to search for a new block
+                    else
+                    {
+                        cellCounterEven = 0;
+                    }
                 }
                 else // Odd
                 {
-                    listCellsOdd.Add(cell);
-                    cellOdd++;
+                    if (cell.Status == Status.Disabled || cell.Status == Status.Free)
+                    {
+                        if (cellCounterOdd == 0 && cell.Status == Status.Free)
+                        {
+                            cellOdd = cell;
+                        }
+
+                        cellCounterOdd++;
+                    }
+                    else
+                    {
+                        cellCounterOdd = 0;
+                    }
                 }
 
-                //if ()
-                //{
-                //}
+                // INFO - if the block is high or higher the drawer we end to search for the block
+                if (cellCounterEven >= cellNumber)
+                {
+                    blockHeight = cellCounterEven;
+                    break;
+                }
+
+                if (cellCounterOdd >= cellNumber)
+                {
+                    blockHeight = cellCounterOdd;
+                    break;
+                }
             }
 
-            return listCellsEven; // Anche Odd
+            // INFO - The method returns the lower block position
+            return blockHeight * cellSpicing;
         }
 
         public bool LogWriting(string logMessage)
@@ -186,25 +200,22 @@ namespace Ferretto.VW.MAS_DataLayer
         public bool SetCellList(List<Cell> listCells)
         {
             var setCellList = true;
-
             if (listCells != null)
             {
                 foreach (var cell in listCells)
                 {
                     var inMemoryCellCurrentValue = this.inMemoryDataContext.Cells.FirstOrDefault(s => s.CellId == cell.CellId);
-
                     if (inMemoryCellCurrentValue != null)
                     {
                         inMemoryCellCurrentValue.Coord = cell.Coord;
                         inMemoryCellCurrentValue.Priority = cell.Priority;
                         inMemoryCellCurrentValue.Side = cell.Side;
                         inMemoryCellCurrentValue.Status = cell.Status;
-
                         this.inMemoryDataContext.SaveChanges();
                     }
                     else
                     {
-                        throw new InMemoryDataLayerException(DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION);
+                        throw new DataLayerException(DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION);
                     }
                 }
             }
@@ -212,7 +223,6 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 setCellList = false;
             }
-
             return setCellList;
         }
 
