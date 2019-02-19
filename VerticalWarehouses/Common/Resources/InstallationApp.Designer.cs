@@ -1285,6 +1285,24 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a ReadFinalPosition.
+        /// </summary>
+        public static string ReadFinalPosition {
+            get {
+                return ResourceManager.GetString("ReadFinalPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ReadInitialPosition.
+        /// </summary>
+        public static string ReadInitialPosition {
+            get {
+                return ResourceManager.GetString("ReadInitialPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Reference&apos;s cell position [mm]:.
         /// </summary>
         public static string ReferenceCellHeight {

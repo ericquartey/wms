@@ -326,7 +326,7 @@
     <value>Sposta</value>
   </data>
   <data name="GoToInitialPosition" xml:space="preserve">
-    <value>Posiziona su cella</value>
+    <value>Posiziona su inizio</value>
   </data>
   <data name="InitialPosition" xml:space="preserve">
     <value>Posizione iniziale:</value>
@@ -347,7 +347,7 @@
     <value>Risoluzione attuale [imp/mm]:</value>
   </data>
   <data name="DesiredInitialPosition" xml:space="preserve">
-    <value>Posizione iniziale [mm]:</value>
+    <value>Quota iniziale [mm]:</value>
   </data>
   <data name="DesiredMovement" xml:space="preserve">
     <value>Spostamento desiderato [mm]:</value>
@@ -362,7 +362,7 @@
     <value>Inserire lo spostamento misurato.</value>
   </data>
   <data name="MesuredMovement" xml:space="preserve">
-    <value>Spostamento misurato [mm]:</value>
+    <value>Corsa misurata [mm]:</value>
   </data>
   <data name="VerticalResolutionCalibration" xml:space="preserve">
     <value>Calibrazione risoluzione asse verticale</value>
@@ -650,7 +650,7 @@
     <value>Barriera anti intrusione baia 3</value>
   </data>
   <data name="RequestedFinalPosition" xml:space="preserve">
-    <value>Posizione finale [mm]</value>
+    <value>Quota finale [mm]:</value>
   </data>
   <data name="StartResolutionProcedure" xml:space="preserve">
     <value>Avvia procedura</value>
@@ -666,5 +666,11 @@
   </data>
   <data name="PanelsControlDescription" xml:space="preserve">
     <value>Verifica posizione pannelli mensola</value>
+  </data>
+  <data name="ReadInitialPosition" xml:space="preserve">
+    <value>Quota iniziale letta [mm]:</value>
+  </data>
+  <data name="ReadFinalPosition" xml:space="preserve">
+    <value>Quota finale letta [mm]:</value>
   </data>
 </root>

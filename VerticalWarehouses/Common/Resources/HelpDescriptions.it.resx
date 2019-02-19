@@ -125,19 +125,19 @@
     <value>La funzione di calibrazione della risoluzione dell'asse verticale permette di tarare il corretto valore tramite misura sul campo aggiornando poi il valore di default proposto dal sistema. La procedura opera per passi successivi fino al corretto completamento.</value>
   </data>
   <data name="ResolutionCalibrationInitialPositionHelp" xml:space="preserve">
-    <value>Se il campo e' editabile impostare la quota inferiore richiesta.</value>
+    <value>Se il campo e' editabile impostare la quota iniziale richiesta.</value>
   </data>
   <data name="ResolutionCalibrationInitialStartHelp" xml:space="preserve">
     <value>Il pulsante avvia la procedura con l'esecuzione dell'origine asse ed il successivo posizionamento alla quota indicata in precedenza.</value>
   </data>
   <data name="ResolutionCalibrationFinalPositionHelp" xml:space="preserve">
-    <value>Se il campo e' editabile impostare la quota superiore richiesta.</value>
+    <value>Se il campo e' editabile impostare la quota finale richiesta.</value>
   </data>
   <data name="ResolutionCalibrationFinalPosizionStartHelp" xml:space="preserve">
-    <value>Il pulsante avvia lo spostamento dell'asse alla quota superiore impostata in precedenza.</value>
+    <value>Il pulsante avvia lo spostamento dell'asse alla quota finale impostata in precedenza.</value>
   </data>
   <data name="ResolutionCalibrationMeasuredeValueHelp" xml:space="preserve">
-    <value>Impostare lo spostamento misurato dalla posizione iniziale a quella finale.</value>
+    <value>Indica la corsa misurata dalla posizione iniziale a quella finale.</value>
   </data>
   <data name="VerticalResolutionCalibrationStep1" xml:space="preserve">
     <value>Passo 1 : posiziona asse alla quota iniziale</value>
@@ -146,13 +146,10 @@
     <value>Passo 2 : posiziona asse alla quota finale</value>
   </data>
   <data name="VerticalResolutionCalibrationStep3" xml:space="preserve">
-    <value>Passo 3 : inserire la corsa misurata</value>
+    <value>Passo 3 : aggiorna la risoluzione al nuovo valore</value>
   </data>
   <data name="VerticalResolutionCalibrationStep4" xml:space="preserve">
-    <value>Passo 4 : aggiorna la risoluzione al nuovo valore</value>
-  </data>
-  <data name="VerticalResolutionCalibrationStep5" xml:space="preserve">
-    <value>Passo 5 : riposiziona asse e chiude la procedura</value>
+    <value>Passo 4 : riposiziona asse e chiude la procedura</value>
   </data>
   <data name="ResolutionCalibrationActualResolutionHelp" xml:space="preserve">
     <value>Visualizza la risoluzione attuale dell'asse</value>
@@ -252,5 +249,11 @@
   </data>
   <data name="HelpVACStop" xml:space="preserve">
     <value>Arresta la procedura di origine dell'asse verticale.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialReadValueHelp" xml:space="preserve">
+    <value>Valore iniziale della posizione corrente letto dal metro.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalReadValueHelp" xml:space="preserve">
+    <value>Valore finale della posizione corrente letto dal metro.</value>
   </data>
 </root>

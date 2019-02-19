@@ -169,10 +169,6 @@
     <value>VerticalResolutionCalibrationStep4</value>
     <comment>Note text</comment>
   </data>
-  <data name="VerticalResolutionCalibrationStep5" xml:space="preserve">
-    <value>VerticalResolutionCalibrationStep5</value>
-    <comment>Note text</comment>
-  </data>
   <data name="ResolutionCalibrationActualResolutionHelp" xml:space="preserve">
     <value>ResolutionCalibrationActualResolutionHelp</value>
     <comment>Note text</comment>
@@ -303,6 +299,14 @@
   </data>
   <data name="HelpVACStop" xml:space="preserve">
     <value>HelpVACStop</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="ResolutionCalibrationInitialReadValueHelp" xml:space="preserve">
+    <value>ResolutionCalibrationInitialReadValueHelp</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="ResolutionCalibrationFinalReadValueHelp" xml:space="preserve">
+    <value>ResolutionCalibrationFinalReadValueHelp</value>
     <comment>Note text</comment>
   </data>
 </root>
