@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
+using Ferretto.WMS.Scheduler.Core;
+using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Ferretto.WMS.Scheduler.Tests
 {
@@ -35,6 +35,8 @@ namespace Ferretto.WMS.Scheduler.Tests
         public async Task ListExecutionRequest()
         {
             #region Arrange
+
+            var listProvider = this.ServiceProvider.GetService(typeof(IItemListSchedulerProvider)) as IItemListSchedulerProvider;
 
             var listId = 1;
 
@@ -107,12 +109,13 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var warehouse = new Warehouse(
-                    new DataProvider(context),
-                    new SchedulerRequestProvider(context),
-                    new Mock<ILogger<Warehouse>>().Object);
-
-                var requests = await warehouse.PrepareListForExecutionAsync(list1.Id, bay2.AreaId, bay2.Id);
+                var requests = await listProvider.PrepareForExecutionAsync(
+                    new ListExecutionRequest
+                    {
+                        ListId = list1.Id,
+                        AreaId = bay2.AreaId,
+                        BayId = bay2.Id
+                    });
 
                 #endregion
 

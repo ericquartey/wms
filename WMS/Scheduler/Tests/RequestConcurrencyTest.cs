@@ -1,9 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
-using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Ferretto.WMS.Scheduler.Tests
 {
@@ -34,6 +32,8 @@ namespace Ferretto.WMS.Scheduler.Tests
         public async Task OneCompletedRequest()
         {
             #region Arrange
+
+            var provider = this.ServiceProvider.GetService(typeof(IMissionSchedulerProvider)) as IMissionSchedulerProvider;
 
             var compartment1 = new Common.DataModels.Compartment
             {
@@ -78,9 +78,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var missionProvider = this.ServiceProvider.GetService(typeof(IMissionSchedulerProvider)) as IMissionSchedulerProvider;
-
-                var missions = await missionProvider.CreateForPendingRequestsAsync();
+                var missions = await provider.CreateForPendingRequestsAsync();
 
                 #endregion
 
@@ -106,6 +104,8 @@ namespace Ferretto.WMS.Scheduler.Tests
         public async Task OneRequestOnTwoCompartments()
         {
             #region Arrange
+
+            var provider = this.ServiceProvider.GetService(typeof(IMissionSchedulerProvider)) as IMissionSchedulerProvider;
 
             var now = System.DateTime.Now;
 
@@ -152,12 +152,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var warehouse = new Warehouse(
-                    new DataProvider(context),
-                    new SchedulerRequestProvider(context),
-                    new Mock<ILogger<Warehouse>>().Object);
-
-                var missions = await warehouse.CreateMissionsForPendingRequestsAsync();
+                var missions = await provider.CreateForPendingRequestsAsync();
 
                 #endregion
 

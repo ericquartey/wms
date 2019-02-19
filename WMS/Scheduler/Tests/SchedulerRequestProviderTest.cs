@@ -19,6 +19,7 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
+            var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
             var request = new SchedulerRequest
             {
                 Type = OperationType.Insertion
@@ -29,9 +30,6 @@ namespace Ferretto.WMS.Scheduler.Tests
             using (var context = this.CreateContext())
             {
                 #region Act + Assert
-
-                this.ServiceProvider.GetService
-                var provider = new SchedulerRequestProvider(context);
 
                 await Assert.ThrowsExceptionAsync<System.ArgumentException>(() => provider.FullyQualifyWithdrawalRequestAsync(request));
 
@@ -49,6 +47,7 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
+            var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
             SchedulerRequest request = null;
 
             #endregion
@@ -56,8 +55,6 @@ namespace Ferretto.WMS.Scheduler.Tests
             using (var context = this.CreateContext())
             {
                 #region Act + Assert
-
-                var provider = new SchedulerRequestProvider(context);
 
                 await Assert.ThrowsExceptionAsync<System.ArgumentNullException>(() => provider.FullyQualifyWithdrawalRequestAsync(request));
 
