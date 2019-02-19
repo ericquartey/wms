@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using DevExpress.Data.Filtering;
 using DevExpress.Xpf.Core.FilteringUI;
@@ -195,14 +194,13 @@ namespace Ferretto.Common.Controls
             var orderByExpression = GetSortOrder(e);
 
             var whereExpression = this.overallFilter?.AsIExpression();
-            Expression<Func<TModel, bool>> searchExpression = (t) => this.searchText;
 
             var entities = await this.provider.GetAllAsync(
                 e.Skip,
                 GetPageSize(),
                 orderByExpression,
                 whereExpression,
-                searchExpression);
+                this.searchText);
 
             return new FetchRowsResult(entities.Cast<object>().ToArray(), hasMoreRows: entities.Count() == GetPageSize());
         }

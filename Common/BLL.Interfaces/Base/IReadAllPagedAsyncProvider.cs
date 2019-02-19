@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.Utils.Expressions;
 
@@ -16,11 +14,11 @@ namespace Ferretto.Common.BLL.Interfaces.Base
             int take,
             IEnumerable<SortOption> orderBy = null,
             IExpression whereExpression = null,
-            Expression<Func<TModel, bool>> searchExpression = null);
+            string searchString = null);
 
         Task<int> GetAllCountAsync(
             IExpression whereExpression = null,
-            Expression<Func<TModel, bool>> searchExpression = null);
+            string searchString = null);
 
         #endregion
     }

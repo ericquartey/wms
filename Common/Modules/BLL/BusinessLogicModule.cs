@@ -39,47 +39,47 @@ namespace Ferretto.Common.Modules.BLL
                .GetCurrentClassLogger()
                .Trace("Loading module ...");
 
-            this.Container.RegisterType<IAisleProvider, AisleProvider>();
-            this.Container.RegisterType<IAreaProvider, AreaProvider>();
-            this.Container.RegisterType<IBayProvider, BayProvider>();
-            this.Container.RegisterType<ICellProvider, CellProvider>();
-            this.Container.RegisterType<ICompartmentProvider, CompartmentProvider>();
-            this.Container.RegisterType<IDataSourceService, DataSourceService>();
-            this.Container.RegisterType<IEventService, EventService>();
-            this.Container.RegisterType<IImageProvider, ImageProvider>();
-            this.Container.RegisterType<IItemProvider, ItemProvider>();
-            this.Container.RegisterType<IItemListProvider, ItemListProvider>();
-            this.Container.RegisterType<IItemListRowProvider, ItemListRowProvider>();
-            this.Container.RegisterType<ILoadingUnitProvider, LoadingUnitProvider>();
-            this.Container.RegisterType<IMachineProvider, MachineProvider>();
-            this.Container.RegisterType<IUserProvider, UserProvider>();
-            this.Container.RegisterType<IMissionProvider, MissionProvider>();
-            this.Container.RegisterType<ISchedulerRequestProvider, SchedulerRequestProvider>();
-
-            this.Container.RegisterType<IAbcClassProvider, AbcClassProvider>();
-            this.Container.RegisterType<ICellPositionProvider, CellPositionProvider>();
-            this.Container.RegisterType<ICellStatusProvider, CellStatusProvider>();
-            this.Container.RegisterType<ICellTypeProvider, CellTypeProvider>();
-            this.Container.RegisterType<ICompartmentStatusProvider, CompartmentStatusProvider>();
-            this.Container.RegisterType<ICompartmentTypeProvider, CompartmentTypeProvider>();
-            this.Container.RegisterType<IItemCategoryProvider, ItemCategoryProvider>();
-            this.Container.RegisterType<ILoadingUnitStatusProvider, LoadingUnitStatusProvider>();
-            this.Container.RegisterType<ILoadingUnitTypeProvider, LoadingUnitTypeProvider>();
-            this.Container.RegisterType<IMaterialStatusProvider, MaterialStatusProvider>();
-            this.Container.RegisterType<IMeasureUnitProvider, MeasureUnitProvider>();
-            this.Container.RegisterType<IPackageTypeProvider, PackageTypeProvider>();
-
-            this.RegisterSchedulerServiceEndpoints();
+            this.RegisterBusinessProviders();
 
             this.RegisterDataServiceEndpoints();
 
             this.Container.RegisterType<DatabaseContext, DatabaseContext>(new InjectionConstructor());
 
-            this.Container.RegisterType<IAbcClassProvider, AbcClassProvider>();
-
             NLog.LogManager
                .GetCurrentClassLogger()
                .Trace("Module loaded.");
+        }
+
+        private void RegisterBusinessProviders()
+        {
+            this.Container.RegisterType<IAbcClassProvider, AbcClassProvider>();
+            this.Container.RegisterType<IAreaProvider, AreaProvider>();
+            this.Container.RegisterType<IBayProvider, BayProvider>();
+            this.Container.RegisterType<ICellPositionProvider, CellPositionProvider>();
+            this.Container.RegisterType<ICellProvider, CellProvider>();
+            this.Container.RegisterType<ICellStatusProvider, CellStatusProvider>();
+            this.Container.RegisterType<ICellTypeProvider, CellTypeProvider>();
+            this.Container.RegisterType<ICompartmentProvider, CompartmentProvider>();
+            this.Container.RegisterType<ICompartmentStatusProvider, CompartmentStatusProvider>();
+            this.Container.RegisterType<ICompartmentTypeProvider, CompartmentTypeProvider>();
+            this.Container.RegisterType<IDataSourceService, DataSourceService>();
+            this.Container.RegisterType<IEventService, EventService>();
+            this.Container.RegisterType<IImageProvider, ImageProvider>();
+            this.Container.RegisterType<IItemCategoryProvider, ItemCategoryProvider>();
+            this.Container.RegisterType<IItemListProvider, ItemListProvider>();
+            this.Container.RegisterType<IItemListRowProvider, ItemListRowProvider>();
+            this.Container.RegisterType<IItemProvider, ItemProvider>();
+            this.Container.RegisterType<ILoadingUnitProvider, LoadingUnitProvider>();
+            this.Container.RegisterType<ILoadingUnitStatusProvider, LoadingUnitStatusProvider>();
+            this.Container.RegisterType<ILoadingUnitTypeProvider, LoadingUnitTypeProvider>();
+            this.Container.RegisterType<IMachineProvider, MachineProvider>();
+            this.Container.RegisterType<IMaterialStatusProvider, MaterialStatusProvider>();
+            this.Container.RegisterType<IMeasureUnitProvider, MeasureUnitProvider>();
+            this.Container.RegisterType<IMissionProvider, MissionProvider>();
+            this.Container.RegisterType<IPackageTypeProvider, PackageTypeProvider>();
+            this.Container.RegisterType<ISchedulerRequestProvider, SchedulerRequestProvider>();
+            this.Container.RegisterType<IUserProvider, UserProvider>();
+            this.Container.RegisterType<IAisleProvider, AisleProvider>();
         }
 
         private void RegisterDataServiceEndpoints()

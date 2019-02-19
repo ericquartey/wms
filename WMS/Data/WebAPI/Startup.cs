@@ -1,7 +1,8 @@
 ﻿using Ferretto.Common.EF;
-using Ferretto.WMS.Data.Core.Interfaces;
-using Ferretto.WMS.Data.Core.Providers;
+using Ferretto.WMS.Data.Core.Extensions;
+using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Middleware;
+using Ferretto.WMS.Scheduler.Core.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
