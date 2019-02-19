@@ -500,4 +500,7 @@
   <data name="ItemImage" xml:space="preserve">
     <value>Item Image</value>
   </data>
+  <data name="EditLoadingUnit" xml:space="preserve">
+    <value>Edit Loading Unit</value>
+  </data>
 </root>
