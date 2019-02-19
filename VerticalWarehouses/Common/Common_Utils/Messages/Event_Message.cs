@@ -40,6 +40,8 @@ namespace Ferretto.VW.Common_Utils.Messages
 
         AddMission,
 
+        CreateMission,
+
         StartAction,
 
         StopAction,

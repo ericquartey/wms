@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Microsoft.Extensions.Hosting;
 using Prism.Events;
 
@@ -21,6 +22,10 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         private readonly ManualResetEventSlim messageReceived;
 
+        private readonly ManualResetEventSlim missionExecuted;
+
+        private readonly Dictionary<IMissionMessageData, int> missionsCollection;
+
         #endregion
 
         #region Constructors
@@ -31,7 +36,11 @@ namespace Ferretto.VW.MAS_MissionsManager
 
             this.messageReceived = new ManualResetEventSlim(false);
 
+            this.missionExecuted = new ManualResetEventSlim(false);
+
             this.messageQueue = new ConcurrentQueue<Event_Message>();
+
+            this.missionsCollection = new Dictionary<IMissionMessageData, int>();
 
             var automationServiceMessagEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
             automationServiceMessagEvent.Subscribe((message) =>
@@ -41,7 +50,7 @@ namespace Ferretto.VW.MAS_MissionsManager
             },
                 ThreadOption.PublisherThread,
                 false,
-                message => message.Source == MessageActor.MissionScheduler);
+                message => message.Source == MessageActor.AutomationService);
         }
 
         #endregion
@@ -96,7 +105,33 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         private void ProcessAddMissionMessage(Event_Message message)
         {
-            //TODO apply Machine Manager Business Logic to the message
+            try
+            {
+                var missionData = (MissionData)message.Data;
+                var missionPriority = ((MissionData)message.Data).Priority;
+                this.missionsCollection.Add(missionData, missionPriority);
+            }
+            catch (InvalidCastException)
+            {
+                throw;
+            }
+            catch (ArgumentNullException)
+            {
+                throw;
+            }
+            catch (ArgumentException)
+            {
+                throw;
+            }
+
+            message.Source = MessageActor.MissionsManager;
+            message.Destination = MessageActor.FiniteStateMachines;
+            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(message);
+        }
+
+        private void ProcessCreateMissionMessage(Event_Message message)
+        {
+            //TODO apply Mission Manager Business Logic to the message
 
             message.Source = MessageActor.MissionsManager;
             message.Destination = MessageActor.FiniteStateMachines;
