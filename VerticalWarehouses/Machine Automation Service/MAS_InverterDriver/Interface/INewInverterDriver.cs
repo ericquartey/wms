@@ -1,13 +1,23 @@
-﻿using Ferretto.VW.MAS_InverterDriver.ActionBlocks;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Ferretto.VW.MAS_InverterDriver.ActionBlocks;
 
 namespace Ferretto.VW.MAS_InverterDriver
 {
     public interface INewInverterDriver
     {
+        #region Properties
+
+        float GetDrawerWeight { get; }
+
+        #endregion
+
         #region Methods
 
         void Destroy();
+
+        void ExecuteDrawerWeight(int targetPosition, float vMax, float acc, float dec);
+
+        void ExecuteHomingStop();
 
         void ExecuteHorizontalHoming();
 
@@ -16,10 +26,6 @@ namespace Ferretto.VW.MAS_InverterDriver
         void ExecuteVerticalHoming();
 
         void ExecuteVerticalPosition(int targetPosition, float vMax, float acc, float dec, float weight, short offset);
-
-        void ExecuteDrawerWeight(int targetPosition, float vMax, float acc, float dec);
-
-        float GetDrawerWeight { get; }
 
         bool[] GetSensorsStates();
 

@@ -70,6 +70,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Properties
 
+        public StateMachineHoming StateMachineHoming => this.homing;
+
         public StateMachineVerticalHoming StateMachineVerticalHoming => this.verticalHoming;
 
         #endregion
@@ -108,6 +110,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         this.homing.Start();
                         break;
                     }
+
+                case CommandType.ExecuteStopHoming:
+                    {
+                        if (null == this.homing)
+                        {
+                            throw new ArgumentNullException();
+                        }
+
+                        this.homing.Stop();
+                        break;
+                    }
                 default:
                     break;
             }
@@ -125,7 +138,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         public void DoVerticalHoming()
         {
-            if (this.verticalHoming == null)
+            if (null == this.verticalHoming)
             {
                 throw new ArgumentNullException();
             }
@@ -160,9 +173,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
                 this.messageReceived.Reset();
 
-                Event_Message receivedMessage;
-
-                while (this.messageQueue.TryDequeue(out receivedMessage))
+                while (this.messageQueue.TryDequeue(out var receivedMessage))
                 {
                     switch (receivedMessage.Type)
                     {

@@ -4,6 +4,8 @@
     {
         ExecuteHoming,
 
+        ExecuteStopHoming,
+
         StopAction
     }
 

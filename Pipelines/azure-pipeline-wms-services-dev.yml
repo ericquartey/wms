@@ -3,10 +3,13 @@ resources:
   fetchDepth: 15
 
 queue:
-  name: Hosted Ubuntu 1604
+  name: Hosted VS2017
+  demands:
+    - msbuild
+    - visualstudio
+    - vstest
 
 trigger:
-  batch: true
   branches:
     include:
     - develop
@@ -17,12 +20,31 @@ trigger:
 
 variables:
   BuildConfiguration: 'Debug'
-  RestoreBuildProjects: 'WMS/@(Scheduler|Data)/**/*.csproj'
-  TestProjects: 'WMS/@(Scheduler|Data)/**/*.Tests.csproj'
+  RestoreBuildProjects: 'WMS/Data/**/*.csproj'
+  TestProjects: 'WMS/Data/**/*.Tests.csproj'
   TargetFramework: 'netcoreapp2.1'
 
 
 steps:
+
+- task: CopyFiles@2
+  displayName: 'Copy sources to staging directory'
+  inputs:
+    Contents: |
+      **
+      !**\.git\**
+      !**\*.png
+      !**\*.jpg
+    targetFolder: '$(Build.ArtifactStagingDirectory)\sources'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Common Sources'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)\sources'
+    ArtifactName: 'common_sources'
+
+
 - task: DotNetCoreCLI@2
   displayName: Restore
   inputs:
@@ -59,13 +81,6 @@ steps:
     projects: '$(RestoreBuildProjects)'
     arguments: '--configuration $(BuildConfiguration) --framework $(TargetFramework) --no-build --no-restore'
     zipAfterPublish: false
-
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Scheduler Service'
-  inputs:
-    PathtoPublish: 'WMS/Scheduler/WebAPI/bin/$(BuildConfiguration)/$(TargetFramework)/win7-x64/publish'
-    ArtifactName: 'scheduler_service'
 
 
 - task: PublishBuildArtifacts@1
