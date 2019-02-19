@@ -3,9 +3,10 @@ using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.InverterDriver;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
+
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PositioningDrawer
 {
-    public class SwitchOnState : IState
+    public class OperationModeState : IState
     {
         #region Fields
 
@@ -13,7 +14,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         private readonly IInverterDriver inverterDriver;
 
-        private readonly StateMachineCalibrateAxis stateMachineCalibrateAxis;
+        private readonly StateMachinePositioningDrawer stateMachinePositioningDrawer;
 
         private readonly ParameterID paramID = ParameterID.HOMING_MODE_PARAM;
 
@@ -27,20 +28,21 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         #region Constructors
 
-        public SwitchOnState(StateMachineCalibrateAxis stateMachineCalibrateAxis, IInverterDriver inverterDriver, IEventAggregator eventAggregator)
+        public OperationModeState(StateMachinePositioningDrawer stateMachinePositioningDrawer, IInverterDriver inverterDriver, IEventAggregator eventAggregator)
         {
             this.inverterDriver = inverterDriver;
             this.eventAggregator = eventAggregator;
-            this.stateMachineCalibrateAxis = stateMachineCalibrateAxis;
+            this.stateMachinePositioningDrawer = stateMachinePositioningDrawer;
 
             this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
+
         }
 
         #endregion
 
         #region Properties
 
-        public string Type => "Switch On State";
+        public string Type => "Operation Mode State";
 
         #endregion
 
@@ -56,13 +58,13 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
                     {
                         if (result == InverterDriverExitStatus.Success)
                         {
-                            this.stateMachineCalibrateAxis.ChangeState(new EnabledOperationState(stateMachineCalibrateAxis, inverterDriver, eventAggregator));
+                            this.stateMachinePositioningDrawer.ChangeState(new ReadyToSwitchOnState(stateMachinePositioningDrawer, inverterDriver, eventAggregator));
                         }
                         break;
                     }
                 case OperationStatus.Error:
                     {
-                        this.stateMachineCalibrateAxis.ChangeState(new ErrorState(stateMachineCalibrateAxis, inverterDriver, eventAggregator));
+                        this.stateMachinePositioningDrawer.ChangeState(new ErrorState(stateMachinePositioningDrawer, inverterDriver, eventAggregator));
 
                         break;
                     }

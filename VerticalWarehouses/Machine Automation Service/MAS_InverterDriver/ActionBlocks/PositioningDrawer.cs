@@ -462,6 +462,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
             switch (this.positioningStep)
             {
+                //TODO Set up the parameters-Idle State
                 case "1.1":
                     {
                         this.paramID = ParameterID.POSITION_TARGET_POSITION_PARAM;
@@ -498,6 +499,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                         break;
                     }
 
+                    //TODO Disabled Voltage
                 case "1":
                     {
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
@@ -511,6 +513,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                         break;
                     }
 
+                    //TODO Operation Mode
                 case "2":
                     {
                         this.paramID = ParameterID.SET_OPERATING_MODE_PARAM;
@@ -520,6 +523,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                         break;
                     }
 
+                    //TODO Ready to Switch
                 case "3":
                     {
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
@@ -534,6 +538,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                         break;
                     }
 
+                    //TODO Switch On
                 case "4":
                     {
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
@@ -546,6 +551,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                         break;
                     }
 
+                    //TODO Operation Enabled
                 case "5":
                     {
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
@@ -558,6 +564,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                         break;
                     }
 
+                    //TODO Set New Position
                 case "6":
                     {
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;

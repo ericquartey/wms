@@ -3,9 +3,9 @@ using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.InverterDriver;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PositioningDrawer
 {
-   public class ErrorState : IState
+    public class ErrorState : IState
     {
         #region Fields
 
@@ -13,17 +13,17 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         private readonly IInverterDriver inverterDriver;
 
-        private readonly StateMachineCalibrateAxis stateMachineCalibrateAxis;
+        private readonly StateMachinePositioningDrawer stateMachinePositioningDrawer;
 
         #endregion
 
         #region Constructors
 
-        public ErrorState(StateMachineCalibrateAxis stateMachineCalibrateAxis, IInverterDriver inverterDriver, IEventAggregator eventAggregator)
+        public ErrorState(StateMachinePositioningDrawer stateMachinePositioningDrawer, IInverterDriver inverterDriver, IEventAggregator eventAggregator)
         {
             this.inverterDriver = inverterDriver;
             this.eventAggregator = eventAggregator;
-            this.stateMachineCalibrateAxis = stateMachineCalibrateAxis;
+            this.stateMachinePositioningDrawer = stateMachinePositioningDrawer;
 
             this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
         }
@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
         private void notifyEventHandler(Notification_EventParameter notification)
         {
 
-            if (notification.OperationType == OperationType.Homing)
+            if (notification.OperationType == OperationType.SwitchHorizontalToVertical)
             {
                 switch (notification.OperationStatus)
                 {
@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
                         }
                     case OperationStatus.Error:
                         {
-                            var notifyEvent = new Notification_EventParameter(OperationType.Homing, OperationStatus.Error, "Unknown Operation!", Verbosity.Info);
+                            var notifyEvent = new Notification_EventParameter(OperationType.SwitchHorizontalToVertical, OperationStatus.Error, "Unknown Operation!", Verbosity.Info);
                             this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(notifyEvent);
 
                             break;
