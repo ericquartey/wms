@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Base;
@@ -8,10 +7,10 @@ using Ferretto.Common.BusinessModels;
 namespace Ferretto.Common.BusinessProviders
 {
     public interface IItemListRowProvider :
-        IPagedBusinessProvider<ItemListRow>,
+        IPagedBusinessProvider<ItemListRow, int>,
         IReadSingleAsyncProvider<ItemListRowDetails, int>,
-        ICreateAsyncProvider<ItemListRowDetails>,
-        IUpdateAsyncProvider<ItemListRowDetails>
+        ICreateAsyncProvider<ItemListRowDetails, int>,
+        IUpdateAsyncProvider<ItemListRowDetails, int>
     {
         #region Methods
 

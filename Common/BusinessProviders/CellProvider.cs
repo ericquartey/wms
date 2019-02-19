@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
-using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
-using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.Common.BusinessProviders
 {
@@ -64,15 +61,16 @@ namespace Ferretto.Common.BusinessProviders
         }
 
         public async Task<IEnumerable<Cell>> GetAllAsync(
-                    int skip = 0,
-            int take = 0,
+            int skip,
+            int take,
             IEnumerable<SortOption> orderBy = null,
             IExpression whereExpression = null,
-            IExpression searchExpression = null)
+            string searchString = null)
         {
-            var orderByString = orderBy != null ? string.Join(",", orderBy.Select(s => $"{s.PropertyName} {s.Direction}")) : null;
+            var cells = await this.cellsDataService
+                .GetAllAsync(skip, take, whereExpression?.ToString(), orderBy.ToQueryString(), searchString);
 
-            return (await this.cellsDataService.GetAllAsync(skip, take, whereExpression?.ToString(), orderByString, searchExpression?.ToString()))
+            return cells
                 .Select(c => new Cell
                 {
                     Id = c.Id,
@@ -94,9 +92,10 @@ namespace Ferretto.Common.BusinessProviders
                 });
         }
 
-        public async Task<int> GetAllCountAsync(IExpression whereExpression = null, IExpression searchExpression = null)
+        public async Task<int> GetAllCountAsync(IExpression whereExpression = null, string searchString = null)
         {
-            return await this.cellsDataService.GetAllCountAsync(whereExpression?.ToString(), searchExpression?.ToString());
+            return await this.cellsDataService
+                .GetAllCountAsync(whereExpression?.ToString(), searchString);
         }
 
         public async Task<IEnumerable<Enumeration>> GetByAisleIdAsync(int aisleId)

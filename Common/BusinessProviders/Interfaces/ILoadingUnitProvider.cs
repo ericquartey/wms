@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Base;
@@ -9,10 +7,10 @@ using Ferretto.Common.BusinessModels;
 namespace Ferretto.Common.BusinessProviders
 {
     public interface ILoadingUnitProvider :
-        IPagedBusinessProvider<LoadingUnit>,
+        IPagedBusinessProvider<LoadingUnit, int>,
         IReadSingleAsyncProvider<LoadingUnitDetails, int>,
-        ICreateAsyncProvider<LoadingUnitDetails>,
-        IUpdateAsyncProvider<LoadingUnitDetails>
+        ICreateAsyncProvider<LoadingUnitDetails, int>,
+        IUpdateAsyncProvider<LoadingUnitDetails, int>
     {
         #region Methods
 

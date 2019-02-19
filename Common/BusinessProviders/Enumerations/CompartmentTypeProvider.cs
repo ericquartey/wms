@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
-using Ferretto.Common.EF;
 
 namespace Ferretto.Common.BusinessProviders
 {
@@ -49,7 +48,7 @@ namespace Ferretto.Common.BusinessProviders
 
                 model.Id = compartmentType.Id;
 
-                return new OperationResult(true);
+                return new OperationResult<CompartmentType>(true);
             }
             catch (Exception ex)
             {

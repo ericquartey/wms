@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
-using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
-using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.Common.BusinessProviders
 {
@@ -35,12 +32,10 @@ namespace Ferretto.Common.BusinessProviders
             IImageProvider imageProvider,
             WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService,
             WMS.Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService,
-            WMS.Scheduler.WebAPI.Contracts.IItemsSchedulerService itemsSchedulerService,
             IAbcClassProvider abcClassProvider,
             IItemCategoryProvider itemCategoryProvider,
             IMeasureUnitProvider measureUnitProvider)
         {
-            this.itemsSchedulerService = itemsSchedulerService;
             this.itemsDataService = itemsDataService;
             this.compartmentsDataService = compartmentsDataService;
             this.imageProvider = imageProvider;
@@ -118,11 +113,14 @@ namespace Ferretto.Common.BusinessProviders
             int take,
             IEnumerable<SortOption> orderBy = null,
             IExpression whereExpression = null,
-            Expression<Func<Item, bool>> searchExpression = null)
+            string searchString = null)
         {
             var orderByString = orderBy != null ? string.Join(",", orderBy.Select(s => $"{s.PropertyName} {s.Direction}")) : null;
 
-            return (await this.itemsDataService.GetAllAsync(skip, take, whereExpression?.ToString(), orderByString, searchExpression?.ToString()))
+            var items = await this.itemsDataService
+                .GetAllAsync(skip, take, whereExpression?.ToString(), orderByString, searchString);
+
+            return items
                 .Select(i => new Item
                 {
                     Id = i.Id,
@@ -155,9 +153,9 @@ namespace Ferretto.Common.BusinessProviders
                 });
         }
 
-        public async Task<int> GetAllCountAsync(IExpression whereExpression = null, IExpression searchExpression = null)
+        public async Task<int> GetAllCountAsync(IExpression whereExpression = null, string searchString = null)
         {
-            return await this.itemsDataService.GetAllCountAsync(whereExpression?.ToString(), searchExpression?.ToString());
+            return await this.itemsDataService.GetAllCountAsync(whereExpression?.ToString(), searchString);
         }
 
         public async Task<IEnumerable<AllowedItemInCompartment>> GetAllowedByCompartmentIdAsync(int compartmentId)
@@ -243,7 +241,7 @@ namespace Ferretto.Common.BusinessProviders
             return await this.itemsDataService.GetUniqueValuesAsync(propertyName);
         }
 
-        public async Task<IOperationResult> UpdateAsync(ItemDetails model)
+        public async Task<IOperationResult<ItemDetails>> UpdateAsync(ItemDetails model)
         {
             if (model == null)
             {
