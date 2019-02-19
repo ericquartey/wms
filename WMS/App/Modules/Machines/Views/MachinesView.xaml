@@ -166,6 +166,7 @@
                                       SeparatorThickness="0"
                                       ShowCardExpandButton="False"
                                       ShowColumnHeaders="False"
+                                      ShowFilterPanelMode="Never"
                                       ShowGroupPanel="False"
                                       ShowGroupedColumns="False"
                                       ShowSearchPanelMode="Never"
