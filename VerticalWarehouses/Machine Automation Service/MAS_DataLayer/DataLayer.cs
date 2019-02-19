@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Ferretto.VW.Common_Utils;
 using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_DataLayer
@@ -12,8 +13,6 @@ namespace Ferretto.VW.MAS_DataLayer
     public partial class DataLayer : IDataLayer, IWriteLogService
     {
         #region Fields
-
-        private const string CELL_NOT_FOUND_EXCEPTION = "Data Layer Exception - Cell Not Found";
 
         private const string ConnectionStringName = "AutomationService";
 
@@ -25,7 +24,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Constructors
 
-        public DataLayer(IConfiguration configuration, DataLayerContext inMemoryDataContext, IEventAggregator eventAggregator)
+        public DataLayer(string connectionString, DataLayerContext inMemoryDataContext, IEventAggregator eventAggregator)
         {
             if (inMemoryDataContext == null)
             {
@@ -41,33 +40,23 @@ namespace Ferretto.VW.MAS_DataLayer
 
             this.eventAggregator = eventAggregator;
 
-            this.Configuration = configuration;
-
-            var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
-
-            var initialContext = new DataLayerContext(
-                new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(connectionString).Options);
-
-            if (initialContext == null)
+            using (var initialContext = new DataLayerContext(
+                new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(connectionString).Options))
             {
-                throw new DataLayerException(DataLayerExceptionEnum.DATALAYER_CONTEXT_EXCEPTION);
+                initialContext.Database.Migrate();
+
+                if (!initialContext.ConfigurationValues.Any())
+                {
+                    //TODO reovery database from permanent storage
+                }
+
+                foreach (var configurationValue in initialContext.ConfigurationValues)
+                {
+                    this.inMemoryDataContext.ConfigurationValues.Add(configurationValue);
+                }
+
+                this.inMemoryDataContext.SaveChanges();
             }
-
-            initialContext.Database.Migrate();
-
-            if (!initialContext.ConfigurationValues.Any())
-            {
-                //TODO reovery database from permanent storage
-            }
-
-            foreach (var configurationValue in initialContext.ConfigurationValues)
-            {
-                this.inMemoryDataContext.ConfigurationValues.Add(configurationValue);
-            }
-
-            this.inMemoryDataContext.SaveChanges();
-
-            initialContext.Dispose();
 
             // The old WriteLogService
             var webApiCommandEvent = eventAggregator.GetEvent<WebAPI_CommandEvent>();
@@ -87,7 +76,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public List<Cell> GetCellList()
         {
-            List<Cell> listCells = new List<Cell>();
+            var listCells = new List<Cell>();
 
             foreach (var cell in this.inMemoryDataContext.Cells)
             {
@@ -139,10 +128,12 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public bool SetCellList(List<Cell> listCells)
         {
-            bool setCellList = true;
+            var setCellList = false;
 
             if (listCells != null)
             {
+                setCellList = true;
+
                 foreach (var cell in listCells)
                 {
                     var inMemoryCellCurrentValue = this.inMemoryDataContext.Cells.FirstOrDefault(s => s.CellId == cell.CellId);
@@ -158,13 +149,9 @@ namespace Ferretto.VW.MAS_DataLayer
                     }
                     else
                     {
-                        throw new DataLayerException(CELL_NOT_FOUND_EXCEPTION);
+                        throw new ArgumentNullException();
                     }
                 }
-            }
-            else
-            {
-                setCellList = false;
             }
 
             return setCellList;
