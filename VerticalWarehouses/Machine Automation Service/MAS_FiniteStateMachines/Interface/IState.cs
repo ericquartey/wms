@@ -6,13 +6,26 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
     {
         #region Properties
 
+        /// <summary>
+        /// Get the type of state (string description).
+        /// </summary>
         string Type { get; }
 
         #endregion
 
         #region Methods
 
-        void NotifyMessage( Event_Message message );
+        /// <summary>
+        /// Make the operation required by the current state.
+        /// </summary>
+        void MakeOperation();
+
+        void NotifyMessage(Event_Message message);
+
+        /// <summary>
+        /// Stop operation for the state.
+        /// </summary>
+        void Stop();
 
         #endregion
     }

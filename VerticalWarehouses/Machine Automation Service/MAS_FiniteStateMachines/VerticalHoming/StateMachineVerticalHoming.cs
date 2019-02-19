@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Constructors
 
-        public StateMachineVerticalHoming( INewInverterDriver driver, IEventAggregator eventAggregator )
+        public StateMachineVerticalHoming(INewInverterDriver driver, IEventAggregator eventAggregator)
         {
             this.driver = driver;
             this.eventAggregator = eventAggregator;
@@ -34,24 +34,35 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Methods
 
-        public void ChangeState( IState newState, Event_Message message = null )
+        public void ChangeState(IState newState, Event_Message message = null)
         {
             this.state = newState;
         }
 
-        public void NotifyMessage( Event_Message message )
+        public void MakeOperation()
+        {
+            this.state?.MakeOperation();
+        }
+
+        public void NotifyMessage(Event_Message message)
         {
             throw new System.NotImplementedException();
         }
 
-        public void PublishMessage( Event_Message message )
+        public void PublishMessage(Event_Message message)
         {
             throw new System.NotImplementedException();
         }
 
         public void Start()
         {
-            this.state = new VerticalHomingIdleState( this, this.driver, this.eventAggregator );
+            this.state = new VerticalHomingIdleState(this, this.driver, this.eventAggregator);
+            this.state.MakeOperation();
+        }
+
+        public void Stop()
+        {
+            this.state?.Stop();
         }
 
         #endregion
