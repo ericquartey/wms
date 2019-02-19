@@ -1,17 +1,23 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
 {
-    public interface IItemListRowProvider : IBusinessProvider<ItemListRow, ItemListRowDetails, int>
+    public interface IItemListRowProvider :
+        IPagedBusinessProvider<ItemListRow>,
+        IReadSingleAsyncProvider<ItemListRowDetails, int>,
+        ICreateAsyncProvider<ItemListRowDetails>,
+        IUpdateAsyncProvider<ItemListRowDetails>
     {
         #region Methods
 
         Task<IOperationResult<ItemListRow>> ExecuteImmediatelyAsync(int listRowId, int areaId, int bayId);
 
-        IQueryable<ItemListRow> GetByItemListId(int id);
+        Task<IEnumerable<BusinessModels.ItemListRow>> GetByItemListIdAsync(int id);
 
         Task<IOperationResult<ItemListRow>> ScheduleForExecutionAsync(int listRowId, int areaId);
 

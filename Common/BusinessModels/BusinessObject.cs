@@ -12,7 +12,8 @@ namespace Ferretto.Common.BusinessModels
         #region Constructors
 
         protected BusinessObject()
-        { }
+        {
+        }
 
         #endregion
 

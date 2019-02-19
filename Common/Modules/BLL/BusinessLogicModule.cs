@@ -39,6 +39,7 @@ namespace Ferretto.Common.Modules.BLL
                .GetCurrentClassLogger()
                .Trace("Loading module ...");
 
+            this.Container.RegisterType<IAisleProvider, AisleProvider>();
             this.Container.RegisterType<IAreaProvider, AreaProvider>();
             this.Container.RegisterType<IBayProvider, BayProvider>();
             this.Container.RegisterType<ICellProvider, CellProvider>();
@@ -68,12 +69,11 @@ namespace Ferretto.Common.Modules.BLL
             this.Container.RegisterType<IMeasureUnitProvider, MeasureUnitProvider>();
             this.Container.RegisterType<IPackageTypeProvider, PackageTypeProvider>();
 
-            this.Container.RegisterType<IDatabaseContextService, DatabaseContextService>();
+            this.RegisterSchedulerServiceEndpoints();
 
             this.RegisterDataServiceEndpoints();
 
             this.Container.RegisterType<DatabaseContext, DatabaseContext>(new InjectionConstructor());
-            this.Container.RegisterType<EnumerationProvider, EnumerationProvider>(new InjectionConstructor(new DatabaseContext()));
 
             this.Container.RegisterType<IAbcClassProvider, AbcClassProvider>();
 
@@ -97,6 +97,11 @@ namespace Ferretto.Common.Modules.BLL
             this.Container.RegisterInstance(DataServiceFactory.GetService<ICompartmentTypesDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<IItemCategoriesDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<IItemListsDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<IAislesDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<IAreasDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<IBaysDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<ICellsDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<ICompartmentsDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<IItemsDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitStatusesDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitTypesDataService>(serviceEndPoint));
@@ -112,6 +117,7 @@ namespace Ferretto.Common.Modules.BLL
             this.Container.RegisterInstance(DataServiceFactory.GetService<ICompartmentStatusesDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<ICompartmentTypesDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<IItemCategoriesDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<IItemCompartmentTypesDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitStatusesDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitTypesDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<IMaterialStatusesDataService>(serviceEndPoint));

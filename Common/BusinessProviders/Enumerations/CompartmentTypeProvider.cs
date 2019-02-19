@@ -14,21 +14,13 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly WMS.Data.WebAPI.Contracts.ICompartmentTypesDataService compartmentTypesDataService;
 
-        private readonly IDatabaseContextService dataContext;
-
-        private readonly ItemCompartmentTypeProvider itemCompartmentTypeProvider;
-
         #endregion
 
         #region Constructors
 
         public CompartmentTypeProvider(
-            IDatabaseContextService context,
-            ItemCompartmentTypeProvider itemCompartmentTypeProvider,
             WMS.Data.WebAPI.Contracts.ICompartmentTypesDataService compartmentTypesDataService)
         {
-            this.dataContext = context;
-            this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
             this.compartmentTypesDataService = compartmentTypesDataService;
         }
 
@@ -36,7 +28,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public async Task<IOperationResult<CompartmentType>> AddAsync(CompartmentType model, int? itemId = null, int? maxCapacity = null)
+        public async Task<IOperationResult<CompartmentType>> CreateAsync(CompartmentType model, int? itemId = null, int? maxCapacity = null)
         {
             // TODO: Task 823
             if (model == null)
@@ -46,66 +38,23 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
-                using (var dc = this.dataContext.Current)
-                {
-                    var compartmentType = dc.CompartmentTypes
-                        .SingleOrDefault(ct =>
-                            (ct.Width == model.Width && ct.Height == model.Height)
-                            ||
-                            (ct.Width == model.Height && ct.Height == model.Width));
-
-                    if (compartmentType == null)
+                var compartmentType = await this.compartmentTypesDataService.CreateAsync(
+                    new WMS.Data.WebAPI.Contracts.CompartmentType
                     {
-                        var entry = dc.CompartmentTypes.Add(new DataModels.CompartmentType
-                        {
-                            Height = model.Height,
-                            Width = model.Width
-                        });
+                        Height = model.Height,
+                        Id = model.Id,
+                        Width = model.Width
+                    }, itemId,
+                    maxCapacity);
 
-                        var changedEntitiesCount = await dc.SaveChangesAsync();
-                        if (changedEntitiesCount > 0)
-                        {
-                            compartmentType = entry.Entity;
-                            model.Id = entry.Entity.Id;
-                        }
-                        else
-                        {
-                            return new OperationResult<CompartmentType>(false);
-                        }
-                    }
+                model.Id = compartmentType.Id;
 
-                    if (itemId.HasValue)
-                    {
-                        var result = await this.itemCompartmentTypeProvider.AddAsync(
-                            new ItemCompartmentType
-                            {
-                                ItemId = itemId.Value,
-                                MaxCapacity = maxCapacity,
-                                CompartmentTypeId = compartmentType.Id
-                            });
-
-                        if (result.Success)
-                        {
-                            await dc.SaveChangesAsync();
-                        }
-                        else
-                        {
-                            return new OperationResult<CompartmentType>(false);
-                        }
-                    }
-
-                    return new OperationResult<CompartmentType>(true, new CompartmentType { Id = compartmentType.Id });
-                }
+                return new OperationResult(true);
             }
             catch (Exception ex)
             {
                 return new OperationResult<CompartmentType>(ex);
             }
-        }
-
-        public Task<IOperationResult<CompartmentType>> AddAsync(CompartmentType model)
-        {
-            return this.AddAsync(model, null, null);
         }
 
         public async Task<IEnumerable<Enumeration>> GetAllAsync()

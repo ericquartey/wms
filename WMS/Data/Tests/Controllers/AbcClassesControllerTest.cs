@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using DataModels = Ferretto.Common.DataModels;
 
 namespace Ferretto.WMS.Data.Tests
 {
@@ -26,6 +25,67 @@ namespace Ferretto.WMS.Data.Tests
         }
 
         [TestMethod]
+        public async Task GetAllCountFound()
+        {
+            using (var context = this.CreateContext())
+            {
+                #region Arrange
+
+                var controller = MockController(context);
+                var abcClass1 = new Common.DataModels.AbcClass { Id = "A", Description = "A Class" };
+                var abcClass2 = new Common.DataModels.AbcClass { Id = "B", Description = "B Class" };
+                var abcClass3 = new Common.DataModels.AbcClass { Id = "C", Description = "C Class" };
+                context.AbcClasses.Add(abcClass1);
+                context.AbcClasses.Add(abcClass2);
+                context.AbcClasses.Add(abcClass3);
+                context.SaveChanges();
+
+                #endregion
+
+                #region Act
+
+                var actionResult = await controller.GetAllCountAsync();
+
+                #endregion
+
+                #region Assert
+
+                Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
+                var result = (int)((OkObjectResult)actionResult.Result).Value;
+                Assert.AreEqual(3, result);
+
+                #endregion
+            }
+        }
+
+        [TestMethod]
+        public async Task GetAllCountNotFound()
+        {
+            using (var context = this.CreateContext())
+            {
+                #region Arrange
+
+                var controller = MockController(context);
+
+                #endregion
+
+                #region Act
+
+                var actionResult = await controller.GetAllCountAsync();
+
+                #endregion
+
+                #region Assert
+
+                Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
+                var result = (int)((OkObjectResult)actionResult.Result).Value;
+                Assert.AreEqual(0, result);
+
+                #endregion
+            }
+        }
+
+        [TestMethod]
         public async Task GetAllFound()
         {
             using (var context = this.CreateContext())
@@ -33,9 +93,9 @@ namespace Ferretto.WMS.Data.Tests
                 #region Arrange
 
                 var controller = MockController(context);
-                var abcClass1 = new DataModels.AbcClass { Id = "A", Description = "A Class" };
-                var abcClass2 = new DataModels.AbcClass { Id = "B", Description = "B Class" };
-                var abcClass3 = new DataModels.AbcClass { Id = "C", Description = "C Class" };
+                var abcClass1 = new Common.DataModels.AbcClass { Id = "A", Description = "A Class" };
+                var abcClass2 = new Common.DataModels.AbcClass { Id = "B", Description = "B Class" };
+                var abcClass3 = new Common.DataModels.AbcClass { Id = "C", Description = "C Class" };
                 context.AbcClasses.Add(abcClass1);
                 context.AbcClasses.Add(abcClass2);
                 context.AbcClasses.Add(abcClass3);
@@ -94,9 +154,9 @@ namespace Ferretto.WMS.Data.Tests
                 #region Arrange
 
                 var controller = MockController(context);
-                var abcClass1 = new DataModels.AbcClass { Id = "A", Description = "A Class" };
-                var abcClass2 = new DataModels.AbcClass { Id = "B", Description = "B Class" };
-                var abcClass3 = new DataModels.AbcClass { Id = "C", Description = "C Class" };
+                var abcClass1 = new Common.DataModels.AbcClass { Id = "A", Description = "A Class" };
+                var abcClass2 = new Common.DataModels.AbcClass { Id = "B", Description = "B Class" };
+                var abcClass3 = new Common.DataModels.AbcClass { Id = "C", Description = "C Class" };
                 context.AbcClasses.Add(abcClass1);
                 context.AbcClasses.Add(abcClass2);
                 context.AbcClasses.Add(abcClass3);

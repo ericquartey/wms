@@ -12,7 +12,8 @@ namespace Ferretto.Common.BusinessModels
     public class BindableBase : INotifyPropertyChanged, IDataErrorInfo
     {
         protected BindableBase()
-        { }
+        {
+        }
 
         /// <summary>
         /// Occurs when a property value changes.

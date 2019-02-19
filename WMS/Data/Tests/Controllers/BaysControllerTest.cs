@@ -50,6 +50,33 @@ namespace Ferretto.WMS.Data.Tests
         }
 
         [TestMethod]
+        public async Task GetAllCountFound()
+        {
+            using (var context = this.CreateContext())
+            {
+                #region Arrange
+
+                var controller = MockController(context);
+
+                #endregion
+
+                #region Act
+
+                var actionResult = await controller.GetAllCountAsync();
+
+                #endregion
+
+                #region Assert
+
+                Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
+                var result = (int)((OkObjectResult)actionResult.Result).Value;
+                Assert.AreEqual(2, result);
+
+                #endregion
+            }
+        }
+
+        [TestMethod]
         public async Task GetBayByIdFound()
         {
             using (var context = this.CreateContext())

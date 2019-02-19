@@ -123,6 +123,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                        .Where(c => c.Aisle.AreaId == areaId)
                        .OrderBy(c => c.Aisle.Name)
                        .ThenBy(c => c.CellNumber)
+                       .Include(c => c.AbcClass)
+                       .Include(c => c.CellType)
+                       .Include(c => c.CellStatus)
                        .Select(c => new Cell
                        {
                            Id = c.Id,

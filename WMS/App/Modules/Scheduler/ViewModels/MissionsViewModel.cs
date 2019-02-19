@@ -5,7 +5,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.Scheduler
 {
-    public class MissionsViewModel : EntityListViewModel<Mission>
+    public class MissionsViewModel : EntityPagedListViewModel<Mission>
     {
     }
 }

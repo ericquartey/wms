@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
+using Ferretto.Common.Utils.Expressions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.Common.BusinessProviders
@@ -13,173 +15,60 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
-        private static readonly Expression<Func<DataModels.Machine, bool>> TrasloFilter =
-           m => m.MachineType.Description.ToUpperInvariant().Contains("TRASLO");
-
-        private static readonly Expression<Func<DataModels.Machine, bool>> VertimagFilter =
-            m => m.MachineType.Description.ToUpperInvariant().Contains("VERTIMAG");
-
-        private static readonly Expression<Func<DataModels.Machine, bool>> VertimagModelMFilter =
-            m => m.Model.Contains("VARIANT-M");
-
-        private static readonly Expression<Func<DataModels.Machine, bool>> VertimagModelXSFilter =
-            m => m.Model.Contains("VARIANT-XS");
-
-        private readonly IDatabaseContextService dataContext;
+        private readonly WMS.Data.WebAPI.Contracts.IMachinesDataService machinesDataService;
 
         #endregion
 
         #region Constructors
 
         public MachineProvider(
-            IDatabaseContextService dataContext)
+            WMS.Data.WebAPI.Contracts.IMachinesDataService machinesDataService)
         {
-            this.dataContext = dataContext;
+            this.machinesDataService = machinesDataService;
         }
 
         #endregion
 
         #region Methods
 
-        public Task<IOperationResult<MachineDetails>> AddAsync(MachineDetails model) => throw new NotSupportedException();
-
-        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
-
-        public IQueryable<Machine> GetAll()
+        public async Task<IEnumerable<Machine>> GetAllAsync(
+            int skip = 0,
+            int take = 0,
+            IEnumerable<SortOption> orderBy = null,
+            IExpression whereExpression = null,
+            IExpression searchExpression = null)
         {
-            return GetAllMachinesWithFilter(this.dataContext.Current);
-        }
+            var orderByString = orderBy != null ? string.Join(",", orderBy.Select(s => $"{s.PropertyName} {s.Direction}")) : null;
 
-        public int GetAllCount()
-        {
-            using (var dc = this.dataContext.Current)
-            {
-                return dc.Machines.AsNoTracking().Count();
-            }
-        }
-
-        public IQueryable<Machine> GetAllTraslo()
-        {
-            return GetAllMachinesWithFilter(this.dataContext.Current, TrasloFilter);
-        }
-
-        public int GetAllTrasloCount()
-        {
-            using (var dc = this.dataContext.Current)
-            {
-                return dc.Machines.AsNoTracking().Where(TrasloFilter).Count();
-            }
-        }
-
-        public IQueryable<Machine> GetAllVertimag()
-        {
-            return GetAllMachinesWithFilter(this.dataContext.Current, VertimagFilter);
-        }
-
-        public int GetAllVertimagCount()
-        {
-            using (var dc = this.dataContext.Current)
-            {
-                return dc.Machines.AsNoTracking().Where(VertimagFilter).Count();
-            }
-        }
-
-        public IQueryable<Machine> GetAllVertimagModelM()
-        {
-            return GetAllMachinesWithFilter(this.dataContext.Current, VertimagModelMFilter);
-        }
-
-        public int GetAllVertimagModelMCount()
-        {
-            using (var dc = this.dataContext.Current)
-            {
-                return dc.Machines.AsNoTracking().Where(VertimagModelMFilter).Count();
-            }
-        }
-
-        public IQueryable<Machine> GetAllVertimagModelXs()
-        {
-            return GetAllMachinesWithFilter(this.dataContext.Current, VertimagModelXSFilter);
-        }
-
-        public int GetAllVertimagModelXsCount()
-        {
-            using (var dc = this.dataContext.Current)
-            {
-                return dc.Machines.AsNoTracking().Where(VertimagModelXSFilter).Count();
-            }
-        }
-
-        public Task<MachineDetails> GetByIdAsync(int id) => throw new NotSupportedException();
-
-        public MachineDetails GetNew()
-        {
-            throw new NotSupportedException();
-        }
-
-        public async Task<IOperationResult<MachineDetails>> SaveAsync(MachineDetails model)
-        {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            try
-            {
-                using (var dc = this.dataContext.Current)
-                {
-                    var existingModel = dc.Machines.Find(model.Id);
-
-                    dc.Entry(existingModel).CurrentValues.SetValues(model);
-
-                    var changedEntityCount = await dc.SaveChangesAsync();
-
-                    return new OperationResult<MachineDetails>(changedEntityCount > 0);
-                }
-            }
-            catch (Exception ex)
-            {
-                return new OperationResult<MachineDetails>(ex);
-            }
-        }
-
-        private static IQueryable<Machine> GetAllMachinesWithFilter(DatabaseContext context, Expression<Func<DataModels.Machine, bool>> whereFunc = null)
-        {
-            var actualWhereFunc = whereFunc ?? ((i) => true);
-
-            return context.Machines
-                .AsNoTracking()
-                .Include(m => m.Aisle)
-                     .ThenInclude(a => a.Area)
-                .Include(m => m.MachineType)
-                .Where(actualWhereFunc)
+            return (await this.machinesDataService.GetAllAsync(skip, take, whereExpression?.ToString(), orderByString, searchExpression?.ToString()))
                 .Select(m => new Machine
                 {
-                    Id = m.Id,
+                    AisleName = m.AisleName,
                     ActualWeight = m.ActualWeight,
-                    AisleName = m.Aisle.Name,
-                    AreaName = m.Aisle.Area.Name,
+                    AreaName = m.AreaName,
                     AutomaticTime = m.AutomaticTime,
                     BuildDate = m.BuildDate,
                     CradlesCount = m.CradlesCount,
                     CustomerAddress = m.CustomerAddress,
                     CustomerCity = m.CustomerCity,
-                    CustomerCountry = m.CustomerCountry,
                     CustomerCode = m.CustomerCode,
+                    CustomerCountry = m.CustomerCountry,
                     CustomerName = m.CustomerName,
+                    Id = m.Id,
                     ErrorTime = m.ErrorTime,
                     Image = m.Image,
-                    InputLoadingUnitsCount = m.InputLoadingUnitsCount,
                     InstallationDate = m.InstallationDate,
                     LastPowerOn = m.LastPowerOn,
                     LastServiceDate = m.LastServiceDate,
-                    Latitude = m.Latitude,
+                    MachineTypeDescription = m.MachineTypeDescription,
+                    Model = m.Model,
                     Longitude = m.Longitude,
-                    LoadingUnitsPerCradle = m.LoadingUnitsPerCradle,
-                    MachineTypeDescription = m.MachineType.Description,
+                    Latitude = m.Latitude,
                     ManualTime = m.ManualTime,
-                    MissionTime = m.MissionTime,
+                    InputLoadingUnitsCount = m.InputLoadingUnitsCount,
+                    LoadingUnitsPerCradle = m.LoadingUnitsPerCradle,
                     MovedLoadingUnitsCount = m.MovedLoadingUnitsCount,
+                    MissionTime = m.MissionTime,
                     NextServiceDate = m.NextServiceDate,
                     Nickname = m.Nickname,
                     OutputLoadingUnitsCount = m.OutputLoadingUnitsCount,
@@ -188,6 +77,58 @@ namespace Ferretto.Common.BusinessProviders
                     TestDate = m.TestDate,
                     TotalMaxWeight = m.TotalMaxWeight
                 });
+        }
+
+        public async Task<int> GetAllCountAsync(IExpression whereExpression = null, IExpression searchExpression = null)
+        {
+            return await this.machinesDataService.GetAllCountAsync(whereExpression?.ToString(), searchExpression?.ToString());
+        }
+
+        public async Task<Machine> GetByIdAsync(int id)
+        {
+            var machine = await this.machinesDataService.GetByIdAsync(id);
+
+            return new Machine
+            {
+                AisleName = machine.AisleName,
+                ActualWeight = machine.ActualWeight,
+                AreaName = machine.AreaName,
+                AutomaticTime = machine.AutomaticTime,
+                BuildDate = machine.BuildDate,
+                CradlesCount = machine.CradlesCount,
+                CustomerAddress = machine.CustomerAddress,
+                CustomerCity = machine.CustomerCity,
+                CustomerCode = machine.CustomerCode,
+                CustomerCountry = machine.CustomerCountry,
+                CustomerName = machine.CustomerName,
+                Id = machine.Id,
+                ErrorTime = machine.ErrorTime,
+                Image = machine.Image,
+                InstallationDate = machine.InstallationDate,
+                LastPowerOn = machine.LastPowerOn,
+                LastServiceDate = machine.LastServiceDate,
+                MachineTypeDescription = machine.MachineTypeDescription,
+                Model = machine.Model,
+                Longitude = machine.Longitude,
+                Latitude = machine.Latitude,
+                ManualTime = machine.ManualTime,
+                InputLoadingUnitsCount = machine.InputLoadingUnitsCount,
+                LoadingUnitsPerCradle = machine.LoadingUnitsPerCradle,
+                MovedLoadingUnitsCount = machine.MovedLoadingUnitsCount,
+                MissionTime = machine.MissionTime,
+                NextServiceDate = machine.NextServiceDate,
+                Nickname = machine.Nickname,
+                OutputLoadingUnitsCount = machine.OutputLoadingUnitsCount,
+                PowerOnTime = machine.PowerOnTime,
+                RegistrationNumber = machine.RegistrationNumber,
+                TestDate = machine.TestDate,
+                TotalMaxWeight = machine.TotalMaxWeight
+            };
+        }
+
+        public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
+        {
+            return await this.machinesDataService.GetUniqueValuesAsync(propertyName);
         }
 
         #endregion

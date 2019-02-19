@@ -1,7 +1,7 @@
 ﻿using Ferretto.Common.EF;
-using Ferretto.WMS.Data.Core.Extensions;
-using Ferretto.WMS.Data.WebAPI.Hubs;
-using Ferretto.WMS.Scheduler.Core.Extensions;
+using Ferretto.WMS.Data.Core.Interfaces;
+using Ferretto.WMS.Data.Core.Providers;
+using Ferretto.WMS.Data.WebAPI.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -57,6 +57,8 @@ namespace Ferretto.WMS.Data.WebAPI
             {
                 app.UseDeveloperExceptionPage();
 #if DEBUG
+                app.UseRequestResponseLogging();
+
                 app.UseSwaggerUi3WithApiExplorer(settings =>
                 {
                     settings.PostProcess = document =>

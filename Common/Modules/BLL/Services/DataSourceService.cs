@@ -60,77 +60,70 @@ namespace Ferretto.Common.Modules.BLL.Services
             var cellProvider = ServiceLocator.Current.GetInstance<ICellProvider>();
             var cellCountProvider = ServiceLocator.Current.GetInstance<ICellProvider>();
 
-            return new List<FilterDataSource<Cell, int>>
+            return new List<PagedDataSource<Cell>>
             {
-                new FilterDataSource<Cell, int>(
+                new PagedDataSource<Cell>(
                     "CellsViewAll",
                     Resources.MasterData.CellAll,
-                    () => cellProvider.GetAll(),
-                    () => cellCountProvider.GetAllCount()),
+                    cellProvider),
 
-                new FilterDataSource<Cell, int>(
+                 new PagedDataSource<Cell>(
                     "CellStatusEmpty",
                     Resources.MasterData.CellStatusEmpty,
-                    () => cellProvider.GetWithStatusEmpty(),
-                    () => cellCountProvider.GetWithStatusEmptyCount()),
-                new FilterDataSource<Cell, int>(
+                    cellProvider,
+                    "[Status] == 'Empty'"),
+                 new PagedDataSource<Cell>(
                     "CellStatusFull",
                     Resources.MasterData.CellStatusFull,
-                    () => cellProvider.GetWithStatusFull(),
-                    () => cellCountProvider.GetWithStatusFullCount()),
-                new FilterDataSource<Cell, int>(
+                    cellProvider,
+                    "[Status] == 'Full'"),
+                 new PagedDataSource<Cell>(
                     "CellClassA",
                     Resources.MasterData.CellClassA,
-                    () => cellProvider.GetWithClassA(),
-                    () => cellCountProvider.GetWithClassACount()),
-            }.Cast<IFilterDataSource<TModel, TKey>>();
+                   cellProvider,
+                    "[AbcClassDescription] == 'A Class'")
+            }.Cast<IFilterDataSource<TModel>>();
         }
 
         private static IEnumerable<IFilterDataSource<TModel, TKey>> GetCompartmentsDataSources<TModel, TKey>()
             where TModel : IModel<TKey>
         {
             var compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
-            var compartmentCountProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
 
-            return new List<FilterDataSource<Compartment, int>>
+            return new List<PagedDataSource<Compartment>>
             {
-                new FilterDataSource<Compartment, int>(
+                new PagedDataSource<Compartment>(
                     "CompartmentsViewAll",
                     Resources.MasterData.CompartmentAll,
-                    () => compartmentProvider.GetAll(),
-                    () => compartmentCountProvider.GetAllCount()),
+                    compartmentProvider),
 
-                new FilterDataSource<Compartment, int>(
+                new PagedDataSource<Compartment>(
                     "CompartmentStatusAvailable",
                     Resources.MasterData.CompartmentStatusAvailable,
-                    () => compartmentProvider.GetWithStatusAvailable(),
-                    () => compartmentCountProvider.GetWithStatusAvailableCount()),
-
-                new FilterDataSource<Compartment, int>(
+                    compartmentProvider,
+                    "[MaterialStatusDescription] == 'Available'"),
+                new PagedDataSource<Compartment>(
                     "CompartmentStatusAwaiting",
                     Resources.MasterData.CompartmentStatusAwaiting,
-                    () => compartmentProvider.GetWithStatusAwaiting(),
-                    () => compartmentCountProvider.GetWithStatusAwaitingCount()),
-
-                new FilterDataSource<Compartment, int>(
+                    compartmentProvider,
+                    "[MaterialStatusDescription] == 'Awaiting'"),
+                new PagedDataSource<Compartment>(
                     "CompartmentStatusExpired",
                     Resources.MasterData.CompartmentStatusExpired,
-                    () => compartmentProvider.GetWithStatusExpired(),
-                    () => compartmentCountProvider.GetWithStatusExpiredCount()),
-
-                new FilterDataSource<Compartment, int>(
+                    compartmentProvider,
+                    "[MaterialStatusDescription] == 'Expired'"),
+                new PagedDataSource<Compartment>(
                     "CompartmentStatusBlocked",
                     Resources.MasterData.CompartmentStatusBlocked,
-                    () => compartmentProvider.GetWithStatusBlocked(),
-                    () => compartmentCountProvider.GetWithStatusBlockedCount()),
-            }.Cast<IFilterDataSource<TModel, TKey>>();
+                    compartmentProvider,
+                    "[MaterialStatusDescription] == 'Blocked'"),
+            }.Cast<IFilterDataSource<TModel>>();
         }
 
         private static IEnumerable<IFilterDataSource<TModel, TKey>> GetItemListsDataSources<TModel, TKey>(object parameter)
             where TModel : IModel<TKey>
         {
             var itemListProvider = ServiceLocator.Current.GetInstance<IItemListProvider>();
-            var itemListCountProvider = ServiceLocator.Current.GetInstance<IItemListProvider>();
 
             var type = parameter;
             if (parameter != null && Enum.IsDefined(typeof(ItemListType), (int)(char)parameter))
@@ -138,76 +131,77 @@ namespace Ferretto.Common.Modules.BLL.Services
                 type = (ItemListType)Enum.ToObject(typeof(ItemListType), parameter);
             }
 
-            var listFilters = new List<FilterDataSource<ItemList, int>>();
+            var listFilters = new List<PagedDataSource<ItemList>>();
             switch (type)
             {
                 case ItemListType.Pick:
                     listFilters.Add(
-                        new FilterDataSource<ItemList, int>(
+                        new PagedDataSource<ItemList>(
                             "ItemListViewTypePick",
                             Resources.MasterData.ItemListsTypePick,
-                            () => itemListProvider.GetWithTypePick(),
-                            () => itemListCountProvider.GetWithTypePickCount()));
+                            itemListProvider,
+                            $"[ItemListType] == '{ItemListType.Pick}'"));
                     break;
 
                 case ItemListType.Put:
                     listFilters.Add(
-                        new FilterDataSource<ItemList, int>(
+                        new PagedDataSource<ItemList>(
                             "ItemListViewTypePut",
                             Resources.MasterData.ItemListsTypePut,
-                            () => itemListProvider.GetWithTypePut(),
-                            () => itemListCountProvider.GetWithTypePutCount()));
+                            itemListProvider,
+                            $"[ItemListType] == '{ItemListType.Put}'"));
                     break;
 
                 case ItemListType.Inventory:
                     listFilters.Add(
-                        new FilterDataSource<ItemList, int>(
+                        new PagedDataSource<ItemList>(
                             "ItemListViewTypeInventory",
                             Resources.MasterData.ItemListsTypeInventory,
-                            () => itemListProvider.GetWithTypeInventory(),
-                            () => itemListCountProvider.GetWithTypeInventoryCount()));
+                            itemListProvider,
+                            $"[ItemListType] == '{ItemListType.Inventory}'"));
                     break;
 
                 default:
-                    listFilters.Add(new FilterDataSource<ItemList, int>(
+                    listFilters.Add(new PagedDataSource<ItemList>(
                                         "ItemListViewAll",
                                         Resources.MasterData.ItemListAll,
-                                        () => itemListProvider.GetAll(),
-                                        () => itemListCountProvider.GetAllCount()));
+                                        itemListProvider));
                     listFilters.Add(
-                        new FilterDataSource<ItemList, int>(
+                        new PagedDataSource<ItemList>(
                             "ItemListViewTypePick",
                             Resources.MasterData.ItemListsTypePick,
-                            () => itemListProvider.GetWithTypePick(),
-                            () => itemListCountProvider.GetWithTypePickCount()));
+                            itemListProvider,
+                            $"[ItemListType] == '{ItemListType.Pick}'"));
                     listFilters.Add(
-                        new FilterDataSource<ItemList, int>(
+                        new PagedDataSource<ItemList>(
                             "ItemListViewTypePut",
                             Resources.MasterData.ItemListsTypePut,
-                            () => itemListProvider.GetWithTypePut(),
-                            () => itemListCountProvider.GetWithTypePutCount()));
+                            itemListProvider,
+                            $"[ItemListType] == '{ItemListType.Put}'"));
                     listFilters.Add(
-                        new FilterDataSource<ItemList, int>(
+                        new PagedDataSource<ItemList>(
                             "ItemListViewTypeInventory",
                             Resources.MasterData.ItemListsTypeInventory,
-                            () => itemListProvider.GetWithTypeInventory(),
-                            () => itemListCountProvider.GetWithTypeInventoryCount()));
+                            itemListProvider,
+                            $"[ItemListType] == '{ItemListType.Inventory}'"));
                     break;
             }
 
-            listFilters.Add(
-                new FilterDataSource<ItemList, int>(
-                    "ItemListViewStatusWaiting",
-                    Resources.MasterData.ItemListStatusWaiting,
-                    () => itemListProvider.GetWithStatusWaiting((ItemListType?)type),
-                    () => itemListCountProvider.GetWithStatusWaitingCount((ItemListType?)type)));
+            var typeFilter = type != null ? $" && [ItemListType] == '{type}'" : string.Empty;
 
             listFilters.Add(
-                new FilterDataSource<ItemList, int>(
+                new PagedDataSource<ItemList>(
+                    "ItemListViewStatusWaiting",
+                    Resources.MasterData.ItemListStatusWaiting,
+                    itemListProvider,
+                    $"[ItemListStatus] == '{ItemListStatus.Waiting}' {typeFilter}"));
+
+            listFilters.Add(
+                new PagedDataSource<ItemList>(
                     "ItemListViewStatusCompleted",
                     Resources.MasterData.ItemListStatusCompleted,
-                    () => itemListProvider.GetWithStatusCompleted((ItemListType?)type),
-                    () => itemListCountProvider.GetWithStatusCompletedCount((ItemListType?)type)));
+                    itemListProvider,
+                    $"[ItemListStatus] == '{ItemListStatus.Completed}' {typeFilter}"));
 
             return listFilters.Cast<IFilterDataSource<TModel, TKey>>();
         }
@@ -233,135 +227,138 @@ namespace Ferretto.Common.Modules.BLL.Services
                     "ItemsViewFIFO",
                     Resources.MasterData.ItemFIFO,
                     itemsProvider,
-                    "[ManagementType] == 'FIFO'")
-            }.Cast<IFilterDataSource<TModel, TKey>>();
+                    $"[ManagementType] == '{ItemManagementType.FIFO}'")
+            }.Cast<IFilterDataSource<TModel>>();
         }
 
         private static IEnumerable<IFilterDataSource<TModel, TKey>> GetLoadingUnitsDataSources<TModel, TKey>()
                     where TModel : IModel<TKey>
         {
             var loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
-            var loadingUnitCountProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
 
-            return new List<FilterDataSource<LoadingUnit, int>>
+            return new List<PagedDataSource<LoadingUnit>>
             {
-                new FilterDataSource<LoadingUnit, int>(
+                new PagedDataSource<LoadingUnit>(
                     "LoadingUnitsViewAll",
                     Resources.MasterData.LoadingUnitAll,
-                    () => loadingUnitProvider.GetAll(),
-                    () => loadingUnitCountProvider.GetAllCount()),
+                    loadingUnitProvider),
 
-                new FilterDataSource<LoadingUnit, int>(
+                new PagedDataSource<LoadingUnit>(
                     "LoadingUnitsViewAreaManual",
                     Resources.MasterData.LoadingUnitAreaManual,
-                    () => loadingUnitProvider.GetWithAreaManual(),
-                    () => loadingUnitCountProvider.GetWithAreaManualCount()),
-                new FilterDataSource<LoadingUnit, int>(
+                    loadingUnitProvider,
+                    $"[AreaName] == 'Manual Area'"),
+                new PagedDataSource<LoadingUnit>(
                     "LoadingUnitsViewAreaVertimag",
                     Resources.MasterData.LoadingUnitAreaVertimag,
-                    () => loadingUnitProvider.GetWithAreaVertimag(),
-                    () => loadingUnitCountProvider.GetWithAreaVertimagCount()),
+                    loadingUnitProvider,
+                    "[AreaName] == 'Vertimag Area'"),
 
-                new FilterDataSource<LoadingUnit, int>(
+                new PagedDataSource<LoadingUnit>(
                     "LoadingUnitsViewStatusAvailable",
                     Resources.MasterData.LoadingUnitStatusAvailable,
-                    () => loadingUnitProvider.GetWithStatusAvailable(),
-                    () => loadingUnitCountProvider.GetWithStatusAvailableCount()),
-                new FilterDataSource<LoadingUnit, int>(
+                    loadingUnitProvider,
+                    "[LoadingUnitStatusDescription] == 'Available'"),
+                new PagedDataSource<LoadingUnit>(
                     "LoadingUnitsViewStatusBlocked",
                     Resources.MasterData.LoadingUnitStatusBlocked,
-                    () => loadingUnitProvider.GetWithStatusBlocked(),
-                    () => loadingUnitCountProvider.GetWithStatusBlockedCount()),
-                new FilterDataSource<LoadingUnit, int>(
+                    loadingUnitProvider,
+                    "[LoadingUnitStatusDescription] == 'Blocked'"),
+                new PagedDataSource<LoadingUnit>(
                     "LoadingUnitsViewStatusUsed",
                     Resources.MasterData.LoadingUnitStatusUsed,
-                    () => loadingUnitProvider.GetWithStatusUsed(),
-                    () => loadingUnitCountProvider.GetWithStatusUsedCount()),
-            }.Cast<IFilterDataSource<TModel, TKey>>();
+                    loadingUnitProvider,
+                    "[LoadingUnitStatusDescription] == 'Used'"),
+            }.Cast<IFilterDataSource<TModel>>();
         }
 
         private static IEnumerable<IFilterDataSource<TModel, TKey>> GetMachinesDataSources<TModel, TKey>()
                             where TModel : IModel<TKey>
         {
             var machineProvider = ServiceLocator.Current.GetInstance<IMachineProvider>();
-            var machineCountProvider = ServiceLocator.Current.GetInstance<IMachineProvider>();
 
-            return new List<FilterDataSource<Machine, int>>
+            return new List<PagedDataSource<Machine>>
             {
-                new FilterDataSource<Machine, int>(
+                new PagedDataSource<Machine>(
                     "MachinesViewAll",
                     Resources.Machines.MachineAll,
-                    () => machineProvider.GetAll(),
-                    () => machineCountProvider.GetAllCount()),
+                    machineProvider),
 
-                new FilterDataSource<Machine, int>(
+                // new PagedDataSource<Machine>(
+                //    "MachinesViewVertimagXS",
+                //    Resources.Machines.MachineVertimagXS,
+                //    machineProvider,
+                //    "UPPER([MachineTypeDescription]) == '%TRASLO%'"),
+
+                // new PagedDataSource<Machine>(
+                //    "MachinesViewVertimagXS",
+                //    Resources.Machines.MachineVertimagXS,
+                //    machineProvider,
+                //    "UPPER([MachineTypeDescription]) == '%VERTIMAG%'"),
+                new PagedDataSource<Machine>(
                     "MachinesViewVertimagXS",
                     Resources.Machines.MachineVertimagXS,
-                    () => machineProvider.GetAllVertimagModelXs(),
-                    () => machineCountProvider.GetAllVertimagModelXsCount()),
+                    machineProvider,
+                    "[Model] == 'VMAG/ver-2018/variant-XS/depth-103'"),
 
-                new FilterDataSource<Machine, int>(
+                new PagedDataSource<Machine>(
                     "MachinesViewVertimagM",
                     Resources.Machines.MachineVertimagM,
-                    () => machineProvider.GetAllVertimagModelM(),
-                    () => machineCountProvider.GetAllVertimagModelMCount())
-            }.Cast<IFilterDataSource<TModel, TKey>>();
+                    machineProvider,
+                    "[Model] == 'VMAG/ver-2018/variant-M/depth-84'")
+            }.Cast<IFilterDataSource<TModel>>();
         }
 
         private static IEnumerable<IFilterDataSource<TModel, TKey>> GetMissionsDataSources<TModel, TKey>()
                     where TModel : IModel<TKey>
         {
             var missionProvider = ServiceLocator.Current.GetInstance<IMissionProvider>();
-            var missionCountProvider = ServiceLocator.Current.GetInstance<IMissionProvider>();
 
-            return new List<FilterDataSource<Mission, int>>
+            return new List<PagedDataSource<Mission>>
             {
-                new FilterDataSource<Mission, int>(
+                new PagedDataSource<Mission>(
                     "MissionViewAll",
                     Resources.Scheduler.MissionAll,
-                    () => missionProvider.GetAll(),
-                    () => missionCountProvider.GetAllCount()),
+                    missionProvider),
 
-                new FilterDataSource<Mission, int>(
+                new PagedDataSource<Mission>(
                     "MissionViewStatusCompleted",
                     Resources.Scheduler.MissionStatusCompleted,
-                    () => missionProvider.GetWithStatusCompleted(),
-                    () => missionCountProvider.GetWithStatusCompletedCount()),
+                    missionProvider,
+                    $"[Status] == '{MissionStatus.Completed}'"),
 
-                new FilterDataSource<Mission, int>(
+                new PagedDataSource<Mission>(
                     "MissionViewStatusNew",
                     Resources.Scheduler.MissionStatusNew,
-                    () => missionProvider.GetWithStatusNew(),
-                    () => missionCountProvider.GetWithStatusNewCount())
-            }.Cast<IFilterDataSource<TModel, TKey>>();
+                    missionProvider,
+                    $"[Status] == '{MissionStatus.New}'")
+            }.Cast<IFilterDataSource<TModel>>();
         }
 
         private static IEnumerable<IFilterDataSource<TModel, TKey>> GetSchedulerRequestDataSources<TModel, TKey>()
                                             where TModel : IModel<TKey>
         {
             var schedulerRequestProvider = ServiceLocator.Current.GetInstance<ISchedulerRequestProvider>();
-            var schedulerRequestCountProvider = ServiceLocator.Current.GetInstance<ISchedulerRequestProvider>();
 
-            return new List<FilterDataSource<SchedulerRequest, int>>
+            return new List<PagedDataSource<SchedulerRequest>>
                     {
-                        new FilterDataSource<SchedulerRequest, int>(
+                        new PagedDataSource<SchedulerRequest>(
                             "SchedulerRequestViewAll",
                             Resources.Scheduler.SchedulerRequestViewAll,
-                            () => schedulerRequestProvider.GetAll(),
-                            () => schedulerRequestCountProvider.GetAllCount()),
+                            schedulerRequestProvider),
 
-                        new FilterDataSource<SchedulerRequest, int>(
+                        new PagedDataSource<SchedulerRequest>(
                             "SchedulerRequestOperationInsert",
                             Resources.Scheduler.SchedulerRequestOperationInsert,
-                            () => schedulerRequestProvider.GetWithOperationTypeInsertion(),
-                            () => schedulerRequestCountProvider.GetWithOperationTypeInsertionCount()),
+                            schedulerRequestProvider,
+                            $"[OperationType] == '{OperationType.Insertion}'"),
 
-                        new FilterDataSource<SchedulerRequest, int>(
+                        new PagedDataSource<SchedulerRequest>(
                             "SchedulerRequestOperationWithdraw",
                             Resources.Scheduler.SchedulerRequestOperationWithdraw,
-                            () => schedulerRequestProvider.GetWithOperationTypeWithdrawal(),
-                            () => schedulerRequestCountProvider.GetWithOperationTypeWithdrawalCount())
-                    }.Cast<IFilterDataSource<TModel, TKey>>();
+                            schedulerRequestProvider,
+                            $"[OperationType] == '{OperationType.Withdrawal}'")
+                    }.Cast<IFilterDataSource<TModel>>();
         }
 
         #endregion

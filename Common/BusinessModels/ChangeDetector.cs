@@ -10,8 +10,11 @@ namespace Ferretto.Common.BusinessModels
         #region Fields
 
         private readonly ISet<string> modifiedProperties = new HashSet<string>();
+
         private T instance;
+
         private bool isModified;
+
         private T snapshot;
 
         #endregion
@@ -48,7 +51,7 @@ namespace Ferretto.Common.BusinessModels
 
         public void TakeSnapshot(T newInstance)
         {
-            if (this.instance != newInstance)
+            if (this.instance != null && !this.instance.Equals(newInstance))
             {
                 if (this.instance != null)
                 {
