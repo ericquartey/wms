@@ -27,40 +27,45 @@
                                   Value="44" />
                 <dxn:RenderSetter TargetName="PART_Root"
                                   Property="MinHeight"
-                                  Value="44" />
+                                  Value="22" />
             </dxn:RenderTrigger>
         </dxn:RenderTemplate.Triggers>
     </dxn:RenderTemplate>
-
     <ControlTemplate x:Key="{dxet:BaseEditThemeKey ResourceKey=TextEditBorderTemplate,
                                                    ThemeName=Office2016White}"
                      TargetType="ContentControl">
-        <Grid x:Name="TextEditGrid">
+        <Grid x:Name="TextEditGrid"  HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <wms:WmsLabel x:Name="TitleLabel">
-                <wms:WmsLabel.Content>
+            <wms:WmsLabel x:Name="TitleLabel" Visibility="Collapsed" Grid.ColumnSpan="2">
+                <wms:WmsLabel.Title>
                     <MultiBinding Converter="{StaticResource DNC}">
                         <Binding RelativeSource="{RelativeSource Self}" />
                         <Binding Path="DataContext"
                                  RelativeSource="{RelativeSource Self}" />
                     </MultiBinding>
-                </wms:WmsLabel.Content>
+                </wms:WmsLabel.Title>
             </wms:WmsLabel>
-            <dxn:Chrome Grid.Row="1"
-                        RenderTemplate="{StaticResource {dxet:InplaceBaseEditThemeKey ResourceKey=TextEditBorderTemplate}}" />
-            <ContentPresenter Grid.Row="1"
-                              Margin="{StaticResource ResourceKey={dxet:InplaceBaseEditThemeKey ResourceKey=TextEditBorderThickness}}" />
-            <dxn:Chrome Grid.Row="1"
-                        dxeh:ControlHelper.ShowFocusedState="{Binding Path=(dxeh:ControlHelper.ShowFocusedState), RelativeSource={RelativeSource TemplatedParent}}"
-                        IsHitTestVisible="False"
-                        RenderTemplate="{StaticResource {dxet:InplaceBaseEditThemeKey ResourceKey=HoverBorderTemplate}}" />
-            <Border Name="MouseOverBorder"
-                    Grid.Row="1"
-                    BorderThickness="1"
-                    Visibility="Collapsed" />
+            <Grid Name="GridEditorCore" Grid.Row="1" Grid.Column="0">
+                <dxn:Chrome 
+                            RenderTemplate="{StaticResource {dxet:InplaceBaseEditThemeKey ResourceKey=TextEditBorderTemplate}}" />
+                <ContentPresenter Grid.Row="1" Name="CCBaseEditor"
+                                  Margin="{StaticResource ResourceKey={dxet:InplaceBaseEditThemeKey ResourceKey=TextEditBorderThickness}}" />
+                <dxn:Chrome Grid.Row="1"
+                            dxeh:ControlHelper.ShowFocusedState="{Binding Path=(dxeh:ControlHelper.ShowFocusedState), RelativeSource={RelativeSource TemplatedParent}}"
+                            IsHitTestVisible="False"
+                            RenderTemplate="{StaticResource {dxet:InplaceBaseEditThemeKey ResourceKey=HoverBorderTemplate}}" />
+                <Border Name="MouseOverBorder"
+                        Grid.Row="1"
+                        BorderThickness="1"
+                        Visibility="Collapsed" />
+            </Grid>
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">

@@ -5,10 +5,17 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace MAS_DataLayerUnitTests
 {
     [TestClass]
-    public abstract class DBTestUnitTest
+    public abstract class DBUnitTest
     {
+        #region Properties
+
         protected StatusLog StatusLog1 { get; set; }
+
         protected StatusLog StatusLog2 { get; set; }
+
+        #endregion
+
+        #region Methods
 
         protected void CleanupDatabase()
         {
@@ -39,5 +46,7 @@ namespace MAS_DataLayerUnitTests
                 context.SaveChanges();
             }
         }
+
+        #endregion
     }
 }
