@@ -56,43 +56,48 @@
                                   MinValue="0"
                                   HorizontalAlignment="Stretch"
                                   AllowNullInput="False"
-                                  EditValue="{Binding Model.XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                  EditValue="{Binding Model.XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  wms:ShowTitle.Show="True"/>
 
                     <wms:SpinEdit Grid.Row="0"
                                   Grid.Column="2"
                                   MinValue="0"
                                   HorizontalAlignment="Stretch"
                                   AllowNullInput="False"
-                                  EditValue="{Binding Model.YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                  EditValue="{Binding Model.YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  wms:ShowTitle.Show="True"/>
 
                     <wms:SpinEdit Grid.Row="1"
                                   Grid.Column="0"
                                   MinValue="0"
                                   HorizontalAlignment="Stretch"
                                   AllowNullInput="False"
-                                  EditValue="{Binding Model.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                  EditValue="{Binding Model.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  wms:ShowTitle.Show="True"/>
 
                     <wms:SpinEdit Grid.Row="1"
                                   Grid.Column="2"
-                                  MinValue="0"
-                                  
+                                  MinValue="0"                                  
                                   HorizontalAlignment="Stretch"
                                   AllowNullInput="False"
-                                  EditValue="{Binding Model.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                  EditValue="{Binding Model.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  wms:ShowTitle.Show="True"/>
 
                     <wms:SpinEdit Grid.Row="2"
                                   Grid.Column="0"
                                   MinValue="1"
                                   HorizontalAlignment="Stretch"
                                   AllowNullInput="False"
-                                  EditValue="{Binding Model.Rows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                  EditValue="{Binding Model.Rows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  wms:ShowTitle.Show="True"/>
 
                     <wms:SpinEdit Grid.Row="2"
                                   Grid.Column="2"
                                   MinValue="1"
                                   HorizontalAlignment="Stretch"
                                   AllowNullInput="False"
-                                  EditValue="{Binding Model.Columns, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                  EditValue="{Binding Model.Columns, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  wms:ShowTitle.Show="True"/>
                 </Grid>
             </GroupBox>
         </ScrollViewer>
