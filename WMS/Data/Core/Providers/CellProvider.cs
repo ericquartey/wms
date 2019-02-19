@@ -69,23 +69,25 @@ namespace Ferretto.WMS.Data.Core.Providers
             int take,
             IEnumerable<SortOption> orderBy = null,
             IExpression whereExpression = null,
-            Expression<Func<Cell, bool>> searchExpression = null)
+            string searchString = null)
         {
             return await this.GetAllBase()
-                       .ToArrayAsync(
-                           skip,
-                           take,
-                           orderBy,
-                           whereExpression,
-                           searchExpression);
+                .ToArrayAsync(
+                    skip,
+                    take,
+                    orderBy,
+                    whereExpression,
+                    BuildSearchExpression(searchString));
         }
 
         public async Task<int> GetAllCountAsync(
             IExpression whereExpression = null,
-            Expression<Func<Cell, bool>> searchExpression = null)
+            string searchString = null)
         {
             return await this.GetAllBase()
-                       .CountAsync(whereExpression, searchExpression);
+                .CountAsync(
+                    whereExpression,
+                    BuildSearchExpression(searchString));
         }
 
         public async Task<IEnumerable<Cell>> GetByAisleIdAsync(int aisleId)
@@ -201,6 +203,35 @@ namespace Ferretto.WMS.Data.Core.Providers
             await this.dataContext.SaveChangesAsync();
 
             return new SuccessOperationResult<CellDetails>(model);
+        }
+
+        private static Expression<Func<Cell, bool>> BuildSearchExpression(string search)
+        {
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                return null;
+            }
+
+            return (c) =>
+                c.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.AisleName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.AreaName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.LoadingUnitsDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.Status.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.Type.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.Column.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.Floor.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.Number.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.Priority.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private IQueryable<Cell> GetAllBase()

@@ -36,23 +36,25 @@ namespace Ferretto.WMS.Data.Core.Providers
             int take,
             IEnumerable<SortOption> orderBy = null,
             IExpression whereExpression = null,
-            Expression<Func<Mission, bool>> searchExpression = null)
+            string searchString = null)
         {
             return await this.GetAllBase()
-                       .ToArrayAsync(
-                           skip,
-                           take,
-                           orderBy,
-                           whereExpression,
-                           searchExpression);
+                .ToArrayAsync(
+                    skip,
+                    take,
+                    orderBy,
+                    whereExpression,
+                    BuildSearchExpression(searchString));
         }
 
         public async Task<int> GetAllCountAsync(
             IExpression whereExpression = null,
-            Expression<Func<Mission, bool>> searchExpression = null)
+            string searchString = null)
         {
             return await this.GetAllBase()
-                       .CountAsync(whereExpression, searchExpression);
+                .CountAsync(
+                    whereExpression,
+                    BuildSearchExpression(searchString));
         }
 
         public async Task<Mission> GetByIdAsync(int id)
@@ -67,6 +69,25 @@ namespace Ferretto.WMS.Data.Core.Providers
                        propertyName,
                        this.dataContext.Missions,
                        this.GetAllBase());
+        }
+
+        private static Expression<Func<Mission, bool>> BuildSearchExpression(string search)
+        {
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                return null;
+            }
+
+            return (m) =>
+                m.Lot.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                m.RegistrationNumber.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                m.Sub1.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                m.Sub2.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                m.Quantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private IQueryable<Mission> GetAllBase()

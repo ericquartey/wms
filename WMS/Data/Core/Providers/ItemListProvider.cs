@@ -72,23 +72,25 @@ namespace Ferretto.WMS.Data.Core.Providers
             int take,
             IEnumerable<SortOption> orderBy = null,
             IExpression whereExpression = null,
-            Expression<Func<ItemList, bool>> searchExpression = null)
+            string searchString = null)
         {
             return await this.GetAllBase()
-                       .ToArrayAsync(
-                           skip,
-                           take,
-                           orderBy,
-                           whereExpression,
-                           searchExpression);
+                .ToArrayAsync(
+                    skip,
+                    take,
+                    orderBy,
+                    whereExpression,
+                    BuildSearchExpression(searchString));
         }
 
         public async Task<int> GetAllCountAsync(
             IExpression whereExpression = null,
-            Expression<Func<ItemList, bool>> searchExpression = null)
+            string searchString = null)
         {
             return await this.GetAllBase()
-                       .CountAsync(whereExpression, searchExpression);
+                .CountAsync(
+                    whereExpression,
+                    BuildSearchExpression(searchString));
         }
 
         public async Task<ItemListDetails> GetByIdAsync(int id)
@@ -123,6 +125,23 @@ namespace Ferretto.WMS.Data.Core.Providers
             await this.dataContext.SaveChangesAsync();
 
             return new SuccessOperationResult<ItemListDetails>(model);
+        }
+
+        private static Expression<Func<ItemList, bool>> BuildSearchExpression(string search)
+        {
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                return null;
+            }
+
+            return i =>
+                i.Code.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.Description.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.ItemListItemsCount.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.ItemListRowsCount.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private IQueryable<ItemList> GetAllBase()
