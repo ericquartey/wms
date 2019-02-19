@@ -133,6 +133,96 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCCVApplyCorrection.
+        /// </summary>
+        public static string HelpCCVApplyCorrection {
+            get {
+                return ResourceManager.GetString("HelpCCVApplyCorrection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCCVAttualPosition.
+        /// </summary>
+        public static string HelpCCVAttualPosition {
+            get {
+                return ResourceManager.GetString("HelpCCVAttualPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCCVCellPosition.
+        /// </summary>
+        public static string HelpCCVCellPosition {
+            get {
+                return ResourceManager.GetString("HelpCCVCellPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCCVCorrectionValue.
+        /// </summary>
+        public static string HelpCCVCorrectionValue {
+            get {
+                return ResourceManager.GetString("HelpCCVCorrectionValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCCVDescription.
+        /// </summary>
+        public static string HelpCCVDescription {
+            get {
+                return ResourceManager.GetString("HelpCCVDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCCVSelectedCell.
+        /// </summary>
+        public static string HelpCCVSelectedCell {
+            get {
+                return ResourceManager.GetString("HelpCCVSelectedCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCCVSetPosition.
+        /// </summary>
+        public static string HelpCCVSetPosition {
+            get {
+                return ResourceManager.GetString("HelpCCVSetPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCCVStepMeno.
+        /// </summary>
+        public static string HelpCCVStepMeno {
+            get {
+                return ResourceManager.GetString("HelpCCVStepMeno", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCCVStepPiu.
+        /// </summary>
+        public static string HelpCCVStepPiu {
+            get {
+                return ResourceManager.GetString("HelpCCVStepPiu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCCVStepValue.
+        /// </summary>
+        public static string HelpCCVStepValue {
+            get {
+                return ResourceManager.GetString("HelpCCVStepValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpGCCompleted.
         /// </summary>
         public static string HelpGCCompleted {

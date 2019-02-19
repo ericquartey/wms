@@ -256,4 +256,34 @@
   <data name="ResolutionCalibrationFinalReadValueHelp" xml:space="preserve">
     <value>Valore finale della posizione corrente letto dal metro.</value>
   </data>
+  <data name="HelpCCVDescription" xml:space="preserve">
+    <value>La procedura permette di verificare ed eventualmente correggere la quota della cella selezionata. La correzione e' applicata alla sola cella selezionata.</value>
+  </data>
+  <data name="HelpCCVSelectedCell" xml:space="preserve">
+    <value>Impostare la cella di cui si vuole controllare la quota.</value>
+  </data>
+  <data name="HelpCCVCellPosition" xml:space="preserve">
+    <value>Indica la quota della cella correntemente selezionata.</value>
+  </data>
+  <data name="HelpCCVStepValue" xml:space="preserve">
+    <value>Valore della variazione di quota in fase di aggiustaggio.</value>
+  </data>
+  <data name="HelpCCVAttualPosition" xml:space="preserve">
+    <value>Valore corrente della quota dell'asse.</value>
+  </data>
+  <data name="HelpCCVCorrectionValue" xml:space="preserve">
+    <value>Valore totale della correzione da applicare.</value>
+  </data>
+  <data name="HelpCCVSetPosition" xml:space="preserve">
+    <value>Posiziona l'asse verticale in corrispondenza della cella selezionata.</value>
+  </data>
+  <data name="HelpCCVStepPiu" xml:space="preserve">
+    <value>Sposta l'asse del valore indicato dallo step. Il valore di step viene sommato alla quota attuale.</value>
+  </data>
+  <data name="HelpCCVStepMeno" xml:space="preserve">
+    <value>Sposta l'asse del valore indicato dallo step. Il valore di step viene sottratto alla quota attuale.</value>
+  </data>
+  <data name="HelpCCVApplyCorrection" xml:space="preserve">
+    <value>Corregge la quota della cella selezionata del valore indicato nel campo che riporta il valore totale richiesto.</value>
+  </data>
 </root>

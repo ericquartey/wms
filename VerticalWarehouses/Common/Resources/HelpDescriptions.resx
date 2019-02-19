@@ -309,4 +309,44 @@
     <value>ResolutionCalibrationFinalReadValueHelp</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpCCVDescription" xml:space="preserve">
+    <value>HelpCCVDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpCCVSelectedCell" xml:space="preserve">
+    <value>HelpCCVSelectedCell</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCCVCellPosition" xml:space="preserve">
+    <value>HelpCCVCellPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCCVStepValue" xml:space="preserve">
+    <value>HelpCCVStepValue</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCCVAttualPosition" xml:space="preserve">
+    <value>HelpCCVAttualPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCCVCorrectionValue" xml:space="preserve">
+    <value>HelpCCVCorrectionValue</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCCVSetPosition" xml:space="preserve">
+    <value>HelpCCVSetPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCCVStepPiu" xml:space="preserve">
+    <value>HelpCCVStepPiu</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCCVStepMeno" xml:space="preserve">
+    <value>HelpCCVStepMeno</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCCVApplyCorrection" xml:space="preserve">
+    <value>HelpCCVApplyCorrection</value>
+    <comment>Note text</comment>
+  </data>
 </root>

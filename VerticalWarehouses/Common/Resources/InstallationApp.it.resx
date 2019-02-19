@@ -326,7 +326,7 @@
     <value>Sposta</value>
   </data>
   <data name="GoToInitialPosition" xml:space="preserve">
-    <value>Posiziona su inizio</value>
+    <value>Posiziona su cella</value>
   </data>
   <data name="InitialPosition" xml:space="preserve">
     <value>Posizione iniziale:</value>
@@ -473,7 +473,7 @@
     <value>Correggi</value>
   </data>
   <data name="ReferenceCellHeight" xml:space="preserve">
-    <value>Quota cella di riferimento [mm]:</value>
+    <value>Quota cella selezionata [mm]:</value>
   </data>
   <data name="ReferenceCellNumber" xml:space="preserve">
     <value>Numero cella di riferimento:</value>
