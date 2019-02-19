@@ -16,6 +16,8 @@ trigger:
   paths:
     exclude:
     - VerticalWarehouses
+    - WMS\Data
+    - WMS\Scheduler
 
 
 variables:
