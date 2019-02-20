@@ -29,101 +29,101 @@ namespace Ferretto.VW.MAS_AutomationService
 
         #region Constructors
 
-        public AutomationService( IEventAggregator eventAggregator, IHubContext<InstallationHub, IInstallationHub> hub )
+        public AutomationService(IEventAggregator eventAggregator, IHubContext<InstallationHub, IInstallationHub> hub)
         {
             this.eventAggregator = eventAggregator;
             this.hub = hub;
 
-            this.messageReceived = new ManualResetEventSlim( false );
+            this.messageReceived = new ManualResetEventSlim(false);
 
             this.messageQueue = new ConcurrentQueue<Event_Message>();
 
             var inverterNotificationEvent = this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>();
-            inverterNotificationEvent.Subscribe( this.SendMessageToAllConnectedClients, ThreadOption.BackgroundThread, false, message => message.OperationStatus == OperationStatus.End );
+            inverterNotificationEvent.Subscribe(this.SendMessageToAllConnectedClients, ThreadOption.BackgroundThread, false, message => message.OperationStatus == OperationStatus.End);
 
             var webApiMessagEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
-            webApiMessagEvent.Subscribe( ( message ) =>
-                {
-                    this.messageQueue.Enqueue( message );
-                    this.messageReceived.Set();
-                },
+            webApiMessagEvent.Subscribe((message) =>
+               {
+                   this.messageQueue.Enqueue(message);
+                   this.messageReceived.Set();
+               },
                 ThreadOption.PublisherThread,
                 false,
-                message => message.Source == MessageActor.WebAPI );
+                message => message.Source == MessageActor.WebAPI);
         }
 
         #endregion
 
         #region Methods
 
-        public void SendMessageToAllConnectedClients( Notification_EventParameter eventParameter )
+        public void SendMessageToAllConnectedClients(Notification_EventParameter eventParameter)
         {
-            this.hub.Clients.All.OnSendMessageToAllConnectedClients( eventParameter.Description );
+            this.hub.Clients.All.OnSendMessageToAllConnectedClients(eventParameter.Description);
         }
 
-        public new Task StopAsync( CancellationToken stoppingToken )
+        public new Task StopAsync(CancellationToken stoppingToken)
         {
-            var returnValue = base.StopAsync( stoppingToken );
+            var returnValue = base.StopAsync(stoppingToken);
 
             return returnValue;
         }
 
         public async void TESTStartCycle()
         {
-            while(true)
+            while (true)
             {
                 var message = new string[] { "pippo", "topolino", "pluto", "paperino", "minnie", "qui", "quo", "qua" };
-                var randomInt = new Random().Next( message.Length );
-                Console.WriteLine( message[randomInt] );
-                await this.hub.Clients.All.OnSendMessageToAllConnectedClients( message[randomInt] );
-                await Task.Delay( 1000 );
+                var randomInt = new Random().Next(message.Length);
+                Console.WriteLine(message[randomInt]);
+                await this.hub.Clients.All.OnSendMessageToAllConnectedClients(message[randomInt]);
+                await Task.Delay(1000);
             }
         }
 
-        protected override async Task ExecuteAsync( CancellationToken stoppingToken )
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            await Task.Run( () => AutomationServiceTaskFunction( stoppingToken ), stoppingToken );
+            await Task.Run(() => this.AutomationServiceTaskFunction(stoppingToken), stoppingToken);
         }
 
-        private Task AutomationServiceTaskFunction( CancellationToken stoppingToken )
+        private Task AutomationServiceTaskFunction(CancellationToken stoppingToken)
         {
             do
             {
                 try
                 {
-                    this.messageReceived.Wait( Timeout.Infinite, stoppingToken );
+                    this.messageReceived.Wait(Timeout.Infinite, stoppingToken);
                 }
-                catch(OperationCanceledException ex)
+                catch (OperationCanceledException ex)
                 {
-                    return Task.FromException( ex );
+                    return Task.FromException(ex);
                 }
 
                 this.messageReceived.Reset();
 
-                while(this.messageQueue.TryDequeue( out var receivedMessage ))
+                while (this.messageQueue.TryDequeue(out var receivedMessage))
                 {
-                    switch(receivedMessage.Type)
+                    switch (receivedMessage.Type)
                     {
                         case MessageType.AddMission:
-                            PorocessAddMissionMessage( receivedMessage );
+                            this.ProcessAddMissionMessage(receivedMessage);
                             break;
 
                         case MessageType.HorizontalHoming:
                             break;
                     }
                 }
-            } while(!stoppingToken.IsCancellationRequested);
+            } while (!stoppingToken.IsCancellationRequested);
 
             return Task.CompletedTask;
         }
 
-        private void PorocessAddMissionMessage( Event_Message message )
+        private void ProcessAddMissionMessage(Event_Message message)
         {
             //TODO apply Automation Service Business Logic to the message
 
             message.Source = MessageActor.AutomationService;
-            message.Destination = MessageActor.MissionScheduler;
-            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish( message );
+            message.Destination = MessageActor.MissionsManager;
+            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(message);
         }
 
         #endregion
