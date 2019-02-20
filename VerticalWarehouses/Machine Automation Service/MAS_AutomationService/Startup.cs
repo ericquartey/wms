@@ -81,8 +81,7 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddHostedService<FiniteStateMachines>();
 #if DEBUG
             services.AddHostedService<HostedInverterDriverMock>();
-#endif
-#if RELEASE
+#else
             services.AddHostedService<HostedInverterDriver>();
 #endif
 
@@ -97,8 +96,7 @@ namespace Ferretto.VW.MAS_AutomationService
 #if DEBUG
             services.AddSingleton<INewInverterDriver, NewInverterDriverMock>();
             services.AddSingleton<INewRemoteIODriver, NewRemoteIODriverMock>();
-#endif
-#if RELEASE
+#else
             services.AddSingleton<INewInverterDriver, NewInverterDriver>();
             services.AddSingleton<INewRemoteIODriver, NewRemoteIODriver>();
 #endif
