@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public ReturnMissionPosition GetFreeBlockPosition(int drawerHeight)
         {
-            var cellSpacing = this.GetIntegerConfigurationValue(ConfigurationValueEnum.cellSpicing);
+            var cellSpacing = this.GetIntegerConfigurationValue(ConfigurationValueEnum.cellSpacing);
 
             // TEMP Drawer height conversion to the necessary cells number Ceiling to round a double to the upper integer
             var cellNumber = (int)Math.Ceiling((decimal)drawerHeight / cellSpacing);
