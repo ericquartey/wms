@@ -1,11 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_IODriver
 {
     public class NewRemoteIODriverMock : INewRemoteIODriver
     {
+        #region Fields
+
+        private readonly ILogger<NewRemoteIODriverMock> logger;
+
+        #endregion
+
+        #region Constructors
+
+        public NewRemoteIODriverMock(ILogger<NewRemoteIODriverMock> logger)
+        {
+            this.logger = logger;
+        }
+
+        #endregion
+
         #region Properties
 
         public List<Boolean> Inputs { get; set; }
@@ -22,17 +37,17 @@ namespace Ferretto.VW.MAS_IODriver
 
         public void Disconnect()
         {
-            Console.WriteLine("RemoteIODriverMock Disconnect\n");
+            this.logger.Log(LogLevel.Debug, "NewRemoteIOMock Disconnect");
         }
 
         public void SwitchHorizontalToVertical()
         {
-            Console.WriteLine("RemoteIODriverMock SwitchHorizontalToVertical\n");
+            this.logger.Log(LogLevel.Debug, "NewRemoteIOMock SwitchHorizontalToVertical");
         }
 
         public void SwitchVerticalToHorizontal()
         {
-            Console.WriteLine("RemoteIODriverMock SwitchVerticalToHorizontal\n");
+            this.logger.Log(LogLevel.Debug, "NewRemoteIOMock SwitchVerticalToHorizontal");
         }
 
         #endregion

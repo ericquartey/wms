@@ -3,11 +3,27 @@ using System.Collections.Generic;
 using System.Text;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.ActionBlocks;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_InverterDriver
 {
     public class NewInverterDriverMock : INewInverterDriver
     {
+        #region Fields
+
+        private readonly ILogger<NewInverterDriverMock> logger;
+
+        #endregion
+
+        #region Constructors
+
+        public NewInverterDriverMock(ILogger<NewInverterDriverMock> logger)
+        {
+            this.logger = logger;
+        }
+
+        #endregion
+
         #region Properties
 
         public Single GetDrawerWeight { get; set; }
@@ -18,42 +34,42 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         public void Destroy()
         {
-            Console.WriteLine("InverterDriverMock Destroy\n");
+            this.logger.Log(LogLevel.Debug, "InverterDriverMock Destroy", null);
         }
 
         public void ExecuteDrawerWeight(Int32 targetPosition, Single vMax, Single acc, Single dec)
         {
-            Console.WriteLine("InverterDriverMock ExecuteDrawerWeight\n");
+            this.logger.Log(LogLevel.Debug, "InverterDriverMock ExecuteDrawerWeight", null);
         }
 
         public void ExecuteHomingStop()
         {
-            Console.WriteLine("InverterDriverMock ExecuteHomingStop\n");
+            this.logger.Log(LogLevel.Debug, "InverterDriverMock ExecuteHomingStop", null);
         }
 
         public void ExecuteHorizontalHoming()
         {
-            Console.WriteLine("InverterDriverMock ExecuteHorizontalHoming\n");
+            this.logger.Log(LogLevel.Debug, "InverterDriverMock ExecuteHorizontalHoming", null);
         }
 
         public void ExecuteHorizontalPosition(Int32 target, Int32 speed, Int32 direction, List<ProfilePosition> profile)
         {
-            Console.WriteLine("InverterDriverMock ExecuteHorizontalPosition\n");
+            this.logger.Log(LogLevel.Debug, "InverterDriverMock ExecuteHorizontalPosition", null);
         }
 
         public void ExecuteVerticalHoming()
         {
-            Console.WriteLine("InverterDriverMock ExecuteVerticalHoming\n");
+            this.logger.Log(LogLevel.Debug, "InverterDriverMock ExecuteVerticalHoming", null);
         }
 
         public void ExecuteVerticalPosition(Int32 targetPosition, Single vMax, Single acc, Single dec, Single weight, Int16 offset)
         {
-            Console.WriteLine("InverterDriverMock ExecuteVerticalPosition\n");
+            this.logger.Log(LogLevel.Debug, "InverterDriverMock ExecuteVerticalPosition", null);
         }
 
         public Boolean[] GetSensorsStates()
         {
-            Console.WriteLine("InverterDriverMock ExecuteHomingStop\n");
+            this.logger.Log(LogLevel.Debug, "InverterDriverMock GetSensorsStates", null);
             return new Boolean[] { true, true, true };
         }
 
