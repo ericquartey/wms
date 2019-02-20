@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.WMS.Data.Core.Models;
 
@@ -11,9 +12,9 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     {
         #region Methods
 
-        Task<OperationResult<Bay>> ActivateAsync(int id);
+        Task<IOperationResult<Bay>> ActivateAsync(int id);
 
-        Task<OperationResult<Bay>> DeactivateAsync(int id);
+        Task<IOperationResult<Bay>> DeactivateAsync(int id);
 
         Task<IEnumerable<Bay>> GetByAreaIdAsync(int id);
 

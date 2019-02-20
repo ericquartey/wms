@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
@@ -27,7 +28,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public async Task<OperationResult<Bay>> ActivateAsync(int id)
+        public async Task<IOperationResult<Bay>> ActivateAsync(int id)
         {
             var bay = this.dataContext.Bays.Find(id);
             if (bay == null)
@@ -42,7 +43,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return new SuccessOperationResult<Bay>();
         }
 
-        public async Task<OperationResult<Bay>> DeactivateAsync(int id)
+        public async Task<IOperationResult<Bay>> DeactivateAsync(int id)
         {
             var bay = this.dataContext.Bays.Find(id);
             if (bay == null)
