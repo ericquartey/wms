@@ -134,7 +134,7 @@
 
                 <wms:ActionBar Margin="5"
                                HorizontalAlignment="Left"
-                               Style="{DynamicResource ActionBarOverlayedWithGrid}">
+                               Style="{DynamicResource ActionBarNotCustomizable}">
                     <wms:ActionBarItem Content="{x:Static res:General.ShowDetails}"
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_info_outline_black_24dp.png"
@@ -288,11 +288,11 @@
                                             <GroupBox Margin="3,0,5,5"
                                                       Header="{x:Static res:MasterData.OtherInformation}">
                                                 <StackPanel Orientation="Vertical">
-                                                    <wms:InfoText HorizontalAlignment="Left"                                                                  
+                                                    <wms:InfoText HorizontalAlignment="Left"
                                                                   Content="{Binding Path=CreationDate}" />
                                                     <wms:InfoText Grid.Row="5"
                                                                   Grid.Column="1"
-                                                                  HorizontalAlignment="Left"                                                                  
+                                                                  HorizontalAlignment="Left"
                                                                   Content="{Binding Path=LastModificationDate}" />
                                                 </StackPanel>
                                             </GroupBox>

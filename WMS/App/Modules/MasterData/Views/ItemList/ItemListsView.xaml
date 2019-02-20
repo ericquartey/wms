@@ -75,7 +75,7 @@
 
                 <wms:ActionBar Margin="5"
                                HorizontalAlignment="Left"
-                               Style="{DynamicResource ActionBarOverlayedWithGrid}">
+                               Style="{DynamicResource ActionBarNotCustomizable}">
                     <wms:ActionBarItem Command="{Binding ShowDetailsCommand}"
                                        Content="{x:Static res:General.ShowDetails}"
                                        CustomGlyphSize="24,24"
