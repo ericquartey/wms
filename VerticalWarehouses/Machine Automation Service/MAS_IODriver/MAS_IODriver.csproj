@@ -12,6 +12,10 @@
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.1.1" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(Configuration)' != 'debug'">
+    <Compile Remove="NewRemoteIODriverMock.cs" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Common_Utils\Ferretto.VW.Common_Utils.csproj" />
     <ProjectReference Include="..\..\RemoteIODriver\Ferretto.VW.RemoteIODriver.csproj" />
