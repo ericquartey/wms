@@ -56,6 +56,7 @@
                                 Margin="0,10,0,0"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
+                                CommandDoubleClick="{Binding EditCommand}"
                                 Compartments="{Binding LoadingUnitDetails.Compartments}"
                                 DimensionHeight="{Binding LoadingUnitDetails.Length}"
                                 DimensionWidth="{Binding LoadingUnitDetails.Width}"
@@ -74,14 +75,13 @@
                                 MaxHeight="500"
                                 HorizontalAlignment="Left"
                                 ItemsSource="{Binding CompartmentsDataSource, Mode=OneWay}"
-                                SelectedBusinessObject="{Binding SelectedCompartmentTray, Mode=TwoWay}">
+                                SelectedBusinessObject="{Binding SelectedCompartmentTray, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <wms:WmsGridControl.View>
                     <dxg:TableView NavigationStyle="Row">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="RowDoubleClick">
-                                <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartmentTray.Id, Mode=OneWay}"
-                                                          StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
-                                                          StartViewName="{x:Static modules:MasterData.COMPARTMENTDETAILS}" />
+                                <i:InvokeCommandAction Command="{Binding EditCommand}"
+                                                       CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartmentTray.Id, Mode=OneWay}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </dxg:TableView>
