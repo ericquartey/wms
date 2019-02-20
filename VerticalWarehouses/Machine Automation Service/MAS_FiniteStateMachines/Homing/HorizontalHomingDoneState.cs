@@ -91,6 +91,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                         }
                     case OperationStatus.Error:
                         {
+                            this.parent.ChangeState(new HomingErrorState(this.parent, this.driver, this.remoteIODriver, this.data, this.eventAggregator));
                             break;
                         }
                     default:
