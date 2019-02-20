@@ -178,7 +178,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                     switch (receivedMessage.Type)
                     {
                         case MessageType.AddMission:
-                            this.PorocessAddMissionMessage(receivedMessage);
+                            this.ProcessAddMissionMessage(receivedMessage);
                             break;
 
                         case MessageType.HorizontalHoming:
@@ -196,7 +196,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             return Task.CompletedTask;
         }
 
-        private void PorocessAddMissionMessage(Event_Message message)
+        private void ProcessAddMissionMessage(Event_Message message)
         {
             if (this.currentStateMachine != null)
             {

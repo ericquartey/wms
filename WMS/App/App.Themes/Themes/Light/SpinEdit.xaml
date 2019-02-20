@@ -63,7 +63,7 @@
                 <dxe:EditorControl x:Name="PART_Content"
                                    Grid.Column="2"
                                    VerticalAlignment="Stretch"
-                                   HorizontalContentAlignment="Left"
+                                   HorizontalContentAlignment="Right"
                                    dx:FocusHelper2.Focusable="False"
                                    Template="{TemplateBinding ActualEditorControlTemplate}" />
                 <dxe:ButtonsControl x:Name="PART_RightButtons"
