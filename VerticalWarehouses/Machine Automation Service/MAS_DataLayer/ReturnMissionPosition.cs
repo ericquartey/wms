@@ -4,7 +4,7 @@
     {
         #region Fields
 
-        public decimal ReturnCood;
+        public decimal ReturnCoord;
 
         public Side ReturnSide;
 

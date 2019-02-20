@@ -79,10 +79,10 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public ReturnMissionPosition GetFreeBlockPosition(int drawerHeight)
         {
-            var cellSpicing = this.GetIntegerConfigurationValue(ConfigurationValueEnum.cellSpicing);
+            var cellSpacing = this.GetIntegerConfigurationValue(ConfigurationValueEnum.cellSpicing);
 
             // TEMP Drawer height conversion to the necessary cells number Ceiling to round a double to the upper integer
-            var cellNumber = (int)Math.Ceiling((decimal)drawerHeight / cellSpicing);
+            var cellNumber = (int)Math.Ceiling((decimal)drawerHeight / cellSpacing);
 
             var cellEven = new Cell();
             var cellOdd = new Cell();
@@ -144,7 +144,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 // INFO - if the block is high or higher the drawer we end to search for the block
                 if (cellCounterEven >= cellNumber)
                 {
-                    returnMissionPosition.ReturnCood = cellEven.Coord;
+                    returnMissionPosition.ReturnCoord = cellEven.Coord;
                     returnMissionPosition.ReturnSide = cellEven.Side;
 
                     break;
@@ -152,7 +152,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
                 if (cellCounterOdd >= cellNumber)
                 {
-                    returnMissionPosition.ReturnCood = cellOdd.Coord;
+                    returnMissionPosition.ReturnCoord = cellOdd.Coord;
                     returnMissionPosition.ReturnSide = cellOdd.Side;
 
                     break;

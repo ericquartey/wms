@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
@@ -17,6 +18,9 @@ namespace Ferretto.VW.MAS_DataLayer
         /// </summary>
         /// <param name="configurationValueEnum">Configuration parameter to get</param>
         /// <returns>Return the value of a decimal configuration parameter</returns>
+        /// <exception cref="DataLayerExceptionEnum.PARSE_EXCEPTION">Exception for a not possible parse</exception>
+        /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
+        /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
         decimal GetDecimalConfigurationValue(ConfigurationValueEnum configurationValueEnum);
 
         /// <summary>
@@ -24,6 +28,9 @@ namespace Ferretto.VW.MAS_DataLayer
         /// </summary>
         /// <param name="runtimeValueEnum">Runtime parameter to get</param>
         /// <returns>Return the value of a decimal runtime parameter</returns>
+        /// <exception cref="DataLayerExceptionEnum.PARSE_EXCEPTION">Exception for a not possible parse</exception>
+        /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
+        /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
         decimal GetDecimalRuntimeValue(RuntimeValueEnum runtimeValueEnum);
 
         /// <summary>
@@ -38,6 +45,9 @@ namespace Ferretto.VW.MAS_DataLayer
         /// </summary>
         /// <param name="configurationValueEnum">Configuration parameter to get</param>
         /// <returns>Return the value of an integer configuration parameter</returns>
+        /// <exception cref="DataLayerExceptionEnum.PARSE_EXCEPTION">Exception for a not possible parse</exception>
+        /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
+        /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
         int GetIntegerConfigurationValue(ConfigurationValueEnum configurationValueEnum);
 
         /// <summary>
@@ -45,6 +55,9 @@ namespace Ferretto.VW.MAS_DataLayer
         /// </summary>
         /// <param name="runtimeValueEnum">Runtime parameter to get</param>
         /// <returns>Return the value of an integer runtime parameter</returns>
+        /// <exception cref="DataLayerExceptionEnum.PARSE_EXCEPTION">Exception for a not possible parse</exception>
+        /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
+        /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
         int GetIntegerRuntimeValue(RuntimeValueEnum runtimeValueEnum);
 
         /// <summary>
@@ -52,6 +65,8 @@ namespace Ferretto.VW.MAS_DataLayer
         /// </summary>
         /// <param name="configurationValueEnum">Configuration parameter to get</param>
         /// <returns>Return the value of a string configuration parameter</returns>
+        /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
+        /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
         string GetStringConfigurationValue(ConfigurationValueEnum configurationValueEnum);
 
         /// <summary>
@@ -59,6 +74,8 @@ namespace Ferretto.VW.MAS_DataLayer
         /// </summary>
         /// <param name="runtimeValueEnum">Runtime parameter to get</param>
         /// <returns>Return the value of a string runtime parameter</returns>
+        /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
+        /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
         string GetStringRuntimeValue(RuntimeValueEnum runtimeValueEnum);
 
         /// <summary>
@@ -66,6 +83,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// </summary>
         /// <param name="listCells">A list of cells</param>
         /// <returns>A boolean value about the set outcome</returns>
+        /// <exception cref="ArgumentNullException">Exception when there is not a variable of list in the table</exception>
         bool SetCellList(List<Cell> listCells);
 
         /// <summary>
@@ -73,6 +91,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// </summary>
         /// <param name="configurationValueEnum">Configuration parameter to set</param>
         /// <param name="value">The new value</param>
+        /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
         void SetDecimalConfigurationValue(ConfigurationValueEnum configurationValueEnum, decimal value);
 
         /// <summary>
@@ -80,6 +99,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// </summary>
         /// <param name="runtimeValueEnum">Runtime parameter to set</param>
         /// <param name="value">The new value</param>
+        /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
         void SetDecimalRuntimeValue(RuntimeValueEnum runtimeValueEnum, decimal value);
 
         /// <summary>
@@ -87,6 +107,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// </summary>
         /// <param name="configurationValueEnum">Configuration parameter to set</param>
         /// <param name="value">The new value</param>
+        /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
         void SetIntegerConfigurationValue(ConfigurationValueEnum configurationValueEnum, int value);
 
         /// <summary>
@@ -94,6 +115,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// </summary>
         /// <param name="runtimeValueEnum">Runtime parameter to set</param>
         /// <param name="value">The new value</param>
+        /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
         void SetIntegerRuntimeValue(RuntimeValueEnum runtimeValueEnum, int value);
 
         /// <summary>
@@ -101,6 +123,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// </summary>
         /// <param name="configurationValueEnum">Configuration parameter to set</param>
         /// <param name="value">The new value</param>
+        /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
         void SetStringConfigurationValue(ConfigurationValueEnum configurationValueEnum, string value);
 
         /// <summary>
@@ -108,6 +131,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// </summary>
         /// <param name="runtimeValueEnum">Runtime parameter to set</param>
         /// <param name="value">The new value</param>
+        /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
         void SetStringRuntimeValue(RuntimeValueEnum runtimeValueEnum, string value);
 
         #endregion

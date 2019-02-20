@@ -2,16 +2,16 @@
 {
     public enum DataLayerExceptionEnum
     {
-        // DataLayer constructor exceptions
+        // INFO DataLayer constructor exceptions
         DATALAYER_CONTEXT_EXCEPTION = 001,
 
         EVENTAGGREGATOR_EXCEPTION = 002,
 
-        // InMemory exceptions
-        PARSE_EXCEPTION = 100, // Exception for a wrong data parse
+        // INFO InMemory exceptions
+        PARSE_EXCEPTION = 100,
 
-        DATATYPE_EXCEPTION = 101, // Exception for wrong data type to parse
+        DATATYPE_EXCEPTION = 101,
 
-        CELL_NOT_FOUND_EXCEPTION = 102, // Exception for a cell not found
+        CELL_NOT_FOUND_EXCEPTION = 102,
     }
 }

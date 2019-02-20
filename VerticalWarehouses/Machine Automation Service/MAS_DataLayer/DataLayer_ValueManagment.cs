@@ -10,6 +10,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public decimal GetDecimalConfigurationValue(ConfigurationValueEnum configurationValueEnum)
         {
+            // TEMP
             // Comments to keep until the method won't be tested
             // Search the var in the DB
             // Check if the type in the DB is decimal
@@ -43,6 +44,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public decimal GetDecimalRuntimeValue(RuntimeValueEnum runtimeValueEnum)
         {
+            // TEMP
             // Comments to keep until the method won't be tested
             // Search the var in the DB
             // Check if the type in the DB is decimal
@@ -76,6 +78,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public int GetIntegerConfigurationValue(ConfigurationValueEnum configurationValueEnum)
         {
+            // TEMP
             // Comments to keep until the method won't be tested
             // Search the var in the DB
             // Check if the type in the DB is integer
@@ -109,6 +112,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public int GetIntegerRuntimeValue(RuntimeValueEnum runtimeValueEnum)
         {
+            // TEMP
             // Comments to keep until the method won't be tested
             // Search the var in the DB
             // Check if the type in the DB is integer
@@ -142,6 +146,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public string GetStringConfigurationValue(ConfigurationValueEnum configurationValueEnum)
         {
+            // TEMP
             // Comments to keep until the method won't be tested
             // Search the var in the DB
             // Check if the type in the DB is string
@@ -172,6 +177,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public string GetStringRuntimeValue(RuntimeValueEnum runtimeValueEnum)
         {
+            // TEMP
             // Comments to keep until the method won't be tested
             // Search the var in the DB
             // Check if the type in the DB is string
@@ -202,6 +208,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public void SetDecimalConfigurationValue(ConfigurationValueEnum configurationValueEnum, decimal value)
         {
+            // TEMP
             // Comments to keep until the method won't be tested
             // Get an input value
             // DB var search in DB
@@ -237,6 +244,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public void SetDecimalRuntimeValue(RuntimeValueEnum runtimeValueEnum, decimal value)
         {
+            // TEMP
             // Comments to keep until the method won't be tested
             // Get an input value
             // DB var search in DB
@@ -272,6 +280,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public void SetIntegerConfigurationValue(ConfigurationValueEnum configurationValueEnum, int value)
         {
+            // TEMP
             // Comments to keep until the method won't be tested
             // Get an input value
             // DB var search in DB
@@ -307,6 +316,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public void SetIntegerRuntimeValue(RuntimeValueEnum runtimeValueEnum, int value)
         {
+            // TEMP
             // Comments to keep until the method won't be tested
             // Get an input value
             // DB var search in DB
@@ -342,6 +352,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public void SetStringConfigurationValue(ConfigurationValueEnum configurationValueEnum, string value)
         {
+            // TEMP
             // Comments to keep until the method won't be tested
             // Get an input value
             // DB var search in DB
@@ -377,6 +388,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public void SetStringRuntimeValue(RuntimeValueEnum runtimeValueEnum, string value)
         {
+            // TEMP
             // Comments to keep until the method won't be tested
             // Get an input value
             // DB var search in DB
