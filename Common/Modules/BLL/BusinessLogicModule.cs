@@ -1,7 +1,6 @@
 ﻿using System.Configuration;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessProviders;
-using Ferretto.Common.EF;
 using Ferretto.Common.Modules.BLL.Services;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Practices.Unity;
@@ -43,8 +42,6 @@ namespace Ferretto.Common.Modules.BLL
 
             this.RegisterDataServiceEndpoints();
 
-            this.Container.RegisterType<DatabaseContext, DatabaseContext>(new InjectionConstructor());
-
             NLog.LogManager
                .GetCurrentClassLogger()
                .Trace("Module loaded.");
@@ -53,6 +50,7 @@ namespace Ferretto.Common.Modules.BLL
         private void RegisterBusinessProviders()
         {
             this.Container.RegisterType<IAbcClassProvider, AbcClassProvider>();
+            this.Container.RegisterType<IAisleProvider, AisleProvider>();
             this.Container.RegisterType<IAreaProvider, AreaProvider>();
             this.Container.RegisterType<IBayProvider, BayProvider>();
             this.Container.RegisterType<ICellPositionProvider, CellPositionProvider>();
@@ -79,7 +77,6 @@ namespace Ferretto.Common.Modules.BLL
             this.Container.RegisterType<IPackageTypeProvider, PackageTypeProvider>();
             this.Container.RegisterType<ISchedulerRequestProvider, SchedulerRequestProvider>();
             this.Container.RegisterType<IUserProvider, UserProvider>();
-            this.Container.RegisterType<IAisleProvider, AisleProvider>();
         }
 
         private void RegisterDataServiceEndpoints()

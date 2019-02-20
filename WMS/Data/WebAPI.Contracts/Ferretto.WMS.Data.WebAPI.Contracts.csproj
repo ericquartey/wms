@@ -32,8 +32,4 @@
     <Compile Remove="DataWebApiServiceCollectionExtensions.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Core\Ferretto.WMS.Data.Core.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
-using Ferretto.Common.EF;
 
 namespace Ferretto.Common.BusinessProviders
 {
