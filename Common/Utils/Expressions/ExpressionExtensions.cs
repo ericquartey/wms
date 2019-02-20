@@ -76,6 +76,11 @@ namespace Ferretto.Common.Utils.Expressions
         public static bool ContainsOnlyTypeProperties<TDataModel>(
             this IExpression expression)
         {
+            if (expression == null)
+            {
+                return true;
+            }
+
             switch (expression)
             {
                 case UnaryExpression v:

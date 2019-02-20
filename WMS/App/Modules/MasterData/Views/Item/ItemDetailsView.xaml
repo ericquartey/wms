@@ -311,20 +311,15 @@
                                           BorderThickness="1"
                                           Filename="{Binding Path=Model.Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           Path="{Binding Path=Model.ImagePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <wms:InfoText HorizontalAlignment="Left"
-                                      HorizontalContentAlignment="Left"
+                        <wms:InfoText HorizontalAlignment="Left"                                     
                                       Content="{Binding Path=Model.CreationDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"
-                                      HorizontalContentAlignment="Left"
+                        <wms:InfoText HorizontalAlignment="Left"                                      
                                       Content="{Binding Path=Model.LastModificationDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
-                                      HorizontalContentAlignment="Left"
                                       Content="{Binding Path=Model.InventoryDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"
-                                      HorizontalContentAlignment="Left"
+                        <wms:InfoText HorizontalAlignment="Left"                                      
                                       Content="{Binding Path=Model.LastPickDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
-                                      HorizontalContentAlignment="Left"
                                       Content="{Binding Path=Model.LastStoreDate}" />
                     </StackPanel>
 

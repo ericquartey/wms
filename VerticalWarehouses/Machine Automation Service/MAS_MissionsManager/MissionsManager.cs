@@ -3,15 +3,16 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.Common.Common_Utils;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Microsoft.Extensions.Hosting;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS_MissionScheduler
+namespace Ferretto.VW.MAS_MissionsManager
 {
-    public class MissionsScheduler : BackgroundService
+    public class MissionsManager : BackgroundService
     {
         #region Fields
 
@@ -21,26 +22,32 @@ namespace Ferretto.VW.MAS_MissionScheduler
 
         private readonly ManualResetEventSlim messageReceived;
 
-        private readonly Queue<Mission> missionsQueue = new Queue<Mission>();
+        private readonly ManualResetEventSlim missionExecuted;
+
+        private readonly Dictionary<IMissionMessageData, int> missionsCollection;
 
         #endregion
 
         #region Constructors
 
-        public MissionsScheduler(IEventAggregator eventAggregator)
+        public MissionsManager(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
 
             this.messageReceived = new ManualResetEventSlim(false);
 
+            this.missionExecuted = new ManualResetEventSlim(false);
+
             this.messageQueue = new ConcurrentQueue<Event_Message>();
 
-            var automationServiceMessageEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
-            automationServiceMessageEvent.Subscribe((message) =>
-               {
-                   this.messageQueue.Enqueue(message);
-                   this.messageReceived.Set();
-               },
+            this.missionsCollection = new Dictionary<IMissionMessageData, int>();
+
+            var automationServiceMessagEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
+            automationServiceMessagEvent.Subscribe((message) =>
+            {
+                this.messageQueue.Enqueue(message);
+                this.messageReceived.Set();
+            },
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Source == MessageActor.AutomationService);
@@ -49,13 +56,6 @@ namespace Ferretto.VW.MAS_MissionScheduler
         #endregion
 
         #region Methods
-
-        public bool AddMission(Mission mission)
-        {
-            if (mission == null) throw new ArgumentNullException("Mission is null, cannot add a null item to the Mission Queue.\n");
-            this.missionsQueue.Enqueue(mission);
-            return true;
-        }
 
         public new Task StopAsync(CancellationToken stoppingToken)
         {
@@ -66,10 +66,10 @@ namespace Ferretto.VW.MAS_MissionScheduler
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            await Task.Run(() => this.MissionSchedulerTaskFunction(stoppingToken), stoppingToken);
+            await Task.Run(() => this.MissionsManagerTaskFunction(stoppingToken), stoppingToken);
         }
 
-        private Task MissionSchedulerTaskFunction(CancellationToken stoppingToken)
+        private Task MissionsManagerTaskFunction(CancellationToken stoppingToken)
         {
             do
             {
@@ -84,9 +84,7 @@ namespace Ferretto.VW.MAS_MissionScheduler
 
                 this.messageReceived.Reset();
 
-                Event_Message receivedMessage;
-
-                while (this.messageQueue.TryDequeue(out receivedMessage))
+                while (this.messageQueue.TryDequeue(out var receivedMessage))
                 {
                     switch (receivedMessage.Type)
                     {
@@ -96,6 +94,9 @@ namespace Ferretto.VW.MAS_MissionScheduler
 
                         case MessageType.HorizontalHoming:
                             break;
+
+                        default:
+                            throw new InvalidOperationException("Type of message unmanaged.");
                     }
                 }
             } while (!stoppingToken.IsCancellationRequested);
@@ -105,10 +106,36 @@ namespace Ferretto.VW.MAS_MissionScheduler
 
         private void ProcessAddMissionMessage(Event_Message message)
         {
-            //TODO apply Mission SchedulerBusiness Logic to the message
+            try
+            {
+                var missionData = (MissionData)message.Data;
+                var missionPriority = ((MissionData)message.Data).Priority;
+                this.missionsCollection.Add(missionData, missionPriority);
+            }
+            catch (InvalidCastException)
+            {
+                throw;
+            }
+            catch (ArgumentNullException)
+            {
+                throw;
+            }
+            catch (ArgumentException)
+            {
+                throw;
+            }
 
-            message.Source = MessageActor.MissionScheduler;
-            message.Destination = MessageActor.MachineManager;
+            message.Source = MessageActor.MissionsManager;
+            message.Destination = MessageActor.FiniteStateMachines;
+            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(message);
+        }
+
+        private void ProcessCreateMissionMessage(Event_Message message)
+        {
+            //TODO apply Mission Manager Business Logic to the message
+
+            message.Source = MessageActor.MissionsManager;
+            message.Destination = MessageActor.FiniteStateMachines;
             this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(message);
         }
 

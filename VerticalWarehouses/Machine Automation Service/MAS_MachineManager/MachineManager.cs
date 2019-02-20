@@ -23,82 +23,82 @@ namespace Ferretto.VW.MAS_MachineManager
 
         #region Constructors
 
-        public MachineManager( IEventAggregator eventAggregator )
+        public MachineManager(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
 
-            this.messageReceived = new ManualResetEventSlim( false );
+            this.messageReceived = new ManualResetEventSlim(false);
 
             this.messageQueue = new ConcurrentQueue<Event_Message>();
 
             var missionSchedulerMessagEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
-            missionSchedulerMessagEvent.Subscribe( ( message ) =>
-                {
-                    this.messageQueue.Enqueue( message );
-                    this.messageReceived.Set();
-                },
+            missionSchedulerMessagEvent.Subscribe((message) =>
+               {
+                   this.messageQueue.Enqueue(message);
+                   this.messageReceived.Set();
+               },
                 ThreadOption.PublisherThread,
                 false,
-                message => message.Source == MessageActor.MissionScheduler );
+                message => message.Source == MessageActor.MissionScheduler);
         }
 
         #endregion
 
         #region Methods
 
-        public new Task StopAsync( CancellationToken stoppingToken )
+        public new Task StopAsync(CancellationToken stoppingToken)
         {
-            var returnValue = base.StopAsync( stoppingToken );
+            var returnValue = base.StopAsync(stoppingToken);
 
             return returnValue;
         }
 
-        protected override async Task ExecuteAsync( CancellationToken stoppingToken )
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            await Task.Run( () => MachineManagerTaskFUnction( stoppingToken ), stoppingToken );
+            await Task.Run(() => this.MachineManagerTaskFUnction(stoppingToken), stoppingToken);
         }
 
-        private Task MachineManagerTaskFUnction( CancellationToken stoppingToken )
+        private Task MachineManagerTaskFUnction(CancellationToken stoppingToken)
         {
             do
             {
                 try
                 {
-                    this.messageReceived.Wait( Timeout.Infinite, stoppingToken );
+                    this.messageReceived.Wait(Timeout.Infinite, stoppingToken);
                 }
-                catch(OperationCanceledException ex)
+                catch (OperationCanceledException ex)
                 {
-                    return Task.FromException( ex );
+                    return Task.FromException(ex);
                 }
 
                 this.messageReceived.Reset();
 
                 Event_Message receivedMessage;
 
-                while(this.messageQueue.TryDequeue( out receivedMessage ))
+                while (this.messageQueue.TryDequeue(out receivedMessage))
                 {
-                    switch(receivedMessage.Type)
+                    switch (receivedMessage.Type)
                     {
                         case MessageType.AddMission:
-                            PorocessAddMissionMessage( receivedMessage );
+                            this.ProcessAddMissionMessage(receivedMessage);
                             break;
 
                         case MessageType.HorizontalHoming:
                             break;
                     }
                 }
-            } while(!stoppingToken.IsCancellationRequested);
+            } while (!stoppingToken.IsCancellationRequested);
 
             return Task.CompletedTask;
         }
 
-        private void PorocessAddMissionMessage( Event_Message message )
+        private void ProcessAddMissionMessage(Event_Message message)
         {
             //TODO apply Machine Manager Business Logic to the message
 
             message.Source = MessageActor.MachineManager;
             message.Destination = MessageActor.FiniteStateMachines;
-            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish( message );
+            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(message);
         }
 
         #endregion

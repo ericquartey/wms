@@ -331,29 +331,21 @@
                 <GroupBox Margin="20,0"
                           Header="{x:Static res:MasterData.OtherInformation}">
                     <StackPanel Orientation="Vertical">
-                        <wms:InfoText HorizontalAlignment="Left"
-                                      HorizontalContentAlignment="Left"
+                        <wms:InfoText HorizontalAlignment="Left"                                      
                                       Content="{Binding Model.CreationDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"
-                                      HorizontalContentAlignment="Left"
+                        <wms:InfoText HorizontalAlignment="Left"                                      
                                       Content="{Binding Model.LastHandlingDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"
-                                      HorizontalContentAlignment="Left"
+                        <wms:InfoText HorizontalAlignment="Left"                                      
                                       Content="{Binding Model.InventoryDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"
-                                      HorizontalContentAlignment="Left"
+                        <wms:InfoText HorizontalAlignment="Left"                                      
                                       Content="{Binding Model.LastPickDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"
-                                      HorizontalContentAlignment="Left"
+                        <wms:InfoText HorizontalAlignment="Left"                                      
                                       Content="{Binding Model.LastStoreDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"
-                                      HorizontalContentAlignment="Left"
+                        <wms:InfoText HorizontalAlignment="Left"                                      
                                       Content="{Binding Model.InCycleCount}" />
-                        <wms:InfoText HorizontalAlignment="Left"
-                                      HorizontalContentAlignment="Left"
+                        <wms:InfoText HorizontalAlignment="Left"                                      
                                       Content="{Binding Model.OutCycleCount}" />
-                        <wms:InfoText HorizontalAlignment="Left"
-                                      HorizontalContentAlignment="Left"
+                        <wms:InfoText HorizontalAlignment="Left"                                      
                                       Content="{Binding Model.OtherCycleCount}" />
                     </StackPanel>
                 </GroupBox>
