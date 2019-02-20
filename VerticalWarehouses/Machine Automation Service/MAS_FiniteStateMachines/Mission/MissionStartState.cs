@@ -6,27 +6,27 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
     {
         #region Constructors
 
-        public MissionStartState( IStateMachine parentMachine )
+        public MissionStartState(IStateMachine parentMachine)
         {
             this.parentStateMachine = parentMachine;
 
-            Event_Message newMessage = new Event_Message( null,
+            var newMessage = new Event_Message(null,
                 $"Mission State Started",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageStatus.Start,
                 MessageType.StartAction,
-                MessageVerbosity.Info );
-            this.parentStateMachine.PublishMessage( newMessage );
+                MessageVerbosity.Info);
+            this.parentStateMachine.PublishMessage(newMessage);
 
-            Event_Message inverterMessage = new Event_Message( null,
+            var inverterMessage = new Event_Message(null,
                 $"Mission State Started",
                 MessageActor.InverterDriver,
                 MessageActor.FiniteStateMachines,
                 MessageStatus.Start,
                 MessageType.StartAction,
-                MessageVerbosity.Info );
-            this.parentStateMachine.PublishMessage( newMessage );
+                MessageVerbosity.Info);
+            this.parentStateMachine.PublishMessage(newMessage);
         }
 
         #endregion
@@ -39,60 +39,70 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         #region Methods
 
-        public override void NotifyMessage( Event_Message message )
+        public override void MakeOperation()
         {
-            switch(message.Type)
+            throw new System.NotImplementedException();
+        }
+
+        public override void NotifyMessage(Event_Message message)
+        {
+            switch (message.Type)
             {
                 case MessageType.StopAction:
                     //TODO add state business logic to stop current action
-                    ProcessStopAction( message );
+                    this.ProcessStopAction(message);
                     break;
 
                 case MessageType.EndAction:
                     //TODO add state business logic to stop current action
-                    ProcessEndAction( message );
+                    this.ProcessEndAction(message);
                     break;
 
                 case MessageType.ErrorAction:
-                    ProcessErrorAction( message );
+                    this.ProcessErrorAction(message);
                     break;
             }
         }
 
-        private void ProcessEndAction( Event_Message message )
+        public override void Stop()
         {
-            Event_Message newMessage = new Event_Message( null,
+            throw new System.NotImplementedException();
+        }
+
+        private void ProcessEndAction(Event_Message message)
+        {
+            var newMessage = new Event_Message(null,
                 $"End Mission",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageStatus.End,
                 MessageType.EndAction,
-                MessageVerbosity.Info );
-            this.parentStateMachine.ChangeState( new MissionEndState( this.parentStateMachine ), newMessage );
+                MessageVerbosity.Info);
+            this.parentStateMachine.ChangeState(new MissionEndState(this.parentStateMachine), newMessage);
         }
 
-        private void ProcessErrorAction( Event_Message message )
+        private void ProcessErrorAction(Event_Message message)
         {
-            Event_Message newMessage = new Event_Message( null,
+            var newMessage = new Event_Message(null,
                 $"Stop Requested",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageStatus.End,
                 MessageType.StopAction,
-                MessageVerbosity.Info );
-            this.parentStateMachine.ChangeState( new MissionErrorState( this.parentStateMachine ), newMessage );
+                MessageVerbosity.Info);
+            this.parentStateMachine.ChangeState(new MissionErrorState(this.parentStateMachine), newMessage);
         }
 
-        private void ProcessStopAction( Event_Message message )
+        private void ProcessStopAction(Event_Message message)
         {
-            Event_Message newMessage = new Event_Message( null,
+            var newMessage = new Event_Message(null,
                 $"Stop Requested",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageStatus.End,
                 MessageType.StopAction,
-                MessageVerbosity.Info );
-            this.parentStateMachine.ChangeState( new MissionEndState( this.parentStateMachine ), newMessage );
+                MessageVerbosity.Info);
+            this.parentStateMachine.ChangeState(new MissionEndState(this.parentStateMachine), newMessage);
         }
 
         #endregion

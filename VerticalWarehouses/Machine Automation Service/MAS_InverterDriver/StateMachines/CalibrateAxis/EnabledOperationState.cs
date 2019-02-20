@@ -5,7 +5,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 {
-    public class SwitchOnState : IState
+    public class EnabledOperationState : IState
     {
         #region Fields
 
@@ -13,21 +13,21 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         private readonly IInverterDriver inverterDriver;
 
-        private readonly StateMachineCalibrateAxis stateMachineCalibrateAxis;
+        private StateMachineCalibrateAxis stateMachineCalibrateAxis;
 
-        private readonly ParameterID paramID = ParameterID.HOMING_MODE_PARAM;
+        private ParameterID paramID = ParameterID.HOMING_MODE_PARAM;
 
         private const byte DATASET_INDEX = 0x05;
 
-        private readonly byte systemIndex = 0x00;
+        private byte systemIndex = 0x00;
 
-        private readonly object valParam;
+        private object valParam;
 
         #endregion
 
         #region Constructors
 
-        public SwitchOnState(StateMachineCalibrateAxis stateMachineCalibrateAxis, IInverterDriver inverterDriver, IEventAggregator eventAggregator)
+        public EnabledOperationState(StateMachineCalibrateAxis stateMachineCalibrateAxis, IInverterDriver inverterDriver, IEventAggregator eventAggregator)
         {
             this.inverterDriver = inverterDriver;
             this.eventAggregator = eventAggregator;
@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         #region Properties
 
-        public string Type => "Switch On State";
+        public string Type => "Enabled Operation State";
 
         #endregion
 
@@ -56,7 +56,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
                     {
                         if (result == InverterDriverExitStatus.Success)
                         {
-                            this.stateMachineCalibrateAxis.ChangeState(new EnabledOperationState(stateMachineCalibrateAxis, inverterDriver, eventAggregator));
+                            this.stateMachineCalibrateAxis.ChangeState(new StartingHomeState(stateMachineCalibrateAxis, inverterDriver, eventAggregator));
                         }
                         break;
                     }

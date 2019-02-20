@@ -4,7 +4,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 {
-    public class StateMachineVerticalHoming : IState, IStateMachine
+    public class VerticalHomingErrorState : IState
     {
         #region Fields
 
@@ -12,14 +12,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         private readonly IEventAggregator eventAggregator;
 
-        private IState state;
+        private StateMachineVerticalHoming parent;
 
         #endregion
 
         #region Constructors
 
-        public StateMachineVerticalHoming(INewInverterDriver driver, IEventAggregator eventAggregator)
+        public VerticalHomingErrorState(StateMachineVerticalHoming parent, INewInverterDriver driver, IEventAggregator eventAggregator)
         {
+            this.parent = parent;
             this.driver = driver;
             this.eventAggregator = eventAggregator;
         }
@@ -28,20 +29,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Properties
 
-        public string Type => this.state.Type;
+        public string Type => "Vertical Homing Error State";
 
         #endregion
 
         #region Methods
 
-        public void ChangeState(IState newState, Event_Message message = null)
-        {
-            this.state = newState;
-        }
-
         public void MakeOperation()
         {
-            this.state?.MakeOperation();
         }
 
         public void NotifyMessage(Event_Message message)
@@ -49,20 +44,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
             throw new System.NotImplementedException();
         }
 
-        public void PublishMessage(Event_Message message)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void Start()
-        {
-            this.state = new VerticalHomingIdleState(this, this.driver, this.eventAggregator);
-            this.state.MakeOperation();
-        }
-
         public void Stop()
         {
-            this.state?.Stop();
         }
 
         #endregion

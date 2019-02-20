@@ -105,10 +105,6 @@ namespace Ferretto.WMS.Modules.MasterData
 #else
 
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingEntityFramework);
-
-#pragma warning disable S1481 // Remove the unused local variable 'dbInitValue'
-            var dbInitValue = ServiceLocator.Current.GetInstance<IItemProvider>().GetAll().ToList();
-#pragma warning restore S1481 //  Remove the unused local variable 'dbInitValue'
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.DoneInitializingEntityFramework);
 
 #endif

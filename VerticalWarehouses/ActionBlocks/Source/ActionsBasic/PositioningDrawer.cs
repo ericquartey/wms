@@ -722,7 +722,7 @@ namespace Ferretto.VW.ActionBlocks
                         break;
                     }
 
-                // Operation Enabled
+                // Set New Position
                 case "6":
                     {
                         //x this.dataSetIndex = 0x01;

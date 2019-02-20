@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Constructors
 
-        public HorizontalSwitchDoneState( StateMachineHoming parent, INewInverterDriver iDriver, INewRemoteIODriver remoteIODriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator )
+        public HorizontalSwitchDoneState(StateMachineHoming parent, INewInverterDriver iDriver, INewRemoteIODriver remoteIODriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
         {
             this.parent = parent;
             this.driver = iDriver;
@@ -34,9 +34,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.data = iWriteLogService;
             this.eventAggregator = eventAggregator;
 
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe( this.notifyEventHandler );
-
-            this.driver.ExecuteHorizontalHoming();
+            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
         }
 
         #endregion
@@ -49,25 +47,42 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Methods
 
-        public void NotifyMessage( Event_Message message )
+        public void MakeOperation()
+        {
+            this.driver.ExecuteHorizontalHoming();
+        }
+
+        public void NotifyMessage(Event_Message message)
         {
             throw new System.NotImplementedException();
         }
 
-        private void notifyEventHandler( Notification_EventParameter notification )
+        public void Stop()
         {
-            switch(notification.OperationStatus)
+            this.driver.ExecuteHomingStop();
+
+            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Unsubscribe(this.notifyEventHandler);
+
+            var notifyEvent = new Notification_EventParameter(OperationType.Homing, OperationStatus.Stopped, "Homing stopped", Verbosity.Info);
+            this.eventAggregator.GetEvent<FiniteStateMachines_NotificationEvent>().Publish(notifyEvent);
+        }
+
+        private void notifyEventHandler(Notification_EventParameter notification)
+        {
+            switch (notification.OperationStatus)
             {
                 case OperationStatus.End:
                     {
-                        if(notification.Description == "Horizontal Calibration Ended" && !this.parent.HomingComplete)
+                        if (notification.Description == "Horizontal Calibration Ended" && !this.parent.HomingComplete)
                         {
-                            this.parent.ChangeState( new HorizontalHomingDoneState( this.parent, this.driver, this.remoteIODriver, this.data, this.eventAggregator ) );
+                            this.parent.ChangeState(new HorizontalHomingDoneState(this.parent, this.driver, this.remoteIODriver, this.data, this.eventAggregator));
+                            this.parent.MakeOperation();
                         }
                         break;
                     }
                 case OperationStatus.Error:
                     {
+                        this.parent.ChangeState(new HomingErrorState(this.parent, this.driver, this.remoteIODriver, this.data, this.eventAggregator));
                         break;
                     }
                 default:
@@ -75,6 +90,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                         break;
                     }
             }
+
+            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Unsubscribe(this.notifyEventHandler);
         }
 
         #endregion

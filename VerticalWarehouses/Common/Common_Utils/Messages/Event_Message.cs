@@ -10,6 +10,8 @@ namespace Ferretto.VW.Common_Utils.Messages
 
         MissionScheduler,
 
+        MissionsManager,
+
         MachineManager,
 
         FiniteStateMachines,
@@ -48,6 +50,8 @@ namespace Ferretto.VW.Common_Utils.Messages
 
         AddMission,
 
+        CreateMission,
+
         StartAction,
 
         StopAction,
@@ -72,21 +76,21 @@ namespace Ferretto.VW.Common_Utils.Messages
         {
         }
 
-        public Event_Message( IEventMessageData data,
+        public Event_Message(IEventMessageData data,
             string description,
             MessageActor destination,
             MessageActor source,
             MessageStatus status,
             MessageType type,
-            MessageVerbosity verbosity )
+            MessageVerbosity verbosity)
         {
-            Data = data;
-            Description = description;
-            Destination = destination;
-            Source = source;
-            Status = status;
-            Type = type;
-            Verbosity = verbosity;
+            this.Data = data;
+            this.Description = description;
+            this.Destination = destination;
+            this.Source = source;
+            this.Status = status;
+            this.Type = type;
+            this.Verbosity = verbosity;
         }
 
         #endregion

@@ -13,6 +13,7 @@
     <Style BasedOn="{StaticResource {dxdst:DefaultStyleThemeKey FullName=System.Windows.Controls.Label,
                                                                 ThemeName=Office2016White}}"
            TargetType="{x:Type wms:InfoText}">
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type wms:InfoText}">

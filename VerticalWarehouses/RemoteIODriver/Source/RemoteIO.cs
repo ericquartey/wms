@@ -35,7 +35,7 @@ namespace Ferretto.VW.RemoteIODriver
 
         private const int PULSE_TIME = 350; // ms
 
-        private const int TIME_OUT = 100; // ms
+        private const int TIME_OUT = 50; // ms
 
         private static readonly object locker = new object();
 

@@ -5,7 +5,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 {
-    public class SwitchOnState : IState
+    public class DisabledVoltageState : IState
     {
         #region Fields
 
@@ -27,20 +27,21 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         #region Constructors
 
-        public SwitchOnState(StateMachineCalibrateAxis stateMachineCalibrateAxis, IInverterDriver inverterDriver, IEventAggregator eventAggregator)
+        public DisabledVoltageState(StateMachineCalibrateAxis stateMachineCalibrateAxis, IInverterDriver inverterDriver, IEventAggregator eventAggregator)
         {
             this.inverterDriver = inverterDriver;
             this.eventAggregator = eventAggregator;
             this.stateMachineCalibrateAxis = stateMachineCalibrateAxis;
 
             this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
+            
         }
 
         #endregion
 
         #region Properties
 
-        public string Type => "Switch On State";
+        public string Type => "Disabled Voltage State";
 
         #endregion
 
@@ -56,7 +57,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
                     {
                         if (result == InverterDriverExitStatus.Success)
                         {
-                            this.stateMachineCalibrateAxis.ChangeState(new EnabledOperationState(stateMachineCalibrateAxis, inverterDriver, eventAggregator));
+                            this.stateMachineCalibrateAxis.ChangeState(new OperationModeState(stateMachineCalibrateAxis, inverterDriver, eventAggregator));
                         }
                         break;
                     }
@@ -71,6 +72,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
                         break;
                     }
             }
+
+            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Unsubscribe(this.notifyEventHandler);
         }
 
         #endregion
