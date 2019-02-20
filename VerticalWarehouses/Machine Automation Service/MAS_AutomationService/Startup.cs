@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddHostedService<MissionsScheduler>();
             services.AddHostedService<MachineManager>();
             services.AddHostedService<FiniteStateMachines>();
-#if DEBUG
+#if TEST
             services.AddHostedService<HostedInverterDriverMock>();
 #else
             services.AddHostedService<HostedInverterDriver>();
@@ -93,7 +93,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
             services.AddSingleton<IWriteLogService, DataLayer>(provider => provider.GetService<IDataLayer>() as DataLayer);
 
-#if DEBUG
+#if TEST
             services.AddSingleton<INewInverterDriver, NewInverterDriverMock>();
             services.AddSingleton<INewRemoteIODriver, NewRemoteIODriverMock>();
 #else
