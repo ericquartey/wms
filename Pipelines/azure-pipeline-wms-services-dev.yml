@@ -69,7 +69,7 @@ steps:
   inputs:
     command: test
     projects: '$(TestProjects)'
-    arguments: '--configuration $(BuildConfiguration)'
+    arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true'
 
 
 - task: DotNetCoreCLI@2
@@ -87,4 +87,5 @@ steps:
   inputs:
     PathtoPublish: 'WMS/Data/WebAPI/bin/$(BuildConfiguration)/$(TargetFramework)/win7-x64/publish'
     ArtifactName: 'data_service'
+
 
