@@ -77,14 +77,11 @@ namespace Ferretto.VW.MAS_DataLayer
             return listCells;
         }
 
-        // TEMP - hypothesis: a bay corresponds to some unusable cells
         public ReturnMissionPosition GetFreeBlockPosition(int drawerHeight)
         {
             var cellSpicing = this.GetIntegerConfigurationValue(ConfigurationValueEnum.cellSpicing);
 
-            // INFO
-            // Drawer height conversion to the necessary cells number
-            // Ceiling to round a double to the upper integer
+            // TEMP Drawer height conversion to the necessary cells number Ceiling to round a double to the upper integer
             var cellNumber = (int)Math.Ceiling((decimal)drawerHeight / cellSpicing);
 
             var cellEven = new Cell();
@@ -99,7 +96,6 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 if (cell.Side == Side.FrontEven)
                 {
-                    // INFO It is the first Free Cell, it could be the beginning of a block
                     if (cell.Status == Status.Free && cellCounterEven == 0)
                     {
                         cellEven = cell;
@@ -121,9 +117,8 @@ namespace Ferretto.VW.MAS_DataLayer
                         cellCounterEven = 0;
                     }
                 }
-                else // Odd similar to the even case
+                else
                 {
-                    // INFO It is the first Free Cell, it could be the beginning of a block
                     if (cell.Status == Status.Free && cellCounterOdd == 0)
                     {
                         cellOdd = cell;
@@ -164,7 +159,6 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
             }
 
-            // INFO - The method returns the lower block position
             return returnMissionPosition;
         }
 
