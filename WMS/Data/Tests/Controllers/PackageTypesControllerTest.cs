@@ -16,12 +16,6 @@ namespace Ferretto.WMS.Data.Tests
     {
         #region Methods
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this.CleanupDatabase();
-        }
-
         [TestMethod]
         public async Task GetAllCountFound()
         {
@@ -216,12 +210,9 @@ namespace Ferretto.WMS.Data.Tests
 
         private PackageTypesController MockController()
         {
-            var logger = new Mock<ILogger<PackageTypesController>>().Object;
-            var packageTypeProvider = this.ServiceProvider.GetService(typeof(IPackageTypeProvider)) as IPackageTypeProvider;
-
             return new PackageTypesController(
-                logger,
-                packageTypeProvider);
+                new Mock<ILogger<PackageTypesController>>().Object,
+                this.ServiceProvider.GetService(typeof(IPackageTypeProvider)) as IPackageTypeProvider);
         }
 
         #endregion

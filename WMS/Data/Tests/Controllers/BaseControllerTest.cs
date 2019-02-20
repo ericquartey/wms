@@ -85,14 +85,6 @@ namespace Ferretto.WMS.Data.Tests
             return services.BuildServiceProvider();
         }
 
-        protected void CleanupDatabase()
-        {
-            using (var context = this.CreateContext())
-            {
-                // ciao
-            }
-        }
-
         protected DatabaseContext CreateContext()
         {
             return this.ServiceProvider.GetService<DatabaseContext>();

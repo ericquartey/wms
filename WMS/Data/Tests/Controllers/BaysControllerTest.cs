@@ -16,12 +16,6 @@ namespace Ferretto.WMS.Data.Tests
     {
         #region Methods
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this.CleanupDatabase();
-        }
-
         [TestMethod]
         public async Task GetAllBays()
         {
@@ -136,11 +130,9 @@ namespace Ferretto.WMS.Data.Tests
 
         private BaysController MockController()
         {
-            var bayProvider = this.ServiceProvider.GetService(typeof(IBayProvider)) as IBayProvider;
-
             return new BaysController(
                 new Mock<ILogger<BaysController>>().Object,
-                bayProvider);
+                this.ServiceProvider.GetService(typeof(IBayProvider)) as IBayProvider);
         }
 
         #endregion
