@@ -67,56 +67,80 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Methods
 
+        public List<Cell> GetCellList()
+        {
+            var listCells = new List<Cell>();
+            foreach (var cell in this.inMemoryDataContext.Cells)
+            {
+                listCells.Add(cell);
+            }
+            return listCells;
+        }
+
         // TEMP - hypothesis: a bay corresponds to some unusable cells
-        public decimal GetFreeBlockPosition(int drawerHeight)
+        public ReturnMissionPosition GetFreeBlockPosition(int drawerHeight)
         {
             var cellSpicing = this.GetIntegerConfigurationValue(ConfigurationValueEnum.cellSpicing);
 
             // INFO
-            // Drawer height conversion to the cell number
+            // Drawer height conversion to the necessary cells number
             // Ceiling to round a double to the upper integer
             var cellNumber = (int)Math.Ceiling((decimal)drawerHeight / cellSpicing);
 
-            var blockHeight = 0; // INFO - Cell number
             var cellEven = new Cell();
             var cellOdd = new Cell();
 
             var cellCounterEven = 0;
             var cellCounterOdd = 0;
 
+            var returnMissionPosition = new ReturnMissionPosition();
+
             foreach (var cell in this.inMemoryDataContext.Cells.OrderBy(cell => cell.CellId))
             {
                 if (cell.Side == Side.FrontEven)
                 {
-                    if (cell.Status == Status.Disabled || cell.Status == Status.Free)
+                    // INFO It is the first Free Cell, it could be the beginning of a block
+                    if (cell.Status == Status.Free && cellCounterEven == 0)
                     {
-                        // INFO It is the first Free Cell, it could be the beginning of a block
-                        if (cellCounterEven == 0 && cell.Status == Status.Free)
-                        {
-                            cellEven = cell;
-                        }
-
-                        // INFO Add a new cell to the current block
+                        cellEven = cell;
                         cellCounterEven++;
                     }
-                    // INFO - if we find a Unusable or Occupied block, we have to search for a new block
-                    else
+
+                    if (cell.Status == Status.Free && cellCounterEven != 0)
+                    {
+                        cellCounterEven++;
+                    }
+
+                    if (cell.Status == Status.Disabled && cellCounterEven != 0)
+                    {
+                        cellCounterEven++;
+                    }
+
+                    if (cell.Status != Status.Occupied || cell.Status == Status.Unusable)
                     {
                         cellCounterEven = 0;
                     }
                 }
                 else // Odd similar to the even case
                 {
-                    if (cell.Status == Status.Disabled || cell.Status == Status.Free)
+                    // INFO It is the first Free Cell, it could be the beginning of a block
+                    if (cell.Status == Status.Free && cellCounterOdd == 0)
                     {
-                        if (cellCounterOdd == 0 && cell.Status == Status.Free)
-                        {
-                            cellOdd = cell;
-                        }
-
+                        cellOdd = cell;
                         cellCounterOdd++;
                     }
-                    else
+
+                    if (cell.Status == Status.Free && cellCounterOdd != 0)
+                    {
+                        cellCounterOdd++;
+                    }
+
+                    if (cell.Status == Status.Disabled && cellCounterOdd != 0)
+                    {
+                        cellCounterOdd++;
+                    }
+
+                    if (cell.Status != Status.Occupied || cell.Status == Status.Unusable)
                     {
                         cellCounterOdd = 0;
                     }
@@ -125,19 +149,23 @@ namespace Ferretto.VW.MAS_DataLayer
                 // INFO - if the block is high or higher the drawer we end to search for the block
                 if (cellCounterEven >= cellNumber)
                 {
-                    blockHeight = cellCounterEven;
+                    returnMissionPosition.ReturnCood = cellEven.Coord;
+                    returnMissionPosition.ReturnSide = cellEven.Side;
+
                     break;
                 }
 
                 if (cellCounterOdd >= cellNumber)
                 {
-                    blockHeight = cellCounterOdd;
+                    returnMissionPosition.ReturnCood = cellOdd.Coord;
+                    returnMissionPosition.ReturnSide = cellOdd.Side;
+
                     break;
                 }
             }
 
             // INFO - The method returns the lower block position
-            return blockHeight * cellSpicing;
+            return returnMissionPosition;
         }
 
         public bool LogWriting(string logMessage)
