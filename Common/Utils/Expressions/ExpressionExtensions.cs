@@ -22,19 +22,6 @@ namespace Ferretto.Common.Utils.Expressions
 
         #region Methods
 
-        public static Expression<Func<TModel, bool>> BuildLambdaExpression<TModel>(this IExpression where)
-        {
-            if (where == null)
-            {
-                return null;
-            }
-
-            var lambdaInParameter = Expression.Parameter(typeof(TModel), typeof(TModel).Name.ToLower());
-            var lambdaBody = where?.GetLambdaBody<TModel>(lambdaInParameter);
-
-            return (Expression<Func<TModel, bool>>)Expression.Lambda(lambdaBody, lambdaInParameter);
-        }
-
         public static IExpression AsIExpression(this string stringExpression)
         {
             if (stringExpression == null)
@@ -71,9 +58,27 @@ namespace Ferretto.Common.Utils.Expressions
             }
         }
 
+        public static Expression<Func<TModel, bool>> BuildLambdaExpression<TModel>(this IExpression where)
+        {
+            if (where == null)
+            {
+                return null;
+            }
+
+            var lambdaInParameter = Expression.Parameter(typeof(TModel), typeof(TModel).Name.ToLower());
+            var lambdaBody = where?.GetLambdaBody<TModel>(lambdaInParameter);
+
+            return (Expression<Func<TModel, bool>>)Expression.Lambda(lambdaBody, lambdaInParameter);
+        }
+
         public static bool ContainsOnlyTypeProperties<TDataModel>(
             this IExpression expression)
         {
+            if (expression == null)
+            {
+                return true;
+            }
+
             switch (expression)
             {
                 case UnaryExpression v:
