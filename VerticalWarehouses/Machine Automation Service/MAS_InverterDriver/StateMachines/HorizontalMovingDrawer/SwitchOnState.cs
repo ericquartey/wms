@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
 
         private readonly ParameterID paramID = ParameterID.HOMING_MODE_PARAM;
 
-        private const byte DATASET_INDEX = 0x05;  //VALUE binary = 00000005
+        private const byte DATASET_INDEX = 0x05;  //VALUE binary = 00000101
 
         private readonly byte systemIndex = 0x00; //VALUE binary = 00000000
 
