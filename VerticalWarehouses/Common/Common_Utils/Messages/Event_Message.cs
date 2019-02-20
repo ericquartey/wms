@@ -34,6 +34,16 @@ namespace Ferretto.VW.Common_Utils.Messages
 
     public enum MessageType
     {
+        CalibrateAxis,
+
+        DrawerWeightDetection,
+
+        MoveDrawerHorizontally,
+
+        PositionDrawer,
+
+        ProfilePosition,
+
         HorizontalHoming,
 
         AddMission,

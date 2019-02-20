@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Ferretto.VW.Common_Utils;
 using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
@@ -24,35 +25,35 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Constructors
 
-        public DataLayer(string connectionString, DataLayerContext inMemoryDataContext, IEventAggregator eventAggregator)
+        public DataLayer( string connectionString, DataLayerContext inMemoryDataContext, IEventAggregator eventAggregator )
         {
-            if (inMemoryDataContext == null)
+            if(inMemoryDataContext == null)
             {
-                throw new DataLayerException(DataLayerExceptionEnum.DATALAYER_CONTEXT_EXCEPTION);
+                throw new DataLayerException( DataLayerExceptionEnum.DATALAYER_CONTEXT_EXCEPTION );
             }
 
-            if (eventAggregator == null)
+            if(eventAggregator == null)
             {
-                throw new DataLayerException(DataLayerExceptionEnum.EVENTAGGREGATOR_EXCEPTION);
+                throw new DataLayerException( DataLayerExceptionEnum.EVENTAGGREGATOR_EXCEPTION );
             }
 
             this.inMemoryDataContext = inMemoryDataContext;
 
             this.eventAggregator = eventAggregator;
 
-            using (var initialContext = new DataLayerContext(
-                new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(connectionString).Options))
+            using(var initialContext = new DataLayerContext(
+                new DbContextOptionsBuilder<DataLayerContext>().UseSqlite( connectionString ).Options ))
             {
                 initialContext.Database.Migrate();
 
-                if (!initialContext.ConfigurationValues.Any())
+                if(!initialContext.ConfigurationValues.Any())
                 {
                     //TODO reovery database from permanent storage
                 }
 
-                foreach (var configurationValue in initialContext.ConfigurationValues)
+                foreach(var configurationValue in initialContext.ConfigurationValues)
                 {
-                    this.inMemoryDataContext.ConfigurationValues.Add(configurationValue);
+                    this.inMemoryDataContext.ConfigurationValues.Add( configurationValue );
                 }
 
                 this.inMemoryDataContext.SaveChanges();
@@ -61,7 +62,7 @@ namespace Ferretto.VW.MAS_DataLayer
             // The old WriteLogService
             var webApiCommandEvent = eventAggregator.GetEvent<WebAPI_CommandEvent>();
 
-            webApiCommandEvent.Subscribe(this.LogWriting);
+            webApiCommandEvent.Subscribe( this.LogWriting );
         }
 
         #endregion
@@ -78,24 +79,29 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             var listCells = new List<Cell>();
 
-            foreach (var cell in this.inMemoryDataContext.Cells)
+            foreach(var cell in this.inMemoryDataContext.Cells)
             {
-                listCells.Add(cell);
+                listCells.Add( cell );
             }
 
             return listCells;
         }
 
-        public bool LogWriting(string logMessage)
+        public IPAddress GetIPAddressConfigurationValue( ConfigurationValueEnum configurationValueEnum )
+        {
+            return IPAddress.Any;
+        }
+
+        public bool LogWriting( string logMessage )
         {
             var updateOperation = true;
 
             try
             {
-                this.inMemoryDataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
+                this.inMemoryDataContext.StatusLogs.Add( new StatusLog { LogMessage = logMessage } );
                 this.inMemoryDataContext.SaveChanges();
             }
-            catch (DbUpdateException exception)
+            catch(DbUpdateException exception)
             {
                 updateOperation = false;
             }
@@ -103,11 +109,11 @@ namespace Ferretto.VW.MAS_DataLayer
             return updateOperation;
         }
 
-        public void LogWriting(Command_EventParameter command_EventParameter)
+        public void LogWriting( Command_EventParameter command_EventParameter )
         {
             string logMessage;
 
-            switch (command_EventParameter.CommandType)
+            switch(command_EventParameter.CommandType)
             {
                 case CommandType.ExecuteHoming:
                     {
@@ -122,23 +128,23 @@ namespace Ferretto.VW.MAS_DataLayer
                     }
             }
 
-            this.inMemoryDataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
+            this.inMemoryDataContext.StatusLogs.Add( new StatusLog { LogMessage = logMessage } );
             this.inMemoryDataContext.SaveChanges();
         }
 
-        public bool SetCellList(List<Cell> listCells)
+        public bool SetCellList( List<Cell> listCells )
         {
             var setCellList = false;
 
-            if (listCells != null)
+            if(listCells != null)
             {
                 setCellList = true;
 
-                foreach (var cell in listCells)
+                foreach(var cell in listCells)
                 {
-                    var inMemoryCellCurrentValue = this.inMemoryDataContext.Cells.FirstOrDefault(s => s.CellId == cell.CellId);
+                    var inMemoryCellCurrentValue = this.inMemoryDataContext.Cells.FirstOrDefault( s => s.CellId == cell.CellId );
 
-                    if (inMemoryCellCurrentValue != null)
+                    if(inMemoryCellCurrentValue != null)
                     {
                         inMemoryCellCurrentValue.Coord = cell.Coord;
                         inMemoryCellCurrentValue.Priority = cell.Priority;
