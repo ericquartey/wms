@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using DevExpress.Mvvm;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
@@ -21,6 +23,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
 
         private IDataSource<AllowedItemInCompartment, int> allowedItemsDataSource;
+
+        private ICommand editCommand;
 
         private bool isCompartmentSelectableTray;
 
@@ -56,6 +60,9 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.allowedItemsDataSource;
             set => this.SetProperty(ref this.allowedItemsDataSource, value);
         }
+
+        public ICommand EditCommand => this.editCommand ??
+                               (this.editCommand = new DelegateCommand(this.ExecuteEditCommand));
 
         public bool IsCompartmentSelectableTray
         {
@@ -144,6 +151,12 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnDispose();
         }
 
+        private void ExecuteEditCommand()
+        {
+            var args = new LoadingUnitArgs { LoadingUnitId = this.Model.LoadingUnitId, CompartmentId = this.Model.Id };
+            this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.LOADINGUNITEDIT, args);
+        }
+
         private void Initialize()
         {
             this.loadingUnit = new LoadingUnitDetails();
@@ -185,6 +198,8 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));
                     this.SelectedCompartmentTray = this.Model;
                 }
+
+                this.LoadRelatedData();
 
                 this.IsBusy = false;
             }

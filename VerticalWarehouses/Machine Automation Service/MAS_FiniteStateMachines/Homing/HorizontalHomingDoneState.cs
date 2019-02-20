@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Constructors
 
-        public HorizontalHomingDoneState( StateMachineHoming parent, INewInverterDriver iDriver, INewRemoteIODriver remoteIODriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator )
+        public HorizontalHomingDoneState(StateMachineHoming parent, INewInverterDriver iDriver, INewRemoteIODriver remoteIODriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
         {
             this.parent = parent;
             this.driver = iDriver;
@@ -34,17 +34,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.data = iWriteLogService;
             this.eventAggregator = eventAggregator;
 
-            if(!this.parent.HorizontalHomingAlreadyDone)
+            if (!this.parent.HorizontalHomingAlreadyDone)
             {
-                this.parent.HorizontalHomingAlreadyDone = true;
-
-                this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Subscribe( this.notifyEventHandler );
-
-                this.remoteIODriver.SwitchHorizontalToVertical();
+                this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
             }
             else
             {
-                this.parent.ChangeState( new HomingDoneState( this.parent, this.driver, this.remoteIODriver, this.data, this.eventAggregator ) );
+                this.parent.ChangeState(new HomingDoneState(this.parent, this.driver, this.remoteIODriver, this.data, this.eventAggregator));
             }
         }
 
@@ -58,20 +54,38 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Methods
 
-        public void NotifyMessage( Event_Message message )
+        public void MakeOperation()
+        {
+            if (!this.parent.HorizontalHomingAlreadyDone)
+            {
+                this.parent.HorizontalHomingAlreadyDone = true;
+                this.remoteIODriver.SwitchHorizontalToVertical();
+            }
+        }
+
+        public void NotifyMessage(Event_Message message)
         {
             throw new System.NotImplementedException();
         }
 
-        private void notifyEventHandler( Notification_EventParameter notification )
+        public void Stop()
         {
-            if(notification.OperationType == OperationType.SwitchHorizontalToVertical)
+            this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Unsubscribe(this.notifyEventHandler);
+
+            var notifyEvent = new Notification_EventParameter(OperationType.Homing, OperationStatus.Stopped, "Homing stopped", Verbosity.Info);
+            this.eventAggregator.GetEvent<FiniteStateMachines_NotificationEvent>().Publish(notifyEvent);
+        }
+
+        private void notifyEventHandler(Notification_EventParameter notification)
+        {
+            if (notification.OperationType == OperationType.SwitchHorizontalToVertical)
             {
-                switch(notification.OperationStatus)
+                switch (notification.OperationStatus)
                 {
                     case OperationStatus.End:
                         {
-                            this.parent.ChangeState( new VerticalSwitchDoneState( this.parent, this.driver, this.remoteIODriver, this.data, this.eventAggregator ) );
+                            this.parent.ChangeState(new VerticalSwitchDoneState(this.parent, this.driver, this.remoteIODriver, this.data, this.eventAggregator));
+                            this.parent.MakeOperation();
 
                             break;
                         }
@@ -86,10 +100,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 }
             }
 
-            if(this.parent.HorizontalHomingAlreadyDone)
-            {
-                this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Unsubscribe( this.notifyEventHandler );
-            }
+            this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Unsubscribe(this.notifyEventHandler);
         }
 
         #endregion

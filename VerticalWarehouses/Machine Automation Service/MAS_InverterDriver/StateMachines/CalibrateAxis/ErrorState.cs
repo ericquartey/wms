@@ -3,7 +3,7 @@ using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.InverterDriver;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS_InverterDriver
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 {
    public class ErrorState : IState
     {
@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS_InverterDriver
         private void notifyEventHandler(Notification_EventParameter notification)
         {
 
-            if (notification.OperationType == OperationType.SwitchHorizontalToVertical)
+            if (notification.OperationType == OperationType.Homing)
             {
                 switch (notification.OperationStatus)
                 {

@@ -11,6 +11,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
     {
         #region Fields
 
+        private readonly IWriteLogService data;
+
         private readonly INewInverterDriver driver;
 
         private readonly IEventAggregator eventAggregator;
@@ -23,10 +25,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Constructors
 
-        public StateMachineHoming( INewInverterDriver driver, INewRemoteIODriver remoteIODriver, IEventAggregator eventAggregator )
+        public StateMachineHoming(INewInverterDriver driver, INewRemoteIODriver remoteIODriver, IEventAggregator eventAggregator)
         {
             this.driver = driver;
             this.remoteIODriver = remoteIODriver;
+            this.data = null;
             this.eventAggregator = eventAggregator;
         }
 
@@ -44,17 +47,22 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Methods
 
-        public void ChangeState( IState newState, Event_Message message = null )
+        public void ChangeState(IState newState, Event_Message message = null)
         {
             this.state = newState;
         }
 
-        public void NotifyMessage( Event_Message message )
+        public void MakeOperation()
+        {
+            this.state?.MakeOperation();
+        }
+
+        public void NotifyMessage(Event_Message message)
         {
             throw new System.NotImplementedException();
         }
 
-        public void PublishMessage( Event_Message message )
+        public void PublishMessage(Event_Message message)
         {
             throw new System.NotImplementedException();
         }
@@ -64,7 +72,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.HorizontalHomingAlreadyDone = false;
             this.HomingComplete = false;
 
-            this.state = new HomingIdleState( this, this.driver, this.remoteIODriver, this.eventAggregator );
+            this.state = new HomingIdleState(this, this.driver, this.remoteIODriver, this.data, this.eventAggregator);
+            this.state.MakeOperation();
+        }
+
+        public void Stop()
+        {
+            this.state?.Stop();
         }
 
         #endregion

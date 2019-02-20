@@ -3,22 +3,23 @@ resources:
   fetchDepth: 15
 queue:
   name: Hosted VS2017
-  demands: 
+  demands:
   - msbuild
   - visualstudio
   - vstest
 
 trigger:
-  batch: true
   branches:
     include:
     - develop
   paths:
+    include:
+    - '*'
+    - 'VerticalWarehouses\Panel PC User Interface'
     exclude:
     - Common
     - WMS
-    include:
-    - 'VerticalWarehouses\Panel PC User Interface'
+    - VerticalWarehouses
 
 variables:
   BuildPlatform: 'any cpu'
@@ -27,19 +28,11 @@ variables:
 
 
 steps:
-- task: NuGetToolInstaller@0
-  displayName: 'Use NuGet 4.x'
-  inputs:
-    versionSpec: 4.x
+
+- template: azure-pipeline-net4-nuget-template.yml
 
 
-- task: NuGetCommand@2
-  displayName: 'NuGet restore'
-  inputs:
-    restoreSolution: '$(TargetSolution)'
-    feedsToUse: config
-    nugetConfigPath: nuget.config
-    restoreDirectory: ./packages
+- template: azure-pipeline-assembly-versioning-template.yml
 
 
 - task: VSBuild@1

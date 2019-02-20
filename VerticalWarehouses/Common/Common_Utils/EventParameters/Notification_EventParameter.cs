@@ -4,13 +4,17 @@
     {
         Error,
 
-        End
+        End,
+
+        Stopped
     }
 
     public enum OperationType
     {
         Homing,
+
         SwitchVerticalToHorizontal,
+
         SwitchHorizontalToVertical
     }
 

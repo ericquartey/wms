@@ -1,7 +1,6 @@
 ﻿using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_InverterDriver;
 using Prism.Events;
 
@@ -21,14 +20,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Constructors
 
-        public VerticalHomingDoneState( StateMachineVerticalHoming parent, INewInverterDriver driver, IEventAggregator eventAggregator )
+        public VerticalHomingDoneState(StateMachineVerticalHoming parent, INewInverterDriver driver, IEventAggregator eventAggregator)
         {
             this.parent = parent;
             this.driver = driver;
             this.eventAggregator = eventAggregator;
 
-            var notifyEvent = new Notification_EventParameter( OperationType.Homing, OperationStatus.End, "Homing done", Verbosity.Info );
-            this.eventAggregator.GetEvent<FiniteStateMachines_NotificationEvent>().Publish( notifyEvent );
+            var notifyEvent = new Notification_EventParameter(OperationType.Homing, OperationStatus.End, "Homing done", Verbosity.Info);
+            this.eventAggregator.GetEvent<FiniteStateMachines_NotificationEvent>().Publish(notifyEvent);
         }
 
         #endregion
@@ -41,9 +40,19 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Methods
 
-        public void NotifyMessage( Event_Message message )
+        public void MakeOperation()
+        {
+        }
+
+        public void NotifyMessage(Event_Message message)
         {
             throw new System.NotImplementedException();
+        }
+
+        public void Stop()
+        {
+            var notifyEvent = new Notification_EventParameter(OperationType.Homing, OperationStatus.Stopped, "Homing stopped", Verbosity.Info);
+            this.eventAggregator.GetEvent<FiniteStateMachines_NotificationEvent>().Publish(notifyEvent);
         }
 
         #endregion

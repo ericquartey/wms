@@ -3,10 +3,13 @@ resources:
   fetchDepth: 15
 
 queue:
-  name: Hosted Ubuntu 1604
+  name: Hosted VS2017
+  demands:
+    - msbuild
+    - visualstudio
+    - vstest
 
 trigger:
-  batch: true
   branches:
     include:
     - develop
@@ -23,8 +26,27 @@ variables:
 
 
 steps:
+
+- task: CopyFiles@2
+  displayName: 'Copy sources to staging directory'
+  inputs:
+    Contents: |
+      **
+      !**\.git\**
+      !**\*.png
+      !**\*.jpg
+    targetFolder: '$(Build.ArtifactStagingDirectory)\sources'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Common Sources'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)\sources'
+    ArtifactName: 'common_sources'
+
+
 - task: DotNetCoreCLI@2
-  displayName: Restore
+  displayName: 'NuGet restore'
   inputs:
     command: restore
     projects: '$(RestoreBuildProjects)'
@@ -32,8 +54,7 @@ steps:
     nugetConfigPath: nuget.config
 
 
-# TODO: uncomment this template when this bug is solved: https://github.com/GitTools/GitVersion/issues/1483
-# - template: azure-pipeline-assembly-versioning-template.yml
+- template: azure-pipeline-assembly-versioning-template.yml
 
 
 - task: DotNetCoreCLI@2

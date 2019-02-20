@@ -464,4 +464,7 @@
   <data name="ItemImage" xml:space="preserve">
     <value>Immagine Articolo</value>
   </data>
+  <data name="EditLoadingUnit" xml:space="preserve">
+    <value>Modica Unità di Carico</value>
+  </data>
 </root>

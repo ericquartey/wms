@@ -50,6 +50,12 @@ namespace Ferretto.VW.MAS_AutomationService
             return "Execute Homing Done!";
         }
 
+        [HttpGet("HomingStop")]
+        public void ExecuteStopHoming()
+        {
+            this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish(new Command_EventParameter(CommandType.ExecuteStopHoming));
+        }
+
         [HttpGet("StopFSM")]
         public void StopFiniteStateMachine()
         {

@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.Controls.Interfaces;
@@ -132,7 +133,7 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        public void LoadRelatedData()
+        public virtual void LoadRelatedData()
         {
             var oldFilterDataSource = this.selectedFilterDataSource;
             this.SelectedFilterDataSource = null;

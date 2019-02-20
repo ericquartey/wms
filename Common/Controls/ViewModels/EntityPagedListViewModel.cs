@@ -117,6 +117,11 @@ namespace Ferretto.Common.Controls
             return (await this.Provider.GetUniqueValuesAsync(propertyName)).ToArray();
         }
 
+        public override void LoadRelatedData()
+        {
+            (this.dataSource as InfiniteAsyncSource)?.RefreshRows();
+        }
+
         public override async Task UpdateFilterTilesCountsAsync()
         {
             foreach (var filterTile in this.Filters)

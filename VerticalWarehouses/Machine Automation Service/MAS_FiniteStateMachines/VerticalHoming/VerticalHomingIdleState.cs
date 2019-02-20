@@ -20,15 +20,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Constructors
 
-        public VerticalHomingIdleState( StateMachineVerticalHoming parent, INewInverterDriver driver, IEventAggregator eventAggregator )
+        public VerticalHomingIdleState(StateMachineVerticalHoming parent, INewInverterDriver driver, IEventAggregator eventAggregator)
         {
             this.parent = parent;
             this.driver = driver;
             this.eventAggregator = eventAggregator;
 
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe( this.notifyEventHandler );
-
-            this.driver.ExecuteVerticalHoming();
+            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
         }
 
         #endregion
@@ -41,22 +39,38 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Methods
 
-        public void NotifyMessage( Event_Message message )
+        public void MakeOperation()
+        {
+            this.driver.ExecuteVerticalHoming();
+        }
+
+        public void NotifyMessage(Event_Message message)
         {
             throw new System.NotImplementedException();
         }
 
-        private void notifyEventHandler( Notification_EventParameter notification )
+        public void Stop()
         {
-            switch(notification.OperationStatus)
+            this.driver.ExecuteHomingStop();
+
+            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Unsubscribe(this.notifyEventHandler);
+
+            var notifyEvent = new Notification_EventParameter(OperationType.Homing, OperationStatus.Stopped, "Homing stopped", Verbosity.Info);
+            this.eventAggregator.GetEvent<FiniteStateMachines_NotificationEvent>().Publish(notifyEvent);
+        }
+
+        private void notifyEventHandler(Notification_EventParameter notification)
+        {
+            switch (notification.OperationStatus)
             {
                 case OperationStatus.End:
                     {
-                        this.parent.ChangeState( new VerticalHomingDoneState( this.parent, this.driver, this.eventAggregator ) );
+                        this.parent.ChangeState(new VerticalHomingDoneState(this.parent, this.driver, this.eventAggregator));
                         break;
                     }
                 case OperationStatus.Error:
                     {
+                        this.parent.ChangeState(new VerticalHomingErrorState(this.parent, this.driver, this.eventAggregator));
                         break;
                     }
                 default:

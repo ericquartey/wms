@@ -3,7 +3,7 @@ using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.InverterDriver;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS_InverterDriver
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 {
     public class SwitchOnState : IState
     {
@@ -56,7 +56,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                     {
                         if (result == InverterDriverExitStatus.Success)
                         {
-                            this.stateMachineCalibrateAxis.ChangeState(new EnableOperationState(stateMachineCalibrateAxis, inverterDriver, eventAggregator));
+                            this.stateMachineCalibrateAxis.ChangeState(new EnabledOperationState(stateMachineCalibrateAxis, inverterDriver, eventAggregator));
                         }
                         break;
                     }

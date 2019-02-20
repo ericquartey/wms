@@ -6,18 +6,18 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
     {
         #region Constructors
 
-        public MissionEndState( IStateMachine parentMachine )
+        public MissionEndState(IStateMachine parentMachine)
         {
             this.parentStateMachine = parentMachine;
 
-            Event_Message newMessage = new Event_Message( null,
+            var newMessage = new Event_Message(null,
                 $"Mission State Ending",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageStatus.End,
                 MessageType.EndAction,
-                MessageVerbosity.Info );
-            this.parentStateMachine.PublishMessage( newMessage );
+                MessageVerbosity.Info);
+            this.parentStateMachine.PublishMessage(newMessage);
         }
 
         #endregion
@@ -30,23 +30,33 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         #region Methods
 
-        public override void NotifyMessage( Event_Message message )
+        public override void MakeOperation()
         {
-            switch(message.Type)
+            throw new System.NotImplementedException();
+        }
+
+        public override void NotifyMessage(Event_Message message)
+        {
+            switch (message.Type)
             {
                 case MessageType.StopAction:
                     //TODO add state business logic to stop current action
 
-                    Event_Message newMessage = new Event_Message( null,
+                    var newMessage = new Event_Message(null,
                         $"Stop Requested",
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         MessageStatus.End,
                         MessageType.StopAction,
-                        MessageVerbosity.Info );
-                    this.parentStateMachine.PublishMessage( newMessage );
+                        MessageVerbosity.Info);
+                    this.parentStateMachine.PublishMessage(newMessage);
                     break;
             }
+        }
+
+        public override void Stop()
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion
