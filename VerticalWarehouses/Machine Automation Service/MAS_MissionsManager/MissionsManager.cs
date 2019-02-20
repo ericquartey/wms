@@ -66,7 +66,16 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            Task.Run(() => this.MissionsExecutionTaskFunction(stoppingToken), stoppingToken);
             await Task.Run(() => this.MissionsManagerTaskFunction(stoppingToken), stoppingToken);
+        }
+
+        private Task MissionsExecutionTaskFunction(CancellationToken stoppingToken)
+        {
+            do
+            {
+            } while (!stoppingToken.IsCancellationRequested);
+            return Task.CompletedTask;
         }
 
         private Task MissionsManagerTaskFunction(CancellationToken stoppingToken)
