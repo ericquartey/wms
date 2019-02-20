@@ -296,32 +296,30 @@
                                                       Margin="0,0,0,8"
                                                       Content="{Binding Path=LoadingUnitTypeDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                                        <ScrollViewer Grid.RowSpan="8"
-                                                      Grid.Column="3"
-                                                      Margin="0"
-                                                      Focusable="False"
-                                                      IsTabStop="False">
-                                            <Border Margin="0"
-                                                    Style="{StaticResource InfoBoxBorderStyle}">
-                                                <GroupBox Margin="3,0,5,5"
-                                                          Header="{x:Static res:MasterData.OtherInformation}">
-                                                    <StackPanel Orientation="Vertical">
-                                                        <wms:InfoText HorizontalAlignment="Left"
-                                                                      HorizontalContentAlignment="Left"
-                                                                      Content="{Binding Path=CreationDate}" />
-                                                        <wms:InfoText Grid.Row="5"
-                                                                      Grid.Column="1"
-                                                                      HorizontalAlignment="Left"
-                                                                      HorizontalContentAlignment="Left"
-                                                                      Content="{Binding Path=LastModificationDate}" />
-                                                    </StackPanel>
-                                                </GroupBox>
-                                            </Border>
-                                        </ScrollViewer>
-                                    </Grid>
-                                </DataTemplate>
-                            </dxg:GridColumn.CellToolTipTemplate>
-                        </dxg:GridColumn>
+                                    <ScrollViewer Grid.RowSpan="8"
+                                                  Grid.Column="3"
+                                                  Margin="0"
+                                                  Focusable="False"
+                                                  IsTabStop="False">
+                                        <Border Margin="0"
+                                                Style="{StaticResource InfoBoxBorderStyle}">
+                                            <GroupBox Margin="3,0,5,5"
+                                                      Header="{x:Static res:MasterData.OtherInformation}">
+                                                <StackPanel Orientation="Vertical">
+                                                    <wms:InfoText HorizontalAlignment="Left"                                                                  
+                                                                  Content="{Binding Path=CreationDate}" />
+                                                    <wms:InfoText Grid.Row="5"
+                                                                  Grid.Column="1"
+                                                                  HorizontalAlignment="Left"                                                                  
+                                                                  Content="{Binding Path=LastModificationDate}" />
+                                                </StackPanel>
+                                            </GroupBox>
+                                        </Border>
+                                    </ScrollViewer>
+                                </Grid>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellToolTipTemplate>
+                    </dxg:GridColumn>
 
                         <dxg:GridColumn Width="100*"
                                         AllowSorting="True"

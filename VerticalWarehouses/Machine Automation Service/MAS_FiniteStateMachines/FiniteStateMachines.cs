@@ -39,36 +39,38 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Constructors
 
-        public FiniteStateMachines( INewInverterDriver driver, INewRemoteIODriver remoteIODriver, IEventAggregator eventAggregator )
+        public FiniteStateMachines(INewInverterDriver driver, INewRemoteIODriver remoteIODriver, IEventAggregator eventAggregator)
         {
             this.driver = driver;
             this.remoteIODriver = remoteIODriver;
             this.eventAggregator = eventAggregator;
 
-            this.messageReceived = new ManualResetEventSlim( false );
+            this.messageReceived = new ManualResetEventSlim(false);
 
             this.messageQueue = new ConcurrentQueue<Event_Message>();
 
             var commandEvent = this.eventAggregator.GetEvent<WebAPI_CommandEvent>();
-            commandEvent.Subscribe( this.DoAction );
+            commandEvent.Subscribe(this.DoAction);
 
             var machineManagerMessagEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
-            machineManagerMessagEvent.Subscribe( ( message ) =>
-                {
-                    this.messageQueue.Enqueue( message );
-                    this.messageReceived.Set();
-                },
+            machineManagerMessagEvent.Subscribe((message) =>
+               {
+                   this.messageQueue.Enqueue(message);
+                   this.messageReceived.Set();
+               },
                 ThreadOption.PublisherThread,
                 false,
-                message => message.Source == MessageActor.MachineManager );
+                message => message.Source == MessageActor.MachineManager);
 
-            this.homing = new StateMachineHoming( this.driver, this.remoteIODriver, this.eventAggregator );
-            this.verticalHoming = new StateMachineVerticalHoming( this.driver, this.eventAggregator );
+            this.homing = new StateMachineHoming(this.driver, this.remoteIODriver, this.eventAggregator);
+            this.verticalHoming = new StateMachineVerticalHoming(this.driver, this.eventAggregator);
         }
 
         #endregion
 
         #region Properties
+
+        public StateMachineHoming StateMachineHoming => this.homing;
 
         public StateMachineVerticalHoming StateMachineVerticalHoming => this.verticalHoming;
 
@@ -82,30 +84,41 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             {
                 this.driver.Destroy();
             }
-            catch(ArgumentNullException exc)
+            catch (ArgumentNullException exc)
             {
-                Debug.WriteLine( "The inverter driver does not exist." );
-                throw new ArgumentNullException( "The inverter driver does not exist.", exc );
+                Debug.WriteLine("The inverter driver does not exist.");
+                throw new ArgumentNullException("The inverter driver does not exist.", exc);
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
-                Debug.WriteLine( "Invalid operation." );
-                throw new Exception( "Invalid operation", exc );
+                Debug.WriteLine("Invalid operation.");
+                throw new Exception("Invalid operation", exc);
             }
         }
 
-        public void DoAction( Command_EventParameter action )
+        public void DoAction(Command_EventParameter action)
         {
-            switch(action.CommandType)
+            switch (action.CommandType)
             {
                 case CommandType.ExecuteHoming:
                     {
-                        if(null == this.homing)
+                        if (null == this.homing)
                         {
                             throw new ArgumentNullException();
                         }
 
                         this.homing.Start();
+                        break;
+                    }
+
+                case CommandType.ExecuteStopHoming:
+                    {
+                        if (null == this.homing)
+                        {
+                            throw new ArgumentNullException();
+                        }
+
+                        this.homing.Stop();
                         break;
                     }
                 default:
@@ -115,7 +128,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         public void DoHoming()
         {
-            if(null == this.homing)
+            if (null == this.homing)
             {
                 throw new ArgumentNullException();
             }
@@ -125,7 +138,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         public void DoVerticalHoming()
         {
-            if(null == this.verticalHoming)
+            if (null == this.verticalHoming)
             {
                 throw new ArgumentNullException();
             }
@@ -133,74 +146,72 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.verticalHoming.Start();
         }
 
-        public new Task StopAsync( CancellationToken stoppingToken )
+        public new Task StopAsync(CancellationToken stoppingToken)
         {
-            var returnValue = base.StopAsync( stoppingToken );
+            var returnValue = base.StopAsync(stoppingToken);
 
             return returnValue;
         }
 
-        protected override async Task ExecuteAsync( CancellationToken stoppingToken )
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            await Task.Run( () => FiniteStateMachineTaskFUnction( stoppingToken ), stoppingToken );
+            await Task.Run(() => this.FiniteStateMachineTaskFUnction(stoppingToken), stoppingToken);
         }
 
-        private Task FiniteStateMachineTaskFUnction( CancellationToken stoppingToken )
+        private Task FiniteStateMachineTaskFUnction(CancellationToken stoppingToken)
         {
             do
             {
                 try
                 {
-                    this.messageReceived.Wait( Timeout.Infinite, stoppingToken );
+                    this.messageReceived.Wait(Timeout.Infinite, stoppingToken);
                 }
-                catch(OperationCanceledException ex)
+                catch (OperationCanceledException ex)
                 {
-                    return Task.FromException( ex );
+                    return Task.FromException(ex);
                 }
 
                 this.messageReceived.Reset();
 
-                Event_Message receivedMessage;
-
-                while(this.messageQueue.TryDequeue( out receivedMessage ))
+                while (this.messageQueue.TryDequeue(out var receivedMessage))
                 {
-                    switch(receivedMessage.Type)
+                    switch (receivedMessage.Type)
                     {
                         case MessageType.AddMission:
-                            PorocessAddMissionMessage( receivedMessage );
+                            this.ProcessAddMissionMessage(receivedMessage);
                             break;
 
                         case MessageType.HorizontalHoming:
                             break;
 
                         case MessageType.StopAction:
-                            ProcessStopActionMessage( receivedMessage );
+                            this.ProcessStopActionMessage(receivedMessage);
                             break;
                     }
 
-                    this.currentStateMachine.NotifyMessage( receivedMessage );
+                    this.currentStateMachine.NotifyMessage(receivedMessage);
                 }
-            } while(!stoppingToken.IsCancellationRequested);
+            } while (!stoppingToken.IsCancellationRequested);
 
             return Task.CompletedTask;
         }
 
-        private void PorocessAddMissionMessage( Event_Message message )
+        private void ProcessAddMissionMessage(Event_Message message)
         {
-            if(this.currentStateMachine != null)
+            if (this.currentStateMachine != null)
             {
                 //TODO throw concurrent action exception
             }
 
             //TODO apply Finite State Machine Business Logic to the message
-            this.currentStateMachine = new MissionStateMachine( this.eventAggregator );
+            this.currentStateMachine = new MissionStateMachine(this.eventAggregator);
 
             this.currentStateMachine.Start();
         }
 
-        private void ProcessStopActionMessage( Event_Message receivedMessage )
+        private void ProcessStopActionMessage(Event_Message receivedMessage)
         {
-            if(this.currentStateMachine == null)
+            if (this.currentStateMachine == null)
             {
                 //TODO throw missing state machine exception
             }

@@ -14,11 +14,13 @@ trigger:
     include:
     - develop
   paths:
+    include:
+    - '*'
+    - 'VerticalWarehouses\Machine Automation Service'
     exclude:
     - Common
     - WMS
-    include:
-    - 'VerticalWarehouses\Machine Automation Service'
+    - VerticalWarehouses
 
 variables:
   BuildConfiguration: 'Debug'
@@ -29,7 +31,7 @@ variables:
 
 steps:
 - task: DotNetCoreCLI@2
-  displayName: Restore
+  displayName: 'NuGet restore'
   inputs:
     command: restore
     projects: '$(RestoreBuildProjects)'
@@ -37,8 +39,7 @@ steps:
     nugetConfigPath: nuget.config
 
 
-# TODO: uncomment this template when this bug is solved: https://github.com/GitTools/GitVersion/issues/1483
-# - template: azure-pipeline-assembly-versioning-template.yml
+- template: azure-pipeline-assembly-versioning-template.yml
 
 
 - task: DotNetCoreCLI@2
