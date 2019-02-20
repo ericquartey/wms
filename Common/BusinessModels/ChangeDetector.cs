@@ -53,10 +53,7 @@ namespace Ferretto.Common.BusinessModels
         {
             if (this.instance != null && !this.instance.Equals(newInstance))
             {
-                if (this.instance != null)
-                {
-                    this.instance.PropertyChanged -= this.Instance_PropertyChanged;
-                }
+                this.instance.PropertyChanged -= this.Instance_PropertyChanged;
             }
 
             this.instance = newInstance;
