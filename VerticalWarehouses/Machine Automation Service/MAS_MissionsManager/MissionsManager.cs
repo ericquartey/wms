@@ -9,6 +9,7 @@ using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Microsoft.Extensions.Hosting;
 using Prism.Events;
+using System.Linq;
 
 namespace Ferretto.VW.MAS_MissionsManager
 {
@@ -36,14 +37,14 @@ namespace Ferretto.VW.MAS_MissionsManager
 
             this.messageReceived = new ManualResetEventSlim(false);
 
-            this.missionExecuted = new ManualResetEventSlim(false);
+            this.missionExecuted = new ManualResetEventSlim(true);
 
             this.messageQueue = new ConcurrentQueue<Event_Message>();
 
             this.missionsCollection = new Dictionary<IMissionMessageData, int>();
 
-            var automationServiceMessagEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
-            automationServiceMessagEvent.Subscribe((message) =>
+            var automationServiceMessageEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
+            automationServiceMessageEvent.Subscribe((message) =>
             {
                 this.messageQueue.Enqueue(message);
                 this.messageReceived.Set();
@@ -51,6 +52,15 @@ namespace Ferretto.VW.MAS_MissionsManager
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Source == MessageActor.AutomationService);
+
+            var finiteStateMachineMessageEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
+            finiteStateMachineMessageEvent.Subscribe((message) =>
+            {
+                this.missionExecuted.Set();
+            },
+                ThreadOption.PublisherThread,
+                false,
+                message => (message.Source == MessageActor.FiniteStateMachines && message.Status == MessageStatus.End));
         }
 
         #endregion
@@ -74,6 +84,47 @@ namespace Ferretto.VW.MAS_MissionsManager
         {
             do
             {
+                try
+                {
+                    this.missionExecuted.Wait(Timeout.Infinite, stoppingToken);
+                }
+                catch (OperationCanceledException ex)
+                {
+                    return Task.FromException(ex);
+                }
+                this.missionExecuted.Reset();
+
+                if (this.missionsCollection.Count > 0)
+                {
+                    var min = this.missionsCollection.Min(x => x.Value);
+                    var mostUrgentMissions = this.missionsCollection.Keys.Where(z => z.Priority == min).ToList();
+                    if (mostUrgentMissions.Count == 1)
+                    {
+                        var executeMissionMessage = new Event_Message(mostUrgentMissions[0],
+                                                                "Execute Mission",
+                                                                MessageActor.FiniteStateMachines,
+                                                                MessageActor.MissionsManager,
+                                                                MessageStatus.Start,
+                                                                MessageType.StartAction,
+                                                                MessageVerbosity.Debug);
+                        this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(executeMissionMessage);
+                    }
+                    else
+                    {
+                        // TODO implement multy-bay logic here
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        this.messageReceived.Wait(Timeout.Infinite, stoppingToken);
+                    }
+                    catch (OperationCanceledException ex)
+                    {
+                        return Task.FromException(ex);
+                    }
+                }
             } while (!stoppingToken.IsCancellationRequested);
             return Task.CompletedTask;
         }
@@ -93,9 +144,7 @@ namespace Ferretto.VW.MAS_MissionsManager
 
                 this.messageReceived.Reset();
 
-                Event_Message receivedMessage;
-
-                while (this.messageQueue.TryDequeue(out receivedMessage))
+                while (this.messageQueue.TryDequeue(out var receivedMessage))
                 {
                     switch (receivedMessage.Type)
                     {
