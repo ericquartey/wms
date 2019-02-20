@@ -2,8 +2,18 @@
 {
     public enum ConfigurationValueEnum : long
     {
+        bayHeight,
+
+        bayHeightFromGround,
+
+        cellSpacing,
+
         homingCreepSpeed,
+
         homingFastSpeed,
+
+        machineHeight,
+
         resolution,
     }
 }
