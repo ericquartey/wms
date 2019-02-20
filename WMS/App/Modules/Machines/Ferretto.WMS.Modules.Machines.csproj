@@ -41,6 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Common\BusinessProviders\Ferretto.Common.BusinessProviders.csproj" />
     <ProjectReference Include="..\..\..\..\Common\Controls\Ferretto.Common.Controls.csproj" />
   </ItemGroup>
 
