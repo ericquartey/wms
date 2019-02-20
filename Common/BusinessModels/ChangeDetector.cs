@@ -57,16 +57,16 @@ namespace Ferretto.Common.BusinessModels
                 {
                     this.instance.PropertyChanged -= this.Instance_PropertyChanged;
                 }
+            }
 
-                this.instance = newInstance;
-                this.modifiedProperties.Clear();
-                this.IsModified = false;
+            this.instance = newInstance;
+            this.modifiedProperties.Clear();
+            this.IsModified = false;
 
-                if (newInstance != null)
-                {
-                    newInstance.PropertyChanged += this.Instance_PropertyChanged;
-                    this.snapshot = newInstance.Clone() as T;
-                }
+            if (newInstance != null)
+            {
+                newInstance.PropertyChanged += this.Instance_PropertyChanged;
+                this.snapshot = newInstance.Clone() as T;
             }
         }
 
