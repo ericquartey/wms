@@ -6,7 +6,7 @@
 
         bayHeightFromGround,
 
-        cellSpicing,
+        cellSpacing,
 
         homingCreepSpeed,
 
