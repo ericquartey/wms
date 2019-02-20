@@ -98,6 +98,11 @@ namespace Ferretto.WMS.Data.Core.Extensions
 
         private static IQueryable<T> ApplyOrderByClause<T>(IEnumerable<SortOption> sortOptions, IQueryable<T> entities)
         {
+            if (sortOptions == null)
+            {
+                return entities;
+            }
+
             var orderedEntities = entities;
 
             var firstOrdering = true;
