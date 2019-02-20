@@ -84,42 +84,29 @@ namespace Ferretto.Common.Modules.BLL
             var serviceEndPoint = new System.Uri(ConfigurationManager.AppSettings["DataServiceEndpoint"]);
 
             this.Container.RegisterInstance(DataServiceFactory.GetService<IAbcClassesDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<IAislesDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<IAreasDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<IBaysDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<ICellPositionsDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<ICellStatusesDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<ICellTypesDataService>(serviceEndPoint));
-            this.Container.RegisterInstance(DataServiceFactory.GetService<ICompartmentsDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<ICellsDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<ICompartmentStatusesDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<ICompartmentTypesDataService>(serviceEndPoint));
-            this.Container.RegisterInstance(DataServiceFactory.GetService<IItemCategoriesDataService>(serviceEndPoint));
-            this.Container.RegisterInstance(DataServiceFactory.GetService<IItemListsDataService>(serviceEndPoint));
-            this.Container.RegisterInstance(DataServiceFactory.GetService<IAislesDataService>(serviceEndPoint));
-            this.Container.RegisterInstance(DataServiceFactory.GetService<IAreasDataService>(serviceEndPoint));
-            this.Container.RegisterInstance(DataServiceFactory.GetService<IBaysDataService>(serviceEndPoint));
-            this.Container.RegisterInstance(DataServiceFactory.GetService<ICellsDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<ICompartmentsDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<IItemCategoriesDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<IItemCompartmentTypesDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<IItemListsDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<IItemsDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitStatusesDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitTypesDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<IMachinesDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<IMaterialStatusesDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<IMeasureUnitsDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<IMissionsDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<IPackageTypesDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<ISchedulerRequestsDataService>(serviceEndPoint));
-            this.Container.RegisterInstance(DataServiceFactory.GetService<IAbcClassesDataService>(serviceEndPoint));
-            this.Container.RegisterInstance(DataServiceFactory.GetService<ICellPositionsDataService>(serviceEndPoint));
-            this.Container.RegisterInstance(DataServiceFactory.GetService<ICellStatusesDataService>(serviceEndPoint));
-            this.Container.RegisterInstance(DataServiceFactory.GetService<ICellTypesDataService>(serviceEndPoint));
-            this.Container.RegisterInstance(DataServiceFactory.GetService<ICompartmentStatusesDataService>(serviceEndPoint));
-            this.Container.RegisterInstance(DataServiceFactory.GetService<ICompartmentTypesDataService>(serviceEndPoint));
-            this.Container.RegisterInstance(DataServiceFactory.GetService<IItemCategoriesDataService>(serviceEndPoint));
-            this.Container.RegisterInstance(DataServiceFactory.GetService<IItemCompartmentTypesDataService>(serviceEndPoint));
-            this.Container.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitStatusesDataService>(serviceEndPoint));
-            this.Container.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitTypesDataService>(serviceEndPoint));
-            this.Container.RegisterInstance(DataServiceFactory.GetService<IMaterialStatusesDataService>(serviceEndPoint));
-            this.Container.RegisterInstance(DataServiceFactory.GetService<IMeasureUnitsDataService>(serviceEndPoint));
-            this.Container.RegisterInstance(DataServiceFactory.GetService<IPackageTypesDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<IUsersDataService>(serviceEndPoint));
         }
 
         #endregion
