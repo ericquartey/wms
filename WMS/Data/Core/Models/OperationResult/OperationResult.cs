@@ -1,8 +1,8 @@
-using System;
+using Ferretto.Common.BLL.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class OperationResult<T>
+    public class OperationResult<T> : IOperationResult<T>
     {
         #region Constructors
 
@@ -17,6 +17,8 @@ namespace Ferretto.WMS.Data.Core.Models
         #endregion
 
         #region Properties
+
+        public string Description { get; private set; }
 
         public T Entity { get; private set; }
 

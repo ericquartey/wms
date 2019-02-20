@@ -28,7 +28,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool itemIdHasValue;
 
-        private IDataSource<Item> itemsDataSource;
+        private IDataSource<Item, int> itemsDataSource;
 
         #endregion
 
@@ -52,7 +52,7 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.itemIdHasValue, value);
         }
 
-        public IDataSource<Item> ItemsDataSource
+        public IDataSource<Item, int> ItemsDataSource
         {
             get => this.itemsDataSource;
             set => this.SetProperty(ref this.itemsDataSource, value);
@@ -85,7 +85,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<LoadingUnit>(this.Model.LoadingUnit.Id));
+                this.EventService.Invoke(new ModelChangedPubSubEvent<LoadingUnit, int>(this.Model.LoadingUnit.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
 
                 this.CompleteOperation();
@@ -145,17 +145,17 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.IsBusy = true;
 
-            var result = this.DialogService.ShowMessage(
+            var userChoice = this.DialogService.ShowMessage(
                 DesktopApp.AreYouSureToDeleteCompartment,
                 DesktopApp.ConfirmOperation,
                 DialogType.Question,
                 DialogButtons.YesNo);
 
-            if (result == DialogResult.Yes)
+            if (userChoice == DialogResult.Yes)
             {
                 var loadingUnit = this.Model.LoadingUnit;
-                var affectedRowsCount = await this.compartmentProvider.DeleteAsync(this.Model.Id);
-                if (affectedRowsCount > 0)
+                var result = await this.compartmentProvider.DeleteAsync(this.Model.Id);
+                if (result.Success)
                 {
                     loadingUnit.Compartments.Remove(this.Model as ICompartment);
 
@@ -180,7 +180,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.IsBusy = true;
                 var items = await this.itemProvider.GetAllAsync(0, 0);
-                this.ItemsDataSource = new DataSource<Item>(() => items.AsQueryable<Item>());
+                this.ItemsDataSource = new DataSource<Item, int>(() => items.AsQueryable<Item>());
 
                 this.IsBusy = false;
             }

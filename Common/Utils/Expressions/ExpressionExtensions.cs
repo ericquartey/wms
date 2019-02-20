@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -138,8 +140,18 @@ namespace Ferretto.Common.Utils.Expressions
             return null;
         }
 
+        public static string ToQueryString(this IEnumerable<SortOption> sortOptions)
+        {
+            if (sortOptions == null)
+            {
+                return string.Empty;
+            }
+
+            return string.Join(",", sortOptions.Select(s => $"{s.PropertyName} {s.Direction}"));
+        }
+
         private static Expression GetLambdaAndExpression<TInParameter>(
-            ParameterExpression inParameter,
+                    ParameterExpression inParameter,
             BinaryExpression binaryExpression)
         {
             return Expression.And(

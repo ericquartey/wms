@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class SchedulerRequestProvider : ISchedulerRequestProvider
+    internal class SchedulerRequestProvider : ISchedulerRequestProvider
     {
         #region Fields
 
@@ -34,25 +34,27 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<SchedulerRequest>> GetAllAsync(
             int skip,
             int take,
-            string orderBy = null,
+            IEnumerable<SortOption> orderBy = null,
             IExpression whereExpression = null,
-            Expression<Func<SchedulerRequest, bool>> searchExpression = null)
+            string searchString = null)
         {
             return await this.GetAllBase()
-                       .ToArrayAsync(
-                           skip,
-                           take,
-                           orderBy,
-                           whereExpression,
-                           searchExpression);
+                .ToArrayAsync(
+                    skip,
+                    take,
+                    orderBy,
+                    whereExpression,
+                    BuildSearchExpression(searchString));
         }
 
         public async Task<int> GetAllCountAsync(
             IExpression whereExpression = null,
-            Expression<Func<SchedulerRequest, bool>> searchExpression = null)
+            string searchString = null)
         {
             return await this.GetAllBase()
-                       .CountAsync(whereExpression, searchExpression);
+                .CountAsync(
+                    whereExpression,
+                    BuildSearchExpression(searchString));
         }
 
         public async Task<SchedulerRequest> GetByIdAsync(int id)
@@ -62,12 +64,53 @@ namespace Ferretto.WMS.Data.Core.Providers
             return result;
         }
 
-        public async Task<object[]> GetUniqueValuesAsync(string propertyName)
+        public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.GetUniqueValuesAsync(
                        propertyName,
                        this.dataContext.SchedulerRequests,
                        this.GetAllBase());
+        }
+
+        private static Expression<Func<SchedulerRequest, bool>> BuildSearchExpression(string search)
+        {
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                return null;
+            }
+
+            return (i) =>
+                i.AreaDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.BayDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.ItemDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.ItemUnitMeasure.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.ListDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.ListRowDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.LoadingUnitDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.LoadingUnitTypeDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.Lot.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.MaterialStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.PackageTypeDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.RegistrationNumber.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.Sub1.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.Sub2.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.DispatchedQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.DispatchedQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private IQueryable<SchedulerRequest> GetAllBase()

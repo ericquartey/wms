@@ -20,7 +20,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool cellHasLoadingUnits;
 
-        private IDataSource<LoadingUnitDetails> loadingUnitsDataSource;
+        private IDataSource<LoadingUnitDetails, int> loadingUnitsDataSource;
 
         private object modelChangedEventSubscription;
 
@@ -67,7 +67,7 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        public IDataSource<LoadingUnitDetails> LoadingUnitsDataSource
+        public IDataSource<LoadingUnitDetails, int> LoadingUnitsDataSource
         {
             get => this.loadingUnitsDataSource;
             set => this.SetProperty(ref this.loadingUnitsDataSource, value);
@@ -91,7 +91,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             var loadingUnit = await this.loadingUnitsProvider.GetByCellIdAsync(this.Model.Id);
             this.LoadingUnitsDataSource = this.Model != null
-                ? new DataSource<LoadingUnitDetails>(() => loadingUnit.AsQueryable<LoadingUnitDetails>())
+                ? new DataSource<LoadingUnitDetails, int>(() => loadingUnit.AsQueryable<LoadingUnitDetails>())
                 : null;
         }
 
@@ -114,7 +114,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<Cell>(this.Model.Id));
+                this.EventService.Invoke(new ModelChangedPubSubEvent<Cell, int>(this.Model.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.CellSavedSuccessfully, StatusType.Success));
             }
             else
@@ -135,7 +135,7 @@ namespace Ferretto.WMS.Modules.MasterData
         protected override void OnDispose()
         {
             this.EventService.Unsubscribe<RefreshModelsPubSubEvent<Cell>>(this.modelRefreshSubscription);
-            this.EventService.Unsubscribe<ModelChangedPubSubEvent<Cell>>(this.modelChangedEventSubscription);
+            this.EventService.Unsubscribe<ModelChangedPubSubEvent<Cell, int>>(this.modelChangedEventSubscription);
             this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<Cell>>(this.modelSelectionChangedSubscription);
             base.OnDispose();
         }
@@ -143,7 +143,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private void Initialize()
         {
             this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<Cell>>(async eventArgs => { await this.LoadDataAsync(); }, this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<Cell>>(async eventArgs => { await this.LoadDataAsync(); });
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<Cell, int>>(async eventArgs => { await this.LoadDataAsync(); });
             this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<Cell>>(
                 async eventArgs =>
                 {

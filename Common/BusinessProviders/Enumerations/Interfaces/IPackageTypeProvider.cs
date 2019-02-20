@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ferretto.Common.BLL.Interfaces.Base;
+﻿using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
 {
-    public interface IPackageTypeProvider : IReadAllAsyncProvider<Enumeration>,
+    public interface IPackageTypeProvider : IReadAllAsyncProvider<Enumeration, int>,
         IReadSingleAsyncProvider<Enumeration, int>
     {
     }

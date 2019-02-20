@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.BusinessModels;
-using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
-using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.Common.BusinessProviders
 {
@@ -26,8 +22,6 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService;
 
-        private readonly WMS.Scheduler.WebAPI.Contracts.IItemsSchedulerService itemsSchedulerService;
-
         private readonly IMeasureUnitProvider measureUnitProvider;
 
         #endregion
@@ -38,12 +32,10 @@ namespace Ferretto.Common.BusinessProviders
             IImageProvider imageProvider,
             WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService,
             WMS.Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService,
-            WMS.Scheduler.WebAPI.Contracts.IItemsSchedulerService itemsSchedulerService,
             IAbcClassProvider abcClassProvider,
             IItemCategoryProvider itemCategoryProvider,
             IMeasureUnitProvider measureUnitProvider)
         {
-            this.itemsSchedulerService = itemsSchedulerService;
             this.itemsDataService = itemsDataService;
             this.compartmentsDataService = compartmentsDataService;
             this.imageProvider = imageProvider;
@@ -68,7 +60,7 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public async Task<IOperationResult> CreateAsync(ItemDetails model)
+        public async Task<IOperationResult<ItemDetails>> CreateAsync(ItemDetails model)
         {
             if (model == null)
             {
@@ -106,26 +98,29 @@ namespace Ferretto.Common.BusinessProviders
 
                 model.Id = item.Id;
 
-                return new OperationResult(true);
+                return new OperationResult<ItemDetails>(true);
             }
             catch (Exception ex)
             {
-                return new OperationResult(ex);
+                return new OperationResult<ItemDetails>(ex);
             }
         }
 
-        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
+        public Task<IOperationResult<ItemDetails>> DeleteAsync(int id) => throw new NotSupportedException();
 
         public async Task<IEnumerable<Item>> GetAllAsync(
-            int skip = 0,
-            int take = 0,
+            int skip,
+            int take,
             IEnumerable<SortOption> orderBy = null,
             IExpression whereExpression = null,
-            IExpression searchExpression = null)
+            string searchString = null)
         {
             var orderByString = orderBy != null ? string.Join(",", orderBy.Select(s => $"{s.PropertyName} {s.Direction}")) : null;
 
-            return (await this.itemsDataService.GetAllAsync(skip, take, whereExpression?.ToString(), orderByString, searchExpression?.ToString()))
+            var items = await this.itemsDataService
+                .GetAllAsync(skip, take, whereExpression?.ToString(), orderByString, searchString);
+
+            return items
                 .Select(i => new Item
                 {
                     Id = i.Id,
@@ -158,9 +153,9 @@ namespace Ferretto.Common.BusinessProviders
                 });
         }
 
-        public async Task<int> GetAllCountAsync(IExpression whereExpression = null, IExpression searchExpression = null)
+        public async Task<int> GetAllCountAsync(IExpression whereExpression = null, string searchString = null)
         {
-            return await this.itemsDataService.GetAllCountAsync(whereExpression?.ToString(), searchExpression?.ToString());
+            return await this.itemsDataService.GetAllCountAsync(whereExpression?.ToString(), searchString);
         }
 
         public async Task<IEnumerable<AllowedItemInCompartment>> GetAllowedByCompartmentIdAsync(int compartmentId)
@@ -246,7 +241,7 @@ namespace Ferretto.Common.BusinessProviders
             return await this.itemsDataService.GetUniqueValuesAsync(propertyName);
         }
 
-        public async Task<IOperationResult> UpdateAsync(ItemDetails model)
+        public async Task<IOperationResult<ItemDetails>> UpdateAsync(ItemDetails model)
         {
             if (model == null)
             {
@@ -290,15 +285,15 @@ namespace Ferretto.Common.BusinessProviders
                     this.SaveImage(model.ImagePath);
                 }
 
-                return new OperationResult(true);
+                return new OperationResult<ItemDetails>(true);
             }
             catch (Exception ex)
             {
-                return new OperationResult(ex);
+                return new OperationResult<ItemDetails>(ex);
             }
         }
 
-        public async Task<IOperationResult> WithdrawAsync(ItemWithdraw itemWithdraw)
+        public async Task<IOperationResult<SchedulerRequest>> WithdrawAsync(ItemWithdraw itemWithdraw)
         {
             if (itemWithdraw == null)
             {
@@ -307,11 +302,11 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
-                await this.itemsSchedulerService.WithdrawAsync(
-                   new WMS.Scheduler.WebAPI.Contracts.SchedulerRequest
+                await this.itemsDataService.WithdrawAsync(
+                   new WMS.Data.WebAPI.Contracts.SchedulerRequest
                    {
                        IsInstant = true,
-                       Type = WMS.Scheduler.WebAPI.Contracts.OperationType.Withdrawal,
+                       Type = WMS.Data.WebAPI.Contracts.OperationType.Withdrawal,
                        ItemId = itemWithdraw.ItemDetails.Id,
                        BayId = itemWithdraw.BayId,
                        AreaId = itemWithdraw.AreaId.Value,
@@ -322,11 +317,11 @@ namespace Ferretto.Common.BusinessProviders
                        Sub2 = itemWithdraw.Sub2,
                    });
 
-                return new OperationResult(true);
+                return new OperationResult<SchedulerRequest>(true);
             }
             catch (Exception ex)
             {
-                return new OperationResult(ex);
+                return new OperationResult<SchedulerRequest>(ex);
             }
         }
 

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ferretto.Common.BLL.Interfaces.Base;
+﻿using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
 {
-    public interface ICellPositionProvider : IReadAllAsyncProvider<Enumeration>
+    public interface ICellPositionProvider : IReadAllAsyncProvider<Enumeration, int>
     {
     }
 }

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
-using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
-using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.Common.BusinessProviders
 {
@@ -32,15 +27,21 @@ namespace Ferretto.Common.BusinessProviders
         #region Methods
 
         public async Task<IEnumerable<Machine>> GetAllAsync(
-            int skip = 0,
-            int take = 0,
+            int skip,
+            int take,
             IEnumerable<SortOption> orderBy = null,
             IExpression whereExpression = null,
-            IExpression searchExpression = null)
+            string searchString = null)
         {
-            var orderByString = orderBy != null ? string.Join(",", orderBy.Select(s => $"{s.PropertyName} {s.Direction}")) : null;
+            var machines = await this.machinesDataService
+                .GetAllAsync(
+                    skip,
+                    take,
+                    whereExpression?.ToString(),
+                    orderBy.ToQueryString(),
+                    searchString);
 
-            return (await this.machinesDataService.GetAllAsync(skip, take, whereExpression?.ToString(), orderByString, searchExpression?.ToString()))
+            return machines
                 .Select(m => new Machine
                 {
                     AisleName = m.AisleName,
@@ -79,9 +80,10 @@ namespace Ferretto.Common.BusinessProviders
                 });
         }
 
-        public async Task<int> GetAllCountAsync(IExpression whereExpression = null, IExpression searchExpression = null)
+        public async Task<int> GetAllCountAsync(IExpression whereExpression = null, string searchString = null)
         {
-            return await this.machinesDataService.GetAllCountAsync(whereExpression?.ToString(), searchExpression?.ToString());
+            return await this.machinesDataService
+                .GetAllCountAsync(whereExpression?.ToString(), searchString);
         }
 
         public async Task<Machine> GetByIdAsync(int id)

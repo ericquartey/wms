@@ -82,6 +82,8 @@ namespace Ferretto.Common.EF.Migrations
                     b.Property<string>("Description")
                         .IsRequired();
 
+                    b.Property<bool>("IsActive");
+
                     b.Property<int?>("LoadingUnitsBufferSize");
 
                     b.Property<int?>("MachineId");

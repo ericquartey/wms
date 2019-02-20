@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Core.Providers;
 using Ferretto.WMS.Data.WebAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,12 +16,6 @@ namespace Ferretto.WMS.Data.Tests
     {
         #region Methods
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this.CleanupDatabase();
-        }
-
         [TestMethod]
         public async Task GetAllCountFound()
         {
@@ -30,7 +23,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var cellStatus1 = new Common.DataModels.CellStatus { Id = 1, Description = "Cell Status #1" };
                 var cellStatus2 = new Common.DataModels.CellStatus { Id = 2, Description = "Cell Status #2" };
                 var cellStatus3 = new Common.DataModels.CellStatus { Id = 3, Description = "Cell Status #3" };
@@ -66,7 +59,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -93,7 +86,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var cellStatus1 = new Common.DataModels.CellStatus { Id = 1, Description = "Cell Status #1" };
                 var cellStatus2 = new Common.DataModels.CellStatus { Id = 2, Description = "Cell Status #2" };
                 var cellStatus3 = new Common.DataModels.CellStatus { Id = 3, Description = "Cell Status #3" };
@@ -129,7 +122,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -156,7 +149,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var cellStatus1 = new Common.DataModels.CellStatus { Id = 1, Description = "Cell Status #1" };
                 var cellStatus2 = new Common.DataModels.CellStatus { Id = 2, Description = "Cell Status #2" };
                 var cellStatus3 = new Common.DataModels.CellStatus { Id = 3, Description = "Cell Status #3" };
@@ -197,7 +190,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -215,11 +208,11 @@ namespace Ferretto.WMS.Data.Tests
             }
         }
 
-        private static CellStatusesController MockController(DatabaseContext context)
+        private CellStatusesController MockController()
         {
             return new CellStatusesController(
                 new Mock<ILogger<CellStatusesController>>().Object,
-                new CellStatusProvider(context));
+                this.ServiceProvider.GetService(typeof(ICellStatusProvider)) as ICellStatusProvider);
         }
 
         #endregion

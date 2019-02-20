@@ -2,11 +2,12 @@
 using System.Linq;
 using DevExpress.Data.Linq;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Base;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class FilterDataSource<TModel> : EntityInstantFeedbackSource, IFilterDataSource<TModel>
-        where TModel : IBusinessObject
+    public class FilterDataSource<TModel, TKey> : EntityInstantFeedbackSource, IFilterDataSource<TModel, TKey>
+        where TModel : IModel<TKey>
     {
         #region Constructors
 
@@ -60,7 +61,7 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         public string Name { get; private set; }
 
-        public IPagedBusinessProvider<TModel> Provider => null;
+        public IPagedBusinessProvider<TModel, TKey> Provider => null;
 
         #endregion
 
