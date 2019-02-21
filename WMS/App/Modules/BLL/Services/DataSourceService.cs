@@ -107,7 +107,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                     "CompartmentStatusAwaiting",
                     Resources.MasterData.CompartmentStatusAwaiting,
                     compartmentProvider,
-                    "[MaterialStatusDescription] == 'Awaiting'"),
+                    "[MaterialStatusDescription] == 'Awaiting verification'"),
                 new PagedDataSource<Compartment, int>(
                     "CompartmentStatusExpired",
                     Resources.MasterData.CompartmentStatusExpired,
