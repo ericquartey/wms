@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;TEST</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,6 +30,7 @@
     <ProjectReference Include="..\MAS_IODriver\MAS_IODriver.csproj" />
     <ProjectReference Include="..\MAS_MachineManager\MAS_MachineManager.csproj" />
     <ProjectReference Include="..\MAS_MissionScheduler\MAS_MissionScheduler.csproj" />
+    <ProjectReference Include="..\MAS_MissionsManager\MAS_MissionsManager.csproj" />
   </ItemGroup>
 
   <ItemGroup>
