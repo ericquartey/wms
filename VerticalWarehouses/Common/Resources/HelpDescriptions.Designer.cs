@@ -475,6 +475,123 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMActualPanel.
+        /// </summary>
+        public static string HelpVPPMActualPanel {
+            get {
+                return ResourceManager.GetString("HelpVPPMActualPanel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMActualPosition.
+        /// </summary>
+        public static string HelpVPPMActualPosition {
+            get {
+                return ResourceManager.GetString("HelpVPPMActualPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMApplyCorrection.
+        /// </summary>
+        public static string HelpVPPMApplyCorrection {
+            get {
+                return ResourceManager.GetString("HelpVPPMApplyCorrection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMCorrectionValue.
+        /// </summary>
+        public static string HelpVPPMCorrectionValue {
+            get {
+                return ResourceManager.GetString("HelpVPPMCorrectionValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMDescription.
+        /// </summary>
+        public static string HelpVPPMDescription {
+            get {
+                return ResourceManager.GetString("HelpVPPMDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMGoToCell.
+        /// </summary>
+        public static string HelpVPPMGoToCell {
+            get {
+                return ResourceManager.GetString("HelpVPPMGoToCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMNextPanel.
+        /// </summary>
+        public static string HelpVPPMNextPanel {
+            get {
+                return ResourceManager.GetString("HelpVPPMNextPanel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMSelectedCell.
+        /// </summary>
+        public static string HelpVPPMSelectedCell {
+            get {
+                return ResourceManager.GetString("HelpVPPMSelectedCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMSelectedCellPosition.
+        /// </summary>
+        public static string HelpVPPMSelectedCellPosition {
+            get {
+                return ResourceManager.GetString("HelpVPPMSelectedCellPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMStepMeno.
+        /// </summary>
+        public static string HelpVPPMStepMeno {
+            get {
+                return ResourceManager.GetString("HelpVPPMStepMeno", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMStepPiu.
+        /// </summary>
+        public static string HelpVPPMStepPiu {
+            get {
+                return ResourceManager.GetString("HelpVPPMStepPiu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMStepValue.
+        /// </summary>
+        public static string HelpVPPMStepValue {
+            get {
+                return ResourceManager.GetString("HelpVPPMStepValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMTotalPanels.
+        /// </summary>
+        public static string HelpVPPMTotalPanels {
+            get {
+                return ResourceManager.GetString("HelpVPPMTotalPanels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a ResolutionCalibrationAcceptNewResolution.
         /// </summary>
         public static string ResolutionCalibrationAcceptNewResolution {

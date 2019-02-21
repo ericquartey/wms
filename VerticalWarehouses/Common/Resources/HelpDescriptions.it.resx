@@ -278,12 +278,51 @@
     <value>Posiziona l'asse verticale in corrispondenza della cella selezionata.</value>
   </data>
   <data name="HelpCCVStepPiu" xml:space="preserve">
-    <value>Sposta l'asse del valore indicato dallo step. Il valore di step viene sommato alla quota attuale.</value>
+    <value>Incrementa la quota corrente dell'asse del valore indicato dallo step.</value>
   </data>
   <data name="HelpCCVStepMeno" xml:space="preserve">
-    <value>Sposta l'asse del valore indicato dallo step. Il valore di step viene sottratto alla quota attuale.</value>
+    <value>Decrementa la quota corrente dell'asse del valore indicato dallo step.</value>
   </data>
   <data name="HelpCCVApplyCorrection" xml:space="preserve">
     <value>Corregge la quota della cella selezionata del valore indicato nel campo che riporta il valore totale richiesto.</value>
+  </data>
+  <data name="HelpVPPMDescription" xml:space="preserve">
+    <value>La procedura permette di verificare il corretto posizionamento dei vari pannelli porta mensola. L'eventuale correzione viene applicata a tutte le celle appartenenti al pannello in verifica. La cella di partenza viene impostata solo all'inizio per selezionare il lato della macchina su cui operare. Tutte le celle pari sono su un lato e le dispari sull'altro.</value>
+  </data>
+  <data name="HelpVPPMTotalPanels" xml:space="preserve">
+    <value>Indica il numero totale di pannelli presenti nel lato selezionato dalla cella di riferimento.</value>
+  </data>
+  <data name="HelpVPPMActualPanel" xml:space="preserve">
+    <value>Indica il pannello attualmente selezionato su cui viene fatto il controllo.</value>
+  </data>
+  <data name="HelpVPPMSelectedCell" xml:space="preserve">
+    <value>Cella selezionata da cui deriva il pannello da controllare. I numeri dispari o pari selezionano il lato anteriore o posteriore.</value>
+  </data>
+  <data name="HelpVPPMSelectedCellPosition" xml:space="preserve">
+    <value>Quota della cella selezionata.</value>
+  </data>
+  <data name="HelpVPPMActualPosition" xml:space="preserve">
+    <value>Indica la posizione corrente dell'asse. Viene modificato dall'azione dei pulsanti di step.</value>
+  </data>
+  <data name="HelpVPPMStepValue" xml:space="preserve">
+    <value>Valore dello step da usare nella modifica della quota.</value>
+  </data>
+  <data name="HelpVPPMCorrectionValue" xml:space="preserve">
+    <value>Valore totale della correzione che sara' applicata alla quota della cella selezionata.</value>
+  </data>
+  <data name="HelpVPPMNextPanel" xml:space="preserve">
+    <value>Permette di passare al prossimo pannello da controllare.</value>
+  </data>
+  <data name="HelpVPPMGoToCell" xml:space="preserve">
+    <value>Posiziona l'asse in corrispondenza della cella selezionata.</value>
+  </data>
+  <data name="HelpVPPMStepPiu" xml:space="preserve">
+    <value>Incrementa la quota corrente dell'asse del valore indicato dallo step.</value>
+  </data>
+  <data name="HelpVPPMStepMeno" xml:space="preserve">
+    <value>Decrementa la quota corrente dell'asse del valore indicato dallo step.</value>
+  </data>
+  <data name="HelpVPPMApplyCorrection" xml:space="preserve">
+    <value>Applica la correzione al gruppo di celle presenti nel pannello correntemente selezionato.</value>
   </data>
 </root>

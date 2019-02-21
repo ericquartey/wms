@@ -491,7 +491,7 @@
     <value>Quota cella selezionata [mm]:</value>
   </data>
   <data name="CellsPanelControl" xml:space="preserve">
-    <value>Controllo pannelli celle</value>
+    <value>Controllo pannelli mensola</value>
   </data>
   <data name="CurrentCell" xml:space="preserve">
     <value>Cella selezionata:</value>

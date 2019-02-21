@@ -45,6 +45,10 @@
             <local:HelpVerticalAxisCalibration></local:HelpVerticalAxisCalibration>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewmodels:CellsPanelsControlViewModel}">
+            <local:HelpCellsPanelControl></local:HelpCellsPanelControl>
+        </DataTemplate>
+
 
     </Window.Resources>
     <Grid Width="1024"

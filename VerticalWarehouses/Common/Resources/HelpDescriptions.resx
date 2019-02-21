@@ -349,4 +349,56 @@
     <value>HelpCCVApplyCorrection</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpVPPMDescription" xml:space="preserve">
+    <value>HelpVPPMDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpVPPMTotalPanels" xml:space="preserve">
+    <value>HelpVPPMTotalPanels</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVPPMActualPanel" xml:space="preserve">
+    <value>HelpVPPMActualPanel</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVPPMSelectedCell" xml:space="preserve">
+    <value>HelpVPPMSelectedCell</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVPPMSelectedCellPosition" xml:space="preserve">
+    <value>HelpVPPMSelectedCellPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVPPMActualPosition" xml:space="preserve">
+    <value>HelpVPPMActualPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVPPMStepValue" xml:space="preserve">
+    <value>HelpVPPMStepValue</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVPPMCorrectionValue" xml:space="preserve">
+    <value>HelpVPPMCorrectionValue</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVPPMNextPanel" xml:space="preserve">
+    <value>HelpVPPMNextPanel</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVPPMGoToCell" xml:space="preserve">
+    <value>HelpVPPMGoToCell</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVPPMStepPiu" xml:space="preserve">
+    <value>HelpVPPMStepPiu</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVPPMStepMeno" xml:space="preserve">
+    <value>HelpVPPMStepMeno</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVPPMApplyCorrection" xml:space="preserve">
+    <value>HelpVPPMApplyCorrection</value>
+    <comment>Note text</comment>
+  </data>
 </root>
