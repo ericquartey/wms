@@ -21,9 +21,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{12BF
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{7C870AE6-46DD-493B-BAD9-FDEFE22ECA1F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Modules.MasterData", "App\Modules\MasterData\Ferretto.WMS.Modules.MasterData.csproj", "{9D9ECC03-073A-43F7-BED8-568CF67AB8AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App.Modules.MasterData", "App\Modules\MasterData\Ferretto.WMS.App.Modules.MasterData.csproj", "{9D9ECC03-073A-43F7-BED8-568CF67AB8AD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Modules.Layout", "App\Modules\Layout\Ferretto.WMS.Modules.Layout.csproj", "{965F447E-A8A3-42FA-9EDB-E90F677437AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App.Modules.Layout", "App\Modules\Layout\Ferretto.WMS.App.Modules.Layout.csproj", "{965F447E-A8A3-42FA-9EDB-E90F677437AE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.Controls", "..\Common\Controls\Ferretto.Common.Controls.csproj", "{0DDBD6DC-1F23-4F52-849D-94DA9E5F1B12}"
 EndProject
@@ -34,8 +34,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.BLL.Interfaces", "..\Common\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj", "{2586C34C-DA26-4143-8359-21D8A42B8462}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.Utils", "..\Common\Utils\Ferretto.Common.Utils.csproj", "{C361D00D-E5D7-4FBD-ADEC-B965C34FFDD7}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{CAA2FB89-063C-490B-89D5-5D3AAD06FE53}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WMS", "WMS", "{C6AB2AE0-C101-4638-AC86-6B6BCB7ACCB2}"
 EndProject
@@ -52,7 +50,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.Utils.Testi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.Resources", "..\Common\Resources\Ferretto.Common.Resources.csproj", "{EC02D26C-F149-496C-BC7C-75D229B4333F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Modules.Machines", "App\Modules\Machines\Ferretto.WMS.Modules.Machines.csproj", "{641C7533-696E-48D4-95DA-9A8E31BCDBED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App.Modules.Machines", "App\Modules\Machines\Ferretto.WMS.App.Modules.Machines.csproj", "{641C7533-696E-48D4-95DA-9A8E31BCDBED}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.BusinessModels", "..\Common\BusinessModels\Ferretto.Common.BusinessModels.csproj", "{9B84A46F-1D02-4535-847F-A6872637BF54}"
 EndProject
@@ -246,7 +244,6 @@ Global
 		{C32FD908-0388-4096-AF68-43BBEDB58725} = {7C870AE6-46DD-493B-BAD9-FDEFE22ECA1F}
 		{2586C34C-DA26-4143-8359-21D8A42B8462} = {7C870AE6-46DD-493B-BAD9-FDEFE22ECA1F}
 		{C361D00D-E5D7-4FBD-ADEC-B965C34FFDD7} = {7C870AE6-46DD-493B-BAD9-FDEFE22ECA1F}
-		{CAA2FB89-063C-490B-89D5-5D3AAD06FE53} = {7C870AE6-46DD-493B-BAD9-FDEFE22ECA1F}
 		{8FEEFE83-4022-476D-BD8A-C2E5321C5B91} = {7C870AE6-46DD-493B-BAD9-FDEFE22ECA1F}
 		{87A5A291-C598-4E40-A381-F23084160D1B} = {97B1C3A8-48D9-42B8-B32D-75369C5E7B9A}
 		{B9FFA685-D50F-4168-B325-BF1B35DD9C3F} = {7C870AE6-46DD-493B-BAD9-FDEFE22ECA1F}

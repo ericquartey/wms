@@ -21,9 +21,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{12BF
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{7C870AE6-46DD-493B-BAD9-FDEFE22ECA1F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Modules.MasterData", "App\Modules\MasterData\Ferretto.WMS.Modules.MasterData.csproj", "{9D9ECC03-073A-43F7-BED8-568CF67AB8AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App.Modules.MasterData", "App\Modules\MasterData\Ferretto.WMS.App.Modules.MasterData.csproj", "{9D9ECC03-073A-43F7-BED8-568CF67AB8AD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Modules.Layout", "App\Modules\Layout\Ferretto.WMS.Modules.Layout.csproj", "{965F447E-A8A3-42FA-9EDB-E90F677437AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App.Modules.Layout", "App\Modules\Layout\Ferretto.WMS.App.Modules.Layout.csproj", "{965F447E-A8A3-42FA-9EDB-E90F677437AE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.Controls", "..\Common\Controls\Ferretto.Common.Controls.csproj", "{0DDBD6DC-1F23-4F52-849D-94DA9E5F1B12}"
 EndProject
@@ -50,7 +50,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.Utils.Testi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.Resources", "..\Common\Resources\Ferretto.Common.Resources.csproj", "{EC02D26C-F149-496C-BC7C-75D229B4333F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Modules.Machines", "App\Modules\Machines\Ferretto.WMS.Modules.Machines.csproj", "{641C7533-696E-48D4-95DA-9A8E31BCDBED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App.Modules.Machines", "App\Modules\Machines\Ferretto.WMS.App.Modules.Machines.csproj", "{641C7533-696E-48D4-95DA-9A8E31BCDBED}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.BusinessModels", "..\Common\BusinessModels\Ferretto.Common.BusinessModels.csproj", "{9B84A46F-1D02-4535-847F-A6872637BF54}"
 EndProject
@@ -64,7 +64,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scheduler", "Scheduler", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Scheduler.Drivers.Vertimag", "Scheduler\Drivers.Vertimag\Ferretto.WMS.Scheduler.Drivers.Vertimag.csproj", "{F5B1D8E3-7F1E-47AD-81ED-D62B20057BEA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Modules.Scheduler", "App\Modules\Scheduler\Ferretto.WMS.Modules.Scheduler.csproj", "{68ED5280-F5E5-44D3-9696-50467560DE85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App.Modules.Scheduler", "App\Modules\Scheduler\Ferretto.WMS.App.Modules.Scheduler.csproj", "{68ED5280-F5E5-44D3-9696-50467560DE85}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{D55ED6C1-D6D0-4147-A424-7797775950B8}"
 EndProject
