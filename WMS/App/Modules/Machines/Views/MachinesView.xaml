@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dxa="http://schemas.devexpress.com/winfx/2008/xaml/accordion"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -109,72 +110,94 @@
 
         <Grid Grid.Column="1">
 
-            <wms:ActionBar HorizontalAlignment="Left"
-                           Style="{DynamicResource ActionBarOverlayedWithGrid}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="200" />
+                </Grid.ColumnDefinitions>
 
-                <wms:ActionBarItem Command="{Binding RefreshCommand}"
-                                   Content="{x:Static res:General.Refresh}"
-                                   CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
-                                   GlyphSize="Custom" />
-            </wms:ActionBar>
+                <wms:ActionBar Margin="5"
+                               HorizontalAlignment="Left"
+                               Style="{DynamicResource ActionBarNotCustomizable}">
 
-            <wms:WmsGridControl x:Name="MainGridControl"
-                                MaxWidth="2000"
-                                MaxHeight="5000"
-                                Margin="3"
-                                CurrentItem="{Binding SelectedItem, Mode=TwoWay}"
-                                FixedFilter="{Binding OverallFilter, Mode=OneWay}"
-                                ItemsSource="{Binding SelectedFilterDataSource, Mode=OneWay}"
-                                SelectionMode="Row"
-                                ShowBorder="False">
+                    <wms:ActionBarItem Command="{Binding RefreshCommand}"
+                                       Content="{x:Static res:General.Refresh}"
+                                       CustomGlyphSize="24,24"
+                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
+                                       GlyphSize="Custom" />
+                </wms:ActionBar>
 
-                <dxg:GridControl.View>
-                    <dxg:CardView AllowCardResizing="false"
-                                  AllowEditing="False"
-                                  CardHeaderTemplate="{StaticResource cardHeaderTemplate}"
-                                  CardLayout="Rows"
-                                  CardMargin="0,0,6,6"
-                                  CardTemplate="{StaticResource cardTemplate}"
-                                  FixedSize="200"
-                                  MinFixedSize="100"
-                                  NavigationStyle="Row"
-                                  PrintAutoCardWidth="False"
-                                  SearchPanelHorizontalAlignment="Right"
-                                  SeparatorThickness="0"
-                                  ShowCardExpandButton="False"
-                                  ShowColumnHeaders="False"
-                                  ShowGroupPanel="False"
-                                  ShowGroupedColumns="False"
-                                  ShowSearchPanelMode="Always"
-                                  ShowSelectionRectangle="False">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="RowDoubleClick">
-                                <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentItem.Id, Mode=OneWay}"
-                                                          StartModuleName="{wms:NameOf Type={x:Type modules:Machines}}"
-                                                          StartViewName="{x:Static modules:Machines.MACHINEDETAILS}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </dxg:CardView>
-                </dxg:GridControl.View>
+                <dxe:TextEdit Grid.Column="2"
+                              Margin="8"
+                              EditValue="{Binding SearchText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged, Delay=200}"
+                              NullText="{x:Static res:General.Search}"
+                              ShowNullText="True" />
 
-                <wms:WmsGridControl.Columns>
-                    <dxg:GridColumn FieldName="MachineTypeDescription" />
-                    <dxg:GridColumn FieldName="AreaName" />
-                    <dxg:GridColumn FieldName="Nickname" />
-                    <dxg:GridColumn FieldName="RegistrationNumber" />
-                    <dxg:GridColumn FieldName="Model" />
-                </wms:WmsGridControl.Columns>
 
-                <wms:WmsGridControl.SortInfo>
-                    <dxg:GridSortInfo FieldName="AreaName"
-                                      SortOrder="Ascending" />
-                    <dxg:GridSortInfo FieldName="Nickname"
-                                      SortOrder="Ascending" />
-                </wms:WmsGridControl.SortInfo>
+                <wms:WmsGridControl x:Name="MainGridControl"
+                                    Grid.Row="1"
+                                    Grid.ColumnSpan="3"
+                                    MaxWidth="2000"
+                                    MaxHeight="5000"
+                                    Margin="3"
+                                    CurrentItem="{Binding SelectedItem, Mode=TwoWay}"
+                                    FixedFilter="{Binding OverallFilter, Mode=OneWay}"
+                                    ItemsSource="{Binding SelectedFilterDataSource, Mode=OneWay}"
+                                    SelectionMode="Row"
+                                    ShowBorder="False">
 
-            </wms:WmsGridControl>
+                    <dxg:GridControl.View>
+                        <dxg:CardView AllowCardResizing="false"
+                                      AllowEditing="False"
+                                      CardHeaderTemplate="{StaticResource cardHeaderTemplate}"
+                                      CardLayout="Rows"
+                                      CardMargin="0,0,6,6"
+                                      CardTemplate="{StaticResource cardTemplate}"
+                                      FixedSize="200"
+                                      MinFixedSize="100"
+                                      NavigationStyle="Row"
+                                      PrintAutoCardWidth="False"
+                                      SearchPanelHorizontalAlignment="Right"
+                                      SeparatorThickness="0"
+                                      ShowCardExpandButton="False"
+                                      ShowColumnHeaders="False"
+                                      ShowFilterPanelMode="Never"
+                                      ShowGroupPanel="False"
+                                      ShowGroupedColumns="False"
+                                      ShowSearchPanelMode="Never"
+                                      ShowSelectionRectangle="False">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="RowDoubleClick">
+                                    <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentItem.Id, Mode=OneWay}"
+                                                              StartModuleName="{wms:NameOf Type={x:Type modules:Machines}}"
+                                                              StartViewName="{x:Static modules:Machines.MACHINEDETAILS}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </dxg:CardView>
+                    </dxg:GridControl.View>
+
+                    <wms:WmsGridControl.Columns>
+                        <dxg:GridColumn FieldName="MachineTypeDescription" />
+                        <dxg:GridColumn FieldName="AreaName" />
+                        <dxg:GridColumn FieldName="Nickname" />
+                        <dxg:GridColumn FieldName="RegistrationNumber" />
+                        <dxg:GridColumn FieldName="Model" />
+                    </wms:WmsGridControl.Columns>
+
+                    <wms:WmsGridControl.SortInfo>
+                        <dxg:GridSortInfo FieldName="AreaName"
+                                          SortOrder="Ascending" />
+                        <dxg:GridSortInfo FieldName="Nickname"
+                                          SortOrder="Ascending" />
+                    </wms:WmsGridControl.SortInfo>
+
+                </wms:WmsGridControl>
+            </Grid>
         </Grid>
-
     </Grid>
 </wms:WmsView>

@@ -8,6 +8,7 @@ namespace Ferretto.Common.BusinessModels
         #region Fields
 
         private string login;
+
         private string password;
 
         #endregion

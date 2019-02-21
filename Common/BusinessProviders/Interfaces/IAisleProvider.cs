@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.BusinessModels;
@@ -8,7 +6,7 @@ using Ferretto.Common.BusinessModels;
 namespace Ferretto.Common.BusinessProviders
 {
     public interface IAisleProvider :
-        IReadAllAsyncProvider<Aisle>,
+        IReadAllAsyncProvider<Aisle, int>,
         IReadSingleAsyncProvider<Aisle, int>
     {
         #region Methods

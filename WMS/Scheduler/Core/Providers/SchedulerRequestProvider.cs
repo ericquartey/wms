@@ -1,29 +1,73 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Ferretto.Common.EF;
+using Ferretto.WMS.Scheduler.Core.Interfaces;
+using Ferretto.WMS.Scheduler.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
-namespace Ferretto.WMS.Scheduler.Core
+namespace Ferretto.WMS.Scheduler.Core.Providers
 {
-    public class SchedulerRequestProvider : ISchedulerRequestProvider
+    internal class SchedulerRequestProvider : ISchedulerRequestProvider
     {
         #region Fields
 
+        private readonly ICompartmentSchedulerProvider compartmentSchedulerProvider;
+
         private readonly DatabaseContext dataContext;
+
+        private readonly ILogger<SchedulerRequestProvider> logger;
 
         #endregion
 
         #region Constructors
 
-        public SchedulerRequestProvider(DatabaseContext dataContext)
+        public SchedulerRequestProvider(
+            DatabaseContext dataContext,
+            ILogger<SchedulerRequestProvider> logger,
+            ICompartmentSchedulerProvider compartmentSchedulerProvider)
         {
             this.dataContext = dataContext;
+            this.logger = logger;
+            this.compartmentSchedulerProvider = compartmentSchedulerProvider;
         }
 
         #endregion
 
         #region Methods
+
+        public async Task<SchedulerRequest> CreateAsync(SchedulerRequest model)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            var entry = this.dataContext.SchedulerRequests.Add(
+                CreateDataModel(model));
+
+            if (await this.dataContext.SaveChangesAsync() > 0)
+            {
+                model.Id = entry.Entity.Id;
+                return model;
+            }
+
+            return null;
+        }
+
+        public async Task<IEnumerable<SchedulerRequest>> CreateRangeAsync(IEnumerable<SchedulerRequest> models)
+        {
+            var requests = models.Select(r => CreateDataModel(r));
+
+            await this.dataContext.AddRangeAsync(requests);
+
+            await this.dataContext.SaveChangesAsync();
+
+            return models;
+        }
 
         public async Task<SchedulerRequest> FullyQualifyWithdrawalRequestAsync(SchedulerRequest schedulerRequest)
         {
@@ -105,7 +149,8 @@ namespace Ferretto.WMS.Scheduler.Core
                 .Select(i => new { i.Id, i.ManagementType })
                 .SingleAsync(i => i.Id == schedulerRequest.ItemId);
 
-            var orderedCompartmentSets = this.OrderCompartmentsByManagementType(compartmentSets, (ItemManagementType)item.ManagementType);
+            var orderedCompartmentSets = this.compartmentSchedulerProvider
+                .OrderCompartmentsByManagementType(compartmentSets, (ItemManagementType)item.ManagementType);
 
             return await orderedCompartmentSets
                   .Select(
@@ -122,133 +167,127 @@ namespace Ferretto.WMS.Scheduler.Core
         }
 
         /// <summary>
-        /// Gets all compartments in the specified area/bay that have availability for the specified item.
+        /// Gets all the pending requests that:
+        /// - are not completed (dispatched qty is not equal to requested qty)
+        /// - are already allocated to a bay
+        /// - the allocated bay has buffer to accept new missions
+        /// - are associated to a list that is in execution
+        ///
+        /// Requests are sorted by:
+        /// - Instant first
+        /// - All others after, giving priority to the lists ones that are already started
+        ///
         /// </summary>
-        /// <param name="schedulerRequest"></param>
-        /// <returns>The unsorted set of compartments matching the specified request.</returns>
-        public IQueryable<Compartment> GetCandidateWithdrawalCompartments(SchedulerRequest schedulerRequest)
+        /// <returns>A Task representing the asynchronous operation.</returns>
+        public async Task<IEnumerable<SchedulerRequest>> GetRequestsToProcessAsync()
         {
-            if (schedulerRequest == null)
+            return await this.dataContext.SchedulerRequests
+               .Include(r => r.List)
+               .Include(r => r.ListRow)
+               .Include(r => r.Bay)
+               .ThenInclude(b => b.Missions)
+               .Where(r =>
+                    r.BayId.HasValue
+                    &&
+                    r.RequestedQuantity > r.DispatchedQuantity
+                    &&
+                    r.Bay.LoadingUnitsBufferSize > r.Bay.Missions.Count
+                    &&
+                    (r.ListRowId.HasValue == false || r.ListRow.Status == Common.DataModels.ItemListRowStatus.Executing)
+                    &&
+                    (r.ListId.HasValue == false || r.List.Status == Common.DataModels.ItemListStatus.Executing))
+               .OrderBy(r => r.ListId.HasValue ? r.List.Priority : int.MaxValue)
+               .ThenBy(r => r.ListRowId.HasValue ? r.ListRow.Priority : int.MaxValue)
+               .Select(r => new SchedulerRequest
+               {
+                   Id = r.Id,
+                   AreaId = r.AreaId,
+                   BayId = r.BayId,
+                   CreationDate = r.CreationDate,
+                   IsInstant = r.IsInstant,
+                   ListStatus = r.List != null ? (ListStatus)r.List.Status : ListStatus.NotSpecified,
+                   ListRowStatus = r.ListRow != null ? (ListRowStatus)r.ListRow.Status : ListRowStatus.NotSpecified,
+                   ItemId = r.ItemId,
+                   ListId = r.ListId,
+                   ListRowId = r.ListRowId,
+                   LoadingUnitId = r.LoadingUnitId,
+                   LoadingUnitTypeId = r.LoadingUnitTypeId,
+                   Lot = r.Lot,
+                   Type = (OperationType)r.OperationType,
+                   MaterialStatusId = r.MaterialStatusId,
+                   PackageTypeId = r.PackageTypeId,
+                   RegistrationNumber = r.RegistrationNumber,
+                   RequestedQuantity = r.RequestedQuantity,
+                   DispatchedQuantity = r.DispatchedQuantity,
+                   Sub1 = r.Sub1,
+                   Sub2 = r.Sub2
+               })
+               .ToArrayAsync();
+        }
+
+        public async Task<SchedulerRequest> UpdateAsync(SchedulerRequest request)
+        {
+            if (request == null)
             {
-                throw new ArgumentNullException(nameof(schedulerRequest));
+                throw new ArgumentNullException(nameof(request));
             }
 
-            if (schedulerRequest.Type != OperationType.Withdrawal)
-            {
-                throw new ArgumentException("Only withdrawal requests are supported.", nameof(schedulerRequest));
-            }
+            var existingModel = this.dataContext.SchedulerRequests.Find(request.Id);
+            this.dataContext.Entry(existingModel).CurrentValues.SetValues(request);
 
-            return this.dataContext.Compartments
-                .Include(c => c.LoadingUnit)
-                .ThenInclude(l => l.Cell)
-                .ThenInclude(c => c.Aisle)
-                .ThenInclude(a => a.Area)
-                .ThenInclude(a => a.Bays)
-                .Where(c =>
-                    c.ItemId == schedulerRequest.ItemId
-                    &&
-                    c.Lot == schedulerRequest.Lot
-                    &&
-                    c.MaterialStatusId == schedulerRequest.MaterialStatusId
-                    &&
-                    c.MaterialStatusId == schedulerRequest.PackageTypeId
-                    &&
-                    c.RegistrationNumber == schedulerRequest.RegistrationNumber
-                    &&
-                    c.Sub1 == schedulerRequest.Sub1
-                    &&
-                    c.Sub2 == schedulerRequest.Sub2
-                    &&
-                    (c.Stock - c.ReservedForPick + c.ReservedToStore) > 0
-                    &&
-                    (schedulerRequest.BayId.HasValue == false || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == schedulerRequest.BayId))
-                    &&
-                    (c.LoadingUnit.Cell.Aisle.AreaId == schedulerRequest.AreaId))
-                .Select(c => new Compartment
+            await this.dataContext.SaveChangesAsync();
+
+            return request;
+        }
+
+        public async Task<SchedulerRequest> WithdrawAsync(SchedulerRequest request)
+        {
+            SchedulerRequest qualifiedRequest = null;
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                qualifiedRequest = await this.FullyQualifyWithdrawalRequestAsync(request);
+                if (qualifiedRequest != null)
                 {
-                    AreaId = c.LoadingUnit.Cell.Aisle.AreaId,
-                    CellId = c.LoadingUnit.CellId,
-                    FifoTime = c.FifoTime,
-                    FirstStoreDate = c.FirstStoreDate,
-                    Id = c.Id,
-                    ItemId = c.ItemId.Value,
-                    LoadingUnitId = c.LoadingUnitId,
-                    Lot = c.Lot,
-                    MaterialStatusId = c.MaterialStatusId,
-                    PackageTypeId = c.PackageTypeId,
-                    RegistrationNumber = c.RegistrationNumber,
-                    ReservedForPick = c.ReservedForPick,
-                    ReservedToStore = c.ReservedToStore,
-                    Stock = c.Stock,
-                    Sub1 = c.Sub1,
-                    Sub2 = c.Sub2,
-                });
-        }
+                    await this.CreateAsync(qualifiedRequest);
 
-        public IQueryable<T> OrderCompartmentsByManagementType<T>(IQueryable<T> compartments, ItemManagementType type)
-                where T : IOrderableCompartment
-        {
-            switch (type)
-            {
-                case ItemManagementType.FIFO:
-                    return compartments
-                        .OrderBy(c => c.FirstStoreDate)
-                        .ThenBy(c => c.Availability);
-
-                case ItemManagementType.Volume:
-                    return compartments
-                        .OrderBy(c => c.Availability)
-                        .ThenBy(c => c.FirstStoreDate);
-
-                default:
-                    throw new ArgumentException(
-                        $"Unable to interpret enumeration value for {nameof(ItemManagementType)}",
-                        nameof(type));
-            }
-        }
-
-        public int Save(SchedulerRequest model)
-        {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
+                    scope.Complete();
+                    this.logger.LogDebug($"Scheduler Request (id={qualifiedRequest.Id}): Withdrawal for item={qualifiedRequest.ItemId} was accepted and stored.");
+                }
             }
 
-            lock (this.dataContext)
-            {
-                var existingModel = this.dataContext.Areas.Find(model.Id);
+            // this should not be done here
+#pragma warning disable S125 // Sections of code should not be commented out
+            /*
+                        var requestsToProcess = await this.GetRequestsToProcessAsync();
+                        await this.missionSchedulerProvider.CreateForRequestsAsync(requestsToProcess);
+                        */
 
-                this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+#pragma warning restore S125 // Sections of code should not be commented out
 
-                return this.dataContext.SaveChanges();
-            }
+            return qualifiedRequest;
         }
 
-        #endregion
-
-        #region Classes
-
-        private class CompartmentSet : IOrderableCompartment
+        private static Common.DataModels.SchedulerRequest CreateDataModel(SchedulerRequest model)
         {
-            #region Properties
-
-            public int Availability { get; set; }
-
-            public DateTime? FirstStoreDate { get; set; }
-
-            public string Lot { get; set; }
-
-            public int? MaterialStatusId { get; set; }
-
-            public int? PackageTypeId { get; set; }
-
-            public string RegistrationNumber { get; set; }
-
-            public string Sub1 { get; set; }
-
-            public string Sub2 { get; set; }
-
-            #endregion
+            return new Common.DataModels.SchedulerRequest
+            {
+                AreaId = model.AreaId,
+                BayId = model.BayId,
+                IsInstant = model.IsInstant,
+                ItemId = model.ItemId,
+                ListId = model.ListId,
+                ListRowId = model.ListRowId,
+                LoadingUnitId = model.LoadingUnitId,
+                LoadingUnitTypeId = model.LoadingUnitTypeId,
+                Lot = model.Lot,
+                MaterialStatusId = model.MaterialStatusId,
+                PackageTypeId = model.PackageTypeId,
+                RegistrationNumber = model.RegistrationNumber,
+                OperationType = (Common.DataModels.OperationType)(int)model.Type,
+                RequestedQuantity = model.RequestedQuantity,
+                Sub1 = model.Sub1,
+                Sub2 = model.Sub2
+            };
         }
 
         #endregion

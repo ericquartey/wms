@@ -2,11 +2,12 @@ using System.Threading.Tasks;
 
 namespace Ferretto.Common.BLL.Interfaces.Base
 {
-    public interface IDeleteAsyncProvider
+    public interface IDeleteAsyncProvider<TModel, in TKey>
+        where TModel : IModel<TKey>
     {
         #region Methods
 
-        Task<int> DeleteAsync(int id);
+        Task<IOperationResult<TModel>> DeleteAsync(TKey id);
 
         #endregion
     }

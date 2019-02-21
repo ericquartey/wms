@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj" />
     <ProjectReference Include="..\..\..\Common\EF\Ferretto.Common.EF.csproj" />
     <ProjectReference Include="..\Drivers.Vertimag\Ferretto.WMS.Scheduler.Drivers.Vertimag.csproj" />
   </ItemGroup>

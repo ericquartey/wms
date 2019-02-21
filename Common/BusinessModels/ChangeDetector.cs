@@ -46,27 +46,27 @@ namespace Ferretto.Common.BusinessModels
 
         public void Dispose()
         {
-            this.instance.PropertyChanged -= this.Instance_PropertyChanged;
+            if (this.instance != null)
+            {
+                this.instance.PropertyChanged -= this.Instance_PropertyChanged;
+            }
         }
 
         public void TakeSnapshot(T newInstance)
         {
             if (this.instance != null && !this.instance.Equals(newInstance))
             {
-                if (this.instance != null)
-                {
-                    this.instance.PropertyChanged -= this.Instance_PropertyChanged;
-                }
+                this.instance.PropertyChanged -= this.Instance_PropertyChanged;
+            }
 
-                this.instance = newInstance;
-                this.modifiedProperties.Clear();
-                this.IsModified = false;
+            this.instance = newInstance;
+            this.modifiedProperties.Clear();
+            this.IsModified = false;
 
-                if (newInstance != null)
-                {
-                    newInstance.PropertyChanged += this.Instance_PropertyChanged;
-                    this.snapshot = newInstance.Clone() as T;
-                }
+            if (newInstance != null)
+            {
+                newInstance.PropertyChanged += this.Instance_PropertyChanged;
+                this.snapshot = newInstance.Clone() as T;
             }
         }
 

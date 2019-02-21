@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Core.Providers;
 using Ferretto.WMS.Data.WebAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,12 +16,6 @@ namespace Ferretto.WMS.Data.Tests
     {
         #region Methods
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this.CleanupDatabase();
-        }
-
         [TestMethod]
         public async Task GetAllCountFound()
         {
@@ -30,7 +23,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var materialStatus1 = new Common.DataModels.MaterialStatus { Id = 1, Description = "Material Status #1" };
                 var materialStatus2 = new Common.DataModels.MaterialStatus { Id = 2, Description = "Material Status #2" };
                 var materialStatus3 = new Common.DataModels.MaterialStatus { Id = 3, Description = "Material Status #3" };
@@ -66,7 +59,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -93,7 +86,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var materialStatus1 = new Common.DataModels.MaterialStatus { Id = 1, Description = "Material Status #1" };
                 var materialStatus2 = new Common.DataModels.MaterialStatus { Id = 2, Description = "Material Status #2" };
                 var materialStatus3 = new Common.DataModels.MaterialStatus { Id = 3, Description = "Material Status #3" };
@@ -129,7 +122,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -156,7 +149,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var materialStatus1 = new Common.DataModels.MaterialStatus { Id = 1, Description = "Material Status #1" };
                 var materialStatus2 = new Common.DataModels.MaterialStatus { Id = 2, Description = "Material Status #2" };
                 var materialStatus3 = new Common.DataModels.MaterialStatus { Id = 3, Description = "Material Status #3" };
@@ -197,7 +190,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -215,11 +208,11 @@ namespace Ferretto.WMS.Data.Tests
             }
         }
 
-        private static MaterialStatusesController MockController(DatabaseContext context)
+        private MaterialStatusesController MockController()
         {
             return new MaterialStatusesController(
                 new Mock<ILogger<MaterialStatusesController>>().Object,
-                new MaterialStatusProvider(context));
+                this.ServiceProvider.GetService(typeof(IMaterialStatusProvider)) as IMaterialStatusProvider);
         }
 
         #endregion

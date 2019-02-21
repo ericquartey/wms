@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -12,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class ItemListProvider : IItemListProvider
+    internal class ItemListProvider : IItemListProvider
     {
         #region Fields
 
@@ -31,7 +32,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public async Task<OperationResult<ItemListDetails>> CreateAsync(ItemListDetails model)
+        public async Task<IOperationResult<ItemListDetails>> CreateAsync(ItemListDetails model)
         {
             if (model == null)
             {
@@ -69,25 +70,27 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<ItemList>> GetAllAsync(
             int skip,
             int take,
-            string orderBy = null,
+            IEnumerable<SortOption> orderBy = null,
             IExpression whereExpression = null,
-            Expression<Func<ItemList, bool>> searchExpression = null)
+            string searchString = null)
         {
             return await this.GetAllBase()
-                       .ToArrayAsync(
-                           skip,
-                           take,
-                           orderBy,
-                           whereExpression,
-                           searchExpression);
+                .ToArrayAsync(
+                    skip,
+                    take,
+                    orderBy,
+                    whereExpression,
+                    BuildSearchExpression(searchString));
         }
 
         public async Task<int> GetAllCountAsync(
             IExpression whereExpression = null,
-            Expression<Func<ItemList, bool>> searchExpression = null)
+            string searchString = null)
         {
             return await this.GetAllBase()
-                       .CountAsync(whereExpression, searchExpression);
+                .CountAsync(
+                    whereExpression,
+                    BuildSearchExpression(searchString));
         }
 
         public async Task<ItemListDetails> GetByIdAsync(int id)
@@ -96,7 +99,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                        .SingleOrDefaultAsync(i => i.Id == id);
         }
 
-        public async Task<object[]> GetUniqueValuesAsync(string propertyName)
+        public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.GetUniqueValuesAsync(
                        propertyName,
@@ -104,7 +107,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                        this.GetAllBase());
         }
 
-        public async Task<OperationResult<ItemListDetails>> UpdateAsync(ItemListDetails model)
+        public async Task<IOperationResult<ItemListDetails>> UpdateAsync(ItemListDetails model)
         {
             if (model == null)
             {
@@ -122,6 +125,23 @@ namespace Ferretto.WMS.Data.Core.Providers
             await this.dataContext.SaveChangesAsync();
 
             return new SuccessOperationResult<ItemListDetails>(model);
+        }
+
+        private static Expression<Func<ItemList, bool>> BuildSearchExpression(string search)
+        {
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                return null;
+            }
+
+            return i =>
+                i.Code.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.Description.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.ItemListItemsCount.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.ItemListRowsCount.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private IQueryable<ItemList> GetAllBase()

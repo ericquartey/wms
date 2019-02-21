@@ -84,9 +84,7 @@ namespace Ferretto.VW.MAS_MissionsManager
 
                 this.messageReceived.Reset();
 
-                Event_Message receivedMessage;
-
-                while (this.messageQueue.TryDequeue(out receivedMessage))
+                while (this.messageQueue.TryDequeue(out var receivedMessage))
                 {
                     switch (receivedMessage.Type)
                     {

@@ -1,13 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
+using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
@@ -27,16 +29,24 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IItemListRowProvider itemListRowProvider;
 
+        private readonly IItemListSchedulerProvider itemListSchedulerProvider;
+
+        private readonly ILogger logger;
+
         #endregion
 
         #region Constructors
 
         public ItemListsController(
+            ILogger<ItemListsController> logger,
+            IItemListSchedulerProvider itemListSchedulerProvider,
             IItemListProvider itemListProvider,
             IItemListRowProvider itemListRowProvider)
         {
+            this.logger = logger;
             this.itemListProvider = itemListProvider;
             this.itemListRowProvider = itemListRowProvider;
+            this.itemListSchedulerProvider = itemListSchedulerProvider;
         }
 
         #endregion
@@ -58,6 +68,43 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Created(this.Request.GetUri(), result.Entity);
         }
 
+        [HttpPost(nameof(Execute))]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(422)]
+        public async Task<ActionResult> Execute(Scheduler.Core.ListExecutionRequest request)
+        {
+            if (request == null)
+            {
+                return this.BadRequest();
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
+            try
+            {
+                var acceptedRequest = await this.itemListSchedulerProvider.PrepareForExecutionAsync(request);
+                if (acceptedRequest == null)
+                {
+                    this.logger.LogWarning($"Request of execution for list (id={request.ListId}) could not be processed.");
+
+                    return this.UnprocessableEntity(this.ModelState);
+                }
+
+                this.logger.LogInformation($"Request of execution for list (id={request.ListId}) was accepted.");
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, $"An error occurred while processing the execution request for list (id={request.ListId}).");
+                return this.BadRequest(ex.Message);
+            }
+
+            return this.Ok();
+        }
+
         [ProducesResponseType(200, Type = typeof(IEnumerable<ItemList>))]
         [ProducesResponseType(400, Type = typeof(string))]
         [HttpGet]
@@ -70,16 +117,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             try
             {
-                var searchExpression = BuildSearchExpression(search);
                 var whereExpression = where.AsIExpression();
+                var orderByExpression = orderBy.ParseSortOptions();
 
                 return this.Ok(
                     await this.itemListProvider.GetAllAsync(
                         skip: skip,
                         take: take,
-                        orderBy: orderBy,
+                        orderBy: orderByExpression,
                         whereExpression: whereExpression,
-                        searchExpression: searchExpression));
+                        searchString: search));
             }
             catch (NotSupportedException e)
             {
@@ -94,12 +141,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             try
             {
-                var searchExpression = BuildSearchExpression(search);
                 var whereExpression = where.AsIExpression();
 
                 return await this.itemListProvider.GetAllCountAsync(
                            whereExpression,
-                           searchExpression);
+                           search);
             }
             catch (NotSupportedException e)
             {
@@ -174,23 +220,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return this.Ok(result.Entity);
-        }
-
-        private static Expression<Func<ItemList, bool>> BuildSearchExpression(string search)
-        {
-            if (string.IsNullOrWhiteSpace(search))
-            {
-                return null;
-            }
-
-            return i =>
-                i.Code.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.Description.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.ItemListItemsCount.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.ItemListRowsCount.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
         #endregion

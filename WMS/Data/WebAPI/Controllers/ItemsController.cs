@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
@@ -29,6 +29,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IItemProvider itemProvider;
 
+        private readonly Scheduler.Core.Interfaces.ISchedulerRequestProvider schedulerRequestProvider;
+
         #endregion
 
         #region Constructors
@@ -36,11 +38,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public ItemsController(
             IItemProvider itemProvider,
             IAreaProvider areaProvider,
+            Scheduler.Core.Interfaces.ISchedulerRequestProvider schedulerRequestProvider,
             ICompartmentProvider compartmentProvider)
         {
             this.itemProvider = itemProvider;
             this.areaProvider = areaProvider;
             this.compartmentProvider = compartmentProvider;
+            this.schedulerRequestProvider = schedulerRequestProvider;
         }
 
         #endregion
@@ -74,16 +78,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             try
             {
-                var searchExpression = BuildSearchExpression(search);
                 var whereExpression = where.AsIExpression();
+                var orderByExpression = orderBy.ParseSortOptions();
 
                 return this.Ok(
                     await this.itemProvider.GetAllAsync(
                         skip,
                         take,
-                        orderBy,
+                        orderByExpression,
                         whereExpression,
-                        searchExpression));
+                        search));
             }
             catch (NotSupportedException e)
             {
@@ -101,12 +105,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             try
             {
-                var searchExpression = BuildSearchExpression(search);
                 var whereExpression = where.AsIExpression();
 
                 return await this.itemProvider.GetAllCountAsync(
                            whereExpression,
-                           searchExpression);
+                           search);
             }
             catch (NotSupportedException e)
             {
@@ -124,16 +127,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(areas);
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Compartment>))]
-        [ProducesResponseType(404)]
-        [HttpGet("{id}/compartments")]
-        public async Task<ActionResult<IEnumerable<Compartment>>> GetCompartmentsAsync(int id)
-        {
-            var compartments = await this.compartmentProvider.GetByItemIdAsync(id);
-
-            return this.Ok(compartments);
-        }
-
         [ProducesResponseType(200, Type = typeof(ItemDetails))]
         [ProducesResponseType(404)]
         [HttpGet("{id}")]
@@ -146,6 +139,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return this.Ok(result);
+        }
+
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Compartment>))]
+        [ProducesResponseType(404)]
+        [HttpGet("{id}/compartments")]
+        public async Task<ActionResult<IEnumerable<Compartment>>> GetCompartmentsAsync(int id)
+        {
+            var compartments = await this.compartmentProvider.GetByItemIdAsync(id);
+
+            return this.Ok(compartments);
         }
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
@@ -189,21 +192,24 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result.Entity);
         }
 
-        private static Expression<Func<Item, bool>> BuildSearchExpression(string search)
+        [ProducesResponseType(201, Type = typeof(Scheduler.Core.SchedulerRequest))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(422)]
+        [HttpPost(nameof(Withdraw))]
+        public async Task<IActionResult> Withdraw([FromBody] Scheduler.Core.SchedulerRequest request)
         {
-            if (string.IsNullOrWhiteSpace(search))
+            if (request == null)
             {
-                return null;
+                return this.BadRequest();
             }
 
-            return (i) =>
-                i.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.Description.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.ItemCategoryDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.TotalAvailable.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
+            var acceptedRequest = await this.schedulerRequestProvider.WithdrawAsync(request);
+            if (acceptedRequest == null)
+            {
+                return this.UnprocessableEntity(this.ModelState);
+            }
+
+            return this.CreatedAtAction(nameof(this.Withdraw), new { id = acceptedRequest.Id }, acceptedRequest);
         }
 
         #endregion
