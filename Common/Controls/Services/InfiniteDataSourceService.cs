@@ -85,15 +85,22 @@ namespace Ferretto.Common.Controls.Services
 
         private async Task<FetchRowsResult> FetchRowsAsync(FetchRowsAsyncEventArgs e)
         {
-            var orderBy = GetSortOrder(e);
+            try
+            {
+                var orderBy = GetSortOrder(e);
 
-            var entities = await this.provider.GetAllAsync(
-                skip: e.Skip,
-                take: GetPageSize(),
-                orderBy: orderBy
-                );
+                var entities = await this.provider.GetAllAsync(
+                    skip: e.Skip,
+                    take: GetPageSize(),
+                    orderBy: orderBy
+                    );
 
-            return new FetchRowsResult(entities.Cast<object>().ToArray(), hasMoreRows: entities.Count() == GetPageSize());
+                return new FetchRowsResult(entities.Cast<object>().ToArray(), hasMoreRows: entities.Count() == GetPageSize());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message.Split(new[] { '\n', '\r' })[0]);
+            }
         }
 
         private void GetUniqueValues(GetUniqueValuesAsyncEventArgs e)

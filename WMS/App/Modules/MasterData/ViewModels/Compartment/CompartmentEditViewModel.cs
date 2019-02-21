@@ -171,14 +171,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void LoadData()
         {
-            try
-            {
-                this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(this.itemProvider).DataSource;
-            }
-            catch
-            {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
-            }
+            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(this.itemProvider).DataSource;
         }
 
         #endregion
