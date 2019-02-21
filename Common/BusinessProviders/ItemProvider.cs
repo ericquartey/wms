@@ -130,6 +130,7 @@ namespace Ferretto.Common.BusinessProviders
                     FifoTimePick = i.FifoTimePick,
                     FifoTimeStore = i.FifoTimeStore,
                     Height = i.Height,
+                    Image = i.Image,
                     InventoryDate = i.InventoryDate,
                     InventoryTolerance = i.InventoryTolerance,
                     ManagementTypeDescription = i.ManagementType.ToString(), // TODO change

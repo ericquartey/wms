@@ -95,7 +95,8 @@
                                         ValueMember="Id">
                             <wms:LookUpEdit.PopupContentTemplate>
                                 <ControlTemplate>
-                                    <wms:WmsGridControl x:Name="PART_GridControl">
+                                    <wms:WmsGridControl x:Name="PART_GridControl"
+                                                        ItemsSource="{Binding LoadingUnitsDataSource, Mode=OneWay}">
                                         <wms:WmsGridControl.Columns>
                                             <dxg:GridColumn Width="100*"
                                                             FieldName="Code" />
@@ -177,7 +178,8 @@
                                         ValueMember="Id">
                             <wms:LookUpEdit.PopupContentTemplate>
                                 <ControlTemplate>
-                                    <wms:WmsGridControl x:Name="PART_GridControl">
+                                    <wms:WmsGridControl x:Name="PART_GridControl"
+                                                        ItemsSource="{Binding AllowedItemsDataSource, Mode=OneWay}">
                                         <wms:WmsGridControl.Columns>
                                             <dxg:GridColumn Width="10*"
                                                             FieldName="Code" />
