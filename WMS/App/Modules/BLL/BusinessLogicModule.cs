@@ -97,7 +97,9 @@ namespace Ferretto.Common.Modules.BLL
             this.Container.RegisterInstance(DataServiceFactory.GetService<IItemCategoriesDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<IItemCompartmentTypesDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<IItemListsDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<IItemListRowsDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<IItemsDataService>(serviceEndPoint));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitsDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitStatusesDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitTypesDataService>(serviceEndPoint));
             this.Container.RegisterInstance(DataServiceFactory.GetService<IMachinesDataService>(serviceEndPoint));
