@@ -38,9 +38,6 @@ namespace Ferretto.VW.MAS_AutomationService
 
             this.messageQueue = new ConcurrentQueue<Event_Message>();
 
-            var inverterNotificationEvent = this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>();
-            inverterNotificationEvent.Subscribe(this.SendMessageToAllConnectedClients, ThreadOption.BackgroundThread, false, message => message.OperationStatus == OperationStatus.End);
-
             var webApiMessagEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
             webApiMessagEvent.Subscribe((message) =>
                {
@@ -49,7 +46,7 @@ namespace Ferretto.VW.MAS_AutomationService
                },
                 ThreadOption.PublisherThread,
                 false,
-                message => message.Source == MessageActor.WebAPI);
+                message => message.Destination == MessageActor.AutomationService);
         }
 
         #endregion
