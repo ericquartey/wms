@@ -41,7 +41,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Views\LoginView.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NLog" Version="4.5.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Common\BusinessProviders\Ferretto.Common.BusinessProviders.csproj" />
     <ProjectReference Include="..\..\..\..\Common\Controls\Ferretto.Common.Controls.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

@@ -46,7 +46,10 @@ namespace Ferretto.Common.BusinessModels
 
         public void Dispose()
         {
-            this.instance.PropertyChanged -= this.Instance_PropertyChanged;
+            if (this.instance != null)
+            {
+                this.instance.PropertyChanged -= this.Instance_PropertyChanged;
+            }
         }
 
         public void TakeSnapshot(T newInstance)
