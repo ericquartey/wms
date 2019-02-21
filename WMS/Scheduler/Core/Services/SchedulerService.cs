@@ -79,10 +79,12 @@ namespace Ferretto.WMS.Scheduler.Core.Services
 
                         this.logger.LogDebug($"Reseeding database ...");
 
-                        var minimalScript = await System.IO.File.ReadAllTextAsync(@"bin\Debug\net471\Seeds\Dev.Minimal.sql");
+                        var cleanAll = await System.IO.File.ReadAllTextAsync(@"bin\Debug\net471\Seeds\Dev.CleanAll.sql");
+                        var initDbScript = await System.IO.File.ReadAllTextAsync(@"bin\Debug\net471\Seeds\Dev.InitDb.sql");
                         var itemsScript = await System.IO.File.ReadAllTextAsync(@"bin\Debug\net471\Seeds\Dev.Items.sql");
 
-                        await database.ExecuteSqlCommandAsync(minimalScript);
+                        await database.ExecuteSqlCommandAsync(cleanAll);
+                        await database.ExecuteSqlCommandAsync(initDbScript);
                         await database.ExecuteSqlCommandAsync(itemsScript);
 #else
                         this.logger.LogCritical("Database is not up to date. Please apply the migrations and restart the service.");
