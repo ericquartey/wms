@@ -80,15 +80,9 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddHostedService<MachineManager>();
             services.AddHostedService<FiniteStateMachines>();
 
-            var useMockedInverterDriver = this.Configuration.GetValue<bool>("InverterDriver:UseMock");
-            if (useMockedInverterDriver)
-            {
-                services.AddHostedService<HostedInverterDriverMock>();
-            }
-            else
-            {
-                services.AddHostedService<HostedInverterDriver>();
-            }
+            this.RegisterInverterDriver(services);
+
+            this.RegisterRemoteIODriver(services);
 
             services.AddSingleton<IEventAggregator, EventAggregator>();
             services.AddSingleton<IDataLayer, DataLayer>(provider => new DataLayer(
@@ -98,13 +92,6 @@ namespace Ferretto.VW.MAS_AutomationService
 
             services.AddSingleton<IWriteLogService, DataLayer>(provider => provider.GetService<IDataLayer>() as DataLayer);
 
-#if TEST
-            services.AddSingleton<INewInverterDriver, NewInverterDriverMock>();
-            services.AddSingleton<INewRemoteIODriver, NewRemoteIODriverMock>();
-#else
-            services.AddSingleton<INewInverterDriver, NewInverterDriver>();
-            services.AddSingleton<INewRemoteIODriver, NewRemoteIODriver>();
-#endif
             services.AddSingleton<ISocketTransport, SocketTransport>();
 
             //TODO Old InverterDriver Registration to be removed after code refactoring completed
@@ -112,6 +99,34 @@ namespace Ferretto.VW.MAS_AutomationService
 
             //TODO Old RemoteIODriver Registration to be removed after code refactoring completed
             services.AddSingleton<RemoteIODriver.IRemoteIO, RemoteIODriver.RemoteIO>();
+        }
+
+        private void RegisterInverterDriver(IServiceCollection services)
+        {
+            var useMockedInverterDriver = this.Configuration.GetValue<bool>("Vertimag:InverterDriver:UseMock");
+            if (useMockedInverterDriver)
+            {
+                services.AddHostedService<HostedInverterDriverMock>();
+                services.AddSingleton<INewInverterDriver, NewInverterDriverMock>();
+            }
+            else
+            {
+                services.AddSingleton<INewInverterDriver, NewInverterDriver>();
+                services.AddHostedService<HostedInverterDriver>();
+            }
+        }
+
+        private void RegisterRemoteIODriver(IServiceCollection services)
+        {
+            var useRemoteIODriver = this.Configuration.GetValue<bool>("Vertimag:RemoteIODriver:UseMock");
+            if (useRemoteIODriver)
+            {
+                services.AddSingleton<INewRemoteIODriver, NewRemoteIODriverMock>();
+            }
+            else
+            {
+                services.AddSingleton<INewRemoteIODriver, NewRemoteIODriver>();
+            }
         }
 
         #endregion
