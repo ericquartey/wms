@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Core.Providers;
 using Ferretto.WMS.Data.WebAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,12 +16,6 @@ namespace Ferretto.WMS.Data.Tests
     {
         #region Methods
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this.CleanupDatabase();
-        }
-
         [TestMethod]
         public async Task GetAllBays()
         {
@@ -30,7 +23,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -57,7 +50,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -84,7 +77,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -111,7 +104,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -135,11 +128,11 @@ namespace Ferretto.WMS.Data.Tests
             this.InitializeDatabase();
         }
 
-        private static BaysController MockController(DatabaseContext context)
+        private BaysController MockController()
         {
             return new BaysController(
                 new Mock<ILogger<BaysController>>().Object,
-                new BayProvider(context));
+                this.ServiceProvider.GetService(typeof(IBayProvider)) as IBayProvider);
         }
 
         #endregion

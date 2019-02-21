@@ -1,12 +1,9 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Core.Providers;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
@@ -18,14 +15,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     {
         #region Fields
 
-        private readonly ItemCompartmentTypeProvider itemCompartmentTypeProvider;
+        private readonly IItemCompartmentTypeProvider itemCompartmentTypeProvider;
 
         #endregion
 
         #region Constructors
 
         public ItemCompartmentTypesController(
-            ItemCompartmentTypeProvider itemCompartmentTypeProvider)
+            IItemCompartmentTypeProvider itemCompartmentTypeProvider)
         {
             this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
         }

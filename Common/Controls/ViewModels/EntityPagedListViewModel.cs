@@ -15,8 +15,8 @@ using NLog;
 
 namespace Ferretto.Common.Controls
 {
-    public class EntityPagedListViewModel<TModel> : EntityListViewModel<TModel>
-       where TModel : IBusinessObject
+    public class EntityPagedListViewModel<TModel, TKey> : EntityListViewModel<TModel, TKey>
+       where TModel : IModel<TKey>
     {
         #region Fields
 
@@ -32,7 +32,7 @@ namespace Ferretto.Common.Controls
 
         private CriteriaOperator overallFilter;
 
-        private IPagedBusinessProvider<TModel> provider;
+        private IPagedBusinessProvider<TModel, TKey> provider;
 
         private string searchText;
 
@@ -65,7 +65,7 @@ namespace Ferretto.Common.Controls
             set => this.SetProperty(ref this.overallFilter, value);
         }
 
-        public IPagedBusinessProvider<TModel> Provider
+        public IPagedBusinessProvider<TModel, TKey> Provider
         {
             get => this.provider;
             set
@@ -196,17 +196,16 @@ namespace Ferretto.Common.Controls
 
         private async Task<FetchRowsResult> FetchRowsAsync(FetchRowsAsyncEventArgs e)
         {
-            var orderBy = GetSortOrder(e);
+            var orderByExpression = GetSortOrder(e);
 
-            var where = this.overallFilter?.AsIExpression();
-            var search = this.searchText?.AsIExpression();
+            var whereExpression = this.overallFilter?.AsIExpression();
 
             var entities = await this.provider.GetAllAsync(
-                skip: e.Skip,
-                take: GetPageSize(),
-                orderBy: orderBy,
-                whereExpression: where,
-                searchExpression: search);
+                e.Skip,
+                GetPageSize(),
+                orderByExpression,
+                whereExpression,
+                this.searchText);
 
             return new FetchRowsResult(entities.Cast<object>().ToArray(), hasMoreRows: entities.Count() == GetPageSize());
         }

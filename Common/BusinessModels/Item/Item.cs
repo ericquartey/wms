@@ -9,19 +9,33 @@ namespace Ferretto.Common.BusinessModels
         #region Fields
 
         private int? averageWeight;
+
         private int? fifoTimePick;
+
         private int? fifoTimeStore;
+
         private int? height;
+
         private string image;
+
         private int? inventoryTolerance;
+
         private int? length;
+
         private int? pickTolerance;
+
         private int? reorderQuantity;
+
         private int? storeTolerance;
+
         private int totalAvailable;
+
         private int totalReservedForPick;
+
         private int totalReservedToStore;
+
         private int totalStock;
+
         private int? width;
 
         #endregion

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Base;
@@ -9,9 +7,9 @@ using Ferretto.Common.BusinessModels;
 namespace Ferretto.Common.BusinessProviders
 {
     public interface ICellProvider :
-        IPagedBusinessProvider<Cell>,
+        IPagedBusinessProvider<Cell, int>,
         IReadSingleAsyncProvider<CellDetails, int>,
-        IUpdateAsyncProvider<CellDetails>
+        IUpdateAsyncProvider<CellDetails, int>
     {
         #region Methods
 

@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Core.Providers;
 using Ferretto.WMS.Data.WebAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,12 +16,6 @@ namespace Ferretto.WMS.Data.Tests
     {
         #region Methods
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this.CleanupDatabase();
-        }
-
         [TestMethod]
         public async Task GetAllCountFound()
         {
@@ -30,7 +23,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var compartmentStatus1 = new Common.DataModels.CompartmentStatus { Id = 1, Description = "Compartment Status #1" };
                 var compartmentStatus2 = new Common.DataModels.CompartmentStatus { Id = 2, Description = "Compartment Status #2" };
                 var compartmentStatus3 = new Common.DataModels.CompartmentStatus { Id = 3, Description = "Compartment Status #3" };
@@ -66,7 +59,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -93,7 +86,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var compartmentStatus1 = new Common.DataModels.CompartmentStatus { Id = 1, Description = "Compartment Status #1" };
                 var compartmentStatus2 = new Common.DataModels.CompartmentStatus { Id = 2, Description = "Compartment Status #2" };
                 var compartmentStatus3 = new Common.DataModels.CompartmentStatus { Id = 3, Description = "Compartment Status #3" };
@@ -129,7 +122,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -156,7 +149,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var compartmentStatus1 = new Common.DataModels.CompartmentStatus { Id = 1, Description = "Compartment Status #1" };
                 var compartmentStatus2 = new Common.DataModels.CompartmentStatus { Id = 2, Description = "Compartment Status #2" };
                 var compartmentStatus3 = new Common.DataModels.CompartmentStatus { Id = 3, Description = "Compartment Status #3" };
@@ -197,7 +190,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -215,11 +208,11 @@ namespace Ferretto.WMS.Data.Tests
             }
         }
 
-        private static CompartmentStatusesController MockController(DatabaseContext context)
+        private CompartmentStatusesController MockController()
         {
             return new CompartmentStatusesController(
                 new Mock<ILogger<CompartmentStatusesController>>().Object,
-                new CompartmentStatusProvider(context));
+                this.ServiceProvider.GetService(typeof(ICompartmentStatusProvider)) as ICompartmentStatusProvider);
         }
 
         #endregion

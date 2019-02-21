@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class MachineProvider : IMachineProvider
+    internal class MachineProvider : IMachineProvider
     {
         #region Fields
 
@@ -34,25 +34,27 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<Machine>> GetAllAsync(
             int skip,
             int take,
-            string orderBy = null,
+            IEnumerable<SortOption> orderBy = null,
             IExpression whereExpression = null,
-            Expression<Func<Machine, bool>> searchExpression = null)
+            string searchString = null)
         {
             return await this.GetAllBase()
-                       .ToArrayAsync(
-                           skip,
-                           take,
-                           orderBy,
-                           whereExpression,
-                           searchExpression);
+                .ToArrayAsync(
+                    skip,
+                    take,
+                    orderBy,
+                    whereExpression,
+                    BuildSearchExpression(searchString));
         }
 
         public async Task<int> GetAllCountAsync(
             IExpression whereExpression = null,
-            Expression<Func<Machine, bool>> searchExpression = null)
+            string searchString = null)
         {
             return await this.GetAllBase()
-                       .CountAsync(whereExpression, searchExpression);
+                .CountAsync(
+                    whereExpression,
+                    BuildSearchExpression(searchString));
         }
 
         public async Task<Machine> GetByIdAsync(int id)
@@ -61,12 +63,35 @@ namespace Ferretto.WMS.Data.Core.Providers
                        .SingleOrDefaultAsync(i => i.Id == id);
         }
 
-        public async Task<object[]> GetUniqueValuesAsync(string propertyName)
+        public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.GetUniqueValuesAsync(
                        propertyName,
                        this.dataContext.Machines,
                        this.GetAllBase());
+        }
+
+        private static Expression<Func<Machine, bool>> BuildSearchExpression(string search)
+        {
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                return null;
+            }
+
+            return (m) =>
+                m.AisleName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                m.AreaName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                m.MachineTypeDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                m.Model.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                m.Nickname.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                m.RegistrationNumber.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                m.FillRate.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private IQueryable<Machine> GetAllBase()

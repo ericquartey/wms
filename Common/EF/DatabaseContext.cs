@@ -274,14 +274,14 @@ namespace Ferretto.Common.EF
 
             foreach (var entry in entries)
             {
-                var timestampedEntity = (ITimestamped)entry.Entity;
-
                 if (entry.State == EntityState.Added)
                 {
-                    timestampedEntity.CreationDate = timeNow;
+                    var creationDate = new { CreationDate = timeNow };
+                    entry.CurrentValues.SetValues(creationDate);
                 }
 
-                timestampedEntity.LastModificationDate = timeNow;
+                var lastModDate = new { LastModificationDate = timeNow };
+                entry.CurrentValues.SetValues(lastModDate);
             }
         }
 

@@ -1,8 +1,8 @@
-﻿using Ferretto.Common.BLL.Interfaces;
+﻿using Ferretto.Common.BLL.Interfaces.Base;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public class Enumeration : BindableBase, IBusinessObject
+    public class Enumeration : BindableBase, IModel<int>
     {
         #region Constructors
 

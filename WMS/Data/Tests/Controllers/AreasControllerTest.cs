@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Core.Providers;
 using Ferretto.WMS.Data.WebAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,12 +16,6 @@ namespace Ferretto.WMS.Data.Tests
     {
         #region Methods
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this.CleanupDatabase();
-        }
-
         [TestMethod]
         public async Task GetAislesFound()
         {
@@ -30,7 +23,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 this.InitializeDatabase();
 
                 #endregion
@@ -72,7 +65,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 this.InitializeDatabase();
 
                 #endregion
@@ -100,7 +93,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var area1 = new Common.DataModels.Area { Id = 1, Name = "Area #1" };
                 var area2 = new Common.DataModels.Area { Id = 2, Name = "Area #2" };
                 context.Areas.Add(area1);
@@ -132,7 +125,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -159,7 +152,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var area1 = new Common.DataModels.Area { Id = 1, Name = "Area #1" };
                 var area2 = new Common.DataModels.Area { Id = 2, Name = "Area #2" };
                 var area3 = new Common.DataModels.Area { Id = 3, Name = "Area #3" };
@@ -196,7 +189,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -223,7 +216,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var area1 = new Common.DataModels.Area { Id = 1, Name = "Area #1" };
                 var area2 = new Common.DataModels.Area { Id = 2, Name = "Area #2" };
                 var machine1 = new Common.DataModels.Machine { Id = 1, Nickname = "Machine #1" };
@@ -231,11 +224,11 @@ namespace Ferretto.WMS.Data.Tests
                 var bayType1 = new Common.DataModels.BayType { Id = "1", Description = "Bay Type #1" };
                 var bayType2 = new Common.DataModels.BayType { Id = "2", Description = "Bay Type #2" };
                 var bay1 = new Common.DataModels.Bay
-                    { Id = 1, Description = "Bay #1", AreaId = 1, MachineId = 1, BayTypeId = "1" };
+                { Id = 1, Description = "Bay #1", AreaId = 1, MachineId = 1, BayTypeId = "1" };
                 var bay2 = new Common.DataModels.Bay
-                    { Id = 2, Description = "Bay #2", AreaId = 2, MachineId = 2, BayTypeId = "1" };
+                { Id = 2, Description = "Bay #2", AreaId = 2, MachineId = 2, BayTypeId = "1" };
                 var bay3 = new Common.DataModels.Bay
-                    { Id = 3, Description = "Bay #3", AreaId = 2, MachineId = 2, BayTypeId = "2" };
+                { Id = 3, Description = "Bay #3", AreaId = 2, MachineId = 2, BayTypeId = "2" };
                 context.Areas.Add(area1);
                 context.Areas.Add(area2);
                 context.Machines.Add(machine1);
@@ -302,7 +295,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var area1 = new Common.DataModels.Area { Id = 1, Name = "Area #1" };
                 context.Areas.Add(area1);
                 context.SaveChanges();
@@ -330,7 +323,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var area1 = new Common.DataModels.Area { Id = 1, Name = "Area #1" };
                 var area2 = new Common.DataModels.Area { Id = 2, Name = "Area #2" };
                 var area3 = new Common.DataModels.Area { Id = 3, Name = "Area #3" };
@@ -370,7 +363,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -395,7 +388,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 this.InitializeDatabase();
 
                 #endregion
@@ -434,7 +427,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 this.InitializeDatabase();
 
                 #endregion
@@ -455,13 +448,13 @@ namespace Ferretto.WMS.Data.Tests
             }
         }
 
-        private static AreasController MockController(DatabaseContext context)
+        private AreasController MockController()
         {
             return new AreasController(
                 new Mock<ILogger<AreasController>>().Object,
-                new AreaProvider(context),
-                new BayProvider(context),
-                new CellProvider(context));
+                this.ServiceProvider.GetService(typeof(IAreaProvider)) as IAreaProvider,
+                this.ServiceProvider.GetService(typeof(IBayProvider)) as IBayProvider,
+                this.ServiceProvider.GetService(typeof(ICellProvider)) as ICellProvider);
         }
 
         #endregion

@@ -27,89 +27,89 @@ namespace Ferretto.VW.MAS_MissionScheduler
 
         #region Constructors
 
-        public MissionsScheduler( IEventAggregator eventAggregator )
+        public MissionsScheduler(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
 
-            this.messageReceived = new ManualResetEventSlim( false );
+            this.messageReceived = new ManualResetEventSlim(false);
 
             this.messageQueue = new ConcurrentQueue<Event_Message>();
 
             var automationServiceMessageEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
-            automationServiceMessageEvent.Subscribe( ( message ) =>
-                {
-                    this.messageQueue.Enqueue( message );
-                    this.messageReceived.Set();
-                },
+            automationServiceMessageEvent.Subscribe((message) =>
+               {
+                   this.messageQueue.Enqueue(message);
+                   this.messageReceived.Set();
+               },
                 ThreadOption.PublisherThread,
                 false,
-                message => message.Source == MessageActor.AutomationService );
+                message => message.Source == MessageActor.AutomationService);
         }
 
         #endregion
 
         #region Methods
 
-        public bool AddMission( Mission mission )
+        public bool AddMission(Mission mission)
         {
-            if(mission == null) throw new ArgumentNullException( "Mission is null, cannot add a null item to the Mission Queue.\n" );
-            this.missionsQueue.Enqueue( mission );
+            if (mission == null) throw new ArgumentNullException("Mission is null, cannot add a null item to the Mission Queue.\n");
+            this.missionsQueue.Enqueue(mission);
             return true;
         }
 
-        public new Task StopAsync( CancellationToken stoppingToken )
+        public new Task StopAsync(CancellationToken stoppingToken)
         {
-            var returnValue = base.StopAsync( stoppingToken );
+            var returnValue = base.StopAsync(stoppingToken);
 
             return returnValue;
         }
 
-        protected override async Task ExecuteAsync( CancellationToken stoppingToken )
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            await Task.Run( () => MissionSchedulerTaskFunction( stoppingToken ), stoppingToken );
+            await Task.Run(() => this.MissionSchedulerTaskFunction(stoppingToken), stoppingToken);
         }
 
-        private Task MissionSchedulerTaskFunction( CancellationToken stoppingToken )
+        private Task MissionSchedulerTaskFunction(CancellationToken stoppingToken)
         {
             do
             {
                 try
                 {
-                    this.messageReceived.Wait( Timeout.Infinite, stoppingToken );
+                    this.messageReceived.Wait(Timeout.Infinite, stoppingToken);
                 }
-                catch(OperationCanceledException ex)
+                catch (OperationCanceledException ex)
                 {
-                    return Task.FromException( ex );
+                    return Task.FromException(ex);
                 }
 
                 this.messageReceived.Reset();
 
                 Event_Message receivedMessage;
 
-                while(this.messageQueue.TryDequeue( out receivedMessage ))
+                while (this.messageQueue.TryDequeue(out receivedMessage))
                 {
-                    switch(receivedMessage.Type)
+                    switch (receivedMessage.Type)
                     {
                         case MessageType.AddMission:
-                            PorocessAddMissionMessage( receivedMessage );
+                            this.ProcessAddMissionMessage(receivedMessage);
                             break;
 
                         case MessageType.HorizontalHoming:
                             break;
                     }
                 }
-            } while(!stoppingToken.IsCancellationRequested);
+            } while (!stoppingToken.IsCancellationRequested);
 
             return Task.CompletedTask;
         }
 
-        private void PorocessAddMissionMessage( Event_Message message )
+        private void ProcessAddMissionMessage(Event_Message message)
         {
             //TODO apply Mission SchedulerBusiness Logic to the message
 
             message.Source = MessageActor.MissionScheduler;
             message.Destination = MessageActor.MachineManager;
-            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish( message );
+            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(message);
         }
 
         #endregion

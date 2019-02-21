@@ -86,7 +86,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<LoadingUnit>(this.Model.LoadingUnit.Id));
+                this.EventService.Invoke(new ModelChangedPubSubEvent<LoadingUnit, int>(this.Model.LoadingUnit.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
 
                 this.CompleteOperation();
@@ -140,17 +140,17 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.IsBusy = true;
 
-            var result = this.DialogService.ShowMessage(
+            var userChoice = this.DialogService.ShowMessage(
                 DesktopApp.AreYouSureToDeleteCompartment,
                 DesktopApp.ConfirmOperation,
                 DialogType.Question,
                 DialogButtons.YesNo);
 
-            if (result == DialogResult.Yes)
+            if (userChoice == DialogResult.Yes)
             {
                 var loadingUnit = this.Model.LoadingUnit;
-                var affectedRowsCount = await this.compartmentProvider.DeleteAsync(this.Model.Id);
-                if (affectedRowsCount > 0)
+                var result = await this.compartmentProvider.DeleteAsync(this.Model.Id);
+                if (result.Success)
                 {
                     loadingUnit.Compartments.Remove(this.Model as ICompartment);
 
@@ -173,10 +173,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             try
             {
-                this.IsBusy = true;
                 this.ItemsDataSource = new InfiniteDataSourceService<Item>(this.itemProvider).DataSource;
-
-                this.IsBusy = false;
             }
             catch
             {

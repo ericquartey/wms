@@ -79,7 +79,11 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddHostedService<MissionsScheduler>();
             services.AddHostedService<MachineManager>();
             services.AddHostedService<FiniteStateMachines>();
+#if TEST
+            services.AddHostedService<HostedInverterDriverMock>();
+#else
             services.AddHostedService<HostedInverterDriver>();
+#endif
 
             services.AddSingleton<IEventAggregator, EventAggregator>();
             services.AddSingleton<IDataLayer, DataLayer>(provider => new DataLayer(
@@ -89,9 +93,13 @@ namespace Ferretto.VW.MAS_AutomationService
 
             services.AddSingleton<IWriteLogService, DataLayer>(provider => provider.GetService<IDataLayer>() as DataLayer);
 
+#if TEST
+            services.AddSingleton<INewInverterDriver, NewInverterDriverMock>();
+            services.AddSingleton<INewRemoteIODriver, NewRemoteIODriverMock>();
+#else
             services.AddSingleton<INewInverterDriver, NewInverterDriver>();
             services.AddSingleton<INewRemoteIODriver, NewRemoteIODriver>();
-
+#endif
             services.AddSingleton<ISocketTransport, SocketTransport>();
 
             //TODO Old InverterDriver Registration to be removed after code refactoring completed

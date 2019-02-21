@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ferretto.Common.BLL.Interfaces
+﻿namespace Ferretto.Common.BLL.Interfaces
 {
-    public interface IOperationResult
+    public interface IOperationResult<out TModel>
     {
         #region Properties
 
         string Description { get; }
 
-        int? EntityId { get; }
+        TModel Entity { get; }
 
         bool Success { get; }
 

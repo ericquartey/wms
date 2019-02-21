@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
@@ -103,16 +103,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             try
             {
-                var searchExpression = BuildSearchExpression(search);
                 var whereExpression = where.AsIExpression();
+                var orderByExpression = orderBy.ParseSortOptions();
 
                 return this.Ok(
                     await this.compartmentProvider.GetAllAsync(
                         skip,
                         take,
-                        orderBy,
+                        orderByExpression,
                         whereExpression,
-                        searchExpression));
+                        search));
             }
             catch (NotSupportedException e)
             {
@@ -130,17 +130,23 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             try
             {
-                var searchExpression = BuildSearchExpression(search);
                 var whereExpression = where.AsIExpression();
 
                 return await this.compartmentProvider.GetAllCountAsync(
                            whereExpression,
-                           searchExpression);
+                           search);
             }
             catch (NotSupportedException e)
             {
                 return this.BadRequest(e.Message);
             }
+        }
+
+        [ProducesResponseType(200, Type = typeof(IEnumerable<AllowedItemInCompartment>))]
+        [HttpGet("{id}/allowed_items")]
+        public async Task<ActionResult<IEnumerable<AllowedItemInCompartment>>> GetAllowedItemsAsync(int id)
+        {
+            return this.Ok(await this.compartmentProvider.GetAllowedItemsAsync(id));
         }
 
         [ProducesResponseType(200, Type = typeof(CompartmentDetails))]
@@ -155,13 +161,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return this.Ok(result);
-        }
-
-        [ProducesResponseType(200, Type = typeof(IEnumerable<AllowedItemInCompartment>))]
-        [HttpGet("{id}/allowed_items")]
-        public async Task<ActionResult<IEnumerable<AllowedItemInCompartment>>> GetAllowedItemsAsync(int id)
-        {
-            return this.Ok(await this.compartmentProvider.GetAllowedItemsAsync(id));
         }
 
         [ProducesResponseType(200, Type = typeof(int?))]
@@ -210,33 +209,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return this.Ok(result.Entity);
-        }
-
-        private static Expression<Func<Compartment, bool>> BuildSearchExpression(string search)
-        {
-            if (string.IsNullOrWhiteSpace(search))
-            {
-                return null;
-            }
-
-            return (c) =>
-                c.CompartmentStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.ItemDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.ItemMeasureUnit.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.LoadingUnitCode.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Lot.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.MaterialStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Sub1.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Sub2.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Stock.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
         #endregion

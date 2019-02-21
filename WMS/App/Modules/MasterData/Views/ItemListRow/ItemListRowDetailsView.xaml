@@ -283,20 +283,15 @@
                               Header="{x:Static res:MasterData.OtherInformation}">
                         <StackPanel Orientation="Vertical">
 
-                            <wms:InfoText HorizontalAlignment="Left"
-                                          HorizontalContentAlignment="Left"
+                            <wms:InfoText HorizontalAlignment="Left"                                          
                                           Content="{Binding Path=Model.DispatchedQuantity}" />
                             <wms:InfoText HorizontalAlignment="Left"
-                                          HorizontalContentAlignment="Left"
                                           Content="{Binding Path=Model.CreationDate}" />
                             <wms:InfoText HorizontalAlignment="Left"
-                                          HorizontalContentAlignment="Left"
                                           Content="{Binding Path=Model.LastModificationDate}" />
-                            <wms:InfoText HorizontalAlignment="Left"
-                                          HorizontalContentAlignment="Left"
+                            <wms:InfoText HorizontalAlignment="Left"                                          
                                           Content="{Binding Path=Model.LastExecutionDate}" />
-                            <wms:InfoText HorizontalAlignment="Left"
-                                          HorizontalContentAlignment="Left"
+                            <wms:InfoText HorizontalAlignment="Left"                                          
                                           Content="{Binding Path=Model.CompletionDate}" />
                         </StackPanel>
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -12,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class ItemListRowProvider : IItemListRowProvider
+    internal class ItemListRowProvider : IItemListRowProvider
     {
         #region Fields
 
@@ -31,7 +32,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public async Task<OperationResult<ItemListRowDetails>> CreateAsync(ItemListRowDetails model)
+        public async Task<IOperationResult<ItemListRowDetails>> CreateAsync(ItemListRowDetails model)
         {
             if (model == null)
             {
@@ -71,25 +72,27 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<ItemListRow>> GetAllAsync(
             int skip,
             int take,
-            string orderBy = null,
+            IEnumerable<SortOption> orderBy = null,
             IExpression whereExpression = null,
-            Expression<Func<ItemListRow, bool>> searchExpression = null)
+            string searchString = null)
         {
             return await this.GetAllBase()
-                       .ToArrayAsync(
-                           skip,
-                           take,
-                           orderBy,
-                           whereExpression,
-                           searchExpression);
+                .ToArrayAsync(
+                    skip,
+                    take,
+                    orderBy,
+                    whereExpression,
+                    BuildSearchExpression(searchString));
         }
 
         public async Task<int> GetAllCountAsync(
             IExpression whereExpression = null,
-            Expression<Func<ItemListRow, bool>> searchExpression = null)
+            string searchString = null)
         {
             return await this.GetAllBase()
-                       .CountAsync(whereExpression, searchExpression);
+                .CountAsync(
+                    whereExpression,
+                    BuildSearchExpression(searchString));
         }
 
         public async Task<ItemListRowDetails> GetByIdAsync(int id)
@@ -105,7 +108,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                        .ToArrayAsync();
         }
 
-        public async Task<object[]> GetUniqueValuesAsync(string propertyName)
+        public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.GetUniqueValuesAsync(
                        propertyName,
@@ -113,7 +116,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                        this.GetAllBase());
         }
 
-        public async Task<OperationResult<ItemListRowDetails>> UpdateAsync(ItemListRowDetails model)
+        public async Task<IOperationResult<ItemListRowDetails>> UpdateAsync(ItemListRowDetails model)
         {
             if (model == null)
             {
@@ -131,6 +134,29 @@ namespace Ferretto.WMS.Data.Core.Providers
             await this.dataContext.SaveChangesAsync();
 
             return new SuccessOperationResult<ItemListRowDetails>(model);
+        }
+
+        private static Expression<Func<ItemListRow, bool>> BuildSearchExpression(string search)
+        {
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                return null;
+            }
+
+            return (i) =>
+                i.Code.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.ItemDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.ItemUnitMeasure.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.MaterialStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.DispatchedQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.RequiredQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.RowPriority.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private IQueryable<ItemListRow> GetAllBase()

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class ItemCompartmentTypeProvider : IItemCompartmentTypeProvider
+    internal class ItemCompartmentTypeProvider : IItemCompartmentTypeProvider
     {
         #region Fields
 
@@ -27,7 +28,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public async Task<OperationResult<ItemCompartmentType>> CreateAsync(ItemCompartmentType model)
+        public async Task<IOperationResult<ItemCompartmentType>> CreateAsync(ItemCompartmentType model)
         {
             if (model == null)
             {
@@ -66,7 +67,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return new SuccessOperationResult<ItemCompartmentType>(model);
         }
 
-        public async Task<OperationResult<ItemCompartmentType>> UpdateAsync(ItemCompartmentType model)
+        public async Task<IOperationResult<ItemCompartmentType>> UpdateAsync(ItemCompartmentType model)
         {
             if (model == null)
             {

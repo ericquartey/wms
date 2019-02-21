@@ -8,5 +8,10 @@ namespace Ferretto.VW.Common_Utils.Messages.Interfaces
 {
     public interface IMissionMessageData : IEventMessageData
     {
+        #region Properties
+
+        int Priority { get; set; }
+
+        #endregion
     }
 }

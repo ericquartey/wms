@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.BusinessModels;
@@ -9,11 +6,11 @@ using Ferretto.Common.BusinessModels;
 namespace Ferretto.Common.BusinessProviders
 {
     public interface ICompartmentTypeProvider :
-        IReadAllAsyncProvider<Enumeration>
+        IReadAllAsyncProvider<Enumeration, int>
     {
         #region Methods
 
-        Task<IOperationResult> CreateAsync(CompartmentType model, int? itemId = null, int? maxCapacity = null);
+        Task<IOperationResult<CompartmentType>> CreateAsync(CompartmentType model, int? itemId = null, int? maxCapacity = null);
 
         #endregion
     }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Ferretto.Common.BLL.Interfaces.Base;
 
 namespace Ferretto.Common.BLL.Interfaces
 {
@@ -6,8 +7,8 @@ namespace Ferretto.Common.BLL.Interfaces
     {
         #region Methods
 
-        IEnumerable<IFilterDataSource<TModel>> GetAllFilters<TModel>(string viewModelName, object parameter = null)
-            where TModel : IBusinessObject;
+        IEnumerable<IFilterDataSource<TModel, TKey>> GetAllFilters<TModel, TKey>(string viewModelName, object parameter = null)
+            where TModel : IModel<TKey>;
 
         #endregion
     }

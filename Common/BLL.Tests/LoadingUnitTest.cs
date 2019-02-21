@@ -1,7 +1,7 @@
 ﻿using Ferretto.Common.BusinessModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Feretto.Common.BLL.Tests
+namespace Ferretto.Common.BLL.Tests
 {
     [TestClass]
     public class LoadingUnitTest

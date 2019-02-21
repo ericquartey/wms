@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class LoadingUnitStatusProvider : ILoadingUnitStatusProvider
+    internal class LoadingUnitStatusProvider : ILoadingUnitStatusProvider
     {
         #region Fields
 

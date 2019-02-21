@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
-using Ferretto.WMS.Data.Core.Interfaces.Base;
+using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.WMS.Data.Core.Models;
 
 namespace Ferretto.WMS.Data.Core.Interfaces
@@ -11,7 +12,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     {
         #region Methods
 
-        Task<OperationResult<CompartmentType>> CreateAsync(
+        Task<IOperationResult<CompartmentType>> CreateAsync(
             CompartmentType model,
             int? itemId,
             int? maxCapacity);

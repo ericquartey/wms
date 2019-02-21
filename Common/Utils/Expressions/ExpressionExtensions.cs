@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -21,19 +23,6 @@ namespace Ferretto.Common.Utils.Expressions
         #endregion
 
         #region Methods
-
-        public static Expression<Func<TModel, bool>> BuildLambdaExpression<TModel>(this IExpression where)
-        {
-            if (where == null)
-            {
-                return null;
-            }
-
-            var lambdaInParameter = Expression.Parameter(typeof(TModel), typeof(TModel).Name.ToLower());
-            var lambdaBody = where?.GetLambdaBody<TModel>(lambdaInParameter);
-
-            return (Expression<Func<TModel, bool>>)Expression.Lambda(lambdaBody, lambdaInParameter);
-        }
 
         public static IExpression AsIExpression(this string stringExpression)
         {
@@ -71,9 +60,27 @@ namespace Ferretto.Common.Utils.Expressions
             }
         }
 
+        public static Expression<Func<TModel, bool>> BuildLambdaExpression<TModel>(this IExpression where)
+        {
+            if (where == null)
+            {
+                return null;
+            }
+
+            var lambdaInParameter = Expression.Parameter(typeof(TModel), typeof(TModel).Name.ToLower());
+            var lambdaBody = where?.GetLambdaBody<TModel>(lambdaInParameter);
+
+            return (Expression<Func<TModel, bool>>)Expression.Lambda(lambdaBody, lambdaInParameter);
+        }
+
         public static bool ContainsOnlyTypeProperties<TDataModel>(
             this IExpression expression)
         {
+            if (expression == null)
+            {
+                return true;
+            }
+
             switch (expression)
             {
                 case UnaryExpression v:
@@ -133,8 +140,18 @@ namespace Ferretto.Common.Utils.Expressions
             return null;
         }
 
+        public static string ToQueryString(this IEnumerable<SortOption> sortOptions)
+        {
+            if (sortOptions == null)
+            {
+                return string.Empty;
+            }
+
+            return string.Join(",", sortOptions.Select(s => $"{s.PropertyName} {s.Direction}"));
+        }
+
         private static Expression GetLambdaAndExpression<TInParameter>(
-            ParameterExpression inParameter,
+                    ParameterExpression inParameter,
             BinaryExpression binaryExpression)
         {
             return Expression.And(

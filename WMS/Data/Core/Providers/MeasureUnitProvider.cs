@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class MeasureUnitProvider : IMeasureUnitProvider
+    internal class MeasureUnitProvider : IMeasureUnitProvider
     {
         #region Fields
 

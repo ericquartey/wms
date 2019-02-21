@@ -79,7 +79,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<LoadingUnit>(this.Model.LoadingUnit.Id));
+                this.EventService.Invoke(new ModelChangedPubSubEvent<LoadingUnit, int>(this.Model.LoadingUnit.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(
                     Common.Resources.MasterData.LoadingUnitSavedSuccessfully,
                     StatusType.Success));
