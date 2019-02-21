@@ -159,21 +159,11 @@
                 </dxg:GridControl.View>
 
                 <wms:WmsGridControl.Columns>
-                    <dxg:GridColumn AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
-                                    FieldName="MachineTypeDescription" />
-                    <dxg:GridColumn AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
-                                    FieldName="AreaName" />
-                    <dxg:GridColumn AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
-                                    FieldName="Nickname" />
-                    <dxg:GridColumn AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
-                                    FieldName="RegistrationNumber" />
-                    <dxg:GridColumn AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
-                                    FieldName="Model" />
+                    <dxg:GridColumn FieldName="MachineTypeDescription" />
+                    <dxg:GridColumn FieldName="AreaName" />
+                    <dxg:GridColumn FieldName="Nickname" />
+                    <dxg:GridColumn FieldName="RegistrationNumber" />
+                    <dxg:GridColumn FieldName="Model" />
                 </wms:WmsGridControl.Columns>
 
                 <wms:WmsGridControl.SortInfo>

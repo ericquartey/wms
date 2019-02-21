@@ -101,52 +101,28 @@
 
                 <wms:WmsGridControl.Columns>
                     <dxg:GridColumn Width="100*"
-                                    AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
                                     FieldName="AreaName" />
                     <dxg:GridColumn Width="100*"
-                                    AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
                                     FieldName="AisleName" />
                     <dxg:GridColumn Width="50*"
-                                    AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
                                     FieldName="Number" />
                     <dxg:GridColumn Width="50*"
-                                    AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
                                     FieldName="Floor" />
                     <dxg:GridColumn Width="50*"
-                                    AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
                                     FieldName="Column" />
                     <dxg:GridColumn Width="50*"
-                                    AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
                                     FieldName="Side" />
                     <dxg:GridColumn Width="50*"
-                                    AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
                                     FieldName="AbcClassDescription" />
                     <dxg:GridColumn Width="50*"
-                                    AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
                                     FieldName="Status" />
                     <dxg:GridColumn Width="300*"
-                                    AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
                                     FieldName="Type" />
                     <dxg:GridColumn Width="50*"
-                                    AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
                                     FieldName="Priority" />
                     <dxg:GridColumn Width="50*"
-                                    AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
                                     FieldName="LoadingUnitsCount" />
                     <dxg:GridColumn Width="100*"
-                                    AllowSorting="True"
-                                    AllowedBinaryFilters="Equals,DoesNotEqual"
                                     FieldName="LoadingUnitsDescription" />
                 </wms:WmsGridControl.Columns>
 
