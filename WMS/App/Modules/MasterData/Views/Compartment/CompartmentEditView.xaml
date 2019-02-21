@@ -121,7 +121,7 @@
                                                                       Height="100"
                                                                       BorderBrush="{DynamicResource CommonSecondaryLight}"
                                                                       BorderThickness="1"
-                                                                      Path="{Binding Data.Image, Mode=OneWay}" />
+                                                                      Path="{Binding Row.Image, Mode=OneWay}" />
                                                     </StackPanel>
                                                 </DataTemplate>
                                             </dxg:GridColumn.CellTemplate>
