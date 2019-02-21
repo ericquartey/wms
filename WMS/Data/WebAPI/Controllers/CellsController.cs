@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
@@ -53,16 +53,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             try
             {
-                var searchExpression = BuildSearchExpression(search);
                 var whereExpression = where.AsIExpression();
+                var orderByExpression = orderBy.ParseSortOptions();
 
                 return this.Ok(
                     await this.cellProvider.GetAllAsync(
                         skip,
                         take,
-                        orderBy,
+                        orderByExpression,
                         whereExpression,
-                        searchExpression));
+                        search));
             }
             catch (NotSupportedException e)
             {
@@ -80,12 +80,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             try
             {
-                var searchExpression = BuildSearchExpression(search);
                 var whereExpression = where.AsIExpression();
 
                 return await this.cellProvider.GetAllCountAsync(
                            whereExpression,
-                           searchExpression);
+                           search);
             }
             catch (NotSupportedException e)
             {
@@ -152,35 +151,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return this.Ok(result.Entity);
-        }
-
-        private static Expression<Func<Cell, bool>> BuildSearchExpression(string search)
-        {
-            if (string.IsNullOrWhiteSpace(search))
-            {
-                return null;
-            }
-
-            return (c) =>
-                c.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.AisleName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.AreaName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.LoadingUnitsDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Status.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Type.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Column.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Floor.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Number.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Priority.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
         #endregion

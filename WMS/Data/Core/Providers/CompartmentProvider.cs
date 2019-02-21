@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Transactions;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -13,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class CompartmentProvider : ICompartmentProvider
+    internal class CompartmentProvider : ICompartmentProvider
     {
         #region Fields
 
@@ -37,34 +38,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public async Task<OperationResult<IEnumerable<CompartmentDetails>>> CreateRangeAsync(
-            IEnumerable<CompartmentDetails> compartments)
-        {
-            if (compartments == null)
-            {
-                throw new ArgumentNullException(nameof(compartments));
-            }
-
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-            {
-                foreach (var compartment in compartments)
-                {
-                    var result = await this.CreateAsync(compartment);
-                    if (!result.Success)
-                    {
-                        return new CreationErrorOperationResult<IEnumerable<CompartmentDetails>>();
-                    }
-
-                    compartment.Id = result.Entity.Id;
-                    compartment.CreationDate = result.Entity.CreationDate;
-                }
-
-                scope.Complete();
-                return new SuccessOperationResult<IEnumerable<CompartmentDetails>>(compartments);
-            }
-        }
-
-        public async Task<OperationResult<CompartmentDetails>> CreateAsync(CompartmentDetails model)
+        public async Task<IOperationResult<CompartmentDetails>> CreateAsync(CompartmentDetails model)
         {
             if (model == null)
             {
@@ -112,7 +86,34 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
-        public async Task<OperationResult<CompartmentDetails>> DeleteAsync(int id)
+        public async Task<IOperationResult<IEnumerable<CompartmentDetails>>> CreateRangeAsync(
+                    IEnumerable<CompartmentDetails> compartments)
+        {
+            if (compartments == null)
+            {
+                throw new ArgumentNullException(nameof(compartments));
+            }
+
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                foreach (var compartment in compartments)
+                {
+                    var result = await this.CreateAsync(compartment);
+                    if (!result.Success)
+                    {
+                        return new CreationErrorOperationResult<IEnumerable<CompartmentDetails>>();
+                    }
+
+                    compartment.Id = result.Entity.Id;
+                    compartment.CreationDate = result.Entity.CreationDate;
+                }
+
+                scope.Complete();
+                return new SuccessOperationResult<IEnumerable<CompartmentDetails>>(compartments);
+            }
+        }
+
+        public async Task<IOperationResult<CompartmentDetails>> DeleteAsync(int id)
         {
             var existingModel = this.dataContext.Compartments.Find(id);
             if (existingModel == null)
@@ -128,25 +129,27 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<Compartment>> GetAllAsync(
             int skip,
             int take,
-            string orderBy = null,
+            IEnumerable<SortOption> orderBy = null,
             IExpression whereExpression = null,
-            Expression<Func<Compartment, bool>> searchExpression = null)
+            string searchString = null)
         {
             return await this.GetAllBase()
-                       .ToArrayAsync(
-                           skip,
-                           take,
-                           orderBy,
-                           whereExpression,
-                           searchExpression);
+                .ToArrayAsync(
+                    skip,
+                    take,
+                    orderBy,
+                    whereExpression,
+                    BuildSearchExpression(searchString));
         }
 
         public async Task<int> GetAllCountAsync(
             IExpression whereExpression = null,
-            Expression<Func<Compartment, bool>> searchExpression = null)
+            string searchString = null)
         {
             return await this.GetAllBase()
-                       .CountAsync(whereExpression, searchExpression);
+                .CountAsync(
+                    whereExpression,
+                    BuildSearchExpression(searchString));
         }
 
         public async Task<IEnumerable<AllowedItemInCompartment>> GetAllowedItemsAsync(int id)
@@ -224,7 +227,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return compartmentType?.MaxCapacity;
         }
 
-        public async Task<object[]> GetUniqueValuesAsync(string propertyName)
+        public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.GetUniqueValuesAsync(
                        propertyName,
@@ -232,7 +235,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                        this.GetAllBase());
         }
 
-        public async Task<OperationResult<CompartmentDetails>> UpdateAsync(CompartmentDetails model)
+        public async Task<IOperationResult<CompartmentDetails>> UpdateAsync(CompartmentDetails model)
         {
             if (model == null)
             {
@@ -249,6 +252,33 @@ namespace Ferretto.WMS.Data.Core.Providers
             await this.dataContext.SaveChangesAsync();
 
             return new SuccessOperationResult<CompartmentDetails>(model);
+        }
+
+        private static Expression<Func<Compartment, bool>> BuildSearchExpression(string search)
+        {
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                return null;
+            }
+
+            return (c) =>
+                c.CompartmentStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.ItemDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.ItemMeasureUnit.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.LoadingUnitCode.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.Lot.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.MaterialStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.Sub1.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.Sub2.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.Stock.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private IQueryable<Compartment> GetAllBase()

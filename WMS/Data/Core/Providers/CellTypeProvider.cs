@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class CellTypeProvider : ICellTypeProvider
+    internal class CellTypeProvider : ICellTypeProvider
     {
         #region Fields
 

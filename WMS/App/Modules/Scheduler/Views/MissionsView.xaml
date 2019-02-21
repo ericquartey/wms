@@ -303,41 +303,23 @@
                         </dxg:GridColumn>
 
                         <dxg:GridColumn Width="120*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
                                         FieldName="Status" />
                         <dxg:GridColumn Width="140*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
                                         FieldName="BayDescription" />
                         <dxg:GridColumn Width="370*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
                                         FieldName="ItemDescription" />
                         <dxg:GridColumn Width="200*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
                                         FieldName="ItemListDescription" />
                         <dxg:GridColumn Width="180*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
                                         FieldName="ItemListRowDescription" />
                         <dxg:GridColumn Width="140*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
                                         FieldName="LoadingUnitDescription" />
                         <dxg:GridColumn Width="90*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
                                         FieldName="Priority" />
                         <dxg:GridColumn Width="90*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
                                         CellDisplayTemplate="{StaticResource CellDisplayTemplateQuantity}"
                                         FieldName="RequiredQuantity" />
                         <dxg:GridColumn Width="120*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
                                         FieldName="Type" />
                     </wms:WmsGridControl.Columns>
 

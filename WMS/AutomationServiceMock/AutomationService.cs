@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Ferretto.WMS.Scheduler.WebAPI.Contracts;
 using Microsoft.Extensions.Logging;
 
@@ -9,11 +10,11 @@ namespace Ferretto.WMS.AutomationServiceMock
     {
         #region Fields
 
-        private readonly IBaysSchedulerService baysSchedulerService;
+        private readonly IBaysDataService baysDataService;
 
         private readonly ILogger logger;
 
-        private readonly IMissionsSchedulerService missionsSchedulerService;
+        private readonly IMissionsDataService missionsDataService;
 
         private readonly Random random = new Random();
 
@@ -26,12 +27,12 @@ namespace Ferretto.WMS.AutomationServiceMock
         public AutomationService(
             ILogger<AutomationService> logger,
             IWakeupHubClient wakeupHubClient,
-            IMissionsSchedulerService missionsSchedulerService,
-            IBaysSchedulerService baysSchedulerService)
+            IMissionsDataService missionsDataService,
+            IBaysDataService baysDataService)
         {
             this.logger = logger;
-            this.missionsSchedulerService = missionsSchedulerService;
-            this.baysSchedulerService = baysSchedulerService;
+            this.missionsDataService = missionsDataService;
+            this.baysDataService = baysDataService;
             this.wakeupHubClient = wakeupHubClient;
 
             this.wakeupHubClient.WakeupReceived += this.WakeupReceived;
@@ -52,7 +53,7 @@ namespace Ferretto.WMS.AutomationServiceMock
         public async Task NotifyUserLoginAsync(int bayId)
         {
             this.logger.LogInformation($"Notifying the scheduler that bay '{bayId}' is operational.");
-            await this.baysSchedulerService.MarkAsOperationalAsync(bayId);
+            await this.baysDataService.ActivateAsync(bayId);
         }
 
         private async Task ExecuteMissionAsync(Mission mission)
@@ -66,12 +67,12 @@ namespace Ferretto.WMS.AutomationServiceMock
             if (success)
             {
                 this.logger.LogInformation($"Mission completed.");
-                await this.missionsSchedulerService.CompleteAsync(new Mission());
+                await this.missionsDataService.CompleteAsync(mission.Id);
             }
             else
             {
                 this.logger.LogWarning($"Mission failed.");
-                await this.missionsSchedulerService.AbortAsync(new Mission());
+                await this.missionsDataService.AbortAsync(mission.Id);
             }
         }
 

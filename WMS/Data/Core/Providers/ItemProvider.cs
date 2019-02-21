@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -12,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class ItemProvider : IItemProvider
+    internal class ItemProvider : IItemProvider
     {
         #region Fields
 
@@ -31,7 +32,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public async Task<OperationResult<ItemDetails>> CreateAsync(ItemDetails model)
+        public async Task<IOperationResult<ItemDetails>> CreateAsync(ItemDetails model)
         {
             if (model == null)
             {
@@ -78,25 +79,27 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<Item>> GetAllAsync(
             int skip,
             int take,
-            string orderBy = null,
+            IEnumerable<SortOption> orderBy = null,
             IExpression whereExpression = null,
-            Expression<Func<Item, bool>> searchExpression = null)
+            string searchString = null)
         {
             return await this.GetAllBase()
-                       .ToArrayAsync(
-                           skip,
-                           take,
-                           orderBy,
-                           whereExpression,
-                           searchExpression);
+                .ToArrayAsync(
+                    skip,
+                    take,
+                    orderBy,
+                    whereExpression,
+                    BuildSearchExpression(searchString));
         }
 
         public async Task<int> GetAllCountAsync(
             IExpression whereExpression = null,
-            Expression<Func<Item, bool>> searchExpression = null)
+            string searchString = null)
         {
             return await this.GetAllBase()
-                       .CountAsync(whereExpression, searchExpression);
+                .CountAsync(
+                    whereExpression,
+                    BuildSearchExpression(searchString));
         }
 
         public async Task<ItemDetails> GetByIdAsync(int id)
@@ -111,7 +114,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return result;
         }
 
-        public async Task<object[]> GetUniqueValuesAsync(string propertyName)
+        public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.GetUniqueValuesAsync(
                        propertyName,
@@ -119,7 +122,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                        this.GetAllBase());
         }
 
-        public async Task<OperationResult<ItemDetails>> UpdateAsync(ItemDetails model)
+        public async Task<IOperationResult<ItemDetails>> UpdateAsync(ItemDetails model)
         {
             if (model == null)
             {
@@ -137,6 +140,23 @@ namespace Ferretto.WMS.Data.Core.Providers
             await this.dataContext.SaveChangesAsync();
 
             return new SuccessOperationResult<ItemDetails>(model);
+        }
+
+        private static Expression<Func<Item, bool>> BuildSearchExpression(string search)
+        {
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                return null;
+            }
+
+            return (i) =>
+                i.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.Description.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.ItemCategoryDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.TotalAvailable.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private IQueryable<Item> GetAllBase(
@@ -180,6 +200,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         FifoTimePick = i.Item.FifoTimePick,
                         FifoTimeStore = i.Item.FifoTimeStore,
                         Height = i.Item.Height,
+                        Image = i.Item.Image,
                         InventoryDate = i.Item.InventoryDate,
                         InventoryTolerance = i.Item.InventoryTolerance,
                         ManagementType = (ItemManagementType)i.Item.ManagementType,

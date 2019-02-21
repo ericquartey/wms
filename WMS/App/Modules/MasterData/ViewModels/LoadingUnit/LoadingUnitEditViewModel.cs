@@ -217,7 +217,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));
-            this.LoadRelatedData();
         }
 
         private void ShowSidePanel(BaseNavigationViewModel childViewModel)

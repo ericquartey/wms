@@ -15,6 +15,7 @@
                                                                 ThemeName=Office2016White}}"
            TargetType="wms:DateEdit">
         <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource ValidationErrorTemplateStyle}" />
+        <Setter Property="MaxHeight" Value="44" />
     </Style>
 
     <DataTemplate x:Key="DateEditCustomButtonTemplate">

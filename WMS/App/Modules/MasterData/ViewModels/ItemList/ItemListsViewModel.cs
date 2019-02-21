@@ -1,12 +1,11 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemListsViewModel : EntityPagedListViewModel<ItemList>
+    public class ItemListsViewModel : EntityPagedListViewModel<ItemList, int>
     {
         #region Fields
 

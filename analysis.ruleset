@@ -125,7 +125,7 @@
     <Rule Id="CA1809" Action="Warning" />
     <Rule Id="CA1810" Action="Warning" />
     <Rule Id="CA1811" Action="Warning" />
-    <Rule Id="CA1812" Action="Warning" />
+    <Rule Id="CA1812" Action="Info" />
     <Rule Id="CA1813" Action="Warning" />
     <Rule Id="CA1814" Action="Warning" />
     <Rule Id="CA1815" Action="Warning" />
@@ -796,16 +796,29 @@
     <Rule Id="S881" Action="Warning" />
   </Rules>
   <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+    <!--ParameterMustNotSpanMultipleLines-->
     <Rule Id="SA1118" Action="None" />
+    <!-- StatementMustNotUseUnnecessaryParenthesis -->
+    <Rule Id="SA1119" Action="Info" />
+    <!-- DoNotPlaceRegionsWithinElements -->
     <Rule Id="SA1123" Action="None" />
+    <!-- DoNotUseRegions -->
     <Rule Id="SA1124" Action="None" />
+    <!-- UsingDirectivesMustBePlacedWithinNamespace -->
     <Rule Id="SA1200" Action="None" />
+    <!-- ConstFieldNamesMustBeginWithUpperCaseLetter -->
     <Rule Id="SA1303" Action="None" />
+    <!-- FieldNamesMustNotContainUnderscore -->
     <Rule Id="SA1310" Action="None" />
+    <!-- ElementParametersMustBeDocumented -->
     <Rule Id="SA1611" Action="None" />
+    <!-- ElementParameterDocumentationMustHaveText -->
     <Rule Id="SA1614" Action="None" />
+    <!-- ElementReturnValueMustBeDocumented -->
     <Rule Id="SA1615" Action="None" />
+    <!-- FileMustHaveHeader -->
     <Rule Id="SA1633" Action="None" />
+    <!-- EnableXmlDocumentationOutput -->
     <Rule Id="SA1652" Action="None" />
   </Rules>
 </RuleSet>

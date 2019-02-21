@@ -1,8 +1,8 @@
-﻿using Ferretto.Common.BLL.Interfaces;
+﻿using Ferretto.Common.BLL.Interfaces.Base;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public interface ICompartment : IBusinessObject
+    public interface ICompartment : IModel<int>
     {
         #region Properties
 

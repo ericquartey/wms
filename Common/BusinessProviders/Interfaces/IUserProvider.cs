@@ -5,7 +5,7 @@ namespace Ferretto.Common.BusinessProviders
 {
     public interface IUserProvider :
         IReadSingleAsyncProvider<User, int>,
-        IReadAllAsyncProvider<User>
+        IReadAllAsyncProvider<User, int>
     {
         #region Methods
 
