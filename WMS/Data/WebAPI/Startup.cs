@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 #if DEBUG
 using NSwag.AspNetCore;
+
 #endif
 
 namespace Ferretto.WMS.Data.WebAPI
@@ -43,10 +44,16 @@ namespace Ferretto.WMS.Data.WebAPI
         /// </summary>
         public static void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (env.IsProduction())
+            {
+                app.UseHsts();
+
+                app.UseHttpsRedirection();
+            }
+            else
             {
                 app.UseDeveloperExceptionPage();
-#if DEBUG
+
                 app.UseRequestResponseLogging();
 
                 app.UseSwaggerUi3WithApiExplorer(settings =>
@@ -65,13 +72,6 @@ namespace Ferretto.WMS.Data.WebAPI
 
                     settings.GeneratorSettings.DefaultEnumHandling = NJsonSchema.EnumHandling.String;
                 });
-#endif
-            }
-            else if (env.IsProduction())
-            {
-                app.UseHsts();
-
-                app.UseHttpsRedirection();
             }
 
             app.UseMvc();
