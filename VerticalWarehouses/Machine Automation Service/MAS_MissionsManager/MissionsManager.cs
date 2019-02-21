@@ -88,45 +88,25 @@ namespace Ferretto.VW.MAS_MissionsManager
         {
             do
             {
-                this.missionReady.Wait();
-                if (this.missionsCollection.Count > 0)
+                try
                 {
-                    try
+                    this.missionExecuted.Wait(Timeout.Infinite, stoppingToken);
+                    this.missionReady.Wait(Timeout.Infinite, stoppingToken);
+                }
+                catch (OperationCanceledException ex)
+                {
+                    return Task.FromException(ex);
+                }
+                if (this.missionsCollection.Count != 0)
+                {
+                    // TODO before removing the mission from the dictionary, execute it
+                    this.missionsCollection.Remove(this.missionsCollection.Keys.First());
+                    if (this.missionsCollection.Count == 0)
                     {
-                        if (!this.missionExecuted.Wait(Timeout.Infinite, stoppingToken))
-                        {
-                            var message = new Event_Message(null,
-                                "Error Message from MissionExecutionTask in MissionsManager",
-                                MessageActor.WebAPI,
-                                MessageActor.MissionsManager,
-                                MessageStatus.Error,
-                                MessageType.ErrorAction,
-                                MessageVerbosity.Debug);
-                            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(message);
-                        }
+                        this.missionReady.Reset();
                     }
-                    catch (OperationCanceledException ex)
-                    {
-                        return Task.FromException(ex);
-                    }
-                    var min = this.missionsCollection.Min(x => x.Value);
-                    var mostUrgentMissions = this.missionsCollection.Keys.Where(z => z.Priority == min).ToList();
-                    if (mostUrgentMissions.Count == 1)
-                    {
-                        var executeMissionMessage = new Event_Message(mostUrgentMissions[0],
-                                                                "Execute Mission",
-                                                                MessageActor.FiniteStateMachines,
-                                                                MessageActor.MissionsManager,
-                                                                MessageStatus.Start,
-                                                                MessageType.StartAction,
-                                                                MessageVerbosity.Debug);
-                        this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(executeMissionMessage);
-                        this.missionExecuted.Reset();
-                    }
-                    else
-                    {
-                        // TODO implement multy-bay logic here
-                    }
+                    // TODO publish event to notify to the FSM to begin the action
+                    this.missionExecuted.Reset();
                 }
                 else
                 {
@@ -168,7 +148,7 @@ namespace Ferretto.VW.MAS_MissionsManager
                             break;
 
                         default:
-                            throw new InvalidOperationException("Type of message unmanaged.");
+                            break;
                     }
                 }
             } while (!stoppingToken.IsCancellationRequested);
