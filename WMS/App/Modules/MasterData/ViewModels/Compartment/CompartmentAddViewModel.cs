@@ -2,12 +2,11 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.Common.BLL.Interfaces;
+using DevExpress.Xpf.Data;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -22,7 +21,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool itemIdHasValue;
 
-        private IDataSource<Item> itemsDataSource;
+        private InfiniteAsyncSource itemsDataSource;
 
         #endregion
 
@@ -33,6 +32,8 @@ namespace Ferretto.WMS.Modules.MasterData
             this.Title = Common.Resources.MasterData.AddCompartment;
 
             this.IsValidationEnabled = false;
+
+            this.LoadData();
         }
 
         #endregion
@@ -45,7 +46,7 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.itemIdHasValue, value);
         }
 
-        public IDataSource<Item> ItemsDataSource
+        public InfiniteAsyncSource ItemsDataSource
         {
             get => this.itemsDataSource;
             set => this.SetProperty(ref this.itemsDataSource, value);
@@ -125,21 +126,11 @@ namespace Ferretto.WMS.Modules.MasterData
             base.Model_PropertyChanged(sender, e);
         }
 
-        protected override async Task OnAppearAsync()
-        {
-            await this.LoadDataAsync().ConfigureAwait(true);
-            await base.OnAppearAsync().ConfigureAwait(true);
-        }
-
-        private async Task LoadDataAsync()
+        private void LoadData()
         {
             try
             {
-                this.IsBusy = true;
-                var items = await this.itemProvider.GetAllAsync(0, 0);
-                this.ItemsDataSource = new DataSource<Item>(() => items.AsQueryable());
-
-                this.IsBusy = false;
+                this.ItemsDataSource = new InfiniteDataSourceService<Item>(this.itemProvider).DataSource;
             }
             catch
             {

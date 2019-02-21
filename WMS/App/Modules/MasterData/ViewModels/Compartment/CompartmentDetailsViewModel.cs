@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using DevExpress.Mvvm;
+using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
@@ -30,7 +31,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private LoadingUnitDetails loadingUnit;
 
-        private IDataSource<LoadingUnit> loadingUnitsDataSource;
+        private InfiniteAsyncSource loadingUnitsDataSource;
 
         private object modelChangedEventSubscription;
 
@@ -72,7 +73,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public LoadingUnitDetails LoadingUnitDetails => this.loadingUnit;
 
-        public IDataSource<LoadingUnit> LoadingUnitsDataSource
+        public InfiniteAsyncSource LoadingUnitsDataSource
         {
             get => this.loadingUnitsDataSource;
             set => this.SetProperty(ref this.loadingUnitsDataSource, value);
@@ -101,9 +102,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 ? new DataSource<AllowedItemInCompartment>(items.AsQueryable<AllowedItemInCompartment>)
                 : null;
 
-            var loadingUnits = await this.loadingUnitProvider.GetAllAsync();
-            this.LoadingUnitsDataSource = new DataSource<LoadingUnit>(loadingUnits.AsQueryable);
-
+            this.LoadingUnitsDataSource = new InfiniteDataSourceService<LoadingUnit>(this.loadingUnitProvider).DataSource;
             base.LoadRelatedData();
         }
 
@@ -198,8 +197,6 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));
                     this.SelectedCompartmentTray = this.Model;
                 }
-
-                this.LoadRelatedData();
 
                 this.IsBusy = false;
             }
