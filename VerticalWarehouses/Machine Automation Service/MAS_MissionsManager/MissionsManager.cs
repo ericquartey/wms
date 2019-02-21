@@ -25,7 +25,11 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         private readonly ManualResetEventSlim missionExecuted;
 
+        private readonly ManualResetEventSlim missionReady;
+
         private readonly Dictionary<IMissionMessageData, int> missionsCollection;
+
+        private Task missionExecutionTask;
 
         #endregion
 
@@ -39,25 +43,20 @@ namespace Ferretto.VW.MAS_MissionsManager
 
             this.missionExecuted = new ManualResetEventSlim(true);
 
+            this.missionReady = new ManualResetEventSlim(false);
+
             this.messageQueue = new ConcurrentQueue<Event_Message>();
 
             this.missionsCollection = new Dictionary<IMissionMessageData, int>();
 
             var automationServiceMessageEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
-            automationServiceMessageEvent.Subscribe((message) =>
-            {
-                this.messageQueue.Enqueue(message);
-                this.messageReceived.Set();
-            },
+            automationServiceMessageEvent.Subscribe((message) => this.EnqueueMessageAndSetSemaphor(message),
                 ThreadOption.PublisherThread,
                 false,
-                message => message.Source == MessageActor.AutomationService);
+                message => (message.Destination == MessageActor.MissionsManager));
 
             var finiteStateMachineMessageEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
-            finiteStateMachineMessageEvent.Subscribe((message) =>
-            {
-                this.missionExecuted.Set();
-            },
+            finiteStateMachineMessageEvent.Subscribe((message) => this.missionExecuted.Set(),
                 ThreadOption.PublisherThread,
                 false,
                 message => (message.Source == MessageActor.FiniteStateMachines && message.Status == MessageStatus.End));
@@ -76,26 +75,40 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            Task.Run(() => this.MissionsExecutionTaskFunction(stoppingToken), stoppingToken);
             await Task.Run(() => this.MissionsManagerTaskFunction(stoppingToken), stoppingToken);
+        }
+
+        private void EnqueueMessageAndSetSemaphor(Event_Message message)
+        {
+            this.messageQueue.Enqueue(message);
+            this.messageReceived.Set();
         }
 
         private Task MissionsExecutionTaskFunction(CancellationToken stoppingToken)
         {
             do
             {
-                try
-                {
-                    this.missionExecuted.Wait(Timeout.Infinite, stoppingToken);
-                }
-                catch (OperationCanceledException ex)
-                {
-                    return Task.FromException(ex);
-                }
-                this.missionExecuted.Reset();
-
+                this.missionReady.Wait();
                 if (this.missionsCollection.Count > 0)
                 {
+                    try
+                    {
+                        if (!this.missionExecuted.Wait(Timeout.Infinite, stoppingToken))
+                        {
+                            var message = new Event_Message(null,
+                                "Error Message from MissionExecutionTask in MissionsManager",
+                                MessageActor.WebAPI,
+                                MessageActor.MissionsManager,
+                                MessageStatus.Error,
+                                MessageType.ErrorAction,
+                                MessageVerbosity.Debug);
+                            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(message);
+                        }
+                    }
+                    catch (OperationCanceledException ex)
+                    {
+                        return Task.FromException(ex);
+                    }
                     var min = this.missionsCollection.Min(x => x.Value);
                     var mostUrgentMissions = this.missionsCollection.Keys.Where(z => z.Priority == min).ToList();
                     if (mostUrgentMissions.Count == 1)
@@ -108,6 +121,7 @@ namespace Ferretto.VW.MAS_MissionsManager
                                                                 MessageType.StartAction,
                                                                 MessageVerbosity.Debug);
                         this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(executeMissionMessage);
+                        this.missionExecuted.Reset();
                     }
                     else
                     {
@@ -116,14 +130,7 @@ namespace Ferretto.VW.MAS_MissionsManager
                 }
                 else
                 {
-                    try
-                    {
-                        this.messageReceived.Wait(Timeout.Infinite, stoppingToken);
-                    }
-                    catch (OperationCanceledException ex)
-                    {
-                        return Task.FromException(ex);
-                    }
+                    this.missionReady.Reset();
                 }
             } while (!stoppingToken.IsCancellationRequested);
             return Task.CompletedTask;
@@ -131,6 +138,7 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         private Task MissionsManagerTaskFunction(CancellationToken stoppingToken)
         {
+            this.missionExecutionTask = Task.Run(() => this.MissionsExecutionTaskFunction(stoppingToken), stoppingToken);
             do
             {
                 try
@@ -152,6 +160,10 @@ namespace Ferretto.VW.MAS_MissionsManager
                             this.ProcessAddMissionMessage(receivedMessage);
                             break;
 
+                        case MessageType.CreateMission:
+
+                            break;
+
                         case MessageType.HorizontalHoming:
                             break;
 
@@ -171,6 +183,7 @@ namespace Ferretto.VW.MAS_MissionsManager
                 var missionData = (MissionData)message.Data;
                 var missionPriority = ((MissionData)message.Data).Priority;
                 this.missionsCollection.Add(missionData, missionPriority);
+                this.missionReady.Set();
             }
             catch (InvalidCastException)
             {
