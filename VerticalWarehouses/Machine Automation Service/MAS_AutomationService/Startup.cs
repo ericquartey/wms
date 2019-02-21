@@ -79,11 +79,16 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddHostedService<MissionsScheduler>();
             services.AddHostedService<MachineManager>();
             services.AddHostedService<FiniteStateMachines>();
-#if TEST
-            services.AddHostedService<HostedInverterDriverMock>();
-#else
-            services.AddHostedService<HostedInverterDriver>();
-#endif
+
+            var useMockedInverterDriver = this.Configuration.GetValue<bool>("InverterDriver:UseMock");
+            if (useMockedInverterDriver)
+            {
+                services.AddHostedService<HostedInverterDriverMock>();
+            }
+            else
+            {
+                services.AddHostedService<HostedInverterDriver>();
+            }
 
             services.AddSingleton<IEventAggregator, EventAggregator>();
             services.AddSingleton<IDataLayer, DataLayer>(provider => new DataLayer(
