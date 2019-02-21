@@ -852,4 +852,8 @@
     <value>ReadFinalPosition</value>
     <comment>Label text</comment>
   </data>
+  <data name="Gate1HeightReaced" xml:space="preserve">
+    <value>Gate1 Height Reaced</value>
+    <comment>Sensor control text</comment>
+  </data>
 </root>

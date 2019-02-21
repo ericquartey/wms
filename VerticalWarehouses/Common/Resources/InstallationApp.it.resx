@@ -410,7 +410,7 @@
     <value>Barriera calibrata.</value>
   </data>
   <data name="GateCorrection" xml:space="preserve">
-    <value>Correzione serranda [mm]:</value>
+    <value>Correzione barriera [mm]:</value>
   </data>
   <data name="GateOutOfTolerance" xml:space="preserve">
     <value>La barriera è fuori tolleranza</value>
@@ -672,5 +672,8 @@
   </data>
   <data name="ReadFinalPosition" xml:space="preserve">
     <value>Quota finale letta [mm]:</value>
+  </data>
+  <data name="Gate1HeightReaced" xml:space="preserve">
+    <value>Altezza raggiunta</value>
   </data>
 </root>

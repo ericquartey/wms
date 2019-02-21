@@ -401,4 +401,44 @@
     <value>HelpVPPMApplyCorrection</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpGHCDescription" xml:space="preserve">
+    <value>HelpGHCDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpGHCVelocity" xml:space="preserve">
+    <value>HelpGHCVelocity</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGHCSystemError" xml:space="preserve">
+    <value>HelpGHCSystemError</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGHCTollerance" xml:space="preserve">
+    <value>HelpGHCTollerance</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGHCHeightReaced" xml:space="preserve">
+    <value>HelpGHCHeightReaced</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGHCCurrentPosition" xml:space="preserve">
+    <value>HelpGHCCurrentPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGHCBarrierCorrection" xml:space="preserve">
+    <value>HelpGHCBarrierCorrection</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGHCFinalResult" xml:space="preserve">
+    <value>HelpGHCFinalResult</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGHCStart" xml:space="preserve">
+    <value>HelpGHCStart</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGHCStop" xml:space="preserve">
+    <value>HelpGHCStop</value>
+    <comment>Note text</comment>
+  </data>
 </root>

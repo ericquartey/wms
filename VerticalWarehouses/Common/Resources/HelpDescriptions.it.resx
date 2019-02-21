@@ -325,4 +325,34 @@
   <data name="HelpVPPMApplyCorrection" xml:space="preserve">
     <value>Applica la correzione al gruppo di celle presenti nel pannello correntemente selezionato.</value>
   </data>
+  <data name="HelpGHCDescription" xml:space="preserve">
+    <value>La procedura permette di effettuale la regolazione della barriera di rilevamento altezza del cassetto. Il segnale di altezza raggiunta va usato anche in fase di pre posizionamento della sagoma di test.</value>
+  </data>
+  <data name="HelpGHCVelocity" xml:space="preserve">
+    <value>Impostare la velocita' da usare durante la fase di taratura.</value>
+  </data>
+  <data name="HelpGHCSystemError" xml:space="preserve">
+    <value>Indica l'errore di sistema che deriva dalla velocita' di taratura impostata e dallo scan time del sistema. Ridurre la velocita' per diminuire l'errore.</value>
+  </data>
+  <data name="HelpGHCTollerance" xml:space="preserve">
+    <value>Imposta la tolleranza massima ammessa nella misura. Il test da' esito negativo se il risultato eccede il valore richiesto.</value>
+  </data>
+  <data name="HelpGHCHeightReaced" xml:space="preserve">
+    <value>Indica l'attivazione del raggio utilizzato come elemento di verifica dell'altezza. </value>
+  </data>
+  <data name="HelpGHCCurrentPosition" xml:space="preserve">
+    <value>Riporta la posizione corrente dell'asse catena.</value>
+  </data>
+  <data name="HelpGHCBarrierCorrection" xml:space="preserve">
+    <value>Indica la correzione da applicare alla barriera. Il segno piu' richiede di alzare la barriera, il segno meno di abbassarla del valore indicato.</value>
+  </data>
+  <data name="HelpGHCFinalResult" xml:space="preserve">
+    <value>Riporta il risultato finale del test.</value>
+  </data>
+  <data name="HelpGHCStart" xml:space="preserve">
+    <value>Il pulsante avvia la procedura di controllo.</value>
+  </data>
+  <data name="HelpGHCStop" xml:space="preserve">
+    <value>Il pulsante arresta la procedura di controllo.</value>
+  </data>
 </root>

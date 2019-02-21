@@ -41,6 +41,7 @@
     <None Remove="HelpWindows\HelpBeltBurnishingView.xaml" />
     <None Remove="HelpWindows\HelpCellsPanelControl.xaml" />
     <None Remove="HelpWindows\HelpGateControl.xaml" />
+    <None Remove="HelpWindows\HelpGateHeightControl.xaml" />
     <None Remove="HelpWindows\HelpInstallationState.xaml" />
     <None Remove="HelpWindows\HelpLowSpeedMovements.xaml" />
     <None Remove="HelpWindows\HelpMainWindow.xaml" />
@@ -92,6 +93,9 @@
     </Compile>
     <Compile Update="HelpWindows\HelpCellsPanelControl.xaml.cs">
       <DependentUpon>HelpCellsPanelControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpGateHeightControl.xaml.cs">
+      <DependentUpon>HelpGateHeightControl.xaml</DependentUpon>
     </Compile>
     <Compile Update="HelpWindows\HelpVerticalAxisCalibration.xaml.cs">
       <DependentUpon>HelpVerticalAxisCalibration.xaml</DependentUpon>

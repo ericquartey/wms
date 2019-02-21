@@ -49,6 +49,10 @@
             <local:HelpCellsPanelControl></local:HelpCellsPanelControl>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewmodels:Gate1HeightControlViewModel}">
+            <local:HelpGateHeightControl></local:HelpGateHeightControl>
+        </DataTemplate>
+
 
     </Window.Resources>
     <Grid Width="1024"

@@ -29,10 +29,6 @@
                                                 ContentText="{Binding SystemError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 LabelText="{x:Static res:InstallationApp.SystemErrorMM}"  />
 
-        <custom:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="410,260,0,0"
-                                                ContentText="{Binding ActiveRaysQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.ActiveRaysQuantity}" />
-
         <custom:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="160,260,0,0"
                                                 ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
@@ -52,6 +48,11 @@
         <Button     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="700,490,0,0"
                     Content="{x:Static res:InstallationApp.Stop}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        
+        <custom:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="410,260,0,0"
+                                      LabelText="{x:Static res:InstallationApp.Gate1HeightReaced}"
+                                      SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
 
     </Grid>
 </UserControl>

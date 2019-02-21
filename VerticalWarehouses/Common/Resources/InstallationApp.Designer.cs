@@ -502,6 +502,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a Gate1 Height Reaced.
+        /// </summary>
+        public static string Gate1HeightReaced {
+            get {
+                return ResourceManager.GetString("Gate1HeightReaced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Gate Control 2.
         /// </summary>
         public static string Gate2Control {

@@ -295,6 +295,96 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGHCBarrierCorrection.
+        /// </summary>
+        public static string HelpGHCBarrierCorrection {
+            get {
+                return ResourceManager.GetString("HelpGHCBarrierCorrection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGHCCurrentPosition.
+        /// </summary>
+        public static string HelpGHCCurrentPosition {
+            get {
+                return ResourceManager.GetString("HelpGHCCurrentPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGHCDescription.
+        /// </summary>
+        public static string HelpGHCDescription {
+            get {
+                return ResourceManager.GetString("HelpGHCDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGHCFinalResult.
+        /// </summary>
+        public static string HelpGHCFinalResult {
+            get {
+                return ResourceManager.GetString("HelpGHCFinalResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGHCHeightReaced.
+        /// </summary>
+        public static string HelpGHCHeightReaced {
+            get {
+                return ResourceManager.GetString("HelpGHCHeightReaced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGHCStart.
+        /// </summary>
+        public static string HelpGHCStart {
+            get {
+                return ResourceManager.GetString("HelpGHCStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGHCStop.
+        /// </summary>
+        public static string HelpGHCStop {
+            get {
+                return ResourceManager.GetString("HelpGHCStop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGHCSystemError.
+        /// </summary>
+        public static string HelpGHCSystemError {
+            get {
+                return ResourceManager.GetString("HelpGHCSystemError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGHCTollerance.
+        /// </summary>
+        public static string HelpGHCTollerance {
+            get {
+                return ResourceManager.GetString("HelpGHCTollerance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGHCVelocity.
+        /// </summary>
+        public static string HelpGHCVelocity {
+            get {
+                return ResourceManager.GetString("HelpGHCVelocity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpInstallationStateDescription.
         /// </summary>
         public static string HelpInstallationStateDescription {
