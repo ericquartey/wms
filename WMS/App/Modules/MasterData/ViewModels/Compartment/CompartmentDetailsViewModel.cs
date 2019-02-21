@@ -102,7 +102,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 ? new DataSource<AllowedItemInCompartment, int>(items.AsQueryable<AllowedItemInCompartment>)
                 : null;
 
-            this.LoadingUnitsDataSource = new InfiniteDataSourceService<LoadingUnit>(this.loadingUnitProvider).DataSource;
+            this.LoadingUnitsDataSource = new InfiniteDataSourceService<LoadingUnit, int>(this.loadingUnitProvider).DataSource;
             base.LoadRelatedData();
         }
 

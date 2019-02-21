@@ -173,7 +173,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             try
             {
-                this.ItemsDataSource = new InfiniteDataSourceService<Item>(this.itemProvider).DataSource;
+                this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(this.itemProvider).DataSource;
             }
             catch
             {

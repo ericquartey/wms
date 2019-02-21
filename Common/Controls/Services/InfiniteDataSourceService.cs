@@ -7,13 +7,12 @@ using System.Threading.Tasks;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Base;
-using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Utils.Expressions;
 using Prism.Mvvm;
 
 namespace Ferretto.Common.Controls.Services
 {
-    public class InfiniteDataSourceService<TModel> : BindableBase where TModel : IBusinessObject
+    public class InfiniteDataSourceService<TModel, TKey> : BindableBase where TModel : IModel<TKey>
     {
         #region Fields
 
@@ -23,13 +22,13 @@ namespace Ferretto.Common.Controls.Services
 
         private InfiniteAsyncSource dataSource;
 
-        private IPagedBusinessProvider<TModel> provider;
+        private IPagedBusinessProvider<TModel, TKey> provider;
 
         #endregion
 
         #region Constructors
 
-        public InfiniteDataSourceService(IPagedBusinessProvider<TModel> provider)
+        public InfiniteDataSourceService(IPagedBusinessProvider<TModel, TKey> provider)
         {
             this.Provider = provider;
         }
@@ -47,7 +46,7 @@ namespace Ferretto.Common.Controls.Services
             }
         }
 
-        public IPagedBusinessProvider<TModel> Provider
+        public IPagedBusinessProvider<TModel, TKey> Provider
         {
             get => this.provider;
             set

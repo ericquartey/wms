@@ -166,7 +166,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.Model = await this.itemListRowProvider.GetByIdAsync(modelId);
                     if (this.Model != null)
                     {
-                        this.ItemsDataSource = new InfiniteDataSourceService<Item>(this.itemProvider).DataSource;
+                        this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(this.itemProvider).DataSource;
                     }
                     else
                     {
