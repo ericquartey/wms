@@ -8,11 +8,11 @@ namespace Ferretto.VW.Common_Utils.Messages.Interfaces
 {
     public enum MissionType
     {
-        BayToCellMission,
+        BayToCell,
 
-        CellToBayMission,
+        CellToBay,
 
-        CellToCellMission
+        CellToCell
     }
 
     public interface IMissionMessageData : IEventMessageData
