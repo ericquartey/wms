@@ -355,4 +355,28 @@
   <data name="HelpGHCStop" xml:space="preserve">
     <value>Il pulsante arresta la procedura di controllo.</value>
   </data>
+  <data name="HelpWCDescription" xml:space="preserve">
+    <value>La procedura permette di verificare che la misura del peso rientri all'interno della tolleranza prevista. Per la misura vengono utilizzati dei pesi campione nella quantita' indicata nell'apposito campo.</value>
+  </data>
+  <data name="HelpWCTestRun" xml:space="preserve">
+    <value>Indica la corsa effettuata a bassa velocita' durante la quale vengono effettuati i campionamenti della corrente erogata.</value>
+  </data>
+  <data name="HelpWCWeightInserted" xml:space="preserve">
+    <value>Indica il peso campione inserito per il test.</value>
+  </data>
+  <data name="HelpWCWeightTollerance" xml:space="preserve">
+    <value>Indica la tolleranza richiesta dalla misura.</value>
+  </data>
+  <data name="HelpWCWeightMeasured" xml:space="preserve">
+    <value>Indica il peso misurato dal sistema.</value>
+  </data>
+  <data name="HelpWCFinalResult" xml:space="preserve">
+    <value>Segnala l'esito finale della procedura. L'esito sara' positivo se il peso misurato rientra nella tolleranza impostata.</value>
+  </data>
+  <data name="HelpWCStart" xml:space="preserve">
+    <value>Avvia la procedura di test.</value>
+  </data>
+  <data name="HelpWCStop" xml:space="preserve">
+    <value>Arresta la procedura di test.</value>
+  </data>
 </root>

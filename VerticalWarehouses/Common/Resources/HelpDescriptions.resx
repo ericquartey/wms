@@ -441,4 +441,36 @@
     <value>HelpGHCStop</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpWCDescription" xml:space="preserve">
+    <value>HelpWCDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpWCTestRun" xml:space="preserve">
+    <value>HelpWCTestRun</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpWCWeightInserted" xml:space="preserve">
+    <value>HelpWCWeightInserted</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpWCWeightTollerance" xml:space="preserve">
+    <value>HelpWCWeightTollerance</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpWCWeightMeasured" xml:space="preserve">
+    <value>HelpWCWeightMeasured</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpWCFinalResult" xml:space="preserve">
+    <value>HelpWCFinalResult</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpWCStart" xml:space="preserve">
+    <value>HelpWCStart</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpWCStop" xml:space="preserve">
+    <value>HelpWCStop</value>
+    <comment>Note text</comment>
+  </data>
 </root>

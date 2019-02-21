@@ -682,6 +682,78 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpWCDescription.
+        /// </summary>
+        public static string HelpWCDescription {
+            get {
+                return ResourceManager.GetString("HelpWCDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpWCFinalResult.
+        /// </summary>
+        public static string HelpWCFinalResult {
+            get {
+                return ResourceManager.GetString("HelpWCFinalResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpWCStart.
+        /// </summary>
+        public static string HelpWCStart {
+            get {
+                return ResourceManager.GetString("HelpWCStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpWCStop.
+        /// </summary>
+        public static string HelpWCStop {
+            get {
+                return ResourceManager.GetString("HelpWCStop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpWCTestRun.
+        /// </summary>
+        public static string HelpWCTestRun {
+            get {
+                return ResourceManager.GetString("HelpWCTestRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpWCWeightInserted.
+        /// </summary>
+        public static string HelpWCWeightInserted {
+            get {
+                return ResourceManager.GetString("HelpWCWeightInserted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpWCWeightMeasured.
+        /// </summary>
+        public static string HelpWCWeightMeasured {
+            get {
+                return ResourceManager.GetString("HelpWCWeightMeasured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpWCWeightTollerance.
+        /// </summary>
+        public static string HelpWCWeightTollerance {
+            get {
+                return ResourceManager.GetString("HelpWCWeightTollerance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a ResolutionCalibrationAcceptNewResolution.
         /// </summary>
         public static string ResolutionCalibrationAcceptNewResolution {

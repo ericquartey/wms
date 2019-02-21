@@ -446,7 +446,7 @@
     <value>Barriera misura altezza </value>
   </data>
   <data name="AcceptableWeightTolerance" xml:space="preserve">
-    <value>Tolleranza peso accettabile [%]:</value>
+    <value>Tolleranza richiesta [%]:</value>
   </data>
   <data name="InsertedWeight" xml:space="preserve">
     <value>Peso inserito [kg]:</value>

@@ -53,6 +53,10 @@
             <local:HelpGateHeightControl></local:HelpGateHeightControl>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewmodels:WeightControlViewModel}">
+            <local:HelpWeightControl></local:HelpWeightControl>
+        </DataTemplate>
+
 
     </Window.Resources>
     <Grid Width="1024"
