@@ -22,7 +22,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
 
-        private IDataSource<AllowedItemInCompartment> allowedItemsDataSource;
+        private IDataSource<AllowedItemInCompartment, int> allowedItemsDataSource;
 
         private ICommand editCommand;
 
@@ -30,7 +30,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private LoadingUnitDetails loadingUnit;
 
-        private IDataSource<LoadingUnit> loadingUnitsDataSource;
+        private IDataSource<LoadingUnit, int> loadingUnitsDataSource;
 
         private object modelChangedEventSubscription;
 
@@ -55,7 +55,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public IDataSource<AllowedItemInCompartment> AllowedItemsDataSource
+        public IDataSource<AllowedItemInCompartment, int> AllowedItemsDataSource
         {
             get => this.allowedItemsDataSource;
             set => this.SetProperty(ref this.allowedItemsDataSource, value);
@@ -72,7 +72,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public LoadingUnitDetails LoadingUnitDetails => this.loadingUnit;
 
-        public IDataSource<LoadingUnit> LoadingUnitsDataSource
+        public IDataSource<LoadingUnit, int> LoadingUnitsDataSource
         {
             get => this.loadingUnitsDataSource;
             set => this.SetProperty(ref this.loadingUnitsDataSource, value);
@@ -94,15 +94,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public async override void LoadRelatedData()
+        public override async void LoadRelatedData()
         {
             var items = await this.itemProvider.GetAllowedByCompartmentIdAsync(this.Model.Id);
             this.AllowedItemsDataSource = this.Model != null
-                ? new DataSource<AllowedItemInCompartment>(items.AsQueryable<AllowedItemInCompartment>)
+                ? new DataSource<AllowedItemInCompartment, int>(items.AsQueryable<AllowedItemInCompartment>)
                 : null;
 
-            var loadingUnits = await this.loadingUnitProvider.GetAllAsync();
-            this.LoadingUnitsDataSource = new DataSource<LoadingUnit>(loadingUnits.AsQueryable);
+            var loadingUnits = await this.loadingUnitProvider.GetAllAsync(0, 0);
+            this.LoadingUnitsDataSource = new DataSource<LoadingUnit, int>(loadingUnits.AsQueryable);
 
             base.LoadRelatedData();
         }
@@ -126,7 +126,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<Compartment>(this.Model.Id));
+                this.EventService.Invoke(new ModelChangedPubSubEvent<Compartment, int>(this.Model.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.CompartmentSavedSuccessfully, StatusType.Success));
             }
             else
@@ -146,7 +146,7 @@ namespace Ferretto.WMS.Modules.MasterData
         protected override void OnDispose()
         {
             this.EventService.Unsubscribe<RefreshModelsPubSubEvent<Compartment>>(this.modelRefreshSubscription);
-            this.EventService.Unsubscribe<ModelChangedPubSubEvent<Compartment>>(this.modelChangedEventSubscription);
+            this.EventService.Unsubscribe<ModelChangedPubSubEvent<Compartment, int>>(this.modelChangedEventSubscription);
             this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<Compartment>>(this.modelSelectionChangedSubscription);
             base.OnDispose();
         }
@@ -163,7 +163,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<Compartment>>(
                 async eventArgs => { await this.LoadDataAsync(); }, this.Token, true, true);
 
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<Compartment>>(
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<Compartment, int>>(
                 async eventArgs => { await this.LoadDataAsync(); });
 
             this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<Compartment>>(

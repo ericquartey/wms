@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using Ferretto.Common.BLL.Interfaces.Base;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class BaseModel<TKey>
+    public class BaseModel<TKey> : IModel<TKey>
     {
         #region Constructors
 

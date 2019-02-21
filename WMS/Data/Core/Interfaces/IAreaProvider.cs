@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Ferretto.WMS.Data.Core.Interfaces.Base;
+using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.WMS.Data.Core.Models;
 
 namespace Ferretto.WMS.Data.Core.Interfaces
@@ -11,9 +11,9 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     {
         #region Methods
 
-        Task<IEnumerable<Area>> GetByItemIdAvailabilityAsync(int id);
-
         Task<IEnumerable<Aisle>> GetAislesAsync(int id);
+
+        Task<IEnumerable<Area>> GetByItemIdAvailabilityAsync(int id);
 
         #endregion
     }

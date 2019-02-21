@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.BusinessModels;
@@ -7,18 +6,18 @@ using Ferretto.Common.BusinessModels;
 namespace Ferretto.Common.BusinessProviders
 {
     public interface IItemListProvider :
-        ICreateAsyncProvider<ItemListDetails>,
-        IPagedBusinessProvider<ItemList>,
+        ICreateAsyncProvider<ItemListDetails, int>,
+        IPagedBusinessProvider<ItemList, int>,
         IReadSingleAsyncProvider<ItemListDetails, int>,
-        IUpdateAsyncProvider<ItemListDetails>
+        IUpdateAsyncProvider<ItemListDetails, int>
     {
         #region Methods
 
-        Task<OperationResult> ExecuteImmediatelyAsync(int listId, int areaId, int bayId);
+        Task<IOperationResult<ItemList>> ExecuteImmediatelyAsync(int listId, int areaId, int bayId);
 
         ItemListDetails GetNew();
 
-        Task<OperationResult> ScheduleForExecutionAsync(int listId, int areaId);
+        Task<IOperationResult<ItemList>> ScheduleForExecutionAsync(int listId, int areaId);
 
         #endregion
     }

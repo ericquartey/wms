@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
-using Ferretto.Common.EF;
 
 namespace Ferretto.Common.BusinessProviders
 {
@@ -27,7 +25,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public async Task<IOperationResult> CreateAsync(ItemCompartmentType model)
+        public async Task<IOperationResult<ItemCompartmentType>> CreateAsync(ItemCompartmentType model)
         {
             if (model == null)
             {
@@ -45,11 +43,11 @@ namespace Ferretto.Common.BusinessProviders
 
                 model.Id = itemCompartmentType.Id;
 
-                return new OperationResult(true);
+                return new OperationResult<ItemCompartmentType>(true);
             }
             catch (Exception ex)
             {
-                return new OperationResult(ex);
+                return new OperationResult<ItemCompartmentType>(ex);
             }
         }
 

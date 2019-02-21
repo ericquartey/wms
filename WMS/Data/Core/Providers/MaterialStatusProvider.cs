@@ -8,13 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class MaterialStatusProvider : IMaterialStatusProvider
+    internal class MaterialStatusProvider : IMaterialStatusProvider
     {
         #region Fields
 
         private readonly DatabaseContext dataContext;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -23,7 +23,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             this.dataContext = dataContext;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -54,6 +54,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                  .SingleOrDefaultAsync(a => a.Id == id);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

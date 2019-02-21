@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
@@ -53,16 +53,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             try
             {
-                var searchExpression = BuildSearchExpression(search);
                 var whereExpression = where.AsIExpression();
+                var orderByExpression = orderBy.ParseSortOptions();
 
                 return this.Ok(
                     await this.machineProvider.GetAllAsync(
                         skip,
                         take,
-                        orderBy,
+                        orderByExpression,
                         whereExpression,
-                        searchExpression));
+                        search));
             }
             catch (NotSupportedException e)
             {
@@ -80,12 +80,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             try
             {
-                var searchExpression = BuildSearchExpression(search);
                 var whereExpression = where.AsIExpression();
 
                 return await this.machineProvider.GetAllCountAsync(
                            whereExpression,
-                           searchExpression);
+                           search);
             }
             catch (NotSupportedException e)
             {
@@ -123,29 +122,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.BadRequest(e.Message);
             }
-        }
-
-        private static Expression<Func<Machine, bool>> BuildSearchExpression(string search)
-        {
-            if (string.IsNullOrWhiteSpace(search))
-            {
-                return null;
-            }
-
-            return (m) =>
-                m.AisleName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                m.AreaName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                m.MachineTypeDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                m.Model.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                m.Nickname.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                m.RegistrationNumber.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                m.FillRate.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
         #endregion

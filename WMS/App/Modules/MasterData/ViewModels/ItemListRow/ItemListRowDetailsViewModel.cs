@@ -20,7 +20,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
-        private IDataSource<Item> itemsDataSource;
+        private IDataSource<Item, int> itemsDataSource;
 
         private ICommand listRowExecuteCommand;
 
@@ -43,7 +43,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public IDataSource<Item> ItemsDataSource
+        public IDataSource<Item, int> ItemsDataSource
         {
             get => this.itemsDataSource;
             set => this.SetProperty(ref this.itemsDataSource, value);
@@ -84,7 +84,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<Item>(this.Model.Id));
+                this.EventService.Invoke(new ModelChangedPubSubEvent<Item, int>(this.Model.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemListSavedSuccessfully));
             }
             else
@@ -104,7 +104,7 @@ namespace Ferretto.WMS.Modules.MasterData
         protected override void OnDispose()
         {
             this.EventService.Unsubscribe<RefreshModelsPubSubEvent<ItemListRow>>(this.modelRefreshSubscription);
-            this.EventService.Unsubscribe<ModelChangedPubSubEvent<ItemListRow>>(this.modelChangedEventSubscription);
+            this.EventService.Unsubscribe<ModelChangedPubSubEvent<ItemListRow, int>>(this.modelChangedEventSubscription);
             this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<ItemListRow>>(
                 this.modelSelectionChangedSubscription);
             base.OnDispose();
@@ -136,7 +136,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.Token,
                 true,
                 true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<ItemListRow>>(async eventArgs => { await this.LoadDataAsync(); });
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<ItemListRow, int>>(async eventArgs => { await this.LoadDataAsync(); });
             this.modelSelectionChangedSubscription =
                 this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<ItemListRow>>(
                     async eventArgs =>
@@ -167,8 +167,8 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.Model = await this.itemListRowProvider.GetByIdAsync(modelId);
                     if (this.Model != null)
                     {
-                        var items = await this.itemProvider.GetAllAsync();
-                        this.ItemsDataSource = new DataSource<Item>(() => items.AsQueryable());
+                        var items = await this.itemProvider.GetAllAsync(0, 0);
+                        this.ItemsDataSource = new DataSource<Item, int>(() => items.AsQueryable());
                     }
                     else
                     {

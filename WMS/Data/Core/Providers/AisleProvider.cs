@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class AisleProvider : IAisleProvider
+    internal class AisleProvider : IAisleProvider
     {
         #region Fields
 

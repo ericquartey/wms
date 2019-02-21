@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Ferretto.WMS.Data.Core.Interfaces.Base;
+using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.WMS.Data.Core.Models;
 
 namespace Ferretto.WMS.Data.Core.Interfaces
@@ -15,7 +16,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     {
         #region Methods
 
-        Task<OperationResult<IEnumerable<CompartmentDetails>>> CreateRangeAsync(
+        Task<IOperationResult<IEnumerable<CompartmentDetails>>> CreateRangeAsync(
             IEnumerable<CompartmentDetails> compartments);
 
         Task<IEnumerable<AllowedItemInCompartment>> GetAllowedItemsAsync(int id);

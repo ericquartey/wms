@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
@@ -41,6 +41,22 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
+        [ProducesResponseType(200, Type = typeof(Mission))]
+        [ProducesResponseType(404, Type = typeof(string))]
+        [HttpPost("{id}/abort")]
+        public Task<ActionResult<Mission>> Abort(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        [ProducesResponseType(200, Type = typeof(Mission))]
+        [ProducesResponseType(404, Type = typeof(string))]
+        [HttpPost("{id}/complete")]
+        public Task<ActionResult<Mission>> Complete(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+
         [ProducesResponseType(200, Type = typeof(IEnumerable<Mission>))]
         [ProducesResponseType(400, Type = typeof(string))]
         [HttpGet]
@@ -53,16 +69,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             try
             {
-                var searchExpression = BuildSearchExpression(search);
                 var whereExpression = where.AsIExpression();
+                var orderByExpression = orderBy.ParseSortOptions();
 
                 return this.Ok(
                     await this.missionProvider.GetAllAsync(
                         skip,
                         take,
-                        orderBy,
+                        orderByExpression,
                         whereExpression,
-                        searchExpression));
+                        search));
             }
             catch (NotSupportedException e)
             {
@@ -80,12 +96,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             try
             {
-                var searchExpression = BuildSearchExpression(search);
                 var whereExpression = where.AsIExpression();
 
                 return await this.missionProvider.GetAllCountAsync(
                            whereExpression,
-                           searchExpression);
+                           search);
             }
             catch (NotSupportedException e)
             {
@@ -94,7 +109,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(200, Type = typeof(Mission))]
-        [ProducesResponseType(404, Type = typeof(SerializableError))]
+        [ProducesResponseType(404, Type = typeof(string))]
         [HttpGet("{id}")]
         public async Task<ActionResult<Mission>> GetByIdAsync(int id)
         {
@@ -123,25 +138,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.BadRequest(e.Message);
             }
-        }
-
-        private static Expression<Func<Mission, bool>> BuildSearchExpression(string search)
-        {
-            if (string.IsNullOrWhiteSpace(search))
-            {
-                return null;
-            }
-
-            return (m) =>
-                m.Lot.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                m.RegistrationNumber.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                m.Sub1.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                m.Sub2.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                m.Quantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
         #endregion

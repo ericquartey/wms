@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
@@ -63,12 +61,9 @@ namespace Ferretto.Common.BusinessModels
 
         #region Properties
 
-        public bool CanBeExecuted
-        {
-            get => this.itemListRowStatus == ItemListRowStatus.Incomplete
+        public bool CanBeExecuted => this.itemListRowStatus == ItemListRowStatus.Incomplete
                     || this.itemListRowStatus == ItemListRowStatus.Suspended
                     || this.itemListRowStatus == ItemListRowStatus.Waiting;
-        }
 
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string Code { get => this.code; set => this.SetProperty(ref this.code, value); }
