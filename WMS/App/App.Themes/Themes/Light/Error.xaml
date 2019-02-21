@@ -5,8 +5,8 @@
         <StackPanel Orientation="Horizontal">
             <Grid>
                 <AdornedElementPlaceholder x:Name="adorner"
-                                           MaxHeight="52"
-                                           Margin="0,-30,0,0"
+                                           MaxHeight="44"
+                                           Margin="0,-22,0,0"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top" />
                 <Border HorizontalAlignment="Stretch"
