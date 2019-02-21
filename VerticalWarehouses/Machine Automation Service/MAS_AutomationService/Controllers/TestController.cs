@@ -52,7 +52,8 @@ namespace Ferretto.VW.MAS_AutomationService
             missionData.BayID = bayID;
             missionData.DrawerID = drawerID;
 
-            var message = new Event_Message(missionData, "Create Mission",
+            var message = new Event_Message(missionData,
+                "Create Mission",
                 MessageActor.MissionsManager,
                 MessageActor.WebAPI,
                 MessageStatus.Start,
@@ -72,6 +73,20 @@ namespace Ferretto.VW.MAS_AutomationService
         public void ExecuteStopHoming()
         {
             this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish(new Command_EventParameter(CommandType.ExecuteStopHoming));
+        }
+
+        [HttpGet("MissionExecutedTest")]
+        public void MissionExecuted()
+        {
+            var message = new Event_Message(
+                null,
+                "Mission Executed",
+                MessageActor.MissionsManager,
+                MessageActor.FiniteStateMachines,
+                MessageStatus.End,
+                MessageType.EndAction,
+                MessageVerbosity.Debug);
+            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(message);
         }
 
         [HttpGet("StopFSM")]
