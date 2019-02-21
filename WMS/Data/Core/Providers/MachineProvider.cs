@@ -94,6 +94,52 @@ namespace Ferretto.WMS.Data.Core.Providers
                 m.FillRate.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
+        private static MachineStatus GetMachineStatus(Common.DataModels.IDataModel machine)
+        {
+            if (machine != null)
+            {
+                if (machine.Id == 1)
+                {
+                    return MachineStatus.Automatic;
+                }
+                else if (machine.Id == 2)
+                {
+                    return MachineStatus.Error;
+                }
+                else if (machine.Id == 3)
+                {
+                    return MachineStatus.Manual;
+                }
+                else
+                {
+                    return MachineStatus.Offline;
+                }
+            }
+
+            return MachineStatus.NotSpecified;
+        }
+
+        private static MaintenanceStatus GetMaintenanceStatus(Common.DataModels.IDataModel machine)
+        {
+            if (machine != null)
+            {
+                if (machine.Id == 1)
+                {
+                    return MaintenanceStatus.Valid;
+                }
+                else if (machine.Id == 2)
+                {
+                    return MaintenanceStatus.Expiring;
+                }
+                else
+                {
+                    return MaintenanceStatus.Expired;
+                }
+            }
+
+            return MaintenanceStatus.NotSpecified;
+        }
+
         private IQueryable<Machine> GetAllBase()
         {
             return this.dataContext.Machines
@@ -127,7 +173,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     LoadingUnitsPerCradle = m.LoadingUnitsPerCradle,
                     MachineTypeId = m.MachineTypeId,
                     MachineTypeDescription = m.MachineType.Description,
-                    MaintenanceStatus = (MaintenanceStatus)((m.Id - 1) % 3),
+                    MaintenanceStatus = GetMaintenanceStatus(m),
                     ManualTime = m.ManualTime,
                     MissionTime = m.MissionTime,
                     Model = m.Model,
@@ -137,7 +183,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     OutputLoadingUnitsCount = m.OutputLoadingUnitsCount,
                     PowerOnTime = m.PowerOnTime,
                     RegistrationNumber = m.RegistrationNumber,
-                    Status = (MachineStatus)(m.Id - 1),
+                    Status = GetMachineStatus(m),
                     TestDate = m.TestDate,
                     TotalMaxWeight = m.TotalMaxWeight
                 });
