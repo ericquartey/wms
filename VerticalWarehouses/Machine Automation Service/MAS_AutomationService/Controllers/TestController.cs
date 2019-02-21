@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Prism.Events;
+﻿using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
+using Microsoft.AspNetCore.Mvc;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
-    [Route( "api/[controller]" )]
+    [Route("api/[controller]")]
     [ApiController]
     public class TestController
     {
@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
         #region Constructors
 
-        public TestController( IEventAggregator eventAggregator )
+        public TestController(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
         }
@@ -28,32 +28,43 @@ namespace Ferretto.VW.MAS_AutomationService
 
         #region Methods
 
-        [HttpGet( "AddMissionTest" )]
+        [HttpGet("AddMissionTest")]
         public void AddMission()
         {
-            MissionData missionData = new MissionData();
+            var missionData = new MissionData();
 
-            Event_Message missionMessage = new Event_Message( missionData,
+            var missionMessage = new Event_Message(missionData,
                 "Test Mission",
                 MessageActor.AutomationService,
                 MessageActor.WebAPI,
                 MessageStatus.Start,
                 MessageType.AddMission,
-                MessageVerbosity.Debug );
-            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish( missionMessage );
+                MessageVerbosity.Debug);
+            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(missionMessage);
         }
 
         [HttpGet("HomingTest")]
-        public string ExecuteHoming()
+        public void ExecuteHoming()
         {
             this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish(new Command_EventParameter(CommandType.ExecuteHoming));
-            return "Execute Homing Done!";
         }
 
         [HttpGet("HomingStop")]
         public void ExecuteStopHoming()
         {
             this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish(new Command_EventParameter(CommandType.ExecuteStopHoming));
+        }
+
+        [HttpGet("PositioningStop")]
+        public void ExecuteStopPositioning()
+        {
+            this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish(new Command_EventParameter(CommandType.ExecuteStopVerticalPositioning));
+        }
+
+        [HttpGet("PositioningTest")]
+        public void PositioningTest()
+        {
+            this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish(new Command_EventParameter(CommandType.ExecuteVerticalPositioning));
         }
 
         [HttpGet("StopFSM")]

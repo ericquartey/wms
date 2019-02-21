@@ -25,7 +25,9 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         void ExecuteVerticalHoming();
 
-        void ExecuteVerticalPosition(int targetPosition, float vMax, float acc, float dec, float weight, short offset);
+        void ExecuteVerticalPosition(int targetPosition, float vMax, float acc, float dec, float weight, short offset, bool absoluteMovement);
+
+        void ExecuteVerticalPositionStop();
 
         bool[] GetSensorsStates();
 
