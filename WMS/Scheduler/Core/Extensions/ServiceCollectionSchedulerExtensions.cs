@@ -22,6 +22,8 @@ namespace Ferretto.WMS.Scheduler.Core.Extensions
             serviceCollection.AddTransient<IMissionSchedulerProvider, MissionSchedulerProvider>();
             serviceCollection.AddTransient<ISchedulerRequestProvider, SchedulerRequestProvider>();
 
+            serviceCollection.AddHostedService<Services.SchedulerService>();
+
             return serviceCollection;
         }
 

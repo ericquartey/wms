@@ -112,7 +112,8 @@ namespace Ferretto.WMS.Data.WebAPI
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             var connectionString = this.Configuration.GetConnectionString("WmsConnectionString");
-            services.AddDbContext<DatabaseContext>(
+
+            services.AddDbContextPool<DatabaseContext>(
                 options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Ferretto.Common.EF")));
 
             services.AddMemoryCache();

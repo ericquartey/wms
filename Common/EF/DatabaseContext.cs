@@ -39,11 +39,7 @@ namespace Ferretto.Common.EF
 
         #region Constructors
 
-        public DatabaseContext()
-        {
-        }
-
-        public DatabaseContext(DbContextOptions<DatabaseContext> options)
+        public DatabaseContext(DbContextOptions<DatabaseContext> options = null)
             : base(options)
         {
         }
