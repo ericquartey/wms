@@ -4,6 +4,7 @@ using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
@@ -32,7 +33,8 @@ namespace Ferretto.VW.MAS_AutomationService
         public void AddMission()
         {
             var missionData = new MissionData();
-
+            missionData.Priority = 1;
+            missionData.MissionType = MissionType.CellToBayMission;
             var missionMessage = new Event_Message(missionData,
                 "Test Mission",
                 MessageActor.AutomationService,
@@ -41,6 +43,22 @@ namespace Ferretto.VW.MAS_AutomationService
                 MessageType.AddMission,
                 MessageVerbosity.Debug);
             this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(missionMessage);
+        }
+
+        [HttpPost("CreateMissionTest")]
+        public void CreateMission([FromBody] int bayID, int drawerID)
+        {
+            var missionData = new MissionData();
+            missionData.BayID = bayID;
+            missionData.DrawerID = drawerID;
+
+            var message = new Event_Message(missionData, "Create Mission",
+                MessageActor.MissionsManager,
+                MessageActor.WebAPI,
+                MessageStatus.Start,
+                MessageType.CreateMission,
+                MessageVerbosity.Debug);
+            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(message);
         }
 
         [HttpGet("HomingTest")]
