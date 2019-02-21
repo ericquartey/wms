@@ -87,6 +87,7 @@
                         </Grid.ColumnDefinitions>
 
                         <wms:LookUpEdit Margin="0,0,20,0"
+                                        wms:ShowTitle.Show="True"
                                         DisplayMember="Code"
                                         EditValue="{Binding Model.LoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         ItemsSource="{Binding LoadingUnitsDataSource, Mode=OneWay}"
@@ -169,6 +170,7 @@
                         <wms:LookUpEdit Grid.Row="0"
                                         Grid.Column="0"
                                         Grid.ColumnSpan="2"
+                                        wms:ShowTitle.Show="True"
                                         DisplayMember="Description"
                                         EditValue="{Binding Model.ItemId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         ItemsSource="{Binding AllowedItemsDataSource, Mode=OneWay}"
@@ -366,17 +368,17 @@
                 <GroupBox Margin="20,0"
                           Header="{x:Static res:MasterData.OtherInformation}">
                     <StackPanel Orientation="Vertical">
-                        <wms:InfoText HorizontalAlignment="Left"                                      
+                        <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.CreationDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"                                      
+                        <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.LastHandlingDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"                                      
+                        <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.InventoryDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"                                      
+                        <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.FirstStoreDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"                                      
+                        <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.LastStoreDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"                                      
+                        <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.LastPickDate}" />
                     </StackPanel>
 

@@ -161,6 +161,7 @@
 
                         <wms:LookUpEdit Grid.ColumnSpan="3"
                                         Margin="0,0,20,0"
+                                        wms:ShowTitle.Show="True"
                                         DisplayMember="Description"
                                         EditValue="{Binding Model.ItemId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         ItemsSource="{Binding ItemsDataSource, Mode=OneWay}"
@@ -283,15 +284,15 @@
                               Header="{x:Static res:MasterData.OtherInformation}">
                         <StackPanel Orientation="Vertical">
 
-                            <wms:InfoText HorizontalAlignment="Left"                                          
+                            <wms:InfoText HorizontalAlignment="Left"
                                           Content="{Binding Path=Model.DispatchedQuantity}" />
                             <wms:InfoText HorizontalAlignment="Left"
                                           Content="{Binding Path=Model.CreationDate}" />
                             <wms:InfoText HorizontalAlignment="Left"
                                           Content="{Binding Path=Model.LastModificationDate}" />
-                            <wms:InfoText HorizontalAlignment="Left"                                          
+                            <wms:InfoText HorizontalAlignment="Left"
                                           Content="{Binding Path=Model.LastExecutionDate}" />
-                            <wms:InfoText HorizontalAlignment="Left"                                          
+                            <wms:InfoText HorizontalAlignment="Left"
                                           Content="{Binding Path=Model.CompletionDate}" />
                         </StackPanel>
 

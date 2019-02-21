@@ -94,6 +94,7 @@
                     <wms:LookUpEdit Grid.Row="2"
                                     Grid.Column="0"
                                     Grid.ColumnSpan="3"
+                                    wms:ShowTitle.Show="True"
                                     DisplayMember="Description"
                                     EditValue="{Binding Model.ItemId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     ItemsSource="{Binding ItemsDataSource, Mode=OneWay}"
