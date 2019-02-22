@@ -82,6 +82,7 @@ namespace Ferretto.Common.BusinessModels
 
             this.instance = newInstance;
             this.modifiedProperties.Clear();
+            this.requiredProperties.Clear();
             this.IsModified = false;
 
             this.totalRequired = this.instance.GetType().GetProperties()
@@ -105,14 +106,14 @@ namespace Ferretto.Common.BusinessModels
             var newValue = propertyInfo.GetValue(sender);
             var snapshotValue = propertyInfo.GetValue(this.snapshot);
 
-            this.IsRequiredValid = propertyInfo.CustomAttributes.Any(a => a.AttributeType == typeof(RequiredAttribute));
+            var isRequired = propertyInfo.CustomAttributes.Any(a => a.AttributeType == typeof(RequiredAttribute));
 
             if (newValue != snapshotValue && newValue?.Equals(snapshotValue) == false)
             {
                 if (this.modifiedProperties.Contains(e.PropertyName) == false)
                 {
                     this.modifiedProperties.Add(e.PropertyName);
-                    if (this.IsRequiredValid)
+                    if (isRequired)
                     {
                         this.requiredProperties.Add(e.PropertyName);
                     }
@@ -122,7 +123,7 @@ namespace Ferretto.Common.BusinessModels
             else if (this.modifiedProperties.Contains(e.PropertyName))
             {
                 this.modifiedProperties.Remove(e.PropertyName);
-                if (!this.IsRequiredValid)
+                if (isRequired)
                 {
                     this.requiredProperties.Remove(e.PropertyName);
                 }
