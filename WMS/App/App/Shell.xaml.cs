@@ -1,11 +1,12 @@
 ﻿using DevExpress.Xpf.Core;
+using Ferretto.Common.Controls;
 using Ferretto.Common.Utils.Modules;
 using Prism.Modularity;
 using Prism.Regions;
 
 namespace Ferretto.WMS.App
 {
-    public partial class Shell : DXWindow
+    public partial class Shell : WmsWindow
     {
         #region Fields
 

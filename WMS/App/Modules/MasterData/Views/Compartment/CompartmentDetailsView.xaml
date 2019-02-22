@@ -87,6 +87,7 @@
                         </Grid.ColumnDefinitions>
 
                         <wms:LookUpEdit Margin="0,0,20,0"
+                                        wms:ShowTitle.Show="True"
                                         DisplayMember="Code"
                                         EditValue="{Binding Model.LoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         ItemsSource="{Binding LoadingUnitsDataSource, Mode=OneWay}"
@@ -94,7 +95,8 @@
                                         ValueMember="Id">
                             <wms:LookUpEdit.PopupContentTemplate>
                                 <ControlTemplate>
-                                    <wms:WmsGridControl x:Name="PART_GridControl">
+                                    <wms:WmsGridControl x:Name="PART_GridControl"
+                                                        ItemsSource="{Binding LoadingUnitsDataSource, Mode=OneWay}">
                                         <wms:WmsGridControl.Columns>
                                             <dxg:GridColumn Width="100*"
                                                             FieldName="Code" />
@@ -130,16 +132,16 @@
 
                         <wms:ComboBox Grid.Column="1"
                                       Margin="0,0,20,0"
+                                      wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.CompartmentStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False"
-                                      ItemsSource="{Binding Model.CompartmentStatusChoices}"
-                                      wms:ShowTitle.Show="True"/>
+                                      ItemsSource="{Binding Model.CompartmentStatusChoices}" />
 
                         <wms:ComboBox Grid.Row="1"
                                       Margin="0,0,20,0"
+                                      wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.CompartmentTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Model.CompartmentTypeChoices}"
-                                      wms:ShowTitle.Show="True"/>
+                                      ItemsSource="{Binding Model.CompartmentTypeChoices}" />
 
                         <wms:WmsCheckEdit Grid.Row="1"
                                           Grid.Column="1"
@@ -168,6 +170,7 @@
                         <wms:LookUpEdit Grid.Row="0"
                                         Grid.Column="0"
                                         Grid.ColumnSpan="2"
+                                        wms:ShowTitle.Show="True"
                                         DisplayMember="Description"
                                         EditValue="{Binding Model.ItemId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         ItemsSource="{Binding AllowedItemsDataSource, Mode=OneWay}"
@@ -175,7 +178,8 @@
                                         ValueMember="Id">
                             <wms:LookUpEdit.PopupContentTemplate>
                                 <ControlTemplate>
-                                    <wms:WmsGridControl x:Name="PART_GridControl">
+                                    <wms:WmsGridControl x:Name="PART_GridControl"
+                                                        ItemsSource="{Binding AllowedItemsDataSource, Mode=OneWay}">
                                         <wms:WmsGridControl.Columns>
                                             <dxg:GridColumn Width="10*"
                                                             FieldName="Code" />
@@ -215,36 +219,36 @@
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="0"
                                      Margin="0,0,20,0"
-                                     EditValue="{Binding Model.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     wms:ShowTitle.Show="True"/>
+                                     wms:ShowTitle.Show="True"
+                                     EditValue="{Binding Model.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="1"
-                                     EditValue="{Binding Model.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     wms:ShowTitle.Show="True"/>
+                                     wms:ShowTitle.Show="True"
+                                     EditValue="{Binding Model.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
+                                      wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Model.MaterialStatusChoices}"
-                                      wms:ShowTitle.Show="True"/>
+                                      ItemsSource="{Binding Model.MaterialStatusChoices}" />
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="1"
-                                      EditValue="{Binding Model.FifoTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      wms:ShowTitle.Show="True"/>
+                                      wms:ShowTitle.Show="True"
+                                      EditValue="{Binding Model.FifoTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="3"
                                      Grid.Column="0"
                                      Margin="0,0,20,0"
-                                     EditValue="{Binding Model.Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     wms:ShowTitle.Show="True"/>
+                                     wms:ShowTitle.Show="True"
+                                     EditValue="{Binding Model.Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="3"
                                       Grid.Column="1"
+                                      wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Model.PackageTypeChoices}"
-                                      wms:ShowTitle.Show="True"/>
+                                      ItemsSource="{Binding Model.PackageTypeChoices}" />
                         <wms:TextBox Grid.Row="4"
                                      Grid.Column="0"
                                      Grid.ColumnSpan="2"
-                                     EditValue="{Binding Model.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     wms:ShowTitle.Show="True"/>
+                                     wms:ShowTitle.Show="True"
+                                     EditValue="{Binding Model.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </GroupBox>
 
@@ -264,29 +268,29 @@
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
+                                      wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False"
-                                      MinValue="1"
-                                      wms:ShowTitle.Show="True"/>
+                                      MinValue="1" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
+                                      wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False"
-                                      MinValue="1"
-                                      wms:ShowTitle.Show="True"/>
+                                      MinValue="1" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
+                                      wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      IsEnabled="False"
-                                      wms:ShowTitle.Show="True"/>
+                                      IsEnabled="False" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
+                                      wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      IsEnabled="False"
-                                      wms:ShowTitle.Show="True"/>
+                                      IsEnabled="False" />
                     </Grid>
                 </GroupBox>
 
@@ -306,32 +310,32 @@
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
                                       wms:AdditionalInfo.Text="{Binding Model.ItemMeasureUnit}"
+                                      wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      MinValue="1"
-                                      wms:ShowTitle.Show="True"/>
+                                      MinValue="1" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
                                       wms:AdditionalInfo.Text="{Binding Model.ItemMeasureUnit}"
+                                      wms:ShowTitle.Show="True"
                                       AllowNullInput="False"
                                       EditValue="{Binding Model.ReservedForPick, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      IsEnabled="False"
-                                      wms:ShowTitle.Show="True"/>
+                                      IsEnabled="False" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
                                       wms:AdditionalInfo.Text="{Binding Model.ItemMeasureUnit}"
+                                      wms:ShowTitle.Show="True"
                                       AllowNullInput="False"
-                                      EditValue="{Binding Model.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      wms:ShowTitle.Show="True"/>
+                                      EditValue="{Binding Model.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
                                       wms:AdditionalInfo.Text="{Binding Model.ItemMeasureUnit}"
+                                      wms:ShowTitle.Show="True"
                                       AllowNullInput="False"
                                       EditValue="{Binding Model.ReservedToStore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      IsEnabled="False"
-                                      wms:ShowTitle.Show="True"/>
+                                      IsEnabled="False" />
                     </Grid>
                 </GroupBox>
 
@@ -364,17 +368,17 @@
                 <GroupBox Margin="20,0"
                           Header="{x:Static res:MasterData.OtherInformation}">
                     <StackPanel Orientation="Vertical">
-                        <wms:InfoText HorizontalAlignment="Left"                                      
+                        <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.CreationDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"                                      
+                        <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.LastHandlingDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"                                      
+                        <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.InventoryDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"                                      
+                        <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.FirstStoreDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"                                      
+                        <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.LastStoreDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"                                      
+                        <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.LastPickDate}" />
                     </StackPanel>
 

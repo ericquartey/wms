@@ -176,9 +176,7 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            gridEditorCore.HorizontalAlignment = HorizontalAlignment.Left;
-            gridEditorCore.MaxWidth = width;
-            gridEditorCore.Width = width;
+            gridEditorCore.HorizontalAlignment = HorizontalAlignment.Stretch;
         }
 
         private void SetInitialSizeToAdjustTitle(FrameworkElement parentControl)

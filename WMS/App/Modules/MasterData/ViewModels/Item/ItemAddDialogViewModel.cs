@@ -1,16 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using Ferretto.Common.BLL.Interfaces;
+﻿using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
-using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.Practices.ServiceLocation;
-using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
@@ -30,7 +23,7 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         // TODO: task 1256 -> protected override async Task ExecuteSaveCommand()
-        protected override async Task ExecuteSaveCommand()
+        protected override async Task ExecuteCreateCommand()
         {
             this.IsValidationEnabled = true;
 
@@ -41,7 +34,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<Item>(this.Model.Id));
+                this.EventService.Invoke(new ModelChangedPubSubEvent<Item, int>(this.Model.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
 
                 this.CloseDialogCommand.Execute(null);

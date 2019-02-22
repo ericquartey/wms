@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.BusinessModels;
@@ -7,7 +6,7 @@ using Ferretto.Common.BusinessModels;
 namespace Ferretto.Common.BusinessProviders
 {
     public interface IAreaProvider :
-        IReadAllAsyncProvider<Area>,
+        IReadAllAsyncProvider<Area, int>,
         IReadSingleAsyncProvider<Area, int>
     {
         #region Methods

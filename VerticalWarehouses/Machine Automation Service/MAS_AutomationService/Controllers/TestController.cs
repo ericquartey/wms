@@ -4,10 +4,11 @@ using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
-    [Route( "api/[controller]" )]
+    [Route("api/[controller]")]
     [ApiController]
     public class TestController
     {
@@ -19,7 +20,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
         #region Constructors
 
-        public TestController( IEventAggregator eventAggregator )
+        public TestController(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
         }
@@ -28,19 +29,33 @@ namespace Ferretto.VW.MAS_AutomationService
 
         #region Methods
 
-        [HttpGet( "AddMissionTest" )]
+        [HttpGet("AddMissionTest")]
         public void AddMission()
         {
-            MissionMessageData missionData = new MissionMessageData();
-
-            Event_Message missionMessage = new Event_Message( missionData,
+            var missionData = new MissionData(1, 1, 1, MissionType.CellToBay, 1);
+            var missionMessage = new Event_Message(missionData,
                 "Test Mission",
                 MessageActor.AutomationService,
                 MessageActor.WebAPI,
                 MessageStatus.Start,
                 MessageType.AddMission,
-                MessageVerbosity.Debug );
-            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish( missionMessage );
+                MessageVerbosity.Debug);
+            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(missionMessage);
+        }
+
+        [HttpPost("CreateMissionTest")]
+        public void CreateMission([FromBody] int bayID, int drawerID)
+        {
+            var missionData = new MissionData(1, 1, 1, MissionType.CellToBay, 1);
+
+            var message = new Event_Message(missionData,
+                "Create Mission",
+                MessageActor.MissionsManager,
+                MessageActor.WebAPI,
+                MessageStatus.Start,
+                MessageType.CreateMission,
+                MessageVerbosity.Debug);
+            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(message);
         }
 
         [HttpGet( "HomingTest" )]
@@ -56,7 +71,21 @@ namespace Ferretto.VW.MAS_AutomationService
             this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish( new Command_EventParameter( CommandType.ExecuteStopHoming ) );
         }
 
-        [HttpGet( "StopFSM" )]
+        [HttpGet("MissionExecutedTest")]
+        public void MissionExecuted()
+        {
+            var message = new Event_Message(
+                null,
+                "Mission Executed",
+                MessageActor.MissionsManager,
+                MessageActor.FiniteStateMachines,
+                MessageStatus.End,
+                MessageType.EndAction,
+                MessageVerbosity.Debug);
+            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(message);
+        }
+
+        [HttpGet("StopFSM")]
         public void StopFiniteStateMachine()
         {
             this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish( new Command_EventParameter( CommandType.StopAction ) );

@@ -14,15 +14,18 @@ namespace Ferretto.Common.Controls.Extensions
             {
                 return new ValueExpression(constantValue.Value.ToString());
             }
-            else if (filter is OperandValue operandValue)
+
+            if (filter is OperandValue operandValue)
             {
-                return new ValueExpression(operandValue.Value.ToString());
+                return new ValueExpression(operandValue.Value?.ToString());
             }
-            else if (filter is OperandProperty operandProperty)
+
+            if (filter is OperandProperty operandProperty)
             {
                 return new ValueExpression(operandProperty.PropertyName);
             }
-            else if (filter is BinaryOperator binaryOperator)
+
+            if (filter is BinaryOperator binaryOperator)
             {
                 return new BinaryExpression(binaryOperator.OperatorType.ToString())
                 {
@@ -30,26 +33,40 @@ namespace Ferretto.Common.Controls.Extensions
                     RightExpression = binaryOperator.RightOperand.AsIExpression()
                 };
             }
-            else if (filter is GroupOperator groupOperator)
+
+            if (filter is FunctionOperator functionOperator)
+            {
+                return new BinaryExpression(functionOperator.OperatorType.ToString())
+                {
+                    LeftExpression = functionOperator.Operands[0].AsIExpression(),
+                    RightExpression = functionOperator.Operands[1].AsIExpression()
+                };
+            }
+
+            if (filter is UnaryOperator unaryOperator)
+            {
+                return new UnaryExpression(unaryOperator.OperatorType.ToString())
+                {
+                    Expression = unaryOperator.Operand.AsIExpression(),
+                };
+            }
+
+            if (filter is GroupOperator groupOperator)
             {
                 if (groupOperator.Operands.Count == 1)
                 {
                     return groupOperator.Operands.Single().AsIExpression();
                 }
-                else
+
+                return new BinaryExpression(groupOperator.OperatorType.ToString())
                 {
-                    return new BinaryExpression(groupOperator.OperatorType.ToString())
-                    {
-                        LeftExpression = groupOperator.Operands.First().AsIExpression(),
-                        RightExpression = new GroupOperator(groupOperator.OperatorType, groupOperator.Operands.Skip(1))
-                            .AsIExpression()
-                    };
-                }
+                    LeftExpression = groupOperator.Operands.First().AsIExpression(),
+                    RightExpression = new GroupOperator(groupOperator.OperatorType, groupOperator.Operands.Skip(1))
+                        .AsIExpression()
+                };
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         #endregion

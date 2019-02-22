@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Core.Providers;
 using Ferretto.WMS.Data.WebAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,12 +16,6 @@ namespace Ferretto.WMS.Data.Tests
     {
         #region Methods
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this.CleanupDatabase();
-        }
-
         [TestMethod]
         public async Task GetAllCountFound()
         {
@@ -30,7 +23,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var abcClass1 = new Common.DataModels.AbcClass { Id = "A", Description = "A Class" };
                 var abcClass2 = new Common.DataModels.AbcClass { Id = "B", Description = "B Class" };
                 var abcClass3 = new Common.DataModels.AbcClass { Id = "C", Description = "C Class" };
@@ -64,7 +57,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -91,7 +84,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var abcClass1 = new Common.DataModels.AbcClass { Id = "A", Description = "A Class" };
                 var abcClass2 = new Common.DataModels.AbcClass { Id = "B", Description = "B Class" };
                 var abcClass3 = new Common.DataModels.AbcClass { Id = "C", Description = "C Class" };
@@ -125,7 +118,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -152,7 +145,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var abcClass1 = new Common.DataModels.AbcClass { Id = "A", Description = "A Class" };
                 var abcClass2 = new Common.DataModels.AbcClass { Id = "B", Description = "B Class" };
                 var abcClass3 = new Common.DataModels.AbcClass { Id = "C", Description = "C Class" };
@@ -191,7 +184,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -209,11 +202,11 @@ namespace Ferretto.WMS.Data.Tests
             }
         }
 
-        private static AbcClassesController MockController(DatabaseContext context)
+        private AbcClassesController MockController()
         {
             return new AbcClassesController(
                 new Mock<ILogger<AbcClassesController>>().Object,
-                new AbcClassProvider(context));
+                this.ServiceProvider.GetService(typeof(IAbcClassProvider)) as IAbcClassProvider);
         }
 
         #endregion

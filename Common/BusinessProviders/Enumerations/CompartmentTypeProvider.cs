@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
-using Ferretto.Common.EF;
 
 namespace Ferretto.Common.BusinessProviders
 {
@@ -29,7 +27,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public async Task<IOperationResult> CreateAsync(CompartmentType model, int? itemId = null, int? maxCapacity = null)
+        public async Task<IOperationResult<CompartmentType>> CreateAsync(CompartmentType model, int? itemId = null, int? maxCapacity = null)
         {
             // TODO: Task 823
             if (model == null)
@@ -50,11 +48,11 @@ namespace Ferretto.Common.BusinessProviders
 
                 model.Id = compartmentType.Id;
 
-                return new OperationResult(true);
+                return new OperationResult<CompartmentType>(true);
             }
             catch (Exception ex)
             {
-                return new OperationResult(ex);
+                return new OperationResult<CompartmentType>(ex);
             }
         }
 

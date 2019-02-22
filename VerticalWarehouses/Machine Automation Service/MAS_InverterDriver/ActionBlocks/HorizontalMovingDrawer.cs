@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
     {
         #region Fields
 
-        private const byte DATASET_FOR_CONTROL = 0x05;
+        private const byte DATASET_FOR_CONTROL = 0x05;  //VALUE binary = 00000005
 
         private const int DELAY_TIME = 350;
 
@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
         private int currentShaftPosition;
 
-        private byte dataSetIndex = 0x00;
+        private byte dataSetIndex = 0x00;  //VALUE binary = 00000000
 
         private Direction direction;
 
@@ -493,6 +493,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
             switch(cmdIndex)
             {
+                //INFO Set the parameters--Idle State
                 case 1:
                     {
                         this.paramID = ParameterID.POSITION_TARGET_POSITION_PARAM;
@@ -504,12 +505,13 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                         valueParameter = (int)this.initialSpeed;
                         if(exitStatus == InverterDriverExitStatus.Success)
                         {
-                            //TODO exitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, valueParameter);
+                            //TEMP exitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, valueParameter);
                         }
 
                         break;
                     }
 
+                    //INFO Disabeled Voltage
                 case 2:
                     {
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
@@ -526,6 +528,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                         break;
                     }
 
+                    //INFO Operation Mode
                 case 3:
                     {
                         this.paramID = ParameterID.SET_OPERATING_MODE_PARAM;
@@ -536,6 +539,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                         break;
                     }
 
+                    //INFO Ready to Switch On
                 case 4:
                     {
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
@@ -552,6 +556,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                         break;
                     }
 
+                    //INFO Switch On
                 case 5:
                     {
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
@@ -567,6 +572,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                         break;
                     }
 
+                    //INFO Enabled Operation
                 case 6:
                     {
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
@@ -584,6 +590,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                         break;
                     }
 
+                    //INFO Set New Position
                 case 7:
                     {
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;

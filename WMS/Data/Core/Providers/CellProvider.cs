@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -12,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class CellProvider : ICellProvider
+    internal class CellProvider : ICellProvider
     {
         #region Fields
 
@@ -31,7 +32,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public async Task<OperationResult<CellDetails>> CreateAsync(CellDetails model)
+        public async Task<IOperationResult<CellDetails>> CreateAsync(CellDetails model)
         {
             if (model == null)
             {
@@ -66,25 +67,27 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<Cell>> GetAllAsync(
             int skip,
             int take,
-            string orderBy = null,
+            IEnumerable<SortOption> orderBy = null,
             IExpression whereExpression = null,
-            Expression<Func<Cell, bool>> searchExpression = null)
+            string searchString = null)
         {
             return await this.GetAllBase()
-                       .ToArrayAsync(
-                           skip,
-                           take,
-                           orderBy,
-                           whereExpression,
-                           searchExpression);
+                .ToArrayAsync(
+                    skip,
+                    take,
+                    orderBy,
+                    whereExpression,
+                    BuildSearchExpression(searchString));
         }
 
         public async Task<int> GetAllCountAsync(
             IExpression whereExpression = null,
-            Expression<Func<Cell, bool>> searchExpression = null)
+            string searchString = null)
         {
             return await this.GetAllBase()
-                       .CountAsync(whereExpression, searchExpression);
+                .CountAsync(
+                    whereExpression,
+                    BuildSearchExpression(searchString));
         }
 
         public async Task<IEnumerable<Cell>> GetByAisleIdAsync(int aisleId)
@@ -174,7 +177,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                        .SingleOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<object[]> GetUniqueValuesAsync(string propertyName)
+        public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.GetUniqueValuesAsync(
                        propertyName,
@@ -182,7 +185,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                        this.GetAllBase());
         }
 
-        public async Task<OperationResult<CellDetails>> UpdateAsync(CellDetails model)
+        public async Task<IOperationResult<CellDetails>> UpdateAsync(CellDetails model)
         {
             if (model == null)
             {
@@ -200,6 +203,35 @@ namespace Ferretto.WMS.Data.Core.Providers
             await this.dataContext.SaveChangesAsync();
 
             return new SuccessOperationResult<CellDetails>(model);
+        }
+
+        private static Expression<Func<Cell, bool>> BuildSearchExpression(string search)
+        {
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                return null;
+            }
+
+            return (c) =>
+                c.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.AisleName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.AreaName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.LoadingUnitsDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.Status.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.Type.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.Column.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.Floor.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.Number.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.Priority.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private IQueryable<Cell> GetAllBase()

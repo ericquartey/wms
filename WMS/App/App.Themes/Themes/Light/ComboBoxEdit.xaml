@@ -28,6 +28,7 @@
         <Setter Property="DisplayMember" Value="Description" />
         <Setter Property="ValueMember" Value="Id" />
         <Setter Property="AllowDefaultButton" Value="False" />
+        <Setter Property="MaxHeight" Value="44" />
         <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource ValidationErrorTemplateStyle}" />
         <Setter Property="Buttons">
             <Setter.Value>

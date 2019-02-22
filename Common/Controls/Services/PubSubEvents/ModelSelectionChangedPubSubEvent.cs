@@ -1,9 +1,10 @@
 ﻿using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Base;
 
 namespace Ferretto.Common.Controls.Services
 {
     public class ModelSelectionChangedPubSubEvent<TModel> : Prism.Events.PubSubEvent<TModel>, IPubSubEvent
-        where TModel : IBusinessObject
+        where TModel : IModel<int>
     {
         #region Fields
 

@@ -2,11 +2,12 @@ using System.Threading.Tasks;
 
 namespace Ferretto.Common.BLL.Interfaces.Base
 {
-    public interface ICreateAsyncProvider<T>
+    public interface ICreateAsyncProvider<TModel, TKey>
+        where TModel : IModel<TKey>
     {
         #region Methods
 
-        Task<IOperationResult> CreateAsync(T model);
+        Task<IOperationResult<TModel>> CreateAsync(TModel model);
 
         #endregion
     }

@@ -128,6 +128,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             await this.LoadDataAsync().ConfigureAwait(true);
             await base.OnAppearAsync().ConfigureAwait(true);
+            this.LoadRelatedData();
         }
 
         private async void ActiveSideViewModel_OperationComplete(object sender, OperationEventArgs e)
@@ -217,7 +218,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));
-            this.LoadRelatedData();
         }
 
         private void ShowSidePanel(BaseNavigationViewModel childViewModel)

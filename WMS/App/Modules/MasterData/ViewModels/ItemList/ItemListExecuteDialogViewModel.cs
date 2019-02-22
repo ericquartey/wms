@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
@@ -110,7 +111,7 @@ namespace Ferretto.WMS.Modules.MasterData
             Debug.Assert(this.executionRequest.AreaId.HasValue, "The parameter must always have a value.");
 
             this.IsBusy = true;
-            OperationResult result = null;
+            IOperationResult<ItemList> result = null;
             if (!this.executionRequest.Schedule)
             {
                 Debug.Assert(this.executionRequest.BayId.HasValue, "The parameter must always have a value.");

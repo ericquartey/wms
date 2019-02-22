@@ -30,7 +30,7 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         // TODO: task 1256 -> protected override async Task ExecuteSaveCommand()
-        protected override Task ExecuteSaveCommand()
+        protected override Task ExecuteCreateCommand()
         {
             this.IsValidationEnabled = true;
             throw new NotImplementedException();

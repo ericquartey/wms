@@ -6,15 +6,15 @@ namespace Ferretto.Common.BusinessModels
     public enum MachineStatus
     {
         [Display(Name = nameof(BusinessObjects.MachineStatusAutomatic), ResourceType = typeof(BusinessObjects))]
-        Automatic,
+        Automatic = 'A',
 
         [Display(Name = nameof(BusinessObjects.MachineStatusManual), ResourceType = typeof(BusinessObjects))]
-        Manual,
+        Manual = 'M',
 
         [Display(Name = nameof(BusinessObjects.MachineStatusError), ResourceType = typeof(BusinessObjects))]
-        Error,
+        Error = 'E',
 
         [Display(Name = nameof(BusinessObjects.MachineStatusOffline), ResourceType = typeof(BusinessObjects))]
-        Offline
+        Offline = 'O'
     }
 }

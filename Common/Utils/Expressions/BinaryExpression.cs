@@ -17,7 +17,7 @@
 
         public IExpression LeftExpression { get; set; }
 
-        public string OperatorName { get; private set; }
+        public string OperatorName { get; }
 
         public IExpression RightExpression { get; set; }
 
@@ -27,7 +27,7 @@
 
         public override string ToString()
         {
-            return string.Format(this.Format, this.LeftExpression?.ToString(), this.RightExpression?.ToString());
+            return string.Format(this.Format, this.LeftExpression, this.RightExpression);
         }
 
         #endregion
