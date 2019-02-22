@@ -26,6 +26,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             this.driver = driver;
             this.eventAggregator = eventAggregator;
 
+            this.Target = 0;
+            this.Velocity = 0.0f;
+            this.Acceleration = 0.0f;
+            this.Deceleration = 0.0f;
+            this.Weight = 0.0f;
+            this.Offset = 0;
+            this.AbsoluteMovement = true;
+
             this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
         }
 
@@ -33,7 +41,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #region Properties
 
+        public bool AbsoluteMovement { get; set; }
+
+        public float Acceleration { get; set; }
+
+        public float Deceleration { get; set; }
+
+        public short Offset { get; set; }
+
+        public int Target { get; set; }
+
         public string Type => "Vertical Positioning Idle State";
+
+        public float Velocity { get; set; }
+
+        public float Weight { get; set; }
 
         #endregion
 
@@ -41,10 +63,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         public void MakeOperation()
         {
-            //TODO Define the parameters for the call to driver
-            //TODO Actually the parameter values are fixed
-            var target = 2048;
-            this.driver.ExecuteVerticalPosition(target, 0, 0, 0, 0, 0, true);
+            this.driver.ExecuteVerticalPosition(this.Target, this.Velocity, this.Acceleration, this.Deceleration, this.Weight, this.Offset, this.AbsoluteMovement);
         }
 
         public void NotifyMessage(Event_Message message)

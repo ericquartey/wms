@@ -57,6 +57,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
         public void Start()
         {
             this.state = new VerticalPositioningIdleState(this, this.driver, this.eventAggregator);
+
+            //TODO: These values are provided by the Finite State Machine component
+            ((VerticalPositioningIdleState)this.state).Target = 2048;
+            ((VerticalPositioningIdleState)this.state).AbsoluteMovement = true;
+
             this.state.MakeOperation();
         }
 
