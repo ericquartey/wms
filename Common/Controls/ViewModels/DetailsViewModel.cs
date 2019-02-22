@@ -144,9 +144,10 @@ namespace Ferretto.Common.Controls
 
         protected virtual bool CanExecuteSaveCommand()
         {
+            //REMOVED VALIDATION ENABLED
             return this.Model != null
                 && this.changeDetector.IsModified
-                && (!this.isValidationEnabled || string.IsNullOrWhiteSpace(this.Model.Error))
+                && string.IsNullOrWhiteSpace(this.Model.Error)// ==  || !this.isValidationEnabled)
                 && !this.IsBusy;
         }
 
