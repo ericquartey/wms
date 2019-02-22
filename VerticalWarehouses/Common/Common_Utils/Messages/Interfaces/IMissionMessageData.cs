@@ -19,15 +19,15 @@ namespace Ferretto.VW.Common_Utils.Messages.Interfaces
     {
         #region Properties
 
-        int BayID { get; set; }
+        int BayID { get; }
 
-        int CellID { get; set; }
+        int CellID { get; }
 
-        int DrawerID { get; set; }
+        int DrawerID { get; }
 
-        MissionType MissionType { get; set; }
+        MissionType MissionType { get; }
 
-        int Priority { get; set; }
+        int Priority { get; }
 
         #endregion
     }
