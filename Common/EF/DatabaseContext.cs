@@ -5,15 +5,6 @@ using Ferretto.Common.DataModels;
 using Ferretto.Common.EF.Configurations;
 using Microsoft.EntityFrameworkCore;
 
-#if NET4
-using System.Configuration;
-#else
-using System;
-using System.IO;
-using System.Reflection;
-using Microsoft.Extensions.Configuration;
-#endif
-
 namespace Ferretto.Common.EF
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
@@ -22,21 +13,6 @@ namespace Ferretto.Common.EF
         Justification = "Class Designed as part of the Entity Framework")]
     public class DatabaseContext : DbContext
     {
-        protected const string ConnectionStringName = "WmsConnectionString";
-
-        private const string DefaultApplicationSettingsFile = "appsettings.json";
-
-        private const string ParametrizedApplicationSettingsFile = "appsettings.{0}.json";
-
-        private const string NetcoreEnvironmentEnvVariable = "NETCORE_ENVIRONMENT";
-
-        private const string cloudInitialCatalogEnvVariable = "cloudInitialCatalog";
-
-        private static readonly System.Text.RegularExpressions.Regex ConnectionStringInitialCatalog =
-            new System.Text.RegularExpressions.Regex(
-                @"Initial Catalog=(?<dbname>[^;]+)",
-                System.Text.RegularExpressions.RegexOptions.Compiled);
-
         #region Constructors
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options = null)
@@ -148,62 +124,11 @@ namespace Ferretto.Common.EF
             return base.SaveChanges();
         }
 
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public override async Task<int> SaveChangesAsync(
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             this.AddTimestamps();
             return await base.SaveChangesAsync(cancellationToken);
-        }
-
-        protected static string GetSettingFileFromEnvironment()
-        {
-            var netcoreEnvironment = System.Environment.GetEnvironmentVariable(NetcoreEnvironmentEnvVariable);
-
-            return netcoreEnvironment != null
-                       ? string.Format(ParametrizedApplicationSettingsFile, netcoreEnvironment)
-                       : DefaultApplicationSettingsFile;
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (optionsBuilder == null)
-            {
-                throw new System.ArgumentNullException(nameof(optionsBuilder));
-            }
-
-            if (optionsBuilder.IsConfigured)
-            {
-                return;
-            }
-
-#if NET4
-            var configuration = ConfigurationManager.ConnectionStrings[ConnectionStringName];
-
-            if (configuration == null)
-            {
-                throw new ConfigurationErrorsException($"Connection string '{ConnectionStringName}' not found.");
-            }
-
-            optionsBuilder.UseSqlServer(configuration.ConnectionString);
-#else
-            var applicationSettingsFile = GetSettingFileFromEnvironment();
-
-            var configurationBuilder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(applicationSettingsFile, optional: false, reloadOnChange: false)
-                .Build();
-
-            var connectionString = configurationBuilder.GetConnectionString(ConnectionStringName);
-            var cloudInitialCatalog = Environment.GetEnvironmentVariable(cloudInitialCatalogEnvVariable);
-
-            if (cloudInitialCatalog != null)
-            {
-                connectionString = ConnectionStringInitialCatalog.Replace(
-                    connectionString,
-                    $"Initial Catalog={cloudInitialCatalog}");
-            }
-
-            optionsBuilder.UseSqlServer(connectionString);
-#endif
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -262,9 +187,9 @@ namespace Ferretto.Common.EF
         {
             var entries = this.ChangeTracker.Entries()
                 .Where(x =>
-                    x.Entity is ITimestamped
-                    &&
-                    (x.State == EntityState.Added || x.State == EntityState.Modified));
+                           x.Entity is ITimestamped
+                           &&
+                           (x.State == EntityState.Added || x.State == EntityState.Modified));
 
             var timeNow = System.DateTime.UtcNow;
 
