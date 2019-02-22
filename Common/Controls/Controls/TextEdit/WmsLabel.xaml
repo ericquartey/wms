@@ -8,8 +8,9 @@
 
     <Grid x:Name="GridWmsLabel">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Label x:Name="TitleLabel"               
                Style="{DynamicResource ControlLabelStyle}"   />
