@@ -23,10 +23,10 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             var cellSpacing = this.GetIntegerConfigurationValue(ConfigurationValueEnum.cellSpacing);
 
-            // INFO Drawer height conversion to the necessary cells number Ceiling to round a double to the upper integer
+            // TEMP Drawer height conversion to the necessary cells number Ceiling to round a double to the upper integer
             var cellsNumber = (int)Math.Ceiling(drawerHeight / cellSpacing);
 
-            // INFO Always take into account +1 drawer cell height to avoid impacts between two next drowers
+            // INFO Always take into account +1 drawer cell height, to avoid impacts between two next drowers
             cellsNumber += 1;
 
             var inMemoryFreeBlockFirstByPriority = this.inMemoryDataContext.FreeBlocks.OrderBy(s => s.Priority).FirstOrDefault(s => s.BlockSize >= cellsNumber);
@@ -81,7 +81,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private void CreateFreeBlockTable()
         {
-            var creationDone = false;
+            var cellTablePopulated = false;
 
             var freeBlockCounter = 1;
 
@@ -97,11 +97,11 @@ namespace Ferretto.VW.MAS_DataLayer
 
             foreach (var cell in this.inMemoryDataContext.Cells.OrderBy(cell => cell.CellId))
             {
-                creationDone = true;
+                cellTablePopulated = true;
 
                 if (cell.Side == Side.FrontEven)
                 {
-                    if ((cell.Status == Status.Free || cell.Status == Status.Disabled) && cellCounterEven != 0)
+                    if (cellCounterEven != 0 && (cell.Status == Status.Free || cell.Status == Status.Disabled))
                     {
                         cellCounterEven++;
                     }
@@ -129,7 +129,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
                 else
                 {
-                    if ((cell.Status == Status.Free || cell.Status == Status.Disabled) && cellCounterOdd != 0)
+                    if (cellCounterOdd != 0 && (cell.Status == Status.Free || cell.Status == Status.Disabled))
                     {
                         cellCounterOdd++;
                     }
@@ -157,7 +157,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
             }
 
-            if (!creationDone)
+            if (!cellTablePopulated)
             {
                 throw new DataLayerException(DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION);
             }
