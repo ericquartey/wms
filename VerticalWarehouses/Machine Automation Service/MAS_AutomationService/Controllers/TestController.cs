@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS_AutomationService
         {
             var missionData = new MissionData();
             missionData.Priority = 1;
-            missionData.MissionType = MissionType.CellToBayMission;
+            missionData.MissionType = MissionType.CellToBay;
             var missionMessage = new Event_Message(missionData,
                 "Test Mission",
                 MessageActor.AutomationService,
