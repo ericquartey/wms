@@ -6,9 +6,6 @@
     <AssemblyName>Ferretto.VW.MAS_AutomationService</AssemblyName>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-  </PropertyGroup>
-
   <ItemGroup>
     <None Remove="wwwroot\**" />
   </ItemGroup>
