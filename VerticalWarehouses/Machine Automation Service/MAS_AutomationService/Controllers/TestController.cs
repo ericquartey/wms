@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS_AutomationService
         [HttpGet( "AddMissionTest" )]
         public void AddMission()
         {
-            MissionData missionData = new MissionData();
+            MissionMessageData missionData = new MissionMessageData();
 
             Event_Message missionMessage = new Event_Message( missionData,
                 "Test Mission",
@@ -43,23 +43,23 @@ namespace Ferretto.VW.MAS_AutomationService
             this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish( missionMessage );
         }
 
-        [HttpGet("HomingTest")]
+        [HttpGet( "HomingTest" )]
         public string ExecuteHoming()
         {
-            this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish(new Command_EventParameter(CommandType.ExecuteHoming));
+            this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish( new Command_EventParameter( CommandType.ExecuteHoming ) );
             return "Execute Homing Done!";
         }
 
-        [HttpGet("HomingStop")]
+        [HttpGet( "HomingStop" )]
         public void ExecuteStopHoming()
         {
-            this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish(new Command_EventParameter(CommandType.ExecuteStopHoming));
+            this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish( new Command_EventParameter( CommandType.ExecuteStopHoming ) );
         }
 
-        [HttpGet("StopFSM")]
+        [HttpGet( "StopFSM" )]
         public void StopFiniteStateMachine()
         {
-            this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish(new Command_EventParameter(CommandType.StopAction));
+            this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish( new Command_EventParameter( CommandType.StopAction ) );
         }
 
         #endregion

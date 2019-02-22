@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         public override void Start()
         {
-            this.currentState = new MissionStartState(this);
+            this.CurrentState = new MissionStartState(this);
         }
 
         #endregion

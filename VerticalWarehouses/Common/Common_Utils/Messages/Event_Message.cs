@@ -36,6 +36,8 @@ namespace Ferretto.VW.Common_Utils.Messages
 
     public enum MessageType
     {
+        Calibrate,
+
         CalibrateAxis,
 
         DrawerWeightDetection,
@@ -76,13 +78,13 @@ namespace Ferretto.VW.Common_Utils.Messages
         {
         }
 
-        public Event_Message(IEventMessageData data,
+        public Event_Message( IEventMessageData data,
             string description,
             MessageActor destination,
             MessageActor source,
             MessageStatus status,
             MessageType type,
-            MessageVerbosity verbosity)
+            MessageVerbosity verbosity )
         {
             this.Data = data;
             this.Description = description;
