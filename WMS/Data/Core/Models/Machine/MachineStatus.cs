@@ -4,12 +4,12 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         NotSpecified,
 
-        Automatic,
+        Automatic = 'A',
 
-        Manual,
+        Manual = 'M',
 
-        Error,
+        Error = 'E',
 
-        Offline
+        Offline = 'O'
     }
 }

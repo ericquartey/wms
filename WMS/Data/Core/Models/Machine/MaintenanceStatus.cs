@@ -4,10 +4,10 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         NotSpecified,
 
-        Valid,
+        Valid = 'V',
 
-        Expiring,
+        Expiring = 'G',
 
-        Expired,
+        Expired = 'X',
     }
 }
