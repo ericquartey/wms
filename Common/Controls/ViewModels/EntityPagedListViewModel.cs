@@ -5,11 +5,9 @@ using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using DevExpress.Data.Filtering;
-using DevExpress.Xpf.Core.FilteringUI;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Base;
-using Ferretto.Common.Controls.Extensions;
 using Ferretto.Common.Utils.Expressions;
 using NLog;
 
@@ -130,12 +128,11 @@ namespace Ferretto.Common.Controls
 
                 if (filterDataSource.Provider != null)
                 {
-                    IExpression whereExpression = null;
+                    string whereExpression = null;
 
                     if (filterDataSource.Expression != null)
                     {
-                        whereExpression = CriteriaOperator.Parse(filterDataSource.Expression)
-                            .AsIExpression();
+                        whereExpression = CriteriaOperator.Parse(filterDataSource.Expression)?.ToString();
                     }
 
                     filterTile.Count = await filterDataSource.Provider.GetAllCountAsync(whereExpression);
@@ -198,7 +195,7 @@ namespace Ferretto.Common.Controls
         {
             var orderByExpression = GetSortOrder(e);
 
-            var whereExpression = this.overallFilter?.AsIExpression();
+            var whereExpression = this.overallFilter?.ToString();
 
             var entities = await this.provider.GetAllAsync(
                 e.Skip,
