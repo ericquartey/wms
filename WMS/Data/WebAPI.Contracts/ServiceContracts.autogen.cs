@@ -2679,13 +2679,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     {
         NotSpecified = 0,
     
-        Automatic = 1,
+        Automatic = 65,
     
-        Manual = 2,
+        Error = 69,
     
-        Error = 3,
+        Manual = 77,
     
-        Offline = 4,
+        Offline = 79,
     
     }
     
