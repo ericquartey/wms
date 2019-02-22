@@ -76,7 +76,9 @@ namespace Ferretto.Common.BusinessProviders
                     PowerOnTime = m.PowerOnTime,
                     RegistrationNumber = m.RegistrationNumber,
                     TestDate = m.TestDate,
-                    TotalMaxWeight = m.TotalMaxWeight
+                    TotalMaxWeight = m.TotalMaxWeight,
+                    MaintenanceStatus = (MaintenanceStatus)m.MaintenanceStatus,
+                    Status = (MachineStatus)m.Status
                 });
         }
 
@@ -124,7 +126,9 @@ namespace Ferretto.Common.BusinessProviders
                 PowerOnTime = machine.PowerOnTime,
                 RegistrationNumber = machine.RegistrationNumber,
                 TestDate = machine.TestDate,
-                TotalMaxWeight = machine.TotalMaxWeight
+                TotalMaxWeight = machine.TotalMaxWeight,
+                MaintenanceStatus = (MaintenanceStatus)machine.MaintenanceStatus,
+                Status = (MachineStatus)machine.Status
             };
         }
 

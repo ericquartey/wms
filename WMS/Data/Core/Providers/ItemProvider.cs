@@ -200,6 +200,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         FifoTimePick = i.Item.FifoTimePick,
                         FifoTimeStore = i.Item.FifoTimeStore,
                         Height = i.Item.Height,
+                        Image = i.Item.Image,
                         InventoryDate = i.Item.InventoryDate,
                         InventoryTolerance = i.Item.InventoryTolerance,
                         ManagementType = (ItemManagementType)i.Item.ManagementType,

@@ -17,9 +17,7 @@
              EnableHistoryView="True"
              mc:Ignorable="d">
 
-
     <Grid>
-
         <Grid.Resources>
             <wms:BoolToDoubleConverter x:Key="BTOC"
                                        ValueOnFalse="0.3"
@@ -184,19 +182,35 @@
                     <wms:WmsGridControl.Columns>
                         <dxg:GridColumn AllowSorting="True"
                                         AllowedBinaryFilters="Equals,DoesNotEqual"
+                                        FieldName="AreaName" />
+                        <dxg:GridColumn AllowSorting="True"
+                                        AllowedBinaryFilters="Equals,DoesNotEqual"
+                                        FieldName="InstallationDate" />
+                        <dxg:GridColumn AllowSorting="True"
+                                        AllowedBinaryFilters="Equals,DoesNotEqual"
+                                        FieldName="LastServiceDate" />
+                        <dxg:GridColumn AllowSorting="True"
+                                        AllowedBinaryFilters="Equals,DoesNotEqual"
+                                        FieldName="Status" />
+                        <dxg:GridColumn AllowSorting="True"
+                                        AllowedBinaryFilters="Equals,DoesNotEqual"
                                         FieldName="MachineTypeDescription" />
                         <dxg:GridColumn AllowSorting="True"
                                         AllowedBinaryFilters="Equals,DoesNotEqual"
-                                        FieldName="AreaName" />
+                                        FieldName="MaintenanceStatus" />
+                        <dxg:GridColumn AllowSorting="True"
+                                        AllowedBinaryFilters="Equals,DoesNotEqual"
+                                        FieldName="Model" />
+                        <dxg:GridColumn AllowSorting="True"
+                                        AllowedBinaryFilters="Equals,DoesNotEqual"
+                                        FieldName="NextServiceDate" />
                         <dxg:GridColumn AllowSorting="True"
                                         AllowedBinaryFilters="Equals,DoesNotEqual"
                                         FieldName="Nickname" />
                         <dxg:GridColumn AllowSorting="True"
                                         AllowedBinaryFilters="Equals,DoesNotEqual"
                                         FieldName="RegistrationNumber" />
-                        <dxg:GridColumn AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
-                                        FieldName="Model" />
+
                     </wms:WmsGridControl.Columns>
 
                     <wms:WmsGridControl.SortInfo>

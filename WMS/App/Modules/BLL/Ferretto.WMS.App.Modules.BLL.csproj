@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <OutputPath>$(SolutionDir)\WMS\App\bin\$(Configuration)</OutputPath>
+    <OutputPath>..\..\App\bin\$(Configuration)</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
