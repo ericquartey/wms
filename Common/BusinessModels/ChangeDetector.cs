@@ -56,7 +56,6 @@ namespace Ferretto.Common.BusinessModels
                 if (this.isRequiredValid != value)
                 {
                     this.isRequiredValid = value;
-                    this.ModifiedChanged?.Invoke(this, EventArgs.Empty);
                 }
             }
         }
