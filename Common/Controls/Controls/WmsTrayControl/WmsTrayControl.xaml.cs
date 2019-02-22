@@ -58,7 +58,7 @@ namespace Ferretto.Common.Controls
             nameof(SelectedItem), typeof(ICompartment), typeof(WmsTrayControl));
 
         public static readonly DependencyProperty ShowBackgroundProperty = DependencyProperty.Register(
-            nameof(ShowBackground), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(true));
+            nameof(ShowBackground), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(false));
 
         public static readonly DependencyProperty ShowInfoProperty = DependencyProperty.Register(
             nameof(ShowInfo), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(true));

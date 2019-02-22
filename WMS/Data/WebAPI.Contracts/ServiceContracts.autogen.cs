@@ -2666,11 +2666,11 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     {
         NotSpecified = 0,
     
-        Valid = 1,
+        Expiring = 71,
     
-        Expiring = 2,
+        Valid = 86,
     
-        Expired = 3,
+        Expired = 88,
     
     }
     

@@ -68,7 +68,7 @@ namespace Ferretto.Common.Controls
             typeof(WmsCanvasListBoxControl), new FrameworkPropertyMetadata(OnSelectedCompartmentChanged));
 
         public static readonly DependencyProperty ShowBackgroundProperty = DependencyProperty.Register(nameof(ShowBackground),
-            typeof(bool), typeof(WmsCanvasListBoxControl), new FrameworkPropertyMetadata(true, OnShowBackgroundChanged));
+            typeof(bool), typeof(WmsCanvasListBoxControl), new FrameworkPropertyMetadata(false, OnShowBackgroundChanged));
 
         public static readonly DependencyProperty ShowRulerProperty = DependencyProperty.Register(nameof(ShowRuler), typeof(bool), typeof(WmsCanvasListBoxControl),
                                                                                                             new UIPropertyMetadata(true, OnShowRulerPropertyChanged));
@@ -101,7 +101,8 @@ namespace Ferretto.Common.Controls
 
         public WmsCanvasListBoxControl()
         {
-            this.SnapsToDevicePixels = true;
+            this.UseLayoutRounding = false;
+            this.SnapsToDevicePixels = false;
             RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
         }
 
@@ -414,18 +415,6 @@ namespace Ferretto.Common.Controls
             this.ItemsSource = newItems;
         }
 
-        private string GetColorFilter(ICompartment compartment)
-        {
-            var colorFill = Application.Current.Resources[DEFAULTCOMPARTMENTCOLOR].ToString();
-            if (this.IsReadOnly == false &&
-                this.SelectedColorFilterFunc != null)
-            {
-                colorFill = this.SelectedColorFilterFunc.Invoke(compartment, this.SelectedCompartment);
-            }
-
-            return colorFill;
-        }
-
         public void UpdateIsReadOnly()
         {
             if (this.Items == null)
@@ -454,50 +443,50 @@ namespace Ferretto.Common.Controls
             };
 
             var points = this.GetBordersPoints();
-            pen.Brush = Application.Current.Resources[DEFAULTBACKGROUND] as Brush;
+            pen.Brush = Brushes.Black;
             DrawSnappedLinesBetweenPoints(drawingContext, pen, penSize, points.ToArray());
 
-            if (this.ShowBackground == false)
-            {
-                return;
-            }
+            //if (this.ShowBackground == false)
+            //{
+            //    return;
+            //}
 
-            points.Clear();
-            var stepXPixel = ConvertMillimetersToPixel(this.Step, this.TrayWidth, this.DimensionWidth);
-            var stepYPixel = ConvertMillimetersToPixel(this.Step, this.TrayHeight, this.DimensionHeight);
+            //points.Clear();
+            //var stepXPixel = ConvertMillimetersToPixel(this.Step, this.TrayWidth, this.DimensionWidth);
+            //var stepYPixel = ConvertMillimetersToPixel(this.Step, this.TrayHeight, this.DimensionHeight);
 
-            var posY = this.OriginVertical == OriginVertical.Top ? stepYPixel : this.ActualHeight - stepYPixel - OFFSET;
-            while (posY > 0 && posY < this.TrayHeight)
-            {
-                points.Add(new Point(0, posY));
-                points.Add(new Point(this.TrayWidth, posY));
-                if (this.OriginVertical == OriginVertical.Top)
-                {
-                    posY += stepYPixel;
-                }
-                else
-                {
-                    posY -= stepYPixel;
-                }
-            }
+            //var posY = this.OriginVertical == OriginVertical.Top ? stepYPixel : this.ActualHeight - stepYPixel - OFFSET;
+            //while (posY > 0 && posY < this.TrayHeight)
+            //{
+            //    points.Add(new Point(0, posY));
+            //    points.Add(new Point(this.TrayWidth, posY));
+            //    if (this.OriginVertical == OriginVertical.Top)
+            //    {
+            //        posY += stepYPixel;
+            //    }
+            //    else
+            //    {
+            //        posY -= stepYPixel;
+            //    }
+            //}
 
-            var posX = this.OriginHorizontal == OriginHorizontal.Left ? stepXPixel : this.ActualWidth - stepXPixel - OFFSET;
-            while (posX > 0 && posX < this.TrayWidth)
-            {
-                points.Add(new Point(posX, 0));
-                points.Add(new Point(posX, this.TrayHeight));
-                if (this.OriginHorizontal == OriginHorizontal.Left)
-                {
-                    posX += stepXPixel;
-                }
-                else
-                {
-                    posX -= stepXPixel;
-                }
-            }
+            //var posX = this.OriginHorizontal == OriginHorizontal.Left ? stepXPixel : this.ActualWidth - stepXPixel - OFFSET;
+            //while (posX > 0 && posX < this.TrayWidth)
+            //{
+            //    points.Add(new Point(posX, 0));
+            //    points.Add(new Point(posX, this.TrayHeight));
+            //    if (this.OriginHorizontal == OriginHorizontal.Left)
+            //    {
+            //        posX += stepXPixel;
+            //    }
+            //    else
+            //    {
+            //        posX -= stepXPixel;
+            //    }
+            //}
 
-            pen.Brush = this.GridLinesColor;
-            DrawSnappedLinesBetweenPoints(drawingContext, pen, penSize, points.ToArray());
+            //pen.Brush = this.GridLinesColor;
+            //DrawSnappedLinesBetweenPoints(drawingContext, pen, penSize, points.ToArray());
         }
 
         protected override void OnSelectionChanged(SelectionChangedEventArgs e)
@@ -586,7 +575,7 @@ namespace Ferretto.Common.Controls
         {
             if (d is WmsCanvasListBoxControl wmsCanvasListBox)
             {
-                wmsCanvasListBox.SetBackground();
+                wmsCanvasListBox.InvalidateVisual();
             }
         }
 
@@ -625,6 +614,18 @@ namespace Ferretto.Common.Controls
             points.Add(new Point(this.TrayWidth, this.ActualHeight));
 
             return points;
+        }
+
+        private string GetColorFilter(ICompartment compartment)
+        {
+            var colorFill = Application.Current.Resources[DEFAULTCOMPARTMENTCOLOR].ToString();
+            if (this.IsReadOnly == false &&
+                this.SelectedColorFilterFunc != null)
+            {
+                colorFill = this.SelectedColorFilterFunc.Invoke(compartment, this.SelectedCompartment);
+            }
+
+            return colorFill;
         }
 
         private double GetSizeOfPen()
