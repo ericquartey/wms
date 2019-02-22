@@ -64,8 +64,6 @@ namespace Ferretto.WMS.Data.WebAPI
             {
                 app.UseDeveloperExceptionPage();
 
-                app.UseRequestResponseLogging();
-
                 app.UseSwaggerUi3WithApiExplorer(settings =>
                 {
                     settings.PostProcess = document =>
