@@ -30,7 +30,7 @@
                      TargetType="{x:Type dxe:ButtonEdit}">
         <ContentControl x:Name="PART_Root"
                         Grid.Row="1"
-                        MaxHeight="52"
+                        MaxHeight="44"
                         HorizontalContentAlignment="Stretch"
                         VerticalContentAlignment="Stretch"
                         dx:FocusHelper2.Focusable="False"

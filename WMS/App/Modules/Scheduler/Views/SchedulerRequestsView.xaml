@@ -322,33 +322,19 @@
                         </dxg:GridColumn>
 
                         <dxg:GridColumn Width="100*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
                                         FieldName="BayDescription" />
                         <dxg:GridColumn Width="360*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
                                         FieldName="ItemDescription" />
                         <dxg:GridColumn Width="180*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
                                         FieldName="ListDescription" />
                         <dxg:GridColumn Width="140*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
                                         FieldName="ListRowDescription" />
                         <dxg:GridColumn Width="70*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
                                         CellDisplayTemplate="{DynamicResource BooleanCellTemplate}"
                                         FieldName="IsInstant" />
                         <dxg:GridColumn Width="90*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
                                         FieldName="OperationType" />
                         <dxg:GridColumn Width="100*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
                                         CellDisplayTemplate="{StaticResource CellDisplayTemplateQuantity}"
                                         FieldName="RequestedQuantity" />
                     </wms:WmsGridControl.Columns>

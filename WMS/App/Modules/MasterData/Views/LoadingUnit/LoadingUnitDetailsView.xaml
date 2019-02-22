@@ -104,8 +104,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -132,31 +132,31 @@
                         </Grid.ColumnDefinitions>
                         <wms:TextBox Grid.ColumnSpan="3"
                                      Margin="0,0,20,0"
-                                     EditValue="{Binding Model.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     wms:ShowTitle.Show="True"/>
+                                     wms:ShowTitle.Show="True"
+                                     EditValue="{Binding Model.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="1"
                                       Grid.ColumnSpan="3"
                                       Margin="0,0,20,0"
+                                      wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.LoadingUnitTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Model.LoadingUnitTypeChoices}"
-                                      wms:ShowTitle.Show="True"/>
+                                      ItemsSource="{Binding Model.LoadingUnitTypeChoices}" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
+                                      wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.LoadingUnitStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Model.LoadingUnitStatusChoices}"
-                                      wms:ShowTitle.Show="True"/>
+                                      ItemsSource="{Binding Model.LoadingUnitStatusChoices}" />
                         <wms:ComboBox Grid.Row="2"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
+                                      wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.AbcClassId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Model.AbcClassChoices}"
-                                      wms:ShowTitle.Show="True"/>
+                                      ItemsSource="{Binding Model.AbcClassChoices}" />
                         <wms:ComboBox Grid.Row="2"
                                       Grid.Column="2"
                                       Margin="0,0,20,0"
+                                      wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.ReferenceType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemTemplate="{DynamicResource ComboBoxEditTranslation}"
-                                      wms:ShowTitle.Show="True">
+                                      ItemTemplate="{DynamicResource ComboBoxEditTranslation}">
                             <dxmvvm:Interaction.Behaviors>
                                 <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type bm:ReferenceType}"
                                                                 SortMode="DisplayName" />
@@ -167,9 +167,9 @@
                                      Grid.ColumnSpan="3"
                                      Height="100"
                                      Margin="0,0,20,0"
+                                     wms:ShowTitle.Show="True"
                                      EditValue="{Binding Model.Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     IsMultiline="True"
-                                     wms:ShowTitle.Show="True"/>
+                                     IsMultiline="True" />
                     </Grid>
                 </GroupBox>
 
@@ -188,21 +188,21 @@
                         </Grid.ColumnDefinitions>
                         <wms:ComboBox Grid.ColumnSpan="2"
                                       Margin="0,0,20,0"
+                                      wms:ShowTitle.Show="True"
                                       EditValue="{Binding Path=Model.CellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Path=Model.CellChoices}"
-                                      wms:ShowTitle.Show="True"/>
+                                      ItemsSource="{Binding Path=Model.CellChoices}" />
                         <wms:ComboBox Grid.Row="1"
                                       Margin="0,0,20,0"
+                                      wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.CellPositionId}"
-                                      ItemsSource="{Binding Model.CellPositionChoices}"
-                                      wms:ShowTitle.Show="True"/>
+                                      ItemsSource="{Binding Model.CellPositionChoices}" />
 
                         <wms:WmsCheckEdit Grid.Row="1"
                                           Grid.Column="1"
                                           Margin="0,0,20,0"
+                                          wms:ShowTitle.Show="True"
                                           Content="{x:Static res:BusinessObjects.PairingFixed}"
-                                          IsChecked="{Binding Path=Model.IsCellPairingFixed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          wms:ShowTitle.Show="True"/>
+                                          IsChecked="{Binding Path=Model.IsCellPairingFixed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     </Grid>
                 </GroupBox>
@@ -217,20 +217,24 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
                         <wms:SpinEdit Margin="0,0,20,0"
+                                      wms:ShowTitle.Show="True"
                                       AllowNullInput="False"
                                       EditValue="{Binding Path=Model.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      MinValue="1"
-                                      wms:ShowTitle.Show="True"/>
+                                      MinValue="1" />
                         <wms:SpinEdit Grid.Column="1"
                                       Margin="0,0,20,0"
+                                      wms:ShowTitle.Show="True"
                                       AllowNullInput="False"
-                                      EditValue="{Binding Path=Model.Weight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      wms:ShowTitle.Show="True"/>
+                                      EditValue="{Binding Path=Model.Weight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Column="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding Path=Model.HandlingParametersCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      wms:ShowTitle.Show="True"/>
+                                      wms:ShowTitle.Show="True"
+                                      EditValue="{Binding Path=Model.HandlingParametersCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     </Grid>
                 </GroupBox>
@@ -331,21 +335,21 @@
                 <GroupBox Margin="20,0"
                           Header="{x:Static res:MasterData.OtherInformation}">
                     <StackPanel Orientation="Vertical">
-                        <wms:InfoText HorizontalAlignment="Left"                                      
+                        <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.CreationDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"                                      
+                        <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.LastHandlingDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"                                      
+                        <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.InventoryDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"                                      
+                        <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.LastPickDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"                                      
+                        <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.LastStoreDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"                                      
+                        <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.InCycleCount}" />
-                        <wms:InfoText HorizontalAlignment="Left"                                      
+                        <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.OutCycleCount}" />
-                        <wms:InfoText HorizontalAlignment="Left"                                      
+                        <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.OtherCycleCount}" />
                     </StackPanel>
                 </GroupBox>

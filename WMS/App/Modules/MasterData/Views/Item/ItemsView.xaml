@@ -132,51 +132,15 @@
                     </wms:WmsGridControl.View>
 
                     <wms:WmsGridControl.Columns>
-                        <dxg:GridColumn Width="100*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
-                                        FieldName="Code"
-                                        FilterPopupMode="Excel" />
-                        <dxg:GridColumn Width="400*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
-                                        FieldName="Description"
-                                        FilterPopupMode="Excel" />
-                        <dxg:GridColumn Width="100*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
-                                        FieldName="ItemCategoryDescription"
-                                        FilterPopupMode="Excel" />
-                        <dxg:GridColumn Width="90*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
-                                        FieldName="AbcClassDescription"
-                                        FilterPopupMode="CheckedList" />
-                        <dxg:GridColumn Width="80*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
-                                        FieldName="MeasureUnitDescription"
-                                        FilterPopupMode="Excel" />
-                        <dxg:GridColumn Width="50*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
-                                        FieldName="TotalStock"
-                                        FilterPopupMode="Excel" />
-                        <dxg:GridColumn Width="100*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
-                                        FieldName="TotalReservedForPick"
-                                        FilterPopupMode="Excel" />
-                        <dxg:GridColumn Width="100*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
-                                        FieldName="TotalReservedToStore"
-                                        FilterPopupMode="Excel" />
-                        <dxg:GridColumn Width="50*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
-                                        FieldName="TotalAvailable"
-                                        FilterPopupMode="Excel" />
+                        <dxg:GridColumn Width="100*" FieldName="Code" />
+                        <dxg:GridColumn Width="400*" FieldName="Description" />
+                        <dxg:GridColumn Width="100*" FieldName="ItemCategoryDescription" />
+                        <dxg:GridColumn Width="90*" FieldName="AbcClassDescription" FilterPopupMode="CheckedList" />
+                        <dxg:GridColumn Width="80*" FieldName="MeasureUnitDescription" />
+                        <dxg:GridColumn Width="50*" FieldName="TotalStock" />
+                        <dxg:GridColumn Width="100*" FieldName="TotalReservedForPick" />
+                        <dxg:GridColumn Width="100*" FieldName="TotalReservedToStore" />
+                        <dxg:GridColumn Width="50*" FieldName="TotalAvailable" />
                     </wms:WmsGridControl.Columns>
 
                     <wms:WmsGridControl.SortInfo>

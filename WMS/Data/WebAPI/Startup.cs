@@ -54,10 +54,16 @@ namespace Ferretto.WMS.Data.WebAPI
                 throw new System.ArgumentNullException(nameof(env));
             }
 
-            if (env.IsDevelopment())
+            if (env.IsProduction())
+            {
+                app.UseHsts();
+
+                app.UseHttpsRedirection();
+            }
+            else
             {
                 app.UseDeveloperExceptionPage();
-#if DEBUG
+
                 app.UseRequestResponseLogging();
 
                 app.UseSwaggerUi3WithApiExplorer(settings =>
@@ -76,13 +82,6 @@ namespace Ferretto.WMS.Data.WebAPI
 
                     settings.GeneratorSettings.DefaultEnumHandling = NJsonSchema.EnumHandling.String;
                 });
-#endif
-            }
-            else if (env.IsProduction())
-            {
-                app.UseHsts();
-
-                app.UseHttpsRedirection();
             }
 
             var wakeupHubEndpoint = this.Configuration["Hubs:WakeUp"];

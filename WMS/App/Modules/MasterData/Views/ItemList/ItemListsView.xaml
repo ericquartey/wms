@@ -148,32 +148,18 @@
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
                         <dxg:GridColumn Width="180*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
                                         FieldName="Code" />
                         <dxg:GridColumn Width="200*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
                                         FieldName="ItemListType" />
                         <dxg:GridColumn Width="400*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
                                         FieldName="Description" />
                         <dxg:GridColumn Width="140*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
                                         FieldName="Priority" />
                         <dxg:GridColumn Width="200*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
                                         FieldName="CreationDate" />
                         <dxg:GridColumn Width="190*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
                                         FieldName="ItemListRowsCount" />
                         <dxg:GridColumn Width="190*"
-                                        AllowSorting="True"
-                                        AllowedBinaryFilters="Equals,DoesNotEqual"
                                         FieldName="ItemListItemsCount" />
 
                     </wms:WmsGridControl.Columns>

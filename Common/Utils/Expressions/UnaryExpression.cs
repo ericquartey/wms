@@ -6,16 +6,18 @@
 
         public UnaryExpression(string operatorName)
         {
-            this.Format = $"{operatorName}({{0}})";
+            this.OperatorName = operatorName;
         }
 
         #endregion
 
         #region Properties
 
+        public string Format => this.OperatorName + "({0})";
+
         public IExpression Expression { get; set; }
 
-        public string Format { get; private set; }
+        public string OperatorName { get; }
 
         #endregion
 
@@ -23,7 +25,7 @@
 
         public override string ToString()
         {
-            return string.Format(this.Format, this.Expression?.ToString());
+            return string.Format(this.Format, this.Expression);
         }
 
         #endregion
