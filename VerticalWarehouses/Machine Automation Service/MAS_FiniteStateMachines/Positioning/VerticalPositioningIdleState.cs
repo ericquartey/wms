@@ -41,21 +41,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #region Properties
 
-        public bool AbsoluteMovement { get; set; }
+        public bool AbsoluteMovement { get; private set; }
 
-        public float Acceleration { get; set; }
+        public float Acceleration { get; private set; }
 
-        public float Deceleration { get; set; }
+        public float Deceleration { get; private set; }
 
-        public short Offset { get; set; }
+        public short Offset { get; private set; }
 
-        public int Target { get; set; }
+        public int Target { get; private set; }
 
         public string Type => "Vertical Positioning Idle State";
 
-        public float Velocity { get; set; }
+        public float Velocity { get; private set; }
 
-        public float Weight { get; set; }
+        public float Weight { get; private set; }
 
         #endregion
 

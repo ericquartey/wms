@@ -59,8 +59,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             this.state = new VerticalPositioningIdleState(this, this.driver, this.eventAggregator);
 
             //TODO The parameter values will be provided to the Finite State Machine component via EventAggregator message
-            //TODO ((VerticalPositioningIdleState)this.state).Target = 2048;
-            //TODO ((VerticalPositioningIdleState)this.state).AbsoluteMovement = true;
+            //TODO Or by a function method to pass the parameters inside the VerticalPositioningIdleState state
 
             this.state.MakeOperation();
         }
