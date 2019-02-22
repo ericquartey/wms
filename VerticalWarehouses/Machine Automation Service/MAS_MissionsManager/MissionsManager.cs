@@ -41,25 +41,25 @@ namespace Ferretto.VW.MAS_MissionsManager
 
             this.messageReceived = new ManualResetEventSlim( false );
 
-            this.missionExecuted = new ManualResetEventSlim(true);
+            this.missionExecuted = new ManualResetEventSlim( true );
 
-            this.missionReady = new ManualResetEventSlim(false);
+            this.missionReady = new ManualResetEventSlim( false );
 
             this.messageQueue = new ConcurrentQueue<Event_Message>();
 
             this.missionsCollection = new Dictionary<IMissionMessageData, int>();
 
             var automationServiceMessageEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
-            automationServiceMessageEvent.Subscribe((message) => this.EnqueueMessageAndSetSemaphor(message),
+            automationServiceMessageEvent.Subscribe( ( message ) => this.EnqueueMessageAndSetSemaphor( message ),
                 ThreadOption.PublisherThread,
                 false,
-                message => (message.Destination == MessageActor.MissionsManager));
+                message => (message.Destination == MessageActor.MissionsManager) );
 
             var finiteStateMachineMessageEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
-            finiteStateMachineMessageEvent.Subscribe((message) => this.missionExecuted.Set(),
+            finiteStateMachineMessageEvent.Subscribe( ( message ) => this.missionExecuted.Set(),
                 ThreadOption.PublisherThread,
                 false,
-                message => (message.Source == MessageActor.FiniteStateMachines && message.Status == MessageStatus.End));
+                message => (message.Source == MessageActor.FiniteStateMachines && message.Status == MessageStatus.End) );
         }
 
         #endregion
@@ -78,30 +78,30 @@ namespace Ferretto.VW.MAS_MissionsManager
             await Task.Run( () => this.MissionsManagerTaskFunction( stoppingToken ), stoppingToken );
         }
 
-        private void EnqueueMessageAndSetSemaphor(Event_Message message)
+        private void EnqueueMessageAndSetSemaphor( Event_Message message )
         {
-            this.messageQueue.Enqueue(message);
+            this.messageQueue.Enqueue( message );
             this.messageReceived.Set();
         }
 
-        private Task MissionsExecutionTaskFunction(CancellationToken stoppingToken)
+        private Task MissionsExecutionTaskFunction( CancellationToken stoppingToken )
         {
             do
             {
                 try
                 {
-                    this.missionExecuted.Wait(Timeout.Infinite, stoppingToken);
-                    this.missionReady.Wait(Timeout.Infinite, stoppingToken);
+                    this.missionExecuted.Wait( Timeout.Infinite, stoppingToken );
+                    this.missionReady.Wait( Timeout.Infinite, stoppingToken );
                 }
-                catch (OperationCanceledException ex)
+                catch(OperationCanceledException ex)
                 {
-                    return Task.FromException(ex);
+                    return Task.FromException( ex );
                 }
-                if (this.missionsCollection.Count != 0)
+                if(this.missionsCollection.Count != 0)
                 {
                     // TODO before removing the mission from the dictionary, execute it
-                    this.missionsCollection.Remove(this.missionsCollection.Keys.First());
-                    if (this.missionsCollection.Count == 0)
+                    this.missionsCollection.Remove( this.missionsCollection.Keys.First() );
+                    if(this.missionsCollection.Count == 0)
                     {
                         this.missionReady.Reset();
                     }
@@ -112,13 +112,13 @@ namespace Ferretto.VW.MAS_MissionsManager
                 {
                     this.missionReady.Reset();
                 }
-            } while (!stoppingToken.IsCancellationRequested);
+            } while(!stoppingToken.IsCancellationRequested);
             return Task.CompletedTask;
         }
 
-        private Task MissionsManagerTaskFunction(CancellationToken stoppingToken)
+        private Task MissionsManagerTaskFunction( CancellationToken stoppingToken )
         {
-            this.missionExecutionTask = Task.Run(() => this.MissionsExecutionTaskFunction(stoppingToken), stoppingToken);
+            this.missionExecutionTask = Task.Run( () => this.MissionsExecutionTaskFunction( stoppingToken ), stoppingToken );
             do
             {
                 try
@@ -132,7 +132,7 @@ namespace Ferretto.VW.MAS_MissionsManager
 
                 this.messageReceived.Reset();
 
-                while (this.messageQueue.TryDequeue(out var receivedMessage))
+                while(this.messageQueue.TryDequeue( out var receivedMessage ))
                 {
                     switch(receivedMessage.Type)
                     {
@@ -160,9 +160,9 @@ namespace Ferretto.VW.MAS_MissionsManager
         {
             try
             {
-                var missionData = (MissionData)message.Data;
-                var missionPriority = ((MissionData)message.Data).Priority;
-                this.missionsCollection.Add(missionData, missionPriority);
+                var missionData = (MissionMessageData)message.Data;
+                var missionPriority = ((MissionMessageData)message.Data).Priority;
+                this.missionsCollection.Add( missionData, missionPriority );
                 this.missionReady.Set();
             }
             catch(InvalidCastException)
