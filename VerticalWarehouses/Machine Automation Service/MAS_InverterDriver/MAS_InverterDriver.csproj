@@ -12,11 +12,6 @@
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.1.1" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(Configuration)' != 'debug'">
-    <Compile Remove="HostedInverterDriverMock.cs" />
-    <Compile Remove="NewInverterDriverMock.cs" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Common_Utils\Ferretto.VW.Common_Utils.csproj" />

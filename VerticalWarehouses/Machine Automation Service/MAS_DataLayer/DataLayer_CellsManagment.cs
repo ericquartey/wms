@@ -11,19 +11,13 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public List<Cell> GetCellList()
         {
-            var listCells = new List<Cell>();
-            foreach (var cell in this.inMemoryDataContext.Cells)
-            {
-                listCells.Add(cell);
-            }
-            return listCells;
+            return this.inMemoryDataContext.Cells.ToList();
         }
 
         public ReturnMissionPosition GetFreeBlockPosition(decimal drawerHeight)
         {
             var cellSpacing = this.GetIntegerConfigurationValue(ConfigurationValueEnum.cellSpacing);
 
-            // TEMP Drawer height conversion to the necessary cells number Ceiling to round a double to the upper integer
             var cellsNumber = (int)Math.Ceiling(drawerHeight / cellSpacing);
 
             // INFO Always take into account +1 drawer cell height, to avoid impacts between two next drowers
