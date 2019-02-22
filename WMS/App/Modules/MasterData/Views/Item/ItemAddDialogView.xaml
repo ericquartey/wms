@@ -245,7 +245,7 @@
                        HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
 
-            <wms:ActionBarItem Command="{Binding SaveCommand}"
+            <wms:ActionBarItem Command="{Binding CreateCommand}"
                                Content="{x:Static res:General.Create}"
                                CustomGlyphSize="36,36"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-create-36.png"
