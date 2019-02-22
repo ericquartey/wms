@@ -101,13 +101,11 @@ namespace Ferretto.Common.BusinessProviders
             int skip,
             int take,
             IEnumerable<SortOption> orderBy = null,
-            IExpression whereExpression = null,
+            string whereExpression = null,
             string searchString = null)
         {
-            var orderByString = orderBy != null ? string.Join(",", orderBy.Select(s => $"{s.PropertyName} {s.Direction}")) : null;
-
             var itemLists = await this.itemListsDataService
-                .GetAllAsync(skip, take, whereExpression?.ToString(), orderByString, searchString);
+                .GetAllAsync(skip, take, whereExpression, orderBy.ToQueryString(), searchString);
 
             return itemLists
                 .Select(l => new ItemList
@@ -124,10 +122,10 @@ namespace Ferretto.Common.BusinessProviders
                 });
         }
 
-        public async Task<int> GetAllCountAsync(IExpression whereExpression = null, string searchString = null)
+        public async Task<int> GetAllCountAsync(string whereExpression = null, string searchString = null)
         {
             return await this.itemListsDataService
-                .GetAllCountAsync(whereExpression?.ToString(), searchString);
+                .GetAllCountAsync(whereExpression, searchString);
         }
 
         public async Task<ItemListDetails> GetByIdAsync(int id)

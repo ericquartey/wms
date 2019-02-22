@@ -13,11 +13,11 @@ namespace Ferretto.Common.BLL.Interfaces.Base
             int skip,
             int take,
             IEnumerable<SortOption> orderBy = null,
-            IExpression whereExpression = null,
+            string whereExpression = null,
             string searchString = null);
 
         Task<int> GetAllCountAsync(
-            IExpression whereExpression = null,
+            string whereExpression = null,
             string searchString = null);
 
         #endregion

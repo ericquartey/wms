@@ -30,14 +30,14 @@ namespace Ferretto.Common.BusinessProviders
             int skip,
             int take,
             IEnumerable<SortOption> orderBy = null,
-            IExpression whereExpression = null,
+            string whereExpression = null,
             string searchString = null)
         {
             var machines = await this.machinesDataService
                 .GetAllAsync(
                     skip,
                     take,
-                    whereExpression?.ToString(),
+                    whereExpression,
                     orderBy.ToQueryString(),
                     searchString);
 
@@ -82,10 +82,10 @@ namespace Ferretto.Common.BusinessProviders
                 });
         }
 
-        public async Task<int> GetAllCountAsync(IExpression whereExpression = null, string searchString = null)
+        public async Task<int> GetAllCountAsync(string whereExpression = null, string searchString = null)
         {
             return await this.machinesDataService
-                .GetAllCountAsync(whereExpression?.ToString(), searchString);
+                .GetAllCountAsync(whereExpression, searchString);
         }
 
         public async Task<Machine> GetByIdAsync(int id)

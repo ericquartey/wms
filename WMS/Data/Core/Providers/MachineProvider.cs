@@ -35,7 +35,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             int skip,
             int take,
             IEnumerable<SortOption> orderBy = null,
-            IExpression whereExpression = null,
+            string whereExpression = null,
             string searchString = null)
         {
             return await this.GetAllBase()
@@ -48,7 +48,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         }
 
         public async Task<int> GetAllCountAsync(
-            IExpression whereExpression = null,
+            string whereExpression = null,
             string searchString = null)
         {
             return await this.GetAllBase()
