@@ -67,6 +67,7 @@
     <PackageReference Include="SonarAnalyzer" Version="6.6.0.3969" />
     <PackageReference Include="SonarAnalyzer.CSharp" Version="7.10.0.7896" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
+    <PackageReference Include="WpfScreenHelper" Version="0.3.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -290,9 +290,7 @@
                         </wms:WmsGridControl>
                     </StackPanel>
                 </GroupBox>
-
             </Grid>
-
         </ScrollViewer>
 
         <ScrollViewer Grid.RowSpan="2"

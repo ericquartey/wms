@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Ferretto.Common.DataModels.LoadingUnit">
+    <Position X="5.25" Y="5" Width="2.5" />
+    <Members>
+      <Property Name="AbcClassId" Hidden="true" />
+      <Property Name="CellId" Hidden="true" />
+      <Property Name="CellPositionId" Hidden="true" />
+      <Property Name="Compartments" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="LoadingUnitStatusId" Hidden="true" />
+      <Property Name="LoadingUnitTypeId" Hidden="true" />
+      <Property Name="Missions" Hidden="true" />
+      <Property Name="SchedulerRequests" Hidden="true" />
+    </Members>
+    <AssociationLine Name="Cell" Type="Ferretto.Common.DataModels.Cell" FixedFromPoint="true">
+      <Path>
+        <Point X="5.25" Y="8.062" />
+        <Point X="2.25" Y="8.062" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="AbcClass" Type="Ferretto.Common.DataModels.AbcClass" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.188" Y="9.18" />
+        <Point X="6.188" Y="9.555" />
+        <Point X="3.781" Y="9.555" />
+        <Point X="3.781" Y="11.25" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>wAALAAKEBAAAAYACQEhwQCAIAGAAAAAAAESQAAEAAAA=</HashCode>
+      <FileName>LoadingUnit.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="LoadingUnitType" />
+      <Property Name="Cell" />
+      <Property Name="LoadingUnitStatus" />
+      <Property Name="AbcClass" />
+    </ShowAsAssociation>
+    <Lollipop Orientation="Bottom" Position="0.1" Collapsed="true" />
+  </Class>
+  <Class Name="Ferretto.Common.DataModels.LoadingUnitType">
+    <Position X="4.5" Y="0.5" Width="3.25" />
+    <Members>
+      <Property Name="CellConfigurationCellPositionLoadingUnitTypes" Hidden="true" />
+      <Property Name="DefaultLoadingUnits" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="LoadingUnitHeightClassId" Hidden="true" />
+      <Property Name="LoadingUnits" Hidden="true" />
+      <Property Name="LoadingUnitSizeClassId" Hidden="true" />
+      <Property Name="LoadingUnitTypeAisles" Hidden="true" />
+      <Property Name="LoadingUnitWeightClassId" Hidden="true" />
+      <Property Name="SchedulerRequests" Hidden="true" />
+    </Members>
+    <AssociationLine Name="LoadingUnitHeightClass" Type="Ferretto.Common.DataModels.LoadingUnitHeightClass" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5" Y="1.796" />
+        <Point X="5" Y="5.994" />
+        <Point X="2.5" Y="5.994" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="LoadingUnitWeightClass" Type="Ferretto.Common.DataModels.LoadingUnitWeightClass" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.5" Y="1.625" />
+        <Point X="4.125" Y="1.625" />
+        <Point X="4.125" Y="3.994" />
+        <Point X="2.5" Y="3.994" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AgADAAggAACgAAAAAAAAAQAgAAAAAAAAAAAAIAAAABA=</HashCode>
+      <FileName>LoadingUnitType.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="LoadingUnitHeightClass" />
+      <Property Name="LoadingUnitSizeClass" />
+      <Property Name="LoadingUnitWeightClass" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Ferretto.Common.DataModels.Cell">
+    <Position X="0.5" Y="7.25" Width="1.75" />
+    <Members>
+      <Property Name="AbcClassId" Hidden="true" />
+      <Property Name="AisleId" Hidden="true" />
+      <Property Name="CellStatusId" Hidden="true" />
+      <Property Name="CellTypeId" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="LoadingUnits" Hidden="true" />
+      <Property Name="Missions" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AIQCAAQgAAAAgQgEgAJAAAAgAiAAAAAAAAkQAAAAAAg=</HashCode>
+      <FileName>Cell.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Ferretto.Common.DataModels.LoadingUnitSizeClass">
+    <Position X="0.5" Y="0.5" Width="2" />
+    <Members>
+      <Property Name="Id" Hidden="true" />
+      <Property Name="LoadingUnitTypes" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAkAAAAAgAAAEBAAAAAAAAAACAAAAAAACI=</HashCode>
+      <FileName>LoadingUnitSizeClass.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Ferretto.Common.DataModels.LoadingUnitHeightClass">
+    <Position X="0.5" Y="5.25" Width="2" />
+    <Members>
+      <Property Name="Id" Hidden="true" />
+      <Property Name="LoadingUnitTypes" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAEAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAECA=</HashCode>
+      <FileName>LoadingUnitHeightClass.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Ferretto.Common.DataModels.LoadingUnitWeightClass">
+    <Position X="0.5" Y="3.25" Width="2" />
+    <Members>
+      <Property Name="Id" Hidden="true" />
+      <Property Name="LoadingUnitTypes" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>CAACACAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>LoadingUnitWeightClass.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Ferretto.Common.DataModels.LoadingUnitStatus">
+    <Position X="6" Y="11.25" Width="2.5" />
+    <Members>
+      <Property Name="Id" Hidden="true" />
+      <Property Name="LoadingUnits" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAAgAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LoadingUnitStatus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ferretto.Common.DataModels.AbcClass">
+    <Position X="2.5" Y="11.25" Width="2" />
+    <Members>
+      <Property Name="Cells" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="Items" Hidden="true" />
+      <Property Name="LoadingUnits" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAAgAAAgCAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AbcClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ferretto.Common.DataModels.Compartment">
+    <Position X="9.25" Y="0.5" Width="3" />
+    <Members>
+      <Property Name="CompartmentStatusId" Hidden="true" />
+      <Property Name="CompartmentTypeId" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="ItemId" Hidden="true" />
+      <Property Name="LoadingUnitId" Hidden="true" />
+      <Property Name="MaterialStatusId" Hidden="true" />
+      <Property Name="Missions" Hidden="true" />
+      <Property Name="PackageTypeId" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>YAACAAAsAABAgAAigBoIYEAMgCgAAEAAQAAIAAJAEAA=</HashCode>
+      <FileName>Compartment.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="LoadingUnit" />
+      <Property Name="Item" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Ferretto.Common.DataModels.Item">
+    <Position X="9.25" Y="6.75" Width="3" />
+    <Members>
+      <Property Name="AbcClassId" Hidden="true" />
+      <Property Name="Compartments" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="ItemAreas" Hidden="true" />
+      <Property Name="ItemCategoryId" Hidden="true" />
+      <Property Name="ItemListRows" Hidden="true" />
+      <Property Name="ItemsCompartmentTypes" Hidden="true" />
+      <Property Name="MeasureUnitId" Hidden="true" />
+      <Property Name="Missions" Hidden="true" />
+      <Property Name="SchedulerRequests" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>YAAjAAAEhAQgBQACQCkoAEBIQCAAABADBQAQAAEAAAA=</HashCode>
+      <FileName>Item.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

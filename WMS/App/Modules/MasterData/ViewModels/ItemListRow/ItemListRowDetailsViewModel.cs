@@ -1,12 +1,11 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.Common.BLL.Interfaces;
+using DevExpress.Xpf.Data;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
@@ -20,7 +19,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
-        private IDataSource<Item, int> itemsDataSource;
+        private InfiniteAsyncSource itemsDataSource;
 
         private ICommand listRowExecuteCommand;
 
@@ -43,7 +42,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public IDataSource<Item, int> ItemsDataSource
+        public InfiniteAsyncSource ItemsDataSource
         {
             get => this.itemsDataSource;
             set => this.SetProperty(ref this.itemsDataSource, value);
@@ -167,8 +166,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.Model = await this.itemListRowProvider.GetByIdAsync(modelId);
                     if (this.Model != null)
                     {
-                        var items = await this.itemProvider.GetAllAsync(0, 0);
-                        this.ItemsDataSource = new DataSource<Item, int>(() => items.AsQueryable());
+                        this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(this.itemProvider).DataSource;
                     }
                     else
                     {

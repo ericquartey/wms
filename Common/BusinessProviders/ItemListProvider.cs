@@ -12,7 +12,7 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
-        private readonly ItemListRowProvider itemListRowProvider;
+        private readonly IItemListRowProvider itemListRowProvider;
 
         private readonly WMS.Data.WebAPI.Contracts.IItemListsDataService itemListsDataService;
 
@@ -21,7 +21,7 @@ namespace Ferretto.Common.BusinessProviders
         #region Constructors
 
         public ItemListProvider(
-            ItemListRowProvider itemListRowProvider,
+            IItemListRowProvider itemListRowProvider,
             WMS.Data.WebAPI.Contracts.IItemListsDataService itemListsDataService)
         {
             this.itemListRowProvider = itemListRowProvider;
