@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ferretto.VW.Common_Utils;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
@@ -18,87 +19,31 @@ namespace Ferretto.VW.MAS_DataLayer
             return listCells;
         }
 
-        public ReturnMissionPosition GetFreeBlockPosition(int drawerHeight)
+        public ReturnMissionPosition GetFreeBlockPosition(decimal drawerHeight)
         {
             var cellSpacing = this.GetIntegerConfigurationValue(ConfigurationValueEnum.cellSpacing);
 
-            // TEMP Drawer height conversion to the necessary cells number Ceiling to round a double to the upper integer
-            var cellNumber = (int)Math.Ceiling((decimal)drawerHeight / cellSpacing);
+            // INFO Drawer height conversion to the necessary cells number Ceiling to round a double to the upper integer
+            var cellsNumber = (int)Math.Ceiling(drawerHeight / cellSpacing);
 
-            var cellEven = new Cell();
-            var cellOdd = new Cell();
+            // INFO Always take into account +1 drawer cell height to avoid impacts between two next drowers
+            cellsNumber += 1;
 
-            var cellCounterEven = 0;
-            var cellCounterOdd = 0;
+            var inMemoryFreeBlockFirstByPriority = this.inMemoryDataContext.FreeBlocks.OrderBy(s => s.Priority).FirstOrDefault(s => s.BlockSize >= cellsNumber);
+
+            if (inMemoryFreeBlockFirstByPriority == null)
+            {
+                throw new DataLayerException(DataLayerExceptionEnum.NO_FREE_BLOCK_EXCEPTION);
+            }
+
+            // INFO Change the BookedCells number in the FreeBlock table
+            inMemoryFreeBlockFirstByPriority.BookedCellsNumber = cellsNumber;
+            this.inMemoryDataContext.SaveChanges();
 
             var returnMissionPosition = new ReturnMissionPosition();
 
-            foreach (var cell in this.inMemoryDataContext.Cells.OrderBy(cell => cell.CellId))
-            {
-                if (cell.Side == Side.FrontEven)
-                {
-                    if (cell.Status == Status.Free && cellCounterEven == 0)
-                    {
-                        cellEven = cell;
-                        cellCounterEven++;
-                    }
-
-                    if (cell.Status == Status.Free && cellCounterEven != 0)
-                    {
-                        cellCounterEven++;
-                    }
-
-                    if (cell.Status == Status.Disabled && cellCounterEven != 0)
-                    {
-                        cellCounterEven++;
-                    }
-
-                    if (cell.Status != Status.Occupied || cell.Status == Status.Unusable)
-                    {
-                        cellCounterEven = 0;
-                    }
-                }
-                else
-                {
-                    if (cell.Status == Status.Free && cellCounterOdd == 0)
-                    {
-                        cellOdd = cell;
-                        cellCounterOdd++;
-                    }
-
-                    if (cell.Status == Status.Free && cellCounterOdd != 0)
-                    {
-                        cellCounterOdd++;
-                    }
-
-                    if (cell.Status == Status.Disabled && cellCounterOdd != 0)
-                    {
-                        cellCounterOdd++;
-                    }
-
-                    if (cell.Status != Status.Occupied || cell.Status == Status.Unusable)
-                    {
-                        cellCounterOdd = 0;
-                    }
-                }
-
-                // INFO - if the block is high or higher the drawer we end to search for the block
-                if (cellCounterEven >= cellNumber)
-                {
-                    returnMissionPosition.ReturnCoord = cellEven.Coord;
-                    returnMissionPosition.ReturnSide = cellEven.Side;
-
-                    break;
-                }
-
-                if (cellCounterOdd >= cellNumber)
-                {
-                    returnMissionPosition.ReturnCoord = cellOdd.Coord;
-                    returnMissionPosition.ReturnSide = cellOdd.Side;
-
-                    break;
-                }
-            }
+            returnMissionPosition.ReturnCoord = inMemoryFreeBlockFirstByPriority.Coord;
+            returnMissionPosition.ReturnSide = inMemoryFreeBlockFirstByPriority.Side;
 
             return returnMissionPosition;
         }
@@ -132,6 +77,95 @@ namespace Ferretto.VW.MAS_DataLayer
             }
 
             return setCellList;
+        }
+
+        private void CreateFreeBlockTable()
+        {
+            var creationDone = false;
+
+            var freeBlockCounter = 1;
+
+            var cellCounterEven = 0;
+            var cellCounterOdd = 0;
+
+            var evenFreeBlock = new FreeBlock();
+            var oddFreeBlock = new FreeBlock();
+
+            // INFO Remove all the records from the FreeBlocks table
+            this.inMemoryDataContext.FreeBlocks.RemoveRange(this.inMemoryDataContext.FreeBlocks);
+            this.inMemoryDataContext.SaveChanges();
+
+            foreach (var cell in this.inMemoryDataContext.Cells.OrderBy(cell => cell.CellId))
+            {
+                creationDone = true;
+
+                if (cell.Side == Side.FrontEven)
+                {
+                    if ((cell.Status == Status.Free || cell.Status == Status.Disabled) && cellCounterEven != 0)
+                    {
+                        cellCounterEven++;
+                    }
+
+                    if (cell.Status == Status.Free && cellCounterEven == 0)
+                    {
+                        evenFreeBlock.StartCell = cell.CellId;
+                        evenFreeBlock.FreeBlockId = freeBlockCounter;
+                        evenFreeBlock.Priority = freeBlockCounter;
+                        evenFreeBlock.Coord = cell.Coord;
+                        evenFreeBlock.Side = cell.Side;
+
+                        freeBlockCounter++;
+                        cellCounterEven++;
+                    }
+
+                    if (cellCounterEven != 0 && (cell.Status == Status.Occupied || cell.Status == Status.Unusable))
+                    {
+                        evenFreeBlock.BlockSize = cellCounterEven;
+                        evenFreeBlock.BookedCellsNumber = 0;
+
+                        cellCounterEven = 0;
+                        this.inMemoryDataContext.FreeBlocks.Add(evenFreeBlock);
+                    }
+                }
+                else
+                {
+                    if ((cell.Status == Status.Free || cell.Status == Status.Disabled) && cellCounterOdd != 0)
+                    {
+                        cellCounterOdd++;
+                    }
+
+                    if (cell.Status == Status.Free && cellCounterOdd == 0)
+                    {
+                        oddFreeBlock.StartCell = cell.CellId;
+                        oddFreeBlock.FreeBlockId = freeBlockCounter;
+                        oddFreeBlock.Priority = freeBlockCounter;
+                        oddFreeBlock.Coord = cell.Coord;
+                        oddFreeBlock.Side = cell.Side;
+
+                        freeBlockCounter++;
+                        cellCounterOdd++;
+                    }
+
+                    if (cellCounterOdd != 0 && (cell.Status == Status.Occupied || cell.Status == Status.Unusable))
+                    {
+                        oddFreeBlock.BlockSize = cellCounterOdd;
+                        oddFreeBlock.BookedCellsNumber = 0;
+
+                        cellCounterOdd = 0;
+                        this.inMemoryDataContext.FreeBlocks.Add(oddFreeBlock);
+                    }
+                }
+            }
+
+            if (!creationDone)
+            {
+                throw new DataLayerException(DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION);
+            }
+
+            if (!this.inMemoryDataContext.FreeBlocks.Any())
+            {
+                throw new DataLayerException(DataLayerExceptionEnum.NO_FREE_BLOCK_EXCEPTION);
+            }
         }
 
         #endregion

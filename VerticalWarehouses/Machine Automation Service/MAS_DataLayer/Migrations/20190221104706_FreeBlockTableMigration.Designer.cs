@@ -3,14 +3,16 @@ using System;
 using Ferretto.VW.MAS_DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS_DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    partial class DataLayerContextModelSnapshot : ModelSnapshot
+    [Migration("20190221104706_FreeBlockTableMigration")]
+    partial class FreeBlockTableMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,28 +47,6 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                     b.HasKey("VarName");
 
                     b.ToTable("ConfigurationValues");
-                });
-
-            modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.FreeBlock", b =>
-                {
-                    b.Property<int>("FreeBlockId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("BlockSize");
-
-                    b.Property<int>("BookedCellsNumber");
-
-                    b.Property<decimal>("Coord");
-
-                    b.Property<int>("Priority");
-
-                    b.Property<long>("Side");
-
-                    b.Property<int>("StartCell");
-
-                    b.HasKey("FreeBlockId");
-
-                    b.ToTable("FreeBlocks");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.Operation", b =>

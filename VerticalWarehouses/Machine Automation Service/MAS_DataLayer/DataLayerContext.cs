@@ -30,19 +30,21 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Properties
 
+        public DbSet<Cell> Cells { get; set; }
+
+        public DbSet<ConfigurationValue> ConfigurationValues { get; set; }
+
+        public DbSet<FreeBlock> FreeBlocks { get; set; }
+
         public DbSet<Operation> Operations { get; set; }
+
+        public DbSet<RuntimeValue> RuntimeValues { get; set; }
 
         public DbSet<StatusLog> StatusLogs { get; set; }
 
         public DbSet<Step> Steps { get; set; }
 
-        public DbSet<RuntimeValue> RuntimeValues { get; set; }
-
-        public DbSet<ConfigurationValue> ConfigurationValues { get; set; }
-
-        public DbSet<Cell> Cells { get; set; }
-
-        #endregion Properties
+        #endregion
 
         #region Methods
 
