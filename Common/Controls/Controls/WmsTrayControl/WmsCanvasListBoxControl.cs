@@ -375,10 +375,10 @@ namespace Ferretto.Common.Controls
                 heightNewCalculated = heightConverted;
             }
 
-            this.Width = widthNewCalculated;
-            this.Height = heightNewCalculated;
-            this.MinTrayWidth = widthNewCalculated + (this.ShowRuler ? this.RulerSize + 1 : 1);
-            this.MinTrayHeight = heightNewCalculated + (this.ShowRuler ? this.RulerSize + 1 : 1);
+            this.Width = widthNewCalculated + this.PenSize; 
+            this.Height = heightNewCalculated + this.PenSize; 
+            this.MinTrayWidth = widthNewCalculated;
+            this.MinTrayHeight = heightNewCalculated;
 
             this.TrayHeight = heightNewCalculated;
             this.TrayWidth = widthNewCalculated;
@@ -618,8 +618,8 @@ namespace Ferretto.Common.Controls
             points.Add(new Point(this.TrayWidth, 0));
             points.Add(new Point(this.TrayWidth, this.ActualHeight));
 
-            points.Add(new Point(0, this.ActualHeight));
-            points.Add(new Point(this.TrayWidth, this.ActualHeight));
+            points.Add(new Point(0, this.ActualHeight - this.PenSize));
+            points.Add(new Point(this.TrayWidth, this.ActualHeight- this.PenSize));
 
             return points;
         }
