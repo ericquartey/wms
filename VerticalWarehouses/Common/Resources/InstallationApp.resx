@@ -291,7 +291,7 @@
   </data>
   <data name="VerticalAxis" xml:space="preserve">
     <value>Vertical and craddle</value>
-    <comment>Title - Button text</comment>
+    <comment>Title</comment>
   </data>
   <data name="AntiIntrusionGate" xml:space="preserve">
     <value>Anti intrusion gate bay 1</value>
@@ -855,5 +855,9 @@
   <data name="Gate1HeightReaced" xml:space="preserve">
     <value>Gate1 Height Reaced</value>
     <comment>Sensor control text</comment>
+  </data>
+  <data name="VerticalAxisButton" xml:space="preserve">
+    <value>VerticalAxisButton</value>
+    <comment>Button text</comment>
   </data>
 </root>

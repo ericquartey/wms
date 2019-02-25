@@ -1645,6 +1645,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a VerticalAxisButton.
+        /// </summary>
+        public static string VerticalAxisButton {
+            get {
+                return ResourceManager.GetString("VerticalAxisButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Calibrating verical axis....
         /// </summary>
         public static string VerticalAxisCalibrating {

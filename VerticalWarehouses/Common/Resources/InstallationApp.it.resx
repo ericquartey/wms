@@ -244,7 +244,7 @@
     <value>Input vari</value>
   </data>
   <data name="VerticalAxis" xml:space="preserve">
-    <value>Elevatore e culla</value>
+    <value>Elevatore</value>
   </data>
   <data name="AntiIntrusionGate" xml:space="preserve">
     <value>Barriera anti intrusione baia 1</value>
@@ -675,5 +675,8 @@
   </data>
   <data name="Gate1HeightReaced" xml:space="preserve">
     <value>Altezza raggiunta</value>
+  </data>
+  <data name="VerticalAxisButton" xml:space="preserve">
+    <value>Elevatore e culla</value>
   </data>
 </root>
