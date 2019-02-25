@@ -1,13 +1,17 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
 {
-    public interface IAreaProvider : IBusinessProvider<Area, Area>
+    public interface IAreaProvider :
+        IReadAllAsyncProvider<Area, int>,
+        IReadSingleAsyncProvider<Area, int>
     {
         #region Methods
 
-        IQueryable<Area> GetByItemIdAvailability(int id);
+        Task<IEnumerable<Area>> GetAreasWithAvailabilityAsync(int id);
 
         #endregion
     }

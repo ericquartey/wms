@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
@@ -10,11 +11,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class CompartmentTypeProvider : ICompartmentTypeProvider
+    internal class CompartmentTypeProvider : ICompartmentTypeProvider
     {
         #region Fields
 
         private readonly DatabaseContext dataContext;
+
         private readonly IItemCompartmentTypeProvider itemCompartmentTypeProvider;
 
         #endregion
@@ -33,12 +35,12 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public async Task<OperationResult<CompartmentType>> CreateAsync(CompartmentType model)
+        public async Task<IOperationResult<CompartmentType>> CreateAsync(CompartmentType model)
         {
             return await this.CreateAsync(model, null, null);
         }
 
-        public async Task<OperationResult<CompartmentType>> CreateAsync(
+        public async Task<IOperationResult<CompartmentType>> CreateAsync(
             CompartmentType model,
             int? itemId,
             int? maxCapacity)
@@ -123,7 +125,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                        .SingleOrDefaultAsync(a => a.Id == id);
         }
 
-        private async Task<OperationResult<ItemCompartmentType>> CreateOrUpdateItemCompartmentTypeAsync(
+        private async Task<IOperationResult<ItemCompartmentType>> CreateOrUpdateItemCompartmentTypeAsync(
             int itemId,
             int? maxCapacity,
             int compartmentTypeId)

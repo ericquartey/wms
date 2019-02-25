@@ -1,291 +1,292 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
-using Ferretto.Common.EF;
-using Microsoft.EntityFrameworkCore;
+using Ferretto.Common.Utils.Expressions;
 
 namespace Ferretto.Common.BusinessProviders
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Major Code Smell",
+        "S107:Methods should not have too many parameters",
+        Justification = "Ok")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Major Code Smell",
+        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
+        Justification = "Ok")]
     public class CompartmentProvider : ICompartmentProvider
     {
         #region Fields
 
-        private static readonly Expression<Func<DataModels.Compartment, bool>> StatusAvailableFilter =
-           compartment => compartment.MaterialStatusId == 1;
+        private readonly IAbcClassProvider abcClassProvider;
 
-        private static readonly Expression<Func<DataModels.Compartment, bool>> StatusAwaitingFilter =
-           compartment => compartment.MaterialStatusId == 2;
+        private readonly WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService;
 
-        private static readonly Expression<Func<DataModels.Compartment, bool>> StatusBlockedFilter =
-           compartment => compartment.MaterialStatusId == 4;
+        private readonly ICellPositionProvider cellPositionProvider;
 
-        private static readonly Expression<Func<DataModels.Compartment, bool>> StatusExpiredFilter =
-           compartment => compartment.MaterialStatusId == 3;
+        private readonly WMS.Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService;
 
-        private readonly CompartmentTypeProvider compartmentTypeProvider;
+        private readonly ICompartmentStatusProvider compartmentStatusProvider;
 
-        private readonly IDatabaseContextService dataContextService;
+        private readonly ICompartmentTypeProvider compartmentTypeProvider;
 
-        private readonly EnumerationProvider enumerationProvider;
+        private readonly WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService;
+
+        private readonly WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService;
+
+        private readonly ILoadingUnitStatusProvider loadingUnitStatusProvider;
+
+        private readonly ILoadingUnitTypeProvider loadingUnitTypeProvider;
+
+        private readonly IMaterialStatusProvider materialStatusProvider;
+
+        private readonly IPackageTypeProvider packageTypeProvider;
 
         #endregion
 
         #region Constructors
 
         public CompartmentProvider(
-            IDatabaseContextService dataContextService,
-            EnumerationProvider enumerationProvider,
-            CompartmentTypeProvider compartmentTypeProvider)
+            ICompartmentStatusProvider compartmentStatusProvider,
+            ICompartmentTypeProvider compartmentTypeProvider,
+            IPackageTypeProvider packageTypeProvider,
+            IMaterialStatusProvider materialStatusProvider,
+            IAbcClassProvider abcClassProvider,
+            ICellPositionProvider cellPositionProvider,
+            ILoadingUnitStatusProvider loadingUnitStatusProvider,
+            ILoadingUnitTypeProvider loadingUnitTypeProvider,
+            WMS.Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService,
+            WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService,
+            WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService,
+            WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService)
         {
-            this.dataContextService = dataContextService;
-            this.enumerationProvider = enumerationProvider;
+            this.compartmentsDataService = compartmentsDataService;
+            this.itemsDataService = itemsDataService;
+            this.loadingUnitsDataService = loadingUnitsDataService;
+            this.areasDataService = areasDataService;
+
+            this.abcClassProvider = abcClassProvider;
+            this.cellPositionProvider = cellPositionProvider;
             this.compartmentTypeProvider = compartmentTypeProvider;
+            this.compartmentStatusProvider = compartmentStatusProvider;
+            this.packageTypeProvider = packageTypeProvider;
+            this.materialStatusProvider = materialStatusProvider;
+            this.loadingUnitStatusProvider = loadingUnitStatusProvider;
+            this.loadingUnitTypeProvider = loadingUnitTypeProvider;
         }
 
         #endregion
 
         #region Methods
 
-        public async Task<OperationResult> AddAsync(CompartmentDetails model)
-        {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            // TODO: add transaction management
-            try
-            {
-                using (var dataContext = this.dataContextService.Current)
-                {
-                    var result = await this.compartmentTypeProvider.AddAsync(
-                                     new CompartmentType
-                                     {
-                                         Width = model.Width,
-                                         Height = model.Height
-                                     }, model.ItemId,
-                                     model.MaxCapacity);
-
-                    if (result.Success == false)
-                    {
-                        return result;
-                    }
-
-                    var entry = dataContext.Compartments.Add(new DataModels.Compartment
-                    {
-                        XPosition = model.XPosition,
-                        YPosition = model.YPosition,
-                        LoadingUnitId = model.LoadingUnitId,
-                        CompartmentTypeId = result.EntityId.Value,
-                        IsItemPairingFixed = model.IsItemPairingFixed,
-                        Stock = model.Stock,
-                        ReservedForPick = model.ReservedForPick,
-                        ReservedToStore = model.ReservedToStore,
-                        CreationDate = DateTime.Now,
-                        ItemId = model.ItemId,
-                        MaterialStatusId = model.MaterialStatusId
-                    });
-
-                    var changedEntitiesCount = await dataContext.SaveChangesAsync();
-                    if (changedEntitiesCount > 0)
-                    {
-                        model.Id = entry.Entity.Id;
-                    }
-
-                    model.LoadingUnit?.Compartments.Add(model);
-
-                    return new OperationResult(true);
-                }
-            }
-            catch (Exception ex)
-            {
-                return new OperationResult(false, description: ex.Message);
-            }
-        }
-
-        public async Task<OperationResult> AddRangeAsync(IEnumerable<ICompartment> compartments)
+        public async Task<IOperationResult<ICompartment>> AddRangeAsync(IEnumerable<ICompartment> compartments)
         {
             if (compartments == null)
             {
                 throw new ArgumentNullException(nameof(compartments));
             }
 
-            // TODO: add transaction management
-            foreach (var compartment in compartments.Cast<CompartmentDetails>())
+            try
             {
-                var result = await this.AddAsync(compartment);
-                if (result.Success == false)
+                var compartmentsApi = new List<WMS.Data.WebAPI.Contracts.CompartmentDetails>();
+                foreach (var compartment in compartments.Cast<CompartmentDetails>())
                 {
-                    return result;
-                }
-            }
-
-            return new OperationResult(true);
-        }
-
-        public async Task<int> DeleteAsync(int id)
-        {
-            using (var dataContext = this.dataContextService.Current)
-            {
-                var existingModel = dataContext.Compartments.Find(id);
-                if (existingModel != null)
-                {
-                    dataContext.Remove(existingModel);
+                    compartmentsApi.Add(new WMS.Data.WebAPI.Contracts.CompartmentDetails
+                    {
+                        XPosition = compartment.XPosition,
+                        YPosition = compartment.YPosition,
+                        LoadingUnitId = compartment.LoadingUnitId,
+                        CompartmentTypeId = compartment.CompartmentTypeId,
+                        IsItemPairingFixed = compartment.IsItemPairingFixed,
+                        Stock = compartment.Stock,
+                        ReservedForPick = compartment.ReservedForPick,
+                        ReservedToStore = compartment.ReservedToStore,
+                        CreationDate = DateTime.Now,
+                        ItemId = compartment.ItemId,
+                        MaterialStatusId = compartment.MaterialStatusId
+                    });
                 }
 
-                return await dataContext.SaveChangesAsync();
+                await this.compartmentsDataService.CreateRangeAsync(compartmentsApi);
+
+                return new OperationResult<CompartmentDetails>(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<CompartmentDetails>(ex);
             }
         }
 
-        public IQueryable<Compartment> GetAll()
+        public async Task<IOperationResult<CompartmentDetails>> CreateAsync(CompartmentDetails model)
         {
-            return this.dataContextService.Current.Compartments
-               .Include(c => c.LoadingUnit)
-               .Include(c => c.MaterialStatus)
-               .Include(c => c.Item)
-               .ThenInclude(i => i.MeasureUnit)
-               .Include(c => c.CompartmentType)
-               .Include(c => c.CompartmentStatus)
-               .Include(c => c.PackageType)
-               .Select(c => new Compartment
-               {
-                   Id = c.Id,
-                   CompartmentStatusDescription = c.CompartmentStatus.Description,
-                   CompartmentTypeDescription = string.Format(
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            try
+            {
+                var compartment = await this.compartmentsDataService.CreateAsync(new WMS.Data.WebAPI.Contracts.CompartmentDetails
+                {
+                    XPosition = model.XPosition,
+                    YPosition = model.YPosition,
+                    LoadingUnitId = model.LoadingUnitId,
+                    CompartmentTypeId = model.CompartmentTypeId,
+                    IsItemPairingFixed = model.IsItemPairingFixed,
+                    Stock = model.Stock,
+                    ReservedForPick = model.ReservedForPick,
+                    ReservedToStore = model.ReservedToStore,
+                    CreationDate = DateTime.Now,
+                    ItemId = model.ItemId,
+                    MaterialStatusId = model.MaterialStatusId
+                });
+
+                model.Id = compartment.Id;
+
+                model.LoadingUnit?.Compartments.Add(model);
+
+                return new OperationResult<CompartmentDetails>(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<CompartmentDetails>(ex);
+            }
+        }
+
+        public async Task<IOperationResult<CompartmentDetails>> DeleteAsync(int id)
+        {
+            try
+            {
+                var compartment = await this.compartmentsDataService.GetByIdAsync(id);
+
+                await this.compartmentsDataService.DeleteAsync(compartment);
+
+                return new OperationResult<CompartmentDetails>(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<CompartmentDetails>(ex);
+            }
+        }
+
+        public async Task<IEnumerable<Compartment>> GetAllAsync(
+            int skip,
+            int take,
+            IEnumerable<SortOption> orderBy = null,
+            IExpression whereExpression = null,
+            string searchString = null)
+        {
+            var orderByString = orderBy != null ? string.Join(",", orderBy.Select(s => $"{s.PropertyName} {s.Direction}")) : null;
+
+            return (await this.compartmentsDataService.GetAllAsync(skip, take, whereExpression?.ToString(), orderByString, searchString))
+                .Select(c => new Compartment
+                {
+                    Id = c.Id,
+                    CompartmentStatusDescription = c.CompartmentStatusDescription,
+                    CompartmentTypeDescription = string.Format(
                        Resources.MasterData.CompartmentTypeListFormatReduced,
-                       c.HasRotation ? c.CompartmentType.Width : c.CompartmentType.Height,
-                       c.HasRotation ? c.CompartmentType.Height : c.CompartmentType.Width),
-                   ItemDescription = c.Item.Description,
-                   IsItemPairingFixed = c.IsItemPairingFixed,
-                   LoadingUnitCode = c.LoadingUnit.Code,
-                   Lot = c.Lot,
-                   MaterialStatusDescription = c.MaterialStatus.Description,
-                   Stock = c.Stock,
-                   Sub1 = c.Sub1,
-                   Sub2 = c.Sub2,
-                   ItemMeasureUnit = c.Item.MeasureUnit.Description
-               })
-               .AsNoTracking();
+                       c.HasRotation ? c.Width : c.Height,
+                       c.HasRotation ? c.Height : c.Width),
+                    ItemDescription = c.ItemDescription,
+                    IsItemPairingFixed = c.IsItemPairingFixed,
+                    LoadingUnitCode = c.LoadingUnitCode,
+                    Lot = c.Lot,
+                    MaterialStatusDescription = c.MaterialStatusDescription,
+                    Stock = c.Stock,
+                    Sub1 = c.Sub1,
+                    Sub2 = c.Sub2,
+                    ItemMeasureUnit = c.ItemMeasureUnit
+                });
         }
 
-        public int GetAllCount()
+        public async Task<int> GetAllCountAsync(IExpression whereExpression = null, string searchString = null)
         {
-            using (var dataContext = this.dataContextService.Current)
-            {
-                return dataContext.Compartments.Count();
-            }
+            return await this.compartmentsDataService.GetAllCountAsync(whereExpression?.ToString(), searchString);
         }
 
         public async Task<CompartmentDetails> GetByIdAsync(int id)
         {
-            using (var dataContext = this.dataContextService.Current)
+            var compartment = await this.compartmentsDataService.GetByIdAsync(id);
+            var compartmentStatusChoices = await this.compartmentStatusProvider.GetAllAsync();
+            var compartmentTypeChoices = await this.compartmentTypeProvider.GetAllAsync();
+            var materialStatusChoices = await this.materialStatusProvider.GetAllAsync();
+            var packageTypeChoices = await this.packageTypeProvider.GetAllAsync();
+
+            var loadingUnit = await this.GetLoadingUnitByIdAsync(compartment.LoadingUnitId);
+
+            return new CompartmentDetails
             {
-                var compartmentDetails = await dataContext.Compartments
-               .Where(c => c.Id == id)
-               .Include(c => c.LoadingUnit)
-               .ThenInclude(l => l.LoadingUnitType)
-               .Include(c => c.Item)
-               .ThenInclude(i => i.MeasureUnit)
-               .Include(c => c.CompartmentStatus)
-               .Include(c => c.CompartmentType)
-               .GroupJoin(
-                    dataContext.ItemsCompartmentTypes,
-                    cmp => new { CompartmentTypeId = cmp.CompartmentTypeId, ItemId = cmp.ItemId.Value },
-                    ict => new { CompartmentTypeId = ict.CompartmentTypeId, ItemId = ict.ItemId },
-                    (cmp, ict) => new { cmp, ict = ict.DefaultIfEmpty() })
-               .Select(j => new CompartmentDetails
-               {
-                   Id = j.cmp.Id,
-                   LoadingUnitCode = j.cmp.LoadingUnit.Code,
-                   CompartmentTypeId = j.cmp.CompartmentTypeId,
-                   IsItemPairingFixed = j.cmp.IsItemPairingFixed,
-                   ItemCode = j.cmp.Item.Code,
-                   ItemDescription = j.cmp.Item.Description,
-                   Sub1 = j.cmp.Sub1,
-                   Sub2 = j.cmp.Sub2,
-                   MaterialStatusId = j.cmp.MaterialStatusId,
-                   FifoTime = j.cmp.FifoTime,
-                   PackageTypeId = j.cmp.PackageTypeId,
-                   Lot = j.cmp.Lot,
-                   RegistrationNumber = j.cmp.RegistrationNumber,
-                   MaxCapacity = j.ict.SingleOrDefault().MaxCapacity,
-                   Stock = j.cmp.Stock,
-                   ReservedForPick = j.cmp.ReservedForPick,
-                   ReservedToStore = j.cmp.ReservedToStore,
-                   CompartmentStatusId = j.cmp.CompartmentStatusId,
-                   CompartmentStatusDescription = j.cmp.CompartmentStatus.Description,
-                   CreationDate = j.cmp.CreationDate,
-                   LastHandlingDate = j.cmp.LastHandlingDate,
-                   InventoryDate = j.cmp.InventoryDate,
-                   FirstStoreDate = j.cmp.FirstStoreDate,
-                   LastStoreDate = j.cmp.LastStoreDate,
-                   LastPickDate = j.cmp.LastPickDate,
-                   Width = j.cmp.HasRotation ? j.cmp.CompartmentType.Height : j.cmp.CompartmentType.Width,
-                   Height = j.cmp.HasRotation ? j.cmp.CompartmentType.Width : j.cmp.CompartmentType.Height,
-                   XPosition = j.cmp.XPosition,
-                   YPosition = j.cmp.YPosition,
-                   LoadingUnitId = j.cmp.LoadingUnitId,
-                   ItemId = j.cmp.ItemId,
-                   LoadingUnitHasCompartments = j.cmp.LoadingUnit.LoadingUnitType.HasCompartments,
-                   ItemMeasureUnit = j.cmp.Item.MeasureUnit.Description
-               })
-               .SingleAsync();
-
-                compartmentDetails.CompartmentStatusChoices = this.enumerationProvider.GetAllCompartmentStatuses();
-                compartmentDetails.CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes();
-                compartmentDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
-                compartmentDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
-
-                return compartmentDetails;
-            }
+                Id = compartment.Id,
+                LoadingUnitCode = compartment.LoadingUnitCode,
+                CompartmentTypeId = compartment.CompartmentTypeId,
+                IsItemPairingFixed = compartment.IsItemPairingFixed,
+                ItemCode = compartment.ItemCode,
+                ItemDescription = compartment.ItemDescription,
+                Sub1 = compartment.Sub1,
+                Sub2 = compartment.Sub2,
+                MaterialStatusId = compartment.MaterialStatusId,
+                FifoTime = compartment.FifoTime,
+                PackageTypeId = compartment.PackageTypeId,
+                Lot = compartment.Lot,
+                RegistrationNumber = compartment.RegistrationNumber,
+                MaxCapacity = compartment.MaxCapacity,
+                Stock = compartment.Stock,
+                ReservedForPick = compartment.ReservedForPick,
+                ReservedToStore = compartment.ReservedToStore,
+                CompartmentStatusId = compartment.CompartmentStatusId,
+                CompartmentStatusDescription = compartment.CompartmentStatusDescription,
+                CreationDate = compartment.CreationDate,
+                LastHandlingDate = compartment.LastHandlingDate,
+                InventoryDate = compartment.InventoryDate,
+                FirstStoreDate = compartment.FirstStoreDate,
+                LastStoreDate = compartment.LastStoreDate,
+                LastPickDate = compartment.LastPickDate,
+                Width = compartment.HasRotation ? compartment.Height : compartment.Width,
+                Height = compartment.HasRotation ? compartment.Width : compartment.Height,
+                XPosition = compartment.XPosition,
+                YPosition = compartment.YPosition,
+                LoadingUnitId = compartment.LoadingUnitId,
+                ItemId = compartment.ItemId,
+                LoadingUnitHasCompartments = compartment.LoadingUnitHasCompartments,
+                ItemMeasureUnit = compartment.ItemMeasureUnit,
+                LoadingUnit = loadingUnit,
+                CompartmentStatusChoices = compartmentStatusChoices,
+                CompartmentTypeChoices = compartmentTypeChoices,
+                MaterialStatusChoices = materialStatusChoices,
+                PackageTypeChoices = packageTypeChoices
+            };
         }
 
-        public IQueryable<Compartment> GetByItemId(int id)
+        public async Task<IEnumerable<Compartment>> GetByItemIdAsync(int id)
         {
-            return this.dataContextService.Current.Compartments
-                .Where(c => c.ItemId == id)
-                .Include(c => c.LoadingUnit)
-                .Include(c => c.CompartmentStatus)
-                .Include(c => c.CompartmentType)
-                .Include(c => c.Item)
-                .Include(c => c.MaterialStatus)
+            return (await this.itemsDataService.GetCompartmentsAsync(id))
                 .Select(c => new Compartment
                 {
                     Id = c.Id,
-                    CompartmentStatusDescription = c.CompartmentStatus.Description,
-                    ItemDescription = c.Item.Description,
-                    LoadingUnitCode = c.LoadingUnit.Code,
+                    CompartmentStatusDescription = c.CompartmentStatusDescription,
+                    ItemDescription = c.ItemDescription,
+                    LoadingUnitCode = c.LoadingUnitCode,
                     Lot = c.Lot,
-                    MaterialStatusDescription = c.MaterialStatus.Description,
+                    MaterialStatusDescription = c.MaterialStatusDescription,
                     Stock = c.Stock,
                     Sub1 = c.Sub1,
                     Sub2 = c.Sub2,
                     IsItemPairingFixed = c.IsItemPairingFixed
-                })
-                .AsNoTracking();
+                });
         }
 
-        public IQueryable<CompartmentDetails> GetByLoadingUnitId(int id)
+        public async Task<IEnumerable<CompartmentDetails>> GetByLoadingUnitIdAsync(int id)
         {
-            return this.dataContextService.Current.Compartments
-                .Where(c => c.LoadingUnitId == id)
-                .Include(c => c.LoadingUnit)
-                .ThenInclude(l => l.LoadingUnitType)
-                .Include(c => c.Item)
-                .ThenInclude(i => i.MeasureUnit)
-                .Include(c => c.CompartmentStatus)
-                .Include(c => c.CompartmentType)
-                .ThenInclude(ct => ct.ItemsCompartmentTypes)
+            return (await this.loadingUnitsDataService.GetCompartmentsAsync(id))
                 .Select(c => new CompartmentDetails
                 {
                     Id = c.Id,
-                    LoadingUnitCode = c.LoadingUnit.Code,
+                    LoadingUnitCode = c.LoadingUnitCode,
                     CompartmentTypeId = c.CompartmentTypeId,
-                    ItemCode = c.Item.Code,
-                    ItemDescription = c.Item.Description,
+                    ItemCode = c.ItemCode,
+                    ItemDescription = c.ItemDescription,
                     Sub1 = c.Sub1,
                     Sub2 = c.Sub2,
                     MaterialStatusId = c.MaterialStatusId,
@@ -293,124 +294,128 @@ namespace Ferretto.Common.BusinessProviders
                     PackageTypeId = c.PackageTypeId,
                     Lot = c.Lot,
                     RegistrationNumber = c.RegistrationNumber,
-                    MaxCapacity = c.CompartmentType.ItemsCompartmentTypes.SingleOrDefault(ict => ict.ItemId == c.ItemId).MaxCapacity,
+                    MaxCapacity = c.MaxCapacity,
                     Stock = c.Stock,
                     ReservedForPick = c.ReservedForPick,
                     ReservedToStore = c.ReservedToStore,
                     CompartmentStatusId = c.CompartmentStatusId,
-                    CompartmentStatusDescription = c.CompartmentStatus.Description,
+                    CompartmentStatusDescription = c.CompartmentStatusDescription,
                     CreationDate = c.CreationDate,
                     LastHandlingDate = c.LastHandlingDate,
                     InventoryDate = c.InventoryDate,
                     FirstStoreDate = c.FirstStoreDate,
                     LastStoreDate = c.LastStoreDate,
                     LastPickDate = c.LastPickDate,
-                    Width = c.HasRotation ? c.CompartmentType.Height : c.CompartmentType.Width,
-                    Height = c.HasRotation ? c.CompartmentType.Width : c.CompartmentType.Height,
+                    Width = c.HasRotation ? c.Height : c.Width,
+                    Height = c.HasRotation ? c.Width : c.Height,
                     XPosition = c.XPosition,
                     YPosition = c.YPosition,
                     LoadingUnitId = c.LoadingUnitId,
                     ItemId = c.ItemId,
                     IsItemPairingFixed = c.IsItemPairingFixed,
-                    LoadingUnitHasCompartments = c.LoadingUnit.LoadingUnitType.HasCompartments,
-                    ItemMeasureUnit = c.Item.MeasureUnit.Description
-                })
-                .AsNoTracking();
+                    LoadingUnitHasCompartments = c.LoadingUnitHasCompartments,
+                    ItemMeasureUnit = c.ItemMeasureUnit
+                });
+        }
+
+        public async Task<IEnumerable<Enumeration>> GetCellsByAreaIdAsync(int areaId)
+        {
+            return (await this.areasDataService.GetCellsAsync(areaId))
+                .Select(c => new Enumeration(
+                    c.Id,
+                    $"{c.AreaName} - {c.AisleName} - Cell {c.Number} (Floor {c.Floor}, Column {c.Column}, {c.Side})")); // TODO: localize string
+        }
+
+        public async Task<LoadingUnitDetails> GetLoadingUnitByIdAsync(int id)
+        {
+            var loadingUnit = await this.loadingUnitsDataService.GetByIdAsync(id);
+
+            var abcClassChoices = await this.abcClassProvider.GetAllAsync();
+            var cellPositionChoices = await this.cellPositionProvider.GetAllAsync();
+            var loadingUnitStatusChoices = await this.loadingUnitStatusProvider.GetAllAsync();
+            var loadingUnitTypeChoices = await this.loadingUnitTypeProvider.GetAllAsync();
+            var cellChoices = await this.GetCellsByAreaIdAsync(loadingUnit.AreaId);
+
+            var l = new LoadingUnitDetails
+            {
+                Id = loadingUnit.Id,
+                Code = loadingUnit.Code,
+                AbcClassId = loadingUnit.AbcClassId,
+                AbcClassDescription = loadingUnit.AbcClassDescription,
+                CellPositionId = loadingUnit.CellPositionId,
+                CellPositionDescription = loadingUnit.CellPositionDescription,
+                LoadingUnitStatusId = loadingUnit.LoadingUnitStatusId,
+                LoadingUnitStatusDescription = loadingUnit.LoadingUnitStatusDescription,
+                LoadingUnitTypeId = loadingUnit.LoadingUnitTypeId,
+                LoadingUnitTypeDescription = loadingUnit.LoadingUnitTypeDescription,
+                Width = loadingUnit.Width,
+                Length = loadingUnit.Length,
+                Note = loadingUnit.Note,
+                IsCellPairingFixed = loadingUnit.IsCellPairingFixed,
+                ReferenceType = (ReferenceType)loadingUnit.ReferenceType,
+                Height = loadingUnit.Height,
+                Weight = loadingUnit.Weight,
+                HandlingParametersCorrection = loadingUnit.HandlingParametersCorrection,
+                LoadingUnitTypeHasCompartments = loadingUnit.LoadingUnitTypeHasCompartments,
+                CreationDate = loadingUnit.CreationDate,
+                LastHandlingDate = loadingUnit.LastHandlingDate,
+                InventoryDate = loadingUnit.InventoryDate,
+                LastPickDate = loadingUnit.LastPickDate,
+                LastStoreDate = loadingUnit.LastStoreDate,
+                InCycleCount = loadingUnit.InCycleCount,
+                OutCycleCount = loadingUnit.OutCycleCount,
+                OtherCycleCount = loadingUnit.OtherCycleCount,
+                CellId = loadingUnit.CellId,
+                AisleId = loadingUnit.AisleId,
+                AreaId = loadingUnit.AreaId,
+                CompartmentsCount = loadingUnit.CompartmentsCount,
+
+                AbcClassChoices = abcClassChoices,
+                CellPositionChoices = cellPositionChoices,
+                LoadingUnitStatusChoices = loadingUnitStatusChoices,
+                LoadingUnitTypeChoices = loadingUnitTypeChoices,
+                CellChoices = cellChoices
+            };
+
+            foreach (var compartment in await this.GetByLoadingUnitIdAsync(id))
+            {
+                l.AddCompartment(compartment);
+            }
+
+            return l;
         }
 
         public async Task<int?> GetMaxCapacityAsync(int? width, int? height, int itemId)
         {
-            using (var dataContext = this.dataContextService.Current)
+            if (width.HasValue && height.HasValue)
             {
-                var compartmentType = await dataContext.ItemsCompartmentTypes
-                    .Include(ict => ict.CompartmentType)
-                    .SingleOrDefaultAsync(ict =>
-                        ict.ItemId == itemId &&
-                        ((ict.CompartmentType.Width == width && ict.CompartmentType.Height == height) ||
-                            (ict.CompartmentType.Width == height && ict.CompartmentType.Height == width)));
-
-                return compartmentType?.MaxCapacity;
+                return await this.compartmentsDataService.GetMaxCapacityAsync(width.Value, height.Value, itemId);
             }
+
+            return null;
         }
 
-        public CompartmentDetails GetNew()
+        public async Task<CompartmentDetails> GetNewAsync()
         {
+            var compartmentStatus = await this.compartmentStatusProvider.GetAllAsync();
+            var compartmentType = await this.compartmentTypeProvider.GetAllAsync();
+            var packageType = await this.packageTypeProvider.GetAllAsync();
+            var materialStatus = await this.materialStatusProvider.GetAllAsync();
             return new CompartmentDetails
             {
-                CompartmentStatusChoices = this.enumerationProvider.GetAllCompartmentStatuses(),
-                CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes(),
-                MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses(),
-                PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes()
+                CompartmentStatusChoices = compartmentStatus,
+                CompartmentTypeChoices = compartmentType,
+                MaterialStatusChoices = materialStatus,
+                PackageTypeChoices = packageType
             };
         }
 
-        public IQueryable<Compartment> GetWithStatusAvailable()
+        public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
-            return GetAllCompartmentsWithAggregations(this.dataContextService.Current, StatusAvailableFilter);
+            return await this.compartmentsDataService.GetUniqueValuesAsync(propertyName);
         }
 
-        public int GetWithStatusAvailableCount()
-        {
-            using (var dataContext = this.dataContextService.Current)
-            {
-                return dataContext.Compartments.AsNoTracking().Count(StatusAvailableFilter);
-            }
-        }
-
-        public IQueryable<Compartment> GetWithStatusAwaiting()
-        {
-            return GetAllCompartmentsWithAggregations(this.dataContextService.Current, StatusAwaitingFilter);
-        }
-
-        public int GetWithStatusAwaitingCount()
-        {
-            using (var dataContext = this.dataContextService.Current)
-            {
-                return dataContext.Compartments.AsNoTracking().Count(StatusAwaitingFilter);
-            }
-        }
-
-        public IQueryable<Compartment> GetWithStatusBlocked()
-        {
-            return GetAllCompartmentsWithAggregations(this.dataContextService.Current, StatusBlockedFilter);
-        }
-
-        public int GetWithStatusBlockedCount()
-        {
-            using (var dataContext = this.dataContextService.Current)
-            {
-                return dataContext.Compartments.AsNoTracking().Count(StatusBlockedFilter);
-            }
-        }
-
-        public IQueryable<Compartment> GetWithStatusExpired()
-        {
-            return GetAllCompartmentsWithAggregations(this.dataContextService.Current, StatusExpiredFilter);
-        }
-
-        public int GetWithStatusExpiredCount()
-        {
-            using (var dataContext = this.dataContextService.Current)
-            {
-                return dataContext.Compartments.AsNoTracking().Count(StatusExpiredFilter);
-            }
-        }
-
-        public bool HasAnyAllowedItem(int modelId)
-        {
-            using (var dataContext = this.dataContextService.Current)
-            {
-                return dataContext.Compartments
-                    .Where(c => c.Id == modelId)
-                    .Include(c => c.CompartmentType)
-                    .ThenInclude(ct => ct.ItemsCompartmentTypes)
-                    .SelectMany(c => c.CompartmentType.ItemsCompartmentTypes)
-                    .AsNoTracking()
-                    .Any();
-            }
-        }
-
-        public async Task<OperationResult> SaveAsync(CompartmentDetails model)
+        public async Task<IOperationResult<CompartmentDetails>> UpdateAsync(CompartmentDetails model)
         {
             if (model == null)
             {
@@ -419,75 +424,49 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
-                using (var dataContext = this.dataContextService.Current)
+                await this.compartmentsDataService.UpdateAsync(new WMS.Data.WebAPI.Contracts.CompartmentDetails
                 {
-                    var result = await this.compartmentTypeProvider.AddAsync(
-                                     new CompartmentType
-                                     {
-                                         Width = model.Width,
-                                         Height = model.Height
-                                     }, model.ItemId,
-                                     model.MaxCapacity);
+                    Id = model.Id,
+                    LoadingUnitCode = model.LoadingUnitCode,
+                    CompartmentTypeId = model.CompartmentTypeId,
+                    ItemCode = model.ItemCode,
+                    ItemDescription = model.ItemDescription,
+                    Sub1 = model.Sub1,
+                    Sub2 = model.Sub2,
+                    MaterialStatusId = model.MaterialStatusId,
+                    FifoTime = model.FifoTime,
+                    PackageTypeId = model.PackageTypeId,
+                    Lot = model.Lot,
+                    RegistrationNumber = model.RegistrationNumber,
+                    MaxCapacity = model.MaxCapacity,
+                    Stock = model.Stock,
+                    ReservedForPick = model.ReservedForPick,
+                    ReservedToStore = model.ReservedToStore,
+                    CompartmentStatusId = model.CompartmentStatusId,
+                    CompartmentStatusDescription = model.CompartmentStatusDescription,
+                    CreationDate = model.CreationDate,
+                    LastHandlingDate = model.LastHandlingDate,
+                    InventoryDate = model.InventoryDate,
+                    FirstStoreDate = model.FirstStoreDate,
+                    LastStoreDate = model.LastStoreDate,
+                    LastPickDate = model.LastPickDate,
+                    Width = model.Width,
+                    Height = model.Height,
+                    XPosition = model.XPosition,
+                    YPosition = model.YPosition,
+                    LoadingUnitId = model.LoadingUnitId,
+                    ItemId = model.ItemId,
+                    IsItemPairingFixed = model.IsItemPairingFixed,
+                    LoadingUnitHasCompartments = model.LoadingUnitHasCompartments,
+                    ItemMeasureUnit = model.ItemMeasureUnit
+                });
 
-                    if (result.Success == false)
-                    {
-                        return result;
-                    }
-
-                    var compartmentType = dataContext.CompartmentTypes.Find(result.EntityId);
-                    model.CompartmentTypeId = compartmentType.Id;
-
-                    var existingModel = dataContext.Compartments.Find(model.Id);
-                    dataContext.Entry(existingModel).CurrentValues.SetValues(model);
-
-                    existingModel.HasRotation =
-                        compartmentType.Height == model.Width
-                        &&
-                        compartmentType.Width == model.Height;
-
-                    await dataContext.SaveChangesAsync();
-
-                    return new OperationResult(true);
-                }
+                return new OperationResult<CompartmentDetails>(true);
             }
             catch (Exception ex)
             {
-                return new OperationResult(ex);
+                return new OperationResult<CompartmentDetails>(ex);
             }
-        }
-
-        private static IQueryable<Compartment> GetAllCompartmentsWithAggregations(
-            DatabaseContext context,
-            Expression<Func<DataModels.Compartment, bool>> whereFunc = null)
-        {
-            var actualWhereFunc = whereFunc ?? ((i) => true);
-
-            return context.Compartments
-               .Include(c => c.LoadingUnit)
-               .Include(c => c.MaterialStatus)
-               .Include(c => c.Item)
-               .Include(c => c.CompartmentType)
-               .Include(c => c.CompartmentStatus)
-               .Include(c => c.PackageType)
-               .Where(actualWhereFunc)
-               .Select(c => new Compartment
-               {
-                   Id = c.Id,
-                   CompartmentStatusDescription = c.CompartmentStatus.Description,
-                   CompartmentTypeDescription = string.Format(
-                       Resources.MasterData.CompartmentTypeListFormat,
-                       c.CompartmentType.Width,
-                       c.CompartmentType.Height),
-                   ItemDescription = c.Item.Description,
-                   IsItemPairingFixed = c.IsItemPairingFixed,
-                   LoadingUnitCode = c.LoadingUnit.Code,
-                   Lot = c.Lot,
-                   MaterialStatusDescription = c.MaterialStatus.Description,
-                   Stock = c.Stock,
-                   Sub1 = c.Sub1,
-                   Sub2 = c.Sub2
-               })
-               .AsNoTracking();
         }
 
         #endregion

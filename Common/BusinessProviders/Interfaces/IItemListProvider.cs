@@ -1,36 +1,23 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
 {
-    public interface IItemListProvider : IBusinessProvider<ItemList, ItemListDetails>
+    public interface IItemListProvider :
+        ICreateAsyncProvider<ItemListDetails, int>,
+        IPagedBusinessProvider<ItemList, int>,
+        IReadSingleAsyncProvider<ItemListDetails, int>,
+        IUpdateAsyncProvider<ItemListDetails, int>
     {
         #region Methods
 
-        Task<OperationResult> ExecuteImmediatelyAsync(int listId, int areaId, int bayId);
+        Task<IOperationResult<ItemList>> ExecuteImmediatelyAsync(int listId, int areaId, int bayId);
 
-        IQueryable<ItemList> GetWithStatusCompleted(ItemListType? type);
+        ItemListDetails GetNew();
 
-        int GetWithStatusCompletedCount(ItemListType? type);
-
-        IQueryable<ItemList> GetWithStatusWaiting(ItemListType? type);
-
-        int GetWithStatusWaitingCount(ItemListType? type);
-
-        IQueryable<ItemList> GetWithTypeInventory();
-
-        int GetWithTypeInventoryCount();
-
-        IQueryable<ItemList> GetWithTypePick();
-
-        int GetWithTypePickCount();
-
-        IQueryable<ItemList> GetWithTypePut();
-
-        int GetWithTypePutCount();
-
-        Task<OperationResult> ScheduleForExecutionAsync(int listId, int areaId);
+        Task<IOperationResult<ItemList>> ScheduleForExecutionAsync(int listId, int areaId);
 
         #endregion
     }

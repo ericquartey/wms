@@ -85,6 +85,10 @@
                 {
                     wmsImage.Source = ImageUtils.RetrieveImage(wmsImage.imageService, (string)e.NewValue);
                 }
+                else
+                {
+                    wmsImage.Source = null;
+                }
             }
         }
 

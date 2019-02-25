@@ -1,12 +1,11 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemListsViewModel : EntityListViewModel<ItemList>
+    public class ItemListsViewModel : EntityPagedListViewModel<ItemList, int>
     {
         #region Fields
 
@@ -31,6 +30,13 @@ namespace Ferretto.WMS.Modules.MasterData
         #endregion
 
         #region Methods
+
+        protected override void ExecuteAddCommand()
+        {
+            this.NavigationService.Appear(
+                nameof(MasterData),
+                Common.Utils.Modules.MasterData.ITEMLISTADDDIALOG);
+        }
 
         private bool CanExecuteListCommand()
         {

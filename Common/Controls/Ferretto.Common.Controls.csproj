@@ -43,8 +43,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Modules\BLL\Ferretto.Common.Modules.BLL.csproj" />
     <ProjectReference Include="..\Resources\Ferretto.Common.Resources.csproj" />
+    <ProjectReference Include="..\Utils\Ferretto.Common.Utils.csproj" />
+    <ProjectReference Include="..\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj" />
+    <ProjectReference Include="..\BusinessModels\Ferretto.Common.BusinessModels.csproj" />
   </ItemGroup>
 
 

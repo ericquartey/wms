@@ -48,7 +48,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Common\Resources\Ferretto.VW.Resources.csproj" />
   </ItemGroup>
-  
+
+ 
 
 </Project>
 

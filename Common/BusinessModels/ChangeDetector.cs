@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Ferretto.Common.BusinessModels
 {
@@ -10,9 +12,18 @@ namespace Ferretto.Common.BusinessModels
         #region Fields
 
         private readonly ISet<string> modifiedProperties = new HashSet<string>();
+
+        private readonly ISet<string> requiredProperties = new HashSet<string>();
+
         private T instance;
+
         private bool isModified;
+
+        private bool isRequiredValid;
+
         private T snapshot;
+
+        private int totalRequired;
 
         #endregion
 
@@ -37,33 +48,49 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
+        public bool IsRequiredValid
+        {
+            get => this.isRequiredValid;
+            private set
+            {
+                if (this.isRequiredValid != value)
+                {
+                    this.isRequiredValid = value;
+                }
+            }
+        }
+
         #endregion
 
         #region Methods
 
         public void Dispose()
         {
-            this.instance.PropertyChanged -= this.Instance_PropertyChanged;
+            if (this.instance != null)
+            {
+                this.instance.PropertyChanged -= this.Instance_PropertyChanged;
+            }
         }
 
         public void TakeSnapshot(T newInstance)
         {
-            if (this.instance != newInstance)
+            if (this.instance != null && !this.instance.Equals(newInstance))
             {
-                if (this.instance != null)
-                {
-                    this.instance.PropertyChanged -= this.Instance_PropertyChanged;
-                }
+                this.instance.PropertyChanged -= this.Instance_PropertyChanged;
+            }
 
-                this.instance = newInstance;
-                this.modifiedProperties.Clear();
-                this.IsModified = false;
+            this.instance = newInstance;
+            this.modifiedProperties.Clear();
+            this.requiredProperties.Clear();
+            this.IsModified = false;
 
-                if (newInstance != null)
-                {
-                    newInstance.PropertyChanged += this.Instance_PropertyChanged;
-                    this.snapshot = newInstance.Clone() as T;
-                }
+            this.totalRequired = this.instance.GetType().GetProperties()
+                .Where(p => p.CustomAttributes.Any(a => a.AttributeType == typeof(RequiredAttribute))).Count();
+
+            if (newInstance != null)
+            {
+                newInstance.PropertyChanged += this.Instance_PropertyChanged;
+                this.snapshot = newInstance.Clone() as T;
             }
         }
 
@@ -77,21 +104,33 @@ namespace Ferretto.Common.BusinessModels
             var propertyInfo = this.instance.GetType().GetProperty(e.PropertyName);
             var newValue = propertyInfo.GetValue(sender);
             var snapshotValue = propertyInfo.GetValue(this.snapshot);
+
+            var isRequired = propertyInfo.CustomAttributes.Any(a => a.AttributeType == typeof(RequiredAttribute));
+
             if (newValue != snapshotValue && newValue?.Equals(snapshotValue) == false)
             {
                 if (this.modifiedProperties.Contains(e.PropertyName) == false)
                 {
                     this.modifiedProperties.Add(e.PropertyName);
+                    if (isRequired)
+                    {
+                        this.requiredProperties.Add(e.PropertyName);
+                    }
                     NLog.LogManager.GetCurrentClassLogger().Trace($"Property '{this.instance.GetType().Name}.{e.PropertyName}' was modified.");
                 }
             }
             else if (this.modifiedProperties.Contains(e.PropertyName))
             {
                 this.modifiedProperties.Remove(e.PropertyName);
+                if (isRequired)
+                {
+                    this.requiredProperties.Remove(e.PropertyName);
+                }
                 NLog.LogManager.GetCurrentClassLogger().Trace($"Property '{this.instance.GetType().Name}.{e.PropertyName}' was reset to initial value.");
             }
 
             this.IsModified = this.modifiedProperties.Count > 0;
+            this.IsRequiredValid = this.requiredProperties.Count == this.totalRequired;
         }
 
         #endregion

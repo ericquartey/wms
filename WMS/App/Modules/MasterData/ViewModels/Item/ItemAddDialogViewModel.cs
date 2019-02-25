@@ -1,16 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using Ferretto.Common.BLL.Interfaces;
+﻿using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
-using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.Practices.ServiceLocation;
-using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
@@ -20,78 +13,28 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
-        private IDataSource<Compartment> compartmentsDataSource;
-
-        private bool itemHasCompartments;
-
-        private object selectedCompartment;
-
-        #endregion
-
-        #region Properties
-
-        public IDataSource<Compartment> CompartmentsDataSource
-        {
-            get => this.compartmentsDataSource;
-            set => this.SetProperty(ref this.compartmentsDataSource, value);
-        }
-
-        public Compartment CurrentCompartment
-        {
-            get
-            {
-                if (this.selectedCompartment == null)
-                {
-                    return default(Compartment);
-                }
-
-                if ((this.selectedCompartment is DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread) == false)
-                {
-                    return default(Compartment);
-                }
-
-                return (Compartment)((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedCompartment).OriginalRow;
-            }
-        }
-
-        public bool ItemHasCompartments
-        {
-            get => this.itemHasCompartments;
-            set => this.SetProperty(ref this.itemHasCompartments, value);
-        }
-
-        public object SelectedCompartment
-        {
-            get => this.selectedCompartment;
-            set
-            {
-                this.SetProperty(ref this.selectedCompartment, value);
-                this.RaisePropertyChanged(nameof(this.CurrentCompartment));
-            }
-        }
-
         #endregion
 
         #region Methods
 
-        protected override void ExecuteClearCommand()
+        protected override async void ExecuteClearCommand()
         {
-            this.LoadData();
+            await this.LoadDataAsync();
         }
 
         // TODO: task 1256 -> protected override async Task ExecuteSaveCommand()
-        protected override async Task ExecuteSaveCommand()
+        protected override async Task ExecuteCreateCommand()
         {
             this.IsValidationEnabled = true;
 
             this.IsBusy = true;
 
-            var result = await this.itemProvider.AddAsync(this.Model);
+            var result = await this.itemProvider.CreateAsync(this.Model);
             if (result.Success)
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<Item>(this.Model.Id));
+                this.EventService.Invoke(new ModelChangedPubSubEvent<Item, int>(this.Model.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
 
                 this.CloseDialogCommand.Execute(null);
@@ -104,25 +47,27 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = false;
         }
 
-        protected override void OnAppear()
+        protected override async Task OnAppearAsync()
         {
-            base.OnAppear();
+            await base.OnAppearAsync().ConfigureAwait(true);
 
-            this.LoadData();
+            await this.LoadDataAsync().ConfigureAwait(true);
         }
 
-        private void LoadData()
+        private async Task LoadDataAsync()
         {
             try
             {
                 this.IsBusy = true;
-                this.Model = this.itemProvider.GetNew();
+                this.Model = await this.itemProvider.GetNewAsync();
                 this.IsBusy = false;
             }
             catch
             {
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
             }
+
+            this.IsBusy = false;
         }
 
         #endregion

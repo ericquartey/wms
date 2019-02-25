@@ -2,10 +2,12 @@ namespace Ferretto.WMS.Data.Core.Models
 {
     public enum MaintenanceStatus
     {
-        Valid,
+        NotSpecified,
 
-        Expiring,
+        Valid = 'V',
 
-        Expired,
+        Expiring = 'G',
+
+        Expired = 'X',
     }
 }

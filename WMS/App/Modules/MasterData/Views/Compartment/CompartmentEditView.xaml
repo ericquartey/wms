@@ -21,13 +21,13 @@
         <wms:ActionBar HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
 
-            <wms:ActionBarItem Command="{Binding SaveCommand, IsAsync=True}"
+            <wms:ActionBarItem Command="{Binding SaveCommand}"
                                Content="{x:Static res:General.Save}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_save_black_24dp.png"
                                GlyphSize="Custom" />
 
-            <wms:ActionBarItem Command="{Binding DeleteCommand, IsAsync=True}"
+            <wms:ActionBarItem Command="{Binding DeleteCommand}"
                                Content="{x:Static res:General.Delete}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_delete_black_24dp.png"
@@ -64,6 +64,7 @@
                                   Grid.Row="0"
                                   Grid.Column="0"
                                   HorizontalAlignment="Stretch"
+                                  wms:ShowTitle.Show="True"
                                   EditValue="{Binding Model.XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   MinValue="0" />
 
@@ -72,6 +73,7 @@
                                   Grid.Column="2"
                                   HorizontalAlignment="Stretch"
                                   HorizontalContentAlignment="Right"
+                                  wms:ShowTitle.Show="True"
                                   EditValue="{Binding Model.YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   MinValue="0" />
 
@@ -79,6 +81,7 @@
                                   Grid.Row="1"
                                   Grid.Column="0"
                                   HorizontalAlignment="Stretch"
+                                  wms:ShowTitle.Show="True"
                                   EditValue="{Binding Model.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   MinValue="1" />
 
@@ -86,12 +89,14 @@
                                   Grid.Row="1"
                                   Grid.Column="2"
                                   HorizontalAlignment="Stretch"
+                                  wms:ShowTitle.Show="True"
                                   EditValue="{Binding Model.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   MinValue="1" />
 
                     <wms:LookUpEdit Grid.Row="2"
                                     Grid.Column="0"
                                     Grid.ColumnSpan="3"
+                                    wms:ShowTitle.Show="True"
                                     AllowNullInput="True"
                                     DisplayMember="Description"
                                     EditValue="{Binding Model.ItemId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -100,7 +105,8 @@
                                     ValueMember="Id">
                         <wms:LookUpEdit.PopupContentTemplate>
                             <ControlTemplate>
-                                <wms:WmsGridControl x:Name="PART_GridControl">
+                                <wms:WmsGridControl x:Name="PART_GridControl"
+                                                    ItemsSource="{Binding ItemsDataSource, Mode=OneWay}">
                                     <wms:WmsGridControl.Columns>
                                         <dxg:GridColumn Width="10*"
                                                         FieldName="Code" />
@@ -116,7 +122,7 @@
                                                                       Height="100"
                                                                       BorderBrush="{DynamicResource CommonSecondaryLight}"
                                                                       BorderThickness="1"
-                                                                      Path="{Binding Data.Image, Mode=OneWay}" />
+                                                                      Path="{Binding Row.Image, Mode=OneWay}" />
                                                     </StackPanel>
                                                 </DataTemplate>
                                             </dxg:GridColumn.CellTemplate>
@@ -139,6 +145,7 @@
                                   Grid.Column="0"
                                   MinWidth="90"
                                   HorizontalAlignment="Stretch"
+                                  wms:ShowTitle.Show="True"
                                   AllowNullInput="False"
                                   EditValue="{Binding Model.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   IsEnabled="{Binding ItemIdHasValue}"
@@ -147,6 +154,7 @@
                                   Grid.Row="3"
                                   Grid.Column="2"
                                   HorizontalAlignment="Stretch"
+                                  wms:ShowTitle.Show="True"
                                   AllowNullInput="False"
                                   EditValue="{Binding Model.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   IsEnabled="{Binding ItemIdHasValue}"
@@ -155,6 +163,7 @@
                     <wms:ComboBox x:Name="MaterialStatus"
                                   Grid.Row="4"
                                   Grid.Column="0"
+                                  wms:ShowTitle.Show="True"
                                   EditValue="{Binding Path=Model.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   IsEnabled="{Binding ItemIdHasValue}"
                                   ItemsSource="{Binding Path=Model.MaterialStatusChoices}" />
@@ -192,20 +201,24 @@
 
                                 <wms:TextBox Grid.Row="0"
                                              Grid.Column="0"
+                                             wms:ShowTitle.Show="True"
                                              EditValue="{Binding Path=Model.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                 <wms:TextBox Grid.Row="0"
                                              Grid.Column="2"
+                                             wms:ShowTitle.Show="True"
                                              EditValue="{Binding Path=Model.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                 <wms:ComboBox x:Name="PackageType"
                                               Grid.Row="1"
                                               Grid.Column="0"
+                                              wms:ShowTitle.Show="True"
                                               EditValue="{Binding Path=Model.PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               ItemsSource="{Binding Path=Model.PackageTypeChoices}" />
 
                                 <wms:TextBox Grid.Row="1"
                                              Grid.Column="2"
+                                             wms:ShowTitle.Show="True"
                                              EditValue="{Binding Path=Model.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
 

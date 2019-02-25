@@ -105,6 +105,8 @@ namespace Ferretto.Common.BusinessModels
 
         public IEnumerable<Compartment> Compartments { get; set; }
 
+        public int CompartmentsCount { get; set; }
+
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate
         {

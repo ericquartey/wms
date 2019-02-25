@@ -2,7 +2,24 @@
 {
     public enum ConfigurationValueEnum : long
     {
+        bayHeight,
+
+        bayHeightFromGround,
+
+        cellSpacing,
+
         homingCreepSpeed,
+
         homingFastSpeed,
+
+        inverterOperationTimeout,
+
+        machineHeight,
+
+        resolution,
+
+        InverterAddress,
+
+        InverterPort
     }
 }

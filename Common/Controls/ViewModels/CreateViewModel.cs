@@ -22,13 +22,13 @@ namespace Ferretto.Common.Controls
 
         private ICommand closeDialogCommand;
 
+        private ICommand createCommand;
+
         private bool isBusy;
 
         private bool isValidationEnabled;
 
         private T model;
-
-        private ICommand saveCommand;
 
         #endregion
 
@@ -51,6 +51,11 @@ namespace Ferretto.Common.Controls
         public ICommand CloseDialogCommand => this.closeDialogCommand ??
                                            (this.closeDialogCommand = new Prism.Commands.DelegateCommand(
                                this.ExecuteCloseDialogCommand));
+
+        public ICommand CreateCommand => this.createCommand ??
+            (this.createCommand = new DelegateCommand(
+                async () => await this.ExecuteCreateCommand(),
+                this.CanExecuteCreateCommand));
 
         public IDialogService DialogService => this.dialogService;
 
@@ -103,11 +108,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public ICommand SaveCommand => this.saveCommand ??
-            (this.saveCommand = new DelegateCommand(
-                async () => await this.ExecuteSaveCommand(),
-                this.CanExecuteSaveCommand));
-
         #endregion
 
         #region Methods
@@ -142,18 +142,19 @@ namespace Ferretto.Common.Controls
                 && this.IsBusy == false;
         }
 
-        protected virtual bool CanExecuteSaveCommand()
+        protected virtual bool CanExecuteCreateCommand()
         {
             return this.Model != null
                 && this.changeDetector.IsModified
                 && (!this.isValidationEnabled || string.IsNullOrWhiteSpace(this.Model.Error))
-                && !this.IsBusy;
+                && !this.IsBusy
+                && this.changeDetector.IsRequiredValid;
         }
 
         protected virtual void EvaluateCanExecuteCommands()
         {
             ((DelegateCommand)this.ClearCommand)?.RaiseCanExecuteChanged();
-            ((DelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
+            ((DelegateCommand)this.CreateCommand)?.RaiseCanExecuteChanged();
         }
 
         protected abstract void ExecuteClearCommand();
@@ -163,7 +164,7 @@ namespace Ferretto.Common.Controls
             this.Disappear();
         }
 
-        protected abstract Task ExecuteSaveCommand();
+        protected abstract Task ExecuteCreateCommand();
 
         protected virtual void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {

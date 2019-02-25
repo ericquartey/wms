@@ -2,6 +2,8 @@
 {
     public enum Side
     {
+        NotSpecified,
+
         Left = 'L',
 
         Right = 'R',

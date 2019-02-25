@@ -8,14 +8,15 @@ using DevExpress.Data.Filtering;
 using DevExpress.Xpf.Core.FilteringUI;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.Controls.Extensions;
 using Ferretto.Common.Utils.Expressions;
 using NLog;
 
 namespace Ferretto.Common.Controls
 {
-    public class EntityPagedListViewModel<TModel> : EntityListViewModel<TModel>
-            where TModel : IBusinessObject
+    public class EntityPagedListViewModel<TModel, TKey> : EntityListViewModel<TModel, TKey>
+       where TModel : IModel<TKey>
     {
         #region Fields
 
@@ -31,7 +32,7 @@ namespace Ferretto.Common.Controls
 
         private CriteriaOperator overallFilter;
 
-        private IPagedBusinessProvider<TModel> provider;
+        private IPagedBusinessProvider<TModel, TKey> provider;
 
         private string searchText;
 
@@ -64,7 +65,7 @@ namespace Ferretto.Common.Controls
             set => this.SetProperty(ref this.overallFilter, value);
         }
 
-        public IPagedBusinessProvider<TModel> Provider
+        public IPagedBusinessProvider<TModel, TKey> Provider
         {
             get => this.provider;
             set
@@ -111,6 +112,16 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
+        public async Task<object[]> GetUniqueValuesAsync(string propertyName)
+        {
+            return (await this.Provider.GetUniqueValuesAsync(propertyName)).ToArray();
+        }
+
+        public override void LoadRelatedData()
+        {
+            (this.dataSource as InfiniteAsyncSource)?.RefreshRows();
+        }
+
         public override async Task UpdateFilterTilesCountsAsync()
         {
             foreach (var filterTile in this.Filters)
@@ -119,13 +130,12 @@ namespace Ferretto.Common.Controls
 
                 if (filterDataSource.Provider != null)
                 {
-                    string whereExpression = null;
+                    IExpression whereExpression = null;
 
                     if (filterDataSource.Expression != null)
                     {
                         whereExpression = CriteriaOperator.Parse(filterDataSource.Expression)
-                            .AsIExpression()
-                            .ToString();
+                            .AsIExpression();
                     }
 
                     filterTile.Count = await filterDataSource.Provider.GetAllCountAsync(whereExpression);
@@ -186,17 +196,16 @@ namespace Ferretto.Common.Controls
 
         private async Task<FetchRowsResult> FetchRowsAsync(FetchRowsAsyncEventArgs e)
         {
-            var orderBy = GetSortOrder(e);
+            var orderByExpression = GetSortOrder(e);
 
-            var where = this.overallFilter?.AsIExpression();
-            var search = this.searchText?.AsIExpression();
+            var whereExpression = this.overallFilter?.AsIExpression();
 
             var entities = await this.provider.GetAllAsync(
-                skip: e.Skip,
-                take: GetPageSize(),
-                orderBy: orderBy,
-                whereExpression: where?.ToString(),
-                searchExpression: search?.ToString());
+                e.Skip,
+                GetPageSize(),
+                orderByExpression,
+                whereExpression,
+                this.searchText);
 
             return new FetchRowsResult(entities.Cast<object>().ToArray(), hasMoreRows: entities.Count() == GetPageSize());
         }
@@ -216,11 +225,6 @@ namespace Ferretto.Common.Controls
                     e.Result = this.GetUniqueValuesAsync(propertyInfo.Name);
                 }
             }
-        }
-
-        private async Task<object[]> GetUniqueValuesAsync(string propertyName)
-        {
-            return (await this.Provider.GetUniqueValuesAsync(propertyName)).ToArray();
         }
 
         private InfiniteAsyncSource InitializeSource()

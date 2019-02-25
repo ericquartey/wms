@@ -2,17 +2,18 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public class BusinessObject : BindableBase, ICloneable, IBusinessObject
+    public class BusinessObject : BindableBase, ICloneable, IModel<int>
     {
         #region Constructors
 
         protected BusinessObject()
-        { }
+        {
+        }
 
         #endregion
 

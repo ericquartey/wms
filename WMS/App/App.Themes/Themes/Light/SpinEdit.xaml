@@ -30,7 +30,7 @@
                      TargetType="{x:Type dxe:ButtonEdit}">
         <ContentControl x:Name="PART_Root"
                         Grid.Row="1"
-                        MaxHeight="52"
+                        MaxHeight="44"
                         HorizontalContentAlignment="Stretch"
                         VerticalContentAlignment="Stretch"
                         dx:FocusHelper2.Focusable="False"
@@ -63,7 +63,7 @@
                 <dxe:EditorControl x:Name="PART_Content"
                                    Grid.Column="2"
                                    VerticalAlignment="Stretch"
-                                   HorizontalContentAlignment="Left"
+                                   HorizontalContentAlignment="Right"
                                    dx:FocusHelper2.Focusable="False"
                                    Template="{TemplateBinding ActualEditorControlTemplate}" />
                 <dxe:ButtonsControl x:Name="PART_RightButtons"

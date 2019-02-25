@@ -73,37 +73,45 @@
                               DisplayMember="Name"
                               EditValue="{Binding ItemWithdraw.AreaId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               IsTextEditable="False"
-                              ItemsSource="{Binding ItemWithdraw.AreaChoices}" />
+                              ItemsSource="{Binding ItemWithdraw.AreaChoices}"
+                              wms:ShowTitle.Show="True"/>
                 <wms:ComboBox x:Name="SelectedBay"
                               Grid.Column="2"
                               AllowNullInput="False"
                               EditValue="{Binding ItemWithdraw.BayId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               IsTextEditable="False"
                               ItemsSource="{Binding ItemWithdraw.BayChoices}"
-                              Visibility="{Binding ElementName=SelectedArea, Path=SelectedItem, Converter={StaticResource RTVC}}" />
+                              Visibility="{Binding ElementName=SelectedArea, Path=SelectedItem, Converter={StaticResource RTVC}}"
+                              wms:ShowTitle.Show="True"/>
                 <wms:TextBox Grid.Row="1"
                              EditValue="{Binding ItemWithdraw.Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
+                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}"
+                             wms:ShowTitle.Show="True"/>
                 <wms:TextBox Grid.Row="1"
                              Grid.Column="2"
                              EditValue="{Binding ItemWithdraw.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
+                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}"
+                             wms:ShowTitle.Show="True"/>
                 <wms:TextBox Grid.Row="2"
                              EditValue="{Binding ItemWithdraw.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
+                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}"
+                             wms:ShowTitle.Show="True"/>
                 <wms:TextBox Grid.Row="2"
                              Grid.Column="2"
                              EditValue="{Binding ItemWithdraw.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
+                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}"
+                             wms:ShowTitle.Show="True"/>
                 <wms:InfoText Grid.Row="3"
                               Content="{Binding ItemWithdraw.ItemDetails.TotalAvailable}"
-                              Visibility="{Binding ElementName=SelectedBay, Path=SelectedItem, Converter={StaticResource RTVC}}" />
+                              Visibility="{Binding ElementName=SelectedBay, Path=SelectedItem, Converter={StaticResource RTVC}}"
+                              wms:ShowTitle.Show="True"/>
                 <wms:SpinEdit Grid.Row="3"
                               Grid.Column="2"
                               AllowNullInput="False"
                               EditValue="{Binding ItemWithdraw.Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               MinValue="1"
-                              Visibility="{Binding ElementName=SelectedBay, Path=SelectedItem, Converter={StaticResource RTVC}}" />
+                              Visibility="{Binding ElementName=SelectedBay, Path=SelectedItem, Converter={StaticResource RTVC}}"
+                              wms:ShowTitle.Show="True"/>
             </Grid>
         </GroupBox>
 
@@ -137,7 +145,7 @@
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/editor/ic_format_align_justify_black_24dp.png"
                                        GlyphSize="Custom"
                                        IsVisible="{Binding SimpleWithdraw}" />
-                    <wms:ActionBarItem Command="{Binding RunWithdrawCommand, IsAsync=True}"
+                    <wms:ActionBarItem Command="{Binding RunWithdrawCommand}"
                                        Content="{x:Static res:MasterData.RunItemWithdraw}"
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/av/ic_play_circle_outline_black_24dp.png"

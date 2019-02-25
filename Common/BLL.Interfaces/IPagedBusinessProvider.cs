@@ -1,27 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Ferretto.Common.Utils.Expressions;
+﻿using Ferretto.Common.BLL.Interfaces.Base;
 
 namespace Ferretto.Common.BLL.Interfaces
 {
-    public interface IPagedBusinessProvider<TModel>
-        where TModel : IBusinessObject
+    public interface IPagedBusinessProvider<TModel, TKey> :
+        IReadAllPagedAsyncProvider<TModel, TKey>,
+        IGetUniqueValuesAsyncProvider
+        where TModel : IModel<TKey>
     {
-        #region Methods
-
-        Task<IEnumerable<TModel>> GetAllAsync(
-          int take = 0,
-          int skip = 0,
-          string whereExpression = null,
-          IEnumerable<SortOption> orderBy = null,
-          string searchExpression = null);
-
-        Task<int> GetAllCountAsync(
-          string whereExpression = null,
-          string searchExpression = null);
-
-        Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName);
-
-        #endregion
     }
 }

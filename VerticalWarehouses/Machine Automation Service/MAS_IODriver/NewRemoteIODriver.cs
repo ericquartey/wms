@@ -11,12 +11,17 @@ namespace Ferretto.VW.MAS_IODriver
     public class NewRemoteIODriver : INewRemoteIODriver
     {
         #region Fields
+
+        private const int DELAY_TIME = 75;
+
         private const int ENCODER_CRADLE = 2;
+
         private const int ENCODER_ELEVATOR = 1;
+
         private const int N_DIGITAL_OUTPUT_LINES = 5;
-        private const int DELAY_TIME = 150;
 
         private readonly IEventAggregator eventAggregator;
+
         private readonly IRemoteIO remoteIO;
 
         #endregion
@@ -44,21 +49,21 @@ namespace Ferretto.VW.MAS_IODriver
 
         public List<bool> Inputs => this.remoteIO.Inputs;
 
-        public List<bool> Outputs
-        {
-            set { this.remoteIO.Outputs = value; }
-        }
-
         public string IPAddress
         {
-            get { return this.remoteIO.IPAddress; }
-            set { this.remoteIO.IPAddress = value; }
+            get => this.remoteIO.IPAddress;
+            set => this.remoteIO.IPAddress = value;
+        }
+
+        public List<bool> Outputs
+        {
+            set => this.remoteIO.Outputs = value;
         }
 
         public int Port
         {
-            get { return this.remoteIO.Port; }
-            set { this.remoteIO.Port = value; }
+            get => this.remoteIO.Port;
+            set => this.remoteIO.Port = value;
         }
 
         #endregion
@@ -75,30 +80,6 @@ namespace Ferretto.VW.MAS_IODriver
             {
                 throw new Exception("RemoteIO does not instantiate.", ex);
             }
-        }
-
-        public void SwitchVerticalToHorizontal()
-        {
-            var digitalOutput = new List<bool>();
-            for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++)
-            {
-                digitalOutput.Add(false);
-            }
-
-            this.remoteIO.Outputs = digitalOutput;
-            Thread.Sleep(DELAY_TIME);
-
-            digitalOutput.Clear();
-            for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++)
-            {
-                digitalOutput.Add((i == ENCODER_CRADLE) ? true : false);
-            }
-
-            this.remoteIO.Outputs = digitalOutput;
-            Thread.Sleep(DELAY_TIME);
-
-            // The calibrate horizontal axis routine is ended
-            this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Publish(new Notification_EventParameter(OperationType.SwitchVerticalToHorizontal, OperationStatus.End, "Switch Vertical to Horizontal Ended", Verbosity.Info));
         }
 
         public void SwitchHorizontalToVertical()
@@ -121,8 +102,30 @@ namespace Ferretto.VW.MAS_IODriver
             this.remoteIO.Outputs = digitalOutput;
             Thread.Sleep(DELAY_TIME);
 
-            // The calibrate horizontal axis routine is ended
             this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Publish(new Notification_EventParameter(OperationType.SwitchHorizontalToVertical, OperationStatus.End, "Switch Horizontal to Vertical Ended", Verbosity.Info));
+        }
+
+        public void SwitchVerticalToHorizontal()
+        {
+            var digitalOutput = new List<bool>();
+            for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++)
+            {
+                digitalOutput.Add(false);
+            }
+
+            this.remoteIO.Outputs = digitalOutput;
+            Thread.Sleep(DELAY_TIME);
+
+            digitalOutput.Clear();
+            for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++)
+            {
+                digitalOutput.Add((i == ENCODER_CRADLE) ? true : false);
+            }
+
+            this.remoteIO.Outputs = digitalOutput;
+            Thread.Sleep(DELAY_TIME);
+
+            this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Publish(new Notification_EventParameter(OperationType.SwitchVerticalToHorizontal, OperationStatus.End, "Switch Vertical to Horizontal Ended", Verbosity.Info));
         }
 
         #endregion

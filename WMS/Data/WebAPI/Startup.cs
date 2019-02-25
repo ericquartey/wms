@@ -1,6 +1,8 @@
 ﻿using Ferretto.Common.EF;
-using Ferretto.WMS.Data.Core.Interfaces;
-using Ferretto.WMS.Data.Core.Providers;
+using Ferretto.WMS.Data.Core.Extensions;
+using Ferretto.WMS.Data.WebAPI.Hubs;
+using Ferretto.WMS.Data.WebAPI.Middleware;
+using Ferretto.WMS.Scheduler.Core.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -40,12 +42,28 @@ namespace Ferretto.WMS.Data.WebAPI
         ///  This method gets called by the runtime.
         ///  Use this method to configure the HTTP request pipeline.
         /// </summary>
-        public static void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (app == null)
+            {
+                throw new System.ArgumentNullException(nameof(app));
+            }
+
+            if (env == null)
+            {
+                throw new System.ArgumentNullException(nameof(env));
+            }
+
+            if (env.IsProduction())
+            {
+                app.UseHsts();
+
+                app.UseHttpsRedirection();
+            }
+            else
             {
                 app.UseDeveloperExceptionPage();
-#if DEBUG
+
                 app.UseSwaggerUi3WithApiExplorer(settings =>
                 {
                     settings.PostProcess = document =>
@@ -62,13 +80,24 @@ namespace Ferretto.WMS.Data.WebAPI
 
                     settings.GeneratorSettings.DefaultEnumHandling = NJsonSchema.EnumHandling.String;
                 });
-#endif
             }
-            else if (env.IsProduction())
-            {
-                app.UseHsts();
 
-                app.UseHttpsRedirection();
+            var wakeupHubEndpoint = this.Configuration["Hubs:WakeUp"];
+            if (string.IsNullOrWhiteSpace(wakeupHubEndpoint) == false)
+            {
+                app.UseSignalR(routes =>
+                {
+                    routes.MapHub<WakeupHub>($"/{wakeupHubEndpoint}");
+                });
+            }
+
+            var healthHubEndpoint = this.Configuration["Hubs:Health"];
+            if (string.IsNullOrWhiteSpace(healthHubEndpoint) == false)
+            {
+                app.UseSignalR(routes =>
+                {
+                    routes.MapHub<HealthHub>($"/{healthHubEndpoint}");
+                });
             }
 
             app.UseMvc();
@@ -80,32 +109,15 @@ namespace Ferretto.WMS.Data.WebAPI
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             var connectionString = this.Configuration.GetConnectionString("WmsConnectionString");
-            services.AddDbContext<DatabaseContext>(
+
+            services.AddDbContextPool<DatabaseContext>(
                 options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Ferretto.Common.EF")));
 
-            services.AddTransient<IAbcClassProvider, AbcClassProvider>();
-            services.AddTransient<IAreaProvider, AreaProvider>();
-            services.AddTransient<IBayProvider, BayProvider>();
-            services.AddTransient<ICellPositionProvider, CellPositionProvider>();
-            services.AddTransient<ICellProvider, CellProvider>();
-            services.AddTransient<ICellStatusProvider, CellStatusProvider>();
-            services.AddTransient<ICellTypeProvider, CellTypeProvider>();
-            services.AddTransient<ICompartmentProvider, CompartmentProvider>();
-            services.AddTransient<ICompartmentStatusProvider, CompartmentStatusProvider>();
-            services.AddTransient<ICompartmentTypeProvider, CompartmentTypeProvider>();
-            services.AddTransient<IItemCategoryProvider, ItemCategoryProvider>();
-            services.AddTransient<IItemCompartmentTypeProvider, ItemCompartmentTypeProvider>();
-            services.AddTransient<IItemListProvider, ItemListProvider>();
-            services.AddTransient<IItemProvider, ItemProvider>();
-            services.AddTransient<ILoadingUnitStatusProvider, LoadingUnitStatusProvider>();
-            services.AddTransient<ILoadingUnitTypeProvider, LoadingUnitTypeProvider>();
-            services.AddTransient<IMachineProvider, MachineProvider>();
-            services.AddTransient<IMaterialStatusProvider, MaterialStatusProvider>();
-            services.AddTransient<IMeasureUnitProvider, MeasureUnitProvider>();
-            services.AddTransient<IMissionProvider, MissionProvider>();
-            services.AddTransient<IPackageTypeProvider, PackageTypeProvider>();
-
             services.AddMemoryCache();
+
+            services.AddDataServiceProviders();
+
+            services.AddSchedulerServiceProviders();
 
             services.AddSignalR();
         }

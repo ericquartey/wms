@@ -1,11 +1,12 @@
-using Ferretto.WMS.Data.Core.Interfaces.Base;
+using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.WMS.Data.Core.Models;
 
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
     public interface IMissionProvider :
-        IReadAllAsyncProvider<Mission, int>,
-        IReadSingleAsyncProvider<Mission, int>
+        IReadAllPagedAsyncProvider<Mission, int>,
+        IReadSingleAsyncProvider<Mission, int>,
+        IGetUniqueValuesAsyncProvider
     {
     }
 }

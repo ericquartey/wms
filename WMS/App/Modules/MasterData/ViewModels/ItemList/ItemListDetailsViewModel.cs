@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -120,12 +119,12 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.IsBusy = true;
 
-            var result = await this.itemListProvider.SaveAsync(this.Model);
+            var result = await this.itemListProvider.UpdateAsync(this.Model);
             if (result.Success)
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<Item>(this.Model.Id));
+                this.EventService.Invoke(new ModelChangedPubSubEvent<Item, int>(this.Model.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemListSavedSuccessfully, StatusType.Success));
             }
             else
@@ -136,17 +135,17 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = false;
         }
 
-        protected override async void OnAppear()
+        protected override async Task OnAppearAsync()
         {
-            base.OnAppear();
+            await base.OnAppearAsync().ConfigureAwait(true);
 
-            await this.LoadDataAsync();
+            await this.LoadDataAsync().ConfigureAwait(true);
         }
 
         protected override void OnDispose()
         {
             this.EventService.Unsubscribe<RefreshModelsPubSubEvent<ItemList>>(this.modelRefreshSubscription);
-            this.EventService.Unsubscribe<ModelChangedPubSubEvent<ItemList>>(this.modelChangedEventSubscription);
+            this.EventService.Unsubscribe<ModelChangedPubSubEvent<ItemList, int>>(this.modelChangedEventSubscription);
             this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<ItemList>>(
                 this.modelSelectionChangedSubscription);
             base.OnDispose();
@@ -220,12 +219,15 @@ namespace Ferretto.WMS.Modules.MasterData
             this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<ItemList>>(
                 async eventArgs => { await this.LoadDataAsync(); },
                 this.Token,
-                true,
-                true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<ItemList>>(
-                async eventArgs => { await this.LoadDataAsync(); });
-            this.modelSelectionChangedSubscription =
-                this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<ItemList>>(
+                keepSubscriberReferenceAlive: true,
+                forceUiThread: true);
+
+            this.modelChangedEventSubscription = this.EventService
+                .Subscribe<ModelChangedPubSubEvent<ItemList, int>>(
+                    async eventArgs => { await this.LoadDataAsync(); });
+
+            this.modelSelectionChangedSubscription = this.EventService
+                .Subscribe<ModelSelectionChangedPubSubEvent<ItemList>>(
                     async eventArgs =>
                     {
                         if (eventArgs.ModelId.HasValue)
@@ -239,8 +241,8 @@ namespace Ferretto.WMS.Modules.MasterData
                         }
                     },
                     this.Token,
-                    true,
-                    true);
+                    keepSubscriberReferenceAlive: true,
+                    forceUiThread: true);
         }
 
         private async Task LoadDataAsync()

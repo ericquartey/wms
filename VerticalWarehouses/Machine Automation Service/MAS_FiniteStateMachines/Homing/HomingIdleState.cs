@@ -1,4 +1,10 @@
 ﻿using Ferretto.VW.Common_Utils.EventParameters;
+using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.MAS_DataLayer;
+using Ferretto.VW.MAS_InverterDriver;
+using Ferretto.VW.MAS_IODriver;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
@@ -6,31 +12,86 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
     {
         #region Fields
 
-        private StateMachineHoming context;
+        private readonly IWriteLogService data;
 
-        private MAS_DataLayer.IWriteLogService data;
+        private readonly INewInverterDriver driver;
 
-        private MAS_InverterDriver.INewInverterDriver driver;
+        private readonly IEventAggregator eventAggregator;
 
-        #endregion Fields
+        private readonly INewRemoteIODriver remoteIODriver;
+
+        private StateMachineHoming parent;
+
+        #endregion
 
         #region Constructors
 
-        public HomingIdleState(StateMachineHoming parent, MAS_InverterDriver.INewInverterDriver iDriver, MAS_DataLayer.IWriteLogService iWriteLogService)
+        public HomingIdleState(StateMachineHoming parent, INewInverterDriver driver, INewRemoteIODriver remoteIODriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
         {
-            this.context = parent;
-            this.driver = iDriver;
+            this.parent = parent;
+            this.driver = driver;
+            this.remoteIODriver = remoteIODriver;
             this.data = iWriteLogService;
+            this.eventAggregator = eventAggregator;
 
-            this.data.LogWriting(new Command_EventParameter(CommandType.ExecuteHoming));
+            this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
-        public string Type => "Homing Undone State";
+        public string Type => "Homing Idle State";
 
-        #endregion Properties
+        #endregion
+
+        #region Methods
+
+        public void MakeOperation()
+        {
+            this.remoteIODriver.SwitchVerticalToHorizontal();
+        }
+
+        public void NotifyMessage(Event_Message message)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Stop()
+        {
+            this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Unsubscribe(this.notifyEventHandler);
+
+            var notifyEvent = new Notification_EventParameter(OperationType.Homing, OperationStatus.Stopped, "Homing stopped", Verbosity.Info);
+            this.eventAggregator.GetEvent<FiniteStateMachines_NotificationEvent>().Publish(notifyEvent);
+        }
+
+        private void notifyEventHandler(Notification_EventParameter notification)
+        {
+            if (notification.OperationType == OperationType.SwitchVerticalToHorizontal)
+            {
+                switch (notification.OperationStatus)
+                {
+                    case OperationStatus.End:
+                        {
+                            this.parent.ChangeState(new HorizontalSwitchDoneState(this.parent, this.driver, this.remoteIODriver, this.data, this.eventAggregator));
+                            this.parent.MakeOperation();
+                            break;
+                        }
+                    case OperationStatus.Error:
+                        {
+                            this.parent.ChangeState(new HomingErrorState(this.parent, this.driver, this.remoteIODriver, this.data, this.eventAggregator));
+                            break;
+                        }
+                    default:
+                        {
+                            break;
+                        }
+                }
+            }
+
+            this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Unsubscribe(this.notifyEventHandler);
+        }
+
+        #endregion
     }
 }

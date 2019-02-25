@@ -1,14 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Core.Providers;
 using Ferretto.WMS.Data.WebAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using DataModels = Ferretto.Common.DataModels;
 
 namespace Ferretto.WMS.Data.Tests
@@ -17,12 +14,6 @@ namespace Ferretto.WMS.Data.Tests
     public class ItemsControllerTest : BaseControllerTest
     {
         #region Methods
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this.CleanupDatabase();
-        }
 
         [TestInitialize]
         public void Initialize()
@@ -37,7 +28,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
                 var compartment1 = new DataModels.Compartment { Id = 1, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 10, ReservedToStore = 0 };
 
@@ -68,7 +59,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
                 var compartment1 = new DataModels.Compartment { Id = 1, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 0, ReservedToStore = 0 };
                 var compartment2 = new DataModels.Compartment { Id = 2, LoadingUnitId = this.LoadingUnit3.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 0, ReservedToStore = 0 };
@@ -103,7 +94,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
                 var compartment1 = new DataModels.Compartment { Id = 1, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 0, ReservedToStore = 0 };
                 var compartment2 = new DataModels.Compartment { Id = 2, LoadingUnitId = this.LoadingUnit2.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 0, ReservedToStore = 0 };
@@ -138,7 +129,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
 
                 context.Items.Add(item1);
@@ -162,11 +153,13 @@ namespace Ferretto.WMS.Data.Tests
             }
         }
 
-        private static ItemsController MockController(DatabaseContext context)
+        private ItemsController MockController()
         {
             return new ItemsController(
-                new ItemProvider(context),
-                new AreaProvider(context));
+                this.ServiceProvider.GetService(typeof(IItemProvider)) as IItemProvider,
+                this.ServiceProvider.GetService(typeof(IAreaProvider)) as IAreaProvider,
+                this.ServiceProvider.GetService(typeof(Scheduler.Core.Interfaces.ISchedulerRequestProvider)) as Scheduler.Core.Interfaces.ISchedulerRequestProvider,
+                this.ServiceProvider.GetService(typeof(ICompartmentProvider)) as ICompartmentProvider);
         }
 
         #endregion

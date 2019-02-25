@@ -40,14 +40,13 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ICompartment selectedCompartmentTray;
 
-        private Tray tray;
-
         #endregion
 
         #region Constructors
 
         public LoadingUnitEditViewModel()
         {
+            this.loadingUnit = new LoadingUnitDetails();
             this.HideSidePanel();
         }
 
@@ -77,7 +76,7 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand AddCommand => this.addCommand ??
-            (this.addCommand = new DelegateCommand(this.ExecuteAddCompartmentCommand));
+            (this.addCommand = new DelegateCommand(async () => await this.ExecuteAddCompartmentCommandAsync()));
 
         public ICommand BulkAddCommand => this.bulkAddCommand ??
             (this.bulkAddCommand = new DelegateCommand(this.ExecuteBulkAddCommand));
@@ -100,17 +99,7 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.isSidePanelOpen, value);
         }
 
-        public LoadingUnitDetails LoadingUnit
-        {
-            get => this.loadingUnit;
-            set
-            {
-                if (this.SetProperty(ref this.loadingUnit, value))
-                {
-                    this.LoadRelatedData();
-                }
-            }
-        }
+        public LoadingUnitDetails LoadingUnitDetails => this.loadingUnit;
 
         public bool LoadingUnitHasCompartments
         {
@@ -124,27 +113,22 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.selectedCompartmentTray, value);
         }
 
-        public Tray Tray
-        {
-            get => this.tray;
-            set => this.SetProperty(ref this.tray, value);
-        }
-
         #endregion
 
         #region Methods
 
-        public void LoadRelatedData()
+        public async void LoadRelatedData()
         {
             this.CompartmentsDataSource = this.loadingUnit != null
-                ? this.compartmentProvider.GetByLoadingUnitId(this.loadingUnit.Id).ToList()
+                ? await this.compartmentProvider.GetByLoadingUnitIdAsync(this.loadingUnit.Id)
                 : null;
         }
 
-        protected override async void OnAppear()
+        protected override async Task OnAppearAsync()
         {
-            await this.LoadDataAsync();
-            base.OnAppear();
+            await this.LoadDataAsync().ConfigureAwait(true);
+            await base.OnAppearAsync().ConfigureAwait(true);
+            this.LoadRelatedData();
         }
 
         private async void ActiveSideViewModel_OperationComplete(object sender, OperationEventArgs e)
@@ -174,11 +158,11 @@ namespace Ferretto.WMS.Modules.MasterData
             return this.selectedCompartmentTray != null;
         }
 
-        private void ExecuteAddCompartmentCommand()
+        private async Task ExecuteAddCompartmentCommandAsync()
         {
             this.SelectedCompartmentTray = null;
 
-            var model = this.compartmentProvider.GetNew();
+            var model = await this.compartmentProvider.GetNewAsync();
             model.LoadingUnitId = this.loadingUnit.Id;
             model.LoadingUnit = this.loadingUnit;
 
@@ -204,39 +188,36 @@ namespace Ferretto.WMS.Modules.MasterData
             this.ShowSidePanel(new CompartmentEditViewModel { Model = model });
         }
 
+        private async Task ExtractArgsInputAsync(LoadingUnitArgs input)
+        {
+            if (input != null)
+            {
+                this.loadingUnit = await this.loadingUnitProvider.GetByIdAsync(input.LoadingUnitId);
+                if (input.CompartmentId.HasValue)
+                {
+                    this.SelectedCompartmentTray = await this.compartmentProvider.GetByIdAsync(input.CompartmentId.Value);
+                }
+            }
+        }
+
         private void HideSidePanel()
         {
             this.IsSidePanelOpen = false;
             this.ActiveSideViewModel = null;
         }
 
-        private void InitializeTray()
-        {
-            this.tray = new Tray
-            {
-                Dimension = new Dimension
-                {
-                    Height = this.LoadingUnit.Length,
-                    Width = this.LoadingUnit.Width
-                },
-                LoadingUnitId = this.LoadingUnit.Id,
-            };
-
-            if (this.LoadingUnit.Compartments != null)
-            {
-                this.tray.AddCompartmentsRange(this.LoadingUnit.Compartments);
-            }
-
-            this.RaisePropertyChanged(nameof(this.Tray));
-        }
-
         private async Task LoadDataAsync()
         {
             if (this.Data is int modelId)
             {
-                this.LoadingUnit = await this.loadingUnitProvider.GetByIdAsync(modelId);
-                this.InitializeTray();
+                this.loadingUnit = await this.loadingUnitProvider.GetByIdAsync(modelId);
             }
+            else if (this.Data is LoadingUnitArgs input)
+            {
+                await this.ExtractArgsInputAsync(input);
+            }
+
+            this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));
         }
 
         private void ShowSidePanel(BaseNavigationViewModel childViewModel)

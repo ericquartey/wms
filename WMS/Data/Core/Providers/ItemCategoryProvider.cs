@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class ItemCategoryProvider : IItemCategoryProvider
+    internal class ItemCategoryProvider : IItemCategoryProvider
     {
         #region Fields
 
@@ -40,7 +40,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<int> GetAllCountAsync()
         {
-            return await this.dataContext.CellPositions.CountAsync();
+            return await this.dataContext.ItemCategories.CountAsync();
         }
 
         public async Task<ItemCategory> GetByIdAsync(int id)

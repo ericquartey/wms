@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Core.Providers;
 using Ferretto.WMS.Data.WebAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,10 +16,133 @@ namespace Ferretto.WMS.Data.Tests
     {
         #region Methods
 
-        [TestCleanup]
-        public void Cleanup()
+        [TestMethod]
+        public async Task GetAislesFound()
         {
-            this.CleanupDatabase();
+            using (var context = this.CreateContext())
+            {
+                #region Arrange
+
+                var controller = this.MockController();
+                this.InitializeDatabase();
+
+                #endregion
+
+                #region Act
+
+                var actionResult1 = await controller.GetAisles(this.Area1.Id);
+                var actionResult2 = await controller.GetAisles(this.Area2.Id);
+
+                #endregion
+
+                #region Assert
+
+                Assert.IsInstanceOfType(actionResult1.Result, typeof(OkObjectResult));
+                var result1 = (IEnumerable<Aisle>)((OkObjectResult)actionResult1.Result).Value;
+                Assert.AreEqual(1, result1.Count());
+                Assert.IsNotNull(result1.SingleOrDefault(a => (a.Id == this.Aisle1.Id && a.Name == this.Aisle1.Name &&
+                                                               a.AreaId == this.Area1.Id &&
+                                                               a.AreaName == this.Area1.Name)));
+
+                Assert.IsInstanceOfType(actionResult2.Result, typeof(OkObjectResult));
+                var result2 = (IEnumerable<Aisle>)((OkObjectResult)actionResult2.Result).Value;
+                Assert.AreEqual(2, result2.Count());
+                Assert.IsNotNull(result2.SingleOrDefault(a => (a.Id == this.Aisle2.Id && a.Name == this.Aisle2.Name &&
+                                                               a.AreaId == this.Area2.Id &&
+                                                               a.AreaName == this.Area2.Name)));
+                Assert.IsNotNull(result2.SingleOrDefault(a => (a.Id == this.Aisle3.Id && a.Name == this.Aisle3.Name &&
+                                                               a.AreaId == this.Area2.Id &&
+                                                               a.AreaName == this.Area2.Name)));
+
+                #endregion
+            }
+        }
+
+        [TestMethod]
+        public async Task GetAislesNotFound()
+        {
+            using (var context = this.CreateContext())
+            {
+                #region Arrange
+
+                var controller = this.MockController();
+                this.InitializeDatabase();
+
+                #endregion
+
+                #region Act
+
+                var actionResult = await controller.GetAisles(this.Area3.Id);
+
+                #endregion
+
+                #region Assert
+
+                Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
+                var result = (IEnumerable<Aisle>)((OkObjectResult)actionResult.Result).Value;
+                Assert.AreEqual(0, result.Count());
+
+                #endregion
+            }
+        }
+
+        [TestMethod]
+        public async Task GetAllCountFound()
+        {
+            using (var context = this.CreateContext())
+            {
+                #region Arrange
+
+                var controller = this.MockController();
+                var area1 = new Common.DataModels.Area { Id = 1, Name = "Area #1" };
+                var area2 = new Common.DataModels.Area { Id = 2, Name = "Area #2" };
+                context.Areas.Add(area1);
+                context.Areas.Add(area2);
+                context.SaveChanges();
+
+                #endregion
+
+                #region Act
+
+                var actionResult = await controller.GetAllCountAsync();
+
+                #endregion
+
+                #region Assert
+
+                Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
+                var result = (int)((OkObjectResult)actionResult.Result).Value;
+                Assert.AreEqual(2, result);
+
+                #endregion
+            }
+        }
+
+        [TestMethod]
+        public async Task GetAllCountNotFound()
+        {
+            using (var context = this.CreateContext())
+            {
+                #region Arrange
+
+                var controller = this.MockController();
+
+                #endregion
+
+                #region Act
+
+                var actionResult = await controller.GetAllCountAsync();
+
+                #endregion
+
+                #region Assert
+
+                Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
+                var result = (int)((OkObjectResult)actionResult.Result).Value;
+                Assert.AreEqual(0, result);
+
+                #endregion
+            }
         }
 
         [TestMethod]
@@ -30,7 +152,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var area1 = new Common.DataModels.Area { Id = 1, Name = "Area #1" };
                 var area2 = new Common.DataModels.Area { Id = 2, Name = "Area #2" };
                 var area3 = new Common.DataModels.Area { Id = 3, Name = "Area #3" };
@@ -67,7 +189,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -94,16 +216,19 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var area1 = new Common.DataModels.Area { Id = 1, Name = "Area #1" };
                 var area2 = new Common.DataModels.Area { Id = 2, Name = "Area #2" };
                 var machine1 = new Common.DataModels.Machine { Id = 1, Nickname = "Machine #1" };
                 var machine2 = new Common.DataModels.Machine { Id = 2, Nickname = "Machine #2" };
                 var bayType1 = new Common.DataModels.BayType { Id = "1", Description = "Bay Type #1" };
                 var bayType2 = new Common.DataModels.BayType { Id = "2", Description = "Bay Type #2" };
-                var bay1 = new Common.DataModels.Bay { Id = 1, Description = "Bay #1", AreaId = 1, MachineId = 1, BayTypeId = "1" };
-                var bay2 = new Common.DataModels.Bay { Id = 2, Description = "Bay #2", AreaId = 2, MachineId = 2, BayTypeId = "1" };
-                var bay3 = new Common.DataModels.Bay { Id = 3, Description = "Bay #3", AreaId = 2, MachineId = 2, BayTypeId = "2" };
+                var bay1 = new Common.DataModels.Bay
+                { Id = 1, Description = "Bay #1", AreaId = 1, MachineId = 1, BayTypeId = "1" };
+                var bay2 = new Common.DataModels.Bay
+                { Id = 2, Description = "Bay #2", AreaId = 2, MachineId = 2, BayTypeId = "1" };
+                var bay3 = new Common.DataModels.Bay
+                { Id = 3, Description = "Bay #3", AreaId = 2, MachineId = 2, BayTypeId = "2" };
                 context.Areas.Add(area1);
                 context.Areas.Add(area2);
                 context.Machines.Add(machine1);
@@ -170,7 +295,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var area1 = new Common.DataModels.Area { Id = 1, Name = "Area #1" };
                 context.Areas.Add(area1);
                 context.SaveChanges();
@@ -198,7 +323,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
                 var area1 = new Common.DataModels.Area { Id = 1, Name = "Area #1" };
                 var area2 = new Common.DataModels.Area { Id = 2, Name = "Area #2" };
                 var area3 = new Common.DataModels.Area { Id = 3, Name = "Area #3" };
@@ -238,7 +363,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 #region Arrange
 
-                var controller = MockController(context);
+                var controller = this.MockController();
 
                 #endregion
 
@@ -256,12 +381,80 @@ namespace Ferretto.WMS.Data.Tests
             }
         }
 
-        private static AreasController MockController(DatabaseContext context)
+        [TestMethod]
+        public async Task GetCellsFound()
+        {
+            using (var context = this.CreateContext())
+            {
+                #region Arrange
+
+                var controller = this.MockController();
+                this.InitializeDatabase();
+
+                #endregion
+
+                #region Act
+
+                var actionResult1 = await controller.GetCellsAsync(this.Area1.Id);
+                var actionResult2 = await controller.GetCellsAsync(this.Area2.Id);
+
+                #endregion
+
+                #region Assert
+
+                Assert.IsInstanceOfType(actionResult1.Result, typeof(OkObjectResult));
+                var result1 = (IEnumerable<Cell>)((OkObjectResult)actionResult1.Result).Value;
+                Assert.AreEqual(2, result1.Count());
+                Assert.IsNotNull(result1.SingleOrDefault(c => (c.Id == this.Cell1.Id)));
+                Assert.IsNotNull(result1.SingleOrDefault(c => (c.Id == this.Cell2.Id)));
+
+                Assert.IsInstanceOfType(actionResult2.Result, typeof(OkObjectResult));
+                var result2 = (IEnumerable<Cell>)((OkObjectResult)actionResult2.Result).Value;
+                Assert.AreEqual(4, result2.Count());
+                Assert.IsNotNull(result2.SingleOrDefault(c => (c.Id == this.Cell3.Id)));
+                Assert.IsNotNull(result2.SingleOrDefault(c => (c.Id == this.Cell4.Id)));
+                Assert.IsNotNull(result2.SingleOrDefault(c => (c.Id == this.Cell5.Id)));
+                Assert.IsNotNull(result2.SingleOrDefault(c => (c.Id == this.Cell6.Id)));
+
+                #endregion
+            }
+        }
+
+        [TestMethod]
+        public async Task GetCellsNotFound()
+        {
+            using (var context = this.CreateContext())
+            {
+                #region Arrange
+
+                var controller = this.MockController();
+                this.InitializeDatabase();
+
+                #endregion
+
+                #region Act
+
+                var actionResult = await controller.GetCellsAsync(this.Area3.Id);
+
+                #endregion
+
+                #region Assert
+
+                Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
+                var result = (IEnumerable<Cell>)((OkObjectResult)actionResult.Result).Value;
+                Assert.AreEqual(0, result.Count());
+
+                #endregion
+            }
+        }
+
+        private AreasController MockController()
         {
             return new AreasController(
                 new Mock<ILogger<AreasController>>().Object,
-                new AreaProvider(context),
-                new BayProvider(context));
+                this.ServiceProvider.GetService(typeof(IAreaProvider)) as IAreaProvider,
+                this.ServiceProvider.GetService(typeof(IBayProvider)) as IBayProvider,
+                this.ServiceProvider.GetService(typeof(ICellProvider)) as ICellProvider);
         }
 
         #endregion

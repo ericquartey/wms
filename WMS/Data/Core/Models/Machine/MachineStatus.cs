@@ -2,12 +2,14 @@ namespace Ferretto.WMS.Data.Core.Models
 {
     public enum MachineStatus
     {
-        Automatic,
+        NotSpecified,
 
-        Manual,
+        Automatic = 'A',
 
-        Error,
+        Manual = 'M',
 
-        Offline
+        Error = 'E',
+
+        Offline = 'O'
     }
 }

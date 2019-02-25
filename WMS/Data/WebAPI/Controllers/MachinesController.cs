@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.WebAPI.Extensions;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -16,7 +16,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     public class MachinesController :
         ControllerBase,
         IReadAllPagedController<Machine>,
-        IReadSingleController<Machine, int>
+        IReadSingleController<Machine, int>,
+        IGetUniqueValuesController
     {
         #region Fields
 
@@ -50,32 +51,45 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             string orderBy = null,
             string search = null)
         {
-            var searchExpression = BuildSearchExpression(search);
-            var whereExpression = this.BuildWhereExpression<Machine>(where);
+            try
+            {
+                var whereExpression = where.AsIExpression();
+                var orderByExpression = orderBy.ParseSortOptions();
 
-            return this.Ok(
-                await this.machineProvider.GetAllAsync(
-                    skip,
-                    take,
-                    orderBy,
-                    whereExpression,
-                    searchExpression));
+                return this.Ok(
+                    await this.machineProvider.GetAllAsync(
+                        skip,
+                        take,
+                        orderByExpression,
+                        whereExpression,
+                        search));
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
         [ProducesResponseType(200, Type = typeof(int))]
+        [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404)]
-        [HttpGet]
-        [Route("count")]
+        [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync(
             string where = null,
             string search = null)
         {
-            var searchExpression = BuildSearchExpression(search);
-            var whereExpression = this.BuildWhereExpression<Machine>(where);
+            try
+            {
+                var whereExpression = where.AsIExpression();
 
-            return await this.machineProvider.GetAllCountAsync(
-                       whereExpression,
-                       searchExpression);
+                return await this.machineProvider.GetAllCountAsync(
+                           whereExpression,
+                           search);
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
         [ProducesResponseType(200, Type = typeof(Machine))]
@@ -94,33 +108,20 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result);
         }
 
-        private static Expression<Func<Machine, bool>> BuildSearchExpression(string search)
+        [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
+        [ProducesResponseType(400)]
+        [HttpGet("unique/{propertyName}")]
+        public async Task<ActionResult<object[]>> GetUniqueValuesAsync(
+            string propertyName)
         {
-            if (string.IsNullOrWhiteSpace(search))
+            try
             {
-                return null;
+                return this.Ok(await this.machineProvider.GetUniqueValuesAsync(propertyName));
             }
-
-            return (i) =>
-                (i.AisleName != null &&
-                 i.AisleName.Contains(search, StringComparison.InvariantCultureIgnoreCase))
-                ||
-                (i.AreaName != null &&
-                 i.AreaName.Contains(search, StringComparison.InvariantCultureIgnoreCase))
-                ||
-                (i.MachineTypeDescription != null &&
-                 i.MachineTypeDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase))
-                ||
-                (i.Model != null &&
-                 i.Model.Contains(search, StringComparison.InvariantCultureIgnoreCase))
-                ||
-                (i.Nickname != null &&
-                 i.Nickname.Contains(search, StringComparison.InvariantCultureIgnoreCase))
-                ||
-                (i.RegistrationNumber != null &&
-                 i.RegistrationNumber.Contains(search, StringComparison.InvariantCultureIgnoreCase))
-                ||
-                i.FillRate.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
+            catch (InvalidOperationException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
         #endregion

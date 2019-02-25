@@ -1,4 +1,9 @@
-﻿using Ferretto.VW.MAS_FiniteStateMachines.Homing;
+﻿using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.MAS_DataLayer;
+using Ferretto.VW.MAS_FiniteStateMachines.Homing;
+using Ferretto.VW.MAS_InverterDriver;
+using Ferretto.VW.MAS_IODriver;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines
 {
@@ -6,9 +11,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
     {
         #region Fields
 
-        private MAS_DataLayer.IWriteLogService data;
+        private readonly IWriteLogService data;
 
-        private MAS_InverterDriver.INewInverterDriver driver;
+        private readonly INewInverterDriver driver;
+
+        private readonly IEventAggregator eventAggregator;
+
+        private readonly INewRemoteIODriver remoteIODriver;
 
         private IState state;
 
@@ -16,15 +25,19 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Constructors
 
-        public StateMachineHoming(MAS_InverterDriver.INewInverterDriver iDriver, MAS_DataLayer.IWriteLogService iWriteLogService)
+        public StateMachineHoming(INewInverterDriver driver, INewRemoteIODriver remoteIODriver, IEventAggregator eventAggregator)
         {
-            this.data = iWriteLogService;
-            this.driver = iDriver;
+            this.driver = driver;
+            this.remoteIODriver = remoteIODriver;
+            this.data = null;
+            this.eventAggregator = eventAggregator;
         }
 
         #endregion
 
         #region Properties
+
+        public bool HomingComplete { get; set; }
 
         public bool HorizontalHomingAlreadyDone { get; set; }
 
@@ -34,16 +47,38 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Methods
 
-        public void ChangeState(IState newState)
+        public void ChangeState(IState newState, Event_Message message = null)
         {
             this.state = newState;
+        }
+
+        public void MakeOperation()
+        {
+            this.state?.MakeOperation();
+        }
+
+        public void NotifyMessage(Event_Message message)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void PublishMessage(Event_Message message)
+        {
+            throw new System.NotImplementedException();
         }
 
         public void Start()
         {
             this.HorizontalHomingAlreadyDone = false;
-            //TODO check the sensors before to set the initial state
-            this.state = new HomingIdleState(this, this.driver, this.data);
+            this.HomingComplete = false;
+
+            this.state = new HomingIdleState(this, this.driver, this.remoteIODriver, this.data, this.eventAggregator);
+            this.state.MakeOperation();
+        }
+
+        public void Stop()
+        {
+            this.state?.Stop();
         }
 
         #endregion

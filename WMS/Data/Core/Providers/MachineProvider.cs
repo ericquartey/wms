@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.EF;
+using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
@@ -11,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class MachineProvider : IMachineProvider
+    internal class MachineProvider : IMachineProvider
     {
         #region Fields
 
@@ -33,33 +34,110 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<Machine>> GetAllAsync(
             int skip,
             int take,
-            string orderBy = null,
-            Expression<Func<Machine, bool>> whereExpression = null,
-            Expression<Func<Machine, bool>> searchExpression = null)
+            IEnumerable<SortOption> orderBy = null,
+            IExpression whereExpression = null,
+            string searchString = null)
         {
             return await this.GetAllBase()
-                       .ApplyTransform(
-                           skip,
-                           take,
-                           orderBy,
-                           whereExpression,
-                           searchExpression)
-                       .ToArrayAsync();
+                .ToArrayAsync(
+                    skip,
+                    take,
+                    orderBy,
+                    whereExpression,
+                    BuildSearchExpression(searchString));
         }
 
         public async Task<int> GetAllCountAsync(
-            Expression<Func<Machine, bool>> whereExpression = null,
-            Expression<Func<Machine, bool>> searchExpression = null)
+            IExpression whereExpression = null,
+            string searchString = null)
         {
             return await this.GetAllBase()
-                       .ApplyTransform(whereExpression, searchExpression)
-                       .CountAsync();
+                .CountAsync(
+                    whereExpression,
+                    BuildSearchExpression(searchString));
         }
 
         public async Task<Machine> GetByIdAsync(int id)
         {
             return await this.GetAllBase()
                        .SingleOrDefaultAsync(i => i.Id == id);
+        }
+
+        public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
+        {
+            return await this.GetUniqueValuesAsync(
+                       propertyName,
+                       this.dataContext.Machines,
+                       this.GetAllBase());
+        }
+
+        private static Expression<Func<Machine, bool>> BuildSearchExpression(string search)
+        {
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                return null;
+            }
+
+            return (m) =>
+                m.AisleName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                m.AreaName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                m.MachineTypeDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                m.Model.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                m.Nickname.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                m.RegistrationNumber.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                m.FillRate.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        private static MachineStatus GetMachineStatus(Common.DataModels.IDataModel machine)
+        {
+            if (machine != null)
+            {
+                if (machine.Id == 1)
+                {
+                    return MachineStatus.Automatic;
+                }
+                else if (machine.Id == 2)
+                {
+                    return MachineStatus.Error;
+                }
+                else if (machine.Id == 3)
+                {
+                    return MachineStatus.Manual;
+                }
+                else
+                {
+                    return MachineStatus.Offline;
+                }
+            }
+
+            return MachineStatus.NotSpecified;
+        }
+
+        private static MaintenanceStatus GetMaintenanceStatus(Common.DataModels.IDataModel machine)
+        {
+            if (machine != null)
+            {
+                if (machine.Id == 1)
+                {
+                    return MaintenanceStatus.Valid;
+                }
+                else if (machine.Id == 2)
+                {
+                    return MaintenanceStatus.Expiring;
+                }
+                else
+                {
+                    return MaintenanceStatus.Expired;
+                }
+            }
+
+            return MaintenanceStatus.NotSpecified;
         }
 
         private IQueryable<Machine> GetAllBase()
@@ -95,7 +173,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     LoadingUnitsPerCradle = m.LoadingUnitsPerCradle,
                     MachineTypeId = m.MachineTypeId,
                     MachineTypeDescription = m.MachineType.Description,
-                    MaintenanceStatus = (MaintenanceStatus)((m.Id - 1) % 3),
+                    MaintenanceStatus = GetMaintenanceStatus(m),
                     ManualTime = m.ManualTime,
                     MissionTime = m.MissionTime,
                     Model = m.Model,
@@ -105,7 +183,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     OutputLoadingUnitsCount = m.OutputLoadingUnitsCount,
                     PowerOnTime = m.PowerOnTime,
                     RegistrationNumber = m.RegistrationNumber,
-                    Status = (MachineStatus)(m.Id - 1),
+                    Status = GetMachineStatus(m),
                     TestDate = m.TestDate,
                     TotalMaxWeight = m.TotalMaxWeight
                 });

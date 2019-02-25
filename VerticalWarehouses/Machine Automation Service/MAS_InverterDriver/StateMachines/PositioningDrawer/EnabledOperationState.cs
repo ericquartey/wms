@@ -1,0 +1,79 @@
+﻿using Ferretto.VW.Common_Utils.EventParameters;
+using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.InverterDriver;
+using Prism.Events;
+
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PositioningDrawer
+{
+    public class EnabledOperationState : IState
+    {
+        #region Fields
+
+        private readonly IEventAggregator eventAggregator;
+
+        private readonly IInverterDriver inverterDriver;
+
+        private readonly StateMachinePositioningDrawer stateMachinePositioningDrawer;
+
+        private readonly ParameterID paramID = ParameterID.HOMING_MODE_PARAM;
+
+        private const byte DATASET_INDEX = 0x05;
+
+        private readonly byte systemIndex = 0x00;
+
+        private readonly object valParam;
+
+        #endregion
+
+        #region Constructors
+
+        public EnabledOperationState(StateMachinePositioningDrawer stateMachinePositioningDrawer, IInverterDriver inverterDriver, IEventAggregator eventAggregator)
+        {
+            this.inverterDriver = inverterDriver;
+            this.eventAggregator = eventAggregator;
+            this.stateMachinePositioningDrawer = stateMachinePositioningDrawer;
+
+            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
+
+        }
+
+        #endregion
+
+        #region Properties
+
+        public string Type => "Enabled Operation State";
+
+        #endregion
+
+        #region Methods
+
+        private void notifyEventHandler(Notification_EventParameter notification)
+        {
+            var result = inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_INDEX, this.valParam);
+
+            switch (notification.OperationStatus)
+            {
+                case OperationStatus.End:
+                    {
+                        if (result == InverterDriverExitStatus.Success)
+                        {
+                            this.stateMachinePositioningDrawer.ChangeState(new SetNewPositionState(stateMachinePositioningDrawer, inverterDriver, eventAggregator));
+                        }
+                        break;
+                    }
+                case OperationStatus.Error:
+                    {
+                        this.stateMachinePositioningDrawer.ChangeState(new ErrorState(stateMachinePositioningDrawer, inverterDriver, eventAggregator));
+
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
+        }
+
+        #endregion
+    }
+}

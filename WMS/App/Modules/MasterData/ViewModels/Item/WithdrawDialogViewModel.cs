@@ -16,15 +16,25 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly IAreaProvider areaProvider = ServiceLocator.Current.GetInstance<IAreaProvider>();
+
         private readonly IBayProvider bayProvider = ServiceLocator.Current.GetInstance<IBayProvider>();
+
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
+
         private bool advancedWithdraw;
+
         private ICommand advancedWithdrawCommand;
+
         private bool isBusy;
+
         private ItemWithdraw itemWithdraw;
+
         private ICommand runWithdrawCommand;
+
         private ICommand simpleWithdrawCommand;
+
         private bool validationEnabled;
+
         private string validationError;
 
         #endregion
@@ -100,15 +110,16 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        protected override async void OnAppear()
+        protected override async Task OnAppearAsync()
         {
+            await base.OnAppearAsync().ConfigureAwait(true);
             var modelId = (int?)this.Data.GetType().GetProperty("Id")?.GetValue(this.Data);
             if (!modelId.HasValue)
             {
                 return;
             }
 
-            this.ItemWithdraw.ItemDetails = await this.itemProvider.GetByIdAsync(modelId.Value);
+            this.ItemWithdraw.ItemDetails = await this.itemProvider.GetByIdAsync(modelId.Value).ConfigureAwait(true);
         }
 
         protected override void OnDispose()
@@ -173,7 +184,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.ItemWithdraw = new ItemWithdraw();
         }
 
-        private void OnItemWithdrawPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private async void OnItemWithdrawPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             ((DelegateCommand)this.RunWithdrawCommand)?.RaiseCanExecuteChanged();
 
@@ -181,12 +192,13 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 case nameof(this.ItemWithdraw.AreaId):
                     this.ItemWithdraw.BayChoices = this.ItemWithdraw.AreaId.HasValue ?
-                                                       this.bayProvider.GetByAreaId(this.ItemWithdraw.AreaId.Value) :
+                                                       await this.bayProvider.GetByAreaIdAsync(this.ItemWithdraw.AreaId.Value) :
                                                        null;
                     break;
+
                 case nameof(this.ItemWithdraw.ItemDetails):
                     this.ItemWithdraw.AreaChoices = this.ItemWithdraw.ItemDetails != null ?
-                                                        this.areaProvider.GetByItemIdAvailability(this.ItemWithdraw.ItemDetails.Id) :
+                                                        await this.areaProvider.GetAreasWithAvailabilityAsync(this.ItemWithdraw.ItemDetails.Id) :
                                                         null;
                     break;
             }

@@ -20,6 +20,8 @@
 
         public string Description { get; set; }
 
+        public bool IsActive { get; set; }
+
         public int? LoadingUnitsBufferSize
         {
             get => this.loadingUnitsBufferSize;

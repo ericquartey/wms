@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class AreaProvider : IAreaProvider
+    internal class AreaProvider : IAreaProvider
     {
         #region Fields
 
@@ -30,14 +30,15 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<Aisle>> GetAislesAsync(int id)
         {
             return await this.dataContext.Aisles
-                       .AsNoTracking()
                        .Include(a => a.Area)
                        .Where(a => a.AreaId == id)
                        .OrderBy(a => a.Area.Name)
                        .ThenBy(a => a.Name)
                        .Select(a => new Aisle
                        {
+                           Id = a.Id,
                            Name = a.Name,
+                           AreaId = a.AreaId,
                            AreaName = a.Area.Name,
                        })
                        .ToArrayAsync();

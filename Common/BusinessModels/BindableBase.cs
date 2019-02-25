@@ -12,14 +12,30 @@ namespace Ferretto.Common.BusinessModels
     public class BindableBase : INotifyPropertyChanged, IDataErrorInfo
     {
         protected BindableBase()
-        { }
+        {
+        }
 
         /// <summary>
         /// Occurs when a property value changes.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
+#pragma warning disable CA1716 // Identifiers should not match keywords
+
+        /// <summary>
+        ///  Gets an error message indicating what is wrong with this object.
+        /// </summary>
+        /// <remarks>
+        /// This member is part of the IDataErrorInfo interface and cannot be removed.
+        /// This is why the Code Analysis rule CA1716 is suppressed.
+        /// </remarks>
+        /// <returns>
+        /// An error message indicating what is wrong with this object.
+        /// The default is an empty string.
+        /// </returns>
         public virtual string Error { get; }
+
+#pragma warning restore CA1716 // Identifiers should not match keywords
 
         public virtual string this[string columnName] => string.Empty;
 

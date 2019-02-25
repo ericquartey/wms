@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.MAS_DataLayer;
+﻿using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_InverterDriver;
 using Prism.Events;
 
@@ -7,8 +7,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
     public class StateMachineVerticalHoming : IState, IStateMachine
     {
         #region Fields
-
-        private readonly IWriteLogService data;
 
         private readonly INewInverterDriver driver;
 
@@ -20,10 +18,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Constructors
 
-        public StateMachineVerticalHoming(INewInverterDriver iDriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
+        public StateMachineVerticalHoming(INewInverterDriver driver, IEventAggregator eventAggregator)
         {
-            this.driver = iDriver;
-            this.data = iWriteLogService;
+            this.driver = driver;
             this.eventAggregator = eventAggregator;
         }
 
@@ -37,15 +34,35 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Methods
 
-        public void ChangeState(IState newState)
+        public void ChangeState(IState newState, Event_Message message = null)
         {
             this.state = newState;
         }
 
+        public void MakeOperation()
+        {
+            this.state?.MakeOperation();
+        }
+
+        public void NotifyMessage(Event_Message message)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void PublishMessage(Event_Message message)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void Start()
         {
-            // TODO check the sensors before to set the initial state
-            this.state = new VerticalHomingIdleState(this, this.driver, this.data, this.eventAggregator);
+            this.state = new VerticalHomingIdleState(this, this.driver, this.eventAggregator);
+            this.state.MakeOperation();
+        }
+
+        public void Stop()
+        {
+            this.state?.Stop();
         }
 
         #endregion

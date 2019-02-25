@@ -89,7 +89,7 @@ namespace Ferretto.WMS.Data.Core.Models
         public int Stock
         {
             get => this.stock;
-            set => this.stock = CheckIfStrictlyPositive(value);
+            set => this.stock = CheckIfPositive(value);
         }
 
         public string Sub1 { get; set; }
