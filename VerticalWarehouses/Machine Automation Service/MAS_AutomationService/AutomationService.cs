@@ -47,6 +47,7 @@ namespace Ferretto.VW.MAS_AutomationService
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Destination == MessageActor.AutomationService);
+            this.TESTStartCycle();
         }
 
         #endregion

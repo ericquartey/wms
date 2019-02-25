@@ -1,8 +1,12 @@
 ﻿using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.InstallationApp;
+using Ferretto.VW.InstallationApp.ServiceUtilities;
+using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.Utils.Source;
+using Ferretto.VW.VWApp.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -103,16 +107,25 @@ namespace Ferretto.VW.VWApp
             return true;
         }
 
-        private void ExecuteLoginButtonCommand()
+        private async void ExecuteLoginButtonCommand()
         {
             if (this.CheckInputCorrectness(this.UserLogin, this.PasswordLogin))
             {
                 switch (this.UserLogin)
                 {
                     case "Installer":
-                        ((App)Application.Current).InstallationAppMainWindowInstance = (InstallationApp.MainWindow)this.Container.Resolve<InstallationApp.IMainWindow>();
-                        ((App)Application.Current).InstallationAppMainWindowInstance.DataContext = (InstallationApp.MainWindowViewModel)this.Container.Resolve<IMainWindowViewModel>();
-                        ((App)Application.Current).InstallationAppMainWindowInstance.Show();
+                        try
+                        {
+                            var ts = ((InstallationHubClient)this.Container.Resolve<ContainerIInstallationHubClient>()).ConnectAsync();
+                            ((App)Application.Current).InstallationAppMainWindowInstance = ((InstallationApp.MainWindow)this.Container.Resolve<InstallationApp.IMainWindow>());
+                            ((App)Application.Current).InstallationAppMainWindowInstance.DataContext = ((InstallationApp.MainWindowViewModel)this.Container.Resolve<IMainWindowViewModel>());
+                            await ts;
+                            ((App)Application.Current).InstallationAppMainWindowInstance.Show();
+                        }
+                        catch
+                        {
+                        }
+
                         break;
 
                     case "Operator":

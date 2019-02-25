@@ -6,6 +6,7 @@ using Microsoft.Practices.Unity;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using System.Net;
 using System.IO;
+using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -94,10 +95,11 @@ namespace Ferretto.VW.InstallationApp
 
         public async void SubscribeMethodToEvent()
         {
+            this.installationHubClient = (InstallationHubClient)this.container.Resolve<ContainerIInstallationHubClient>();
             try
             {
-                this.installationHubClient = new InstallationHubClient("http://localhost:5000", "/installation-endpoint");
-                await this.installationHubClient.ConnectAsync();
+                //this.installationHubClient = new InstallationHubClient("http://localhost:5000", "/installation-endpoint");
+                //await this.installationHubClient.ConnectAsync();
 
                 this.installationHubClient.ReceivedMessageToAllConnectedClients += this.UpdateNoteString;
                 this.installationHubClient.connection.Closed += async (error) => this.NoteString = "Not Connected";

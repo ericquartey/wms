@@ -3,6 +3,7 @@ using Ferretto.VW.ActionBlocks.Source.ActionsBasic;
 using Ferretto.VW.InstallationApp;
 using Ferretto.VW.Navigation;
 using Ferretto.VW.Utils.Source;
+using Ferretto.VW.VWApp.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Modularity;
@@ -23,6 +24,7 @@ namespace Ferretto.VW.VWApp
         protected override void ConfigureModuleCatalog()
         {
             var catalog = (ModuleCatalog)this.ModuleCatalog;
+            catalog.AddModule(typeof(VWAppModule));
             catalog.AddModule(typeof(InstallationAppModule));
         }
 
