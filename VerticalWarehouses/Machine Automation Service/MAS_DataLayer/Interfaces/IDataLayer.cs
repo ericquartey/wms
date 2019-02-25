@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// </summary>
         /// <param name="drawerHeight">Drawer height to insert in the magazine</param>
         /// <returns>An object with position and side for a return mission</returns>
-        ReturnMissionPosition GetFreeBlockPosition(int drawerHeight);
+        ReturnMissionPosition GetFreeBlockPosition(decimal drawerHeight);
 
         /// <summary>
         /// Get an integer variable from the configuration table

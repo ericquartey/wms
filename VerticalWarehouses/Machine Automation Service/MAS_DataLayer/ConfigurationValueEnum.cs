@@ -12,6 +12,8 @@
 
         homingFastSpeed,
 
+        inverterOperationTimeout,
+
         machineHeight,
 
         resolution,

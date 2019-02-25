@@ -34,13 +34,11 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public DbSet<ConfigurationValue> ConfigurationValues { get; set; }
 
-        public DbSet<Operation> Operations { get; set; }
+        public DbSet<FreeBlock> FreeBlocks { get; set; }
 
         public DbSet<RuntimeValue> RuntimeValues { get; set; }
 
         public DbSet<StatusLog> StatusLogs { get; set; }
-
-        public DbSet<Step> Steps { get; set; }
 
         #endregion
 
