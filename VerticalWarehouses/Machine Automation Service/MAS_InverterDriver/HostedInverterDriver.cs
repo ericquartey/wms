@@ -100,15 +100,15 @@ namespace Ferretto.VW.InverterDriver
         {
             //=== create the heartbeat timer
             this.heartBeatTimer?.Dispose();
-            this.heartBeatTimer = new Timer(SendHeartBeat, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(HEARTBEAT_TIMEOUT));
+            this.heartBeatTimer = new Timer(this.SendHeartBeat, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(HEARTBEAT_TIMEOUT));
 
             //=== create and start the sending Task
             this.inverterSendTask?.Dispose();
-            this.inverterSendTask = Task.Run(() => SendInverterCommand(stoppingToken), stoppingToken);
+            this.inverterSendTask = Task.Run(() => this.SendInverterCommand(stoppingToken), stoppingToken);
 
             //=== create and start the receiving Task
             this.inverterReceiveTask?.Dispose();
-            this.inverterReceiveTask = Task.Run(() => ReceiveInverterData(stoppingToken), stoppingToken);
+            this.inverterReceiveTask = Task.Run(() => this.ReceiveInverterData(stoppingToken), stoppingToken);
 
             //=== This will be the command receiving Task from state machine
             do
@@ -125,9 +125,8 @@ namespace Ferretto.VW.InverterDriver
                 this.messageReceived.Reset();
 
                 //=== Identify message and start relevant state machine
-                Event_Message receivedMessage;
 
-                while (this.messageQueue.TryDequeue(out receivedMessage))
+                while (this.messageQueue.TryDequeue(out var receivedMessage))
                 {
                     switch (receivedMessage.Type)
                     {
@@ -212,12 +211,12 @@ namespace Ferretto.VW.InverterDriver
                 {
                     case 0:
                         this.priorityInverterCommandReceived.Reset();
-                        ProcessPriorityCommand();
+                        this.ProcessPriorityCommand();
                         break;
 
                     case 1:
                         this.inverterCommandReceived.Reset();
-                        ProcessCommand();
+                        this.ProcessCommand();
                         break;
 
                     case 2:

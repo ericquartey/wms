@@ -9,6 +9,7 @@ using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Microsoft.Extensions.Hosting;
 using Prism.Events;
+using System.Linq;
 
 namespace Ferretto.VW.MAS_MissionsManager
 {
@@ -24,7 +25,11 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         private readonly ManualResetEventSlim missionExecuted;
 
+        private readonly ManualResetEventSlim missionReady;
+
         private readonly Dictionary<IMissionMessageData, int> missionsCollection;
+
+        private Task missionExecutionTask;
 
         #endregion
 
@@ -36,21 +41,25 @@ namespace Ferretto.VW.MAS_MissionsManager
 
             this.messageReceived = new ManualResetEventSlim(false);
 
-            this.missionExecuted = new ManualResetEventSlim(false);
+            this.missionExecuted = new ManualResetEventSlim(true);
+
+            this.missionReady = new ManualResetEventSlim(false);
 
             this.messageQueue = new ConcurrentQueue<Event_Message>();
 
             this.missionsCollection = new Dictionary<IMissionMessageData, int>();
 
-            var automationServiceMessagEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
-            automationServiceMessagEvent.Subscribe((message) =>
-            {
-                this.messageQueue.Enqueue(message);
-                this.messageReceived.Set();
-            },
+            var automationServiceMessageEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
+            automationServiceMessageEvent.Subscribe((message) => this.EnqueueMessageAndSetSemaphor(message),
                 ThreadOption.PublisherThread,
                 false,
-                message => message.Source == MessageActor.AutomationService);
+                message => (message.Destination == MessageActor.MissionsManager));
+
+            var finiteStateMachineMessageEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
+            finiteStateMachineMessageEvent.Subscribe((message) => this.missionExecuted.Set(),
+                ThreadOption.PublisherThread,
+                false,
+                message => (message.Source == MessageActor.FiniteStateMachines && message.Status == MessageStatus.End));
         }
 
         #endregion
@@ -69,8 +78,47 @@ namespace Ferretto.VW.MAS_MissionsManager
             await Task.Run(() => this.MissionsManagerTaskFunction(stoppingToken), stoppingToken);
         }
 
+        private void EnqueueMessageAndSetSemaphor(Event_Message message)
+        {
+            this.messageQueue.Enqueue(message);
+            this.messageReceived.Set();
+        }
+
+        private Task MissionsExecutionTaskFunction(CancellationToken stoppingToken)
+        {
+            do
+            {
+                try
+                {
+                    this.missionExecuted.Wait(Timeout.Infinite, stoppingToken);
+                    this.missionReady.Wait(Timeout.Infinite, stoppingToken);
+                }
+                catch (OperationCanceledException ex)
+                {
+                    return Task.FromException(ex);
+                }
+                if (this.missionsCollection.Count != 0)
+                {
+                    // TODO before removing the mission from the dictionary, execute it
+                    this.missionsCollection.Remove(this.missionsCollection.Keys.First());
+                    if (this.missionsCollection.Count == 0)
+                    {
+                        this.missionReady.Reset();
+                    }
+                    // TODO publish event to notify to the FSM to begin the action
+                    this.missionExecuted.Reset();
+                }
+                else
+                {
+                    this.missionReady.Reset();
+                }
+            } while (!stoppingToken.IsCancellationRequested);
+            return Task.CompletedTask;
+        }
+
         private Task MissionsManagerTaskFunction(CancellationToken stoppingToken)
         {
+            this.missionExecutionTask = Task.Run(() => this.MissionsExecutionTaskFunction(stoppingToken), stoppingToken);
             do
             {
                 try
@@ -92,11 +140,15 @@ namespace Ferretto.VW.MAS_MissionsManager
                             this.ProcessAddMissionMessage(receivedMessage);
                             break;
 
+                        case MessageType.CreateMission:
+
+                            break;
+
                         case MessageType.HorizontalHoming:
                             break;
 
                         default:
-                            throw new InvalidOperationException("Type of message unmanaged.");
+                            break;
                     }
                 }
             } while (!stoppingToken.IsCancellationRequested);
@@ -111,6 +163,7 @@ namespace Ferretto.VW.MAS_MissionsManager
                 var missionData = (MissionData)message.Data;
                 var missionPriority = ((MissionData)message.Data).Priority;
                 this.missionsCollection.Add(missionData, missionPriority);
+                this.missionReady.Set();
             }
             catch (InvalidCastException)
             {
