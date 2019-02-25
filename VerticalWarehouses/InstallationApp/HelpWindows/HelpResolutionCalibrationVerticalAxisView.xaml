@@ -25,128 +25,154 @@
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                    Text="{x:Static res:HelpDescriptions.ResolutionCalibrationFunctionDescription}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,165,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,155,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.BeltBurnishingUpLimit}" />
+                    Text="{x:Static res:HelpDescriptions.ResolutionCalibrationInitialPositionHelp}" />
 
-        <Controls:CustomInputFieldControlFocusable     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,165,0,0"
+        <Controls:CustomInputFieldControlFocusable     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,155,0,0"
                                                        Width="180"
                                                        Highlighted="True" IsEnabled="True"
                                                        InputText="1025,5"
                                                        LabelText="{x:Static res:InstallationApp.DesiredInitialPosition}"
                                                        Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 
-        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,235,0,0"
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,295,0,0"
                     Content="{x:Static res:InstallationApp.StartResolutionProcedure}"
                     IsEnabled="True"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,235,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,295,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.ResolutionCalibrationInitialStartHelp}" />
 
-        <Controls:CustomInputFieldControlFocusable    HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,385,0,0"
+        <Controls:CustomInputFieldControlFocusable    HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,450,0,0"
                                                       Width="180"
                                                       Highlighted="True" IsEnabled="True"
                                                       InputText="5150.0"
                                                       LabelText="{x:Static res:InstallationApp.RequestedFinalPosition}"
                                                       Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"  />
 
-        <Button     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,455,0,0"
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,590,0,0"
                     Content="{x:Static res:InstallationApp.Move}"
                     IsEnabled="True"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,385,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,450,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.ResolutionCalibrationFinalPositionHelp}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,455,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,590,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.ResolutionCalibrationFinalPosizionStartHelp}" />
 
-        <Controls:CustomInputFieldControlFocusable     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,605,0,0"
+        <Controls:CustomInputFieldControlFocusable     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,155,0,0"
                                                        Width="180"
                                                        Highlighted="True" IsEnabled="True"
                                                        InputText="4250,5"
                                                        LabelText="{x:Static res:InstallationApp.MesuredMovement}"
                                                        Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"  />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,605,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,155,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.ResolutionCalibrationMeasuredeValueHelp}" />
 
-        <Controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,167,0,0"
+        <Controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,225,0,0"
                                                 Width="180"
                                                 ContentText="125,36"
                                                 LabelText="{x:Static res:InstallationApp.CurrentResolution}"/>
 
-        <Controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,238,0,0"
+        <Controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,295,0,0"
                                                 Width="180"
                                                 ContentText="127,12"
                                                 LabelText="{x:Static res:InstallationApp.NewResolution}" />
 
-        <Button     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,311,0,0"
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,365,0,0"
                     Content="{x:Static res:General.Accept}"
                     IsEnabled="True"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,486,0,0"
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,526,0,0"
                     Content="{x:Static res:InstallationApp.GoToInitialPosition}"
                     IsEnabled="True"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,559,0,0"
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,599,0,0"
                     Content="{x:Static res:InstallationApp.CloseProcedure}"
                     IsEnabled="True"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,165,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.ResolutionCalibrationActualResolutionHelp}" />
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,238,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.ResolutionCalibrationNewResolutionHelp}" />
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,311,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.ResolutionCalibrationAcceptNewResolution}" />
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,486,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.ResolutionCalibrationGoToInitialPosizion}" />
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,559,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.ResolutionCalibrationCloseProcedure}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,225,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.ResolutionCalibrationActualResolutionHelp}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,295,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.ResolutionCalibrationNewResolutionHelp}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,365,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.ResolutionCalibrationAcceptNewResolution}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,526,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.ResolutionCalibrationGoToInitialPosizion}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,599,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.ResolutionCalibrationCloseProcedure}" />
 
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,125,0,0"
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,115,0,0"
                    Width="300"
                    Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
                    Text="{x:Static res:HelpDescriptions.VerticalResolutionCalibrationStep1}" />
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,345,0,0"
-            Width="300"
-            Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.VerticalResolutionCalibrationStep2}" />
+        
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,410,0,0"
+                   Width="300"
+                   Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.VerticalResolutionCalibrationStep2}" />
+        
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,115,0,0"
+                   Width="300"
+                   Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.VerticalResolutionCalibrationStep3}" />
+        
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,480,0,0"
+                   Width="300"
+                   Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.VerticalResolutionCalibrationStep4}" />
+        
+        <Controls:CustomInputFieldControlFocusable   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,225,0,0" 
+                                                     Highlighted="True"
+                                                     InputText="875,5"
+                                                     LabelText="{x:Static res:InstallationApp.ReadInitialPosition}"
+                                                     Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,565,0,0"
-            Width="300"
-            Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.VerticalResolutionCalibrationStep3}" />
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,125,0,0"
-            Width="300"
-            Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.VerticalResolutionCalibrationStep4}" />
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,440,0,0"
-            Width="300"
-            Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.VerticalResolutionCalibrationStep5}" />
+        <Controls:CustomInputFieldControlFocusable     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,520,0,0"
+                                                       Highlighted="True"
+                                                       InputText="5045,5"
+                                                       IsEnabled="True"
+                                                       LabelText="{x:Static res:InstallationApp.ReadFinalPosition}"
+                                                       Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"  />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,225,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.ResolutionCalibrationInitialReadValueHelp}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,520,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.ResolutionCalibrationFinalReadValueHelp}" />
 
     </Grid>
 </UserControl>
