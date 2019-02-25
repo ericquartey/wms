@@ -7,6 +7,7 @@ using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_FiniteStateMachines.Mission;
+using Ferretto.VW.MAS_FiniteStateMachines.Positioning;
 using Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_IODriver;
@@ -32,6 +33,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         private readonly INewRemoteIODriver remoteIODriver;
 
         private readonly StateMachineVerticalHoming verticalHoming;
+
+        private readonly StateMachineVerticalPositioning verticalPositioning;
 
         private IStateMachine currentStateMachine;
 
@@ -64,6 +67,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
             this.homing = new StateMachineHoming(this.driver, this.remoteIODriver, this.eventAggregator);
             this.verticalHoming = new StateMachineVerticalHoming(this.driver, this.eventAggregator);
+            this.verticalPositioning = new StateMachineVerticalPositioning(this.driver, this.eventAggregator);
         }
 
         #endregion
@@ -121,6 +125,29 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         this.homing.Stop();
                         break;
                     }
+
+                case CommandType.ExecuteVerticalPositioning:
+                    {
+                        if (null == this.verticalPositioning)
+                        {
+                            throw new ArgumentNullException();
+                        }
+
+                        this.verticalPositioning.Start();
+                        break;
+                    }
+
+                case CommandType.ExecuteStopVerticalPositioning:
+                    {
+                        if (null == this.verticalPositioning)
+                        {
+                            throw new ArgumentNullException();
+                        }
+
+                        this.verticalPositioning.Stop();
+                        break;
+                    }
+
                 default:
                     break;
             }
