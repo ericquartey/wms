@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private readonly StateMachineHoming homing;
 
-        private readonly ConcurrentQueue<Event_Message> messageQueue;
+        private readonly ConcurrentQueue<CommandMessage> messageQueue;
 
         private readonly ManualResetEventSlim messageReceived;
 
@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
             this.messageReceived = new ManualResetEventSlim(false);
 
-            this.messageQueue = new ConcurrentQueue<Event_Message>();
+            this.messageQueue = new ConcurrentQueue<CommandMessage>();
 
             var commandEvent = this.eventAggregator.GetEvent<WebAPI_CommandEvent>();
             commandEvent.Subscribe(this.DoAction);
@@ -196,7 +196,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             return Task.CompletedTask;
         }
 
-        private void ProcessAddMissionMessage(Event_Message message)
+        private void ProcessAddMissionMessage(CommandMessage message)
         {
             if (this.currentStateMachine != null)
             {
@@ -209,7 +209,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.currentStateMachine.Start();
         }
 
-        private void ProcessStopActionMessage(Event_Message receivedMessage)
+        private void ProcessStopActionMessage(CommandMessage receivedMessage)
         {
             if (this.currentStateMachine == null)
             {

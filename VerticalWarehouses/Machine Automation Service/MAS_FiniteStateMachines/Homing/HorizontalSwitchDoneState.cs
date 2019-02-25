@@ -52,7 +52,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.driver.ExecuteHorizontalHoming();
         }
 
-        public void NotifyMessage(Event_Message message)
+        public void NotifyMessage(CommandMessage message)
         {
             throw new System.NotImplementedException();
         }

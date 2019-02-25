@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
         {
             this.parentStateMachine = parentMachine;
 
-            var newMessage = new Event_Message(null,
+            var newMessage = new CommandMessage(null,
                 $"Mission State Ending",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
@@ -35,14 +35,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
             throw new System.NotImplementedException();
         }
 
-        public override void NotifyMessage(Event_Message message)
+        public override void NotifyMessage(CommandMessage message)
         {
             switch (message.Type)
             {
                 case MessageType.StopAction:
                     //TODO add state business logic to stop current action
 
-                    var newMessage = new Event_Message(null,
+                    var newMessage = new CommandMessage(null,
                         $"Mission Error",
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,

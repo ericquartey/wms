@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Methods
 
-        public void ChangeState( IState newState, Event_Message message = null )
+        public void ChangeState( IState newState, CommandMessage message = null )
         {
             this.CurrentState = newState;
             if(message != null)
@@ -34,12 +34,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             }
         }
 
-        public void NotifyMessage( Event_Message message )
+        public void NotifyMessage( CommandMessage message )
         {
             this.CurrentState?.NotifyMessage( message );
         }
 
-        public void PublishMessage( Event_Message message )
+        public void PublishMessage( CommandMessage message )
         {
             this.EventAggregator.GetEvent<MachineAutomationService_Event>().Publish( message );
         }

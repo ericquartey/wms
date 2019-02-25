@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS_MachineManager
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly ConcurrentQueue<Event_Message> messageQueue;
+        private readonly ConcurrentQueue<CommandMessage> messageQueue;
 
         private readonly ManualResetEventSlim messageReceived;
 
@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS_MachineManager
 
             this.messageReceived = new ManualResetEventSlim(false);
 
-            this.messageQueue = new ConcurrentQueue<Event_Message>();
+            this.messageQueue = new ConcurrentQueue<CommandMessage>();
 
             var missionSchedulerMessagEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
             missionSchedulerMessagEvent.Subscribe((message) =>
@@ -73,7 +73,7 @@ namespace Ferretto.VW.MAS_MachineManager
 
                 this.messageReceived.Reset();
 
-                Event_Message receivedMessage;
+                CommandMessage receivedMessage;
 
                 while (this.messageQueue.TryDequeue(out receivedMessage))
                 {
@@ -92,7 +92,7 @@ namespace Ferretto.VW.MAS_MachineManager
             return Task.CompletedTask;
         }
 
-        private void ProcessAddMissionMessage(Event_Message message)
+        private void ProcessAddMissionMessage(CommandMessage message)
         {
             //TODO apply Machine Manager Business Logic to the message
 

@@ -15,7 +15,7 @@ namespace Ferretto.VW.Common_Utils.Messages.Interfaces
         CellToCell
     }
 
-    public interface IMissionMessageData : IEventMessageData
+    public interface IMissionMessageData : IMessageData
     {
         #region Properties
 

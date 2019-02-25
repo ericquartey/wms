@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Methods
 
-        public void ChangeState(IState newState, Event_Message message = null)
+        public void ChangeState(IState newState, CommandMessage message = null)
         {
             this.state = newState;
         }
@@ -44,12 +44,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
             this.state?.MakeOperation();
         }
 
-        public void NotifyMessage(Event_Message message)
+        public void NotifyMessage(CommandMessage message)
         {
             throw new System.NotImplementedException();
         }
 
-        public void PublishMessage(Event_Message message)
+        public void PublishMessage(CommandMessage message)
         {
             throw new System.NotImplementedException();
         }

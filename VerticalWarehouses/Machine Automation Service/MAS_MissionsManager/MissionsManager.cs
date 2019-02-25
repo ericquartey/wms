@@ -10,6 +10,7 @@ using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Microsoft.Extensions.Hosting;
 using Prism.Events;
 using System.Linq;
+using Ferretto.VW.Common_Utils.Enumerations;
 
 namespace Ferretto.VW.MAS_MissionsManager
 {
@@ -19,7 +20,7 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly ConcurrentQueue<Event_Message> messageQueue;
+        private readonly ConcurrentQueue<CommandMessage> messageQueue;
 
         private readonly ManualResetEventSlim messageReceived;
 
@@ -45,7 +46,7 @@ namespace Ferretto.VW.MAS_MissionsManager
 
             this.missionReady = new ManualResetEventSlim( false );
 
-            this.messageQueue = new ConcurrentQueue<Event_Message>();
+            this.messageQueue = new ConcurrentQueue<CommandMessage>();
 
             this.missionsCollection = new Dictionary<IMissionMessageData, int>();
 
@@ -78,7 +79,7 @@ namespace Ferretto.VW.MAS_MissionsManager
             await Task.Run( () => this.MissionsManagerTaskFunction( stoppingToken ), stoppingToken );
         }
 
-        private void EnqueueMessageAndSetSemaphor( Event_Message message )
+        private void EnqueueMessageAndSetSemaphor( CommandMessage message )
         {
             this.messageQueue.Enqueue( message );
             this.messageReceived.Set();
@@ -156,7 +157,7 @@ namespace Ferretto.VW.MAS_MissionsManager
             return Task.CompletedTask;
         }
 
-        private void ProcessAddMissionMessage( Event_Message message )
+        private void ProcessAddMissionMessage( CommandMessage message )
         {
             try
             {
@@ -183,7 +184,7 @@ namespace Ferretto.VW.MAS_MissionsManager
             this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish( message );
         }
 
-        private void ProcessCreateMissionMessage( Event_Message message )
+        private void ProcessCreateMissionMessage( CommandMessage message )
         {
             //TODO apply Mission Manager Business Logic to the message
 
