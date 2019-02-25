@@ -42,6 +42,24 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnMissionPosition;
         }
 
+        //public bool ReturnMissionEnded()
+        //{
+        //    var cellTableUpdated = true;
+
+        //    var inMemoryFreeBlockSearchBookedCells = this.inMemoryDataContext.FreeBlocks.FirstOrDefault(s => s.BookedCellsNumber > 0);
+
+        //    int bookedCellsNumber = inMemoryFreeBlockSearchBookedCells.BookedCellsNumber;
+        //    int filledCell = inMemoryFreeBlockSearchBookedCells.StartCell;
+
+        //    for (int i = 0 ; i < bookedCellsNumber ; i++)
+        //    {
+        //        var inMemoryCellsSearchFilledCell = this.inMemoryDataContext.Cells.FirstOrDefault(s => s.CellId == filledCell);
+        //        inMemoryCellsSearchFilledCell.Status = Status.Occupied;
+        //    }
+
+        //    return cellTableUpdated;
+        //}
+
         public bool SetCellList(List<Cell> listCells)
         {
             var setCellList = false;

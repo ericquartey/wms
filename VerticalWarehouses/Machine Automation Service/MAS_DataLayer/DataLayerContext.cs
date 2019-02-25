@@ -21,8 +21,8 @@ namespace Ferretto.VW.MAS_DataLayer
         {
         }
 
-        public DataLayerContext( DbContextOptions<DataLayerContext> options )
-            : base( options )
+        public DataLayerContext(DbContextOptions<DataLayerContext> options)
+            : base(options)
         {
         }
 
@@ -44,37 +44,37 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Methods
 
-        protected override void OnConfiguring( DbContextOptionsBuilder optionsBuilder )
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if(optionsBuilder == null)
+            if (optionsBuilder == null)
             {
-                throw new ArgumentNullException( nameof( optionsBuilder ) );
+                throw new ArgumentNullException(nameof(optionsBuilder));
             }
 
-            if(optionsBuilder.IsConfigured)
+            if (optionsBuilder.IsConfigured)
             {
                 return;
             }
 
             var configurationBuilder = new ConfigurationBuilder()
-                .SetBasePath( Directory.GetCurrentDirectory() )
-                .AddJsonFile( DefaultApplicationSettingsFile, optional: false, reloadOnChange: false )
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile(DefaultApplicationSettingsFile, optional: false, reloadOnChange: false)
                 .Build();
 
-            var connectionString = configurationBuilder.GetConnectionString( ConnectionStringName );
+            var connectionString = configurationBuilder.GetConnectionString(ConnectionStringName);
 
-            if(string.IsNullOrWhiteSpace( connectionString ))
+            if (string.IsNullOrWhiteSpace(connectionString))
             {
-                throw new InvalidOperationException( $"Unable to locate the connection string '{ConnectionStringName}'." );
+                throw new InvalidOperationException($"Unable to locate the connection string '{ConnectionStringName}'.");
             }
 
-            optionsBuilder.UseSqlite( connectionString );
+            optionsBuilder.UseSqlite(connectionString);
         }
 
-        protected override void OnModelCreating( ModelBuilder modelBuilder )
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ConfigurationValue>().HasData( new ConfigurationValue { VarName = ConfigurationValueEnum.InverterAddress, VarType = DataTypeEnum.IPAddress, VarValue = "169.254.231.248" } );
-            modelBuilder.Entity<ConfigurationValue>().HasData( new ConfigurationValue { VarName = ConfigurationValueEnum.InverterPort, VarType = DataTypeEnum.integerType, VarValue = "17221" } );
+            modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = ConfigurationValueEnum.InverterAddress, VarType = DataTypeEnum.IPAddress, VarValue = "169.254.231.248" });
+            modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = ConfigurationValueEnum.InverterPort, VarType = DataTypeEnum.integerType, VarValue = "17221" });
         }
 
         #endregion
