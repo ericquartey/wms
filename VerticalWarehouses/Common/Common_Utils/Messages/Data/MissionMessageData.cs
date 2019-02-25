@@ -2,11 +2,11 @@
 
 namespace Ferretto.VW.Common_Utils.Messages.Data
 {
-    public class MissionData : IMissionMessageData
+    public class MissionMessageData : IMissionMessageData
     {
         #region Constructors
 
-        public MissionData(int bayID, int cellID, int drawerID, MissionType missionType, int priority)
+        public MissionMessageData( int bayID, int cellID, int drawerID, MissionType missionType, int priority )
         {
             this.BayID = bayID;
             this.CellID = cellID;

@@ -8,40 +8,40 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
     {
         #region Constructors
 
-        protected StateMachineBase(IEventAggregator eventAggregator)
+        protected StateMachineBase( IEventAggregator eventAggregator )
         {
-            this.eventAggregator = eventAggregator;
+            this.EventAggregator = eventAggregator;
         }
 
         #endregion
 
         #region Properties
 
-        protected IState currentState { get; set; }
+        protected IState CurrentState { get; set; }
 
-        protected IEventAggregator eventAggregator { get; }
+        protected IEventAggregator EventAggregator { get; }
 
         #endregion
 
         #region Methods
 
-        public void ChangeState(IState newState, Event_Message message = null)
+        public void ChangeState( IState newState, Event_Message message = null )
         {
-            this.currentState = newState;
-            if (message != null)
+            this.CurrentState = newState;
+            if(message != null)
             {
-                this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(message);
+                this.EventAggregator.GetEvent<MachineAutomationService_Event>().Publish( message );
             }
         }
 
-        public void NotifyMessage(Event_Message message)
+        public void NotifyMessage( Event_Message message )
         {
-            this.currentState.NotifyMessage(message);
+            this.CurrentState?.NotifyMessage( message );
         }
 
-        public void PublishMessage(Event_Message message)
+        public void PublishMessage( Event_Message message )
         {
-            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(message);
+            this.EventAggregator.GetEvent<MachineAutomationService_Event>().Publish( message );
         }
 
         public abstract void Start();
