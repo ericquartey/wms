@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -9,6 +10,7 @@ namespace Ferretto.Common.Controls
     public class WmsRulerControl : UserControl
     {
         #region Fields
+        private const string DEFAULTBACKGROUND = "CommonSecondaryMedium";
 
         public static readonly DependencyProperty DimensionHeightProperty =
                     DependencyProperty.Register(nameof(DimensionHeight), typeof(double), typeof(WmsRulerControl), new UIPropertyMetadata(0.0));
@@ -19,8 +21,11 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty ForegroundTextProperty =
             DependencyProperty.Register(nameof(ForegroundText), typeof(Brush), typeof(WmsRulerControl), new UIPropertyMetadata(Brushes.Black));
 
+        public static readonly DependencyProperty HideAllMarkersProperty = DependencyProperty.Register(
+                nameof(HideAllMarkers), typeof(bool), typeof(WmsRulerControl), new FrameworkPropertyMetadata(OnHideAllMarkersChanged));
+
         public static readonly DependencyProperty LittleMarkLengthProperty =
-                    DependencyProperty.Register(nameof(LittleMarkLength), typeof(double), typeof(WmsRulerControl), new UIPropertyMetadata(8.0));
+                            DependencyProperty.Register(nameof(LittleMarkLength), typeof(double), typeof(WmsRulerControl), new UIPropertyMetadata(8.0));
 
         public static readonly DependencyProperty MiddleMarkLengthProperty =
                     DependencyProperty.Register(nameof(MiddleMarkLength), typeof(double), typeof(WmsRulerControl), new UIPropertyMetadata(14.0));
@@ -100,6 +105,12 @@ namespace Ferretto.Common.Controls
         {
             get => (Brush)this.GetValue(ForegroundTextProperty);
             set => this.SetValue(ForegroundTextProperty, value);
+        }
+
+        public bool HideAllMarkers
+        {
+            get => (bool)this.GetValue(HideAllMarkersProperty);
+            set => this.SetValue(HideAllMarkersProperty, value);
         }
 
         public double LittleMarkLength
@@ -232,7 +243,22 @@ namespace Ferretto.Common.Controls
                 totalSteps != 0)
             {
                 this.InitializePen();
-                this.DrawMarkers(drawingContext, totalSteps);
+                if (this.HideAllMarkers)
+                {
+                    this.ShowOnlyBaseMarkers(drawingContext);
+                }
+                else
+                {
+                    this.DrawMarkers(drawingContext, totalSteps);
+                }
+            }
+        }
+
+        private static void OnHideAllMarkersChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is WmsRulerControl ruler)
+            {
+                ruler.Redraw();
             }
         }
 
@@ -283,8 +309,12 @@ namespace Ferretto.Common.Controls
             {
                 pointStart.Y = this.ActualHeight - sizeOfPen;
                 pointEnd.Y = pointStart.Y;
-                pointStart.X = 0;
+                pointStart.X = this.HideAllMarkers ? -1 : 0;
                 pointEnd.X = this.TrayWidth - sizeOfPen;
+                if (this.HideAllMarkers)
+                {
+                    pointEnd.X++;
+                }
             }
             else
             {
@@ -292,6 +322,10 @@ namespace Ferretto.Common.Controls
                 pointEnd.X = pointStart.X;
                 pointStart.Y = 0;
                 pointEnd.Y = this.TrayHeight - sizeOfPen;
+                if (this.HideAllMarkers)
+                {
+                    pointEnd.Y++;
+                }
             }
 
             this.DrawSnappedLinesBetweenPoints(drawingContext, pointStart, pointEnd);
@@ -587,6 +621,21 @@ namespace Ferretto.Common.Controls
                 StartLineCap = PenLineCap.Square,
                 EndLineCap = PenLineCap.Square
             };
+        }
+
+        private void ShowOnlyBaseMarkers(DrawingContext drawingContext)
+        {
+            if (this.Orientation == Orientation.Horizontal)
+            {
+                this.Height = 1;
+            }
+            else
+            {
+                this.Width = 1;
+            }
+
+            this.pen.Brush = Application.Current.Resources[DEFAULTBACKGROUND] as Brush;
+            this.DrawBase(drawingContext);
         }
 
         #endregion

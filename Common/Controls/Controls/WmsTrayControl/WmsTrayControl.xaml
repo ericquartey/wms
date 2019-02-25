@@ -7,15 +7,15 @@
              mc:Ignorable="d"
              x:Name="WmsTray">
 
-    <Grid Name="RootTrayGrid" MinWidth="{Binding MinTrayWidth, ElementName=CanvasListBoxControl}">
+    <Grid Name="RootTrayGrid" >
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" MinHeight="0.5" />
+            <RowDefinition Height="Auto" MinHeight="1" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MinWidth="0.5" />
+            <ColumnDefinition Width="Auto" MinWidth="1" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*"   />
         </Grid.ColumnDefinitions>
@@ -33,7 +33,7 @@
                FontWeight="Bold"
                FontFamily="{DynamicResource TrayFont}"
                Visibility="{Binding ShowRuler, Converter={StaticResource BTVC}}"/>
-
+    
         <ctrls:WmsRulerControl x:Name="HorizontalRulerControl"
                                Grid.Column="1"
                                Foreground="{Binding RulerForeground}"
@@ -52,13 +52,11 @@
                                TrayHeight="{Binding TrayHeight, ElementName=CanvasListBoxControl}"                               
                                FontFamily="{DynamicResource TrayFont}"                             
                                HorizontalAlignment="Left"                               
-                               VerticalAlignment="Top"
-                               BorderBrush="Black"        
+                               VerticalAlignment="Top"                               
                                Orientation="Horizontal"
                                OriginHorizontal="{Binding OriginHorizontal}"
                                OriginVertical="{Binding OriginVertical}"
-                               Visibility="{Binding ShowRuler, Converter={StaticResource BTVC}}" />
-               
+                               HideAllMarkers="{Binding ShowRuler, Converter={StaticResource BNC}}"/>
         <ctrls:WmsRulerControl x:Name="VerticalRulerControl"                                                                                       
                                Grid.Row="1"                               
                                Foreground="{Binding RulerForeground}"
@@ -81,9 +79,7 @@
                                HorizontalAlignment="Left"
                                OriginHorizontal="{Binding OriginHorizontal}"
                                OriginVertical="{Binding OriginVertical}"
-                               Visibility="{Binding ShowRuler, Converter={StaticResource BTVC}}"/>
-        
-
+                               HideAllMarkers="{Binding ShowRuler, Converter={StaticResource BNC}}"/>
         <ctrls:WmsCanvasListBoxControl x:Name="CanvasListBoxControl"
                                        Grid.Row="1"
                                        Grid.Column="1"                                                                                 

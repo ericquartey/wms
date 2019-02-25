@@ -14,7 +14,7 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         public static readonly DependencyProperty BackgroundGrodLinesProperty =
-                             DependencyProperty.Register(nameof(BackgroundGrodLines), typeof(DrawingBrush), typeof(WmsCanvasListBoxControl));
+                         DependencyProperty.Register(nameof(BackgroundGrodLines), typeof(DrawingBrush), typeof(WmsCanvasListBoxControl));
 
         public static readonly DependencyProperty BackgroundStepEndProperty =
                              DependencyProperty.Register(nameof(BackgroundStepEnd), typeof(double), typeof(WmsCanvasListBoxControl));
@@ -40,8 +40,11 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(nameof(IsReadOnly),
             typeof(bool), typeof(WmsCanvasListBoxControl), new FrameworkPropertyMetadata(OnIsReadOnlyChanged));
 
+        public static readonly DependencyProperty MinTrayHeightProperty =
+             DependencyProperty.Register(nameof(MinTrayHeight), typeof(double), typeof(WmsCanvasListBoxControl));
+
         public static readonly DependencyProperty MinTrayWidthProperty =
-                     DependencyProperty.Register(nameof(MinTrayWidth), typeof(double), typeof(WmsCanvasListBoxControl));
+                             DependencyProperty.Register(nameof(MinTrayWidth), typeof(double), typeof(WmsCanvasListBoxControl));
 
         public static readonly DependencyProperty OriginHorizontalProperty =
                        DependencyProperty.Register(nameof(OriginHorizontal), typeof(OriginHorizontal), typeof(WmsCanvasListBoxControl), new FrameworkPropertyMetadata(OriginHorizontal.Left));
@@ -68,7 +71,7 @@ namespace Ferretto.Common.Controls
             typeof(WmsCanvasListBoxControl), new FrameworkPropertyMetadata(OnSelectedCompartmentChanged));
 
         public static readonly DependencyProperty ShowBackgroundProperty = DependencyProperty.Register(nameof(ShowBackground),
-            typeof(bool), typeof(WmsCanvasListBoxControl), new FrameworkPropertyMetadata(false, OnShowBackgroundChanged));
+            typeof(bool), typeof(WmsCanvasListBoxControl), new FrameworkPropertyMetadata(true, OnShowBackgroundChanged));
 
         public static readonly DependencyProperty ShowRulerProperty = DependencyProperty.Register(nameof(ShowRuler), typeof(bool), typeof(WmsCanvasListBoxControl),
                                                                                                             new UIPropertyMetadata(true, OnShowRulerPropertyChanged));
@@ -101,8 +104,7 @@ namespace Ferretto.Common.Controls
 
         public WmsCanvasListBoxControl()
         {
-            this.UseLayoutRounding = false;
-            this.SnapsToDevicePixels = false;
+            this.SnapsToDevicePixels = true;
             RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
         }
 
@@ -162,6 +164,12 @@ namespace Ferretto.Common.Controls
         {
             get => (bool)this.GetValue(IsReadOnlyProperty);
             set => this.SetValue(IsReadOnlyProperty, value);
+        }
+
+        public double MinTrayHeight
+        {
+            get => (double)this.GetValue(MinTrayHeightProperty);
+            set => this.SetValue(MinTrayHeightProperty, value);
         }
 
         public double MinTrayWidth
@@ -369,7 +377,8 @@ namespace Ferretto.Common.Controls
 
             this.Width = widthNewCalculated;
             this.Height = heightNewCalculated;
-            this.MinTrayWidth = widthNewCalculated + this.RulerSize + 1;
+            this.MinTrayWidth = widthNewCalculated + (this.ShowRuler ? this.RulerSize + 1 : 1);
+            this.MinTrayHeight = heightNewCalculated + (this.ShowRuler ? this.RulerSize + 1 : 1);
 
             this.TrayHeight = heightNewCalculated;
             this.TrayWidth = widthNewCalculated;
@@ -443,50 +452,57 @@ namespace Ferretto.Common.Controls
             };
 
             var points = this.GetBordersPoints();
-            pen.Brush = Brushes.Black;
+            pen.Brush = Application.Current.Resources[DEFAULTBACKGROUND] as Brush;
             DrawSnappedLinesBetweenPoints(drawingContext, pen, penSize, points.ToArray());
 
-            //if (this.ShowBackground == false)
-            //{
-            //    return;
-            //}
+            if (this.ShowBackground == false)
+            {
+                return;
+            }
 
-            //points.Clear();
-            //var stepXPixel = ConvertMillimetersToPixel(this.Step, this.TrayWidth, this.DimensionWidth);
-            //var stepYPixel = ConvertMillimetersToPixel(this.Step, this.TrayHeight, this.DimensionHeight);
+            points.Clear();
+            var stepXPixel = ConvertMillimetersToPixel(this.Step, this.TrayWidth, this.DimensionWidth);
+            var stepYPixel = ConvertMillimetersToPixel(this.Step, this.TrayHeight, this.DimensionHeight);
 
-            //var posY = this.OriginVertical == OriginVertical.Top ? stepYPixel : this.ActualHeight - stepYPixel - OFFSET;
-            //while (posY > 0 && posY < this.TrayHeight)
-            //{
-            //    points.Add(new Point(0, posY));
-            //    points.Add(new Point(this.TrayWidth, posY));
-            //    if (this.OriginVertical == OriginVertical.Top)
-            //    {
-            //        posY += stepYPixel;
-            //    }
-            //    else
-            //    {
-            //        posY -= stepYPixel;
-            //    }
-            //}
+            var posY = this.OriginVertical == OriginVertical.Top ? stepYPixel : this.ActualHeight - stepYPixel - OFFSET;
+            while (posY > 0 && posY < this.TrayHeight)
+            {
+                points.Add(new Point(0, posY));
+                points.Add(new Point(this.TrayWidth - penSize, posY));
+                if (this.OriginVertical == OriginVertical.Top)
+                {
+                    posY += stepYPixel;
+                }
+                else
+                {
+                    posY -= stepYPixel;
+                }
+            }
 
-            //var posX = this.OriginHorizontal == OriginHorizontal.Left ? stepXPixel : this.ActualWidth - stepXPixel - OFFSET;
-            //while (posX > 0 && posX < this.TrayWidth)
-            //{
-            //    points.Add(new Point(posX, 0));
-            //    points.Add(new Point(posX, this.TrayHeight));
-            //    if (this.OriginHorizontal == OriginHorizontal.Left)
-            //    {
-            //        posX += stepXPixel;
-            //    }
-            //    else
-            //    {
-            //        posX -= stepXPixel;
-            //    }
-            //}
+            var posX = this.OriginHorizontal == OriginHorizontal.Left ? stepXPixel : this.ActualWidth - stepXPixel - OFFSET;
+            while (posX > 0 && posX < this.TrayWidth)
+            {
+                points.Add(new Point(posX, 0));
+                points.Add(new Point(posX, this.TrayHeight - penSize));
+                if (this.OriginHorizontal == OriginHorizontal.Left)
+                {
+                    posX += stepXPixel;
+                }
+                else
+                {
+                    posX -= stepXPixel;
+                }
+            }
 
-            //pen.Brush = this.GridLinesColor;
-            //DrawSnappedLinesBetweenPoints(drawingContext, pen, penSize, points.ToArray());
+            var penLines = new Pen
+            {
+                DashCap = PenLineCap.Square,
+                Thickness = penSize,
+                StartLineCap = PenLineCap.Square,
+                EndLineCap = PenLineCap.Square
+            };
+            penLines.Brush = this.GridLinesColor;
+            DrawSnappedLinesBetweenPoints(drawingContext, penLines, penSize, points.ToArray());
         }
 
         protected override void OnSelectionChanged(SelectionChangedEventArgs e)
@@ -575,7 +591,7 @@ namespace Ferretto.Common.Controls
         {
             if (d is WmsCanvasListBoxControl wmsCanvasListBox)
             {
-                wmsCanvasListBox.InvalidateVisual();
+                wmsCanvasListBox.SetBackground();
             }
         }
 
@@ -598,14 +614,6 @@ namespace Ferretto.Common.Controls
         private List<Point> GetBordersPoints()
         {
             var points = new List<Point>();
-            if (this.ShowRuler == false)
-            {
-                points.Add(new Point(BORDEROFFSET, BORDEROFFSET));
-                points.Add(new Point(this.TrayWidth, BORDEROFFSET));
-
-                points.Add(new Point(BORDEROFFSET, BORDEROFFSET));
-                points.Add(new Point(BORDEROFFSET, this.ActualHeight));
-            }
 
             points.Add(new Point(this.TrayWidth, 0));
             points.Add(new Point(this.TrayWidth, this.ActualHeight));
