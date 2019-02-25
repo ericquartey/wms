@@ -17,5 +17,9 @@
         machineHeight,
 
         resolution,
+
+        InverterAddress,
+
+        InverterPort
     }
 }
