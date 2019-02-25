@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (inMemoryFreeBlockFirstByPriority == null)
             {
-                throw new DataLayerException(DataLayerExceptionEnum.NO_FREE_BLOCK_EXCEPTION);
+                throw new InMemoryDataLayerException(DataLayerExceptionEnum.NO_FREE_BLOCK_BOOKING_EXCEPTION);
             }
 
             // INFO Change the BookedCells number in the FreeBlock table
@@ -42,23 +42,33 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnMissionPosition;
         }
 
-        //public bool ReturnMissionEnded()
-        //{
-        //    var cellTableUpdated = true;
+        public void ReturnMissionEnded()
+        {
+            var inMemoryFreeBlockSearchBookedCells = this.inMemoryDataContext.FreeBlocks.FirstOrDefault(s => s.BookedCellsNumber > 0);
 
-        //    var inMemoryFreeBlockSearchBookedCells = this.inMemoryDataContext.FreeBlocks.FirstOrDefault(s => s.BookedCellsNumber > 0);
+            if (inMemoryFreeBlockSearchBookedCells == null)
+            {
+                throw new InMemoryDataLayerException(DataLayerExceptionEnum.NO_FREE_BLOCK_BOOKED_EXCEPTION);
+            }
 
-        //    int bookedCellsNumber = inMemoryFreeBlockSearchBookedCells.BookedCellsNumber;
-        //    int filledCell = inMemoryFreeBlockSearchBookedCells.StartCell;
+            var filledStartCell = inMemoryFreeBlockSearchBookedCells.StartCell;
+            var filledLastCell = filledStartCell + inMemoryFreeBlockSearchBookedCells.BookedCellsNumber * 2;
 
-        //    for (int i = 0 ; i < bookedCellsNumber ; i++)
-        //    {
-        //        var inMemoryCellsSearchFilledCell = this.inMemoryDataContext.Cells.FirstOrDefault(s => s.CellId == filledCell);
-        //        inMemoryCellsSearchFilledCell.Status = Status.Occupied;
-        //    }
+            for (var currentCell = filledStartCell; currentCell <= filledLastCell; currentCell += 2)
+            {
+                var inMemoryCellsSearchFilledCell = this.inMemoryDataContext.Cells.FirstOrDefault(s => s.CellId == currentCell);
 
-        //    return cellTableUpdated;
-        //}
+                if (inMemoryCellsSearchFilledCell == null)
+                {
+                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION);
+                }
+
+                inMemoryCellsSearchFilledCell.Status = Status.Occupied;
+            }
+
+            // INFO Run the Free Block table calculation after the update
+            this.CreateFreeBlockTable();
+        }
 
         public bool SetCellList(List<Cell> listCells)
         {
@@ -171,12 +181,12 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (!cellTablePopulated)
             {
-                throw new DataLayerException(DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION);
+                throw new InMemoryDataLayerException(DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION);
             }
 
             if (!this.inMemoryDataContext.FreeBlocks.Any())
             {
-                throw new DataLayerException(DataLayerExceptionEnum.NO_FREE_BLOCK_EXCEPTION);
+                throw new InMemoryDataLayerException(DataLayerExceptionEnum.NO_FREE_BLOCK_BOOKING_EXCEPTION);
             }
         }
 
