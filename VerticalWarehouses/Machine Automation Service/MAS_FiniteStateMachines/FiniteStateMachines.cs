@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                },
                 ThreadOption.PublisherThread,
                 false,
-                message => message.Source == MessageActor.MachineManager);
+                message => message.Destination == MessageActor.FiniteStateMachines);
 
             this.homing = new StateMachineHoming(this.driver, this.remoteIODriver, this.eventAggregator);
             this.verticalHoming = new StateMachineVerticalHoming(this.driver, this.eventAggregator);

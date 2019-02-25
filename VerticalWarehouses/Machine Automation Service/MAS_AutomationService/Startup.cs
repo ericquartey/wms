@@ -5,8 +5,7 @@ using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_FiniteStateMachines;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_IODriver;
-using Ferretto.VW.MAS_MachineManager;
-using Ferretto.VW.MAS_MissionScheduler;
+using Ferretto.VW.MAS_MissionsManager;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -76,8 +75,7 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddDbContext<DataLayerContext>(options => options.UseInMemoryDatabase("InMemoryWorkingDB"), ServiceLifetime.Singleton);
 
             services.AddHostedService<AutomationService>();
-            services.AddHostedService<MissionsScheduler>();
-            services.AddHostedService<MachineManager>();
+            services.AddHostedService<MissionsManager>();
             services.AddHostedService<FiniteStateMachines>();
 
             this.RegisterInverterDriver(services);

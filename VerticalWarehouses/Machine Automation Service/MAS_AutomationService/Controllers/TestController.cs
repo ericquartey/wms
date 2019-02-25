@@ -1,9 +1,10 @@
-﻿using Ferretto.VW.Common_Utils.EventParameters;
+﻿using Microsoft.AspNetCore.Mvc;
+using Prism.Events;
 using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
-using Microsoft.AspNetCore.Mvc;
-using Prism.Events;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
@@ -31,8 +32,7 @@ namespace Ferretto.VW.MAS_AutomationService
         [HttpGet("AddMissionTest")]
         public void AddMission()
         {
-            var missionData = new MissionData();
-
+            var missionData = new MissionData(1, 1, 1, MissionType.CellToBay, 1);
             var missionMessage = new Event_Message(missionData,
                 "Test Mission",
                 MessageActor.AutomationService,
@@ -41,6 +41,21 @@ namespace Ferretto.VW.MAS_AutomationService
                 MessageType.AddMission,
                 MessageVerbosity.Debug);
             this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(missionMessage);
+        }
+
+        [HttpPost("CreateMissionTest")]
+        public void CreateMission([FromBody] int bayID, int drawerID)
+        {
+            var missionData = new MissionData(1, 1, 1, MissionType.CellToBay, 1);
+
+            var message = new Event_Message(missionData,
+                "Create Mission",
+                MessageActor.MissionsManager,
+                MessageActor.WebAPI,
+                MessageStatus.Start,
+                MessageType.CreateMission,
+                MessageVerbosity.Debug);
+            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(message);
         }
 
         [HttpGet("HomingTest")]
@@ -55,16 +70,18 @@ namespace Ferretto.VW.MAS_AutomationService
             this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish(new Command_EventParameter(CommandType.ExecuteStopHoming));
         }
 
-        [HttpGet("PositioningStop")]
-        public void ExecuteStopPositioning()
+        [HttpGet("MissionExecutedTest")]
+        public void MissionExecuted()
         {
-            this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish(new Command_EventParameter(CommandType.ExecuteStopVerticalPositioning));
-        }
-
-        [HttpGet("PositioningTest")]
-        public void PositioningTest()
-        {
-            this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish(new Command_EventParameter(CommandType.ExecuteVerticalPositioning));
+            var message = new Event_Message(
+                null,
+                "Mission Executed",
+                MessageActor.MissionsManager,
+                MessageActor.FiniteStateMachines,
+                MessageStatus.End,
+                MessageType.EndAction,
+                MessageVerbosity.Debug);
+            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(message);
         }
 
         [HttpGet("StopFSM")]
