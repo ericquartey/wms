@@ -32,7 +32,7 @@ namespace MAS_InverterDriverUnitTests
         [TestInitialize]
         public void ConfigureMessages()
         {
-            this.readMessage = new InverterMessage( 0x01, 0x02, 3 );
+            this.readMessage = new InverterMessage( 0x01, 3, 3 );
             this.writeByteMessage = new InverterMessage( 0x01, 3, (byte)16 );
             this.writeShortMessage = new InverterMessage( 0x01, 3, (short)16 );
             this.writeUnsignedShortMessage = new InverterMessage( 0x01, 3, (ushort)16 );
@@ -51,7 +51,7 @@ namespace MAS_InverterDriverUnitTests
             Assert.AreEqual( 0x80, writeMessage[0] );
             Assert.AreEqual( 0x05, writeMessage[1] );
             Assert.AreEqual( 0x01, writeMessage[2] );
-            Assert.AreEqual( 0x02, writeMessage[3] );
+            Assert.AreEqual( 0x05, writeMessage[3] );
             Assert.AreEqual( 0x03, writeMessage[4] );
             Assert.AreEqual( 0x00, writeMessage[5] );
             Assert.AreEqual( 0x10, writeMessage[6] );
@@ -66,7 +66,7 @@ namespace MAS_InverterDriverUnitTests
             Assert.AreEqual( 0x80, writeMessage[0] );
             Assert.AreEqual( 0x08, writeMessage[1] );
             Assert.AreEqual( 0x01, writeMessage[2] );
-            Assert.AreEqual( 0x02, writeMessage[3] );
+            Assert.AreEqual( 0x05, writeMessage[3] );
             Assert.AreEqual( 0x03, writeMessage[4] );
             Assert.AreEqual( 0x00, writeMessage[5] );
             Assert.AreEqual( 0x10, writeMessage[6] );
@@ -85,7 +85,7 @@ namespace MAS_InverterDriverUnitTests
             Assert.AreEqual( 0x00, readMessage[0] );
             Assert.AreEqual( 0x04, readMessage[1] );
             Assert.AreEqual( 0x01, readMessage[2] );
-            Assert.AreEqual( 0x02, readMessage[3] );
+            Assert.AreEqual( 0x05, readMessage[3] );
             Assert.AreEqual( 0x03, readMessage[4] );
             Assert.AreEqual( 0x00, readMessage[5] );
         }
