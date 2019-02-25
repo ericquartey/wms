@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Microsoft.Practices.Unity;
+using Prism.Events;
 using Prism.Modularity;
 
 namespace Ferretto.VW.InstallationApp
@@ -48,7 +49,7 @@ namespace Ferretto.VW.InstallationApp
             var verticalAxisCalibrationVMInstance = new VerticalAxisCalibrationViewModel();
             var verticalOffsetCalibrationVMInstance = new VerticalOffsetCalibrationViewModel();
             var weightControlVMInstance = new WeightControlViewModel();
-            var mainWindowVMInstance = new MainWindowViewModel();
+            var mainWindowVMInstance = new MainWindowViewModel(container.Resolve<IEventAggregator>());
             var helpMainWindowInstance = new HelpMainWindow();
 
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);

@@ -28,7 +28,7 @@ namespace Ferretto.VW.InstallationApp
             MainWindowViewModel.ClickedOnMachineOnMarchEventHandler += this.SetMachineOn;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Events
 
@@ -36,7 +36,7 @@ namespace Ferretto.VW.InstallationApp
 
         public static event FinishedMachineOnMarchChangeStateEvent FinishedMachineOnMarchChangeStateEventHandler;
 
-        #endregion Events
+        #endregion
 
         #region Methods
 
@@ -48,6 +48,10 @@ namespace Ferretto.VW.InstallationApp
         {
             this.UnsubscribeEvents();
             base.OnClosed(e);
+        }
+
+        private void Button_Click(Object sender, RoutedEventArgs e)
+        {
         }
 
         private void HideAndUnsubscribe()
@@ -92,11 +96,6 @@ namespace Ferretto.VW.InstallationApp
             MainWindow.FinishedMachineOnMarchChangeStateEventHandler = null;
         }
 
-        #endregion Methods
-
-        private void Button_Click(Object sender, RoutedEventArgs e)
-        {
-
-        }
+        #endregion
     }
 }

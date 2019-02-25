@@ -13,7 +13,7 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        public IUnityContainer Container;
+        private IUnityContainer container;
 
         private InstallationHubClient installationHubClient;
 
@@ -89,7 +89,7 @@ namespace Ferretto.VW.InstallationApp
 
         public void InitializeViewModel(IUnityContainer container)
         {
-            this.Container = container;
+            this.container = container;
         }
 
         public async void SubscribeMethodToEvent()
@@ -167,10 +167,6 @@ namespace Ferretto.VW.InstallationApp
             {
                 this.NoteString = "Couldn't get response from this http get request.";
                 throw;
-            }
-            catch
-            {
-                this.NoteString = "Couldn't get response from this http get request.";
             }
         }
 

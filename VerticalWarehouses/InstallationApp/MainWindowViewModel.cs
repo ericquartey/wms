@@ -7,6 +7,7 @@ using Ferretto.VW.Navigation;
 using Ferretto.VW.Utils.Source;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
@@ -27,6 +28,8 @@ namespace Ferretto.VW.InstallationApp
 
         private BindableBase contentRegionCurrentViewModel;
 
+        private IEventAggregator eventAggregator;
+
         private BindableBase exitViewButtonRegionCurrentViewModel;
 
         private string internalMessages;
@@ -46,6 +49,15 @@ namespace Ferretto.VW.InstallationApp
         private BindableBase navigationRegionCurrentViewModel;
 
         private ICommand openClosePopupCommand;
+
+        #endregion
+
+        #region Constructors
+
+        public MainWindowViewModel(IEventAggregator eventAggregator)
+        {
+            this.eventAggregator = eventAggregator;
+        }
 
         #endregion
 

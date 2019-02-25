@@ -1,15 +1,11 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
-using Ferretto.VW.ActionBlocks;
 using Ferretto.VW.InstallationApp;
-using Ferretto.VW.InverterDriver;
-using Ferretto.VW.MathLib;
-using Ferretto.VW.RemoteIODriver;
 using Ferretto.VW.Utils.Source;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.VWApp
@@ -23,6 +19,8 @@ namespace Ferretto.VW.VWApp
         public DataManager Data;
 
         private ICommand changeSkin;
+
+        private IEventAggregator eventAggregator;
 
         private bool installationCompleted;
 
@@ -39,6 +37,15 @@ namespace Ferretto.VW.VWApp
         private ICommand switchOffCommand;
 
         private string userLogin = "Installer";
+
+        #endregion
+
+        #region Constructors
+
+        public MainWindowViewModel(IEventAggregator eventAggregator)
+        {
+            this.eventAggregator = eventAggregator;
+        }
 
         #endregion
 
