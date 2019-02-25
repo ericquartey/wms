@@ -59,10 +59,9 @@ namespace Ferretto.VW.MAS_AutomationService
         }
 
         [HttpGet( "HomingTest" )]
-        public string ExecuteHoming()
+        public void ExecuteHoming()
         {
             this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish( new Command_EventParameter( CommandType.ExecuteHoming ) );
-            return "Execute Homing Done!";
         }
 
         [HttpGet( "HomingStop" )]

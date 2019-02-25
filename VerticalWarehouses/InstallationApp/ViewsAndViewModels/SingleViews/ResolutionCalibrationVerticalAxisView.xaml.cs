@@ -15,5 +15,10 @@ namespace Ferretto.VW.InstallationApp
         }
 
         #endregion Constructors
+
+        private void CustomInputFieldControlFocusable_Loaded(System.Object sender, System.Windows.RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -51,7 +51,7 @@ namespace Ferretto.VW.InverterDriver
 
         #region Constructors
 
-        public HostedInverterDriver( IEventAggregator eventAggregator, ISocketTransport socketTransport, IDataLayer dataLayer )
+        public HostedInverterDriver(IEventAggregator eventAggregator, ISocketTransport socketTransport, IDataLayer dataLayer)
         {
             this.socketTransport = socketTransport;
             this.eventAggregator = eventAggregator;
@@ -63,13 +63,13 @@ namespace Ferretto.VW.InverterDriver
             this.messageQueue = new BlockingConcurrentQueue<Event_Message>();
 
             var webApiMessagEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
-            webApiMessagEvent.Subscribe( ( message ) =>
-                {
-                    this.messageQueue.Enqueue( message );
-                },
+            webApiMessagEvent.Subscribe((message) =>
+               {
+                   this.messageQueue.Enqueue(message);
+               },
                 ThreadOption.PublisherThread,
                 false,
-                message => message.Source == MessageActor.FiniteStateMachines );
+                message => message.Source == MessageActor.FiniteStateMachines);
         }
 
         #endregion
@@ -84,41 +84,41 @@ namespace Ferretto.VW.InverterDriver
             this.controlWordCheckTimer?.Dispose();
         }
 
-        public override Task StopAsync( CancellationToken stoppingToken )
+        public override Task StopAsync(CancellationToken stoppingToken)
         {
-            var returnValue = base.StopAsync( stoppingToken );
+            var returnValue = base.StopAsync(stoppingToken);
 
             return returnValue;
         }
 
-        protected override async Task ExecuteAsync( CancellationToken stoppingToken )
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            await Task.Run( () => this.HostedInverterDriverTaskFunction( stoppingToken ), stoppingToken );
+            await Task.Run(() => this.HostedInverterDriverTaskFunction(stoppingToken), stoppingToken);
         }
 
-        private void ControlWordCheckTimeout( Object state )
+        private void ControlWordCheckTimeout(Object state)
         {
-            this.controlWordCheckTimer.Change( -1, Timeout.Infinite );
+            this.controlWordCheckTimer.Change(-1, Timeout.Infinite);
             //TODO notify control word change error
         }
 
-        private Task HostedInverterDriverTaskFunction( CancellationToken stoppingToken )
+        private Task HostedInverterDriverTaskFunction(CancellationToken stoppingToken)
         {
             //=== Create control word check timer but not start it
             this.controlWordCheckTimer?.Dispose();
-            this.controlWordCheckTimer = new Timer( ControlWordCheckTimeout, null, -1, Timeout.Infinite );
+            this.controlWordCheckTimer = new Timer(this.ControlWordCheckTimeout, null, -1, Timeout.Infinite);
 
             //=== create the heartbeat timer
             this.heartBeatTimer?.Dispose();
-            this.heartBeatTimer = new Timer( this.SendHeartBeat, null, TimeSpan.Zero, TimeSpan.FromMilliseconds( HEARTBEAT_TIMEOUT ) );
+            this.heartBeatTimer = new Timer(this.SendHeartBeat, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(HEARTBEAT_TIMEOUT));
 
             //=== create and start the sending Task
             this.inverterSendTask?.Dispose();
-            this.inverterSendTask = Task.Run( () => this.SendInverterCommand( stoppingToken ), stoppingToken );
+            this.inverterSendTask = Task.Run(() => this.SendInverterCommand(stoppingToken), stoppingToken);
 
             //=== create and start the receiving Task
             this.inverterReceiveTask?.Dispose();
-            this.inverterReceiveTask = Task.Run( () => this.ReceiveInverterData( stoppingToken ), stoppingToken );
+            this.inverterReceiveTask = Task.Run(() => this.ReceiveInverterData(stoppingToken), stoppingToken);
 
             //=== This will be the command receiving Task from state machine
             do
@@ -126,19 +126,19 @@ namespace Ferretto.VW.InverterDriver
                 Event_Message receivedMessage;
                 try
                 {
-                    this.messageQueue.TryDequeue( Timeout.Infinite, stoppingToken, out receivedMessage );
+                    this.messageQueue.TryDequeue(Timeout.Infinite, stoppingToken, out receivedMessage);
                 }
-                catch(OperationCanceledException ex)
+                catch (OperationCanceledException ex)
                 {
                     return Task.CompletedTask;
                 }
 
-                switch(receivedMessage.Type)
+                switch (receivedMessage.Type)
                 {
                     case MessageType.Calibrate:
-                        if(receivedMessage.Data is ICalibrateMessageData data)
+                        if (receivedMessage.Data is ICalibrateMessageData data)
                         {
-                            this.currentStateMachine = new CalibrateStateMachine( data.AxisToCalibrate, this.inverterCommandQueue, this.heartbeatQueue );
+                            this.currentStateMachine = new CalibrateStateMachine(data.AxisToCalibrate, this.inverterCommandQueue, this.heartbeatQueue);
                             this.currentStateMachine.Start();
                         }
                         else
@@ -147,52 +147,52 @@ namespace Ferretto.VW.InverterDriver
                         }
                         break;
                 }
-            } while(stoppingToken.IsCancellationRequested);
+            } while (stoppingToken.IsCancellationRequested);
 
             return Task.CompletedTask;
         }
 
-        private async Task ProcessCommand( CancellationToken cancellationToken )
+        private async Task ProcessCommand(CancellationToken cancellationToken)
         {
-            while(this.inverterCommandQueue.TryDequeue( Timeout.Infinite, cancellationToken, out var message ))
+            while (this.inverterCommandQueue.TryDequeue(Timeout.Infinite, cancellationToken, out var message))
             {
-                if(message.ParameterId == InverterParameterId.ControlWordParam)
+                if (message.ParameterId == InverterParameterId.ControlWordParam)
                 {
-                    this.lastControlMessage = new InverterMessage( message );
+                    this.lastControlMessage = new InverterMessage(message);
                 }
 
-                await this.socketTransport.WriteAsync( message.GetWriteMessage(), cancellationToken );
+                await this.socketTransport.WriteAsync(message.GetWriteMessage(), cancellationToken);
             }
         }
 
-        private async Task ProcessHeartbeat( CancellationToken cancellationToken )
+        private async Task ProcessHeartbeat(CancellationToken cancellationToken)
         {
-            while(this.heartbeatQueue.TryDequeue( Timeout.Infinite, cancellationToken, out var message ))
+            while (this.heartbeatQueue.TryDequeue(Timeout.Infinite, cancellationToken, out var message))
             {
-                await this.socketTransport.WriteAsync( message.GetWriteMessage(), cancellationToken );
+                await this.socketTransport.WriteAsync(message.GetWriteMessage(), cancellationToken);
             }
         }
 
-        private async void ReceiveInverterData( CancellationToken stoppingToken )
+        private async void ReceiveInverterData(CancellationToken stoppingToken)
         {
             var inverterAddress = IPAddress.Any;//this.dataLayer.GetIPAddressConfigurationValue( ConfigurationValueEnum.InverterAddress );
-            var inverterPort = this.dataLayer.GetIntegerConfigurationValue( ConfigurationValueEnum.InverterPort );
+            var inverterPort = this.dataLayer.GetIntegerConfigurationValue(ConfigurationValueEnum.InverterPort);
 
-            this.socketTransport.Configure( inverterAddress, inverterPort );
+            this.socketTransport.Configure(inverterAddress, inverterPort);
 
             bool connectionCompleted;
             try
             {
                 connectionCompleted = await this.socketTransport.ConnectAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                throw new InverterDriverException( $"Exception {ex.Message} while Connecting Receiver Socket Transport", ex );
+                throw new InverterDriverException($"Exception {ex.Message} while Connecting Receiver Socket Transport", ex);
             }
 
-            if(!connectionCompleted)
+            if (!connectionCompleted)
             {
-                throw new InverterDriverException( "Socket Transport failed to connect" );
+                throw new InverterDriverException("Socket Transport failed to connect");
             }
 
             do
@@ -200,80 +200,80 @@ namespace Ferretto.VW.InverterDriver
                 byte[] inverterData;
                 try
                 {
-                    inverterData = await this.socketTransport.ReadAsync( stoppingToken );
+                    inverterData = await this.socketTransport.ReadAsync(stoppingToken);
                 }
-                catch(OperationCanceledException)
+                catch (OperationCanceledException)
                 {
                     return;
                 }
 
-                var currentMessage = new InverterMessage( inverterData );
+                var currentMessage = new InverterMessage(inverterData);
 
-                if(currentMessage.IsError)
+                if (currentMessage.IsError)
                 {
                     //TODO notify error condition
                     continue;
                 }
 
-                if(currentMessage.IsWriteMessage && currentMessage.ParameterId == InverterParameterId.ControlWordParam)
+                if (currentMessage.IsWriteMessage && currentMessage.ParameterId == InverterParameterId.ControlWordParam)
                 {
-                    InverterMessage readStatusWordMessage = new InverterMessage( 0x00, (short)InverterParameterId.StatusWordParam );
-                    this.inverterCommandQueue.Enqueue( readStatusWordMessage );
-                    this.controlWordCheckTimer.Change( 5000, Timeout.Infinite );
+                    var readStatusWordMessage = new InverterMessage(0x00, (short)InverterParameterId.StatusWordParam);
+                    this.inverterCommandQueue.Enqueue(readStatusWordMessage);
+                    this.controlWordCheckTimer.Change(5000, Timeout.Infinite);
                     continue;
                 }
 
-                if(!currentMessage.IsWriteMessage && currentMessage.ParameterId == InverterParameterId.StatusWordParam)
+                if (!currentMessage.IsWriteMessage && currentMessage.ParameterId == InverterParameterId.StatusWordParam)
                 {
-                    if(currentMessage.ShortPayload != this.lastControlMessage.ShortPayload)
+                    if (currentMessage.ShortPayload != this.lastControlMessage.ShortPayload)
                     {
-                        InverterMessage readStatusWordMessage = new InverterMessage( 0x00, (short)InverterParameterId.StatusWordParam );
-                        this.inverterCommandQueue.Enqueue( readStatusWordMessage );
+                        var readStatusWordMessage = new InverterMessage(0x00, (short)InverterParameterId.StatusWordParam);
+                        this.inverterCommandQueue.Enqueue(readStatusWordMessage);
                         continue;
                     }
                     else
                     {
-                        this.controlWordCheckTimer.Change( -1, Timeout.Infinite );
+                        this.controlWordCheckTimer.Change(-1, Timeout.Infinite);
                     }
                 }
 
-                this.currentStateMachine.NotifyMessage( currentMessage );
-            } while(stoppingToken.IsCancellationRequested);
+                this.currentStateMachine.NotifyMessage(currentMessage);
+            } while (stoppingToken.IsCancellationRequested);
         }
 
-        private void SendHeartBeat( object state )
+        private void SendHeartBeat(object state)
         {
-            this.heartbeatQueue.Enqueue( this.lastControlMessage );
+            this.heartbeatQueue.Enqueue(this.lastControlMessage);
         }
 
-        private async Task SendInverterCommand( CancellationToken cancellationToken )
+        private async Task SendInverterCommand(CancellationToken cancellationToken)
         {
-            var cancellationEventSlim = new ManualResetEventSlim( false );
+            var cancellationEventSlim = new ManualResetEventSlim(false);
 
-            cancellationToken.Register( () => cancellationEventSlim.Set() );
+            cancellationToken.Register(() => cancellationEventSlim.Set());
 
             //INFO Create WaitHandle array to wait for multiple events
-            WaitHandle[] commandHandles = new[]{ this.heartbeatQueue.WaitHandle,
+            var commandHandles = new[]{ this.heartbeatQueue.WaitHandle,
                                                  this.inverterCommandQueue.WaitHandle,
                                                  cancellationEventSlim.WaitHandle };
 
             do
             {
-                var handleIndex = WaitHandle.WaitAny( commandHandles, Timeout.Infinite );
-                switch(handleIndex)
+                var handleIndex = WaitHandle.WaitAny(commandHandles, Timeout.Infinite);
+                switch (handleIndex)
                 {
                     case 0:
-                        await ProcessHeartbeat( cancellationToken );
+                        await this.ProcessHeartbeat(cancellationToken);
                         break;
 
                     case 1:
-                        await ProcessCommand( cancellationToken );
+                        await this.ProcessCommand(cancellationToken);
                         break;
 
                     case 2:
                         return;
                 }
-            } while(!cancellationToken.IsCancellationRequested);
+            } while (!cancellationToken.IsCancellationRequested);
         }
 
         #endregion

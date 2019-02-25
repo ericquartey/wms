@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.ActionBlocks;
 using Microsoft.Extensions.Logging;
 
@@ -62,9 +60,14 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.logger.Log(LogLevel.Debug, "InverterDriverMock ExecuteVerticalHoming", null);
         }
 
-        public void ExecuteVerticalPosition(Int32 targetPosition, Single vMax, Single acc, Single dec, Single weight, Int16 offset)
+        public void ExecuteVerticalPosition(Int32 targetPosition, Single vMax, Single acc, Single dec, Single weight, Int16 offset, bool absoluteMovement)
         {
             this.logger.Log(LogLevel.Debug, "InverterDriverMock ExecuteVerticalPosition", null);
+        }
+
+        public void ExecuteVerticalPositionStop()
+        {
+            this.logger.Log(LogLevel.Debug, "InverterDriverMock ExecuteVerticalPositionStop", null);
         }
 
         public Boolean[] GetSensorsStates()

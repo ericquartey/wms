@@ -9,42 +9,50 @@
              xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"             
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
-    <Grid Width="1024"
+    <Grid    Width="1024"
              Height="608">
-        <TextBlock Grid.Row="0"
+
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="160,30,0,0"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.Gate1HeightControl}" Margin="120,19,0,543" Height="46" />
-        <custom:CustomInputFieldControlFocusable Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
-                                                     Margin="120,155,624,405"
-                                                     InputText="{Binding Speed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     LabelText="{x:Static res:InstallationApp.SpeedMMSec}" />
-        <custom:CustomLabelTextBlockControl
+                   Text="{x:Static res:InstallationApp.Gate1HeightControl}"/>
+
+        <custom:CustomInputFieldControlFocusable    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,140,0,0"
+                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                    InputText="{Binding Speed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    LabelText="{x:Static res:InstallationApp.SpeedMMSec}" />
+
+        <custom:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="700,140,0,0" 
                                                 ContentText="{Binding Tolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.Tolerance}" Margin="430,155,244,400" />
-        <custom:CustomLabelTextBlockControl
-                                                Grid.Column="0"
+                                                LabelText="{x:Static res:InstallationApp.Tolerance}"/>
+
+        <custom:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="410,140,0,0"
                                                 ContentText="{Binding SystemError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.SystemErrorMM}" Margin="430,220,304,335" />
-        <custom:CustomLabelTextBlockControl
-                                                ContentText="{Binding ActiveRaysQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.ActiveRaysQuantity}" Margin="430,303,304,252" />
-        <custom:CustomLabelTextBlockControl
+                                                LabelText="{x:Static res:InstallationApp.SystemErrorMM}"  />
+
+        <custom:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="160,260,0,0"
                                                 ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.CurrentHeight}" Margin="430,385,300,170" />
-        <custom:CustomLabelTextBlockControl
+                                                LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
+
+        <custom:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="700,260,0,0"
                                                 ContentText="{Binding GateCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.GateCorrection}" Margin="120,385,620,170" />
-        <custom:CustomLabelTextBlockControl
+                                                LabelText="{x:Static res:InstallationApp.GateCorrection}" />
+
+        <custom:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="160,360,0,0"
                                                 ContentText="{Binding NoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.Output}" Margin="120,485,630,55" />
-        <Button
-                    Grid.Column="0"
-                    HorizontalAlignment="Left"
+                                                LabelText="{x:Static res:InstallationApp.Output}" />
+
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="430,490,0,0"
                     Content="{x:Static res:InstallationApp.Start}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="430,485,0,55" />
-        <Button
-                    HorizontalAlignment="Left"
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"  />
+
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="700,490,0,0"
                     Content="{x:Static res:InstallationApp.Stop}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" Margin="655,485,0,55" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        
+        <custom:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="410,260,0,0"
+                                      LabelText="{x:Static res:InstallationApp.Gate1HeightReaced}"
+                                      SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
     </Grid>
 </UserControl>

@@ -291,7 +291,7 @@
   </data>
   <data name="VerticalAxis" xml:space="preserve">
     <value>Vertical and craddle</value>
-    <comment>Title - Button text</comment>
+    <comment>Title</comment>
   </data>
   <data name="AntiIntrusionGate" xml:space="preserve">
     <value>Anti intrusion gate bay 1</value>
@@ -503,7 +503,7 @@
   </data>
   <data name="Gate1HeightControl" xml:space="preserve">
     <value>Gate 1 Height Control</value>
-    <comment>Title - Button text</comment>
+    <comment>Title</comment>
   </data>
   <data name="PanelsControl" xml:space="preserve">
     <value>Panels Control</value>
@@ -531,11 +531,11 @@
   </data>
   <data name="Gate2HeightControl" xml:space="preserve">
     <value>Gate 2 Height Control</value>
-    <comment>Title - Button text</comment>
+    <comment>Title</comment>
   </data>
   <data name="Gate3HeightControl" xml:space="preserve">
     <value>Gate 3 Height Control</value>
-    <comment>Title - Button text</comment>
+    <comment>Title</comment>
   </data>
   <data name="GateHeightControl" xml:space="preserve">
     <value>Gate Height Control</value>
@@ -834,6 +834,30 @@
   </data>
   <data name="LSMTElevator" xml:space="preserve">
     <value>Elevator</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="NextPanel" xml:space="preserve">
+    <value>Nex panel</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="PanelsControlDescription" xml:space="preserve">
+    <value>Panels control procedure</value>
+    <comment>Title</comment>
+  </data>
+  <data name="ReadInitialPosition" xml:space="preserve">
+    <value>ReadInitialPosition</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ReadFinalPosition" xml:space="preserve">
+    <value>ReadFinalPosition</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Gate1HeightReaced" xml:space="preserve">
+    <value>Gate1 Height Reaced</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="VerticalAxisButton" xml:space="preserve">
+    <value>VerticalAxisButton</value>
     <comment>Button text</comment>
   </data>
 </root>
