@@ -379,4 +379,37 @@
   <data name="HelpWCStop" xml:space="preserve">
     <value>Arresta la procedura di test.</value>
   </data>
+  <data name="HelpVOCDescription" xml:space="preserve">
+    <value>La procedura consente di correggere l'offset dell'asse verticale in modo da allineare la quota delle varie celle al sistema di riferimento dell'asse verticale.</value>
+  </data>
+  <data name="HelpVOCSelectedCell" xml:space="preserve">
+    <value>Cella selezionata per il controllo.</value>
+  </data>
+  <data name="HelpVOCCellPosition" xml:space="preserve">
+    <value>Quota attuale della cella selezionata</value>
+  </data>
+  <data name="HelpVOCStepValue" xml:space="preserve">
+    <value>Valore della variazione di quota da applicare ad ogni pressione dei tasti di spostamento asse.</value>
+  </data>
+  <data name="HelpVOCActualPosition" xml:space="preserve">
+    <value>Posizione attuale dell'asse verticale.</value>
+  </data>
+  <data name="HelpVOCActualOffset" xml:space="preserve">
+    <value>Valore attuale dell'offset asse verticale.</value>
+  </data>
+  <data name="HelpVOCAdjustedOffset" xml:space="preserve">
+    <value>Nuovo valore di offset.</value>
+  </data>
+  <data name="HelpVOCGoToCell" xml:space="preserve">
+    <value>Sposta l'asse verticale in alla quota della cella selezionata.</value>
+  </data>
+  <data name="HelpVOCStepPiu" xml:space="preserve">
+    <value>Incrementa la quota attuale dell'asse verticale del valore di step impostato.</value>
+  </data>
+  <data name="HelpVOCStepMeno" xml:space="preserve">
+    <value>Decrementa la quota attuale dell'asse verticale del valore di step impostato.</value>
+  </data>
+  <data name="HelpVOCApplyCorrection" xml:space="preserve">
+    <value>Aggiorna l'offset dell'asse verticale al valore indicato.</value>
+  </data>
 </root>

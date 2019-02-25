@@ -57,6 +57,10 @@
             <local:HelpWeightControl></local:HelpWeightControl>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewmodels:VerticalOffsetCalibrationViewModel}">
+            <local:HelpVerticalOffsetCalibration></local:HelpVerticalOffsetCalibration>
+        </DataTemplate>
+
 
     </Window.Resources>
     <Grid Width="1024"

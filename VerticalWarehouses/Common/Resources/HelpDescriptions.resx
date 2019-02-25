@@ -473,4 +473,48 @@
     <value>HelpWCStop</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpVOCDescription" xml:space="preserve">
+    <value>HelpVOCDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpVOCSelectedCell" xml:space="preserve">
+    <value>HelpVOCSelectedCell</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVOCCellPosition" xml:space="preserve">
+    <value>HelpVOCCellPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVOCStepValue" xml:space="preserve">
+    <value>HelpVOCStepValue</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVOCActualPosition" xml:space="preserve">
+    <value>HelpVOCActualPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVOCActualOffset" xml:space="preserve">
+    <value>HelpVOCActualOffset</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVOCAdjustedOffset" xml:space="preserve">
+    <value>HelpVOCAdjustedOffset</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVOCGoToCell" xml:space="preserve">
+    <value>HelpVOCGoToCell</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVOCStepPiu" xml:space="preserve">
+    <value>HelpVOCStepPiu</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVOCStepMeno" xml:space="preserve">
+    <value>HelpVOCStepMeno</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVOCApplyCorrection" xml:space="preserve">
+    <value>HelpVOCApplyCorrection</value>
+    <comment>Note text</comment>
+  </data>
 </root>

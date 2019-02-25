@@ -565,6 +565,105 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVOCActualOffset.
+        /// </summary>
+        public static string HelpVOCActualOffset {
+            get {
+                return ResourceManager.GetString("HelpVOCActualOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVOCActualPosition.
+        /// </summary>
+        public static string HelpVOCActualPosition {
+            get {
+                return ResourceManager.GetString("HelpVOCActualPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVOCAdjustedOffset.
+        /// </summary>
+        public static string HelpVOCAdjustedOffset {
+            get {
+                return ResourceManager.GetString("HelpVOCAdjustedOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVOCApplyCorrection.
+        /// </summary>
+        public static string HelpVOCApplyCorrection {
+            get {
+                return ResourceManager.GetString("HelpVOCApplyCorrection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVOCCellPosition.
+        /// </summary>
+        public static string HelpVOCCellPosition {
+            get {
+                return ResourceManager.GetString("HelpVOCCellPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVOCDescription.
+        /// </summary>
+        public static string HelpVOCDescription {
+            get {
+                return ResourceManager.GetString("HelpVOCDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVOCGoToCell.
+        /// </summary>
+        public static string HelpVOCGoToCell {
+            get {
+                return ResourceManager.GetString("HelpVOCGoToCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVOCSelectedCell.
+        /// </summary>
+        public static string HelpVOCSelectedCell {
+            get {
+                return ResourceManager.GetString("HelpVOCSelectedCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVOCStepMeno.
+        /// </summary>
+        public static string HelpVOCStepMeno {
+            get {
+                return ResourceManager.GetString("HelpVOCStepMeno", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVOCStepPiu.
+        /// </summary>
+        public static string HelpVOCStepPiu {
+            get {
+                return ResourceManager.GetString("HelpVOCStepPiu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVOCStepValue.
+        /// </summary>
+        public static string HelpVOCStepValue {
+            get {
+                return ResourceManager.GetString("HelpVOCStepValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpVPPMActualPanel.
         /// </summary>
         public static string HelpVPPMActualPanel {
