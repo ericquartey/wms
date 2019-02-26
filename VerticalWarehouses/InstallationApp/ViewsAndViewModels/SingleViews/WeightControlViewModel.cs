@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Windows.Input;
-using Ferretto.VW.ActionBlocks;
+﻿using System.Windows.Input;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -33,7 +30,7 @@ namespace Ferretto.VW.InstallationApp
 
         private int mesuredWeight;
 
-        private string noteText = Resources.InstallationApp.WeightControl;
+        private string noteText = Ferretto.VW.Resources.InstallationApp.WeightControl;
 
         private ICommand stopButtonCommand;
 

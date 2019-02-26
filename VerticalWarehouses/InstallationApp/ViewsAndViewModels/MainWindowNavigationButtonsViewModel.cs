@@ -1,7 +1,8 @@
 ﻿using Prism.Mvvm;
-using Ferretto.VW.Navigation;
 using Microsoft.Practices.Unity;
 using Prism.Events;
+using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.InstallationApp.Resources.Enumerables;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -48,9 +49,17 @@ namespace Ferretto.VW.InstallationApp
         public MainWindowNavigationButtonsViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
-            NavigationService.ExitViewEventHandler += this.UpdateDataFromDataManager;
-            NavigationService.GoToViewEventHandler += this.SetAllNavigationButtonDisabled;
-            NavigationService.ExitViewEventHandler += this.UpdateDataFromDataManager;
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
+                (message) => { this.SetAllNavigationButtonDisabled(); },
+                ThreadOption.PublisherThread,
+                false,
+                message => message.Type == InstallationApp_EventMessageType.EnterView);
+
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
+                (message) => { this.UpdateDataFromDataManager(); },
+                ThreadOption.PublisherThread,
+                false,
+                message => message.Type == InstallationApp_EventMessageType.ExitView);
         }
 
         #endregion
@@ -122,8 +131,8 @@ namespace Ferretto.VW.InstallationApp
             this.IsLowSpeedMovementsTestButtonActive = true;
             this.IsGateControlButtonActive = true;
             this.IsOriginVerticalAxisButtonActive = true;
-            this.IsBeltBurnishingButtonActive = false;
-            this.IsSetYResolutionButtonActive = false;
+            this.IsBeltBurnishingButtonActive = true;
+            this.IsSetYResolutionButtonActive = true;
             this.IsGateHeightControlButtonActive = true; // TODO: Reference value missing in InstallationInfo file
             this.IsWeightControlButtonActive = true; // TODO: Reference value missing in InstallationInfo file
             this.IsVerticalOffsetCalibrationButtonActive = true; // TODO: Reference value missing in InstallationInfo file

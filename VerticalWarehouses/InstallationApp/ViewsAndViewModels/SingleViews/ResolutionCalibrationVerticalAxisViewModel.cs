@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
-using Ferretto.VW.ActionBlocks;
-using Ferretto.VW.Utils.Source;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
-using Ferretto.VW.MathLib;
 using Prism.Mvvm;
 using Prism.Events;
 
@@ -54,7 +51,7 @@ namespace Ferretto.VW.InstallationApp
 
         private string newResolution;
 
-        private string noteString = Resources.InstallationApp.MoveToInitialPosition;
+        private string noteString = Ferretto.VW.Resources.InstallationApp.MoveToInitialPosition;
 
         private string repositionLenght;
 
@@ -159,7 +156,7 @@ namespace Ferretto.VW.InstallationApp
             this.MesuredLenght = "";
             this.MesuredInitialPosition = "";
             this.NewResolution = "";
-            this.NoteString = Resources.InstallationApp.MoveToInitialPosition;
+            this.NoteString = Ferretto.VW.Resources.InstallationApp.MoveToInitialPosition;
             this.IsAcceptButtonActive = false;
             this.IsMesuredInitialPositionHighlighted = false;
             this.IsMesuredInitialPositionTextInputActive = false;
@@ -179,7 +176,7 @@ namespace Ferretto.VW.InstallationApp
                         this.IsMoveButtonActive = true;
                         this.IsMesuredInitialPositionTextInputActive = false;
                         this.IsMesuredInitialPositionHighlighted = false;
-                        this.NoteString = Resources.InstallationApp.MoveToPosition;
+                        this.NoteString = Ferretto.VW.Resources.InstallationApp.MoveToPosition;
                         this.IsMesuredInitialPositionTextInputActive = true;
                         this.IsMesuredInitialPositionHighlighted = true;
                     }
@@ -198,7 +195,7 @@ namespace Ferretto.VW.InstallationApp
                         this.IsMesuredMovementHighlighted = false;
                         this.IsMesuredLenghtTextInputActive = false;
                         this.CalculateNewResolutionMethod();
-                        this.NoteString = Resources.InstallationApp.ConfirmResolution;
+                        this.NoteString = Ferretto.VW.Resources.InstallationApp.ConfirmResolution;
                     }
                 }
             }

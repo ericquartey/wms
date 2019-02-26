@@ -8,6 +8,7 @@ using System.Net;
 using System.IO;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Prism.Events;
+using Ferretto.VW.InstallationApp.Resources;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -27,7 +28,7 @@ namespace Ferretto.VW.InstallationApp
 
         private string lowerBound;
 
-        private string noteString = Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
+        private string noteString = Ferretto.VW.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
 
         private string offset;
 
@@ -100,39 +101,13 @@ namespace Ferretto.VW.InstallationApp
         public async void SubscribeMethodToEvent()
         {
             this.installationHubClient = (InstallationHubClient)this.container.Resolve<ContainerIInstallationHubClient>();
-            try
-            {
-                //this.installationHubClient = new InstallationHubClient("http://localhost:5000", "/installation-endpoint");
-                //await this.installationHubClient.ConnectAsync();
-
-                this.installationHubClient.ReceivedMessageToAllConnectedClients += this.UpdateNoteString;
-                this.installationHubClient.connection.Closed += async (error) => this.NoteString = "Not Connected";
-                this.NoteString = "Connected to Installation Hub";
-            }
-            catch (ArgumentNullException)
-            {
-                if (this.installationHubClient == null)
-                {
-                    this.installationHubClient = new InstallationHubClient("http://localhost:5000", "/installation-endpoint");
-                    await this.installationHubClient.ConnectAsync();
-                    this.installationHubClient.ReceivedMessageToAllConnectedClients += this.UpdateNoteString;
-                    this.NoteString = "Connected to Installation Hub";
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            catch (Exception)
-            {
-                this.NoteString = "Did not connect to Installation Hub";
-                throw;
-            }
+            this.installationHubClient.ReceivedMessageToAllConnectedClients += this.UpdateNoteString;
         }
 
         public async void UnSubscribeMethodFromEvent()
         {
-            await this.installationHubClient.DisconnectAsync();
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Unsubscribe((message) => { this.SubscribeMethodToEvent(); });
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Unsubscribe((message) => { this.UnSubscribeMethodFromEvent(); });
         }
 
         public void UpdateNoteString(object sender, string message)
@@ -178,7 +153,7 @@ namespace Ferretto.VW.InstallationApp
 
         private void StopButtonMethod()
         {
-            this.NoteString = Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
+            this.NoteString = Ferretto.VW.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
         }
 
         #endregion

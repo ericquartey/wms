@@ -1,9 +1,10 @@
 ﻿using Prism.Mvvm;
 using Ferretto.VW.Utils.Source;
 using System;
-using Ferretto.VW.Navigation;
 using Microsoft.Practices.Unity;
 using Prism.Events;
+using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.InstallationApp.Resources.Enumerables;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -60,7 +61,10 @@ namespace Ferretto.VW.InstallationApp
 
         public InstallationStateViewModel()
         {
-            NavigationService.InstallationInfoChangedEventHandler += this.UpdateData;
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe((message) => { this.UpdateData(); },
+                ThreadOption.PublisherThread,
+                false,
+                message => message.Type == InstallationApp_EventMessageType.InstallationInfoChanged);
         }
 
         #endregion

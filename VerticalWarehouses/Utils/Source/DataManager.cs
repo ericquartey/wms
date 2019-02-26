@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Ferretto.VW.Utils.Source.CellsManagement;
 using Ferretto.VW.Utils.Source.Configuration;
-using Ferretto.VW.Navigation;
 using Newtonsoft.Json;
 using System.IO;
 using System;
@@ -25,7 +24,7 @@ namespace Ferretto.VW.Utils.Source
 
         private Installation_Info installationInfo;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -34,7 +33,7 @@ namespace Ferretto.VW.Utils.Source
             this.InitializeDataManager();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -52,7 +51,7 @@ namespace Ferretto.VW.Utils.Source
 
         public bool IsInstallationInfoFilePresent { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -96,25 +95,21 @@ namespace Ferretto.VW.Utils.Source
 
         private void RaiseCellBlocksChangedEvent()
         {
-            NavigationService.RaiseCellBlockChangedEvent();
         }
 
         private void RaiseCellsChangedEvent()
         {
-            NavigationService.RaiseCellsChangedEvent();
         }
 
         private void RaiseDrawersChangedEvent()
         {
-            NavigationService.RaiseDrawersChangedEvent();
         }
 
         private void RaiseInstallationInfoChangedEvent()
         {
             this.UpdateInstallationInfoFile();
-            NavigationService.RaiseInstallationInfoChangedEvent();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -1,5 +1,4 @@
-﻿using Ferretto.VW.ActionBlocks;
-using Microsoft.Practices.Unity;
+﻿using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Mvvm;
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Windows.Input;
-using System.Windows.Threading;
-using Ferretto.VW.ActionBlocks;
+﻿using System.Windows.Input;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -35,7 +32,7 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isStepUpButtonActive;
 
-        private string noteString = Resources.InstallationApp.VerticalOffsetCalibration;
+        private string noteString = Ferretto.VW.Resources.InstallationApp.VerticalOffsetCalibration;
 
         private string referenceCellHeight;
 
@@ -56,7 +53,7 @@ namespace Ferretto.VW.InstallationApp
         public VerticalOffsetCalibrationViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
-            this.NoteString = Resources.InstallationApp.VerticalOffsetCalibration;
+            this.NoteString = Ferretto.VW.Resources.InstallationApp.VerticalOffsetCalibration;
         }
 
         #endregion
