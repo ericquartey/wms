@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Ferretto.VW.MAS_IODriver
 {
@@ -7,44 +8,44 @@ namespace Ferretto.VW.MAS_IODriver
         #region Properties
 
         /// <summary>
-        /// Gets the digital inputs.
+        ///     Gets the digital inputs.
         /// </summary>
-        List<bool> Inputs { get; }
+        List<Boolean> Inputs { get; }
 
         /// <summary>
-        /// Get/set the IP address. Ipv4 format.
+        ///     Get/set the IP address. Ipv4 format.
         /// </summary>
-        string IPAddress { get; set; }
+        String IPAddress { get; set; }
 
         /// <summary>
-        /// Set the digital outputs.
+        ///     Set the digital outputs.
         /// </summary>
-        List<bool> Outputs { set; }
+        List<Boolean> Outputs { set; }
 
         /// <summary>
-        /// Get/set the port address. Fixed value (see the NModBus class documentation).
+        ///     Get/set the port address. Fixed value (see the NModBus class documentation).
         /// </summary>
-        int Port { get; set; }
+        Int32 Port { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
         /// <summary>
-        /// Disconnect from remote device.
+        ///     Disconnect from remote device.
         /// </summary>
         void Disconnect();
 
         /// <summary>
-        /// Switch from vertical to horizontal movement.
-        /// </summary>
-        void SwitchVerticalToHorizontal();
-
-        /// <summary>
-        /// Switch from horizontal to vertical movement.
+        ///     Switch from horizontal to vertical movement.
         /// </summary>
         void SwitchHorizontalToVertical();
 
-        #endregion Methods
+        /// <summary>
+        ///     Switch from vertical to horizontal movement.
+        /// </summary>
+        void SwitchVerticalToHorizontal();
+
+        #endregion
     }
 }

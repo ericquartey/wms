@@ -1,5 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.EventParameters;
+﻿using System;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_InverterDriver;
@@ -15,13 +15,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         private readonly IEventAggregator eventAggregator;
 
-        private StateMachineVerticalPositioning parent;
+        private readonly StateMachineVerticalPositioning parent;
 
         #endregion
 
         #region Constructors
 
-        public VerticalPositioningIdleState(StateMachineVerticalPositioning parent, INewInverterDriver driver, IEventAggregator eventAggregator)
+        public VerticalPositioningIdleState(StateMachineVerticalPositioning parent, INewInverterDriver driver,
+            IEventAggregator eventAggregator)
         {
             this.parent = parent;
             this.driver = driver;
@@ -42,21 +43,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #region Properties
 
-        public bool AbsoluteMovement { get; private set; }
+        public Boolean AbsoluteMovement { get; }
 
-        public float Acceleration { get; private set; }
+        public Single Acceleration { get; }
 
-        public float Deceleration { get; private set; }
+        public Single Deceleration { get; }
 
-        public short Offset { get; private set; }
+        public Int16 Offset { get; }
 
-        public int Target { get; private set; }
+        public Int32 Target { get; }
 
-        public string Type => "Vertical Positioning Idle State";
+        public String Type => "Vertical Positioning Idle State";
 
-        public float Velocity { get; private set; }
+        public Single Velocity { get; }
 
-        public float Weight { get; private set; }
+        public Single Weight { get; }
 
         #endregion
 
@@ -64,12 +65,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         public void MakeOperation()
         {
-            this.driver.ExecuteVerticalPosition(this.Target, this.Velocity, this.Acceleration, this.Deceleration, this.Weight, this.Offset, this.AbsoluteMovement);
+            this.driver.ExecuteVerticalPosition(this.Target, this.Velocity, this.Acceleration, this.Deceleration,
+                this.Weight, this.Offset, this.AbsoluteMovement);
         }
 
         public void NotifyMessage(CommandMessage message)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Stop()
@@ -78,7 +80,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
             this.eventAggregator.GetEvent<NotificationEvent>().Unsubscribe(this.notifyEventHandler);
 
-            var notifyEvent = new NotificationMessage( null, "Positioning stopped", MessageActor.Any, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OpeerationStop, MessageVerbosity.Info);
+            var notifyEvent = new NotificationMessage(null, "Positioning stopped", MessageActor.Any,
+                MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationStop);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
         }
 
@@ -87,19 +90,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             switch (notification.Status)
             {
                 case MessageStatus.OperationEnd:
-                    {
-                        this.parent.ChangeState(new VerticalPositioningDoneState(this.parent, this.driver, this.eventAggregator));
-                        break;
-                    }
+                {
+                    this.parent.ChangeState(new VerticalPositioningDoneState(this.parent, this.driver,
+                        this.eventAggregator));
+                    break;
+                }
                 case MessageStatus.OperationError:
-                    {
-                        this.parent.ChangeState(new VerticalPositioningErrorState(this.parent, this.driver, this.eventAggregator));
-                        break;
-                    }
-                default:
-                    {
-                        break;
-                    }
+                {
+                    this.parent.ChangeState(
+                        new VerticalPositioningErrorState(this.parent, this.driver, this.eventAggregator));
+                    break;
+                }
             }
         }
 

@@ -8,6 +8,6 @@
 
         OperationError,
 
-        OpeerationStop
+        OperationStop
     }
 }

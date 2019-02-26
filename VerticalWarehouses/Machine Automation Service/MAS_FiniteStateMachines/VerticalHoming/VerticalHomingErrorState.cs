@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Messages;
+﻿using System;
+using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_InverterDriver;
 using Prism.Events;
 
@@ -18,7 +19,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Constructors
 
-        public VerticalHomingErrorState(StateMachineVerticalHoming parent, INewInverterDriver driver, IEventAggregator eventAggregator)
+        public VerticalHomingErrorState(StateMachineVerticalHoming parent, INewInverterDriver driver,
+            IEventAggregator eventAggregator)
         {
             this.parent = parent;
             this.driver = driver;
@@ -29,7 +31,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Properties
 
-        public string Type => "Vertical Homing Error State";
+        public String Type => "Vertical Homing Error State";
 
         #endregion
 
@@ -41,7 +43,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         public void NotifyMessage(CommandMessage message)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Stop()

@@ -14,32 +14,35 @@ namespace MAS_FiniteStateMachinesUnitTests
         #region Methods
 
         [TestMethod]
-        [TestCategory( "Unit" )]
+        [TestCategory("Unit")]
         public void TestStateMachineVerticalHoming_Create()
         {
             var inverterDriverMock = new Mock<INewInverterDriver>();
             var writeLogServiceMock = new Mock<IWriteLogService>();
             var eventAggregatorMock = new Mock<IEventAggregator>();
 
-            var smVerticalHoming = new StateMachineVerticalHoming( inverterDriverMock.Object, eventAggregatorMock.Object );
+            var smVerticalHoming =
+                new StateMachineVerticalHoming(inverterDriverMock.Object, eventAggregatorMock.Object);
 
-            Assert.IsNotNull( smVerticalHoming );
+            Assert.IsNotNull(smVerticalHoming);
         }
 
         [TestMethod]
-        [TestCategory( "Unit" )]
+        [TestCategory("Unit")]
         public void TestStateMachineVerticalHoming_StartSuccess()
         {
             var inverterDriverMock = new Mock<INewInverterDriver>();
             var writeLogServiceMock = new Mock<IWriteLogService>();
             var eventAggregatorMock = new Mock<IEventAggregator>();
             var notifyDriverEvent = new NotificationEvent();
-            eventAggregatorMock.Setup( aggregator => aggregator.GetEvent<NotificationEvent>() ).Returns( notifyDriverEvent );
+            eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<NotificationEvent>())
+                .Returns(notifyDriverEvent);
 
-            var smVerticalHoming = new StateMachineVerticalHoming( inverterDriverMock.Object, eventAggregatorMock.Object );
+            var smVerticalHoming =
+                new StateMachineVerticalHoming(inverterDriverMock.Object, eventAggregatorMock.Object);
             smVerticalHoming.Start();
 
-            Assert.AreEqual( smVerticalHoming.Type, "Vertical Homing Idle State" );
+            Assert.AreEqual(smVerticalHoming.Type, "Vertical Homing Idle State");
         }
 
         #endregion

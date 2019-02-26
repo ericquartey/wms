@@ -60,7 +60,8 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.logger.Log(LogLevel.Debug, "InverterDriverMock ExecuteVerticalHoming", null);
         }
 
-        public void ExecuteVerticalPosition(Int32 targetPosition, Single vMax, Single acc, Single dec, Single weight, Int16 offset, bool absoluteMovement)
+        public void ExecuteVerticalPosition(Int32 targetPosition, Single vMax, Single acc, Single dec, Single weight,
+            Int16 offset, Boolean absoluteMovement)
         {
             this.logger.Log(LogLevel.Debug, "InverterDriverMock ExecuteVerticalPosition", null);
         }
@@ -73,7 +74,7 @@ namespace Ferretto.VW.MAS_InverterDriver
         public Boolean[] GetSensorsStates()
         {
             this.logger.Log(LogLevel.Debug, "InverterDriverMock GetSensorsStates", null);
-            return new Boolean[] { true, true, true };
+            return new[] {true, true, true};
         }
 
         #endregion

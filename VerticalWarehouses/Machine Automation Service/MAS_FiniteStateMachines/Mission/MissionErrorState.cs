@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
+﻿using System;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
@@ -12,7 +13,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
             this.parentStateMachine = parentMachine;
 
             var newMessage = new CommandMessage(null,
-                $"Mission State Ending",
+                "Mission State Ending",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.EndAction,
@@ -24,7 +25,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         #region Properties
 
-        public string Type => $"MissionErrorState";
+        public String Type => "MissionErrorState";
 
         #endregion
 
@@ -32,7 +33,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         public override void MakeOperation()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override void NotifyMessage(CommandMessage message)
@@ -43,7 +44,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
                     //TODO add state business logic to stop current action
 
                     var newMessage = new CommandMessage(null,
-                        $"Mission Error",
+                        "Mission Error",
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         MessageType.StopAction,
@@ -55,7 +56,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         public override void Stop()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         #endregion

@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
+﻿using System;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
@@ -12,12 +13,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
             this.parentStateMachine = parentMachine;
 
             var newMessage = new NotificationMessage(null,
-                $"Mission State Ending",
+                "Mission State Ending",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.EndMission,
-                MessageStatus.OperationEnd,
-                MessageVerbosity.Info);
+                MessageStatus.OperationEnd);
             this.parentStateMachine.PublishNotificationMessage(newMessage);
         }
 
@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         #region Properties
 
-        public string Type => $"MissionEndState";
+        public String Type => "MissionEndState";
 
         #endregion
 
@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         public override void MakeOperation()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override void NotifyMessage(CommandMessage message)
@@ -44,7 +44,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
                     //TODO add state business logic to stop current action
 
                     var newMessage = new CommandMessage(null,
-                        $"Stop Requested",
+                        "Stop Requested",
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         MessageType.StopAction,
@@ -56,7 +56,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         public override void Stop()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         #endregion

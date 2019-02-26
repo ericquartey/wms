@@ -1,9 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.InverterDriver;
 using Ferretto.VW.MAS_InverterDriver;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Prism.Events;
-using Ferretto.VW.InverterDriver;
-using Ferretto.VW.Common_Utils.Events;
 
 namespace MAS_InverterDriverUnitTests
 {
@@ -18,10 +18,10 @@ namespace MAS_InverterDriverUnitTests
         {
             var inverterDriverMock = new Mock<IInverterDriver>();
             var eventAggregatorMock = new Mock<IEventAggregator>();
-            eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<NotificationEvent>()).Returns(new NotificationEvent());
+            eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<NotificationEvent>())
+                .Returns(new NotificationEvent());
 
             var newInverterDriver = new NewInverterDriver(eventAggregatorMock.Object, inverterDriverMock.Object);
-
         }
 
         #endregion

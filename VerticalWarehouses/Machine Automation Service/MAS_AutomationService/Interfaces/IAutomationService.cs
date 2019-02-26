@@ -1,4 +1,5 @@
-﻿using Ferretto.Common.Common_Utils;
+﻿using System;
+using Ferretto.Common.Common_Utils;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
@@ -6,7 +7,7 @@ namespace Ferretto.VW.MAS_AutomationService
     {
         #region Methods
 
-        bool AddMission(Mission mission);
+        Boolean AddMission(Mission mission);
 
         #endregion
     }

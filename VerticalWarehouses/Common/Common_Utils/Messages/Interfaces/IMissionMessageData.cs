@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ferretto.VW.Common_Utils.Messages.Interfaces
 {
@@ -19,15 +15,15 @@ namespace Ferretto.VW.Common_Utils.Messages.Interfaces
     {
         #region Properties
 
-        int BayID { get; }
+        Int32 BayID { get; }
 
-        int CellID { get; }
+        Int32 CellID { get; }
 
-        int DrawerID { get; }
+        Int32 DrawerID { get; }
 
         MissionType MissionType { get; }
 
-        int Priority { get; }
+        Int32 Priority { get; }
 
         #endregion
     }

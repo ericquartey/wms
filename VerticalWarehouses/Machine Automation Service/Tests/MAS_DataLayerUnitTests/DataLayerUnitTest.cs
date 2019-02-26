@@ -21,22 +21,24 @@ namespace MAS_DataLayerUnitTests
             {
                 var updateFeedback1 = false;
 
-                var cell = new Cell() { CellId = 1, Coord = 1, Priority = 1, Side = Side.FrontEven, Status = Status.Free };
-                var listCells1 = new List<Cell>() { };
-                var listCells2 = new List<Cell>() { cell };
+                var cell = new Cell
+                    {CellId = 1, Coord = 1, Priority = 1, Side = Side.FrontEven, Status = Status.Free};
+                var listCells1 = new List<Cell>();
+                var listCells2 = new List<Cell>
+                    {cell};
                 var updateFeedback2 = false;
 
                 var setIntResolution = 1024;
                 var setDecimalHomingCreepSpeed = 10.1m;
                 var setStringHomingFastSpeed = "1000";
-                int resolution;
-                decimal homingCreepSpeed;
-                string homingFastSpeed;
+                Int32 resolution;
+                Decimal homingCreepSpeed;
+                String homingFastSpeed;
 
                 var setIntHomingDone = 1;
                 var setDecHomingDone = 1.0m;
                 var setStrHomingDone = "Homing Done";
-                int intHomingDone;
+                Int32 intHomingDone;
 
                 var mockEventAggregator = new Mock<IEventAggregator>();
                 mockEventAggregator.Setup(s => s.GetEvent<CommandEvent>()).Returns(new CommandEvent());
@@ -48,7 +50,8 @@ namespace MAS_DataLayerUnitTests
 
                 dataLayer.SetIntegerConfigurationValue(ConfigurationValueEnum.resolution, setIntResolution);
                 resolution = dataLayer.GetIntegerConfigurationValue(ConfigurationValueEnum.resolution);
-                dataLayer.SetDecimalConfigurationValue(ConfigurationValueEnum.homingCreepSpeed, setDecimalHomingCreepSpeed);
+                dataLayer.SetDecimalConfigurationValue(ConfigurationValueEnum.homingCreepSpeed,
+                    setDecimalHomingCreepSpeed);
                 homingCreepSpeed = dataLayer.GetDecimalConfigurationValue(ConfigurationValueEnum.homingCreepSpeed);
                 dataLayer.SetStringConfigurationValue(ConfigurationValueEnum.homingFastSpeed, setStringHomingFastSpeed);
                 homingFastSpeed = dataLayer.GetStringConfigurationValue(ConfigurationValueEnum.homingFastSpeed);
@@ -66,10 +69,14 @@ namespace MAS_DataLayerUnitTests
                 Assert.AreEqual(setStringHomingFastSpeed, homingFastSpeed);
                 Assert.AreEqual(setIntHomingDone, intHomingDone);
 
-                Assert.ThrowsException<InMemoryDataLayerException>(() => dataLayer.SetDecimalRuntimeValue(RuntimeValueEnum.homingDone, setDecHomingDone));
-                Assert.ThrowsException<InMemoryDataLayerException>(() => dataLayer.SetStringRuntimeValue(RuntimeValueEnum.homingDone, setStrHomingDone));
-                Assert.ThrowsException<InMemoryDataLayerException>(() => dataLayer.GetDecimalRuntimeValue(RuntimeValueEnum.homingDone));
-                Assert.ThrowsException<InMemoryDataLayerException>(() => dataLayer.GetStringRuntimeValue(RuntimeValueEnum.homingDone));
+                Assert.ThrowsException<InMemoryDataLayerException>(() =>
+                    dataLayer.SetDecimalRuntimeValue(RuntimeValueEnum.homingDone, setDecHomingDone));
+                Assert.ThrowsException<InMemoryDataLayerException>(() =>
+                    dataLayer.SetStringRuntimeValue(RuntimeValueEnum.homingDone, setStrHomingDone));
+                Assert.ThrowsException<InMemoryDataLayerException>(() =>
+                    dataLayer.GetDecimalRuntimeValue(RuntimeValueEnum.homingDone));
+                Assert.ThrowsException<InMemoryDataLayerException>(() =>
+                    dataLayer.GetStringRuntimeValue(RuntimeValueEnum.homingDone));
             }
         }
 

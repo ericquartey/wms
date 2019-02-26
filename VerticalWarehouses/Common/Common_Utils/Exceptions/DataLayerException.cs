@@ -1,23 +1,40 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace Ferretto.VW.Common_Utils
 {
     public class DataLayerException : Exception
     {
-        public DataLayerExceptionEnum ConfigurationExceptionCode { get; protected set; }
+        #region Constructors
 
-        public DataLayerException() : base() { }
-
-        public DataLayerException(string message) : base(message) { }
-
-        public DataLayerException(DataLayerExceptionEnum exceptionEnum) : base()
+        public DataLayerException()
         {
-            ConfigurationExceptionCode = exceptionEnum;
         }
 
-        public DataLayerException(string message, System.Exception inner) : base(message, inner) { }
+        public DataLayerException(String message) : base(message)
+        {
+        }
 
-        protected DataLayerException(System.Runtime.Serialization.SerializationInfo info,
-            System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+        public DataLayerException(DataLayerExceptionEnum exceptionEnum)
+        {
+            this.ConfigurationExceptionCode = exceptionEnum;
+        }
+
+        public DataLayerException(String message, Exception inner) : base(message, inner)
+        {
+        }
+
+        protected DataLayerException(SerializationInfo info,
+            StreamingContext context) : base(info, context)
+        {
+        }
+
+        #endregion
+
+        #region Properties
+
+        public DataLayerExceptionEnum ConfigurationExceptionCode { get; protected set; }
+
+        #endregion
     }
 }

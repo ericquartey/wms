@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
@@ -6,13 +7,12 @@ namespace Ferretto.VW.MAS_DataLayer
     {
         #region Properties
 
-        [Key]
-        public ConfigurationValueEnum VarName { get; set; }
-
-        public string VarValue { get; set; }
+        [Key] public ConfigurationValueEnum VarName { get; set; }
 
         public DataTypeEnum VarType { get; set; }
 
-        #endregion Properties
+        public String VarValue { get; set; }
+
+        #endregion
     }
 }

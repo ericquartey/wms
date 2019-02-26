@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 
@@ -13,7 +14,7 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
             return base.OnConnectedAsync();
         }
 
-        public async Task SendMessageToAllConnectedClients(string message)
+        public async Task SendMessageToAllConnectedClients(String message)
         {
             await this.Clients.All.OnSendMessageToAllConnectedClients(message);
         }

@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_AutomationService.Hubs;
@@ -40,11 +39,11 @@ namespace Ferretto.VW.MAS_AutomationService
             this.messageQueue = new ConcurrentQueue<CommandMessage>();
 
             var webApiMessagEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            webApiMessagEvent.Subscribe((message) =>
-               {
-                   this.messageQueue.Enqueue(message);
-                   this.messageReceived.Set();
-               },
+            webApiMessagEvent.Subscribe(message =>
+                {
+                    this.messageQueue.Enqueue(message);
+                    this.messageReceived.Set();
+                },
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Destination == MessageActor.AutomationService);
@@ -70,7 +69,7 @@ namespace Ferretto.VW.MAS_AutomationService
         {
             while (true)
             {
-                var message = new string[] { "pippo", "topolino", "pluto", "paperino", "minnie", "qui", "quo", "qua" };
+                var message = new[] {"pippo", "topolino", "pluto", "paperino", "minnie", "qui", "quo", "qua"};
                 var randomInt = new Random().Next(message.Length);
                 Console.WriteLine(message[randomInt]);
                 await this.hub.Clients.All.OnSendMessageToAllConnectedClients(message[randomInt]);
@@ -99,7 +98,6 @@ namespace Ferretto.VW.MAS_AutomationService
                 this.messageReceived.Reset();
 
                 while (this.messageQueue.TryDequeue(out var receivedMessage))
-                {
                     switch (receivedMessage.Type)
                     {
                         case MessageType.AddMission:
@@ -109,7 +107,6 @@ namespace Ferretto.VW.MAS_AutomationService
                         case MessageType.HorizontalHoming:
                             break;
                     }
-                }
             } while (!stoppingToken.IsCancellationRequested);
 
             return Task.CompletedTask;

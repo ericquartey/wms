@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.InverterDriver;
+﻿using System;
+using Ferretto.VW.InverterDriver;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
@@ -27,7 +28,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
 
         #region Properties
 
-        public string Type => this.state.Type;
+        public String Type => this.state.Type;
 
         #endregion
 

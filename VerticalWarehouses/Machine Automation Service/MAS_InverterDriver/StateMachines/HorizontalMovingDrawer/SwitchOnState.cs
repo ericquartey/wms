@@ -1,5 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.EventParameters;
+﻿using System;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.InverterDriver;
@@ -11,25 +11,26 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
     {
         #region Fields
 
+        private const Byte DATASET_INDEX = 0x05; //VALUE binary = 00000101
+
         private readonly IEventAggregator eventAggregator;
 
         private readonly IInverterDriver inverterDriver;
 
-        private readonly StateMachineHorizontalMoving stateMachineHorizontalMoving;
-
         private readonly ParameterID paramID = ParameterID.HOMING_MODE_PARAM;
 
-        private const byte DATASET_INDEX = 0x05;  //VALUE binary = 00000101
+        private readonly StateMachineHorizontalMoving stateMachineHorizontalMoving;
 
-        private readonly byte systemIndex = 0x00; //VALUE binary = 00000000
+        private readonly Byte systemIndex = 0x00; //VALUE binary = 00000000
 
-        private readonly object valParam;
+        private readonly Object valParam;
 
         #endregion
 
         #region Constructors
 
-        public SwitchOnState(StateMachineHorizontalMoving stateMachineHorizontalMoving, IInverterDriver inverterDriver, IEventAggregator eventAggregator)
+        public SwitchOnState(StateMachineHorizontalMoving stateMachineHorizontalMoving, IInverterDriver inverterDriver,
+            IEventAggregator eventAggregator)
         {
             this.inverterDriver = inverterDriver;
             this.eventAggregator = eventAggregator;
@@ -42,7 +43,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
 
         #region Properties
 
-        public string Type => "Switch On State";
+        public String Type => "Switch On State";
 
         #endregion
 
@@ -50,28 +51,26 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
 
         private void notifyEventHandler(NotificationMessage notification)
         {
-            var result = inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_INDEX, this.valParam);
+            var result =
+                this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_INDEX, this.valParam);
 
             switch (notification.Status)
             {
                 case MessageStatus.OperationEnd:
-                    {
-                        if (result == InverterDriverExitStatus.Success)
-                        {
-                            this.stateMachineHorizontalMoving.ChangeState(new EnabledOperationState(stateMachineHorizontalMoving, inverterDriver, eventAggregator));
-                        }
-                        break;
-                    }
+                {
+                    if (result == InverterDriverExitStatus.Success)
+                        this.stateMachineHorizontalMoving.ChangeState(
+                            new EnabledOperationState(this.stateMachineHorizontalMoving, this.inverterDriver,
+                                this.eventAggregator));
+                    break;
+                }
                 case MessageStatus.OperationError:
-                    {
-                        this.stateMachineHorizontalMoving.ChangeState(new ErrorState(stateMachineHorizontalMoving, inverterDriver, eventAggregator));
+                {
+                    this.stateMachineHorizontalMoving.ChangeState(new ErrorState(this.stateMachineHorizontalMoving,
+                        this.inverterDriver, this.eventAggregator));
 
-                        break;
-                    }
-                default:
-                    {
-                        break;
-                    }
+                    break;
+                }
             }
         }
 

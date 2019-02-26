@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Ferretto.VW.MAS_InverterDriver.ActionBlocks;
 
 namespace Ferretto.VW.MAS_InverterDriver
@@ -7,7 +8,7 @@ namespace Ferretto.VW.MAS_InverterDriver
     {
         #region Properties
 
-        float GetDrawerWeight { get; }
+        Single GetDrawerWeight { get; }
 
         #endregion
 
@@ -15,21 +16,22 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         void Destroy();
 
-        void ExecuteDrawerWeight(int targetPosition, float vMax, float acc, float dec);
+        void ExecuteDrawerWeight(Int32 targetPosition, Single vMax, Single acc, Single dec);
 
         void ExecuteHomingStop();
 
         void ExecuteHorizontalHoming();
 
-        void ExecuteHorizontalPosition(int target, int speed, int direction, List<ProfilePosition> profile);
+        void ExecuteHorizontalPosition(Int32 target, Int32 speed, Int32 direction, List<ProfilePosition> profile);
 
         void ExecuteVerticalHoming();
 
-        void ExecuteVerticalPosition(int targetPosition, float vMax, float acc, float dec, float weight, short offset, bool absoluteMovement);
+        void ExecuteVerticalPosition(Int32 targetPosition, Single vMax, Single acc, Single dec, Single weight,
+            Int16 offset, Boolean absoluteMovement);
 
         void ExecuteVerticalPositionStop();
 
-        bool[] GetSensorsStates();
+        Boolean[] GetSensorsStates();
 
         #endregion
     }

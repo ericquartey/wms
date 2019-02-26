@@ -1,5 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.EventParameters;
+﻿using System;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_InverterDriver;
@@ -15,13 +15,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         private readonly IEventAggregator eventAggregator;
 
-        private StateMachineVerticalHoming parent;
+        private readonly StateMachineVerticalHoming parent;
 
         #endregion
 
         #region Constructors
 
-        public VerticalHomingIdleState(StateMachineVerticalHoming parent, INewInverterDriver driver, IEventAggregator eventAggregator)
+        public VerticalHomingIdleState(StateMachineVerticalHoming parent, INewInverterDriver driver,
+            IEventAggregator eventAggregator)
         {
             this.parent = parent;
             this.driver = driver;
@@ -34,7 +35,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Properties
 
-        public string Type => "Vertical Homing Idle State";
+        public String Type => "Vertical Homing Idle State";
 
         #endregion
 
@@ -47,7 +48,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         public void NotifyMessage(CommandMessage message)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Stop()
@@ -56,7 +57,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
             this.eventAggregator.GetEvent<NotificationEvent>().Unsubscribe(this.notifyEventHandler);
 
-            var notifyEvent = new NotificationMessage(null, "Homing stopped", MessageActor.Any, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OpeerationStop, MessageVerbosity.Info);
+            var notifyEvent = new NotificationMessage(null, "Homing stopped", MessageActor.Any,
+                MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationStop);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
         }
 
@@ -65,19 +67,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
             switch (notification.Status)
             {
                 case MessageStatus.OperationEnd:
-                    {
-                        this.parent.ChangeState(new VerticalHomingDoneState(this.parent, this.driver, this.eventAggregator));
-                        break;
-                    }
+                {
+                    this.parent.ChangeState(new VerticalHomingDoneState(this.parent, this.driver,
+                        this.eventAggregator));
+                    break;
+                }
                 case MessageStatus.OperationError:
-                    {
-                        this.parent.ChangeState(new VerticalHomingErrorState(this.parent, this.driver, this.eventAggregator));
-                        break;
-                    }
-                default:
-                    {
-                        break;
-                    }
+                {
+                    this.parent.ChangeState(
+                        new VerticalHomingErrorState(this.parent, this.driver, this.eventAggregator));
+                    break;
+                }
             }
         }
 

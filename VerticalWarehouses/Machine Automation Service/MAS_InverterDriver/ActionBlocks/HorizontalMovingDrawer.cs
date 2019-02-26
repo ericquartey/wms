@@ -13,33 +13,35 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
     {
         #region Fields
 
-        private const byte DATASET_FOR_CONTROL = 0x05;  //VALUE binary = 00000005
+        private const Byte DATASET_FOR_CONTROL = 0x05; //VALUE binary = 00000005
 
-        private const int DELAY_TIME = 350;
+        private const Int32 DELAY_TIME = 350;
 
-        private const int N_BITS_16 = 16;
+        private const Int32 N_BITS_16 = 16;
 
-        private const int TIME_OUT = 100;
+        private const Int32 TIME_OUT = 100;
 
-        private const int TOTAL_N_ENTRIES = 3;
+        private const Int32 TOTAL_N_ENTRIES = 3;
 
-        private const int TOTAL_NUMBER_COMMANDS = 7;
+        private const Int32 TOTAL_NUMBER_COMMANDS = 7;
 
-        private static readonly object lockObj = new object();
+        private static readonly Object lockObj = new Object();
 
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private bool bInitialShaftPosition;
+        private readonly Byte systemIndex = 0x00;
+
+        private Boolean bInitialShaftPosition;
 
         private BitArray cmdWord;
 
-        private int currentCmdIndex;
+        private Int32 currentCmdIndex;
 
-        private int currEntry;
+        private Int32 currEntry;
 
-        private int currentShaftPosition;
+        private Int32 currentShaftPosition;
 
-        private byte dataSetIndex = 0x00;  //VALUE binary = 00000000
+        private Byte dataSetIndex; //VALUE binary = 00000000
 
         private Direction direction;
 
@@ -51,21 +53,21 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
         private AutoResetEvent eventForTerminateReceive;
 
-        private long freq;
+        private Int64 freq;
 
-        private int initialPosition;
+        private Int32 initialPosition;
 
-        private int initialSpeed;
+        private Int32 initialSpeed;
 
-        private Ferretto.VW.InverterDriver.IInverterDriver inverterDriver;
+        private IInverterDriver inverterDriver;
 
-        private int nEntries;
+        private Int32 nEntries;
 
-        private int numberOfConditionTargetReachedSatisfied;
+        private Int32 numberOfConditionTargetReachedSatisfied;
 
         private ParameterID paramID = ParameterID.POSITION_TARGET_POSITION_PARAM;
 
-        private long pTimePrev;
+        private Int64 pTimePrev;
 
         private RegisteredWaitHandle regWaitHandleForOnChangeSetupThread;
 
@@ -75,9 +77,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
         private BitArray statusWord;
 
-        private byte systemIndex = 0x00;
-
-        private int targetPosition;
+        private Int32 targetPosition;
 
         #endregion
 
@@ -160,11 +160,11 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
         #region Properties
 
-        public bool AbsoluteMovement { get; set; }
+        public Boolean AbsoluteMovement { get; set; }
 
-        public bool EnableRetrivialCurrentPositionMode { get; set; }
+        public Boolean EnableRetrivialCurrentPositionMode { get; set; }
 
-        public Ferretto.VW.InverterDriver.IInverterDriver SetInverterDriverInterface
+        public IInverterDriver SetInverterDriverInterface
         {
             set => this.inverterDriver = value;
         }
@@ -176,38 +176,39 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
         public void Initialize()
         {
             this.AbsoluteMovement = false;
-            this.cmdWord = new BitArray( N_BITS_16 );
-            this.statusWord = new BitArray( N_BITS_16 );
+            this.cmdWord = new BitArray(N_BITS_16);
+            this.statusWord = new BitArray(N_BITS_16);
             this.entries = new List<ProfilePosition>();
 
-            if(this.inverterDriver != null)
+            if (this.inverterDriver != null)
             {
                 this.inverterDriver.EnquiryTelegramDone_PositioningDrawer += this.EnquiryTelegram;
                 this.inverterDriver.SelectTelegramDone_PositioningDrawer += this.SelectTelegram;
 
                 this.paramID = ParameterID.CONTROL_WORD_PARAM;
                 var dataSetIdx = DATASET_FOR_CONTROL;
-                this.cmdWord.Set( (int)CTRLWBITS.MOTOR_SELECTION, true );
+                this.cmdWord.Set((Int32) CTRLWBITS.MOTOR_SELECTION, true);
 
-                var bytes = BitArrayToByteArray( this.cmdWord );
-                var value = BitConverter.ToUInt16( bytes, 0 );
+                var bytes = BitArrayToByteArray(this.cmdWord);
+                var value = BitConverter.ToUInt16(bytes, 0);
 
-                this.inverterDriver.SettingRequest( this.paramID, this.systemIndex, dataSetIdx, (object)value );
+                this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, value);
             }
         }
 
-        public void Run( int target, int speed, int direction, List<ProfilePosition> profile )
+        public void Run(Int32 target, Int32 speed, Int32 direction, List<ProfilePosition> profile)
         {
             this.bInitialShaftPosition = true;
             this.initialPosition = 0;
 
-            this.inverterDriver.SendRequest( ParameterID.ACTUAL_POSITION_SHAFT, this.systemIndex, this.dataSetIndex );
-            Thread.Sleep( 250 );
+            this.inverterDriver.SendRequest(ParameterID.ACTUAL_POSITION_SHAFT, this.systemIndex, this.dataSetIndex);
+            Thread.Sleep(250);
 
-            this.inverterDriver.Enable_Update_Current_Position_Horizontal_Shaft_Mode = this.EnableRetrivialCurrentPositionMode;
+            this.inverterDriver.Enable_Update_Current_Position_Horizontal_Shaft_Mode =
+                this.EnableRetrivialCurrentPositionMode;
             this.inverterDriver.Get_Status_Word_Enable = true;
 
-            QueryPerformanceFrequency( out this.freq );
+            QueryPerformanceFrequency(out this.freq);
             this.createThreadsForMovingAutomation();
 
             this.dataSetIndex = 0x05;
@@ -216,15 +217,15 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
             this.targetPosition = target;
             this.initialSpeed = speed;
-            if(direction == 0)
+            if (direction == 0)
             {
                 this.direction = Direction.Clockwise;
-                this.targetPosition = this.initialPosition + Math.Abs( target );
+                this.targetPosition = this.initialPosition + Math.Abs(target);
             }
             else
             {
                 this.direction = Direction.CounterClockwise;
-                this.targetPosition = this.initialPosition - Math.Abs( target );
+                this.targetPosition = this.initialPosition - Math.Abs(target);
             }
 
             this.currentCmdIndex = 1;
@@ -232,24 +233,22 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
             this.entries.Clear();
 
-            foreach(var p in profile)
+            foreach (var p in profile)
             {
-                if(this.direction == Direction.Clockwise)
-                {
+                if (this.direction == Direction.Clockwise)
                     p.Quote = this.initialPosition + p.Quote;
-                }
                 else
-                {
                     p.Quote = this.initialPosition - p.Quote;
-                }
-                this.entries.Add( p );
+                this.entries.Add(p);
             }
 
             this.currEntry = 0;
 
             this.inverterDriver.CurrentActionType = ActionType.HorizontalMoving;
 
-            logger.Log( LogLevel.Debug, String.Format( "RUN :: Initial position: {0}, target position: {1}", this.initialPosition, this.targetPosition ) );
+            logger.Log(LogLevel.Debug,
+                String.Format("RUN :: Initial position: {0}, target position: {1}", this.initialPosition,
+                    this.targetPosition));
 
             this.eventForExecuteStep?.Set();
         }
@@ -257,20 +256,21 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
         public void Stop()
         {
             this.paramID = ParameterID.CONTROL_WORD_PARAM;
-            this.cmdWord.SetAll( false );
-            this.cmdWord.Set( (int)CTRLWBITS.MOTOR_SELECTION, true );
+            this.cmdWord.SetAll(false);
+            this.cmdWord.Set((Int32) CTRLWBITS.MOTOR_SELECTION, true);
 
-            var bytes = BitArrayToByteArray( this.cmdWord );
-            var value = BitConverter.ToUInt16( bytes, 0 );
+            var bytes = BitArrayToByteArray(this.cmdWord);
+            var value = BitConverter.ToUInt16(bytes, 0);
 
-            var idExitStatus = this.inverterDriver.SettingRequest( this.paramID, this.systemIndex, DATASET_FOR_CONTROL, (object)value );
+            var idExitStatus =
+                this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_FOR_CONTROL, value);
 
             this.destroyThreadsForMovingAutomation();
         }
 
         public void Terminate()
         {
-            if(this.inverterDriver != null)
+            if (this.inverterDriver != null)
             {
                 this.inverterDriver.Enable_Update_Current_Position_Vertical_Shaft_Mode = false;
                 this.inverterDriver.Get_Status_Word_Enable = false;
@@ -280,136 +280,128 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             }
         }
 
-        internal static byte[] BitArrayToByteArray( BitArray bits )
+        internal static Byte[] BitArrayToByteArray(BitArray bits)
         {
-            var ret = new byte[(bits.Length - 1) / 8 + 1];
-            bits.CopyTo( ret, 0 );
+            var ret = new Byte[( bits.Length - 1 ) / 8 + 1];
+            bits.CopyTo(ret, 0);
             return ret;
         }
 
-        [DllImport( "kernel32.dll", SetLastError = true )]
-        private static extern bool QueryPerformanceCounter( out long lpPerformanceCount );
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern Boolean QueryPerformanceCounter(out Int64 lpPerformanceCount);
 
-        [DllImport( "kernel32.dll", SetLastError = true )]
-        private static extern bool QueryPerformanceFrequency( out long lpPerformanceFrequency );
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern Boolean QueryPerformanceFrequency(out Int64 lpPerformanceFrequency);
 
-        private bool checkChangeSetup( int entryIndex )
+        private Boolean checkChangeSetup(Int32 entryIndex)
         {
-            if(entryIndex < this.entries.Count)
+            if (entryIndex < this.entries.Count)
             {
                 var data = this.entries[entryIndex];
-                if(this.direction == Direction.Clockwise)
-                {
-                    return (Math.Abs( this.currentShaftPosition ) > Math.Abs( data.Quote ));
-                }
-                else
-                {
-                    return (Math.Abs( this.currentShaftPosition ) < Math.Abs( data.Quote ));
-                }
+                if (this.direction == Direction.Clockwise)
+                    return Math.Abs(this.currentShaftPosition) > Math.Abs(data.Quote);
+                return Math.Abs(this.currentShaftPosition) < Math.Abs(data.Quote);
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
-        private bool checkCommandTransition( int cmdIndex )
+        private Boolean checkCommandTransition(Int32 cmdIndex)
         {
             var bStateTransitionIsAllowed = false;
-            switch(cmdIndex)
+            switch (cmdIndex)
             {
                 case 1:
-                    {
-                        bStateTransitionIsAllowed = true;
-                        break;
-                    }
+                {
+                    bStateTransitionIsAllowed = true;
+                    break;
+                }
 
                 case 2:
-                    {
-                        bStateTransitionIsAllowed = this.statusWord.Get( (int)STATUSWBITS.VOLTAGE_ENABLED ) &&
-                            this.statusWord.Get( (int)STATUSWBITS.SWITCH_ON_DISABLED );
-                        break;
-                    }
+                {
+                    bStateTransitionIsAllowed = this.statusWord.Get((Int32) STATUSWBITS.VOLTAGE_ENABLED) &&
+                                                this.statusWord.Get((Int32) STATUSWBITS.SWITCH_ON_DISABLED);
+                    break;
+                }
 
                 case 3:
-                    {
-                        bStateTransitionIsAllowed = true;
-                        break;
-                    }
+                {
+                    bStateTransitionIsAllowed = true;
+                    break;
+                }
 
                 case 4:
-                    {
-                        bStateTransitionIsAllowed = this.statusWord.Get( (int)STATUSWBITS.READY_TO_SWITCH_ON ) &&
-                            this.statusWord.Get( (int)STATUSWBITS.VOLTAGE_ENABLED ) &&
-                            this.statusWord.Get( (int)STATUSWBITS.QUICK_STOP );
-                        break;
-                    }
+                {
+                    bStateTransitionIsAllowed = this.statusWord.Get((Int32) STATUSWBITS.READY_TO_SWITCH_ON) &&
+                                                this.statusWord.Get((Int32) STATUSWBITS.VOLTAGE_ENABLED) &&
+                                                this.statusWord.Get((Int32) STATUSWBITS.QUICK_STOP);
+                    break;
+                }
 
                 case 5:
-                    {
-                        bStateTransitionIsAllowed = this.statusWord.Get( (int)STATUSWBITS.SWITCHED_ON );
-                        break;
-                    }
+                {
+                    bStateTransitionIsAllowed = this.statusWord.Get((Int32) STATUSWBITS.SWITCHED_ON);
+                    break;
+                }
 
                 case 6:
-                    {
-                        bStateTransitionIsAllowed = this.statusWord.Get( (int)STATUSWBITS.OPERATION_ENABLED );
-                        break;
-                    }
+                {
+                    bStateTransitionIsAllowed = this.statusWord.Get((Int32) STATUSWBITS.OPERATION_ENABLED);
+                    break;
+                }
 
                 case 7:
+                {
+                    bStateTransitionIsAllowed = this.statusWord.Get((Int32) STATUSWBITS.TARGET_REACHED);
+                    if (bStateTransitionIsAllowed)
                     {
-                        bStateTransitionIsAllowed = this.statusWord.Get( (int)STATUSWBITS.TARGET_REACHED );
-                        if(bStateTransitionIsAllowed)
-                        {
-                            bStateTransitionIsAllowed = (this.numberOfConditionTargetReachedSatisfied >= 2);
-                            this.numberOfConditionTargetReachedSatisfied++;
-                        }
-                        else
-                        {
-                            this.numberOfConditionTargetReachedSatisfied = 0;
-                        }
-                        break;
+                        bStateTransitionIsAllowed = this.numberOfConditionTargetReachedSatisfied >= 2;
+                        this.numberOfConditionTargetReachedSatisfied++;
                     }
-
-                default:
+                    else
+                        this.numberOfConditionTargetReachedSatisfied = 0;
 
                     break;
+                }
             }
 
-            ushort value = 0x0000; byte[] bytes;
-            bytes = BitArrayToByteArray( this.statusWord );
-            value = BitConverter.ToUInt16( bytes, 0 );
+            UInt16 value = 0x0000;
+            Byte[] bytes;
+            bytes = BitArrayToByteArray(this.statusWord);
+            value = BitConverter.ToUInt16(bytes, 0);
 
             return bStateTransitionIsAllowed;
         }
 
         private void createThreadsForMovingAutomation()
         {
-            this.eventForChangeSetup = new AutoResetEvent( false );
-            this.regWaitHandleForOnChangeSetupThread = ThreadPool.RegisterWaitForSingleObject( this.eventForChangeSetup, this.OnChangeSetup, null, -1, false );
-            this.eventForExecuteStep = new AutoResetEvent( false );
-            this.regWaitHandleForOnExecutionThread = ThreadPool.RegisterWaitForSingleObject( this.eventForExecuteStep, this.OnExecutionThread, null, -1, false );
-            this.eventForTerminateReceive = new AutoResetEvent( false );
-            this.regWaitHandleForOnReceiveThread = ThreadPool.RegisterWaitForSingleObject( this.eventForTerminateReceive, this.OnReceiveThread, null, TIME_OUT, false );
+            this.eventForChangeSetup = new AutoResetEvent(false);
+            this.regWaitHandleForOnChangeSetupThread =
+                ThreadPool.RegisterWaitForSingleObject(this.eventForChangeSetup, this.OnChangeSetup, null, -1, false);
+            this.eventForExecuteStep = new AutoResetEvent(false);
+            this.regWaitHandleForOnExecutionThread = ThreadPool.RegisterWaitForSingleObject(this.eventForExecuteStep,
+                this.OnExecutionThread, null, -1, false);
+            this.eventForTerminateReceive = new AutoResetEvent(false);
+            this.regWaitHandleForOnReceiveThread = ThreadPool.RegisterWaitForSingleObject(this.eventForTerminateReceive,
+                this.OnReceiveThread, null, TIME_OUT, false);
         }
 
         private void destroyThreadsForMovingAutomation()
         {
-            this.regWaitHandleForOnChangeSetupThread?.Unregister( this.eventForChangeSetup );
-            this.regWaitHandleForOnExecutionThread?.Unregister( this.eventForExecuteStep );
-            this.regWaitHandleForOnReceiveThread?.Unregister( this.eventForTerminateReceive );
+            this.regWaitHandleForOnChangeSetupThread?.Unregister(this.eventForChangeSetup);
+            this.regWaitHandleForOnExecutionThread?.Unregister(this.eventForExecuteStep);
+            this.regWaitHandleForOnReceiveThread?.Unregister(this.eventForTerminateReceive);
         }
 
-        private void EnquiryTelegram( Object sender, EnquiryTelegramDoneEventArgs eventArgs )
+        private void EnquiryTelegram(Object sender, EnquiryTelegramDoneEventArgs eventArgs)
         {
             var paramID = eventArgs.ParamID;
-            if(paramID == ParameterID.ACTUAL_POSITION_SHAFT)
+            if (paramID == ParameterID.ACTUAL_POSITION_SHAFT)
             {
                 this.currentShaftPosition = this.inverterDriver.Current_Position_Horizontal_Shaft;
-                logger.Log( LogLevel.Debug, String.Format( "Actual shaft position: {0}", this.currentShaftPosition ) );
+                logger.Log(LogLevel.Debug, String.Format("Actual shaft position: {0}", this.currentShaftPosition));
 
-                if(this.bInitialShaftPosition)
+                if (this.bInitialShaftPosition)
                 {
                     this.initialPosition = this.currentShaftPosition;
                     this.bInitialShaftPosition = false;
@@ -423,273 +415,289 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             this.paramID = ParameterID.CONTROL_WORD_PARAM;
             var dataSetIdx = DATASET_FOR_CONTROL;
 
-            var bytes = BitArrayToByteArray( this.cmdWord );
-            var value = BitConverter.ToUInt16( bytes, 0 );
+            var bytes = BitArrayToByteArray(this.cmdWord);
+            var value = BitConverter.ToUInt16(bytes, 0);
 
-            if(this.currEntry <= this.entries.Count)
+            if (this.currEntry <= this.entries.Count)
             {
                 dataSetIdx = DATASET_FOR_CONTROL;
-                var valueParameter = new object();
+                var valueParameter = new Object();
                 exitStatus = InverterDriverExitStatus.Success;
 
                 var data = this.entries[this.currEntry];
 
-                if(data.Speed != 0)
+                if (data.Speed != 0)
                 {
                     this.paramID = ParameterID.POSITION_TARGET_SPEED_PARAM;
                     dataSetIdx = this.dataSetIndex;
-                    valueParameter = (int)data.Speed;
-                    exitStatus = this.inverterDriver.SettingRequest( this.paramID, this.systemIndex, dataSetIdx, valueParameter );
+                    valueParameter = data.Speed;
+                    exitStatus =
+                        this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, valueParameter);
                 }
 
-                if(data.Acceleration != 0)
+                if (data.Acceleration != 0)
                 {
                     this.paramID = ParameterID.POSITION_ACCELERATION_PARAM;
                     dataSetIdx = this.dataSetIndex;
-                    valueParameter = (int)data.Acceleration;
-                    exitStatus = this.inverterDriver.SettingRequest( this.paramID, this.systemIndex, dataSetIdx, valueParameter );
+                    valueParameter = data.Acceleration;
+                    exitStatus =
+                        this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, valueParameter);
                 }
 
-                if(data.Deceleration != 0)
+                if (data.Deceleration != 0)
                 {
                     this.paramID = ParameterID.POSITION_DECELERATION_PARAM;
                     dataSetIdx = this.dataSetIndex;
-                    valueParameter = (int)data.Deceleration;
-                    exitStatus = this.inverterDriver.SettingRequest( this.paramID, this.systemIndex, dataSetIdx, valueParameter );
+                    valueParameter = data.Deceleration;
+                    exitStatus =
+                        this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, valueParameter);
                 }
 
                 this.paramID = ParameterID.CONTROL_WORD_PARAM;
                 dataSetIdx = DATASET_FOR_CONTROL;
-                this.cmdWord.Set( (int)CTRLWBITS.NEW_SET_POINT, true );
+                this.cmdWord.Set((Int32) CTRLWBITS.NEW_SET_POINT, true);
 
-                bytes = BitArrayToByteArray( this.cmdWord );
-                value = BitConverter.ToUInt16( bytes, 0 );
+                bytes = BitArrayToByteArray(this.cmdWord);
+                value = BitConverter.ToUInt16(bytes, 0);
 
-                exitStatus = this.inverterDriver.SettingRequest( this.paramID, this.systemIndex, dataSetIdx, (object)value );
+                exitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, value);
                 exitStatus = InverterDriverExitStatus.Success;
                 this.paramID = ParameterID.CONTROL_WORD_PARAM;
                 dataSetIdx = DATASET_FOR_CONTROL;
-                this.cmdWord.Set( (int)CTRLWBITS.NEW_SET_POINT, false );
+                this.cmdWord.Set((Int32) CTRLWBITS.NEW_SET_POINT, false);
 
-                bytes = BitArrayToByteArray( this.cmdWord );
-                value = BitConverter.ToUInt16( bytes, 0 );
+                bytes = BitArrayToByteArray(this.cmdWord);
+                value = BitConverter.ToUInt16(bytes, 0);
 
-                exitStatus = this.inverterDriver.SettingRequest( this.paramID, this.systemIndex, dataSetIdx, (object)value );
+                exitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, value);
 
                 this.currEntry++;
             }
         }
 
-        private void executeCommand( int cmdIndex )
+        private void executeCommand(Int32 cmdIndex)
         {
-            if(cmdIndex > TOTAL_NUMBER_COMMANDS)
+            if (cmdIndex > TOTAL_NUMBER_COMMANDS)
                 return;
 
-            ushort value = 0x0000; byte[] bytes;
-            string error_Message;
-            byte dataSetIdx = 0x00;
-            var valueParameter = new object();
+            UInt16 value = 0x0000;
+            Byte[] bytes;
+            String error_Message;
+            Byte dataSetIdx = 0x00;
+            var valueParameter = new Object();
             var exitStatus = InverterDriverExitStatus.Success;
 
-            switch(cmdIndex)
+            switch (cmdIndex)
             {
                 //INFO Set the parameters--Idle State
                 case 1:
+                {
+                    this.paramID = ParameterID.POSITION_TARGET_POSITION_PARAM;
+                    dataSetIdx = this.dataSetIndex;
+                    valueParameter = this.targetPosition;
+                    exitStatus =
+                        this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, valueParameter);
+                    this.paramID = ParameterID.POSITION_TARGET_SPEED_PARAM;
+                    dataSetIdx = this.dataSetIndex;
+                    valueParameter = this.initialSpeed;
+                    if (exitStatus == InverterDriverExitStatus.Success)
                     {
-                        this.paramID = ParameterID.POSITION_TARGET_POSITION_PARAM;
-                        dataSetIdx = this.dataSetIndex;
-                        valueParameter = (int)this.targetPosition;
-                        exitStatus = this.inverterDriver.SettingRequest( this.paramID, this.systemIndex, dataSetIdx, valueParameter );
-                        this.paramID = ParameterID.POSITION_TARGET_SPEED_PARAM;
-                        dataSetIdx = this.dataSetIndex;
-                        valueParameter = (int)this.initialSpeed;
-                        if(exitStatus == InverterDriverExitStatus.Success)
-                        {
-                            //TEMP exitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, valueParameter);
-                        }
-
-                        break;
+                        //TEMP exitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, valueParameter);
                     }
 
-                    //INFO Disabeled Voltage
+                    break;
+                }
+
+                //INFO Disabeled Voltage
                 case 2:
-                    {
-                        this.paramID = ParameterID.CONTROL_WORD_PARAM;
-                        dataSetIdx = DATASET_FOR_CONTROL;
-                        this.cmdWord.SetAll( false );
-                        this.cmdWord.Set( (int)CTRLWBITS.MOTOR_SELECTION, true );
+                {
+                    this.paramID = ParameterID.CONTROL_WORD_PARAM;
+                    dataSetIdx = DATASET_FOR_CONTROL;
+                    this.cmdWord.SetAll(false);
+                    this.cmdWord.Set((Int32) CTRLWBITS.MOTOR_SELECTION, true);
 
-                        bytes = BitArrayToByteArray( this.cmdWord );
-                        value = BitConverter.ToUInt16( bytes, 0 );
-                        valueParameter = value;
+                    bytes = BitArrayToByteArray(this.cmdWord);
+                    value = BitConverter.ToUInt16(bytes, 0);
+                    valueParameter = value;
 
-                        exitStatus = this.inverterDriver.SettingRequest( this.paramID, this.systemIndex, dataSetIdx, valueParameter );
+                    exitStatus =
+                        this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, valueParameter);
 
-                        break;
-                    }
+                    break;
+                }
 
-                    //INFO Operation Mode
+                //INFO Operation Mode
                 case 3:
-                    {
-                        this.paramID = ParameterID.SET_OPERATING_MODE_PARAM;
-                        dataSetIdx = DATASET_FOR_CONTROL;
-                        valueParameter = (short)0x01;
+                {
+                    this.paramID = ParameterID.SET_OPERATING_MODE_PARAM;
+                    dataSetIdx = DATASET_FOR_CONTROL;
+                    valueParameter = (Int16) 0x01;
 
-                        exitStatus = this.inverterDriver.SettingRequest( this.paramID, this.systemIndex, dataSetIdx, valueParameter );
-                        break;
-                    }
+                    exitStatus =
+                        this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, valueParameter);
+                    break;
+                }
 
-                    //INFO Ready to Switch On
+                //INFO Ready to Switch On
                 case 4:
-                    {
-                        this.paramID = ParameterID.CONTROL_WORD_PARAM;
-                        dataSetIdx = DATASET_FOR_CONTROL;
-                        this.cmdWord.Set( (int)CTRLWBITS.ENABLE_VOLTAGE, true );
-                        this.cmdWord.Set( (int)CTRLWBITS.QUICK_STOP, true );
+                {
+                    this.paramID = ParameterID.CONTROL_WORD_PARAM;
+                    dataSetIdx = DATASET_FOR_CONTROL;
+                    this.cmdWord.Set((Int32) CTRLWBITS.ENABLE_VOLTAGE, true);
+                    this.cmdWord.Set((Int32) CTRLWBITS.QUICK_STOP, true);
 
-                        bytes = BitArrayToByteArray( this.cmdWord );
-                        value = BitConverter.ToUInt16( bytes, 0 );
-                        valueParameter = value;
+                    bytes = BitArrayToByteArray(this.cmdWord);
+                    value = BitConverter.ToUInt16(bytes, 0);
+                    valueParameter = value;
 
-                        exitStatus = this.inverterDriver.SettingRequest( this.paramID, this.systemIndex, dataSetIdx, valueParameter );
+                    exitStatus =
+                        this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, valueParameter);
 
-                        break;
-                    }
+                    break;
+                }
 
-                    //INFO Switch On
+                //INFO Switch On
                 case 5:
-                    {
-                        this.paramID = ParameterID.CONTROL_WORD_PARAM;
-                        dataSetIdx = DATASET_FOR_CONTROL;
-                        this.cmdWord.Set( (int)CTRLWBITS.SWITCH_ON, true );
+                {
+                    this.paramID = ParameterID.CONTROL_WORD_PARAM;
+                    dataSetIdx = DATASET_FOR_CONTROL;
+                    this.cmdWord.Set((Int32) CTRLWBITS.SWITCH_ON, true);
 
-                        bytes = BitArrayToByteArray( this.cmdWord );
-                        value = BitConverter.ToUInt16( bytes, 0 );
-                        valueParameter = value;
+                    bytes = BitArrayToByteArray(this.cmdWord);
+                    value = BitConverter.ToUInt16(bytes, 0);
+                    valueParameter = value;
 
-                        exitStatus = this.inverterDriver.SettingRequest( this.paramID, this.systemIndex, dataSetIdx, valueParameter );
+                    exitStatus =
+                        this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, valueParameter);
 
-                        break;
-                    }
+                    break;
+                }
 
-                    //INFO Enabled Operation
+                //INFO Enabled Operation
                 case 6:
-                    {
-                        this.paramID = ParameterID.CONTROL_WORD_PARAM;
-                        dataSetIdx = DATASET_FOR_CONTROL;
-                        this.cmdWord.Set( (int)CTRLWBITS.ENABLE_OPERATION, true );
-                        this.cmdWord.Set( (int)CTRLWBITS.CHANGE_ON_SET_POINT, false );
-                        this.cmdWord.Set( (int)CTRLWBITS.CHANGE_SET_IMMEDIATELY, true );
+                {
+                    this.paramID = ParameterID.CONTROL_WORD_PARAM;
+                    dataSetIdx = DATASET_FOR_CONTROL;
+                    this.cmdWord.Set((Int32) CTRLWBITS.ENABLE_OPERATION, true);
+                    this.cmdWord.Set((Int32) CTRLWBITS.CHANGE_ON_SET_POINT, false);
+                    this.cmdWord.Set((Int32) CTRLWBITS.CHANGE_SET_IMMEDIATELY, true);
 
-                        bytes = BitArrayToByteArray( this.cmdWord );
-                        value = BitConverter.ToUInt16( bytes, 0 );
-                        valueParameter = value;
+                    bytes = BitArrayToByteArray(this.cmdWord);
+                    value = BitConverter.ToUInt16(bytes, 0);
+                    valueParameter = value;
 
-                        exitStatus = this.inverterDriver.SettingRequest( this.paramID, this.systemIndex, dataSetIdx, valueParameter );
+                    exitStatus =
+                        this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, valueParameter);
 
-                        break;
-                    }
+                    break;
+                }
 
-                    //INFO Set New Position
+                //INFO Set New Position
                 case 7:
-                    {
-                        this.paramID = ParameterID.CONTROL_WORD_PARAM;
-                        dataSetIdx = DATASET_FOR_CONTROL;
-                        this.cmdWord.Set( (int)CTRLWBITS.NEW_SET_POINT, true );
-                        this.cmdWord.Set( (int)CTRLWBITS.ABS_REL, false );
+                {
+                    this.paramID = ParameterID.CONTROL_WORD_PARAM;
+                    dataSetIdx = DATASET_FOR_CONTROL;
+                    this.cmdWord.Set((Int32) CTRLWBITS.NEW_SET_POINT, true);
+                    this.cmdWord.Set((Int32) CTRLWBITS.ABS_REL, false);
 
-                        bytes = BitArrayToByteArray( this.cmdWord );
-                        value = BitConverter.ToUInt16( bytes, 0 );
-                        valueParameter = value;
+                    bytes = BitArrayToByteArray(this.cmdWord);
+                    value = BitConverter.ToUInt16(bytes, 0);
+                    valueParameter = value;
 
-                        exitStatus = this.inverterDriver.SettingRequest( this.paramID, this.systemIndex, dataSetIdx, valueParameter );
+                    exitStatus =
+                        this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, valueParameter);
 
-                        exitStatus = InverterDriverExitStatus.Success;
-                        this.paramID = ParameterID.CONTROL_WORD_PARAM;
-                        dataSetIdx = DATASET_FOR_CONTROL;
-                        this.cmdWord.Set( (int)CTRLWBITS.NEW_SET_POINT, false );
+                    exitStatus = InverterDriverExitStatus.Success;
+                    this.paramID = ParameterID.CONTROL_WORD_PARAM;
+                    dataSetIdx = DATASET_FOR_CONTROL;
+                    this.cmdWord.Set((Int32) CTRLWBITS.NEW_SET_POINT, false);
 
-                        bytes = BitArrayToByteArray( this.cmdWord );
-                        value = BitConverter.ToUInt16( bytes, 0 );
+                    bytes = BitArrayToByteArray(this.cmdWord);
+                    value = BitConverter.ToUInt16(bytes, 0);
 
-                        exitStatus = this.inverterDriver.SettingRequest( this.paramID, this.systemIndex, dataSetIdx, (object)value );
+                    exitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, value);
 
-                        break;
-                    }
+                    break;
+                }
 
                 default:
-                    {
-                        error_Message = "Unknown Operation";
-                        ErrorEvent?.Invoke();
-                        break;
-                    }
+                {
+                    error_Message = "Unknown Operation";
+                    this.ErrorEvent?.Invoke();
+                    break;
+                }
             }
 
-            if(exitStatus != InverterDriverExitStatus.Success)
+            if (exitStatus != InverterDriverExitStatus.Success)
             {
-                switch(exitStatus)
+                switch (exitStatus)
                 {
-                    case (InverterDriverExitStatus.InvalidArgument): error_Message = "Invalid Arguments"; break;
-                    case (InverterDriverExitStatus.InvalidOperation): error_Message = "Invalid Operation"; break;
-                    case (InverterDriverExitStatus.Failure): error_Message = "Operation Failed"; break;
-                    default: error_Message = "Unknown Operation"; break;
+                    case InverterDriverExitStatus.InvalidArgument:
+                        error_Message = "Invalid Arguments";
+                        break;
+                    case InverterDriverExitStatus.InvalidOperation:
+                        error_Message = "Invalid Operation";
+                        break;
+                    case InverterDriverExitStatus.Failure:
+                        error_Message = "Operation Failed";
+                        break;
+                    default:
+                        error_Message = "Unknown Operation";
+                        break;
                 }
-                ErrorEvent?.Invoke();
+
+                this.ErrorEvent?.Invoke();
             }
         }
 
-        private void OnChangeSetup( object data, bool bTimeOut )
+        private void OnChangeSetup(Object data, Boolean bTimeOut)
         {
             this.executeChangeCurrentSetup();
         }
 
-        private void OnExecutionThread( object data, bool bTimeOut )
+        private void OnExecutionThread(Object data, Boolean bTimeOut)
         {
-            this.executeCommand( this.currentCmdIndex );
+            this.executeCommand(this.currentCmdIndex);
         }
 
-        private void OnReceiveThread( object data, bool bTimeOut )
+        private void OnReceiveThread(Object data, Boolean bTimeOut)
         {
-            if(bTimeOut)
+            if (bTimeOut)
             {
-                lock(lockObj)
+                lock (lockObj)
                 {
                     this.currentShaftPosition = this.inverterDriver.Current_Position_Horizontal_Shaft;
 
-                    QueryPerformanceCounter( out var pTime );
-                    var offsetTime_ms = (int)(((double)(pTime - this.pTimePrev) * 1000) / this.freq);
+                    QueryPerformanceCounter(out var pTime);
+                    var offsetTime_ms = (Int32) ( (Double) ( pTime - this.pTimePrev ) * 1000 / this.freq );
                     this.pTimePrev = pTime;
 
-                    logger.Log( LogLevel.Debug, String.Format( " ----> Current horizontal shaft postition: {0} :: time out: {1} ms", this.currentShaftPosition, offsetTime_ms ) );
+                    logger.Log(LogLevel.Debug,
+                        String.Format(" ----> Current horizontal shaft postition: {0} :: time out: {1} ms",
+                            this.currentShaftPosition, offsetTime_ms));
 
                     this.statusWord = this.inverterDriver.Status_Word;
                 }
 
-                if(this.checkCommandTransition( this.currentCmdIndex ))
+                if (this.checkCommandTransition(this.currentCmdIndex))
                 {
                     this.currentCmdIndex++;
-                    if(this.currentCmdIndex <= TOTAL_NUMBER_COMMANDS)
-                    {
+                    if (this.currentCmdIndex <= TOTAL_NUMBER_COMMANDS)
                         this.eventForExecuteStep?.Set();
-                    }
                     else
                     {
-                        logger.Log( LogLevel.Debug, " ---> Send a stop command" );
+                        logger.Log(LogLevel.Debug, " ---> Send a stop command");
                         this.Stop();
                     }
                 }
 
-                if(this.currentCmdIndex == TOTAL_NUMBER_COMMANDS)
-                {
-                    if(this.entries.Count > 0 && this.checkChangeSetup( this.currEntry ))
-                    {
+                if (this.currentCmdIndex == TOTAL_NUMBER_COMMANDS)
+                    if (this.entries.Count > 0 && this.checkChangeSetup(this.currEntry))
                         this.eventForChangeSetup?.Set();
-                    }
-                }
             }
         }
 
-        private void SelectTelegram( Object sender, SelectTelegramDoneEventArgs eventArgs )
+        private void SelectTelegram(Object sender, SelectTelegramDoneEventArgs eventArgs)
         {
             //TODO
         }

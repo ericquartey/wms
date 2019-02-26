@@ -1,5 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.EventParameters;
+﻿using System;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_DataLayer;
@@ -27,7 +27,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Constructors
 
-        public HomingErrorState(StateMachineHoming parent, INewInverterDriver driver, INewRemoteIODriver remoteIODriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
+        public HomingErrorState(StateMachineHoming parent, INewInverterDriver driver, INewRemoteIODriver remoteIODriver,
+            IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
         {
             this.parent = parent;
             this.driver = driver;
@@ -37,7 +38,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
             var notifyEvent = new NotificationMessage(null, "Homing Error", MessageActor.Any,
                 MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationError,
-                MessageVerbosity.Info, ErrorLevel.Error);
+                ErrorLevel.Error);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
         }
 
@@ -45,7 +46,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Properties
 
-        public string Type => "Homing Error State";
+        public String Type => "Homing Error State";
 
         #endregion
 
@@ -57,7 +58,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         public void NotifyMessage(CommandMessage message)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Stop()

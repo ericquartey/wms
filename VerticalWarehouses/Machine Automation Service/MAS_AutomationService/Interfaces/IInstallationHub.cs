@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Ferretto.VW.MAS_AutomationService.Interfaces
 {
@@ -6,7 +7,7 @@ namespace Ferretto.VW.MAS_AutomationService.Interfaces
     {
         #region Methods
 
-        Task OnSendMessageToAllConnectedClients(string message);
+        Task OnSendMessageToAllConnectedClients(String message);
 
         #endregion
     }

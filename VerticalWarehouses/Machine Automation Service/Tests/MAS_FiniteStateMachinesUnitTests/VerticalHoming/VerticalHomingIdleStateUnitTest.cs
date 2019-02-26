@@ -1,5 +1,4 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_DataLayer;
@@ -24,10 +23,12 @@ namespace MAS_FiniteStateMachinesUnitTests.VerticalHoming
             var writeLogServiceMock = new Mock<IWriteLogService>();
             var eventAggregatorMock = new Mock<IEventAggregator>();
             var notifyDriverEvent = new NotificationEvent();
-            eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<NotificationEvent>()).Returns(notifyDriverEvent);
+            eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<NotificationEvent>())
+                .Returns(notifyDriverEvent);
             var stateMachine = new StateMachineVerticalHoming(inverterDriverMock.Object, eventAggregatorMock.Object);
 
-            var state = new VerticalHomingIdleState(stateMachine, inverterDriverMock.Object, eventAggregatorMock.Object);
+            var state = new VerticalHomingIdleState(stateMachine, inverterDriverMock.Object,
+                eventAggregatorMock.Object);
 
             Assert.IsNotNull(state);
         }
@@ -80,12 +81,16 @@ namespace MAS_FiniteStateMachinesUnitTests.VerticalHoming
             var writeLogServiceMock = new Mock<IWriteLogService>();
             var eventAggregatorMock = new Mock<IEventAggregator>();
             var notifyDriverEvent = new NotificationEvent();
-            eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<NotificationEvent>()).Returns(notifyDriverEvent);
+            eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<NotificationEvent>())
+                .Returns(notifyDriverEvent);
             var stateMachine = new StateMachineVerticalHoming(inverterDriverMock.Object, eventAggregatorMock.Object);
 
-            var state = new VerticalHomingIdleState(stateMachine, inverterDriverMock.Object, eventAggregatorMock.Object);
+            var state = new VerticalHomingIdleState(stateMachine, inverterDriverMock.Object,
+                eventAggregatorMock.Object);
 
-            notifyDriverEvent.Publish(new NotificationMessage( null, "Homing Error", MessageActor.FiniteStateMachines, MessageActor.AutomationService, MessageType.Homing, MessageStatus.OperationError, MessageVerbosity.Info, ErrorLevel.Error));
+            notifyDriverEvent.Publish(new NotificationMessage(null, "Homing Error", MessageActor.FiniteStateMachines,
+                MessageActor.AutomationService, MessageType.Homing, MessageStatus.OperationError,
+                ErrorLevel.Error));
 
             Assert.AreEqual(stateMachine.Type, "Vertical Homing Error State");
         }

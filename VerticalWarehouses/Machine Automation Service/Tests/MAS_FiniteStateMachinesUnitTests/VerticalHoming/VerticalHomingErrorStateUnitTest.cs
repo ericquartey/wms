@@ -21,7 +21,8 @@ namespace MAS_FiniteStateMachinesUnitTests.VerticalHoming
             var eventAggregatorMock = new Mock<IEventAggregator>();
             var stateMachine = new StateMachineVerticalHoming(inverterDriverMock.Object, eventAggregatorMock.Object);
 
-            var state = new VerticalHomingErrorState(stateMachine, inverterDriverMock.Object, eventAggregatorMock.Object);
+            var state = new VerticalHomingErrorState(stateMachine, inverterDriverMock.Object,
+                eventAggregatorMock.Object);
 
             Assert.IsNotNull(state);
         }

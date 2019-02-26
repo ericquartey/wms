@@ -1,5 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.EventParameters;
+﻿using System;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_DataLayer;
@@ -19,15 +19,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly INewRemoteIODriver remoteIODriver;
+        private readonly StateMachineHoming parent;
 
-        private StateMachineHoming parent;
+        private readonly INewRemoteIODriver remoteIODriver;
 
         #endregion
 
         #region Constructors
 
-        public HomingDoneState(StateMachineHoming parent, INewInverterDriver driver, INewRemoteIODriver remoteIODriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
+        public HomingDoneState(StateMachineHoming parent, INewInverterDriver driver, INewRemoteIODriver remoteIODriver,
+            IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
         {
             this.parent = parent;
             this.driver = driver;
@@ -46,7 +47,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Properties
 
-        public string Type => "Homing Done State";
+        public String Type => "Homing Done State";
 
         #endregion
 
@@ -58,7 +59,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         public void NotifyMessage(CommandMessage message)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Stop()
@@ -68,26 +69,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         private void notifyEventHandler(NotificationMessage notification)
         {
             if (notification.Type == MessageType.SwitchHorizontalToVertical)
-            {
                 switch (notification.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        {
-                            var notifyEvent = new NotificationMessage( null, "Homing Done", MessageActor.Any, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationEnd, MessageVerbosity.Info);
-                            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
+                    {
+                        var notifyEvent = new NotificationMessage(null, "Homing Done", MessageActor.Any,
+                            MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationEnd);
+                        this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
 
-                            break;
-                        }
+                        break;
+                    }
                     case MessageStatus.OperationError:
-                        {
-                            break;
-                        }
-                    default:
-                        {
-                            break;
-                        }
+                    {
+                        break;
+                    }
                 }
-            }
 
             this.eventAggregator.GetEvent<NotificationEvent>().Unsubscribe(this.notifyEventHandler);
         }

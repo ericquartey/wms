@@ -1,5 +1,6 @@
-﻿using Ferretto.VW.MAS_InverterDriver.Interface;
+﻿using System;
 using Ferretto.VW.InverterDriver;
+using Ferretto.VW.MAS_InverterDriver.Interface;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_InverterDriver
@@ -16,7 +17,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private readonly IInverterDriver inverterDriver;
 
-        private  IInverterActions inverterAction;
+        private IInverterActions inverterAction;
 
         #endregion
 
@@ -27,7 +28,6 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.inverterDriver = inverterDriver;
             this.eventAggregator = eventAggregator;
             this.inverterDriver.Initialize();
-            
         }
 
         #endregion
@@ -39,14 +39,11 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.inverterDriver.Terminate();
         }
 
-        public bool[] GetSensorsStates()
+        public Boolean[] GetSensorsStates()
         {
-            if (null == this.inverterDriver)
-            {
-                return null;
-            }
+            if (null == this.inverterDriver) return null;
 
-            var sensors = new bool[5];
+            var sensors = new Boolean[5];
             sensors[0] = this.inverterDriver.Brake_Resistance_Overtemperature;
             sensors[1] = this.inverterDriver.Emergency_Stop;
             sensors[2] = this.inverterDriver.Pawl_Sensor_Zero;

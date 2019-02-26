@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
+﻿using System;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
@@ -12,7 +13,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
             this.parentStateMachine = parentMachine;
 
             var newMessage = new CommandMessage(null,
-                $"Mission State Started",
+                "Mission State Started",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.StartAction,
@@ -20,7 +21,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
             this.parentStateMachine.PublishCommandMessage(newMessage);
 
             var inverterMessage = new CommandMessage(null,
-                $"Mission State Started",
+                "Mission State Started",
                 MessageActor.InverterDriver,
                 MessageActor.FiniteStateMachines,
                 MessageType.StartAction,
@@ -32,7 +33,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         #region Properties
 
-        public override string Type => $"MissionStartState";
+        public override String Type => "MissionStartState";
 
         #endregion
 
@@ -40,7 +41,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         public override void MakeOperation()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override void NotifyMessage(CommandMessage message)
@@ -65,13 +66,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         public override void Stop()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         private void ProcessEndAction(CommandMessage message)
         {
             var newMessage = new CommandMessage(null,
-                $"End Mission",
+                "End Mission",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.EndAction,
@@ -82,7 +83,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
         private void ProcessErrorAction(CommandMessage message)
         {
             var newMessage = new CommandMessage(null,
-                $"Stop Requested",
+                "Stop Requested",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.StopAction,
@@ -93,7 +94,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
         private void ProcessStopAction(CommandMessage message)
         {
             var newMessage = new CommandMessage(null,
-                $"Stop Requested",
+                "Stop Requested",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.StopAction,

@@ -1,5 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.EventParameters;
+﻿using System;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_DataLayer;
@@ -19,15 +19,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly INewRemoteIODriver remoteIODriver;
+        private readonly StateMachineHoming parent;
 
-        private StateMachineHoming parent;
+        private readonly INewRemoteIODriver remoteIODriver;
 
         #endregion
 
         #region Constructors
 
-        public HomingIdleState(StateMachineHoming parent, INewInverterDriver driver, INewRemoteIODriver remoteIODriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
+        public HomingIdleState(StateMachineHoming parent, INewInverterDriver driver, INewRemoteIODriver remoteIODriver,
+            IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
         {
             this.parent = parent;
             this.driver = driver;
@@ -42,7 +43,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Properties
 
-        public string Type => "Homing Idle State";
+        public String Type => "Homing Idle State";
 
         #endregion
 
@@ -55,7 +56,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         public void NotifyMessage(CommandMessage message)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Stop()
@@ -63,8 +64,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.eventAggregator.GetEvent<NotificationEvent>().Unsubscribe(this.notifyEventHandler);
 
             var notifyEvent = new NotificationMessage(null, "Homing Stopped", MessageActor.Any,
-                MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OpeerationStop,
-                MessageVerbosity.Info);
+                MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationStop);
 
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
         }
@@ -72,26 +72,22 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         private void notifyEventHandler(NotificationMessage notification)
         {
             if (notification.Type == MessageType.SwitchVerticalToHorizontal)
-            {
                 switch (notification.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        {
-                            this.parent.ChangeState(new HorizontalSwitchDoneState(this.parent, this.driver, this.remoteIODriver, this.data, this.eventAggregator));
-                            this.parent.MakeOperation();
-                            break;
-                        }
+                    {
+                        this.parent.ChangeState(new HorizontalSwitchDoneState(this.parent, this.driver,
+                            this.remoteIODriver, this.data, this.eventAggregator));
+                        this.parent.MakeOperation();
+                        break;
+                    }
                     case MessageStatus.OperationError:
-                        {
-                            this.parent.ChangeState(new HomingErrorState(this.parent, this.driver, this.remoteIODriver, this.data, this.eventAggregator));
-                            break;
-                        }
-                    default:
-                        {
-                            break;
-                        }
+                    {
+                        this.parent.ChangeState(new HomingErrorState(this.parent, this.driver, this.remoteIODriver,
+                            this.data, this.eventAggregator));
+                        break;
+                    }
                 }
-            }
 
             this.eventAggregator.GetEvent<NotificationEvent>().Unsubscribe(this.notifyEventHandler);
         }

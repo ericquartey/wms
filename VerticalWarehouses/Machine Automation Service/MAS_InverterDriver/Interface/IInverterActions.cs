@@ -2,8 +2,12 @@
 {
     public interface IInverterActions
     {
+        #region Events
+
         event EndEventHandler EndEvent;
+
         event ErrorEventHandler ErrorEvent;
+
+        #endregion
     }
-    
 }

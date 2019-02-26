@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Messages;
+﻿using System;
+using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_InverterDriver;
 using Prism.Events;
 
@@ -28,7 +29,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Properties
 
-        public string Type => this.state.Type;
+        public String Type => this.state.Type;
 
         #endregion
 
@@ -46,17 +47,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         public void NotifyMessage(CommandMessage message)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void PublishCommandMessage(CommandMessage message)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void PublishNotificationMessage(NotificationMessage message)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Start()

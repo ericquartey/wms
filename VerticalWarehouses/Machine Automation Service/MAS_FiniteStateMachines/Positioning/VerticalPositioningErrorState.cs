@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Messages;
+﻿using System;
+using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_InverterDriver;
 using Prism.Events;
 
@@ -18,7 +19,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #region Constructors
 
-        public VerticalPositioningErrorState(StateMachineVerticalPositioning parent, INewInverterDriver driver, IEventAggregator eventAggregator)
+        public VerticalPositioningErrorState(StateMachineVerticalPositioning parent, INewInverterDriver driver,
+            IEventAggregator eventAggregator)
         {
             this.parent = parent;
             this.driver = driver;
@@ -29,7 +31,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #region Properties
 
-        public string Type => "Vertical Positioning Error State";
+        public String Type => "Vertical Positioning Error State";
 
         #endregion
 
@@ -41,7 +43,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         public void NotifyMessage(CommandMessage message)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Stop()

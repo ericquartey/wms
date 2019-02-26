@@ -1,10 +1,12 @@
-﻿namespace Ferretto.VW.MAS_DataLayer
+﻿using System;
+
+namespace Ferretto.VW.MAS_DataLayer
 {
     public class ReturnMissionPosition
     {
         #region Fields
 
-        public decimal ReturnCoord;
+        public Decimal ReturnCoord;
 
         public Side ReturnSide;
 

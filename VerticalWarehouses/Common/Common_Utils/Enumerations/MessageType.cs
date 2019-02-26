@@ -37,5 +37,4 @@
         ExecuteVerticalPositioning,
         ExecuteStopVerticalPositioning
     }
-
 }

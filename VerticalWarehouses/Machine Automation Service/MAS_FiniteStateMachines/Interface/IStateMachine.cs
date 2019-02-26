@@ -8,9 +8,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         void ChangeState(IState newState, CommandMessage message = null);
 
-        void NotifyMessage( CommandMessage message );
+        void NotifyMessage(CommandMessage message);
 
-        void PublishCommandMessage( CommandMessage message );
+        void PublishCommandMessage(CommandMessage message);
 
         void PublishNotificationMessage(NotificationMessage message);
 

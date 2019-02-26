@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.RemoteIODriver;
@@ -14,13 +13,13 @@ namespace Ferretto.VW.MAS_IODriver
     {
         #region Fields
 
-        private const int DELAY_TIME = 75;
+        private const Int32 DELAY_TIME = 75;
 
-        private const int ENCODER_CRADLE = 2;
+        private const Int32 ENCODER_CRADLE = 2;
 
-        private const int ENCODER_ELEVATOR = 1;
+        private const Int32 ENCODER_ELEVATOR = 1;
 
-        private const int N_DIGITAL_OUTPUT_LINES = 5;
+        private const Int32 N_DIGITAL_OUTPUT_LINES = 5;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -49,20 +48,20 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Properties
 
-        public List<bool> Inputs => this.remoteIO.Inputs;
+        public List<Boolean> Inputs => this.remoteIO.Inputs;
 
-        public string IPAddress
+        public String IPAddress
         {
             get => this.remoteIO.IPAddress;
             set => this.remoteIO.IPAddress = value;
         }
 
-        public List<bool> Outputs
+        public List<Boolean> Outputs
         {
             set => this.remoteIO.Outputs = value;
         }
 
-        public int Port
+        public Int32 Port
         {
             get => this.remoteIO.Port;
             set => this.remoteIO.Port = value;
@@ -86,52 +85,40 @@ namespace Ferretto.VW.MAS_IODriver
 
         public void SwitchHorizontalToVertical()
         {
-            var digitalOutput = new List<bool>();
-            for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++)
-            {
-                digitalOutput.Add(false);
-            }
+            var digitalOutput = new List<Boolean>();
+            for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++) digitalOutput.Add(false);
 
             this.remoteIO.Outputs = digitalOutput;
             Thread.Sleep(DELAY_TIME);
 
             digitalOutput.Clear();
-            for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++)
-            {
-                digitalOutput.Add((i == ENCODER_ELEVATOR) ? true : false);
-            }
+            for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++) digitalOutput.Add(i == ENCODER_ELEVATOR ? true : false);
 
             this.remoteIO.Outputs = digitalOutput;
             Thread.Sleep(DELAY_TIME);
 
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null,
                 "Switch Horizontal to Vertical Ended", MessageActor.Any, MessageActor.IODriver,
-                MessageType.SwitchHorizontalToVertical, MessageStatus.OperationEnd, MessageVerbosity.Info));
+                MessageType.SwitchHorizontalToVertical, MessageStatus.OperationEnd));
         }
 
         public void SwitchVerticalToHorizontal()
         {
-            var digitalOutput = new List<bool>();
-            for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++)
-            {
-                digitalOutput.Add(false);
-            }
+            var digitalOutput = new List<Boolean>();
+            for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++) digitalOutput.Add(false);
 
             this.remoteIO.Outputs = digitalOutput;
             Thread.Sleep(DELAY_TIME);
 
             digitalOutput.Clear();
-            for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++)
-            {
-                digitalOutput.Add((i == ENCODER_CRADLE) ? true : false);
-            }
+            for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++) digitalOutput.Add(i == ENCODER_CRADLE ? true : false);
 
             this.remoteIO.Outputs = digitalOutput;
             Thread.Sleep(DELAY_TIME);
 
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null,
                 "Switch Vertical to Horizontal Ended", MessageActor.Any, MessageActor.IODriver,
-                MessageType.SwitchVerticalToHorizontal, MessageStatus.OperationEnd, MessageVerbosity.Info));
+                MessageType.SwitchVerticalToHorizontal, MessageStatus.OperationEnd));
         }
 
         #endregion

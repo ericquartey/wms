@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Messages;
+﻿using System;
+using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_InverterDriver;
 using Prism.Events;
 
@@ -28,13 +29,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #region Properties
 
-        public string Type => this.state.Type;
+        public String Type => this.state.Type;
 
         #endregion
 
         #region Methods
 
-        public void ChangeState(IState newState,CommandMessage message = null)
+        public void ChangeState(IState newState, CommandMessage message = null)
         {
             this.state = newState;
         }
@@ -46,22 +47,22 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         public void NotifyMessage(CommandMessage message)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void PublishCommandMessage(CommandMessage message)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public void PublishNotificationMessage(NotificationMessage message)
-        {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void PublishMessage(CommandMessage message)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
+        }
+
+        public void PublishNotificationMessage(NotificationMessage message)
+        {
+            throw new NotImplementedException();
         }
 
         public void Start()

@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.InverterDriver;
+﻿using System;
+using Ferretto.VW.InverterDriver;
 using Ferretto.VW.InverterDriver.Interface;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_DataLayer;
@@ -6,15 +7,14 @@ using Ferretto.VW.MAS_FiniteStateMachines;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_IODriver;
 using Ferretto.VW.MAS_MissionsManager;
+using Ferretto.VW.RemoteIODriver;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Prism.Events;
-using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS_AutomationService
     {
         #region Fields
 
-        private const string ConnectionStringName = "AutomationService";
+        private const String ConnectionStringName = "AutomationService";
 
         #endregion
 
@@ -47,18 +47,11 @@ namespace Ferretto.VW.MAS_AutomationService
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-            }
             else
-            {
                 app.UseHsts();
-            }
 
-            app.UseSignalR(routes =>
-            {
-                routes.MapHub<InstallationHub>($"/installation-endpoint", options => { });
-            });
+            app.UseSignalR(routes => { routes.MapHub<InstallationHub>("/installation-endpoint", options => { }); });
 
             app.UseHttpsRedirection();
             app.UseMvc();
@@ -72,7 +65,8 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSignalR();
 
             var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
-            services.AddDbContext<DataLayerContext>(options => options.UseInMemoryDatabase("InMemoryWorkingDB"), ServiceLifetime.Singleton);
+            services.AddDbContext<DataLayerContext>(options => options.UseInMemoryDatabase("InMemoryWorkingDB"),
+                ServiceLifetime.Singleton);
 
             services.AddHostedService<AutomationService>();
             services.AddHostedService<MissionsManager>();
@@ -84,24 +78,25 @@ namespace Ferretto.VW.MAS_AutomationService
 
             services.AddSingleton<IEventAggregator, EventAggregator>();
             services.AddSingleton<IDataLayer, DataLayer>(provider => new DataLayer(
-               connectionString,
+                connectionString,
                 provider.GetService<DataLayerContext>(),
                 provider.GetService<IEventAggregator>()));
 
-            services.AddSingleton<IWriteLogService, DataLayer>(provider => provider.GetService<IDataLayer>() as DataLayer);
+            services.AddSingleton<IWriteLogService, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
 
             services.AddSingleton<ISocketTransport, SocketTransport>();
 
             //TODO Old InverterDriver Registration to be removed after code refactoring completed
-            services.AddSingleton<InverterDriver.IInverterDriver, InverterDriver.InverterDriver>();
+            services.AddSingleton<IInverterDriver, InverterDriver.InverterDriver>();
 
             //TODO Old RemoteIODriver Registration to be removed after code refactoring completed
-            services.AddSingleton<RemoteIODriver.IRemoteIO, RemoteIODriver.RemoteIO>();
+            services.AddSingleton<IRemoteIO, RemoteIO>();
         }
 
         private void RegisterInverterDriver(IServiceCollection services)
         {
-            var useMockedInverterDriver = this.Configuration.GetValue<bool>("Vertimag:InverterDriver:UseMock");
+            var useMockedInverterDriver = this.Configuration.GetValue<Boolean>("Vertimag:InverterDriver:UseMock");
             if (useMockedInverterDriver)
             {
                 services.AddHostedService<HostedInverterDriverMock>();
@@ -116,15 +111,11 @@ namespace Ferretto.VW.MAS_AutomationService
 
         private void RegisterRemoteIODriver(IServiceCollection services)
         {
-            var useRemoteIODriver = this.Configuration.GetValue<bool>("Vertimag:RemoteIODriver:UseMock");
+            var useRemoteIODriver = this.Configuration.GetValue<Boolean>("Vertimag:RemoteIODriver:UseMock");
             if (useRemoteIODriver)
-            {
                 services.AddSingleton<INewRemoteIODriver, NewRemoteIODriverMock>();
-            }
             else
-            {
                 services.AddSingleton<INewRemoteIODriver, NewRemoteIODriver>();
-            }
         }
 
         #endregion

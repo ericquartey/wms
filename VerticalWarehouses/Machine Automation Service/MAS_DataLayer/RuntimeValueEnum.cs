@@ -2,6 +2,6 @@
 {
     public enum RuntimeValueEnum : long
     {
-        homingDone,
+        homingDone
     }
 }

@@ -1,5 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.EventParameters;
+﻿using System;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_InverterDriver;
@@ -21,13 +21,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Constructors
 
-        public VerticalHomingDoneState(StateMachineVerticalHoming parent, INewInverterDriver driver, IEventAggregator eventAggregator)
+        public VerticalHomingDoneState(StateMachineVerticalHoming parent, INewInverterDriver driver,
+            IEventAggregator eventAggregator)
         {
             this.parent = parent;
             this.driver = driver;
             this.eventAggregator = eventAggregator;
 
-            var notifyEvent = new NotificationMessage(null, "Homing done", MessageActor.Any, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationEnd, MessageVerbosity.Info);
+            var notifyEvent = new NotificationMessage(null, "Homing done", MessageActor.Any,
+                MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationEnd);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
         }
 
@@ -35,7 +37,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Properties
 
-        public string Type => "Vertical Homing Done State";
+        public String Type => "Vertical Homing Done State";
 
         #endregion
 
@@ -47,12 +49,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         public void NotifyMessage(CommandMessage message)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Stop()
         {
-            var notifyEvent = new NotificationMessage(null, "Homing stopped", MessageActor.Any, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OpeerationStop, MessageVerbosity.Info);
+            var notifyEvent = new NotificationMessage(null, "Homing stopped", MessageActor.Any,
+                MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationStop);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
         }
 

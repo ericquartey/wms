@@ -1,12 +1,4 @@
-﻿using Ferretto.VW.Common_Utils.EventParameters;
-using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.MAS_DataLayer;
-using Ferretto.VW.MAS_FiniteStateMachines;
-using Ferretto.VW.MAS_InverterDriver;
-using Ferretto.VW.MAS_IODriver;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Prism.Events;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MAS_FiniteStateMachinesUnitTests
 {
@@ -16,7 +8,7 @@ namespace MAS_FiniteStateMachinesUnitTests
         #region Methods
 
         [TestMethod]
-        [TestCategory( "Unit" )]
+        [TestCategory("Unit")]
         public void TestFiniteStateMachines_ExecuteVerticalHoming_Success()
         {
             //var inverterDriverMock = new Mock<INewInverterDriver>();
@@ -45,7 +37,7 @@ namespace MAS_FiniteStateMachinesUnitTests
         }
 
         [TestMethod]
-        [TestCategory( "Unit" )]
+        [TestCategory("Unit")]
         public void TestFiniteStateMachinesCreate()
         {
             //var inverterDriverMock = new Mock<INewInverterDriver>();
