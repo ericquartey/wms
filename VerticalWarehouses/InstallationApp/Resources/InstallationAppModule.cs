@@ -1,5 +1,7 @@
-﻿using Ferretto.VW.InstallationApp.ServiceUtilities;
+﻿using Ferretto.VW.InstallationApp.Interfaces;
+using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
+using Ferretto.VW.InstallationApp;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 
@@ -50,6 +52,7 @@ namespace Ferretto.VW.InstallationApp
             var weightControlVMInstance = new WeightControlViewModel();
             var mainWindowVMInstance = new MainWindowViewModel();
             var helpMainWindowInstance = new HelpMainWindow();
+            var cellsSideControlVMInstance = new CellsSideControlViewModel();
 
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
             this.container.RegisterInstance<IBeltBurnishingViewModel>(beltBurnishingVMInstance);
@@ -83,6 +86,7 @@ namespace Ferretto.VW.InstallationApp
             this.container.RegisterInstance<IWeightControlViewModel>(weightControlVMInstance);
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
             this.container.RegisterInstance<IHelpMainWindow>(helpMainWindowInstance);
+            this.container.RegisterInstance<ICellsSideControlViewModel>(cellsSideControlVMInstance);
 
             lSMTNavigationButtonsVMInstance.InitializeViewModel(this.container);
             lSMTMainVMInstance.InitializeViewModel(this.container);

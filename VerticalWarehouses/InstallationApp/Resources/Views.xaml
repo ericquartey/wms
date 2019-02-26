@@ -89,4 +89,7 @@
     <DataTemplate DataType="{x:Type local:SSMainViewModel}">
         <local:SSMainView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type local:CellsSideControlViewModel}">
+        <local:CellsSideControlView />
+    </DataTemplate>
 </ResourceDictionary>

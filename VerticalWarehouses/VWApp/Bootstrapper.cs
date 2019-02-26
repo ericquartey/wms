@@ -1,12 +1,15 @@
 ﻿using System.Windows;
 using Ferretto.VW.ActionBlocks.Source.ActionsBasic;
 using Ferretto.VW.InstallationApp;
+using Ferretto.VW.InstallationApp;
+using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.Navigation;
 using Ferretto.VW.Utils.Source;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Mvvm;
 using Prism.Unity;
+using Ferretto.VW.InstallationApp;
 
 namespace Ferretto.VW.VWApp
 {
@@ -57,6 +60,7 @@ namespace Ferretto.VW.VWApp
             this.BindViewModelToView<IVerticalOffsetCalibrationViewModel, VerticalOffsetCalibrationView>();
             this.BindViewModelToView<IWeightControlViewModel, WeightControlView>();
             this.BindViewModelToView<IMainWindowViewModel, InstallationApp.MainWindow>();
+            this.BindViewModelToView<ICellsSideControlViewModel, CellsSideControlView>();
         }
 
         protected override DependencyObject CreateShell()

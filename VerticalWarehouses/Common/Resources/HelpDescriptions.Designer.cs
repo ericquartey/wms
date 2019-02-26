@@ -223,6 +223,60 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCSCApplyCorrection.
+        /// </summary>
+        public static string HelpCSCApplyCorrection {
+            get {
+                return ResourceManager.GetString("HelpCSCApplyCorrection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCSCCorrection.
+        /// </summary>
+        public static string HelpCSCCorrection {
+            get {
+                return ResourceManager.GetString("HelpCSCCorrection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCSCDescription.
+        /// </summary>
+        public static string HelpCSCDescription {
+            get {
+                return ResourceManager.GetString("HelpCSCDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCSCFinalCell.
+        /// </summary>
+        public static string HelpCSCFinalCell {
+            get {
+                return ResourceManager.GetString("HelpCSCFinalCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCSCInitialCell.
+        /// </summary>
+        public static string HelpCSCInitialCell {
+            get {
+                return ResourceManager.GetString("HelpCSCInitialCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCSCSelectedSide.
+        /// </summary>
+        public static string HelpCSCSelectedSide {
+            get {
+                return ResourceManager.GetString("HelpCSCSelectedSide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpGCCompleted.
         /// </summary>
         public static string HelpGCCompleted {

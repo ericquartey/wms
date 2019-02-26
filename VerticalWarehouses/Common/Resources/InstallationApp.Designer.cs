@@ -241,6 +241,60 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a CellsSideControlButton.
+        /// </summary>
+        public static string CellsSideControlButton {
+            get {
+                return ResourceManager.GetString("CellsSideControlButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a CellsSideControlCorrection.
+        /// </summary>
+        public static string CellsSideControlCorrection {
+            get {
+                return ResourceManager.GetString("CellsSideControlCorrection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a CellsSideControlDescription.
+        /// </summary>
+        public static string CellsSideControlDescription {
+            get {
+                return ResourceManager.GetString("CellsSideControlDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a CellsSideControlFinalCell.
+        /// </summary>
+        public static string CellsSideControlFinalCell {
+            get {
+                return ResourceManager.GetString("CellsSideControlFinalCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a CellsSideControlInitialCell.
+        /// </summary>
+        public static string CellsSideControlInitialCell {
+            get {
+                return ResourceManager.GetString("CellsSideControlInitialCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a CellsSideControlSelectedSide.
+        /// </summary>
+        public static string CellsSideControlSelectedSide {
+            get {
+                return ResourceManager.GetString("CellsSideControlSelectedSide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Closed.
         /// </summary>
         public static string Closed {

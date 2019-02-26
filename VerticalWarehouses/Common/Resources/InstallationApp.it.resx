@@ -679,4 +679,22 @@
   <data name="VerticalAxisButton" xml:space="preserve">
     <value>Elevatore e culla</value>
   </data>
+  <data name="CellsSideControlButton" xml:space="preserve">
+    <value>Modifica blocco celle</value>
+  </data>
+  <data name="CellsSideControlDescription" xml:space="preserve">
+    <value>Modifica quote gruppo celle.</value>
+  </data>
+  <data name="CellsSideControlInitialCell" xml:space="preserve">
+    <value>Cella iniziale:</value>
+  </data>
+  <data name="CellsSideControlFinalCell" xml:space="preserve">
+    <value>Cella finale:</value>
+  </data>
+  <data name="CellsSideControlCorrection" xml:space="preserve">
+    <value>Correzione richiesta [mm]:</value>
+  </data>
+  <data name="CellsSideControlSelectedSide" xml:space="preserve">
+    <value>Lato selezionato:</value>
+  </data>
 </root>

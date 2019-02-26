@@ -860,4 +860,28 @@
     <value>VerticalAxisButton</value>
     <comment>Button text</comment>
   </data>
+  <data name="CellsSideControlButton" xml:space="preserve">
+    <value>CellsSideControlButton</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="CellsSideControlDescription" xml:space="preserve">
+    <value>CellsSideControlDescription</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="CellsSideControlInitialCell" xml:space="preserve">
+    <value>CellsSideControlInitialCell</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CellsSideControlFinalCell" xml:space="preserve">
+    <value>CellsSideControlFinalCell</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CellsSideControlCorrection" xml:space="preserve">
+    <value>CellsSideControlCorrection</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CellsSideControlSelectedSide" xml:space="preserve">
+    <value>CellsSideControlSelectedSide</value>
+    <comment>Label text</comment>
+  </data>
 </root>

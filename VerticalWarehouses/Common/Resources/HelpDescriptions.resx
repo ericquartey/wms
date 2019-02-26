@@ -517,4 +517,28 @@
     <value>HelpVOCApplyCorrection</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpCSCDescription" xml:space="preserve">
+    <value>HelpCSCDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpCSCInitialCell" xml:space="preserve">
+    <value>HelpCSCInitialCell</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCSCFinalCell" xml:space="preserve">
+    <value>HelpCSCFinalCell</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCSCCorrection" xml:space="preserve">
+    <value>HelpCSCCorrection</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCSCSelectedSide" xml:space="preserve">
+    <value>HelpCSCSelectedSide</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCSCApplyCorrection" xml:space="preserve">
+    <value>HelpCSCApplyCorrection</value>
+    <comment>Note text</comment>
+  </data>
 </root>

@@ -412,4 +412,22 @@
   <data name="HelpVOCApplyCorrection" xml:space="preserve">
     <value>Aggiorna l'offset dell'asse verticale al valore indicato.</value>
   </data>
+  <data name="HelpCSCDescription" xml:space="preserve">
+    <value>La procedura permette di modifica un blocco di celle comprese fra la prima e l'ultima selezionata. Il lato selezionato viene automaticamente indicato sulla base del numero cella iniziale a seconda sia pari o dispari.</value>
+  </data>
+  <data name="HelpCSCInitialCell" xml:space="preserve">
+    <value>Impostare il numero della cella iniziale del blocco.</value>
+  </data>
+  <data name="HelpCSCFinalCell" xml:space="preserve">
+    <value>Impostare il numero della cella finale del blocco.</value>
+  </data>
+  <data name="HelpCSCCorrection" xml:space="preserve">
+    <value>Impostare il valore desiderato della correzione che verra' applicata al gruppo celle selezionato.</value>
+  </data>
+  <data name="HelpCSCSelectedSide" xml:space="preserve">
+    <value>Riporta il lato su cui si sta effettuando la modifica. Il lato e' automaticamente determinato sulla base del numero cella iniziale selezionato se pari o dispari.</value>
+  </data>
+  <data name="HelpCSCApplyCorrection" xml:space="preserve">
+    <value>Applica la correzione al gruppo celle selezionato.</value>
+  </data>
 </root>

@@ -61,6 +61,10 @@
             <local:HelpVerticalOffsetCalibration></local:HelpVerticalOffsetCalibration>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewmodels:CellsSideControlViewModel}">
+            <local:HelpCellsSideControl></local:HelpCellsSideControl>
+        </DataTemplate>
+
 
     </Window.Resources>
     <Grid Width="1024"

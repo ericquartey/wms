@@ -40,6 +40,7 @@
     <None Remove="CellsControlHelpView.xaml" />
     <None Remove="HelpWindows\HelpBeltBurnishingView.xaml" />
     <None Remove="HelpWindows\HelpCellsPanelControl.xaml" />
+    <None Remove="HelpWindows\HelpCellsSideControl.xaml" />
     <None Remove="HelpWindows\HelpGateControl.xaml" />
     <None Remove="HelpWindows\HelpGateHeightControl.xaml" />
     <None Remove="HelpWindows\HelpInstallationState.xaml" />
@@ -99,6 +100,9 @@
     <Compile Update="HelpWindows\HelpGateHeightControl.xaml.cs">
       <DependentUpon>HelpGateHeightControl.xaml</DependentUpon>
     </Compile>
+    <Compile Update="HelpWindows\HelpCellsSideControl.xaml.cs">
+      <DependentUpon>HelpCellsSideControl.xaml</DependentUpon>
+    </Compile>
     <Compile Update="HelpWindows\HelpVerticalOffsetCalibration.xaml.cs">
       <DependentUpon>HelpVerticalOffsetCalibration.xaml</DependentUpon>
     </Compile>
@@ -114,6 +118,11 @@
     <Compile Update="HelpWindows\HelpResolutionCalibrationVerticalAxisView.xaml.cs">
       <DependentUpon>HelpResolutionCalibrationVerticalAxisView.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -122,6 +131,10 @@
     </None>
     <None Update="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Update="Resources\Views.xaml">
       <Generator>MSBuild:Compile</Generator>

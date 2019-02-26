@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Windows.Input;
+using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.Navigation;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
@@ -69,6 +70,8 @@ namespace Ferretto.VW.InstallationApp
         private ICommand verticalOffsetCalibrationButtonCommand;
 
         private ICommand weightControlButtonCommand;
+
+        private ICommand cellsSideControlButtonCommand;
 
         #endregion
 
@@ -255,6 +258,12 @@ namespace Ferretto.VW.InstallationApp
             ((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand(((WeightControlViewModel)this.Container.Resolve<IWeightControlViewModel>()).ExitFromViewCommand);
         }));
 
+        public ICommand CellsSideControlButtonCommand => this.cellsSideControlButtonCommand ?? (this.weightControlButtonCommand = new DelegateCommand(() =>
+        {
+            NavigationService.RaiseGoToViewEvent();
+            this.ContentRegionCurrentViewModel = (CellsSideControlViewModel)this.Container.Resolve<ICellsSideControlViewModel>();
+            //((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand(((WeightControlViewModel)this.Container.Resolve<IWeightControlViewModel>()).ExitFromViewCommand);
+        }));
         #endregion
     }
 }
