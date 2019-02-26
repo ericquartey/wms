@@ -1,12 +1,7 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
-using Ferretto.VW.ActionBlocks;
 using Ferretto.VW.InstallationApp;
-using Ferretto.VW.InverterDriver;
-using Ferretto.VW.MathLib;
-using Ferretto.VW.RemoteIODriver;
 using Ferretto.VW.Utils.Source;
 using Microsoft.Practices.Unity;
 using Prism.Commands;

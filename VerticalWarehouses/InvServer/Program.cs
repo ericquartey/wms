@@ -612,12 +612,12 @@ namespace Ferretto.VW.InvServer
                             switch (this.controlWord)
                             {
                                 // 3.1
-                                case (4):// Control Word: 00000000 00000100
+                                case (4): // Control Word: 00000000 00000100
                                     this.statusWord.Set(4, true);
 
                                     break;
                                 // 3.2
-                                case (6):// Control Word: 00000000 00000110
+                                case (6): // Control Word: 00000000 00000110
                                     this.statusWord.Set(5, true);
                                     this.statusWord.Set(4, true);
                                     this.statusWord.Set(0, true);
@@ -741,6 +741,6 @@ namespace Ferretto.VW.InvServer
             }
         }
 
-#endregion Methods
+        #endregion Methods
     }
 }

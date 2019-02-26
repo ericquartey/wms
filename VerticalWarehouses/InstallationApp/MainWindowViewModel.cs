@@ -21,9 +21,9 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        public IUnityContainer Container;
-
         private readonly HelpMainWindow helpWindow = new HelpMainWindow();
+
+        private IUnityContainer container;
 
         private BindableBase contentRegionCurrentViewModel;
 
@@ -54,8 +54,6 @@ namespace Ferretto.VW.InstallationApp
         public static event ClickedOnMachineModeEvent ClickedOnMachineModeEventHandler;
 
         public static event ClickedOnMachineOnMarchEvent ClickedOnMachineOnMarchEventHandler;
-
-        public static event SensorsStatesChangedEvent SensorsStatesChangedEventHandler;
 
         #endregion
 
@@ -98,15 +96,14 @@ namespace Ferretto.VW.InstallationApp
             {
                 return reader.ReadToEnd();
             }
-            return "";
         }
 
         public void InitializeViewModel(IUnityContainer _container)
         {
-            this.Container = _container;
-            this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.Container.Resolve<IMainWindowNavigationButtonsViewModel>();
+            this.container = _container;
+            this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
             this.ExitViewButtonRegionCurrentViewModel = null;
-            this.ContentRegionCurrentViewModel = (IdleViewModel)this.Container.Resolve<IIdleViewModel>();
+            this.ContentRegionCurrentViewModel = (IdleViewModel)this.container.Resolve<IIdleViewModel>();
             this.ConnectMethod();
             this.InitializeEvents();
         }
@@ -118,16 +115,15 @@ namespace Ferretto.VW.InstallationApp
         private void InitializeEvents()
         {
             NavigationService.GoToViewEventHandler += () => this.NavigationRegionCurrentViewModel = null;
-            NavigationService.GoToViewEventHandler += () => this.ExitViewButtonRegionCurrentViewModel = (MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>();
-            NavigationService.GoToViewEventHandler += () => ((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).InitializeBottomButtons();
-            NavigationService.ExitViewEventHandler += () => this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.Container.Resolve<IMainWindowNavigationButtonsViewModel>();
+            NavigationService.GoToViewEventHandler += () => this.ExitViewButtonRegionCurrentViewModel = (MainWindowBackToIAPPButtonViewModel)this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>();
+            NavigationService.GoToViewEventHandler += () => ((MainWindowBackToIAPPButtonViewModel)this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).InitializeBottomButtons();
+            NavigationService.ExitViewEventHandler += () => this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
             NavigationService.ExitViewEventHandler += () => this.ExitViewButtonRegionCurrentViewModel = null;
-            NavigationService.ExitViewEventHandler += () => ((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).FinalizeBottomButtons();
+            NavigationService.ExitViewEventHandler += () => ((MainWindowBackToIAPPButtonViewModel)this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).FinalizeBottomButtons();
             MainWindow.FinishedMachineModeChangeStateEventHandler += () => { this.MachineModeSelectionBool = !this.MachineModeSelectionBool; };
             MainWindow.FinishedMachineOnMarchChangeStateEventHandler += () => { this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool; };
             ClickedOnMachineModeEventHandler += () => { };
             ClickedOnMachineOnMarchEventHandler += () => { };
-            SensorsStatesChangedEventHandler += () => { };
         }
 
         private void RaiseClickedOnMachineModeEvent() => ClickedOnMachineModeEventHandler();

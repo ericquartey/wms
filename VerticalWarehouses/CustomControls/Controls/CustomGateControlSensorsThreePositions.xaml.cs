@@ -20,9 +20,13 @@ namespace Ferretto.VW.CustomControls.Controls
     /// </summary>
     public partial class CustomGateControlSensorsThreePositions : UserControl
     {
+        #region Constructors
+
         public CustomGateControlSensorsThreePositions()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
+
+        #endregion
     }
 }

@@ -16,16 +16,13 @@ namespace Ferretto.VW.ActionBlocks
     {
         #region Fields
 
+        private const byte DATASET_INDEX = 0x05;
+
         private const int DELAY_TIME = 250;
 
         private const int STEPS_NUMBER = 6;
 
-        private const byte DATASET_INDEX = 0x05;
-
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-
-        // Index for the calibration steps
-        private int stepCounter;
 
         // Inverter driver
         private InverterDriver.InverterDriver inverterDriver;
@@ -38,6 +35,14 @@ namespace Ferretto.VW.ActionBlocks
 
         private ParameterID paramID = ParameterID.HOMING_MODE_PARAM;
 
+        // To keep the end of the execution
+        private bool signaledEnd;
+
+        // Index for the calibration steps
+        private int stepCounter;
+
+        private bool stopPushed;
+
         private byte systemIndex = 0x00;
 
         private object valParam = "";
@@ -48,12 +53,7 @@ namespace Ferretto.VW.ActionBlocks
         // Fast speed
         private short vFast;
 
-        // To keep the end of the execution
-        private bool signaledEnd;
-
-        private bool stopPushed;
-
-        #endregion Fields
+        #endregion
 
         #region Events
 
@@ -63,7 +63,7 @@ namespace Ferretto.VW.ActionBlocks
         // [Error] event
         public event CalibrateHorizontalAxisErrorEventHandler ThrowErrorEvent;
 
-        #endregion Events
+        #endregion
 
         #region Properties
 
@@ -75,8 +75,7 @@ namespace Ferretto.VW.ActionBlocks
             set => this.inverterDriver = value;
         }
 
-        #endregion Properties
-
+        #endregion
 
         #region Methods
 
@@ -122,7 +121,7 @@ namespace Ferretto.VW.ActionBlocks
             bool result = true;
 
             try
-            { 
+            {
                 this.paramID = ParameterID.CONTROL_WORD_PARAM;
                 this.valParam = 0x8000; // 1000 0000 0000 0000
                 logger.Log(LogLevel.Debug, String.Format(" --> Send stop::  paramID: {0}, value: {1:X}", this.paramID.ToString(), this.valParam));
@@ -131,7 +130,7 @@ namespace Ferretto.VW.ActionBlocks
                 this.stopPushed = true;
                 this.Terminate();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 result = false;
             }
@@ -314,7 +313,7 @@ namespace Ferretto.VW.ActionBlocks
                 this.stepCounter++;
 
                 if (this.stepCounter < STEPS_NUMBER)
-                    {
+                {
                     logger.Log(LogLevel.Debug, "Ok: perform the next step. The next step is {0}", stepCounter);
                     this.stepExecution();
                 }
@@ -327,7 +326,7 @@ namespace Ferretto.VW.ActionBlocks
                     {
                         this.StopInverter();
                         this.signaledEnd = true;
-                        
+
                         ThrowEndEvent?.Invoke();
                     }
 
@@ -469,6 +468,6 @@ namespace Ferretto.VW.ActionBlocks
             this.checkExistStatus(idExitStatus);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

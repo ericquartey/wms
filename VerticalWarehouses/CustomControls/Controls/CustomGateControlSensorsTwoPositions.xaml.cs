@@ -20,9 +20,13 @@ namespace Ferretto.VW.CustomControls.Controls
     /// </summary>
     public partial class CustomGateControlSensorsTwoPositions : UserControl
     {
+        #region Constructors
+
         public CustomGateControlSensorsTwoPositions()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
+
+        #endregion
     }
 }

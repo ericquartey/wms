@@ -28,21 +28,21 @@ namespace Ferretto.VW.InstallationApp
             this.InitializeComponent();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public ContentPresenter HelpMainWindowContentRegion => this.HelpContentRegion;
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
-        private void Button_Click(Object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.Hide();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

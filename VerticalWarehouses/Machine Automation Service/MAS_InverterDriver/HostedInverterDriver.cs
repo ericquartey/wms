@@ -128,7 +128,7 @@ namespace Ferretto.VW.InverterDriver
                 {
                     this.messageQueue.TryDequeue(Timeout.Infinite, stoppingToken, out receivedMessage);
                 }
-                catch (OperationCanceledException ex)
+                catch (OperationCanceledException)
                 {
                     return Task.CompletedTask;
                 }

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
     <RootNamespace>Ferretto.VW.MAS_MissionScheduler</RootNamespace>
     <AssemblyName>Ferretto.VW.MAS_MissionScheduler</AssemblyName>
   </PropertyGroup>

@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         #region Properties
 
-        public string Type => $"MissionErrorState";
+        public override string Type => $"MissionErrorState";
 
         #endregion
 

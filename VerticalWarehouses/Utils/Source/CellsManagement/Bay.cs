@@ -12,7 +12,7 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
 
         private int heightMillimiters;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -23,14 +23,15 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
             this.Id = newBayID;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
-        public Int32 DrawerID { get; set; }
-        public Int32 FirstCellID { get; set; }
+        public int DrawerID { get; set; }
 
-        public Int32 HeightMillimiters
+        public int FirstCellID { get; set; }
+
+        public int HeightMillimiters
         {
             get => this.heightMillimiters;
             set
@@ -46,9 +47,10 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
             }
         }
 
-        public Int32 Id { get; set; }
-        public Boolean Occupied { get; set; }
+        public int Id { get; set; }
 
-        #endregion Properties
+        public bool Occupied { get; set; }
+
+        #endregion
     }
 }

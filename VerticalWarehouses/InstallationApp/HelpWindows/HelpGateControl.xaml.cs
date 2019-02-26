@@ -20,9 +20,13 @@ namespace Ferretto.VW.InstallationApp.HelpWindows
     /// </summary>
     public partial class HelpGateControl : UserControl
     {
+        #region Constructors
+
         public HelpGateControl()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
+
+        #endregion
     }
 }

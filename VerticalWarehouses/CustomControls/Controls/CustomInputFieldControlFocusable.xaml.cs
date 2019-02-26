@@ -24,55 +24,75 @@ namespace Ferretto.VW.CustomControls.Controls
         #region Fields
 
         public static readonly DependencyProperty BorderColorProperty = DependencyProperty.Register("BorderColor", typeof(SolidColorBrush), typeof(CustomInputFieldControlFocusable));
-        public static readonly DependencyProperty HighlightedProperty = DependencyProperty.Register("Highlighted", typeof(bool), typeof(CustomInputFieldControlFocusable));
-        public static readonly DependencyProperty InputProperty = DependencyProperty.Register("InputText", typeof(string), typeof(CustomInputFieldControlFocusable), new PropertyMetadata(""));
-        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register("LabelText", typeof(string), typeof(CustomInputFieldControlFocusable), new PropertyMetadata(""));
 
-        #endregion Fields
+        public static readonly DependencyProperty HighlightedProperty = DependencyProperty.Register("Highlighted", typeof(bool), typeof(CustomInputFieldControlFocusable));
+
+        public static readonly DependencyProperty InputProperty = DependencyProperty.Register("InputText", typeof(string), typeof(CustomInputFieldControlFocusable), new PropertyMetadata(string.Empty));
+
+        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register("LabelText", typeof(string), typeof(CustomInputFieldControlFocusable), new PropertyMetadata(string.Empty));
+
+        #endregion
 
         #region Constructors
 
         public CustomInputFieldControlFocusable()
         {
             this.InitializeComponent();
-            this.LayoutRoot.DataContext = this;
+            var customInputFieldControlFocusable = this;
+            this.LayoutRoot.DataContext = customInputFieldControlFocusable;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Events
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        #endregion Events
+        #endregion
 
         #region Properties
 
         public SolidColorBrush BorderColor
         {
             get => (SolidColorBrush)this.GetValue(BorderColorProperty);
-            set { this.SetValue(BorderColorProperty, value); this.RaisePropertyChanged("BorderColor"); }
+            set
+            {
+                this.SetValue(BorderColorProperty, value);
+                this.RaisePropertyChanged(nameof(this.BorderColor));
+            }
         }
 
         public bool Highlighted
         {
             get => (bool)this.GetValue(HighlightedProperty);
-            set { this.SetValue(HighlightedProperty, value); this.RaisePropertyChanged("Highlighted"); }
+            set
+            {
+                this.SetValue(HighlightedProperty, value);
+                this.RaisePropertyChanged(nameof(this.Highlighted));
+            }
         }
 
         public string InputText
         {
             get => (string)this.GetValue(InputProperty);
-            set { this.SetValue(InputProperty, value); this.RaisePropertyChanged("InputText"); }
+            set
+            {
+                this.SetValue(InputProperty, value);
+                this.RaisePropertyChanged(nameof(this.InputText));
+            }
         }
 
         public string LabelText
         {
             get => (string)this.GetValue(LabelProperty);
-            set { this.SetValue(LabelProperty, value); this.RaisePropertyChanged("LabelText"); }
+            set
+            {
+                this.SetValue(LabelProperty, value);
+                this.RaisePropertyChanged(nameof(this.LabelText));
+            }
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -80,7 +100,6 @@ namespace Ferretto.VW.CustomControls.Controls
         {
             if (e.Key == Key.Return)
             {
-                this.InputTextBox.Text = this.InputTextBox.Text;
                 var b = this.GetBindingExpression(InputProperty);
                 b.UpdateSource();
             }
@@ -94,6 +113,6 @@ namespace Ferretto.VW.CustomControls.Controls
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

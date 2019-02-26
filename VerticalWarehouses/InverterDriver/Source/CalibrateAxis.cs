@@ -8,25 +8,35 @@ namespace Ferretto.VW.InverterDriver
     // On [EndedEventHandler] delegate for Calibrate Vertical Axis routine
     public delegate void CalibrateAxisEndEventHandler();
 
-    public delegate void CalibrateAxisSetUpEndEventHandler();
-
     // On [ErrorEventHandler] delegate for Calibrate Vertical Axis routine
     public delegate void CalibrateAxisErrorEventHandler(CalibrationStatus ErrorDescription);
+
+    public delegate void CalibrateAxisSetUpEndEventHandler();
 
     public enum CalibrationStatus
     {
         CALIBRATION_COMPLEATED = 00,
+
         // Calibration Errors
         NO_ERROR = 10,
+
         INVALID_OPERATION = 11,
+
         INVALID_ARGUMENTS = 12,
+
         OPERATION_FAILED = 13,
+
         UNKNOWN_OPERATION = 14,
+
         // Inverter Driver Error Status
         INVERTER_DRIVER_NO_ERROR = 20,
+
         INVERTER_DRIVER_HARDWARE_ERROR = 21,
+
         INVERTER_DRIVER_IO_ERROR = 22,
+
         INVERTER_DRIVER_INTERNAL_ERROR = 23,
+
         INVERTER_DRIVER_UNKNOWN_ERROR = 24,
     }
 
@@ -34,6 +44,7 @@ namespace Ferretto.VW.InverterDriver
     {
         // The two possible kinds of calibration
         VERTICAL_CALIBRATION = 0,
+
         HORIZONTAL_CALIBRATION = 1,
     }
 
@@ -41,54 +52,60 @@ namespace Ferretto.VW.InverterDriver
     {
         #region Fields
 
-        private const int DELAY_TIME = 500;
-
-        private const int STEPS_NUMBER = 6;
-
         private const byte DATASET_INDEX = 0x05;
+
+        private const int DELAY_TIME = 500;
 
         // The number of parameters to SetUp for the Vertical Calibration
         private const int SETUP_PARAMETERS_STEPS = 3;
 
+        private const int STEPS_NUMBER = 6;
+
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-
-        // Index for the calibration steps
-        private int stepCounter;
-
-        // Inverter driver
-        private InverterDriver inverterDriver;
-
-        private ParameterID paramID = ParameterID.HOMING_MODE_PARAM;
-
-        private byte systemIndex = 0x00;
-
-        private object valParam = "";
-
-        // Variable to keep the end of the execution
-        private bool stopExecution;
-
-        private bool setupParameters;
 
         // actualCalibrationAxis keep the actual calibration in execution,
         // * 0: Vertical Calibration Axis
         // * 1: Horizontal Calibration Axis
         private CalibrationType actualCalibrationAxis;
 
-        #endregion Fields
+        // Inverter driver
+        private InverterDriver inverterDriver;
+
+        private ParameterID paramID = ParameterID.HOMING_MODE_PARAM;
+
+        private bool setupParameters;
+
+        // Index for the calibration steps
+        private int stepCounter;
+
+        // Variable to keep the end of the execution
+        private bool stopExecution;
+
+        private byte systemIndex = 0x00;
+
+        private object valParam = "";
+
+        #endregion
 
         #region Events
 
         // [Ended] event
         public event CalibrateAxisEndEventHandler ThrowEndEvent;
 
-        public event CalibrateAxisSetUpEndEventHandler ThrowSetUpEnd;
-
         // [Error] event
         public event CalibrateAxisErrorEventHandler ThrowErrorEvent;
 
-        #endregion Events
+        public event CalibrateAxisSetUpEndEventHandler ThrowSetUpEnd;
+
+        #endregion
 
         #region Properties
+
+        public CalibrationType ActualCalibrationAxis
+        {
+            set => this.actualCalibrationAxis = value;
+            get => this.actualCalibrationAxis;
+        }
 
         /// <summary>
         /// Set Inverter driver.
@@ -98,13 +115,7 @@ namespace Ferretto.VW.InverterDriver
             set => this.inverterDriver = value;
         }
 
-        public CalibrationType ActualCalibrationAxis
-        {
-            set => this.actualCalibrationAxis = value;
-            get => this.actualCalibrationAxis;
-        }
-
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -118,6 +129,29 @@ namespace Ferretto.VW.InverterDriver
             this.inverterDriver.EnquiryTelegramDone_CalibrateVerticalAxis += this.EnquiryTelegram;
         }
 
+        /// <summary>
+        /// Start Calibrate Vertical Axis routine.
+        /// </summary>
+        public void SetAxisOrigin()
+        {
+            this.stopExecution = false;
+
+            this.setupParameters = false;
+
+            this.stepCounter = 0;
+
+            if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION) // Vertical Calibration
+                this.inverterDriver.CurrentActionType = ActionType.CalibrateVerticalAxis;
+            else // Horizontal Calibration
+                this.inverterDriver.CurrentActionType = ActionType.CalibrateHorizontalAxis;
+
+            logger.Log(LogLevel.Debug, "Start the routine for calibrate...");
+            logger.Log(LogLevel.Debug, String.Format(" <-- SetAxisOrigin - Step: {0}", this.actualCalibrationAxis));
+
+            // Start the routine
+            this.stepExecution();
+        }
+
         public void SetUpVerticalHomingParameters(int acc, int vFast, int vCreep)
         {
             logger.Log(LogLevel.Debug, " --> SetVerticalHomingParameters Begin ...");
@@ -126,40 +160,40 @@ namespace Ferretto.VW.InverterDriver
             this.setupParameters = true;
 
             while (setUpCounter < SETUP_PARAMETERS_STEPS)
-            { 
+            {
                 // Select the operation
                 switch (setUpCounter)
                 {
                     // Vertical Homing Parameters
                     case 0:
-                    {
-                        this.paramID = ParameterID.HOMING_ACCELERATION;
-                        this.valParam = acc;
+                        {
+                            this.paramID = ParameterID.HOMING_ACCELERATION;
+                            this.valParam = acc;
 
-                        break;
-                    }
+                            break;
+                        }
 
                     case 1:
-                    {
-                        this.paramID = ParameterID.HOMING_FAST_SPEED_PARAM;
-                        this.valParam = vFast;
+                        {
+                            this.paramID = ParameterID.HOMING_FAST_SPEED_PARAM;
+                            this.valParam = vFast;
 
-                        break;
-                    }
+                            break;
+                        }
 
                     case 2:
-                    {
-                        this.paramID = ParameterID.HOMING_CREEP_SPEED_PARAM;
-                        this.valParam = vCreep;
+                        {
+                            this.paramID = ParameterID.HOMING_CREEP_SPEED_PARAM;
+                            this.valParam = vCreep;
 
-                        break;
-                    }
+                            break;
+                        }
                     default:
-                    {
-                        ThrowErrorEvent?.Invoke(CalibrationStatus.UNKNOWN_OPERATION);
+                        {
+                            ThrowErrorEvent?.Invoke(CalibrationStatus.UNKNOWN_OPERATION);
 
-                        break;
-                    }
+                            break;
+                        }
                 }
 
                 // Set request to inverter
@@ -175,29 +209,6 @@ namespace Ferretto.VW.InverterDriver
             logger.Log(LogLevel.Debug, String.Format(" --> ... SetVerticalHomingParameters End"));
 
             ThrowSetUpEnd?.Invoke();
-        }
-
-        /// <summary>
-        /// Start Calibrate Vertical Axis routine.
-        /// </summary>
-        public void SetAxisOrigin()
-        {
-            this.stopExecution = false;
-
-            this.setupParameters = false;
-
-            this.stepCounter = 0;
-        
-            if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION) // Vertical Calibration
-                this.inverterDriver.CurrentActionType = ActionType.CalibrateVerticalAxis;
-            else // Horizontal Calibration
-                this.inverterDriver.CurrentActionType = ActionType.CalibrateHorizontalAxis;
-
-            logger.Log(LogLevel.Debug, "Start the routine for calibrate...");
-            logger.Log(LogLevel.Debug, String.Format(" <-- SetAxisOrigin - Step: {0}", this.actualCalibrationAxis));
-
-            // Start the routine
-            this.stepExecution();
         }
 
         /// <summary>
@@ -221,7 +232,7 @@ namespace Ferretto.VW.InverterDriver
                 this.stopExecution = true;
                 this.Terminate();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 result = false;
             }
@@ -446,12 +457,12 @@ namespace Ferretto.VW.InverterDriver
         /// Handle the select telegram sent by the inverter.
         /// </summary>
         private void SelectTelegram(object sender, SelectTelegramDoneEventArgs eventArgs)
-        { 
+        {
             logger.Log(LogLevel.Debug, String.Format(" <-- SelectTelegram - Step: {0} - {1}", stepCounter, this.actualCalibrationAxis));
 
             // During the SetUp Vertical Homing Parameters i don't need to do any control
             if (!setupParameters)
-            { 
+            {
                 if (this.stepCounter < STEPS_NUMBER)
                 {
                     logger.Log(LogLevel.Debug, "Calibrate Vertical Operation = " + this.stepCounter);
@@ -583,6 +594,6 @@ namespace Ferretto.VW.InverterDriver
             this.checkExistStatus(idExitStatus);
         }
 
-        #endregion Methods
+        #endregion
     }
 }
