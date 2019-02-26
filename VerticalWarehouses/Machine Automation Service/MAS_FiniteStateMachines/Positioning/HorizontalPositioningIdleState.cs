@@ -28,10 +28,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             this.driver = driver;
             this.eventAggregator = eventAggregator;
 
-            this.Target = 0;
-            this.Velocity = 0;
-            this.Direction = 0;
-            this.Weight = 0.0f;
             this.Profile = new List<ProfilePosition>();
 
             this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
