@@ -39,7 +39,7 @@ namespace MAS_DataLayerUnitTests
                 int intHomingDone;
 
                 var mockEventAggregator = new Mock<IEventAggregator>();
-                mockEventAggregator.Setup(s => s.GetEvent<WebAPI_CommandEvent>()).Returns(new WebAPI_CommandEvent());
+                mockEventAggregator.Setup(s => s.GetEvent<CommandEvent>()).Returns(new CommandEvent());
                 var dataLayer = new DataLayer("Data Source=./TestDataBase.db", context, mockEventAggregator.Object);
 
                 updateFeedback1 = dataLayer.LogWriting("Unit Test");

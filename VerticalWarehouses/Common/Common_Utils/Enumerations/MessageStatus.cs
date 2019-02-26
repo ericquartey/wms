@@ -4,6 +4,10 @@
     {
         NoStatus,
 
-        OK
+        OperationEnd,
+
+        OperationError,
+
+        OpeerationStop
     }
 }

@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.EventParameters;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_DataLayer;
@@ -34,7 +35,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.data = iWriteLogService;
             this.eventAggregator = eventAggregator;
 
-            this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
+            this.eventAggregator.GetEvent<NotificationEvent>().Subscribe(this.notifyEventHandler);
         }
 
         #endregion
@@ -59,26 +60,26 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         public void Stop()
         {
-            this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Unsubscribe(this.notifyEventHandler);
+            this.eventAggregator.GetEvent<NotificationEvent>().Unsubscribe(this.notifyEventHandler);
 
-            var notifyEvent = new Notification_EventParameter(OperationType.Homing, OperationStatus.Stopped, "Homing stopped", Verbosity.Info);
-            this.eventAggregator.GetEvent<FiniteStateMachines_NotificationEvent>().Publish(notifyEvent);
+            var notifyEvent = new NotificationMessage(null, "Homing stopped", MessageActor.Any, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OpeerationStop, MessageVerbosity.Info);
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
         }
 
-        private void notifyEventHandler(Notification_EventParameter notification)
+        private void notifyEventHandler(NotificationMessage notification)
         {
-            if (notification.OperationType == OperationType.SwitchVerticalToHorizontal)
+            if (notification.Type == MessageType.SwitchVerticalToHorizontal)
             {
-                switch (notification.OperationStatus)
+                switch (notification.Status)
                 {
-                    case OperationStatus.End:
+                    case MessageStatus.OperationEnd:
                         {
                             this.parent.ChangeState(new HorizontalSwitchDoneState(this.parent, this.driver, this.remoteIODriver, this.data, this.eventAggregator));
                             this.parent.MakeOperation();
 
                             break;
                         }
-                    case OperationStatus.Error:
+                    case MessageStatus.OperationError:
                         {
                             this.parent.ChangeState(new HomingErrorState(this.parent, this.driver, this.remoteIODriver, this.data, this.eventAggregator));
                             break;
@@ -90,7 +91,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 }
             }
 
-            this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Unsubscribe(this.notifyEventHandler);
+            this.eventAggregator.GetEvent<NotificationEvent>().Unsubscribe(this.notifyEventHandler);
         }
 
         #endregion

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.ActionBlocks;
 using Microsoft.Extensions.Logging;
 

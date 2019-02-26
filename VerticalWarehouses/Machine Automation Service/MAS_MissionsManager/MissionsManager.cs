@@ -50,17 +50,17 @@ namespace Ferretto.VW.MAS_MissionsManager
 
             this.missionsCollection = new Dictionary<IMissionMessageData, int>();
 
-            var automationServiceMessageEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
-            automationServiceMessageEvent.Subscribe( ( message ) => this.EnqueueMessageAndSetSemaphor( message ),
+            var automationServiceMessageEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            automationServiceMessageEvent.Subscribe( ( commandMessage ) => this.EnqueueMessageAndSetSemaphor(commandMessage),
                 ThreadOption.PublisherThread,
                 false,
-                message => (message.Destination == MessageActor.MissionsManager) );
+                commandMessage => (commandMessage.Destination == MessageActor.MissionsManager) );
 
-            var finiteStateMachineMessageEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
-            finiteStateMachineMessageEvent.Subscribe( ( message ) => this.missionExecuted.Set(),
+            var finiteStateMachineMessageEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            finiteStateMachineMessageEvent.Subscribe( ( x ) => this.missionExecuted.Set(),
                 ThreadOption.PublisherThread,
                 false,
-                message => (message.Source == MessageActor.FiniteStateMachines && message.Status == MessageStatus.End) );
+                ( notificationMessage ) => notificationMessage.Source == MessageActor.FiniteStateMachines && notificationMessage.Status == MessageStatus.OperationEnd );
         }
 
         #endregion
@@ -181,7 +181,7 @@ namespace Ferretto.VW.MAS_MissionsManager
 
             message.Source = MessageActor.MissionsManager;
             message.Destination = MessageActor.FiniteStateMachines;
-            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish( message );
+            this.eventAggregator.GetEvent<CommandEvent>().Publish( message );
         }
 
         private void ProcessCreateMissionMessage( CommandMessage message )
@@ -190,7 +190,7 @@ namespace Ferretto.VW.MAS_MissionsManager
 
             message.Source = MessageActor.MissionsManager;
             message.Destination = MessageActor.FiniteStateMachines;
-            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish( message );
+            this.eventAggregator.GetEvent<CommandEvent>().Publish( message );
         }
 
         #endregion

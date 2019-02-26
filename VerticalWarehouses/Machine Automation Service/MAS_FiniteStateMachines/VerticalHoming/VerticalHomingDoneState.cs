@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.EventParameters;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_InverterDriver;
@@ -26,8 +27,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
             this.driver = driver;
             this.eventAggregator = eventAggregator;
 
-            var notifyEvent = new Notification_EventParameter(OperationType.Homing, OperationStatus.End, "Homing done", Verbosity.Info);
-            this.eventAggregator.GetEvent<FiniteStateMachines_NotificationEvent>().Publish(notifyEvent);
+            var notifyEvent = new NotificationMessage(null, "Homing done", MessageActor.Any, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationEnd, MessageVerbosity.Info);
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
         }
 
         #endregion
@@ -51,8 +52,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         public void Stop()
         {
-            var notifyEvent = new Notification_EventParameter(OperationType.Homing, OperationStatus.Stopped, "Homing stopped", Verbosity.Info);
-            this.eventAggregator.GetEvent<FiniteStateMachines_NotificationEvent>().Publish(notifyEvent);
+            var notifyEvent = new NotificationMessage(null, "Homing stopped", MessageActor.Any, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OpeerationStop, MessageVerbosity.Info);
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
         }
 
         #endregion

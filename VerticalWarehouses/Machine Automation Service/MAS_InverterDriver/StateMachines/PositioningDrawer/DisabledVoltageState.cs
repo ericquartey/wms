@@ -1,5 +1,7 @@
-﻿using Ferretto.VW.Common_Utils.EventParameters;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.InverterDriver;
 using Prism.Events;
 
@@ -33,7 +35,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PositioningDrawer
             this.eventAggregator = eventAggregator;
             this.stateMachinePositioningDrawer = stateMachinePositioningDrawer;
 
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
+            this.eventAggregator.GetEvent<NotificationEvent>().Subscribe(this.notifyEventHandler);
 
         }
 
@@ -47,13 +49,13 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PositioningDrawer
 
         #region Methods
 
-        private void notifyEventHandler(Notification_EventParameter notification)
+        private void notifyEventHandler(NotificationMessage notification)
         {
             var result = inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_INDEX, this.valParam);
 
-            switch (notification.OperationStatus)
+            switch (notification.Status)
             {
-                case OperationStatus.End:
+                case MessageStatus.OperationEnd:
                     {
                         if (result == InverterDriverExitStatus.Success)
                         {
@@ -61,7 +63,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PositioningDrawer
                         }
                         break;
                     }
-                case OperationStatus.Error:
+                case MessageStatus.OperationError:
                     {
                         this.stateMachinePositioningDrawer.ChangeState(new ErrorState(stateMachinePositioningDrawer, inverterDriver, eventAggregator));
 

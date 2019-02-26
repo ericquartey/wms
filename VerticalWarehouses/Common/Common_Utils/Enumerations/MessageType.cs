@@ -4,6 +4,8 @@
     {
         Calibrate,
 
+        EndMission,
+
         CalibrateAxis,
 
         DrawerWeightDetection,
@@ -26,7 +28,11 @@
 
         EndAction,
 
-        ErrorAction
+        ErrorAction,
+        Homing,
+        SwitchVerticalToHorizontal,
+        SwitchHorizontalToVertical,
+        StopHoming
     }
 
 }

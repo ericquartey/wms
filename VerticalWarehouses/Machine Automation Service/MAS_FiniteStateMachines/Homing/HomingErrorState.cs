@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.EventParameters;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_DataLayer;
@@ -34,8 +35,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.data = iWriteLogService;
             this.eventAggregator = eventAggregator;
 
-            var notifyEvent = new Notification_EventParameter(OperationType.Homing, OperationStatus.Error, "Homing Error", Verbosity.Info);
-            this.eventAggregator.GetEvent<FiniteStateMachines_NotificationEvent>().Publish(notifyEvent);
+            var notifyEvent = new NotificationMessage(null, "Homing Error", MessageActor.Any,
+                MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationError,
+                MessageVerbosity.Info, ErrorLevel.Error);
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
         }
 
         #endregion

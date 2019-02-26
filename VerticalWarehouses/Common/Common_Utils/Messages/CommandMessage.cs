@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Prism.Events;
 
 namespace Ferretto.VW.Common_Utils.Messages
 {
@@ -16,8 +17,8 @@ namespace Ferretto.VW.Common_Utils.Messages
             string description,
             MessageActor destination,
             MessageActor source,
-            MessageVerbosity verbosity,
-            MessageType type )
+            MessageType type,
+            MessageVerbosity verbosity )
         {
             this.Data = data;
             this.Description = description;

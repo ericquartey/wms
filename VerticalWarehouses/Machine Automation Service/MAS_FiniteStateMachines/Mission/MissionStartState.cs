@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Messages;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Messages;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 {
@@ -14,19 +15,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
                 $"Mission State Started",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageStatus.Start,
                 MessageType.StartAction,
                 MessageVerbosity.Info);
-            this.parentStateMachine.PublishMessage(newMessage);
+            this.parentStateMachine.PublishCommandMessage(newMessage);
 
             var inverterMessage = new CommandMessage(null,
                 $"Mission State Started",
                 MessageActor.InverterDriver,
                 MessageActor.FiniteStateMachines,
-                MessageStatus.Start,
                 MessageType.StartAction,
                 MessageVerbosity.Info);
-            this.parentStateMachine.PublishMessage(newMessage);
+            this.parentStateMachine.PublishCommandMessage(newMessage);
         }
 
         #endregion
@@ -75,7 +74,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
                 $"End Mission",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageStatus.End,
                 MessageType.EndAction,
                 MessageVerbosity.Info);
             this.parentStateMachine.ChangeState(new MissionEndState(this.parentStateMachine), newMessage);
@@ -87,7 +85,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
                 $"Stop Requested",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageStatus.End,
                 MessageType.StopAction,
                 MessageVerbosity.Info);
             this.parentStateMachine.ChangeState(new MissionErrorState(this.parentStateMachine), newMessage);
@@ -99,7 +96,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
                 $"Stop Requested",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageStatus.End,
                 MessageType.StopAction,
                 MessageVerbosity.Info);
             this.parentStateMachine.ChangeState(new MissionEndState(this.parentStateMachine), newMessage);

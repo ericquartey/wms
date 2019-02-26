@@ -1,5 +1,7 @@
-﻿using Ferretto.VW.Common_Utils.EventParameters;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.InverterDriver;
 using Prism.Events;
 
@@ -25,7 +27,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
             this.eventAggregator = eventAggregator;
             this.stateMachineHorizontalMoving = stateMachineHorizontalMoving;
 
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
+            this.eventAggregator.GetEvent<NotificationEvent>().Subscribe(this.notifyEventHandler);
         }
 
         #endregion
@@ -38,21 +40,21 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
 
         #region Methods
 
-        private void notifyEventHandler(Notification_EventParameter notification)
+        private void notifyEventHandler(NotificationMessage notification)
         {
 
-            if (notification.OperationType == OperationType.SwitchVerticalToHorizontal)
+            if (notification.Type == MessageType.SwitchVerticalToHorizontal)
             {
-                switch (notification.OperationStatus)
+                switch (notification.Status)
                 {
-                    case OperationStatus.End:
+                    case MessageStatus.OperationEnd:
                         {
                             break;
                         }
-                    case OperationStatus.Error:
+                    case MessageStatus.OperationError:
                         {
-                            var notifyEvent = new Notification_EventParameter(OperationType.SwitchVerticalToHorizontal, OperationStatus.Error, "Unknown Operation!", Verbosity.Info);
-                            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(notifyEvent);
+                            var notifyEvent = new NotificationMessage(null, "Unknown Operation!", MessageActor.Any, MessageActor.InverterDriver, MessageType.SwitchVerticalToHorizontal, MessageStatus.OperationError, MessageVerbosity.Info, ErrorLevel.Error );
+                            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
 
                             break;
                         }

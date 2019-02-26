@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.EventParameters;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_DataLayer;
@@ -36,7 +37,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
             this.parent.HomingComplete = true;
 
-            this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
+            this.eventAggregator.GetEvent<NotificationEvent>().Subscribe(this.notifyEventHandler);
 
             this.remoteIODriver.SwitchHorizontalToVertical();
         }
@@ -64,20 +65,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         {
         }
 
-        private void notifyEventHandler(Notification_EventParameter notification)
+        private void notifyEventHandler(NotificationMessage notification)
         {
-            if (notification.OperationType == OperationType.SwitchHorizontalToVertical)
+            if (notification.Type == MessageType.SwitchHorizontalToVertical)
             {
-                switch (notification.OperationStatus)
+                switch (notification.Status)
                 {
-                    case OperationStatus.End:
+                    case MessageStatus.OperationEnd:
                         {
-                            var notifyEvent = new Notification_EventParameter(OperationType.Homing, OperationStatus.End, "Homing done", Verbosity.Info);
-                            this.eventAggregator.GetEvent<FiniteStateMachines_NotificationEvent>().Publish(notifyEvent);
+                            var notifyEvent = new NotificationMessage( null, "Homing Done", MessageActor.Any, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationEnd, MessageVerbosity.Info);
+                            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
 
                             break;
                         }
-                    case OperationStatus.Error:
+                    case MessageStatus.OperationError:
                         {
                             break;
                         }
@@ -88,7 +89,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 }
             }
 
-            this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Unsubscribe(this.notifyEventHandler);
+            this.eventAggregator.GetEvent<NotificationEvent>().Unsubscribe(this.notifyEventHandler);
         }
 
         #endregion

@@ -25,15 +25,15 @@
         Info
     }
 
-    public class Notification_EventParameter
+    public class Notification_EventParameterOld
     {
         #region Constructors
 
-        public Notification_EventParameter()
+        public Notification_EventParameterOld()
         {
         }
 
-        public Notification_EventParameter(OperationType operationType, OperationStatus operationStatus, string description, Verbosity verbosity)
+        public Notification_EventParameterOld(OperationType operationType, OperationStatus operationStatus, string description, Verbosity verbosity)
         {
             this.OperationType = operationType;
             this.OperationStatus = operationStatus;

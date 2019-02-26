@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
@@ -38,7 +39,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
             this.messageQueue = new ConcurrentQueue<CommandMessage>();
 
-            var webApiMessagEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
+            var webApiMessagEvent = this.eventAggregator.GetEvent<CommandEvent>();
             webApiMessagEvent.Subscribe((message) =>
                {
                    this.messageQueue.Enqueue(message);
@@ -53,9 +54,9 @@ namespace Ferretto.VW.MAS_AutomationService
 
         #region Methods
 
-        public void SendMessageToAllConnectedClients(Notification_EventParameter eventParameter)
+        public void SendMessageToAllConnectedClients(NotificationMessage notificationMessage)
         {
-            this.hub.Clients.All.OnSendMessageToAllConnectedClients(eventParameter.Description);
+            this.hub.Clients.All.OnSendMessageToAllConnectedClients(notificationMessage.Description);
         }
 
         public new Task StopAsync(CancellationToken stoppingToken)
@@ -120,7 +121,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
             message.Source = MessageActor.AutomationService;
             message.Destination = MessageActor.MissionsManager;
-            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(message);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
 
         #endregion

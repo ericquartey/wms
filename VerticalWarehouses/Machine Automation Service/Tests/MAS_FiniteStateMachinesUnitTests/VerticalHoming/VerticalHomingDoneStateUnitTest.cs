@@ -20,8 +20,8 @@ namespace MAS_FiniteStateMachinesUnitTests.VerticalHoming
             var inverterDriverMock = new Mock<INewInverterDriver>();
             var writeLogServiceMock = new Mock<IWriteLogService>();
             var eventAggregatorMock = new Mock<IEventAggregator>();
-            var notifyFSMEvent = new FiniteStateMachines_NotificationEvent();
-            eventAggregatorMock.Setup( aggregator => aggregator.GetEvent<FiniteStateMachines_NotificationEvent>() ).Returns( notifyFSMEvent );
+            var notifyFSMEvent = new NotificationEvent();
+            eventAggregatorMock.Setup( aggregator => aggregator.GetEvent<NotificationEvent>() ).Returns( notifyFSMEvent );
             var stateMachine = new StateMachineVerticalHoming( inverterDriverMock.Object, eventAggregatorMock.Object );
 
             var state = new VerticalHomingDoneState( stateMachine, inverterDriverMock.Object, eventAggregatorMock.Object );

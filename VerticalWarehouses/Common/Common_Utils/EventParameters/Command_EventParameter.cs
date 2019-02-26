@@ -9,11 +9,11 @@
         StopAction
     }
 
-    public class Command_EventParameter
+    public class Command_EventParameterOld
     {
         #region Constructors
 
-        public Command_EventParameter(CommandType commandType)
+        public Command_EventParameterOld(CommandType commandType)
         {
             this.CommandType = commandType;
         }

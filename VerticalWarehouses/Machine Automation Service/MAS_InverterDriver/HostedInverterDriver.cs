@@ -63,7 +63,7 @@ namespace Ferretto.VW.InverterDriver
 
             this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
 
-            var webApiMessagEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
+            var webApiMessagEvent = this.eventAggregator.GetEvent<CommandEvent>();
             webApiMessagEvent.Subscribe((message) =>
                {
                    this.messageQueue.Enqueue(message);

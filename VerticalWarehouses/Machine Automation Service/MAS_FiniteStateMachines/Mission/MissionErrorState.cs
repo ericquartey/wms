@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Messages;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Messages;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 {
@@ -14,10 +15,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
                 $"Mission State Ending",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageStatus.End,
                 MessageType.EndAction,
                 MessageVerbosity.Info);
-            this.parentStateMachine.PublishMessage(newMessage);
+            this.parentStateMachine.PublishCommandMessage(newMessage);
         }
 
         #endregion
@@ -46,10 +46,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
                         $"Mission Error",
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
-                        MessageStatus.End,
                         MessageType.StopAction,
                         MessageVerbosity.Info);
-                    this.parentStateMachine.PublishMessage(newMessage);
+                    this.parentStateMachine.PublishCommandMessage(newMessage);
                     break;
             }
         }

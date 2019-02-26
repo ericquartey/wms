@@ -18,7 +18,7 @@ namespace MAS_InverterDriverUnitTests
         {
             var inverterDriverMock = new Mock<IInverterDriver>();
             var eventAggregatorMock = new Mock<IEventAggregator>();
-            eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<InverterDriver_NotificationEvent>()).Returns(new InverterDriver_NotificationEvent());
+            eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<NotificationEvent>()).Returns(new NotificationEvent());
 
             var newInverterDriver = new NewInverterDriver(eventAggregatorMock.Object, inverterDriverMock.Object);
 

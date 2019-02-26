@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
@@ -49,10 +50,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
             this.messageQueue = new ConcurrentQueue<CommandMessage>();
 
-            var commandEvent = this.eventAggregator.GetEvent<WebAPI_CommandEvent>();
+            var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
             commandEvent.Subscribe(this.DoAction);
 
-            var machineManagerMessagEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
+            var machineManagerMessagEvent = this.eventAggregator.GetEvent<CommandEvent>();
             machineManagerMessagEvent.Subscribe((message) =>
                {
                    this.messageQueue.Enqueue(message);
@@ -96,11 +97,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             }
         }
 
-        public void DoAction(Command_EventParameter action)
+        public void DoAction(CommandMessage action)
         {
-            switch (action.CommandType)
+            switch (action.Type)
             {
-                case CommandType.ExecuteHoming:
+                case MessageType.Homing:
                     {
                         if (null == this.homing)
                         {
@@ -111,7 +112,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         break;
                     }
 
-                case CommandType.ExecuteStopHoming:
+                case MessageType.StopHoming:
                     {
                         if (null == this.homing)
                         {

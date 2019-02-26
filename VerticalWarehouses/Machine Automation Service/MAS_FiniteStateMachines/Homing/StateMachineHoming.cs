@@ -62,7 +62,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             throw new System.NotImplementedException();
         }
 
-        public void PublishMessage(CommandMessage message)
+        public void PublishCommandMessage(CommandMessage message)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void PublishNotificationMessage(NotificationMessage message)
         {
             throw new System.NotImplementedException();
         }

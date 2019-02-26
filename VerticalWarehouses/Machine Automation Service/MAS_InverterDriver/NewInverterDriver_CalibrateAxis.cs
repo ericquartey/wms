@@ -1,5 +1,7 @@
-﻿using Ferretto.VW.Common_Utils.EventParameters;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.InverterDriver;
 
 namespace Ferretto.VW.MAS_InverterDriver
@@ -12,8 +14,9 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
             if (this.inverterAction == null)
             {
-                this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
-                    (OperationType.Homing, OperationStatus.Error, "Stop Homing operation failed", Verbosity.Info));
+                this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null,
+                    "Stop Homing operation failed", MessageActor.Any, MessageActor.InverterDriver, MessageType.Homing, MessageStatus.OperationError,
+                    MessageVerbosity.Info, ErrorLevel.Error));
             }
 
             ((ActionBlocks.CalibrateAxis)this.inverterAction).StopInverter();
@@ -34,8 +37,9 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
             if (this.inverterAction != null)
             {
-                this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
-                    (OperationType.Homing, OperationStatus.Error, "Inverter action has already defined", Verbosity.Info));
+                this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null,
+                    "Inverter action has already defined", MessageActor.Any, MessageActor.InverterDriver, MessageType.Homing, MessageStatus.OperationError,
+                    MessageVerbosity.Info, ErrorLevel.Error));
             }
             var inverterAction = new ActionBlocks.CalibrateAxis();
             this.inverterAction = inverterAction;
@@ -53,8 +57,9 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
             if (this.inverterAction != null)
             {
-                this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
-                    (OperationType.Homing, OperationStatus.Error, "Inverter action has already defined", Verbosity.Info));
+                this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null,
+                    "Inverter action has already defined", MessageActor.Any, MessageActor.InverterDriver, MessageType.Homing, MessageStatus.OperationError,
+                    MessageVerbosity.Info, ErrorLevel.Error));
             }
             var inverterAction = new ActionBlocks.CalibrateAxis();
             this.inverterAction = inverterAction;
@@ -74,16 +79,18 @@ namespace Ferretto.VW.MAS_InverterDriver
             ((ActionBlocks.CalibrateAxis)this.inverterAction).Terminate();
             this.inverterAction = null;
 
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
-                (OperationType.Homing, OperationStatus.End, "Horizontal Calibration Ended", Verbosity.Info));
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null,
+                "Horizontal Calibration Ended", MessageActor.Any, MessageActor.InverterDriver, MessageType.Homing, MessageStatus.OperationEnd,
+                MessageVerbosity.Info));
         }
 
         private void HorizontalCalibration_ThrowErrorEvent()
         {
             this.inverterAction.ErrorEvent -= this.HorizontalCalibration_ThrowErrorEvent;
 
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
-                (OperationType.Homing, OperationStatus.Error, "Internal inverter driver error", Verbosity.Info));
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null,
+                "Internal inverter driver error", MessageActor.Any, MessageActor.InverterDriver, MessageType.Homing, MessageStatus.OperationError,
+                MessageVerbosity.Info, ErrorLevel.Error));
         }
 
         private void VerticalCalibration_ThrowEndEvent()
@@ -92,16 +99,18 @@ namespace Ferretto.VW.MAS_InverterDriver
             ((ActionBlocks.CalibrateAxis)this.inverterAction).Terminate();
             this.inverterAction = null;
 
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
-                (OperationType.Homing, OperationStatus.End, "Vertical Calibration Ended", Verbosity.Info));
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null,
+                "Vertical Calibration Ended", MessageActor.Any, MessageActor.InverterDriver, MessageType.Homing, MessageStatus.OperationEnd,
+                MessageVerbosity.Info));
         }
 
         private void VerticalCalibration_ThrowErrorEvent()
         {
             this.inverterAction.ErrorEvent -= this.VerticalCalibration_ThrowErrorEvent;
 
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
-                (OperationType.Homing, OperationStatus.Error, "Internal inverter driver error", Verbosity.Info));
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null,
+                "Internal inverter driver error", MessageActor.Any, MessageActor.InverterDriver, MessageType.Homing, MessageStatus.OperationError,
+                MessageVerbosity.Info, ErrorLevel.Error));
         }
 
         #endregion

@@ -1,5 +1,7 @@
-﻿using Ferretto.VW.Common_Utils.Events;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.EventParameters;
+using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages;
 
 namespace Ferretto.VW.MAS_InverterDriver
 {
@@ -19,8 +21,9 @@ namespace Ferretto.VW.MAS_InverterDriver
                 this.weight = -1.0f;
                 if (this.inverterAction != null)
                 {
-                  this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
-                      (OperationType.Homing, OperationStatus.Error, "Inverter action has already defined", Verbosity.Info));
+                  this.eventAggregator.GetEvent<NotificationEvent>().Publish( new NotificationMessage( null,
+                      "Inverter action has already defined", MessageActor.Any, MessageActor.InverterDriver, MessageType.Homing, MessageStatus.OperationError,
+                      MessageVerbosity.Info, ErrorLevel.Error) );
                 }
                 var inverterAction = new ActionBlocks.DrawerWeightDetection();
                 this.inverterAction = inverterAction;
@@ -34,16 +37,18 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private void DrawerWeight_ThrowErrorEvent()
         {
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
-                (OperationType.Homing, OperationStatus.Error, "Internal inverter driver error", Verbosity.Info));
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null,
+                "Internal inverter driver error", MessageActor.Any, MessageActor.InverterDriver, MessageType.Homing, MessageStatus.OperationError,
+                MessageVerbosity.Info, ErrorLevel.Error));
 
             this.inverterAction.ErrorEvent -= this.DrawerWeight_ThrowErrorEvent;
         }
 
         private void DrawerWeight_ThrowEndEvent()
         {
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
-                (OperationType.Homing, OperationStatus.End, "Drawer weight detection Ended", Verbosity.Info));
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null,
+                "Drawer weight detection Ended", MessageActor.Any, MessageActor.InverterDriver, MessageType.Homing, MessageStatus.OperationEnd,
+                MessageVerbosity.Info));
 
             this.inverterAction.EndEvent -= this.DrawerWeight_ThrowEndEvent;
             if(this.inverterAction is ActionBlocks.DrawerWeightDetection)

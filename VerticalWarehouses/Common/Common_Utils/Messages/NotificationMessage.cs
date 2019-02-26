@@ -1,6 +1,7 @@
 ﻿using System;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Prism.Events;
 
 namespace Ferretto.VW.Common_Utils.Messages
 {
@@ -17,6 +18,7 @@ namespace Ferretto.VW.Common_Utils.Messages
             MessageActor destination,
             MessageActor source,
             MessageType type,
+            MessageStatus status,
             MessageVerbosity verbosity,
             ErrorLevel level = ErrorLevel.NoError)
         {
@@ -25,6 +27,7 @@ namespace Ferretto.VW.Common_Utils.Messages
             this.Destination = destination;
             this.Source = source;
             this.Type = type;
+            this.Status = status;
             this.Verbosity = verbosity;
             this.ErrorLevel = level;
         }

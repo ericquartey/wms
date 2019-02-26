@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.RemoteIODriver;
 using Prism.Events;
 
@@ -102,7 +104,9 @@ namespace Ferretto.VW.MAS_IODriver
             this.remoteIO.Outputs = digitalOutput;
             Thread.Sleep(DELAY_TIME);
 
-            this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Publish(new Notification_EventParameter(OperationType.SwitchHorizontalToVertical, OperationStatus.End, "Switch Horizontal to Vertical Ended", Verbosity.Info));
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null,
+                "Switch Horizontal to Vertical Ended", MessageActor.Any, MessageActor.IODriver,
+                MessageType.SwitchHorizontalToVertical, MessageStatus.OperationEnd, MessageVerbosity.Info));
         }
 
         public void SwitchVerticalToHorizontal()
@@ -125,7 +129,9 @@ namespace Ferretto.VW.MAS_IODriver
             this.remoteIO.Outputs = digitalOutput;
             Thread.Sleep(DELAY_TIME);
 
-            this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Publish(new Notification_EventParameter(OperationType.SwitchVerticalToHorizontal, OperationStatus.End, "Switch Vertical to Horizontal Ended", Verbosity.Info));
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null,
+                "Switch Vertical to Horizontal Ended", MessageActor.Any, MessageActor.IODriver,
+                MessageType.SwitchVerticalToHorizontal, MessageStatus.OperationEnd, MessageVerbosity.Info));
         }
 
         #endregion
