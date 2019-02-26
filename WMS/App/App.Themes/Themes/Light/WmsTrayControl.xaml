@@ -128,8 +128,8 @@
                 <ItemsPanelTemplate>
                     <Canvas x:Name="TrayCanvas"  DataContext="{Binding ElementName=CanvasListBoxControl}"                                                        
                             RenderOptions.EdgeMode="Aliased"
-                            SnapsToDevicePixels="True"
-                            UseLayoutRounding="True"                          
+                            SnapsToDevicePixels="False"
+                            UseLayoutRounding="False"                          
                             Height="{Binding TrayHeight, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"
                             Width="{Binding TrayWidth, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }">
                         <Canvas.Style>

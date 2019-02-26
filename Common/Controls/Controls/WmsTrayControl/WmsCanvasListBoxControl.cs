@@ -40,11 +40,11 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(nameof(IsReadOnly),
             typeof(bool), typeof(WmsCanvasListBoxControl), new FrameworkPropertyMetadata(OnIsReadOnlyChanged));
 
-        public static readonly DependencyProperty MinTrayHeightProperty =
-             DependencyProperty.Register(nameof(MinTrayHeight), typeof(double), typeof(WmsCanvasListBoxControl));
+        public static readonly DependencyProperty MinBorderHeightProperty =
+             DependencyProperty.Register(nameof(MinBorderHeight), typeof(double), typeof(WmsCanvasListBoxControl));
 
-        public static readonly DependencyProperty MinTrayWidthProperty =
-                             DependencyProperty.Register(nameof(MinTrayWidth), typeof(double), typeof(WmsCanvasListBoxControl));
+        public static readonly DependencyProperty MinBorderWidthProperty =
+                             DependencyProperty.Register(nameof(MinBorderWidth), typeof(double), typeof(WmsCanvasListBoxControl));
 
         public static readonly DependencyProperty OriginHorizontalProperty =
                        DependencyProperty.Register(nameof(OriginHorizontal), typeof(OriginHorizontal), typeof(WmsCanvasListBoxControl), new FrameworkPropertyMetadata(OriginHorizontal.Left));
@@ -166,16 +166,16 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(IsReadOnlyProperty, value);
         }
 
-        public double MinTrayHeight
+        public double MinBorderHeight
         {
-            get => (double)this.GetValue(MinTrayHeightProperty);
-            set => this.SetValue(MinTrayHeightProperty, value);
+            get => (double)this.GetValue(MinBorderHeightProperty);
+            set => this.SetValue(MinBorderHeightProperty, value);
         }
 
-        public double MinTrayWidth
+        public double MinBorderWidth
         {
-            get => (double)this.GetValue(MinTrayWidthProperty);
-            set => this.SetValue(MinTrayWidthProperty, value);
+            get => (double)this.GetValue(MinBorderWidthProperty);
+            set => this.SetValue(MinBorderWidthProperty, value);
         }
 
         public OriginHorizontal OriginHorizontal
@@ -377,8 +377,8 @@ namespace Ferretto.Common.Controls
 
             this.Width = widthNewCalculated;
             this.Height = heightNewCalculated;
-            this.MinTrayWidth = widthNewCalculated;
-            this.MinTrayHeight = heightNewCalculated;
+            this.MinBorderWidth = 1 + this.GetSizeOfPen() / 4;
+            this.MinBorderHeight = 1 + this.GetSizeOfPen() / 4;
 
             this.TrayHeight = heightNewCalculated;
             this.TrayWidth = widthNewCalculated;

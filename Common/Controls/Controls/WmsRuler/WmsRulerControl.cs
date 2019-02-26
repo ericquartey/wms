@@ -320,8 +320,8 @@ namespace Ferretto.Common.Controls
             {
                 pointStart.X = this.ActualWidth - sizeOfPen;
                 pointEnd.X = pointStart.X;
-                pointStart.Y = 0;
-                pointEnd.Y = this.TrayHeight - sizeOfPen;
+                pointStart.Y = this.HideAllMarkers ? -1 : 0;
+                pointEnd.Y = this.TrayHeight - 1;
                 if (this.HideAllMarkers)
                 {
                     pointEnd.Y++;
@@ -357,11 +357,12 @@ namespace Ferretto.Common.Controls
                 {
                     littleMarkStart.X = basePixelStart + (littlePixelStep * j);
                     littleMarkStart.Y = this.Height - this.LittleMarkLength + this.penHalfSize;
-                    littleMarkEnd.Y = this.Height - this.penHalfSize;
+                    littleMarkEnd.Y = this.Height - this.GetSizeOfPen();
                     if (this.OriginHorizontal == OriginHorizontal.Right)
                     {
                         littleMarkStart.X = this.ActualWidth - littleMarkStart.X;
                     }
+
 
                     littleMarkEnd.X = littleMarkStart.X;
                 }
@@ -369,7 +370,7 @@ namespace Ferretto.Common.Controls
                 {
                     var pixelPosition = basePixelStart + (littlePixelStep * j);
                     littleMarkStart.Y = (this.OriginVertical == OriginVertical.Top) ? pixelPosition : this.ActualHeight - pixelPosition - 1;
-                    littleMarkStart.X = this.Width - this.LittleMarkLength + this.penHalfSize;
+                    littleMarkStart.X = this.Width - this.LittleMarkLength + this.GetSizeOfPen();
                     littleMarkEnd.X = this.Width - this.penHalfSize - this.GetSizeOfPen();
                     littleMarkEnd.Y = littleMarkStart.Y;
                 }
@@ -399,7 +400,7 @@ namespace Ferretto.Common.Controls
             {
                 littleMarkStart.X = ConvertMillimetersToPixel(this.Step * currentStep, this.TrayWidth, this.DimensionWidth);
                 littleMarkStart.Y = this.penHalfSize;
-                littleMarkEnd.Y = this.ActualHeight - this.penHalfSize;
+                littleMarkEnd.Y = this.ActualHeight - sizeOfPen;
                 if (this.OriginHorizontal == OriginHorizontal.Right)
                 {
                     littleMarkStart.X = this.ActualWidth - littleMarkStart.X;
@@ -411,8 +412,8 @@ namespace Ferretto.Common.Controls
             {
                 var offSet = ConvertMillimetersToPixel(this.Step * currentStep, this.TrayHeight, this.DimensionHeight);
                 littleMarkStart.X = this.penHalfSize;
-                littleMarkEnd.X = this.ActualWidth - this.penHalfSize;
-                littleMarkStart.Y = (this.OriginVertical == OriginVertical.Top) ? offSet - 0 : this.ActualHeight - offSet - sizeOfPen;
+                littleMarkEnd.X = this.ActualWidth - sizeOfPen;
+                littleMarkStart.Y = (this.OriginVertical == OriginVertical.Top) ? offSet: this.ActualHeight - offSet - sizeOfPen;
                 littleMarkEnd.Y = littleMarkStart.Y;
             }
 
@@ -470,12 +471,13 @@ namespace Ferretto.Common.Controls
         {
             var littleMarkStart = new Point(0, 0);
             var littleMarkEnd = new Point(0, 0);
+            var sizeOfPen = this.GetSizeOfPen();
             if (this.Orientation == Orientation.Horizontal)
             {
                 var pixelStep = ConvertMillimetersToPixel(this.Step, this.TrayWidth, this.DimensionWidth);
                 littleMarkStart.X = (pixelStep * currentStep) + (pixelStep / 2);
                 littleMarkStart.Y = this.Height - this.MiddleMarkLength + this.penHalfSize;
-                littleMarkEnd.Y = this.Height - this.penHalfSize;
+                littleMarkEnd.Y = this.ActualHeight - sizeOfPen;
                 if (this.OriginHorizontal == OriginHorizontal.Right)
                 {
                     littleMarkStart.X = this.ActualWidth - littleMarkStart.X;
@@ -489,7 +491,7 @@ namespace Ferretto.Common.Controls
                 var pixelPosition = (pixelStep * currentStep) + (pixelStep / 2);
                 littleMarkStart.Y = (this.OriginVertical == OriginVertical.Top) ? pixelPosition : this.ActualHeight - (pixelPosition + 1);
                 littleMarkStart.X = this.Width - this.MiddleMarkLength + this.penHalfSize;
-                littleMarkEnd.X = this.Width - this.penHalfSize;
+                littleMarkEnd.X = this.ActualWidth - sizeOfPen;
                 littleMarkEnd.Y = littleMarkStart.Y;
             }
 

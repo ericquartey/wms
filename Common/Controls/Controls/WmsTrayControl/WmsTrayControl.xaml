@@ -7,15 +7,15 @@
              mc:Ignorable="d"
              x:Name="WmsTray">
 
-    <Grid Name="RootTrayGrid" >
+    <Grid Name="RootTrayGrid">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" MinHeight="1.5" />
+            <RowDefinition Height="Auto"  MinHeight="{Binding MinBorderHeight, ElementName=CanvasListBoxControl}"   />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MinWidth="1.5" />
+            <ColumnDefinition Width="Auto" MinWidth="1" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*"   />
         </Grid.ColumnDefinitions>
