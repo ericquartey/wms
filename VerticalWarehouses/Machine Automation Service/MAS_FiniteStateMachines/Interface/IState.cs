@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         /// </summary>
         void MakeOperation();
 
-        void NotifyMessage(Event_Message message);
+        void NotifyMessage(CommandMessage message);
 
         /// <summary>
         /// Stop operation for the state.

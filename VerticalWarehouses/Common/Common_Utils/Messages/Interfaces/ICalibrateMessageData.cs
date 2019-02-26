@@ -15,7 +15,7 @@ namespace Ferretto.VW.Common_Utils.Messages.Interfaces
         Both
     }
 
-    public interface ICalibrateMessageData : IEventMessageData
+    public interface ICalibrateMessageData : IMessageData
     {
         #region Properties
 

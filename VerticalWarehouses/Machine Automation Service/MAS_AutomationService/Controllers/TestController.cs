@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS_AutomationService
         public void AddMission()
         {
             var missionData = new MissionMessageData( 1, 1, 1, MissionType.CellToBay, 1 );
-            var missionMessage = new Event_Message( missionData,
+            var missionMessage = new CommandMessage( missionData,
                 "Test Mission",
                 MessageActor.AutomationService,
                 MessageActor.WebAPI,
@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS_AutomationService
         {
             var missionData = new MissionMessageData( 1, 1, 1, MissionType.CellToBay, 1 );
 
-            var message = new Event_Message( missionData,
+            var message = new CommandMessage( missionData,
                 "Create Mission",
                 MessageActor.MissionsManager,
                 MessageActor.WebAPI,
@@ -73,7 +73,7 @@ namespace Ferretto.VW.MAS_AutomationService
         [HttpGet( "MissionExecutedTest" )]
         public void MissionExecuted()
         {
-            var message = new Event_Message(
+            var message = new CommandMessage(
                 null,
                 "Mission Executed",
                 MessageActor.MissionsManager,

@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
         private readonly IHubContext<InstallationHub, IInstallationHub> hub;
 
-        private readonly ConcurrentQueue<Event_Message> messageQueue;
+        private readonly ConcurrentQueue<CommandMessage> messageQueue;
 
         private readonly ManualResetEventSlim messageReceived;
 
@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
             this.messageReceived = new ManualResetEventSlim(false);
 
-            this.messageQueue = new ConcurrentQueue<Event_Message>();
+            this.messageQueue = new ConcurrentQueue<CommandMessage>();
 
             var webApiMessagEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
             webApiMessagEvent.Subscribe((message) =>
@@ -114,7 +114,7 @@ namespace Ferretto.VW.MAS_AutomationService
             return Task.CompletedTask;
         }
 
-        private void ProcessAddMissionMessage(Event_Message message)
+        private void ProcessAddMissionMessage(CommandMessage message)
         {
             //TODO apply Automation Service Business Logic to the message
 

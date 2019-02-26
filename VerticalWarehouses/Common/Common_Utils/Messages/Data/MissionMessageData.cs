@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Interfaces;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.Common_Utils.Messages.Data
 {
@@ -6,13 +7,14 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
     {
         #region Constructors
 
-        public MissionMessageData( int bayID, int cellID, int drawerID, MissionType missionType, int priority )
+        public MissionMessageData( int bayID, int cellID, int drawerID, MissionType missionType, int priority, MessageVerbosity verbosity = MessageVerbosity.Debug )
         {
             this.BayID = bayID;
             this.CellID = cellID;
             this.DrawerID = drawerID;
             this.MissionType = missionType;
             this.Priority = priority;
+            this.Verbosity = verbosity;
         }
 
         #endregion
@@ -28,6 +30,8 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
         public MissionType MissionType { get; private set; }
 
         public int Priority { get; private set; }
+
+        public MessageVerbosity Verbosity { get; private set; }
 
         #endregion
     }

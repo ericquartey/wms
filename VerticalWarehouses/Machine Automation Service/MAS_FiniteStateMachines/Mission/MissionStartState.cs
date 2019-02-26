@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
         {
             this.parentStateMachine = parentMachine;
 
-            var newMessage = new Event_Message(null,
+            var newMessage = new CommandMessage(null,
                 $"Mission State Started",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
                 MessageVerbosity.Info);
             this.parentStateMachine.PublishMessage(newMessage);
 
-            var inverterMessage = new Event_Message(null,
+            var inverterMessage = new CommandMessage(null,
                 $"Mission State Started",
                 MessageActor.InverterDriver,
                 MessageActor.FiniteStateMachines,
@@ -44,7 +44,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
             throw new System.NotImplementedException();
         }
 
-        public override void NotifyMessage(Event_Message message)
+        public override void NotifyMessage(CommandMessage message)
         {
             switch (message.Type)
             {
@@ -69,9 +69,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
             throw new System.NotImplementedException();
         }
 
-        private void ProcessEndAction(Event_Message message)
+        private void ProcessEndAction(CommandMessage message)
         {
-            var newMessage = new Event_Message(null,
+            var newMessage = new CommandMessage(null,
                 $"End Mission",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
@@ -81,9 +81,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
             this.parentStateMachine.ChangeState(new MissionEndState(this.parentStateMachine), newMessage);
         }
 
-        private void ProcessErrorAction(Event_Message message)
+        private void ProcessErrorAction(CommandMessage message)
         {
-            var newMessage = new Event_Message(null,
+            var newMessage = new CommandMessage(null,
                 $"Stop Requested",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
@@ -93,9 +93,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
             this.parentStateMachine.ChangeState(new MissionErrorState(this.parentStateMachine), newMessage);
         }
 
-        private void ProcessStopAction(Event_Message message)
+        private void ProcessStopAction(CommandMessage message)
         {
-            var newMessage = new Event_Message(null,
+            var newMessage = new CommandMessage(null,
                 $"Stop Requested",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
