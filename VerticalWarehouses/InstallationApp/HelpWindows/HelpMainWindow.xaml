@@ -12,15 +12,56 @@
              WindowStartupLocation="CenterScreen"
              WindowStyle="None">
     <Window.Resources>
+        
         <DataTemplate DataType="{x:Type viewmodels:BeltBurnishingViewModel}">
             <local:BeltBurnishingHelpView></local:BeltBurnishingHelpView>
         </DataTemplate>
+        
         <DataTemplate DataType="{x:Type viewmodels:CellsControlViewModel}">
             <local:CellsControlHelpView></local:CellsControlHelpView>
         </DataTemplate>
+        
         <DataTemplate DataType="{x:Type viewmodels:ResolutionCalibrationVerticalAxisViewModel}">
             <local:ResolutionCalibrationVerticalAxisHelpView></local:ResolutionCalibrationVerticalAxisHelpView>
         </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type viewmodels:InstallationStateViewModel}">
+            <local:HelpInstallationState></local:HelpInstallationState>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:SSMainViewModel}">
+            <local:HelpSensorState></local:HelpSensorState>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:LSMTMainViewModel}">
+            <local:HelpLowSpeedMovements></local:HelpLowSpeedMovements>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:Gate1ControlViewModel}">
+            <local:HelpGateControl></local:HelpGateControl>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:VerticalAxisCalibrationViewModel}">
+            <local:HelpVerticalAxisCalibration></local:HelpVerticalAxisCalibration>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:CellsPanelsControlViewModel}">
+            <local:HelpCellsPanelControl></local:HelpCellsPanelControl>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:Gate1HeightControlViewModel}">
+            <local:HelpGateHeightControl></local:HelpGateHeightControl>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:WeightControlViewModel}">
+            <local:HelpWeightControl></local:HelpWeightControl>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:VerticalOffsetCalibrationViewModel}">
+            <local:HelpVerticalOffsetCalibration></local:HelpVerticalOffsetCalibration>
+        </DataTemplate>
+
+
     </Window.Resources>
     <Grid Width="1024"
           Height="768"

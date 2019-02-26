@@ -11,49 +11,58 @@
              mc:Ignorable="d">
     <Grid Width="1024"
              Height="608">
-        <TextBlock
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,30,0,0"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.PanelsControl}" Margin="160,10,0,562" />
-        <custom:CustomLabelTextBlockControl Margin="645,70,139,468"
-                                                ContentText="{Binding TotalPanels, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.TotalPanels}" />
-        <custom:CustomLabelTextBlockControl Margin="160,75,624,463"
-                                                ContentText="{Binding CurrentPanel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.CurrentPanel}" />
-        <custom:CustomLabelTextBlockControl ContentText="{Binding CurrentCell, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.CurrentCell}" Margin="160,485,624,53" />
-        <custom:CustomLabelTextBlockControl ContentText="{Binding CellHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.CellHeight}" Margin="160,395,624,143" />
-        <custom:CustomLabelTextBlockControl Margin="160,310,624,228"
-                                                ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
-        <custom:CustomInputFieldControlFocusable Margin="160,220,624,318"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
-                                                     InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     LabelText="{x:Static res:InstallationApp.StepValue}" />
-        <custom:CustomLabelTextBlockControl Margin="160,145,624,393"
-                                                ContentText="{Binding PanelCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.PanelCorrection}" />
-        <Button Margin="645,145,0,393"
-                    HorizontalAlignment="Left"
-                    Content="{x:Static res:General.Next}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        <Button Margin="645,220,0,318"
-                    HorizontalAlignment="Left"
-                    Content="{x:Static res:InstallationApp.GoToInitialPosition}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        <Button Margin="645,310,0,228"
-                    HorizontalAlignment="Left"
-                    Content="{x:Static res:InstallationApp.StepUp}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        <Button Margin="645,400,0,143"
-                    HorizontalAlignment="Left"
-                    Content="{x:Static res:InstallationApp.StepDown}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        <Button Margin="645,485,0,53"
-                    HorizontalAlignment="Left"
-                    Content="{x:Static res:InstallationApp.Correct}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                   Text="{x:Static res:InstallationApp.PanelsControlDescription}"  />
+
+        <custom:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="170,110,0,0"
+                                              ContentText="{Binding TotalPanels, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static res:InstallationApp.TotalPanels}" />
+
+        <custom:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="430,110,0,0"
+                                              ContentText="{Binding CurrentPanel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static res:InstallationApp.CurrentPanel}" />
+
+        <custom:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,210,0,0" 
+                                              ContentText="{Binding CurrentCell, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static res:InstallationApp.CurrentCell}" />
+
+        <custom:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="430,210,0,0"
+                                              ContentText="{Binding CellHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static res:InstallationApp.CellHeight}" />
+
+        <custom:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="430,350,0,0"
+                                              ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
+
+        <custom:CustomInputFieldControlFocusable   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="170,350,0,0"
+                                                   Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                   InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   LabelText="{x:Static res:InstallationApp.StepValue}" />
+
+        <custom:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="430,490,0,0"
+                                              ContentText="{Binding PanelCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static res:InstallationApp.PanelCorrection}" />
+
+        <Button   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="700,110,0,0"
+                  Content="{x:Static res:InstallationApp.NextPanel}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+
+        <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="700,210,0,0"
+                  Content="{x:Static res:InstallationApp.GoToInitialPosition}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+
+        <Button   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="700,310,0,0"
+                  Content="{x:Static res:InstallationApp.StepUp}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+
+        <Button   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="700,380,0,0"
+                  Content="{x:Static res:InstallationApp.StepDown}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+
+        <Button   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="700,490,0,0"
+                  Content="{x:Static res:InstallationApp.Correct}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
     </Grid>
 </UserControl>

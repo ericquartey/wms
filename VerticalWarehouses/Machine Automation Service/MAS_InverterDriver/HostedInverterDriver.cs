@@ -254,7 +254,7 @@ namespace Ferretto.VW.InverterDriver
             cancellationToken.Register(() => cancellationEventSlim.Set());
 
             //INFO Create WaitHandle array to wait for multiple events
-            WaitHandle[] commandHandles = new[]{ this.heartbeatQueue.WaitHandle,
+            var commandHandles = new[]{ this.heartbeatQueue.WaitHandle,
                                                  this.inverterCommandQueue.WaitHandle,
                                                  cancellationEventSlim.WaitHandle };
 

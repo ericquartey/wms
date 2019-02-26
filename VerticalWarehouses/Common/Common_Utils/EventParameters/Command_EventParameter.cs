@@ -6,6 +6,10 @@
 
         ExecuteStopHoming,
 
+        ExecuteVerticalPositioning,
+
+        ExecuteStopVerticalPositioning,
+
         StopAction
     }
 
