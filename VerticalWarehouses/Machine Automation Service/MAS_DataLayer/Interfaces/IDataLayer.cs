@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
@@ -78,6 +77,13 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
         string GetStringRuntimeValue(RuntimeValueEnum runtimeValueEnum);
+
+        /// <summary>
+        /// This methods is been invoked when a drawer backs from the bay to cells
+        /// </summary>
+        /// <exception cref="DataLayerExceptionEnum.NO_FREE_BLOCK_BOOKED_EXCEPTION">Thrown when a drawer backs from bay, but we don't find booked cells in a Free Blocks table</exception>
+        /// <exception cref="DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION">Thrown when we have booked cells in the Free Blocks table, but we don't find one of them in the cells table</exception>
+        void ReturnMissionEnded();
 
         /// <summary>
         /// Set one or more cells to a list cell to new value

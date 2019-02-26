@@ -113,6 +113,9 @@ namespace Ferretto.VW.MAS_DataLayer
             var evenFreeBlock = new FreeBlock();
             var oddFreeBlock = new FreeBlock();
 
+            var evenCellBeforePriority = -1;
+            var oddCellBeforePriority = -1;
+
             // INFO Remove all the records from the FreeBlocks table
             this.inMemoryDataContext.FreeBlocks.RemoveRange(this.inMemoryDataContext.FreeBlocks);
             this.inMemoryDataContext.SaveChanges();
@@ -123,16 +126,16 @@ namespace Ferretto.VW.MAS_DataLayer
 
                 if (cell.Side == Side.FrontEven)
                 {
-                    if (cellCounterEven != 0 && (cell.Status == Status.Free || cell.Status == Status.Disabled))
+                    if (cellCounterEven != 0 && (cell.Status == Status.Free || cell.Status == Status.Disabled) && evenCellBeforePriority < cell.Priority)
                     {
                         cellCounterEven++;
                     }
 
-                    if (cell.Status == Status.Free && cellCounterEven == 0)
+                    if (cell.Status == Status.Free && cellCounterEven == 0 && evenCellBeforePriority < cell.Priority)
                     {
                         evenFreeBlock.StartCell = cell.CellId;
                         evenFreeBlock.FreeBlockId = freeBlockCounter;
-                        evenFreeBlock.Priority = freeBlockCounter;
+                        evenFreeBlock.Priority = cell.Priority;
                         evenFreeBlock.Coord = cell.Coord;
                         evenFreeBlock.Side = cell.Side;
 
@@ -140,7 +143,7 @@ namespace Ferretto.VW.MAS_DataLayer
                         cellCounterEven++;
                     }
 
-                    if (cellCounterEven != 0 && (cell.Status == Status.Occupied || cell.Status == Status.Unusable))
+                    if (cellCounterEven != 0 && (cell.Status == Status.Occupied || cell.Status == Status.Unusable || evenCellBeforePriority > cell.Priority))
                     {
                         evenFreeBlock.BlockSize = cellCounterEven;
                         evenFreeBlock.BookedCellsNumber = 0;
@@ -148,19 +151,22 @@ namespace Ferretto.VW.MAS_DataLayer
                         cellCounterEven = 0;
                         this.inMemoryDataContext.FreeBlocks.Add(evenFreeBlock);
                     }
+
+                    // INFO Saving the Priority before
+                    evenCellBeforePriority = cell.Priority;
                 }
                 else
                 {
-                    if (cellCounterOdd != 0 && (cell.Status == Status.Free || cell.Status == Status.Disabled))
+                    if (cellCounterOdd != 0 && (cell.Status == Status.Free || cell.Status == Status.Disabled) && oddCellBeforePriority < cell.Priority)
                     {
                         cellCounterOdd++;
                     }
 
-                    if (cell.Status == Status.Free && cellCounterOdd == 0)
+                    if (cell.Status == Status.Free && cellCounterOdd == 0 && oddCellBeforePriority < cell.Priority)
                     {
                         oddFreeBlock.StartCell = cell.CellId;
                         oddFreeBlock.FreeBlockId = freeBlockCounter;
-                        oddFreeBlock.Priority = freeBlockCounter;
+                        oddFreeBlock.Priority = cell.Priority;
                         oddFreeBlock.Coord = cell.Coord;
                         oddFreeBlock.Side = cell.Side;
 
@@ -168,7 +174,7 @@ namespace Ferretto.VW.MAS_DataLayer
                         cellCounterOdd++;
                     }
 
-                    if (cellCounterOdd != 0 && (cell.Status == Status.Occupied || cell.Status == Status.Unusable))
+                    if (cellCounterOdd != 0 && (cell.Status == Status.Occupied || cell.Status == Status.Unusable || oddCellBeforePriority > cell.Priority))
                     {
                         oddFreeBlock.BlockSize = cellCounterOdd;
                         oddFreeBlock.BookedCellsNumber = 0;
@@ -176,6 +182,9 @@ namespace Ferretto.VW.MAS_DataLayer
                         cellCounterOdd = 0;
                         this.inMemoryDataContext.FreeBlocks.Add(oddFreeBlock);
                     }
+
+                    // INFO Saving the Priority before
+                    oddCellBeforePriority = cell.Priority;
                 }
             }
 
