@@ -375,8 +375,8 @@ namespace Ferretto.Common.Controls
                 heightNewCalculated = heightConverted;
             }
 
-            this.Width = widthNewCalculated + this.PenSize; 
-            this.Height = heightNewCalculated + this.PenSize; 
+            this.Width = widthNewCalculated;
+            this.Height = heightNewCalculated;
             this.MinTrayWidth = widthNewCalculated;
             this.MinTrayHeight = heightNewCalculated;
 
@@ -443,24 +443,24 @@ namespace Ferretto.Common.Controls
             base.OnRender(drawingContext);
 
             var penSize = this.GetSizeOfPen();
-            var pen = new Pen
-            {
-                DashCap = PenLineCap.Square,
-                Thickness = penSize,
-                StartLineCap = PenLineCap.Square,
-                EndLineCap = PenLineCap.Square
-            };
+            //var pen = new Pen
+            //{
+            //    DashCap = PenLineCap.Square,
+            //    Thickness = penSize,
+            //    StartLineCap = PenLineCap.Square,
+            //    EndLineCap = PenLineCap.Square
+            //};
 
-            var points = this.GetBordersPoints();
-            pen.Brush = Application.Current.Resources[DEFAULTBACKGROUND] as Brush;
-            DrawSnappedLinesBetweenPoints(drawingContext, pen, penSize, points.ToArray());
+            //var points = this.GetBordersPoints();
+            //pen.Brush = Application.Current.Resources[DEFAULTBACKGROUND] as Brush;
+            //DrawSnappedLinesBetweenPoints(drawingContext, pen, penSize, points.ToArray());
 
-            if (this.ShowBackground == false)
-            {
-                return;
-            }
-
-            points.Clear();
+            //if (this.ShowBackground == false)
+            //{
+            //    return;
+            //}
+            var points = new List<Point>();
+            // points.Clear();
             var stepXPixel = ConvertMillimetersToPixel(this.Step, this.TrayWidth, this.DimensionWidth);
             var stepYPixel = ConvertMillimetersToPixel(this.Step, this.TrayHeight, this.DimensionHeight);
 
@@ -615,11 +615,11 @@ namespace Ferretto.Common.Controls
         {
             var points = new List<Point>();
 
-            points.Add(new Point(this.TrayWidth, 0));
-            points.Add(new Point(this.TrayWidth, this.ActualHeight));
+            //points.Add(new Point(this.TrayWidth, 0));
+            //points.Add(new Point(this.TrayWidth, this.ActualHeight));
 
-            points.Add(new Point(0, this.ActualHeight - this.PenSize));
-            points.Add(new Point(this.TrayWidth, this.ActualHeight- this.PenSize));
+            //points.Add(new Point(0, this.ActualHeight - this.PenSize));
+            //points.Add(new Point(this.TrayWidth, this.ActualHeight- this.PenSize));
 
             return points;
         }

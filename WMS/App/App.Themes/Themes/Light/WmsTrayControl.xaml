@@ -128,8 +128,8 @@
                 <ItemsPanelTemplate>
                     <Canvas x:Name="TrayCanvas"  DataContext="{Binding ElementName=CanvasListBoxControl}"                                                        
                             RenderOptions.EdgeMode="Aliased"
-                            SnapsToDevicePixels="False"
-                            UseLayoutRounding="False"                          
+                            SnapsToDevicePixels="True"
+                            UseLayoutRounding="True"                          
                             Height="{Binding TrayHeight, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"
                             Width="{Binding TrayWidth, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }">
                         <Canvas.Style>
@@ -148,19 +148,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBox">
-                    <ContentControl x:Name="ListBoxBorder"                            
-                            Panel.ZIndex="999"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            BorderBrush="Yellow">
-                        <ItemsPresenter />
-                    </ContentControl>
-                    <ControlTemplate.Triggers>
-                        <DataTrigger Binding="{Binding IsReadOnly}"
-                                     Value="false">
-                            <Setter TargetName="ListBoxBorder" Property="BorderBrush" Value="{DynamicResource CommonSecondaryMedium}" />
-                        </DataTrigger>
-                    </ControlTemplate.Triggers>
+                    <ItemsPresenter />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

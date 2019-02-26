@@ -9,13 +9,13 @@
 
     <Grid Name="RootTrayGrid" >
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" MinHeight="1" />
+            <RowDefinition Height="Auto" MinHeight="1.5" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MinWidth="1" />
+            <ColumnDefinition Width="Auto" MinWidth="1.5" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*"   />
         </Grid.ColumnDefinitions>
@@ -104,5 +104,54 @@
                                        ShowBackground="{Binding ShowBackground}"
                                        GridLinesColor="{Binding GridLinesColor}"
                                        Style="{DynamicResource CanvasListBox}" />
+
+        <ctrls:WmsRulerControl x:Name="BorderRulerControl"
+                               Grid.Row="2"
+                               Grid.Column="1"
+                               Foreground="{Binding RulerForeground}"
+                               ForegroundText="{Binding RulerForeground}"
+                               FontSize="{Binding RulerFontSize}"
+                               DimensionWidth="{Binding DimensionWidth}"
+                               DimensionHeight="{Binding DimensionHeight}"
+                               ShowInfo="{Binding ShowInfo}"
+                               ShowMark="{Binding ShowMark}"
+                               ShowLittleMark="{Binding ShowLittleMark}"
+                               ShowMiddleMark="{Binding ShowMiddleMark}"                                                              
+                               Step="{Binding RulerStep}"
+                               Height="{DynamicResource TrayRulerSize}"
+                               Width="{Binding TrayWidth, ElementName=CanvasListBoxControl}"
+                               TrayWidth="{Binding TrayWidth, ElementName=CanvasListBoxControl}"
+                               TrayHeight="{Binding TrayHeight, ElementName=CanvasListBoxControl}"                               
+                               FontFamily="{DynamicResource TrayFont}"                             
+                               HorizontalAlignment="Left"                               
+                               VerticalAlignment="Top"                               
+                               Orientation="Horizontal"
+                               OriginHorizontal="{Binding OriginHorizontal}"
+                               OriginVertical="{Binding OriginVertical}"
+                               HideAllMarkers="True"/>
+        <ctrls:WmsRulerControl x:Name="BorderRightRulerControl"                                                                                       
+                               Grid.Row="1"
+                               Grid.Column="2"
+                               Foreground="{Binding RulerForeground}"
+                               ForegroundText="{Binding RulerForeground}"
+                               FontSize="{Binding RulerFontSize}"
+                               DimensionWidth="{Binding DimensionWidth}"
+                               DimensionHeight="{Binding DimensionHeight}"
+                               ShowInfo="{Binding ShowInfo}"
+                               ShowMark="{Binding ShowMark}"
+                               ShowLittleMark="{Binding ShowLittleMark}"
+                               ShowMiddleMark="{Binding ShowMiddleMark}"                                                              
+                               Step="{Binding RulerStep}"                               
+                               TrayWidth="{Binding TrayWidth, ElementName=CanvasListBoxControl}"
+                               TrayHeight="{Binding TrayHeight, ElementName=CanvasListBoxControl}"
+                               FontFamily="{DynamicResource TrayFont}"                               
+                               Width="{DynamicResource TrayRulerSize}"                               
+                               Height="{Binding TrayHeight, ElementName=CanvasListBoxControl}"                               
+                               VerticalAlignment="Top"                               
+                               Orientation="Vertical"
+                               HorizontalAlignment="Left"
+                               OriginHorizontal="{Binding OriginHorizontal}"
+                               OriginVertical="{Binding OriginVertical}"
+                               HideAllMarkers="True"/>
     </Grid>
 </UserControl>
