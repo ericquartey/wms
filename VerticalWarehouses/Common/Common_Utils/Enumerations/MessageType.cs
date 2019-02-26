@@ -32,7 +32,10 @@
         Homing,
         SwitchVerticalToHorizontal,
         SwitchHorizontalToVertical,
-        StopHoming
+        StopHoming,
+        Positioning,
+        ExecuteVerticalPositioning,
+        ExecuteStopVerticalPositioning
     }
 
 }

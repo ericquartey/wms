@@ -64,8 +64,7 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
             this.inverterAction.ErrorEvent -= this.PositioningDrawer_ThrowErrorEvent;
 
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
-               (OperationType.Positioning, OperationStatus.Error, "Internal inverter driver error", Verbosity.Info));
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage( null, "Internal inverter driver error", MessageActor.Any, MessageActor.InverterDriver, MessageType.Positioning, MessageStatus.OperationError, MessageVerbosity.Info, ErrorLevel.Error));
         }
 
         #endregion

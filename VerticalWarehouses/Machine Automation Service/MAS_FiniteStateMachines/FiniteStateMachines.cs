@@ -127,7 +127,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         break;
                     }
 
-                case CommandType.ExecuteVerticalPositioning:
+                case MessageType.ExecuteVerticalPositioning:
                     {
                         if (null == this.verticalPositioning)
                         {
@@ -138,7 +138,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         break;
                     }
 
-                case CommandType.ExecuteStopVerticalPositioning:
+                case MessageType.ExecuteStopVerticalPositioning:
                     {
                         if (null == this.verticalPositioning)
                         {
