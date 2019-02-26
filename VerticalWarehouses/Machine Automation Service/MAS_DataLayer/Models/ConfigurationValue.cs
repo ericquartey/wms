@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public DataTypeEnum VarType { get; set; }
 
-        public String VarValue { get; set; }
+        public string VarValue { get; set; }
 
         #endregion
     }

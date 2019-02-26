@@ -6,7 +6,7 @@ namespace Ferretto.VW.MAS_InverterDriver
     {
         #region Properties
 
-        String Type { get; }
+        string Type { get; }
 
         #endregion
     }

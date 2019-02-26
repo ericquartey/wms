@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         /// <summary>
         ///     Get the type of state (string description).
         /// </summary>
-        String Type { get; }
+        string Type { get; }
 
         #endregion
 

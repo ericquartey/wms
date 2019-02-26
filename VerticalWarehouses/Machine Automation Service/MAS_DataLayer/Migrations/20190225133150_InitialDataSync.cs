@@ -25,12 +25,12 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
             migrationBuilder.InsertData(
                 "ConfigurationValues",
                 new[] {"VarName", "VarType", "VarValue"},
-                new Object[] {8L, 3L, "169.254.231.248"});
+                new object[] {8L, 3L, "169.254.231.248"});
 
             migrationBuilder.InsertData(
                 "ConfigurationValues",
                 new[] {"VarName", "VarType", "VarValue"},
-                new Object[] {9L, 0L, "17221"});
+                new object[] {9L, 0L, "17221"});
         }
 
         #endregion

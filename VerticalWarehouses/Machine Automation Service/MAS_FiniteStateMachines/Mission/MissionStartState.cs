@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         #region Properties
 
-        public override String Type => "MissionStartState";
+        public override string Type => "MissionStartState";
 
         #endregion
 

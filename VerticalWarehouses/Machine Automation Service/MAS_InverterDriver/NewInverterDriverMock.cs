@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         #region Properties
 
-        public Single GetDrawerWeight { get; set; }
+        public float GetDrawerWeight { get; set; }
 
         #endregion
 
@@ -35,7 +35,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.logger.Log(LogLevel.Debug, "InverterDriverMock Destroy", null);
         }
 
-        public void ExecuteDrawerWeight(Int32 targetPosition, Single vMax, Single acc, Single dec)
+        public void ExecuteDrawerWeight(int targetPosition, float vMax, float acc, float dec)
         {
             this.logger.Log(LogLevel.Debug, "InverterDriverMock ExecuteDrawerWeight", null);
         }
@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.logger.Log(LogLevel.Debug, "InverterDriverMock ExecuteHorizontalHoming", null);
         }
 
-        public void ExecuteHorizontalPosition(Int32 target, Int32 speed, Int32 direction, List<ProfilePosition> profile)
+        public void ExecuteHorizontalPosition(int target, int speed, int direction, List<ProfilePosition> profile)
         {
             this.logger.Log(LogLevel.Debug, "InverterDriverMock ExecuteHorizontalPosition", null);
         }
@@ -60,8 +60,8 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.logger.Log(LogLevel.Debug, "InverterDriverMock ExecuteVerticalHoming", null);
         }
 
-        public void ExecuteVerticalPosition(Int32 targetPosition, Single vMax, Single acc, Single dec, Single weight,
-            Int16 offset, Boolean absoluteMovement)
+        public void ExecuteVerticalPosition(int targetPosition, float vMax, float acc, float dec, float weight,
+            short offset, bool absoluteMovement)
         {
             this.logger.Log(LogLevel.Debug, "InverterDriverMock ExecuteVerticalPosition", null);
         }
@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.logger.Log(LogLevel.Debug, "InverterDriverMock ExecuteVerticalPositionStop", null);
         }
 
-        public Boolean[] GetSensorsStates()
+        public bool[] GetSensorsStates()
         {
             this.logger.Log(LogLevel.Debug, "InverterDriverMock GetSensorsStates", null);
             return new[] {true, true, true};

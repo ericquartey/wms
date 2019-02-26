@@ -10,12 +10,12 @@ namespace Ferretto.VW.Common_Utils
         {
         }
 
-        public InMemoryDataLayerException(DataLayerExceptionEnum exceptionEnum, String message) : base(message)
+        public InMemoryDataLayerException(DataLayerExceptionEnum exceptionEnum, string message) : base(message)
         {
             this.ConfigurationExceptionCode = exceptionEnum;
         }
 
-        public InMemoryDataLayerException(DataLayerExceptionEnum exceptionEnum, String message,
+        public InMemoryDataLayerException(DataLayerExceptionEnum exceptionEnum, string message,
             Exception inner) : base(message, inner)
         {
             this.ConfigurationExceptionCode = exceptionEnum;

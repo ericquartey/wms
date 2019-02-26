@@ -37,7 +37,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Properties
 
-        public String Type => "Vertical Homing Done State";
+        public string Type => "Vertical Homing Done State";
 
         #endregion
 

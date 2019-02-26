@@ -48,7 +48,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
             }
         }
 
-        private void Click_Execute(Object sender, RoutedEventArgs e)
+        private void Click_Execute(object sender, RoutedEventArgs e)
         {
             /*
             var cmdId = OperationID.None;
@@ -131,7 +131,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Click_Initialize(Object sender, RoutedEventArgs e)
+        private void Click_Initialize(object sender, RoutedEventArgs e)
         {
             // Assign the IP address to connect
             this.driver.IPAddressToConnect = this.TxtBoxIP.Text;
@@ -147,12 +147,12 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Click_Terminate(Object sender, RoutedEventArgs e)
+        private void Click_Terminate(object sender, RoutedEventArgs e)
         {
             this.driver.Terminate();
         }
 
-        private void Driver_Connected(Object sender, ConnectedEventArgs eventArgs)
+        private void Driver_Connected(object sender, ConnectedEventArgs eventArgs)
         {
             var State = eventArgs.State;
             this.Dispatcher.BeginInvoke(new Action(() => this.updateUI(State)));
@@ -167,7 +167,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
         }
         */
 
-        private void PreviewTextInput_TxtBox(Object sender, System.Windows.Input.TextCompositionEventArgs e)
+        private void PreviewTextInput_TxtBox(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
             var regex = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
             e.Handled = !regex.IsMatch((sender as TextBox).Text.Insert((sender as TextBox).SelectionStart, e.Text));
@@ -180,7 +180,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
 
         private void updateUI(OperationID cmdId, string Message)
         {
-            this.TxtBoxReceiveMessageFromServer.Text = String.Format("Command id: {0} Text: {1}", cmdId.ToString(), Message);
+            this.TxtBoxReceiveMessageFromServer.Text = string.Format("Command id: {0} Text: {1}", cmdId.ToString(), Message);
         }
 
         #endregion Methods

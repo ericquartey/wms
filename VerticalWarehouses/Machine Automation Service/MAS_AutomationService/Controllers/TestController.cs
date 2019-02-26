@@ -44,7 +44,7 @@ namespace Ferretto.VW.MAS_AutomationService
         }
 
         [HttpPost("CreateMissionTest")]
-        public void CreateMission([FromBody] Int32 bayID, Int32 drawerID)
+        public void CreateMission([FromBody] int bayID, int drawerID)
         {
             var missionData = new MissionMessageData(1, 1, 1, MissionType.CellToBay, 1);
 

@@ -6,7 +6,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines
     {
         #region Properties
 
-        String Type { get; }
+        string Type { get; }
 
         #endregion
 

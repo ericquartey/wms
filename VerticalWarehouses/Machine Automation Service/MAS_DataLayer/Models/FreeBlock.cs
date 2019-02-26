@@ -6,19 +6,19 @@ namespace Ferretto.VW.MAS_DataLayer
     {
         #region Properties
 
-        public Int32 BlockSize { get; set; }
+        public int BlockSize { get; set; }
 
-        public Int32 BookedCellsNumber { get; set; }
+        public int BookedCellsNumber { get; set; }
 
-        public Decimal Coord { get; set; }
+        public decimal Coord { get; set; }
 
-        public Int32 FreeBlockId { get; set; }
+        public int FreeBlockId { get; set; }
 
-        public Int32 Priority { get; set; }
+        public int Priority { get; set; }
 
         public Side Side { get; set; }
 
-        public Int32 StartCell { get; set; }
+        public int StartCell { get; set; }
 
         #endregion
     }

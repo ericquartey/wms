@@ -31,12 +31,12 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                 "Cells",
                 table => new
                 {
-                    CellId = table.Column<Int32>(nullable: false)
+                    CellId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Coord = table.Column<Decimal>(nullable: false),
-                    Priority = table.Column<Int32>(nullable: false),
-                    Side = table.Column<Int64>(nullable: false),
-                    Status = table.Column<Int64>(nullable: false)
+                    Coord = table.Column<decimal>(nullable: false),
+                    Priority = table.Column<int>(nullable: false),
+                    Side = table.Column<long>(nullable: false),
+                    Status = table.Column<long>(nullable: false)
                 },
                 constraints: table => { table.PrimaryKey("PK_Cells", x => x.CellId); });
 
@@ -44,9 +44,9 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                 "ConfigurationValues",
                 table => new
                 {
-                    VarName = table.Column<Int64>(nullable: false),
-                    VarValue = table.Column<String>(nullable: true),
-                    VarType = table.Column<Int64>(nullable: false)
+                    VarName = table.Column<long>(nullable: false),
+                    VarValue = table.Column<string>(nullable: true),
+                    VarType = table.Column<long>(nullable: false)
                 },
                 constraints: table => { table.PrimaryKey("PK_ConfigurationValues", x => x.VarName); });
 
@@ -54,14 +54,14 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                 "FreeBlocks",
                 table => new
                 {
-                    BlockSize = table.Column<Int32>(nullable: false),
-                    BookedCellsNumber = table.Column<Int32>(nullable: false),
-                    Coord = table.Column<Decimal>(nullable: false),
-                    FreeBlockId = table.Column<Int32>(nullable: false)
+                    BlockSize = table.Column<int>(nullable: false),
+                    BookedCellsNumber = table.Column<int>(nullable: false),
+                    Coord = table.Column<decimal>(nullable: false),
+                    FreeBlockId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Priority = table.Column<Int32>(nullable: false),
-                    Side = table.Column<Int64>(nullable: false),
-                    StartCell = table.Column<Int32>(nullable: false)
+                    Priority = table.Column<int>(nullable: false),
+                    Side = table.Column<long>(nullable: false),
+                    StartCell = table.Column<int>(nullable: false)
                 },
                 constraints: table => { table.PrimaryKey("PK_FreeBlocks", x => x.FreeBlockId); });
 
@@ -69,9 +69,9 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                 "RuntimeValues",
                 table => new
                 {
-                    VarName = table.Column<Int64>(nullable: false),
-                    VarValue = table.Column<String>(nullable: true),
-                    VarType = table.Column<Int64>(nullable: false)
+                    VarName = table.Column<long>(nullable: false),
+                    VarValue = table.Column<string>(nullable: true),
+                    VarType = table.Column<long>(nullable: false)
                 },
                 constraints: table => { table.PrimaryKey("PK_RuntimeValues", x => x.VarName); });
 
@@ -79,8 +79,8 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                 "StatusLogs",
                 table => new
                 {
-                    LogMessage = table.Column<String>(nullable: true),
-                    StatusLogId = table.Column<Int32>(nullable: false)
+                    LogMessage = table.Column<string>(nullable: true),
+                    StatusLogId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true)
                 },
                 constraints: table => { table.PrimaryKey("PK_StatusLogs", x => x.StatusLogId); });

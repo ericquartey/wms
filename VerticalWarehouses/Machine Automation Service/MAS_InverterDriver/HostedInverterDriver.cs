@@ -20,9 +20,9 @@ namespace Ferretto.VW.InverterDriver
     {
         #region Fields
 
-        private const Int32 HEARTBEAT_TIMEOUT = 300;
+        private const int HEARTBEAT_TIMEOUT = 300;
 
-        private const Int32 InverterPortNumber = 17221;
+        private const int InverterPortNumber = 17221;
 
         private readonly IDataLayer dataLayer;
 
@@ -95,7 +95,7 @@ namespace Ferretto.VW.InverterDriver
             await Task.Run(() => this.HostedInverterDriverTaskFunction(stoppingToken), stoppingToken);
         }
 
-        private void ControlWordCheckTimeout(Object state)
+        private void ControlWordCheckTimeout(object state)
         {
             this.controlWordCheckTimer.Change(-1, Timeout.Infinite);
             //TODO notify control word change error
@@ -175,7 +175,7 @@ namespace Ferretto.VW.InverterDriver
 
             this.socketTransport.Configure(inverterAddress, inverterPort);
 
-            Boolean connectionCompleted;
+            bool connectionCompleted;
             try
             {
                 connectionCompleted = await this.socketTransport.ConnectAsync();
@@ -190,7 +190,7 @@ namespace Ferretto.VW.InverterDriver
 
             do
             {
-                Byte[] inverterData;
+                byte[] inverterData;
                 try
                 {
                     inverterData = await this.socketTransport.ReadAsync(stoppingToken);
@@ -206,7 +206,7 @@ namespace Ferretto.VW.InverterDriver
 
                 if (currentMessage.IsWriteMessage && currentMessage.ParameterId == InverterParameterId.ControlWordParam)
                 {
-                    var readStatusWordMessage = new InverterMessage(0x00, (Int16) InverterParameterId.StatusWordParam);
+                    var readStatusWordMessage = new InverterMessage(0x00, (short) InverterParameterId.StatusWordParam);
                     this.inverterCommandQueue.Enqueue(readStatusWordMessage);
                     this.controlWordCheckTimer.Change(5000, Timeout.Infinite);
                     continue;
@@ -217,7 +217,7 @@ namespace Ferretto.VW.InverterDriver
                     if (currentMessage.ShortPayload != this.lastControlMessage.ShortPayload)
                     {
                         var readStatusWordMessage =
-                            new InverterMessage(0x00, (Int16) InverterParameterId.StatusWordParam);
+                            new InverterMessage(0x00, (short) InverterParameterId.StatusWordParam);
                         this.inverterCommandQueue.Enqueue(readStatusWordMessage);
                         continue;
                     }
@@ -229,7 +229,7 @@ namespace Ferretto.VW.InverterDriver
             } while (stoppingToken.IsCancellationRequested);
         }
 
-        private void SendHeartBeat(Object state)
+        private void SendHeartBeat(object state)
         {
             this.heartbeatQueue.Enqueue(this.lastControlMessage);
         }

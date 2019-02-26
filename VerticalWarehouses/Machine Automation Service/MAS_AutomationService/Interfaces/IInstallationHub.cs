@@ -7,7 +7,7 @@ namespace Ferretto.VW.MAS_AutomationService.Interfaces
     {
         #region Methods
 
-        Task OnSendMessageToAllConnectedClients(String message);
+        Task OnSendMessageToAllConnectedClients(string message);
 
         #endregion
     }

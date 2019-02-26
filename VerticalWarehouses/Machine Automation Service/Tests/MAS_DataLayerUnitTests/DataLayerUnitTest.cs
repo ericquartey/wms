@@ -31,14 +31,14 @@ namespace MAS_DataLayerUnitTests
                 var setIntResolution = 1024;
                 var setDecimalHomingCreepSpeed = 10.1m;
                 var setStringHomingFastSpeed = "1000";
-                Int32 resolution;
-                Decimal homingCreepSpeed;
-                String homingFastSpeed;
+                int resolution;
+                decimal homingCreepSpeed;
+                string homingFastSpeed;
 
                 var setIntHomingDone = 1;
                 var setDecHomingDone = 1.0m;
                 var setStrHomingDone = "Homing Done";
-                Int32 intHomingDone;
+                int intHomingDone;
 
                 var mockEventAggregator = new Mock<IEventAggregator>();
                 mockEventAggregator.Setup(s => s.GetEvent<CommandEvent>()).Returns(new CommandEvent());

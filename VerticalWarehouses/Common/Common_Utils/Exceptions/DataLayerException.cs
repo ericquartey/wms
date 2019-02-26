@@ -11,7 +11,7 @@ namespace Ferretto.VW.Common_Utils
         {
         }
 
-        public DataLayerException(String message) : base(message)
+        public DataLayerException(string message) : base(message)
         {
         }
 
@@ -20,7 +20,7 @@ namespace Ferretto.VW.Common_Utils
             this.ConfigurationExceptionCode = exceptionEnum;
         }
 
-        public DataLayerException(String message, Exception inner) : base(message, inner)
+        public DataLayerException(string message, Exception inner) : base(message, inner)
         {
         }
 

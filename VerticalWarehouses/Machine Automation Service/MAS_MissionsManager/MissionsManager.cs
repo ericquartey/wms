@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         private readonly ManualResetEventSlim missionReady;
 
-        private readonly Dictionary<IMissionMessageData, Int32> missionsCollection;
+        private readonly Dictionary<IMissionMessageData, int> missionsCollection;
 
         private Task missionExecutionTask;
 
@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS_MissionsManager
 
             this.messageQueue = new ConcurrentQueue<CommandMessage>();
 
-            this.missionsCollection = new Dictionary<IMissionMessageData, Int32>();
+            this.missionsCollection = new Dictionary<IMissionMessageData, int>();
 
             var automationServiceMessageEvent = this.eventAggregator.GetEvent<CommandEvent>();
             automationServiceMessageEvent.Subscribe(commandMessage => this.EnqueueMessageAndSetSemaphor(commandMessage),

@@ -13,7 +13,7 @@ namespace Ferretto.VW.Common_Utils.Messages
         }
 
         public CommandMessage(IMessageData data,
-            String description,
+            string description,
             MessageActor destination,
             MessageActor source,
             MessageType type,
@@ -33,7 +33,7 @@ namespace Ferretto.VW.Common_Utils.Messages
 
         public IMessageData Data { get; }
 
-        public String Description { get; }
+        public string Description { get; }
 
         public MessageType Type { get; }
 

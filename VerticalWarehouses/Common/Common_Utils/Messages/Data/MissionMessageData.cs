@@ -8,7 +8,7 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
     {
         #region Constructors
 
-        public MissionMessageData(Int32 bayID, Int32 cellID, Int32 drawerID, MissionType missionType, Int32 priority,
+        public MissionMessageData(int bayID, int cellID, int drawerID, MissionType missionType, int priority,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.BayID = bayID;
@@ -23,15 +23,15 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
 
         #region Properties
 
-        public Int32 BayID { get; }
+        public int BayID { get; }
 
-        public Int32 CellID { get; }
+        public int CellID { get; }
 
-        public Int32 DrawerID { get; }
+        public int DrawerID { get; }
 
         public MissionType MissionType { get; }
 
-        public Int32 Priority { get; }
+        public int Priority { get; }
 
         public MessageVerbosity Verbosity { get; }
 

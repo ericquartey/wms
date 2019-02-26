@@ -6,11 +6,11 @@ namespace Ferretto.VW.MAS_DataLayer
     {
         #region Properties
 
-        public Int32 CellId { get; set; }
+        public int CellId { get; set; }
 
-        public Decimal Coord { get; set; }
+        public decimal Coord { get; set; }
 
-        public Int32 Priority { get; set; }
+        public int Priority { get; set; }
 
         public Side Side { get; set; }
 

@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PositioningDrawer
 
         #region Properties
 
-        public String Type => this.state.Type;
+        public string Type => this.state.Type;
 
         #endregion
 

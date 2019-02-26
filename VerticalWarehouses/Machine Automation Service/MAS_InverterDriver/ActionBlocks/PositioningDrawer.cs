@@ -11,109 +11,109 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
     {
         #region Fields
 
-        private const Int32 BIT_ABS_REL = 6;
+        private const int BIT_ABS_REL = 6;
 
-        private const Int32 BIT_ANALOGSAMPLING = 13;
+        private const int BIT_ANALOGSAMPLING = 13;
 
-        private const Int32 BIT_CHANGE_ON_SET_POINT = 9;
+        private const int BIT_CHANGE_ON_SET_POINT = 9;
 
-        private const Int32 BIT_CHANGE_SET_IMMEDIATELY = 5;
+        private const int BIT_CHANGE_SET_IMMEDIATELY = 5;
 
-        private const Int32 BIT_ENABLE_OPERATION = 3;
+        private const int BIT_ENABLE_OPERATION = 3;
 
-        private const Int32 BIT_ENABLE_VOLTAGE = 1;
+        private const int BIT_ENABLE_VOLTAGE = 1;
 
-        private const Int32 BIT_FAULT = 3;
+        private const int BIT_FAULT = 3;
 
-        private const Int32 BIT_FAULT_RESET = 7;
+        private const int BIT_FAULT_RESET = 7;
 
-        private const Int32 BIT_FOLLOWING_ERROR = 13;
+        private const int BIT_FOLLOWING_ERROR = 13;
 
-        private const Int32 BIT_HALT = 8;
+        private const int BIT_HALT = 8;
 
-        private const Int32 BIT_INTERNAL_LIMIT_ACTIVE = 11;
+        private const int BIT_INTERNAL_LIMIT_ACTIVE = 11;
 
-        private const Int32 BIT_NEW_SET_POINT = 4;
+        private const int BIT_NEW_SET_POINT = 4;
 
-        private const Int32 BIT_OPERATION_ENABLED = 2;
+        private const int BIT_OPERATION_ENABLED = 2;
 
-        private const Int32 BIT_QUICK_STOP = 2;
+        private const int BIT_QUICK_STOP = 2;
 
-        private const Int32 BIT_QUICK_STOP_STATUS = 5;
+        private const int BIT_QUICK_STOP_STATUS = 5;
 
-        private const Int32 BIT_READY_ON_SWITCH_ON = 0;
+        private const int BIT_READY_ON_SWITCH_ON = 0;
 
-        private const Int32 BIT_REMOTE = 9;
+        private const int BIT_REMOTE = 9;
 
-        private const Int32 BIT_SET_POINT_ACK = 12;
+        private const int BIT_SET_POINT_ACK = 12;
 
-        private const Int32 BIT_SWITCH_ON = 0;
+        private const int BIT_SWITCH_ON = 0;
 
-        private const Int32 BIT_SWITCH_ON_DISABLED = 6;
+        private const int BIT_SWITCH_ON_DISABLED = 6;
 
-        private const Int32 BIT_SWITCHED_ON = 1;
+        private const int BIT_SWITCHED_ON = 1;
 
-        private const Int32 BIT_TARGET_REACHED = 10;
+        private const int BIT_TARGET_REACHED = 10;
 
-        private const Int32 BIT_VOLTAGE_ENABLED = 4;
+        private const int BIT_VOLTAGE_ENABLED = 4;
 
-        private const Int32 BIT_WARNING = 7;
+        private const int BIT_WARNING = 7;
 
-        private const Byte DATASET_FOR_CONTROL = 0x05;
+        private const byte DATASET_FOR_CONTROL = 0x05;
 
-        private const Int32 DELAY_TIME = 350;
+        private const int DELAY_TIME = 350;
 
-        private const Int32 N_BITS_16 = 16;
+        private const int N_BITS_16 = 16;
 
-        private const Int32 TIME_OUT = 100;
+        private const int TIME_OUT = 100;
 
-        private static readonly Object lockObj = new Object();
+        private static readonly object lockObj = new object();
 
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly String[] positioningDrawerSteps = {"1.1", "1", "2", "3", "4", "5", "6"};
+        private readonly string[] positioningDrawerSteps = {"1.1", "1", "2", "3", "4", "5", "6"};
 
-        private readonly Byte systemIndex = 0x00;
+        private readonly byte systemIndex = 0x00;
 
-        private Single acc;
+        private float acc;
 
-        private Boolean bInitialShaftPosition;
+        private bool bInitialShaftPosition;
 
-        private Boolean bStoppedOk;
+        private bool bStoppedOk;
 
         private BitArray cmdWord;
 
-        private Int32 currentPosition;
+        private int currentPosition;
 
-        private Byte dataSetIndex;
+        private byte dataSetIndex;
 
-        private Single dec;
+        private float dec;
 
-        private Boolean enableReadMaxAnalogIc;
+        private bool enableReadMaxAnalogIc;
 
-        private Boolean enableRetrivialCurrentPositionMode;
+        private bool enableRetrivialCurrentPositionMode;
 
         private AutoResetEvent eventForTerminate;
 
-        private Int32 i;
+        private int i;
 
-        private Int32 initialPosition;
+        private int initialPosition;
 
         private IInverterDriver inverterDriver;
 
         private ParameterID paramID = ParameterID.POSITION_TARGET_POSITION_PARAM;
 
-        private String positioningStep;
+        private string positioningStep;
 
         private RegisteredWaitHandle regLoopUpdateCurrentPositionThread;
 
         private BitArray statusWord;
 
-        private Object valParam = "";
+        private object valParam = "";
 
-        private Single vMax;
+        private float vMax;
 
-        private Int32 x;
+        private int x;
 
         #endregion
 
@@ -127,7 +127,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
         #region Properties
 
-        public Int32 CurrentPosition
+        public int CurrentPosition
         {
             get
             {
@@ -137,19 +137,19 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             }
         }
 
-        public Boolean AbsoluteMovement { set; get; }
+        public bool AbsoluteMovement { set; get; }
 
-        public Boolean EnableReadMaxAnalogIc
+        public bool EnableReadMaxAnalogIc
         {
             set => this.enableReadMaxAnalogIc = value;
         }
 
-        public Boolean EnableRetrivialCurrentPositionMode
+        public bool EnableRetrivialCurrentPositionMode
         {
             set => this.enableRetrivialCurrentPositionMode = value;
         }
 
-        public UInt16 MaxAnalogIc { get; private set; }
+        public ushort MaxAnalogIc { get; private set; }
 
         public IInverterDriver SetInverterDriverInterface
         {
@@ -175,7 +175,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             }
         }
 
-        public void MoveAlongVerticalAxisToPoint(Int32 x, Single vMax, Single acc, Single dec, Single w, Int16 offset)
+        public void MoveAlongVerticalAxisToPoint(int x, float vMax, float acc, float dec, float w, short offset)
         {
             this.inverterDriver.Enable_Update_Current_Position_Vertical_Shaft_Mode =
                 this.enableRetrivialCurrentPositionMode;
@@ -229,17 +229,17 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             }
         }
 
-        internal static Byte[] BitArrayToByteArray(BitArray bits)
+        internal static byte[] BitArrayToByteArray(BitArray bits)
         {
-            var ret = new Byte[( bits.Length - 1 ) / 8 + 1];
+            var ret = new byte[( bits.Length - 1 ) / 8 + 1];
             bits.CopyTo(ret, 0);
             return ret;
         }
 
-        private Boolean CheckTransitionState()
+        private bool CheckTransitionState()
         {
             var bStateTransitionAllowed = false;
-            String error_Message;
+            string error_Message;
             switch (this.positioningStep)
             {
                 case "1":
@@ -338,7 +338,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             this.regLoopUpdateCurrentPositionThread?.Unregister(this.eventForTerminate);
         }
 
-        private void DriverError(Object sender, ErrorEventArgs eventArgs)
+        private void DriverError(object sender, ErrorEventArgs eventArgs)
         {
             var error_Message = "";
             switch (eventArgs.ErrorCode)
@@ -368,7 +368,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             this.ErrorEvent?.Invoke();
         }
 
-        private void EnquiryTelegram(Object sender, EnquiryTelegramDoneEventArgs eventArgs)
+        private void EnquiryTelegram(object sender, EnquiryTelegramDoneEventArgs eventArgs)
         {
             var type = eventArgs.Type;
             var paramID = eventArgs.ParamID;
@@ -408,13 +408,13 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                 this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_FOR_CONTROL, this.valParam);
         }
 
-        private Boolean IsTargetReached()
+        private bool IsTargetReached()
         {
             var endReached = this.i == this.positioningDrawerSteps.Length && this.statusWord.Get(BIT_TARGET_REACHED);
             return endReached;
         }
 
-        private void OnMainAutomationThread(Object data, Boolean bTimeOut)
+        private void OnMainAutomationThread(object data, bool bTimeOut)
         {
             if (bTimeOut)
             {
@@ -468,7 +468,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                 this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_FOR_CONTROL, this.valParam);
         }
 
-        private void SelectTelegram(Object sender, SelectTelegramDoneEventArgs eventArgs)
+        private void SelectTelegram(object sender, SelectTelegramDoneEventArgs eventArgs)
         {
             if (eventArgs.ParamID == ParameterID.CONTROL_WORD_PARAM && this.bStoppedOk)
                 this.inverterDriver.SendRequest(ParameterID.ACTUAL_POSITION_SHAFT, this.systemIndex,
@@ -494,10 +494,10 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
         private void stepExecution()
         {
             this.positioningStep = this.positioningDrawerSteps[this.i];
-            UInt16 value = 0x0000;
-            Byte[] bytes;
-            String error_Message;
-            Byte dataSetIdx = 0x00;
+            ushort value = 0x0000;
+            byte[] bytes;
+            string error_Message;
+            byte dataSetIdx = 0x00;
 
             switch (this.positioningStep)
             {
@@ -515,7 +515,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                 {
                     this.paramID = ParameterID.POSITION_TARGET_SPEED_PARAM;
                     dataSetIdx = this.dataSetIndex;
-                    this.valParam = (Int32) this.vMax;
+                    this.valParam = (int) this.vMax;
 
                     break;
                 }
@@ -524,7 +524,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                 {
                     this.paramID = ParameterID.POSITION_ACCELERATION_PARAM;
                     dataSetIdx = this.dataSetIndex;
-                    this.valParam = (Int32) this.acc;
+                    this.valParam = (int) this.acc;
 
                     break;
                 }
@@ -533,7 +533,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                 {
                     this.paramID = ParameterID.POSITION_DECELERATION_PARAM;
                     dataSetIdx = this.dataSetIndex;
-                    this.valParam = (Int32) this.dec;
+                    this.valParam = (int) this.dec;
 
                     break;
                 }
@@ -557,7 +557,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                 {
                     this.paramID = ParameterID.SET_OPERATING_MODE_PARAM;
                     dataSetIdx = DATASET_FOR_CONTROL;
-                    this.valParam = (Int16) 0x01;
+                    this.valParam = (short) 0x01;
 
                     break;
                 }

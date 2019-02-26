@@ -6,7 +6,7 @@ namespace Ferretto.VW.MAS_DataLayer
     {
         #region Fields
 
-        public Decimal ReturnCoord;
+        public decimal ReturnCoord;
 
         public Side ReturnSide;
 

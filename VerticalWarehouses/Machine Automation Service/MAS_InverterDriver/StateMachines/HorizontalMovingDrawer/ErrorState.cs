@@ -35,7 +35,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
 
         #region Properties
 
-        public String Type => "Error State";
+        public string Type => "Error State";
 
         #endregion
 

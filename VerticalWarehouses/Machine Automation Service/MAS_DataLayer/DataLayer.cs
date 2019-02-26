@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Constructors
 
-        public DataLayer(String connectionString, DataLayerContext inMemoryDataContext,
+        public DataLayer(string connectionString, DataLayerContext inMemoryDataContext,
             IEventAggregator eventAggregator)
         {
             if (inMemoryDataContext == null)
@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Methods
 
-        public Boolean LogWriting(String logMessage)
+        public bool LogWriting(string logMessage)
         {
             var updateOperation = true;
 
@@ -78,7 +78,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public void LogWriting(CommandMessage command_EventParameter)
         {
-            String logMessage;
+            string logMessage;
 
             switch (command_EventParameter.Type)
             {

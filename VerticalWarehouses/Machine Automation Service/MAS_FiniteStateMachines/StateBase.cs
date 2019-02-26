@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Properties
 
-        public virtual String Type => "BaseState";
+        public virtual string Type => "BaseState";
 
         #endregion
 

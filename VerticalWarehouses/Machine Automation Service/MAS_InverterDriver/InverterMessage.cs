@@ -8,17 +8,17 @@ namespace Ferretto.VW.InverterDriver
     {
         #region Fields
 
-        private const Byte ActualDataSetIndex = 0x05; //VALUE fixed data set id used for the inverter operation
+        private const byte ActualDataSetIndex = 0x05; //VALUE fixed data set id used for the inverter operation
 
-        private const Byte ReadHeader = 0x00;
+        private const byte ReadHeader = 0x00;
 
-        private const Byte WriteHeader = 0x80;
+        private const byte WriteHeader = 0x80;
 
-        private readonly Int16 parameterId;
+        private readonly short parameterId;
 
-        private readonly Byte[] payload;
+        private readonly byte[] payload;
 
-        private Byte writeBytesLength;
+        private byte writeBytesLength;
 
         #endregion
 
@@ -31,7 +31,7 @@ namespace Ferretto.VW.InverterDriver
             this.DataSetIndex = message.DataSetIndex;
             this.IsError = message.IsError;
             this.parameterId = message.parameterId;
-            this.payload = new Byte[message.payload.Length];
+            this.payload = new byte[message.payload.Length];
             try
             {
                 Array.Copy(message.payload, this.payload, message.payload.Length);
@@ -43,7 +43,7 @@ namespace Ferretto.VW.InverterDriver
             }
         }
 
-        public InverterMessage(Byte[] rawMessage)
+        public InverterMessage(byte[] rawMessage)
         {
             this.IsWriteMessage = ( rawMessage[0] & 0x80 ) > 0;
 
@@ -61,7 +61,7 @@ namespace Ferretto.VW.InverterDriver
                 rawMessage.Length -
                 6; //VALUE In received messages payload is always 6 bytes shorter than the full message
 
-            this.payload = new Byte[payloadSize];
+            this.payload = new byte[payloadSize];
             try
             {
                 Array.Copy(rawMessage, 6, this.payload, 0, payloadSize);
@@ -72,7 +72,7 @@ namespace Ferretto.VW.InverterDriver
             }
         }
 
-        public InverterMessage(Byte systemIndex, Int16 parameterId)
+        public InverterMessage(byte systemIndex, short parameterId)
         {
             this.SystemIndex = systemIndex;
             this.DataSetIndex = ActualDataSetIndex;
@@ -80,7 +80,7 @@ namespace Ferretto.VW.InverterDriver
             this.IsWriteMessage = false;
         }
 
-        public InverterMessage(Byte systemIndex, Int16 parametrerId, Object payload)
+        public InverterMessage(byte systemIndex, short parametrerId, object payload)
         {
             this.SystemIndex = systemIndex;
             this.DataSetIndex = ActualDataSetIndex;
@@ -92,31 +92,31 @@ namespace Ferretto.VW.InverterDriver
             switch (payloadType.Name)
             {
                 case "Byte":
-                    this.payload = new[] {(Byte) payload};
+                    this.payload = new[] {(byte) payload};
                     break;
 
                 case "Int16":
-                    this.payload = BitConverter.GetBytes((Int16) payload);
+                    this.payload = BitConverter.GetBytes((short) payload);
                     break;
 
                 case "UInt16":
-                    this.payload = BitConverter.GetBytes((UInt16) payload);
+                    this.payload = BitConverter.GetBytes((ushort) payload);
                     break;
 
                 case "Int32":
-                    this.payload = BitConverter.GetBytes((Int32) payload);
+                    this.payload = BitConverter.GetBytes((int) payload);
                     break;
 
                 case "Single":
-                    this.payload = BitConverter.GetBytes((Single) payload);
+                    this.payload = BitConverter.GetBytes((float) payload);
                     break;
 
                 case "Double":
-                    this.payload = BitConverter.GetBytes((Double) payload);
+                    this.payload = BitConverter.GetBytes((double) payload);
                     break;
 
                 case "String":
-                    this.payload = Encoding.ASCII.GetBytes((String) payload);
+                    this.payload = Encoding.ASCII.GetBytes((string) payload);
                     break;
             }
         }
@@ -125,31 +125,31 @@ namespace Ferretto.VW.InverterDriver
 
         #region Properties
 
-        public Byte BytePayload => this.ConvertPayloadToByte();
+        public byte BytePayload => this.ConvertPayloadToByte();
 
-        public Byte DataSetIndex { get; }
+        public byte DataSetIndex { get; }
 
-        public Double DoublePayload => this.ConvertPayloadToDouble();
+        public double DoublePayload => this.ConvertPayloadToDouble();
 
-        public Single FloatPayload => this.ConvertPayloadToFloat();
+        public float FloatPayload => this.ConvertPayloadToFloat();
 
-        public Int32 IntPayload => this.ConvertPayloadToInt();
+        public int IntPayload => this.ConvertPayloadToInt();
 
-        public Boolean IsError { get; }
+        public bool IsError { get; }
 
-        public Boolean IsWriteMessage { get; }
+        public bool IsWriteMessage { get; }
 
         public InverterParameterId ParameterId => (InverterParameterId) this.parameterId;
 
-        public Object Payload => this.ConvertPayload();
+        public object Payload => this.ConvertPayload();
 
-        public Int16 ShortPayload => this.ConvertPayloadToShort();
+        public short ShortPayload => this.ConvertPayloadToShort();
 
-        public String StringPayload => this.ConvertPayloadToString();
+        public string StringPayload => this.ConvertPayloadToString();
 
-        public Byte SystemIndex { get; }
+        public byte SystemIndex { get; }
 
-        public UInt16 UShortPayload => this.ConvertPayloadToUShort();
+        public ushort UShortPayload => this.ConvertPayloadToUShort();
 
         #endregion
 
@@ -160,9 +160,9 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         /// <returns>Byte array containing the request message for the inverter</returns>
         /// <exception cref="InverterDriverException">Configured ParameterId failed to convert into byte array</exception>
-        public Byte[] GetReadMessage()
+        public byte[] GetReadMessage()
         {
-            var readMessage = new Byte[6];
+            var readMessage = new byte[6];
 
             readMessage[0] = ReadHeader;
             readMessage[1] = 0x04; //VALUE Fixed packed data length to 4 bytes
@@ -183,10 +183,10 @@ namespace Ferretto.VW.InverterDriver
             return readMessage;
         }
 
-        public Byte[] GetWriteMessage()
+        public byte[] GetWriteMessage()
         {
             var messageLength = this.payload.Length + 6;
-            var writeMessage = new Byte[messageLength];
+            var writeMessage = new byte[messageLength];
 
             writeMessage[0] = WriteHeader;
             writeMessage[1] =
@@ -218,9 +218,9 @@ namespace Ferretto.VW.InverterDriver
             return writeMessage;
         }
 
-        public Byte[] GteHeartbeatMessage()
+        public byte[] GteHeartbeatMessage()
         {
-            if (this.parameterId != (Int16) InverterParameterId.ControlWordParam)
+            if (this.parameterId != (short) InverterParameterId.ControlWordParam)
                 throw new InverterDriverException("Invalid parameter id");
 
             var heartbeatMessage = this.GetWriteMessage();
@@ -231,9 +231,9 @@ namespace Ferretto.VW.InverterDriver
             return heartbeatMessage;
         }
 
-        private Object ConvertPayload()
+        private object ConvertPayload()
         {
-            var returnValue = default(Object);
+            var returnValue = default(object);
 
             switch ((InverterParameterId) this.parameterId)
             {
@@ -260,16 +260,16 @@ namespace Ferretto.VW.InverterDriver
                     break;
 
                 default:
-                    returnValue = default(Object);
+                    returnValue = default(object);
                     break;
             }
 
             return returnValue;
         }
 
-        private Byte ConvertPayloadToByte()
+        private byte ConvertPayloadToByte()
         {
-            var returnValue = default(Byte);
+            var returnValue = default(byte);
 
             switch ((InverterParameterId) this.parameterId)
             {
@@ -292,16 +292,16 @@ namespace Ferretto.VW.InverterDriver
                     break;
 
                 default:
-                    returnValue = default(Byte);
+                    returnValue = default(byte);
                     break;
             }
 
             return returnValue;
         }
 
-        private Double ConvertPayloadToDouble()
+        private double ConvertPayloadToDouble()
         {
-            var returnValue = default(Double);
+            var returnValue = default(double);
 
             switch ((InverterParameterId) this.parameterId)
             {
@@ -324,16 +324,16 @@ namespace Ferretto.VW.InverterDriver
                     break;
 
                 default:
-                    returnValue = default(Double);
+                    returnValue = default(double);
                     break;
             }
 
             return returnValue;
         }
 
-        private Single ConvertPayloadToFloat()
+        private float ConvertPayloadToFloat()
         {
-            var returnValue = default(Single);
+            var returnValue = default(float);
 
             switch ((InverterParameterId) this.parameterId)
             {
@@ -356,16 +356,16 @@ namespace Ferretto.VW.InverterDriver
                     break;
 
                 default:
-                    returnValue = default(Single);
+                    returnValue = default(float);
                     break;
             }
 
             return returnValue;
         }
 
-        private Int32 ConvertPayloadToInt()
+        private int ConvertPayloadToInt()
         {
-            var returnValue = default(Int32);
+            var returnValue = default(int);
 
             switch ((InverterParameterId) this.parameterId)
             {
@@ -388,16 +388,16 @@ namespace Ferretto.VW.InverterDriver
                     break;
 
                 default:
-                    returnValue = default(Int32);
+                    returnValue = default(int);
                     break;
             }
 
             return returnValue;
         }
 
-        private Int16 ConvertPayloadToShort()
+        private short ConvertPayloadToShort()
         {
-            var returnValue = default(Int16);
+            var returnValue = default(short);
 
             switch ((InverterParameterId) this.parameterId)
             {
@@ -420,16 +420,16 @@ namespace Ferretto.VW.InverterDriver
                     break;
 
                 default:
-                    returnValue = default(Int16);
+                    returnValue = default(short);
                     break;
             }
 
             return returnValue;
         }
 
-        private String ConvertPayloadToString()
+        private string ConvertPayloadToString()
         {
-            var returnValue = default(String);
+            var returnValue = default(string);
 
             switch ((InverterParameterId) this.parameterId)
             {
@@ -452,16 +452,16 @@ namespace Ferretto.VW.InverterDriver
                     break;
 
                 default:
-                    returnValue = default(String);
+                    returnValue = default(string);
                     break;
             }
 
             return returnValue;
         }
 
-        private UInt16 ConvertPayloadToUShort()
+        private ushort ConvertPayloadToUShort()
         {
-            var returnValue = default(UInt16);
+            var returnValue = default(ushort);
 
             switch ((InverterParameterId) this.parameterId)
             {
@@ -484,7 +484,7 @@ namespace Ferretto.VW.InverterDriver
                     break;
 
                 default:
-                    returnValue = default(UInt16);
+                    returnValue = default(ushort);
                     break;
             }
 

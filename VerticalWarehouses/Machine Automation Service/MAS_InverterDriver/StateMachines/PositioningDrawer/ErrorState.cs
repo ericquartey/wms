@@ -35,7 +35,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PositioningDrawer
 
         #region Properties
 
-        public String Type => "Error State";
+        public string Type => "Error State";
 
         #endregion
 

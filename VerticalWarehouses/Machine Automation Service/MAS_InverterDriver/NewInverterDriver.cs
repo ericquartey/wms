@@ -39,11 +39,11 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.inverterDriver.Terminate();
         }
 
-        public Boolean[] GetSensorsStates()
+        public bool[] GetSensorsStates()
         {
             if (null == this.inverterDriver) return null;
 
-            var sensors = new Boolean[5];
+            var sensors = new bool[5];
             sensors[0] = this.inverterDriver.Brake_Resistance_Overtemperature;
             sensors[1] = this.inverterDriver.Emergency_Stop;
             sensors[2] = this.inverterDriver.Pawl_Sensor_Zero;

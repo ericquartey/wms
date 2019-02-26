@@ -6,7 +6,7 @@ namespace Ferretto.Common.Common_Utils
     {
         #region Properties
 
-        public Int32 BayID { get; set; }
+        public int BayID { get; set; }
 
         #endregion
     }

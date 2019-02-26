@@ -6,9 +6,9 @@ namespace Ferretto.VW.MAS_DataLayer
     {
         #region Properties
 
-        public String LogMessage { get; set; }
+        public string LogMessage { get; set; }
 
-        public Int32 StatusLogId { get; set; }
+        public int StatusLogId { get; set; }
 
         #endregion
     }

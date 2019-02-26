@@ -11,31 +11,31 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
     {
         #region Fields
 
-        private const Byte DATASET_INDEX = 0x05;
+        private const byte DATASET_INDEX = 0x05;
 
-        private const Int32 DELAY_TIME = 500;
+        private const int DELAY_TIME = 500;
 
-        private const Int32 SETUP_PARAMETERS_STEPS = 3;
+        private const int SETUP_PARAMETERS_STEPS = 3;
 
-        private const Int32 STEPS_NUMBER = 6;
+        private const int STEPS_NUMBER = 6;
 
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly Byte systemIndex = 0x00;
+        private readonly byte systemIndex = 0x00;
 
         private IInverterDriver inverterDriver;
 
-        private Int32 numberOfConditionTargetReachedSatisfied;
+        private int numberOfConditionTargetReachedSatisfied;
 
         private ParameterID paramID = ParameterID.HOMING_MODE_PARAM;
 
-        private Boolean setupParameters;
+        private bool setupParameters;
 
-        private Int32 stepCounter;
+        private int stepCounter;
 
-        private Boolean stopExecution;
+        private bool stopExecution;
 
-        private Object valParam = "";
+        private object valParam = "";
 
         #endregion
 
@@ -82,12 +82,12 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                 this.inverterDriver.CurrentActionType = ActionType.CalibrateHorizontalAxis;
 
             logger.Log(LogLevel.Debug, "Start the routine for calibrate...");
-            logger.Log(LogLevel.Debug, String.Format(" <-- SetAxisOrigin - Step: {0}", this.ActualCalibrationAxis));
+            logger.Log(LogLevel.Debug, string.Format(" <-- SetAxisOrigin - Step: {0}", this.ActualCalibrationAxis));
 
             this.stepExecution();
         }
 
-        public void SetUpVerticalHomingParameters(Int32 acc, Int32 vFast, Int32 vCreep)
+        public void SetUpVerticalHomingParameters(int acc, int vFast, int vCreep)
         {
             logger.Log(LogLevel.Debug, " --> SetVerticalHomingParameters Begin ...");
 
@@ -132,7 +132,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                 var idExitStatus =
                     this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_INDEX, this.valParam);
 
-                logger.Log(LogLevel.Debug, String.Format(
+                logger.Log(LogLevel.Debug, string.Format(
                     " --> SetVerticalHomingParameters: {0}. Set parameter to inverter::  paramID: {1}, value: {2:X}, DataSetIndex: {3}",
                     setUpCounter, this.paramID.ToString(), this.valParam, DATASET_INDEX));
 
@@ -144,7 +144,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             logger.Log(LogLevel.Debug, " --> ... SetVerticalHomingParameters End");
         }
 
-        public Boolean StopInverter()
+        public bool StopInverter()
         {
             var result = true;
 
@@ -158,7 +158,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                     this.valParam = 0x8000;
 
                 logger.Log(LogLevel.Debug,
-                    String.Format(" --> Send stop::  paramID: {0}, value: {1:X}", this.paramID.ToString(),
+                    string.Format(" --> Send stop::  paramID: {0}, value: {1:X}", this.paramID.ToString(),
                         this.valParam));
                 this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_INDEX, this.valParam);
                 this.stopExecution = true;
@@ -211,14 +211,14 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             }
         }
 
-        private void EnquiryTelegram(Object sender, EnquiryTelegramDoneEventArgs eventArgs)
+        private void EnquiryTelegram(object sender, EnquiryTelegramDoneEventArgs eventArgs)
         {
-            const Int32 NUMBER_OF_SATISFIED_CONDITION = 2;
+            const int NUMBER_OF_SATISFIED_CONDITION = 2;
 
             var type = eventArgs.Type;
 
-            Byte[] statusWord;
-            Byte[] statusWord01;
+            byte[] statusWord;
+            byte[] statusWord01;
 
             BitArray statusWordBA01;
 
@@ -229,7 +229,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                 case ValueDataType.UInt16:
                 {
                     var value = Convert.ToUInt16(eventArgs.Value);
-                    statusWord = new Byte[sizeof(Int16)];
+                    statusWord = new byte[sizeof(short)];
                     statusWord = BitConverter.GetBytes(value);
 
                     break;
@@ -237,7 +237,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                 case ValueDataType.Int32:
                 {
                     var value = Convert.ToInt32(eventArgs.Value);
-                    statusWord = new Byte[sizeof(Int32)];
+                    statusWord = new byte[sizeof(int)];
                     statusWord = BitConverter.GetBytes(value);
 
                     break;
@@ -245,7 +245,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
                 default:
                 {
-                    statusWord = new Byte[1];
+                    statusWord = new byte[1];
                     statusWord = BitConverter.GetBytes(0);
 
                     break;
@@ -256,9 +256,9 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             statusWordBA01 = new BitArray(statusWord01);
 
             logger.Log(LogLevel.Debug,
-                String.Format(" <-- EnquiryTelegram - Step: {0} - {1}", this.stepCounter, this.ActualCalibrationAxis));
+                string.Format(" <-- EnquiryTelegram - Step: {0} - {1}", this.stepCounter, this.ActualCalibrationAxis));
 
-            logger.Log(LogLevel.Debug, String.Format(
+            logger.Log(LogLevel.Debug, string.Format(
                 "Bit 0: {0} - Bit 1: {1} - Bit 2: {2} - Bit 3: {3} - Bit 4: {4} - Bit 5: {5} - Bit 6: {6} - Bit 7: {7}" +
                 " - Bit 8: {8} - Bit 9: {9} - Bit 10: {10} - Bit 11: {11} - Bit 12: {12} - Bit 13: {13} - Bit 14: {14} - Bit 15: {15}",
                 statusWordBA01[0], statusWordBA01[1], statusWordBA01[2], statusWordBA01[3], statusWordBA01[4],
@@ -368,10 +368,10 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             }
         }
 
-        private void SelectTelegram(Object sender, SelectTelegramDoneEventArgs eventArgs)
+        private void SelectTelegram(object sender, SelectTelegramDoneEventArgs eventArgs)
         {
             logger.Log(LogLevel.Debug,
-                String.Format(" <-- SelectTelegram - Step: {0} - {1}", this.stepCounter, this.ActualCalibrationAxis));
+                string.Format(" <-- SelectTelegram - Step: {0} - {1}", this.stepCounter, this.ActualCalibrationAxis));
 
             if (!this.setupParameters)
             {
@@ -410,7 +410,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
         private void stepExecution()
         {
             logger.Log(LogLevel.Debug,
-                String.Format(" <-- stepExecution - Step: {0} - {1}", this.stepCounter, this.ActualCalibrationAxis));
+                string.Format(" <-- stepExecution - Step: {0} - {1}", this.stepCounter, this.ActualCalibrationAxis));
 
             switch (this.stepCounter)
             {
@@ -494,7 +494,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                 this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_INDEX, this.valParam);
 
             logger.Log(LogLevel.Debug,
-                String.Format(" --> StepExecution: {0}. Set parameter to inverter::  paramID: {1}, value: {2:X}",
+                string.Format(" --> StepExecution: {0}. Set parameter to inverter::  paramID: {1}, value: {2:X}",
                     this.stepCounter, this.paramID.ToString(), this.valParam));
 
             this.checkExistStatus(idExitStatus);

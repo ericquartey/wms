@@ -191,7 +191,7 @@ namespace Ferretto.VW.ActionBlocks
         /// </summary>
         public ushort MaxAnalogIc => this.maxAnalogIc;
 
-        Int16 IPositioningDrawer.MaxAnalogIc => throw new NotImplementedException();
+        short IPositioningDrawer.MaxAnalogIc => throw new NotImplementedException();
 
         public InverterDriver.InverterDriver SetInverterDriverInterface
         {
@@ -402,7 +402,7 @@ namespace Ferretto.VW.ActionBlocks
             this.regLoopUpdateCurrentPositionThread?.Unregister(this.eventForTerminate);
         }
 
-        private void DriverError(Object sender, ErrorEventArgs eventArgs)
+        private void DriverError(object sender, ErrorEventArgs eventArgs)
         {
             var error_Message = "";
             switch (eventArgs.ErrorCode)
@@ -439,7 +439,7 @@ namespace Ferretto.VW.ActionBlocks
         /// <summary>
         /// Occurs when the inverter driver notify the completion of a send request.
         /// </summary>
-        private void EnquiryTelegram(Object sender, EnquiryTelegramDoneEventArgs eventArgs)
+        private void EnquiryTelegram(object sender, EnquiryTelegramDoneEventArgs eventArgs)
         {
             var type = eventArgs.Type;
             var paramID = eventArgs.ParamID;
@@ -566,7 +566,7 @@ namespace Ferretto.VW.ActionBlocks
         /// <summary>
         /// Occurs when the inverter driver notify the completion of a setting request.
         /// </summary>
-        private void SelectTelegram(Object sender, SelectTelegramDoneEventArgs eventArgs)
+        private void SelectTelegram(object sender, SelectTelegramDoneEventArgs eventArgs)
         {
             if (eventArgs.ParamID == ParameterID.CONTROL_WORD_PARAM && this.bStoppedOk)
             {

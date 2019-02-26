@@ -44,7 +44,7 @@ namespace Ferretto.VW.CustomControls.Converters
 
         #region Methods
 
-        public Object Convert(object value, Type targetType, Object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (targetType != typeof(Visibility))
             {
@@ -61,7 +61,7 @@ namespace Ferretto.VW.CustomControls.Converters
             return this.Hide ? Visibility.Hidden : Visibility.Collapsed;
         }
 
-        public Object ConvertBack(object value, Type targetType, Object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is Visibility == false)
             {

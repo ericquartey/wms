@@ -10,8 +10,8 @@ namespace Ferretto.VW.MAS_InverterDriver
     {
         #region Methods
 
-        public void ExecuteVerticalPosition(Int32 targetPosition, Single vMax, Single acc, Single dec, Single weight,
-            Int16 offset, Boolean absoluteMovement)
+        public void ExecuteVerticalPosition(int targetPosition, float vMax, float acc, float dec, float weight,
+            short offset, bool absoluteMovement)
         {
             if (this.inverterAction != null)
                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null,

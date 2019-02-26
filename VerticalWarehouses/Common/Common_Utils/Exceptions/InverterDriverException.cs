@@ -32,20 +32,20 @@ namespace Ferretto.VW.Common_Utils.Exceptions
         {
         }
 
-        public InverterDriverException(String message) : base(message)
+        public InverterDriverException(string message) : base(message)
         {
         }
 
-        public InverterDriverException(String message, InverterDriverExceptionCode exceptionEnum) : base(message)
+        public InverterDriverException(string message, InverterDriverExceptionCode exceptionEnum) : base(message)
         {
             this.InverterDriverExceptionCode = exceptionEnum;
         }
 
-        public InverterDriverException(String message, Exception inner) : base(message, inner)
+        public InverterDriverException(string message, Exception inner) : base(message, inner)
         {
         }
 
-        public InverterDriverException(String message, InverterDriverExceptionCode exceptionEnum, Exception inner) :
+        public InverterDriverException(string message, InverterDriverExceptionCode exceptionEnum, Exception inner) :
             base(message, inner)
         {
             this.InverterDriverExceptionCode = exceptionEnum;

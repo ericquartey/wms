@@ -43,7 +43,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Properties
 
-        public String Type => "Homing Idle State";
+        public string Type => "Homing Idle State";
 
         #endregion
 

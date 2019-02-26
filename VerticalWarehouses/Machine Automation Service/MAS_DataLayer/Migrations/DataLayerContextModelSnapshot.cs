@@ -19,16 +19,16 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.Cell", b =>
             {
-                b.Property<Int32>("CellId")
+                b.Property<int>("CellId")
                     .ValueGeneratedOnAdd();
 
-                b.Property<Decimal>("Coord");
+                b.Property<decimal>("Coord");
 
-                b.Property<Int32>("Priority");
+                b.Property<int>("Priority");
 
-                b.Property<Int64>("Side");
+                b.Property<long>("Side");
 
-                b.Property<Int64>("Status");
+                b.Property<long>("Status");
 
                 b.HasKey("CellId");
 
@@ -37,11 +37,11 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.ConfigurationValue", b =>
             {
-                b.Property<Int64>("VarName");
+                b.Property<long>("VarName");
 
-                b.Property<Int64>("VarType");
+                b.Property<long>("VarType");
 
-                b.Property<String>("VarValue");
+                b.Property<string>("VarValue");
 
                 b.HasKey("VarName");
 
@@ -55,20 +55,20 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.FreeBlock", b =>
             {
-                b.Property<Int32>("FreeBlockId")
+                b.Property<int>("FreeBlockId")
                     .ValueGeneratedOnAdd();
 
-                b.Property<Int32>("BlockSize");
+                b.Property<int>("BlockSize");
 
-                b.Property<Int32>("BookedCellsNumber");
+                b.Property<int>("BookedCellsNumber");
 
-                b.Property<Decimal>("Coord");
+                b.Property<decimal>("Coord");
 
-                b.Property<Int32>("Priority");
+                b.Property<int>("Priority");
 
-                b.Property<Int64>("Side");
+                b.Property<long>("Side");
 
-                b.Property<Int32>("StartCell");
+                b.Property<int>("StartCell");
 
                 b.HasKey("FreeBlockId");
 
@@ -77,11 +77,11 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.RuntimeValue", b =>
             {
-                b.Property<Int64>("VarName");
+                b.Property<long>("VarName");
 
-                b.Property<Int64>("VarType");
+                b.Property<long>("VarType");
 
-                b.Property<String>("VarValue");
+                b.Property<string>("VarValue");
 
                 b.HasKey("VarName");
 
@@ -90,10 +90,10 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.StatusLog", b =>
             {
-                b.Property<Int32>("StatusLogId")
+                b.Property<int>("StatusLogId")
                     .ValueGeneratedOnAdd();
 
-                b.Property<String>("LogMessage");
+                b.Property<string>("LogMessage");
 
                 b.HasKey("StatusLogId");
 

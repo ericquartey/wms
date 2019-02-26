@@ -7,7 +7,7 @@ namespace Ferretto.VW.MAS_AutomationService
     {
         #region Methods
 
-        Boolean AddMission(Mission mission);
+        bool AddMission(Mission mission);
 
         #endregion
     }

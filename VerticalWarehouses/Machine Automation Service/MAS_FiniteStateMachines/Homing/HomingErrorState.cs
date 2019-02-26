@@ -46,7 +46,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Properties
 
-        public String Type => "Homing Error State";
+        public string Type => "Homing Error State";
 
         #endregion
 

@@ -35,7 +35,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Properties
 
-        public String Type => "Vertical Homing Idle State";
+        public string Type => "Vertical Homing Idle State";
 
         #endregion
 

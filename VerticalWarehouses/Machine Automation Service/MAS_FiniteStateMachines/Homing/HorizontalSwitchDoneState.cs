@@ -43,7 +43,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Properties
 
-        public String Type => "Horizontal Switch Done";
+        public string Type => "Horizontal Switch Done";
 
         #endregion
 

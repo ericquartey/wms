@@ -10,13 +10,13 @@ namespace Ferretto.VW.MAS_InverterDriver
     {
         #region Properties
 
-        public Single GetDrawerWeight { get; private set; }
+        public float GetDrawerWeight { get; private set; }
 
         #endregion
 
         #region Methods
 
-        public void ExecuteDrawerWeight(Int32 targetPosition, Single vMax, Single acc, Single dec)
+        public void ExecuteDrawerWeight(int targetPosition, float vMax, float acc, float dec)
         {
             this.GetDrawerWeight = -1.0f;
             if (this.inverterAction != null)

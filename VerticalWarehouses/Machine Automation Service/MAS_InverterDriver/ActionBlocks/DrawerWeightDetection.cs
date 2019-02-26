@@ -8,12 +8,12 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
     {
         #region Fields
 
-        private Single acc;
-        private Single dec;
+        private float acc;
+        private float dec;
         private PositioningDrawer drawerPositionController;
-        private Boolean executeWeighting;
-        private Single speed;
-        private Int32 target;
+        private bool executeWeighting;
+        private float speed;
+        private int target;
 
         #endregion
 
@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             set => this.drawerPositionController = value;
         }
 
-        public Single Weight { get; set; }
+        public float Weight { get; set; }
 
         #endregion
 
@@ -77,7 +77,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                 -1, 0);
         }
 
-        public void Run(Int32 targetPosition, Single v, Single acc, Single dec)
+        public void Run(int targetPosition, float v, float acc, float dec)
         {
             this.drawerPositionController.AbsoluteMovement = false;
             this.drawerPositionController.EnableReadMaxAnalogIc = true;
@@ -107,7 +107,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             }
         }
 
-        private Single ConvertToWeight(Int64 value)
+        private float ConvertToWeight(long value)
         {
             return value;
         }

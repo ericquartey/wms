@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #region Properties
 
-        public String Type => "Vertical Positioning Error State";
+        public string Type => "Vertical Positioning Error State";
 
         #endregion
 

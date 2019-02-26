@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
             return base.OnConnectedAsync();
         }
 
-        public async Task SendMessageToAllConnectedClients(String message)
+        public async Task SendMessageToAllConnectedClients(string message)
         {
             await this.Clients.All.OnSendMessageToAllConnectedClients(message);
         }

@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Properties
 
-        public String Type => this.state.Type;
+        public string Type => this.state.Type;
 
         #endregion
 

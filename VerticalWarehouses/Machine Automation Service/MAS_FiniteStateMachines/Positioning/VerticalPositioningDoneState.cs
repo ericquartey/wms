@@ -37,7 +37,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #region Properties
 
-        public String Type => "Vertical Positioning Done State";
+        public string Type => "Vertical Positioning Done State";
 
         #endregion
 

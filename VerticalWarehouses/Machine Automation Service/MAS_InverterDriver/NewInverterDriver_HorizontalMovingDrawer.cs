@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS_InverterDriver
     {
         #region Methods
 
-        public void ExecuteHorizontalPosition(Int32 target, Int32 speed, Int32 direction, List<ProfilePosition> profile)
+        public void ExecuteHorizontalPosition(int target, int speed, int direction, List<ProfilePosition> profile)
         {
             if (this.inverterAction != null)
                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null,

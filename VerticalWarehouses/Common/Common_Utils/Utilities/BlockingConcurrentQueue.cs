@@ -35,7 +35,7 @@ namespace Ferretto.VW.Common_Utils.Utilities
             this.dataReady?.Set();
         }
 
-        public Boolean TryDequeue(Int32 timeout, CancellationToken cancellationToken, out T result)
+        public bool TryDequeue(int timeout, CancellationToken cancellationToken, out T result)
         {
             if (this.dataReady?.Wait(timeout, cancellationToken) ?? false)
             {

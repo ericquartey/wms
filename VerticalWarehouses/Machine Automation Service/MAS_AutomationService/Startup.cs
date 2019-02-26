@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS_AutomationService
     {
         #region Fields
 
-        private const String ConnectionStringName = "AutomationService";
+        private const string ConnectionStringName = "AutomationService";
 
         #endregion
 
@@ -96,7 +96,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
         private void RegisterInverterDriver(IServiceCollection services)
         {
-            var useMockedInverterDriver = this.Configuration.GetValue<Boolean>("Vertimag:InverterDriver:UseMock");
+            var useMockedInverterDriver = this.Configuration.GetValue<bool>("Vertimag:InverterDriver:UseMock");
             if (useMockedInverterDriver)
             {
                 services.AddHostedService<HostedInverterDriverMock>();
@@ -111,7 +111,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
         private void RegisterRemoteIODriver(IServiceCollection services)
         {
-            var useRemoteIODriver = this.Configuration.GetValue<Boolean>("Vertimag:RemoteIODriver:UseMock");
+            var useRemoteIODriver = this.Configuration.GetValue<bool>("Vertimag:RemoteIODriver:UseMock");
             if (useRemoteIODriver)
                 services.AddSingleton<INewRemoteIODriver, NewRemoteIODriverMock>();
             else

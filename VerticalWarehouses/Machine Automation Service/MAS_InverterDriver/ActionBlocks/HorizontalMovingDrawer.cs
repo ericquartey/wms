@@ -13,35 +13,35 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
     {
         #region Fields
 
-        private const Byte DATASET_FOR_CONTROL = 0x05; //VALUE binary = 00000005
+        private const byte DATASET_FOR_CONTROL = 0x05; //VALUE binary = 00000005
 
-        private const Int32 DELAY_TIME = 350;
+        private const int DELAY_TIME = 350;
 
-        private const Int32 N_BITS_16 = 16;
+        private const int N_BITS_16 = 16;
 
-        private const Int32 TIME_OUT = 100;
+        private const int TIME_OUT = 100;
 
-        private const Int32 TOTAL_N_ENTRIES = 3;
+        private const int TOTAL_N_ENTRIES = 3;
 
-        private const Int32 TOTAL_NUMBER_COMMANDS = 7;
+        private const int TOTAL_NUMBER_COMMANDS = 7;
 
-        private static readonly Object lockObj = new Object();
+        private static readonly object lockObj = new object();
 
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly Byte systemIndex = 0x00;
+        private readonly byte systemIndex = 0x00;
 
-        private Boolean bInitialShaftPosition;
+        private bool bInitialShaftPosition;
 
         private BitArray cmdWord;
 
-        private Int32 currentCmdIndex;
+        private int currentCmdIndex;
 
-        private Int32 currEntry;
+        private int currEntry;
 
-        private Int32 currentShaftPosition;
+        private int currentShaftPosition;
 
-        private Byte dataSetIndex; //VALUE binary = 00000000
+        private byte dataSetIndex; //VALUE binary = 00000000
 
         private Direction direction;
 
@@ -53,21 +53,21 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
         private AutoResetEvent eventForTerminateReceive;
 
-        private Int64 freq;
+        private long freq;
 
-        private Int32 initialPosition;
+        private int initialPosition;
 
-        private Int32 initialSpeed;
+        private int initialSpeed;
 
         private IInverterDriver inverterDriver;
 
-        private Int32 nEntries;
+        private int nEntries;
 
-        private Int32 numberOfConditionTargetReachedSatisfied;
+        private int numberOfConditionTargetReachedSatisfied;
 
         private ParameterID paramID = ParameterID.POSITION_TARGET_POSITION_PARAM;
 
-        private Int64 pTimePrev;
+        private long pTimePrev;
 
         private RegisteredWaitHandle regWaitHandleForOnChangeSetupThread;
 
@@ -77,7 +77,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
         private BitArray statusWord;
 
-        private Int32 targetPosition;
+        private int targetPosition;
 
         #endregion
 
@@ -160,9 +160,9 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
         #region Properties
 
-        public Boolean AbsoluteMovement { get; set; }
+        public bool AbsoluteMovement { get; set; }
 
-        public Boolean EnableRetrivialCurrentPositionMode { get; set; }
+        public bool EnableRetrivialCurrentPositionMode { get; set; }
 
         public IInverterDriver SetInverterDriverInterface
         {
@@ -187,7 +187,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
                 this.paramID = ParameterID.CONTROL_WORD_PARAM;
                 var dataSetIdx = DATASET_FOR_CONTROL;
-                this.cmdWord.Set((Int32) CTRLWBITS.MOTOR_SELECTION, true);
+                this.cmdWord.Set((int) CTRLWBITS.MOTOR_SELECTION, true);
 
                 var bytes = BitArrayToByteArray(this.cmdWord);
                 var value = BitConverter.ToUInt16(bytes, 0);
@@ -196,7 +196,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             }
         }
 
-        public void Run(Int32 target, Int32 speed, Int32 direction, List<ProfilePosition> profile)
+        public void Run(int target, int speed, int direction, List<ProfilePosition> profile)
         {
             this.bInitialShaftPosition = true;
             this.initialPosition = 0;
@@ -247,7 +247,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             this.inverterDriver.CurrentActionType = ActionType.HorizontalMoving;
 
             logger.Log(LogLevel.Debug,
-                String.Format("RUN :: Initial position: {0}, target position: {1}", this.initialPosition,
+                string.Format("RUN :: Initial position: {0}, target position: {1}", this.initialPosition,
                     this.targetPosition));
 
             this.eventForExecuteStep?.Set();
@@ -257,7 +257,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
         {
             this.paramID = ParameterID.CONTROL_WORD_PARAM;
             this.cmdWord.SetAll(false);
-            this.cmdWord.Set((Int32) CTRLWBITS.MOTOR_SELECTION, true);
+            this.cmdWord.Set((int) CTRLWBITS.MOTOR_SELECTION, true);
 
             var bytes = BitArrayToByteArray(this.cmdWord);
             var value = BitConverter.ToUInt16(bytes, 0);
@@ -280,20 +280,20 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             }
         }
 
-        internal static Byte[] BitArrayToByteArray(BitArray bits)
+        internal static byte[] BitArrayToByteArray(BitArray bits)
         {
-            var ret = new Byte[( bits.Length - 1 ) / 8 + 1];
+            var ret = new byte[( bits.Length - 1 ) / 8 + 1];
             bits.CopyTo(ret, 0);
             return ret;
         }
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern Boolean QueryPerformanceCounter(out Int64 lpPerformanceCount);
+        private static extern bool QueryPerformanceCounter(out long lpPerformanceCount);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern Boolean QueryPerformanceFrequency(out Int64 lpPerformanceFrequency);
+        private static extern bool QueryPerformanceFrequency(out long lpPerformanceFrequency);
 
-        private Boolean checkChangeSetup(Int32 entryIndex)
+        private bool checkChangeSetup(int entryIndex)
         {
             if (entryIndex < this.entries.Count)
             {
@@ -306,7 +306,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             return false;
         }
 
-        private Boolean checkCommandTransition(Int32 cmdIndex)
+        private bool checkCommandTransition(int cmdIndex)
         {
             var bStateTransitionIsAllowed = false;
             switch (cmdIndex)
@@ -319,8 +319,8 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
                 case 2:
                 {
-                    bStateTransitionIsAllowed = this.statusWord.Get((Int32) STATUSWBITS.VOLTAGE_ENABLED) &&
-                                                this.statusWord.Get((Int32) STATUSWBITS.SWITCH_ON_DISABLED);
+                    bStateTransitionIsAllowed = this.statusWord.Get((int) STATUSWBITS.VOLTAGE_ENABLED) &&
+                                                this.statusWord.Get((int) STATUSWBITS.SWITCH_ON_DISABLED);
                     break;
                 }
 
@@ -332,27 +332,27 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
                 case 4:
                 {
-                    bStateTransitionIsAllowed = this.statusWord.Get((Int32) STATUSWBITS.READY_TO_SWITCH_ON) &&
-                                                this.statusWord.Get((Int32) STATUSWBITS.VOLTAGE_ENABLED) &&
-                                                this.statusWord.Get((Int32) STATUSWBITS.QUICK_STOP);
+                    bStateTransitionIsAllowed = this.statusWord.Get((int) STATUSWBITS.READY_TO_SWITCH_ON) &&
+                                                this.statusWord.Get((int) STATUSWBITS.VOLTAGE_ENABLED) &&
+                                                this.statusWord.Get((int) STATUSWBITS.QUICK_STOP);
                     break;
                 }
 
                 case 5:
                 {
-                    bStateTransitionIsAllowed = this.statusWord.Get((Int32) STATUSWBITS.SWITCHED_ON);
+                    bStateTransitionIsAllowed = this.statusWord.Get((int) STATUSWBITS.SWITCHED_ON);
                     break;
                 }
 
                 case 6:
                 {
-                    bStateTransitionIsAllowed = this.statusWord.Get((Int32) STATUSWBITS.OPERATION_ENABLED);
+                    bStateTransitionIsAllowed = this.statusWord.Get((int) STATUSWBITS.OPERATION_ENABLED);
                     break;
                 }
 
                 case 7:
                 {
-                    bStateTransitionIsAllowed = this.statusWord.Get((Int32) STATUSWBITS.TARGET_REACHED);
+                    bStateTransitionIsAllowed = this.statusWord.Get((int) STATUSWBITS.TARGET_REACHED);
                     if (bStateTransitionIsAllowed)
                     {
                         bStateTransitionIsAllowed = this.numberOfConditionTargetReachedSatisfied >= 2;
@@ -365,8 +365,8 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                 }
             }
 
-            UInt16 value = 0x0000;
-            Byte[] bytes;
+            ushort value = 0x0000;
+            byte[] bytes;
             bytes = BitArrayToByteArray(this.statusWord);
             value = BitConverter.ToUInt16(bytes, 0);
 
@@ -393,13 +393,13 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             this.regWaitHandleForOnReceiveThread?.Unregister(this.eventForTerminateReceive);
         }
 
-        private void EnquiryTelegram(Object sender, EnquiryTelegramDoneEventArgs eventArgs)
+        private void EnquiryTelegram(object sender, EnquiryTelegramDoneEventArgs eventArgs)
         {
             var paramID = eventArgs.ParamID;
             if (paramID == ParameterID.ACTUAL_POSITION_SHAFT)
             {
                 this.currentShaftPosition = this.inverterDriver.Current_Position_Horizontal_Shaft;
-                logger.Log(LogLevel.Debug, String.Format("Actual shaft position: {0}", this.currentShaftPosition));
+                logger.Log(LogLevel.Debug, string.Format("Actual shaft position: {0}", this.currentShaftPosition));
 
                 if (this.bInitialShaftPosition)
                 {
@@ -421,7 +421,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             if (this.currEntry <= this.entries.Count)
             {
                 dataSetIdx = DATASET_FOR_CONTROL;
-                var valueParameter = new Object();
+                var valueParameter = new object();
                 exitStatus = InverterDriverExitStatus.Success;
 
                 var data = this.entries[this.currEntry];
@@ -455,7 +455,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
                 this.paramID = ParameterID.CONTROL_WORD_PARAM;
                 dataSetIdx = DATASET_FOR_CONTROL;
-                this.cmdWord.Set((Int32) CTRLWBITS.NEW_SET_POINT, true);
+                this.cmdWord.Set((int) CTRLWBITS.NEW_SET_POINT, true);
 
                 bytes = BitArrayToByteArray(this.cmdWord);
                 value = BitConverter.ToUInt16(bytes, 0);
@@ -464,7 +464,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                 exitStatus = InverterDriverExitStatus.Success;
                 this.paramID = ParameterID.CONTROL_WORD_PARAM;
                 dataSetIdx = DATASET_FOR_CONTROL;
-                this.cmdWord.Set((Int32) CTRLWBITS.NEW_SET_POINT, false);
+                this.cmdWord.Set((int) CTRLWBITS.NEW_SET_POINT, false);
 
                 bytes = BitArrayToByteArray(this.cmdWord);
                 value = BitConverter.ToUInt16(bytes, 0);
@@ -475,16 +475,16 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             }
         }
 
-        private void executeCommand(Int32 cmdIndex)
+        private void executeCommand(int cmdIndex)
         {
             if (cmdIndex > TOTAL_NUMBER_COMMANDS)
                 return;
 
-            UInt16 value = 0x0000;
-            Byte[] bytes;
-            String error_Message;
-            Byte dataSetIdx = 0x00;
-            var valueParameter = new Object();
+            ushort value = 0x0000;
+            byte[] bytes;
+            string error_Message;
+            byte dataSetIdx = 0x00;
+            var valueParameter = new object();
             var exitStatus = InverterDriverExitStatus.Success;
 
             switch (cmdIndex)
@@ -514,7 +514,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                     this.paramID = ParameterID.CONTROL_WORD_PARAM;
                     dataSetIdx = DATASET_FOR_CONTROL;
                     this.cmdWord.SetAll(false);
-                    this.cmdWord.Set((Int32) CTRLWBITS.MOTOR_SELECTION, true);
+                    this.cmdWord.Set((int) CTRLWBITS.MOTOR_SELECTION, true);
 
                     bytes = BitArrayToByteArray(this.cmdWord);
                     value = BitConverter.ToUInt16(bytes, 0);
@@ -531,7 +531,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                 {
                     this.paramID = ParameterID.SET_OPERATING_MODE_PARAM;
                     dataSetIdx = DATASET_FOR_CONTROL;
-                    valueParameter = (Int16) 0x01;
+                    valueParameter = (short) 0x01;
 
                     exitStatus =
                         this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, valueParameter);
@@ -543,8 +543,8 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                 {
                     this.paramID = ParameterID.CONTROL_WORD_PARAM;
                     dataSetIdx = DATASET_FOR_CONTROL;
-                    this.cmdWord.Set((Int32) CTRLWBITS.ENABLE_VOLTAGE, true);
-                    this.cmdWord.Set((Int32) CTRLWBITS.QUICK_STOP, true);
+                    this.cmdWord.Set((int) CTRLWBITS.ENABLE_VOLTAGE, true);
+                    this.cmdWord.Set((int) CTRLWBITS.QUICK_STOP, true);
 
                     bytes = BitArrayToByteArray(this.cmdWord);
                     value = BitConverter.ToUInt16(bytes, 0);
@@ -561,7 +561,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                 {
                     this.paramID = ParameterID.CONTROL_WORD_PARAM;
                     dataSetIdx = DATASET_FOR_CONTROL;
-                    this.cmdWord.Set((Int32) CTRLWBITS.SWITCH_ON, true);
+                    this.cmdWord.Set((int) CTRLWBITS.SWITCH_ON, true);
 
                     bytes = BitArrayToByteArray(this.cmdWord);
                     value = BitConverter.ToUInt16(bytes, 0);
@@ -578,9 +578,9 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                 {
                     this.paramID = ParameterID.CONTROL_WORD_PARAM;
                     dataSetIdx = DATASET_FOR_CONTROL;
-                    this.cmdWord.Set((Int32) CTRLWBITS.ENABLE_OPERATION, true);
-                    this.cmdWord.Set((Int32) CTRLWBITS.CHANGE_ON_SET_POINT, false);
-                    this.cmdWord.Set((Int32) CTRLWBITS.CHANGE_SET_IMMEDIATELY, true);
+                    this.cmdWord.Set((int) CTRLWBITS.ENABLE_OPERATION, true);
+                    this.cmdWord.Set((int) CTRLWBITS.CHANGE_ON_SET_POINT, false);
+                    this.cmdWord.Set((int) CTRLWBITS.CHANGE_SET_IMMEDIATELY, true);
 
                     bytes = BitArrayToByteArray(this.cmdWord);
                     value = BitConverter.ToUInt16(bytes, 0);
@@ -597,8 +597,8 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                 {
                     this.paramID = ParameterID.CONTROL_WORD_PARAM;
                     dataSetIdx = DATASET_FOR_CONTROL;
-                    this.cmdWord.Set((Int32) CTRLWBITS.NEW_SET_POINT, true);
-                    this.cmdWord.Set((Int32) CTRLWBITS.ABS_REL, false);
+                    this.cmdWord.Set((int) CTRLWBITS.NEW_SET_POINT, true);
+                    this.cmdWord.Set((int) CTRLWBITS.ABS_REL, false);
 
                     bytes = BitArrayToByteArray(this.cmdWord);
                     value = BitConverter.ToUInt16(bytes, 0);
@@ -610,7 +610,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                     exitStatus = InverterDriverExitStatus.Success;
                     this.paramID = ParameterID.CONTROL_WORD_PARAM;
                     dataSetIdx = DATASET_FOR_CONTROL;
-                    this.cmdWord.Set((Int32) CTRLWBITS.NEW_SET_POINT, false);
+                    this.cmdWord.Set((int) CTRLWBITS.NEW_SET_POINT, false);
 
                     bytes = BitArrayToByteArray(this.cmdWord);
                     value = BitConverter.ToUInt16(bytes, 0);
@@ -650,17 +650,17 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             }
         }
 
-        private void OnChangeSetup(Object data, Boolean bTimeOut)
+        private void OnChangeSetup(object data, bool bTimeOut)
         {
             this.executeChangeCurrentSetup();
         }
 
-        private void OnExecutionThread(Object data, Boolean bTimeOut)
+        private void OnExecutionThread(object data, bool bTimeOut)
         {
             this.executeCommand(this.currentCmdIndex);
         }
 
-        private void OnReceiveThread(Object data, Boolean bTimeOut)
+        private void OnReceiveThread(object data, bool bTimeOut)
         {
             if (bTimeOut)
             {
@@ -669,11 +669,11 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
                     this.currentShaftPosition = this.inverterDriver.Current_Position_Horizontal_Shaft;
 
                     QueryPerformanceCounter(out var pTime);
-                    var offsetTime_ms = (Int32) ( (Double) ( pTime - this.pTimePrev ) * 1000 / this.freq );
+                    var offsetTime_ms = (int) ( (double) ( pTime - this.pTimePrev ) * 1000 / this.freq );
                     this.pTimePrev = pTime;
 
                     logger.Log(LogLevel.Debug,
-                        String.Format(" ----> Current horizontal shaft postition: {0} :: time out: {1} ms",
+                        string.Format(" ----> Current horizontal shaft postition: {0} :: time out: {1} ms",
                             this.currentShaftPosition, offsetTime_ms));
 
                     this.statusWord = this.inverterDriver.Status_Word;
@@ -697,7 +697,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
             }
         }
 
-        private void SelectTelegram(Object sender, SelectTelegramDoneEventArgs eventArgs)
+        private void SelectTelegram(object sender, SelectTelegramDoneEventArgs eventArgs)
         {
             //TODO
         }

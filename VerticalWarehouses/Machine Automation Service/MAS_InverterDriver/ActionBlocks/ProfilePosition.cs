@@ -6,7 +6,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
     {
         #region Constructors
 
-        public ProfilePosition(Int32 quote, Int32 speed, Int32 acceleration, Int32 deceleration)
+        public ProfilePosition(int quote, int speed, int acceleration, int deceleration)
         {
             this.Quote = quote;
             this.Speed = speed;
@@ -18,13 +18,13 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
         #region Properties
 
-        public Int32 Acceleration { get; }
+        public int Acceleration { get; }
 
-        public Int32 Deceleration { get; }
+        public int Deceleration { get; }
 
-        public Int32 Speed { get; }
+        public int Speed { get; }
 
-        public Int32 Quote { get; set; }
+        public int Quote { get; set; }
 
         #endregion
     }

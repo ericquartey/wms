@@ -9,7 +9,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
 
         private readonly Axis axisToCalibrate;
 
-        private readonly UInt16 parameterValue;
+        private readonly ushort parameterValue;
 
         #endregion
 
@@ -32,7 +32,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
             }
 
             var inverterMessage =
-                new InverterMessage(0x00, (Int16) InverterParameterId.ControlWordParam, this.parameterValue);
+                new InverterMessage(0x00, (short) InverterParameterId.ControlWordParam, this.parameterValue);
 
             parentStateMachine.EnqueueMessage(inverterMessage);
         }

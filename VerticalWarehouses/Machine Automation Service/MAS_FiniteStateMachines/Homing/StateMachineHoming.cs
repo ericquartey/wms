@@ -39,11 +39,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Properties
 
-        public String Type => this.state.Type;
+        public string Type => this.state.Type;
 
-        public Boolean HomingComplete { get; set; }
+        public bool HomingComplete { get; set; }
 
-        public Boolean HorizontalHomingAlreadyDone { get; set; }
+        public bool HorizontalHomingAlreadyDone { get; set; }
 
         #endregion
 

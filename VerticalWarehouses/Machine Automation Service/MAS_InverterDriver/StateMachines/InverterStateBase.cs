@@ -12,7 +12,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines
 
         #region Properties
 
-        public String Type => "InverterBaseState";
+        public string Type => "InverterBaseState";
 
         #endregion
 

@@ -10,22 +10,22 @@ namespace Ferretto.VW.MAS_IODriver
         /// <summary>
         ///     Gets the digital inputs.
         /// </summary>
-        List<Boolean> Inputs { get; }
+        List<bool> Inputs { get; }
 
         /// <summary>
         ///     Get/set the IP address. Ipv4 format.
         /// </summary>
-        String IPAddress { get; set; }
+        string IPAddress { get; set; }
 
         /// <summary>
         ///     Set the digital outputs.
         /// </summary>
-        List<Boolean> Outputs { set; }
+        List<bool> Outputs { set; }
 
         /// <summary>
         ///     Get/set the port address. Fixed value (see the NModBus class documentation).
         /// </summary>
-        Int32 Port { get; set; }
+        int Port { get; set; }
 
         #endregion
 

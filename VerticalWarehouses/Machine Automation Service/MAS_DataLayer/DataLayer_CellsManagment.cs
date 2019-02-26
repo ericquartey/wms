@@ -14,11 +14,11 @@ namespace Ferretto.VW.MAS_DataLayer
             return this.inMemoryDataContext.Cells.ToList();
         }
 
-        public ReturnMissionPosition GetFreeBlockPosition(Decimal drawerHeight)
+        public ReturnMissionPosition GetFreeBlockPosition(decimal drawerHeight)
         {
             var cellSpacing = this.GetIntegerConfigurationValue(ConfigurationValueEnum.cellSpacing);
 
-            var cellsNumber = (Int32) Math.Ceiling(drawerHeight / cellSpacing);
+            var cellsNumber = (int) Math.Ceiling(drawerHeight / cellSpacing);
 
             // INFO Always take into account +1 drawer cell height, to avoid impacts between two next drowers
             cellsNumber += 1;
@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnMissionPosition;
         }
 
-        public Boolean SetCellList(List<Cell> listCells)
+        public bool SetCellList(List<Cell> listCells)
         {
             var setCellList = false;
 

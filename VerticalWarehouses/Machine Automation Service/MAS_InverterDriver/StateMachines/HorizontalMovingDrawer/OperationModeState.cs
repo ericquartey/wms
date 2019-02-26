@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
     {
         #region Fields
 
-        private const Byte DATASET_INDEX = 0x05; //VALUE binary = 00000101
+        private const byte DATASET_INDEX = 0x05; //VALUE binary = 00000101
 
         private readonly IEventAggregator eventAggregator;
 
@@ -21,9 +21,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
 
         private readonly StateMachineHorizontalMoving stateMachineHorizontalMoving;
 
-        private readonly Byte systemIndex = 0x00; //VALUE binary = 00000000
+        private readonly byte systemIndex = 0x00; //VALUE binary = 00000000
 
-        private readonly Object valParam;
+        private readonly object valParam;
 
         #endregion
 
@@ -43,7 +43,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
 
         #region Properties
 
-        public String Type => "Operation Mode State";
+        public string Type => "Operation Mode State";
 
         #endregion
 

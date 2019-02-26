@@ -13,13 +13,13 @@ namespace Ferretto.VW.MAS_IODriver
     {
         #region Fields
 
-        private const Int32 DELAY_TIME = 75;
+        private const int DELAY_TIME = 75;
 
-        private const Int32 ENCODER_CRADLE = 2;
+        private const int ENCODER_CRADLE = 2;
 
-        private const Int32 ENCODER_ELEVATOR = 1;
+        private const int ENCODER_ELEVATOR = 1;
 
-        private const Int32 N_DIGITAL_OUTPUT_LINES = 5;
+        private const int N_DIGITAL_OUTPUT_LINES = 5;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -48,20 +48,20 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Properties
 
-        public List<Boolean> Inputs => this.remoteIO.Inputs;
+        public List<bool> Inputs => this.remoteIO.Inputs;
 
-        public String IPAddress
+        public string IPAddress
         {
             get => this.remoteIO.IPAddress;
             set => this.remoteIO.IPAddress = value;
         }
 
-        public List<Boolean> Outputs
+        public List<bool> Outputs
         {
             set => this.remoteIO.Outputs = value;
         }
 
-        public Int32 Port
+        public int Port
         {
             get => this.remoteIO.Port;
             set => this.remoteIO.Port = value;
@@ -85,7 +85,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         public void SwitchHorizontalToVertical()
         {
-            var digitalOutput = new List<Boolean>();
+            var digitalOutput = new List<bool>();
             for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++) digitalOutput.Add(false);
 
             this.remoteIO.Outputs = digitalOutput;
@@ -104,7 +104,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         public void SwitchVerticalToHorizontal()
         {
-            var digitalOutput = new List<Boolean>();
+            var digitalOutput = new List<bool>();
             for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++) digitalOutput.Add(false);
 
             this.remoteIO.Outputs = digitalOutput;

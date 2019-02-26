@@ -12,13 +12,13 @@ namespace Ferretto.VW.InverterDriver
     {
         #region Fields
 
-        private readonly Byte[] receiveBuffer = new Byte[1024];
+        private readonly byte[] receiveBuffer = new byte[1024];
 
-        private Boolean disposed;
+        private bool disposed;
 
         private IPAddress inverterAddress;
 
-        private Int32 sendPort;
+        private int sendPort;
 
         private TcpClient transportClient;
 
@@ -37,21 +37,21 @@ namespace Ferretto.VW.InverterDriver
 
         #region Properties
 
-        public Boolean IsConnected => this.transportClient?.Connected ?? false && this.transportStream != null;
+        public bool IsConnected => this.transportClient?.Connected ?? false && this.transportStream != null;
 
         #endregion
 
         #region Methods
 
         /// <inheritdoc />
-        public void Configure(IPAddress inverterAddress, Int32 sendPort)
+        public void Configure(IPAddress inverterAddress, int sendPort)
         {
             this.inverterAddress = inverterAddress;
             this.sendPort = sendPort;
         }
 
         /// <inheritdoc />
-        public async Task<Boolean> ConnectAsync()
+        public async Task<bool> ConnectAsync()
         {
             if (this.inverterAddress == null)
                 throw new ArgumentNullException(nameof(this.inverterAddress),
@@ -110,7 +110,7 @@ namespace Ferretto.VW.InverterDriver
         }
 
         /// <inheritdoc />
-        public void Disconnect(Int32 delay)
+        public void Disconnect(int delay)
         {
             if (!this.transportClient?.Connected ?? false) return;
 
@@ -127,7 +127,7 @@ namespace Ferretto.VW.InverterDriver
         }
 
         /// <inheritdoc />
-        public async Task<Byte[]> ReadAsync(CancellationToken stoppingToken)
+        public async Task<byte[]> ReadAsync(CancellationToken stoppingToken)
         {
             if (this.transportStream == null)
                 throw new InverterDriverException("Transport Stream is null",
@@ -151,7 +151,7 @@ namespace Ferretto.VW.InverterDriver
         }
 
         /// <inheritdoc />
-        public async Task WriteAsync(Byte[] inverterMessage, CancellationToken stoppingToken)
+        public async Task WriteAsync(byte[] inverterMessage, CancellationToken stoppingToken)
         {
             if (this.transportStream == null)
                 throw new InverterDriverException("Transport Stream is null",
@@ -172,7 +172,7 @@ namespace Ferretto.VW.InverterDriver
             }
         }
 
-        protected virtual void Dispose(Boolean disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (!this.disposed)
             {

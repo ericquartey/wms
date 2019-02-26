@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
     {
         #region Fields
 
-        private const Byte DATASET_INDEX = 0x05;
+        private const byte DATASET_INDEX = 0x05;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -21,9 +21,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         private readonly StateMachineCalibrateAxis stateMachineCalibrateAxis;
 
-        private readonly Byte systemIndex = 0x00;
+        private readonly byte systemIndex = 0x00;
 
-        private readonly Object valParam;
+        private readonly object valParam;
 
         #endregion
 
@@ -43,7 +43,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         #region Properties
 
-        public String Type => "Switch On State";
+        public string Type => "Switch On State";
 
         #endregion
 

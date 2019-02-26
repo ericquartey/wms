@@ -9,9 +9,9 @@ namespace Ferretto.VW.MAS_DataLayer
     {
         #region Fields
 
-        private const String ConnectionStringName = "AutomationService";
+        private const string ConnectionStringName = "AutomationService";
 
-        private const String DefaultApplicationSettingsFile = "appsettings.json";
+        private const string DefaultApplicationSettingsFile = "appsettings.json";
 
         #endregion
 
@@ -57,7 +57,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
             var connectionString = configurationBuilder.GetConnectionString(ConnectionStringName);
 
-            if (String.IsNullOrWhiteSpace(connectionString))
+            if (string.IsNullOrWhiteSpace(connectionString))
                 throw new InvalidOperationException(
                     $"Unable to locate the connection string '{ConnectionStringName}'.");
 

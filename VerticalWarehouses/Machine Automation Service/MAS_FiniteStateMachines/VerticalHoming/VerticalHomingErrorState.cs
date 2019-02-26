@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming
 
         #region Properties
 
-        public String Type => "Vertical Homing Error State";
+        public string Type => "Vertical Homing Error State";
 
         #endregion
 
