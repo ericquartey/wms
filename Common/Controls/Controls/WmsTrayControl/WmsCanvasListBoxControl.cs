@@ -375,10 +375,12 @@ namespace Ferretto.Common.Controls
                 heightNewCalculated = heightConverted;
             }
 
+            var extraOffset = OFFSET + (this.GetSizeOfPen() / 4);
+
             this.Width = widthNewCalculated;
             this.Height = heightNewCalculated;
-            this.MinBorderWidth = 1 + this.GetSizeOfPen() / 4;
-            this.MinBorderHeight = 1 + this.GetSizeOfPen() / 4;
+            this.MinBorderWidth = extraOffset;
+            this.MinBorderHeight = extraOffset;
 
             this.TrayHeight = heightNewCalculated;
             this.TrayWidth = widthNewCalculated;
@@ -443,24 +445,7 @@ namespace Ferretto.Common.Controls
             base.OnRender(drawingContext);
 
             var penSize = this.GetSizeOfPen();
-            //var pen = new Pen
-            //{
-            //    DashCap = PenLineCap.Square,
-            //    Thickness = penSize,
-            //    StartLineCap = PenLineCap.Square,
-            //    EndLineCap = PenLineCap.Square
-            //};
-
-            //var points = this.GetBordersPoints();
-            //pen.Brush = Application.Current.Resources[DEFAULTBACKGROUND] as Brush;
-            //DrawSnappedLinesBetweenPoints(drawingContext, pen, penSize, points.ToArray());
-
-            //if (this.ShowBackground == false)
-            //{
-            //    return;
-            //}
             var points = new List<Point>();
-            // points.Clear();
             var stepXPixel = ConvertMillimetersToPixel(this.Step, this.TrayWidth, this.DimensionWidth);
             var stepYPixel = ConvertMillimetersToPixel(this.Step, this.TrayHeight, this.DimensionHeight);
 
@@ -609,19 +594,6 @@ namespace Ferretto.Common.Controls
             {
                 wmsCanvasListBox.SetControlSize();
             }
-        }
-
-        private List<Point> GetBordersPoints()
-        {
-            var points = new List<Point>();
-
-            //points.Add(new Point(this.TrayWidth, 0));
-            //points.Add(new Point(this.TrayWidth, this.ActualHeight));
-
-            //points.Add(new Point(0, this.ActualHeight - this.PenSize));
-            //points.Add(new Point(this.TrayWidth, this.ActualHeight- this.PenSize));
-
-            return points;
         }
 
         private string GetColorFilter(ICompartment compartment)

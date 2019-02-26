@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MinWidth="1" />
+            <ColumnDefinition Width="Auto" MinWidth="{Binding MinBorderWidth, ElementName=CanvasListBoxControl}"    />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*"   />
         </Grid.ColumnDefinitions>
