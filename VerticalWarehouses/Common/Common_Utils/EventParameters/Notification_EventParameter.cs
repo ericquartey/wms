@@ -15,7 +15,9 @@
 
         SwitchVerticalToHorizontal,
 
-        SwitchHorizontalToVertical
+        SwitchHorizontalToVertical,
+
+        Positioning
     }
 
     public enum Verbosity

@@ -16,9 +16,9 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isBeltBurnishingButtonActive;
 
-        private bool isCellsControlButtonActive;
+        private bool isCellsControlButtonActive = true;
 
-        private bool isCellsPanelControlButtonActive;
+        private bool isCellsPanelControlButtonActive = true;
 
         private bool isDownScrollButtonActive = true;
 
@@ -34,7 +34,7 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isSensorsStateButtonActive = true;
 
-        private bool isSetYResolutionButtonActive;
+        private bool isSetYResolutionButtonActive = true;
 
         private bool isUpScrollButtonActive = true;
 

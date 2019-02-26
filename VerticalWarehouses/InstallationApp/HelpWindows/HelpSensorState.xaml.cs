@@ -13,16 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.InstallationApp.HelpWindows
 {
     /// <summary>
-    /// Interaction logic for HelpPageBase.xaml
+    /// Logica di interazione per HelpSensorState.xaml
     /// </summary>
-    public partial class HelpPageBase_old : UserControl
+    public partial class HelpSensorState : UserControl
     {
-        public HelpPageBase_old()
+        public HelpSensorState()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

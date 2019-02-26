@@ -39,10 +39,18 @@
   <ItemGroup>
     <None Remove="CellsControlHelpView.xaml" />
     <None Remove="HelpWindows\HelpBeltBurnishingView.xaml" />
+    <None Remove="HelpWindows\HelpCellsPanelControl.xaml" />
+    <None Remove="HelpWindows\HelpGateControl.xaml" />
+    <None Remove="HelpWindows\HelpGateHeightControl.xaml" />
+    <None Remove="HelpWindows\HelpInstallationState.xaml" />
+    <None Remove="HelpWindows\HelpLowSpeedMovements.xaml" />
     <None Remove="HelpWindows\HelpMainWindow.xaml" />
     <None Remove="HelpWindows\HelpPageBase.xaml" />
-    <None Remove="HelpWindows\HelpPageBase_old.xaml" />
     <None Remove="HelpWindows\HelpResolutionCalibrationVerticalAxisView.xaml" />
+    <None Remove="HelpWindows\HelpSensorState.xaml" />
+    <None Remove="HelpWindows\HelpVerticalAxisCalibration.xaml" />
+    <None Remove="HelpWindows\HelpVerticalOffsetCalibration.xaml" />
+    <None Remove="HelpWindows\HelpWeightControl.xaml" />
     <None Remove="MainWindowBackToIAPPButtonView.xaml" />
     <None Remove="ViewsAndViewModels\LowSpeedMovements\LSMTMainView.xaml" />
     <None Remove="ViewsAndViewModels\MainWindowBackToIAPPButtonView.xaml" />
@@ -72,8 +80,32 @@
     <Compile Update="HelpWindows\HelpCellsControlView.xaml.cs">
       <DependentUpon>HelpCellsControlView.xaml</DependentUpon>
     </Compile>
-    <Compile Update="HelpWindows\HelpPageBase_old.xaml.cs">
-      <DependentUpon>HelpPageBase_old.xaml</DependentUpon>
+    <Compile Update="HelpWindows\HelpInstallationState.xaml.cs">
+      <DependentUpon>HelpInstallationState.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpLowSpeedMovements.xaml.cs">
+      <DependentUpon>HelpLowSpeedMovements.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpGateControl.xaml.cs">
+      <DependentUpon>HelpGateControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpCellsPanelControl.xaml.cs">
+      <DependentUpon>HelpCellsPanelControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpGateHeightControl.xaml.cs">
+      <DependentUpon>HelpGateHeightControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpVerticalOffsetCalibration.xaml.cs">
+      <DependentUpon>HelpVerticalOffsetCalibration.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpWeightControl.xaml.cs">
+      <DependentUpon>HelpWeightControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpVerticalAxisCalibration.xaml.cs">
+      <DependentUpon>HelpVerticalAxisCalibration.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpSensorState.xaml.cs">
+      <DependentUpon>HelpSensorState.xaml</DependentUpon>
     </Compile>
     <Compile Update="HelpWindows\HelpResolutionCalibrationVerticalAxisView.xaml.cs">
       <DependentUpon>HelpResolutionCalibrationVerticalAxisView.xaml</DependentUpon>
