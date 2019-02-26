@@ -50,9 +50,14 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.logger.Log(LogLevel.Debug, "InverterDriverMock ExecuteHorizontalHoming", null);
         }
 
-        public void ExecuteHorizontalPosition(Int32 target, Int32 speed, Int32 direction, List<ProfilePosition> profile)
+        public void ExecuteHorizontalPosition(Int32 target, Int32 speed, Int32 direction, List<ProfilePosition> profile, Single weight)
         {
             this.logger.Log(LogLevel.Debug, "InverterDriverMock ExecuteHorizontalPosition", null);
+        }
+
+        public void ExecuteHorizontalPositionStop()
+        {
+            this.logger.Log(LogLevel.Debug, "InverterDriverMock ExecuteHorizontalPositionStop", null);
         }
 
         public void ExecuteVerticalHoming()
