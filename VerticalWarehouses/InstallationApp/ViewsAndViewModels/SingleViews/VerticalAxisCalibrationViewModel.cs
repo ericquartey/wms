@@ -7,6 +7,7 @@ using Ferretto.VW.InstallationApp.ServiceUtilities;
 using System.Net;
 using System.IO;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
+using Prism.Events;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -15,6 +16,8 @@ namespace Ferretto.VW.InstallationApp
         #region Fields
 
         private IUnityContainer container;
+
+        private IEventAggregator eventAggregator;
 
         private InstallationHubClient installationHubClient;
 
@@ -40,8 +43,9 @@ namespace Ferretto.VW.InstallationApp
 
         #region Constructors
 
-        public VerticalAxisCalibrationViewModel()
+        public VerticalAxisCalibrationViewModel(IEventAggregator eventAggregator)
         {
+            this.eventAggregator = eventAggregator;
             this.InputsCorrectionControlEventHandler += this.CheckInputsCorrectness;
         }
 

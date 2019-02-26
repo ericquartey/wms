@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
@@ -11,11 +12,22 @@ namespace Ferretto.VW.InstallationApp
 
         private IUnityContainer container;
 
+        private IEventAggregator eventAggregator;
+
         private ICommand gateEngineButtonCommand;
 
         private ICommand horizontalEngineButtonCommand;
 
         private ICommand verticalEngineButtonCommand;
+
+        #endregion
+
+        #region Constructors
+
+        public LSMTNavigationButtonsViewModel(IEventAggregator eventAggregator)
+        {
+            this.eventAggregator = eventAggregator;
+        }
 
         #endregion
 

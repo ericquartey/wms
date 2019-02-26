@@ -1,4 +1,5 @@
-﻿using Prism.Mvvm;
+﻿using Prism.Events;
+using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -6,9 +7,20 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
+        private IEventAggregator eventAggregator;
+
         private bool gateSensorA;
 
         private bool gateSensorB = true;
+
+        #endregion
+
+        #region Constructors
+
+        public SSGateViewModel(IEventAggregator eventAggregator)
+        {
+            this.eventAggregator = eventAggregator;
+        }
 
         #endregion
 

@@ -3,6 +3,7 @@ using Ferretto.VW.Utils.Source;
 using System;
 using Ferretto.VW.Navigation;
 using Microsoft.Practices.Unity;
+using Prism.Events;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -13,6 +14,8 @@ namespace Ferretto.VW.InstallationApp
         public IUnityContainer Container;
 
         public DataManager Data;
+
+        private IEventAggregator eventAggregator;
 
         private bool isBeltBurnishingDone;
 
@@ -49,6 +52,11 @@ namespace Ferretto.VW.InstallationApp
         #endregion
 
         #region Constructors
+
+        public InstallationStateViewModel(IEventAggregator eventAggregator)
+        {
+            this.eventAggregator = eventAggregator;
+        }
 
         public InstallationStateViewModel()
         {

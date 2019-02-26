@@ -1,6 +1,7 @@
 ﻿using Prism.Mvvm;
 using Ferretto.VW.Navigation;
 using Microsoft.Practices.Unity;
+using Prism.Events;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -9,6 +10,8 @@ namespace Ferretto.VW.InstallationApp
         #region Fields
 
         public IUnityContainer Container;
+
+        private IEventAggregator eventAggregator;
 
         private bool isBeltBurnishingButtonActive;
 
@@ -42,8 +45,9 @@ namespace Ferretto.VW.InstallationApp
 
         #region Constructors
 
-        public MainWindowNavigationButtonsViewModel()
+        public MainWindowNavigationButtonsViewModel(IEventAggregator eventAggregator)
         {
+            this.eventAggregator = eventAggregator;
             NavigationService.ExitViewEventHandler += this.UpdateDataFromDataManager;
             NavigationService.GoToViewEventHandler += this.SetAllNavigationButtonDisabled;
             NavigationService.ExitViewEventHandler += this.UpdateDataFromDataManager;

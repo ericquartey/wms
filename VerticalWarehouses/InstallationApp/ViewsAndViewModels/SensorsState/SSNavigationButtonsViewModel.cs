@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
@@ -15,11 +16,22 @@ namespace Ferretto.VW.InstallationApp
 
         private ICommand cradleButtonCommand;
 
+        private IEventAggregator eventAggregator;
+
         private ICommand gateButtonCommand;
 
         private ICommand variousButtonCommand;
 
         private ICommand verticalButtonCommand;
+
+        #endregion
+
+        #region Constructors
+
+        public SSNavigationButtonsViewModel(IEventAggregator eventAggregator)
+        {
+            this.eventAggregator = eventAggregator;
+        }
 
         #endregion
 

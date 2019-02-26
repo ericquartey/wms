@@ -1,4 +1,5 @@
-﻿using Prism.Mvvm;
+﻿using Prism.Events;
+using Prism.Mvvm;
 using System;
 
 namespace Ferretto.VW.InstallationApp
@@ -11,6 +12,8 @@ namespace Ferretto.VW.InstallationApp
 
         private decimal currentHeight;
 
+        private IEventAggregator eventAggregator;
+
         private decimal gateCorrection;
 
         private string noteText;
@@ -20,6 +23,15 @@ namespace Ferretto.VW.InstallationApp
         private decimal systemError;
 
         private decimal tolerance;
+
+        #endregion
+
+        #region Constructors
+
+        public Gate3HeightControlViewModel(IEventAggregator eventAggregator)
+        {
+            this.eventAggregator = eventAggregator;
+        }
 
         #endregion
 

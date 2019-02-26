@@ -24,7 +24,7 @@ namespace Ferretto.VW.InstallationApp
 
         public IUnityContainer Container;
 
-        private readonly HelpMainWindow helpWindow = new HelpMainWindow();
+        private readonly HelpMainWindow helpWindow;
 
         private BindableBase contentRegionCurrentViewModel;
 
@@ -57,6 +57,7 @@ namespace Ferretto.VW.InstallationApp
         public MainWindowViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.helpWindow = new HelpMainWindow(eventAggregator);
         }
 
         #endregion

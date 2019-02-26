@@ -1,12 +1,11 @@
-﻿using System.ComponentModel;
-using System.Threading.Tasks;
+﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.InstallationApp;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.Utils.Source;
-using Ferretto.VW.VWApp.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -122,8 +121,9 @@ namespace Ferretto.VW.VWApp
                             await ts;
                             ((App)Application.Current).InstallationAppMainWindowInstance.Show();
                         }
-                        catch
+                        catch (Exception)
                         {
+                            this.LoginErrorMessage = "Error: Couldn't connect to Machine Automation Service";
                         }
 
                         break;

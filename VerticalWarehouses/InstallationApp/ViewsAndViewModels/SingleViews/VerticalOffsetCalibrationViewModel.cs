@@ -4,6 +4,7 @@ using System.Windows.Threading;
 using Ferretto.VW.ActionBlocks;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
@@ -21,6 +22,8 @@ namespace Ferretto.VW.InstallationApp
         private string currentHeight;
 
         private int currentOffset;
+
+        private IEventAggregator eventAggregator;
 
         private ICommand exitFromViewCommand;
 
@@ -50,8 +53,9 @@ namespace Ferretto.VW.InstallationApp
 
         #region Constructors
 
-        public VerticalOffsetCalibrationViewModel()
+        public VerticalOffsetCalibrationViewModel(IEventAggregator eventAggregator)
         {
+            this.eventAggregator = eventAggregator;
             this.NoteString = Resources.InstallationApp.VerticalOffsetCalibration;
         }
 

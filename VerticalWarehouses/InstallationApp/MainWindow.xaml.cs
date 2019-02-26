@@ -7,6 +7,7 @@ using System;
 using System.Windows.Media;
 using Ferretto.VW.CustomControls.Controls;
 using System.Threading.Tasks;
+using Prism.Events;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -16,10 +17,17 @@ namespace Ferretto.VW.InstallationApp
 
     public partial class MainWindow : Window, IMainWindow
     {
+        #region Fields
+
+        private IEventAggregator eventAggregator;
+
+        #endregion
+
         #region Constructors
 
-        public MainWindow()
+        public MainWindow(IEventAggregator eventAggregator)
         {
+            this.eventAggregator = eventAggregator;
             this.InitializeComponent();
             NavigationService.BackToVWAppEventHandler += () => this.HideAndUnsubscribe();
             FinishedMachineModeChangeStateEventHandler += () => { };

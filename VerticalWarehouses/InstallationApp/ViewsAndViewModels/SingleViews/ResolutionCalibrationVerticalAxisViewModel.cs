@@ -6,6 +6,7 @@ using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Ferretto.VW.MathLib;
 using Prism.Mvvm;
+using Prism.Events;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -28,6 +29,8 @@ namespace Ferretto.VW.InstallationApp
         private string desiredInitialPosition;
 
         private decimal desiredInitialPositionDec;
+
+        private IEventAggregator eventAggregator;
 
         private bool isAcceptButtonActive;
 
@@ -55,9 +58,16 @@ namespace Ferretto.VW.InstallationApp
 
         private string repositionLenght;
 
-        private decimal resolution;
-
         private ICommand setPositionButtonCommand;
+
+        #endregion
+
+        #region Constructors
+
+        public ResolutionCalibrationVerticalAxisViewModel(IEventAggregator eventAggregator)
+        {
+            this.eventAggregator = eventAggregator;
+        }
 
         #endregion
 

@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Ferretto.VW.ActionBlocks;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
@@ -17,6 +18,8 @@ namespace Ferretto.VW.InstallationApp
         private int acceptableWeightTolerance;
 
         private ICommand beginButtonCommand;
+
+        private IEventAggregator eventAggregator;
 
         private ICommand exitFromViewCommand;
 
@@ -35,6 +38,15 @@ namespace Ferretto.VW.InstallationApp
         private ICommand stopButtonCommand;
 
         private int testRun;
+
+        #endregion
+
+        #region Constructors
+
+        public WeightControlViewModel(IEventAggregator eventAggregator)
+        {
+            this.eventAggregator = eventAggregator;
+        }
 
         #endregion
 
