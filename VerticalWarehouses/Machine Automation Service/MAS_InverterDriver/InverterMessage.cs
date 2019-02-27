@@ -45,9 +45,9 @@ namespace Ferretto.VW.InverterDriver
 
         public InverterMessage(byte[] rawMessage)
         {
-            this.IsWriteMessage = ( rawMessage[0] & 0x80 ) > 0;
+            this.IsWriteMessage = (rawMessage[0] & 0x80) > 0;
 
-            this.IsError = ( rawMessage[0] & 0x40 ) > 0;
+            this.IsError = (rawMessage[0] & 0x40) > 0;
 
             this.SystemIndex = rawMessage[2];
 
@@ -92,31 +92,31 @@ namespace Ferretto.VW.InverterDriver
             switch (payloadType.Name)
             {
                 case "Byte":
-                    this.payload = new[] {(byte) payload};
+                    this.payload = new[] { (byte)payload };
                     break;
 
                 case "Int16":
-                    this.payload = BitConverter.GetBytes((short) payload);
+                    this.payload = BitConverter.GetBytes((short)payload);
                     break;
 
                 case "UInt16":
-                    this.payload = BitConverter.GetBytes((ushort) payload);
+                    this.payload = BitConverter.GetBytes((ushort)payload);
                     break;
 
                 case "Int32":
-                    this.payload = BitConverter.GetBytes((int) payload);
+                    this.payload = BitConverter.GetBytes((int)payload);
                     break;
 
                 case "Single":
-                    this.payload = BitConverter.GetBytes((float) payload);
+                    this.payload = BitConverter.GetBytes((float)payload);
                     break;
 
                 case "Double":
-                    this.payload = BitConverter.GetBytes((double) payload);
+                    this.payload = BitConverter.GetBytes((double)payload);
                     break;
 
                 case "String":
-                    this.payload = Encoding.ASCII.GetBytes((string) payload);
+                    this.payload = Encoding.ASCII.GetBytes((string)payload);
                     break;
             }
         }
@@ -139,7 +139,7 @@ namespace Ferretto.VW.InverterDriver
 
         public bool IsWriteMessage { get; }
 
-        public InverterParameterId ParameterId => (InverterParameterId) this.parameterId;
+        public InverterParameterId ParameterId => (InverterParameterId)this.parameterId;
 
         public object Payload => this.ConvertPayload();
 
@@ -220,7 +220,7 @@ namespace Ferretto.VW.InverterDriver
 
         public byte[] GteHeartbeatMessage()
         {
-            if (this.parameterId != (short) InverterParameterId.ControlWordParam)
+            if (this.parameterId != (short)InverterParameterId.ControlWordParam)
                 throw new InverterDriverException("Invalid parameter id");
 
             var heartbeatMessage = this.GetWriteMessage();
@@ -235,32 +235,24 @@ namespace Ferretto.VW.InverterDriver
         {
             var returnValue = default(object);
 
-            switch ((InverterParameterId) this.parameterId)
+            switch ((InverterParameterId)this.parameterId)
             {
                 case InverterParameterId.ControlWordParam:
+                case InverterParameterId.StatusWordParam:
+                case InverterParameterId.SetOperatingModeParam:
                     if (this.payload.Length == 2) returnValue = BitConverter.ToUInt16(this.payload);
                     break;
 
                 case InverterParameterId.HomingCreepSpeedParam:
                 case InverterParameterId.HomingFastSpeedParam:
-                case InverterParameterId.HomingModeParam:
-                case InverterParameterId.HomingOffsetParam:
                 case InverterParameterId.HomingAcceleration:
                 case InverterParameterId.PositionAccelerationParam:
                 case InverterParameterId.PositionDecelerationParam:
                 case InverterParameterId.PositionTargetPositionParam:
                 case InverterParameterId.PositionTargetSpeedParam:
-                case InverterParameterId.SetOperatingModeParam:
-                case InverterParameterId.StatusWordParam:
                 case InverterParameterId.ActualPositionShaft:
                 case InverterParameterId.StatusDigitalSignals:
-                case InverterParameterId.ControlModeParam:
-                case InverterParameterId.AnalogIcParam:
-                    if (this.payload.Length == 1) returnValue = BitConverter.ToBoolean(this.payload);
-                    break;
-
-                default:
-                    returnValue = default(object);
+                    if (this.payload.Length == 4) returnValue = BitConverter.ToInt32(this.payload);
                     break;
             }
 
@@ -269,122 +261,37 @@ namespace Ferretto.VW.InverterDriver
 
         private byte ConvertPayloadToByte()
         {
-            var returnValue = default(byte);
-
-            switch ((InverterParameterId) this.parameterId)
-            {
-                case InverterParameterId.ControlWordParam:
-                case InverterParameterId.HomingCreepSpeedParam:
-                case InverterParameterId.HomingFastSpeedParam:
-                case InverterParameterId.HomingModeParam:
-                case InverterParameterId.HomingOffsetParam:
-                case InverterParameterId.HomingAcceleration:
-                case InverterParameterId.PositionAccelerationParam:
-                case InverterParameterId.PositionDecelerationParam:
-                case InverterParameterId.PositionTargetPositionParam:
-                case InverterParameterId.PositionTargetSpeedParam:
-                case InverterParameterId.SetOperatingModeParam:
-                case InverterParameterId.StatusWordParam:
-                case InverterParameterId.ActualPositionShaft:
-                case InverterParameterId.StatusDigitalSignals:
-                case InverterParameterId.ControlModeParam:
-                case InverterParameterId.AnalogIcParam:
-                    break;
-
-                default:
-                    returnValue = default(byte);
-                    break;
-            }
-
-            return returnValue;
+            return default(byte);
         }
 
         private double ConvertPayloadToDouble()
         {
-            var returnValue = default(double);
-
-            switch ((InverterParameterId) this.parameterId)
-            {
-                case InverterParameterId.ControlWordParam:
-                case InverterParameterId.HomingCreepSpeedParam:
-                case InverterParameterId.HomingFastSpeedParam:
-                case InverterParameterId.HomingModeParam:
-                case InverterParameterId.HomingOffsetParam:
-                case InverterParameterId.HomingAcceleration:
-                case InverterParameterId.PositionAccelerationParam:
-                case InverterParameterId.PositionDecelerationParam:
-                case InverterParameterId.PositionTargetPositionParam:
-                case InverterParameterId.PositionTargetSpeedParam:
-                case InverterParameterId.SetOperatingModeParam:
-                case InverterParameterId.StatusWordParam:
-                case InverterParameterId.ActualPositionShaft:
-                case InverterParameterId.StatusDigitalSignals:
-                case InverterParameterId.ControlModeParam:
-                case InverterParameterId.AnalogIcParam:
-                    break;
-
-                default:
-                    returnValue = default(double);
-                    break;
-            }
-
-            return returnValue;
+            return default(double);
         }
 
         private float ConvertPayloadToFloat()
         {
-            var returnValue = default(float);
-
-            switch ((InverterParameterId) this.parameterId)
-            {
-                case InverterParameterId.ControlWordParam:
-                case InverterParameterId.HomingCreepSpeedParam:
-                case InverterParameterId.HomingFastSpeedParam:
-                case InverterParameterId.HomingModeParam:
-                case InverterParameterId.HomingOffsetParam:
-                case InverterParameterId.HomingAcceleration:
-                case InverterParameterId.PositionAccelerationParam:
-                case InverterParameterId.PositionDecelerationParam:
-                case InverterParameterId.PositionTargetPositionParam:
-                case InverterParameterId.PositionTargetSpeedParam:
-                case InverterParameterId.SetOperatingModeParam:
-                case InverterParameterId.StatusWordParam:
-                case InverterParameterId.ActualPositionShaft:
-                case InverterParameterId.StatusDigitalSignals:
-                case InverterParameterId.ControlModeParam:
-                case InverterParameterId.AnalogIcParam:
-                    break;
-
-                default:
-                    returnValue = default(float);
-                    break;
-            }
-
-            return returnValue;
+            return default(float);
         }
 
         private int ConvertPayloadToInt()
         {
             var returnValue = default(int);
 
-            switch ((InverterParameterId) this.parameterId)
+            switch ((InverterParameterId)this.parameterId)
             {
                 case InverterParameterId.ControlWordParam:
                 case InverterParameterId.HomingCreepSpeedParam:
                 case InverterParameterId.HomingFastSpeedParam:
-                case InverterParameterId.HomingModeParam:
-                case InverterParameterId.HomingOffsetParam:
                 case InverterParameterId.HomingAcceleration:
                 case InverterParameterId.PositionAccelerationParam:
                 case InverterParameterId.PositionDecelerationParam:
                 case InverterParameterId.PositionTargetPositionParam:
                 case InverterParameterId.PositionTargetSpeedParam:
-                case InverterParameterId.SetOperatingModeParam:
                 case InverterParameterId.StatusWordParam:
                 case InverterParameterId.ActualPositionShaft:
                 case InverterParameterId.StatusDigitalSignals:
-                case InverterParameterId.ControlModeParam:
-                case InverterParameterId.AnalogIcParam:
+                    if (this.payload.Length == 4) returnValue = BitConverter.ToInt32(this.payload);
                     break;
 
                 default:
@@ -397,98 +304,17 @@ namespace Ferretto.VW.InverterDriver
 
         private short ConvertPayloadToShort()
         {
-            var returnValue = default(short);
-
-            switch ((InverterParameterId) this.parameterId)
-            {
-                case InverterParameterId.ControlWordParam:
-                case InverterParameterId.HomingCreepSpeedParam:
-                case InverterParameterId.HomingFastSpeedParam:
-                case InverterParameterId.HomingModeParam:
-                case InverterParameterId.HomingOffsetParam:
-                case InverterParameterId.HomingAcceleration:
-                case InverterParameterId.PositionAccelerationParam:
-                case InverterParameterId.PositionDecelerationParam:
-                case InverterParameterId.PositionTargetPositionParam:
-                case InverterParameterId.PositionTargetSpeedParam:
-                case InverterParameterId.SetOperatingModeParam:
-                case InverterParameterId.StatusWordParam:
-                case InverterParameterId.ActualPositionShaft:
-                case InverterParameterId.StatusDigitalSignals:
-                case InverterParameterId.ControlModeParam:
-                case InverterParameterId.AnalogIcParam:
-                    break;
-
-                default:
-                    returnValue = default(short);
-                    break;
-            }
-
-            return returnValue;
+            return default(short);
         }
 
         private string ConvertPayloadToString()
         {
-            var returnValue = default(string);
-
-            switch ((InverterParameterId) this.parameterId)
-            {
-                case InverterParameterId.ControlWordParam:
-                case InverterParameterId.HomingCreepSpeedParam:
-                case InverterParameterId.HomingFastSpeedParam:
-                case InverterParameterId.HomingModeParam:
-                case InverterParameterId.HomingOffsetParam:
-                case InverterParameterId.HomingAcceleration:
-                case InverterParameterId.PositionAccelerationParam:
-                case InverterParameterId.PositionDecelerationParam:
-                case InverterParameterId.PositionTargetPositionParam:
-                case InverterParameterId.PositionTargetSpeedParam:
-                case InverterParameterId.SetOperatingModeParam:
-                case InverterParameterId.StatusWordParam:
-                case InverterParameterId.ActualPositionShaft:
-                case InverterParameterId.StatusDigitalSignals:
-                case InverterParameterId.ControlModeParam:
-                case InverterParameterId.AnalogIcParam:
-                    break;
-
-                default:
-                    returnValue = default(string);
-                    break;
-            }
-
-            return returnValue;
+            return default(string);
         }
 
         private ushort ConvertPayloadToUShort()
         {
-            var returnValue = default(ushort);
-
-            switch ((InverterParameterId) this.parameterId)
-            {
-                case InverterParameterId.ControlWordParam:
-                case InverterParameterId.HomingCreepSpeedParam:
-                case InverterParameterId.HomingFastSpeedParam:
-                case InverterParameterId.HomingModeParam:
-                case InverterParameterId.HomingOffsetParam:
-                case InverterParameterId.HomingAcceleration:
-                case InverterParameterId.PositionAccelerationParam:
-                case InverterParameterId.PositionDecelerationParam:
-                case InverterParameterId.PositionTargetPositionParam:
-                case InverterParameterId.PositionTargetSpeedParam:
-                case InverterParameterId.SetOperatingModeParam:
-                case InverterParameterId.StatusWordParam:
-                case InverterParameterId.ActualPositionShaft:
-                case InverterParameterId.StatusDigitalSignals:
-                case InverterParameterId.ControlModeParam:
-                case InverterParameterId.AnalogIcParam:
-                    break;
-
-                default:
-                    returnValue = default(ushort);
-                    break;
-            }
-
-            return returnValue;
+            return default(ushort);
         }
 
         #endregion

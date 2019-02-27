@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Exceptions;
 
-namespace Ferretto.VW.InverterDriver.Interface
+namespace Ferretto.VW.Common_Utils.Interfaces
 {
     public interface ISocketTransport
     {
@@ -22,9 +22,9 @@ namespace Ferretto.VW.InverterDriver.Interface
         /// <summary>
         ///     Configures the SocketTransport to communicate with the remote inverter host
         /// </summary>
-        /// <param name="inverterAddress">Address of the Inverter device</param>
+        /// <param name="hostAddress">Address of the Inverter device</param>
         /// <param name="sendPort">TCP/IP Port for the Inverter device</param>
-        void Configure(IPAddress inverterAddress, int sendPort);
+        void Configure(IPAddress hostAddress, int sendPort);
 
         /// <summary>
         ///     Creates the TCP client object and connects it to the remote inverter host
@@ -42,7 +42,7 @@ namespace Ferretto.VW.InverterDriver.Interface
         ///     Port specified during object configuration is out of allowed range
         ///     (1024-65535)
         /// </exception>
-        /// <exception cref="InverterDriverException">Connection operation Failed. Inspect exception details for more details</exception>
+        /// <exception cref="SocketTransportException">Connection operation Failed. Inspect exception details for more details</exception>
         Task<bool> ConnectAsync();
 
         /// <summary>
@@ -56,16 +56,16 @@ namespace Ferretto.VW.InverterDriver.Interface
         /// </summary>
         /// <param name="stoppingToken">Cancellation token used to cancel wait operations</param>
         /// <returns>A byte array containing the bytes read from the socket stream</returns>
-        /// <exception cref="InverterDriverException">Read operation Failed. Inspect exception details for more details</exception>
+        /// <exception cref="SocketTransportException">Read operation Failed. Inspect exception details for more details</exception>
         Task<byte[]> ReadAsync(CancellationToken stoppingToken);
 
         /// <summary>
         ///     Sends data to the remote host asynchronously.
         /// </summary>
-        /// <param name="inverterMessage">Byte array containing the message to be sent to the Inverter hardware</param>
+        /// <param name="hostMessage">Byte array containing the message to be sent to the Inverter hardware</param>
         /// <param name="stoppingToken">Cancellation token used to cancel wait operations</param>
-        /// <exception cref="InverterDriverException">Write operation Failed. Inspect exception details for more details</exception>
-        Task WriteAsync(byte[] inverterMessage, CancellationToken stoppingToken);
+        /// <exception cref="SocketTransportException">Write operation Failed. Inspect exception details for more details</exception>
+        Task WriteAsync(byte[] hostMessage, CancellationToken stoppingToken);
 
         #endregion
     }

@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.VW.InverterDriver;
+﻿using Ferretto.VW.InverterDriver;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PositioningDrawer

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
@@ -13,10 +14,15 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
 
         #region Constructors
 
-        public ErrorState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate)
+        public ErrorState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate, InverterMessage message)
         {
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
+
+            var notificationMessage = new NotificationMessage(null, "Inverter Driver Error", MessageActor.Any,
+                MessageActor.InverterDriver, MessageType.Calibrate, MessageStatus.OperationError, ErrorLevel.Error);
+
+            parentStateMachine.PublishNotificationEvent(notificationMessage);
         }
 
         #endregion
@@ -25,7 +31,6 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
 
         public override void NotifyMessage(InverterMessage message)
         {
-            throw new NotImplementedException();
         }
 
         #endregion

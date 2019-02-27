@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.InverterDriver;
@@ -47,18 +46,18 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
                 switch (notification.Status)
                 {
                     case MessageStatus.OperationEnd:
-                    {
-                        break;
-                    }
+                        {
+                            break;
+                        }
                     case MessageStatus.OperationError:
-                    {
-                        var notifyEvent = new NotificationMessage(null, "Unknown Operation!", MessageActor.Any,
-                            MessageActor.InverterDriver, MessageType.Homing, MessageStatus.OperationError,
-                            ErrorLevel.Error);
-                        this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
+                        {
+                            var notifyEvent = new NotificationMessage(null, "Unknown Operation!", MessageActor.Any,
+                                MessageActor.InverterDriver, MessageType.Homing, MessageStatus.OperationError,
+                                ErrorLevel.Error);
+                            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
 
-                        break;
-                    }
+                            break;
+                        }
                 }
         }
 

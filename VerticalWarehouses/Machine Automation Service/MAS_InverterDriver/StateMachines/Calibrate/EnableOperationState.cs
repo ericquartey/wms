@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
+﻿using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
 {
@@ -32,7 +31,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
             }
 
             var inverterMessage =
-                new InverterMessage(0x00, (short) InverterParameterId.ControlWordParam, this.parameterValue);
+                new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue);
 
             parentStateMachine.EnqueueMessage(inverterMessage);
         }
@@ -44,12 +43,12 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
         public override void NotifyMessage(InverterMessage message)
         {
             if (message.IsError)
-                this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate));
+                this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate, message));
 
             if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
                 if (message.ShortPayload == this.parameterValue)
                 {
-                    this.parentStateMachine.ChangeState(new EndState(this.parentStateMachine, this.axisToCalibrate));
+                    this.parentStateMachine.ChangeState(new StartingHomeState(this.parentStateMachine, this.axisToCalibrate));
                     ;
                 }
         }

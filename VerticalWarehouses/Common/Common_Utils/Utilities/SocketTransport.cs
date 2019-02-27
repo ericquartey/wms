@@ -3,10 +3,11 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Exceptions;
-using Ferretto.VW.InverterDriver.Interface;
+using Ferretto.VW.Common_Utils.Interfaces;
 
-namespace Ferretto.VW.InverterDriver
+namespace Ferretto.VW.Common_Utils.Utilities
 {
     public class SocketTransport : ISocketTransport, IDisposable
     {
@@ -16,7 +17,7 @@ namespace Ferretto.VW.InverterDriver
 
         private bool disposed;
 
-        private IPAddress inverterAddress;
+        private IPAddress hostAddress;
 
         private int sendPort;
 
@@ -44,22 +45,22 @@ namespace Ferretto.VW.InverterDriver
         #region Methods
 
         /// <inheritdoc />
-        public void Configure(IPAddress inverterAddress, int sendPort)
+        public void Configure(IPAddress hostAddress, int sendPort)
         {
-            this.inverterAddress = inverterAddress;
+            this.hostAddress = hostAddress;
             this.sendPort = sendPort;
         }
 
         /// <inheritdoc />
         public async Task<bool> ConnectAsync()
         {
-            if (this.inverterAddress == null)
-                throw new ArgumentNullException(nameof(this.inverterAddress),
-                    $"{nameof(this.inverterAddress)} can't be null");
+            if (this.hostAddress == null)
+                throw new ArgumentNullException(nameof(this.hostAddress),
+                    $"{nameof(this.hostAddress)} can't be null");
 
-            if (this.inverterAddress.AddressFamily != AddressFamily.InterNetwork)
-                throw new ArgumentException("Inverter Address is not a valid IPV4 address",
-                    nameof(this.inverterAddress));
+            if (this.hostAddress.AddressFamily != AddressFamily.InterNetwork)
+                throw new ArgumentException("Host Address is not a valid IPV4 address",
+                    nameof(this.hostAddress));
 
             if (this.sendPort == 0)
                 throw new ArgumentNullException(nameof(this.sendPort), $"{nameof(this.sendPort)} can't be zero");
@@ -69,8 +70,8 @@ namespace Ferretto.VW.InverterDriver
                     $"{nameof(this.sendPort)} value must be between 1204 and 65535");
 
             if (this.transportClient != null || this.transportStream != null)
-                throw new InverterDriverException("Socket Transport is already open",
-                    InverterDriverExceptionCode.SocketOpen);
+                throw new SocketTransportException("Socket Transport is already open",
+                    SocketTransportExceptionCode.SocketOpen);
 
             try
             {
@@ -78,20 +79,20 @@ namespace Ferretto.VW.InverterDriver
             }
             catch (Exception ex)
             {
-                throw new InverterDriverException("Failed to create Transport Socket client",
-                    InverterDriverExceptionCode.TcpClientCreationFailed, ex);
+                throw new SocketTransportException("Failed to create Transport Socket client",
+                    SocketTransportExceptionCode.TcpClientCreationFailed, ex);
             }
 
             try
             {
-                await this.transportClient.ConnectAsync(this.inverterAddress, this.sendPort);
+                await this.transportClient.ConnectAsync(this.hostAddress, this.sendPort);
             }
             catch (Exception ex)
             {
                 this.transportClient?.Dispose();
                 this.transportClient = null;
-                throw new InverterDriverException("Failed to connect to Inverter Hardware",
-                    InverterDriverExceptionCode.TcpInverterConnectionFailed, ex);
+                throw new SocketTransportException("Failed to connect to Host Hardware",
+                    SocketTransportExceptionCode.TcpInverterConnectionFailed, ex);
             }
 
             try
@@ -102,8 +103,8 @@ namespace Ferretto.VW.InverterDriver
             {
                 this.transportClient?.Dispose();
                 this.transportClient = null;
-                throw new InverterDriverException("Failed to retrieve socket communication stream",
-                    InverterDriverExceptionCode.GetNetworkStreamFailed, ex);
+                throw new SocketTransportException("Failed to retrieve socket communication stream",
+                    SocketTransportExceptionCode.GetNetworkStreamFailed, ex);
             }
 
             return this.transportClient?.Connected ?? false;
@@ -130,12 +131,12 @@ namespace Ferretto.VW.InverterDriver
         public async Task<byte[]> ReadAsync(CancellationToken stoppingToken)
         {
             if (this.transportStream == null)
-                throw new InverterDriverException("Transport Stream is null",
-                    InverterDriverExceptionCode.UninitializedNetworkStream);
+                throw new SocketTransportException("Transport Stream is null",
+                    SocketTransportExceptionCode.UninitializedNetworkStream);
 
             if (!this.transportStream.CanRead)
-                throw new InverterDriverException("Transport Stream not configured for reading data",
-                    InverterDriverExceptionCode.MisconfiguredNetworkStream);
+                throw new SocketTransportException("Transport Stream not configured for reading data",
+                    SocketTransportExceptionCode.MisconfiguredNetworkStream);
 
             try
             {
@@ -143,32 +144,32 @@ namespace Ferretto.VW.InverterDriver
             }
             catch (Exception ex)
             {
-                throw new InverterDriverException("Error reading data from Transport Stream",
-                    InverterDriverExceptionCode.NetworkStreamReadFailure, ex);
+                throw new SocketTransportException("Error reading data from Transport Stream",
+                    SocketTransportExceptionCode.NetworkStreamReadFailure, ex);
             }
 
             return this.receiveBuffer;
         }
 
         /// <inheritdoc />
-        public async Task WriteAsync(byte[] inverterMessage, CancellationToken stoppingToken)
+        public async Task WriteAsync(byte[] hostMessage, CancellationToken stoppingToken)
         {
             if (this.transportStream == null)
-                throw new InverterDriverException("Transport Stream is null",
-                    InverterDriverExceptionCode.UninitializedNetworkStream);
+                throw new SocketTransportException("Transport Stream is null",
+                    SocketTransportExceptionCode.UninitializedNetworkStream);
 
             if (!this.transportStream.CanWrite)
-                throw new InverterDriverException("Transport Stream not configured for sending data",
-                    InverterDriverExceptionCode.MisconfiguredNetworkStream);
+                throw new SocketTransportException("Transport Stream not configured for sending data",
+                    SocketTransportExceptionCode.MisconfiguredNetworkStream);
 
             try
             {
-                await this.transportStream.WriteAsync(inverterMessage, 0, inverterMessage.Length, stoppingToken);
+                await this.transportStream.WriteAsync(hostMessage, 0, hostMessage.Length, stoppingToken);
             }
             catch (Exception ex)
             {
-                throw new InverterDriverException("Error writing data to Transport Stream",
-                    InverterDriverExceptionCode.NetworkStreamWriteFailure, ex);
+                throw new SocketTransportException("Error writing data to Transport Stream",
+                    SocketTransportExceptionCode.NetworkStreamWriteFailure, ex);
             }
         }
 
