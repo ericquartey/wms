@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
 {
-    public class SwitchOnState : InverterStateBase
+    public class VoltageDisabledState : InverterStateBase
     {
         #region Fields
 
@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
 
         #region Constructors
 
-        public SwitchOnState(IInverterStateMachine parentStateMachine, MovingDrawer movingDrawer)
+        public VoltageDisabledState(IInverterStateMachine parentStateMachine, MovingDrawer movingDrawer)
         {
             this.parentStateMachine = parentStateMachine;
             this.movingDrawer = movingDrawer;
@@ -35,7 +35,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
 
             if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
                 if (message.ShortPayload == this.parameterValue)
-                    this.parentStateMachine.ChangeState(new EnableOperationState(this.parentStateMachine,
+                    this.parentStateMachine.ChangeState(new OperationModeState(this.parentStateMachine,
                         this.movingDrawer));
         }
 

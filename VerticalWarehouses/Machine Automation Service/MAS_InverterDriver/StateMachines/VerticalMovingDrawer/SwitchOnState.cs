@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalMovingDrawer
 {
     public class SwitchOnState : InverterStateBase
     {

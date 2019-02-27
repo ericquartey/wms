@@ -4,7 +4,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Exceptions;
-using Ferretto.VW.InverterDriver.Interface;
+using Ferretto.VW.MAS_InverterDriver.Interface;
 
 namespace Ferretto.VW.InverterDriver
 {
