@@ -1,9 +1,9 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
+﻿using System;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.Common_Utils.Messages
 {
-
     public class CommandMessage
     {
         #region Constructors
@@ -12,12 +12,12 @@ namespace Ferretto.VW.Common_Utils.Messages
         {
         }
 
-        public CommandMessage( IMessageData data,
+        public CommandMessage(IMessageData data,
             string description,
             MessageActor destination,
             MessageActor source,
-            MessageVerbosity verbosity,
-            MessageType type )
+            MessageType type,
+            MessageVerbosity verbosity = MessageVerbosity.Info)
         {
             this.Data = data;
             this.Description = description;
@@ -31,17 +31,17 @@ namespace Ferretto.VW.Common_Utils.Messages
 
         #region Properties
 
-        public IMessageData Data { get; private set; }
+        public IMessageData Data { get; }
 
-        public string Description { get; private set; }
+        public string Description { get; }
+
+        public MessageType Type { get; }
+
+        public MessageVerbosity Verbosity { get; }
 
         public MessageActor Destination { get; set; }
 
         public MessageActor Source { get; set; }
-
-        public MessageType Type { get; private set; }
-
-        public MessageVerbosity Verbosity { get; private set; }
 
         #endregion
     }

@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Interfaces;
+﻿using System;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
 {
@@ -14,12 +15,12 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
 
         #region Constructors
 
-        public StartingHomeState( IInverterStateMachine parentStateMachine, Axis axisToCalibrate )
+        public StartingHomeState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate)
         {
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
 
-            switch(this.axisToCalibrate)
+            switch (this.axisToCalibrate)
             {
                 case Axis.Horizontal:
                     this.parameterValue = 0x001F;
@@ -30,29 +31,24 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
                     break;
             }
 
-            var inverterMessage = new InverterMessage( 0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue );
+            var inverterMessage =
+                new InverterMessage(0x00, (short) InverterParameterId.ControlWordParam, this.parameterValue);
 
-            parentStateMachine.EnqueueMessage( inverterMessage );
+            parentStateMachine.EnqueueMessage(inverterMessage);
         }
 
         #endregion
 
         #region Methods
 
-        public override void NotifyMessage( InverterMessage message )
+        public override void NotifyMessage(InverterMessage message)
         {
-            if(message.IsError)
-            {
-                this.parentStateMachine.ChangeState( new ErrorState( this.parentStateMachine, this.axisToCalibrate ) );
-            }
+            if (message.IsError)
+                this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate));
 
-            if(!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
-            {
-                if(message.ShortPayload == this.parameterValue)
-                {
-                    this.parentStateMachine.ChangeState( new EndState( this.parentStateMachine, this.axisToCalibrate ) );
-                }
-            }
+            if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
+                if (message.ShortPayload == this.parameterValue)
+                    this.parentStateMachine.ChangeState(new EndState(this.parentStateMachine, this.axisToCalibrate));
         }
 
         #endregion

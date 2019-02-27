@@ -6,15 +6,16 @@
         #region Constructors
 
         private Singleton()
-        { }
+        {
+        }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public static T UniqueInstance => SingletonCreator.instance;
 
-        #endregion Properties
+        #endregion
 
         #region Classes
 
@@ -24,7 +25,7 @@
 
             internal static readonly T instance = new T();
 
-            #endregion Fields
+            #endregion
 
             #region Constructors
 
@@ -32,9 +33,9 @@
             {
             }
 
-            #endregion Constructors
+            #endregion
         }
 
-        #endregion Classes
+        #endregion
     }
 }

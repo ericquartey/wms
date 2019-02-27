@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Microsoft.Extensions.Hosting;
 using Prism.Events;
-using System.Linq;
-using Ferretto.VW.Common_Utils.Enumerations;
 
 namespace Ferretto.VW.MAS_MissionsManager
 {
@@ -36,109 +36,107 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         #region Constructors
 
-        public MissionsManager( IEventAggregator eventAggregator )
+        public MissionsManager(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
 
-            this.messageReceived = new ManualResetEventSlim( false );
+            this.messageReceived = new ManualResetEventSlim(false);
 
-            this.missionExecuted = new ManualResetEventSlim( true );
+            this.missionExecuted = new ManualResetEventSlim(true);
 
-            this.missionReady = new ManualResetEventSlim( false );
+            this.missionReady = new ManualResetEventSlim(false);
 
             this.messageQueue = new ConcurrentQueue<CommandMessage>();
 
             this.missionsCollection = new Dictionary<IMissionMessageData, int>();
 
-            var automationServiceMessageEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
-            automationServiceMessageEvent.Subscribe( ( message ) => this.EnqueueMessageAndSetSemaphor( message ),
+            var automationServiceMessageEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            automationServiceMessageEvent.Subscribe(commandMessage => this.EnqueueMessageAndSetSemaphor(commandMessage),
                 ThreadOption.PublisherThread,
                 false,
-                message => (message.Destination == MessageActor.MissionsManager) );
+                commandMessage => commandMessage.Destination == MessageActor.MissionsManager);
 
-            var finiteStateMachineMessageEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
-            finiteStateMachineMessageEvent.Subscribe( ( message ) => this.missionExecuted.Set(),
+            var finiteStateMachineMessageEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            finiteStateMachineMessageEvent.Subscribe(x => this.missionExecuted.Set(),
                 ThreadOption.PublisherThread,
                 false,
-                message => (message.Source == MessageActor.FiniteStateMachines && message.Status == MessageStatus.End) );
+                notificationMessage => notificationMessage.Source == MessageActor.FiniteStateMachines &&
+                                       notificationMessage.Status == MessageStatus.OperationEnd);
         }
 
         #endregion
 
         #region Methods
 
-        public new Task StopAsync( CancellationToken stoppingToken )
+        public new Task StopAsync(CancellationToken stoppingToken)
         {
-            var returnValue = base.StopAsync( stoppingToken );
+            var returnValue = base.StopAsync(stoppingToken);
 
             return returnValue;
         }
 
-        protected override async Task ExecuteAsync( CancellationToken stoppingToken )
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            await Task.Run( () => this.MissionsManagerTaskFunction( stoppingToken ), stoppingToken );
+            await Task.Run(() => this.MissionsManagerTaskFunction(stoppingToken), stoppingToken);
         }
 
-        private void EnqueueMessageAndSetSemaphor( CommandMessage message )
+        private void EnqueueMessageAndSetSemaphor(CommandMessage message)
         {
-            this.messageQueue.Enqueue( message );
+            this.messageQueue.Enqueue(message);
             this.messageReceived.Set();
         }
 
-        private Task MissionsExecutionTaskFunction( CancellationToken stoppingToken )
+        private Task MissionsExecutionTaskFunction(CancellationToken stoppingToken)
         {
             do
             {
                 try
                 {
-                    this.missionExecuted.Wait( Timeout.Infinite, stoppingToken );
-                    this.missionReady.Wait( Timeout.Infinite, stoppingToken );
+                    this.missionExecuted.Wait(Timeout.Infinite, stoppingToken);
+                    this.missionReady.Wait(Timeout.Infinite, stoppingToken);
                 }
-                catch(OperationCanceledException ex)
+                catch (OperationCanceledException ex)
                 {
-                    return Task.FromException( ex );
+                    return Task.FromException(ex);
                 }
-                if(this.missionsCollection.Count != 0)
+
+                if (this.missionsCollection.Count != 0)
                 {
                     // TODO before removing the mission from the dictionary, execute it
-                    this.missionsCollection.Remove( this.missionsCollection.Keys.First() );
-                    if(this.missionsCollection.Count == 0)
-                    {
-                        this.missionReady.Reset();
-                    }
+                    this.missionsCollection.Remove(this.missionsCollection.Keys.First());
+                    if (this.missionsCollection.Count == 0) this.missionReady.Reset();
                     // TODO publish event to notify to the FSM to begin the action
                     this.missionExecuted.Reset();
                 }
                 else
-                {
                     this.missionReady.Reset();
-                }
-            } while(!stoppingToken.IsCancellationRequested);
+            } while (!stoppingToken.IsCancellationRequested);
+
             return Task.CompletedTask;
         }
 
-        private Task MissionsManagerTaskFunction( CancellationToken stoppingToken )
+        private Task MissionsManagerTaskFunction(CancellationToken stoppingToken)
         {
-            this.missionExecutionTask = Task.Run( () => this.MissionsExecutionTaskFunction( stoppingToken ), stoppingToken );
+            this.missionExecutionTask =
+                Task.Run(() => this.MissionsExecutionTaskFunction(stoppingToken), stoppingToken);
             do
             {
                 try
                 {
-                    this.messageReceived.Wait( Timeout.Infinite, stoppingToken );
+                    this.messageReceived.Wait(Timeout.Infinite, stoppingToken);
                 }
-                catch(OperationCanceledException ex)
+                catch (OperationCanceledException ex)
                 {
-                    return Task.FromException( ex );
+                    return Task.FromException(ex);
                 }
 
                 this.messageReceived.Reset();
 
-                while(this.messageQueue.TryDequeue( out var receivedMessage ))
-                {
-                    switch(receivedMessage.Type)
+                while (this.messageQueue.TryDequeue(out var receivedMessage))
+                    switch (receivedMessage.Type)
                     {
                         case MessageType.AddMission:
-                            this.ProcessAddMissionMessage( receivedMessage );
+                            this.ProcessAddMissionMessage(receivedMessage);
                             break;
 
                         case MessageType.CreateMission:
@@ -147,50 +145,31 @@ namespace Ferretto.VW.MAS_MissionsManager
 
                         case MessageType.HorizontalHoming:
                             break;
-
-                        default:
-                            break;
                     }
-                }
-            } while(!stoppingToken.IsCancellationRequested);
+            } while (!stoppingToken.IsCancellationRequested);
 
             return Task.CompletedTask;
         }
 
-        private void ProcessAddMissionMessage( CommandMessage message )
+        private void ProcessAddMissionMessage(CommandMessage message)
         {
-            try
-            {
-                var missionData = (MissionMessageData)message.Data;
-                var missionPriority = ((MissionMessageData)message.Data).Priority;
-                this.missionsCollection.Add( missionData, missionPriority );
-                this.missionReady.Set();
-            }
-            catch(InvalidCastException)
-            {
-                throw;
-            }
-            catch(ArgumentNullException)
-            {
-                throw;
-            }
-            catch(ArgumentException)
-            {
-                throw;
-            }
+            var missionData = (MissionMessageData) message.Data;
+            var missionPriority = ( (MissionMessageData) message.Data ).Priority;
+            this.missionsCollection.Add(missionData, missionPriority);
+            this.missionReady.Set();
 
             message.Source = MessageActor.MissionsManager;
             message.Destination = MessageActor.FiniteStateMachines;
-            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish( message );
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
 
-        private void ProcessCreateMissionMessage( CommandMessage message )
+        private void ProcessCreateMissionMessage(CommandMessage message)
         {
             //TODO apply Mission Manager Business Logic to the message
 
             message.Source = MessageActor.MissionsManager;
             message.Destination = MessageActor.FiniteStateMachines;
-            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish( message );
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
 
         #endregion

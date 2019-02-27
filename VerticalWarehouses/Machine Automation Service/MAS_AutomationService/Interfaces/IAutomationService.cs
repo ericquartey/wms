@@ -1,4 +1,5 @@
-﻿using Ferretto.Common.Common_Utils;
+﻿using System;
+using Ferretto.Common.Common_Utils;
 
 namespace Ferretto.VW.MAS_AutomationService
 {

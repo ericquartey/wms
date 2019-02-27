@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.EventParameters;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_FiniteStateMachines.Mission;
@@ -24,15 +24,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly StateMachineHoming homing;
-
         private readonly ConcurrentQueue<CommandMessage> messageQueue;
 
         private readonly ManualResetEventSlim messageReceived;
 
         private readonly INewRemoteIODriver remoteIODriver;
-
-        private readonly StateMachineVerticalHoming verticalHoming;
 
         private readonly StateMachineVerticalPositioning verticalPositioning;
 
@@ -42,7 +38,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Constructors
 
-        public FiniteStateMachines(INewInverterDriver driver, INewRemoteIODriver remoteIODriver, IEventAggregator eventAggregator)
+        public FiniteStateMachines(INewInverterDriver driver, INewRemoteIODriver remoteIODriver,
+            IEventAggregator eventAggregator)
         {
             this.driver = driver;
             this.remoteIODriver = remoteIODriver;
@@ -52,21 +49,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
             this.messageQueue = new ConcurrentQueue<CommandMessage>();
 
-            var commandEvent = this.eventAggregator.GetEvent<WebAPI_CommandEvent>();
+            var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
             commandEvent.Subscribe(this.DoAction);
 
-            var machineManagerMessagEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
-            machineManagerMessagEvent.Subscribe((message) =>
-               {
-                   this.messageQueue.Enqueue(message);
-                   this.messageReceived.Set();
-               },
+            var machineManagerMessagEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            machineManagerMessagEvent.Subscribe(message =>
+                {
+                    this.messageQueue.Enqueue(message);
+                    this.messageReceived.Set();
+                },
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Destination == MessageActor.FiniteStateMachines);
 
-            this.homing = new StateMachineHoming(this.driver, this.remoteIODriver, this.eventAggregator);
-            this.verticalHoming = new StateMachineVerticalHoming(this.driver, this.eventAggregator);
+            this.StateMachineHoming = new StateMachineHoming(this.driver, this.remoteIODriver, this.eventAggregator);
+            this.StateMachineVerticalHoming = new StateMachineVerticalHoming(this.driver, this.eventAggregator);
             this.verticalPositioning = new StateMachineVerticalPositioning(this.driver, this.eventAggregator);
         }
 
@@ -74,9 +71,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Properties
 
-        public StateMachineHoming StateMachineHoming => this.homing;
+        public StateMachineHoming StateMachineHoming { get; }
 
-        public StateMachineVerticalHoming StateMachineVerticalHoming => this.verticalHoming;
+        public StateMachineVerticalHoming StateMachineVerticalHoming { get; }
 
         #endregion
 
@@ -100,77 +97,56 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             }
         }
 
-        public void DoAction(Command_EventParameter action)
+        public void DoAction(CommandMessage action)
         {
-            switch (action.CommandType)
+            switch (action.Type)
             {
-                case CommandType.ExecuteHoming:
-                    {
-                        if (null == this.homing)
-                        {
-                            throw new ArgumentNullException();
-                        }
+                case MessageType.Homing:
+                {
+                    if (null == this.StateMachineHoming) throw new ArgumentNullException();
 
-                        this.homing.Start();
-                        break;
-                    }
-
-                case CommandType.ExecuteStopHoming:
-                    {
-                        if (null == this.homing)
-                        {
-                            throw new ArgumentNullException();
-                        }
-
-                        this.homing.Stop();
-                        break;
-                    }
-
-                case CommandType.ExecuteVerticalPositioning:
-                    {
-                        if (null == this.verticalPositioning)
-                        {
-                            throw new ArgumentNullException();
-                        }
-
-                        this.verticalPositioning.Start();
-                        break;
-                    }
-
-                case CommandType.ExecuteStopVerticalPositioning:
-                    {
-                        if (null == this.verticalPositioning)
-                        {
-                            throw new ArgumentNullException();
-                        }
-
-                        this.verticalPositioning.Stop();
-                        break;
-                    }
-
-                default:
+                    this.StateMachineHoming.Start();
                     break;
+                }
+
+                case MessageType.StopHoming:
+                {
+                    if (null == this.StateMachineHoming) throw new ArgumentNullException();
+
+                    this.StateMachineHoming.Stop();
+                    break;
+                }
+
+                case MessageType.ExecuteVerticalPositioning:
+                {
+                    if (null == this.verticalPositioning) throw new ArgumentNullException();
+
+                    this.verticalPositioning.Start();
+                    break;
+                }
+
+                case MessageType.ExecuteStopVerticalPositioning:
+                {
+                    if (null == this.verticalPositioning) throw new ArgumentNullException();
+
+                    this.verticalPositioning.Stop();
+                    break;
+                }
             }
         }
 
         public void DoHoming()
         {
-            if (null == this.homing)
-            {
-                throw new ArgumentNullException();
-            }
+            if (null == this.StateMachineHoming) throw new ArgumentNullException();
 
-            this.homing.Start();
+            this.StateMachineHoming.Start();
         }
 
         public void DoVerticalHoming()
         {
-            if (null == this.verticalHoming)
-            {
-                throw new ArgumentNullException();
-            }
+            if (null == this.StateMachineVerticalHoming) throw new ArgumentNullException();
 
-            this.verticalHoming.Start();
+            this.StateMachineVerticalHoming.Start();
         }
 
         public new Task StopAsync(CancellationToken stoppingToken)

@@ -13,18 +13,20 @@ namespace Ferretto.VW.Common_Utils.Messages
         }
 
         public NotificationMessage(IMessageData data,
-            String description,
+            string description,
             MessageActor destination,
             MessageActor source,
             MessageType type,
-            MessageVerbosity verbosity,
-            ErrorLevel level = ErrorLevel.NoError)
+            MessageStatus status,
+            ErrorLevel level = ErrorLevel.NoError,
+            MessageVerbosity verbosity = MessageVerbosity.Info)
         {
             this.Data = data;
             this.Description = description;
             this.Destination = destination;
             this.Source = source;
             this.Type = type;
+            this.Status = status;
             this.Verbosity = verbosity;
             this.ErrorLevel = level;
         }
@@ -35,9 +37,11 @@ namespace Ferretto.VW.Common_Utils.Messages
 
         public IMessageData Data { get; }
 
-        public String Description { get; }
+        public string Description { get; }
 
         public ErrorLevel ErrorLevel { get; }
+
+        public MessageStatus Status { get; }
 
         public MessageType Type { get; }
 
@@ -46,8 +50,6 @@ namespace Ferretto.VW.Common_Utils.Messages
         public MessageActor Destination { get; set; }
 
         public MessageActor Source { get; set; }
-
-        public MessageStatus Status { get; private set; }
 
         #endregion
     }

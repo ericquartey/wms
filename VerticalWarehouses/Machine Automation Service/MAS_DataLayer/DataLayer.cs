@@ -1,8 +1,9 @@
-﻿using System.Linq;
-using System.Net;
+﻿using System;
+using System.Linq;
 using Ferretto.VW.Common_Utils;
-using Ferretto.VW.Common_Utils.EventParameters;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages;
 using Microsoft.EntityFrameworkCore;
 using Prism.Events;
 
@@ -20,44 +21,38 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Constructors
 
-        public DataLayer( string connectionString, DataLayerContext inMemoryDataContext, IEventAggregator eventAggregator )
+        public DataLayer(string connectionString, DataLayerContext inMemoryDataContext,
+            IEventAggregator eventAggregator)
         {
-            if(inMemoryDataContext == null)
-            {
-                throw new DataLayerException( DataLayerExceptionEnum.DATALAYER_CONTEXT_EXCEPTION );
-            }
+            if (inMemoryDataContext == null)
+                throw new DataLayerException(DataLayerExceptionEnum.DATALAYER_CONTEXT_EXCEPTION);
 
-            if(eventAggregator == null)
-            {
-                throw new DataLayerException( DataLayerExceptionEnum.EVENTAGGREGATOR_EXCEPTION );
-            }
+            if (eventAggregator == null) throw new DataLayerException(DataLayerExceptionEnum.EVENTAGGREGATOR_EXCEPTION);
 
             this.inMemoryDataContext = inMemoryDataContext;
 
             this.eventAggregator = eventAggregator;
 
-            using(var initialContext = new DataLayerContext(
-                new DbContextOptionsBuilder<DataLayerContext>().UseSqlite( connectionString ).Options ))
+            using (var initialContext = new DataLayerContext(
+                new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(connectionString).Options))
             {
                 initialContext.Database.Migrate();
 
-                if(!initialContext.ConfigurationValues.Any())
+                if (!initialContext.ConfigurationValues.Any())
                 {
                     //TODO reovery database from permanent storage
                 }
 
-                foreach(var configurationValue in initialContext.ConfigurationValues)
-                {
-                    this.inMemoryDataContext.ConfigurationValues.Add( configurationValue );
-                }
+                foreach (var configurationValue in initialContext.ConfigurationValues)
+                    this.inMemoryDataContext.ConfigurationValues.Add(configurationValue);
 
                 this.inMemoryDataContext.SaveChanges();
             }
 
             // The old WriteLogService
-            var webApiCommandEvent = eventAggregator.GetEvent<WebAPI_CommandEvent>();
+            var webApiCommandEvent = eventAggregator.GetEvent<CommandEvent>();
 
-            webApiCommandEvent.Subscribe( this.LogWriting );
+            webApiCommandEvent.Subscribe(this.LogWriting);
         }
 
         #endregion
@@ -70,10 +65,10 @@ namespace Ferretto.VW.MAS_DataLayer
 
             try
             {
-                this.inMemoryDataContext.StatusLogs.Add( new StatusLog { LogMessage = logMessage } );
+                this.inMemoryDataContext.StatusLogs.Add(new StatusLog {LogMessage = logMessage});
                 this.inMemoryDataContext.SaveChanges();
             }
-            catch(DbUpdateException exception)
+            catch (DbUpdateException exception)
             {
                 updateOperation = false;
             }
@@ -81,26 +76,26 @@ namespace Ferretto.VW.MAS_DataLayer
             return updateOperation;
         }
 
-        public void LogWriting( Command_EventParameter command_EventParameter )
+        public void LogWriting(CommandMessage command_EventParameter)
         {
             string logMessage;
 
-            switch(command_EventParameter.CommandType)
+            switch (command_EventParameter.Type)
             {
-                case CommandType.ExecuteHoming:
-                    {
-                        logMessage = "Vertical Homing";
-                        break;
-                    }
+                case MessageType.Homing:
+                {
+                    logMessage = "Vertical Homing";
+                    break;
+                }
                 default:
-                    {
-                        logMessage = "Unknown Action";
+                {
+                    logMessage = "Unknown Action";
 
-                        break;
-                    }
+                    break;
+                }
             }
 
-            this.inMemoryDataContext.StatusLogs.Add( new StatusLog { LogMessage = logMessage } );
+            this.inMemoryDataContext.StatusLogs.Add(new StatusLog {LogMessage = logMessage});
             this.inMemoryDataContext.SaveChanges();
         }
 

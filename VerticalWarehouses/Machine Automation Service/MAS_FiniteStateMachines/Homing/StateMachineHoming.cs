@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Messages;
+﻿using System;
+using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_FiniteStateMachines.Homing;
 using Ferretto.VW.MAS_InverterDriver;
@@ -25,7 +26,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Constructors
 
-        public StateMachineHoming(INewInverterDriver driver, INewRemoteIODriver remoteIODriver, IEventAggregator eventAggregator)
+        public StateMachineHoming(INewInverterDriver driver, INewRemoteIODriver remoteIODriver,
+            IEventAggregator eventAggregator)
         {
             this.driver = driver;
             this.remoteIODriver = remoteIODriver;
@@ -37,11 +39,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Properties
 
+        public string Type => this.state.Type;
+
         public bool HomingComplete { get; set; }
 
         public bool HorizontalHomingAlreadyDone { get; set; }
-
-        public string Type => this.state.Type;
 
         #endregion
 
@@ -59,12 +61,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         public void NotifyMessage(CommandMessage message)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public void PublishMessage(CommandMessage message)
+        public void PublishCommandMessage(CommandMessage message)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
+        }
+
+        public void PublishNotificationMessage(NotificationMessage message)
+        {
+            throw new NotImplementedException();
         }
 
         public void Start()

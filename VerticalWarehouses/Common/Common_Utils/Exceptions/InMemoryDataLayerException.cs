@@ -1,19 +1,26 @@
-﻿namespace Ferretto.VW.Common_Utils
+﻿using System;
+
+namespace Ferretto.VW.Common_Utils
 {
     public class InMemoryDataLayerException : DataLayerException
     {
-        public InMemoryDataLayerException(DataLayerExceptionEnum exceptionEnum) : base(exceptionEnum) {
+        #region Constructors
+
+        public InMemoryDataLayerException(DataLayerExceptionEnum exceptionEnum) : base(exceptionEnum)
+        {
         }
 
         public InMemoryDataLayerException(DataLayerExceptionEnum exceptionEnum, string message) : base(message)
         {
-            ConfigurationExceptionCode = exceptionEnum;
+            this.ConfigurationExceptionCode = exceptionEnum;
         }
 
         public InMemoryDataLayerException(DataLayerExceptionEnum exceptionEnum, string message,
-            System.Exception inner) : base(message, inner)
+            Exception inner) : base(message, inner)
         {
-            ConfigurationExceptionCode = exceptionEnum;
+            this.ConfigurationExceptionCode = exceptionEnum;
         }
+
+        #endregion
     }
 }

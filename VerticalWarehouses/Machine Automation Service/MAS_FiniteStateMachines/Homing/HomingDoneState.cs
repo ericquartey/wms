@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.EventParameters;
+﻿using System;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_DataLayer;
@@ -18,15 +19,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly INewRemoteIODriver remoteIODriver;
+        private readonly StateMachineHoming parent;
 
-        private StateMachineHoming parent;
+        private readonly INewRemoteIODriver remoteIODriver;
 
         #endregion
 
         #region Constructors
 
-        public HomingDoneState(StateMachineHoming parent, INewInverterDriver driver, INewRemoteIODriver remoteIODriver, IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
+        public HomingDoneState(StateMachineHoming parent, INewInverterDriver driver, INewRemoteIODriver remoteIODriver,
+            IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
         {
             this.parent = parent;
             this.driver = driver;
@@ -36,7 +38,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
             this.parent.HomingComplete = true;
 
-            this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
+            this.eventAggregator.GetEvent<NotificationEvent>().Subscribe(this.notifyEventHandler);
 
             this.remoteIODriver.SwitchHorizontalToVertical();
         }
@@ -57,38 +59,33 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         public void NotifyMessage(CommandMessage message)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Stop()
         {
         }
 
-        private void notifyEventHandler(Notification_EventParameter notification)
+        private void notifyEventHandler(NotificationMessage notification)
         {
-            if (notification.OperationType == OperationType.SwitchHorizontalToVertical)
-            {
-                switch (notification.OperationStatus)
+            if (notification.Type == MessageType.SwitchHorizontalToVertical)
+                switch (notification.Status)
                 {
-                    case OperationStatus.End:
-                        {
-                            var notifyEvent = new Notification_EventParameter(OperationType.Homing, OperationStatus.End, "Homing done", Verbosity.Info);
-                            this.eventAggregator.GetEvent<FiniteStateMachines_NotificationEvent>().Publish(notifyEvent);
+                    case MessageStatus.OperationEnd:
+                    {
+                        var notifyEvent = new NotificationMessage(null, "Homing Done", MessageActor.Any,
+                            MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationEnd);
+                        this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
 
-                            break;
-                        }
-                    case OperationStatus.Error:
-                        {
-                            break;
-                        }
-                    default:
-                        {
-                            break;
-                        }
+                        break;
+                    }
+                    case MessageStatus.OperationError:
+                    {
+                        break;
+                    }
                 }
-            }
 
-            this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Unsubscribe(this.notifyEventHandler);
+            this.eventAggregator.GetEvent<NotificationEvent>().Unsubscribe(this.notifyEventHandler);
         }
 
         #endregion
