@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -163,25 +163,23 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
-                var cell = await this.cellsDataService.GetByIdAsync(model.Id);
-
                 await this.cellsDataService.UpdateAsync(new WMS.Data.WebAPI.Contracts.CellDetails
                 {
-                    Id = cell.Id,
-                    AbcClassId = cell.AbcClassId,
-                    AisleId = cell.AisleId,
-                    AreaId = cell.AreaId,
-                    CellStatusId = cell.CellStatusId,
-                    CellTypeId = cell.CellTypeId,
-                    Column = cell.Column,
-                    Floor = cell.Floor,
-                    Number = cell.Number,
-                    Priority = cell.Priority,
-                    Side = cell.Side,
-                    XCoordinate = cell.XCoordinate,
-                    YCoordinate = cell.YCoordinate,
-                    ZCoordinate = cell.ZCoordinate,
-                    LoadingUnitsCount = cell.LoadingUnitsCount
+                    Id = model.Id,
+                    AbcClassId = model.AbcClassId,
+                    AisleId = model.AisleId,
+                    AreaId = model.AreaId,
+                    CellStatusId = model.CellStatusId,
+                    CellTypeId = model.CellTypeId,
+                    Column = model.Column,
+                    Floor = model.Floor,
+                    Number = model.Number,
+                    Priority = model.Priority,
+                    Side = (WMS.Data.WebAPI.Contracts.Side)model.Side,
+                    XCoordinate = model.XCoordinate,
+                    YCoordinate = model.YCoordinate,
+                    ZCoordinate = model.ZCoordinate,
+                    LoadingUnitsCount = model.LoadingUnitsCount
                 });
 
                 return new OperationResult<CellDetails>(true);
