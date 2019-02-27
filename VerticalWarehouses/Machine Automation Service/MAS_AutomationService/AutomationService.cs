@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
 using Prism.Events;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
@@ -35,7 +37,6 @@ namespace Ferretto.VW.MAS_AutomationService
             this.hub = hub;
 
             this.messageReceived = new ManualResetEventSlim(false);
-
             this.messageQueue = new ConcurrentQueue<CommandMessage>();
 
             var webApiMessagEvent = this.eventAggregator.GetEvent<CommandEvent>();
@@ -47,6 +48,17 @@ namespace Ferretto.VW.MAS_AutomationService
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Destination == MessageActor.AutomationService);
+
+            var finiteStateMachineMessageEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            finiteStateMachineMessageEvent.Subscribe(message =>
+            {
+                if (message.Data is ISensorsChangedMessageData)
+                {
+                    this.hub.Clients.All.OnSensorsChangedToAllConnectedClients(((ISensorsChangedMessageData)message.Data).SensorsStates);
+                }
+            }, ThreadOption.PublisherThread,
+            false,
+            (message) => message.Source == MessageActor.FiniteStateMachines && message.Type == MessageType.SensorsChanged);
             this.TESTStartCycle();
         }
 
@@ -70,7 +82,7 @@ namespace Ferretto.VW.MAS_AutomationService
         {
             while (true)
             {
-                var message = new[] {"pippo", "topolino", "pluto", "paperino", "minnie", "qui", "quo", "qua"};
+                var message = new[] { "pippo", "topolino", "pluto", "paperino", "minnie", "qui", "quo", "qua" };
                 var randomInt = new Random().Next(message.Length);
                 Console.WriteLine(message[randomInt]);
                 await this.hub.Clients.All.OnSendMessageToAllConnectedClients(message[randomInt]);
