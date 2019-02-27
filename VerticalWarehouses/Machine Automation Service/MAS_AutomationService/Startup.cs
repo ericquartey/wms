@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.VW.InverterDriver;
+﻿using Ferretto.VW.InverterDriver;
 using Ferretto.VW.InverterDriver.Interface;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_DataLayer;
@@ -77,6 +76,7 @@ namespace Ferretto.VW.MAS_AutomationService
             this.RegisterRemoteIODriver(services);
 
             services.AddSingleton<IEventAggregator, EventAggregator>();
+
             services.AddSingleton<IDataLayer, DataLayer>(provider => new DataLayer(
                 connectionString,
                 provider.GetService<DataLayerContext>(),
@@ -84,6 +84,8 @@ namespace Ferretto.VW.MAS_AutomationService
 
             services.AddSingleton<IWriteLogService, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
+
+            // services.AddHostedService<HostedDataLayer>(); // Test for the BackgroundService
 
             services.AddSingleton<ISocketTransport, SocketTransport>();
 

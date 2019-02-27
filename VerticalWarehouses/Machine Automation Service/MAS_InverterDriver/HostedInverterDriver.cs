@@ -182,8 +182,7 @@ namespace Ferretto.VW.InverterDriver
             }
             catch (Exception ex)
             {
-                throw new InverterDriverException($"Exception {ex.Message} while Connecting Receiver Socket Transport",
-                    ex);
+                throw new InverterDriverException($"Exception {ex.Message} while Connecting Receiver Socket Transport", ex);
             }
 
             if (!connectionCompleted) throw new InverterDriverException("Socket Transport failed to connect");
@@ -206,7 +205,7 @@ namespace Ferretto.VW.InverterDriver
 
                 if (currentMessage.IsWriteMessage && currentMessage.ParameterId == InverterParameterId.ControlWordParam)
                 {
-                    var readStatusWordMessage = new InverterMessage(0x00, (short) InverterParameterId.StatusWordParam);
+                    var readStatusWordMessage = new InverterMessage(0x00, (short)InverterParameterId.StatusWordParam);
                     this.inverterCommandQueue.Enqueue(readStatusWordMessage);
                     this.controlWordCheckTimer.Change(5000, Timeout.Infinite);
                     continue;
@@ -217,7 +216,7 @@ namespace Ferretto.VW.InverterDriver
                     if (currentMessage.ShortPayload != this.lastControlMessage.ShortPayload)
                     {
                         var readStatusWordMessage =
-                            new InverterMessage(0x00, (short) InverterParameterId.StatusWordParam);
+                            new InverterMessage(0x00, (short)InverterParameterId.StatusWordParam);
                         this.inverterCommandQueue.Enqueue(readStatusWordMessage);
                         continue;
                     }
