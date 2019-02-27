@@ -26,7 +26,7 @@ namespace Ferretto.Common.Controls
 
         private bool isBusy;
 
-        private bool isValidationEnabled;
+        private bool isModelValid;
 
         private T model;
 
@@ -71,15 +71,21 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public bool IsValidationEnabled
+        public bool IsModelValid
         {
-            get => this.isValidationEnabled;
-            set
+            get
             {
-                if (this.SetProperty(ref this.isValidationEnabled, value))
+                var temp = false;
+                if (this.Model == null)
                 {
-                    this.EvaluateCanExecuteCommands();
+                    temp = true;
                 }
+                else
+                {
+                    temp = string.IsNullOrWhiteSpace(this.Model.Error);
+                }
+                this.SetProperty(ref this.isModelValid, temp);
+                return temp;
             }
         }
 
@@ -146,7 +152,7 @@ namespace Ferretto.Common.Controls
         {
             return this.Model != null
                 && this.changeDetector.IsModified
-                && (!this.isValidationEnabled || string.IsNullOrWhiteSpace(this.Model.Error))
+                && this.IsModelValid
                 && !this.IsBusy
                 && this.changeDetector.IsRequiredValid;
         }
