@@ -61,17 +61,17 @@ namespace ZZ_CellManagementTestApp
 
         #region Properties
 
-        public Int32 ExtractDrawerDestinationBayID { get => this.extractDrawerDestinationBayID; set => this.extractDrawerDestinationBayID = value; }
-        public System.Int32 ExtractDrawerID { get => this.extractDrawerID; set => this.extractDrawerID = value; }
-        public System.Int32 InsertNewDrawerHeight { get => this.insertNewDrawerHeight; set => this.insertNewDrawerHeight = value; }
-        public System.Int32 InsertNewDrawerID { get => this.insertNewDrawerID; set => this.insertNewDrawerID = value; }
-        public System.Int32 MachineHeight { get => this.machineHeight; set => this.machineHeight = value; }
+        public int ExtractDrawerDestinationBayID { get => this.extractDrawerDestinationBayID; set => this.extractDrawerDestinationBayID = value; }
+        public int ExtractDrawerID { get => this.extractDrawerID; set => this.extractDrawerID = value; }
+        public int InsertNewDrawerHeight { get => this.insertNewDrawerHeight; set => this.insertNewDrawerHeight = value; }
+        public int InsertNewDrawerID { get => this.insertNewDrawerID; set => this.insertNewDrawerID = value; }
+        public int MachineHeight { get => this.machineHeight; set => this.machineHeight = value; }
 
-        public System.Int32 NewBayHeight { get => this.newBayHeight; set => this.newBayHeight = value; }
-        public System.Int32 NewBayHeightFromGround { get => this.newBayHeightFromGround; set => this.newBayHeightFromGround = value; }
-        public System.Int32 NewBaySide { get => this.newBaySide; set => this.newBaySide = value; }
-        public Int32 NewUnusableCellID { get => this.newUnusableCellID; set => this.newUnusableCellID = value; }
-        public Int32 ReInsertDrawerDestinationBayID { get => this.reInsertDrawerDestinationBayID; set => this.reInsertDrawerDestinationBayID = value; }
+        public int NewBayHeight { get => this.newBayHeight; set => this.newBayHeight = value; }
+        public int NewBayHeightFromGround { get => this.newBayHeightFromGround; set => this.newBayHeightFromGround = value; }
+        public int NewBaySide { get => this.newBaySide; set => this.newBaySide = value; }
+        public int NewUnusableCellID { get => this.newUnusableCellID; set => this.newUnusableCellID = value; }
+        public int ReInsertDrawerDestinationBayID { get => this.reInsertDrawerDestinationBayID; set => this.reInsertDrawerDestinationBayID = value; }
 
         #endregion Properties
 

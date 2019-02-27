@@ -14,6 +14,6 @@
 
         CELL_NOT_FOUND_EXCEPTION = 102,
 
-        NO_FREE_BLOCK_EXCEPTION = 103,
+        NO_FREE_BLOCK_EXCEPTION = 103
     }
 }

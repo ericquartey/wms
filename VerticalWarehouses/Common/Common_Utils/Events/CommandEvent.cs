@@ -3,7 +3,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.Common_Utils.Events
 {
-    public class MachineAutomationService_Event : PubSubEvent<Event_Message>
+    public class CommandEvent : PubSubEvent<CommandMessage>
     {
     }
 }

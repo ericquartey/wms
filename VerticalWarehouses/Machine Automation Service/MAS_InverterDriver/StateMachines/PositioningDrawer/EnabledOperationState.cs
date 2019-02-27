@@ -1,5 +1,7 @@
-﻿using Ferretto.VW.Common_Utils.EventParameters;
+﻿using System;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.InverterDriver;
 using Prism.Events;
 
@@ -9,15 +11,15 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PositioningDrawer
     {
         #region Fields
 
+        private const byte DATASET_INDEX = 0x05;
+
         private readonly IEventAggregator eventAggregator;
 
         private readonly IInverterDriver inverterDriver;
 
-        private readonly StateMachinePositioningDrawer stateMachinePositioningDrawer;
-
         private readonly ParameterID paramID = ParameterID.HOMING_MODE_PARAM;
 
-        private const byte DATASET_INDEX = 0x05;
+        private readonly StateMachinePositioningDrawer stateMachinePositioningDrawer;
 
         private readonly byte systemIndex = 0x00;
 
@@ -27,14 +29,14 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PositioningDrawer
 
         #region Constructors
 
-        public EnabledOperationState(StateMachinePositioningDrawer stateMachinePositioningDrawer, IInverterDriver inverterDriver, IEventAggregator eventAggregator)
+        public EnabledOperationState(StateMachinePositioningDrawer stateMachinePositioningDrawer,
+            IInverterDriver inverterDriver, IEventAggregator eventAggregator)
         {
             this.inverterDriver = inverterDriver;
             this.eventAggregator = eventAggregator;
             this.stateMachinePositioningDrawer = stateMachinePositioningDrawer;
 
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
-
+            this.eventAggregator.GetEvent<NotificationEvent>().Subscribe(this.notifyEventHandler);
         }
 
         #endregion
@@ -47,30 +49,28 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PositioningDrawer
 
         #region Methods
 
-        private void notifyEventHandler(Notification_EventParameter notification)
+        private void notifyEventHandler(NotificationMessage notification)
         {
-            var result = inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_INDEX, this.valParam);
+            var result =
+                this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_INDEX, this.valParam);
 
-            switch (notification.OperationStatus)
+            switch (notification.Status)
             {
-                case OperationStatus.End:
-                    {
-                        if (result == InverterDriverExitStatus.Success)
-                        {
-                            this.stateMachinePositioningDrawer.ChangeState(new SetNewPositionState(stateMachinePositioningDrawer, inverterDriver, eventAggregator));
-                        }
-                        break;
-                    }
-                case OperationStatus.Error:
-                    {
-                        this.stateMachinePositioningDrawer.ChangeState(new ErrorState(stateMachinePositioningDrawer, inverterDriver, eventAggregator));
+                case MessageStatus.OperationEnd:
+                {
+                    if (result == InverterDriverExitStatus.Success)
+                        this.stateMachinePositioningDrawer.ChangeState(
+                            new SetNewPositionState(this.stateMachinePositioningDrawer, this.inverterDriver,
+                                this.eventAggregator));
+                    break;
+                }
+                case MessageStatus.OperationError:
+                {
+                    this.stateMachinePositioningDrawer.ChangeState(new ErrorState(this.stateMachinePositioningDrawer,
+                        this.inverterDriver, this.eventAggregator));
 
-                        break;
-                    }
-                default:
-                    {
-                        break;
-                    }
+                    break;
+                }
             }
         }
 

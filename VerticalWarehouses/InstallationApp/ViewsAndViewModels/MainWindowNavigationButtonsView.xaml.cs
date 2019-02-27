@@ -46,7 +46,7 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        private void DownScroll_Click(Object sender, RoutedEventArgs e)
+        private void DownScroll_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationButtonScrollViewer.LineDown();
         }
@@ -56,7 +56,7 @@ namespace Ferretto.VW.InstallationApp
             e.Handled = true;
         }
 
-        private void UpScroll_Click(Object sender, RoutedEventArgs e)
+        private void UpScroll_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationButtonScrollViewer.LineUp();
             //TODO: scroll up and down nav button height

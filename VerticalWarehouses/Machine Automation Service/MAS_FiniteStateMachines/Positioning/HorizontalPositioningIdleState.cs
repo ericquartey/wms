@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using Ferretto.VW.Common_Utils.EventParameters;
+﻿using System.Buffers;
+using System.Collections.Generic;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_InverterDriver;
@@ -30,7 +31,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
             this.Profile = new List<ProfilePosition>();
 
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
+            this.eventAggregator.GetEvent<NotificationEvent>().Subscribe(this.notifyEventHandler);
         }
 
         #endregion
@@ -58,7 +59,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             this.driver.ExecuteHorizontalPosition(this.Target, this.Velocity, this.Direction, this.Profile, this.Weight);
         }
 
-        public void NotifyMessage(Event_Message message)
+        public void NotifyMessage(CommandMessage message)
         {
             throw new System.NotImplementedException();
         }
@@ -67,22 +68,22 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
         {
             this.driver.ExecuteHorizontalPositionStop();
 
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Unsubscribe(this.notifyEventHandler);
+            this.eventAggregator.GetEvent<NotificationEvent>().Unsubscribe(this.notifyEventHandler);
 
-            var notifyEvent = new Notification_EventParameter(OperationType.Positioning, OperationStatus.Stopped, "Positioning stopped", Verbosity.Info);
-            this.eventAggregator.GetEvent<FiniteStateMachines_NotificationEvent>().Publish(notifyEvent);
+            var notifyEvent = new NotificationMessage(null, "Positioning stopped", MessageActor.Any, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationStop);
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
         }
 
-        private void notifyEventHandler(Notification_EventParameter notification)
+        private void notifyEventHandler(NotificationMessage notification)
         {
-            switch (notification.OperationStatus)
+            switch (notification.Status)
             {
-                case OperationStatus.End:
+                case MessageStatus.OperationEnd:
                     {
                         this.parent.ChangeState(new HorizontalPositioningDoneState(this.parent, this.driver, this.eventAggregator));
                         break;
                     }
-                case OperationStatus.Error:
+                case MessageStatus.OperationError:
                     {
                         this.parent.ChangeState(new HorizontalPositioningErrorState(this.parent, this.driver, this.eventAggregator));
                         break;
