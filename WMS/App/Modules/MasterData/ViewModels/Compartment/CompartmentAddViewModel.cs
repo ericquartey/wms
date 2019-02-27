@@ -31,8 +31,6 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.Title = Common.Resources.MasterData.AddCompartment;
 
-            this.IsValidationEnabled = false;
-
             this.LoadData();
         }
 
@@ -65,9 +63,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async Task ExecuteSaveCommand()
         {
-            this.IsValidationEnabled = true;
+            if (!this.IsModelValid)
 
-            if (string.IsNullOrWhiteSpace(this.Model.Error) == false)
             {
                 return;
             }
