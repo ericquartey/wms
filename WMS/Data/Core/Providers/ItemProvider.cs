@@ -79,26 +79,26 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<Item>> GetAllAsync(
             int skip,
             int take,
-            IEnumerable<SortOption> orderBy = null,
-            string whereExpression = null,
+            IEnumerable<SortOption> orderBySortOptions = null,
+            string whereString = null,
             string searchString = null)
         {
             return await this.GetAllBase()
-                .ToArrayAsync(
+                .ToArrayAsync<Item, Common.DataModels.Item>(
                     skip,
                     take,
-                    orderBy,
-                    whereExpression,
+                    orderBySortOptions,
+                    whereString,
                     BuildSearchExpression(searchString));
         }
 
         public async Task<int> GetAllCountAsync(
-            string whereExpression = null,
+            string whereString = null,
             string searchString = null)
         {
             return await this.GetAllBase()
-                .CountAsync(
-                    whereExpression,
+                .CountAsync<Item, Common.DataModels.Item>(
+                    whereString,
                     BuildSearchExpression(searchString));
         }
 

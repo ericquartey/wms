@@ -34,26 +34,26 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<SchedulerRequest>> GetAllAsync(
             int skip,
             int take,
-            IEnumerable<SortOption> orderBy = null,
-            string whereExpression = null,
+            IEnumerable<SortOption> orderBySortOptions = null,
+            string whereString = null,
             string searchString = null)
         {
             return await this.GetAllBase()
-                .ToArrayAsync(
+                .ToArrayAsync<SchedulerRequest, Common.DataModels.SchedulerRequest>(
                     skip,
                     take,
-                    orderBy,
-                    whereExpression,
+                    orderBySortOptions,
+                    whereString,
                     BuildSearchExpression(searchString));
         }
 
         public async Task<int> GetAllCountAsync(
-            string whereExpression = null,
+            string whereString = null,
             string searchString = null)
         {
             return await this.GetAllBase()
-                .CountAsync(
-                    whereExpression,
+                .CountAsync<SchedulerRequest, Common.DataModels.SchedulerRequest>(
+                    whereString,
                     BuildSearchExpression(searchString));
         }
 
