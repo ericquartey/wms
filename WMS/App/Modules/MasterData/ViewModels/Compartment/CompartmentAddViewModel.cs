@@ -64,7 +64,6 @@ namespace Ferretto.WMS.Modules.MasterData
         protected override async Task ExecuteSaveCommand()
         {
             if (!this.IsModelValid)
-
             {
                 return;
             }
