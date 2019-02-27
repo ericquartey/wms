@@ -10,6 +10,8 @@
 
         public decimal Coord { get; set; }
 
+        public int DrawerId { get; set; }
+
         public int FreeBlockId { get; set; }
 
         public int Priority { get; set; }

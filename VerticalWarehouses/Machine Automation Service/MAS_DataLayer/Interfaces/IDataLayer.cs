@@ -38,7 +38,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// </summary>
         /// <param name="drawerHeight">Drawer height to insert in the magazine</param>
         /// <returns>An object with position and side for a return mission</returns>
-        ReturnMissionPosition GetFreeBlockPosition(decimal drawerHeight);
+        ReturnMissionPosition GetFreeBlockPosition(decimal drawerHeight, int drawerNumber);
 
         /// <summary>
         /// Get an integer variable from the configuration table
@@ -81,9 +81,10 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <summary>
         /// This methods is been invoked when a drawer backs from the bay to cells
         /// </summary>
+        /// <param name="drawerNumber">Id of the Drawer we take into account</param>
         /// <exception cref="DataLayerExceptionEnum.NO_FREE_BLOCK_BOOKED_EXCEPTION">Thrown when a drawer backs from bay, but we don't find booked cells in a Free Blocks table</exception>
         /// <exception cref="DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION">Thrown when we have booked cells in the Free Blocks table, but we don't find one of them in the cells table</exception>
-        void ReturnMissionEnded();
+        void ReturnMissionEnded(int drawerNumber);
 
         /// <summary>
         /// Set one or more cells to a list cell to new value

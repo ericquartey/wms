@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return this.inMemoryDataContext.Cells.ToList();
         }
 
-        public ReturnMissionPosition GetFreeBlockPosition(decimal drawerHeight)
+        public ReturnMissionPosition GetFreeBlockPosition(decimal drawerHeight, int drawerNumber)
         {
             var cellSpacing = this.GetIntegerConfigurationValue(ConfigurationValueEnum.cellSpacing);
 
@@ -32,6 +32,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
             // INFO Change the BookedCells number in the FreeBlock table
             inMemoryFreeBlockFirstByPriority.BookedCellsNumber = cellsNumber;
+            // inMemoryFreeBlockFirstByPriority.DrawerNumber = drawerNumber;
             this.inMemoryDataContext.SaveChanges();
 
             var returnMissionPosition = new ReturnMissionPosition();
@@ -42,7 +43,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnMissionPosition;
         }
 
-        public void ReturnMissionEnded()
+        public void ReturnMissionEnded(int drawerNumber)
         {
             var inMemoryFreeBlockSearchBookedCells = this.inMemoryDataContext.FreeBlocks.FirstOrDefault(s => s.BookedCellsNumber > 0);
 
