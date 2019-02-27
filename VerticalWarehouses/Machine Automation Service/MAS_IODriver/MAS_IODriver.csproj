@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
     <AssemblyName>Ferretto.VW.MAS_IODriver</AssemblyName>
     <RootNamespace>Ferretto.VW.MAS_IODriver</RootNamespace>
   </PropertyGroup>

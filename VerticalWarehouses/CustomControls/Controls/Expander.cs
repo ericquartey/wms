@@ -14,11 +14,14 @@ namespace Ferretto.VW.CustomControls.Controls
         #region Fields
 
         public static readonly DependencyProperty HideToggleButtonProperty = DependencyProperty.RegisterAttached("HideToggleButton", typeof(bool), typeof(Expander), new FrameworkPropertyMetadata(false));
+
         private Grid gridHeaderSite;
+
         private ToggleButton toggleButton;
+
         private VisualTreeAdapter visualTreeAdapterInstance;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -28,7 +31,7 @@ namespace Ferretto.VW.CustomControls.Controls
             this.visualTreeAdapterInstance = new VisualTreeAdapter(this);
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -38,7 +41,7 @@ namespace Ferretto.VW.CustomControls.Controls
             set => this.SetValue(HideToggleButtonProperty, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -55,37 +58,36 @@ namespace Ferretto.VW.CustomControls.Controls
             {
                 this.visualTreeAdapterInstance = new VisualTreeAdapter(this);
             }
-            if (!(sender is FrameworkElement parentControl))
+            if (sender is FrameworkElement parentControl)
             {
-                return;
-            }
-            if (this.toggleButton == null)
-            {
-                var toggleButtonFound = this.visualTreeAdapterInstance.Children()
-                 .OfType<ToggleButton>()
-                 .FirstOrDefault();
-                if (toggleButtonFound != null)
+                if (this.toggleButton == null)
                 {
-                    this.toggleButton = toggleButtonFound as ToggleButton;
+                    var toggleButtonFound = this.visualTreeAdapterInstance.Children()
+                     .OfType<ToggleButton>()
+                     .FirstOrDefault();
+                    if (toggleButtonFound != null)
+                    {
+                        this.toggleButton = toggleButtonFound as ToggleButton;
+                    }
                 }
-            }
-            if (this.gridHeaderSite == null)
-            {
-                var gridFound = this.visualTreeAdapterInstance.Children()
-                 .OfType<Grid>()
-                 .FirstOrDefault(n => n.Name == "GridHeaderSite");
-                if (gridFound != null)
+                if (this.gridHeaderSite == null)
                 {
-                    this.gridHeaderSite = gridFound as Grid;
+                    var gridFound = this.visualTreeAdapterInstance.Children()
+                     .OfType<Grid>()
+                     .FirstOrDefault(n => n.Name == "GridHeaderSite");
+                    if (gridFound != null)
+                    {
+                        this.gridHeaderSite = gridFound as Grid;
+                    }
                 }
-            }
-            var actualHeight = (this.ActualHeight - 4);
-            if (this.gridHeaderSite.Height != actualHeight)
-            {
-                this.gridHeaderSite.Height = actualHeight;
+                var actualHeight = this.ActualHeight - 4;
+                if (this.gridHeaderSite.Height != actualHeight)
+                {
+                    this.gridHeaderSite.Height = actualHeight;
+                }
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

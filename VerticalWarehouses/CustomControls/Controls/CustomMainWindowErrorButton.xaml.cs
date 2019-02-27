@@ -24,49 +24,62 @@ namespace Ferretto.VW.CustomControls.Controls
         #region Fields
 
         public static readonly DependencyProperty ContentTextProperty = DependencyProperty.Register("ContentText", typeof(string), typeof(CustomMainWindowErrorButton));
+
         public static readonly DependencyProperty CustomCommandProperty = DependencyProperty.Register("CustomCommand", typeof(ICommand), typeof(CustomMainWindowErrorButton));
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
         public CustomMainWindowErrorButton()
         {
             this.InitializeComponent();
-            this.LayoutRoot.DataContext = this;
+            var customMainWindowErrorButton = this;
+            this.LayoutRoot.DataContext = customMainWindowErrorButton;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Events
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        #endregion Events
+        #endregion
 
         #region Properties
 
         public string ContentText
         {
             get => (string)this.GetValue(ContentTextProperty);
-            set { this.SetValue(ContentTextProperty, value); this.RaisePropertyChanged("ContentText"); }
+            set
+            {
+                this.SetValue(ContentTextProperty, value);
+                this.RaisePropertyChanged(nameof(this.ContentText));
+            }
         }
 
         public ICommand CustomCommand
         {
             get => (ICommand)this.GetValue(CustomCommandProperty);
-            set { this.SetValue(CustomCommandProperty, value); this.RaisePropertyChanged("CustomCommand"); }
+            set
+            {
+                this.SetValue(CustomCommandProperty, value);
+                this.RaisePropertyChanged(nameof(this.CustomCommand));
+            }
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
         private void RaisePropertyChanged(string propertyName)
         {
-            if (this.PropertyChanged != null) this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            if (this.PropertyChanged != null)
+            {
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
 
-        #endregion Methods
+        #endregion
     }
 }
