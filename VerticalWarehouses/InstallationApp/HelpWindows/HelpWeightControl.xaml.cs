@@ -20,9 +20,13 @@ namespace Ferretto.VW.InstallationApp.HelpWindows
     /// </summary>
     public partial class HelpWeightControl : UserControl
     {
+        #region Constructors
+
         public HelpWeightControl()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
+
+        #endregion
     }
 }

@@ -11,42 +11,52 @@ namespace Ferretto.VW.CustomControls.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty ContentTextProperty = DependencyProperty.Register("ContentText", typeof(string), typeof(CustomLabelTextBlockControl), new PropertyMetadata(""));
-        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register("LabelText", typeof(string), typeof(CustomLabelTextBlockControl), new PropertyMetadata(""));
+        public static readonly DependencyProperty ContentTextProperty = DependencyProperty.Register("ContentText", typeof(string), typeof(CustomLabelTextBlockControl), new PropertyMetadata(string.Empty));
 
-        #endregion Fields
+        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register("LabelText", typeof(string), typeof(CustomLabelTextBlockControl), new PropertyMetadata(string.Empty));
+
+        #endregion
 
         #region Constructors
 
         public CustomLabelTextBlockControl()
         {
             this.InitializeComponent();
-            this.LayoutRoot.DataContext = this;
+            var customLabelTextBlockControl = this;
+            this.LayoutRoot.DataContext = customLabelTextBlockControl;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Events
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        #endregion Events
+        #endregion
 
         #region Properties
 
         public string ContentText
         {
             get => (string)this.GetValue(ContentTextProperty);
-            set { this.SetValue(ContentTextProperty, value); this.RaisePropertyChanged("ContentText"); }
+            set
+            {
+                this.SetValue(ContentTextProperty, value);
+                this.RaisePropertyChanged(nameof(this.ContentText));
+            }
         }
 
         public string LabelText
         {
             get => (string)this.GetValue(LabelProperty);
-            set { this.SetValue(LabelProperty, value); this.RaisePropertyChanged("LabelText"); }
+            set
+            {
+                this.SetValue(LabelProperty, value);
+                this.RaisePropertyChanged(nameof(this.LabelText));
+            }
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -58,6 +68,6 @@ namespace Ferretto.VW.CustomControls.Controls
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

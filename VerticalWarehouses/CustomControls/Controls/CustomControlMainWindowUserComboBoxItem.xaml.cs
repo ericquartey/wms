@@ -24,41 +24,51 @@ namespace Ferretto.VW.CustomControls.Controls
         #region Fields
 
         public static readonly DependencyProperty CustomCommandProperty = DependencyProperty.Register("CustomCommand", typeof(ICommand), typeof(CustomControlMainWindowUserComboBoxItem));
-        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register("LabelText", typeof(string), typeof(CustomControlMainWindowUserComboBoxItem), new PropertyMetadata(""));
 
-        #endregion Fields
+        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register("LabelText", typeof(string), typeof(CustomControlMainWindowUserComboBoxItem), new PropertyMetadata(string.Empty));
+
+        #endregion
 
         #region Constructors
 
         public CustomControlMainWindowUserComboBoxItem()
         {
             this.InitializeComponent();
-            this.LayoutRoot.DataContext = this;
+            var customControlMainWindowUserComboBoxItem = this;
+            this.LayoutRoot.DataContext = customControlMainWindowUserComboBoxItem;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Events
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        #endregion Events
+        #endregion
 
         #region Properties
 
         public ICommand CustomCommand
         {
             get => (ICommand)this.GetValue(CustomCommandProperty);
-            set { this.SetValue(CustomCommandProperty, value); this.RaisePropertyChanged("CustomCommand"); }
+            set
+            {
+                this.SetValue(CustomCommandProperty, value);
+                this.RaisePropertyChanged(nameof(this.CustomCommand));
+            }
         }
 
         public string LabelText
         {
             get => (string)this.GetValue(LabelProperty);
-            set { this.SetValue(LabelProperty, value); this.RaisePropertyChanged("LabelText"); }
+            set
+            {
+                this.SetValue(LabelProperty, value);
+                this.RaisePropertyChanged(nameof(this.LabelText));
+            }
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -70,6 +80,6 @@ namespace Ferretto.VW.CustomControls.Controls
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

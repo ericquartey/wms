@@ -20,9 +20,13 @@ namespace Ferretto.VW.InstallationApp.HelpWindows
     /// </summary>
     public partial class HelpVerticalAxisCalibration : UserControl
     {
+        #region Constructors
+
         public HelpVerticalAxisCalibration()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
+
+        #endregion
     }
 }
