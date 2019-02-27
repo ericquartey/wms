@@ -8,9 +8,9 @@
         {
             this.Belt_Burnishing = true;
             this.Machine_Ok = true;
-            this.Ok_Gate1 = true;
-            this.Ok_Gate2 = true;
-            this.Ok_Gate3 = true;
+            this.Ok_Shutter1 = true;
+            this.Ok_Shutter2 = true;
+            this.Ok_Shutter3 = true;
             this.Ok_Laser1 = true;
             this.Ok_Laser2 = true;
             this.Ok_Laser3 = true;
@@ -28,19 +28,13 @@
             this.Set_Y_Resolution = true;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public bool Belt_Burnishing { get; set; }
 
         public bool Machine_Ok { get; set; }
-
-        public bool Ok_Gate1 { get; set; }
-
-        public bool Ok_Gate2 { get; set; }
-
-        public bool Ok_Gate3 { get; set; }
 
         public bool Ok_Laser1 { get; set; }
 
@@ -54,12 +48,18 @@
 
         public bool Ok_Shape3 { get; set; }
 
+        public bool Ok_Shutter1 { get; set; }
+
+        public bool Ok_Shutter2 { get; set; }
+
+        public bool Ok_Shutter3 { get; set; }
+
         public bool Origin_X_Axis { get; }
 
         public bool Origin_Y_Axis { get; }
 
         public bool Set_Y_Resolution { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

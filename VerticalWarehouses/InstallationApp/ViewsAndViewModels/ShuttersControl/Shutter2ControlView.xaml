@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="Ferretto.VW.InstallationApp.Shutter2ControlView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Ferretto.VW.InstallationApp"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
+             mc:Ignorable="d">
+    <Grid Width="1024"
+          Height="608">
+        <TextBlock Grid.Row="0"
+                   Margin="150,10,0,562"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.Gate2Control}" />
+
+        <custom:CustomInputFieldControlFocusable Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" Margin="150,170,499,375"
+                                                 LabelText="{x:Static res:InstallationApp.RequiredCicles}" />
+        <custom:CustomInputFieldControlFocusable Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" Margin="150,260,549,284"
+                                                 LabelText="{x:Static res:InstallationApp.DelayBetweenCicles}" />
+        <custom:CustomLabelTextBlockControl Margin="150,350,549,195"
+                                            LabelText="{x:Static res:InstallationApp.CompletedCicles}" />
+        <ContentControl Name="SensorRegionContentControl"
+                        Width="200"
+                        Height="200"
+                        Margin="570,213,254,195" />
+
+        <Button Grid.Column="0"
+                Margin="150,465,0,75"
+                HorizontalAlignment="Left"
+                Content="{x:Static res:InstallationApp.Start}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <Button Margin="570,465,0,75"
+                HorizontalAlignment="Left"
+                Content="{x:Static res:InstallationApp.Stop}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+
+    </Grid>
+</UserControl>

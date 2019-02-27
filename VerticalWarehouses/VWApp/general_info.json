@@ -29,8 +29,8 @@
   "Type_Bay1": 1,
   "Type_Bay2": 2,
   "Type_Bay3": 0,
-  "Type_Gate1": 1,
-  "Type_Gate2": 2,
-  "Type_Gate3": 0,
+  "Type_Shutter1": 1,
+  "Type_Shutter2": 2,
+  "Type_Shutter3": 0,
   "WMS_ON": true
 }

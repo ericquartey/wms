@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Ferretto.VW.InstallationApp.ServiceUtilities
 {
-    public class InstallationHubClient
+    public class InstallationHubClient : ContainerIInstallationHubClient
     {
         #region Fields
 
@@ -27,8 +28,6 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
                 await Task.Delay(new Random().Next(0, 5) * 1000);
                 await this.connection.StartAsync();
             };
-
-            this.connection.StartAsync();
         }
 
         #endregion

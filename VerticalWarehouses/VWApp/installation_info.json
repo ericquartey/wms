@@ -1,16 +1,16 @@
 {
   "Belt_Burnishing": true,
   "Machine_Ok": true,
-  "Ok_Gate1": true,
-  "Ok_Gate2": true,
-  "Ok_Gate3": true,
+  "Ok_Shutter1": true,
+  "Ok_Shutter2": true,
+  "Ok_Shutter3": true,
   "Ok_Laser1": true,
   "Ok_Laser2": true,
   "Ok_Laser3": true,
   "Ok_Shape1": true,
   "Ok_Shape2": true,
   "Ok_Shape3": true,
-  "Origin_X_Axis": false,
-  "Origin_Y_Axis": false,
+  "Origin_X_Axis": true,
+  "Origin_Y_Axis": true,
   "Set_Y_Resolution": true
 }

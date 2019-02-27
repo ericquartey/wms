@@ -1,9 +1,7 @@
-﻿using System;
-using System.Threading;
-using System.Windows.Input;
-using Ferretto.VW.ActionBlocks;
+﻿using System.Windows.Input;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
@@ -18,6 +16,8 @@ namespace Ferretto.VW.InstallationApp
 
         private ICommand beginButtonCommand;
 
+        private IEventAggregator eventAggregator;
+
         private ICommand exitFromViewCommand;
 
         private int feedRate;
@@ -30,11 +30,20 @@ namespace Ferretto.VW.InstallationApp
 
         private int mesuredWeight;
 
-        private string noteText = Resources.InstallationApp.WeightControl;
+        private string noteText = Ferretto.VW.Resources.InstallationApp.WeightControl;
 
         private ICommand stopButtonCommand;
 
         private int testRun;
+
+        #endregion
+
+        #region Constructors
+
+        public WeightControlViewModel(IEventAggregator eventAggregator)
+        {
+            this.eventAggregator = eventAggregator;
+        }
 
         #endregion
 

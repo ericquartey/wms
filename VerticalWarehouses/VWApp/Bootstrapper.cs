@@ -1,9 +1,8 @@
 ﻿using System.Windows;
-using Ferretto.VW.ActionBlocks.Source.ActionsBasic;
 using Ferretto.VW.InstallationApp;
-using Ferretto.VW.Navigation;
 using Ferretto.VW.Utils.Source;
 using Microsoft.Practices.Unity;
+using Prism.Events;
 using Prism.Modularity;
 using Prism.Mvvm;
 using Prism.Unity;
@@ -22,6 +21,7 @@ namespace Ferretto.VW.VWApp
         protected override void ConfigureModuleCatalog()
         {
             var catalog = (ModuleCatalog)this.ModuleCatalog;
+            catalog.AddModule(typeof(VWAppModule));
             catalog.AddModule(typeof(InstallationAppModule));
         }
 
@@ -34,21 +34,21 @@ namespace Ferretto.VW.VWApp
             this.BindViewModelToView<ICellsPanelsControlViewModel, CellsPanelsControlView>();
             this.BindViewModelToView<ICellsControlViewModel, CellsControlView>();
             this.BindViewModelToView<IIdleViewModel, IdleView>();
-            this.BindViewModelToView<IGate1ControlViewModel, Gate1ControlView>();
-            this.BindViewModelToView<IGate2ControlViewModel, Gate2ControlView>();
-            this.BindViewModelToView<IGate3ControlViewModel, Gate3ControlView>();
-            this.BindViewModelToView<IGate1HeightControlViewModel, Gate1HeightControlView>();
-            this.BindViewModelToView<IGate2HeightControlViewModel, Gate2HeightControlView>();
-            this.BindViewModelToView<IGate3HeightControlViewModel, Gate3HeightControlView>();
+            this.BindViewModelToView<IShutter1ControlViewModel, Shutter1ControlView>();
+            this.BindViewModelToView<IShutter2ControlViewModel, Shutter2ControlView>();
+            this.BindViewModelToView<IShutter3ControlViewModel, Shutter3ControlView>();
+            this.BindViewModelToView<IShutter1HeightControlViewModel, Shutter1HeightControlView>();
+            this.BindViewModelToView<IShutter2HeightControlViewModel, Shutter2HeightControlView>();
+            this.BindViewModelToView<IShutter3HeightControlViewModel, Shutter3HeightControlView>();
             this.BindViewModelToView<IInstallationStateViewModel, InstallationStateView>();
-            this.BindViewModelToView<ILSMTGateEngineViewModel, LSMTGateEngineView>();
+            this.BindViewModelToView<ILSMTShutterEngineViewModel, LSMTShutterEngineView>();
             this.BindViewModelToView<ILSMTHorizontalEngineViewModel, LSMTHorizontalEngineView>();
             this.BindViewModelToView<ILSMTMainViewModel, LSMTMainView>();
             this.BindViewModelToView<ILSMTNavigationButtonsViewModel, LSMTNavigationButtonsView>();
             this.BindViewModelToView<ILSMTVerticalEngineViewModel, LSMTVerticalEngineView>();
             this.BindViewModelToView<ISSBaysViewModel, SSBaysView>();
             this.BindViewModelToView<ISSBaysViewModel, SSCradleView>();
-            this.BindViewModelToView<ISSGateViewModel, SSGateView>();
+            this.BindViewModelToView<ISSShutterViewModel, SSShutterView>();
             this.BindViewModelToView<ISSMainViewModel, SSMainView>();
             this.BindViewModelToView<ISSNavigationButtonsViewModel, SSNavigationButtonsView>();
             this.BindViewModelToView<ISSVariousInputsViewModel, SSVariousInputsView>();
@@ -61,8 +61,6 @@ namespace Ferretto.VW.VWApp
 
         protected override DependencyObject CreateShell()
         {
-            NavigationService.InitializeEvents();
-            NavigationService.ChangeSkinToDarkEventHandler += (Application.Current as App).ChangeSkin;
             this.InitializeData();
             this.InitializeMainWindow();
 
@@ -84,7 +82,7 @@ namespace Ferretto.VW.VWApp
         private void InitializeMainWindow()
         {
             var MainWindowVInstance = new MainWindow();
-            var MainWindowVMInstance = new MainWindowViewModel();
+            var MainWindowVMInstance = new MainWindowViewModel(this.Container.Resolve<IEventAggregator>());
             MainWindowVMInstance.InitializeViewModel(this.Container);
             MainWindowVInstance.DataContext = MainWindowVMInstance;
             this.Container.RegisterInstance<IMainWindow>(MainWindowVInstance);
