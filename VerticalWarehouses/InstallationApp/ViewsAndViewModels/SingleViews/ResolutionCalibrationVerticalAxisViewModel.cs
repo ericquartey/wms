@@ -169,7 +169,7 @@ namespace Ferretto.VW.InstallationApp
         {
             if (input != "")
             {
-                if (Int32.TryParse(input, out var i))
+                if (int.TryParse(input, out var i))
                 {
                     if (i > 0)
                     {
@@ -188,7 +188,7 @@ namespace Ferretto.VW.InstallationApp
         {
             if (input != "")
             {
-                if (Int32.TryParse(input, out var i))
+                if (int.TryParse(input, out var i))
                 {
                     if (i > 0)
                     {

@@ -32,12 +32,9 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
 
         #region Properties
 
-        public Int32 Coord { get; set; }
-
-        public Int32 IdCell { get; set; }
-
-        public Int32 Priority { get; set; }
-
+        public int Coord { get; set; }
+        public int IdCell { get; set; }
+        public int Priority { get; set; }
         public Side Side { get; set; }
 
         public Status Status { get; set; }

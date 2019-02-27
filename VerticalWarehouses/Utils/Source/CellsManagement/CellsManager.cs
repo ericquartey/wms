@@ -19,7 +19,7 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
 
         #region Properties
 
-        public Int32 BayCounter { get; set; }
+        public int BayCounter { get; set; }
 
         public List<Bay> Bays { get; set; }
         public List<CellBlock> Blocks { get; set; }

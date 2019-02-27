@@ -49,7 +49,7 @@ namespace Ferretto.VW.CustomControls.Controls
             ((FrameworkElement)this.Parent).SizeChanged += this.Expander_SizeChanged;
         }
 
-        private void Expander_SizeChanged(Object sender, SizeChangedEventArgs e)
+        private void Expander_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (this.visualTreeAdapterInstance == null)
             {

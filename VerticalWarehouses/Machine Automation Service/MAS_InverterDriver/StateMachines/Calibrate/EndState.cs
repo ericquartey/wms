@@ -12,7 +12,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
 
         #region Constructors
 
-        public EndState( IInverterStateMachine parentStateMachine, Axis axisToCalibrate )
+        public EndState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate)
         {
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
@@ -22,12 +22,10 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
 
         #region Methods
 
-        public override void NotifyMessage( InverterMessage message )
+        public override void NotifyMessage(InverterMessage message)
         {
-            if(message.IsError)
-            {
-                this.parentStateMachine.ChangeState( new ErrorState( this.parentStateMachine, this.axisToCalibrate ) );
-            }
+            if (message.IsError)
+                this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate));
         }
 
         #endregion

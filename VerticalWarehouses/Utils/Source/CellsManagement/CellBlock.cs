@@ -30,9 +30,9 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
 
         #region Properties
 
-        public Int32 Area { get; set; }
+        public int Area { get; set; }
 
-        public Int32 BlockHeightMillimiters
+        public int BlockHeightMillimiters
         {
             get => this.blockHeightMillimiters;
             set
@@ -48,16 +48,11 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
             }
         }
 
-        public Int32 FinalIDCell { get; set; }
-
-        public Int32 IdGroup { get; set; }
-
-        public Int32 InitialIDCell { get; set; }
-
-        public Int32 Machine { get; set; }
-
-        public Int32 Priority { get; set; }
-
+        public int FinalIDCell { get; set; }
+        public int IdGroup { get; set; }
+        public int InitialIDCell { get; set; }
+        public int Machine { get; set; }
+        public int Priority { get; set; }
         public Side Side { get; set; }
 
         #endregion

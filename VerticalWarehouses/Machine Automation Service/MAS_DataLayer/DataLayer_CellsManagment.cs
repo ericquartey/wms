@@ -18,17 +18,16 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             var cellSpacing = this.GetIntegerConfigurationValue(ConfigurationValueEnum.cellSpacing);
 
-            var cellsNumber = (int)Math.Ceiling(drawerHeight / cellSpacing);
+            var cellsNumber = (int) Math.Ceiling(drawerHeight / cellSpacing);
 
             // INFO Always take into account +1 drawer cell height, to avoid impacts between two next drowers
             cellsNumber += 1;
 
-            var inMemoryFreeBlockFirstByPriority = this.inMemoryDataContext.FreeBlocks.OrderBy(s => s.Priority).FirstOrDefault(s => s.BlockSize >= cellsNumber);
+            var inMemoryFreeBlockFirstByPriority = this.inMemoryDataContext.FreeBlocks.OrderBy(s => s.Priority)
+                .FirstOrDefault(s => s.BlockSize >= cellsNumber);
 
             if (inMemoryFreeBlockFirstByPriority == null)
-            {
                 throw new DataLayerException(DataLayerExceptionEnum.NO_FREE_BLOCK_EXCEPTION);
-            }
 
             // INFO Change the BookedCells number in the FreeBlock table
             inMemoryFreeBlockFirstByPriority.BookedCellsNumber = cellsNumber;
@@ -52,7 +51,8 @@ namespace Ferretto.VW.MAS_DataLayer
 
                 foreach (var cell in listCells)
                 {
-                    var inMemoryCellCurrentValue = this.inMemoryDataContext.Cells.FirstOrDefault(s => s.CellId == cell.CellId);
+                    var inMemoryCellCurrentValue =
+                        this.inMemoryDataContext.Cells.FirstOrDefault(s => s.CellId == cell.CellId);
 
                     if (inMemoryCellCurrentValue != null)
                     {
@@ -64,9 +64,7 @@ namespace Ferretto.VW.MAS_DataLayer
                         this.inMemoryDataContext.SaveChanges();
                     }
                     else
-                    {
                         throw new ArgumentNullException();
-                    }
                 }
             }
 
@@ -95,10 +93,8 @@ namespace Ferretto.VW.MAS_DataLayer
 
                 if (cell.Side == Side.FrontEven)
                 {
-                    if (cellCounterEven != 0 && (cell.Status == Status.Free || cell.Status == Status.Disabled))
-                    {
+                    if (cellCounterEven != 0 && ( cell.Status == Status.Free || cell.Status == Status.Disabled ))
                         cellCounterEven++;
-                    }
 
                     if (cell.Status == Status.Free && cellCounterEven == 0)
                     {
@@ -112,7 +108,7 @@ namespace Ferretto.VW.MAS_DataLayer
                         cellCounterEven++;
                     }
 
-                    if (cellCounterEven != 0 && (cell.Status == Status.Occupied || cell.Status == Status.Unusable))
+                    if (cellCounterEven != 0 && ( cell.Status == Status.Occupied || cell.Status == Status.Unusable ))
                     {
                         evenFreeBlock.BlockSize = cellCounterEven;
                         evenFreeBlock.BookedCellsNumber = 0;
@@ -123,10 +119,8 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
                 else
                 {
-                    if (cellCounterOdd != 0 && (cell.Status == Status.Free || cell.Status == Status.Disabled))
-                    {
+                    if (cellCounterOdd != 0 && ( cell.Status == Status.Free || cell.Status == Status.Disabled ))
                         cellCounterOdd++;
-                    }
 
                     if (cell.Status == Status.Free && cellCounterOdd == 0)
                     {
@@ -140,7 +134,7 @@ namespace Ferretto.VW.MAS_DataLayer
                         cellCounterOdd++;
                     }
 
-                    if (cellCounterOdd != 0 && (cell.Status == Status.Occupied || cell.Status == Status.Unusable))
+                    if (cellCounterOdd != 0 && ( cell.Status == Status.Occupied || cell.Status == Status.Unusable ))
                     {
                         oddFreeBlock.BlockSize = cellCounterOdd;
                         oddFreeBlock.BookedCellsNumber = 0;
@@ -151,15 +145,10 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
             }
 
-            if (!cellTablePopulated)
-            {
-                throw new DataLayerException(DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION);
-            }
+            if (!cellTablePopulated) throw new DataLayerException(DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION);
 
             if (!this.inMemoryDataContext.FreeBlocks.Any())
-            {
                 throw new DataLayerException(DataLayerExceptionEnum.NO_FREE_BLOCK_EXCEPTION);
-            }
         }
 
         #endregion

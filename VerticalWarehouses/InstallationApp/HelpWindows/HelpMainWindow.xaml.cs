@@ -46,7 +46,7 @@ namespace Ferretto.VW.InstallationApp
 
         #region Methods
 
-        private void Button_Click(Object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.Hide();
         }

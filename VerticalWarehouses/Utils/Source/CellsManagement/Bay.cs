@@ -27,10 +27,10 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
 
         #region Properties
 
-        public Int32 DrawerID { get; set; }
-        public Int32 FirstCellID { get; set; }
+        public int DrawerID { get; set; }
+        public int FirstCellID { get; set; }
 
-        public Int32 HeightMillimiters
+        public int HeightMillimiters
         {
             get => this.heightMillimiters;
             set
@@ -46,8 +46,8 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
             }
         }
 
-        public Int32 Id { get; set; }
-        public Boolean Occupied { get; set; }
+        public int Id { get; set; }
+        public bool Occupied { get; set; }
 
         #endregion Properties
     }

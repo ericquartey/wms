@@ -14,7 +14,7 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         public static readonly DependencyProperty BackgroundGrodLinesProperty =
-                             DependencyProperty.Register(nameof(BackgroundGrodLines), typeof(DrawingBrush), typeof(WmsCanvasListBoxControl));
+                         DependencyProperty.Register(nameof(BackgroundGrodLines), typeof(DrawingBrush), typeof(WmsCanvasListBoxControl));
 
         public static readonly DependencyProperty BackgroundStepEndProperty =
                              DependencyProperty.Register(nameof(BackgroundStepEnd), typeof(double), typeof(WmsCanvasListBoxControl));
@@ -40,8 +40,11 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(nameof(IsReadOnly),
             typeof(bool), typeof(WmsCanvasListBoxControl), new FrameworkPropertyMetadata(OnIsReadOnlyChanged));
 
-        public static readonly DependencyProperty MinTrayWidthProperty =
-                     DependencyProperty.Register(nameof(MinTrayWidth), typeof(double), typeof(WmsCanvasListBoxControl));
+        public static readonly DependencyProperty MinBorderHeightProperty =
+             DependencyProperty.Register(nameof(MinBorderHeight), typeof(double), typeof(WmsCanvasListBoxControl));
+
+        public static readonly DependencyProperty MinBorderWidthProperty =
+                             DependencyProperty.Register(nameof(MinBorderWidth), typeof(double), typeof(WmsCanvasListBoxControl));
 
         public static readonly DependencyProperty OriginHorizontalProperty =
                        DependencyProperty.Register(nameof(OriginHorizontal), typeof(OriginHorizontal), typeof(WmsCanvasListBoxControl), new FrameworkPropertyMetadata(OriginHorizontal.Left));
@@ -163,10 +166,16 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(IsReadOnlyProperty, value);
         }
 
-        public double MinTrayWidth
+        public double MinBorderHeight
         {
-            get => (double)this.GetValue(MinTrayWidthProperty);
-            set => this.SetValue(MinTrayWidthProperty, value);
+            get => (double)this.GetValue(MinBorderHeightProperty);
+            set => this.SetValue(MinBorderHeightProperty, value);
+        }
+
+        public double MinBorderWidth
+        {
+            get => (double)this.GetValue(MinBorderWidthProperty);
+            set => this.SetValue(MinBorderWidthProperty, value);
         }
 
         public OriginHorizontal OriginHorizontal
@@ -366,9 +375,12 @@ namespace Ferretto.Common.Controls
                 heightNewCalculated = heightConverted;
             }
 
+            var extraOffset = OFFSET + (this.GetSizeOfPen() / 4);
+
             this.Width = widthNewCalculated;
             this.Height = heightNewCalculated;
-            this.MinTrayWidth = widthNewCalculated + this.RulerSize + 1;
+            this.MinBorderWidth = extraOffset;
+            this.MinBorderHeight = extraOffset;
 
             this.TrayHeight = heightNewCalculated;
             this.TrayWidth = widthNewCalculated;
@@ -414,18 +426,6 @@ namespace Ferretto.Common.Controls
             this.ItemsSource = newItems;
         }
 
-        private string GetColorFilter(ICompartment compartment)
-        {
-            var colorFill = Application.Current.Resources[DEFAULTCOMPARTMENTCOLOR].ToString();
-            if (this.IsReadOnly == false &&
-                this.SelectedColorFilterFunc != null)
-            {
-                colorFill = this.SelectedColorFilterFunc.Invoke(compartment, this.SelectedCompartment);
-            }
-
-            return colorFill;
-        }
-
         public void UpdateIsReadOnly()
         {
             if (this.Items == null)
@@ -445,24 +445,7 @@ namespace Ferretto.Common.Controls
             base.OnRender(drawingContext);
 
             var penSize = this.GetSizeOfPen();
-            var pen = new Pen
-            {
-                DashCap = PenLineCap.Square,
-                Thickness = penSize,
-                StartLineCap = PenLineCap.Square,
-                EndLineCap = PenLineCap.Square
-            };
-
-            var points = this.GetBordersPoints();
-            pen.Brush = Application.Current.Resources[DEFAULTBACKGROUND] as Brush;
-            DrawSnappedLinesBetweenPoints(drawingContext, pen, penSize, points.ToArray());
-
-            if (this.ShowBackground == false)
-            {
-                return;
-            }
-
-            points.Clear();
+            var points = new List<Point>();
             var stepXPixel = ConvertMillimetersToPixel(this.Step, this.TrayWidth, this.DimensionWidth);
             var stepYPixel = ConvertMillimetersToPixel(this.Step, this.TrayHeight, this.DimensionHeight);
 
@@ -470,7 +453,7 @@ namespace Ferretto.Common.Controls
             while (posY > 0 && posY < this.TrayHeight)
             {
                 points.Add(new Point(0, posY));
-                points.Add(new Point(this.TrayWidth, posY));
+                points.Add(new Point(this.TrayWidth - penSize, posY));
                 if (this.OriginVertical == OriginVertical.Top)
                 {
                     posY += stepYPixel;
@@ -485,7 +468,7 @@ namespace Ferretto.Common.Controls
             while (posX > 0 && posX < this.TrayWidth)
             {
                 points.Add(new Point(posX, 0));
-                points.Add(new Point(posX, this.TrayHeight));
+                points.Add(new Point(posX, this.TrayHeight - penSize));
                 if (this.OriginHorizontal == OriginHorizontal.Left)
                 {
                     posX += stepXPixel;
@@ -496,8 +479,15 @@ namespace Ferretto.Common.Controls
                 }
             }
 
-            pen.Brush = this.GridLinesColor;
-            DrawSnappedLinesBetweenPoints(drawingContext, pen, penSize, points.ToArray());
+            var penLines = new Pen
+            {
+                DashCap = PenLineCap.Square,
+                Thickness = penSize,
+                StartLineCap = PenLineCap.Square,
+                EndLineCap = PenLineCap.Square
+            };
+            penLines.Brush = this.GridLinesColor;
+            DrawSnappedLinesBetweenPoints(drawingContext, penLines, penSize, points.ToArray());
         }
 
         protected override void OnSelectionChanged(SelectionChangedEventArgs e)
@@ -606,25 +596,16 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        private List<Point> GetBordersPoints()
+        private string GetColorFilter(ICompartment compartment)
         {
-            var points = new List<Point>();
-            if (this.ShowRuler == false)
+            var colorFill = Application.Current.Resources[DEFAULTCOMPARTMENTCOLOR].ToString();
+            if (this.IsReadOnly == false &&
+                this.SelectedColorFilterFunc != null)
             {
-                points.Add(new Point(BORDEROFFSET, BORDEROFFSET));
-                points.Add(new Point(this.TrayWidth, BORDEROFFSET));
-
-                points.Add(new Point(BORDEROFFSET, BORDEROFFSET));
-                points.Add(new Point(BORDEROFFSET, this.ActualHeight));
+                colorFill = this.SelectedColorFilterFunc.Invoke(compartment, this.SelectedCompartment);
             }
 
-            points.Add(new Point(this.TrayWidth, 0));
-            points.Add(new Point(this.TrayWidth, this.ActualHeight));
-
-            points.Add(new Point(0, this.ActualHeight));
-            points.Add(new Point(this.TrayWidth, this.ActualHeight));
-
-            return points;
+            return colorFill;
         }
 
         private double GetSizeOfPen()

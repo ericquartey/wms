@@ -161,7 +161,7 @@ namespace Ferretto.VW.ActionBlocks
 
         private void nextStep()
         {
-            logger.Log(LogLevel.Debug, String.Format("Aknowledge of end calibration  stepCounter = {0}", this.stepCounter));
+            logger.Log(LogLevel.Debug, string.Format("Aknowledge of end calibration  stepCounter = {0}", this.stepCounter));
 
             if (!this.stopPushed)
             {
@@ -172,7 +172,7 @@ namespace Ferretto.VW.ActionBlocks
 
         private void stepExecution()
         {
-            logger.Log(LogLevel.Debug, String.Format("Execute Step counter = {0}", this.stepCounter));
+            logger.Log(LogLevel.Debug, string.Format("Execute Step counter = {0}", this.stepCounter));
 
             switch (stepCounter)
             {

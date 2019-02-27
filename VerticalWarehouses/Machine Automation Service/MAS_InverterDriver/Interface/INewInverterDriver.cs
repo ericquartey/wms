@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Ferretto.VW.MAS_InverterDriver.ActionBlocks;
 
 namespace Ferretto.VW.MAS_InverterDriver
@@ -27,7 +28,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         void ExecuteVerticalHoming();
 
-        void ExecuteVerticalPosition(int targetPosition, float vMax, float acc, float dec, float weight, short offset, bool absoluteMovement);
+        void ExecuteVerticalPosition(int targetPosition, float vMax, float acc, float dec, float weight,
+            short offset, bool absoluteMovement);
 
         void ExecuteVerticalPositionStop();
 

@@ -1,5 +1,7 @@
-﻿using Ferretto.VW.Common_Utils.EventParameters;
+﻿using System;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.InverterDriver;
 using Prism.Events;
 
@@ -9,15 +11,15 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
     {
         #region Fields
 
+        private const byte DATASET_INDEX = 0x05; //VALUE binary = 00000101
+
         private readonly IEventAggregator eventAggregator;
 
         private readonly IInverterDriver inverterDriver;
 
-        private readonly StateMachineHorizontalMoving stateMachineHorizontalMoving;
-
         private readonly ParameterID paramID = ParameterID.HOMING_MODE_PARAM;
 
-        private const byte DATASET_INDEX = 0x05;  //VALUE binary = 00000101
+        private readonly StateMachineHorizontalMoving stateMachineHorizontalMoving;
 
         private readonly byte systemIndex = 0x00; //VALUE binary = 00000000
 
@@ -27,13 +29,14 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
 
         #region Constructors
 
-        public OperationModeState(StateMachineHorizontalMoving stateMachineHorizontalMoving, IInverterDriver inverterDriver, IEventAggregator eventAggregator)
+        public OperationModeState(StateMachineHorizontalMoving stateMachineHorizontalMoving,
+            IInverterDriver inverterDriver, IEventAggregator eventAggregator)
         {
             this.inverterDriver = inverterDriver;
             this.eventAggregator = eventAggregator;
             this.stateMachineHorizontalMoving = stateMachineHorizontalMoving;
 
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
+            this.eventAggregator.GetEvent<NotificationEvent>().Subscribe(this.notifyEventHandler);
         }
 
         #endregion
@@ -46,30 +49,28 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
 
         #region Methods
 
-        private void notifyEventHandler(Notification_EventParameter notification)
+        private void notifyEventHandler(NotificationMessage notification)
         {
-            var result = inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_INDEX, this.valParam);
+            var result =
+                this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_INDEX, this.valParam);
 
-            switch (notification.OperationStatus)
+            switch (notification.Status)
             {
-                case OperationStatus.End:
-                    {
-                        if (result == InverterDriverExitStatus.Success)
-                        {
-                            this.stateMachineHorizontalMoving.ChangeState(new ReadyToSwitchOnState(stateMachineHorizontalMoving, inverterDriver, eventAggregator));
-                        }
-                        break;
-                    }
-                case OperationStatus.Error:
-                    {
-                        this.stateMachineHorizontalMoving.ChangeState(new ErrorState(stateMachineHorizontalMoving, inverterDriver, eventAggregator));
+                case MessageStatus.OperationEnd:
+                {
+                    if (result == InverterDriverExitStatus.Success)
+                        this.stateMachineHorizontalMoving.ChangeState(
+                            new ReadyToSwitchOnState(this.stateMachineHorizontalMoving, this.inverterDriver,
+                                this.eventAggregator));
+                    break;
+                }
+                case MessageStatus.OperationError:
+                {
+                    this.stateMachineHorizontalMoving.ChangeState(new ErrorState(this.stateMachineHorizontalMoving,
+                        this.inverterDriver, this.eventAggregator));
 
-                        break;
-                    }
-                default:
-                    {
-                        break;
-                    }
+                    break;
+                }
             }
         }
 

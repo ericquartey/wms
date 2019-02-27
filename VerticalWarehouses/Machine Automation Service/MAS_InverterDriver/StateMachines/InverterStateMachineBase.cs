@@ -20,19 +20,19 @@ namespace Ferretto.VW.InverterDriver.StateMachines
 
         #region Methods
 
-        public virtual void ChangeState( IInverterState newState )
+        public virtual void ChangeState(IInverterState newState)
         {
             this.CurrentState = newState;
         }
 
-        public void EnqueueMessage( InverterMessage message )
+        public void EnqueueMessage(InverterMessage message)
         {
-            this.inverterCommandQueue.Enqueue( message );
+            this.inverterCommandQueue.Enqueue(message);
         }
 
-        public void NotifyMessage( InverterMessage message )
+        public void NotifyMessage(InverterMessage message)
         {
-            this.CurrentState?.NotifyMessage( message );
+            this.CurrentState?.NotifyMessage(message);
         }
 
         public abstract void Start();

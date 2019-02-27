@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.EventParameters;
+﻿using System;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_InverterDriver;
@@ -20,14 +21,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #region Constructors
 
-        public VerticalPositioningDoneState(StateMachineVerticalPositioning parent, INewInverterDriver driver, IEventAggregator eventAggregator)
+        public VerticalPositioningDoneState(StateMachineVerticalPositioning parent, INewInverterDriver driver,
+            IEventAggregator eventAggregator)
         {
             this.parent = parent;
             this.driver = driver;
             this.eventAggregator = eventAggregator;
 
-            var notifyEvent = new Notification_EventParameter(OperationType.Homing, OperationStatus.End, "Positioning done", Verbosity.Info);
-            this.eventAggregator.GetEvent<FiniteStateMachines_NotificationEvent>().Publish(notifyEvent);
+            var notifyEvent = new NotificationMessage(null, "Positioning Done", MessageActor.Any,
+                MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationEnd);
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
         }
 
         #endregion
@@ -44,15 +47,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
         {
         }
 
-        public void NotifyMessage(Event_Message message)
+        public void NotifyMessage(CommandMessage message)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Stop()
         {
-            var notifyEvent = new Notification_EventParameter(OperationType.Homing, OperationStatus.Stopped, "Positioning stopped", Verbosity.Info);
-            this.eventAggregator.GetEvent<FiniteStateMachines_NotificationEvent>().Publish(notifyEvent);
+            var notifyEvent = new NotificationMessage(null, "Positioning Done", MessageActor.Any,
+                MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationStop);
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
         }
 
         #endregion

@@ -280,7 +280,7 @@ namespace Ferretto.VW.ActionBlocks
 
             this.inverterDriver.CurrentActionType = ActionType.HorizontalMoving;
 
-            logger.Log(LogLevel.Debug, String.Format("RUN :: Initial position: {0}, target position: {1}", this.initialPosition, this.targetPosition));
+            logger.Log(LogLevel.Debug, string.Format("RUN :: Initial position: {0}, target position: {1}", this.initialPosition, this.targetPosition));
 
             // Start the routine
             this.eventForExecuteStep?.Set();
@@ -443,14 +443,14 @@ namespace Ferretto.VW.ActionBlocks
             this.regWaitHandleForOnReceiveThread?.Unregister(this.eventForTerminateReceive);
         }
 
-        private void EnquiryTelegram(Object sender, EnquiryTelegramDoneEventArgs eventArgs)
+        private void EnquiryTelegram(object sender, EnquiryTelegramDoneEventArgs eventArgs)
         {
             var paramID = eventArgs.ParamID;
             if (paramID == ParameterID.ACTUAL_POSITION_SHAFT)
             {
                 // cache the value of shaft position from inverter driver
                 this.currentShaftPosition = this.inverterDriver.Current_Position_Horizontal_Shaft;
-                logger.Log(LogLevel.Debug, String.Format("Actual shaft position: {0}", this.currentShaftPosition));
+                logger.Log(LogLevel.Debug, string.Format("Actual shaft position: {0}", this.currentShaftPosition));
 
                 if (this.bInitialShaftPosition)
                 {
@@ -737,7 +737,7 @@ namespace Ferretto.VW.ActionBlocks
                     var offsetTime_ms = (int)(((double)(pTime - this.pTimePrev) * 1000) / this.freq);
                     this.pTimePrev = pTime;
 
-                    logger.Log(LogLevel.Debug, String.Format(" ----> Current horizontal shaft postition: {0} :: time out: {1} ms", this.currentShaftPosition, offsetTime_ms));
+                    logger.Log(LogLevel.Debug, string.Format(" ----> Current horizontal shaft postition: {0} :: time out: {1} ms", this.currentShaftPosition, offsetTime_ms));
 
                     this.statusWord = this.inverterDriver.Status_Word;
                 }
@@ -767,7 +767,7 @@ namespace Ferretto.VW.ActionBlocks
             }
         }
 
-        private void SelectTelegram(Object sender, SelectTelegramDoneEventArgs eventArgs)
+        private void SelectTelegram(object sender, SelectTelegramDoneEventArgs eventArgs)
         {
             // Not used
         }
