@@ -2,7 +2,6 @@
 using System.Windows;
 using System;
 using System.Windows.Input;
-using Ferretto.VW.Navigation;
 using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;

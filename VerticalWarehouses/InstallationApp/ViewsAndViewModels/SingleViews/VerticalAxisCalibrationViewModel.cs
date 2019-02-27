@@ -6,6 +6,9 @@ using Microsoft.Practices.Unity;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using System.Net;
 using System.IO;
+using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
+using Prism.Events;
+using Ferretto.VW.InstallationApp.Resources;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -13,7 +16,9 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        public IUnityContainer Container;
+        private IUnityContainer container;
+
+        private IEventAggregator eventAggregator;
 
         private InstallationHubClient installationHubClient;
 
@@ -23,7 +28,7 @@ namespace Ferretto.VW.InstallationApp
 
         private string lowerBound;
 
-        private string noteString = Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
+        private string noteString = Ferretto.VW.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
 
         private string offset;
 
@@ -39,8 +44,9 @@ namespace Ferretto.VW.InstallationApp
 
         #region Constructors
 
-        public VerticalAxisCalibrationViewModel()
+        public VerticalAxisCalibrationViewModel(IEventAggregator eventAggregator)
         {
+            this.eventAggregator = eventAggregator;
             this.InputsCorrectionControlEventHandler += this.CheckInputsCorrectness;
         }
 
@@ -89,44 +95,19 @@ namespace Ferretto.VW.InstallationApp
 
         public void InitializeViewModel(IUnityContainer container)
         {
-            this.Container = container;
+            this.container = container;
         }
 
         public async void SubscribeMethodToEvent()
         {
-            try
-            {
-                this.installationHubClient = new InstallationHubClient("http://localhost:5000", "/installation-endpoint");
-                await this.installationHubClient.ConnectAsync();
-
-                this.installationHubClient.ReceivedMessageToAllConnectedClients += this.UpdateNoteString;
-                this.installationHubClient.connection.Closed += async (error) => this.NoteString = "Not Connected";
-                this.NoteString = "Connected to Installation Hub";
-            }
-            catch (ArgumentNullException)
-            {
-                if (this.installationHubClient == null)
-                {
-                    this.installationHubClient = new InstallationHubClient("http://localhost:5000", "/installation-endpoint");
-                    await this.installationHubClient.ConnectAsync();
-                    this.installationHubClient.ReceivedMessageToAllConnectedClients += this.UpdateNoteString;
-                    this.NoteString = "Connected to Installation Hub";
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            catch (Exception)
-            {
-                this.NoteString = "Did not connect to Installation Hub";
-                throw;
-            }
+            this.installationHubClient = (InstallationHubClient)this.container.Resolve<ContainerIInstallationHubClient>();
+            this.installationHubClient.ReceivedMessageToAllConnectedClients += this.UpdateNoteString;
         }
 
         public async void UnSubscribeMethodFromEvent()
         {
-            await this.installationHubClient.DisconnectAsync();
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Unsubscribe((message) => { this.SubscribeMethodToEvent(); });
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Unsubscribe((message) => { this.UnSubscribeMethodFromEvent(); });
         }
 
         public void UpdateNoteString(object sender, string message)
@@ -168,15 +149,11 @@ namespace Ferretto.VW.InstallationApp
                 this.NoteString = "Couldn't get response from this http get request.";
                 throw;
             }
-            catch
-            {
-                this.NoteString = "Couldn't get response from this http get request.";
-            }
         }
 
         private void StopButtonMethod()
         {
-            this.NoteString = Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
+            this.NoteString = Ferretto.VW.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
         }
 
         #endregion

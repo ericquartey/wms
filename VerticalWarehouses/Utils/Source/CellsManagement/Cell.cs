@@ -14,20 +14,21 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
         {
             this.IdCell = id;
             this.Priority = id;
-            if (id % 2 == 0) //if id is even
+            if (id % 2 == 0) // if id is even
             {
                 this.Coord = (id == 2) ? CellManagementMethods.CELL_HEIGHT_MILLIMETERS : CellManagementMethods.CELL_HEIGHT_MILLIMETERS * (id / CellManagementMethods.AISLE_SIDES_COUNT);
                 this.Side = Side.FrontEven;
             }
-            else //if id is odd
+            else // if id is odd
             {
                 this.Coord = (id == 1) ? CellManagementMethods.CELL_HEIGHT_MILLIMETERS : CellManagementMethods.CELL_HEIGHT_MILLIMETERS * ((id / CellManagementMethods.AISLE_SIDES_COUNT) + 1);
                 this.Side = Side.BackOdd;
             }
+
             this.Status = Status.Free;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -35,9 +36,10 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
         public int IdCell { get; set; }
         public int Priority { get; set; }
         public Side Side { get; set; }
+
         public Status Status { get; set; }
 
-        #endregion Properties
+        #endregion
 
         // status code: 0 = free; 1 = disabled; 2 = occupied; 3 = unusable
     }

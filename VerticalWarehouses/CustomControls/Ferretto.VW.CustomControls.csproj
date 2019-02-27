@@ -49,6 +49,15 @@
     <ProjectReference Include="..\Common\Resources\Ferretto.VW.Resources.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Controls\CustomShutterControlSensorsTwoPositions.xaml.cs">
+      <DependentUpon>CustomShutterControlSensorsTwoPositions.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\CustomShutterControlSensorsThreePositions.xaml.cs">
+      <DependentUpon>CustomShutterControlSensorsThreePositions.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
  
 
 </Project>

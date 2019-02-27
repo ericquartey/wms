@@ -1,4 +1,5 @@
-﻿using Prism.Mvvm;
+﻿using Prism.Events;
+using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -6,7 +7,18 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
+        private IEventAggregator eventAggregator;
+
         private bool luPresentInBay;
+
+        #endregion
+
+        #region Constructors
+
+        public SSBaysViewModel(IEventAggregator eventAggregator)
+        {
+            this.eventAggregator = eventAggregator;
+        }
 
         #endregion
 
