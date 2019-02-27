@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Ferretto.VW.Common_Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Ferretto.VW.Common_Utils;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
@@ -11,48 +11,91 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public List<Cell> GetCellList()
         {
-            return this.inMemoryDataContext.Cells.ToList();
+            return inMemoryDataContext.Cells.ToList();
         }
 
-        public ReturnMissionPosition GetFreeBlockPosition(decimal drawerHeight)
+        public ReturnMissionPosition GetFreeBlockPosition(decimal drawerHeight, int drawerId)
         {
-            var cellSpacing = this.GetIntegerConfigurationValue(ConfigurationValueEnum.cellSpacing);
+            int cellSpacing = GetIntegerConfigurationValue(ConfigurationValueEnum.cellSpacing);
 
-            var cellsNumber = (int) Math.Ceiling(drawerHeight / cellSpacing);
+            int cellsNumber = (int)Math.Ceiling(drawerHeight / cellSpacing);
 
             // INFO Always take into account +1 drawer cell height, to avoid impacts between two next drowers
             cellsNumber += 1;
 
-            var inMemoryFreeBlockFirstByPriority = this.inMemoryDataContext.FreeBlocks.OrderBy(s => s.Priority)
+            // INFO Inserted a control to free a booked block, in the case the drawer is refused after the weight control
+            FreeBlock inMemoryFreeBlockAlreadyBooked = inMemoryDataContext.FreeBlocks.FirstOrDefault(s => s.DrawerId >= drawerId);
+
+            if (inMemoryFreeBlockAlreadyBooked != null)
+            {
+                inMemoryFreeBlockAlreadyBooked.BlockSize = 0;
+                inMemoryFreeBlockAlreadyBooked.DrawerId = 0;
+
+                inMemoryDataContext.SaveChanges();
+            }
+
+            FreeBlock inMemoryFreeBlockFirstByPriority = inMemoryDataContext.FreeBlocks.OrderBy(s => s.Priority)
                 .FirstOrDefault(s => s.BlockSize >= cellsNumber);
 
             if (inMemoryFreeBlockFirstByPriority == null)
-                throw new DataLayerException(DataLayerExceptionEnum.NO_FREE_BLOCK_EXCEPTION);
+            {
+                throw new InMemoryDataLayerException(DataLayerExceptionEnum.NO_FREE_BLOCK_BOOKING_EXCEPTION);
+            }
 
             // INFO Change the BookedCells number in the FreeBlock table
             inMemoryFreeBlockFirstByPriority.BookedCellsNumber = cellsNumber;
-            this.inMemoryDataContext.SaveChanges();
+            inMemoryFreeBlockFirstByPriority.DrawerId = drawerId;
+            inMemoryDataContext.SaveChanges();
 
-            var returnMissionPosition = new ReturnMissionPosition();
-
-            returnMissionPosition.ReturnCoord = inMemoryFreeBlockFirstByPriority.Coord;
-            returnMissionPosition.ReturnSide = inMemoryFreeBlockFirstByPriority.Side;
+            ReturnMissionPosition returnMissionPosition = new ReturnMissionPosition
+            {
+                ReturnCoord = inMemoryFreeBlockFirstByPriority.Coord,
+                ReturnSide = inMemoryFreeBlockFirstByPriority.Side
+            };
 
             return returnMissionPosition;
         }
 
+        public void ReturnMissionEnded(int drawerId)
+        {
+            FreeBlock inMemoryFreeBlockSearchBookedCells = inMemoryDataContext.FreeBlocks.FirstOrDefault(s => s.BookedCellsNumber > 0 && s.DrawerId == drawerId);
+
+            if (inMemoryFreeBlockSearchBookedCells == null)
+            {
+                throw new InMemoryDataLayerException(DataLayerExceptionEnum.NO_FREE_BLOCK_BOOKED_EXCEPTION);
+            }
+
+            int filledStartCell = inMemoryFreeBlockSearchBookedCells.StartCell;
+            int filledLastCell = filledStartCell + inMemoryFreeBlockSearchBookedCells.BookedCellsNumber * 2;
+
+            for (int currentCell = filledStartCell; currentCell <= filledLastCell; currentCell += 2)
+            {
+                Cell inMemoryCellsSearchFilledCell = inMemoryDataContext.Cells.FirstOrDefault(s => s.CellId == currentCell);
+
+                if (inMemoryCellsSearchFilledCell == null)
+                {
+                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION);
+                }
+
+                inMemoryCellsSearchFilledCell.Status = Status.Occupied;
+            }
+
+            // INFO Run the Free Block table calculation after the update
+            CreateFreeBlockTable();
+        }
+
         public bool SetCellList(List<Cell> listCells)
         {
-            var setCellList = false;
+            bool setCellList = false;
 
             if (listCells != null)
             {
                 setCellList = true;
 
-                foreach (var cell in listCells)
+                foreach (Cell cell in listCells)
                 {
-                    var inMemoryCellCurrentValue =
-                        this.inMemoryDataContext.Cells.FirstOrDefault(s => s.CellId == cell.CellId);
+                    Cell inMemoryCellCurrentValue =
+                        inMemoryDataContext.Cells.FirstOrDefault(s => s.CellId == cell.CellId);
 
                     if (inMemoryCellCurrentValue != null)
                     {
@@ -61,7 +104,7 @@ namespace Ferretto.VW.MAS_DataLayer
                         inMemoryCellCurrentValue.Side = cell.Side;
                         inMemoryCellCurrentValue.Status = cell.Status;
 
-                        this.inMemoryDataContext.SaveChanges();
+                        inMemoryDataContext.SaveChanges();
                     }
                     else
                         throw new ArgumentNullException();
@@ -73,34 +116,39 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private void CreateFreeBlockTable()
         {
-            var cellTablePopulated = false;
+            bool cellTablePopulated = false;
 
-            var freeBlockCounter = 1;
+            int freeBlockCounter = 1;
 
-            var cellCounterEven = 0;
-            var cellCounterOdd = 0;
+            int cellCounterEven = 0;
+            int cellCounterOdd = 0;
 
-            var evenFreeBlock = new FreeBlock();
-            var oddFreeBlock = new FreeBlock();
+            FreeBlock evenFreeBlock = new FreeBlock();
+            FreeBlock oddFreeBlock = new FreeBlock();
+
+            int evenCellBeforePriority = -1;
+            int oddCellBeforePriority = -1;
 
             // INFO Remove all the records from the FreeBlocks table
-            this.inMemoryDataContext.FreeBlocks.RemoveRange(this.inMemoryDataContext.FreeBlocks);
-            this.inMemoryDataContext.SaveChanges();
+            inMemoryDataContext.FreeBlocks.RemoveRange(inMemoryDataContext.FreeBlocks);
+            inMemoryDataContext.SaveChanges();
 
-            foreach (var cell in this.inMemoryDataContext.Cells.OrderBy(cell => cell.CellId))
+            foreach (Cell cell in inMemoryDataContext.Cells.OrderBy(cell => cell.CellId))
             {
                 cellTablePopulated = true;
 
                 if (cell.Side == Side.FrontEven)
                 {
-                    if (cellCounterEven != 0 && ( cell.Status == Status.Free || cell.Status == Status.Disabled ))
+                    if (cellCounterEven != 0 && (cell.Status == Status.Free || cell.Status == Status.Disabled) && evenCellBeforePriority < cell.Priority)
+                    {
                         cellCounterEven++;
+                    }
 
-                    if (cell.Status == Status.Free && cellCounterEven == 0)
+                    if (cell.Status == Status.Free && cellCounterEven == 0 /*&& evenCellBeforePriority < cell.Priority*/)
                     {
                         evenFreeBlock.StartCell = cell.CellId;
                         evenFreeBlock.FreeBlockId = freeBlockCounter;
-                        evenFreeBlock.Priority = freeBlockCounter;
+                        evenFreeBlock.Priority = cell.Priority;
                         evenFreeBlock.Coord = cell.Coord;
                         evenFreeBlock.Side = cell.Side;
 
@@ -108,25 +156,30 @@ namespace Ferretto.VW.MAS_DataLayer
                         cellCounterEven++;
                     }
 
-                    if (cellCounterEven != 0 && ( cell.Status == Status.Occupied || cell.Status == Status.Unusable ))
+                    if (cellCounterEven != 0 && (cell.Status == Status.Occupied || cell.Status == Status.Unusable || evenCellBeforePriority > cell.Priority))
                     {
                         evenFreeBlock.BlockSize = cellCounterEven;
                         evenFreeBlock.BookedCellsNumber = 0;
 
                         cellCounterEven = 0;
-                        this.inMemoryDataContext.FreeBlocks.Add(evenFreeBlock);
+                        inMemoryDataContext.FreeBlocks.Add(evenFreeBlock);
                     }
+
+                    // INFO Saving the Priority before
+                    evenCellBeforePriority = cell.Priority;
                 }
                 else
                 {
-                    if (cellCounterOdd != 0 && ( cell.Status == Status.Free || cell.Status == Status.Disabled ))
+                    if (cellCounterOdd != 0 && (cell.Status == Status.Free || cell.Status == Status.Disabled) && oddCellBeforePriority < cell.Priority)
+                    {
                         cellCounterOdd++;
+                    }
 
-                    if (cell.Status == Status.Free && cellCounterOdd == 0)
+                    if (cell.Status == Status.Free && cellCounterOdd == 0 /*&& oddCellBeforePriority < cell.Priority*/)
                     {
                         oddFreeBlock.StartCell = cell.CellId;
                         oddFreeBlock.FreeBlockId = freeBlockCounter;
-                        oddFreeBlock.Priority = freeBlockCounter;
+                        oddFreeBlock.Priority = cell.Priority;
                         oddFreeBlock.Coord = cell.Coord;
                         oddFreeBlock.Side = cell.Side;
 
@@ -134,21 +187,29 @@ namespace Ferretto.VW.MAS_DataLayer
                         cellCounterOdd++;
                     }
 
-                    if (cellCounterOdd != 0 && ( cell.Status == Status.Occupied || cell.Status == Status.Unusable ))
+                    if (cellCounterOdd != 0 && (cell.Status == Status.Occupied || cell.Status == Status.Unusable || oddCellBeforePriority > cell.Priority))
                     {
                         oddFreeBlock.BlockSize = cellCounterOdd;
                         oddFreeBlock.BookedCellsNumber = 0;
 
                         cellCounterOdd = 0;
-                        this.inMemoryDataContext.FreeBlocks.Add(oddFreeBlock);
+                        inMemoryDataContext.FreeBlocks.Add(oddFreeBlock);
                     }
+
+                    // INFO Saving the Priority before
+                    oddCellBeforePriority = cell.Priority;
                 }
             }
 
-            if (!cellTablePopulated) throw new DataLayerException(DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION);
+            if (!cellTablePopulated)
+            {
+                throw new InMemoryDataLayerException(DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION);
+            }
 
-            if (!this.inMemoryDataContext.FreeBlocks.Any())
-                throw new DataLayerException(DataLayerExceptionEnum.NO_FREE_BLOCK_EXCEPTION);
+            if (!inMemoryDataContext.FreeBlocks.Any())
+            {
+                throw new InMemoryDataLayerException(DataLayerExceptionEnum.NO_FREE_BLOCK_BOOKING_EXCEPTION);
+            }
         }
 
         #endregion
