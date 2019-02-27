@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ferretto.VW.InverterDriver.StateMachines
+﻿namespace Ferretto.VW.InverterDriver.StateMachines
 {
     public interface IInverterState
     {

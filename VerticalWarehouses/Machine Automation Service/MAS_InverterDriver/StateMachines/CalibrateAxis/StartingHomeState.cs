@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.InverterDriver;
@@ -57,21 +56,21 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
             switch (notification.Status)
             {
                 case MessageStatus.OperationEnd:
-                {
-                    if (result == InverterDriverExitStatus.Success)
                     {
-                        //TODO
+                        if (result == InverterDriverExitStatus.Success)
+                        {
+                            //TODO
+                        }
+
+                        break;
                     }
-
-                    break;
-                }
                 case MessageStatus.OperationError:
-                {
-                    this.stateMachineCalibrateAxis.ChangeState(new ErrorState(this.stateMachineCalibrateAxis,
-                        this.inverterDriver, this.eventAggregator));
+                    {
+                        this.stateMachineCalibrateAxis.ChangeState(new ErrorState(this.stateMachineCalibrateAxis,
+                            this.inverterDriver, this.eventAggregator));
 
-                    break;
-                }
+                        break;
+                    }
             }
         }
 

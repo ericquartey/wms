@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.InverterDriver;
@@ -57,20 +56,20 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
             switch (notification.Status)
             {
                 case MessageStatus.OperationEnd:
-                {
-                    if (result == InverterDriverExitStatus.Success)
-                        this.stateMachineHorizontalMoving.ChangeState(
-                            new OperationModeState(this.stateMachineHorizontalMoving, this.inverterDriver,
-                                this.eventAggregator));
-                    break;
-                }
+                    {
+                        if (result == InverterDriverExitStatus.Success)
+                            this.stateMachineHorizontalMoving.ChangeState(
+                                new OperationModeState(this.stateMachineHorizontalMoving, this.inverterDriver,
+                                    this.eventAggregator));
+                        break;
+                    }
                 case MessageStatus.OperationError:
-                {
-                    this.stateMachineHorizontalMoving.ChangeState(new ErrorState(this.stateMachineHorizontalMoving,
-                        this.inverterDriver, this.eventAggregator));
+                    {
+                        this.stateMachineHorizontalMoving.ChangeState(new ErrorState(this.stateMachineHorizontalMoving,
+                            this.inverterDriver, this.eventAggregator));
 
-                    break;
-                }
+                        break;
+                    }
             }
         }
 

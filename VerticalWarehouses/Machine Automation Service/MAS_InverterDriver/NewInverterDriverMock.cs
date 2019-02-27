@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Ferretto.VW.MAS_InverterDriver.ActionBlocks;
 using Microsoft.Extensions.Logging;
 
@@ -79,7 +78,7 @@ namespace Ferretto.VW.MAS_InverterDriver
         public bool[] GetSensorsStates()
         {
             this.logger.Log(LogLevel.Debug, "InverterDriverMock GetSensorsStates", null);
-            return new[] {true, true, true};
+            return new[] { true, true, true };
         }
 
         #endregion

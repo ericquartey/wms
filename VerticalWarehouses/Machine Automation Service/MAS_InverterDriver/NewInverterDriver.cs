@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.VW.InverterDriver;
+﻿using Ferretto.VW.InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Prism.Events;
 

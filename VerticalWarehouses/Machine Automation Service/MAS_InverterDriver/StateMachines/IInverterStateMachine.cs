@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.InverterDriver.StateMachines
+﻿using Ferretto.VW.Common_Utils.Messages;
+
+namespace Ferretto.VW.InverterDriver.StateMachines
 {
     public interface IInverterStateMachine
     {
@@ -9,6 +11,8 @@
         void EnqueueMessage(InverterMessage message);
 
         void NotifyMessage(InverterMessage message);
+
+        void PublishNotificationEvent(NotificationMessage notificationMessage);
 
         void Start();
 

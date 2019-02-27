@@ -20,6 +20,10 @@
 
         InverterAddress,
 
-        InverterPort
+        InverterPort,
+
+        IoAddress,
+
+        IoPort
     }
 }

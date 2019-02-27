@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="NModbus4" Version="3.0.0-alpha2" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.1.1" />
   </ItemGroup>
@@ -15,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Common_Utils\Ferretto.VW.Common_Utils.csproj" />
     <ProjectReference Include="..\..\RemoteIODriver\Ferretto.VW.RemoteIODriver.csproj" />
+    <ProjectReference Include="..\MAS_DataLayer\MAS_DataLayer.csproj" />
   </ItemGroup>
 
 </Project>

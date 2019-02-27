@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ferretto.VW.MAS_InverterDriver
+﻿namespace Ferretto.VW.MAS_InverterDriver
 {
     public interface IState
     {

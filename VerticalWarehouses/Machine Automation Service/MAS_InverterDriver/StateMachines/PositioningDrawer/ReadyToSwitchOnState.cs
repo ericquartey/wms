@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.InverterDriver;
@@ -57,20 +56,20 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PositioningDrawer
             switch (notification.Status)
             {
                 case MessageStatus.OperationEnd:
-                {
-                    if (result == InverterDriverExitStatus.Success)
-                        this.stateMachinePositioningDrawer.ChangeState(
-                            new SwitchOnState(this.stateMachinePositioningDrawer, this.inverterDriver,
-                                this.eventAggregator));
-                    break;
-                }
+                    {
+                        if (result == InverterDriverExitStatus.Success)
+                            this.stateMachinePositioningDrawer.ChangeState(
+                                new SwitchOnState(this.stateMachinePositioningDrawer, this.inverterDriver,
+                                    this.eventAggregator));
+                        break;
+                    }
                 case MessageStatus.OperationError:
-                {
-                    this.stateMachinePositioningDrawer.ChangeState(new ErrorState(this.stateMachinePositioningDrawer,
-                        this.inverterDriver, this.eventAggregator));
+                    {
+                        this.stateMachinePositioningDrawer.ChangeState(new ErrorState(this.stateMachinePositioningDrawer,
+                            this.inverterDriver, this.eventAggregator));
 
-                    break;
-                }
+                        break;
+                    }
             }
         }
 

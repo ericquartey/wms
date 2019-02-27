@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_InverterDriver.ActionBlocks;
@@ -38,8 +37,8 @@ namespace Ferretto.VW.MAS_InverterDriver
                     MessageStatus.OperationError,
                     ErrorLevel.Error));
 
-            ( (PositioningDrawer) this.inverterAction ).Stop();
-            ( (PositioningDrawer) this.inverterAction ).Terminate();
+            ((PositioningDrawer)this.inverterAction).Stop();
+            ((PositioningDrawer)this.inverterAction).Terminate();
 
             this.inverterAction.EndEvent -= this.PositioningDrawer_ThrowEndEvent;
             this.inverterAction.ErrorEvent -= this.PositioningDrawer_ThrowErrorEvent;
@@ -51,7 +50,7 @@ namespace Ferretto.VW.MAS_InverterDriver
         private void PositioningDrawer_ThrowEndEvent()
         {
             this.inverterAction.EndEvent -= this.PositioningDrawer_ThrowEndEvent;
-            ( (PositioningDrawer) this.inverterAction ).Terminate();
+            ((PositioningDrawer)this.inverterAction).Terminate();
             this.inverterAction = null;
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null,
                 "Vertical position Ended", MessageActor.Any, MessageActor.InverterDriver, MessageType.Homing,
