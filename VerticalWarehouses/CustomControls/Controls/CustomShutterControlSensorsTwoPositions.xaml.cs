@@ -18,11 +18,15 @@ namespace Ferretto.VW.CustomControls.Controls
     /// <summary>
     /// Interaction logic for CustomGateControlSensorsTwoPositions.xaml
     /// </summary>
-    public partial class CustomGateControlSensorsTwoPositions : UserControl
+    public partial class CustomShutterControlSensorsTwoPositions : UserControl
     {
-        public CustomGateControlSensorsTwoPositions()
+        #region Constructors
+
+        public CustomShutterControlSensorsTwoPositions()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
+
+        #endregion
     }
 }
