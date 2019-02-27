@@ -23,7 +23,7 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        private readonly HelpMainWindow helpWindow = new HelpMainWindow();
+        private readonly HelpMainWindow helpWindow;
 
         private IUnityContainer container;
 
@@ -131,8 +131,8 @@ namespace Ferretto.VW.InstallationApp
             this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe((message) =>
             {
                 this.NavigationRegionCurrentViewModel = null;
-                this.ExitViewButtonRegionCurrentViewModel = (MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>();
-                ((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).InitializeBottomButtons();
+                this.ExitViewButtonRegionCurrentViewModel = (MainWindowBackToIAPPButtonViewModel)this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>();
+                ((MainWindowBackToIAPPButtonViewModel)this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).InitializeBottomButtons();
             },
             ThreadOption.PublisherThread,
             false,
@@ -140,9 +140,9 @@ namespace Ferretto.VW.InstallationApp
 
             this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe((message) =>
             {
-                this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.Container.Resolve<IMainWindowNavigationButtonsViewModel>();
+                this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
                 this.ExitViewButtonRegionCurrentViewModel = null;
-                ((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).FinalizeBottomButtons();
+                ((MainWindowBackToIAPPButtonViewModel)this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).FinalizeBottomButtons();
             },
             ThreadOption.PublisherThread,
             false,
