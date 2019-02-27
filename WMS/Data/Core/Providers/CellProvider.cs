@@ -109,7 +109,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                            Priority = c.Priority,
                            Side = (Side)c.Side,
                            Status = c.CellStatus.Description,
-                           Type = c.CellType.Description,
+                           CellTypeDescription = c.CellType.Description,
                            XCoordinate = c.XCoordinate,
                            YCoordinate = c.YCoordinate,
                            ZCoordinate = c.ZCoordinate,
@@ -140,7 +140,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                            Priority = c.Priority,
                            Side = (Side)c.Side,
                            Status = c.CellStatus.Description,
-                           Type = c.CellType.Description,
+                           CellTypeDescription = c.CellType.Description,
                            XCoordinate = c.XCoordinate,
                            YCoordinate = c.YCoordinate,
                            ZCoordinate = c.ZCoordinate,
@@ -223,13 +223,15 @@ namespace Ferretto.WMS.Data.Core.Providers
                 ||
                 c.Status.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                c.Type.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                c.CellTypeDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                 c.Column.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                 c.Floor.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                 c.Number.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                c.Side.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                 c.Priority.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
@@ -272,7 +274,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         Priority = c.Cell.Priority,
                         Side = (Side)c.Cell.Side,
                         Status = c.Cell.CellStatus.Description,
-                        Type = c.Cell.CellType.Description,
+                        CellTypeDescription = c.Cell.CellType.Description,
                         XCoordinate = c.Cell.XCoordinate,
                         YCoordinate = c.Cell.YCoordinate,
                         ZCoordinate = c.Cell.ZCoordinate,

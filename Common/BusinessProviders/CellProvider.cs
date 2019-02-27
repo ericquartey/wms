@@ -80,7 +80,7 @@ namespace Ferretto.Common.BusinessProviders
                     LoadingUnitsCount = c.LoadingUnitsCount,
                     LoadingUnitsDescription = c.LoadingUnitsDescription,
                     Status = c.Status,
-                    Type = c.Type,
+                    CellTypeDescription = c.CellTypeDescription,
                     Column = c.Column,
                     Floor = c.Floor,
                     Number = c.Number,
