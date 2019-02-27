@@ -25,7 +25,7 @@
             <Button Command="{Binding HorizontalEngineButtonCommand}"
                     Content="{x:Static res:InstallationApp.LSMTHorizontalEngineButton}"
                     Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
-            <Button Command="{Binding GateEngineButtonCommand}"
+            <Button Command="{Binding ShutterEngineButtonCommand}"
                     Content="{x:Static res:InstallationApp.LSMTGateEngineButton}"
                     Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
         </StackPanel>

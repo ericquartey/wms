@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Ferretto.Common.BusinessModels
 {
@@ -11,11 +13,17 @@ namespace Ferretto.Common.BusinessModels
 
         private readonly ISet<string> modifiedProperties = new HashSet<string>();
 
+        private readonly ISet<string> requiredProperties = new HashSet<string>();
+
         private T instance;
 
         private bool isModified;
 
+        private bool isRequiredValid;
+
         private T snapshot;
+
+        private int totalRequired;
 
         #endregion
 
@@ -36,6 +44,18 @@ namespace Ferretto.Common.BusinessModels
                 {
                     this.isModified = value;
                     this.ModifiedChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
+
+        public bool IsRequiredValid
+        {
+            get => this.isRequiredValid;
+            private set
+            {
+                if (this.isRequiredValid != value)
+                {
+                    this.isRequiredValid = value;
                 }
             }
         }
@@ -61,7 +81,11 @@ namespace Ferretto.Common.BusinessModels
 
             this.instance = newInstance;
             this.modifiedProperties.Clear();
+            this.requiredProperties.Clear();
             this.IsModified = false;
+
+            this.totalRequired = this.instance.GetType().GetProperties()
+                .Where(p => p.CustomAttributes.Any(a => a.AttributeType == typeof(RequiredAttribute))).Count();
 
             if (newInstance != null)
             {
@@ -80,21 +104,33 @@ namespace Ferretto.Common.BusinessModels
             var propertyInfo = this.instance.GetType().GetProperty(e.PropertyName);
             var newValue = propertyInfo.GetValue(sender);
             var snapshotValue = propertyInfo.GetValue(this.snapshot);
+
+            var isRequired = propertyInfo.CustomAttributes.Any(a => a.AttributeType == typeof(RequiredAttribute));
+
             if (newValue != snapshotValue && newValue?.Equals(snapshotValue) == false)
             {
                 if (this.modifiedProperties.Contains(e.PropertyName) == false)
                 {
                     this.modifiedProperties.Add(e.PropertyName);
+                    if (isRequired)
+                    {
+                        this.requiredProperties.Add(e.PropertyName);
+                    }
                     NLog.LogManager.GetCurrentClassLogger().Trace($"Property '{this.instance.GetType().Name}.{e.PropertyName}' was modified.");
                 }
             }
             else if (this.modifiedProperties.Contains(e.PropertyName))
             {
                 this.modifiedProperties.Remove(e.PropertyName);
+                if (isRequired)
+                {
+                    this.requiredProperties.Remove(e.PropertyName);
+                }
                 NLog.LogManager.GetCurrentClassLogger().Trace($"Property '{this.instance.GetType().Name}.{e.PropertyName}' was reset to initial value.");
             }
 
             this.IsModified = this.modifiedProperties.Count > 0;
+            this.IsRequiredValid = this.requiredProperties.Count == this.totalRequired;
         }
 
         #endregion

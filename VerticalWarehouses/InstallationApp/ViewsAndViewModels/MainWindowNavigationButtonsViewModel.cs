@@ -1,6 +1,8 @@
 ﻿using Prism.Mvvm;
-using Ferretto.VW.Navigation;
 using Microsoft.Practices.Unity;
+using Prism.Events;
+using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.InstallationApp.Resources.Enumerables;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -10,11 +12,13 @@ namespace Ferretto.VW.InstallationApp
 
         public IUnityContainer Container;
 
+        private IEventAggregator eventAggregator;
+
         private bool isBeltBurnishingButtonActive;
 
-        private bool isCellsControlButtonActive;
+        private bool isCellsControlButtonActive = true;
 
-        private bool isCellsPanelControlButtonActive;
+        private bool isCellsPanelControlButtonActive = true;
 
         private bool isDownScrollButtonActive = true;
 
@@ -30,7 +34,7 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isSensorsStateButtonActive = true;
 
-        private bool isSetYResolutionButtonActive;
+        private bool isSetYResolutionButtonActive = true;
 
         private bool isUpScrollButtonActive = true;
 
@@ -42,11 +46,20 @@ namespace Ferretto.VW.InstallationApp
 
         #region Constructors
 
-        public MainWindowNavigationButtonsViewModel()
+        public MainWindowNavigationButtonsViewModel(IEventAggregator eventAggregator)
         {
-            NavigationService.ExitViewEventHandler += this.UpdateDataFromDataManager;
-            NavigationService.GoToViewEventHandler += this.SetAllNavigationButtonDisabled;
-            NavigationService.ExitViewEventHandler += this.UpdateDataFromDataManager;
+            this.eventAggregator = eventAggregator;
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
+                (message) => { this.SetAllNavigationButtonDisabled(); },
+                ThreadOption.PublisherThread,
+                false,
+                message => message.Type == InstallationApp_EventMessageType.EnterView);
+
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
+                (message) => { this.UpdateDataFromDataManager(); },
+                ThreadOption.PublisherThread,
+                false,
+                message => message.Type == InstallationApp_EventMessageType.ExitView);
         }
 
         #endregion
@@ -118,8 +131,8 @@ namespace Ferretto.VW.InstallationApp
             this.IsLowSpeedMovementsTestButtonActive = true;
             this.IsGateControlButtonActive = true;
             this.IsOriginVerticalAxisButtonActive = true;
-            this.IsBeltBurnishingButtonActive = false;
-            this.IsSetYResolutionButtonActive = false;
+            this.IsBeltBurnishingButtonActive = true;
+            this.IsSetYResolutionButtonActive = true;
             this.IsGateHeightControlButtonActive = true; // TODO: Reference value missing in InstallationInfo file
             this.IsWeightControlButtonActive = true; // TODO: Reference value missing in InstallationInfo file
             this.IsVerticalOffsetCalibrationButtonActive = true; // TODO: Reference value missing in InstallationInfo file

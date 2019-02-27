@@ -502,6 +502,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a Gate1 Height Reaced.
+        /// </summary>
+        public static string Gate1HeightReaced {
+            get {
+                return ResourceManager.GetString("Gate1HeightReaced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Gate Control 2.
         /// </summary>
         public static string Gate2Control {
@@ -1177,6 +1186,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a Nex panel.
+        /// </summary>
+        public static string NextPanel {
+            get {
+                return ResourceManager.GetString("NextPanel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Off.
         /// </summary>
         public static string Off {
@@ -1258,11 +1276,38 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a Panels control procedure.
+        /// </summary>
+        public static string PanelsControlDescription {
+            get {
+                return ResourceManager.GetString("PanelsControlDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Pawl Encoder.
         /// </summary>
         public static string PawlEncoder {
             get {
                 return ResourceManager.GetString("PawlEncoder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ReadFinalPosition.
+        /// </summary>
+        public static string ReadFinalPosition {
+            get {
+                return ResourceManager.GetString("ReadFinalPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ReadInitialPosition.
+        /// </summary>
+        public static string ReadInitialPosition {
+            get {
+                return ResourceManager.GetString("ReadInitialPosition", resourceCulture);
             }
         }
         
@@ -1596,6 +1641,15 @@ namespace Ferretto.VW.Resources {
         public static string VerticalAxisBrake {
             get {
                 return ResourceManager.GetString("VerticalAxisBrake", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a VerticalAxisButton.
+        /// </summary>
+        public static string VerticalAxisButton {
+            get {
+                return ResourceManager.GetString("VerticalAxisButton", resourceCulture);
             }
         }
         

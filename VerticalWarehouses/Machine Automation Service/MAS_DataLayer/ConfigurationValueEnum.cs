@@ -12,8 +12,14 @@
 
         homingFastSpeed,
 
+        inverterOperationTimeout,
+
         machineHeight,
 
         resolution,
+
+        InverterAddress,
+
+        InverterPort
     }
 }

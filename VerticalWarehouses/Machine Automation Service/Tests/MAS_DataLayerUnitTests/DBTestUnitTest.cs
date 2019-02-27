@@ -19,24 +19,21 @@ namespace MAS_DataLayerUnitTests
 
         protected void CleanupDatabase()
         {
-            using (var context = this.CreateContext())
-            {
-                context.Database.EnsureDeleted();
-            }
+            using (var context = this.CreateContext()) context.Database.EnsureDeleted();
         }
 
         protected DataLayerContext CreateContext()
         {
             return new DataLayerContext(
                 new DbContextOptionsBuilder<DataLayerContext>()
-                    .UseInMemoryDatabase(databaseName: this.GetType().FullName)
+                    .UseInMemoryDatabase(this.GetType().FullName)
                     .Options);
         }
 
         protected virtual void InitializeDatabase()
         {
-            this.StatusLog1 = new StatusLog { StatusLogId = 1, LogMessage = "Test Message #1" };
-            this.StatusLog2 = new StatusLog { StatusLogId = 2, LogMessage = "Test Message #2" };
+            this.StatusLog1 = new StatusLog {StatusLogId = 1, LogMessage = "Test Message #1"};
+            this.StatusLog2 = new StatusLog {StatusLogId = 2, LogMessage = "Test Message #2"};
 
             using (var context = this.CreateContext())
             {

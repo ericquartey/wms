@@ -14,8 +14,8 @@
         //! Terminate and release the device resources.
         void Terminate();
 
-        #endregion Methods
-    }  // interface IDriverBase
+        #endregion
+    } // interface IDriverBase
 
     // Creo una Queue che salva i comandi ricevuti come bytes
     //public Queue<byte[]> Commands;
@@ -29,9 +29,10 @@
         #region Fields
 
         public byte[] dataBuffer = new byte[1024];
+
         public System.Net.Sockets.Socket thisSocket;
 
-        #endregion Fields
+        #endregion
 
         //|< Current socket instance
         //!< Data buffer

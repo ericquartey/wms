@@ -222,7 +222,6 @@ namespace Ferretto.Common.BusinessProviders
         public async Task<ItemDetails> GetNewAsync()
         {
             var itemDetails = new ItemDetails();
-            itemDetails.ManagementType = ItemManagementType.FIFO;
 
             await this.AddEnumerationsAsync(itemDetails);
 

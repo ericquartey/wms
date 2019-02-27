@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.EventParameters;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_AutomationService.Hubs;
@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
         private readonly IHubContext<InstallationHub, IInstallationHub> hub;
 
-        private readonly ConcurrentQueue<Event_Message> messageQueue;
+        private readonly ConcurrentQueue<CommandMessage> messageQueue;
 
         private readonly ManualResetEventSlim messageReceived;
 
@@ -36,29 +36,27 @@ namespace Ferretto.VW.MAS_AutomationService
 
             this.messageReceived = new ManualResetEventSlim(false);
 
-            this.messageQueue = new ConcurrentQueue<Event_Message>();
+            this.messageQueue = new ConcurrentQueue<CommandMessage>();
 
-            var inverterNotificationEvent = this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>();
-            inverterNotificationEvent.Subscribe(this.SendMessageToAllConnectedClients, ThreadOption.BackgroundThread, false, message => message.OperationStatus == OperationStatus.End);
-
-            var webApiMessagEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
-            webApiMessagEvent.Subscribe((message) =>
-               {
-                   this.messageQueue.Enqueue(message);
-                   this.messageReceived.Set();
-               },
+            var webApiMessagEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            webApiMessagEvent.Subscribe(message =>
+                {
+                    this.messageQueue.Enqueue(message);
+                    this.messageReceived.Set();
+                },
                 ThreadOption.PublisherThread,
                 false,
-                message => message.Source == MessageActor.WebAPI);
+                message => message.Destination == MessageActor.AutomationService);
+            this.TESTStartCycle();
         }
 
         #endregion
 
         #region Methods
 
-        public void SendMessageToAllConnectedClients(Notification_EventParameter eventParameter)
+        public void SendMessageToAllConnectedClients(NotificationMessage notificationMessage)
         {
-            this.hub.Clients.All.OnSendMessageToAllConnectedClients(eventParameter.Description);
+            this.hub.Clients.All.OnSendMessageToAllConnectedClients(notificationMessage.Description);
         }
 
         public new Task StopAsync(CancellationToken stoppingToken)
@@ -72,7 +70,7 @@ namespace Ferretto.VW.MAS_AutomationService
         {
             while (true)
             {
-                var message = new string[] { "pippo", "topolino", "pluto", "paperino", "minnie", "qui", "quo", "qua" };
+                var message = new[] {"pippo", "topolino", "pluto", "paperino", "minnie", "qui", "quo", "qua"};
                 var randomInt = new Random().Next(message.Length);
                 Console.WriteLine(message[randomInt]);
                 await this.hub.Clients.All.OnSendMessageToAllConnectedClients(message[randomInt]);
@@ -101,7 +99,6 @@ namespace Ferretto.VW.MAS_AutomationService
                 this.messageReceived.Reset();
 
                 while (this.messageQueue.TryDequeue(out var receivedMessage))
-                {
                     switch (receivedMessage.Type)
                     {
                         case MessageType.AddMission:
@@ -111,19 +108,18 @@ namespace Ferretto.VW.MAS_AutomationService
                         case MessageType.HorizontalHoming:
                             break;
                     }
-                }
             } while (!stoppingToken.IsCancellationRequested);
 
             return Task.CompletedTask;
         }
 
-        private void ProcessAddMissionMessage(Event_Message message)
+        private void ProcessAddMissionMessage(CommandMessage message)
         {
             //TODO apply Automation Service Business Logic to the message
 
             message.Source = MessageActor.AutomationService;
             message.Destination = MessageActor.MissionsManager;
-            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(message);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
 
         #endregion

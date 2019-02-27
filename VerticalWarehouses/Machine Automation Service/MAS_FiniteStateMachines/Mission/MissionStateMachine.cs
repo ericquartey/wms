@@ -7,7 +7,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
         #region Constructors
 
         public MissionStateMachine(IEventAggregator eventAggregator)
-        : base(eventAggregator)
+            : base(eventAggregator)
         {
         }
 
@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         public override void Start()
         {
-            this.currentState = new MissionStartState(this);
+            this.CurrentState = new MissionStartState(this);
         }
 
         #endregion

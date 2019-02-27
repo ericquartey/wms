@@ -14,14 +14,14 @@
     <DataTemplate DataType="{x:Type local:SSBaysViewModel}">
         <local:SSBaysView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:SSGateViewModel}">
-        <local:SSGateView />
+    <DataTemplate DataType="{x:Type local:SSShutterViewModel}">
+        <local:SSShutterView />
     </DataTemplate>
     <DataTemplate DataType="{x:Type local:SSVariousInputsViewModel}">
         <local:SSVariousInputsView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:LSMTGateEngineViewModel}">
-        <local:LSMTGateEngineView />
+    <DataTemplate DataType="{x:Type local:LSMTShutterEngineViewModel}">
+        <local:LSMTShutterEngineView />
     </DataTemplate>
     <DataTemplate DataType="{x:Type local:LSMTHorizontalEngineViewModel}">
         <local:LSMTHorizontalEngineView />
@@ -59,23 +59,23 @@
     <DataTemplate DataType="{x:Type local:IdleViewModel}">
         <local:IdleView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:Gate1ControlViewModel}">
-        <local:Gate1ControlView />
+    <DataTemplate DataType="{x:Type local:Shutter1ControlViewModel}">
+        <local:Shutter1ControlView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:Gate2ControlViewModel}">
-        <local:Gate2ControlView />
+    <DataTemplate DataType="{x:Type local:Shutter2ControlViewModel}">
+        <local:Shutter2ControlView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:Gate3ControlViewModel}">
-        <local:Gate3ControlView />
+    <DataTemplate DataType="{x:Type local:Shutter3ControlViewModel}">
+        <local:Shutter3ControlView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:Gate1HeightControlViewModel}">
-        <local:Gate1HeightControlView />
+    <DataTemplate DataType="{x:Type local:Shutter1HeightControlViewModel}">
+        <local:Shutter1HeightControlView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:Gate2HeightControlViewModel}">
-        <local:Gate2HeightControlView />
+    <DataTemplate DataType="{x:Type local:Shutter2HeightControlViewModel}">
+        <local:Shutter2HeightControlView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:Gate3HeightControlViewModel}">
-        <local:Gate3HeightControlView />
+    <DataTemplate DataType="{x:Type local:Shutter3HeightControlViewModel}">
+        <local:Shutter3HeightControlView />
     </DataTemplate>
     <DataTemplate DataType="{x:Type local:MainWindowNavigationButtonsViewModel}">
         <local:MainWindowNavigationButtonsView />

@@ -12,12 +12,14 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
         #region Fields
 
         public const int AISLE_SIDES_COUNT = 2;
+
         public const int CELL_HEIGHT_MILLIMETERS = 25;
 
         public static readonly string JSON_BLOCK_PATH = string.Concat(Environment.CurrentDirectory, ConfigurationManager.AppSettings["BlocksFilePath"]);
+
         public static readonly string JSON_CELL_PATH = string.Concat(Environment.CurrentDirectory, ConfigurationManager.AppSettings["CellsFilePath"]);
 
-        #endregion Fields
+        #endregion
 
         #region Methods
 
@@ -206,7 +208,7 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
         {
             if (cellIndex >= cm.Cells.Count || cellIndex < 0)
             {
-                throw new ArgumentException("CellsManagement Exception: cellID does not point to any cell in memory.", "cellID");
+                throw new ArgumentException("CellsManagement Exception: cellID does not point to any cell in memory.", "cellIndex");
             }
             cm.Cells[cellIndex].Status = newStatus;
         }
@@ -228,7 +230,7 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
         private static void FreeCells(CellsManager cm, int firstCellIndex, int drawerHeightMillimiters)
         {
             var cellsToFree = drawerHeightMillimiters / CELL_HEIGHT_MILLIMETERS;
-            for (int index = firstCellIndex; index <= firstCellIndex + cellsToFree * AISLE_SIDES_COUNT; index += 2)
+            for (int index = firstCellIndex; index <= firstCellIndex + (cellsToFree * AISLE_SIDES_COUNT); index += 2)
             {
                 ChangeCellStatus(cm, index, 0);
             }
@@ -252,12 +254,12 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
         private static void OccupyCells(CellsManager cm, int firstCellindex, int drawerHeightMillimiters)
         {
             int cellsToOccupy = (drawerHeightMillimiters / CELL_HEIGHT_MILLIMETERS) + 1;
-            for (int index = firstCellindex; index <= firstCellindex + cellsToOccupy * AISLE_SIDES_COUNT; index += 2)
+            for (int index = firstCellindex; index <= firstCellindex + (cellsToOccupy * AISLE_SIDES_COUNT); index += 2)
             {
                 ChangeCellStatus(cm, index, Status.Occupied);
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

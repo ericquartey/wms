@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Events;
+﻿using System;
+using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Prism.Events;
 
@@ -10,38 +11,40 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         protected StateMachineBase(IEventAggregator eventAggregator)
         {
-            this.eventAggregator = eventAggregator;
+            this.EventAggregator = eventAggregator;
         }
 
         #endregion
 
         #region Properties
 
-        protected IState currentState { get; set; }
+        protected IEventAggregator EventAggregator { get; }
 
-        protected IEventAggregator eventAggregator { get; }
+        protected IState CurrentState { get; set; }
 
         #endregion
 
         #region Methods
 
-        public void ChangeState(IState newState, Event_Message message = null)
+        public void ChangeState(IState newState, CommandMessage message = null)
         {
-            this.currentState = newState;
-            if (message != null)
-            {
-                this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(message);
-            }
+            this.CurrentState = newState;
+            if (message != null) this.EventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
 
-        public void NotifyMessage(Event_Message message)
+        public void NotifyMessage(CommandMessage message)
         {
-            this.currentState.NotifyMessage(message);
+            this.CurrentState?.NotifyMessage(message);
         }
 
-        public void PublishMessage(Event_Message message)
+        public void PublishCommandMessage(CommandMessage message)
         {
-            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(message);
+            this.EventAggregator.GetEvent<CommandEvent>().Publish(message);
+        }
+
+        public void PublishNotificationMessage(NotificationMessage message)
+        {
+            throw new NotImplementedException();
         }
 
         public abstract void Start();

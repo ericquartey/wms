@@ -1,4 +1,6 @@
-﻿using Ferretto.VW.MAS_InverterDriver.Interface;
+﻿using System;
+using Ferretto.VW.InverterDriver;
+using Ferretto.VW.MAS_InverterDriver.Interface;
 
 namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 {
@@ -31,11 +33,17 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
         #region Events
 
         public event EndEventHandler EndEvent;
+
         public event ErrorEventHandler ErrorEvent;
 
         #endregion
 
         #region Properties
+
+        public IInverterDriver SetInverterDriverInterface
+        {
+            set => this.drawerPositionController.SetInverterDriverInterface = value;
+        }
 
         public PositioningDrawer SetPositioningDrawerInterface
         {
@@ -43,11 +51,6 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
         }
 
         public float Weight { get; set; }
-
-        public Ferretto.VW.InverterDriver.IInverterDriver SetInverterDriverInterface
-        {
-            set => this.drawerPositionController.SetInverterDriverInterface = value;
-        }
 
         #endregion
 
@@ -66,17 +69,18 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
         public void RestorePosition()
         {
-            this.drawerPositionController.EnableReadMaxAnalogIc = false;  
+            this.drawerPositionController.EnableReadMaxAnalogIc = false;
 
             this.executeWeighting = false;
 
-            this.drawerPositionController?.MoveAlongVerticalAxisToPoint(-this.target, this.speed, this.acc, this.dec, -1, 0);
+            this.drawerPositionController?.MoveAlongVerticalAxisToPoint(-this.target, this.speed, this.acc, this.dec,
+                -1, 0);
         }
 
         public void Run(int targetPosition, float v, float acc, float dec)
         {
-            this.drawerPositionController.AbsoluteMovement = false;    
-            this.drawerPositionController.EnableReadMaxAnalogIc = true;   
+            this.drawerPositionController.AbsoluteMovement = false;
+            this.drawerPositionController.EnableReadMaxAnalogIc = true;
 
             this.target = targetPosition;
             this.speed = v;
@@ -110,10 +114,7 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 
         private void DrawerPositioningEndEvent()
         {
-            if (this.executeWeighting)
-            {
-                this.Weight = this.ConvertToWeight(this.drawerPositionController.MaxAnalogIc);
-            }
+            if (this.executeWeighting) this.Weight = this.ConvertToWeight(this.drawerPositionController.MaxAnalogIc);
 
             this.EndEvent?.Invoke();
         }
