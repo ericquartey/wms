@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
@@ -128,14 +128,7 @@ namespace Ferretto.Common.Controls
 
                 if (filterDataSource.Provider != null)
                 {
-                    string whereExpression = null;
-
-                    if (filterDataSource.Expression != null)
-                    {
-                        whereExpression = CriteriaOperator.Parse(filterDataSource.Expression)?.ToString();
-                    }
-
-                    filterTile.Count = await filterDataSource.Provider.GetAllCountAsync(whereExpression);
+                    filterTile.Count = await filterDataSource.Provider.GetAllCountAsync(filterDataSource.FilterString);
                 }
             }
         }
