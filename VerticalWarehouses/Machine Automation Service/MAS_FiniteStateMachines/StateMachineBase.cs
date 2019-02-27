@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Events;
+﻿using System;
+using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Prism.Events;
 
@@ -8,7 +9,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
     {
         #region Constructors
 
-        protected StateMachineBase( IEventAggregator eventAggregator )
+        protected StateMachineBase(IEventAggregator eventAggregator)
         {
             this.EventAggregator = eventAggregator;
         }
@@ -17,31 +18,33 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Properties
 
-        protected IState CurrentState { get; set; }
-
         protected IEventAggregator EventAggregator { get; }
+
+        protected IState CurrentState { get; set; }
 
         #endregion
 
         #region Methods
 
-        public void ChangeState( IState newState, Event_Message message = null )
+        public void ChangeState(IState newState, CommandMessage message = null)
         {
             this.CurrentState = newState;
-            if(message != null)
-            {
-                this.EventAggregator.GetEvent<MachineAutomationService_Event>().Publish( message );
-            }
+            if (message != null) this.EventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
 
-        public void NotifyMessage( Event_Message message )
+        public void NotifyMessage(CommandMessage message)
         {
-            this.CurrentState?.NotifyMessage( message );
+            this.CurrentState?.NotifyMessage(message);
         }
 
-        public void PublishMessage( Event_Message message )
+        public void PublishCommandMessage(CommandMessage message)
         {
-            this.EventAggregator.GetEvent<MachineAutomationService_Event>().Publish( message );
+            this.EventAggregator.GetEvent<CommandEvent>().Publish(message);
+        }
+
+        public void PublishNotificationMessage(NotificationMessage message)
+        {
+            throw new NotImplementedException();
         }
 
         public abstract void Start();

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Ferretto.VW.Common_Utils.Messages.Interfaces
+﻿namespace Ferretto.VW.Common_Utils.Messages.Interfaces
 {
     public enum Axis
     {
@@ -15,7 +9,7 @@ namespace Ferretto.VW.Common_Utils.Messages.Interfaces
         Both
     }
 
-    public interface ICalibrateMessageData : IEventMessageData
+    public interface ICalibrateMessageData : IMessageData
     {
         #region Properties
 

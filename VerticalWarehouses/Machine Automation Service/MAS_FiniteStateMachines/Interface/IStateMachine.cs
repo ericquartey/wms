@@ -6,11 +6,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
     {
         #region Methods
 
-        void ChangeState( IState newState, Event_Message message = null );
+        void ChangeState(IState newState, CommandMessage message = null);
 
-        void NotifyMessage( Event_Message message );
+        void NotifyMessage(CommandMessage message);
 
-        void PublishMessage( Event_Message message );
+        void PublishCommandMessage(CommandMessage message);
+
+        void PublishNotificationMessage(NotificationMessage message);
 
         void Start();
 

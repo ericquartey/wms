@@ -9,15 +9,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         void Destroy();
 
         /// <summary>
-        /// Execute complete homing.
+        ///     Execute complete homing.
         /// </summary>
-        /// <exception cref="InvalidOperationException">An <see cref="InvalidOperationException"/> is thrown, if object is null.</exception>
+        /// <exception cref="InvalidOperationException">An <see cref="InvalidOperationException" /> is thrown, if object is null.</exception>
         void DoHoming();
 
         /// <summary>
-        /// Execute vertical homing.
+        ///     Execute vertical homing.
         /// </summary>
-        /// <exception cref="InvalidOperationException">An <see cref="InvalidOperationException"/> is thrown, if object is null.</exception>
+        /// <exception cref="InvalidOperationException">An <see cref="InvalidOperationException" /> is thrown, if object is null.</exception>
         void DoVerticalHoming();
 
         #endregion

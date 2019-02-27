@@ -4,11 +4,11 @@
     {
         #region Methods
 
-        void ChangeState( IInverterState newState );
+        void ChangeState(IInverterState newState);
 
-        void EnqueueMessage( InverterMessage message );
+        void EnqueueMessage(InverterMessage message);
 
-        void NotifyMessage( InverterMessage message );
+        void NotifyMessage(InverterMessage message);
 
         void Start();
 

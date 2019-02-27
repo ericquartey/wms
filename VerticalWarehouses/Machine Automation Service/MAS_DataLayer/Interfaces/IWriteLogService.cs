@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.Common_Utils.EventParameters;
+﻿using Ferretto.VW.Common_Utils.Messages;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
@@ -6,8 +6,8 @@ namespace Ferretto.VW.MAS_DataLayer
     {
         #region Methods
 
-        void LogWriting(Command_EventParameter command_EventParameter);
+        void LogWriting(CommandMessage command_EventParameter);
 
-        #endregion Methods
+        #endregion
     }
 }

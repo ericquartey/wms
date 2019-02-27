@@ -13,7 +13,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
 
         #region Constructors
 
-        public ErrorState( IInverterStateMachine parentStateMachine, Axis axisToCalibrate )
+        public ErrorState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate)
         {
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
@@ -23,7 +23,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
 
         #region Methods
 
-        public override void NotifyMessage( InverterMessage message )
+        public override void NotifyMessage(InverterMessage message)
         {
             throw new NotImplementedException();
         }

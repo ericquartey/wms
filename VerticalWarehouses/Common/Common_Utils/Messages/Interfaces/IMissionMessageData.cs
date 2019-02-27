@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ferretto.VW.Common_Utils.Messages.Interfaces
 {
@@ -15,7 +11,7 @@ namespace Ferretto.VW.Common_Utils.Messages.Interfaces
         CellToCell
     }
 
-    public interface IMissionMessageData : IEventMessageData
+    public interface IMissionMessageData : IMessageData
     {
         #region Properties
 

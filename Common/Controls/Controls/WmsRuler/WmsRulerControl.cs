@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -19,8 +20,11 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty ForegroundTextProperty =
             DependencyProperty.Register(nameof(ForegroundText), typeof(Brush), typeof(WmsRulerControl), new UIPropertyMetadata(Brushes.Black));
 
+        public static readonly DependencyProperty HideAllMarkersProperty = DependencyProperty.Register(
+                nameof(HideAllMarkers), typeof(bool), typeof(WmsRulerControl), new FrameworkPropertyMetadata(OnHideAllMarkersChanged));
+
         public static readonly DependencyProperty LittleMarkLengthProperty =
-                    DependencyProperty.Register(nameof(LittleMarkLength), typeof(double), typeof(WmsRulerControl), new UIPropertyMetadata(8.0));
+                            DependencyProperty.Register(nameof(LittleMarkLength), typeof(double), typeof(WmsRulerControl), new UIPropertyMetadata(8.0));
 
         public static readonly DependencyProperty MiddleMarkLengthProperty =
                     DependencyProperty.Register(nameof(MiddleMarkLength), typeof(double), typeof(WmsRulerControl), new UIPropertyMetadata(14.0));
@@ -53,6 +57,8 @@ namespace Ferretto.Common.Controls
 
         public static readonly DependencyProperty TrayWidthProperty =
                                DependencyProperty.Register(nameof(TrayWidth), typeof(double), typeof(WmsRulerControl));
+
+        private const string DEFAULTBACKGROUND = "CommonSecondaryMedium";
 
         private const int LITTLE_INTERVALMARKS = 10;
 
@@ -100,6 +106,12 @@ namespace Ferretto.Common.Controls
         {
             get => (Brush)this.GetValue(ForegroundTextProperty);
             set => this.SetValue(ForegroundTextProperty, value);
+        }
+
+        public bool HideAllMarkers
+        {
+            get => (bool)this.GetValue(HideAllMarkersProperty);
+            set => this.SetValue(HideAllMarkersProperty, value);
         }
 
         public double LittleMarkLength
@@ -232,7 +244,22 @@ namespace Ferretto.Common.Controls
                 totalSteps != 0)
             {
                 this.InitializePen();
-                this.DrawMarkers(drawingContext, totalSteps);
+                if (this.HideAllMarkers)
+                {
+                    this.ShowOnlyBaseMarkers(drawingContext);
+                }
+                else
+                {
+                    this.DrawMarkers(drawingContext, totalSteps);
+                }
+            }
+        }
+
+        private static void OnHideAllMarkersChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is WmsRulerControl ruler)
+            {
+                ruler.Redraw();
             }
         }
 
@@ -283,15 +310,23 @@ namespace Ferretto.Common.Controls
             {
                 pointStart.Y = this.ActualHeight - sizeOfPen;
                 pointEnd.Y = pointStart.Y;
-                pointStart.X = 0;
+                pointStart.X = this.HideAllMarkers ? -1 : 0;
                 pointEnd.X = this.TrayWidth - sizeOfPen;
+                if (this.HideAllMarkers)
+                {
+                    pointEnd.X++;
+                }
             }
             else
             {
                 pointStart.X = this.ActualWidth - sizeOfPen;
                 pointEnd.X = pointStart.X;
-                pointStart.Y = 0;
-                pointEnd.Y = this.TrayHeight - sizeOfPen;
+                pointStart.Y = this.HideAllMarkers ? -1 : 0;
+                pointEnd.Y = this.TrayHeight - 1;
+                if (this.HideAllMarkers)
+                {
+                    pointEnd.Y++;
+                }
             }
 
             this.DrawSnappedLinesBetweenPoints(drawingContext, pointStart, pointEnd);
@@ -323,7 +358,7 @@ namespace Ferretto.Common.Controls
                 {
                     littleMarkStart.X = basePixelStart + (littlePixelStep * j);
                     littleMarkStart.Y = this.Height - this.LittleMarkLength + this.penHalfSize;
-                    littleMarkEnd.Y = this.Height - this.penHalfSize;
+                    littleMarkEnd.Y = this.Height - this.GetSizeOfPen();
                     if (this.OriginHorizontal == OriginHorizontal.Right)
                     {
                         littleMarkStart.X = this.ActualWidth - littleMarkStart.X;
@@ -335,7 +370,7 @@ namespace Ferretto.Common.Controls
                 {
                     var pixelPosition = basePixelStart + (littlePixelStep * j);
                     littleMarkStart.Y = (this.OriginVertical == OriginVertical.Top) ? pixelPosition : this.ActualHeight - pixelPosition - 1;
-                    littleMarkStart.X = this.Width - this.LittleMarkLength + this.penHalfSize;
+                    littleMarkStart.X = this.Width - this.LittleMarkLength + this.GetSizeOfPen();
                     littleMarkEnd.X = this.Width - this.penHalfSize - this.GetSizeOfPen();
                     littleMarkEnd.Y = littleMarkStart.Y;
                 }
@@ -365,7 +400,7 @@ namespace Ferretto.Common.Controls
             {
                 littleMarkStart.X = ConvertMillimetersToPixel(this.Step * currentStep, this.TrayWidth, this.DimensionWidth);
                 littleMarkStart.Y = this.penHalfSize;
-                littleMarkEnd.Y = this.ActualHeight - this.penHalfSize;
+                littleMarkEnd.Y = this.ActualHeight - sizeOfPen;
                 if (this.OriginHorizontal == OriginHorizontal.Right)
                 {
                     littleMarkStart.X = this.ActualWidth - littleMarkStart.X;
@@ -377,8 +412,8 @@ namespace Ferretto.Common.Controls
             {
                 var offSet = ConvertMillimetersToPixel(this.Step * currentStep, this.TrayHeight, this.DimensionHeight);
                 littleMarkStart.X = this.penHalfSize;
-                littleMarkEnd.X = this.ActualWidth - this.penHalfSize;
-                littleMarkStart.Y = (this.OriginVertical == OriginVertical.Top) ? offSet - 0 : this.ActualHeight - offSet - sizeOfPen;
+                littleMarkEnd.X = this.ActualWidth - sizeOfPen;
+                littleMarkStart.Y = (this.OriginVertical == OriginVertical.Top) ? offSet : this.ActualHeight - offSet - sizeOfPen;
                 littleMarkEnd.Y = littleMarkStart.Y;
             }
 
@@ -436,18 +471,28 @@ namespace Ferretto.Common.Controls
         {
             var littleMarkStart = new Point(0, 0);
             var littleMarkEnd = new Point(0, 0);
+            var sizeOfPen = this.GetSizeOfPen();
             if (this.Orientation == Orientation.Horizontal)
             {
                 var pixelStep = ConvertMillimetersToPixel(this.Step, this.TrayWidth, this.DimensionWidth);
                 littleMarkStart.X = (pixelStep * currentStep) + (pixelStep / 2);
                 littleMarkStart.Y = this.Height - this.MiddleMarkLength + this.penHalfSize;
-                littleMarkEnd.Y = this.Height - this.penHalfSize;
+                littleMarkEnd.Y = this.ActualHeight - sizeOfPen;
                 if (this.OriginHorizontal == OriginHorizontal.Right)
                 {
                     littleMarkStart.X = this.ActualWidth - littleMarkStart.X;
                 }
 
                 littleMarkEnd.X = littleMarkStart.X;
+                if (littleMarkEnd.X < 0)
+                {
+                    return;
+                }
+
+                if (littleMarkEnd.X > this.ActualWidth)
+                {
+                    return;
+                }
             }
             else
             {
@@ -455,8 +500,17 @@ namespace Ferretto.Common.Controls
                 var pixelPosition = (pixelStep * currentStep) + (pixelStep / 2);
                 littleMarkStart.Y = (this.OriginVertical == OriginVertical.Top) ? pixelPosition : this.ActualHeight - (pixelPosition + 1);
                 littleMarkStart.X = this.Width - this.MiddleMarkLength + this.penHalfSize;
-                littleMarkEnd.X = this.Width - this.penHalfSize;
+                littleMarkEnd.X = this.ActualWidth - sizeOfPen;
                 littleMarkEnd.Y = littleMarkStart.Y;
+                if (littleMarkEnd.Y < 0)
+                {
+                    return;
+                }
+
+                if (littleMarkEnd.Y > this.ActualHeight)
+                {
+                    return;
+                }
             }
 
             this.DrawSnappedLinesBetweenPoints(drawingContext, littleMarkStart, littleMarkEnd);
@@ -527,6 +581,10 @@ namespace Ferretto.Common.Controls
                     startFrom = this.ActualHeight;
                     position.Y = startFrom - position.Y;
                     position.Y -= OFFSET_BORDER;
+                    if (position.Y - ft.Width < 0)
+                    {
+                        return;
+                    }
                 }
 
                 if (position.Y + ft.Width > this.ActualHeight)
@@ -587,6 +645,21 @@ namespace Ferretto.Common.Controls
                 StartLineCap = PenLineCap.Square,
                 EndLineCap = PenLineCap.Square
             };
+        }
+
+        private void ShowOnlyBaseMarkers(DrawingContext drawingContext)
+        {
+            if (this.Orientation == Orientation.Horizontal)
+            {
+                this.Height = 1;
+            }
+            else
+            {
+                this.Width = 1;
+            }
+
+            this.pen.Brush = Application.Current.Resources[DEFAULTBACKGROUND] as Brush;
+            this.DrawBase(drawingContext);
         }
 
         #endregion

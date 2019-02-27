@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Messages;
+﻿using System;
+using Ferretto.VW.Common_Utils.Messages;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines
 {
@@ -12,7 +13,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Properties
 
-        public virtual string Type => $"BaseState";
+        public virtual string Type => "BaseState";
 
         #endregion
 
@@ -20,7 +21,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         public abstract void MakeOperation();
 
-        public abstract void NotifyMessage(Event_Message message);
+        public abstract void NotifyMessage(CommandMessage message);
 
         public abstract void Stop();
 

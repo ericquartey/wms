@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Threading;
 
 namespace Ferretto.VW.Common_Utils.Utilities
@@ -7,7 +8,7 @@ namespace Ferretto.VW.Common_Utils.Utilities
     {
         #region Fields
 
-        private ManualResetEventSlim dataReady;
+        private readonly ManualResetEventSlim dataReady;
 
         #endregion
 

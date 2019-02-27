@@ -7,7 +7,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
         #region Constructors
 
         public MissionStateMachine(IEventAggregator eventAggregator)
-        : base(eventAggregator)
+            : base(eventAggregator)
         {
         }
 

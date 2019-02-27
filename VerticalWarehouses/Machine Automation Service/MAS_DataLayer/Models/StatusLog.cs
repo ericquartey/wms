@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS_DataLayer
+﻿using System;
+
+namespace Ferretto.VW.MAS_DataLayer
 {
     public class StatusLog
     {
@@ -8,6 +10,6 @@
 
         public int StatusLogId { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

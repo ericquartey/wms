@@ -124,7 +124,7 @@ namespace Ferretto.VW.ActionBlocks
             {
                 this.paramID = ParameterID.CONTROL_WORD_PARAM;
                 this.valParam = 0x8000; // 1000 0000 0000 0000
-                logger.Log(LogLevel.Debug, String.Format(" --> Send stop::  paramID: {0}, value: {1:X}", this.paramID.ToString(), this.valParam));
+                logger.Log(LogLevel.Debug, string.Format(" --> Send stop::  paramID: {0}, value: {1:X}", this.paramID.ToString(), this.valParam));
                 this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_INDEX, this.valParam);
 
                 this.stopPushed = true;
@@ -229,8 +229,8 @@ namespace Ferretto.VW.ActionBlocks
             statusWord01 = new byte[] { statusWord[0], statusWord[1] };
             statusWordBA01 = new BitArray(statusWord01);
 
-            logger.Log(LogLevel.Debug, String.Format(" <-- EnquiryTelegram - Step: {0}", stepCounter));
-            logger.Log(LogLevel.Debug, String.Format("Bit 0: {0} - Bit 1: {1} - Bit 2: {2} - Bit 3: {3} - Bit 4: {4} - Bit 5: {5} - Bit 6: {6} - Bit 7: {7} - Bit 8: {8} - Bit 9: {9} - Bit 10: {10} - Bit 11: {11} - Bit 12: {12} - Bit 13: {13} - Bit 14: {14} - Bit 15: {15}", statusWordBA01[0], statusWordBA01[1], statusWordBA01[2], statusWordBA01[3], statusWordBA01[4], statusWordBA01[5], statusWordBA01[6], statusWordBA01[7], statusWordBA01[8], statusWordBA01[9], statusWordBA01[10], statusWordBA01[11], statusWordBA01[12], statusWordBA01[13], statusWordBA01[14], statusWordBA01[15]));
+            logger.Log(LogLevel.Debug, string.Format(" <-- EnquiryTelegram - Step: {0}", stepCounter));
+            logger.Log(LogLevel.Debug, string.Format("Bit 0: {0} - Bit 1: {1} - Bit 2: {2} - Bit 3: {3} - Bit 4: {4} - Bit 5: {5} - Bit 6: {6} - Bit 7: {7} - Bit 8: {8} - Bit 9: {9} - Bit 10: {10} - Bit 11: {11} - Bit 12: {12} - Bit 13: {13} - Bit 14: {14} - Bit 15: {15}", statusWordBA01[0], statusWordBA01[1], statusWordBA01[2], statusWordBA01[3], statusWordBA01[4], statusWordBA01[5], statusWordBA01[6], statusWordBA01[7], statusWordBA01[8], statusWordBA01[9], statusWordBA01[10], statusWordBA01[11], statusWordBA01[12], statusWordBA01[13], statusWordBA01[14], statusWordBA01[15]));
 
             switch (stepCounter)
             {
@@ -305,7 +305,7 @@ namespace Ferretto.VW.ActionBlocks
                     }
             }
 
-            logger.Log(LogLevel.Debug, String.Format(" StatusWord Value: {0}", statusWordValue));
+            logger.Log(LogLevel.Debug, string.Format(" StatusWord Value: {0}", statusWordValue));
 
             if (statusWordValue)
             {
@@ -463,7 +463,7 @@ namespace Ferretto.VW.ActionBlocks
             // Set request to inverter
             var idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_INDEX, this.valParam);
 
-            logger.Log(LogLevel.Debug, String.Format(" --> stepExecution: {0}, paramID: {1}, value: {2:X}", stepCounter, this.paramID.ToString(), this.valParam));
+            logger.Log(LogLevel.Debug, string.Format(" --> stepExecution: {0}, paramID: {1}, value: {2:X}", stepCounter, this.paramID.ToString(), this.valParam));
 
             this.checkExistStatus(idExitStatus);
         }

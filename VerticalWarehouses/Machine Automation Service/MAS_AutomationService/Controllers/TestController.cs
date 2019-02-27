@@ -1,14 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Prism.Events;
+﻿using System;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.Common_Utils.EventParameters;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
-    [Route( "api/[controller]" )]
+    [Route("api/[controller]")]
     [ApiController]
     public class TestController
     {
@@ -20,7 +21,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
         #region Constructors
 
-        public TestController( IEventAggregator eventAggregator )
+        public TestController(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
         }
@@ -29,65 +30,68 @@ namespace Ferretto.VW.MAS_AutomationService
 
         #region Methods
 
-        [HttpGet( "AddMissionTest" )]
+        [HttpGet("AddMissionTest")]
         public void AddMission()
         {
-            var missionData = new MissionMessageData( 1, 1, 1, MissionType.CellToBay, 1 );
-            var missionMessage = new Event_Message( missionData,
+            var missionData = new MissionMessageData(1, 1, 1, MissionType.CellToBay, 1);
+            var missionMessage = new CommandMessage(missionData,
                 "Test Mission",
                 MessageActor.AutomationService,
                 MessageActor.WebAPI,
-                MessageStatus.Start,
                 MessageType.AddMission,
-                MessageVerbosity.Debug );
-            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish( missionMessage );
+                MessageVerbosity.Debug);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(missionMessage);
         }
 
-        [HttpPost( "CreateMissionTest" )]
-        public void CreateMission( [FromBody] int bayID, int drawerID )
+        [HttpPost("CreateMissionTest")]
+        public void CreateMission([FromBody] int bayID, int drawerID)
         {
-            var missionData = new MissionMessageData( 1, 1, 1, MissionType.CellToBay, 1 );
+            var missionData = new MissionMessageData(1, 1, 1, MissionType.CellToBay, 1);
 
-            var message = new Event_Message( missionData,
+            var message = new CommandMessage(missionData,
                 "Create Mission",
                 MessageActor.MissionsManager,
                 MessageActor.WebAPI,
-                MessageStatus.Start,
                 MessageType.CreateMission,
-                MessageVerbosity.Debug );
-            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish( message );
+                MessageVerbosity.Debug);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
 
-        [HttpGet( "HomingTest" )]
+        [HttpGet("HomingTest")]
         public void ExecuteHoming()
         {
-            this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish( new Command_EventParameter( CommandType.ExecuteHoming ) );
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Execute Homing",
+                MessageActor.FiniteStateMachines, MessageActor.AutomationService, MessageType.Homing,
+                MessageVerbosity.Info));
         }
 
-        [HttpGet( "HomingStop" )]
+        [HttpGet("HomingStop")]
         public void ExecuteStopHoming()
         {
-            this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish( new Command_EventParameter( CommandType.ExecuteStopHoming ) );
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Stop Homing",
+                MessageActor.FiniteStateMachines, MessageActor.AutomationService, MessageType.StopHoming,
+                MessageVerbosity.Info));
         }
 
-        [HttpGet( "MissionExecutedTest" )]
+        [HttpGet("MissionExecutedTest")]
         public void MissionExecuted()
         {
-            var message = new Event_Message(
+            var message = new CommandMessage(
                 null,
                 "Mission Executed",
                 MessageActor.MissionsManager,
                 MessageActor.FiniteStateMachines,
-                MessageStatus.End,
                 MessageType.EndAction,
-                MessageVerbosity.Debug );
-            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish( message );
+                MessageVerbosity.Debug);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
 
-        [HttpGet( "StopFSM" )]
+        [HttpGet("StopFSM")]
         public void StopFiniteStateMachine()
         {
-            this.eventAggregator.GetEvent<WebAPI_CommandEvent>().Publish( new Command_EventParameter( CommandType.StopAction ) );
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Stop Homing",
+                MessageActor.FiniteStateMachines, MessageActor.AutomationService, MessageType.StopAction,
+                MessageVerbosity.Info));
         }
 
         #endregion

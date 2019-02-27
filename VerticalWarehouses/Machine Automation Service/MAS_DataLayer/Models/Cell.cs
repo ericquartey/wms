@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS_DataLayer
+﻿using System;
+
+namespace Ferretto.VW.MAS_DataLayer
 {
     public class Cell
     {
