@@ -112,15 +112,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             try
             {
-                var orderByExpression = orderBy.ParseSortOptions();
-
                 return this.Ok(
                     await this.itemListRowProvider.GetAllAsync(
-                        skip: skip,
-                        take: take,
-                        orderBy: orderByExpression,
-                        whereExpression: where,
-                        searchString: search));
+                        skip,
+                        take,
+                        orderBy.ParseSortOptions(),
+                        where,
+                        search));
             }
             catch (NotSupportedException e)
             {

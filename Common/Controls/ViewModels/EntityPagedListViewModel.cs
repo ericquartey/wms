@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
@@ -177,7 +177,7 @@ namespace Ferretto.Common.Controls
 
             this.Provider = filterDataSource.Provider;
 
-            var newOverallFilter = CriteriaOperator.TryParse(filterDataSource.Expression);
+            var newOverallFilter = CriteriaOperator.TryParse(filterDataSource.FilterString);
 
             this.OverallFilter = JoinFilters(newOverallFilter, this.customFilter);
             this.logger.Debug($"Data source filter: '{this.OverallFilter}'");
@@ -186,15 +186,15 @@ namespace Ferretto.Common.Controls
 
         private async Task<FetchRowsResult> FetchRowsAsync(FetchRowsAsyncEventArgs e)
         {
-            var orderByExpression = GetSortOrder(e);
+            var orderBySortOptions = GetSortOrder(e);
 
-            var whereExpression = this.overallFilter?.ToString();
+            var whereString = this.overallFilter?.ToString();
 
             var entities = await this.provider.GetAllAsync(
                 e.Skip,
                 GetPageSize(),
-                orderByExpression,
-                whereExpression,
+                orderBySortOptions,
+                whereString,
                 this.searchText);
 
             return new FetchRowsResult(entities.Cast<object>().ToArray(), hasMoreRows: entities.Count() == GetPageSize());

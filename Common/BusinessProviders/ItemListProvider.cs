@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -100,12 +100,12 @@ namespace Ferretto.Common.BusinessProviders
         public async Task<IEnumerable<ItemList>> GetAllAsync(
             int skip,
             int take,
-            IEnumerable<SortOption> orderBy = null,
-            string whereExpression = null,
+            IEnumerable<SortOption> orderBySortOptions = null,
+            string whereString = null,
             string searchString = null)
         {
             var itemLists = await this.itemListsDataService
-                .GetAllAsync(skip, take, whereExpression, orderBy.ToQueryString(), searchString);
+                .GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString);
 
             return itemLists
                 .Select(l => new ItemList

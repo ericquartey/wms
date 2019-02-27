@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -109,11 +109,11 @@ namespace Ferretto.Common.BusinessProviders
         public async Task<IEnumerable<BusinessModels.ItemListRow>> GetAllAsync(
             int skip,
             int take,
-            IEnumerable<SortOption> orderBy = null,
-            string whereExpression = null,
+            IEnumerable<SortOption> orderBySortOptions = null,
+            string whereString = null,
             string searchString = null)
         {
-            return (await this.itemListRowsDataService.GetAllAsync(skip, take, whereExpression, orderBy.ToQueryString(), searchString))
+            return (await this.itemListRowsDataService.GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString))
                 .Select(l => new BusinessModels.ItemListRow
                 {
                     Id = l.Id,

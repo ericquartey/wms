@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
@@ -29,12 +29,12 @@ namespace Ferretto.Common.BusinessProviders
         public async Task<IEnumerable<SchedulerRequest>> GetAllAsync(
             int skip,
             int take,
-            IEnumerable<SortOption> orderBy = null,
-            string whereExpression = null,
+            IEnumerable<SortOption> orderBySortOptions = null,
+            string whereString = null,
             string searchString = null)
         {
             var schedulerRequests = await this.schedulerRequestsDataService
-                    .GetAllAsync(skip, take, whereExpression, orderBy.ToQueryString(), searchString);
+                    .GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString);
 
             return schedulerRequests
                 .Select(r => new SchedulerRequest
