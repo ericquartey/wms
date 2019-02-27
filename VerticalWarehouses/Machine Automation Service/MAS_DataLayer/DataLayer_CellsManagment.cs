@@ -131,7 +131,7 @@ namespace Ferretto.VW.MAS_DataLayer
                         cellCounterEven++;
                     }
 
-                    if (cell.Status == Status.Free && cellCounterEven == 0 && evenCellBeforePriority < cell.Priority)
+                    if (cell.Status == Status.Free && cellCounterEven == 0 /*&& evenCellBeforePriority < cell.Priority*/)
                     {
                         evenFreeBlock.StartCell = cell.CellId;
                         evenFreeBlock.FreeBlockId = freeBlockCounter;
@@ -162,7 +162,7 @@ namespace Ferretto.VW.MAS_DataLayer
                         cellCounterOdd++;
                     }
 
-                    if (cell.Status == Status.Free && cellCounterOdd == 0 && oddCellBeforePriority < cell.Priority)
+                    if (cell.Status == Status.Free && cellCounterOdd == 0 /*&& oddCellBeforePriority < cell.Priority*/)
                     {
                         oddFreeBlock.StartCell = cell.CellId;
                         oddFreeBlock.FreeBlockId = freeBlockCounter;
