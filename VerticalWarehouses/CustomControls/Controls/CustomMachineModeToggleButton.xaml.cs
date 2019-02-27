@@ -24,63 +24,86 @@ namespace Ferretto.VW.CustomControls.Controls
         #region Fields
 
         public static readonly DependencyProperty CustomCommandProperty = DependencyProperty.Register("CustomCommand", typeof(ICommand), typeof(CustomMachineModeToggleButton));
+
         public static readonly DependencyProperty MachineModeStateProperty = DependencyProperty.Register("MachineModeState", typeof(bool), typeof(CustomMachineModeToggleButton));
+
         public static readonly DependencyProperty MachineModeStringProperty = DependencyProperty.Register("MachineModeString", typeof(string), typeof(CustomMachineModeToggleButton));
+
         public static readonly DependencyProperty RectangleBrushProperty = DependencyProperty.Register("RectangleBrush", typeof(SolidColorBrush), typeof(CustomMachineModeToggleButton));
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
         public CustomMachineModeToggleButton()
         {
             this.InitializeComponent();
-            this.LayoutRoot.DataContext = this;
+            var customMachineModeToggleButton = this;
+            this.LayoutRoot.DataContext = customMachineModeToggleButton;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Events
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        #endregion Events
+        #endregion
 
         #region Properties
 
         public ICommand CustomCommand
         {
             get => (ICommand)this.GetValue(CustomCommandProperty);
-            set { this.SetValue(CustomCommandProperty, value); this.RaisePropertyChanged("CustomCommand"); }
+            set
+            {
+                this.SetValue(CustomCommandProperty, value);
+                this.RaisePropertyChanged(nameof(this.CustomCommand));
+            }
         }
 
         public bool MachineModeState
         {
             get => (bool)this.GetValue(MachineModeStateProperty);
-            set { this.SetValue(MachineModeStateProperty, value); this.RaisePropertyChanged("MachineModeState"); }
+            set
+            {
+                this.SetValue(MachineModeStateProperty, value);
+                this.RaisePropertyChanged(nameof(this.MachineModeState));
+            }
         }
 
         public string MachineModeString
         {
             get => (string)this.GetValue(MachineModeStringProperty);
-            set { this.SetValue(MachineModeStringProperty, value); this.RaisePropertyChanged("MachineModeString"); }
+            set
+            {
+                this.SetValue(MachineModeStringProperty, value);
+                this.RaisePropertyChanged(nameof(this.MachineModeString));
+            }
         }
 
         public SolidColorBrush RectangleBrush
         {
             get => (SolidColorBrush)this.GetValue(RectangleBrushProperty);
-            set { this.SetValue(RectangleBrushProperty, value); this.RaisePropertyChanged("RectangleBrush"); }
+            set
+            {
+                this.SetValue(RectangleBrushProperty, value);
+                this.RaisePropertyChanged(nameof(this.RectangleBrush));
+            }
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
         private void RaisePropertyChanged(string propertyName)
         {
-            if (this.PropertyChanged != null) this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            if (this.PropertyChanged != null)
+            {
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

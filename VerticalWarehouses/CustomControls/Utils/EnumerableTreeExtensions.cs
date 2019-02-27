@@ -90,13 +90,16 @@ namespace Ferretto.VW.CustomControls
             Func<DependencyObject, IEnumerable<DependencyObject>> function)
             where T : DependencyObject
         {
-            foreach (var item in items)
+            if (items != null)
             {
-                foreach (var itemChild in function(item))
+                foreach (var item in items)
                 {
-                    if (itemChild is T)
+                    foreach (var itemChild in function(item))
                     {
-                        yield return (T)itemChild;
+                        if (itemChild is T)
+                        {
+                            yield return (T)itemChild;
+                        }
                     }
                 }
             }
@@ -154,6 +157,6 @@ namespace Ferretto.VW.CustomControls
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

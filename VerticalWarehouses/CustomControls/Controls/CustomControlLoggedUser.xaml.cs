@@ -25,55 +25,75 @@ namespace Ferretto.VW.CustomControls.Controls
         #region Fields
 
         public static readonly DependencyProperty IsPopupOpenProperty = DependencyProperty.Register("IsPopupOpen", typeof(bool), typeof(CustomControlLoggedUser));
+
         public static readonly DependencyProperty LogOffCommandProperty = DependencyProperty.Register("LogOffCommand", typeof(ICommand), typeof(CustomControlLoggedUser));
+
         public static readonly DependencyProperty OpenClosePopupCommandProperty = DependencyProperty.Register("OpenClosePopupCommand", typeof(ICommand), typeof(CustomControlLoggedUser));
+
         public static readonly DependencyProperty UserTextProperty = DependencyProperty.Register("UserText", typeof(string), typeof(CustomControlLoggedUser));
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
         public CustomControlLoggedUser()
         {
             this.InitializeComponent();
-            this.LayoutRoot.DataContext = this;
+            var customControlLoggedUser = this;
+            this.LayoutRoot.DataContext = customControlLoggedUser;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Events
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        #endregion Events
+        #endregion
 
         #region Properties
 
         public bool IsPopupOpen
         {
             get => (bool)this.GetValue(IsPopupOpenProperty);
-            set { this.SetValue(IsPopupOpenProperty, value); this.RaisePropertyChanged("IsPopupOpen"); }
+            set
+            {
+                this.SetValue(IsPopupOpenProperty, value);
+                this.RaisePropertyChanged(nameof(this.IsPopupOpen));
+            }
         }
 
         public ICommand LogOffCommand
         {
             get => (ICommand)this.GetValue(LogOffCommandProperty);
-            set { this.SetValue(LogOffCommandProperty, value); this.RaisePropertyChanged("LogOffCommand"); }
+            set
+            {
+                this.SetValue(LogOffCommandProperty, value);
+                this.RaisePropertyChanged(nameof(this.LogOffCommand));
+            }
         }
 
         public ICommand OpenClosePopupCommand
         {
             get => (ICommand)this.GetValue(OpenClosePopupCommandProperty);
-            set { this.SetValue(OpenClosePopupCommandProperty, value); this.RaisePropertyChanged("OpenClosePopupCommand"); }
+            set
+            {
+                this.SetValue(OpenClosePopupCommandProperty, value);
+                this.RaisePropertyChanged(nameof(this.OpenClosePopupCommand));
+            }
         }
 
         public string UserText
         {
             get => (string)this.GetValue(UserTextProperty);
-            set { this.SetValue(UserTextProperty, value); this.RaisePropertyChanged("UserText"); }
+            set
+            {
+                this.SetValue(UserTextProperty, value);
+                this.RaisePropertyChanged(nameof(this.UserText));
+            }
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -85,6 +105,6 @@ namespace Ferretto.VW.CustomControls.Controls
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }
