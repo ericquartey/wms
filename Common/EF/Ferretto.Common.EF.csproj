@@ -9,12 +9,6 @@
     <Content Include="Seeds\Dev.Minimal.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Seeds\Dev.InitDb.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Seeds\Dev.CleanAll.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Seeds\Dev.Items.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
