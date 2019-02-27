@@ -33,9 +33,9 @@ namespace Ferretto.VW.Utils.Source.Configuration
             this.Height_Bay1 = 500d;
             this.Height_Bay2 = 800d;
             this.Height_Bay3 = 0d;
-            this.Type_Gate1 = 1;
-            this.Type_Gate2 = 2;
-            this.Type_Gate3 = 0;
+            this.Type_Shutter1 = 1;
+            this.Type_Shutter2 = 2;
+            this.Type_Shutter3 = 0;
             this.Laser1 = true;
             this.Laser2 = true;
             this.Laser3 = false;
@@ -71,9 +71,9 @@ namespace Ferretto.VW.Utils.Source.Configuration
             this.Height_Bay1 = 500d;
             this.Height_Bay2 = 800d;
             this.Height_Bay3 = 0d;
-            this.Type_Gate1 = 1;
-            this.Type_Gate2 = 2;
-            this.Type_Gate3 = 0;
+            this.Type_Shutter1 = 1;
+            this.Type_Shutter2 = 2;
+            this.Type_Shutter3 = 0;
             this.Laser1 = true;
             this.Laser2 = true;
             this.Laser3 = false;
@@ -82,7 +82,7 @@ namespace Ferretto.VW.Utils.Source.Configuration
             this.AlfaNum3 = false;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -146,14 +146,14 @@ namespace Ferretto.VW.Utils.Source.Configuration
 
         public int Type_Bay3 { get; set; }
 
-        public int Type_Gate1 { get; set; }
+        public int Type_Shutter1 { get; set; }
 
-        public int Type_Gate2 { get; set; }
+        public int Type_Shutter2 { get; set; }
 
-        public int Type_Gate3 { get; set; }
+        public int Type_Shutter3 { get; set; }
 
         public bool WMS_ON { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

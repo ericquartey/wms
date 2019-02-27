@@ -2,6 +2,7 @@
 using System.Windows;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
@@ -14,9 +15,20 @@ namespace Ferretto.VW.InstallationApp
 
         private IUnityContainer container;
 
+        private IEventAggregator eventAggregator;
+
         private bool isBackButtonActive = true;
 
         private bool isCancelButtonActive = false;
+
+        #endregion
+
+        #region Constructors
+
+        public MainWindowBackToIAPPButtonViewModel(IEventAggregator eventAggregator)
+        {
+            this.eventAggregator = eventAggregator;
+        }
 
         #endregion
 

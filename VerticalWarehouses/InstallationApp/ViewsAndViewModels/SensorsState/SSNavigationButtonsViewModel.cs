@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
@@ -15,11 +16,22 @@ namespace Ferretto.VW.InstallationApp
 
         private ICommand cradleButtonCommand;
 
+        private IEventAggregator eventAggregator;
+
         private ICommand gateButtonCommand;
 
         private ICommand variousButtonCommand;
 
         private ICommand verticalButtonCommand;
+
+        #endregion
+
+        #region Constructors
+
+        public SSNavigationButtonsViewModel(IEventAggregator eventAggregator)
+        {
+            this.eventAggregator = eventAggregator;
+        }
 
         #endregion
 
@@ -29,7 +41,7 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand CradleButtonCommand => this.cradleButtonCommand ?? (this.cradleButtonCommand = new DelegateCommand(() => ((SSMainViewModel)this.container.Resolve<ISSMainViewModel>()).SSContentRegionCurrentViewModel = (SSCradleViewModel)this.container.Resolve<ISSCradleViewModel>()));
 
-        public ICommand GateButtonCommand => this.gateButtonCommand ?? (this.gateButtonCommand = new DelegateCommand(() => ((SSMainViewModel)this.container.Resolve<ISSMainViewModel>()).SSContentRegionCurrentViewModel = (SSGateViewModel)this.container.Resolve<ISSGateViewModel>()));
+        public ICommand GateButtonCommand => this.gateButtonCommand ?? (this.gateButtonCommand = new DelegateCommand(() => ((SSMainViewModel)this.container.Resolve<ISSMainViewModel>()).SSContentRegionCurrentViewModel = (SSShutterViewModel)this.container.Resolve<ISSShutterViewModel>()));
 
         public ICommand VariousButtonCommand => this.variousButtonCommand ?? (this.variousButtonCommand = new DelegateCommand(() => ((SSMainViewModel)this.container.Resolve<ISSMainViewModel>()).SSContentRegionCurrentViewModel = (SSVariousInputsViewModel)this.container.Resolve<ISSVariousInputsViewModel>()));
 

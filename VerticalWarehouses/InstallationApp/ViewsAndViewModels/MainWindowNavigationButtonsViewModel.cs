@@ -1,6 +1,8 @@
 ﻿using Prism.Mvvm;
-using Ferretto.VW.Navigation;
 using Microsoft.Practices.Unity;
+using Prism.Events;
+using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.InstallationApp.Resources.Enumerables;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -10,7 +12,9 @@ namespace Ferretto.VW.InstallationApp
 
         public IUnityContainer Container;
 
-        private bool isBeltBurnishingButtonActive = true;
+        private IEventAggregator eventAggregator;
+
+        private bool isBeltBurnishingButtonActive;
 
         private bool isCellsControlButtonActive = true;
 
@@ -42,11 +46,20 @@ namespace Ferretto.VW.InstallationApp
 
         #region Constructors
 
-        public MainWindowNavigationButtonsViewModel()
+        public MainWindowNavigationButtonsViewModel(IEventAggregator eventAggregator)
         {
-            NavigationService.ExitViewEventHandler += this.UpdateDataFromDataManager;
-            NavigationService.GoToViewEventHandler += this.SetAllNavigationButtonDisabled;
-            NavigationService.ExitViewEventHandler += this.UpdateDataFromDataManager;
+            this.eventAggregator = eventAggregator;
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
+                (message) => { this.SetAllNavigationButtonDisabled(); },
+                ThreadOption.PublisherThread,
+                false,
+                message => message.Type == InstallationApp_EventMessageType.EnterView);
+
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
+                (message) => { this.UpdateDataFromDataManager(); },
+                ThreadOption.PublisherThread,
+                false,
+                message => message.Type == InstallationApp_EventMessageType.ExitView);
         }
 
         #endregion

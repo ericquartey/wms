@@ -14,11 +14,15 @@ namespace Ferretto.VW.InstallationApp
             this.InitializeComponent();
         }
 
-        #endregion Constructors
+        #endregion
+
+        #region Methods
 
         private void CustomInputFieldControlFocusable_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-
+            // HACK is not known yet the reason of this method's existance and why it's used in the auto-generated code-behind
         }
+
+        #endregion
     }
 }

@@ -8,7 +8,7 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
 
         private int blockHeightMillimiters;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -16,7 +16,7 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
         {
             if ((firstCellID % 2 == 0 && lastCellID % 2 != 0) || (firstCellID % 2 != 0 && lastCellID % 2 == 0))
             {
-                throw new ArgumentException("Cells' Management Exception: final cell not on the same side of initial cell.", "lastCell");
+                throw new ArgumentException("Cells' Management Exception: final cell not on the same side of initial cell.", "lastCellID");
             }
             this.InitialIDCell = firstCellID;
             this.FinalIDCell = lastCellID;
@@ -26,7 +26,7 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
             this.IdGroup = blockID;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -55,6 +55,6 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
         public int Priority { get; set; }
         public Side Side { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }
