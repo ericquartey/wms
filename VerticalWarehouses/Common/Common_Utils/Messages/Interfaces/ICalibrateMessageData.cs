@@ -13,7 +13,13 @@
     {
         #region Properties
 
+        float Acceleration { get; }
+
         Axis AxisToCalibrate { get; }
+
+        float CreepSpeed { get; }
+
+        float FastSpeed { get; }
 
         #endregion
     }

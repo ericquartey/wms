@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Mission;
+using Ferretto.VW.MAS_FiniteStateMachines.NewHoming;
 using Ferretto.VW.MAS_FiniteStateMachines.Positioning;
 using Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming;
 using Ferretto.VW.MAS_InverterDriver;
@@ -20,7 +22,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
     {
         #region Fields
 
-        private readonly INewInverterDriver driver;
+        private readonly INewInverterDriver driver; //TODO to be removed
 
         private readonly IEventAggregator eventAggregator;
 
@@ -28,9 +30,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private readonly ManualResetEventSlim messageReceived;
 
-        private readonly INewRemoteIODriver remoteIODriver;
+        private readonly INewRemoteIODriver remoteIODriver; //TODO to be removed
 
-        private readonly StateMachineVerticalPositioning verticalPositioning;
+        private readonly StateMachineVerticalPositioning verticalPositioning; //TODO to be removed
 
         private IStateMachine currentStateMachine;
 
@@ -41,8 +43,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         public FiniteStateMachines(INewInverterDriver driver, INewRemoteIODriver remoteIODriver,
             IEventAggregator eventAggregator)
         {
-            this.driver = driver;
-            this.remoteIODriver = remoteIODriver;
+            //TODO The input args INewInverterDriver driver, INewRemoteIODriver remoteIODriver can be removed
+
+            this.driver = driver; //TODO TO BE REMOVED
+            this.remoteIODriver = remoteIODriver; //TODO TO BE REMOVED
             this.eventAggregator = eventAggregator;
 
             this.messageReceived = new ManualResetEventSlim(false);
@@ -62,23 +66,26 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 false,
                 message => message.Destination == MessageActor.FiniteStateMachines);
 
-            this.StateMachineHoming = new StateMachineHoming(this.driver, this.remoteIODriver, this.eventAggregator);
-            this.StateMachineVerticalHoming = new StateMachineVerticalHoming(this.driver, this.eventAggregator);
-            this.verticalPositioning = new StateMachineVerticalPositioning(this.driver, this.eventAggregator);
+            this.StateMachineHoming = new StateMachineHoming(this.driver, this.remoteIODriver, this.eventAggregator); //TODO to be removed
+            this.StateMachineVerticalHoming = new StateMachineVerticalHoming(this.driver, this.eventAggregator); //TODO to be removed
+            this.verticalPositioning = new StateMachineVerticalPositioning(this.driver, this.eventAggregator); //TODO to be removed
         }
 
         #endregion
 
         #region Properties
 
-        public StateMachineHoming StateMachineHoming { get; }
+        public StateMachineHoming StateMachineHoming { get; } //TODO to be removed
 
+        //TODO to be removed
         public StateMachineVerticalHoming StateMachineVerticalHoming { get; }
 
         #endregion
 
         #region Methods
 
+        // -----
+        //TODO to be removed
         public void Destroy()
         {
             try
@@ -102,36 +109,36 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             switch (action.Type)
             {
                 case MessageType.Homing:
-                {
-                    if (null == this.StateMachineHoming) throw new ArgumentNullException();
+                    {
+                        if (null == this.StateMachineHoming) throw new ArgumentNullException();
 
-                    this.StateMachineHoming.Start();
-                    break;
-                }
+                        this.StateMachineHoming.Start();
+                        break;
+                    }
 
                 case MessageType.StopHoming:
-                {
-                    if (null == this.StateMachineHoming) throw new ArgumentNullException();
+                    {
+                        if (null == this.StateMachineHoming) throw new ArgumentNullException();
 
-                    this.StateMachineHoming.Stop();
-                    break;
-                }
+                        this.StateMachineHoming.Stop();
+                        break;
+                    }
 
                 case MessageType.ExecuteVerticalPositioning:
-                {
-                    if (null == this.verticalPositioning) throw new ArgumentNullException();
+                    {
+                        if (null == this.verticalPositioning) throw new ArgumentNullException();
 
-                    this.verticalPositioning.Start();
-                    break;
-                }
+                        this.verticalPositioning.Start();
+                        break;
+                    }
 
                 case MessageType.ExecuteStopVerticalPositioning:
-                {
-                    if (null == this.verticalPositioning) throw new ArgumentNullException();
+                    {
+                        if (null == this.verticalPositioning) throw new ArgumentNullException();
 
-                    this.verticalPositioning.Stop();
-                    break;
-                }
+                        this.verticalPositioning.Stop();
+                        break;
+                    }
             }
         }
 
@@ -148,6 +155,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
             this.StateMachineVerticalHoming.Start();
         }
+
+        // -------
 
         public new Task StopAsync(CancellationToken stoppingToken)
         {
@@ -187,6 +196,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         case MessageType.HorizontalHoming:
                             break;
 
+                        // Added this performed action
+                        case MessageType.Homing:
+                            this.ProcessHomingMessage(receivedMessage);
+                            break;
+
                         case MessageType.StopAction:
                             this.ProcessStopActionMessage(receivedMessage);
                             break;
@@ -210,6 +224,23 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.currentStateMachine = new MissionStateMachine(this.eventAggregator);
 
             this.currentStateMachine.Start();
+        }
+
+        private void ProcessHomingMessage(CommandMessage message)
+        {
+            if (this.currentStateMachine != null)
+            {
+                //TODO throw concurrent action exception
+            }
+
+            if (message.Data is ICalibrateMessageData data)
+            {
+                // handle the calibration data and pass to the calibrate states machine
+
+                //TODO apply Finite State Machine Business Logic to the message
+                this.currentStateMachine = new HomingStateMachine(this.eventAggregator, data);
+                this.currentStateMachine.Start();
+            }
         }
 
         private void ProcessStopActionMessage(CommandMessage receivedMessage)
