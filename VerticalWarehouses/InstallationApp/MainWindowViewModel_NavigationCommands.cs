@@ -117,37 +117,37 @@ namespace Ferretto.VW.InstallationApp
         public ICommand Gate1HeightControlNavigationButtonCommand => this.gate1HeightControlNavigationButtonCommand ?? (this.gate1HeightControlNavigationButtonCommand = new DelegateCommand(() =>
         {
             this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (Gate1HeightControlViewModel)this.Container.Resolve<IGate1HeightControlViewModel>();
+            this.ContentRegionCurrentViewModel = (Shutter1HeightControlViewModel)this.Container.Resolve<IShutter1HeightControlViewModel>();
         }));
 
         public ICommand Gate2HeightControlNavigationButtonCommand => this.gate2HeightControlNavigationButtonCommand ?? (this.gate2HeightControlNavigationButtonCommand = new DelegateCommand(() =>
         {
             this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (Gate2HeightControlViewModel)this.Container.Resolve<IGate2HeightControlViewModel>();
+            this.ContentRegionCurrentViewModel = (Shutter2HeightControlViewModel)this.Container.Resolve<IShutter2HeightControlViewModel>();
         }));
 
         public ICommand Gate3HeightControlNavigationButtonCommand => this.gate3HeightControlNavigationButtonCommand ?? (this.gate3HeightControlNavigationButtonCommand = new DelegateCommand(() =>
         {
             this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (Gate3HeightControlViewModel)this.Container.Resolve<IGate3HeightControlViewModel>();
+            this.ContentRegionCurrentViewModel = (Shutter3HeightControlViewModel)this.Container.Resolve<IShutter3HeightControlViewModel>();
         }));
 
         public ICommand Gates1ControlNavigationButtonCommand => this.gates1ControlNavigationButtonCommand ?? (this.gates1ControlNavigationButtonCommand = new DelegateCommand(() =>
         {
             this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (Gate1ControlViewModel)this.Container.Resolve<IGate1ControlViewModel>();
+            this.ContentRegionCurrentViewModel = (Shutter1ControlViewModel)this.Container.Resolve<IShutter1ControlViewModel>();
         }));
 
         public ICommand Gates2ControlNavigationButtonCommand => this.gates2ControlNavigationButtonCommand ?? (this.gates2ControlNavigationButtonCommand = new DelegateCommand(() =>
         {
             this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (Gate2ControlViewModel)this.Container.Resolve<IGate2ControlViewModel>();
+            this.ContentRegionCurrentViewModel = (Shutter2ControlViewModel)this.Container.Resolve<IShutter2ControlViewModel>();
         }));
 
         public ICommand Gates3ControlNavigationButtonCommand => this.gates3ControlNavigationButtonCommand ?? (this.gates3ControlNavigationButtonCommand = new DelegateCommand(() =>
         {
             this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (Gate3ControlViewModel)this.Container.Resolve<IGate3ControlViewModel>();
+            this.ContentRegionCurrentViewModel = (Shutter3ControlViewModel)this.Container.Resolve<IShutter3ControlViewModel>();
         }));
 
         public ICommand InstallationStateButtonCommand => this.installationStateButtonCommand ?? (this.installationStateButtonCommand = new DelegateCommand(() =>
@@ -165,7 +165,7 @@ namespace Ferretto.VW.InstallationApp
         public ICommand LSMTGateEngineButtonCommand => this.lsmtGateEngineButtonCommand ?? (this.lsmtGateEngineButtonCommand = new DelegateCommand(() =>
         {
             this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (LSMTGateEngineViewModel)this.Container.Resolve<ILSMTGateEngineViewModel>();
+            this.ContentRegionCurrentViewModel = (LSMTShutterEngineViewModel)this.Container.Resolve<ILSMTShutterEngineViewModel>();
         }));
 
         public ICommand LSMTHorizontalEngineButtonCommand => this.lsmtHorizontalEngineButtonCommand ?? (this.lsmtHorizontalEngineButtonCommand = new DelegateCommand(() =>
@@ -212,7 +212,7 @@ namespace Ferretto.VW.InstallationApp
         public ICommand SsGateButtonCommand => this.ssGateButtonCommand ?? (this.ssGateButtonCommand = new DelegateCommand(() =>
         {
             this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (SSGateViewModel)this.Container.Resolve<ISSGateViewModel>();
+            this.ContentRegionCurrentViewModel = (SSShutterViewModel)this.Container.Resolve<ISSShutterViewModel>();
         }));
 
         public ICommand SSNavigationButtonsButtonCommand => this.ssNavigationButtonsButtonCommand ?? (this.ssNavigationButtonsButtonCommand = new DelegateCommand(() =>

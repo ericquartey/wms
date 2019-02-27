@@ -14,9 +14,9 @@ namespace Ferretto.VW.InstallationApp
 
         private IEventAggregator eventAggregator;
 
-        private ICommand gateEngineButtonCommand;
-
         private ICommand horizontalEngineButtonCommand;
+
+        private ICommand shutterEngineButtonCommand;
 
         private ICommand verticalEngineButtonCommand;
 
@@ -33,9 +33,9 @@ namespace Ferretto.VW.InstallationApp
 
         #region Properties
 
-        public ICommand GateEngineButtonCommand => this.gateEngineButtonCommand ?? (this.gateEngineButtonCommand = new DelegateCommand(() => ((LSMTMainViewModel)this.container.Resolve<ILSMTMainViewModel>()).LSMTContentRegionCurrentViewModel = (LSMTGateEngineViewModel)this.container.Resolve<ILSMTGateEngineViewModel>()));
-
         public ICommand HorizontalEngineButtonCommand => this.horizontalEngineButtonCommand ?? (this.horizontalEngineButtonCommand = new DelegateCommand(() => ((LSMTMainViewModel)this.container.Resolve<ILSMTMainViewModel>()).LSMTContentRegionCurrentViewModel = (LSMTHorizontalEngineViewModel)this.container.Resolve<ILSMTHorizontalEngineViewModel>()));
+
+        public ICommand ShutterEngineButtonCommand => this.shutterEngineButtonCommand ?? (this.shutterEngineButtonCommand = new DelegateCommand(() => ((LSMTMainViewModel)this.container.Resolve<ILSMTMainViewModel>()).LSMTContentRegionCurrentViewModel = (LSMTShutterEngineViewModel)this.container.Resolve<ILSMTShutterEngineViewModel>()));
 
         public ICommand VerticalEngineButtonCommand => this.verticalEngineButtonCommand ?? (this.verticalEngineButtonCommand = new DelegateCommand(() => ((LSMTMainViewModel)this.container.Resolve<ILSMTMainViewModel>()).LSMTContentRegionCurrentViewModel = (LSMTVerticalEngineViewModel)this.container.Resolve<ILSMTVerticalEngineViewModel>()));
 

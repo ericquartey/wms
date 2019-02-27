@@ -1,9 +1,9 @@
 {
   "Belt_Burnishing": true,
   "Machine_Ok": true,
-  "Ok_Gate1": true,
-  "Ok_Gate2": true,
-  "Ok_Gate3": true,
+  "Ok_Shutter1": true,
+  "Ok_Shutter2": true,
+  "Ok_Shutter3": true,
   "Ok_Laser1": true,
   "Ok_Laser2": true,
   "Ok_Laser3": true,

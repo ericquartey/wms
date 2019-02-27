@@ -132,9 +132,9 @@ namespace Ferretto.VW.InstallationApp
         private void UpdateData()
         {
             this.IsBeltBurnishingDone = this.Data.InstallationInfo.Belt_Burnishing;
-            this.IsShutter1InstallationProcedureDone = this.Data.InstallationInfo.Ok_Gate1;
-            this.IsShutter2InstallationProcedureDone = this.Data.InstallationInfo.Ok_Gate2;
-            this.IsShutter3InstallationProcedureDone = this.Data.InstallationInfo.Ok_Gate3;
+            this.IsShutter1InstallationProcedureDone = this.Data.InstallationInfo.Ok_Shutter1;
+            this.IsShutter2InstallationProcedureDone = this.Data.InstallationInfo.Ok_Shutter2;
+            this.IsShutter3InstallationProcedureDone = this.Data.InstallationInfo.Ok_Shutter3;
             this.IsHorizontalHomingDone = this.Data.InstallationInfo.Origin_X_Axis;
             this.IsLaserShutter1Done = this.Data.InstallationInfo.Ok_Laser1;
             this.IsLaserShutter2Done = this.Data.InstallationInfo.Ok_Laser2;
