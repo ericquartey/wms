@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
@@ -69,9 +69,9 @@ namespace Ferretto.Common.BusinessProviders
                 });
         }
 
-        public async Task<int> GetAllCountAsync(string whereExpression = null, string searchString = null)
+        public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
         {
-            return await this.missionsDataService.GetAllCountAsync(whereExpression, searchString);
+            return await this.missionsDataService.GetAllCountAsync(whereString, searchString);
         }
 
         public async Task<Mission> GetByIdAsync(int id)

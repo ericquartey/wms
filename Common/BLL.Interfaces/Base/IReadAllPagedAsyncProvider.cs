@@ -12,12 +12,12 @@ namespace Ferretto.Common.BLL.Interfaces.Base
         Task<IEnumerable<TModel>> GetAllAsync(
             int skip,
             int take,
-            IEnumerable<SortOption> orderBy = null,
-            string whereExpression = null,
+            IEnumerable<SortOption> orderBySortOptions = null,
+            string whereString = null,
             string searchString = null);
 
         Task<int> GetAllCountAsync(
-            string whereExpression = null,
+            string whereString = null,
             string searchString = null);
 
         #endregion

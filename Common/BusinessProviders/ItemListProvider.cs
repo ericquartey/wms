@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -122,10 +122,10 @@ namespace Ferretto.Common.BusinessProviders
                 });
         }
 
-        public async Task<int> GetAllCountAsync(string whereExpression = null, string searchString = null)
+        public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
         {
             return await this.itemListsDataService
-                .GetAllCountAsync(whereExpression, searchString);
+                .GetAllCountAsync(whereString, searchString);
         }
 
         public async Task<ItemListDetails> GetByIdAsync(int id)
