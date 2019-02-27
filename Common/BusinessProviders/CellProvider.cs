@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -127,24 +127,25 @@ namespace Ferretto.Common.BusinessProviders
 
             return new CellDetails
             {
-                Id = cell.Id,
+                AbcClassChoices = abcClassChoices,
                 AbcClassId = cell.AbcClassId,
+                AisleChoices = aisleChoices,
                 AisleId = cell.AisleId,
                 AreaId = cell.AreaId,
+                CellStatusChoices = cellStatusChoices,
                 CellStatusId = cell.CellStatusId,
+                CellTypeChoices = cellTypeChoices,
                 CellTypeId = cell.CellTypeId,
                 Column = cell.Column,
                 Floor = cell.Floor,
+                Id = cell.Id,
+                LoadingUnitsCount = cell.LoadingUnitsCount,
                 Number = cell.Number,
                 Priority = cell.Priority,
                 Side = (Side)cell.Side,
                 XCoordinate = cell.XCoordinate,
                 YCoordinate = cell.YCoordinate,
                 ZCoordinate = cell.ZCoordinate,
-                AbcClassChoices = abcClassChoices,
-                AisleChoices = aisleChoices,
-                CellStatusChoices = cellStatusChoices,
-                CellTypeChoices = cellTypeChoices
             };
         }
 
