@@ -4,7 +4,7 @@ namespace Ferretto.Common.Controls.Interfaces
     {
         #region Properties
 
-        ColorRequired ColorRequired { get; set; }
+        ColorRequired ColorRequired { get; }
 
         #endregion
 
