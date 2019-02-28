@@ -2,14 +2,16 @@
 using Ferretto.VW.MAS_DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS_DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    partial class DataLayerContextModelSnapshot : ModelSnapshot
+    [Migration("20190228135125_AddLoadingUnit")]
+    partial class AddLoadingUnit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,6 +25,8 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                     b.Property<decimal>("Coord");
 
                     b.Property<int>("DrawerId");
+
+                    b.Property<int>("LoadingUnitId");
 
                     b.Property<int>("Priority");
 

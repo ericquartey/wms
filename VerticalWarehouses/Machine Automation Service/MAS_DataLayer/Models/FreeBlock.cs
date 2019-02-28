@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ferretto.VW.MAS_DataLayer
+﻿namespace Ferretto.VW.MAS_DataLayer
 {
     public class FreeBlock
     {
@@ -15,6 +13,8 @@ namespace Ferretto.VW.MAS_DataLayer
         public int DrawerId { get; set; }
 
         public int FreeBlockId { get; set; }
+
+        public int LoadingUnitId { get; set; }
 
         public int Priority { get; set; }
 

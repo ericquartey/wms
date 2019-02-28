@@ -1,17 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
     public interface IDataLayer
     {
+        // TEMP Maybe obsolete
+        ///// <summary>
+        /////     Get a list of cells from the configuration table
+        ///// </summary>
+        ///// <returns>Return a list of cell</returns>
+        //List<Cell> GetCellList();
+
         #region Methods
 
         /// <summary>
-        ///     Get a list of cells from the configuration table
+        /// Get to the mission the lowest cell position for a drawer
         /// </summary>
-        /// <returns>Return a list of cell</returns>
-        List<Cell> GetCellList();
+        /// <param name="cellId">Id of the lowest drawer cell</param>
+        /// <returns>The dawer side and height</returns>
+        LoadingUnitPosition GetCellPosition(int cellId);
 
         /// <summary>
         ///     Get a decimal variable from the configuration table
@@ -37,9 +44,9 @@ namespace Ferretto.VW.MAS_DataLayer
         ///     Get an object with the vertical position and side to place a drawer
         /// </summary>
         /// <param name="drawerHeight">Drawer height to insert in the magazine</param>
-        /// <param name="drawerId">Id of the Drawer we take into account</param>
+        /// <param name="loadingUnitId">Id of the Drawer we take into account</param>
         /// <returns>An object with position and side for a return mission</returns>
-        ReturnMissionPosition GetFreeBlockPosition(decimal drawerHeight, int drawerId);
+        LoadingUnitPosition GetFreeBlockPosition(decimal loadingUnitHeight, int loadingUnitId);
 
         /// <summary>
         ///     Get an integer variable from the configuration table
@@ -82,18 +89,25 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <summary>
         /// This methods is been invoked when a drawer backs from the bay to cells
         /// </summary>
-        /// <param name="drawerId">Id of the Drawer we take into account</param>
+        /// <param name="loadingUnitId">Id of the Drawer we take into account</param>
         /// <exception cref="DataLayerExceptionEnum.NO_FREE_BLOCK_BOOKED_EXCEPTION">Thrown when a drawer backs from bay, but we don't find booked cells in a Free Blocks table</exception>
         /// <exception cref="DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION">Thrown when we have booked cells in the Free Blocks table, but we don't find one of them in the cells table</exception>
-        void ReturnMissionEnded(int drawerId);
+        void ReturnMissionEnded(int loadingUnitId);
+
+        ///// <summary>
+        ///// Set one or more cells to a list cell to new value
+        ///// </summary>
+        ///// <param name="listCells">A list of cells</param>
+        ///// <returns>A boolean value about the set outcome</returns>
+        ///// <exception cref="ArgumentNullException">Exception when there is not a variable of list in the table</exception>
+        //bool SetCellList(List<Cell> listCells);
 
         /// <summary>
-        /// Set one or more cells to a list cell to new value
+        /// Set the status of a cell, when a drawer free some cells
         /// </summary>
-        /// <param name="listCells">A list of cells</param>
-        /// <returns>A boolean value about the set outcome</returns>
-        /// <exception cref="ArgumentNullException">Exception when there is not a variable of list in the table</exception>
-        bool SetCellList(List<Cell> listCells);
+        /// <param name="loadingUnitId">Id of the Drawer we take into account</param>
+        /// <exception cref="DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION">Thrown when we don't find cells in the Free Blocks table</exception>
+        void SetCellWorkingStatus(int loadingUnitId);
 
         /// <summary>
         ///     Set a decimal variable in the configuration table to a new value
