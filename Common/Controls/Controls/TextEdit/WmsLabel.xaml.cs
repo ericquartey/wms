@@ -5,6 +5,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using DevExpress.Mvvm.UI;
+using Ferretto.Common.BusinessModels;
+using Ferretto.Common.Controls.Interfaces;
 
 namespace Ferretto.Common.Controls
 {
@@ -31,6 +33,8 @@ namespace Ferretto.Common.Controls
         private const string TRIMTEXT = "...";
 
         private bool adjustSizeAfterFirstUpdate;
+
+        private string colorRequiredIcon;
 
         private double defaultControlWidth;
 
@@ -71,6 +75,8 @@ namespace Ferretto.Common.Controls
             var trimTextWidth = this.GetTextWidth(TRIMTEXT);
             this.endTitleTextMargin = trimTextWidth + this.WmsIcon.Width + EXTRATEXTOFFSET;
             this.SizeChanged += this.WmsLabel_SizeChanged;
+
+            this.SetColorRequiredIcon();
         }
 
         public void Show(bool show)
@@ -81,6 +87,23 @@ namespace Ferretto.Common.Controls
         public void ShowIcon(bool show)
         {
             this.WmsIcon.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private string ConvertColor(ColorRequired color)
+        {
+            switch (color)
+            {
+                case ColorRequired.CreateMode:
+                    return Colors.Red.ToString();
+                    break;
+
+                case ColorRequired.EditMode:
+                    return "#039BE5";
+                    break;
+
+                default:
+                    return Colors.Black.ToString();
+            }
         }
 
         private void EvaluateTitle()
@@ -163,6 +186,19 @@ namespace Ferretto.Common.Controls
         private double GetTextWidth(string text) => new FormattedText(text, System.Threading.Thread.CurrentThread.CurrentCulture,
                                                          this.FlowDirection, this.GetInterface, this.FontSize, this.Foreground,
                                                          VisualTreeHelper.GetDpi(this).PixelsPerDip).Width;
+
+        private void SetColorRequiredIcon()
+        {
+            if (this.DataContext is IRefreshDataEntityViewModel viewModel)
+            {
+                this.colorRequiredIcon = this.ConvertColor(viewModel.ColorRequired);
+                if (this.colorRequiredIcon != null)
+                {
+                    this.WmsIcon.ColorizeBrush = (SolidColorBrush)
+                        new BrushConverter().ConvertFromString(this.colorRequiredIcon);
+                }
+            }
+        }
 
         private void SetEditorCoreWidth(double width)
         {
