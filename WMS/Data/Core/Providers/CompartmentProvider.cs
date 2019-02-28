@@ -40,7 +40,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<CompartmentDetails>> CreateAsync(CompartmentDetails model)
         {
-            if (model == null)
+            if (model == null || model.Height == null || model.Width == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
@@ -248,10 +248,29 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new NotFoundOperationResult<CompartmentDetails>();
             }
 
-            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
-            await this.dataContext.SaveChangesAsync();
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                var createCompartmentTypeResult = await this.compartmentTypeProvider.CreateAsync(
+                    new CompartmentType
+                    {
+                        Width = model.Width,
+                        Height = model.Height
+                    },
+                    model.ItemId,
+                    model.MaxCapacity);
 
-            return new SuccessOperationResult<CompartmentDetails>(model);
+                if (!createCompartmentTypeResult.Success)
+                {
+                    return new CreationErrorOperationResult<CompartmentDetails>();
+                }
+
+                model.CompartmentTypeId = createCompartmentTypeResult.Entity.Id;
+                this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                await this.dataContext.SaveChangesAsync();
+
+                scope.Complete();
+                return new SuccessOperationResult<CompartmentDetails>(model);
+            }
         }
 
         private static Expression<Func<Compartment, bool>> BuildSearchExpression(string search)

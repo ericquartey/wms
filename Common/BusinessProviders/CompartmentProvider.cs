@@ -105,7 +105,16 @@ namespace Ferretto.Common.BusinessProviders
                         ReservedToStore = compartment.ReservedToStore,
                         CreationDate = DateTime.Now,
                         ItemId = compartment.ItemId,
-                        MaterialStatusId = compartment.MaterialStatusId
+                        MaterialStatusId = compartment.MaterialStatusId,
+                        Width = compartment.Width,
+                        Height = compartment.Height,
+                        CompartmentStatusId = compartment.CompartmentStatusId,
+                        Lot = compartment.Lot,
+                        MaxCapacity = compartment.MaxCapacity,
+                        PackageTypeId = compartment.PackageTypeId,
+                        RegistrationNumber = compartment.RegistrationNumber,
+                        Sub1 = compartment.Sub1,
+                        Sub2 = compartment.Sub2
                     });
                 }
 
@@ -140,7 +149,16 @@ namespace Ferretto.Common.BusinessProviders
                     ReservedToStore = model.ReservedToStore,
                     CreationDate = DateTime.Now,
                     ItemId = model.ItemId,
-                    MaterialStatusId = model.MaterialStatusId
+                    MaterialStatusId = model.MaterialStatusId,
+                    Width = model.Width,
+                    Height = model.Height,
+                    CompartmentStatusId = model.CompartmentStatusId,
+                    Lot = model.Lot,
+                    MaxCapacity = model.MaxCapacity,
+                    PackageTypeId = model.PackageTypeId,
+                    RegistrationNumber = model.RegistrationNumber,
+                    Sub1 = model.Sub1,
+                    Sub2 = model.Sub2
                 });
 
                 model.Id = compartment.Id;
