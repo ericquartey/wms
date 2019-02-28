@@ -12,7 +12,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class LoadingUnitEditViewModel : BaseServiceNavigationViewModel, IRefreshDataEntityViewModel
+    public class LoadingUnitEditViewModel : BaseServiceNavigationViewModel, IExtensionDataEntityViewModel
     {
         #region Fields
 

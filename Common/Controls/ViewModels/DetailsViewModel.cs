@@ -9,7 +9,7 @@ using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
-    public abstract class DetailsViewModel<T> : BaseServiceNavigationViewModel, IRefreshDataEntityViewModel
+    public abstract class DetailsViewModel<T> : BaseServiceNavigationViewModel, IExtensionDataEntityViewModel
         where T : BusinessObject
     {
         #region Fields
