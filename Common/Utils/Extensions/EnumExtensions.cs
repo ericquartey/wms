@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 
-namespace Ferretto.Common.Utils
+namespace Ferretto.Common.Utils.Extensions
 {
     public static class EnumExtensions
     {

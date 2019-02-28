@@ -87,14 +87,7 @@ namespace Ferretto.Common.Controls.Services
         {
             try
             {
-                var orderBy = GetSortOrder(e);
-
-                var entities = await this.provider.GetAllAsync(
-                    skip: e.Skip,
-                    take: GetPageSize(),
-                    orderBy: orderBy
-                    );
-
+                var entities = await this.provider.GetAllAsync(e.Skip, GetPageSize(), GetSortOrder(e));
                 return new FetchRowsResult(entities.Cast<object>().ToArray(), hasMoreRows: entities.Count() == GetPageSize());
             }
             catch (Exception ex)
