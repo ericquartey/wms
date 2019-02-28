@@ -111,14 +111,12 @@ namespace Ferretto.Common.BusinessProviders
         public async Task<IEnumerable<Item>> GetAllAsync(
             int skip,
             int take,
-            IEnumerable<SortOption> orderBy = null,
-            IExpression whereExpression = null,
+            IEnumerable<SortOption> orderBySortOptions = null,
+            string whereString = null,
             string searchString = null)
         {
-            var orderByString = orderBy != null ? string.Join(",", orderBy.Select(s => $"{s.PropertyName} {s.Direction}")) : null;
-
             var items = await this.itemsDataService
-                .GetAllAsync(skip, take, whereExpression?.ToString(), orderByString, searchString);
+                .GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString);
 
             return items
                 .Select(i => new Item
@@ -154,9 +152,9 @@ namespace Ferretto.Common.BusinessProviders
                 });
         }
 
-        public async Task<int> GetAllCountAsync(IExpression whereExpression = null, string searchString = null)
+        public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
         {
-            return await this.itemsDataService.GetAllCountAsync(whereExpression?.ToString(), searchString);
+            return await this.itemsDataService.GetAllCountAsync(whereString, searchString);
         }
 
         public async Task<IEnumerable<AllowedItemInCompartment>> GetAllowedByCompartmentIdAsync(int compartmentId)

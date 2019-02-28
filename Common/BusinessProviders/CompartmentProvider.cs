@@ -95,15 +95,24 @@ namespace Ferretto.Common.BusinessProviders
                 {
                     compartmentsApi.Add(new WMS.Data.WebAPI.Contracts.CompartmentDetails
                     {
+                        CompartmentStatusId = compartment.CompartmentStatusId,
                         CompartmentTypeId = compartment.CompartmentTypeId,
                         CreationDate = DateTime.Now,
+                        Height = compartment.Height,
                         IsItemPairingFixed = compartment.IsItemPairingFixed,
                         ItemId = compartment.ItemId,
                         LoadingUnitId = compartment.LoadingUnitId,
+                        Lot = compartment.Lot,
                         MaterialStatusId = compartment.MaterialStatusId,
+                        MaxCapacity = compartment.MaxCapacity,
+                        PackageTypeId = compartment.PackageTypeId,
+                        RegistrationNumber = compartment.RegistrationNumber,
                         ReservedForPick = compartment.ReservedForPick,
                         ReservedToStore = compartment.ReservedToStore,
                         Stock = compartment.Stock,
+                        Sub1 = compartment.Sub1,
+                        Sub2 = compartment.Sub2,
+                        Width = compartment.Width,
                         XPosition = compartment.XPosition,
                         YPosition = compartment.YPosition,
                     });
@@ -130,15 +139,24 @@ namespace Ferretto.Common.BusinessProviders
             {
                 var compartment = await this.compartmentsDataService.CreateAsync(new WMS.Data.WebAPI.Contracts.CompartmentDetails
                 {
+                    CompartmentStatusId = model.CompartmentStatusId,
                     CompartmentTypeId = model.CompartmentTypeId,
                     CreationDate = DateTime.Now,
+                    Height = model.Height,
                     IsItemPairingFixed = model.IsItemPairingFixed,
                     ItemId = model.ItemId,
                     LoadingUnitId = model.LoadingUnitId,
+                    Lot = model.Lot,
                     MaterialStatusId = model.MaterialStatusId,
+                    MaxCapacity = model.MaxCapacity,
+                    PackageTypeId = model.PackageTypeId,
+                    RegistrationNumber = model.RegistrationNumber,
                     ReservedForPick = model.ReservedForPick,
                     ReservedToStore = model.ReservedToStore,
                     Stock = model.Stock,
+                    Sub1 = model.Sub1,
+                    Sub2 = model.Sub2,
+                    Width = model.Width,
                     XPosition = model.XPosition,
                     YPosition = model.YPosition,
                 });
@@ -174,13 +192,11 @@ namespace Ferretto.Common.BusinessProviders
         public async Task<IEnumerable<Compartment>> GetAllAsync(
             int skip,
             int take,
-            IEnumerable<SortOption> orderBy = null,
-            IExpression whereExpression = null,
+            IEnumerable<SortOption> orderBySortOptions = null,
+            string whereString = null,
             string searchString = null)
         {
-            var orderByString = orderBy != null ? string.Join(",", orderBy.Select(s => $"{s.PropertyName} {s.Direction}")) : null;
-
-            return (await this.compartmentsDataService.GetAllAsync(skip, take, whereExpression?.ToString(), orderByString, searchString))
+            return (await this.compartmentsDataService.GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString))
                 .Select(c => new Compartment
                 {
                     CompartmentStatusDescription = c.CompartmentStatusDescription,
@@ -201,9 +217,9 @@ namespace Ferretto.Common.BusinessProviders
                 });
         }
 
-        public async Task<int> GetAllCountAsync(IExpression whereExpression = null, string searchString = null)
+        public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
         {
-            return await this.compartmentsDataService.GetAllCountAsync(whereExpression?.ToString(), searchString);
+            return await this.compartmentsDataService.GetAllCountAsync(whereString, searchString);
         }
 
         public async Task<CompartmentDetails> GetByIdAsync(int id)

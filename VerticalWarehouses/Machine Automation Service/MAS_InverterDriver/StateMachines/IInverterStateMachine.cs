@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.InverterDriver.StateMachines
+﻿namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 {
     public interface IInverterStateMachine
     {

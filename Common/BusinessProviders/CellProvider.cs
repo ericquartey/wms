@@ -63,12 +63,12 @@ namespace Ferretto.Common.BusinessProviders
         public async Task<IEnumerable<Cell>> GetAllAsync(
             int skip,
             int take,
-            IEnumerable<SortOption> orderBy = null,
-            IExpression whereExpression = null,
+            IEnumerable<SortOption> orderBySortOptions = null,
+            string whereString = null,
             string searchString = null)
         {
             var cells = await this.cellsDataService
-                .GetAllAsync(skip, take, whereExpression?.ToString(), orderBy.ToQueryString(), searchString);
+                .GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString);
 
             return cells
                 .Select(c => new Cell
@@ -92,10 +92,10 @@ namespace Ferretto.Common.BusinessProviders
                 });
         }
 
-        public async Task<int> GetAllCountAsync(IExpression whereExpression = null, string searchString = null)
+        public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
         {
             return await this.cellsDataService
-                .GetAllCountAsync(whereExpression?.ToString(), searchString);
+                .GetAllCountAsync(whereString, searchString);
         }
 
         public async Task<IEnumerable<Enumeration>> GetByAisleIdAsync(int aisleId)

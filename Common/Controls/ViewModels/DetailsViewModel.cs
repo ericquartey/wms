@@ -9,7 +9,7 @@ using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
-    public abstract class DetailsViewModel<T> : BaseServiceNavigationViewModel, IRefreshDataEntityViewModel
+    public abstract class DetailsViewModel<T> : BaseServiceNavigationViewModel, IExtensionDataEntityViewModel
         where T : BusinessObject
     {
         #region Fields
@@ -18,9 +18,11 @@ namespace Ferretto.Common.Controls
 
         private readonly IDialogService dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
 
+        private ColorRequired colorRequired = ColorRequired.EditMode;
+
         private bool isBusy;
 
-        private bool isValidationEnabled;
+        private bool isModelValid;
 
         private T model;
 
@@ -43,6 +45,12 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
+        public ColorRequired ColorRequired
+        {
+            get => this.colorRequired;
+            set => this.SetProperty(ref this.colorRequired, value);
+        }
+
         public IDialogService DialogService => this.dialogService;
 
         public bool IsBusy
@@ -57,15 +65,21 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public bool IsValidationEnabled
+        public bool IsModelValid
         {
-            get => this.isValidationEnabled;
-            set
+            get
             {
-                if (this.SetProperty(ref this.isValidationEnabled, value))
+                var temp = false;
+                if (!this.changeDetector.IsModified || this.Model == null)
                 {
-                    this.EvaluateCanExecuteCommands();
+                    temp = true;
                 }
+                else
+                {
+                    temp = string.IsNullOrWhiteSpace(this.Model.Error);
+                }
+                this.SetProperty(ref this.isModelValid, temp);
+                return temp;
             }
         }
 
@@ -146,7 +160,7 @@ namespace Ferretto.Common.Controls
         {
             return this.Model != null
                 && this.changeDetector.IsModified
-                && (!this.isValidationEnabled || string.IsNullOrWhiteSpace(this.Model.Error))
+                && this.IsModelValid
                 && !this.IsBusy
                 && this.changeDetector.IsRequiredValid;
         }

@@ -1,6 +1,7 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Interfaces;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
-namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Calibrate
 {
     public class EndState : InverterStateBase
     {

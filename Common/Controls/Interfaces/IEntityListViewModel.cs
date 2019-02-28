@@ -2,7 +2,7 @@
 
 namespace Ferretto.Common.Controls.Interfaces
 {
-    public interface IEntityListViewModel : IRefreshDataEntityViewModel
+    public interface IEntityListViewModel : IExtensionDataEntityViewModel
     {
         #region Properties
 

@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Exceptions;
 
-namespace Ferretto.VW.InverterDriver.Interface
+namespace Ferretto.VW.MAS_InverterDriver.Interface
 {
     public interface ISocketTransport
     {
