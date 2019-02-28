@@ -10,16 +10,16 @@ namespace Ferretto.Common.Modules.BLL.Models
     {
         #region Constructors
 
-        public PagedDataSource(string key, string name, IPagedBusinessProvider<TModel, TKey> provider, string expression)
+        public PagedDataSource(string key, string name, IPagedBusinessProvider<TModel, TKey> provider, string filterString)
         {
             this.Key = key;
             this.Name = name;
             this.Provider = provider;
-            this.Expression = expression;
+            this.FilterString = filterString;
         }
 
         public PagedDataSource(string key, string name, IPagedBusinessProvider<TModel, TKey> provider)
-            : this(key, name, provider, expression: null)
+            : this(key, name, provider, null)
         {
         }
 
@@ -27,7 +27,7 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         #region Properties
 
-        public string Expression { get; }
+        public string FilterString { get; }
 
         public Func<IQueryable<TModel>> GetData { get; }
 

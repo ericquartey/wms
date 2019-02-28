@@ -124,6 +124,7 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.CompartmentFirstStoreDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? FirstStoreDate { get; set; }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CompartmentHeight), ResourceType = typeof(BusinessObjects))]
         public int? Height
         {
@@ -302,6 +303,7 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.sub2, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CompartmentWidth), ResourceType = typeof(BusinessObjects))]
         public int? Width
         {
@@ -315,6 +317,7 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CompartmentXPosition), ResourceType = typeof(BusinessObjects))]
         public int? XPosition
         {
@@ -328,6 +331,7 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CompartmentYPosition), ResourceType = typeof(BusinessObjects))]
         public int? YPosition
         {

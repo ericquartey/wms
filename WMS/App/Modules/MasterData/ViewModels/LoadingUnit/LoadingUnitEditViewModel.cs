@@ -12,7 +12,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class LoadingUnitEditViewModel : BaseServiceNavigationViewModel, IRefreshDataEntityViewModel
+    public class LoadingUnitEditViewModel : BaseServiceNavigationViewModel, IExtensionDataEntityViewModel
     {
         #region Fields
 
@@ -80,6 +80,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public ICommand BulkAddCommand => this.bulkAddCommand ??
             (this.bulkAddCommand = new DelegateCommand(this.ExecuteBulkAddCommand));
+
+        public ColorRequired ColorRequired => ColorRequired.Default;
 
         public IEnumerable<CompartmentDetails> CompartmentsDataSource
         {

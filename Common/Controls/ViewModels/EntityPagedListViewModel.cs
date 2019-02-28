@@ -5,11 +5,9 @@ using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using DevExpress.Data.Filtering;
-using DevExpress.Xpf.Core.FilteringUI;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Base;
-using Ferretto.Common.Controls.Extensions;
 using Ferretto.Common.Utils.Expressions;
 using NLog;
 
@@ -130,15 +128,7 @@ namespace Ferretto.Common.Controls
 
                 if (filterDataSource.Provider != null)
                 {
-                    IExpression whereExpression = null;
-
-                    if (filterDataSource.Expression != null)
-                    {
-                        whereExpression = CriteriaOperator.Parse(filterDataSource.Expression)
-                            .AsIExpression();
-                    }
-
-                    filterTile.Count = await filterDataSource.Provider.GetAllCountAsync(whereExpression);
+                    filterTile.Count = await filterDataSource.Provider.GetAllCountAsync(filterDataSource.FilterString);
                 }
             }
         }
@@ -187,7 +177,7 @@ namespace Ferretto.Common.Controls
 
             this.Provider = filterDataSource.Provider;
 
-            var newOverallFilter = CriteriaOperator.TryParse(filterDataSource.Expression);
+            var newOverallFilter = CriteriaOperator.TryParse(filterDataSource.FilterString);
 
             this.OverallFilter = JoinFilters(newOverallFilter, this.customFilter);
             this.logger.Debug($"Data source filter: '{this.OverallFilter}'");
@@ -196,15 +186,15 @@ namespace Ferretto.Common.Controls
 
         private async Task<FetchRowsResult> FetchRowsAsync(FetchRowsAsyncEventArgs e)
         {
-            var orderByExpression = GetSortOrder(e);
+            var orderBySortOptions = GetSortOrder(e);
 
-            var whereExpression = this.overallFilter?.AsIExpression();
+            var whereString = this.overallFilter?.ToString();
 
             var entities = await this.provider.GetAllAsync(
                 e.Skip,
                 GetPageSize(),
-                orderByExpression,
-                whereExpression,
+                orderBySortOptions,
+                whereString,
                 this.searchText);
 
             return new FetchRowsResult(entities.Cast<object>().ToArray(), hasMoreRows: entities.Count() == GetPageSize());

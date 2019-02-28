@@ -53,7 +53,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             try
             {
-                var whereExpression = where.AsIExpression();
                 var orderByExpression = orderBy.ParseSortOptions();
 
                 return this.Ok(
@@ -61,7 +60,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                         skip,
                         take,
                         orderByExpression,
-                        whereExpression,
+                        where,
                         search));
             }
             catch (NotSupportedException e)
@@ -80,11 +79,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             try
             {
-                var whereExpression = where.AsIExpression();
-
-                return await this.cellProvider.GetAllCountAsync(
-                           whereExpression,
-                           search);
+                return await this.cellProvider.GetAllCountAsync(where, search);
             }
             catch (NotSupportedException e)
             {

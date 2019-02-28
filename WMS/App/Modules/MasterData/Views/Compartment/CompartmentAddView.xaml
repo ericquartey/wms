@@ -28,9 +28,9 @@
                        Style="{DynamicResource ActionBarNotCustomizable}">
 
             <wms:ActionBarItem Command="{Binding SaveCommand}"
-                               Content="{x:Static res:General.Save}"
+                               Content="{x:Static res:General.Create}"
                                CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_save_black_24dp.png"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-create-36.png"
                                GlyphSize="Custom" />
 
             <wms:ActionBarItem Command="{Binding CancelCommand}"
@@ -236,6 +236,6 @@
                    MaxWidth="300"
                    Style="{DynamicResource TextBlockErrorMessageStyle}"
                    Text="{Binding Model.Error}"
-                   Visibility="{Binding IsValidationEnabled, Converter={StaticResource BTVC}}" />
+                   Visibility="{Binding IsModelValid, Converter={StaticResource BTVIC}}" />
     </Grid>
 </UserControl>
