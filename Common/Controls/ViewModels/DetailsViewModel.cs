@@ -18,6 +18,8 @@ namespace Ferretto.Common.Controls
 
         private readonly IDialogService dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
 
+        private ColorRequired colorRequired = ColorRequired.EditMode;
+
         private bool isBusy;
 
         private bool isModelValid;
@@ -42,6 +44,12 @@ namespace Ferretto.Common.Controls
         #endregion
 
         #region Properties
+
+        public ColorRequired ColorRequired
+        {
+            get => this.colorRequired;
+            set => this.SetProperty(ref this.colorRequired, value);
+        }
 
         public IDialogService DialogService => this.dialogService;
 

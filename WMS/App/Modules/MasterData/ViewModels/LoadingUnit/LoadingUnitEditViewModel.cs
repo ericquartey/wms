@@ -81,6 +81,8 @@ namespace Ferretto.WMS.Modules.MasterData
         public ICommand BulkAddCommand => this.bulkAddCommand ??
             (this.bulkAddCommand = new DelegateCommand(this.ExecuteBulkAddCommand));
 
+        public ColorRequired ColorRequired => ColorRequired.Default;
+
         public IEnumerable<CompartmentDetails> CompartmentsDataSource
         {
             get => this.compartmentsDataSource;

@@ -30,6 +30,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public CompartmentAddViewModel()
         {
             this.Title = Common.Resources.MasterData.AddCompartment;
+            this.ColorRequired = ColorRequired.CreateMode;
 
             this.LoadData();
         }

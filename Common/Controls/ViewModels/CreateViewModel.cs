@@ -52,6 +52,8 @@ namespace Ferretto.Common.Controls
                                            (this.closeDialogCommand = new Prism.Commands.DelegateCommand(
                                this.ExecuteCloseDialogCommand));
 
+        public ColorRequired ColorRequired { get => ColorRequired.CreateMode; }
+
         public ICommand CreateCommand => this.createCommand ??
             (this.createCommand = new DelegateCommand(
                 async () => await this.ExecuteCreateCommand(),

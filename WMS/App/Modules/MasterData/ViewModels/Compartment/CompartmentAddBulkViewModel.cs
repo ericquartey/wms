@@ -21,6 +21,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public CompartmentAddBulkViewModel()
         {
             this.Title = Common.Resources.MasterData.BulkAddCompartment;
+            this.ColorRequired = ColorRequired.CreateMode;
         }
 
         #endregion
