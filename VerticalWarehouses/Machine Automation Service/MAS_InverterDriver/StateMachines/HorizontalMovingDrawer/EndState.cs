@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Interfaces;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
 {
@@ -6,13 +6,13 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
     {
         #region Fields
 
-        private readonly MovingDrawer movingDrawer;
+        private readonly Axis movingDrawer;
 
         #endregion
 
         #region Constructors
 
-        public EndState(IInverterStateMachine parentStateMachine, MovingDrawer movingDrawer)
+        public EndState(IInverterStateMachine parentStateMachine, Axis movingDrawer)
         {
             this.parentStateMachine = parentStateMachine;
             this.movingDrawer = movingDrawer;

@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Interfaces;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalMovingDrawer;
 
@@ -8,15 +8,15 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
     {
         #region Fields
 
-        private readonly MovingDrawer movingDrawer;
+        private readonly Axis movingDrawer;
 
-        private MovingDrawer currentMovingDrawer;
+        private Axis currentMovingDrawer;
 
         #endregion
 
         #region Constructors
 
-        public VerticalMovingStateMachine(MovingDrawer movingDrawer,
+        public VerticalMovingStateMachine(Axis movingDrawer,
             BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
             BlockingConcurrentQueue<InverterMessage> priorityInverterCommandQueue)
         {
@@ -33,8 +33,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         {
             switch (this.movingDrawer)
             {
-                case MovingDrawer.Vertical:
-                    this.currentMovingDrawer = MovingDrawer.Vertical;
+                case Axis.Vertical:
+                    this.currentMovingDrawer = Axis.Vertical;
                     base.ChangeState(new IdleState(this, this.currentMovingDrawer));
                     break;
             }
@@ -46,8 +46,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         {
             switch (this.movingDrawer)
             {
-                case MovingDrawer.Vertical:
-                    this.currentMovingDrawer = MovingDrawer.Vertical;
+                case Axis.Vertical:
+                    this.currentMovingDrawer = Axis.Vertical;
                     break;
             }
 
