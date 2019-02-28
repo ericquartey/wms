@@ -147,7 +147,8 @@ namespace Ferretto.Common.Controls
             return this.Model != null
                 && this.changeDetector.IsModified
                 && (!this.isValidationEnabled || string.IsNullOrWhiteSpace(this.Model.Error))
-                && !this.IsBusy;
+                && !this.IsBusy
+                && this.changeDetector.IsRequiredValid;
         }
 
         protected virtual void EvaluateCanExecuteCommands()
