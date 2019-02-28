@@ -157,8 +157,9 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.CompartmentDeletedSuccessfully, StatusType.Success));
 
                     this.IsBusy = false;
-                    this.Model = null;
                     this.CompleteOperation();
+
+                    this.Model = null;
                 }
                 else
                 {

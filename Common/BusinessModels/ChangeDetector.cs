@@ -74,7 +74,7 @@ namespace Ferretto.Common.BusinessModels
 
         public void TakeSnapshot(T newInstance)
         {
-            if (this.instance != null && !this.instance.Equals(newInstance))
+            if (this.instance != null)//&& (newInstance == null || !this.instance.Equals(newInstance)))
             {
                 this.instance.PropertyChanged -= this.Instance_PropertyChanged;
             }
@@ -84,11 +84,11 @@ namespace Ferretto.Common.BusinessModels
             this.requiredProperties.Clear();
             this.IsModified = false;
 
-            this.totalRequired = this.instance.GetType().GetProperties()
-                .Where(p => p.CustomAttributes.Any(a => a.AttributeType == typeof(RequiredAttribute))).Count();
-
             if (newInstance != null)
             {
+                this.totalRequired = this.instance.GetType().GetProperties()
+                    .Where(p => p.CustomAttributes.Any(a => a.AttributeType == typeof(RequiredAttribute))).Count();
+
                 newInstance.PropertyChanged += this.Instance_PropertyChanged;
                 this.snapshot = newInstance.Clone() as T;
             }
