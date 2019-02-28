@@ -4,9 +4,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>Ferretto.VW.MAS_AutomationService</RootNamespace>
     <AssemblyName>Ferretto.VW.MAS_AutomationService</AssemblyName>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,8 +25,7 @@
     <ProjectReference Include="..\MAS_FiniteStateMachines\MAS_FiniteStateMachines.csproj" />
     <ProjectReference Include="..\MAS_InverterDriver\MAS_InverterDriver.csproj" />
     <ProjectReference Include="..\MAS_IODriver\MAS_IODriver.csproj" />
-    <ProjectReference Include="..\MAS_MachineManager\MAS_MachineManager.csproj" />
-    <ProjectReference Include="..\MAS_MissionScheduler\MAS_MissionScheduler.csproj" />
+    <ProjectReference Include="..\MAS_MissionsManager\MAS_MissionsManager.csproj" />
   </ItemGroup>
 
   <ItemGroup>

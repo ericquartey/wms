@@ -155,7 +155,7 @@ namespace Ferretto.VW.InvServer
         /// </summary>
         public void ClientConn(out string IPAddressClient, out string PortClient)
         {
-            logger.Log(LogLevel.Debug, String.Format("Client connection"));
+            logger.Log(LogLevel.Debug, string.Format("Client connection"));
 
             IPAddressClient = this.remoteIpEndPoint.Address.ToString();
             PortClient = this.remoteIpEndPoint.Port.ToString();
@@ -191,7 +191,7 @@ namespace Ferretto.VW.InvServer
         /// </summary>
         public void sendDataToClient(byte[] Answer)
         {
-            logger.Log(LogLevel.Debug, String.Format(" > sendDataToClient"));
+            logger.Log(LogLevel.Debug, string.Format(" > sendDataToClient"));
 
             if (this.sckWorker != null)
             {
@@ -207,11 +207,11 @@ namespace Ferretto.VW.InvServer
                 }
                 catch (SocketException ex)
                 {
-                    logger.Log(LogLevel.Debug, String.Format("Socket Exception Message: {0}", ex.Message));
+                    logger.Log(LogLevel.Debug, string.Format("Socket Exception Message: {0}", ex.Message));
                 }
                 catch (Exception ex)
                 {
-                    logger.Log(LogLevel.Debug, String.Format("Exception Message: {0}", ex.Message));
+                    logger.Log(LogLevel.Debug, string.Format("Exception Message: {0}", ex.Message));
                 }
             }
         }
@@ -229,7 +229,7 @@ namespace Ferretto.VW.InvServer
         public string StartListen()
         {
             var sListening = "ATTIVO";
-            logger.Log(LogLevel.Debug, String.Format("Start listening..."));
+            logger.Log(LogLevel.Debug, string.Format("Start listening..."));
 
             try
             {
@@ -248,7 +248,7 @@ namespace Ferretto.VW.InvServer
 #endif
                 // Resolves a host name to an IPHostEntry instance
                 var ipHost = Dns.GetHostEntry("");
-                logger.Log(LogLevel.Debug, String.Format("ipHost = {0}", ipHost.ToString()));
+                logger.Log(LogLevel.Debug, string.Format("ipHost = {0}", ipHost.ToString()));
 
                 // Gets first IP address associated with a localhost (IPv6)
                 IPAddress ipAddr = null;
@@ -258,14 +258,14 @@ namespace Ferretto.VW.InvServer
                     if (ipaddress.AddressFamily == AddressFamily.InterNetwork)
                     {
                         ipAddr = ipaddress;
-                        logger.Log(LogLevel.Debug, String.Format(" ipAddr = {0}", ipaddress.ToString()));
+                        logger.Log(LogLevel.Debug, string.Format(" ipAddr = {0}", ipaddress.ToString()));
                     }
                 }
 
                 // Creates a network endpoint
                 var ipLocal = new IPEndPoint(ipAddr, port);
 
-                logger.Log(LogLevel.Debug, String.Format("ipLocal = {0}", ipLocal.ToString()));
+                logger.Log(LogLevel.Debug, string.Format("ipLocal = {0}", ipLocal.ToString()));
 
                 // Create the listening socket (main)
                 this.sckMain = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -277,22 +277,22 @@ namespace Ferretto.VW.InvServer
                 // Create the call back for any client connections...
                 this.sckMain.BeginAccept(new AsyncCallback(this.onClientConnect), null);
 
-                logger.Log(LogLevel.Debug, String.Format("Socket started successfully"));
+                logger.Log(LogLevel.Debug, string.Format("Socket started successfully"));
             }
             catch (SocketException ex)
             {
                 sListening = "ERROR";
-                logger.Log(LogLevel.Debug, String.Format("Socket Exception Message: {0}", ex.Message));
+                logger.Log(LogLevel.Debug, string.Format("Socket Exception Message: {0}", ex.Message));
             }
             catch (IOException ex)
             {
                 sListening = "ERROR";
-                logger.Log(LogLevel.Debug, String.Format("IO Exception Message: {0}", ex.Message));
+                logger.Log(LogLevel.Debug, string.Format("IO Exception Message: {0}", ex.Message));
             }
             catch (Exception ex)
             {
                 sListening = "ERROR";
-                logger.Log(LogLevel.Debug, String.Format("Exception Message: {0}", ex.Message));
+                logger.Log(LogLevel.Debug, string.Format("Exception Message: {0}", ex.Message));
             }
 
             return sListening;
@@ -304,7 +304,7 @@ namespace Ferretto.VW.InvServer
         /// </summary>
         public string StopListen()
         {
-            logger.Log(LogLevel.Debug, String.Format("Stop listening..."));
+            logger.Log(LogLevel.Debug, string.Format("Stop listening..."));
 
             var cSocket = this.closeSockets();
             return cSocket;
@@ -322,7 +322,7 @@ namespace Ferretto.VW.InvServer
         /// </summary>
         private string closeSockets()
         {
-            logger.Log(LogLevel.Debug, String.Format("Closing socket..."));
+            logger.Log(LogLevel.Debug, string.Format("Closing socket..."));
             var cSocket = "STOP";
 
             try
@@ -334,12 +334,12 @@ namespace Ferretto.VW.InvServer
             catch (SocketException ex)
             {
                 cSocket = "ERRORE";
-                logger.Log(LogLevel.Debug, String.Format("Socket Exception Message: {0}", ex.Message));
+                logger.Log(LogLevel.Debug, string.Format("Socket Exception Message: {0}", ex.Message));
             }
             catch (Exception ex)
             {
                 cSocket = "ERRORE";
-                logger.Log(LogLevel.Debug, String.Format("Exception Message: {0}", ex.Message));
+                logger.Log(LogLevel.Debug, string.Format("Exception Message: {0}", ex.Message));
             }
 
             return cSocket;
@@ -350,7 +350,7 @@ namespace Ferretto.VW.InvServer
         /// </summary>
         private void onClientConnect(IAsyncResult asyn)
         {
-            logger.Log(LogLevel.Debug, String.Format(" --> onClientConnect"));
+            logger.Log(LogLevel.Debug, string.Format(" --> onClientConnect"));
 
             try
             {
@@ -359,10 +359,10 @@ namespace Ferretto.VW.InvServer
                 this.sckWorker = this.sckMain.EndAccept(asyn);
 
                 // -------------------------------------
-                var size = sizeof(UInt32);
-                UInt32 on = 1;
-                UInt32 keepAliveInterval = 10000;
-                UInt32 retryInterval = 1000;
+                var size = sizeof(uint);
+                uint on = 1;
+                uint keepAliveInterval = 10000;
+                uint retryInterval = 1000;
                 var inArray = new byte[3 * size];
                 Array.Copy(BitConverter.GetBytes(on), 0, inArray, 0, size);
                 Array.Copy(BitConverter.GetBytes(keepAliveInterval), 0, inArray, size, size);
@@ -374,18 +374,18 @@ namespace Ferretto.VW.InvServer
 
                 // Write the client connection as a status message on the Log
                 this.remoteIpEndPoint = this.sckWorker.RemoteEndPoint as IPEndPoint;
-                logger.Log(LogLevel.Debug, String.Format("Client connected [{0}, {1}]", this.remoteIpEndPoint.Address.ToString(), this.remoteIpEndPoint.Port.ToString()));
+                logger.Log(LogLevel.Debug, string.Format("Client connected [{0}, {1}]", this.remoteIpEndPoint.Address.ToString(), this.remoteIpEndPoint.Port.ToString()));
 
                 // Fire event to notify Connection is occurred
                 SendClientEvent();
             }
             catch (SocketException ex)
             {
-                logger.Log(LogLevel.Debug, String.Format("Socket Exception Message: {0}", ex.Message));
+                logger.Log(LogLevel.Debug, string.Format("Socket Exception Message: {0}", ex.Message));
             }
             catch (Exception ex)
             {
-                logger.Log(LogLevel.Debug, String.Format("Exception Message: {0}", ex.Message));
+                logger.Log(LogLevel.Debug, string.Format("Exception Message: {0}", ex.Message));
             }
         }
 
@@ -424,15 +424,15 @@ namespace Ferretto.VW.InvServer
                 if (ex.ErrorCode == 10053)
                 {
                     var StopListen = this.StopListen();
-                    logger.Log(LogLevel.Debug, String.Format("Connection lost"));
+                    logger.Log(LogLevel.Debug, string.Format("Connection lost"));
                     DiscSockets?.Invoke(StopListen);
                 }
 
-                logger.Log(LogLevel.Debug, String.Format("Socket Exception Message: {0}", ex.Message));
+                logger.Log(LogLevel.Debug, string.Format("Socket Exception Message: {0}", ex.Message));
             }
             catch (Exception ex)
             {
-                logger.Log(LogLevel.Debug, String.Format("Exception Message: {0}", ex.Message));
+                logger.Log(LogLevel.Debug, string.Format("Exception Message: {0}", ex.Message));
             }
         }
 
@@ -612,12 +612,12 @@ namespace Ferretto.VW.InvServer
                             switch (this.controlWord)
                             {
                                 // 3.1
-                                case (4):// Control Word: 00000000 00000100
+                                case (4): // Control Word: 00000000 00000100
                                     this.statusWord.Set(4, true);
 
                                     break;
                                 // 3.2
-                                case (6):// Control Word: 00000000 00000110
+                                case (6): // Control Word: 00000000 00000110
                                     this.statusWord.Set(5, true);
                                     this.statusWord.Set(4, true);
                                     this.statusWord.Set(0, true);
@@ -729,18 +729,18 @@ namespace Ferretto.VW.InvServer
                 {
                     var StopListen = this.StopListen();
                     var StartLitener = this.StartListen();
-                    logger.Log(LogLevel.Debug, String.Format("Connection to client is lost"));
+                    logger.Log(LogLevel.Debug, string.Format("Connection to client is lost"));
                     DiscClient?.Invoke(StopListen, StartLitener);
                 }
 
-                logger.Log(LogLevel.Debug, String.Format("Socket Exception Message: {0}", ex.Message));
+                logger.Log(LogLevel.Debug, string.Format("Socket Exception Message: {0}", ex.Message));
             }
             catch (Exception ex)
             {
-                logger.Log(LogLevel.Debug, String.Format("Exception Message: {0}", ex.Message));
+                logger.Log(LogLevel.Debug, string.Format("Exception Message: {0}", ex.Message));
             }
         }
 
-#endregion Methods
+        #endregion Methods
     }
 }

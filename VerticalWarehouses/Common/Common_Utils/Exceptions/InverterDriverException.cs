@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace Ferretto.VW.Common_Utils.Exceptions
 {
@@ -27,30 +28,33 @@ namespace Ferretto.VW.Common_Utils.Exceptions
     {
         #region Constructors
 
-        public InverterDriverException() : base()
+        public InverterDriverException()
         {
         }
 
-        public InverterDriverException( string message ) : base( message )
+        public InverterDriverException(string message) : base(message)
         {
         }
 
-        public InverterDriverException( string message, InverterDriverExceptionCode exceptionEnum ) : base( message )
+        public InverterDriverException(string message, InverterDriverExceptionCode exceptionEnum) : base(message)
         {
-            InverterDriverExceptionCode = exceptionEnum;
+            this.InverterDriverExceptionCode = exceptionEnum;
         }
 
-        public InverterDriverException( string message, Exception inner ) : base( message, inner )
+        public InverterDriverException(string message, Exception inner) : base(message, inner)
         {
         }
 
-        public InverterDriverException( string message, InverterDriverExceptionCode exceptionEnum, Exception inner ) : base( message, inner )
+        public InverterDriverException(string message, InverterDriverExceptionCode exceptionEnum, Exception inner) :
+            base(message, inner)
         {
-            InverterDriverExceptionCode = exceptionEnum;
+            this.InverterDriverExceptionCode = exceptionEnum;
         }
 
-        protected InverterDriverException( System.Runtime.Serialization.SerializationInfo info,
-            System.Runtime.Serialization.StreamingContext context ) : base( info, context ) { }
+        protected InverterDriverException(SerializationInfo info,
+            StreamingContext context) : base(info, context)
+        {
+        }
 
         #endregion
 

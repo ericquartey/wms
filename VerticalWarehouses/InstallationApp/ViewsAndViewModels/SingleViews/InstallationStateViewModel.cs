@@ -1,8 +1,10 @@
 ﻿using Prism.Mvvm;
 using Ferretto.VW.Utils.Source;
 using System;
-using Ferretto.VW.Navigation;
 using Microsoft.Practices.Unity;
+using Prism.Events;
+using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.InstallationApp.Resources.Enumerables;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -13,6 +15,8 @@ namespace Ferretto.VW.InstallationApp
         public IUnityContainer Container;
 
         public DataManager Data;
+
+        private IEventAggregator eventAggregator;
 
         private bool isBeltBurnishingDone;
 
@@ -50,9 +54,17 @@ namespace Ferretto.VW.InstallationApp
 
         #region Constructors
 
+        public InstallationStateViewModel(IEventAggregator eventAggregator)
+        {
+            this.eventAggregator = eventAggregator;
+        }
+
         public InstallationStateViewModel()
         {
-            NavigationService.InstallationInfoChangedEventHandler += this.UpdateData;
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe((message) => { this.UpdateData(); },
+                ThreadOption.PublisherThread,
+                false,
+                message => message.Type == InstallationApp_EventMessageType.InstallationInfoChanged);
         }
 
         #endregion
@@ -120,9 +132,9 @@ namespace Ferretto.VW.InstallationApp
         private void UpdateData()
         {
             this.IsBeltBurnishingDone = this.Data.InstallationInfo.Belt_Burnishing;
-            this.IsShutter1InstallationProcedureDone = this.Data.InstallationInfo.Ok_Gate1;
-            this.IsShutter2InstallationProcedureDone = this.Data.InstallationInfo.Ok_Gate2;
-            this.IsShutter3InstallationProcedureDone = this.Data.InstallationInfo.Ok_Gate3;
+            this.IsShutter1InstallationProcedureDone = this.Data.InstallationInfo.Ok_Shutter1;
+            this.IsShutter2InstallationProcedureDone = this.Data.InstallationInfo.Ok_Shutter2;
+            this.IsShutter3InstallationProcedureDone = this.Data.InstallationInfo.Ok_Shutter3;
             this.IsHorizontalHomingDone = this.Data.InstallationInfo.Origin_X_Axis;
             this.IsLaserShutter1Done = this.Data.InstallationInfo.Ok_Laser1;
             this.IsLaserShutter2Done = this.Data.InstallationInfo.Ok_Laser2;

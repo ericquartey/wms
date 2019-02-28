@@ -1,4 +1,5 @@
 ﻿using Microsoft.Practices.Unity;
+using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
@@ -8,20 +9,25 @@ namespace Ferretto.VW.InstallationApp
         #region Fields
 
         private IUnityContainer container;
+
+        private IEventAggregator eventAggregator;
+
         private BindableBase lSMTContentRegionCurrentViewModel;
+
         private BindableBase lSMTNavigationRegionCurrentViewModel;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
-        public LSMTMainViewModel()
+        public LSMTMainViewModel(IEventAggregator eventAggregator)
         {
+            this.eventAggregator = eventAggregator;
             this.LSMTContentRegionCurrentViewModel = null;
             this.LSMTNavigationRegionCurrentViewModel = null;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -29,7 +35,7 @@ namespace Ferretto.VW.InstallationApp
 
         public BindableBase LSMTNavigationRegionCurrentViewModel { get => this.lSMTNavigationRegionCurrentViewModel; set => this.SetProperty(ref this.lSMTNavigationRegionCurrentViewModel, value); }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -39,6 +45,6 @@ namespace Ferretto.VW.InstallationApp
             this.LSMTNavigationRegionCurrentViewModel = (LSMTNavigationButtonsViewModel)this.container.Resolve<ILSMTNavigationButtonsViewModel>();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

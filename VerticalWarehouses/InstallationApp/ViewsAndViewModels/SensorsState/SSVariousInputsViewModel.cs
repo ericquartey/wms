@@ -1,4 +1,5 @@
-﻿using Prism.Mvvm;
+﻿using Prism.Events;
+using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -12,6 +13,8 @@ namespace Ferretto.VW.InstallationApp
 
         private bool elevatorEngineSelected;
 
+        private IEventAggregator eventAggregator;
+
         private bool microCarterLeftSide = true;
 
         private bool microCarterRightSide;
@@ -19,6 +22,15 @@ namespace Ferretto.VW.InstallationApp
         private bool mushroomHeadButton;
 
         private bool securityFunctionActive = true;
+
+        #endregion
+
+        #region Constructors
+
+        public SSVariousInputsViewModel(IEventAggregator eventAggregator)
+        {
+            this.eventAggregator = eventAggregator;
+        }
 
         #endregion
 

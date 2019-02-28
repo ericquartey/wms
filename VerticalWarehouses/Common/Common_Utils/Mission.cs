@@ -1,4 +1,6 @@
-﻿namespace Ferretto.Common.Common_Utils
+﻿using System;
+
+namespace Ferretto.Common.Common_Utils
 {
     public class Mission
     {
@@ -6,6 +8,6 @@
 
         public int BayID { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

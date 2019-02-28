@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
     <AssemblyName>Ferretto.VW.MAS_IODriver</AssemblyName>
     <RootNamespace>Ferretto.VW.MAS_IODriver</RootNamespace>
   </PropertyGroup>
@@ -10,10 +10,6 @@
   <ItemGroup>
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.1.1" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(Configuration)' != 'debug'">
-    <Compile Remove="NewRemoteIODriverMock.cs" />
   </ItemGroup>
 
   <ItemGroup>

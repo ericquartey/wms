@@ -1,5 +1,5 @@
-﻿using Ferretto.VW.ActionBlocks;
-using Microsoft.Practices.Unity;
+﻿using Microsoft.Practices.Unity;
+using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
@@ -9,6 +9,17 @@ namespace Ferretto.VW.InstallationApp
         #region Fields
 
         public IUnityContainer Container;
+
+        private IEventAggregator eventAggregator;
+
+        #endregion
+
+        #region Constructors
+
+        public LSMTVerticalEngineViewModel(IEventAggregator eventAggregator)
+        {
+            this.eventAggregator = eventAggregator;
+        }
 
         #endregion
 

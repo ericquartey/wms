@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using Ferretto.VW.Common_Utils.EventParameters;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.RemoteIODriver;
 using Prism.Events;
 
@@ -85,47 +86,39 @@ namespace Ferretto.VW.MAS_IODriver
         public void SwitchHorizontalToVertical()
         {
             var digitalOutput = new List<bool>();
-            for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++)
-            {
-                digitalOutput.Add(false);
-            }
+            for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++) digitalOutput.Add(false);
 
             this.remoteIO.Outputs = digitalOutput;
             Thread.Sleep(DELAY_TIME);
 
             digitalOutput.Clear();
-            for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++)
-            {
-                digitalOutput.Add((i == ENCODER_ELEVATOR) ? true : false);
-            }
+            for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++) digitalOutput.Add(i == ENCODER_ELEVATOR ? true : false);
 
             this.remoteIO.Outputs = digitalOutput;
             Thread.Sleep(DELAY_TIME);
 
-            this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Publish(new Notification_EventParameter(OperationType.SwitchHorizontalToVertical, OperationStatus.End, "Switch Horizontal to Vertical Ended", Verbosity.Info));
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null,
+                "Switch Horizontal to Vertical Ended", MessageActor.Any, MessageActor.IODriver,
+                MessageType.SwitchHorizontalToVertical, MessageStatus.OperationEnd));
         }
 
         public void SwitchVerticalToHorizontal()
         {
             var digitalOutput = new List<bool>();
-            for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++)
-            {
-                digitalOutput.Add(false);
-            }
+            for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++) digitalOutput.Add(false);
 
             this.remoteIO.Outputs = digitalOutput;
             Thread.Sleep(DELAY_TIME);
 
             digitalOutput.Clear();
-            for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++)
-            {
-                digitalOutput.Add((i == ENCODER_CRADLE) ? true : false);
-            }
+            for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++) digitalOutput.Add(i == ENCODER_CRADLE ? true : false);
 
             this.remoteIO.Outputs = digitalOutput;
             Thread.Sleep(DELAY_TIME);
 
-            this.eventAggregator.GetEvent<RemoteIODriver_NotificationEvent>().Publish(new Notification_EventParameter(OperationType.SwitchVerticalToHorizontal, OperationStatus.End, "Switch Vertical to Horizontal Ended", Verbosity.Info));
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null,
+                "Switch Vertical to Horizontal Ended", MessageActor.Any, MessageActor.IODriver,
+                MessageType.SwitchVerticalToHorizontal, MessageStatus.OperationEnd));
         }
 
         #endregion

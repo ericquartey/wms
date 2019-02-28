@@ -4,7 +4,7 @@
     <LanguageTargets>$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
     <TargetFramework>net471</TargetFramework>
     <OutputType>Library</OutputType>
-    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\analysis.ruleset</CodeAnalysisRuleSet>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <RootNamespace>Ferretto.VW.InstallationApp</RootNamespace>
     <AssemblyName>Ferretto.VW.InstallationApp</AssemblyName>
@@ -39,10 +39,18 @@
   <ItemGroup>
     <None Remove="CellsControlHelpView.xaml" />
     <None Remove="HelpWindows\HelpBeltBurnishingView.xaml" />
+    <None Remove="HelpWindows\HelpCellsPanelControl.xaml" />
+    <None Remove="HelpWindows\HelpInstallationState.xaml" />
+    <None Remove="HelpWindows\HelpLowSpeedMovements.xaml" />
     <None Remove="HelpWindows\HelpMainWindow.xaml" />
     <None Remove="HelpWindows\HelpPageBase.xaml" />
-    <None Remove="HelpWindows\HelpPageBase_old.xaml" />
     <None Remove="HelpWindows\HelpResolutionCalibrationVerticalAxisView.xaml" />
+    <None Remove="HelpWindows\HelpSensorState.xaml" />
+    <None Remove="HelpWindows\HelpShutterControl.xaml" />
+    <None Remove="HelpWindows\HelpShutterHeightControl.xaml" />
+    <None Remove="HelpWindows\HelpVerticalAxisCalibration.xaml" />
+    <None Remove="HelpWindows\HelpVerticalOffsetCalibration.xaml" />
+    <None Remove="HelpWindows\HelpWeightControl.xaml" />
     <None Remove="MainWindowBackToIAPPButtonView.xaml" />
     <None Remove="ViewsAndViewModels\LowSpeedMovements\LSMTMainView.xaml" />
     <None Remove="ViewsAndViewModels\MainWindowBackToIAPPButtonView.xaml" />
@@ -60,12 +68,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ActionBlocks\Ferretto.VW.ActionBlocks.csproj" />
     <ProjectReference Include="..\Common\Resources\Ferretto.VW.Resources.csproj" />
     <ProjectReference Include="..\CustomControls\Ferretto.VW.CustomControls.csproj" />
-    <ProjectReference Include="..\InverterDriver\Ferretto.VW.InverterDriver.csproj" />
-    <ProjectReference Include="..\MathLib\Ferretto.VW.MathLib.csproj" />
-    <ProjectReference Include="..\Navigation\Ferretto.VW.Navigation.csproj" />
     <ProjectReference Include="..\Utils\Ferretto.VW.Utils.csproj" />
   </ItemGroup>
 
@@ -76,11 +80,64 @@
     <Compile Update="HelpWindows\HelpCellsControlView.xaml.cs">
       <DependentUpon>HelpCellsControlView.xaml</DependentUpon>
     </Compile>
-    <Compile Update="HelpWindows\HelpPageBase_old.xaml.cs">
-      <DependentUpon>HelpPageBase_old.xaml</DependentUpon>
+    <Compile Update="HelpWindows\HelpInstallationState.xaml.cs">
+      <DependentUpon>HelpInstallationState.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpLowSpeedMovements.xaml.cs">
+      <DependentUpon>HelpLowSpeedMovements.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpShutterControl.xaml.cs">
+      <DependentUpon>HelpShutterControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpCellsPanelControl.xaml.cs">
+      <DependentUpon>HelpCellsPanelControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpShutterHeightControl.xaml.cs">
+      <DependentUpon>HelpShutterHeightControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpVerticalOffsetCalibration.xaml.cs">
+      <DependentUpon>HelpVerticalOffsetCalibration.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpWeightControl.xaml.cs">
+      <DependentUpon>HelpWeightControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpVerticalAxisCalibration.xaml.cs">
+      <DependentUpon>HelpVerticalAxisCalibration.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpSensorState.xaml.cs">
+      <DependentUpon>HelpSensorState.xaml</DependentUpon>
     </Compile>
     <Compile Update="HelpWindows\HelpResolutionCalibrationVerticalAxisView.xaml.cs">
       <DependentUpon>HelpResolutionCalibrationVerticalAxisView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\LowSpeedMovements\LSMTShutterEngineView.xaml.cs">
+      <DependentUpon>LSMTShutterEngineView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\SensorsState\SSShutterView.xaml.cs">
+      <DependentUpon>SSShutterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\ShuttersControl\Shutter3ControlView.xaml.cs">
+      <DependentUpon>Shutter3ControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\ShuttersControl\Shutter2ControlView.xaml.cs">
+      <DependentUpon>Shutter2ControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\ShuttersControl\Shutter1ControlView.xaml.cs">
+      <DependentUpon>Shutter1ControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\ShuttersHeightControl\Shutter3HeightControlView.xaml.cs">
+      <DependentUpon>Shutter3HeightControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\ShuttersHeightControl\Shutter2HeightControlView.xaml.cs">
+      <DependentUpon>Shutter2HeightControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\ShuttersHeightControl\Shutter1HeightControlView.xaml.cs">
+      <DependentUpon>Shutter1HeightControlView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -91,28 +148,32 @@
     <None Update="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Update="Resources\Views.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
-    <None Update="ViewsAndViewModels\GatesControl\Gate1ControlView.xaml">
+    <None Update="ViewsAndViewModels\ShuttersControl\Shutter1ControlView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
-    <None Update="ViewsAndViewModels\GatesControl\Gate2ControlView.xaml">
+    <None Update="ViewsAndViewModels\ShuttersControl\Shutter2ControlView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
-    <None Update="ViewsAndViewModels\GatesControl\Gate3ControlView.xaml">
+    <None Update="ViewsAndViewModels\ShuttersControl\Shutter3ControlView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
-    <None Update="ViewsAndViewModels\GatesHeightControl\Gate1HeightControlView.xaml">
+    <None Update="ViewsAndViewModels\ShuttersHeightControl\Shutter1HeightControlView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
-    <None Update="ViewsAndViewModels\GatesHeightControl\Gate2HeightControlView.xaml">
+    <None Update="ViewsAndViewModels\ShuttersHeightControl\Shutter2HeightControlView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
-    <None Update="ViewsAndViewModels\GatesHeightControl\Gate3HeightControlView.xaml">
+    <None Update="ViewsAndViewModels\ShuttersHeightControl\Shutter3HeightControlView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
-    <None Update="ViewsAndViewModels\LowSpeedMovements\LSMTGateEngineView.xaml">
+    <None Update="ViewsAndViewModels\LowSpeedMovements\LSMTShutterEngineView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
     <None Update="ViewsAndViewModels\LowSpeedMovements\LSMTHorizontalEngineView.xaml">
@@ -133,7 +194,7 @@
     <None Update="ViewsAndViewModels\SensorsState\SSCradleView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
-    <None Update="ViewsAndViewModels\SensorsState\SSGateView.xaml">
+    <None Update="ViewsAndViewModels\SensorsState\SSShutterView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
     <None Update="ViewsAndViewModels\SensorsState\SSNavigationButtonsView.xaml">

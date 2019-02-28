@@ -30,19 +30,17 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Properties
 
-        public DbSet<Operation> Operations { get; set; }
-
-        public DbSet<StatusLog> StatusLogs { get; set; }
-
-        public DbSet<Step> Steps { get; set; }
-
-        public DbSet<RuntimeValue> RuntimeValues { get; set; }
+        public DbSet<Cell> Cells { get; set; }
 
         public DbSet<ConfigurationValue> ConfigurationValues { get; set; }
 
-        public DbSet<Cell> Cells { get; set; }
+        public DbSet<FreeBlock> FreeBlocks { get; set; }
 
-        #endregion Properties
+        public DbSet<RuntimeValue> RuntimeValues { get; set; }
+
+        public DbSet<StatusLog> StatusLogs { get; set; }
+
+        #endregion
 
         #region Methods
 
@@ -71,6 +69,12 @@ namespace Ferretto.VW.MAS_DataLayer
             }
 
             optionsBuilder.UseSqlite(connectionString);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = ConfigurationValueEnum.InverterAddress, VarType = DataTypeEnum.IPAddress, VarValue = "169.254.231.248" });
+            modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = ConfigurationValueEnum.InverterPort, VarType = DataTypeEnum.integerType, VarValue = "17221" });
         }
 
         #endregion

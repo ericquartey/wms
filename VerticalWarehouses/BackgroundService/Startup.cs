@@ -22,15 +22,15 @@ namespace BackgroundService
             this.Configuration = configuration;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
-        static public IServiceProvider Services { get; private set; }
+        public static IServiceProvider Services { get; private set; }
 
         public IConfiguration Configuration { get; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -61,6 +61,6 @@ namespace BackgroundService
             services.AddSignalR();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

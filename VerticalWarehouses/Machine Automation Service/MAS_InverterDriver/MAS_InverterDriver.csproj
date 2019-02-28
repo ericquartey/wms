@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
     <RootNamespace>Ferretto.VW.InverterDriver</RootNamespace>
     <AssemblyName>Ferretto.VW.MAS_InverterDriver</AssemblyName>
   </PropertyGroup>
@@ -12,15 +12,10 @@
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.1.1" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(Configuration)' != 'debug'">
-    <Compile Remove="HostedInverterDriverMock.cs" />
-    <Compile Remove="NewInverterDriverMock.cs" />
-  </ItemGroup>
-
-
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Common_Utils\Ferretto.VW.Common_Utils.csproj" />
     <ProjectReference Include="..\..\InverterDriver\Ferretto.VW.InverterDriver.csproj" />
+    <ProjectReference Include="..\MAS_DataLayer\MAS_DataLayer.csproj" />
   </ItemGroup>
 
 </Project>

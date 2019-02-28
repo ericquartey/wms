@@ -1,9 +1,7 @@
-﻿using System;
-using System.Windows.Input;
-using System.Windows.Threading;
-using Ferretto.VW.ActionBlocks;
+﻿using System.Windows.Input;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
@@ -22,6 +20,8 @@ namespace Ferretto.VW.InstallationApp
 
         private int currentOffset;
 
+        private IEventAggregator eventAggregator;
+
         private ICommand exitFromViewCommand;
 
         private bool isCorrectOffsetButtonActive;
@@ -32,7 +32,7 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isStepUpButtonActive;
 
-        private string noteString = Resources.InstallationApp.VerticalOffsetCalibration;
+        private string noteString = Ferretto.VW.Resources.InstallationApp.VerticalOffsetCalibration;
 
         private string referenceCellHeight;
 
@@ -50,9 +50,10 @@ namespace Ferretto.VW.InstallationApp
 
         #region Constructors
 
-        public VerticalOffsetCalibrationViewModel()
+        public VerticalOffsetCalibrationViewModel(IEventAggregator eventAggregator)
         {
-            this.NoteString = Resources.InstallationApp.VerticalOffsetCalibration;
+            this.eventAggregator = eventAggregator;
+            this.NoteString = Ferretto.VW.Resources.InstallationApp.VerticalOffsetCalibration;
         }
 
         #endregion

@@ -3,10 +3,12 @@ using System.IO;
 using System.Net;
 using System.Windows;
 using System.Windows.Input;
-using Ferretto.VW.Navigation;
+using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.InstallationApp.Resources.Enumerables;
 using Ferretto.VW.Utils.Source;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
@@ -21,11 +23,13 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        public IUnityContainer Container;
+        private readonly HelpMainWindow helpWindow;
 
-        private readonly HelpMainWindow helpWindow = new HelpMainWindow();
+        private IUnityContainer container;
 
         private BindableBase contentRegionCurrentViewModel;
+
+        private IEventAggregator eventAggregator;
 
         private BindableBase exitViewButtonRegionCurrentViewModel;
 
@@ -49,13 +53,21 @@ namespace Ferretto.VW.InstallationApp
 
         #endregion
 
+        #region Constructors
+
+        public MainWindowViewModel(IEventAggregator eventAggregator)
+        {
+            this.eventAggregator = eventAggregator;
+            this.helpWindow = new HelpMainWindow(eventAggregator);
+        }
+
+        #endregion
+
         #region Events
 
         public static event ClickedOnMachineModeEvent ClickedOnMachineModeEventHandler;
 
         public static event ClickedOnMachineOnMarchEvent ClickedOnMachineOnMarchEventHandler;
-
-        public static event SensorsStatesChangedEvent SensorsStatesChangedEventHandler;
 
         #endregion
 
@@ -98,15 +110,14 @@ namespace Ferretto.VW.InstallationApp
             {
                 return reader.ReadToEnd();
             }
-            return "";
         }
 
         public void InitializeViewModel(IUnityContainer _container)
         {
-            this.Container = _container;
-            this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.Container.Resolve<IMainWindowNavigationButtonsViewModel>();
+            this.container = _container;
+            this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
             this.ExitViewButtonRegionCurrentViewModel = null;
-            this.ContentRegionCurrentViewModel = (IdleViewModel)this.Container.Resolve<IIdleViewModel>();
+            this.ContentRegionCurrentViewModel = (IdleViewModel)this.container.Resolve<IIdleViewModel>();
             this.ConnectMethod();
             this.InitializeEvents();
         }
@@ -117,17 +128,30 @@ namespace Ferretto.VW.InstallationApp
 
         private void InitializeEvents()
         {
-            NavigationService.GoToViewEventHandler += () => this.NavigationRegionCurrentViewModel = null;
-            NavigationService.GoToViewEventHandler += () => this.ExitViewButtonRegionCurrentViewModel = (MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>();
-            NavigationService.GoToViewEventHandler += () => ((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).InitializeBottomButtons();
-            NavigationService.ExitViewEventHandler += () => this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.Container.Resolve<IMainWindowNavigationButtonsViewModel>();
-            NavigationService.ExitViewEventHandler += () => this.ExitViewButtonRegionCurrentViewModel = null;
-            NavigationService.ExitViewEventHandler += () => ((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).FinalizeBottomButtons();
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe((message) =>
+            {
+                this.NavigationRegionCurrentViewModel = null;
+                this.ExitViewButtonRegionCurrentViewModel = (MainWindowBackToIAPPButtonViewModel)this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>();
+                ((MainWindowBackToIAPPButtonViewModel)this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).InitializeBottomButtons();
+            },
+            ThreadOption.PublisherThread,
+            false,
+            message => message.Type == InstallationApp_EventMessageType.EnterView);
+
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe((message) =>
+            {
+                this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
+                this.ExitViewButtonRegionCurrentViewModel = null;
+                ((MainWindowBackToIAPPButtonViewModel)this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).FinalizeBottomButtons();
+            },
+            ThreadOption.PublisherThread,
+            false,
+            message => message.Type == InstallationApp_EventMessageType.ExitView);
+
             MainWindow.FinishedMachineModeChangeStateEventHandler += () => { this.MachineModeSelectionBool = !this.MachineModeSelectionBool; };
             MainWindow.FinishedMachineOnMarchChangeStateEventHandler += () => { this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool; };
             ClickedOnMachineModeEventHandler += () => { };
             ClickedOnMachineOnMarchEventHandler += () => { };
-            SensorsStatesChangedEventHandler += () => { };
         }
 
         private void RaiseClickedOnMachineModeEvent() => ClickedOnMachineModeEventHandler();

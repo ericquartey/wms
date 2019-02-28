@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
+﻿using System;
+
+namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
 {
     public class ProfilePosition
     {
@@ -16,10 +18,13 @@
 
         #region Properties
 
-        public int Acceleration { get; private set; }
-        public int Deceleration { get; private set; }
+        public int Acceleration { get; }
+
+        public int Deceleration { get; }
+
+        public int Speed { get; }
+
         public int Quote { get; set; }
-        public int Speed { get; private set; }
 
         #endregion
     }

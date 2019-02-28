@@ -1,4 +1,6 @@
-﻿using Ferretto.VW.Common_Utils.Messages;
+﻿using System;
+using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Messages;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 {
@@ -10,21 +12,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
         {
             this.parentStateMachine = parentMachine;
 
-            var newMessage = new Event_Message(null,
-                $"Mission State Ending",
+            var newMessage = new CommandMessage(null,
+                "Mission State Ending",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageStatus.End,
                 MessageType.EndAction,
                 MessageVerbosity.Info);
-            this.parentStateMachine.PublishMessage(newMessage);
+            this.parentStateMachine.PublishCommandMessage(newMessage);
         }
 
         #endregion
 
         #region Properties
 
-        public string Type => $"MissionErrorState";
+        public string Type => "MissionErrorState";
 
         #endregion
 
@@ -32,31 +33,30 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         public override void MakeOperation()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public override void NotifyMessage(Event_Message message)
+        public override void NotifyMessage(CommandMessage message)
         {
             switch (message.Type)
             {
                 case MessageType.StopAction:
                     //TODO add state business logic to stop current action
 
-                    var newMessage = new Event_Message(null,
-                        $"Mission Error",
+                    var newMessage = new CommandMessage(null,
+                        "Mission Error",
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
-                        MessageStatus.End,
                         MessageType.StopAction,
                         MessageVerbosity.Info);
-                    this.parentStateMachine.PublishMessage(newMessage);
+                    this.parentStateMachine.PublishCommandMessage(newMessage);
                     break;
             }
         }
 
         public override void Stop()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         #endregion

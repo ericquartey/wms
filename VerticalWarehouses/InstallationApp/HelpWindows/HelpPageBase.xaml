@@ -6,21 +6,52 @@
              xmlns:local="clr-namespace:Ferretto.VW.InstallationApp.HelpWindows"            
              xmlns:Controls="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls" 
              xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             mc:Ignorable="d">
     <Grid Width="1024"
           Height="688"
           Background="{DynamicResource VWAPP_BACKGROUND}">
-        <Image Grid.Row="0"
-               Width="200"
+        
+        <Image Width="200"
                Height="60"
                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"
                Source="{DynamicResource Ferretto_Logo}"
                Stretch="Uniform" />
-        <TextBlock Grid.Row="0"
-                   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
-                   Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.BeltBurnishing}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
+                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
+                    Text="{x:Static res:InstallationApp.VerticalResolutionCalibration}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
+                    Width="670" Height="50"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.ResolutionCalibrationFunctionDescription}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,165,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.BeltBurnishingUpLimit}" />
+        
+        <Controls:CustomInputFieldControlFocusable     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,165,0,0"
+                                                       Width="180"
+                                                       Highlighted="True" IsEnabled="True"
+                                                       InputText="1025,5"
+                                                       LabelText="{x:Static res:InstallationApp.DesiredInitialPosition}"
+                                                       Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+        
+        <Controls:CustomLabelTextBlockControl          HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,167,0,0"
+                                                       Width="180"
+                                                       ContentText="125,36"
+                                                       LabelText="{x:Static res:InstallationApp.CurrentResolution}"/>
+        
+        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,165,0,0"
+                     Width="260" Height="70"
+                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                     Text="{x:Static res:HelpDescriptions.ResolutionCalibrationActualResolutionHelp}" />
+        
+        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,125,0,0"
+                     Width="300"
+                     Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
+                     Text="{x:Static res:HelpDescriptions.VerticalResolutionCalibrationStep1}" />
 
     </Grid>
 </UserControl>

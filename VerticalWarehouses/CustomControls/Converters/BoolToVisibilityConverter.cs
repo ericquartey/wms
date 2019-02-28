@@ -24,7 +24,7 @@ namespace Ferretto.VW.CustomControls.Converters
             typeof(bool),
             typeof(BoolToVisibilityConverter));
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -40,11 +40,11 @@ namespace Ferretto.VW.CustomControls.Converters
             set => this.SetValue(InvertProperty, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
-        public Object Convert(object value, Type targetType, Object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (targetType != typeof(Visibility))
             {
@@ -61,14 +61,14 @@ namespace Ferretto.VW.CustomControls.Converters
             return this.Hide ? Visibility.Hidden : Visibility.Collapsed;
         }
 
-        public Object ConvertBack(object value, Type targetType, Object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is Visibility == false)
             {
                 throw new InvalidOperationException(Errors.ConverterCanConvertOnlyToVisibilityType);
             }
 
-            var visible = ((Visibility)value == Visibility.Visible ? true : false);
+            var visible = (Visibility)value == Visibility.Visible ? true : false;
 
             if ((visible && !this.Invert) || (!visible && this.Invert))
             {
@@ -78,6 +78,6 @@ namespace Ferretto.VW.CustomControls.Converters
             return false;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

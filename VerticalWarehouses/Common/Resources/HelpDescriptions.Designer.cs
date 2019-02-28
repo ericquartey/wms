@@ -133,6 +133,726 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCCVApplyCorrection.
+        /// </summary>
+        public static string HelpCCVApplyCorrection {
+            get {
+                return ResourceManager.GetString("HelpCCVApplyCorrection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCCVAttualPosition.
+        /// </summary>
+        public static string HelpCCVAttualPosition {
+            get {
+                return ResourceManager.GetString("HelpCCVAttualPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCCVCellPosition.
+        /// </summary>
+        public static string HelpCCVCellPosition {
+            get {
+                return ResourceManager.GetString("HelpCCVCellPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCCVCorrectionValue.
+        /// </summary>
+        public static string HelpCCVCorrectionValue {
+            get {
+                return ResourceManager.GetString("HelpCCVCorrectionValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCCVDescription.
+        /// </summary>
+        public static string HelpCCVDescription {
+            get {
+                return ResourceManager.GetString("HelpCCVDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCCVSelectedCell.
+        /// </summary>
+        public static string HelpCCVSelectedCell {
+            get {
+                return ResourceManager.GetString("HelpCCVSelectedCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCCVSetPosition.
+        /// </summary>
+        public static string HelpCCVSetPosition {
+            get {
+                return ResourceManager.GetString("HelpCCVSetPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCCVStepMeno.
+        /// </summary>
+        public static string HelpCCVStepMeno {
+            get {
+                return ResourceManager.GetString("HelpCCVStepMeno", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCCVStepPiu.
+        /// </summary>
+        public static string HelpCCVStepPiu {
+            get {
+                return ResourceManager.GetString("HelpCCVStepPiu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCCVStepValue.
+        /// </summary>
+        public static string HelpCCVStepValue {
+            get {
+                return ResourceManager.GetString("HelpCCVStepValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGCCompleted.
+        /// </summary>
+        public static string HelpGCCompleted {
+            get {
+                return ResourceManager.GetString("HelpGCCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGCDelay.
+        /// </summary>
+        public static string HelpGCDelay {
+            get {
+                return ResourceManager.GetString("HelpGCDelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGCDescription.
+        /// </summary>
+        public static string HelpGCDescription {
+            get {
+                return ResourceManager.GetString("HelpGCDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGCRequiredCycles.
+        /// </summary>
+        public static string HelpGCRequiredCycles {
+            get {
+                return ResourceManager.GetString("HelpGCRequiredCycles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGCSensorA.
+        /// </summary>
+        public static string HelpGCSensorA {
+            get {
+                return ResourceManager.GetString("HelpGCSensorA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGCSensorB.
+        /// </summary>
+        public static string HelpGCSensorB {
+            get {
+                return ResourceManager.GetString("HelpGCSensorB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGCStartButton.
+        /// </summary>
+        public static string HelpGCStartButton {
+            get {
+                return ResourceManager.GetString("HelpGCStartButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGCStopButton.
+        /// </summary>
+        public static string HelpGCStopButton {
+            get {
+                return ResourceManager.GetString("HelpGCStopButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGHCBarrierCorrection.
+        /// </summary>
+        public static string HelpGHCBarrierCorrection {
+            get {
+                return ResourceManager.GetString("HelpGHCBarrierCorrection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGHCCurrentPosition.
+        /// </summary>
+        public static string HelpGHCCurrentPosition {
+            get {
+                return ResourceManager.GetString("HelpGHCCurrentPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGHCDescription.
+        /// </summary>
+        public static string HelpGHCDescription {
+            get {
+                return ResourceManager.GetString("HelpGHCDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGHCFinalResult.
+        /// </summary>
+        public static string HelpGHCFinalResult {
+            get {
+                return ResourceManager.GetString("HelpGHCFinalResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGHCHeightReaced.
+        /// </summary>
+        public static string HelpGHCHeightReaced {
+            get {
+                return ResourceManager.GetString("HelpGHCHeightReaced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGHCStart.
+        /// </summary>
+        public static string HelpGHCStart {
+            get {
+                return ResourceManager.GetString("HelpGHCStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGHCStop.
+        /// </summary>
+        public static string HelpGHCStop {
+            get {
+                return ResourceManager.GetString("HelpGHCStop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGHCSystemError.
+        /// </summary>
+        public static string HelpGHCSystemError {
+            get {
+                return ResourceManager.GetString("HelpGHCSystemError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGHCTollerance.
+        /// </summary>
+        public static string HelpGHCTollerance {
+            get {
+                return ResourceManager.GetString("HelpGHCTollerance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGHCVelocity.
+        /// </summary>
+        public static string HelpGHCVelocity {
+            get {
+                return ResourceManager.GetString("HelpGHCVelocity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpInstallationStateDescription.
+        /// </summary>
+        public static string HelpInstallationStateDescription {
+            get {
+                return ResourceManager.GetString("HelpInstallationStateDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpInstallationStateDone.
+        /// </summary>
+        public static string HelpInstallationStateDone {
+            get {
+                return ResourceManager.GetString("HelpInstallationStateDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpInstallationStateToDo.
+        /// </summary>
+        public static string HelpInstallationStateToDo {
+            get {
+                return ResourceManager.GetString("HelpInstallationStateToDo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLSMTActualPosition.
+        /// </summary>
+        public static string HelpLSMTActualPosition {
+            get {
+                return ResourceManager.GetString("HelpLSMTActualPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLSMTDescription.
+        /// </summary>
+        public static string HelpLSMTDescription {
+            get {
+                return ResourceManager.GetString("HelpLSMTDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLSMTMoveDown.
+        /// </summary>
+        public static string HelpLSMTMoveDown {
+            get {
+                return ResourceManager.GetString("HelpLSMTMoveDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLSMTMoveUp.
+        /// </summary>
+        public static string HelpLSMTMoveUp {
+            get {
+                return ResourceManager.GetString("HelpLSMTMoveUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLSMTTitle.
+        /// </summary>
+        public static string HelpLSMTTitle {
+            get {
+                return ResourceManager.GetString("HelpLSMTTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpSSDescription.
+        /// </summary>
+        public static string HelpSSDescription {
+            get {
+                return ResourceManager.GetString("HelpSSDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpSSStateOff.
+        /// </summary>
+        public static string HelpSSStateOff {
+            get {
+                return ResourceManager.GetString("HelpSSStateOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpSSStateOn.
+        /// </summary>
+        public static string HelpSSStateOn {
+            get {
+                return ResourceManager.GetString("HelpSSStateOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpSSTitle.
+        /// </summary>
+        public static string HelpSSTitle {
+            get {
+                return ResourceManager.GetString("HelpSSTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVACDescription.
+        /// </summary>
+        public static string HelpVACDescription {
+            get {
+                return ResourceManager.GetString("HelpVACDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVACDownLimit.
+        /// </summary>
+        public static string HelpVACDownLimit {
+            get {
+                return ResourceManager.GetString("HelpVACDownLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVACFinalResult.
+        /// </summary>
+        public static string HelpVACFinalResult {
+            get {
+                return ResourceManager.GetString("HelpVACFinalResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVACOffset.
+        /// </summary>
+        public static string HelpVACOffset {
+            get {
+                return ResourceManager.GetString("HelpVACOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVACResolution.
+        /// </summary>
+        public static string HelpVACResolution {
+            get {
+                return ResourceManager.GetString("HelpVACResolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVacStart.
+        /// </summary>
+        public static string HelpVacStart {
+            get {
+                return ResourceManager.GetString("HelpVacStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVACStop.
+        /// </summary>
+        public static string HelpVACStop {
+            get {
+                return ResourceManager.GetString("HelpVACStop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVACUpLimit.
+        /// </summary>
+        public static string HelpVACUpLimit {
+            get {
+                return ResourceManager.GetString("HelpVACUpLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVOCActualOffset.
+        /// </summary>
+        public static string HelpVOCActualOffset {
+            get {
+                return ResourceManager.GetString("HelpVOCActualOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVOCActualPosition.
+        /// </summary>
+        public static string HelpVOCActualPosition {
+            get {
+                return ResourceManager.GetString("HelpVOCActualPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVOCAdjustedOffset.
+        /// </summary>
+        public static string HelpVOCAdjustedOffset {
+            get {
+                return ResourceManager.GetString("HelpVOCAdjustedOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVOCApplyCorrection.
+        /// </summary>
+        public static string HelpVOCApplyCorrection {
+            get {
+                return ResourceManager.GetString("HelpVOCApplyCorrection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVOCCellPosition.
+        /// </summary>
+        public static string HelpVOCCellPosition {
+            get {
+                return ResourceManager.GetString("HelpVOCCellPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVOCDescription.
+        /// </summary>
+        public static string HelpVOCDescription {
+            get {
+                return ResourceManager.GetString("HelpVOCDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVOCGoToCell.
+        /// </summary>
+        public static string HelpVOCGoToCell {
+            get {
+                return ResourceManager.GetString("HelpVOCGoToCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVOCSelectedCell.
+        /// </summary>
+        public static string HelpVOCSelectedCell {
+            get {
+                return ResourceManager.GetString("HelpVOCSelectedCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVOCStepMeno.
+        /// </summary>
+        public static string HelpVOCStepMeno {
+            get {
+                return ResourceManager.GetString("HelpVOCStepMeno", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVOCStepPiu.
+        /// </summary>
+        public static string HelpVOCStepPiu {
+            get {
+                return ResourceManager.GetString("HelpVOCStepPiu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVOCStepValue.
+        /// </summary>
+        public static string HelpVOCStepValue {
+            get {
+                return ResourceManager.GetString("HelpVOCStepValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMActualPanel.
+        /// </summary>
+        public static string HelpVPPMActualPanel {
+            get {
+                return ResourceManager.GetString("HelpVPPMActualPanel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMActualPosition.
+        /// </summary>
+        public static string HelpVPPMActualPosition {
+            get {
+                return ResourceManager.GetString("HelpVPPMActualPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMApplyCorrection.
+        /// </summary>
+        public static string HelpVPPMApplyCorrection {
+            get {
+                return ResourceManager.GetString("HelpVPPMApplyCorrection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMCorrectionValue.
+        /// </summary>
+        public static string HelpVPPMCorrectionValue {
+            get {
+                return ResourceManager.GetString("HelpVPPMCorrectionValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMDescription.
+        /// </summary>
+        public static string HelpVPPMDescription {
+            get {
+                return ResourceManager.GetString("HelpVPPMDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMGoToCell.
+        /// </summary>
+        public static string HelpVPPMGoToCell {
+            get {
+                return ResourceManager.GetString("HelpVPPMGoToCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMNextPanel.
+        /// </summary>
+        public static string HelpVPPMNextPanel {
+            get {
+                return ResourceManager.GetString("HelpVPPMNextPanel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMSelectedCell.
+        /// </summary>
+        public static string HelpVPPMSelectedCell {
+            get {
+                return ResourceManager.GetString("HelpVPPMSelectedCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMSelectedCellPosition.
+        /// </summary>
+        public static string HelpVPPMSelectedCellPosition {
+            get {
+                return ResourceManager.GetString("HelpVPPMSelectedCellPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMStepMeno.
+        /// </summary>
+        public static string HelpVPPMStepMeno {
+            get {
+                return ResourceManager.GetString("HelpVPPMStepMeno", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMStepPiu.
+        /// </summary>
+        public static string HelpVPPMStepPiu {
+            get {
+                return ResourceManager.GetString("HelpVPPMStepPiu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMStepValue.
+        /// </summary>
+        public static string HelpVPPMStepValue {
+            get {
+                return ResourceManager.GetString("HelpVPPMStepValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpVPPMTotalPanels.
+        /// </summary>
+        public static string HelpVPPMTotalPanels {
+            get {
+                return ResourceManager.GetString("HelpVPPMTotalPanels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpWCDescription.
+        /// </summary>
+        public static string HelpWCDescription {
+            get {
+                return ResourceManager.GetString("HelpWCDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpWCFinalResult.
+        /// </summary>
+        public static string HelpWCFinalResult {
+            get {
+                return ResourceManager.GetString("HelpWCFinalResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpWCStart.
+        /// </summary>
+        public static string HelpWCStart {
+            get {
+                return ResourceManager.GetString("HelpWCStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpWCStop.
+        /// </summary>
+        public static string HelpWCStop {
+            get {
+                return ResourceManager.GetString("HelpWCStop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpWCTestRun.
+        /// </summary>
+        public static string HelpWCTestRun {
+            get {
+                return ResourceManager.GetString("HelpWCTestRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpWCWeightInserted.
+        /// </summary>
+        public static string HelpWCWeightInserted {
+            get {
+                return ResourceManager.GetString("HelpWCWeightInserted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpWCWeightMeasured.
+        /// </summary>
+        public static string HelpWCWeightMeasured {
+            get {
+                return ResourceManager.GetString("HelpWCWeightMeasured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpWCWeightTollerance.
+        /// </summary>
+        public static string HelpWCWeightTollerance {
+            get {
+                return ResourceManager.GetString("HelpWCWeightTollerance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a ResolutionCalibrationAcceptNewResolution.
         /// </summary>
         public static string ResolutionCalibrationAcceptNewResolution {
@@ -178,6 +898,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a ResolutionCalibrationFinalReadValueHelp.
+        /// </summary>
+        public static string ResolutionCalibrationFinalReadValueHelp {
+            get {
+                return ResourceManager.GetString("ResolutionCalibrationFinalReadValueHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a ResolutionCalibrationFunctionDescription.
         /// </summary>
         public static string ResolutionCalibrationFunctionDescription {
@@ -201,6 +930,15 @@ namespace Ferretto.VW.Resources {
         public static string ResolutionCalibrationInitialPositionHelp {
             get {
                 return ResourceManager.GetString("ResolutionCalibrationInitialPositionHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ResolutionCalibrationInitialReadValueHelp.
+        /// </summary>
+        public static string ResolutionCalibrationInitialReadValueHelp {
+            get {
+                return ResourceManager.GetString("ResolutionCalibrationInitialReadValueHelp", resourceCulture);
             }
         }
         
@@ -264,15 +1002,6 @@ namespace Ferretto.VW.Resources {
         public static string VerticalResolutionCalibrationStep4 {
             get {
                 return ResourceManager.GetString("VerticalResolutionCalibrationStep4", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a VerticalResolutionCalibrationStep5.
-        /// </summary>
-        public static string VerticalResolutionCalibrationStep5 {
-            get {
-                return ResourceManager.GetString("VerticalResolutionCalibrationStep5", resourceCulture);
             }
         }
     }

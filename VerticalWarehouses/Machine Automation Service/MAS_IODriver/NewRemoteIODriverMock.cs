@@ -23,13 +23,13 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Properties
 
-        public List<Boolean> Inputs { get; set; }
+        public List<bool> Inputs { get; set; }
 
-        public String IPAddress { get; set; }
+        public string IPAddress { get; set; }
 
-        public List<Boolean> Outputs { get; set; }
+        public List<bool> Outputs { get; set; }
 
-        public Int32 Port { get; set; }
+        public int Port { get; set; }
 
         #endregion
 

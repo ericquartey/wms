@@ -19,7 +19,7 @@
         <StackPanel Grid.Row="1"
                     VerticalAlignment="Top">
             <Button Command="{Binding VerticalButtonCommand}"
-                    Content="{x:Static res:InstallationApp.VerticalAxis}"
+                    Content="{x:Static res:InstallationApp.VerticalAxisButton}"
                     Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
             <Button Command="{Binding BaysButtonCommand}"
                     Content="{x:Static res:InstallationApp.Bays}"
