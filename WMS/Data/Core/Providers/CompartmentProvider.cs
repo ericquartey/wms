@@ -40,7 +40,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<CompartmentDetails>> CreateAsync(CompartmentDetails model)
         {
-            if (model == null)
+            if (model == null || model.Height == null || model.Width == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
