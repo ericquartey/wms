@@ -1,7 +1,7 @@
 ﻿using System;
 using Ferretto.VW.Common_Utils.Enumerations;
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalMovingDrawer
 {
     public class ErrorState : InverterStateBase
     {

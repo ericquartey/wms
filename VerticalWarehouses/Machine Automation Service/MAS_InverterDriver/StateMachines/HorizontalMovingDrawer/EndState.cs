@@ -1,9 +1,8 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
 {
-    public class ErrorState : InverterStateBase
+    public class EndState : InverterStateBase
     {
         #region Fields
 
@@ -13,7 +12,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
 
         #region Constructors
 
-        public ErrorState(IInverterStateMachine parentStateMachine, Axis movingDrawer)
+        public EndState(IInverterStateMachine parentStateMachine, Axis movingDrawer)
         {
             this.parentStateMachine = parentStateMachine;
             this.movingDrawer = movingDrawer;
@@ -25,7 +24,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
 
         public override void NotifyMessage(InverterMessage message)
         {
-            throw new NotImplementedException();
+            if (message.IsError)
+                this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.movingDrawer));
         }
 
         #endregion

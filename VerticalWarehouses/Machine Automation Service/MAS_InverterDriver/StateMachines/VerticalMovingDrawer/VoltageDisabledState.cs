@@ -1,8 +1,8 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
-{
-    public class ReadyToSwitchOnState : InverterStateBase
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalMovingDrawer
+{ 
+    public class VoltageDisabledState : InverterStateBase
     {
         #region Fields
 
@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
 
         #region Constructors
 
-        public ReadyToSwitchOnState(IInverterStateMachine parentStateMachine, Axis movingDrawer)
+        public VoltageDisabledState(IInverterStateMachine parentStateMachine, Axis movingDrawer)
         {
             this.parentStateMachine = parentStateMachine;
             this.movingDrawer = movingDrawer;
@@ -35,7 +35,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
 
             if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
                 if (message.ShortPayload == this.parameterValue)
-                    this.parentStateMachine.ChangeState(new SwitchOnState(this.parentStateMachine,
+                    this.parentStateMachine.ChangeState(new OperationModeState(this.parentStateMachine,
                         this.movingDrawer));
         }
 
