@@ -34,7 +34,7 @@ namespace Ferretto.Common.Controls
 
         private bool adjustSizeAfterFirstUpdate;
 
-        private string colorRequiredIcon;
+        private SolidColorBrush colorRequiredIcon;
 
         private double defaultControlWidth;
 
@@ -89,20 +89,18 @@ namespace Ferretto.Common.Controls
             this.WmsIcon.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private string ConvertColor(ColorRequired color)
+        private SolidColorBrush ConvertColor(ColorRequired color)
         {
             switch (color)
             {
                 case ColorRequired.CreateMode:
-                    return Colors.Red.ToString();
-                    break;
+                    return (SolidColorBrush)Application.Current.Resources[nameof(ColorRequired.CreateMode)];
 
                 case ColorRequired.EditMode:
-                    return "#039BE5";
-                    break;
+                    return (SolidColorBrush)Application.Current.Resources[nameof(ColorRequired.EditMode)];
 
                 default:
-                    return Colors.Black.ToString();
+                    return (SolidColorBrush)Application.Current.Resources[nameof(ColorRequired.Default)];
             }
         }
 
@@ -189,13 +187,12 @@ namespace Ferretto.Common.Controls
 
         private void SetColorRequiredIcon()
         {
-            if (this.DataContext is IRefreshDataEntityViewModel viewModel)
+            if (this.DataContext is IExtensionDataEntityViewModel viewModel)
             {
                 this.colorRequiredIcon = this.ConvertColor(viewModel.ColorRequired);
                 if (this.colorRequiredIcon != null)
                 {
-                    this.WmsIcon.ColorizeBrush = (SolidColorBrush)
-                        new BrushConverter().ConvertFromString(this.colorRequiredIcon);
+                    this.WmsIcon.ColorizeBrush = this.colorRequiredIcon;
                 }
             }
         }
