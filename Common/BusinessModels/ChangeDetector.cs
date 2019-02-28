@@ -74,7 +74,7 @@ namespace Ferretto.Common.BusinessModels
 
         public void TakeSnapshot(T newInstance)
         {
-            if (this.instance != null)//&& (newInstance == null || !this.instance.Equals(newInstance)))
+            if (this.instance != null)
             {
                 this.instance.PropertyChanged -= this.Instance_PropertyChanged;
             }
