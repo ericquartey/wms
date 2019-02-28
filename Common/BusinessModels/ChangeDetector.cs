@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
 
 namespace Ferretto.Common.BusinessModels
 {
@@ -13,13 +14,11 @@ namespace Ferretto.Common.BusinessModels
 
         private readonly ISet<string> modifiedProperties = new HashSet<string>();
 
-        private readonly ISet<string> requiredProperties = new HashSet<string>();
+        private readonly ISet<string> validRequiredProperties = new HashSet<string>();
 
         private T instance;
 
         private bool isModified;
-
-        private bool isRequiredValid;
 
         private T snapshot;
 
@@ -48,17 +47,7 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
-        public bool IsRequiredValid
-        {
-            get => this.isRequiredValid;
-            private set
-            {
-                if (this.isRequiredValid != value)
-                {
-                    this.isRequiredValid = value;
-                }
-            }
-        }
+        public bool IsRequiredValid { get; private set; }
 
         #endregion
 
@@ -81,17 +70,59 @@ namespace Ferretto.Common.BusinessModels
 
             this.instance = newInstance;
             this.modifiedProperties.Clear();
-            this.requiredProperties.Clear();
+            this.validRequiredProperties.Clear();
             this.IsModified = false;
 
-            this.totalRequired = this.instance.GetType().GetProperties()
-                .Where(p => p.CustomAttributes.Any(a => a.AttributeType == typeof(RequiredAttribute))).Count();
+            this.totalRequired = this.instance.GetType()
+                .GetProperties().Count(p => p.CustomAttributes.Any(a => a.AttributeType == typeof(RequiredAttribute)));
 
-            if (newInstance != null)
+            var instanceValidRequiredProperties = this.instance.GetType()
+                .GetProperties().Where(
+                    p => p.CustomAttributes.Any(
+                             a => a.AttributeType == typeof(RequiredAttribute))
+                         && !HasEmptyValue(p, this.instance)).ToArray();
+
+            foreach (var validRequiredProperty in instanceValidRequiredProperties)
             {
-                newInstance.PropertyChanged += this.Instance_PropertyChanged;
-                this.snapshot = newInstance.Clone() as T;
+                this.validRequiredProperties.Add(validRequiredProperty.Name);
             }
+
+            if (newInstance == null)
+            {
+                return;
+            }
+
+            newInstance.PropertyChanged += this.Instance_PropertyChanged;
+            this.snapshot = newInstance.Clone() as T;
+        }
+
+        private static bool HasEmptyValue(PropertyInfo propertyInfo, T model)
+        {
+            if (propertyInfo == null)
+            {
+                return true;
+            }
+
+            var propertyType = propertyInfo.PropertyType;
+            var propertyValue = propertyInfo.GetValue(model);
+            if (propertyType.IsEnum)
+            {
+                return propertyValue == null || (int)propertyValue == 0;
+            }
+
+            if (propertyType == typeof(DateTime))
+            {
+                return propertyValue == null || (DateTime)propertyValue == DateTime.MinValue;
+            }
+
+            return propertyInfo.GetValue(model) == null;
+        }
+
+        private static bool IsValueChanged(PropertyInfo propertyInfo, T originalModel, T actualModel)
+        {
+            var actualValue = propertyInfo.GetValue(actualModel);
+            var originalValue = propertyInfo.GetValue(originalModel);
+            return actualValue != originalValue && (actualValue == null || actualValue.Equals(originalValue) == false);
         }
 
         private void Instance_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -101,36 +132,53 @@ namespace Ferretto.Common.BusinessModels
                 return;
             }
 
-            var propertyInfo = this.instance.GetType().GetProperty(e.PropertyName);
-            var newValue = propertyInfo.GetValue(sender);
-            var snapshotValue = propertyInfo.GetValue(this.snapshot);
-
-            var isRequired = propertyInfo.CustomAttributes.Any(a => a.AttributeType == typeof(RequiredAttribute));
-
-            if (newValue != snapshotValue && newValue?.Equals(snapshotValue) == false)
+            var propertyName = e.PropertyName;
+            var propertyInfo = this.instance.GetType().GetProperty(propertyName);
+            if (propertyInfo == null)
             {
-                if (this.modifiedProperties.Contains(e.PropertyName) == false)
+                return;
+            }
+
+            var isPresent = this.modifiedProperties.Contains(propertyName);
+            if (IsValueChanged(propertyInfo, this.snapshot, this.instance))
+            {
+                if (!isPresent)
                 {
                     this.modifiedProperties.Add(e.PropertyName);
-                    if (isRequired)
-                    {
-                        this.requiredProperties.Add(e.PropertyName);
-                    }
-                    NLog.LogManager.GetCurrentClassLogger().Trace($"Property '{this.instance.GetType().Name}.{e.PropertyName}' was modified.");
                 }
+
+                this.UpdateValidRequiredProperties(propertyInfo, this.instance);
             }
-            else if (this.modifiedProperties.Contains(e.PropertyName))
+            else if (isPresent)
             {
                 this.modifiedProperties.Remove(e.PropertyName);
-                if (isRequired)
-                {
-                    this.requiredProperties.Remove(e.PropertyName);
-                }
-                NLog.LogManager.GetCurrentClassLogger().Trace($"Property '{this.instance.GetType().Name}.{e.PropertyName}' was reset to initial value.");
             }
 
             this.IsModified = this.modifiedProperties.Count > 0;
-            this.IsRequiredValid = this.requiredProperties.Count == this.totalRequired;
+            this.IsRequiredValid = this.validRequiredProperties.Count == this.totalRequired;
+        }
+
+        private void UpdateValidRequiredProperties(PropertyInfo propertyInfo, T model)
+        {
+            var isRequired = propertyInfo.CustomAttributes.Any(a => a.AttributeType == typeof(RequiredAttribute));
+            if (!isRequired)
+            {
+                return;
+            }
+
+            var propertyName = propertyInfo.Name;
+            var isPresent = this.validRequiredProperties.Contains(propertyName);
+            if (HasEmptyValue(propertyInfo, model))
+            {
+                if (isPresent)
+                {
+                    this.validRequiredProperties.Remove(propertyName);
+                }
+            }
+            else if (!isPresent)
+            {
+                this.validRequiredProperties.Add(propertyName);
+            }
         }
 
         #endregion
