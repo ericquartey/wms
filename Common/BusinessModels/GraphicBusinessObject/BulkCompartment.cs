@@ -30,6 +30,7 @@ namespace Ferretto.Common.BusinessModels
 
         #region Properties
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.BulkCompartmentColumns), ResourceType = typeof(BusinessObjects))]
         public int Columns
         {
@@ -49,6 +50,7 @@ namespace Ferretto.Common.BusinessModels
           .Distinct()
           .Where(s => !string.IsNullOrEmpty(s)));
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CompartmentHeight), ResourceType = typeof(BusinessObjects))]
         public int? Height
         {
@@ -70,6 +72,7 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.loadingUnitId, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.BulkCompartmentRows), ResourceType = typeof(BusinessObjects))]
         public int Rows
         {
@@ -83,6 +86,7 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CompartmentWidth), ResourceType = typeof(BusinessObjects))]
         public int? Width
         {
@@ -96,6 +100,7 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CompartmentXPosition), ResourceType = typeof(BusinessObjects))]
         public int? XPosition
         {
@@ -109,6 +114,7 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CompartmentYPosition), ResourceType = typeof(BusinessObjects))]
         public int? YPosition
         {
