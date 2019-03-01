@@ -29,16 +29,16 @@ namespace Ferretto.Common.BusinessProviders
         public async Task<IEnumerable<Mission>> GetAllAsync(
             int skip,
             int take,
-            IEnumerable<SortOption> orderBy = null,
-            IExpression whereExpression = null,
+            IEnumerable<SortOption> orderBySortOptions = null,
+            string whereString = null,
             string searchString = null)
         {
             var missions = await this.missionsDataService
                 .GetAllAsync(
                     skip,
                     take,
-                    whereExpression?.ToString(),
-                    orderBy.ToQueryString(),
+                    whereString,
+                    orderBySortOptions.ToQueryString(),
                     searchString);
 
             return missions
@@ -69,9 +69,9 @@ namespace Ferretto.Common.BusinessProviders
                 });
         }
 
-        public async Task<int> GetAllCountAsync(IExpression whereExpression = null, string searchString = null)
+        public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
         {
-            return await this.missionsDataService.GetAllCountAsync(whereExpression?.ToString(), searchString);
+            return await this.missionsDataService.GetAllCountAsync(whereString, searchString);
         }
 
         public async Task<Mission> GetByIdAsync(int id)

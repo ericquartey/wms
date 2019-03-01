@@ -6,7 +6,12 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using DevExpress.Data.Filtering;
+using DevExpress.Data.Helpers;
+using DevExpress.Data.Linq;
+using DevExpress.Data.Linq.Helpers;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.Data.Core.Visitors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Extensions
@@ -33,23 +38,26 @@ namespace Ferretto.WMS.Data.Core.Extensions
 
         #region Methods
 
-        public static async Task<int> CountAsync<TModel>(
-            this IQueryable<TModel> entities,
-            IExpression whereExpression,
-            Expression<Func<TModel, bool>> searchExpression)
+        public static async Task<int> CountAsync<TBusinessModel, TDataModel>(
+            this IQueryable<TBusinessModel> entities,
+            string whereString,
+            Expression<Func<TBusinessModel, bool>> searchExpression)
         {
-            var isAsyncQueryable = whereExpression.ContainsOnlyTypeProperties<TModel>();
+            var whereCriteriaOperator = CriteriaOperator.Parse(whereString);
+            whereCriteriaOperator = RemoveNullPropertiesVisitor.Patch(whereCriteriaOperator);
+            var containsOnlyTypePropertiesVisitor = new ContainsOnlyTypePropertiesVisitor<TDataModel>();
+            var containsOnlyTypeProperties = containsOnlyTypePropertiesVisitor.ProcessCriteria(whereCriteriaOperator);
 
             var result = await ApplyTransformAsync(
-                       entities,
-                       0,
-                       int.MaxValue,
-                       null,
-                       whereExpression,
-                       searchExpression,
-                       isAsyncQueryable);
+                             entities,
+                             0,
+                             int.MaxValue,
+                             null,
+                             whereCriteriaOperator,
+                             searchExpression,
+                             containsOnlyTypeProperties);
 
-            return isAsyncQueryable ? await result.CountAsync() : result.Count();
+            return containsOnlyTypeProperties ? await result.CountAsync() : result.Count();
         }
 
         public static IEnumerable<SortOption> ParseSortOptions(this string orderBy)
@@ -61,7 +69,7 @@ namespace Ferretto.WMS.Data.Core.Extensions
 
             var matches = OrderByRegex.Matches(orderBy);
 
-            return matches.Cast<Match>().Select(match =>
+            return matches.Select(match =>
             {
                 var propertyName = match.Groups[nameof(SortOption.PropertyName)].Value;
 
@@ -74,26 +82,29 @@ namespace Ferretto.WMS.Data.Core.Extensions
             });
         }
 
-        public static async Task<IEnumerable<TModel>> ToArrayAsync<TModel>(
-                    this IQueryable<TModel> entities,
+        public static async Task<IEnumerable<TBusinessModel>> ToArrayAsync<TBusinessModel, TDataModel>(
+            this IQueryable<TBusinessModel> entities,
             int skip,
             int take,
             IEnumerable<SortOption> orderBy,
-            IExpression whereExpression,
-            Expression<Func<TModel, bool>> searchExpression)
+            string whereString,
+            Expression<Func<TBusinessModel, bool>> searchExpression)
         {
-            var isAsyncQueryable = whereExpression.ContainsOnlyTypeProperties<TModel>();
+            var whereCriteriaOperator = CriteriaOperator.Parse(whereString);
+            whereCriteriaOperator = RemoveNullPropertiesVisitor.Patch(whereCriteriaOperator);
+            var containsOnlyTypePropertiesVisitor = new ContainsOnlyTypePropertiesVisitor<TDataModel>();
+            var containsOnlyTypeProperties = containsOnlyTypePropertiesVisitor.ProcessCriteria(whereCriteriaOperator);
 
             var result = await ApplyTransformAsync(
-                       entities,
-                       skip,
-                       take,
-                       orderBy,
-                       whereExpression,
-                       searchExpression,
-                       isAsyncQueryable);
+                             entities,
+                             skip,
+                             take,
+                             orderBy,
+                             whereCriteriaOperator,
+                             searchExpression,
+                             containsOnlyTypeProperties);
 
-            return isAsyncQueryable ? await result.ToArrayAsync() : result.ToArray();
+            return containsOnlyTypeProperties ? await result.ToArrayAsync() : result.ToArray();
         }
 
         private static IQueryable<T> ApplyOrderByClause<T>(IEnumerable<SortOption> sortOptions, IQueryable<T> entities)
@@ -119,7 +130,7 @@ namespace Ferretto.WMS.Data.Core.Extensions
                         $"Property {sortOption.PropertyName} does not exist on entity {typeof(T).Name}");
                 }
 
-                var expression = typeof(IQueryableExtension)?
+                var expression = typeof(IQueryableExtension)
                     .GetMethod(nameof(CreateSelectorExpression), BindingFlags.Static | BindingFlags.NonPublic)?
                     .MakeGenericMethod(typeof(T), propertyType)
                     .Invoke(null, new object[] { sortOption.PropertyName });
@@ -149,24 +160,26 @@ namespace Ferretto.WMS.Data.Core.Extensions
             int skip,
             int take,
             IEnumerable<SortOption> orderBy,
-            IExpression whereExpression,
+            CriteriaOperator whereCriteriaOperator,
             Expression<Func<TModel, bool>> searchExpression,
             bool containsOnlyTypeProperties)
         {
             var filteredItems = entities;
 
-            if (whereExpression != null)
+            if (containsOnlyTypeProperties)
             {
-                var lambdaWhereExpression = whereExpression.BuildLambdaExpression<TModel>();
-
-                if (!containsOnlyTypeProperties)
-                {
-                    filteredItems = (await filteredItems.ToArrayAsync()).AsQueryable().Where(lambdaWhereExpression);
-                }
-                else
-                {
-                    filteredItems = filteredItems.Where(lambdaWhereExpression);
-                }
+                filteredItems = (IQueryable<TModel>)filteredItems
+                    .AppendWhere(
+                        new CriteriaToExpressionConverter(),
+                        StringsTolowerCloningHelper.Process(whereCriteriaOperator));
+            }
+            else
+            {
+                filteredItems = (IQueryable<TModel>)(await filteredItems.ToArrayAsync())
+                    .AsQueryable()
+                    .AppendWhere(
+                        new CriteriaToExpressionConverter(),
+                        StringsTolowerCloningHelper.Process(whereCriteriaOperator));
             }
 
             // TODO: if skip or take, then orderby should be defined (throw exception)

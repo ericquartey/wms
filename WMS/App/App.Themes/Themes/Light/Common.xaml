@@ -96,5 +96,14 @@
     <system:Double x:Key="MenuTileHeight">55</system:Double>
     <system:Double x:Key="MenuTileWidth">140</system:Double>
 
+    <!--  icon required  -->
+    <Color x:Key="RedMode">#F44336</Color>
+    <Color x:Key="BlueMode">#039BE5</Color>
+    <SolidColorBrush x:Key="CreateMode"
+                     Color="{StaticResource RedMode}" />
+    <SolidColorBrush x:Key="EditMode"
+                     Color="{StaticResource BlueMode}" />
+    <SolidColorBrush x:Key="Default"
+                     Color="{StaticResource Black}" />
 
 </ResourceDictionary>

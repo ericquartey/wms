@@ -9,7 +9,7 @@ using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
-    public abstract class CreateViewModel<T> : BaseServiceNavigationViewModel, IRefreshDataEntityViewModel
+    public abstract class CreateViewModel<T> : BaseServiceNavigationViewModel, IExtensionDataEntityViewModel
         where T : BusinessObject
     {
         #region Fields
@@ -26,7 +26,7 @@ namespace Ferretto.Common.Controls
 
         private bool isBusy;
 
-        private bool isValidationEnabled;
+        private bool isModelValid;
 
         private T model;
 
@@ -52,6 +52,8 @@ namespace Ferretto.Common.Controls
                                            (this.closeDialogCommand = new Prism.Commands.DelegateCommand(
                                this.ExecuteCloseDialogCommand));
 
+        public ColorRequired ColorRequired { get => ColorRequired.CreateMode; }
+
         public ICommand CreateCommand => this.createCommand ??
             (this.createCommand = new DelegateCommand(
                 async () => await this.ExecuteCreateCommand(),
@@ -71,15 +73,21 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public bool IsValidationEnabled
+        public bool IsModelValid
         {
-            get => this.isValidationEnabled;
-            set
+            get
             {
-                if (this.SetProperty(ref this.isValidationEnabled, value))
+                var temp = false;
+                if (this.Model == null)
                 {
-                    this.EvaluateCanExecuteCommands();
+                    temp = true;
                 }
+                else
+                {
+                    temp = string.IsNullOrWhiteSpace(this.Model.Error);
+                }
+                this.SetProperty(ref this.isModelValid, temp);
+                return temp;
             }
         }
 
@@ -146,7 +154,7 @@ namespace Ferretto.Common.Controls
         {
             return this.Model != null
                 && this.changeDetector.IsModified
-                && (!this.isValidationEnabled || string.IsNullOrWhiteSpace(this.Model.Error))
+                && this.IsModelValid
                 && !this.IsBusy
                 && this.changeDetector.IsRequiredValid;
         }

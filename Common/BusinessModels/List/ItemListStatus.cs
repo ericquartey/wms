@@ -5,6 +5,9 @@ namespace Ferretto.Common.BusinessModels
 {
     public enum ItemListStatus
     {
+        [Display(Name = "")]
+        NotSpecified,
+
         [Display(Name = nameof(BusinessObjects.ItemListStatusWaiting), ResourceType = typeof(BusinessObjects))]
         Waiting = 'W',
 

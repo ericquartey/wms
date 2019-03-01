@@ -5,6 +5,9 @@ namespace Ferretto.Common.BusinessModels
 {
     public enum MachineStatus
     {
+        [Display(Name = "")]
+        NotSpecified,
+
         [Display(Name = nameof(BusinessObjects.MachineStatusAutomatic), ResourceType = typeof(BusinessObjects))]
         Automatic = 'A',
 
