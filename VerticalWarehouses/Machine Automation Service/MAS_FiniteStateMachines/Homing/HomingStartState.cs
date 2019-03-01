@@ -1,6 +1,7 @@
 ﻿using System;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
@@ -12,7 +13,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         {
             this.parentStateMachine = parentMachine;
 
-            var calibrateData = ((HomingStateMachine)this.parentStateMachine).CalibrateData;
+            var calibrateData = ((IHomingStateMachine)this.parentStateMachine).CalibrateData;
 
             //TEMP send a message to start the homing (to inverter and other components)
             var newMessage = new CommandMessage(calibrateData,

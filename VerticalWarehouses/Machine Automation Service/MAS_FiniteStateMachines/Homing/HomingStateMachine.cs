@@ -1,10 +1,11 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
-    public class HomingStateMachine : StateMachineBase
+    public class HomingStateMachine : StateMachineBase, IHomingStateMachine
     {
         #region Fields
 
