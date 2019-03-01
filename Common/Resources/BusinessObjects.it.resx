@@ -289,7 +289,7 @@
     <value>Data Ultima Movimentazione</value>
   </data>
   <data name="CompartmentIsItemPairingFixed" xml:space="preserve">
-    <value>Abbinamento Articolo</value>
+    <value>Abbinamento Fisso</value>
   </data>
   <data name="CompartmentReservedForPick" xml:space="preserve">
     <value>Impegnato in Prelievo</value>

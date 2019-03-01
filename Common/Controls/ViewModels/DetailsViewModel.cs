@@ -161,7 +161,8 @@ namespace Ferretto.Common.Controls
             return this.Model != null
                 && this.changeDetector.IsModified
                 && this.IsModelValid
-                && !this.IsBusy;
+                && !this.IsBusy
+                && this.changeDetector.IsRequiredValid;
         }
 
         protected virtual void EvaluateCanExecuteCommands()
