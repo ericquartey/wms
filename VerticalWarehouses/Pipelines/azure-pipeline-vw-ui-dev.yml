@@ -71,7 +71,7 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Panel Pc App'
   inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/VWApp/bin/$(BuildConfiguration)/net471'
+    PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/Panel PC UI/VWApp/bin/$(BuildConfiguration)/net471'
     ArtifactName: 'panelpc_app'
 
 
