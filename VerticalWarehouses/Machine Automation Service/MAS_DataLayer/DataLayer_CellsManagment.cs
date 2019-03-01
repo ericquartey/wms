@@ -35,8 +35,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 this.inMemoryDataContext.SaveChanges();
             }
 
-            var inMemoryFreeBlockFirstByPriority = this.inMemoryDataContext.FreeBlocks.OrderBy(s => s.Priority)
-                .FirstOrDefault(s => s.BlockSize >= cellsNumber);
+            var inMemoryFreeBlockFirstByPriority = this.inMemoryDataContext.FreeBlocks.OrderBy(s => s.Priority).FirstOrDefault(s => s.BlockSize >= cellsNumber);
 
             if (inMemoryFreeBlockFirstByPriority == null)
             {
