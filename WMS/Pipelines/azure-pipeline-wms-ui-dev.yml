@@ -1,0 +1,83 @@
+resources:
+- repo: self
+  clean: true
+
+queue:
+  name: Hosted VS2017
+  demands:
+  - msbuild
+  - visualstudio
+  - vstest
+
+trigger:
+  branches:
+    include:
+    - develop
+  paths:
+    exclude:
+    - VerticalWarehouses
+    - WMS\Data
+    - WMS\Scheduler
+
+
+variables:
+  BuildPlatform: 'any cpu'
+  BuildConfiguration: 'debug'
+  TargetSolution: 'WMS\WMS.App.sln'
+
+steps:
+
+- template: ../../Pipelines/azure-pipeline-net4-nuget-template.yml
+
+
+- template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
+
+
+- task: VSBuild@1
+  displayName: 'Build solution WMS.App'
+  inputs:
+    solution: '$(TargetSolution)'
+    msbuildArgs: '-v:normal'
+    platform: '$(BuildPlatform)'
+    configuration: '$(BuildConfiguration)'
+    msbuildArchitecture: x64
+
+
+- task: VSTest@2
+  displayName: 'Run Tests'
+  inputs:
+    testAssemblyVer2: |
+     **\$(BuildConfiguration)\*test*.dll
+     !**\obj\**
+    codeCoverageEnabled: true
+    platform: '$(BuildPlatform)'
+    configuration: '$(BuildConfiguration)'
+
+
+- task: PublishSymbols@2
+  displayName: 'Publish symbols path'
+  inputs:
+    SearchPattern: '**\bin\**\*.pdb'
+    PublishSymbols: false
+  continueOnError: true
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to staging directory'
+  inputs:
+    SourceFolder: '$(system.defaultworkingdirectory)'
+    Contents: '**\bin\$(BuildConfiguration)\**'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Desktop App'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)/WMS/App/App/bin/$(BuildConfiguration)/net471'
+    ArtifactName: 'desktop_app'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: on_premises_appconfig_transform'
+  inputs:
+    PathtoPublish: 'WMS/App/App'
+    ArtifactName: 'on_premises_appconfig_transform'
