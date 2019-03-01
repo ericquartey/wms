@@ -26,8 +26,8 @@ namespace Ferretto.VW.InstallationApp
             var values = new Dictionary<string, string>
             {
                 { "mm", JsonConvert.SerializeObject(-100m) },
-                { "axis", JsonConvert.SerializeObject(MovementDirections.Vertical) },
-                { "movementType", JsonConvert.SerializeObject(MovementType.Relative) },
+                { "axis", JsonConvert.SerializeObject(1) },
+                { "movementType", JsonConvert.SerializeObject(0) },
                 { "speedPercentage", JsonConvert.SerializeObject(50) }
             };
             var content = new FormUrlEncodedContent(values);

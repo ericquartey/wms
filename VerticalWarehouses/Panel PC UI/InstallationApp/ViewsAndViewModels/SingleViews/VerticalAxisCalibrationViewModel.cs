@@ -7,7 +7,6 @@ using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Prism.Events;
 using Ferretto.VW.InstallationApp.Resources;
-using Ferretto.VW.InstallationApp.Interfaces;
 using System.Net.Http;
 
 namespace Ferretto.VW.InstallationApp
@@ -134,7 +133,7 @@ namespace Ferretto.VW.InstallationApp
         {
             try
             {
-                var client = this.container.Resolve<IRESTClient>() as HttpClient;
+                var client = new HttpClient();
                 await client.GetStringAsync("http://localhost:5000/api/Installation/ExecuteHoming");
                 this.IsStartButtonActive = false;
                 this.IsStopButtonActive = true;
@@ -150,7 +149,7 @@ namespace Ferretto.VW.InstallationApp
         {
             try
             {
-                var client = this.container.Resolve<IRESTClient>() as HttpClient;
+                var client = new HttpClient();
                 await client.GetStringAsync("http://localhost:5000/api/Installation/StopCommand");
                 this.IsStartButtonActive = true;
                 this.IsStopButtonActive = false;
