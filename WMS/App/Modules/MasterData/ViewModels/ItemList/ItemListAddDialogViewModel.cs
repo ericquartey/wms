@@ -29,9 +29,26 @@ namespace Ferretto.WMS.Modules.MasterData
             this.LoadData();
         }
 
-        protected override Task ExecuteCreateCommand()
+        protected override async Task ExecuteCreateCommand()
         {
-            throw new NotImplementedException();
+            this.IsBusy = true;
+
+            var result = await this.itemListProvider.CreateAsync(this.Model);
+            if (result.Success)
+            {
+                this.TakeModelSnapshot();
+
+                this.EventService.Invoke(new ModelChangedPubSubEvent<ItemList, int>(this.Model.Id));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
+
+                this.CloseDialogCommand.Execute(null);
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+            }
+
+            this.IsBusy = false;
         }
 
         protected override async Task OnAppearAsync()
