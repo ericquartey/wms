@@ -6,7 +6,7 @@
     <ApplicationIcon>favicon.ico</ApplicationIcon>
     <OutputType>WinExe</OutputType>
     <StartupObject />
-    <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AssemblyVersion>0.2.0.0</AssemblyVersion>
     <Copyright>copyright</Copyright>

@@ -3,7 +3,7 @@
     <PropertyGroup>
         <OutputType>Library</OutputType>
         <TargetFramework>netcoreapp2.1</TargetFramework>
-        <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <RootNamespace>Ferretto.WMS.Data.Core</RootNamespace>
     </PropertyGroup>
