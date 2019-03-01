@@ -32,7 +32,7 @@ namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
             Assert.IsNotNull(inverterMessage);
         }
 
-        /*
+        /* TEMP
         [TestMethod]
         [TestCategory("NotifyMessage")]
 
