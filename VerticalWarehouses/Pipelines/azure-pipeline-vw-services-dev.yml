@@ -14,13 +14,10 @@ trigger:
     include:
     - develop
   paths:
-    include:
-    - '*'
-    - 'VerticalWarehouses\Machine Automation Service'
     exclude:
     - Common
     - WMS
-    - VerticalWarehouses
+    - VerticalWarehouses\Panel PC UI
 
 variables:
   BuildConfiguration: 'Debug'
@@ -30,6 +27,7 @@ variables:
 
 
 steps:
+
 - task: DotNetCoreCLI@2
   displayName: 'NuGet restore'
   inputs:
@@ -39,7 +37,7 @@ steps:
     nugetConfigPath: nuget.config
 
 
-- template: azure-pipeline-assembly-versioning-template.yml
+- template: ../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
 
 - task: DotNetCoreCLI@2
@@ -54,7 +52,7 @@ steps:
   inputs:
     command: test
     projects: '$(TestProjects)'
-    arguments: '--configuration $(BuildConfiguration)'
+    arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true'
 
 
 - task: DotNetCoreCLI@2
@@ -68,9 +66,7 @@ steps:
 
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact'
+  displayName: 'Publish Artifact: Machine Automation Service'
   inputs:
-    PathtoPublish: 'VerticalWarehouses/Machine Automation Service'
-    ArtifactName: 'automation_services'
-
-
+    PathtoPublish: 'VerticalWarehouses/Machine Automation Service/MAS_AutomationService/bin/$(BuildConfiguration)/$(TargetFramework)/win7-x64/publish'
+    ArtifactName: 'automation_service'

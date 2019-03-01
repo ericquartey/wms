@@ -1,6 +1,7 @@
 resources:
 - repo: self
-  fetchDepth: 15
+  clean: true
+
 queue:
   name: Hosted VS2017
   demands:
@@ -13,42 +14,41 @@ trigger:
     include:
     - develop
   paths:
-    include:
-    - '*'
-    - 'VerticalWarehouses\Panel PC User Interface'
     exclude:
     - Common
     - WMS
-    - VerticalWarehouses
+    - VerticalWarehouses\Machine Automation Service
 
 variables:
   BuildPlatform: 'any cpu'
-  BuildConfiguration: 'release'
+  BuildConfiguration: 'debug'
   TargetSolution: 'VerticalWarehouses\VerticalWarehouses.sln'
-
 
 steps:
 
-- template: azure-pipeline-net4-nuget-template.yml
+- template: ../Pipelines/azure-pipeline-net4-nuget-template.yml
 
 
-- template: azure-pipeline-assembly-versioning-template.yml
+- template: ../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
 
 - task: VSBuild@1
-  displayName: 'Build solution'
+  displayName: 'Build solution VerticalWarehouses.sln'
   inputs:
     solution: '$(TargetSolution)'
+    msbuildArgs: '-v:normal'
     platform: '$(BuildPlatform)'
     configuration: '$(BuildConfiguration)'
+    msbuildArchitecture: x64
 
 
 - task: VSTest@2
-  displayName: 'VsTest - testAssemblies'
+  displayName: 'Run Tests'
   inputs:
     testAssemblyVer2: |
      **\$(BuildConfiguration)\*test*.dll
      !**\obj\**
+    codeCoverageEnabled: true
     platform: '$(BuildPlatform)'
     configuration: '$(BuildConfiguration)'
 
@@ -61,7 +61,7 @@ steps:
   continueOnError: true
 
 - task: CopyFiles@2
-  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+  displayName: 'Copy Files to staging directory'
   inputs:
     SourceFolder: '$(system.defaultworkingdirectory)'
     Contents: '**\bin\$(BuildConfiguration)\**'
@@ -69,8 +69,9 @@ steps:
 
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: drop'
+  displayName: 'Publish Artifact: Panel Pc App'
   inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)'
+    PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/VWApp/bin/$(BuildConfiguration)/net471'
+    ArtifactName: 'panelpc_app'
 
 

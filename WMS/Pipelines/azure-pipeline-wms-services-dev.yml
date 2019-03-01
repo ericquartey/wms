@@ -27,6 +27,7 @@ variables:
 
 steps:
 
+
 - task: CopyFiles@2
   displayName: 'Copy sources to staging directory'
   inputs:
@@ -54,7 +55,7 @@ steps:
     nugetConfigPath: nuget.config
 
 
-- template: azure-pipeline-assembly-versioning-template.yml
+- template: ../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
 
 - task: DotNetCoreCLI@2
@@ -87,5 +88,3 @@ steps:
   inputs:
     PathtoPublish: 'WMS/Data/WebAPI/bin/$(BuildConfiguration)/$(TargetFramework)/win7-x64/publish'
     ArtifactName: 'data_service'
-
-
