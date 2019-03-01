@@ -37,7 +37,7 @@ steps:
     nugetConfigPath: nuget.config
 
 
-- template: ../Pipelines/azure-pipeline-assembly-versioning-template.yml
+- template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
 
 - task: DotNetCoreCLI@2
