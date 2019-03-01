@@ -4,8 +4,10 @@
     {
         InBay,
 
-        OnMovement,
+        OnMovementToPlace,
 
-        InMagazine,
+        OnMovementToBay,
+
+        InPlace,
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS_DataLayer
+﻿using System.Collections.Generic;
+
+namespace Ferretto.VW.MAS_DataLayer
 {
     public class LoadingUnit
     {
@@ -6,7 +8,9 @@
 
         public decimal CellPosition { get; set; }
 
-        // public ICollection<Cell> Cells { get; set; }
+        public ICollection<Cell> Cells { get; set; }
+
+        public ICollection<FreeBlock> FreeBlocks { get; set; }
 
         public decimal Height { get; set; }
 

@@ -8,8 +8,6 @@
 
         public decimal Coord { get; set; }
 
-        public int DrawerId { get; set; }
-
         public LoadingUnit LoadingUnit { get; set; }
 
         public int LoadingUnitId { get; set; }

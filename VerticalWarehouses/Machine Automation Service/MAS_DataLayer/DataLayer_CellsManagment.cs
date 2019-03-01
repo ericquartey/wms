@@ -14,25 +14,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Methods
 
-        // INFO The method returns to the machine manager the position to take a drawer for mission from the WMS
-        public LoadingUnitPosition GetCellPosition(int cellId)
-        {
-            var loadingUnitPosition = new LoadingUnitPosition();
-
-            var inMemoryCellPosition = this.inMemoryDataContext.Cells.FirstOrDefault(s => s.CellId == cellId);
-
-            if (inMemoryCellPosition == null)
-            {
-                throw new InMemoryDataLayerException(DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION);
-            }
-
-            loadingUnitPosition.LoadingUnitCoord = inMemoryCellPosition.Coord;
-            loadingUnitPosition.LoadingUnitSide = inMemoryCellPosition.Side;
-
-            return loadingUnitPosition;
-        }
-
-        // INFO Method used when a drawer backs to the magazine to returns the position.
+        // INFO Method used when a drawer backs in the magazine from bay (return mission).
         public LoadingUnitPosition GetFreeBlockPosition(decimal loadingUnitHeight, int loadingUnitId)
         {
             var cellSpacing = this.GetIntegerConfigurationValue(ConfigurationValueEnum.cellSpacing);
@@ -64,6 +46,11 @@ namespace Ferretto.VW.MAS_DataLayer
             // INFO Change the BookedCells number in the FreeBlock table
             inMemoryFreeBlockFirstByPriority.BookedCellsNumber = cellsNumber;
             inMemoryFreeBlockFirstByPriority.LoadingUnitId = loadingUnitId;
+
+            // INFO Change the LoadingUnit height with the new value, in the LoadingUnit table
+            var inMemoryLoadingUnit = this.inMemoryDataContext.LoadingUnits.FirstOrDefault(s => s.LoadingUnitId == loadingUnitId);
+            inMemoryLoadingUnit.Height = loadingUnitHeight;
+
             this.inMemoryDataContext.SaveChanges();
 
             var returnLoadingUnitPosition = new LoadingUnitPosition
@@ -75,8 +62,26 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnLoadingUnitPosition;
         }
 
+        // INFO The method returns to the machine manager the position to take a drawer for mission from the WMS
+        public LoadingUnitPosition GetLoadingUnitPosition(int cellId)
+        {
+            var loadingUnitPosition = new LoadingUnitPosition();
+
+            var inMemoryCellPosition = this.inMemoryDataContext.Cells.FirstOrDefault(s => s.CellId == cellId);
+
+            if (inMemoryCellPosition == null)
+            {
+                throw new InMemoryDataLayerException(DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION);
+            }
+
+            loadingUnitPosition.LoadingUnitCoord = inMemoryCellPosition.Coord;
+            loadingUnitPosition.LoadingUnitSide = inMemoryCellPosition.Side;
+
+            return loadingUnitPosition;
+        }
+
         // INFO Method called when a drawer backs in the magazine and it occupies some cells
-        public void ReturnMissionEnded(int loadingUnitId)
+        public void ReturnLoadingUnitInPlace(int loadingUnitId)
         {
             // INFO Search in the FreeBlock table the booked cells for the drawer
             var inMemoryFreeBlockSearchBookedCells = this.inMemoryDataContext.FreeBlocks.FirstOrDefault(s => s.BookedCellsNumber > 0 && s.LoadingUnitId == loadingUnitId);
@@ -101,6 +106,13 @@ namespace Ferretto.VW.MAS_DataLayer
                 inMemoryCellsSearchFilledCell.WorkingStatus = Status.Occupied;
                 inMemoryCellsSearchFilledCell.LoadingUnitId = loadingUnitId;
             }
+
+            // INFO Update the LoadingUnit table when the LoadingUnit is in place
+            var loadingUnitOnMovement = this.inMemoryDataContext.LoadingUnits.FirstOrDefault(s => s.LoadingUnitId == loadingUnitId);
+            loadingUnitOnMovement.CellPosition = filledStartCell;
+            loadingUnitOnMovement.Status = LoadingUnitStatus.InPlace;
+
+            this.inMemoryDataContext.SaveChanges();
 
             // INFO Run the Free Block table calculation after the update
             this.CreateFreeBlockTable();
@@ -138,8 +150,8 @@ namespace Ferretto.VW.MAS_DataLayer
         //    return setCellList;
         //}
 
-        // INFO Procedure called when a drawer frees some cells in a first type mission from WMS.
-        public void SetCellWorkingStatus(int loadingUnitId)
+        // INFO Procedure called when a drawer frees some cells in a first type mission from cells to bay.
+        public void WithdrawalLoadingUnitFromPlace(int loadingUnitId)
         {
             var freeCells = this.inMemoryDataContext.Cells.FirstOrDefault(s => s.LoadingUnitId == loadingUnitId);
 
@@ -148,9 +160,14 @@ namespace Ferretto.VW.MAS_DataLayer
                 throw new InMemoryDataLayerException(DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION);
             }
 
-            // INFO Verify it copies a coloumn in another coloumn
+            // INFO Copies a coloumn in another coloumn
             freeCells.WorkingStatus = freeCells.Status;
             freeCells.LoadingUnitId = 0;
+
+            // INFO Update the LoadingUnit table
+            var loadingUnitOnMovement = this.inMemoryDataContext.LoadingUnits.FirstOrDefault(s => s.LoadingUnitId == loadingUnitId);
+            loadingUnitOnMovement.CellPosition = 0;
+            loadingUnitOnMovement.Status = LoadingUnitStatus.OnMovementToBay;
 
             this.inMemoryDataContext.SaveChanges();
 
