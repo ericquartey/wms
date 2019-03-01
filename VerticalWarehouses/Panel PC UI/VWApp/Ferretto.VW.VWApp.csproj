@@ -4,7 +4,7 @@
     <LanguageTargets>$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
     <TargetFramework>net471</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <CodeAnalysisRuleSet>..\analysis.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,10 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\Resources\Ferretto.VW.Resources.csproj" />
     <ProjectReference Include="..\Utils\Ferretto.VW.Utils.csproj" />
     <ProjectReference Include="..\InstallationApp\Ferretto.VW.InstallationApp.csproj" />
     <ProjectReference Include="..\CustomControls\Ferretto.VW.CustomControls.csproj" />
-    <ProjectReference Include="..\Common\Resources\Ferretto.VW.Resources.csproj" />
   </ItemGroup>
 
   <ItemGroup>

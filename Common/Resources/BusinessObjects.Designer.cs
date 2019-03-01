@@ -19,7 +19,7 @@ namespace Ferretto.Common.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class BusinessObjects {
@@ -358,7 +358,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item Pairing.
+        ///   Looks up a localized string similar to Fixed Item Pairing.
         /// </summary>
         public static string CompartmentIsItemPairingFixed {
             get {
@@ -421,7 +421,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max Capacity [pieces].
+        ///   Looks up a localized string similar to Max Capacity.
         /// </summary>
         public static string CompartmentMaxCapacity {
             get {
@@ -430,7 +430,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reserved for Pick [pieces].
+        ///   Looks up a localized string similar to Reserved for Pick.
         /// </summary>
         public static string CompartmentReservedForPick {
             get {
@@ -439,7 +439,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reserved to Store [pieces].
+        ///   Looks up a localized string similar to Reserved to Store.
         /// </summary>
         public static string CompartmentReservedToStore {
             get {
@@ -457,7 +457,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stock [pieces].
+        ///   Looks up a localized string similar to Stock .
         /// </summary>
         public static string CompartmentStock {
             get {

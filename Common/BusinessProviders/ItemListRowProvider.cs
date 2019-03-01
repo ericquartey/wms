@@ -222,7 +222,7 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
-                await this.itemListRowsDataService.CreateAsync(new WMS.Data.WebAPI.Contracts.ItemListRowDetails
+                await this.itemListRowsDataService.UpdateAsync(new WMS.Data.WebAPI.Contracts.ItemListRowDetails
                 {
                     Id = model.Id,
                     Code = model.Code,
