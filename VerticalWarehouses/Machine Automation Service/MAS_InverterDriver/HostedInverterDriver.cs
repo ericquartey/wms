@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Exceptions;
-using Ferretto.VW.Common_Utils.Interfaces;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.Common_Utils.Utilities;
-using Ferretto.VW.InverterDriver.StateMachines;
-using Ferretto.VW.InverterDriver.StateMachines.Calibrate;
+using Ferretto.VW.MAS_InverterDriver.Interface;
+using Ferretto.VW.MAS_InverterDriver;
+using Ferretto.VW.MAS_InverterDriver.StateMachines;
 using Ferretto.VW.MAS_DataLayer;
 using Microsoft.Extensions.Hosting;
 using Prism.Events;
@@ -78,7 +79,7 @@ namespace Ferretto.VW.InverterDriver
             messageEvent.Subscribe(message => { this.messageQueue.Enqueue(message); },
                 ThreadOption.PublisherThread,
                 false,
-                message => message.Destination == MessageActor.InverterDriver || message.Destination == MessageActor.Any);
+                message => message.Source == MessageActor.FiniteStateMachines);
         }
 
         #endregion
@@ -169,13 +170,14 @@ namespace Ferretto.VW.InverterDriver
                     case MessageType.Calibrate:
                         if (receivedMessage.Data is ICalibrateMessageData data)
                         {
-                            this.currentStateMachine = new CalibrateStateMachine(data.AxisToCalibrate, this.inverterCommandQueue, this.eventAggregator);
+                            this.currentStateMachine = new CalibrateStateMachine(data.AxisToCalibrate,
+                                this.inverterCommandQueue, this.heartbeatQueue);
                             this.currentStateMachine.Start();
                         }
 
                         break;
                 }
-            } while (!stoppingToken.IsCancellationRequested);
+            } while (stoppingToken.IsCancellationRequested);
 
             return Task.CompletedTask;
         }
@@ -223,7 +225,7 @@ namespace Ferretto.VW.InverterDriver
 
                 if (currentMessage.IsWriteMessage && currentMessage.ParameterId == InverterParameterId.ControlWordParam)
                 {
-                    var readStatusWordMessage = new InverterMessage(0x00, (short)InverterParameterId.StatusWordParam);
+                    var readStatusWordMessage = new InverterMessage(0x00, (short) InverterParameterId.StatusWordParam);
                     this.inverterCommandQueue.Enqueue(readStatusWordMessage);
                     this.controlWordCheckTimer.Change(5000, Timeout.Infinite);
                     continue;
@@ -234,7 +236,7 @@ namespace Ferretto.VW.InverterDriver
                     if (currentMessage.ShortPayload != this.lastControlMessage.ShortPayload)
                     {
                         var readStatusWordMessage =
-                            new InverterMessage(0x00, (short)InverterParameterId.StatusWordParam);
+                            new InverterMessage(0x00, (short) InverterParameterId.StatusWordParam);
                         this.inverterCommandQueue.Enqueue(readStatusWordMessage);
                         continue;
                     }

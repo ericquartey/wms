@@ -1086,8 +1086,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Status { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Type { get; set; }
+        [Newtonsoft.Json.JsonProperty("cellTypeDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CellTypeDescription { get; set; }
     
         [Newtonsoft.Json.JsonProperty("xCoordinate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? XCoordinate { get; set; }
@@ -2666,11 +2666,11 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     {
         NotSpecified = 0,
     
-        Valid = 1,
+        Expiring = 71,
     
-        Expiring = 2,
+        Valid = 86,
     
-        Expired = 3,
+        Expired = 88,
     
     }
     

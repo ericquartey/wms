@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 
-namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Calibrate
 {
     public class HomingModeState : InverterStateBase
     {
@@ -21,7 +21,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
 
             this.parameterValue = 0x0006;
 
-            var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.SetOperatingModeParam,
+            var inverterMessage = new InverterMessage(0x00, (short) InverterParameterId.SetOperatingModeParam,
                 this.parameterValue);
 
             parentStateMachine.EnqueueMessage(inverterMessage);
@@ -34,7 +34,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
         public override void NotifyMessage(InverterMessage message)
         {
             if (message.IsError)
-                this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate, message));
+                this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate));
 
             if (message.IsWriteMessage && message.ParameterId == InverterParameterId.SetOperatingModeParam)
                 if (message.ShortPayload == this.parameterValue)

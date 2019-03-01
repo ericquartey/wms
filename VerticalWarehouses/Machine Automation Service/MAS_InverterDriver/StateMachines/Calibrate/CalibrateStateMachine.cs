@@ -1,8 +1,8 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Utilities;
-using Prism.Events;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.Calibrate;
 
-namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 {
     public class CalibrateStateMachine : InverterStateMachineBase
     {
@@ -10,18 +10,20 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
 
         private readonly Axis axisToCalibrate;
 
-        private int calibrationStep;
+        private Axis currentAxis;
 
         #endregion
 
         #region Constructors
 
+        //TODO remove priority queue
         public CalibrateStateMachine(Axis axisToCalibrate,
-            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator)
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            BlockingConcurrentQueue<InverterMessage> priorityInverterCommandQueue)
         {
             this.axisToCalibrate = axisToCalibrate;
             this.inverterCommandQueue = inverterCommandQueue;
-            this.eventAggregator = eventAggregator;
+            //this.priorityInverterCommandQueue = priorityInverterCommandQueue;
         }
 
         #endregion
@@ -31,20 +33,11 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
         public override void ChangeState(IInverterState newState)
         {
             if (newState is EndState)
-                if (this.axisToCalibrate == Axis.Both)
+                if (this.axisToCalibrate == Axis.Both && this.currentAxis == Axis.Horizontal)
                 {
-                    switch (this.calibrationStep)
-                    {
-                        case 0:
-                            this.calibrationStep++;
-                            base.ChangeState(new VoltageDisabledState(this, Axis.Vertical));
-                            return;
-
-                        case 1:
-                            this.calibrationStep++;
-                            base.ChangeState(new VoltageDisabledState(this, Axis.Horizontal));
-                            return;
-                    }
+                    this.currentAxis = Axis.Vertical;
+                    base.ChangeState(new VoltageDisabledState(this, this.currentAxis));
+                    return;
                 }
 
             base.ChangeState(newState);
@@ -56,13 +49,15 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
             {
                 case Axis.Both:
                 case Axis.Horizontal:
-                    this.CurrentState = new VoltageDisabledState(this, Axis.Horizontal);
+                    this.currentAxis = Axis.Horizontal;
                     break;
 
                 case Axis.Vertical:
-                    this.CurrentState = new VoltageDisabledState(this, Axis.Vertical);
+                    this.currentAxis = Axis.Vertical;
                     break;
             }
+
+            this.CurrentState = new VoltageDisabledState(this, this.currentAxis);
         }
 
         #endregion

@@ -138,7 +138,7 @@
                         <dxg:GridColumn Width="50*"
                                         FieldName="Status" />
                         <dxg:GridColumn Width="300*"
-                                        FieldName="Type" />
+                                        FieldName="CellTypeDescription" />
                         <dxg:GridColumn Width="50*"
                                         FieldName="Priority" />
                         <dxg:GridColumn Width="50*"

@@ -148,19 +148,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBox">
-                    <ContentControl x:Name="ListBoxBorder"                            
-                            Panel.ZIndex="999"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            BorderBrush="Yellow">
-                        <ItemsPresenter />
-                    </ContentControl>
-                    <ControlTemplate.Triggers>
-                        <DataTrigger Binding="{Binding IsReadOnly}"
-                                     Value="false">
-                            <Setter TargetName="ListBoxBorder" Property="BorderBrush" Value="{DynamicResource CommonSecondaryMedium}" />
-                        </DataTrigger>
-                    </ControlTemplate.Triggers>
+                    <ItemsPresenter />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

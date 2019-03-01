@@ -77,6 +77,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                     existingCompartmentType = entry.Entity;
                     model.Id = entry.Entity.Id;
                 }
+                else
+                {
+                    model.Id = existingCompartmentType.Id;
+                }
 
                 if (itemId.HasValue)
                 {

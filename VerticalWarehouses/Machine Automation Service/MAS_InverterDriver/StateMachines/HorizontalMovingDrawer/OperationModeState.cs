@@ -1,76 +1,42 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.InverterDriver;
-using Prism.Events;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
 {
-    public class OperationModeState : IState
+    public class OperationModeState : InverterStateBase
     {
         #region Fields
 
-        private const byte DATASET_INDEX = 0x05; //VALUE binary = 00000101
+        private readonly Axis movingDrawer;
 
-        private readonly IEventAggregator eventAggregator;
-
-        private readonly IInverterDriver inverterDriver;
-
-        private readonly ParameterID paramID = ParameterID.HOMING_MODE_PARAM;
-
-        private readonly StateMachineHorizontalMoving stateMachineHorizontalMoving;
-
-        private readonly byte systemIndex = 0x00; //VALUE binary = 00000000
-
-        private readonly object valParam;
+        private readonly ushort parameterValue;
 
         #endregion
 
         #region Constructors
 
-        public OperationModeState(StateMachineHorizontalMoving stateMachineHorizontalMoving,
-            IInverterDriver inverterDriver, IEventAggregator eventAggregator)
+        public OperationModeState(IInverterStateMachine parentStateMachine, Axis movingDrawer)
         {
-            this.inverterDriver = inverterDriver;
-            this.eventAggregator = eventAggregator;
-            this.stateMachineHorizontalMoving = stateMachineHorizontalMoving;
+            this.parentStateMachine = parentStateMachine;
+            this.movingDrawer = movingDrawer;
 
-            this.eventAggregator.GetEvent<NotificationEvent>().Subscribe(this.notifyEventHandler);
+            var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue);
+
+            parentStateMachine.EnqueueMessage(inverterMessage);
         }
-
-        #endregion
-
-        #region Properties
-
-        public string Type => "Operation Mode State";
 
         #endregion
 
         #region Methods
 
-        private void notifyEventHandler(NotificationMessage notification)
+        public override void NotifyMessage(InverterMessage message)
         {
-            var result =
-                this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_INDEX, this.valParam);
+            if (message.IsError)
+                this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.movingDrawer));
 
-            switch (notification.Status)
-            {
-                case MessageStatus.OperationEnd:
-                    {
-                        if (result == InverterDriverExitStatus.Success)
-                            this.stateMachineHorizontalMoving.ChangeState(
-                                new ReadyToSwitchOnState(this.stateMachineHorizontalMoving, this.inverterDriver,
-                                    this.eventAggregator));
-                        break;
-                    }
-                case MessageStatus.OperationError:
-                    {
-                        this.stateMachineHorizontalMoving.ChangeState(new ErrorState(this.stateMachineHorizontalMoving,
-                            this.inverterDriver, this.eventAggregator));
-
-                        break;
-                    }
-            }
+            if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
+                if (message.ShortPayload == this.parameterValue)
+                    this.parentStateMachine.ChangeState(new ReadyToSwitchOnState(this.parentStateMachine,
+                        this.movingDrawer));
         }
 
         #endregion

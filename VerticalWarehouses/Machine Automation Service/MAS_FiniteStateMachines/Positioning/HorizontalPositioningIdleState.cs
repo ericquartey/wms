@@ -1,5 +1,4 @@
-﻿using System.Buffers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
@@ -60,6 +59,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
         }
 
         public void NotifyMessage(CommandMessage message)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SendCommandMessage(CommandMessage message)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SendNotificationMessage(NotificationMessage message)
         {
             throw new System.NotImplementedException();
         }

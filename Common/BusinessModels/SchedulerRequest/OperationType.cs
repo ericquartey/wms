@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
     public enum OperationType
     {
+        [Display(Name = "")]
+        NotSpecified,
+
         [Display(Name = nameof(BusinessObjects.OperationInsert), ResourceType = typeof(BusinessObjects))]
         Insertion = 'I',
 
