@@ -165,7 +165,6 @@ namespace Ferretto.Common.BusinessProviders
             {
                 await this.cellsDataService.UpdateAsync(new WMS.Data.WebAPI.Contracts.CellDetails
                 {
-                    Id = model.Id,
                     AbcClassId = model.AbcClassId,
                     AisleId = model.AisleId,
                     AreaId = model.AreaId,
@@ -173,13 +172,14 @@ namespace Ferretto.Common.BusinessProviders
                     CellTypeId = model.CellTypeId,
                     Column = model.Column,
                     Floor = model.Floor,
+                    Id = model.Id,
+                    LoadingUnitsCount = model.LoadingUnitsCount,
                     Number = model.Number,
                     Priority = model.Priority,
                     Side = (WMS.Data.WebAPI.Contracts.Side)model.Side,
                     XCoordinate = model.XCoordinate,
                     YCoordinate = model.YCoordinate,
                     ZCoordinate = model.ZCoordinate,
-                    LoadingUnitsCount = model.LoadingUnitsCount
                 });
 
                 return new OperationResult<CellDetails>(true);
