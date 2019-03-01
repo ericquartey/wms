@@ -1,6 +1,4 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Calibrate
 {
