@@ -3,7 +3,7 @@ using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.Common_Utils.Messages.Data
 {
-    internal class CalibrateMessageData : ICalibrateMessageData
+    public class CalibrateMessageData : ICalibrateMessageData
     {
         #region Constructors
 

@@ -19,7 +19,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
 
-            var notificationMessage = new NotificationMessage(null, "Inverter Driver Error", MessageActor.Any,
+            var notificationMessage = new NotificationMessage(null, "Inverter Driver End Operation", MessageActor.Any,
                 MessageActor.InverterDriver, MessageType.Calibrate, MessageStatus.OperationEnd);
 
             parentStateMachine.PublishNotificationEvent(notificationMessage);

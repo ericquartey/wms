@@ -11,8 +11,8 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Methods
 
-        void InitializeViewModel(IUnityContainer _container);
+        void InitializeViewModel(IUnityContainer container);
 
-        #endregion Methods
+        #endregion
     }
 }

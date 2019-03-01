@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
@@ -21,20 +22,27 @@ namespace Ferretto.VW.InstallationApp
     /// </summary>
     public partial class HelpMainWindow : Window, IHelpMainWindow
     {
+        #region Fields
+
+        private IEventAggregator eventAggregator;
+
+        #endregion
+
         #region Constructors
 
-        public HelpMainWindow()
+        public HelpMainWindow(IEventAggregator eventAggregator)
         {
+            this.eventAggregator = eventAggregator;
             this.InitializeComponent();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public ContentPresenter HelpMainWindowContentRegion => this.HelpContentRegion;
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -43,6 +51,6 @@ namespace Ferretto.VW.InstallationApp
             this.Hide();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

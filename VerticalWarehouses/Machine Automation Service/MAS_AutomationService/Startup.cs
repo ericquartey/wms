@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Interfaces;
+﻿using Ferretto.VW.Common_Utils.Interfaces;
 using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.InverterDriver;
 using Ferretto.VW.MAS_AutomationService.Hubs;

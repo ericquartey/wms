@@ -3,7 +3,7 @@
   <PropertyGroup>
     <LanguageTargets>$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
     <TargetFramework>net471</TargetFramework>
-    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\analysis.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
@@ -47,6 +47,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Resources\Ferretto.VW.Resources.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Controls\CustomShutterControlSensorsTwoPositions.xaml.cs">
+      <DependentUpon>CustomShutterControlSensorsTwoPositions.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\CustomShutterControlSensorsThreePositions.xaml.cs">
+      <DependentUpon>CustomShutterControlSensorsThreePositions.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
  

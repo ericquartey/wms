@@ -28,7 +28,7 @@ namespace Ferretto.VW.InverterDriver
         public const string IP_ADDR_INVERTER_DEFAULT = "169.254.231.248";
 
         public const int PORT_ADDR_INVERTER_DEFAULT = 17221;
-        
+
         private static readonly object lockFlags = new object();
 
         private static readonly object lockObj = new object();
@@ -101,7 +101,7 @@ namespace Ferretto.VW.InverterDriver
 
         private bool UdcPresenceCradleOperator;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -121,7 +121,7 @@ namespace Ferretto.VW.InverterDriver
             // logger.Log(LogLevel.Debug, String.Format("InverterDriver in a new incarnation..."));
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Events
 
@@ -137,11 +137,9 @@ namespace Ferretto.VW.InverterDriver
 
         public event SelectTelegramDoneEventHandler SelectTelegramDone_PositioningDrawer;
 
-        #endregion Events
+        #endregion
 
         #region Properties
-
-        public ActionType CurrentActionType { get; set; }
 
         /// <summary>
         /// Get brake resistance overtemperature-Digital value.
@@ -184,6 +182,8 @@ namespace Ferretto.VW.InverterDriver
                 }
             }
         }
+
+        public ActionType CurrentActionType { get; set; }
 
         /// <summary>
         /// Get Emergency Stop-Digital value.
@@ -336,15 +336,9 @@ namespace Ferretto.VW.InverterDriver
             }
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
-
-        public class SocketPacket
-        {
-            public byte[] dataBuffer = new byte[1024];
-            public System.Net.Sockets.Socket thisSocket;
-        }
 
         /// <summary>
         /// Release resources.
@@ -516,7 +510,7 @@ namespace Ferretto.VW.InverterDriver
                                     //logger.Log(LogLevel.Debug, "Invoke SelectTelegramDone for parameter: {0}, value: {1}", this.currentRequest.ParameterID, (ushort)this.retParameterValue);
                                     SelectTelegramDone_CalibrateVerticalAxis?.Invoke(this, new SelectTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType));
                                 }
-                            
+
                                 break;
                             }
                         case ActionType.PositioningDrawer:
@@ -692,7 +686,7 @@ namespace Ferretto.VW.InverterDriver
                     Connected?.Invoke(this, new ConnectedEventArgs(false));
                 }
             }
-            catch (SocketException exc)
+            catch (SocketException)
             {
                 // logger.Log(LogLevel.Debug, String.Format("Connection to inverter failed [error message: {0}]", exc.Message));
                 this.LastError = InverterDriverErrors.GenericError;
@@ -991,7 +985,7 @@ namespace Ferretto.VW.InverterDriver
                     this.sckClient?.Send(byTelegramToSend);
                 }
             }
-            catch (SocketException exc)
+            catch (SocketException)
             {
                 // logger.Log(LogLevel.Debug, String.Format("Send telegram to inverter failed [error Message: {0}]", exc.Message));
                 // TODO: Warning? Handle the exception?
@@ -1016,13 +1010,28 @@ namespace Ferretto.VW.InverterDriver
                     theSocPkt
                 );
             }
-            catch (SocketException exc)
+            catch (SocketException)
             {
                 // logger.Log(LogLevel.Debug, String.Format("Asyncronously receive message invoke failed [error Message: {0}]", exc.Message));
                 // TODO: Warning? Handle the exception?
             }
         }
 
-        #endregion Methods
+        #endregion
+
+        #region Classes
+
+        public class SocketPacket
+        {
+            #region Fields
+
+            public byte[] dataBuffer = new byte[1024];
+
+            public System.Net.Sockets.Socket thisSocket;
+
+            #endregion
+        }
+
+        #endregion
     }
 }

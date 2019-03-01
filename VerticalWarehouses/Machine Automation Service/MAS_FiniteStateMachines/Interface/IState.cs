@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Messages;
+﻿using Ferretto.VW.Common_Utils.Messages;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines
 {
@@ -8,7 +7,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         #region Properties
 
         /// <summary>
-        ///     Get the type of state (string description).
+        /// Get the type of state (string description).
         /// </summary>
         string Type { get; }
 
@@ -16,16 +15,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Methods
 
-        /// <summary>
-        ///     Make the operation required by the current state.
-        /// </summary>
         void MakeOperation();
 
-        void NotifyMessage(CommandMessage message);
+        void SendCommandMessage(CommandMessage message);
 
-        /// <summary>
-        ///     Stop operation for the state.
-        /// </summary>
+        void SendNotificationMessage(NotificationMessage message);
+
         void Stop();
 
         #endregion

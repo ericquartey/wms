@@ -1,4 +1,5 @@
 ﻿using System.Windows.Media;
+using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
@@ -11,7 +12,18 @@ namespace Ferretto.VW.InstallationApp
 
         private bool emergencyEndRun;
 
+        private IEventAggregator eventAggregator;
+
         private bool zeroVerticalSensor = true;
+
+        #endregion
+
+        #region Constructors
+
+        public SSVerticalAxisViewModel(IEventAggregator eventAggregator)
+        {
+            this.eventAggregator = eventAggregator;
+        }
 
         #endregion
 

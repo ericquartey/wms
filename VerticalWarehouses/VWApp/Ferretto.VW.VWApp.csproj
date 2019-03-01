@@ -4,7 +4,7 @@
     <LanguageTargets>$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
     <TargetFramework>net471</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\analysis.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,14 +16,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Utils\Ferretto.VW.Utils.csproj" />
-    <ProjectReference Include="..\RemoteIODriver\Ferretto.VW.RemoteIODriver.csproj" />
-    <ProjectReference Include="..\Navigation\Ferretto.VW.Navigation.csproj" />
-    <ProjectReference Include="..\MathLib\Ferretto.VW.MathLib.csproj" />
-    <ProjectReference Include="..\InverterDriver\Ferretto.VW.InverterDriver.csproj" />
     <ProjectReference Include="..\InstallationApp\Ferretto.VW.InstallationApp.csproj" />
     <ProjectReference Include="..\CustomControls\Ferretto.VW.CustomControls.csproj" />
     <ProjectReference Include="..\Common\Resources\Ferretto.VW.Resources.csproj" />
-    <ProjectReference Include="..\ActionBlocks\Ferretto.VW.ActionBlocks.csproj" />
   </ItemGroup>
 
   <ItemGroup>

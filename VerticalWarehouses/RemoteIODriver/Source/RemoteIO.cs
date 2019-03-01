@@ -152,7 +152,7 @@ namespace Ferretto.VW.RemoteIODriver
                 if (this.client.Connected)
                 {
                     // Power up the machine
-                    this.powerUp();
+                    this.powerUp();  // uncomment these code lines
 
                     // Set the digital signal to high level related to the encoder of vertical motor enabling (as default).
                     this.outputs.Clear();

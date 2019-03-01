@@ -21,11 +21,11 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
 
             switch (this.axisToCalibrate)
             {
-                case Axis.Horizontal:
+                case Axis.Vertical:
                     this.parameterValue = 0x000F;
                     break;
 
-                case Axis.Vertical:
+                case Axis.Horizontal:
                     this.parameterValue = 0x800F;
                     break;
             }

@@ -113,7 +113,7 @@ namespace Ferretto.VW.InverterDriver
                 throw new InverterDriverException("Socket Transport failed to connect");
             }
 
-            Task.Run(() => this.HostedInverterDriverTaskFunction(stoppingToken), stoppingToken);
+            await Task.Run(() => this.HostedInverterDriverTaskFunction(stoppingToken), stoppingToken);
         }
 
         private void ControlWordCheckTimeout(object state)
@@ -122,8 +122,10 @@ namespace Ferretto.VW.InverterDriver
             //TODO notify control word change error
         }
 
-        private Task HostedInverterDriverTaskFunction(CancellationToken stoppingToken)
+        private async Task HostedInverterDriverTaskFunction(CancellationToken stoppingToken)
         {
+            this.lastControlMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, (ushort)0);
+
             //=== Create control word check timer but not start it
             this.controlWordCheckTimer?.Dispose();
             this.controlWordCheckTimer = new Timer(this.ControlWordCheckTimeout, null, -1, Timeout.Infinite);
@@ -151,7 +153,7 @@ namespace Ferretto.VW.InverterDriver
                 }
                 catch (OperationCanceledException)
                 {
-                    return Task.CompletedTask;
+                    return;
                 }
 
                 switch (receivedMessage.Type)
@@ -159,6 +161,7 @@ namespace Ferretto.VW.InverterDriver
                     case MessageType.Calibrate:
                         if (receivedMessage.Data is ICalibrateMessageData data)
                         {
+                            Console.WriteLine("[MAS_InverterDriver] CalibrateStateMachine -> Create");
                             this.currentStateMachine = new CalibrateStateMachine(data.AxisToCalibrate, this.inverterCommandQueue, this.eventAggregator);
                             this.currentStateMachine.Start();
                         }
@@ -167,7 +170,7 @@ namespace Ferretto.VW.InverterDriver
                 }
             } while (!stoppingToken.IsCancellationRequested);
 
-            return Task.CompletedTask;
+            return;
         }
 
         private async Task ProcessCommand(CancellationToken cancellationToken)
@@ -184,7 +187,9 @@ namespace Ferretto.VW.InverterDriver
         private async Task ProcessHeartbeat(CancellationToken cancellationToken)
         {
             while (this.heartbeatQueue.TryDequeue(Timeout.Infinite, cancellationToken, out var message))
+            {
                 await this.socketTransport.WriteAsync(message.GetWriteMessage(), cancellationToken);
+            }
         }
 
         private async Task ReceiveInverterData(CancellationToken stoppingToken)
@@ -252,6 +257,7 @@ namespace Ferretto.VW.InverterDriver
             do
             {
                 var handleIndex = WaitHandle.WaitAny(commandHandles, Timeout.Infinite);
+
                 switch (handleIndex)
                 {
                     case 0:

@@ -10,11 +10,27 @@ using Microsoft.AspNetCore.SignalR.Client;
 using Prism.Commands;
 using Prism.Mvvm;
 using Ferretto.VW.InstallationApp;
+using Prism.Events;
 
 namespace Ferretto.VW.InstallationApp
 {
     public class BeltBurnishingViewModel : BindableBase, IViewModel, IBeltBurnishingViewModel
     {
+        #region Fields
+
+        private IEventAggregator eventAggregator;
+
+        #endregion
+
+        #region Constructors
+
+        public BeltBurnishingViewModel(IEventAggregator eventAggregator)
+        {
+            this.eventAggregator = eventAggregator;
+        }
+
+        #endregion
+
         #region Methods
 
         public void ExitFromViewMethod()

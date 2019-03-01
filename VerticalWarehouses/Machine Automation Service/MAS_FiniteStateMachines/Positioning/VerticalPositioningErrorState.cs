@@ -46,6 +46,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             throw new NotImplementedException();
         }
 
+        public void SendCommandMessage(CommandMessage message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SendNotificationMessage(NotificationMessage message)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Stop()
         {
         }

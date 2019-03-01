@@ -1,4 +1,5 @@
-﻿using Prism.Mvvm;
+﻿using Prism.Events;
+using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -6,11 +7,22 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
+        private IEventAggregator eventAggregator;
+
         private bool luPresentiInMachineSide;
 
         private bool luPresentInOperatorSide = true;
 
         private bool zeroPawlSensor;
+
+        #endregion
+
+        #region Constructors
+
+        public SSCradleViewModel(IEventAggregator eventAggregator)
+        {
+            this.eventAggregator = eventAggregator;
+        }
 
         #endregion
 
