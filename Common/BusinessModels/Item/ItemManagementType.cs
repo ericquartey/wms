@@ -5,6 +5,9 @@ namespace Ferretto.Common.BusinessModels
 {
     public enum ItemManagementType
     {
+        [Display(Name = "")]
+        NotSpecified,
+
         [Display(Name = nameof(BusinessObjects.ItemManagementTypeFIFO), ResourceType = typeof(BusinessObjects))]
         FIFO = 'F',
 

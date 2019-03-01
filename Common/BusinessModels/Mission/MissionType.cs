@@ -5,6 +5,9 @@ namespace Ferretto.Common.BusinessModels
 {
     public enum MissionType
     {
+        [Display(Name = "")]
+        NotSpecified,
+
         [Display(Name = nameof(BusinessObjects.MissionTypeBypass), ResourceType = typeof(BusinessObjects))]
         Bypass = 'B',
 
