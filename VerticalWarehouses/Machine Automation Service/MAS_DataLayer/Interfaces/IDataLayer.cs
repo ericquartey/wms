@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using Ferretto.VW.Common_Utils;
 
@@ -73,6 +72,13 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
         IPAddress GetIPAddressConfigurationValue(ConfigurationValueEnum configurationValueEnum);
+
+        /// <summary>
+        /// Get to the mission the lowest cell position for a drawer
+        /// </summary>
+        /// <param name="cellId">Id of the lowest drawer cell</param>
+        /// <returns>The dawer side and height</returns>
+        LoadingUnitPosition GetLoadingUnitPosition(int cellId);
 
         /// <summary>
         ///     Get a string variable from the configuration table

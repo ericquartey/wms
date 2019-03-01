@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS_IODriver
     {
         #region Fields
 
-        private const int IoPollingInterval = 50;
+        private const int IO_POLLING_INTERVAL = 50;
 
         private readonly Task commadReceiveTask;
 
@@ -110,7 +110,7 @@ namespace Ferretto.VW.MAS_IODriver
             var ioAddress = this.dataLayer.GetIPAddressConfigurationValue(ConfigurationValueEnum.IoAddress);
             var ioPort = this.dataLayer.GetIntegerConfigurationValue(ConfigurationValueEnum.IoPort);
 
-            modbusTransport.Configure(ioAddress, ioPort);
+            this.modbusTransport.Configure(ioAddress, ioPort);
 
             bool connectionResult;
             try
@@ -142,7 +142,7 @@ namespace Ferretto.VW.MAS_IODriver
         private Task CommandReceiveTaskFunction()
         {
             this.pollIoTimer?.Dispose();
-            this.pollIoTimer = new Timer(ReadIoData, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IoPollingInterval));
+            this.pollIoTimer = new Timer(this.ReadIoData, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IO_POLLING_INTERVAL));
 
             this.currentStateMachine = new PowerUpStateMachine(this.ioCommandQueue, this.eventAggregator);
             this.currentStateMachine.Start();
@@ -181,7 +181,7 @@ namespace Ferretto.VW.MAS_IODriver
             {
                 try
                 {
-                    pollIoEvent.Wait(Timeout.Infinite, this.stoppingToken);
+                    this.pollIoEvent.Wait(Timeout.Infinite, stoppingToken);
                 }
                 catch (OperationCanceledException)
                 {
