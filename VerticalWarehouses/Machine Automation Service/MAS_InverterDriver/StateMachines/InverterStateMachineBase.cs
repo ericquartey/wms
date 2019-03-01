@@ -3,7 +3,7 @@ using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
 using Prism.Events;
 
-namespace Ferretto.VW.InverterDriver.StateMachines
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 {
     public abstract class InverterStateMachineBase : IInverterStateMachine
     {

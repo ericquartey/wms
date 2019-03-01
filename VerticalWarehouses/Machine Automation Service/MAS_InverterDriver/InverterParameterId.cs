@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.InverterDriver
+﻿namespace Ferretto.VW.MAS_InverterDriver
 {
     public enum InverterParameterId : short
     {

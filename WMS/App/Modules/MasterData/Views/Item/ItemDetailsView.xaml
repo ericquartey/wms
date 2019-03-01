@@ -267,15 +267,21 @@
                                                 FieldName="Lot" />
                                 <dxg:GridColumn Width="200*"
                                                 FieldName="CompartmentStatusDescription" />
-                                <dxg:GridColumn Width="150*">
-                                    <dxg:GridColumn.FieldName>
-                                        <MultiBinding Converter="{StaticResource SFC}">
-                                            <Binding Source="{x:Static res:MasterData.QuantityWithUnitMeasure}" />
-                                            <Binding Source="{x:Static res:BusinessObjects.ItemStock}" />
-                                            <Binding Path="Model.MeasureUnitDescription"
-                                                     TargetNullValue="" />
-                                        </MultiBinding>
-                                    </dxg:GridColumn.FieldName>
+                                <dxg:GridColumn Width="150*"
+                                                FieldName="Stock">
+                                    <dxg:GridColumn.CellDisplayTemplate>
+                                        <DataTemplate>
+                                            <TextBlock VerticalAlignment="Center">
+                                                <TextBlock.Text>
+                                                    <MultiBinding Converter="{StaticResource SFC}">
+                                                        <Binding Source="{x:Static res:MasterData.QuantityWithUnitMeasure}" />
+                                                        <Binding Path="Data.Stock" TargetNullValue="" />
+                                                        <Binding Path="Data.ItemMeasureUnit" TargetNullValue="" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </dxg:GridColumn.CellDisplayTemplate>
                                 </dxg:GridColumn>
                                 <dxg:GridColumn Width="100*"
                                                 CellDisplayTemplate="{DynamicResource BooleanCellTemplate}"
@@ -309,13 +315,13 @@
                                           BorderThickness="1"
                                           Filename="{Binding Path=Model.Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           Path="{Binding Path=Model.ImagePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <wms:InfoText HorizontalAlignment="Left"                                     
+                        <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Path=Model.CreationDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"                                      
+                        <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Path=Model.LastModificationDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Path=Model.InventoryDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"                                      
+                        <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Path=Model.LastPickDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Path=Model.LastStoreDate}" />
