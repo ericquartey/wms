@@ -41,7 +41,7 @@ namespace Ferretto.Common.BusinessModels
         public string Status { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellType), ResourceType = typeof(BusinessObjects))]
-        public string Type { get; set; }
+        public string CellTypeDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellXCoordinate), ResourceType = typeof(BusinessObjects))]
         public int? XCoordinate { get; set; }
