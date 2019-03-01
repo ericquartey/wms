@@ -45,13 +45,13 @@ namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
 
             if (message.IsError)
             {
-                //TODO Assert.IsTrue(errorState);
+                Assert.IsTrue(errorState);
             }
 
             if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
                 if (message.ShortPayload == this.parameterValue)
                 {
-                    //TODO Assert.IsTrue(readyToSwitchOnState);
+                   Assert.IsTrue(readyToSwitchOnState);
                 }
         }
 

@@ -44,7 +44,7 @@ namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
 
             if (message.IsError)
             {
-                //TODO Assert.IsTrue(errorState);
+               Assert.IsTrue(errorState);
             }
         }
 
