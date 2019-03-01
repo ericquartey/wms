@@ -1,20 +1,35 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Utilities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
-    public partial class DataLayer : IDataLayer, IWriteLogService
+    public partial class DataLayer : BackgroundService, IDataLayer, IWriteLogService
     {
         #region Fields
+
+        private readonly Task commadReceiveTask;
+
+        private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
 
         private readonly IEventAggregator eventAggregator;
 
         private readonly DataLayerContext inMemoryDataContext;
+
+        private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
+
+        private readonly Task notificationReceiveTask;
+
+        private CancellationToken stoppingToken;
 
         #endregion
 
@@ -48,10 +63,25 @@ namespace Ferretto.VW.MAS_DataLayer
                 this.inMemoryDataContext.SaveChanges();
             }
 
-            // The old WriteLogService
-            var webApiCommandEvent = eventAggregator.GetEvent<CommandEvent>();
+            this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
 
-            webApiCommandEvent.Subscribe(this.LogWriting);
+            this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
+
+            this.commadReceiveTask = new Task(async () => await ReceiveCommandTaskFunction());
+            this.notificationReceiveTask = new Task(async () => await ReceiveNotificationTaskFunction());
+
+            var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            commandEvent.Subscribe(message => { this.commandQueue.Enqueue(message); },
+                ThreadOption.PublisherThread,
+                false,
+                message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
+
+            // The old WriteLogService
+            var NotificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            NotificationEvent.Subscribe(message => { this.notificationQueue.Enqueue(message); },
+                ThreadOption.PublisherThread,
+                false,
+                message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
         }
 
         #endregion
@@ -96,6 +126,75 @@ namespace Ferretto.VW.MAS_DataLayer
 
             this.inMemoryDataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
             this.inMemoryDataContext.SaveChanges();
+        }
+
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            this.stoppingToken = stoppingToken;
+
+            try
+            {
+                this.commadReceiveTask.Start();
+                this.notificationReceiveTask.Start();
+            }
+            catch (Exception ex)
+            {
+                throw new DataLayerException($"Exception: {ex.Message} while starting service threads", ex);
+            }
+        }
+
+        private async Task ReceiveCommandTaskFunction()
+        {
+            do
+            {
+                CommandMessage receivedMessage;
+                try
+                {
+                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                }
+                catch (OperationCanceledException)
+                {
+                    return;
+                }
+
+                LogWriting(receivedMessage);
+
+                switch (receivedMessage.Type)
+                {
+                    //TODO define action for each received notification
+                    default:
+
+                        break;
+                }
+
+                await this.inMemoryDataContext.SaveChangesAsync(this.stoppingToken);
+            } while (!this.stoppingToken.IsCancellationRequested);
+        }
+
+        private async Task ReceiveNotificationTaskFunction()
+        {
+            do
+            {
+                NotificationMessage receivedMessage;
+                try
+                {
+                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                }
+                catch (OperationCanceledException)
+                {
+                    return;
+                }
+
+                switch (receivedMessage.Type)
+                {
+                    //TODO define action for each received notification
+                    default:
+
+                        break;
+                }
+
+                await this.inMemoryDataContext.SaveChangesAsync(this.stoppingToken);
+            } while (!this.stoppingToken.IsCancellationRequested);
         }
 
         #endregion

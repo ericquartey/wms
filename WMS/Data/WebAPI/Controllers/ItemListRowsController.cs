@@ -63,11 +63,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Created(this.Request.GetUri(), result.Entity);
         }
 
-        [HttpPost(nameof(Execute))]
+        [HttpPost("execute")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(422)]
-        public async Task<ActionResult> Execute(Scheduler.Core.ListRowExecutionRequest request)
+        public async Task<ActionResult> ExecuteAsync(Scheduler.Core.ListRowExecutionRequest request)
         {
             if (request == null)
             {
