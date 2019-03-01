@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Net.Sockets;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
@@ -9,8 +9,9 @@ using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_IODriver.Interface;
+using Ferretto.VW.MAS_IODriver.StateMachines;
+using Ferretto.VW.MAS_IODriver.StateMachines.PowerUp;
 using Microsoft.Extensions.Hosting;
-using Modbus.Device;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_IODriver
@@ -21,25 +22,33 @@ namespace Ferretto.VW.MAS_IODriver
 
         private const int IoPollingInterval = 50;
 
+        private readonly Task commadReceiveTask;
+
         private readonly IDataLayer dataLayer;
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IModbusTransport modbusTransport;
+        private readonly BlockingConcurrentQueue<IoMessage> ioCommandQueue;
 
-        private readonly BlockingConcurrentQueue<IoStatus> ioCommandQueue;
+        private readonly Task ioReceiveTask;
 
-        private readonly BlockingConcurrentQueue<CommandMessage> messageQueue;
-
-        private readonly ManualResetEventSlim pollIoEvent;
+        private readonly Task ioSendTask;
 
         private readonly IoStatus ioStatus;
 
-        private Task ioReceiveTask;
+        private readonly BlockingConcurrentQueue<CommandMessage> messageQueue;
 
-        private Task ioSendTask;
+        private readonly IModbusTransport modbusTransport;
+
+        private readonly ManualResetEventSlim pollIoEvent;
+
+        private IIoStateMachine currentStateMachine;
+
+        private bool disposed;
 
         private Timer pollIoTimer;
+
+        private CancellationToken stoppingToken;
 
         #endregion
 
@@ -54,8 +63,13 @@ namespace Ferretto.VW.MAS_IODriver
             this.ioStatus = new IoStatus();
             this.pollIoEvent = new ManualResetEventSlim(false);
 
-            this.ioCommandQueue = new BlockingConcurrentQueue<IoStatus>();
+            this.ioCommandQueue = new BlockingConcurrentQueue<IoMessage>();
+
             this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
+
+            this.commadReceiveTask = new Task(() => CommandReceiveTaskFunction());
+            this.ioReceiveTask = new Task(async () => await this.ReceiveIoData());
+            this.ioSendTask = new Task(async () => await this.SendIoCommand());
 
             var messageEvent = this.eventAggregator.GetEvent<CommandEvent>();
             messageEvent.Subscribe(message => { this.messageQueue.Enqueue(message); },
@@ -68,20 +82,31 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Methods
 
-        public override Task StopAsync(CancellationToken stoppingToken)
+        public void Dispose()
         {
-            var returnValue = base.StopAsync(stoppingToken);
+            base.Dispose();
 
-            return returnValue;
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.pollIoTimer?.Dispose();
+            }
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            Task.Run(() => this.HostedIoDriverTaskFunction(stoppingToken), stoppingToken);
-        }
+            this.stoppingToken = stoppingToken;
 
-        private Task HostedIoDriverTaskFunction(CancellationToken stoppingToken)
-        {
             var ioAddress = this.dataLayer.GetIPAddressConfigurationValue(ConfigurationValueEnum.IoAddress);
             var ioPort = this.dataLayer.GetIntegerConfigurationValue(ConfigurationValueEnum.IoPort);
 
@@ -102,14 +127,25 @@ namespace Ferretto.VW.MAS_IODriver
                 throw new IoDriverException("Failed to connect to Modbus I/O master");
             }
 
+            try
+            {
+                this.commadReceiveTask.Start();
+                this.ioReceiveTask.Start();
+                this.ioSendTask.Start();
+            }
+            catch (Exception ex)
+            {
+                throw new IOException($"Exception: {ex.Message} while starting service threads", ex);
+            }
+        }
+
+        private Task CommandReceiveTaskFunction()
+        {
             this.pollIoTimer?.Dispose();
             this.pollIoTimer = new Timer(ReadIoData, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IoPollingInterval));
 
-            this.ioSendTask?.Dispose();
-            this.ioSendTask = Task.Run(() => this.SendIoCommand(stoppingToken), stoppingToken);
-
-            this.ioReceiveTask?.Dispose();
-            this.ioReceiveTask = Task.Run(() => this.ReceiveIoData(stoppingToken), stoppingToken);
+            this.currentStateMachine = new PowerUpStateMachine(this.ioCommandQueue, this.eventAggregator);
+            this.currentStateMachine.Start();
 
             do
             {
@@ -125,7 +161,7 @@ namespace Ferretto.VW.MAS_IODriver
 
                 switch (receivedMessage.Type)
                 {
-                    case MessageType.Calibrate:
+                    case MessageType.SwitchAxis:
 
                         break;
                 }
@@ -139,7 +175,7 @@ namespace Ferretto.VW.MAS_IODriver
             this.pollIoEvent.Set();
         }
 
-        private async Task ReceiveIoData(CancellationToken stoppingToken)
+        private async Task ReceiveIoData()
         {
             do
             {
@@ -156,29 +192,32 @@ namespace Ferretto.VW.MAS_IODriver
 
                 if (this.ioStatus.UpdateInputStates(inputData))
                 {
-                    this.eventAggregator.GetEvent<NotificationEvent>();
+                    this.currentStateMachine.ProcessMessage(new IoMessage(inputData, true));
                 }
             } while (stoppingToken.IsCancellationRequested);
         }
 
-        private async Task SendIoCommand(CancellationToken stoppingToken)
+        private async Task SendIoCommand()
         {
             do
             {
-                CommandMessage receivedMessage;
+                IoMessage message;
                 try
                 {
-                    this.messageQueue.TryDequeue(Timeout.Infinite, stoppingToken, out receivedMessage);
+                    this.ioCommandQueue.TryDequeue(Timeout.Infinite, stoppingToken, out message);
                 }
                 catch (OperationCanceledException)
                 {
                     return;
                 }
 
-                switch (receivedMessage.Type)
+                if (message.ValidOutputs)
                 {
-                    case MessageType.Calibrate:
-                        break;
+                    if (this.ioStatus.UpdateOutputStates(message.Outputs) || message.Force)
+                    {
+                        await this.modbusTransport.WriteAsync(message.Outputs);
+                        this.currentStateMachine.ProcessMessage(message);
+                    }
                 }
             } while (!stoppingToken.IsCancellationRequested);
         }

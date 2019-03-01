@@ -10,7 +10,7 @@
 
         #region Properties
 
-        public string Type => "InverterBaseState";
+        public virtual string Type => this.GetType().ToString();
 
         #endregion
 

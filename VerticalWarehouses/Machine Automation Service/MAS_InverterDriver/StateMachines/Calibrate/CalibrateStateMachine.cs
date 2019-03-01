@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Interfaces;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Utilities;
 using Prism.Events;
 

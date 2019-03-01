@@ -2,11 +2,11 @@
 
 namespace Ferretto.VW.Common_Utils.Messages.Interfaces
 {
-    public interface ICalibrateMessageData : IMessageData
+    public interface ISwitchAxisMessageData : IMessageData
     {
         #region Properties
 
-        Axis AxisToCalibrate { get; }
+        Axis AxisToSwitch { get; }
 
         #endregion
     }

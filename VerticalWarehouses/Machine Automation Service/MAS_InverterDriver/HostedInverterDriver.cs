@@ -24,6 +24,8 @@ namespace Ferretto.VW.InverterDriver
 
         private const int InverterPortNumber = 17221;
 
+        private readonly Task commandReceiveTask;
+
         private readonly IDataLayer dataLayer;
 
         private readonly IEventAggregator eventAggregator;
@@ -31,6 +33,10 @@ namespace Ferretto.VW.InverterDriver
         private readonly BlockingConcurrentQueue<InverterMessage> heartbeatQueue;
 
         private readonly BlockingConcurrentQueue<InverterMessage> inverterCommandQueue;
+
+        private readonly Task inverterReceiveTask;
+
+        private readonly Task inverterSendTask;
 
         private readonly BlockingConcurrentQueue<CommandMessage> messageQueue;
 
@@ -40,13 +46,13 @@ namespace Ferretto.VW.InverterDriver
 
         private IInverterStateMachine currentStateMachine;
 
+        private bool disposed;
+
         private Timer heartBeatTimer;
 
-        private Task inverterReceiveTask;
-
-        private Task inverterSendTask;
-
         private InverterMessage lastControlMessage;
+
+        private CancellationToken stoppingToken;
 
         #endregion
 
@@ -64,6 +70,10 @@ namespace Ferretto.VW.InverterDriver
 
             this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
 
+            this.commandReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
+            this.inverterReceiveTask = new Task(async () => await ReceiveInverterData());
+            this.inverterSendTask = new Task(async () => await SendInverterCommand());
+
             var messageEvent = this.eventAggregator.GetEvent<CommandEvent>();
             messageEvent.Subscribe(message => { this.messageQueue.Enqueue(message); },
                 ThreadOption.PublisherThread,
@@ -75,23 +85,32 @@ namespace Ferretto.VW.InverterDriver
 
         #region Methods
 
-        public new void Dispose()
+        public void Dispose()
         {
             base.Dispose();
 
-            this.heartBeatTimer?.Dispose();
-            this.controlWordCheckTimer?.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        public override Task StopAsync(CancellationToken stoppingToken)
+        public void Dispose(bool disposing)
         {
-            var returnValue = base.StopAsync(stoppingToken);
+            if (this.disposed)
+            {
+                return;
+            }
 
-            return returnValue;
+            if (disposing)
+            {
+                this.heartBeatTimer?.Dispose();
+                this.controlWordCheckTimer?.Dispose();
+            }
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            this.stoppingToken = stoppingToken;
+
             var inverterAddress = this.dataLayer.GetIPAddressConfigurationValue(ConfigurationValueEnum.InverterAddress);
             var inverterPort = this.dataLayer.GetIntegerConfigurationValue(ConfigurationValueEnum.InverterPort);
 
@@ -113,41 +132,32 @@ namespace Ferretto.VW.InverterDriver
                 throw new InverterDriverException("Socket Transport failed to connect");
             }
 
-            Task.Run(() => this.HostedInverterDriverTaskFunction(stoppingToken), stoppingToken);
+            try
+            {
+                this.commandReceiveTask.Start();
+                this.inverterReceiveTask.Start();
+                this.inverterSendTask.Start();
+            }
+            catch (Exception ex)
+            {
+                throw new InverterDriverException($"Exception: {ex.Message} while starting service threads", ex);
+            }
         }
 
-        private void ControlWordCheckTimeout(object state)
+        private Task CommandReceiveTaskFunction()
         {
-            this.controlWordCheckTimer.Change(-1, Timeout.Infinite);
-            //TODO notify control word change error
-        }
-
-        private Task HostedInverterDriverTaskFunction(CancellationToken stoppingToken)
-        {
-            //=== Create control word check timer but not start it
             this.controlWordCheckTimer?.Dispose();
             this.controlWordCheckTimer = new Timer(this.ControlWordCheckTimeout, null, -1, Timeout.Infinite);
 
-            //=== create the heartbeat timer
             this.heartBeatTimer?.Dispose();
-            this.heartBeatTimer = new Timer(this.SendHeartBeat, null, TimeSpan.Zero,
-                TimeSpan.FromMilliseconds(HEARTBEAT_TIMEOUT));
+            this.heartBeatTimer = new Timer(this.SendHeartBeat, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(HEARTBEAT_TIMEOUT));
 
-            //=== create and start the sending Task
-            this.inverterSendTask?.Dispose();
-            this.inverterSendTask = Task.Run(() => this.SendInverterCommand(stoppingToken), stoppingToken);
-
-            //=== create and start the receiving Task
-            this.inverterReceiveTask?.Dispose();
-            this.inverterReceiveTask = Task.Run(() => this.ReceiveInverterData(stoppingToken), stoppingToken);
-
-            //=== This will be the command receiving Task from state machine
             do
             {
                 CommandMessage receivedMessage;
                 try
                 {
-                    this.messageQueue.TryDequeue(Timeout.Infinite, stoppingToken, out receivedMessage);
+                    this.messageQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
                 }
                 catch (OperationCanceledException)
                 {
@@ -170,31 +180,37 @@ namespace Ferretto.VW.InverterDriver
             return Task.CompletedTask;
         }
 
-        private async Task ProcessCommand(CancellationToken cancellationToken)
+        private void ControlWordCheckTimeout(object state)
         {
-            while (this.inverterCommandQueue.TryDequeue(Timeout.Infinite, cancellationToken, out var message))
+            this.controlWordCheckTimer.Change(-1, Timeout.Infinite);
+            //TODO notify control word change error
+        }
+
+        private async Task ProcessCommand()
+        {
+            while (this.inverterCommandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out var message))
             {
                 if (message.ParameterId == InverterParameterId.ControlWordParam)
                     this.lastControlMessage = new InverterMessage(message);
 
-                await this.socketTransport.WriteAsync(message.GetWriteMessage(), cancellationToken);
+                await this.socketTransport.WriteAsync(message.GetWriteMessage(), this.stoppingToken);
             }
         }
 
-        private async Task ProcessHeartbeat(CancellationToken cancellationToken)
+        private async Task ProcessHeartbeat()
         {
-            while (this.heartbeatQueue.TryDequeue(Timeout.Infinite, cancellationToken, out var message))
-                await this.socketTransport.WriteAsync(message.GetWriteMessage(), cancellationToken);
+            while (this.heartbeatQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out var message))
+                await this.socketTransport.WriteAsync(message.GetWriteMessage(), this.stoppingToken);
         }
 
-        private async Task ReceiveInverterData(CancellationToken stoppingToken)
+        private async Task ReceiveInverterData()
         {
             do
             {
                 byte[] inverterData;
                 try
                 {
-                    inverterData = await this.socketTransport.ReadAsync(stoppingToken);
+                    inverterData = await this.socketTransport.ReadAsync(this.stoppingToken);
                 }
                 catch (OperationCanceledException)
                 {
@@ -227,7 +243,7 @@ namespace Ferretto.VW.InverterDriver
                 }
 
                 this.currentStateMachine.NotifyMessage(currentMessage);
-            } while (stoppingToken.IsCancellationRequested);
+            } while (this.stoppingToken.IsCancellationRequested);
         }
 
         private void SendHeartBeat(object state)
@@ -235,11 +251,11 @@ namespace Ferretto.VW.InverterDriver
             this.heartbeatQueue.Enqueue(this.lastControlMessage);
         }
 
-        private async Task SendInverterCommand(CancellationToken cancellationToken)
+        private async Task SendInverterCommand()
         {
             var cancellationEventSlim = new ManualResetEventSlim(false);
 
-            cancellationToken.Register(() => cancellationEventSlim.Set());
+            this.stoppingToken.Register(() => cancellationEventSlim.Set());
 
             //INFO Create WaitHandle array to wait for multiple events
             var commandHandles = new[]
@@ -255,17 +271,17 @@ namespace Ferretto.VW.InverterDriver
                 switch (handleIndex)
                 {
                     case 0:
-                        await this.ProcessHeartbeat(cancellationToken);
+                        await this.ProcessHeartbeat();
                         break;
 
                     case 1:
-                        await this.ProcessCommand(cancellationToken);
+                        await this.ProcessCommand();
                         break;
 
                     case 2:
                         return;
                 }
-            } while (!cancellationToken.IsCancellationRequested);
+            } while (!this.stoppingToken.IsCancellationRequested);
         }
 
         #endregion

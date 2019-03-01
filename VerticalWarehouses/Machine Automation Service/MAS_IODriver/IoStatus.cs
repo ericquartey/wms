@@ -1,4 +1,7 @@
-﻿namespace Ferretto.VW.MAS_IODriver
+﻿using System;
+using System.IO;
+
+namespace Ferretto.VW.MAS_IODriver
 {
     public class IoStatus
     {
@@ -34,7 +37,54 @@
 
         public bool UpdateInputStates(bool[] newInputStates)
         {
-            return false;
+            bool updateRequired = false;
+            for (int index = 0; index < totalInputs; index++)
+            {
+                if (this.inputs[index] != newInputStates[index])
+                {
+                    updateRequired = true;
+                    break;
+                }
+            }
+            try
+            {
+                if (updateRequired)
+                {
+                    Array.Copy(newInputStates, this.inputs, totalInputs);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new IOException($"Exception {ex.Message} while updating Inputs status");
+            }
+
+            return updateRequired;
+        }
+
+        public bool UpdateOutputStates(bool[] newOutputStates)
+        {
+            bool updateRequired = false;
+            for (int index = 0; index < totalOutputs; index++)
+            {
+                if (this.outputs[index] != newOutputStates[index])
+                {
+                    updateRequired = true;
+                    break;
+                }
+            }
+            try
+            {
+                if (updateRequired)
+                {
+                    Array.Copy(newOutputStates, this.outputs, totalOutputs);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new IOException($"Exception {ex.Message} while updating Outputs status");
+            }
+
+            return updateRequired;
         }
 
         #endregion
