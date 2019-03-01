@@ -16,9 +16,6 @@ trigger:
     - release/*
     - bugfix/*
     - hotfix/*
-  paths:
-    exclude:
-    - VerticalWarehouses
 
 variables:
   BuildPlatform: 'any cpu'
@@ -46,12 +43,6 @@ steps:
 
 - template: azure-pipeline-net4-nuget-template.yml
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Common Sources'
-  inputs:
-    PathtoPublish: '.'
-    ArtifactName: 'common_sources'
-
 
 - template: azure-pipeline-assembly-versioning-template.yml
 
@@ -60,6 +51,16 @@ steps:
   displayName: 'Build solution WMS.App'
   inputs:
     solution: 'WMS\WMS.App.sln'
+    msbuildArgs: '-v:normal'
+    platform: '$(BuildPlatform)'
+    configuration: '$(BuildConfiguration)'
+    msbuildArchitecture: x64
+
+
+- task: VSBuild@1
+  displayName: 'Build solution VerticalWarehouses.sln'
+  inputs:
+    solution: 'VerticalWarehouses\VerticalWarehouses.sln'
     msbuildArgs: '-v:normal'
     platform: '$(BuildPlatform)'
     configuration: '$(BuildConfiguration)'
@@ -83,5 +84,7 @@ steps:
     SourceFolder: '$(system.defaultworkingdirectory)'
     Contents: '**\bin\$(BuildConfiguration)\**'
     TargetFolder: '$(build.artifactstagingdirectory)'
+
+
 - template: azure-pipeline-publish-artifacts-template.yml
 
