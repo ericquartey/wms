@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
@@ -10,7 +9,6 @@ using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_IODriver.Interface;
 using Microsoft.Extensions.Hosting;
-using Modbus.Device;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_IODriver
@@ -19,21 +17,21 @@ namespace Ferretto.VW.MAS_IODriver
     {
         #region Fields
 
-        private const int IoPollingInterval = 50;
+        private const int IO_POLLING_INTERVAL = 50;
 
         private readonly IDataLayer dataLayer;
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IModbusTransport modbusTransport;
-
         private readonly BlockingConcurrentQueue<IoStatus> ioCommandQueue;
+
+        private readonly IoStatus ioStatus;
 
         private readonly BlockingConcurrentQueue<CommandMessage> messageQueue;
 
-        private readonly ManualResetEventSlim pollIoEvent;
+        private readonly IModbusTransport modbusTransport;
 
-        private readonly IoStatus ioStatus;
+        private readonly ManualResetEventSlim pollIoEvent;
 
         private Task ioReceiveTask;
 
@@ -85,7 +83,7 @@ namespace Ferretto.VW.MAS_IODriver
             var ioAddress = this.dataLayer.GetIPAddressConfigurationValue(ConfigurationValueEnum.IoAddress);
             var ioPort = this.dataLayer.GetIntegerConfigurationValue(ConfigurationValueEnum.IoPort);
 
-            modbusTransport.Configure(ioAddress, ioPort);
+            this.modbusTransport.Configure(ioAddress, ioPort);
 
             bool connectionResult;
             try
@@ -103,7 +101,7 @@ namespace Ferretto.VW.MAS_IODriver
             }
 
             this.pollIoTimer?.Dispose();
-            this.pollIoTimer = new Timer(ReadIoData, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IoPollingInterval));
+            this.pollIoTimer = new Timer(this.ReadIoData, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IO_POLLING_INTERVAL));
 
             this.ioSendTask?.Dispose();
             this.ioSendTask = Task.Run(() => this.SendIoCommand(stoppingToken), stoppingToken);
@@ -145,7 +143,7 @@ namespace Ferretto.VW.MAS_IODriver
             {
                 try
                 {
-                    pollIoEvent.Wait(Timeout.Infinite, stoppingToken);
+                    this.pollIoEvent.Wait(Timeout.Infinite, stoppingToken);
                 }
                 catch (OperationCanceledException)
                 {
