@@ -43,28 +43,20 @@ namespace Ferretto.Common.BusinessProviders
             {
                 var itemList = await this.itemListsDataService.CreateAsync(new WMS.Data.WebAPI.Contracts.ItemListDetails
                 {
-                    Id = model.Id,
-                    Code = model.Code,
-                    Description = model.Description,
-                    Priority = model.Priority,
-                    ItemListStatus = (WMS.Data.WebAPI.Contracts.ItemListStatus)model.ItemListStatus,
-                    ItemListType = (WMS.Data.WebAPI.Contracts.ItemListType)model.ItemListType,
-                    CreationDate = model.CreationDate,
                     AreaName = model.AreaName,
-                    ItemListItemsCount = model.ItemListItemsCount,
-                    Job = model.Job,
+                    Code = model.Code,
                     CustomerOrderCode = model.CustomerOrderCode,
                     CustomerOrderDescription = model.CustomerOrderDescription,
+                    Description = model.Description,
+                    ItemListItemsCount = model.ItemListItemsCount,
+                    ItemListStatus = (WMS.Data.WebAPI.Contracts.ItemListStatus)model.ItemListStatus,
+                    ItemListType = (WMS.Data.WebAPI.Contracts.ItemListType)model.ItemListType,
+                    ItemListTypeDescription = model.ItemListTypeDescription,
+                    Job = model.Job,
+                    Priority = model.Priority,
                     ShipmentUnitAssociated = model.ShipmentUnitAssociated,
                     ShipmentUnitCode = model.ShipmentUnitCode,
                     ShipmentUnitDescription = model.ShipmentUnitDescription,
-                    LastModificationDate = model.LastModificationDate,
-                    FirstExecutionDate = model.FirstExecutionDate,
-                    ExecutionEndDate = model.ExecutionEndDate,
-                    CanAddNewRow = model.CanAddNewRow,
-                    ItemListRowsCount = model.ItemListRowsCount,
-                    ItemListTypeDescription = model.ItemListTypeDescription,
-                    CanBeExecuted = model.CanBeExecuted
                 });
 
                 model.Id = itemList.Id;
