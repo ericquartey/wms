@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
@@ -177,7 +176,7 @@ namespace Ferretto.VW.InverterDriver
 
                         break;
                 }
-            } while (stoppingToken.IsCancellationRequested);
+            } while (!this.stoppingToken.IsCancellationRequested);
 
             return Task.CompletedTask;
         }
@@ -225,7 +224,7 @@ namespace Ferretto.VW.InverterDriver
 
                 if (currentMessage.IsWriteMessage && currentMessage.ParameterId == InverterParameterId.ControlWordParam)
                 {
-                    var readStatusWordMessage = new InverterMessage(0x00, (short) InverterParameterId.StatusWordParam);
+                    var readStatusWordMessage = new InverterMessage(0x00, (short)InverterParameterId.StatusWordParam);
                     this.inverterCommandQueue.Enqueue(readStatusWordMessage);
                     this.controlWordCheckTimer.Change(5000, Timeout.Infinite);
                     continue;
@@ -236,7 +235,7 @@ namespace Ferretto.VW.InverterDriver
                     if (currentMessage.ShortPayload != this.lastControlMessage.ShortPayload)
                     {
                         var readStatusWordMessage =
-                            new InverterMessage(0x00, (short) InverterParameterId.StatusWordParam);
+                            new InverterMessage(0x00, (short)InverterParameterId.StatusWordParam);
                         this.inverterCommandQueue.Enqueue(readStatusWordMessage);
                         continue;
                     }
@@ -245,7 +244,7 @@ namespace Ferretto.VW.InverterDriver
                 }
 
                 this.currentStateMachine.NotifyMessage(currentMessage);
-            } while (this.stoppingToken.IsCancellationRequested);
+            } while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private void SendHeartBeat(object state)

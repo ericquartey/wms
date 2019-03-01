@@ -53,7 +53,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.VWApp", "Panel 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Utils", "Panel PC UI\Utils\Ferretto.VW.Utils.csproj", "{868F2E9D-DC2A-4B3E-8708-CD494DBE37E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAS_IoDriverUnitTests", "Machine Automation Service\Tests\MAS_IoDriverUnitTests\MAS_IoDriverUnitTests.csproj", "{1AEE3413-6499-496A-AC29-69E05BCE7630}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAS_IoDriverUnitTests", "Machine Automation Service\Tests\MAS_IoDriverUnitTests\MAS_IoDriverUnitTests.csproj", "{1AEE3413-6499-496A-AC29-69E05BCE7630}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -305,6 +305,18 @@ Global
 		{868F2E9D-DC2A-4B3E-8708-CD494DBE37E3}.Release|x64.Build.0 = Release|Any CPU
 		{868F2E9D-DC2A-4B3E-8708-CD494DBE37E3}.Release|x86.ActiveCfg = Release|Any CPU
 		{868F2E9D-DC2A-4B3E-8708-CD494DBE37E3}.Release|x86.Build.0 = Release|Any CPU
+		{1AEE3413-6499-496A-AC29-69E05BCE7630}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AEE3413-6499-496A-AC29-69E05BCE7630}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AEE3413-6499-496A-AC29-69E05BCE7630}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1AEE3413-6499-496A-AC29-69E05BCE7630}.Debug|x64.Build.0 = Debug|Any CPU
+		{1AEE3413-6499-496A-AC29-69E05BCE7630}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1AEE3413-6499-496A-AC29-69E05BCE7630}.Debug|x86.Build.0 = Debug|Any CPU
+		{1AEE3413-6499-496A-AC29-69E05BCE7630}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AEE3413-6499-496A-AC29-69E05BCE7630}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AEE3413-6499-496A-AC29-69E05BCE7630}.Release|x64.ActiveCfg = Release|Any CPU
+		{1AEE3413-6499-496A-AC29-69E05BCE7630}.Release|x64.Build.0 = Release|Any CPU
+		{1AEE3413-6499-496A-AC29-69E05BCE7630}.Release|x86.ActiveCfg = Release|Any CPU
+		{1AEE3413-6499-496A-AC29-69E05BCE7630}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -334,6 +346,7 @@ Global
 		{7A484BAF-AB01-488A-853F-C0CE4305BA56} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
 		{BBB70951-5692-44F2-BD04-C1E150D970FD} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
 		{868F2E9D-DC2A-4B3E-8708-CD494DBE37E3} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
+		{1AEE3413-6499-496A-AC29-69E05BCE7630} = {CDC83818-9D4B-44CB-AD54-829C68929B4D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40395CF2-451B-48E4-A29A-0E8AE12146B4}

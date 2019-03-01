@@ -70,40 +70,36 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddDbContext<DataLayerContext>(options => options.UseInMemoryDatabase("InMemoryWorkingDB"),
                 ServiceLifetime.Singleton);
 
-            services.AddHostedService<AutomationService>();
-            services.AddHostedService<MissionsManager>();
-            services.AddHostedService<FiniteStateMachines>();
+            services.AddSingleton<IEventAggregator, EventAggregator>();
 
-            this.RegisterInverterDriver(services);
+            services.AddSingleton<IDataLayer, DataLayer>(provider => new DataLayer(
+                connectionString,
+                provider.GetService<DataLayerContext>(),
+                provider.GetService<IEventAggregator>()));
+
+            services.AddSingleton<IWriteLogService, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<IHostedService, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<ISocketTransport, SocketTransport>();
 
             this.RegisterRemoteIODriver(services);
 
-            services.AddSingleton<IEventAggregator, EventAggregator>();
-
-            services.AddSingleton<IDataLayer, TestMultipleInterfaceService>(
-                p => new TestMultipleInterfaceService(1));
-
-            services.AddSingleton<IHostedService, TestMultipleInterfaceService>(p =>
-                p.GetService<IDataLayer>() as TestMultipleInterfaceService);
-
-            services.AddSingleton<IWriteLogService, TestMultipleInterfaceService>(p =>
-                p.GetService<IDataLayer>() as TestMultipleInterfaceService);
-
-            //services.AddSingleton<IDataLayer, DataLayer>(provider => new DataLayer(
-            //    connectionString,
-            //    provider.GetService<DataLayerContext>(),
-            //    provider.GetService<IEventAggregator>()));
-
-            //services.AddSingleton<IWriteLogService, DataLayer>(provider =>
-            //    provider.GetService<IDataLayer>() as DataLayer);
-
-            services.AddSingleton<ISocketTransport, SocketTransport>();
+            this.RegisterInverterDriver(services);
 
             //TODO Old InverterDriver Registration to be removed after code refactoring completed
             services.AddSingleton<IInverterDriver, InverterDriver.InverterDriver>();
 
             //TODO Old RemoteIODriver Registration to be removed after code refactoring completed
             services.AddSingleton<IRemoteIO, RemoteIO>();
+
+            services.AddHostedService<FiniteStateMachines>();
+
+            services.AddHostedService<MissionsManager>();
+
+            services.AddHostedService<AutomationService>();
         }
 
         private void RegisterInverterDriver(IServiceCollection services)

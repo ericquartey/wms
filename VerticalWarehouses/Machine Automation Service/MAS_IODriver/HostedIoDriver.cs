@@ -152,7 +152,7 @@ namespace Ferretto.VW.MAS_IODriver
                 CommandMessage receivedMessage;
                 try
                 {
-                    this.messageQueue.TryDequeue(Timeout.Infinite, stoppingToken, out receivedMessage);
+                    this.messageQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
                 }
                 catch (OperationCanceledException)
                 {
@@ -165,7 +165,7 @@ namespace Ferretto.VW.MAS_IODriver
 
                         break;
                 }
-            } while (stoppingToken.IsCancellationRequested);
+            } while (!this.stoppingToken.IsCancellationRequested);
 
             return Task.CompletedTask;
         }
@@ -181,7 +181,7 @@ namespace Ferretto.VW.MAS_IODriver
             {
                 try
                 {
-                    pollIoEvent.Wait(Timeout.Infinite, stoppingToken);
+                    pollIoEvent.Wait(Timeout.Infinite, this.stoppingToken);
                 }
                 catch (OperationCanceledException)
                 {
@@ -194,7 +194,7 @@ namespace Ferretto.VW.MAS_IODriver
                 {
                     this.currentStateMachine.ProcessMessage(new IoMessage(inputData, true));
                 }
-            } while (stoppingToken.IsCancellationRequested);
+            } while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private async Task SendIoCommand()
@@ -204,7 +204,7 @@ namespace Ferretto.VW.MAS_IODriver
                 IoMessage message;
                 try
                 {
-                    this.ioCommandQueue.TryDequeue(Timeout.Infinite, stoppingToken, out message);
+                    this.ioCommandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out message);
                 }
                 catch (OperationCanceledException)
                 {
@@ -219,7 +219,7 @@ namespace Ferretto.VW.MAS_IODriver
                         this.currentStateMachine.ProcessMessage(message);
                     }
                 }
-            } while (!stoppingToken.IsCancellationRequested);
+            } while (!this.stoppingToken.IsCancellationRequested);
         }
 
         #endregion

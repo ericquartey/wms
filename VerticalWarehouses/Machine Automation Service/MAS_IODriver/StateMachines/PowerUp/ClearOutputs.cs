@@ -19,10 +19,7 @@
 
         public override void ProcessMessage(IoMessage message)
         {
-            if (message.ResetSecurity)
-            {
-                this.parentStateMachine.ChangeState(new PulseReset(this.parentStateMachine));
-            }
+            this.parentStateMachine.ChangeState(new PulseReset(this.parentStateMachine));
         }
 
         #endregion

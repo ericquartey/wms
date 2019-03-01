@@ -22,7 +22,7 @@ namespace MAS_DataLayerUnitTests
                 var updateFeedback1 = false;
 
                 var cell = new Cell
-                    {CellId = 1, Coord = 1, Priority = 1, Side = Side.FrontEven, Status = Status.Free};
+                { CellId = 1, Coord = 1, Priority = 1, Side = Side.FrontEven, Status = Status.Free };
                 var listCells1 = new List<Cell>();
                 var listCells2 = new List<Cell>
                     {cell};
@@ -42,6 +42,7 @@ namespace MAS_DataLayerUnitTests
 
                 var mockEventAggregator = new Mock<IEventAggregator>();
                 mockEventAggregator.Setup(s => s.GetEvent<CommandEvent>()).Returns(new CommandEvent());
+                mockEventAggregator.Setup(s => s.GetEvent<NotificationEvent>()).Returns(new NotificationEvent());
                 var dataLayer = new DataLayer("Data Source=./TestDataBase.db", context, mockEventAggregator.Object);
 
                 updateFeedback1 = dataLayer.LogWriting("Unit Test");
