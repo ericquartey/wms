@@ -15,26 +15,25 @@ trigger:
     - develop
   paths:
     exclude:
-    - VerticalWarehouses
-    - WMS\Data
-    - WMS\Scheduler
-
+    - Common
+    - WMS
+    - VerticalWarehouses\Machine Automation Service
 
 variables:
   BuildPlatform: 'any cpu'
   BuildConfiguration: 'debug'
-  TargetSolution: 'WMS\WMS.App.sln'
+  TargetSolution: 'VerticalWarehouses\VerticalWarehouses.sln'
 
 steps:
 
-- template: azure-pipeline-net4-nuget-template.yml
+- template: ../../Pipelines/azure-pipeline-net4-nuget-template.yml
 
 
-- template: azure-pipeline-assembly-versioning-template.yml
+- template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
 
 - task: VSBuild@1
-  displayName: 'Build solution WMS.App'
+  displayName: 'Build solution VerticalWarehouses.sln'
   inputs:
     solution: '$(TargetSolution)'
     msbuildArgs: '-v:normal'
@@ -69,4 +68,10 @@ steps:
     TargetFolder: '$(build.artifactstagingdirectory)'
 
 
-- template: azure-pipeline-publish-artifacts-template.yml
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Panel Pc App'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/Panel PC UI/VWApp/bin/$(BuildConfiguration)/net471'
+    ArtifactName: 'panelpc_app'
+
+
