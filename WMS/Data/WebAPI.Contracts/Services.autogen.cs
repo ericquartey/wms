@@ -5655,7 +5655,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task ExecuteAsync(ListRowExecutionRequest request, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemListRows/Execute");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemListRows/execute");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -6353,7 +6353,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task ExecuteAsync(ListExecutionRequest request, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemLists/Execute");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemLists/execute");
     
             var client_ = new System.Net.Http.HttpClient();
             try
