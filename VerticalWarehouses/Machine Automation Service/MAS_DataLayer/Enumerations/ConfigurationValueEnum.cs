@@ -8,6 +8,8 @@
 
         cellSpacing,
 
+        homingModeAcceleration,
+
         homingCreepSpeed,
 
         homingFastSpeed,
@@ -20,6 +22,14 @@
 
         InverterAddress,
 
-        InverterPort
+        InverterPort,
+
+        positioningOverrideTargetPosition,
+
+        positioningOverrideTargetSpeed,
+
+        positioningOverrideTargetAcceleration,
+
+        positioningOverrideTargetDeceleration,
     }
 }
