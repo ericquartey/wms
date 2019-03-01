@@ -22,11 +22,8 @@ namespace Ferretto.WMS.Modules.MasterData
             await this.LoadDataAsync();
         }
 
-        // TODO: task 1256 -> protected override async Task ExecuteSaveCommand()
         protected override async Task ExecuteCreateCommand()
         {
-            this.IsValidationEnabled = true;
-
             this.IsBusy = true;
 
             var result = await this.itemProvider.CreateAsync(this.Model);

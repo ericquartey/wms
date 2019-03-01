@@ -11,7 +11,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemDetailsViewModel : DetailsViewModel<ItemDetails>, IRefreshDataEntityViewModel, IEdit
+    public class ItemDetailsViewModel : DetailsViewModel<ItemDetails>, IExtensionDataEntityViewModel, IEdit
     {
         #region Fields
 
