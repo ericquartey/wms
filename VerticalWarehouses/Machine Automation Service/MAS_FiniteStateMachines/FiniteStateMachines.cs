@@ -102,36 +102,36 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             switch (action.Type)
             {
                 case MessageType.Homing:
-                {
-                    if (null == this.StateMachineHoming) throw new ArgumentNullException();
+                    {
+                        if (null == this.StateMachineHoming) throw new ArgumentNullException();
 
-                    this.StateMachineHoming.Start();
-                    break;
-                }
+                        this.StateMachineHoming.Start();
+                        break;
+                    }
 
-                case MessageType.StopHoming:
-                {
-                    if (null == this.StateMachineHoming) throw new ArgumentNullException();
+                case MessageType.Stop:
+                    {
+                        if (null == this.StateMachineHoming) throw new ArgumentNullException();
 
-                    this.StateMachineHoming.Stop();
-                    break;
-                }
+                        this.StateMachineHoming.Stop();
+                        break;
+                    }
 
                 case MessageType.ExecuteVerticalPositioning:
-                {
-                    if (null == this.verticalPositioning) throw new ArgumentNullException();
+                    {
+                        if (null == this.verticalPositioning) throw new ArgumentNullException();
 
-                    this.verticalPositioning.Start();
-                    break;
-                }
+                        this.verticalPositioning.Start();
+                        break;
+                    }
 
                 case MessageType.ExecuteStopVerticalPositioning:
-                {
-                    if (null == this.verticalPositioning) throw new ArgumentNullException();
+                    {
+                        if (null == this.verticalPositioning) throw new ArgumentNullException();
 
-                    this.verticalPositioning.Stop();
-                    break;
-                }
+                        this.verticalPositioning.Stop();
+                        break;
+                    }
             }
         }
 
@@ -187,7 +187,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         case MessageType.HorizontalHoming:
                             break;
 
-                        case MessageType.StopAction:
+                        case MessageType.Stop:
                             this.ProcessStopActionMessage(receivedMessage);
                             break;
                     }

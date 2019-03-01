@@ -4,11 +4,11 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Microsoft.Practices.Unity;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
-using System.Net;
-using System.IO;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Prism.Events;
 using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.InstallationApp.Interfaces;
+using System.Net.Http;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -16,9 +16,9 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        private IUnityContainer container;
+        private readonly IEventAggregator eventAggregator;
 
-        private IEventAggregator eventAggregator;
+        private IUnityContainer container;
 
         private InstallationHubClient installationHubClient;
 
@@ -130,19 +130,14 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        private void ExecuteStartButtonCommand()
+        private async void ExecuteStartButtonCommand()
         {
             try
             {
-                var request = (HttpWebRequest)WebRequest.Create("https://localhost:5001/api/Test/HomingTest");
-                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-
-                using (var response = (HttpWebResponse)request.GetResponse())
-                using (var stream = response.GetResponseStream())
-                using (var reader = new StreamReader(stream))
-                {
-                    this.NoteString = reader.ReadToEnd();
-                }
+                var client = this.container.Resolve<IRESTClient>() as HttpClient;
+                await client.GetStringAsync("http://localhost:5000/api/Installation/ExecuteHoming");
+                this.IsStartButtonActive = false;
+                this.IsStopButtonActive = true;
             }
             catch (Exception)
             {
@@ -151,9 +146,21 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        private void StopButtonMethod()
+        private async void StopButtonMethod()
         {
-            this.NoteString = Ferretto.VW.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
+            try
+            {
+                var client = this.container.Resolve<IRESTClient>() as HttpClient;
+                await client.GetStringAsync("http://localhost:5000/api/Installation/StopCommand");
+                this.IsStartButtonActive = true;
+                this.IsStopButtonActive = false;
+                this.NoteString = Ferretto.VW.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
+            }
+            catch (Exception)
+            {
+                this.NoteString = "Couldn't get response from this http get request.";
+                throw;
+            }
         }
 
         #endregion

@@ -117,8 +117,7 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         private Task MissionsManagerTaskFunction(CancellationToken stoppingToken)
         {
-            this.missionExecutionTask =
-                Task.Run(() => this.MissionsExecutionTaskFunction(stoppingToken), stoppingToken);
+            this.missionExecutionTask = Task.Run(() => this.MissionsExecutionTaskFunction(stoppingToken), stoppingToken);
             do
             {
                 try
@@ -153,8 +152,8 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         private void ProcessAddMissionMessage(CommandMessage message)
         {
-            var missionData = (MissionMessageData) message.Data;
-            var missionPriority = ( (MissionMessageData) message.Data ).Priority;
+            var missionData = (MissionMessageData)message.Data;
+            var missionPriority = ((MissionMessageData)message.Data).Priority;
             this.missionsCollection.Add(missionData, missionPriority);
             this.missionReady.Set();
 

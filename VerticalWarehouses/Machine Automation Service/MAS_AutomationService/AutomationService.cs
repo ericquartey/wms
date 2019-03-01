@@ -121,7 +121,6 @@ namespace Ferretto.VW.MAS_AutomationService
                             break;
                     }
             } while (!stoppingToken.IsCancellationRequested);
-
             return Task.CompletedTask;
         }
 

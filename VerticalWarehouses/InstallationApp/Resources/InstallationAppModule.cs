@@ -1,4 +1,7 @@
-﻿using Ferretto.VW.InstallationApp.ServiceUtilities;
+﻿using System.Net.Http;
+using Ferretto.VW.InstallationApp.Interfaces;
+using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Events;
@@ -52,6 +55,7 @@ namespace Ferretto.VW.InstallationApp
             var mainWindowVMInstance = new MainWindowViewModel(container.Resolve<IEventAggregator>());
             var helpMainWindowInstance = new HelpMainWindow(container.Resolve<IEventAggregator>());
             var installationHubClientInstance = new InstallationHubClient("http://localhost:5000", "/installation-endpoint");
+            var restClient = new RESTClient();
 
             this.container.RegisterInstance<ContainerIInstallationHubClient>(installationHubClientInstance);
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
@@ -86,6 +90,7 @@ namespace Ferretto.VW.InstallationApp
             this.container.RegisterInstance<IWeightControlViewModel>(weightControlVMInstance);
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
             this.container.RegisterInstance<IHelpMainWindow>(helpMainWindowInstance);
+            this.container.RegisterInstance<IRESTClient>(restClient);
 
             lSMTNavigationButtonsVMInstance.InitializeViewModel(this.container);
             lSMTMainVMInstance.InitializeViewModel(this.container);
