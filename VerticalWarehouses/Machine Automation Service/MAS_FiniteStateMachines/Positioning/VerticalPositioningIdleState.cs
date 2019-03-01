@@ -74,6 +74,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             throw new NotImplementedException();
         }
 
+        public void SendCommandMessage(CommandMessage message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SendNotificationMessage(NotificationMessage message)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Stop()
         {
             this.driver.ExecuteVerticalPositionStop();
@@ -90,17 +100,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             switch (notification.Status)
             {
                 case MessageStatus.OperationEnd:
-                {
-                    this.parent.ChangeState(new VerticalPositioningDoneState(this.parent, this.driver,
-                        this.eventAggregator));
-                    break;
-                }
+                    {
+                        this.parent.ChangeState(new VerticalPositioningDoneState(this.parent, this.driver,
+                            this.eventAggregator));
+                        break;
+                    }
                 case MessageStatus.OperationError:
-                {
-                    this.parent.ChangeState(
-                        new VerticalPositioningErrorState(this.parent, this.driver, this.eventAggregator));
-                    break;
-                }
+                    {
+                        this.parent.ChangeState(
+                            new VerticalPositioningErrorState(this.parent, this.driver, this.eventAggregator));
+                        break;
+                    }
             }
         }
 

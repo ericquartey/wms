@@ -44,7 +44,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
             throw new NotImplementedException();
         }
 
-        public override void NotifyMessage(CommandMessage message)
+        public override void SendCommandMessage(CommandMessage message)
         {
             switch (message.Type)
             {
@@ -62,6 +62,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
                     this.ProcessErrorAction(message);
                     break;
             }
+        }
+
+        public override void SendNotificationMessage(NotificationMessage message)
+        {
+            throw new NotImplementedException();
         }
 
         public override void Stop()

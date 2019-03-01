@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Net;
 using Ferretto.VW.Common_Utils;
 
 namespace Ferretto.VW.MAS_DataLayer
@@ -122,6 +124,27 @@ namespace Ferretto.VW.MAS_DataLayer
                 throw new ArgumentNullException();
 
             return returnIntegerValue;
+        }
+
+        /// <inheritdoc/>
+        public IPAddress GetIPAddressConfigurationValue(ConfigurationValueEnum configurationValueEnum)
+        {
+            IPAddress returnIPAddressValue;
+
+            var configurationValue =
+                this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+
+            if (configurationValue != null)
+            {
+                if (configurationValue.VarType == DataTypeEnum.IPAddressType)
+                    returnIPAddressValue = IPAddress.Parse(configurationValue.VarValue);
+                else
+                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+            }
+            else
+                throw new ArgumentNullException();
+
+            return returnIPAddressValue;
         }
 
         public string GetStringConfigurationValue(ConfigurationValueEnum configurationValueEnum)

@@ -75,7 +75,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = ConfigurationValueEnum.InverterAddress, VarType = DataTypeEnum.IPAddress, VarValue = "169.254.231.248" });
+            modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = ConfigurationValueEnum.InverterAddress, VarType = DataTypeEnum.IPAddressType, VarValue = "169.254.231.248" });
             modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = ConfigurationValueEnum.InverterPort, VarType = DataTypeEnum.integerType, VarValue = "17221" });
         }
 

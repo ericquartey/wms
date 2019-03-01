@@ -6,7 +6,13 @@ namespace Ferretto.VW.Common_Utils.Messages.Interfaces
     {
         #region Properties
 
+        float Acceleration { get; }
+
         Axis AxisToCalibrate { get; }
+
+        float CreepSpeed { get; }
+
+        float FastSpeed { get; }
 
         #endregion
     }
