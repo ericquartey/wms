@@ -111,14 +111,12 @@ namespace Ferretto.Common.BusinessProviders
         public async Task<IEnumerable<Item>> GetAllAsync(
             int skip,
             int take,
-            IEnumerable<SortOption> orderBy = null,
-            IExpression whereExpression = null,
+            IEnumerable<SortOption> orderBySortOptions = null,
+            string whereString = null,
             string searchString = null)
         {
-            var orderByString = orderBy != null ? string.Join(",", orderBy.Select(s => $"{s.PropertyName} {s.Direction}")) : null;
-
             var items = await this.itemsDataService
-                .GetAllAsync(skip, take, whereExpression?.ToString(), orderByString, searchString);
+                .GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString);
 
             return items
                 .Select(i => new Item
@@ -154,9 +152,9 @@ namespace Ferretto.Common.BusinessProviders
                 });
         }
 
-        public async Task<int> GetAllCountAsync(IExpression whereExpression = null, string searchString = null)
+        public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
         {
-            return await this.itemsDataService.GetAllCountAsync(whereExpression?.ToString(), searchString);
+            return await this.itemsDataService.GetAllCountAsync(whereString, searchString);
         }
 
         public async Task<IEnumerable<AllowedItemInCompartment>> GetAllowedByCompartmentIdAsync(int compartmentId)
@@ -180,40 +178,34 @@ namespace Ferretto.Common.BusinessProviders
 
             var itemDetails = new ItemDetails
             {
-                Id = item.Id,
-                Code = item.Code,
-                Description = item.Description,
-                ItemCategoryId = item.ItemCategoryId,
-                Note = item.Note,
-
                 AbcClassId = item.AbcClassId,
-                MeasureUnitId = item.MeasureUnitId,
-
-                // TODO  MeasureUnitDescription = item.MeasureUnit.,
-                ManagementType = (ItemManagementType)item.ManagementType,
+                AverageWeight = item.AverageWeight,
+                Code = item.Code,
+                CompartmentsCount = item.CompartmentsCount,
+                CreationDate = item.CreationDate,
+                Description = item.Description,
                 FifoTimePick = item.FifoTimePick,
                 FifoTimeStore = item.FifoTimeStore,
-                ReorderPoint = item.ReorderPoint,
-                ReorderQuantity = item.ReorderQuantity,
-
                 Height = item.Height,
-                Length = item.Length,
-                Width = item.Width,
-                PickTolerance = item.PickTolerance,
-                StoreTolerance = item.StoreTolerance,
-                InventoryTolerance = item.InventoryTolerance,
-                AverageWeight = item.AverageWeight,
-                CompartmentsCount = item.CompartmentsCount,
-
+                Id = item.Id,
                 Image = item.Image,
-
-                CreationDate = item.CreationDate,
                 InventoryDate = item.InventoryDate,
+                InventoryTolerance = item.InventoryTolerance,
+                ItemCategoryId = item.ItemCategoryId,
                 LastModificationDate = item.LastModificationDate,
                 LastPickDate = item.LastPickDate,
                 LastStoreDate = item.LastStoreDate,
-
-                TotalAvailable = item.TotalAvailable
+                Length = item.Length,
+                ManagementType = (ItemManagementType)item.ManagementType,
+                MeasureUnitDescription = item.MeasureUnitDescription,
+                MeasureUnitId = item.MeasureUnitId,
+                Note = item.Note,
+                PickTolerance = item.PickTolerance,
+                ReorderPoint = item.ReorderPoint,
+                ReorderQuantity = item.ReorderQuantity,
+                StoreTolerance = item.StoreTolerance,
+                TotalAvailable = item.TotalAvailable,
+                Width = item.Width,
             };
 
             await this.AddEnumerationsAsync(itemDetails);
@@ -257,6 +249,7 @@ namespace Ferretto.Common.BusinessProviders
                     AbcClassId = model.AbcClassId,
                     AverageWeight = model.AverageWeight,
                     Code = model.Code,
+                    CompartmentsCount = model.CompartmentsCount,
                     Description = model.Description,
                     FifoTimePick = model.FifoTimePick,
                     FifoTimeStore = model.FifoTimeStore,
@@ -270,6 +263,7 @@ namespace Ferretto.Common.BusinessProviders
                     LastStoreDate = model.LastStoreDate,
                     Length = model.Length,
                     ManagementType = (WMS.Data.WebAPI.Contracts.ItemManagementType)model.ManagementType,
+                    MeasureUnitDescription = model.MeasureUnitDescription,
                     MeasureUnitId = model.MeasureUnitId,
                     Note = model.Note,
                     PickTolerance = model.PickTolerance,
@@ -277,7 +271,6 @@ namespace Ferretto.Common.BusinessProviders
                     ReorderQuantity = model.ReorderQuantity,
                     StoreTolerance = model.StoreTolerance,
                     Width = model.Width,
-                    CompartmentsCount = model.CompartmentsCount
                 });
 
                 if (originalItem.Image != model.Image)
@@ -305,16 +298,16 @@ namespace Ferretto.Common.BusinessProviders
                 await this.itemsDataService.WithdrawAsync(
                    new WMS.Data.WebAPI.Contracts.SchedulerRequest
                    {
-                       IsInstant = true,
-                       Type = WMS.Data.WebAPI.Contracts.OperationType.Withdrawal,
-                       ItemId = itemWithdraw.ItemDetails.Id,
-                       BayId = itemWithdraw.BayId,
                        AreaId = itemWithdraw.AreaId.Value,
+                       BayId = itemWithdraw.BayId,
+                       IsInstant = true,
+                       ItemId = itemWithdraw.ItemDetails.Id,
                        Lot = itemWithdraw.Lot,
-                       RequestedQuantity = itemWithdraw.Quantity,
                        RegistrationNumber = itemWithdraw.RegistrationNumber,
+                       RequestedQuantity = itemWithdraw.Quantity,
                        Sub1 = itemWithdraw.Sub1,
                        Sub2 = itemWithdraw.Sub2,
+                       Type = WMS.Data.WebAPI.Contracts.OperationType.Withdrawal,
                    });
 
                 return new OperationResult<SchedulerRequest>(true);

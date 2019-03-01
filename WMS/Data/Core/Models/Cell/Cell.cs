@@ -30,7 +30,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string Status { get; set; }
 
-        public string Type { get; set; }
+        public string CellTypeDescription { get; set; }
 
         public int? XCoordinate { get; set; }
 

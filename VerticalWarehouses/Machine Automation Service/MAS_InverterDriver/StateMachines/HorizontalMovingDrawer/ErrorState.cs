@@ -1,65 +1,31 @@
 ﻿using System;
 using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.InverterDriver;
-using Prism.Events;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
 {
-    public class ErrorState : IState
+    public class ErrorState : InverterStateBase
     {
         #region Fields
 
-        private readonly IEventAggregator eventAggregator;
-
-        private readonly IInverterDriver inverterDriver;
-
-        private readonly StateMachineHorizontalMoving stateMachineHorizontalMoving;
+        private readonly Axis movingDrawer;
 
         #endregion
 
         #region Constructors
 
-        public ErrorState(StateMachineHorizontalMoving stateMachineHorizontalMoving, IInverterDriver inverterDriver,
-            IEventAggregator eventAggregator)
+        public ErrorState(IInverterStateMachine parentStateMachine, Axis movingDrawer)
         {
-            this.inverterDriver = inverterDriver;
-            this.eventAggregator = eventAggregator;
-            this.stateMachineHorizontalMoving = stateMachineHorizontalMoving;
-
-            this.eventAggregator.GetEvent<NotificationEvent>().Subscribe(this.notifyEventHandler);
+            this.parentStateMachine = parentStateMachine;
+            this.movingDrawer = movingDrawer;
         }
-
-        #endregion
-
-        #region Properties
-
-        public string Type => "Error State";
 
         #endregion
 
         #region Methods
 
-        private void notifyEventHandler(NotificationMessage notification)
+        public override void NotifyMessage(InverterMessage message)
         {
-            if (notification.Type == MessageType.SwitchVerticalToHorizontal)
-                switch (notification.Status)
-                {
-                    case MessageStatus.OperationEnd:
-                    {
-                        break;
-                    }
-                    case MessageStatus.OperationError:
-                    {
-                        var notifyEvent = new NotificationMessage(null, "Unknown Operation!", MessageActor.Any,
-                            MessageActor.InverterDriver, MessageType.SwitchVerticalToHorizontal,
-                            MessageStatus.OperationError, ErrorLevel.Error);
-                        this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
-
-                        break;
-                    }
-                }
+            throw new NotImplementedException();
         }
 
         #endregion

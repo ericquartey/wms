@@ -134,10 +134,6 @@
       <Project>{119128d4-1776-427a-aec1-6da12b0ff813}</Project>
       <Name>Ferretto.VW.InverterDriver</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Utils\Ferretto.VW.Utils.csproj">
-      <Project>{eaeeeb73-e9e7-4cdf-b100-a433a33562e3}</Project>
-      <Name>Ferretto.VW.Utils</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\griglia_map_cassetto.jpg" />

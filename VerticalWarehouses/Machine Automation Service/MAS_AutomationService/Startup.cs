@@ -1,5 +1,5 @@
 ﻿using Ferretto.VW.InverterDriver;
-using Ferretto.VW.InverterDriver.Interface;
+using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_FiniteStateMachines;
