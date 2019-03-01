@@ -80,7 +80,7 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         // INFO Method called when a drawer backs in the magazine and it occupies some cells
-        public void SetReturnLoadingUnitInPlace(int loadingUnitId)
+        public void SetReturnLoadingUnitInLocation(int loadingUnitId)
         {
             // INFO Search in the FreeBlock table the booked cells for the drawer
             var inMemoryFreeBlockSearchBookedCells = this.inMemoryDataContext.FreeBlocks.FirstOrDefault(s => s.BookedCellsNumber > 0 && s.LoadingUnitId == loadingUnitId);
@@ -106,10 +106,10 @@ namespace Ferretto.VW.MAS_DataLayer
                 inMemoryCellsSearchFilledCell.LoadingUnitId = loadingUnitId;
             }
 
-            // INFO Update the LoadingUnit table when the LoadingUnit is in place
+            // INFO Update the LoadingUnit table when the LoadingUnit is in location
             var loadingUnitOnMovement = this.inMemoryDataContext.LoadingUnits.FirstOrDefault(s => s.LoadingUnitId == loadingUnitId);
             loadingUnitOnMovement.CellPosition = filledStartCell;
-            loadingUnitOnMovement.Status = LoadingUnitStatus.InPlace;
+            loadingUnitOnMovement.Status = LoadingUnitStatus.InLocation;
 
             this.inMemoryDataContext.SaveChanges();
 
@@ -150,7 +150,7 @@ namespace Ferretto.VW.MAS_DataLayer
         //}
 
         // INFO Procedure called when a drawer frees some cells in a first type mission from cells to bay.
-        public void SetWithdrawalLoadingUnitFromPlace(int loadingUnitId)
+        public void SetWithdrawalLoadingUnitFromLocation(int loadingUnitId)
         {
             var freeCells = this.inMemoryDataContext.Cells.FirstOrDefault(s => s.LoadingUnitId == loadingUnitId);
 

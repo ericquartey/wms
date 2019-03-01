@@ -4,10 +4,10 @@
     {
         InBay,
 
-        OnMovementToPlace,
+        OnMovementToLocation,
 
         OnMovementToBay,
 
-        InPlace,
+        InLocation,
     }
 }

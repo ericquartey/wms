@@ -131,7 +131,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <param name="loadingUnitId">Id of the Drawer we take into account</param>
         /// <exception cref="DataLayerExceptionEnum.NO_FREE_BLOCK_BOOKED_EXCEPTION">Thrown when a drawer backs from bay, but we don't find booked cells in a Free Blocks table</exception>
         /// <exception cref="DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION">Thrown when we have booked cells in the Free Blocks table, but we don't find one of them in the cells table</exception>
-        void SetReturnLoadingUnitInPlace(int loadingUnitId);
+        void SetReturnLoadingUnitInLocation(int loadingUnitId);
 
         /// <summary>
         ///     Set a string variable in the configuration table to a new value
@@ -154,7 +154,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// </summary>
         /// <param name="loadingUnitId">Id of the Drawer we take into account</param>
         /// <exception cref="DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION">Thrown when we don't find cells in the Free Blocks table</exception>
-        void SetWithdrawalLoadingUnitFromPlace(int loadingUnitId);
+        void SetWithdrawalLoadingUnitFromLocation(int loadingUnitId);
 
         #endregion
     }
