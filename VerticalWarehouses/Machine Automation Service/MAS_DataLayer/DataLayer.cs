@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Ferretto.VW.Common_Utils;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
@@ -65,7 +64,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
             try
             {
-                this.inMemoryDataContext.StatusLogs.Add(new StatusLog {LogMessage = logMessage});
+                this.inMemoryDataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
                 this.inMemoryDataContext.SaveChanges();
             }
             catch (DbUpdateException exception)
@@ -83,19 +82,19 @@ namespace Ferretto.VW.MAS_DataLayer
             switch (command_EventParameter.Type)
             {
                 case MessageType.Homing:
-                {
-                    logMessage = "Vertical Homing";
-                    break;
-                }
+                    {
+                        logMessage = "Vertical Homing";
+                        break;
+                    }
                 default:
-                {
-                    logMessage = "Unknown Action";
+                    {
+                        logMessage = "Unknown Action";
 
-                    break;
-                }
+                        break;
+                    }
             }
 
-            this.inMemoryDataContext.StatusLogs.Add(new StatusLog {LogMessage = logMessage});
+            this.inMemoryDataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
             this.inMemoryDataContext.SaveChanges();
         }
 
