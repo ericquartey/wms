@@ -5,41 +5,42 @@ using Ferretto.VW.MAS_InverterDriver.StateMachines;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
+namespace MAS_InverterDriverUnitTests.StateMachines.HorizontalMovingDrawer
 {
     [TestClass]
-    public class VerticalMovingStateMachineUnitTest
+    public class HorizontalMovingStateMachineUnitTest
     {
         #region Methods
 
         [TestMethod]
         [TestCategory("Constructors")]
 
-        public void IsNotNullVerticalMovingStateMachine()
+        public void IsNotNullHorizontalMovingStateMachine()
         {
             var inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
             var priorityInverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
 
-            var verticalMovingStateMachine = new VerticalMovingStateMachine(Axis.Vertical, inverterCommandQueue, priorityInverterCommandQueue);
+            var horizontalMovingStateMachine = new HorizontalMovingStateMachine(Axis.Horizontal, inverterCommandQueue, priorityInverterCommandQueue);
 
-            Assert.IsNotNull(verticalMovingStateMachine);
+            Assert.IsNotNull(horizontalMovingStateMachine);
 
 
         }
 
         [TestMethod]
         [TestCategory("ChangeState")]
+
         public void IsTrueChangeState()
         {
             var newStateMock = new Mock<IInverterState>();
-            
+
             var inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
             var priorityInverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
-            var verticalMovingStateMachine = new VerticalMovingStateMachine(Axis.Vertical, inverterCommandQueue, priorityInverterCommandQueue);
-            
-            verticalMovingStateMachine.ChangeState(newStateMock.Object);
+            var horizontalMovingStateMachine = new HorizontalMovingStateMachine(Axis.Horizontal, inverterCommandQueue, priorityInverterCommandQueue);
 
-            //TODO Assert.IsTrue(verticalMovingStateMachine.ChangeState);
+            horizontalMovingStateMachine.ChangeState(newStateMock.Object);
+
+            //TODO Assert.IsTrue(horizontalMovingStateMachine.ChangeState);
         }
 
         [TestMethod]
@@ -50,11 +51,11 @@ namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
             var inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
             var priorityInverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
 
-            var verticalMovingStateMachine = new VerticalMovingStateMachine(Axis.Vertical, inverterCommandQueue, priorityInverterCommandQueue);
-            
-            verticalMovingStateMachine.Start();
+            var horizontalMovingStateMachine = new HorizontalMovingStateMachine(Axis.Horizontal, inverterCommandQueue, priorityInverterCommandQueue);
 
-            //TODO Assert.IsTrue(verticalMovingStateMachine.Start);
+            horizontalMovingStateMachine.Start();
+
+            //TODO Assert.IsTrue(horizontalMovingStateMachine.Start);
         }
 
         #endregion

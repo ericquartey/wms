@@ -5,7 +5,7 @@ using Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalMovingDrawer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
+namespace MAS_InverterDriverUnitTests.StateMachines.HorizontalMovingDrawer
 {
     [TestClass]
     public class ReadyToSwitchOnStateUnitTest
@@ -21,6 +21,7 @@ namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
 
         [TestMethod]
         [TestCategory("Constructors")]
+
         public void IsNotNullReadyToSwitchOnState()
         {
             var parentStateMachineMock = new Mock<IInverterStateMachine>();
@@ -32,28 +33,28 @@ namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
         }
 
         /* TEMP
-        [TestMethod]
-        [TestCategory("NotifyMessage")]
+       [TestMethod]
+       [TestCategory("NotifyMessage")]
 
-        public void IsTrueNotifyMessage()
-        {
-            var parentStateMachineMock = new Mock<IInverterStateMachine>();
+       public void IsTrueNotifyMessage()
+       {
+           var parentStateMachineMock = new Mock<IInverterStateMachine>();
 
-            var errorState = new ErrorState(parentStateMachineMock.Object, Axis.Vertical);
-            var switchOnState = new SwitchOnState(parentStateMachineMock.Object, Axis.Vertical);
+           var errorState = new ErrorState(parentStateMachineMock.Object, Axis.Vertical);
+           var switchOnState = new SwitchOnState(parentStateMachineMock.Object, Axis.Vertical);
 
-            if (message.IsError)
-            {
-                Assert.IsTrue(errorState);
-            }
+           if (message.IsError)
+           {
+               Assert.IsTrue(errorState);
+           }
 
-            if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
-                if (message.ShortPayload == this.parameterValue)
-                {
-                   Assert.IsTrue(switchOnState);
-                }
-        }
-        */
+           if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
+               if (message.ShortPayload == this.parameterValue)
+               {
+                  Assert.IsTrue(switchOnState);
+               }
+       }
+       */
         #endregion
     }
 }

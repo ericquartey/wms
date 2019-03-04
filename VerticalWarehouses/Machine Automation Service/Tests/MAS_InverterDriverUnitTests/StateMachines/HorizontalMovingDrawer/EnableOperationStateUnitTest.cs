@@ -5,7 +5,7 @@ using Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalMovingDrawer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
+namespace MAS_InverterDriverUnitTests.StateMachines.HorizontalMovingDrawer
 {
     [TestClass]
     public class EnableOperationStateUnitTest
@@ -24,7 +24,7 @@ namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
         public void IsNotNullEnableOperationState()
         {
             var parentStateMachineMock = new Mock<IInverterStateMachine>();
-            var enableOperationState = new EnableOperationState(parentStateMachineMock.Object, Axis.Vertical);
+            var enableOperationState = new EnableOperationState(parentStateMachineMock.Object, Axis.Horizontal);
             var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue);
 
             Assert.IsNotNull(enableOperationState);
@@ -39,8 +39,8 @@ namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
         {
             var parentStateMachineMock = new Mock<IInverterStateMachine>();
 
-            var errorState = new ErrorState(parentStateMachineMock.Object, Axis.Vertical);
-            var setNewPositionState = new SetNewPositionState(parentStateMachineMock.Object, Axis.Vertical);
+            var errorState = new ErrorState(parentStateMachineMock.Object, Axis.Horizontal);
+            var setNewPositionState = new SetNewPositionState(parentStateMachineMock.Object, Axis.Horizontal);
 
             if (message.IsError)
             {
