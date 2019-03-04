@@ -8,8 +8,6 @@ using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_FiniteStateMachines.Homing;
 using Ferretto.VW.MAS_FiniteStateMachines.Mission;
-using Ferretto.VW.MAS_InverterDriver;
-using Ferretto.VW.MAS_IODriver;
 using Microsoft.Extensions.Hosting;
 using Prism.Events;
 
@@ -37,8 +35,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Constructors
 
-        public FiniteStateMachines(INewInverterDriver driver, INewRemoteIODriver remoteIODriver,
-            IEventAggregator eventAggregator)
+        public FiniteStateMachines(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
 
