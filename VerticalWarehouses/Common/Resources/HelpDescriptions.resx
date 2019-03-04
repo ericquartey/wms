@@ -541,4 +541,36 @@
     <value>HelpCSCApplyCorrection</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpLFDTotalCells" xml:space="preserve">
+    <value>HelpLFDTotalCells</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLFDTestedCells" xml:space="preserve">
+    <value>HelpLFDTestedCells</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLFDCellInTest" xml:space="preserve">
+    <value>HelpLFDCellInTest</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLFDDrawerNumber" xml:space="preserve">
+    <value>HelpLFDDrawerNumber</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLFDMaxLoad" xml:space="preserve">
+    <value>HelpLFDMaxLoad</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLFDInsertDrawer" xml:space="preserve">
+    <value>HelpLFDInsertDrawer</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLFDRecallDrawer" xml:space="preserve">
+    <value>HelpLFDRecallDrawer</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLFDDescription" xml:space="preserve">
+    <value>HelpLFDDescription</value>
+    <comment>Note text</comment>
+  </data>
 </root>

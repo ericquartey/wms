@@ -65,6 +65,10 @@
             <local:HelpCellsSideControl></local:HelpCellsSideControl>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewmodels:LoadFirstDrawerViewModel}">
+            <local:HelpLoadFirstDrawer></local:HelpLoadFirstDrawer>
+        </DataTemplate>
+
 
     </Window.Resources>
     <Grid Width="1024"

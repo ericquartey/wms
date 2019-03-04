@@ -44,6 +44,7 @@
     <None Remove="HelpWindows\HelpGateControl.xaml" />
     <None Remove="HelpWindows\HelpGateHeightControl.xaml" />
     <None Remove="HelpWindows\HelpInstallationState.xaml" />
+    <None Remove="HelpWindows\HelpLoadFirstDrawer.xaml" />
     <None Remove="HelpWindows\HelpLowSpeedMovements.xaml" />
     <None Remove="HelpWindows\HelpMainWindow.xaml" />
     <None Remove="HelpWindows\HelpPageBase.xaml" />
@@ -104,6 +105,9 @@
     </Compile>
     <Compile Update="HelpWindows\HelpCellsSideControl.xaml.cs">
       <DependentUpon>HelpCellsSideControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpLoadFirstDrawer.xaml.cs">
+      <DependentUpon>HelpLoadFirstDrawer.xaml</DependentUpon>
     </Compile>
     <Compile Update="HelpWindows\HelpVerticalOffsetCalibration.xaml.cs">
       <DependentUpon>HelpVerticalOffsetCalibration.xaml</DependentUpon>

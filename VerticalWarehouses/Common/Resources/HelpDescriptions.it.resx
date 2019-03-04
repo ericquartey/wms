@@ -430,4 +430,28 @@
   <data name="HelpCSCApplyCorrection" xml:space="preserve">
     <value>Applica la correzione al gruppo celle selezionato.</value>
   </data>
+  <data name="HelpLFDTotalCells" xml:space="preserve">
+    <value>Indica il numero totale di celle da sottoporre a test.</value>
+  </data>
+  <data name="HelpLFDTestedCells" xml:space="preserve">
+    <value>Indica il numero di celle attualmente testate.</value>
+  </data>
+  <data name="HelpLFDCellInTest" xml:space="preserve">
+    <value>Numero della cella attualmente in test.</value>
+  </data>
+  <data name="HelpLFDDrawerNumber" xml:space="preserve">
+    <value>Numero del cassetto in fase di inserimento.</value>
+  </data>
+  <data name="HelpLFDMaxLoad" xml:space="preserve">
+    <value>Portata massima del cassetto in fase di carico.</value>
+  </data>
+  <data name="HelpLFDInsertDrawer" xml:space="preserve">
+    <value>Avvia la procedura di inserimento del cassetto. La procedura termina al completamento dei cicli previsti.</value>
+  </data>
+  <data name="HelpLFDRecallDrawer" xml:space="preserve">
+    <value>Richiama in baia il cassetto utilizzato per il test.</value>
+  </data>
+  <data name="HelpLFDDescription" xml:space="preserve">
+    <value>La procedura permette di utilizzare il cassetto selezionato nell'apposito campo di input per testare le celle inferiori e superiori della macchina oltre alle celle sottostanti e sovrastanti blocchi di celle indicate come disabilitate. Scopo della procedura e' quello di verificare che non vi siano interferenze meccaniche in queste aree.</value>
+  </data>
 </root>

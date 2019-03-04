@@ -466,6 +466,78 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLFDCellInTest.
+        /// </summary>
+        public static string HelpLFDCellInTest {
+            get {
+                return ResourceManager.GetString("HelpLFDCellInTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLFDDescription.
+        /// </summary>
+        public static string HelpLFDDescription {
+            get {
+                return ResourceManager.GetString("HelpLFDDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLFDDrawerNumber.
+        /// </summary>
+        public static string HelpLFDDrawerNumber {
+            get {
+                return ResourceManager.GetString("HelpLFDDrawerNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLFDInsertDrawer.
+        /// </summary>
+        public static string HelpLFDInsertDrawer {
+            get {
+                return ResourceManager.GetString("HelpLFDInsertDrawer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLFDMaxLoad.
+        /// </summary>
+        public static string HelpLFDMaxLoad {
+            get {
+                return ResourceManager.GetString("HelpLFDMaxLoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLFDRecallDrawer.
+        /// </summary>
+        public static string HelpLFDRecallDrawer {
+            get {
+                return ResourceManager.GetString("HelpLFDRecallDrawer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLFDTestedCells.
+        /// </summary>
+        public static string HelpLFDTestedCells {
+            get {
+                return ResourceManager.GetString("HelpLFDTestedCells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLFDTotalCells.
+        /// </summary>
+        public static string HelpLFDTotalCells {
+            get {
+                return ResourceManager.GetString("HelpLFDTotalCells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpLSMTActualPosition.
         /// </summary>
         public static string HelpLSMTActualPosition {
