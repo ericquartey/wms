@@ -40,12 +40,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             this.state = newState;
         }
 
-        public void MakeOperation()
+        public void ProcessCommandMessage(CommandMessage message)
         {
-            this.state?.MakeOperation();
+            throw new NotImplementedException();
         }
 
-        public void NotifyMessage(CommandMessage message)
+        public void ProcessNotificationMessage(NotificationMessage message)
         {
             throw new NotImplementedException();
         }
@@ -77,17 +77,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         public void Start()
         {
-            this.state = new VerticalPositioningIdleState(this, this.driver, this.eventAggregator);
-
-            //TODO The parameter values will be provided to the Finite State Machine component via EventAggregator message
-            //TODO Or by a function method to pass the parameters inside the VerticalPositioningIdleState state
-
-            this.state.MakeOperation();
-        }
-
-        public void Stop()
-        {
-            this.state?.Stop();
+            throw new NotImplementedException();
         }
 
         #endregion

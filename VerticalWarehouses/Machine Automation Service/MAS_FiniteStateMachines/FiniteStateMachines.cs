@@ -25,6 +25,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private readonly BlockingConcurrentQueue<CommandMessage> messageQueue;
 
+        private readonly Task messageReceiveTask;
+
+        private readonly BlockingConcurrentQueue<NotificationMessage> notifyQueue;
+
         private IStateMachine currentStateMachine;
 
         private CancellationToken stoppingToken;
@@ -39,8 +43,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.eventAggregator = eventAggregator;
 
             this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
+            this.notifyQueue = new BlockingConcurrentQueue<NotificationMessage>();
 
-            this.commadReceiveTask = new Task(() => CommandReceiveTaskFunction());
+            this.commadReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
+            this.messageReceiveTask = new Task(async () => await this.MessageReceiveData());
 
             var machineManagerMessagEvent = this.eventAggregator.GetEvent<CommandEvent>();
             machineManagerMessagEvent.Subscribe(message =>
@@ -50,6 +56,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Destination == MessageActor.FiniteStateMachines);
+
+            var notificationMessageEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            notificationMessageEvent.Subscribe(message =>
+                {
+                    this.notifyQueue.Enqueue(message);
+                },
+                ThreadOption.PublisherThread,
+                false,
+                message => message.Destination == MessageActor.FiniteStateMachines || message.Destination == MessageActor.Any);
         }
 
         #endregion
@@ -69,6 +84,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 //TODO define custom Exception
                 throw new Exception($"Exception: {ex.Message} while starting service threads", ex);
             }
+
+            await Task.CompletedTask;
         }
 
         private Task CommandReceiveTaskFunction()
@@ -99,12 +116,39 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         this.ProcessHomingMessage(receivedMessage);
                         break;
 
+                    case MessageType.StopHoming:
+                        this.ProcessStopHomingMessage(receivedMessage);
+                        break;
+
                     case MessageType.StopAction:
                         this.ProcessStopActionMessage(receivedMessage);
                         break;
                 }
 
-                this.currentStateMachine.NotifyMessage(receivedMessage);
+                //TEMP this.currentStateMachine.ProcessCommandMessage(receivedMessage);
+            } while (!this.stoppingToken.IsCancellationRequested);
+
+            return Task.CompletedTask;
+        }
+
+        private Task MessageReceiveData()
+        {
+            do
+            {
+                NotificationMessage receivedMessage;
+                try
+                {
+                    this.notifyQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                }
+                catch (OperationCanceledException)
+                {
+                    return Task.CompletedTask;
+                }
+
+                if (this.currentStateMachine != null)
+                {
+                    this.currentStateMachine.ProcessNotificationMessage(receivedMessage);
+                }
             } while (!this.stoppingToken.IsCancellationRequested);
 
             return Task.CompletedTask;
@@ -119,7 +163,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
             //TODO apply Finite State Machine Business Logic to the message
             this.currentStateMachine = new MissionStateMachine(this.eventAggregator);
-
             this.currentStateMachine.Start();
         }
 
@@ -146,6 +189,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             {
                 //TODO throw missing state machine exception
             }
+        }
+
+        private void ProcessStopHomingMessage(CommandMessage receivedMessage)
+        {
+            if (this.currentStateMachine == null)
+            {
+                //TODO throw missing state machine exception
+            }
+
+            this.currentStateMachine.ProcessCommandMessage(receivedMessage);
         }
 
         #endregion
