@@ -22,7 +22,7 @@
 
         InverterAddress,
 
-        InverterPort
+        InverterPort,
 
         IoAddress,
 
