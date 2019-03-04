@@ -53,6 +53,7 @@ namespace Ferretto.VW.InstallationApp
             var mainWindowVMInstance = new MainWindowViewModel();
             var helpMainWindowInstance = new HelpMainWindow();
             var cellsSideControlVMInstance = new CellsSideControlViewModel();
+            var loadingDrawersVWInstance = new LoadingDrawersViewModel();
 
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
             this.container.RegisterInstance<IBeltBurnishingViewModel>(beltBurnishingVMInstance);
@@ -87,6 +88,7 @@ namespace Ferretto.VW.InstallationApp
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
             this.container.RegisterInstance<IHelpMainWindow>(helpMainWindowInstance);
             this.container.RegisterInstance<ICellsSideControlViewModel>(cellsSideControlVMInstance);
+            this.container.RegisterInstance<ILoadingDrawersViewModel>(loadingDrawersVWInstance);
 
             lSMTNavigationButtonsVMInstance.InitializeViewModel(this.container);
             lSMTMainVMInstance.InitializeViewModel(this.container);

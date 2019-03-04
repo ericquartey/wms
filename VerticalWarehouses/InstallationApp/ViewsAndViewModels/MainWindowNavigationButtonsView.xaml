@@ -105,6 +105,12 @@
                         Content="{x:Static res:InstallationApp.CellsSideControlButton}"
                         IsEnabled="{Binding IsWeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+
+                <Button Command="{Binding DataContext.LoadingDrawersCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                        Content="{x:Static res:InstallationApp.LoadingDrawersButton}"
+                        IsEnabled="{Binding IsWeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+
             </StackPanel>
         </ScrollViewer>
     </Grid>

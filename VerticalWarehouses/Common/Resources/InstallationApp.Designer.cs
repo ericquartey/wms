@@ -889,6 +889,78 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadingDrawersButton.
+        /// </summary>
+        public static string LoadingDrawersButton {
+            get {
+                return ResourceManager.GetString("LoadingDrawersButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadingDrawersDrawerToInsert.
+        /// </summary>
+        public static string LoadingDrawersDrawerToInsert {
+            get {
+                return ResourceManager.GetString("LoadingDrawersDrawerToInsert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadingDrawersInsertedDrawers.
+        /// </summary>
+        public static string LoadingDrawersInsertedDrawers {
+            get {
+                return ResourceManager.GetString("LoadingDrawersInsertedDrawers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadingDrawersMaxWeight.
+        /// </summary>
+        public static string LoadingDrawersMaxWeight {
+            get {
+                return ResourceManager.GetString("LoadingDrawersMaxWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadingDrawersNextDrawer.
+        /// </summary>
+        public static string LoadingDrawersNextDrawer {
+            get {
+                return ResourceManager.GetString("LoadingDrawersNextDrawer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadingDrawersPageHeader.
+        /// </summary>
+        public static string LoadingDrawersPageHeader {
+            get {
+                return ResourceManager.GetString("LoadingDrawersPageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadingDrawersStartInsertion.
+        /// </summary>
+        public static string LoadingDrawersStartInsertion {
+            get {
+                return ResourceManager.GetString("LoadingDrawersStartInsertion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadingDrawersTotalDrawers.
+        /// </summary>
+        public static string LoadingDrawersTotalDrawers {
+            get {
+                return ResourceManager.GetString("LoadingDrawersTotalDrawers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Log Off.
         /// </summary>
         public static string LogOff {

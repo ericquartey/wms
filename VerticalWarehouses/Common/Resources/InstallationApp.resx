@@ -884,4 +884,36 @@
     <value>CellsSideControlSelectedSide</value>
     <comment>Label text</comment>
   </data>
+  <data name="LoadingDrawersButton" xml:space="preserve">
+    <value>LoadingDrawersButton</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LoadingDrawersPageHeader" xml:space="preserve">
+    <value>LoadingDrawersPageHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="LoadingDrawersTotalDrawers" xml:space="preserve">
+    <value>LoadingDrawersTotalDrawers</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadingDrawersMaxWeight" xml:space="preserve">
+    <value>LoadingDrawersMaxWeight</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadingDrawersInsertedDrawers" xml:space="preserve">
+    <value>LoadingDrawersInsertedDrawers</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadingDrawersDrawerToInsert" xml:space="preserve">
+    <value>LoadingDrawersDrawerToInsert</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadingDrawersNextDrawer" xml:space="preserve">
+    <value>LoadingDrawersNextDrawer</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LoadingDrawersStartInsertion" xml:space="preserve">
+    <value>LoadingDrawersStartInsertion</value>
+    <comment>Button text</comment>
+  </data>
 </root>

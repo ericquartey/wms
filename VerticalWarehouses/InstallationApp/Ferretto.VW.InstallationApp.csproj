@@ -56,6 +56,7 @@
     <None Remove="ViewsAndViewModels\LowSpeedMovements\LSMTMainView.xaml" />
     <None Remove="ViewsAndViewModels\MainWindowBackToIAPPButtonView.xaml" />
     <None Remove="ViewsAndViewModels\SensorsState\SSMainView.xaml" />
+    <None Remove="ViewsAndViewModels\SingleViews\LoadingDrawersView.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -122,6 +123,9 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\SingleViews\LoadingDrawersView.xaml.cs">
+      <DependentUpon>LoadingDrawersView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 

@@ -73,6 +73,8 @@ namespace Ferretto.VW.InstallationApp
 
         private ICommand cellsSideControlButtonCommand;
 
+        private ICommand loadingDrawersButtonCommand;
+
         #endregion
 
         #region Properties
@@ -258,12 +260,20 @@ namespace Ferretto.VW.InstallationApp
             ((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand(((WeightControlViewModel)this.Container.Resolve<IWeightControlViewModel>()).ExitFromViewCommand);
         }));
 
-        public ICommand CellsSideControlButtonCommand => this.cellsSideControlButtonCommand ?? (this.weightControlButtonCommand = new DelegateCommand(() =>
+        public ICommand CellsSideControlButtonCommand => this.cellsSideControlButtonCommand ?? (this.cellsSideControlButtonCommand = new DelegateCommand(() =>
         {
             NavigationService.RaiseGoToViewEvent();
             this.ContentRegionCurrentViewModel = (CellsSideControlViewModel)this.Container.Resolve<ICellsSideControlViewModel>();
             //((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand(((WeightControlViewModel)this.Container.Resolve<IWeightControlViewModel>()).ExitFromViewCommand);
         }));
+
+        public ICommand LoadingDrawersCommand => this.loadingDrawersButtonCommand ?? (this.loadingDrawersButtonCommand = new DelegateCommand(() =>
+        {
+            NavigationService.RaiseGoToViewEvent();
+            this.ContentRegionCurrentViewModel = (LoadingDrawersViewModel)this.Container.Resolve<ILoadingDrawersViewModel>();
+            //((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand(((WeightControlViewModel)this.Container.Resolve<IWeightControlViewModel>()).ExitFromViewCommand);
+        }));
+
         #endregion
     }
 }

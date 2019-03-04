@@ -61,6 +61,7 @@ namespace Ferretto.VW.VWApp
             this.BindViewModelToView<IWeightControlViewModel, WeightControlView>();
             this.BindViewModelToView<IMainWindowViewModel, InstallationApp.MainWindow>();
             this.BindViewModelToView<ICellsSideControlViewModel, CellsSideControlView>();
+            this.BindViewModelToView<ILoadingDrawersViewModel, LoadingDrawersView>();
         }
 
         protected override DependencyObject CreateShell()

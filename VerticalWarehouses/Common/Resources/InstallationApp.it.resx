@@ -697,4 +697,28 @@
   <data name="CellsSideControlSelectedSide" xml:space="preserve">
     <value>Lato selezionato:</value>
   </data>
+  <data name="LoadingDrawersButton" xml:space="preserve">
+    <value>Carico cassetti</value>
+  </data>
+  <data name="LoadingDrawersPageHeader" xml:space="preserve">
+    <value>Carico cassetti.</value>
+  </data>
+  <data name="LoadingDrawersTotalDrawers" xml:space="preserve">
+    <value>Totale cassetti:</value>
+  </data>
+  <data name="LoadingDrawersMaxWeight" xml:space="preserve">
+    <value>Portata max. [kg]:</value>
+  </data>
+  <data name="LoadingDrawersInsertedDrawers" xml:space="preserve">
+    <value>Cassetti inseriti:</value>
+  </data>
+  <data name="LoadingDrawersDrawerToInsert" xml:space="preserve">
+    <value>Cassetto da inserire:</value>
+  </data>
+  <data name="LoadingDrawersNextDrawer" xml:space="preserve">
+    <value>Prossimo cassetto</value>
+  </data>
+  <data name="LoadingDrawersStartInsertion" xml:space="preserve">
+    <value>Inizia inserimento</value>
+  </data>
 </root>

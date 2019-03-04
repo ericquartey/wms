@@ -92,4 +92,8 @@
     <DataTemplate DataType="{x:Type local:CellsSideControlViewModel}">
         <local:CellsSideControlView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type local:LoadingDrawersViewModel}">
+        <local:LoadingDrawersView />
+    </DataTemplate>
+
 </ResourceDictionary>
