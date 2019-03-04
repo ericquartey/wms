@@ -22,7 +22,11 @@
 
         InverterAddress,
 
-        InverterPort,
+        InverterPort
+
+        IoAddress,
+
+        IoPort,
 
         positioningOverrideTargetPosition,
 

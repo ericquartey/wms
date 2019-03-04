@@ -65,6 +65,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             throw new NotImplementedException();
         }
 
+        public void SendCommandMessage(CommandMessage message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SendNotificationMessage(NotificationMessage message)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Start()
         {
             this.state = new VerticalPositioningIdleState(this, this.driver, this.eventAggregator);

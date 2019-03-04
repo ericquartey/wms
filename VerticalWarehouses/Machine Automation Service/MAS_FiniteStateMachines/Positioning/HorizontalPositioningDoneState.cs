@@ -43,9 +43,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         public void MakeOperation()
         {
+            throw new System.NotImplementedException();
         }
 
         public void NotifyMessage(CommandMessage message)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SendCommandMessage(CommandMessage message)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SendNotificationMessage(NotificationMessage message)
         {
             throw new System.NotImplementedException();
         }

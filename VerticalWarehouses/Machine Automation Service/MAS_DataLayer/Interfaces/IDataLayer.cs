@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+using Ferretto.VW.Common_Utils;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
@@ -60,6 +62,16 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
         int GetIntegerRuntimeValue(RuntimeValueEnum runtimeValueEnum);
+
+        /// <summary>
+        /// Get an IPAddress variable from the runtime table
+        /// </summary>
+        /// <param name="configurationValueEnum">Configuration parameter to get</param>
+        /// <returns>Return the value of an IPAddfress configuration parameter</returns>
+        /// <exception cref="DataLayerExceptionEnum.PARSE_EXCEPTION">Exception for a not possible parse</exception>
+        /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
+        /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
+        IPAddress GetIPAddressConfigurationValue(ConfigurationValueEnum configurationValueEnum);
 
         /// <summary>
         /// Get to the mission the lowest cell position for a drawer

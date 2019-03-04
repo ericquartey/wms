@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_InverterDriver.ActionBlocks;
@@ -42,7 +41,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             this.inverterAction.EndEvent -= this.DrawerWeight_ThrowEndEvent;
             if (this.inverterAction is DrawerWeightDetection)
-                this.GetDrawerWeight = ( (DrawerWeightDetection) this.inverterAction ).Weight;
+                this.GetDrawerWeight = ((DrawerWeightDetection)this.inverterAction).Weight;
         }
 
         private void DrawerWeight_ThrowErrorEvent()
