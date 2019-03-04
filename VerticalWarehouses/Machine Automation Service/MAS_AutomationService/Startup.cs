@@ -14,7 +14,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Prism.Events;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
@@ -68,15 +70,8 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddDbContext<DataLayerContext>(options => options.UseInMemoryDatabase("InMemoryWorkingDB"),
                 ServiceLifetime.Singleton);
 
-            services.AddHostedService<AutomationService>();
-            services.AddHostedService<MissionsManager>();
-            services.AddHostedService<FiniteStateMachines>();
-
-            this.RegisterInverterDriver(services);
-
-            this.RegisterRemoteIODriver(services);
-
             services.AddSingleton<IEventAggregator, EventAggregator>();
+
             services.AddSingleton<IDataLayer, DataLayer>(provider => new DataLayer(
                 connectionString,
                 provider.GetService<DataLayerContext>(),
@@ -85,13 +80,26 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSingleton<IWriteLogService, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
+            services.AddSingleton<IHostedService, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
             services.AddSingleton<ISocketTransport, SocketTransport>();
+
+            this.RegisterRemoteIODriver(services);
+
+            this.RegisterInverterDriver(services);
 
             //TODO Old InverterDriver Registration to be removed after code refactoring completed
             services.AddSingleton<IInverterDriver, InverterDriver.InverterDriver>();
 
             //TODO Old RemoteIODriver Registration to be removed after code refactoring completed
             services.AddSingleton<IRemoteIO, RemoteIO>();
+
+            services.AddHostedService<FiniteStateMachines>();
+
+            services.AddHostedService<MissionsManager>();
+
+            services.AddHostedService<AutomationService>();
         }
 
         private void RegisterInverterDriver(IServiceCollection services)

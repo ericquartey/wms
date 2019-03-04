@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_FiniteStateMachines.Homing;
 using Ferretto.VW.MAS_FiniteStateMachines.Mission;
 using Ferretto.VW.MAS_InverterDriver;
@@ -19,13 +19,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
     {
         #region Fields
 
+        private readonly Task commadReceiveTask;
+
         private readonly IEventAggregator eventAggregator;
 
-        private readonly ConcurrentQueue<CommandMessage> messageQueue;
-
-        private readonly ManualResetEventSlim messageReceived;
+        private readonly BlockingConcurrentQueue<CommandMessage> messageQueue;
 
         private IStateMachine currentStateMachine;
+
+        private CancellationToken stoppingToken;
 
         #endregion
 
@@ -36,15 +38,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         {
             this.eventAggregator = eventAggregator;
 
-            this.messageReceived = new ManualResetEventSlim(false);
+            this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
 
-            this.messageQueue = new ConcurrentQueue<CommandMessage>();
+            this.commadReceiveTask = new Task(() => CommandReceiveTaskFunction());
 
             var machineManagerMessagEvent = this.eventAggregator.GetEvent<CommandEvent>();
             machineManagerMessagEvent.Subscribe(message =>
                 {
                     this.messageQueue.Enqueue(message);
-                    this.messageReceived.Set();
                 },
                 ThreadOption.PublisherThread,
                 false,
@@ -55,57 +56,56 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Methods
 
-        public new Task StopAsync(CancellationToken stoppingToken)
-        {
-            var returnValue = base.StopAsync(stoppingToken);
-
-            return returnValue;
-        }
-
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            await Task.Run(() => this.FiniteStateMachineTaskFUnction(stoppingToken), stoppingToken);
+            this.stoppingToken = stoppingToken;
+
+            try
+            {
+                this.commadReceiveTask.Start();
+            }
+            catch (Exception ex)
+            {
+                //TODO define custom Exception
+                throw new Exception($"Exception: {ex.Message} while starting service threads", ex);
+            }
         }
 
-        private Task FiniteStateMachineTaskFUnction(CancellationToken stoppingToken)
+        private Task CommandReceiveTaskFunction()
         {
             do
             {
+                CommandMessage receivedMessage;
                 try
                 {
-                    this.messageReceived.Wait(Timeout.Infinite, stoppingToken);
+                    this.messageQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
                 }
                 catch (OperationCanceledException ex)
                 {
                     return Task.FromException(ex);
                 }
 
-                this.messageReceived.Reset();
-
-                while (this.messageQueue.TryDequeue(out var receivedMessage))
+                switch (receivedMessage.Type)
                 {
-                    switch (receivedMessage.Type)
-                    {
-                        case MessageType.AddMission:
-                            this.ProcessAddMissionMessage(receivedMessage);
-                            break;
+                    case MessageType.AddMission:
+                        this.ProcessAddMissionMessage(receivedMessage);
+                        break;
 
-                        //TODO to be removed
-                        case MessageType.HorizontalHoming:
-                            break;
+                    //TODO to be removed
+                    case MessageType.HorizontalHoming:
+                        break;
 
-                        case MessageType.Homing:
-                            this.ProcessHomingMessage(receivedMessage);
-                            break;
+                    case MessageType.Homing:
+                        this.ProcessHomingMessage(receivedMessage);
+                        break;
 
-                        case MessageType.StopAction:
-                            this.ProcessStopActionMessage(receivedMessage);
-                            break;
-                    }
-
-                    this.currentStateMachine.NotifyMessage(receivedMessage);
+                    case MessageType.StopAction:
+                        this.ProcessStopActionMessage(receivedMessage);
+                        break;
                 }
-            } while (!stoppingToken.IsCancellationRequested);
+
+                this.currentStateMachine.NotifyMessage(receivedMessage);
+            } while (!this.stoppingToken.IsCancellationRequested);
 
             return Task.CompletedTask;
         }
