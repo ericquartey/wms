@@ -466,6 +466,69 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLDRDescription.
+        /// </summary>
+        public static string HelpLDRDescription {
+            get {
+                return ResourceManager.GetString("HelpLDRDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLDRDrawerToInsert.
+        /// </summary>
+        public static string HelpLDRDrawerToInsert {
+            get {
+                return ResourceManager.GetString("HelpLDRDrawerToInsert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLDRInsertedDrawers.
+        /// </summary>
+        public static string HelpLDRInsertedDrawers {
+            get {
+                return ResourceManager.GetString("HelpLDRInsertedDrawers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLDRMaxLoad.
+        /// </summary>
+        public static string HelpLDRMaxLoad {
+            get {
+                return ResourceManager.GetString("HelpLDRMaxLoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLDRNextDrawer.
+        /// </summary>
+        public static string HelpLDRNextDrawer {
+            get {
+                return ResourceManager.GetString("HelpLDRNextDrawer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLDRStart.
+        /// </summary>
+        public static string HelpLDRStart {
+            get {
+                return ResourceManager.GetString("HelpLDRStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLDRTotalDrawers.
+        /// </summary>
+        public static string HelpLDRTotalDrawers {
+            get {
+                return ResourceManager.GetString("HelpLDRTotalDrawers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpLFDCellInTest.
         /// </summary>
         public static string HelpLFDCellInTest {

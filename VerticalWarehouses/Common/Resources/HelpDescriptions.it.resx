@@ -454,4 +454,25 @@
   <data name="HelpLFDDescription" xml:space="preserve">
     <value>La procedura permette di utilizzare il cassetto selezionato nell'apposito campo di input per testare le celle inferiori e superiori della macchina oltre alle celle sottostanti e sovrastanti blocchi di celle indicate come disabilitate. Scopo della procedura e' quello di verificare che non vi siano interferenze meccaniche in queste aree.</value>
   </data>
+  <data name="HelpLDRDescription" xml:space="preserve">
+    <value>La procedura permette di inserire i cassetti vuoti all'interno della macchina al termine della procedura di messa in servizio. I cassetti vengono inseriti all'interno dei blocchi liberi scegliendoli in base alla priorita' piu' bassa.</value>
+  </data>
+  <data name="HelpLDRTotalDrawers" xml:space="preserve">
+    <value>Numero totali di cassetti da inserire.</value>
+  </data>
+  <data name="HelpLDRInsertedDrawers" xml:space="preserve">
+    <value>Cassetti gia' inseriti in macchina.</value>
+  </data>
+  <data name="HelpLDRDrawerToInsert" xml:space="preserve">
+    <value>Numero del cassetto in fase di inserimento. Puo' essere generato dal pulsante apposito oppure inserito nell'apposito campo.</value>
+  </data>
+  <data name="HelpLDRMaxLoad" xml:space="preserve">
+    <value>Indica la portata massima ammessa per il cassetto attualmente in inserimento.</value>
+  </data>
+  <data name="HelpLDRNextDrawer" xml:space="preserve">
+    <value>Il pulsante imposta il prossimo cassetto da inserire. il numero e' quello successivo all'ultimo inserito.</value>
+  </data>
+  <data name="HelpLDRStart" xml:space="preserve">
+    <value>Avvia la procedura di inserimento del cassetto selezionato.</value>
+  </data>
 </root>

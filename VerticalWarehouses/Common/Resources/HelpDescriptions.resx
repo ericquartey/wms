@@ -573,4 +573,32 @@
     <value>HelpLFDDescription</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpLDRDescription" xml:space="preserve">
+    <value>HelpLDRDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpLDRTotalDrawers" xml:space="preserve">
+    <value>HelpLDRTotalDrawers</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLDRInsertedDrawers" xml:space="preserve">
+    <value>HelpLDRInsertedDrawers</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLDRDrawerToInsert" xml:space="preserve">
+    <value>HelpLDRDrawerToInsert</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLDRMaxLoad" xml:space="preserve">
+    <value>HelpLDRMaxLoad</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLDRNextDrawer" xml:space="preserve">
+    <value>HelpLDRNextDrawer</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLDRStart" xml:space="preserve">
+    <value>HelpLDRStart</value>
+    <comment>Note text</comment>
+  </data>
 </root>

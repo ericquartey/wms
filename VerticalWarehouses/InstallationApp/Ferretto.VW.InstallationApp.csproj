@@ -45,6 +45,7 @@
     <None Remove="HelpWindows\HelpGateHeightControl.xaml" />
     <None Remove="HelpWindows\HelpInstallationState.xaml" />
     <None Remove="HelpWindows\HelpLoadFirstDrawer.xaml" />
+    <None Remove="HelpWindows\HelpLoadingDrawers.xaml" />
     <None Remove="HelpWindows\HelpLowSpeedMovements.xaml" />
     <None Remove="HelpWindows\HelpMainWindow.xaml" />
     <None Remove="HelpWindows\HelpPageBase.xaml" />
@@ -108,6 +109,9 @@
     </Compile>
     <Compile Update="HelpWindows\HelpLoadFirstDrawer.xaml.cs">
       <DependentUpon>HelpLoadFirstDrawer.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpLoadingDrawers.xaml.cs">
+      <DependentUpon>HelpLoadingDrawers.xaml</DependentUpon>
     </Compile>
     <Compile Update="HelpWindows\HelpVerticalOffsetCalibration.xaml.cs">
       <DependentUpon>HelpVerticalOffsetCalibration.xaml</DependentUpon>
