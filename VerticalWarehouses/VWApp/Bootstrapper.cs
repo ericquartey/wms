@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using Ferretto.VW.ActionBlocks.Source.ActionsBasic;
 using Ferretto.VW.InstallationApp;
-using Ferretto.VW.InstallationApp;
 using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.Navigation;
 using Ferretto.VW.Utils.Source;
@@ -61,6 +60,7 @@ namespace Ferretto.VW.VWApp
             this.BindViewModelToView<IWeightControlViewModel, WeightControlView>();
             this.BindViewModelToView<IMainWindowViewModel, InstallationApp.MainWindow>();
             this.BindViewModelToView<ICellsSideControlViewModel, CellsSideControlView>();
+            this.BindViewModelToView<ILoadFirstDrawerViewModel, LoadFirstDrawerView>();
             this.BindViewModelToView<ILoadingDrawersViewModel, LoadingDrawersView>();
         }
 

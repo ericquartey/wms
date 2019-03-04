@@ -73,6 +73,8 @@ namespace Ferretto.VW.InstallationApp
 
         private ICommand cellsSideControlButtonCommand;
 
+        private ICommand loadFirstDrawerButtonCommand;
+
         private ICommand loadingDrawersButtonCommand;
 
         #endregion
@@ -266,6 +268,15 @@ namespace Ferretto.VW.InstallationApp
             this.ContentRegionCurrentViewModel = (CellsSideControlViewModel)this.Container.Resolve<ICellsSideControlViewModel>();
             //((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand(((WeightControlViewModel)this.Container.Resolve<IWeightControlViewModel>()).ExitFromViewCommand);
         }));
+
+
+        public ICommand LoadFirstDrawerButtonCommand => this.loadFirstDrawerButtonCommand ?? (this.loadFirstDrawerButtonCommand = new DelegateCommand(() =>
+        {
+            NavigationService.RaiseGoToViewEvent();
+            this.ContentRegionCurrentViewModel = (LoadFirstDrawerViewModel)this.Container.Resolve<ILoadFirstDrawerViewModel>();
+            //((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand(((WeightControlViewModel)this.Container.Resolve<IWeightControlViewModel>()).ExitFromViewCommand);
+        }));
+
 
         public ICommand LoadingDrawersCommand => this.loadingDrawersButtonCommand ?? (this.loadingDrawersButtonCommand = new DelegateCommand(() =>
         {

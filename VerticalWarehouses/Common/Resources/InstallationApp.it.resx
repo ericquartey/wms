@@ -721,4 +721,31 @@
   <data name="LoadingDrawersStartInsertion" xml:space="preserve">
     <value>Inizia inserimento</value>
   </data>
+  <data name="LoadFirstDrawerButton" xml:space="preserve">
+    <value>Carica primo cassetto</value>
+  </data>
+  <data name="LoadFirstDrawerPageHeader" xml:space="preserve">
+    <value>Carico primo cassetto e test celle.</value>
+  </data>
+  <data name="LoadFirstDrawerTotCellsToCheck" xml:space="preserve">
+    <value>Totale celle da testare:</value>
+  </data>
+  <data name="LoadFirstDrawerTotCellsChecked" xml:space="preserve">
+    <value>Totale celle testate:</value>
+  </data>
+  <data name="LoadFirstDrawerActualCellToCheck" xml:space="preserve">
+    <value>Cella in fase di test:</value>
+  </data>
+  <data name="LoadFirstDrawerDrawerToInsert" xml:space="preserve">
+    <value>Cassetto da inserire:</value>
+  </data>
+  <data name="LoadFirstDrawerMaxWeight" xml:space="preserve">
+    <value>Portata massima cassetto [kg]:</value>
+  </data>
+  <data name="LoadFirstDrawerStartLoading" xml:space="preserve">
+    <value>Inserisci cassetto</value>
+  </data>
+  <data name="LoadFirstDrawerRecallDrawer" xml:space="preserve">
+    <value>Richiama cassetto</value>
+  </data>
 </root>

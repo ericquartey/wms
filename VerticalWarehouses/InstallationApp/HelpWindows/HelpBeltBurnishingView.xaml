@@ -40,6 +40,7 @@
 
         <Controls:CustomInputFieldControlFocusable  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
             HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,380,0,0"
+            Highlighted="True" IsEnabled="True"
             Width="180"
             LabelText="{x:Static res:InstallationApp.RequiredCicles}"/>
 

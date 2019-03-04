@@ -889,6 +889,87 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadFirstDrawerActualCellToCheck.
+        /// </summary>
+        public static string LoadFirstDrawerActualCellToCheck {
+            get {
+                return ResourceManager.GetString("LoadFirstDrawerActualCellToCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadFirstDrawerButton.
+        /// </summary>
+        public static string LoadFirstDrawerButton {
+            get {
+                return ResourceManager.GetString("LoadFirstDrawerButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadFirstDrawerDrawerToInsert.
+        /// </summary>
+        public static string LoadFirstDrawerDrawerToInsert {
+            get {
+                return ResourceManager.GetString("LoadFirstDrawerDrawerToInsert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadFirstDrawerMaxWeight.
+        /// </summary>
+        public static string LoadFirstDrawerMaxWeight {
+            get {
+                return ResourceManager.GetString("LoadFirstDrawerMaxWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadFirstDrawerPageHeader.
+        /// </summary>
+        public static string LoadFirstDrawerPageHeader {
+            get {
+                return ResourceManager.GetString("LoadFirstDrawerPageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadFirstDrawerRecallDrawer.
+        /// </summary>
+        public static string LoadFirstDrawerRecallDrawer {
+            get {
+                return ResourceManager.GetString("LoadFirstDrawerRecallDrawer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadFirstDrawerStartLoading.
+        /// </summary>
+        public static string LoadFirstDrawerStartLoading {
+            get {
+                return ResourceManager.GetString("LoadFirstDrawerStartLoading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadFirstDrawerTotCellsChecked.
+        /// </summary>
+        public static string LoadFirstDrawerTotCellsChecked {
+            get {
+                return ResourceManager.GetString("LoadFirstDrawerTotCellsChecked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadFirstDrawerTotCellsToCheck.
+        /// </summary>
+        public static string LoadFirstDrawerTotCellsToCheck {
+            get {
+                return ResourceManager.GetString("LoadFirstDrawerTotCellsToCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a LoadingDrawersButton.
         /// </summary>
         public static string LoadingDrawersButton {

@@ -916,4 +916,40 @@
     <value>LoadingDrawersStartInsertion</value>
     <comment>Button text</comment>
   </data>
+  <data name="LoadFirstDrawerButton" xml:space="preserve">
+    <value>LoadFirstDrawerButton</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LoadFirstDrawerPageHeader" xml:space="preserve">
+    <value>LoadFirstDrawerPageHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="LoadFirstDrawerTotCellsToCheck" xml:space="preserve">
+    <value>LoadFirstDrawerTotCellsToCheck</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadFirstDrawerTotCellsChecked" xml:space="preserve">
+    <value>LoadFirstDrawerTotCellsChecked</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadFirstDrawerActualCellToCheck" xml:space="preserve">
+    <value>LoadFirstDrawerActualCellToCheck</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadFirstDrawerDrawerToInsert" xml:space="preserve">
+    <value>LoadFirstDrawerDrawerToInsert</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadFirstDrawerMaxWeight" xml:space="preserve">
+    <value>LoadFirstDrawerMaxWeight</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadFirstDrawerStartLoading" xml:space="preserve">
+    <value>LoadFirstDrawerStartLoading</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LoadFirstDrawerRecallDrawer" xml:space="preserve">
+    <value>LoadFirstDrawerRecallDrawer</value>
+    <comment>Button text</comment>
+  </data>
 </root>
