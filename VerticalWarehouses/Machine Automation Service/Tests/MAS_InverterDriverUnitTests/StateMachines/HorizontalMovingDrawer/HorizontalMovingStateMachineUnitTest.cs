@@ -13,7 +13,7 @@ namespace MAS_InverterDriverUnitTests.StateMachines.HorizontalMovingDrawer
         #region Methods
 
         [TestMethod]
-        [TestCategory("Constructors")]
+        [TestCategory("Unit")]
 
         public void IsNotNullHorizontalMovingStateMachine()
         {
@@ -28,7 +28,7 @@ namespace MAS_InverterDriverUnitTests.StateMachines.HorizontalMovingDrawer
         }
 
         [TestMethod]
-        [TestCategory("ChangeState")]
+        [TestCategory("Unit")]
 
         public void IsTrueChangeState()
         {
@@ -44,7 +44,7 @@ namespace MAS_InverterDriverUnitTests.StateMachines.HorizontalMovingDrawer
         }
 
         [TestMethod]
-        [TestCategory("Start")]
+        [TestCategory("Unit")]
 
         public void IsTrueStart()
         {

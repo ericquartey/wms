@@ -20,7 +20,7 @@ namespace MAS_InverterDriverUnitTests.StateMachines.HorizontalMovingDrawer
         #region Method
 
         [TestMethod]
-        [TestCategory("Constructors")]
+        [TestCategory("Unit")]
 
         public void IsNotNullOperationModeState()
         {
@@ -34,7 +34,7 @@ namespace MAS_InverterDriverUnitTests.StateMachines.HorizontalMovingDrawer
 
         /* TEMP
        [TestMethod]
-       [TestCategory("NotifyMessage")]
+       [TestCategory("Unit")]
 
        public void IsTrueNotifyMessage()
        {

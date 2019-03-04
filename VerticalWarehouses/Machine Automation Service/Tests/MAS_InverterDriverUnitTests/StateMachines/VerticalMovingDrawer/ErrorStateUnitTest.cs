@@ -12,7 +12,7 @@ namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
         #region Methods
 
         [TestMethod]
-        [TestCategory("Constructors")]
+        [TestCategory("Unit")]
         public void IsNotNullErrorState()
         {
             var parentStateMachineMock = new Mock<IInverterStateMachine>();
