@@ -9,13 +9,13 @@ using Moq;
 namespace MAS_FiniteStateMachinesUnitTests.Homing
 {
     [TestClass]
-    public class HomingStartStateUnitTest
+    public class HomingErrorStateUnitTest
     {
         #region Methods
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void TestHomingStartStateCreate()
+        public void TestHomingErrorStateCreate()
         {
             var calibrateMessageData = new Mock<ICalibrateMessageData>();
 
@@ -25,7 +25,7 @@ namespace MAS_FiniteStateMachinesUnitTests.Homing
             var parent = new Mock<IStateMachine>();
             parent.As<IHomingStateMachine>().Setup(p => p.CalibrateData).Returns(calibrateMessageData.Object);
 
-            var state = new HomingStartState(parent.Object);
+            var state = new HomingErrorState(parent.Object);
 
             Assert.IsNotNull(state);
         }

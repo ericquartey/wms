@@ -34,22 +34,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Methods
 
-        public override void MakeOperation()
-        {
-            throw new NotImplementedException();
-        }
-
         public override void SendCommandMessage(CommandMessage message)
         {
             throw new NotImplementedException();
         }
 
         public override void SendNotificationMessage(NotificationMessage message)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Stop()
         {
             throw new NotImplementedException();
         }

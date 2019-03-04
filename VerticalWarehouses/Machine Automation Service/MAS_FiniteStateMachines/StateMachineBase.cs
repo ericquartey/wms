@@ -28,13 +28,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         public void ChangeState(IState newState, CommandMessage message = null)
         {
             this.CurrentState = newState;
-            if (message != null) this.EventAggregator.GetEvent<CommandEvent>().Publish(message);
+            //x if (message != null) this.EventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
 
-        public void NotifyMessage(CommandMessage message)
+        public void ProcessCommandMessage(CommandMessage message)
         {
-            //TODO to remove
             this.CurrentState?.SendCommandMessage(message);
+        }
+
+        public void ProcessNotificationMessage(NotificationMessage message)
+        {
+            this.CurrentState?.SendNotificationMessage(message);
         }
 
         public void PublishCommandMessage(CommandMessage message)

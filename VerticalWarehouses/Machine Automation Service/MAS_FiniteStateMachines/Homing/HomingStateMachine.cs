@@ -30,6 +30,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         public ICalibrateMessageData CalibrateData => this.calibrateMessageData;
 
+        public IState GetState => this.CurrentState;
+
         #endregion
 
         #region Methods

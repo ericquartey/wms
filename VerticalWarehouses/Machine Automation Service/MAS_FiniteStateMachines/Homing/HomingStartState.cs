@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 
@@ -35,11 +34,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Methods
 
-        public override void MakeOperation()
-        {
-            throw new NotImplementedException();
-        }
-
         public override void SendCommandMessage(CommandMessage message)
         {
             switch (message.Type)
@@ -74,11 +68,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                         break;
                 }
             }
-        }
-
-        public override void Stop()
-        {
-            throw new NotImplementedException();
         }
 
         private void ProcessEndHoming(NotificationMessage message)

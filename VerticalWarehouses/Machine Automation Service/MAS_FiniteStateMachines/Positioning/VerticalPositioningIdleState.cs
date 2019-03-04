@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                 this.Weight, this.Offset, this.AbsoluteMovement);
         }
 
-        public void NotifyMessage(CommandMessage message)
+        public void ProcessCommandMessage(CommandMessage message)
         {
             throw new NotImplementedException();
         }
@@ -82,17 +82,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
         public void SendNotificationMessage(NotificationMessage message)
         {
             throw new NotImplementedException();
-        }
-
-        public void Stop()
-        {
-            this.driver.ExecuteVerticalPositionStop();
-
-            this.eventAggregator.GetEvent<NotificationEvent>().Unsubscribe(this.notifyEventHandler);
-
-            var notifyEvent = new NotificationMessage(null, "Positioning stopped", MessageActor.Any,
-                MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationStop);
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
         }
 
         private void notifyEventHandler(NotificationMessage notification)
