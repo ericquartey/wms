@@ -13,8 +13,6 @@ namespace MAS_InverterDriverUnitTests.StateMachines.HorizontalMovingDrawer
         #region Methods
 
         [TestMethod]
-        [TestCategory("Unit")]
-
         public void IsNotNullHorizontalMovingStateMachine()
         {
             var inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
@@ -28,8 +26,6 @@ namespace MAS_InverterDriverUnitTests.StateMachines.HorizontalMovingDrawer
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
-
         public void IsTrueChangeState()
         {
             var newStateMock = new Mock<IInverterState>();
@@ -44,8 +40,6 @@ namespace MAS_InverterDriverUnitTests.StateMachines.HorizontalMovingDrawer
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
-
         public void IsTrueStart()
         {
             var inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();

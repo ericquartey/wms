@@ -20,7 +20,6 @@ namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
         #region Methods
 
         [TestMethod]
-        [TestCategory("Unit")]
         public void IsNotNullSetNewPositionState()
         {
             var parentStateMachineMock = new Mock<IInverterStateMachine>();
@@ -33,8 +32,6 @@ namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
 
         /* TEMP
         [TestMethod]
-        [TestCategory("Unit")]
-
         public void IsTrueNotifyMessage()
         {
             var parentStateMachineMock = new Mock<IInverterStateMachine>();

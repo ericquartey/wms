@@ -20,8 +20,6 @@ namespace MAS_InverterDriverUnitTests.StateMachines.HorizontalMovingDrawer
         #region Methods
 
         [TestMethod]
-        [TestCategory("Unit")]
-
         public void IsNotNullReadyToSwitchOnState()
         {
             var parentStateMachineMock = new Mock<IInverterStateMachine>();
@@ -34,8 +32,6 @@ namespace MAS_InverterDriverUnitTests.StateMachines.HorizontalMovingDrawer
 
         /* TEMP
        [TestMethod]
-       [TestCategory("Unit")]
-
        public void IsTrueNotifyMessage()
        {
            var parentStateMachineMock = new Mock<IInverterStateMachine>();
