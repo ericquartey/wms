@@ -82,7 +82,7 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        public static void ShowDialog(INavigableView registeredView, bool iNoModal = false)
+        public static void ShowDialog(INavigableView registeredView, bool isNoModalDialog = false)
         {
             if (!(registeredView is WmsDialogView wmsDialog))
             {
