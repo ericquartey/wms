@@ -143,9 +143,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         private IQueryable<Machine> GetAllBase()
         {
             return this.dataContext.Machines
-                .Include(m => m.Aisle)
-                .ThenInclude(a => a.Area)
-                .Include(m => m.MachineType)
                 .Select(m => new Machine
                 {
                     Id = m.Id,
