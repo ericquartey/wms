@@ -64,6 +64,8 @@ namespace Ferretto.WMS.App.ModulesUITests
             if (viewsToProcess.Count == 0)
             {
                 Application.Current.MainWindow.Close();
+                var bindingErrors = BindingListener.Current.Errors;
+                Assert.IsTrue(string.IsNullOrEmpty(bindingErrors), bindingErrors);
                 return;
             }
 
@@ -93,6 +95,8 @@ namespace Ferretto.WMS.App.ModulesUITests
 
         private void InitializeContext()
         {
+            BindingListener.Current.Initialise();
+
             new Bootstrapper().Run();
 
             DevExpress.Xpf.Core.ApplicationThemeHelper.ApplicationThemeName = Common.Utils.Common.THEMECONTROLSNAME;
