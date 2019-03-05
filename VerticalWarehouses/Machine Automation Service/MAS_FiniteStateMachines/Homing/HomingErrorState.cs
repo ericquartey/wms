@@ -1,68 +1,47 @@
 ﻿using System;
 using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.MAS_DataLayer;
-using Ferretto.VW.MAS_InverterDriver;
-using Ferretto.VW.MAS_IODriver;
-using Prism.Events;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
-    public class HomingErrorState : IState
+    public class HomingErrorState : StateBase
     {
-        #region Fields
-
-        private readonly IWriteLogService data;
-
-        private readonly INewInverterDriver driver;
-
-        private readonly IEventAggregator eventAggregator;
-
-        private readonly INewRemoteIODriver remoteIODriver;
-
-        private StateMachineHoming parent;
-
-        #endregion
-
         #region Constructors
 
-        public HomingErrorState(StateMachineHoming parent, INewInverterDriver driver, INewRemoteIODriver remoteIODriver,
-            IWriteLogService iWriteLogService, IEventAggregator eventAggregator)
+        public HomingErrorState(IStateMachine parentMachine)
         {
-            this.parent = parent;
-            this.driver = driver;
-            this.remoteIODriver = remoteIODriver;
-            this.data = iWriteLogService;
-            this.eventAggregator = eventAggregator;
+            this.parentStateMachine = parentMachine;
 
-            var notifyEvent = new NotificationMessage(null, "Homing Error", MessageActor.Any,
-                MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationError,
-                ErrorLevel.Error);
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
+            //TEMP Notify the error condition
+            var newMessage = new NotificationMessage(null,
+                "Error Homing State",
+                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
+                MessageType.Homing,
+                MessageStatus.OperationError,
+                ErrorLevel.Error,
+                MessageVerbosity.Info);
+            this.parentStateMachine.PublishNotificationMessage(newMessage);
         }
 
         #endregion
 
         #region Properties
 
-        public string Type => "Homing Error State";
+        public override string Type => "HomingErrorState";
 
         #endregion
 
         #region Methods
 
-        public void MakeOperation()
-        {
-        }
-
-        public void NotifyMessage(CommandMessage message)
+        public override void SendCommandMessage(CommandMessage message)
         {
             throw new NotImplementedException();
         }
 
-        public void Stop()
+        public override void SendNotificationMessage(NotificationMessage message)
         {
+            throw new NotImplementedException();
         }
 
         #endregion

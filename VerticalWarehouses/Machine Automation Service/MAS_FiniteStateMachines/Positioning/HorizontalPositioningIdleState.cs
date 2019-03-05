@@ -1,5 +1,4 @@
-﻿using System.Buffers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
@@ -59,19 +58,19 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             this.driver.ExecuteHorizontalPosition(this.Target, this.Velocity, this.Direction, this.Profile, this.Weight);
         }
 
-        public void NotifyMessage(CommandMessage message)
+        public void ProcessCommandMessage(CommandMessage message)
         {
             throw new System.NotImplementedException();
         }
 
-        public void Stop()
+        public void SendCommandMessage(CommandMessage message)
         {
-            this.driver.ExecuteHorizontalPositionStop();
+            throw new System.NotImplementedException();
+        }
 
-            this.eventAggregator.GetEvent<NotificationEvent>().Unsubscribe(this.notifyEventHandler);
-
-            var notifyEvent = new NotificationMessage(null, "Positioning stopped", MessageActor.Any, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationStop);
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
+        public void SendNotificationMessage(NotificationMessage message)
+        {
+            throw new System.NotImplementedException();
         }
 
         private void notifyEventHandler(NotificationMessage notification)

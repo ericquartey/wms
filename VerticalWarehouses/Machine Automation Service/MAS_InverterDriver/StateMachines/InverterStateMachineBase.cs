@@ -1,4 +1,7 @@
-﻿using Ferretto.VW.Common_Utils.Utilities;
+﻿using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Utilities;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 {
@@ -6,9 +9,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
     {
         #region Fields
 
-        protected BlockingConcurrentQueue<InverterMessage> inverterCommandQueue;
+        protected IEventAggregator eventAggregator;
 
-        protected BlockingConcurrentQueue<InverterMessage> priorityInverterCommandQueue;
+        protected BlockingConcurrentQueue<InverterMessage> inverterCommandQueue;
 
         #endregion
 
@@ -33,6 +36,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         public void NotifyMessage(InverterMessage message)
         {
             this.CurrentState?.NotifyMessage(message);
+        }
+
+        public void PublishNotificationEvent(NotificationMessage notificationMessage)
+        {
+            this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
         }
 
         public abstract void Start();

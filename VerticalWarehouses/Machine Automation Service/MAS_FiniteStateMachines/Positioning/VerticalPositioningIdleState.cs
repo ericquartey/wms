@@ -69,20 +69,19 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                 this.Weight, this.Offset, this.AbsoluteMovement);
         }
 
-        public void NotifyMessage(CommandMessage message)
+        public void ProcessCommandMessage(CommandMessage message)
         {
             throw new NotImplementedException();
         }
 
-        public void Stop()
+        public void SendCommandMessage(CommandMessage message)
         {
-            this.driver.ExecuteVerticalPositionStop();
+            throw new NotImplementedException();
+        }
 
-            this.eventAggregator.GetEvent<NotificationEvent>().Unsubscribe(this.notifyEventHandler);
-
-            var notifyEvent = new NotificationMessage(null, "Positioning stopped", MessageActor.Any,
-                MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationStop);
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
+        public void SendNotificationMessage(NotificationMessage message)
+        {
+            throw new NotImplementedException();
         }
 
         private void notifyEventHandler(NotificationMessage notification)
@@ -90,17 +89,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             switch (notification.Status)
             {
                 case MessageStatus.OperationEnd:
-                {
-                    this.parent.ChangeState(new VerticalPositioningDoneState(this.parent, this.driver,
-                        this.eventAggregator));
-                    break;
-                }
+                    {
+                        this.parent.ChangeState(new VerticalPositioningDoneState(this.parent, this.driver,
+                            this.eventAggregator));
+                        break;
+                    }
                 case MessageStatus.OperationError:
-                {
-                    this.parent.ChangeState(
-                        new VerticalPositioningErrorState(this.parent, this.driver, this.eventAggregator));
-                    break;
-                }
+                    {
+                        this.parent.ChangeState(
+                            new VerticalPositioningErrorState(this.parent, this.driver, this.eventAggregator));
+                        break;
+                    }
             }
         }
 

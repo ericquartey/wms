@@ -9,6 +9,7 @@ using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.Common_Utils.Utilities;
 using Microsoft.Extensions.Hosting;
 using Prism.Events;
 
@@ -18,19 +19,21 @@ namespace Ferretto.VW.MAS_MissionsManager
     {
         #region Fields
 
+        private readonly Task commadReceiveTask;
+
         private readonly IEventAggregator eventAggregator;
 
-        private readonly ConcurrentQueue<CommandMessage> messageQueue;
-
-        private readonly ManualResetEventSlim messageReceived;
+        private readonly BlockingConcurrentQueue<CommandMessage> messageQueue;
 
         private readonly ManualResetEventSlim missionExecuted;
+
+        private readonly Task missionExecutionTask;
 
         private readonly ManualResetEventSlim missionReady;
 
         private readonly Dictionary<IMissionMessageData, int> missionsCollection;
 
-        private Task missionExecutionTask;
+        private CancellationToken stoppingToken;
 
         #endregion
 
@@ -40,18 +43,20 @@ namespace Ferretto.VW.MAS_MissionsManager
         {
             this.eventAggregator = eventAggregator;
 
-            this.messageReceived = new ManualResetEventSlim(false);
-
             this.missionExecuted = new ManualResetEventSlim(true);
 
             this.missionReady = new ManualResetEventSlim(false);
 
-            this.messageQueue = new ConcurrentQueue<CommandMessage>();
+            this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
 
             this.missionsCollection = new Dictionary<IMissionMessageData, int>();
 
+            this.commadReceiveTask = new Task(() => CommandReceiveTaskFunction());
+
+            this.missionExecutionTask = new Task(() => MissionsExecutionTaskFunction());
+
             var automationServiceMessageEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            automationServiceMessageEvent.Subscribe(commandMessage => this.EnqueueMessageAndSetSemaphor(commandMessage),
+            automationServiceMessageEvent.Subscribe(commandMessage => this.messageQueue.Enqueue(commandMessage),
                 ThreadOption.PublisherThread,
                 false,
                 commandMessage => commandMessage.Destination == MessageActor.MissionsManager);
@@ -68,32 +73,61 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         #region Methods
 
-        public new Task StopAsync(CancellationToken stoppingToken)
-        {
-            var returnValue = base.StopAsync(stoppingToken);
-
-            return returnValue;
-        }
-
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            await Task.Run(() => this.MissionsManagerTaskFunction(stoppingToken), stoppingToken);
+            this.stoppingToken = stoppingToken;
+
+            try
+            {
+                this.commadReceiveTask.Start();
+                this.missionExecutionTask.Start();
+            }
+            catch (Exception ex)
+            {
+                //TODO Define custom exception
+                throw new Exception($"Exception: {ex.Message} while starting service threads", ex);
+            }
         }
 
-        private void EnqueueMessageAndSetSemaphor(CommandMessage message)
+        private Task CommandReceiveTaskFunction()
         {
-            this.messageQueue.Enqueue(message);
-            this.messageReceived.Set();
+            do
+            {
+                CommandMessage receivedMessage;
+                try
+                {
+                    this.messageQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                }
+                catch (OperationCanceledException)
+                {
+                    return Task.CompletedTask;
+                }
+                switch (receivedMessage.Type)
+                {
+                    case MessageType.AddMission:
+                        this.ProcessAddMissionMessage(receivedMessage);
+                        break;
+
+                    case MessageType.CreateMission:
+
+                        break;
+
+                    case MessageType.HorizontalHoming:
+                        break;
+                }
+            } while (!this.stoppingToken.IsCancellationRequested);
+
+            return Task.CompletedTask;
         }
 
-        private Task MissionsExecutionTaskFunction(CancellationToken stoppingToken)
+        private Task MissionsExecutionTaskFunction()
         {
             do
             {
                 try
                 {
-                    this.missionExecuted.Wait(Timeout.Infinite, stoppingToken);
-                    this.missionReady.Wait(Timeout.Infinite, stoppingToken);
+                    this.missionExecuted.Wait(Timeout.Infinite, this.stoppingToken);
+                    this.missionReady.Wait(Timeout.Infinite, this.stoppingToken);
                 }
                 catch (OperationCanceledException ex)
                 {
@@ -110,42 +144,7 @@ namespace Ferretto.VW.MAS_MissionsManager
                 }
                 else
                     this.missionReady.Reset();
-            } while (!stoppingToken.IsCancellationRequested);
-
-            return Task.CompletedTask;
-        }
-
-        private Task MissionsManagerTaskFunction(CancellationToken stoppingToken)
-        {
-            this.missionExecutionTask = Task.Run(() => this.MissionsExecutionTaskFunction(stoppingToken), stoppingToken);
-            do
-            {
-                try
-                {
-                    this.messageReceived.Wait(Timeout.Infinite, stoppingToken);
-                }
-                catch (OperationCanceledException ex)
-                {
-                    return Task.FromException(ex);
-                }
-
-                this.messageReceived.Reset();
-
-                while (this.messageQueue.TryDequeue(out var receivedMessage))
-                    switch (receivedMessage.Type)
-                    {
-                        case MessageType.AddMission:
-                            this.ProcessAddMissionMessage(receivedMessage);
-                            break;
-
-                        case MessageType.CreateMission:
-
-                            break;
-
-                        case MessageType.HorizontalHoming:
-                            break;
-                    }
-            } while (!stoppingToken.IsCancellationRequested);
+            } while (!this.stoppingToken.IsCancellationRequested);
 
             return Task.CompletedTask;
         }

@@ -36,6 +36,8 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public DbSet<FreeBlock> FreeBlocks { get; set; }
 
+        public DbSet<LoadingUnit> LoadingUnits { get; set; }
+
         public DbSet<RuntimeValue> RuntimeValues { get; set; }
 
         public DbSet<StatusLog> StatusLogs { get; set; }
@@ -73,7 +75,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = ConfigurationValueEnum.InverterAddress, VarType = DataTypeEnum.IPAddress, VarValue = "169.254.231.248" });
+            modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = ConfigurationValueEnum.InverterAddress, VarType = DataTypeEnum.IPAddressType, VarValue = "169.254.231.248" });
             modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = ConfigurationValueEnum.InverterPort, VarType = DataTypeEnum.integerType, VarValue = "17221" });
         }
 

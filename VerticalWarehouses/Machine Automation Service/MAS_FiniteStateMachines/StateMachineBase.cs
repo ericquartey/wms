@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Events;
+﻿using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Prism.Events;
 
@@ -18,9 +17,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Properties
 
-        protected IEventAggregator EventAggregator { get; }
-
         protected IState CurrentState { get; set; }
+
+        protected IEventAggregator EventAggregator { get; }
 
         #endregion
 
@@ -29,12 +28,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         public void ChangeState(IState newState, CommandMessage message = null)
         {
             this.CurrentState = newState;
-            if (message != null) this.EventAggregator.GetEvent<CommandEvent>().Publish(message);
+            //x if (message != null) this.EventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
 
-        public void NotifyMessage(CommandMessage message)
+        public void ProcessCommandMessage(CommandMessage message)
         {
-            this.CurrentState?.NotifyMessage(message);
+            this.CurrentState?.SendCommandMessage(message);
+        }
+
+        public void ProcessNotificationMessage(NotificationMessage message)
+        {
+            this.CurrentState?.SendNotificationMessage(message);
         }
 
         public void PublishCommandMessage(CommandMessage message)
@@ -44,7 +48,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         public void PublishNotificationMessage(NotificationMessage message)
         {
-            throw new NotImplementedException();
+            this.EventAggregator.GetEvent<NotificationEvent>().Publish(message);
         }
 
         public abstract void Start();

@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.VW.InverterDriver;
+﻿using Ferretto.VW.InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 
 namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
@@ -9,10 +8,15 @@ namespace Ferretto.VW.MAS_InverterDriver.ActionBlocks
         #region Fields
 
         private float acc;
+
         private float dec;
+
         private PositioningDrawer drawerPositionController;
+
         private bool executeWeighting;
+
         private float speed;
+
         private int target;
 
         #endregion

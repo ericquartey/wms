@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ferretto.VW.MAS_DataLayer
+﻿namespace Ferretto.VW.MAS_DataLayer
 {
     public class FreeBlock
     {
@@ -12,9 +10,11 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public decimal Coord { get; set; }
 
-        public int DrawerId { get; set; }
-
         public int FreeBlockId { get; set; }
+
+        public LoadingUnit LoadingUnit { get; set; }
+
+        public int LoadingUnitId { get; set; }
 
         public int Priority { get; set; }
 

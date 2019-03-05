@@ -290,13 +290,49 @@
                             </wms:WmsGridControl.View>
 
                             <wms:WmsGridControl.Columns>
+                                <dxg:GridColumn Width="130*"
+                                                Header="{x:Static res:General.Position}">
+                                    <dxg:GridColumn.CellDisplayTemplate>
+                                        <DataTemplate>
+                                            <TextBlock VerticalAlignment="Center">
+                                                <TextBlock.Text>
+                                                    <MultiBinding Converter="{StaticResource SFC}">
+                                                        <Binding Source="{x:Static res:General.PositionFormat}" />
+                                                        <Binding Path="Data.XPosition"
+                                                                 TargetNullValue="" />
+                                                        <Binding Path="Data.YPosition"
+                                                                 TargetNullValue="" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </dxg:GridColumn.CellDisplayTemplate>
+                                </dxg:GridColumn>
+                                <dxg:GridColumn Width="110*"
+                                                Header="{x:Static res:General.Dimension}">
+                                    <dxg:GridColumn.CellDisplayTemplate>
+                                        <DataTemplate>
+                                            <TextBlock VerticalAlignment="Center">
+                                                <TextBlock.Text>
+                                                    <MultiBinding Converter="{StaticResource SFC}">
+                                                        <Binding Source="{x:Static res:General.DimensionFormat}" />
+                                                        <Binding Path="Data.Width"
+                                                                 TargetNullValue="" />
+                                                        <Binding Path="Data.Height"
+                                                                 TargetNullValue="" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </dxg:GridColumn.CellDisplayTemplate>
+                                </dxg:GridColumn>
                                 <dxg:GridColumn Width="100*"
                                                 FieldName="ItemCode" />
                                 <dxg:GridColumn Width="280*"
                                                 FieldName="ItemDescription" />
-                                <dxg:GridColumn Width="100*"
+                                <dxg:GridColumn Width="90*"
                                                 FieldName="Sub1" />
-                                <dxg:GridColumn Width="100*"
+                                <dxg:GridColumn Width="90*"
                                                 FieldName="Sub2" />
                                 <dxg:GridColumn Width="180*"
                                                 FieldName="Lot" />

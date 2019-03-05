@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
 using Microsoft.AspNetCore.SignalR;
@@ -19,13 +19,15 @@ namespace Ferretto.VW.MAS_AutomationService
     {
         #region Fields
 
+        private readonly Task commadReceiveTask;
+
         private readonly IEventAggregator eventAggregator;
 
         private readonly IHubContext<InstallationHub, IInstallationHub> hub;
 
-        private readonly ConcurrentQueue<CommandMessage> messageQueue;
+        private readonly BlockingConcurrentQueue<CommandMessage> messageQueue;
 
-        private readonly ManualResetEventSlim messageReceived;
+        private CancellationToken stoppingToken;
 
         #endregion
 
@@ -38,6 +40,9 @@ namespace Ferretto.VW.MAS_AutomationService
 
             this.messageReceived = new ManualResetEventSlim(false);
             this.messageQueue = new ConcurrentQueue<CommandMessage>();
+            this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
+
+            this.commadReceiveTask = new Task(() => CommandReceiveTaskFunction());
 
             this.InitializeMethodSubscription();
             this.StartTestCycles();
@@ -84,30 +89,37 @@ namespace Ferretto.VW.MAS_AutomationService
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            await Task.Run(() => this.AutomationServiceTaskFunction(stoppingToken), stoppingToken);
+            this.stoppingToken = stoppingToken;
+
+            try
+            {
+                this.commadReceiveTask.Start();
+            }
+            catch (Exception ex)
+            {
+                //TODO define custom Exception
+                throw new Exception($"Exception: {ex.Message} while starting service threads", ex);
+            }
         }
 
-        private Task AutomationServiceTaskFunction(CancellationToken stoppingToken)
+        private Task CommandReceiveTaskFunction()
         {
             do
             {
+                CommandMessage receivedMessage;
                 try
                 {
-                    this.messageReceived.Wait(Timeout.Infinite, stoppingToken);
+                    this.messageQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
                 }
                 catch (OperationCanceledException ex)
                 {
                     return Task.FromException(ex);
                 }
-
-                this.messageReceived.Reset();
-
-                while (this.messageQueue.TryDequeue(out var receivedMessage))
-                    switch (receivedMessage.Type)
-                    {
-                        case MessageType.AddMission:
-                            this.ProcessAddMissionMessage(receivedMessage);
-                            break;
+                switch (receivedMessage.Type)
+                {
+                    case MessageType.AddMission:
+                        this.ProcessAddMissionMessage(receivedMessage);
+                        break;
 
                         case MessageType.HorizontalHoming:
                             break;

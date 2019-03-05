@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Messages;
+﻿using Ferretto.VW.Common_Utils.Messages;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines
 {
@@ -19,11 +18,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Methods
 
-        public abstract void MakeOperation();
+        public abstract void SendCommandMessage(CommandMessage message);
 
-        public abstract void NotifyMessage(CommandMessage message);
-
-        public abstract void Stop();
+        public abstract void SendNotificationMessage(NotificationMessage message);
 
         #endregion
     }

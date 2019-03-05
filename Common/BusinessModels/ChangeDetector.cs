@@ -8,7 +8,7 @@ using System.Reflection;
 namespace Ferretto.Common.BusinessModels
 {
     public class ChangeDetector<T> : IDisposable
-        where T : class, ICloneable, INotifyPropertyChanged
+        where T : BusinessObject, ICloneable, INotifyPropertyChanged
     {
         #region Fields
 
@@ -63,7 +63,7 @@ namespace Ferretto.Common.BusinessModels
 
         public void TakeSnapshot(T newInstance)
         {
-            if (this.instance != null && !this.instance.Equals(newInstance))
+            if (this.instance != null)
             {
                 this.instance.PropertyChanged -= this.Instance_PropertyChanged;
             }
@@ -73,49 +73,27 @@ namespace Ferretto.Common.BusinessModels
             this.validRequiredProperties.Clear();
             this.IsModified = false;
 
-            this.totalRequired = this.instance.GetType()
-                .GetProperties().Count(p => p.CustomAttributes.Any(a => a.AttributeType == typeof(RequiredAttribute)));
+            if (newInstance == null)
+            {
+                return;
+            }
 
             var instanceValidRequiredProperties = this.instance.GetType()
                 .GetProperties().Where(
                     p => p.CustomAttributes.Any(
                              a => a.AttributeType == typeof(RequiredAttribute))
-                         && !HasEmptyValue(p, this.instance)).ToArray();
+                         && !this.instance.HasEmptyValue(p)).ToArray();
 
             foreach (var validRequiredProperty in instanceValidRequiredProperties)
             {
                 this.validRequiredProperties.Add(validRequiredProperty.Name);
             }
 
-            if (newInstance == null)
-            {
-                return;
-            }
+            this.totalRequired = this.instance.GetType().GetProperties()
+                .Count(p => p.CustomAttributes.Any(a => a.AttributeType == typeof(RequiredAttribute)));
 
             newInstance.PropertyChanged += this.Instance_PropertyChanged;
             this.snapshot = newInstance.Clone() as T;
-        }
-
-        private static bool HasEmptyValue(PropertyInfo propertyInfo, T model)
-        {
-            if (propertyInfo == null)
-            {
-                return true;
-            }
-
-            var propertyType = propertyInfo.PropertyType;
-            var propertyValue = propertyInfo.GetValue(model);
-            if (propertyType.IsEnum)
-            {
-                return propertyValue == null || (int)propertyValue == 0;
-            }
-
-            if (propertyType == typeof(DateTime))
-            {
-                return propertyValue == null || (DateTime)propertyValue == DateTime.MinValue;
-            }
-
-            return propertyInfo.GetValue(model) == null;
         }
 
         private static bool IsValueChanged(PropertyInfo propertyInfo, T originalModel, T actualModel)
@@ -146,14 +124,13 @@ namespace Ferretto.Common.BusinessModels
                 {
                     this.modifiedProperties.Add(e.PropertyName);
                 }
-
-                this.UpdateValidRequiredProperties(propertyInfo, this.instance);
             }
             else if (isPresent)
             {
                 this.modifiedProperties.Remove(e.PropertyName);
             }
 
+            this.UpdateValidRequiredProperties(propertyInfo, this.instance);
             this.IsModified = this.modifiedProperties.Count > 0;
             this.IsRequiredValid = this.validRequiredProperties.Count == this.totalRequired;
         }
@@ -168,7 +145,7 @@ namespace Ferretto.Common.BusinessModels
 
             var propertyName = propertyInfo.Name;
             var isPresent = this.validRequiredProperties.Contains(propertyName);
-            if (HasEmptyValue(propertyInfo, model))
+            if (model.HasEmptyValue(propertyInfo))
             {
                 if (isPresent)
                 {

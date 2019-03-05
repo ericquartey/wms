@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.Common_Utils.Utilities;
+using Ferretto.VW.MAS_FiniteStateMachines.Homing;
 using Ferretto.VW.MAS_FiniteStateMachines.Mission;
-using Ferretto.VW.MAS_FiniteStateMachines.Positioning;
-using Ferretto.VW.MAS_FiniteStateMachines.VerticalHoming;
-using Ferretto.VW.MAS_InverterDriver;
-using Ferretto.VW.MAS_IODriver;
 using Microsoft.Extensions.Hosting;
 using Prism.Events;
 
@@ -20,181 +17,136 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
     {
         #region Fields
 
-        private readonly INewInverterDriver driver;
+        private readonly Task commadReceiveTask;
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly ConcurrentQueue<CommandMessage> messageQueue;
+        private readonly BlockingConcurrentQueue<CommandMessage> messageQueue;
 
-        private readonly ManualResetEventSlim messageReceived;
+        private readonly Task messageReceiveTask;
 
-        private readonly INewRemoteIODriver remoteIODriver;
-
-        private readonly StateMachineVerticalPositioning verticalPositioning;
+        private readonly BlockingConcurrentQueue<NotificationMessage> notifyQueue;
 
         private IStateMachine currentStateMachine;
+
+        private CancellationToken stoppingToken;
 
         #endregion
 
         #region Constructors
 
-        public FiniteStateMachines(INewInverterDriver driver, INewRemoteIODriver remoteIODriver,
-            IEventAggregator eventAggregator)
+        public FiniteStateMachines(IEventAggregator eventAggregator)
         {
-            this.driver = driver;
-            this.remoteIODriver = remoteIODriver;
             this.eventAggregator = eventAggregator;
 
-            this.messageReceived = new ManualResetEventSlim(false);
+            this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
+            this.notifyQueue = new BlockingConcurrentQueue<NotificationMessage>();
 
-            this.messageQueue = new ConcurrentQueue<CommandMessage>();
-
-            var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            commandEvent.Subscribe(this.DoAction);
+            this.commadReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
+            this.messageReceiveTask = new Task(async () => await this.MessageReceiveData());
 
             var machineManagerMessagEvent = this.eventAggregator.GetEvent<CommandEvent>();
             machineManagerMessagEvent.Subscribe(message =>
                 {
                     this.messageQueue.Enqueue(message);
-                    this.messageReceived.Set();
                 },
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Destination == MessageActor.FiniteStateMachines);
 
-            this.StateMachineHoming = new StateMachineHoming(this.driver, this.remoteIODriver, this.eventAggregator);
-            this.StateMachineVerticalHoming = new StateMachineVerticalHoming(this.driver, this.eventAggregator);
-            this.verticalPositioning = new StateMachineVerticalPositioning(this.driver, this.eventAggregator);
+            var notificationMessageEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            notificationMessageEvent.Subscribe(message =>
+                {
+                    this.notifyQueue.Enqueue(message);
+                },
+                ThreadOption.PublisherThread,
+                false,
+                message => message.Destination == MessageActor.FiniteStateMachines || message.Destination == MessageActor.Any);
         }
-
-        #endregion
-
-        #region Properties
-
-        public StateMachineHoming StateMachineHoming { get; }
-
-        public StateMachineVerticalHoming StateMachineVerticalHoming { get; }
 
         #endregion
 
         #region Methods
 
-        public void Destroy()
-        {
-            try
-            {
-                this.driver.Destroy();
-            }
-            catch (ArgumentNullException exc)
-            {
-                Debug.WriteLine("The inverter driver does not exist.");
-                throw new ArgumentNullException("The inverter driver does not exist.", exc);
-            }
-            catch (Exception exc)
-            {
-                Debug.WriteLine("Invalid operation.");
-                throw new Exception("Invalid operation", exc);
-            }
-        }
-
-        public void DoAction(CommandMessage action)
-        {
-            switch (action.Type)
-            {
-                case MessageType.Homing:
-                    {
-                        if (null == this.StateMachineHoming) throw new ArgumentNullException();
-
-                        this.StateMachineHoming.Start();
-                        break;
-                    }
-
-                case MessageType.Stop:
-                    {
-                        if (null == this.StateMachineHoming) throw new ArgumentNullException();
-
-                        this.StateMachineHoming.Stop();
-                        break;
-                    }
-
-                case MessageType.ExecuteVerticalPositioning:
-                    {
-                        if (null == this.verticalPositioning) throw new ArgumentNullException();
-
-                        this.verticalPositioning.Start();
-                        break;
-                    }
-
-                case MessageType.ExecuteStopVerticalPositioning:
-                    {
-                        if (null == this.verticalPositioning) throw new ArgumentNullException();
-
-                        this.verticalPositioning.Stop();
-                        break;
-                    }
-            }
-        }
-
-        public void DoHoming()
-        {
-            if (null == this.StateMachineHoming) throw new ArgumentNullException();
-
-            this.StateMachineHoming.Start();
-        }
-
-        public void DoVerticalHoming()
-        {
-            if (null == this.StateMachineVerticalHoming) throw new ArgumentNullException();
-
-            this.StateMachineVerticalHoming.Start();
-        }
-
-        public new Task StopAsync(CancellationToken stoppingToken)
-        {
-            var returnValue = base.StopAsync(stoppingToken);
-
-            return returnValue;
-        }
-
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            await Task.Run(() => this.FiniteStateMachineTaskFUnction(stoppingToken), stoppingToken);
+            this.stoppingToken = stoppingToken;
+
+            try
+            {
+                this.commadReceiveTask.Start();
+            }
+            catch (Exception ex)
+            {
+                //TODO define custom Exception
+                throw new Exception($"Exception: {ex.Message} while starting service threads", ex);
+            }
+
+            await Task.CompletedTask;
         }
 
-        private Task FiniteStateMachineTaskFUnction(CancellationToken stoppingToken)
+        private Task CommandReceiveTaskFunction()
         {
             do
             {
+                CommandMessage receivedMessage;
                 try
                 {
-                    this.messageReceived.Wait(Timeout.Infinite, stoppingToken);
+                    this.messageQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
                 }
                 catch (OperationCanceledException ex)
                 {
                     return Task.FromException(ex);
                 }
 
-                this.messageReceived.Reset();
-
-                while (this.messageQueue.TryDequeue(out var receivedMessage))
+                switch (receivedMessage.Type)
                 {
-                    switch (receivedMessage.Type)
-                    {
-                        case MessageType.AddMission:
-                            this.ProcessAddMissionMessage(receivedMessage);
-                            break;
+                    case MessageType.AddMission:
+                        this.ProcessAddMissionMessage(receivedMessage);
+                        break;
 
-                        case MessageType.HorizontalHoming:
-                            break;
+                    //TODO to be removed
+                    case MessageType.HorizontalHoming:
+                        break;
 
-                        case MessageType.Stop:
-                            this.ProcessStopActionMessage(receivedMessage);
-                            break;
-                    }
+                    case MessageType.Homing:
+                        this.ProcessHomingMessage(receivedMessage);
+                        break;
 
-                    this.currentStateMachine.NotifyMessage(receivedMessage);
+                    case MessageType.StopHoming:
+                        this.ProcessStopHomingMessage(receivedMessage);
+                        break;
+
+                    case MessageType.StopAction:
+                        this.ProcessStopActionMessage(receivedMessage);
+                        break;
                 }
-            } while (!stoppingToken.IsCancellationRequested);
+
+                //TEMP this.currentStateMachine.ProcessCommandMessage(receivedMessage);
+            } while (!this.stoppingToken.IsCancellationRequested);
+
+            return Task.CompletedTask;
+        }
+
+        private Task MessageReceiveData()
+        {
+            do
+            {
+                NotificationMessage receivedMessage;
+                try
+                {
+                    this.notifyQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                }
+                catch (OperationCanceledException)
+                {
+                    return Task.CompletedTask;
+                }
+
+                if (this.currentStateMachine != null)
+                {
+                    this.currentStateMachine.ProcessNotificationMessage(receivedMessage);
+                }
+            } while (!this.stoppingToken.IsCancellationRequested);
 
             return Task.CompletedTask;
         }
@@ -208,8 +160,24 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
             //TODO apply Finite State Machine Business Logic to the message
             this.currentStateMachine = new MissionStateMachine(this.eventAggregator);
-
             this.currentStateMachine.Start();
+        }
+
+        private void ProcessHomingMessage(CommandMessage message)
+        {
+            if (this.currentStateMachine != null)
+            {
+                //TODO throw concurrent action exception
+            }
+
+            if (message.Data is ICalibrateMessageData data)
+            {
+                //TODO handle the calibration data and pass to the calibrate states machine
+                //TODO apply Finite State Machine Business Logic to the message
+                this.currentStateMachine = new HomingStateMachine(this.eventAggregator, data);
+
+                this.currentStateMachine.Start();
+            }
         }
 
         private void ProcessStopActionMessage(CommandMessage receivedMessage)
@@ -218,6 +186,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             {
                 //TODO throw missing state machine exception
             }
+        }
+
+        private void ProcessStopHomingMessage(CommandMessage receivedMessage)
+        {
+            if (this.currentStateMachine == null)
+            {
+                //TODO throw missing state machine exception
+            }
+
+            this.currentStateMachine.ProcessCommandMessage(receivedMessage);
         }
 
         #endregion

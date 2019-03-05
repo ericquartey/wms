@@ -8,10 +8,6 @@
 
         HomingFastSpeedParam = 1132,
 
-        HomingModeParam = 1130,
-
-        HomingOffsetParam = 1131,
-
         HomingAcceleration = 1134,
 
         PositionAccelerationParam = 1457,
@@ -29,9 +25,5 @@
         ActualPositionShaft = 1108,
 
         StatusDigitalSignals = 250,
-
-        ControlModeParam = 412,
-
-        AnalogIcParam = 457
     }
 }

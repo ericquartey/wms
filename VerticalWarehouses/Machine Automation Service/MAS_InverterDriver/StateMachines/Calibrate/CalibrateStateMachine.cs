@@ -1,5 +1,4 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.Calibrate;
 
@@ -24,7 +23,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         {
             this.axisToCalibrate = axisToCalibrate;
             this.inverterCommandQueue = inverterCommandQueue;
-            this.priorityInverterCommandQueue = priorityInverterCommandQueue;
+            //this.priorityInverterCommandQueue = priorityInverterCommandQueue;
         }
 
         #endregion

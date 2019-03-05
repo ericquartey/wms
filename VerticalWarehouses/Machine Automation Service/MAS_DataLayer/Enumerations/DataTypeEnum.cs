@@ -8,6 +8,6 @@
 
         stringType,
 
-        IPAddress
+        IPAddressType
     }
 }

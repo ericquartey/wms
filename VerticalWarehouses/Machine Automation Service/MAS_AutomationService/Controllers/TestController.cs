@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
@@ -60,9 +59,15 @@ namespace Ferretto.VW.MAS_AutomationService
         [HttpGet("HomingTest")]
         public void ExecuteHoming()
         {
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Execute Homing",
-                MessageActor.FiniteStateMachines, MessageActor.AutomationService, MessageType.Homing,
-                MessageVerbosity.Info));
+            var calibrateData = new CalibrateMessageData(Axis.Vertical);
+
+            var message = new CommandMessage(calibrateData,
+                "Execute Homing",
+                MessageActor.FiniteStateMachines,
+                MessageActor.AutomationService,
+                MessageType.Homing,
+                MessageVerbosity.Info);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
 
         [HttpGet("HomingStop")]
