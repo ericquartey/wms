@@ -133,6 +133,114 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpBCTRActualHeight.
+        /// </summary>
+        public static string HelpBCTRActualHeight {
+            get {
+                return ResourceManager.GetString("HelpBCTRActualHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpBCTRAdjust.
+        /// </summary>
+        public static string HelpBCTRAdjust {
+            get {
+                return ResourceManager.GetString("HelpBCTRAdjust", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpBCTRCorrectionValue.
+        /// </summary>
+        public static string HelpBCTRCorrectionValue {
+            get {
+                return ResourceManager.GetString("HelpBCTRCorrectionValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpBCTRDescription.
+        /// </summary>
+        public static string HelpBCTRDescription {
+            get {
+                return ResourceManager.GetString("HelpBCTRDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpBCTRMoveToPosition.
+        /// </summary>
+        public static string HelpBCTRMoveToPosition {
+            get {
+                return ResourceManager.GetString("HelpBCTRMoveToPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpBCTRNextPosition.
+        /// </summary>
+        public static string HelpBCTRNextPosition {
+            get {
+                return ResourceManager.GetString("HelpBCTRNextPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpBCTRPositionHeight.
+        /// </summary>
+        public static string HelpBCTRPositionHeight {
+            get {
+                return ResourceManager.GetString("HelpBCTRPositionHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpBCTRSelectedBay.
+        /// </summary>
+        public static string HelpBCTRSelectedBay {
+            get {
+                return ResourceManager.GetString("HelpBCTRSelectedBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpBCTRSelectedPosition.
+        /// </summary>
+        public static string HelpBCTRSelectedPosition {
+            get {
+                return ResourceManager.GetString("HelpBCTRSelectedPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpBCTRStepMeno.
+        /// </summary>
+        public static string HelpBCTRStepMeno {
+            get {
+                return ResourceManager.GetString("HelpBCTRStepMeno", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpBCTRStepPiu.
+        /// </summary>
+        public static string HelpBCTRStepPiu {
+            get {
+                return ResourceManager.GetString("HelpBCTRStepPiu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpBCTRStepValue.
+        /// </summary>
+        public static string HelpBCTRStepValue {
+            get {
+                return ResourceManager.GetString("HelpBCTRStepValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpCCVApplyCorrection.
         /// </summary>
         public static string HelpCCVApplyCorrection {

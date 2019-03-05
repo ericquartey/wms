@@ -601,4 +601,52 @@
     <value>HelpLDRStart</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpBCTRDescription" xml:space="preserve">
+    <value>HelpBCTRDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpBCTRSelectedBay" xml:space="preserve">
+    <value>HelpBCTRSelectedBay</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRSelectedPosition" xml:space="preserve">
+    <value>HelpBCTRSelectedPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRPositionHeight" xml:space="preserve">
+    <value>HelpBCTRPositionHeight</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRStepValue" xml:space="preserve">
+    <value>HelpBCTRStepValue</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRActualHeight" xml:space="preserve">
+    <value>HelpBCTRActualHeight</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRCorrectionValue" xml:space="preserve">
+    <value>HelpBCTRCorrectionValue</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRMoveToPosition" xml:space="preserve">
+    <value>HelpBCTRMoveToPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRStepPiu" xml:space="preserve">
+    <value>HelpBCTRStepPiu</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRStepMeno" xml:space="preserve">
+    <value>HelpBCTRStepMeno</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRAdjust" xml:space="preserve">
+    <value>HelpBCTRAdjust</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRNextPosition" xml:space="preserve">
+    <value>HelpBCTRNextPosition</value>
+    <comment>Nore text</comment>
+  </data>
 </root>

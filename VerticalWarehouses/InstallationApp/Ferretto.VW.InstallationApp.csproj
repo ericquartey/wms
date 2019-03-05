@@ -38,6 +38,7 @@
 
   <ItemGroup>
     <None Remove="CellsControlHelpView.xaml" />
+    <None Remove="HelpWindows\HelpBayControl.xaml" />
     <None Remove="HelpWindows\HelpBeltBurnishingView.xaml" />
     <None Remove="HelpWindows\HelpCellsPanelControl.xaml" />
     <None Remove="HelpWindows\HelpCellsSideControl.xaml" />
@@ -113,6 +114,9 @@
     </Compile>
     <Compile Update="HelpWindows\HelpLoadingDrawers.xaml.cs">
       <DependentUpon>HelpLoadingDrawers.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpBayControl.xaml.cs">
+      <DependentUpon>HelpBayControl.xaml</DependentUpon>
     </Compile>
     <Compile Update="HelpWindows\HelpVerticalOffsetCalibration.xaml.cs">
       <DependentUpon>HelpVerticalOffsetCalibration.xaml</DependentUpon>
