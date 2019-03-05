@@ -39,27 +39,8 @@ namespace Ferretto.VW.MAS_AutomationService
             this.messageReceived = new ManualResetEventSlim(false);
             this.messageQueue = new ConcurrentQueue<CommandMessage>();
 
-            var webApiMessagEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            webApiMessagEvent.Subscribe(message =>
-                {
-                    this.messageQueue.Enqueue(message);
-                    this.messageReceived.Set();
-                },
-                ThreadOption.PublisherThread,
-                false,
-                message => message.Destination == MessageActor.AutomationService);
-
-            var finiteStateMachineMessageEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            finiteStateMachineMessageEvent.Subscribe(message =>
-            {
-                if (message.Data is ISensorsChangedMessageData)
-                {
-                    this.hub.Clients.All.OnSensorsChangedToAllConnectedClients(((ISensorsChangedMessageData)message.Data).SensorsStates);
-                }
-            }, ThreadOption.PublisherThread,
-            false,
-            (message) => message.Source == MessageActor.FiniteStateMachines && message.Type == MessageType.SensorsChanged);
-            //this.TESTStartCycle();
+            this.InitializeMethodSubscription();
+            this.StartTestCycles();
         }
 
         #endregion
@@ -78,7 +59,18 @@ namespace Ferretto.VW.MAS_AutomationService
             return returnValue;
         }
 
-        public async void TESTStartCycle()
+        public async void TESTStartBoolSensorsCycle()
+        {
+            while (true)
+            {
+                var message = new bool[] { (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), };
+                Console.WriteLine(message[0].ToString() + " " + message[1].ToString() + " " + message[2].ToString() + " " + message[3].ToString());
+                await this.hub.Clients.All.OnSensorsChangedToAllConnectedClients(message);
+                await Task.Delay(1000);
+            }
+        }
+
+        public async void TESTStartStringMessageCycle()
         {
             while (true)
             {
@@ -124,6 +116,30 @@ namespace Ferretto.VW.MAS_AutomationService
             return Task.CompletedTask;
         }
 
+        private void InitializeMethodSubscription()
+        {
+            var webApiMessagEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            webApiMessagEvent.Subscribe(message =>
+            {
+                this.messageQueue.Enqueue(message);
+                this.messageReceived.Set();
+            },
+                ThreadOption.PublisherThread,
+                false,
+                message => message.Destination == MessageActor.AutomationService);
+
+            var finiteStateMachineMessageEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            finiteStateMachineMessageEvent.Subscribe(message =>
+            {
+                if (message.Data is ISensorsChangedMessageData)
+                {
+                    this.hub.Clients.All.OnSensorsChangedToAllConnectedClients(((ISensorsChangedMessageData)message.Data).SensorsStates);
+                }
+            }, ThreadOption.PublisherThread,
+            false,
+            (message) => message.Source == MessageActor.FiniteStateMachines && message.Type == MessageType.SensorsChanged);
+        }
+
         private void ProcessAddMissionMessage(CommandMessage message)
         {
             //TODO apply Automation Service Business Logic to the message
@@ -131,6 +147,12 @@ namespace Ferretto.VW.MAS_AutomationService
             message.Source = MessageActor.AutomationService;
             message.Destination = MessageActor.MissionsManager;
             this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
+        }
+
+        private async void StartTestCycles()
+        {
+            this.TESTStartBoolSensorsCycle();
+            this.TESTStartStringMessageCycle();
         }
 
         #endregion

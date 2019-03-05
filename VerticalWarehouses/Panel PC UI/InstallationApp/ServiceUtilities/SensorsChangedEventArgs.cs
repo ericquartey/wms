@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace Ferretto.VW.InstallationApp.ServiceUtilities
 {
-    public class InstallationHubEventArgs
+    public class SensorsChangedEventArgs
     {
         #region Constructors
 
-        public InstallationHubEventArgs(string message)
+        public SensorsChangedEventArgs(bool[] states)
         {
-            this.Message = message;
+            this.SensorsStates = states;
         }
 
         #endregion
 
         #region Properties
 
-        public string Message { get; set; }
+        public bool[] SensorsStates { get; set; }
 
         #endregion
     }

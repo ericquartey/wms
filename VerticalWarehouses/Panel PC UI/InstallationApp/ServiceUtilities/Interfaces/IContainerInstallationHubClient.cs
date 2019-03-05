@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces
 {
-    public interface ContainerIInstallationHubClient
+    public interface IContainerInstallationHubClient
     {
     }
 }

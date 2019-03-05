@@ -27,7 +27,7 @@ namespace Ferretto.VW.InstallationApp
 
         private string lowerBound;
 
-        private string noteString = Ferretto.VW.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
+        private string noteString = VW.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
 
         private string offset;
 
@@ -99,8 +99,8 @@ namespace Ferretto.VW.InstallationApp
 
         public async void SubscribeMethodToEvent()
         {
-            this.installationHubClient = (InstallationHubClient)this.container.Resolve<ContainerIInstallationHubClient>();
-            this.installationHubClient.ReceivedMessageToAllConnectedClients += this.UpdateNoteString;
+            this.installationHubClient = (InstallationHubClient)this.container.Resolve<IContainerInstallationHubClient>();
+            this.installationHubClient.ReceivedMessage += this.UpdateNoteString;
         }
 
         public async void UnSubscribeMethodFromEvent()
@@ -153,7 +153,7 @@ namespace Ferretto.VW.InstallationApp
                 await client.GetStringAsync("http://localhost:5000/api/Installation/StopCommand");
                 this.IsStartButtonActive = true;
                 this.IsStopButtonActive = false;
-                this.NoteString = Ferretto.VW.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
+                this.NoteString = VW.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
             }
             catch (Exception)
             {

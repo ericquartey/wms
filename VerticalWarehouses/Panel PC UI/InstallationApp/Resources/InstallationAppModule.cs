@@ -55,7 +55,7 @@ namespace Ferretto.VW.InstallationApp
             var helpMainWindowInstance = new HelpMainWindow(container.Resolve<IEventAggregator>());
             var installationHubClientInstance = new InstallationHubClient("http://localhost:5000", "/installation-endpoint");
 
-            this.container.RegisterInstance<ContainerIInstallationHubClient>(installationHubClientInstance);
+            this.container.RegisterInstance<IContainerInstallationHubClient>(installationHubClientInstance);
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
             this.container.RegisterInstance<IBeltBurnishingViewModel>(beltBurnishingVMInstance);
             this.container.RegisterInstance<ICellsControlViewModel>(cellsControlVMInstance);
@@ -101,6 +101,7 @@ namespace Ferretto.VW.InstallationApp
             mainWindowNavigationButtonsVMInstance.InitializeViewModel(this.container);
             weightControlVMInstance.InitializeViewModel(this.container);
             verticalAxisCalibrationVMInstance.InitializeViewModel(this.container);
+            sSBaysVMInstance.InitializeViewModel(this.container);
         }
 
         #endregion
