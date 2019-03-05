@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
@@ -72,35 +71,22 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(422)]
-        public async Task<ActionResult> ExecuteAsync(Scheduler.Core.ListExecutionRequest request)
+        public async Task<ActionResult> ExecuteAsync(Scheduler.Core.Models.ListExecutionRequest request)
         {
             if (request == null)
             {
                 return this.BadRequest();
             }
 
-            if (!this.ModelState.IsValid)
+            var acceptedRequests = await this.itemListSchedulerProvider.PrepareForExecutionAsync(request);
+            if (acceptedRequests == null)
             {
-                return this.BadRequest(this.ModelState);
+                this.logger.LogWarning($"Request of execution for list (id={request.ListId}) could not be processed.");
+
+                return this.UnprocessableEntity(this.ModelState);
             }
 
-            try
-            {
-                var acceptedRequest = await this.itemListSchedulerProvider.PrepareForExecutionAsync(request);
-                if (acceptedRequest == null)
-                {
-                    this.logger.LogWarning($"Request of execution for list (id={request.ListId}) could not be processed.");
-
-                    return this.UnprocessableEntity(this.ModelState);
-                }
-
-                this.logger.LogInformation($"Request of execution for list (id={request.ListId}) was accepted.");
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, $"An error occurred while processing the execution request for list (id={request.ListId}).");
-                return this.BadRequest(ex.Message);
-            }
+            this.logger.LogInformation($"Request of execution for list (id={request.ListId}) was accepted.");
 
             return this.Ok();
         }
