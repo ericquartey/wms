@@ -48,6 +48,10 @@
 
         SensorsChanged,
 
-        Movement
+        Movement,
+
+        SwitchAxis,
+
+        StopAction
     }
 }

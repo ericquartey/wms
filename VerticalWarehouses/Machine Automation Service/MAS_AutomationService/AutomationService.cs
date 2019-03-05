@@ -27,6 +27,8 @@ namespace Ferretto.VW.MAS_AutomationService
 
         private readonly BlockingConcurrentQueue<CommandMessage> messageQueue;
 
+        private ManualResetEventSlim messageReceived;
+
         private CancellationToken stoppingToken;
 
         #endregion
@@ -39,7 +41,7 @@ namespace Ferretto.VW.MAS_AutomationService
             this.hub = hub;
 
             this.messageReceived = new ManualResetEventSlim(false);
-            this.messageQueue = new ConcurrentQueue<CommandMessage>();
+            this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
             this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
 
             this.commadReceiveTask = new Task(() => CommandReceiveTaskFunction());
@@ -121,9 +123,9 @@ namespace Ferretto.VW.MAS_AutomationService
                         this.ProcessAddMissionMessage(receivedMessage);
                         break;
 
-                        case MessageType.HorizontalHoming:
-                            break;
-                    }
+                    case MessageType.HorizontalHoming:
+                        break;
+                }
             } while (!stoppingToken.IsCancellationRequested);
             return Task.CompletedTask;
         }
