@@ -69,49 +69,49 @@
                 </Grid.ColumnDefinitions>
 
                 <wms:ComboBox x:Name="SelectedArea"
+                              wms:ShowTitle.Show="True"
                               AllowNullInput="False"
                               DisplayMember="Name"
                               EditValue="{Binding ItemWithdraw.AreaId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               IsTextEditable="False"
-                              ItemsSource="{Binding ItemWithdraw.AreaChoices}"
-                              wms:ShowTitle.Show="True"/>
+                              ItemsSource="{Binding ItemWithdraw.AreaChoices}" />
                 <wms:ComboBox x:Name="SelectedBay"
                               Grid.Column="2"
+                              wms:ShowTitle.Show="True"
                               AllowNullInput="False"
                               EditValue="{Binding ItemWithdraw.BayId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               IsTextEditable="False"
                               ItemsSource="{Binding ItemWithdraw.BayChoices}"
-                              Visibility="{Binding ElementName=SelectedArea, Path=SelectedItem, Converter={StaticResource RTVC}}"
-                              wms:ShowTitle.Show="True"/>
+                              Visibility="{Binding ElementName=SelectedArea, Path=SelectedItem, Converter={StaticResource RTVHC}}" />
                 <wms:TextBox Grid.Row="1"
+                             wms:ShowTitle.Show="True"
                              EditValue="{Binding ItemWithdraw.Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}"
-                             wms:ShowTitle.Show="True"/>
+                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
                 <wms:TextBox Grid.Row="1"
                              Grid.Column="2"
+                             wms:ShowTitle.Show="True"
                              EditValue="{Binding ItemWithdraw.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}"
-                             wms:ShowTitle.Show="True"/>
+                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
                 <wms:TextBox Grid.Row="2"
+                             wms:ShowTitle.Show="True"
                              EditValue="{Binding ItemWithdraw.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}"
-                             wms:ShowTitle.Show="True"/>
+                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
                 <wms:TextBox Grid.Row="2"
                              Grid.Column="2"
+                             wms:ShowTitle.Show="True"
                              EditValue="{Binding ItemWithdraw.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}"
-                             wms:ShowTitle.Show="True"/>
+                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
                 <wms:InfoText Grid.Row="3"
+                              wms:ShowTitle.Show="True"
                               Content="{Binding ItemWithdraw.ItemDetails.TotalAvailable}"
-                              Visibility="{Binding ElementName=SelectedBay, Path=SelectedItem, Converter={StaticResource RTVC}}"
-                              wms:ShowTitle.Show="True"/>
+                              Visibility="{Binding ElementName=SelectedBay, Path=SelectedItem, Converter={StaticResource RTVHC}}" />
                 <wms:SpinEdit Grid.Row="3"
                               Grid.Column="2"
+                              wms:ShowTitle.Show="True"
                               AllowNullInput="False"
                               EditValue="{Binding ItemWithdraw.Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               MinValue="1"
-                              Visibility="{Binding ElementName=SelectedBay, Path=SelectedItem, Converter={StaticResource RTVC}}"
-                              wms:ShowTitle.Show="True"/>
+                              Visibility="{Binding ElementName=SelectedBay, Path=SelectedItem, Converter={StaticResource RTVHC}}" />
             </Grid>
         </GroupBox>
 
