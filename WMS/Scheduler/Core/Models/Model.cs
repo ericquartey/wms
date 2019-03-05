@@ -1,7 +1,7 @@
 ﻿using System;
 using Ferretto.Common.BLL.Interfaces.Base;
 
-namespace Ferretto.WMS.Scheduler.Core
+namespace Ferretto.WMS.Scheduler.Core.Models
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Critical Code Smell",

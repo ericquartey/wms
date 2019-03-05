@@ -1,12 +1,13 @@
 ﻿using System;
 
-namespace Ferretto.WMS.Scheduler.Core
+namespace Ferretto.WMS.Scheduler.Core.Models
 {
     public class SchedulerRequest : Model
     {
         #region Fields
 
         private int dispatchedQuantity;
+
         private int requestedQuantity;
 
         #endregion
