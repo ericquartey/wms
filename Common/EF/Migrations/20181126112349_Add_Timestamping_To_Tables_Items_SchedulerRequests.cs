@@ -58,7 +58,9 @@ namespace Ferretto.Common.EF.Migrations
                 throw new System.ArgumentNullException(nameof(migrationBuilder));
             }
 
-            using (var db = new DatabaseContext())
+            var factory = new DatabaseContextFactory();
+
+            using (var db = factory.CreateDbContext(null))
             {
                 var now = DateTime.UtcNow;
 
