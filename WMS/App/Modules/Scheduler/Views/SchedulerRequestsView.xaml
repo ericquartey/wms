@@ -69,6 +69,17 @@
                 </Border>
             </dx:MeasurePixelSnapper>
         </DataTemplate>
+
+        <DataTemplate x:Key="IsInstanstBooleanCellTemplate">
+            <Grid VerticalAlignment="Center">
+                <wms:WmsIcon Width="18"
+                             Height="18"
+                             ColorizeBrush="{DynamicResource CommonSecondaryDark}"
+                             SymbolName="PairingFixed"
+                             Visibility="{Binding Path=Data.IsInstant, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+            </Grid>
+        </DataTemplate>
     </wms:WmsView.Resources>
 
     <Grid>
@@ -141,8 +152,7 @@
                                        GlyphSize="Custom">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="ItemClick">
-                                <wms:WmsTooltipViewAppear Grid="{Binding RelativeSource={RelativeSource AncestorType={x:Type Grid}}, Path=Children[1]}"
-                                                          Tooltip="Details" />
+                                <wms:WmsTooltipViewAppear Tooltip="Details" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </wms:ActionBarItem>
@@ -174,8 +184,8 @@
                             <Setter Property="Background" Value="White" />
                             <Setter Property="BorderThickness" Value="1" />
                             <Setter Property="Padding" Value="0" />
-                            <Setter Property="FontSize" Value="12" />
-                            <Setter Property="FontFamily" Value="Sergoe UI" />
+                            <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}" />
+                            <Setter Property="FontFamily" Value="{DynamicResource FontSmall}" />
                             <Setter Property="FontStyle" Value="Normal" />
                             <Setter Property="FontWeight" Value="Normal" />
                             <Setter Property="HorizontalContentAlignment" Value="Left" />
@@ -224,6 +234,7 @@
 
                         <dxg:GridColumn Width="65*"
                                         CellToolTipBinding="{Binding}"
+                                        FieldName="Details"
                                         Header="{x:Static res:General.Details}">
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
@@ -330,7 +341,7 @@
                         <dxg:GridColumn Width="140*"
                                         FieldName="ListRowDescription" />
                         <dxg:GridColumn Width="70*"
-                                        CellDisplayTemplate="{DynamicResource BooleanCellTemplate}"
+                                        CellDisplayTemplate="{StaticResource IsInstanstBooleanCellTemplate}"
                                         FieldName="IsInstant" />
                         <dxg:GridColumn Width="90*"
                                         FieldName="OperationType" />
@@ -339,10 +350,6 @@
                                         FieldName="RequestedQuantity" />
                     </wms:WmsGridControl.Columns>
 
-                    <wms:WmsGridControl.SortInfo>
-                        <dxg:GridSortInfo FieldName="Priority"
-                                          SortOrder="Descending" />
-                    </wms:WmsGridControl.SortInfo>
 
                 </wms:WmsGridControl>
             </Grid>
