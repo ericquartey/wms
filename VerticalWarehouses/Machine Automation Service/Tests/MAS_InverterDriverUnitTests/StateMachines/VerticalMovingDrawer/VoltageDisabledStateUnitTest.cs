@@ -4,6 +4,7 @@ using Ferretto.VW.MAS_InverterDriver.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalMovingDrawer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+
 namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
 {
     [TestClass]
@@ -19,8 +20,6 @@ namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
         #region Methods
 
         [TestMethod]
-        [TestCategory("Constructors")]
-
         public void IsNotNullVoltageDisabledState()
         {
             var parentStateMachineMock = new Mock<IInverterStateMachine>();
@@ -33,8 +32,6 @@ namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
 
         /* TEMP
         [TestMethod]
-        [TestCategory("NotifyMessage")]
-
         public void IsTrueNotifyMessage()
         {
             var parentStateMachineMock = new Mock<IInverterStateMachine>();
@@ -53,7 +50,6 @@ namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
                     Assert.IsTrue(operationModeState);
                 }
         }
-
        */
         #endregion
     }
