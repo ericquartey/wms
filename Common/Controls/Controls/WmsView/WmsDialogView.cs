@@ -82,7 +82,7 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        public static void ShowDialog(INavigableView registeredView)
+        public static void ShowDialog(INavigableView registeredView, bool iNoModal = false)
         {
             if (!(registeredView is WmsDialogView wmsDialog))
             {
@@ -115,7 +115,14 @@ namespace Ferretto.Common.Controls
                 wmsDialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             }
 
-            wmsDialog.ShowDialog();
+            if (iNoModal)
+            {
+                wmsDialog.Show();
+            }
+            else
+            {
+                wmsDialog.ShowDialog();
+            }
         }
 
         public void Disappear()
