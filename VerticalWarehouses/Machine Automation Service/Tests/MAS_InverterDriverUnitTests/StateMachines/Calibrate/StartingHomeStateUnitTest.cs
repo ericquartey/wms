@@ -1,14 +1,14 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.Calibrate;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace MAS_InverterDriverUnitTests.StateMachines.HorizontalMovingDrawer
+namespace MAS_InverterDriverUnitTests.StateMachines.Calibrate
 {
     [TestClass]
-    public class IdleStateUnitTest
+    public class StartingHomeStateUnitTest
     {
         #region Fields
 
@@ -20,39 +20,37 @@ namespace MAS_InverterDriverUnitTests.StateMachines.HorizontalMovingDrawer
         #region Methods
 
         [TestMethod]
-        public void IsNotNullIdleState()
+        public void IsNotNullStartingHomeState()
         {
             var parentStateMachineMock = new Mock<IInverterStateMachine>();
-            var IdleState = new IdleState(parentStateMachineMock.Object, Axis.Horizontal);
+            var startingHomeState = new StartingHomeState(parentStateMachineMock.Object, Axis.Both);
             var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue);
 
-            Assert.IsNotNull(IdleState);
+            Assert.IsNotNull(startingHomeState);
             Assert.IsNotNull(inverterMessage);
         }
 
-        /* TEMP
+        /*TEMP
         [TestMethod]
         public void IsTrueNotifyMessage()
         {
             var parentStateMachineMock = new Mock<IInverterStateMachine>();
 
-            var errorState = new ErrorState(parentStateMachineMock.Object, Axis.Horizontal);
-            var voltageDisabledState = new VoltageDisabledState(parentStateMachineMock.Object, Axis.Horizontal);
-            
+            var errorState = new ErrorState(parentStateMachineMock.Object, Axis.Both);
+            var endState = new EndState(parentStateMachineMock.Object, Axis.Both);
+
             if (message.IsError)
             {
                 Assert.IsTrue(errorState);
             }
 
-            if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)           
+            if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
                 if (message.ShortPayload == this.parameterValue)
                 {
-                   Assert.IsTrue(voltageDisabledState);
+                    Assert.IsTrue(endState);
                 }
-        }
-
-        */
-
+        }     
+       */
         #endregion
     }
 }
