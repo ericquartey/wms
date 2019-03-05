@@ -182,10 +182,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
         public async Task<IEnumerable<SchedulerRequest>> GetRequestsToProcessAsync()
         {
             return await this.dataContext.SchedulerRequests
-               .Include(r => r.List)
-               .Include(r => r.ListRow)
-               .Include(r => r.Bay)
-               .ThenInclude(b => b.Missions)
                .Where(r =>
                     r.BayId.HasValue
                     &&
