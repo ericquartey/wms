@@ -4,6 +4,7 @@ using Ferretto.VW.Common_Utils.Enumerations;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.DTOs;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
@@ -34,11 +35,12 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Execute Homing Command", MessageActor.WebAPI, MessageActor.FiniteStateMachines, MessageType.Homing));
         }
 
-        [HttpPost("ExecuteMovement")]
-        public void ExecuteRelativeHorizontalMovement([FromBody] decimal mm, [FromBody] int axis, [FromBody] int movementType, [FromBody] uint speedPercentage)
+        [HttpPost]
+        [Route("ExecuteMovement")]
+        public void ExecuteMovement([FromBody]MovementMessageDataDTO data)
         {
-            var data = new MovementMessageData(mm, axis, movementType, speedPercentage);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(data, "Execute Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebAPI, MessageType.Movement));
+            var messageData = new MovementMessageData(data);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebAPI, MessageType.Movement));
         }
 
         [HttpGet("StopCommand")]

@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS_AutomationService
             }, ThreadOption.PublisherThread,
             false,
             (message) => message.Source == MessageActor.FiniteStateMachines && message.Type == MessageType.SensorsChanged);
-            this.TESTStartCycle();
+            //this.TESTStartCycle();
         }
 
         #endregion

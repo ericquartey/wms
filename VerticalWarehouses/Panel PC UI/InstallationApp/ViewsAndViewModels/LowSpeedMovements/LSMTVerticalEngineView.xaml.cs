@@ -1,15 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Ferretto.VW.InstallationApp.Resources.Enumerables;
+using Ferretto.VW.Common_Utils.DTOs;
 using Newtonsoft.Json;
+using System.Configuration;
 
 namespace Ferretto.VW.InstallationApp
 {
     public partial class LSMTVerticalEngineView : UserControl
     {
+        #region Fields
+
+        private string contentType = ConfigurationManager.AppSettings["HttpPostContentTypeJSON"];
+
+        private string executeMovementPath = ConfigurationManager.AppSettings["InstallationExecuteMovement"];
+
+        private string installationUrl = ConfigurationManager.AppSettings["InstallationController"];
+
+        private string stopCommandPath = ConfigurationManager.AppSettings["InstallationStopCommand"];
+
+        #endregion
+
         #region Constructors
 
         public LSMTVerticalEngineView()
@@ -23,33 +36,27 @@ namespace Ferretto.VW.InstallationApp
 
         private async void MoveDownVerticalAxisHandler(object sender, MouseButtonEventArgs e)
         {
-            var values = new Dictionary<string, string>
-            {
-                { "mm", JsonConvert.SerializeObject(-100m) },
-                { "axis", JsonConvert.SerializeObject(1) },
-                { "movementType", JsonConvert.SerializeObject(0) },
-                { "speedPercentage", JsonConvert.SerializeObject(50) }
-            };
-            var content = new FormUrlEncodedContent(values);
-            await new HttpClient().PostAsync(new Uri("http://localhost:5000/api/Installation/ExecuteMovement"), content);
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+            var messageData = new MovementMessageDataDTO(-100m, 0, 1, 50u);
+            var json = JsonConvert.SerializeObject(messageData);
+            HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
+            await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
         }
 
         private async void MoveUpVerticalAxisHandler(object sender, MouseButtonEventArgs e)
         {
-            var values = new Dictionary<string, string>
-            {
-                { "mm", JsonConvert.SerializeObject(100m) },
-                { "axis", JsonConvert.SerializeObject(1) },
-                { "movementType", JsonConvert.SerializeObject(0) },
-                { "speedPercentage", JsonConvert.SerializeObject(50u) }
-            };
-            var content = new FormUrlEncodedContent(values);
-            await new HttpClient().PostAsync(new Uri("http://localhost:5000/api/Installation/ExecuteMovement"), content);
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+            var messageData = new MovementMessageDataDTO(100m, 0, 1, 50u);
+            var json = JsonConvert.SerializeObject(messageData);
+            HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
+            await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
         }
 
-        private void StopVerticalAxisHandler(object sender, MouseButtonEventArgs e)
+        private async void StopVerticalAxisHandler(object sender, MouseButtonEventArgs e)
         {
-            new HttpClient().GetAsync("http://localhost:5000/api/Installation/StopCommand");
+            await new HttpClient().GetAsync(new Uri(string.Concat(this.installationUrl, this.stopCommandPath)));
         }
 
         #endregion
