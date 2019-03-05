@@ -1,6 +1,6 @@
 namespace Ferretto.WMS.Scheduler.Core
 {
-    public sealed class Item : BusinessObject
+    public sealed class Item : Model
     {
         #region Properties
 

@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.WMS.Scheduler.Core
 {
-    public class Bay : BusinessObject
+    public class Bay : Model
     {
         #region Properties
 

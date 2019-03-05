@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.Common.BLL.Interfaces.Base;
 
 namespace Ferretto.WMS.Scheduler.Core
 {
@@ -6,11 +7,11 @@ namespace Ferretto.WMS.Scheduler.Core
         "Critical Code Smell",
         "S3874:\"out\" and \"ref\" parameters should not be used",
         Justification = "This code nned to be refactored in the scope of data service implementation")]
-    public class BusinessObject
+    public class Model : IModel<int>
     {
         #region Constructors
 
-        protected BusinessObject()
+        protected Model()
         {
         }
 

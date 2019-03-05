@@ -2,7 +2,7 @@
 
 namespace Ferretto.WMS.Scheduler.Core
 {
-    public class Area : BusinessObject
+    public class Area : Model
     {
         #region Properties
 
