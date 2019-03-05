@@ -58,6 +58,7 @@
     <None Remove="ViewsAndViewModels\LowSpeedMovements\LSMTMainView.xaml" />
     <None Remove="ViewsAndViewModels\MainWindowBackToIAPPButtonView.xaml" />
     <None Remove="ViewsAndViewModels\SensorsState\SSMainView.xaml" />
+    <None Remove="ViewsAndViewModels\SingleViews\BayControlView.xaml" />
     <None Remove="ViewsAndViewModels\SingleViews\LoadFirstDrawerView.xaml" />
     <None Remove="ViewsAndViewModels\SingleViews\LoadingDrawersView.xaml" />
   </ItemGroup>

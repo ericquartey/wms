@@ -748,4 +748,43 @@
   <data name="LoadFirstDrawerRecallDrawer" xml:space="preserve">
     <value>Richiama cassetto</value>
   </data>
+  <data name="BayControl" xml:space="preserve">
+    <value>Controllo baie</value>
+  </data>
+  <data name="BayControlHeader" xml:space="preserve">
+    <value>Controllo quote baie.</value>
+  </data>
+  <data name="BayControlSelectedBay" xml:space="preserve">
+    <value>Baia selezionata:</value>
+  </data>
+  <data name="BayControlSelectedPosition" xml:space="preserve">
+    <value>Posizione nella baia:</value>
+  </data>
+  <data name="BayControlPositionHeight" xml:space="preserve">
+    <value>Quota posizione baia [mm]:</value>
+  </data>
+  <data name="BayControlStepValue" xml:space="preserve">
+    <value>Valore di step [mm]:</value>
+  </data>
+  <data name="BayControlActualHeight" xml:space="preserve">
+    <value>Posizione attuale [mm]:</value>
+  </data>
+  <data name="BayControlCorrectionValue" xml:space="preserve">
+    <value>Valore della correzione [mm]:</value>
+  </data>
+  <data name="BayControlMoveToPosition" xml:space="preserve">
+    <value>Muovi a posizione</value>
+  </data>
+  <data name="BayControlStepPiu" xml:space="preserve">
+    <value>Step +</value>
+  </data>
+  <data name="BayControlStepMeno" xml:space="preserve">
+    <value>Step -</value>
+  </data>
+  <data name="BayControlAdjust" xml:space="preserve">
+    <value>Correggi quota</value>
+  </data>
+  <data name="BayControlNextPosition" xml:space="preserve">
+    <value>Prossima posizione</value>
+  </data>
 </root>

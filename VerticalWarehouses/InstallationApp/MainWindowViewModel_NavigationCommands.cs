@@ -77,6 +77,8 @@ namespace Ferretto.VW.InstallationApp
 
         private ICommand loadingDrawersButtonCommand;
 
+        private ICommand bayControlButtonCommand;
+
         #endregion
 
         #region Properties
@@ -251,7 +253,8 @@ namespace Ferretto.VW.InstallationApp
             NavigationService.RaiseGoToViewEvent();
             this.ContentRegionCurrentViewModel = (VerticalOffsetCalibrationViewModel)this.Container.Resolve<IVerticalOffsetCalibrationViewModel>();
             ((VerticalOffsetCalibrationViewModel)this.Container.Resolve<IVerticalOffsetCalibrationViewModel>()).SubscribeMethodToEvent();
-            ((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand(((VerticalOffsetCalibrationViewModel)this.Container.Resolve<IVerticalOffsetCalibrationViewModel>()).ExitFromViewCommand);
+            ((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>())
+            .BackButtonCommand.RegisterCommand(((VerticalOffsetCalibrationViewModel)this.Container.Resolve<IVerticalOffsetCalibrationViewModel>()).ExitFromViewCommand);
         }));
 
         public ICommand WeightControlButtonCommand => this.weightControlButtonCommand ?? (this.weightControlButtonCommand = new DelegateCommand(() =>
@@ -259,30 +262,40 @@ namespace Ferretto.VW.InstallationApp
             NavigationService.RaiseGoToViewEvent();
             this.ContentRegionCurrentViewModel = (WeightControlViewModel)this.Container.Resolve<IWeightControlViewModel>();
             ((WeightControlViewModel)this.Container.Resolve<IWeightControlViewModel>()).SubscribeMethodToEvent();
-            ((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand(((WeightControlViewModel)this.Container.Resolve<IWeightControlViewModel>()).ExitFromViewCommand);
+            ((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>())
+            .BackButtonCommand.RegisterCommand(((WeightControlViewModel)this.Container.Resolve<IWeightControlViewModel>()).ExitFromViewCommand);
         }));
 
         public ICommand CellsSideControlButtonCommand => this.cellsSideControlButtonCommand ?? (this.cellsSideControlButtonCommand = new DelegateCommand(() =>
         {
             NavigationService.RaiseGoToViewEvent();
             this.ContentRegionCurrentViewModel = (CellsSideControlViewModel)this.Container.Resolve<ICellsSideControlViewModel>();
-            //((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand(((WeightControlViewModel)this.Container.Resolve<IWeightControlViewModel>()).ExitFromViewCommand);
+            //((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>())
+            //.BackButtonCommand.RegisterCommand(((WeightControlViewModel)this.Container.Resolve<IWeightControlViewModel>()).ExitFromViewCommand);
         }));
 
+        public ICommand BayControlButtonCommand => this.bayControlButtonCommand ?? (this.bayControlButtonCommand = new DelegateCommand(() =>
+        {
+        NavigationService.RaiseGoToViewEvent();
+        this.ContentRegionCurrentViewModel = (BayControlViewModel)this.Container.Resolve<IBayControlViewModel>();
+            //((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>())
+            //.BackButtonCommand.RegisterCommand(((WeightControlViewModel)this.Container.Resolve<IWeightControlViewModel>()).ExitFromViewCommand);
+        }));
 
         public ICommand LoadFirstDrawerButtonCommand => this.loadFirstDrawerButtonCommand ?? (this.loadFirstDrawerButtonCommand = new DelegateCommand(() =>
         {
             NavigationService.RaiseGoToViewEvent();
             this.ContentRegionCurrentViewModel = (LoadFirstDrawerViewModel)this.Container.Resolve<ILoadFirstDrawerViewModel>();
-            //((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand(((WeightControlViewModel)this.Container.Resolve<IWeightControlViewModel>()).ExitFromViewCommand);
+            //((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>())
+            //.BackButtonCommand.RegisterCommand(((WeightControlViewModel)this.Container.Resolve<IWeightControlViewModel>()).ExitFromViewCommand);
         }));
-
 
         public ICommand LoadingDrawersCommand => this.loadingDrawersButtonCommand ?? (this.loadingDrawersButtonCommand = new DelegateCommand(() =>
         {
             NavigationService.RaiseGoToViewEvent();
             this.ContentRegionCurrentViewModel = (LoadingDrawersViewModel)this.Container.Resolve<ILoadingDrawersViewModel>();
-            //((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand(((WeightControlViewModel)this.Container.Resolve<IWeightControlViewModel>()).ExitFromViewCommand);
+            //((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>())
+            //.BackButtonCommand.RegisterCommand(((WeightControlViewModel)this.Container.Resolve<IWeightControlViewModel>()).ExitFromViewCommand);
         }));
 
         #endregion

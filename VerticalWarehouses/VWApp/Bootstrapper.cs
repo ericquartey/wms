@@ -62,6 +62,7 @@ namespace Ferretto.VW.VWApp
             this.BindViewModelToView<ICellsSideControlViewModel, CellsSideControlView>();
             this.BindViewModelToView<ILoadFirstDrawerViewModel, LoadFirstDrawerView>();
             this.BindViewModelToView<ILoadingDrawersViewModel, LoadingDrawersView>();
+            this.BindViewModelToView<IBayControlViewModel, BayControlView>();
         }
 
         protected override DependencyObject CreateShell()

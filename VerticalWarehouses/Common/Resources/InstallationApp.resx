@@ -952,4 +952,56 @@
     <value>LoadFirstDrawerRecallDrawer</value>
     <comment>Button text</comment>
   </data>
+  <data name="BayControl" xml:space="preserve">
+    <value>BayControl</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="BayControlHeader" xml:space="preserve">
+    <value>BayControlHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="BayControlSelectedBay" xml:space="preserve">
+    <value>BayControlSelectedBay</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="BayControlSelectedPosition" xml:space="preserve">
+    <value>BayControlSelectedPosition</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="BayControlPositionHeight" xml:space="preserve">
+    <value>BayControlPositionHeight</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="BayControlStepValue" xml:space="preserve">
+    <value>BayControlStepValue</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="BayControlActualHeight" xml:space="preserve">
+    <value>BayControlActualHeight</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="BayControlCorrectionValue" xml:space="preserve">
+    <value>BayControlCorrectionValue</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="BayControlMoveToPosition" xml:space="preserve">
+    <value>BayControlMoveToPosition</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="BayControlStepPiu" xml:space="preserve">
+    <value>BayControlStepPiu</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="BayControlStepMeno" xml:space="preserve">
+    <value>BayControlStepMeno</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="BayControlAdjust" xml:space="preserve">
+    <value>BayControlAdjust</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="BayControlNextPosition" xml:space="preserve">
+    <value>BayControlNextPosition</value>
+    <comment>Button text</comment>
+  </data>
 </root>

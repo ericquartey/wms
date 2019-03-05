@@ -160,6 +160,123 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControl.
+        /// </summary>
+        public static string BayControl {
+            get {
+                return ResourceManager.GetString("BayControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControlActualHeight.
+        /// </summary>
+        public static string BayControlActualHeight {
+            get {
+                return ResourceManager.GetString("BayControlActualHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControlAdjust.
+        /// </summary>
+        public static string BayControlAdjust {
+            get {
+                return ResourceManager.GetString("BayControlAdjust", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControlCorrectionValue.
+        /// </summary>
+        public static string BayControlCorrectionValue {
+            get {
+                return ResourceManager.GetString("BayControlCorrectionValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControlHeader.
+        /// </summary>
+        public static string BayControlHeader {
+            get {
+                return ResourceManager.GetString("BayControlHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControlMoveToPosition.
+        /// </summary>
+        public static string BayControlMoveToPosition {
+            get {
+                return ResourceManager.GetString("BayControlMoveToPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControlNextPosition.
+        /// </summary>
+        public static string BayControlNextPosition {
+            get {
+                return ResourceManager.GetString("BayControlNextPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControlPositionHeight.
+        /// </summary>
+        public static string BayControlPositionHeight {
+            get {
+                return ResourceManager.GetString("BayControlPositionHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControlSelectedBay.
+        /// </summary>
+        public static string BayControlSelectedBay {
+            get {
+                return ResourceManager.GetString("BayControlSelectedBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControlSelectedPosition.
+        /// </summary>
+        public static string BayControlSelectedPosition {
+            get {
+                return ResourceManager.GetString("BayControlSelectedPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControlStepMeno.
+        /// </summary>
+        public static string BayControlStepMeno {
+            get {
+                return ResourceManager.GetString("BayControlStepMeno", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControlStepPiu.
+        /// </summary>
+        public static string BayControlStepPiu {
+            get {
+                return ResourceManager.GetString("BayControlStepPiu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControlStepValue.
+        /// </summary>
+        public static string BayControlStepValue {
+            get {
+                return ResourceManager.GetString("BayControlStepValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Bays and height control.
         /// </summary>
         public static string Bays {
