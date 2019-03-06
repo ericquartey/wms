@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
+using Ferretto.WMS.Scheduler.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Scheduler.Core.Providers
@@ -25,6 +26,22 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
         #endregion
 
         #region Methods
+
+        public async Task<StockUpdateCompartment> GetByIdForStockUpdateAsync(int id)
+        {
+            return await this.databaseContext.Compartments
+                .Select(c => new StockUpdateCompartment
+                {
+                    Id = c.Id,
+                    LastPickDate = c.LastPickDate,
+                    ItemId = c.ItemId,
+                    ReservedForPick = c.ReservedForPick,
+                    IsItemPairingFixed = c.IsItemPairingFixed,
+                    Stock = c.Stock,
+                })
+                .Where(c => c.Id == id)
+                .SingleOrDefaultAsync();
+        }
 
         /// <summary>
         /// Gets all compartments in the specified area/bay that have availability for the specified item.
@@ -91,7 +108,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
         }
 
         public IQueryable<T> OrderCompartmentsByManagementType<T>(IQueryable<T> compartments, ItemManagementType type)
-                           where T : IOrderableCompartment
+            where T : IOrderableCompartment
         {
             switch (type)
             {
@@ -113,6 +130,21 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
         }
 
         public async Task<Compartment> UpdateAsync(Compartment compartment)
+        {
+            if (compartment == null)
+            {
+                throw new ArgumentNullException(nameof(compartment));
+            }
+
+            var existingModel = this.databaseContext.Compartments.Find(compartment.Id);
+            this.databaseContext.Entry(existingModel).CurrentValues.SetValues(compartment);
+
+            await this.databaseContext.SaveChangesAsync();
+
+            return compartment;
+        }
+
+        public async Task<StockUpdateCompartment> UpdateAsync(StockUpdateCompartment compartment)
         {
             if (compartment == null)
             {

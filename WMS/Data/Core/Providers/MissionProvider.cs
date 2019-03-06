@@ -93,18 +93,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         private IQueryable<Mission> GetAllBase()
         {
             return this.dataContext.Missions
-                .Include(m => m.Bay)
-                .Include(m => m.Item)
-                .ThenInclude(i => i.MeasureUnit)
-                .Include(m => m.ItemList)
-                .Include(m => m.ItemListRow)
-                .Include(m => m.LoadingUnit)
-                .Include(m => m.Cell)
-                .ThenInclude(c => c.Aisle)
-                .Include(m => m.MaterialStatus)
-                .Include(m => m.PackageType)
-                .Include(m => m.Compartment)
-                .ThenInclude(c => c.CompartmentType)
                 .Select(m => new Mission
                 {
                     BayDescription = m.Bay.Description,

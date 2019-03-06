@@ -172,8 +172,6 @@ namespace Ferretto.WMS.Data.Core.Providers
             var actualSearchFunc = searchExpression ?? ((i) => true);
 
             return this.dataContext.Items
-                .Include(i => i.AbcClass)
-                .Include(i => i.ItemCategory)
                 .Where(actualWhereFunc)
                 .Where(actualSearchFunc)
                 .GroupJoin(
