@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using DevExpress.Mvvm.UI;
+using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls.Interfaces;
 
 namespace Ferretto.Common.Controls
@@ -63,7 +64,7 @@ namespace Ferretto.Common.Controls
                    .GetCurrentClassLogger()
                    .Warn(string.Format("Form control: cannot determine label value because no DisplayAttribute is available on the property '{0}'.", fieldName));
 
-                return $"[{fieldName}]";
+                return null;
             }
 
             // get the Display attribute argument values
@@ -121,6 +122,11 @@ namespace Ferretto.Common.Controls
                 }
 
                 type = p.PropertyType;
+            }
+
+            if (type == typeof(BusinessObject))
+            {
+                return null;
             }
 
             var property = type.GetProperty(splits[splits.Length - 1]);
