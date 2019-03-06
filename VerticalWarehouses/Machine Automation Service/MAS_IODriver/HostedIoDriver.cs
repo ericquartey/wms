@@ -16,13 +16,15 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS_IODriver
 {
-    public class HostedIoDriver : BackgroundService
+    public partial class HostedIoDriver : BackgroundService
     {
         #region Fields
 
-        private const int IO_POLLING_INTERVAL = 50;
+        private const int IoPollingInterval = 50;
 
-        private readonly Task commadReceiveTask;
+        private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
+
+        private readonly Task commandReceiveTask;
 
         private readonly IDataLayer dataLayer;
 
@@ -36,9 +38,11 @@ namespace Ferretto.VW.MAS_IODriver
 
         private readonly IoStatus ioStatus;
 
-        private readonly BlockingConcurrentQueue<CommandMessage> messageQueue;
-
         private readonly IModbusTransport modbusTransport;
+
+        private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
+
+        private readonly Task notificationReceiveTask;
 
         private readonly ManualResetEventSlim pollIoEvent;
 
@@ -65,14 +69,23 @@ namespace Ferretto.VW.MAS_IODriver
 
             this.ioCommandQueue = new BlockingConcurrentQueue<IoMessage>();
 
-            this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
+            this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
 
-            this.commadReceiveTask = new Task(() => CommandReceiveTaskFunction());
-            this.ioReceiveTask = new Task(async () => await this.ReceiveIoData());
-            this.ioSendTask = new Task(async () => await this.SendIoCommand());
+            this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
 
-            var messageEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            messageEvent.Subscribe(message => { this.messageQueue.Enqueue(message); },
+            this.commandReceiveTask = new Task(() => CommandReceiveTaskFunction());
+            this.notificationReceiveTask = new Task(() => this.NotificationReceiveTaskFunction());
+            this.ioReceiveTask = new Task(async () => await this.ReceiveIoDataTaskFunction());
+            this.ioSendTask = new Task(async () => await this.SendIoCommandTaskFunction());
+
+            var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            commandEvent.Subscribe(message => { this.commandQueue.Enqueue(message); },
+                ThreadOption.PublisherThread,
+                false,
+                message => message.Destination == MessageActor.IODriver || message.Destination == MessageActor.Any);
+
+            var notificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            notificationEvent.Subscribe(message => { this.notificationQueue.Enqueue(message); },
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Destination == MessageActor.IODriver || message.Destination == MessageActor.Any);
@@ -80,17 +93,18 @@ namespace Ferretto.VW.MAS_IODriver
 
         #endregion
 
-        #region Methods
+        #region Destructors
 
-        public void Dispose()
+        ~HostedIoDriver()
         {
-            base.Dispose();
-
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            Dispose(false);
         }
 
-        public void Dispose(bool disposing)
+        #endregion
+
+        #region Methods
+
+        protected void Dispose(bool disposing)
         {
             if (this.disposed)
             {
@@ -100,6 +114,7 @@ namespace Ferretto.VW.MAS_IODriver
             if (disposing)
             {
                 this.pollIoTimer?.Dispose();
+                base.Dispose();
             }
         }
 
@@ -129,7 +144,8 @@ namespace Ferretto.VW.MAS_IODriver
 
             try
             {
-                this.commadReceiveTask.Start();
+                this.commandReceiveTask.Start();
+                this.notificationReceiveTask.Start();
                 this.ioReceiveTask.Start();
                 this.ioSendTask.Start();
             }
@@ -142,7 +158,7 @@ namespace Ferretto.VW.MAS_IODriver
         private Task CommandReceiveTaskFunction()
         {
             this.pollIoTimer?.Dispose();
-            this.pollIoTimer = new Timer(this.ReadIoData, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IO_POLLING_INTERVAL));
+            this.pollIoTimer = new Timer(this.ReadIoData, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IoPollingInterval));
 
             this.currentStateMachine = new PowerUpStateMachine(this.ioCommandQueue, this.eventAggregator);
             this.currentStateMachine.Start();
@@ -152,7 +168,39 @@ namespace Ferretto.VW.MAS_IODriver
                 CommandMessage receivedMessage;
                 try
                 {
-                    this.messageQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                }
+                catch (OperationCanceledException)
+                {
+                    return Task.CompletedTask;
+                }
+
+                if (this.currentStateMachine != null)
+                {
+                    var errorNotification = new NotificationMessage(null, "I/O operation already in progress", MessageActor.Any,
+                        MessageActor.IODriver, receivedMessage.Type, MessageStatus.OperationError, ErrorLevel.Error);
+                    this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
+                }
+
+                switch (receivedMessage.Type)
+                {
+                    case MessageType.SwitchAxis:
+                        ExecuteSwitchAxis(receivedMessage);
+                        break;
+                }
+            } while (!this.stoppingToken.IsCancellationRequested);
+
+            return Task.CompletedTask;
+        }
+
+        private Task NotificationReceiveTaskFunction()
+        {
+            do
+            {
+                NotificationMessage receivedMessage;
+                try
+                {
+                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
                 }
                 catch (OperationCanceledException)
                 {
@@ -161,12 +209,17 @@ namespace Ferretto.VW.MAS_IODriver
 
                 switch (receivedMessage.Type)
                 {
+                    case MessageType.IOPowerUp:
                     case MessageType.SwitchAxis:
-
+                        if (receivedMessage.Status == MessageStatus.OperationEnd &&
+                            receivedMessage.ErrorLevel == ErrorLevel.NoError)
+                        {
+                            this.currentStateMachine.Dispose();
+                            this.currentStateMachine = null;
+                        }
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
-
             return Task.CompletedTask;
         }
 
@@ -175,13 +228,14 @@ namespace Ferretto.VW.MAS_IODriver
             this.pollIoEvent.Set();
         }
 
-        private async Task ReceiveIoData()
+        private async Task ReceiveIoDataTaskFunction()
         {
             do
             {
                 try
                 {
                     this.pollIoEvent.Wait(Timeout.Infinite, stoppingToken);
+                    this.pollIoEvent.Reset();
                 }
                 catch (OperationCanceledException)
                 {
@@ -192,12 +246,12 @@ namespace Ferretto.VW.MAS_IODriver
 
                 if (this.ioStatus.UpdateInputStates(inputData))
                 {
-                    this.currentStateMachine.ProcessMessage(new IoMessage(inputData, true));
+                    this.currentStateMachine?.ProcessMessage(new IoMessage(inputData, true));
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
         }
 
-        private async Task SendIoCommand()
+        private async Task SendIoCommandTaskFunction()
         {
             do
             {
@@ -216,8 +270,9 @@ namespace Ferretto.VW.MAS_IODriver
                     if (this.ioStatus.UpdateOutputStates(message.Outputs) || message.Force)
                     {
                         await this.modbusTransport.WriteAsync(message.Outputs);
-                        this.currentStateMachine.ProcessMessage(message);
                     }
+
+                    this.currentStateMachine.ProcessMessage(message);
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
         }

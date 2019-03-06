@@ -20,7 +20,7 @@ namespace Ferretto.VW.InverterDriver
     {
         #region Fields
 
-        private const int HEARTBEAT_TIMEOUT = 300;
+        private const int HeartbeatTimeout = 300;
 
         private const int InverterPortNumber = 17221;
 
@@ -40,6 +40,10 @@ namespace Ferretto.VW.InverterDriver
 
         private readonly BlockingConcurrentQueue<CommandMessage> messageQueue;
 
+        private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
+
+        private readonly Task notificationReceiveTask;
+
         private readonly ISocketTransport socketTransport;
 
         private Timer controlWordCheckTimer;
@@ -58,8 +62,7 @@ namespace Ferretto.VW.InverterDriver
 
         #region Constructors
 
-        public HostedInverterDriver(IEventAggregator eventAggregator, ISocketTransport socketTransport,
-            IDataLayer dataLayer)
+        public HostedInverterDriver(IEventAggregator eventAggregator, ISocketTransport socketTransport, IDataLayer dataLayer)
         {
             this.socketTransport = socketTransport;
             this.eventAggregator = eventAggregator;
@@ -69,29 +72,38 @@ namespace Ferretto.VW.InverterDriver
             this.inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
 
             this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
+            this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
 
             this.commandReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
+            this.notificationReceiveTask = new Task(() => this.NotificationReceiveTaskFunction());
             this.inverterReceiveTask = new Task(async () => await ReceiveInverterData());
             this.inverterSendTask = new Task(async () => await SendInverterCommand());
 
-            var messageEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            messageEvent.Subscribe(message => { this.messageQueue.Enqueue(message); },
+            var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            commandEvent.Subscribe(message => { this.messageQueue.Enqueue(message); },
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Source == MessageActor.FiniteStateMachines);
+
+            var notificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            notificationEvent.Subscribe(message => { this.notificationQueue.Enqueue(message); },
+                ThreadOption.PublisherThread,
+                false,
+                message => message.Destination == MessageActor.InverterDriver || message.Destination == MessageActor.Any);
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~HostedInverterDriver()
+        {
+            Dispose(false);
         }
 
         #endregion
 
         #region Methods
-
-        public void Dispose()
-        {
-            base.Dispose();
-
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
 
         public void Dispose(bool disposing)
         {
@@ -135,6 +147,7 @@ namespace Ferretto.VW.InverterDriver
             try
             {
                 this.commandReceiveTask.Start();
+                this.notificationReceiveTask.Start();
                 this.inverterReceiveTask.Start();
                 this.inverterSendTask.Start();
             }
@@ -150,7 +163,7 @@ namespace Ferretto.VW.InverterDriver
             this.controlWordCheckTimer = new Timer(this.ControlWordCheckTimeout, null, -1, Timeout.Infinite);
 
             this.heartBeatTimer?.Dispose();
-            this.heartBeatTimer = new Timer(this.SendHeartBeat, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(HEARTBEAT_TIMEOUT));
+            this.heartBeatTimer = new Timer(this.SendHeartBeat, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(HeartbeatTimeout));
 
             do
             {
@@ -169,8 +182,7 @@ namespace Ferretto.VW.InverterDriver
                     case MessageType.Calibrate:
                         if (receivedMessage.Data is ICalibrateMessageData data)
                         {
-                            this.currentStateMachine = new CalibrateStateMachine(data.AxisToCalibrate,
-                                this.inverterCommandQueue, this.heartbeatQueue);
+                            this.currentStateMachine = new CalibrateStateMachine(data.AxisToCalibrate, this.inverterCommandQueue);
                             this.currentStateMachine.Start();
                         }
 
@@ -185,6 +197,36 @@ namespace Ferretto.VW.InverterDriver
         {
             this.controlWordCheckTimer.Change(-1, Timeout.Infinite);
             //TODO notify control word change error
+        }
+
+        private Task NotificationReceiveTaskFunction()
+        {
+            do
+            {
+                NotificationMessage receivedMessage;
+                try
+                {
+                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                }
+                catch (OperationCanceledException)
+                {
+                    return Task.CompletedTask;
+                }
+
+                switch (receivedMessage.Type)
+                {
+                    case MessageType.SwitchAxis:
+                        if (receivedMessage.Status == MessageStatus.OperationEnd)
+                        {
+                            if (this.currentStateMachine is CalibrateStateMachine)
+                            {
+                                this.currentStateMachine.ChangeState();
+                            }
+                        }
+                        break;
+                }
+            } while (!this.stoppingToken.IsCancellationRequested);
+            return Task.CompletedTask;
         }
 
         private async Task ProcessCommand()
@@ -220,8 +262,6 @@ namespace Ferretto.VW.InverterDriver
 
                 var currentMessage = new InverterMessage(inverterData);
 
-                if (currentMessage.IsError) continue;
-
                 if (currentMessage.IsWriteMessage && currentMessage.ParameterId == InverterParameterId.ControlWordParam)
                 {
                     var readStatusWordMessage = new InverterMessage(0x00, (short)InverterParameterId.StatusWordParam);
@@ -243,7 +283,7 @@ namespace Ferretto.VW.InverterDriver
                     this.controlWordCheckTimer.Change(-1, Timeout.Infinite);
                 }
 
-                this.currentStateMachine.NotifyMessage(currentMessage);
+                this.currentStateMachine.ProcessMessage(currentMessage);
             } while (!this.stoppingToken.IsCancellationRequested);
         }
 
