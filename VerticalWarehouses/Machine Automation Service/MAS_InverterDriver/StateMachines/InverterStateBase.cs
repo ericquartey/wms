@@ -8,6 +8,17 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 
         protected IInverterStateMachine parentStateMachine;
 
+        private bool disposed = false;
+
+        #endregion
+
+        #region Destructors
+
+        ~InverterStateBase()
+        {
+            Dispose(false);
+        }
+
         #endregion
 
         #region Properties
@@ -18,7 +29,25 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 
         #region Methods
 
-        public abstract void NotifyMessage(InverterMessage message);
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public abstract void ProcessMessage(InverterMessage message);
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
+            {
+            }
+
+            disposed = true;
+        }
 
         #endregion
     }

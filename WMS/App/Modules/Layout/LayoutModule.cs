@@ -1,4 +1,5 @@
-﻿using Ferretto.Common.Controls.Interfaces;
+﻿using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
@@ -40,6 +41,8 @@ namespace Ferretto.WMS.Modules.Layout
                .Trace("Loading module ...");
 
             this.Container.RegisterType<INavigationService, NavigationService>(new ContainerControlledLifetimeManager());
+            this.Container.RegisterType<IEventService, EventService>();
+            this.Container.RegisterType<IImageProvider, ImageProvider>();
             this.Container.RegisterType<IInputService, InputService>(new ContainerControlledLifetimeManager());
             this.Container.RegisterType<IDialogService, DialogService>(new ContainerControlledLifetimeManager());
             this.Container.RegisterType<IHistoryViewService, HistoryViewService>(new ContainerControlledLifetimeManager());

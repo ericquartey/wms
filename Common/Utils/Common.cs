@@ -5,10 +5,19 @@
         #region Fields
 
         public const string ASSEMBLY_QUALIFIEDNAME_PREFIX = "Ferretto.WMS.Modules";
+
         public const string ASSEMBLY_THEMENAME = "Ferretto.WMS.App.Themes";
+
         public const string MODEL_SUFFIX = "Model";
+
         public const string THEME_DEFAULTNAME = "Light";
+
+        public const string THEMECONTROLSNAME = "Office2016White";
+
+        public const string THEMERESOURCEDICTIONARY = "ThemeDictionary";
+
         public const string VIEW_SUFFIX = "View";
+
         public const string VIEWMODEL_SUFFIX = "ViewModel";
 
         #endregion

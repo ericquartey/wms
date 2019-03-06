@@ -41,6 +41,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
+        public string Errors => this.executionRequest.Error;
+
         public ItemListRowExecutionRequest ExecutionRequest
         {
             get => this.executionRequest;
@@ -95,6 +97,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool CanExecuteListRowCommand()
         {
+            this.RaisePropertyChanged(nameof(this.executionRequest.Error));
             return string.IsNullOrEmpty(this.executionRequest.Error);
         }
 

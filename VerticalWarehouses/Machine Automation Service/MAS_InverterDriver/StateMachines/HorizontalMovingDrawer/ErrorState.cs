@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
 
         #region Methods
 
-        public override void NotifyMessage(InverterMessage message)
+        public override void ProcessMessage(InverterMessage message)
         {
             throw new NotImplementedException();
         }

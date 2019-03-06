@@ -1,4 +1,7 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.Calibrate;
 
@@ -12,18 +15,25 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 
         private Axis currentAxis;
 
+        private bool disposed;
+
         #endregion
 
         #region Constructors
 
-        //TODO remove priority queue
-        public CalibrateStateMachine(Axis axisToCalibrate,
-            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
-            BlockingConcurrentQueue<InverterMessage> priorityInverterCommandQueue)
+        public CalibrateStateMachine(Axis axisToCalibrate, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue)
         {
             this.axisToCalibrate = axisToCalibrate;
             this.inverterCommandQueue = inverterCommandQueue;
-            //this.priorityInverterCommandQueue = priorityInverterCommandQueue;
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~CalibrateStateMachine()
+        {
+            Dispose(false);
         }
 
         #endregion
@@ -36,7 +46,10 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
                 if (this.axisToCalibrate == Axis.Both && this.currentAxis == Axis.Horizontal)
                 {
                     this.currentAxis = Axis.Vertical;
-                    base.ChangeState(new VoltageDisabledState(this, this.currentAxis));
+
+                    SwitchAxisMessageData switchAxisiMessageData = new SwitchAxisMessageData(this.currentAxis);
+                    CommandMessage switchAxisCommandMessage = new CommandMessage(switchAxisiMessageData, "Switch Axis to calibrate", MessageActor.IODriver, MessageActor.InverterDriver, MessageType.SwitchAxis);
+                    this.eventAggregator.GetEvent<CommandEvent>().Publish(switchAxisCommandMessage);
                     return;
                 }
 

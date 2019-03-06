@@ -5,6 +5,7 @@ using Ferretto.VW.MAS_FiniteStateMachines;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_IODriver;
+using Ferretto.VW.MAS_IODriver.Interface;
 using Ferretto.VW.MAS_MissionsManager;
 using Ferretto.VW.RemoteIODriver;
 using Microsoft.AspNetCore.Builder;
@@ -84,21 +85,26 @@ namespace Ferretto.VW.MAS_AutomationService
 
             services.AddSingleton<ISocketTransport, SocketTransport>();
 
-            this.RegisterRemoteIODriver(services);
+            //this.RegisterRemoteIODriver(services);
 
-            this.RegisterInverterDriver(services);
+            //this.RegisterInverterDriver(services);
 
-            //TODO Old InverterDriver Registration to be removed after code refactoring completed
-            services.AddSingleton<IInverterDriver, InverterDriver.InverterDriver>();
+            ////TODO Old InverterDriver Registration to be removed after code refactoring completed
+            //services.AddSingleton<IInverterDriver, InverterDriver.InverterDriver>();
 
-            //TODO Old RemoteIODriver Registration to be removed after code refactoring completed
-            services.AddSingleton<IRemoteIO, RemoteIO>();
+            ////TODO Old RemoteIODriver Registration to be removed after code refactoring completed
+            //services.AddSingleton<IRemoteIO, RemoteIO>();
+            services.AddSingleton<IModbusTransport, ModbusTransport>();
 
-            services.AddHostedService<FiniteStateMachines>();
+            services.AddHostedService<HostedIoDriver>();
 
-            services.AddHostedService<MissionsManager>();
+            services.AddHostedService<HostedInverterDriver>();
 
-            services.AddHostedService<AutomationService>();
+            //services.AddHostedService<FiniteStateMachines>();
+
+            //services.AddHostedService<MissionsManager>();
+
+            //services.AddHostedService<AutomationService>();
         }
 
         private void RegisterInverterDriver(IServiceCollection services)

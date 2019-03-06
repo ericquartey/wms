@@ -61,8 +61,6 @@ namespace Ferretto.Common.Modules.BLL
             this.Container.RegisterType<ICompartmentStatusProvider, CompartmentStatusProvider>();
             this.Container.RegisterType<ICompartmentTypeProvider, CompartmentTypeProvider>();
             this.Container.RegisterType<IDataSourceService, DataSourceService>();
-            this.Container.RegisterType<IEventService, EventService>();
-            this.Container.RegisterType<IImageProvider, ImageProvider>();
             this.Container.RegisterType<IItemCategoryProvider, ItemCategoryProvider>();
             this.Container.RegisterType<IItemListProvider, ItemListProvider>();
             this.Container.RegisterType<IItemListRowProvider, ItemListRowProvider>();
