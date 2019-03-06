@@ -19,6 +19,11 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
             await this.Clients.All.OnSendMessageToAllConnectedClients(message);
         }
 
+        public async Task SendSensorsStatesToAllConnectedClients(bool[] sensors)
+        {
+            await this.Clients.All.OnSensorsChangedToAllConnectedClients(sensors);
+        }
+
         #endregion
     }
 }

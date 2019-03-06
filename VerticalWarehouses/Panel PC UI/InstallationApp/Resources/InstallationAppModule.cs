@@ -1,4 +1,6 @@
-﻿using Ferretto.VW.InstallationApp.Interfaces;
+﻿using System.Net.Http;
+using Ferretto.VW.InstallationApp.Interfaces;
+using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Microsoft.Practices.Unity;
@@ -58,7 +60,7 @@ namespace Ferretto.VW.InstallationApp
             var loadingDrawersVMInstance = new LoadingDrawersViewModel();
             var cellsSideControlVMInstance = new CellsSideControlViewModel();
 
-            this.container.RegisterInstance<ContainerIInstallationHubClient>(installationHubClientInstance);
+            this.container.RegisterInstance<IContainerInstallationHubClient>(installationHubClientInstance);
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
             this.container.RegisterInstance<IBeltBurnishingViewModel>(beltBurnishingVMInstance);
             this.container.RegisterInstance<ICellsControlViewModel>(cellsControlVMInstance);
@@ -108,6 +110,7 @@ namespace Ferretto.VW.InstallationApp
             mainWindowNavigationButtonsVMInstance.InitializeViewModel(this.container);
             weightControlVMInstance.InitializeViewModel(this.container);
             verticalAxisCalibrationVMInstance.InitializeViewModel(this.container);
+            sSBaysVMInstance.InitializeViewModel(this.container);
         }
 
         #endregion
