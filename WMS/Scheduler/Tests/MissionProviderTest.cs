@@ -136,7 +136,8 @@ namespace Ferretto.WMS.Scheduler.Tests
                 ItemId = this.Item1.Id,
                 LoadingUnitId = this.LoadingUnit1.Id,
                 Stock = 10,
-                ReservedForPick = 7
+                ReservedForPick = 7,
+                LastPickDate = null
             };
 
             var mission = new Common.DataModels.Mission
@@ -177,20 +178,13 @@ namespace Ferretto.WMS.Scheduler.Tests
                     $"The status of the mission should be '{MissionStatus.Completed}'.");
 
                 var updatedCompartment = await compartmentProvider.GetByIdForStockUpdateAsync(compartment1.Id);
-                var updatedLoadingUnit = await loadingUnitProvider.GetByIdAsync(compartment1.LoadingUnitId);
-                var updatedItem = await itemProvider.GetByIdAsync(compartment1.ItemId.Value);
 
                 Assert.IsNotNull(updatedCompartment);
-                Assert.IsNotNull(updatedLoadingUnit);
-                Assert.IsNotNull(updatedItem);
 
                 Assert.AreEqual(
                   3,
                   updatedCompartment.Stock,
                   $"The stock of the compartment should be 3.");
-
-                Assert.IsTrue(updatedCompartment.LastPickDate.HasValue);
-                Assert.IsTrue(updatedLoadingUnit.LastPickDate.HasValue);
 
                 Assert.AreEqual(
                   0,
@@ -200,6 +194,20 @@ namespace Ferretto.WMS.Scheduler.Tests
                 Assert.IsNotNull(
                     updatedCompartment.ItemId,
                  $"The item pairing is not removed.");
+
+                Assert.IsTrue(updatedCompartment.LastPickDate.HasValue);
+
+                var updatedLoadingUnit = await loadingUnitProvider.GetByIdAsync(compartment1.LoadingUnitId);
+
+                Assert.IsNotNull(updatedLoadingUnit);
+
+                Assert.IsTrue(updatedLoadingUnit.LastPickDate.HasValue);
+
+                var updatedItem = await itemProvider.GetByIdAsync(compartment1.ItemId.Value);
+
+                Assert.IsNotNull(updatedItem);
+
+                Assert.IsTrue(updatedItem.LastPickDate.HasValue);
 
                 #endregion
             }
