@@ -1,0 +1,62 @@
+﻿using System.IO;
+using System.Reflection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TestStack.White;
+using TestStack.White.Factory;
+using TestStack.White.UIItems.WindowItems;
+
+namespace Ferretto.WMS.App.ModulesUITests
+{
+    public class EndToEndTest
+    {
+        #region Fields
+
+        private Application application;
+
+        private Window mainWindow;
+
+        #endregion
+
+        #region Properties
+
+        public Window MainWindow => this.mainWindow;
+
+        public TestContext TestContext { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        public void Cleanup()
+        {
+            this.application?.Close();
+        }
+
+        public void Initialize()
+        {
+#pragma warning disable S3902 // "Assembly.GetExecutingAssembly" should not be called
+
+            var applicationPath = System.Environment.CurrentDirectory;
+#pragma warning restore S3902 // "Assembly.GetExecutingAssembly" should not be called
+
+            var applicationFilePath = Path.Combine(applicationPath, "Ferretto.WMS.App.exe");
+
+            var appProcess = new System.Diagnostics.Process();
+            appProcess.StartInfo.WorkingDirectory = applicationPath;
+            appProcess.StartInfo.FileName = applicationFilePath;
+            appProcess.Start();
+            appProcess.Exited += AppProcess_Exited;
+
+            appProcess.WaitForInputIdle();
+
+            this.application = Application.Attach(appProcess);
+
+            this.mainWindow =
+                this.application.GetWindow(Common.Resources.DesktopApp.Application_Title, InitializeOption.NoCache);
+        }
+
+        private static void AppProcess_Exited(object sender, System.EventArgs e) => Assert.Fail("Main application closed unnaturally.");
+
+        #endregion
+    }
+}
