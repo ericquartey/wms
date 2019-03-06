@@ -4,6 +4,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 {
     public interface IFiniteStateMachines
     {
+        //TODO to remove
+
         #region Methods
 
         void Destroy();

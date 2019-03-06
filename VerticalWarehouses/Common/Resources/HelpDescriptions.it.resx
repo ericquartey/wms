@@ -412,4 +412,103 @@
   <data name="HelpVOCApplyCorrection" xml:space="preserve">
     <value>Aggiorna l'offset dell'asse verticale al valore indicato.</value>
   </data>
+  <data name="HelpCSCDescription" xml:space="preserve">
+    <value>La procedura permette di modifica un blocco di celle comprese fra la prima e l'ultima selezionata. Il lato selezionato viene automaticamente indicato sulla base del numero cella iniziale a seconda sia pari o dispari.</value>
+  </data>
+  <data name="HelpCSCInitialCell" xml:space="preserve">
+    <value>Impostare il numero della cella iniziale del blocco.</value>
+  </data>
+  <data name="HelpCSCFinalCell" xml:space="preserve">
+    <value>Impostare il numero della cella finale del blocco.</value>
+  </data>
+  <data name="HelpCSCCorrection" xml:space="preserve">
+    <value>Impostare il valore desiderato della correzione che verra' applicata al gruppo celle selezionato.</value>
+  </data>
+  <data name="HelpCSCSelectedSide" xml:space="preserve">
+    <value>Riporta il lato su cui si sta effettuando la modifica. Il lato e' automaticamente determinato sulla base del numero cella iniziale selezionato se pari o dispari.</value>
+  </data>
+  <data name="HelpCSCApplyCorrection" xml:space="preserve">
+    <value>Applica la correzione al gruppo celle selezionato.</value>
+  </data>
+  <data name="HelpLFDTotalCells" xml:space="preserve">
+    <value>Indica il numero totale di celle da sottoporre a test.</value>
+  </data>
+  <data name="HelpLFDTestedCells" xml:space="preserve">
+    <value>Indica il numero di celle attualmente testate.</value>
+  </data>
+  <data name="HelpLFDCellInTest" xml:space="preserve">
+    <value>Numero della cella attualmente in test.</value>
+  </data>
+  <data name="HelpLFDDrawerNumber" xml:space="preserve">
+    <value>Numero del cassetto in fase di inserimento.</value>
+  </data>
+  <data name="HelpLFDMaxLoad" xml:space="preserve">
+    <value>Portata massima del cassetto in fase di carico.</value>
+  </data>
+  <data name="HelpLFDInsertDrawer" xml:space="preserve">
+    <value>Avvia la procedura di inserimento del cassetto. La procedura termina al completamento dei cicli previsti.</value>
+  </data>
+  <data name="HelpLFDRecallDrawer" xml:space="preserve">
+    <value>Richiama in baia il cassetto utilizzato per il test.</value>
+  </data>
+  <data name="HelpLFDDescription" xml:space="preserve">
+    <value>La procedura permette di utilizzare il cassetto selezionato nell'apposito campo di input per testare le celle inferiori e superiori della macchina oltre alle celle sottostanti e sovrastanti blocchi di celle indicate come disabilitate. Scopo della procedura e' quello di verificare che non vi siano interferenze meccaniche in queste aree.</value>
+  </data>
+  <data name="HelpLDRDescription" xml:space="preserve">
+    <value>La procedura permette di inserire i cassetti vuoti all'interno della macchina al termine della procedura di messa in servizio. I cassetti vengono inseriti all'interno dei blocchi liberi scegliendoli in base alla priorita' piu' bassa.</value>
+  </data>
+  <data name="HelpLDRTotalDrawers" xml:space="preserve">
+    <value>Numero totali di cassetti da inserire.</value>
+  </data>
+  <data name="HelpLDRInsertedDrawers" xml:space="preserve">
+    <value>Cassetti gia' inseriti in macchina.</value>
+  </data>
+  <data name="HelpLDRDrawerToInsert" xml:space="preserve">
+    <value>Numero del cassetto in fase di inserimento. Puo' essere generato dal pulsante apposito oppure inserito nell'apposito campo.</value>
+  </data>
+  <data name="HelpLDRMaxLoad" xml:space="preserve">
+    <value>Indica la portata massima ammessa per il cassetto attualmente in inserimento.</value>
+  </data>
+  <data name="HelpLDRNextDrawer" xml:space="preserve">
+    <value>Il pulsante imposta il prossimo cassetto da inserire. il numero e' quello successivo all'ultimo inserito.</value>
+  </data>
+  <data name="HelpLDRStart" xml:space="preserve">
+    <value>Avvia la procedura di inserimento del cassetto selezionato.</value>
+  </data>
+  <data name="HelpBCTRDescription" xml:space="preserve">
+    <value>La procedura permette di verificare ed eventualmente correggere la quota delle varie posizioni possibili sulle varie baie. La procedura si adatta alla tipologia di baia indicata nel documento che descrive la configurazione macchina. Nel caso di piu' posizioni sulla stessa baia la procedura permette verifiche multiple.</value>
+  </data>
+  <data name="HelpBCTRSelectedBay" xml:space="preserve">
+    <value>Seleziona la baia di cui si vogliono verificare le quote.</value>
+  </data>
+  <data name="HelpBCTRSelectedPosition" xml:space="preserve">
+    <value>Indica la posizione all'interno della baia selezionata di cui si vogliono controllare le quote. Viene impostata automaticamente.</value>
+  </data>
+  <data name="HelpBCTRPositionHeight" xml:space="preserve">
+    <value>Visualizza la quota della posizione selezionata nell'ambito della baia sotto controllo.</value>
+  </data>
+  <data name="HelpBCTRStepValue" xml:space="preserve">
+    <value>Valore dello step applicato alla quota corrente dell'asse ad ogni pressione dei pulsanti di spostamento.</value>
+  </data>
+  <data name="HelpBCTRActualHeight" xml:space="preserve">
+    <value>Posizione attuale dell'asse verticale.</value>
+  </data>
+  <data name="HelpBCTRCorrectionValue" xml:space="preserve">
+    <value>Valore cumulativo della correzione che verra' applicata all quota della baia-posizione selezionata. </value>
+  </data>
+  <data name="HelpBCTRMoveToPosition" xml:space="preserve">
+    <value>Posiziona l'asse verticale in corrispondenza della baia-posizione selezionata.</value>
+  </data>
+  <data name="HelpBCTRStepPiu" xml:space="preserve">
+    <value>Incrementa la quota corrente dell'asse del valore indicato dallo step.</value>
+  </data>
+  <data name="HelpBCTRStepMeno" xml:space="preserve">
+    <value>Decrementa la quota corrente dell'asse del valore indicato dallo step.</value>
+  </data>
+  <data name="HelpBCTRAdjust" xml:space="preserve">
+    <value>Corregge la quota attuale della baia-posizione corrente del valore indicato nell'apposito campo.</value>
+  </data>
+  <data name="HelpBCTRNextPosition" xml:space="preserve">
+    <value>Se abilitato, il pulsante permette di scegliere la prossima posizione presente nella baia attualmente selezionata. La procedura va ripetuta per la nuova posizione.</value>
+  </data>
 </root>

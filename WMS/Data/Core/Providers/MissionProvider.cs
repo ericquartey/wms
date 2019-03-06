@@ -79,32 +79,29 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             return (m) =>
-                m.Lot.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                m.BayDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                m.RegistrationNumber.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                m.ItemDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                m.Sub1.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                m.ItemListDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                m.Sub2.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                m.ItemListRowCode.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                m.Quantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
+                m.LoadingUnitCode.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                m.Priority.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                m.RequiredQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                m.Type.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                m.Status.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ;
         }
 
         private IQueryable<Mission> GetAllBase()
         {
             return this.dataContext.Missions
-                .Include(m => m.Bay)
-                .Include(m => m.Item)
-                .ThenInclude(i => i.MeasureUnit)
-                .Include(m => m.ItemList)
-                .Include(m => m.ItemListRow)
-                .Include(m => m.LoadingUnit)
-                .Include(m => m.Cell)
-                .ThenInclude(c => c.Aisle)
-                .Include(m => m.MaterialStatus)
-                .Include(m => m.PackageType)
-                .Include(m => m.Compartment)
-                .ThenInclude(c => c.CompartmentType)
                 .Select(m => new Mission
                 {
                     BayDescription = m.Bay.Description,

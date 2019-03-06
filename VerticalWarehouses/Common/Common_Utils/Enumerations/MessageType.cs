@@ -29,12 +29,23 @@
         EndAction,
 
         ErrorAction,
+
         Homing,
+
         SwitchVerticalToHorizontal,
+
         SwitchHorizontalToVertical,
+
         StopHoming,
+
         Positioning,
+
         ExecuteVerticalPositioning,
-        ExecuteStopVerticalPositioning
+
+        ExecuteStopVerticalPositioning,
+
+        SwitchAxis,
+
+        IOPowerUp
     }
 }

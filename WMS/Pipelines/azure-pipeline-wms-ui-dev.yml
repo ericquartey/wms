@@ -47,7 +47,7 @@ steps:
   displayName: 'Run Tests'
   inputs:
     testAssemblyVer2: |
-     **\$(BuildConfiguration)\*test*.dll
+     **\$(BuildConfiguration)\**\*test*.dll
      !**\obj\**
     codeCoverageEnabled: true
     platform: '$(BuildPlatform)'

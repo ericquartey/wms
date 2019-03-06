@@ -6,6 +6,7 @@ using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
+using Ferretto.WMS.Scheduler.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Scheduler.Core.Providers
@@ -49,8 +50,10 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 .Select(i => new ItemList
                 {
                     Id = i.Id,
+                    Code = i.Code,
                     Rows = i.ItemListRows.Select(r => new ItemListRow
                     {
+                        Code = r.Code,
                         Id = r.Id,
                         ItemId = r.ItemId,
                         Lot = r.Lot,
@@ -59,7 +62,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                         RegistrationNumber = r.RegistrationNumber,
                         RequestedQuantity = r.RequiredQuantity,
                         Sub1 = r.Sub1,
-                        Sub2 = r.Sub2
+                        Sub2 = r.Sub2,
                     })
                 })
                 .SingleOrDefaultAsync(l => l.Id == listId);
@@ -137,7 +140,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     PackageTypeId = row.PackageTypeId,
                     RegistrationNumber = row.RegistrationNumber,
                     Sub1 = row.Sub1,
-                    Sub2 = row.Sub2
+                    Sub2 = row.Sub2,
                 };
 
                 var qualifiedRequest = await this.schedulerRequestProvider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);

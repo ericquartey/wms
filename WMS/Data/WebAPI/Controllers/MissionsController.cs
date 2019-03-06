@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
+using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -25,16 +25,20 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IMissionProvider missionProvider;
 
+        private readonly IMissionSchedulerProvider missionSchedulerProvider;
+
         #endregion
 
         #region Constructors
 
         public MissionsController(
             ILogger<MissionsController> logger,
-            IMissionProvider missionProvider)
+            IMissionProvider missionProvider,
+            IMissionSchedulerProvider missionSchedulerProvider)
         {
             this.logger = logger;
             this.missionProvider = missionProvider;
+            this.missionSchedulerProvider = missionSchedulerProvider;
         }
 
         #endregion
@@ -52,9 +56,19 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(200, Type = typeof(Mission))]
         [ProducesResponseType(404, Type = typeof(string))]
         [HttpPost("{id}/complete")]
-        public Task<ActionResult<Mission>> Complete(int id)
+        public async Task<ActionResult<Scheduler.Core.Models.Mission>> Complete(int id)
         {
-            throw new System.NotImplementedException();
+            var result = await this.missionSchedulerProvider.CompleteAsync(id);
+            if (result is NotFoundOperationResult<Scheduler.Core.Models.Mission>)
+            {
+                return this.NotFound(id);
+            }
+            else if (result is Scheduler.Core.Models.BadRequestOperationResult<Scheduler.Core.Models.Mission>)
+            {
+                return this.BadRequest(result.Description);
+            }
+
+            return this.Ok(result.Entity);
         }
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<Mission>))]

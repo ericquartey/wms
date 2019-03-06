@@ -80,37 +80,19 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             return (i) =>
-                i.AreaDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
+
                 i.BayDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                 i.ItemDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.ItemUnitMeasure.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                 i.ListDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                 i.ListRowDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                i.LoadingUnitDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                i.OperationType.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                i.LoadingUnitTypeDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.Lot.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.MaterialStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.PackageTypeDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.RegistrationNumber.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.Sub1.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.Sub2.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.DispatchedQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.DispatchedQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
+                i.RequestedQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ;
         }
 
         private IQueryable<SchedulerRequest> GetAllBase()
@@ -128,6 +110,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Include(m => m.PackageType)
                 .Select(r => new SchedulerRequest
                 {
+                    Id = r.Id,
                     AreaDescription = r.Area.Name,
                     BayDescription = r.Bay.Description,
                     CreationDate = r.CreationDate,
