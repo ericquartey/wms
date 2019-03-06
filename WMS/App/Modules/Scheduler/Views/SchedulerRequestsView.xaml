@@ -70,7 +70,7 @@
             </dx:MeasurePixelSnapper>
         </DataTemplate>
 
-        <DataTemplate x:Key="IsInstanstBooleanCellTemplate">
+        <DataTemplate x:Key="IsInstantBooleanCellTemplate">
             <Grid VerticalAlignment="Center">
                 <wms:WmsIcon Width="18"
                              Height="18"
@@ -341,7 +341,7 @@
                         <dxg:GridColumn Width="140*"
                                         FieldName="ListRowDescription" />
                         <dxg:GridColumn Width="70*"
-                                        CellDisplayTemplate="{StaticResource IsInstanstBooleanCellTemplate}"
+                                        CellDisplayTemplate="{StaticResource IsInstantBooleanCellTemplate}"
                                         FieldName="IsInstant" />
                         <dxg:GridColumn Width="90*"
                                         FieldName="OperationType" />
@@ -350,6 +350,10 @@
                                         FieldName="RequestedQuantity" />
                     </wms:WmsGridControl.Columns>
 
+                    <wms:WmsGridControl.SortInfo>
+                        <dxg:GridSortInfo FieldName="RequestedQuantity"
+                                          SortOrder="Ascending" />
+                    </wms:WmsGridControl.SortInfo>
 
                 </wms:WmsGridControl>
             </Grid>
