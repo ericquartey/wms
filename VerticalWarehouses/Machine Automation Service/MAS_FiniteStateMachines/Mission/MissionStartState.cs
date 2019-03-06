@@ -43,7 +43,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
         {
             switch (message.Type)
             {
-                case MessageType.StopAction:
+                case MessageType.Stop:
                     //TODO add state business logic to stop current action
                     this.ProcessStopAction(message);
                     break;
@@ -81,7 +81,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
                 "Stop Requested",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.StopAction,
+                MessageType.Stop,
                 MessageVerbosity.Info);
             this.parentStateMachine.ChangeState(new MissionErrorState(this.parentStateMachine), newMessage);
         }
@@ -92,7 +92,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
                 "Stop Requested",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.StopAction,
+                MessageType.Stop,
                 MessageVerbosity.Info);
             this.parentStateMachine.ChangeState(new MissionEndState(this.parentStateMachine), newMessage);
         }

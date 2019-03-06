@@ -1,7 +1,6 @@
-using System.Collections.Generic;
-using Ferretto.VW.Common_Utils;
-using Ferretto.VW.Common_Utils.Events;
+﻿using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.MAS_DataLayer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Prism.Events;
@@ -9,80 +8,90 @@ using Prism.Events;
 namespace MAS_DataLayerUnitTests
 {
     [TestClass]
-    public class DataLayerUnitTest : DBUnitTest
+    public class DataLayerUnitTest
     {
+        #region Fields
+
+        protected DataLayerContext context;
+
+        protected DataLayer dataLayer;
+
+        #endregion
+
         #region Methods
 
-        [TestMethod]
-        public void TestMethodDataLayer()
+        [TestInitialize]
+        public void CreateNewContext()
         {
-            using (var context = this.CreateContext())
-            {
-                var updateFeedback1 = false;
+            this.context = this.CreateContext();
 
-                var cell = new Cell
-                { CellId = 1, Coord = 1, Priority = 1, Side = Side.FrontEven, Status = Status.Free };
-                var listCells1 = new List<Cell>();
-                var listCells2 = new List<Cell>
-                    {cell};
-                // TEMP Commented because it could be obsolete
-                // var updateFeedback2 = false;
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            mockEventAggregator.Setup(s => s.GetEvent<CommandEvent>()).Returns(new CommandEvent());
+            mockEventAggregator.Setup(s => s.GetEvent<NotificationEvent>()).Returns(new NotificationEvent());
+            this.dataLayer = new DataLayer(this.context, mockEventAggregator.Object);
+        }
 
-                var setIntResolution = 1024;
-                var setDecimalHomingCreepSpeed = 10.1m;
-                var setStringHomingFastSpeed = "1000";
-                int resolution;
-                decimal homingCreepSpeed;
-                string homingFastSpeed;
+        [TestMethod]
+        public void NewGetDecimalConfigurationValue()
+        {
+            var setDecResolution = 100.01m;
 
-                var setIntHomingDone = 1;
-                var setDecHomingDone = 1.0m;
-                var setStrHomingDone = "Homing Done";
-                int intHomingDone;
+            var decimalValue = new ConfigurationValue { VarName = ConfigurationValueEnum.resolution, VarType = DataTypeEnum.decimalType, VarValue = setDecResolution.ToString() };
 
-                var mockEventAggregator = new Mock<IEventAggregator>();
-                mockEventAggregator.Setup(s => s.GetEvent<CommandEvent>()).Returns(new CommandEvent());
-                mockEventAggregator.Setup(s => s.GetEvent<NotificationEvent>()).Returns(new NotificationEvent());
-                var dataLayer = new DataLayer("Data Source=./TestDataBase.db", context, mockEventAggregator.Object);
+            this.context.ConfigurationValues.Add(decimalValue);
 
-                updateFeedback1 = dataLayer.LogWriting("Unit Test");
+            this.context.SaveChanges();
 
-                // TEMP Commented because it could be obsolete
-                // updateFeedback2 = dataLayer.SetCellList(listCells1);
+            Assert.AreEqual(setDecResolution, this.dataLayer.GetDecimalConfigurationValue(ConfigurationValueEnum.resolution));
+        }
 
-                dataLayer.SetIntegerConfigurationValue(ConfigurationValueEnum.resolution, setIntResolution);
-                resolution = dataLayer.GetIntegerConfigurationValue(ConfigurationValueEnum.resolution);
-                dataLayer.SetDecimalConfigurationValue(ConfigurationValueEnum.homingCreepSpeed,
-                    setDecimalHomingCreepSpeed);
-                homingCreepSpeed = dataLayer.GetDecimalConfigurationValue(ConfigurationValueEnum.homingCreepSpeed);
-                dataLayer.SetStringConfigurationValue(ConfigurationValueEnum.homingFastSpeed, setStringHomingFastSpeed);
-                homingFastSpeed = dataLayer.GetStringConfigurationValue(ConfigurationValueEnum.homingFastSpeed);
+        [TestMethod]
+        public void NewGetIntegerConfigurationValue()
+        {
+            var setIntBayHeight = 100;
+            var integerValue = new ConfigurationValue { VarName = ConfigurationValueEnum.bayHeight, VarType = DataTypeEnum.integerType, VarValue = setIntBayHeight.ToString() };
 
-                dataLayer.SetIntegerRuntimeValue(RuntimeValueEnum.homingDone, setIntHomingDone);
-                intHomingDone = dataLayer.GetIntegerRuntimeValue(RuntimeValueEnum.homingDone);
+            this.context.ConfigurationValues.Add(integerValue);
 
-                Assert.IsTrue(updateFeedback1);
+            this.context.SaveChanges();
 
-                // TEMP Commented because it could be obsolete
-                // Assert.IsTrue(updateFeedback2);
+            Assert.AreEqual(setIntBayHeight, this.dataLayer.GetIntegerConfigurationValue(ConfigurationValueEnum.bayHeight));
+        }
 
-                // TEMP Commented because it could be obsolete
-                // Assert.ThrowsException<ArgumentNullException>(() => dataLayer.SetCellList(listCells2));
+        [TestMethod]
+        public void NewGetIPAddressConfigurationValue()
+        {
+            var setStrInvAddress = "169.254.231.248";
 
-                Assert.AreEqual(setIntResolution, resolution);
-                Assert.AreEqual(setDecimalHomingCreepSpeed, homingCreepSpeed);
-                Assert.AreEqual(setStringHomingFastSpeed, homingFastSpeed);
-                Assert.AreEqual(setIntHomingDone, intHomingDone);
+            var ipAddrrValue = new ConfigurationValue { VarName = ConfigurationValueEnum.InverterAddress, VarType = DataTypeEnum.IPAddressType, VarValue = setStrInvAddress };
 
-                Assert.ThrowsException<InMemoryDataLayerException>(() =>
-                    dataLayer.SetDecimalRuntimeValue(RuntimeValueEnum.homingDone, setDecHomingDone));
-                Assert.ThrowsException<InMemoryDataLayerException>(() =>
-                    dataLayer.SetStringRuntimeValue(RuntimeValueEnum.homingDone, setStrHomingDone));
-                Assert.ThrowsException<InMemoryDataLayerException>(() =>
-                    dataLayer.GetDecimalRuntimeValue(RuntimeValueEnum.homingDone));
-                Assert.ThrowsException<InMemoryDataLayerException>(() =>
-                    dataLayer.GetStringRuntimeValue(RuntimeValueEnum.homingDone));
-            }
+            this.context.ConfigurationValues.Add(ipAddrrValue);
+
+            this.context.SaveChanges();
+
+            Assert.AreEqual(setStrInvAddress, this.dataLayer.GetIPAddressConfigurationValue(ConfigurationValueEnum.InverterAddress).ToString());
+        }
+
+        [TestMethod]
+        public void NewGetStringConfigurationValue()
+        {
+            var strBayHeightFromGround = "10.000025";
+
+            var stringBHFGrn = new ConfigurationValue { VarName = ConfigurationValueEnum.bayHeightFromGround, VarType = DataTypeEnum.stringType, VarValue = strBayHeightFromGround };
+
+            this.context.ConfigurationValues.Add(stringBHFGrn);
+
+            this.context.SaveChanges();
+
+            Assert.AreEqual(strBayHeightFromGround, this.dataLayer.GetStringConfigurationValue(ConfigurationValueEnum.bayHeightFromGround));
+        }
+
+        protected DataLayerContext CreateContext()
+        {
+            return new DataLayerContext(
+                new DbContextOptionsBuilder<DataLayerContext>()
+                    .UseInMemoryDatabase(this.GetType().FullName)
+                    .Options);
         }
 
         #endregion

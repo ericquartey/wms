@@ -29,11 +29,15 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{x:Static res:InstallationApp.Forward}"
+                PreviewMouseDown="MoveForwardHorizontalAxisHandler"
+                PreviewMouseUp="StopHorizontalAxisHandler"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <Button Margin="440,280,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
+                PreviewMouseDown="MoveBackHorizontalAxisHandler"
+                PreviewMouseUp="StopHorizontalAxisHandler"
                 Content="{x:Static res:InstallationApp.Backward}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
     </Grid>

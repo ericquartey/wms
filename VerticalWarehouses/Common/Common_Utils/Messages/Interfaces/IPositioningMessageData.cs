@@ -16,7 +16,7 @@ namespace Ferretto.VW.Common_Utils.Messages.Interfaces
 
         decimal TargetSpeed { get; }
 
-        PositioningType Type { get; }
+        MovementType TypeOfMovement { get; }
 
         #endregion
     }

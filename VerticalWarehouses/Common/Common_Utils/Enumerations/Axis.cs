@@ -8,11 +8,4 @@
 
         Both
     }
-
-    public enum PositioningType
-    {
-        Absolute,
-
-        Relative
-    }
 }

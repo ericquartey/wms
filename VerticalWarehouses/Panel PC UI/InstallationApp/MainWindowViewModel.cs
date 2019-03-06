@@ -1,11 +1,9 @@
-﻿using System.Configuration;
-using System.IO;
+﻿using System.IO;
 using System.Net;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.InstallationApp.Resources.Enumerables;
-using Ferretto.VW.Utils.Source;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -118,12 +116,7 @@ namespace Ferretto.VW.InstallationApp
             this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
             this.ExitViewButtonRegionCurrentViewModel = null;
             this.ContentRegionCurrentViewModel = (IdleViewModel)this.container.Resolve<IIdleViewModel>();
-            this.ConnectMethod();
             this.InitializeEvents();
-        }
-
-        private async void ConnectMethod()
-        {
         }
 
         private void InitializeEvents()
