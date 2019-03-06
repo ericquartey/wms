@@ -1,10 +1,10 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.Calibrate;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace MAS_InverterDriverUnitTests.StateMachines.HorizontalMovingDrawer
+namespace MAS_InverterDriverUnitTests.StateMachines.Calibrate
 {
     [TestClass]
     public class ErrorStateUnitTest
@@ -15,7 +15,7 @@ namespace MAS_InverterDriverUnitTests.StateMachines.HorizontalMovingDrawer
         public void IsNotNullErrorState()
         {
             var parentStateMachineMock = new Mock<IInverterStateMachine>();
-            var errorState = new ErrorState(parentStateMachineMock.Object, Axis.Horizontal);
+            var errorState = new ErrorState(parentStateMachineMock.Object, Axis.Both);
 
             Assert.IsNotNull(errorState);
         }
