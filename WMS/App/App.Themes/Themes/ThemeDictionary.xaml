@@ -35,6 +35,7 @@
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/BusyIndicator.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/DialogMessageBox.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/ImageEdit.xaml" />
+        <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/TextBlock.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 
