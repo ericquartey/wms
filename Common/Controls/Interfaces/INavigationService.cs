@@ -4,11 +4,17 @@ namespace Ferretto.Common.Controls.Interfaces
 {
     public interface INavigationService
     {
+        #region Properties
+
+        bool IsUnitTest { get; set; }
+
+        #endregion
+
         #region Methods
 
         void Appear<TViewModel>();
 
-        void Appear(string moduleName, string viewModelName, object data = null);
+        INavigableView Appear(string moduleName, string viewModelName, object data = null);
 
         void Disappear(INavigableViewModel viewModel);
 

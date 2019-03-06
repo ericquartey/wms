@@ -860,4 +860,148 @@
     <value>VerticalAxisButton</value>
     <comment>Button text</comment>
   </data>
+  <data name="CellsSideControlButton" xml:space="preserve">
+    <value>CellsSideControlButton</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="CellsSideControlDescription" xml:space="preserve">
+    <value>CellsSideControlDescription</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="CellsSideControlInitialCell" xml:space="preserve">
+    <value>CellsSideControlInitialCell</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CellsSideControlFinalCell" xml:space="preserve">
+    <value>CellsSideControlFinalCell</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CellsSideControlCorrection" xml:space="preserve">
+    <value>CellsSideControlCorrection</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CellsSideControlSelectedSide" xml:space="preserve">
+    <value>CellsSideControlSelectedSide</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadingDrawersButton" xml:space="preserve">
+    <value>LoadingDrawersButton</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LoadingDrawersPageHeader" xml:space="preserve">
+    <value>LoadingDrawersPageHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="LoadingDrawersTotalDrawers" xml:space="preserve">
+    <value>LoadingDrawersTotalDrawers</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadingDrawersMaxWeight" xml:space="preserve">
+    <value>LoadingDrawersMaxWeight</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadingDrawersInsertedDrawers" xml:space="preserve">
+    <value>LoadingDrawersInsertedDrawers</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadingDrawersDrawerToInsert" xml:space="preserve">
+    <value>LoadingDrawersDrawerToInsert</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadingDrawersNextDrawer" xml:space="preserve">
+    <value>LoadingDrawersNextDrawer</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LoadingDrawersStartInsertion" xml:space="preserve">
+    <value>LoadingDrawersStartInsertion</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LoadFirstDrawerButton" xml:space="preserve">
+    <value>LoadFirstDrawerButton</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LoadFirstDrawerPageHeader" xml:space="preserve">
+    <value>LoadFirstDrawerPageHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="LoadFirstDrawerTotCellsToCheck" xml:space="preserve">
+    <value>LoadFirstDrawerTotCellsToCheck</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadFirstDrawerTotCellsChecked" xml:space="preserve">
+    <value>LoadFirstDrawerTotCellsChecked</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadFirstDrawerActualCellToCheck" xml:space="preserve">
+    <value>LoadFirstDrawerActualCellToCheck</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadFirstDrawerDrawerToInsert" xml:space="preserve">
+    <value>LoadFirstDrawerDrawerToInsert</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadFirstDrawerMaxWeight" xml:space="preserve">
+    <value>LoadFirstDrawerMaxWeight</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadFirstDrawerStartLoading" xml:space="preserve">
+    <value>LoadFirstDrawerStartLoading</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LoadFirstDrawerRecallDrawer" xml:space="preserve">
+    <value>LoadFirstDrawerRecallDrawer</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="BayControl" xml:space="preserve">
+    <value>BayControl</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="BayControlHeader" xml:space="preserve">
+    <value>BayControlHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="BayControlSelectedBay" xml:space="preserve">
+    <value>BayControlSelectedBay</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="BayControlSelectedPosition" xml:space="preserve">
+    <value>BayControlSelectedPosition</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="BayControlPositionHeight" xml:space="preserve">
+    <value>BayControlPositionHeight</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="BayControlStepValue" xml:space="preserve">
+    <value>BayControlStepValue</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="BayControlActualHeight" xml:space="preserve">
+    <value>BayControlActualHeight</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="BayControlCorrectionValue" xml:space="preserve">
+    <value>BayControlCorrectionValue</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="BayControlMoveToPosition" xml:space="preserve">
+    <value>BayControlMoveToPosition</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="BayControlStepPiu" xml:space="preserve">
+    <value>BayControlStepPiu</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="BayControlStepMeno" xml:space="preserve">
+    <value>BayControlStepMeno</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="BayControlAdjust" xml:space="preserve">
+    <value>BayControlAdjust</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="BayControlNextPosition" xml:space="preserve">
+    <value>BayControlNextPosition</value>
+    <comment>Button text</comment>
+  </data>
 </root>

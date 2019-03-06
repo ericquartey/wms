@@ -68,8 +68,6 @@ namespace Ferretto.WMS.Scheduler.Tests
 
         protected void InitializeDatabase()
         {
-            CreateServices();
-
             this.Area1 = new Common.DataModels.Area { Id = 1, Name = "Area #1" };
             this.Aisle1 = new Common.DataModels.Aisle { Id = 1, AreaId = this.Area1.Id, Name = "Aisle #1" };
             this.Cell1 = new Common.DataModels.Cell { Id = 1, AisleId = this.Aisle1.Id };

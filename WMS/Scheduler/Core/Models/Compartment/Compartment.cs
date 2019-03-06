@@ -1,15 +1,19 @@
 ﻿using System;
 
-namespace Ferretto.WMS.Scheduler.Core
+namespace Ferretto.WMS.Scheduler.Core.Models
 {
-    public class Compartment : BusinessObject, IOrderableCompartment
+    public class Compartment : Model, IOrderableCompartment
     {
         #region Fields
 
         private int? fifoTime;
+
         private int? maxCapacity;
+
         private int reservedForPick;
+
         private int reservedToStore;
+
         private int stock;
 
         #endregion
@@ -30,7 +34,11 @@ namespace Ferretto.WMS.Scheduler.Core
 
         public DateTime? FirstStoreDate { get; set; }
 
-        public int ItemId { get; set; }
+        public bool IsItemPairingFixed { get; set; }
+
+        public int? ItemId { get; set; }
+
+        public DateTime? LastPickDate { get; internal set; }
 
         public int LoadingUnitId { get; set; }
 

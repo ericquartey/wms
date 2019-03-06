@@ -133,6 +133,114 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpBCTRActualHeight.
+        /// </summary>
+        public static string HelpBCTRActualHeight {
+            get {
+                return ResourceManager.GetString("HelpBCTRActualHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpBCTRAdjust.
+        /// </summary>
+        public static string HelpBCTRAdjust {
+            get {
+                return ResourceManager.GetString("HelpBCTRAdjust", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpBCTRCorrectionValue.
+        /// </summary>
+        public static string HelpBCTRCorrectionValue {
+            get {
+                return ResourceManager.GetString("HelpBCTRCorrectionValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpBCTRDescription.
+        /// </summary>
+        public static string HelpBCTRDescription {
+            get {
+                return ResourceManager.GetString("HelpBCTRDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpBCTRMoveToPosition.
+        /// </summary>
+        public static string HelpBCTRMoveToPosition {
+            get {
+                return ResourceManager.GetString("HelpBCTRMoveToPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpBCTRNextPosition.
+        /// </summary>
+        public static string HelpBCTRNextPosition {
+            get {
+                return ResourceManager.GetString("HelpBCTRNextPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpBCTRPositionHeight.
+        /// </summary>
+        public static string HelpBCTRPositionHeight {
+            get {
+                return ResourceManager.GetString("HelpBCTRPositionHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpBCTRSelectedBay.
+        /// </summary>
+        public static string HelpBCTRSelectedBay {
+            get {
+                return ResourceManager.GetString("HelpBCTRSelectedBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpBCTRSelectedPosition.
+        /// </summary>
+        public static string HelpBCTRSelectedPosition {
+            get {
+                return ResourceManager.GetString("HelpBCTRSelectedPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpBCTRStepMeno.
+        /// </summary>
+        public static string HelpBCTRStepMeno {
+            get {
+                return ResourceManager.GetString("HelpBCTRStepMeno", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpBCTRStepPiu.
+        /// </summary>
+        public static string HelpBCTRStepPiu {
+            get {
+                return ResourceManager.GetString("HelpBCTRStepPiu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpBCTRStepValue.
+        /// </summary>
+        public static string HelpBCTRStepValue {
+            get {
+                return ResourceManager.GetString("HelpBCTRStepValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpCCVApplyCorrection.
         /// </summary>
         public static string HelpCCVApplyCorrection {
@@ -219,6 +327,60 @@ namespace Ferretto.VW.Resources {
         public static string HelpCCVStepValue {
             get {
                 return ResourceManager.GetString("HelpCCVStepValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCSCApplyCorrection.
+        /// </summary>
+        public static string HelpCSCApplyCorrection {
+            get {
+                return ResourceManager.GetString("HelpCSCApplyCorrection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCSCCorrection.
+        /// </summary>
+        public static string HelpCSCCorrection {
+            get {
+                return ResourceManager.GetString("HelpCSCCorrection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCSCDescription.
+        /// </summary>
+        public static string HelpCSCDescription {
+            get {
+                return ResourceManager.GetString("HelpCSCDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCSCFinalCell.
+        /// </summary>
+        public static string HelpCSCFinalCell {
+            get {
+                return ResourceManager.GetString("HelpCSCFinalCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCSCInitialCell.
+        /// </summary>
+        public static string HelpCSCInitialCell {
+            get {
+                return ResourceManager.GetString("HelpCSCInitialCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCSCSelectedSide.
+        /// </summary>
+        public static string HelpCSCSelectedSide {
+            get {
+                return ResourceManager.GetString("HelpCSCSelectedSide", resourceCulture);
             }
         }
         
@@ -408,6 +570,141 @@ namespace Ferretto.VW.Resources {
         public static string HelpInstallationStateToDo {
             get {
                 return ResourceManager.GetString("HelpInstallationStateToDo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLDRDescription.
+        /// </summary>
+        public static string HelpLDRDescription {
+            get {
+                return ResourceManager.GetString("HelpLDRDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLDRDrawerToInsert.
+        /// </summary>
+        public static string HelpLDRDrawerToInsert {
+            get {
+                return ResourceManager.GetString("HelpLDRDrawerToInsert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLDRInsertedDrawers.
+        /// </summary>
+        public static string HelpLDRInsertedDrawers {
+            get {
+                return ResourceManager.GetString("HelpLDRInsertedDrawers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLDRMaxLoad.
+        /// </summary>
+        public static string HelpLDRMaxLoad {
+            get {
+                return ResourceManager.GetString("HelpLDRMaxLoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLDRNextDrawer.
+        /// </summary>
+        public static string HelpLDRNextDrawer {
+            get {
+                return ResourceManager.GetString("HelpLDRNextDrawer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLDRStart.
+        /// </summary>
+        public static string HelpLDRStart {
+            get {
+                return ResourceManager.GetString("HelpLDRStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLDRTotalDrawers.
+        /// </summary>
+        public static string HelpLDRTotalDrawers {
+            get {
+                return ResourceManager.GetString("HelpLDRTotalDrawers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLFDCellInTest.
+        /// </summary>
+        public static string HelpLFDCellInTest {
+            get {
+                return ResourceManager.GetString("HelpLFDCellInTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLFDDescription.
+        /// </summary>
+        public static string HelpLFDDescription {
+            get {
+                return ResourceManager.GetString("HelpLFDDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLFDDrawerNumber.
+        /// </summary>
+        public static string HelpLFDDrawerNumber {
+            get {
+                return ResourceManager.GetString("HelpLFDDrawerNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLFDInsertDrawer.
+        /// </summary>
+        public static string HelpLFDInsertDrawer {
+            get {
+                return ResourceManager.GetString("HelpLFDInsertDrawer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLFDMaxLoad.
+        /// </summary>
+        public static string HelpLFDMaxLoad {
+            get {
+                return ResourceManager.GetString("HelpLFDMaxLoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLFDRecallDrawer.
+        /// </summary>
+        public static string HelpLFDRecallDrawer {
+            get {
+                return ResourceManager.GetString("HelpLFDRecallDrawer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLFDTestedCells.
+        /// </summary>
+        public static string HelpLFDTestedCells {
+            get {
+                return ResourceManager.GetString("HelpLFDTestedCells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLFDTotalCells.
+        /// </summary>
+        public static string HelpLFDTotalCells {
+            get {
+                return ResourceManager.GetString("HelpLFDTotalCells", resourceCulture);
             }
         }
         

@@ -58,7 +58,9 @@ namespace Ferretto.Common.EF.Migrations
                 throw new System.ArgumentNullException(nameof(migrationBuilder));
             }
 
-            using (var db = new DatabaseContext())
+            var factory = new DatabaseContextFactory();
+
+            using (var db = factory.CreateDbContext(null))
             {
                 var now = DateTime.UtcNow;
 
@@ -68,7 +70,7 @@ namespace Ferretto.Common.EF.Migrations
                     nullable: true,
                     defaultValueSql: "GETUTCDATE()");
 
-                this.AddDates(migrationBuilder, now, db.SchedulerRequests, nameof(db.SchedulerRequests));
+                AddDates(migrationBuilder, now, db.SchedulerRequests, nameof(db.SchedulerRequests));
 
                 migrationBuilder.AlterColumn<DateTime>(
                     name: "LastModificationDate",
@@ -82,7 +84,7 @@ namespace Ferretto.Common.EF.Migrations
                     nullable: true,
                     defaultValueSql: "GETUTCDATE()");
 
-                this.AddDates(migrationBuilder, now, db.LoadingUnits, nameof(db.LoadingUnits));
+                AddDates(migrationBuilder, now, db.LoadingUnits, nameof(db.LoadingUnits));
 
                 migrationBuilder.AlterColumn<DateTime>(
                     name: "LastModificationDate",
@@ -90,7 +92,7 @@ namespace Ferretto.Common.EF.Migrations
                     nullable: false,
                     defaultValueSql: "GETUTCDATE()");
 
-                this.AddDates(migrationBuilder, now, db.Items, nameof(db.Items));
+                AddDates(migrationBuilder, now, db.Items, nameof(db.Items));
                 migrationBuilder.AlterColumn<DateTime>(
                     name: "LastModificationDate",
                     table: "Items",
@@ -99,7 +101,7 @@ namespace Ferretto.Common.EF.Migrations
                     oldClrType: typeof(DateTime),
                     oldNullable: true);
 
-                this.AddDates(migrationBuilder, now, db.ItemLists, nameof(db.ItemLists));
+                AddDates(migrationBuilder, now, db.ItemLists, nameof(db.ItemLists));
                 migrationBuilder.AlterColumn<DateTime>(
                     name: "LastModificationDate",
                     table: "ItemLists",
@@ -108,7 +110,7 @@ namespace Ferretto.Common.EF.Migrations
                     oldClrType: typeof(DateTime),
                     oldNullable: true);
 
-                this.AddDates(migrationBuilder, now, db.ItemListRows, nameof(db.ItemListRows));
+                AddDates(migrationBuilder, now, db.ItemListRows, nameof(db.ItemListRows));
                 migrationBuilder.AlterColumn<DateTime>(
                     name: "LastModificationDate",
                     table: "ItemListRows",
@@ -123,7 +125,7 @@ namespace Ferretto.Common.EF.Migrations
                     nullable: true,
                     defaultValueSql: "GETUTCDATE()");
 
-                this.AddDates(migrationBuilder, now, db.Compartments, nameof(db.Compartments));
+                AddDates(migrationBuilder, now, db.Compartments, nameof(db.Compartments));
 
                 migrationBuilder.AlterColumn<DateTime>(
                     name: "LastModificationDate",
@@ -133,7 +135,7 @@ namespace Ferretto.Common.EF.Migrations
             }
         }
 
-        private void AddDates<T>(MigrationBuilder migrationBuilder, DateTime now, DbSet<T> dbSet, string tableName)
+        private static void AddDates<T>(MigrationBuilder migrationBuilder, DateTime now, DbSet<T> dbSet, string tableName)
             where T : class, IDataModel
         {
             var ids = dbSet.Select(r => (object)r.Id).ToArray();

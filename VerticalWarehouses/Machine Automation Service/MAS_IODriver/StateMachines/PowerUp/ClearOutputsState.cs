@@ -1,10 +1,10 @@
 ﻿namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 {
-    public class ClearOutputs : IoStateBase
+    public class ClearOutputsState : IoStateBase
     {
         #region Constructors
 
-        public ClearOutputs(IIoStateMachine parentStateMachine)
+        public ClearOutputsState(IIoStateMachine parentStateMachine)
         {
             this.parentStateMachine = parentStateMachine;
             var clearIoMessage = new IoMessage(false);
@@ -19,7 +19,10 @@
 
         public override void ProcessMessage(IoMessage message)
         {
-            this.parentStateMachine.ChangeState(new PulseReset(this.parentStateMachine));
+            if (message.ValidOutputs && message.OutputsCleared)
+            {
+                this.parentStateMachine.ChangeState(new PulseResetState(this.parentStateMachine));
+            }
         }
 
         #endregion

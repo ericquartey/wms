@@ -4,12 +4,12 @@
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Interactivity;
+    using DevExpress.Mvvm.UI;
+    using DevExpress.Xpf.Bars;
 
     public class WmsTooltipViewAppear : TriggerAction<ContentElement>
     {
         #region Fields
-
-        public static readonly DependencyProperty GridProperty = DependencyProperty.Register(nameof(Grid), typeof(object), typeof(WmsTooltipViewAppear));
 
         public static readonly DependencyProperty TooltipProperty = DependencyProperty.Register(nameof(Tooltip), typeof(string), typeof(WmsTooltipViewAppear));
 
@@ -17,11 +17,7 @@
 
         #region Properties
 
-        public WmsGridControl Grid
-        {
-            get => (WmsGridControl)this.GetValue(GridProperty);
-            set => this.SetValue(GridProperty, value);
-        }
+        public WmsGridControl Grid { get; set; }
 
         public string Tooltip
         {
@@ -33,8 +29,21 @@
 
         #region Methods
 
-        protected override void Invoke(object parameter)
+        protected override void Invoke(object inputArgs)
         {
+            if (inputArgs is ItemClickEventArgs clickEventArgs)
+            {
+                if (clickEventArgs.Source is ActionBarItem actionBarItem)
+                {
+                    var gridParent = LayoutTreeHelper.GetVisualParents(actionBarItem)
+                        .OfType<Grid>()
+                        .FirstOrDefault();
+
+                    this.Grid = LayoutTreeHelper.GetVisualChildren(gridParent)
+                        .OfType<WmsGridControl>()
+                        .FirstOrDefault();
+                }
+            }
             if (this.Grid?.GetSelectedRowHandles().Count() == 1)
             {
                 var rowHandle = this.Grid.GetSelectedRowHandles().FirstOrDefault();

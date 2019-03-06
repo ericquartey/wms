@@ -44,6 +44,8 @@
 
         ExecuteStopVerticalPositioning,
 
-        SwitchAxis
+        SwitchAxis,
+
+        IOPowerUp
     }
 }

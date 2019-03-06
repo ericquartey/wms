@@ -24,6 +24,10 @@ namespace Ferretto.Common.Controls.Services
 
         private readonly Dictionary<string, ViewModelBind> registrations = new Dictionary<string, ViewModelBind>();
 
+        private bool isInUnitTest;
+
+        private INavigableView lastViewActivated;
+
         #endregion
 
         #region Constructors
@@ -36,6 +40,12 @@ namespace Ferretto.Common.Controls.Services
 
         #endregion
 
+        #region Properties
+
+        public bool IsUnitTest { get => this.isInUnitTest; set => this.isInUnitTest = value; }
+
+        #endregion
+
         #region Methods
 
         public void Appear<TViewModel>()
@@ -44,11 +54,11 @@ namespace Ferretto.Common.Controls.Services
             this.Appear(moduleName, viewModelName);
         }
 
-        public void Appear(string moduleName, string viewModelName, object data = null)
+        public INavigableView Appear(string moduleName, string viewModelName, object data = null)
         {
             if (MvvmNaming.IsViewModelNameValid(viewModelName) == false)
             {
-                return;
+                return null;
             }
 
             NLog.LogManager
@@ -62,7 +72,7 @@ namespace Ferretto.Common.Controls.Services
                 var modelName = MvvmNaming.GetModelNameFromViewModelName(viewModelName);
                 var moduleViewName = MvvmNaming.GetViewName(moduleName, modelName);
 
-                this.CheckAddRegion(moduleViewName, data);
+                return this.CheckAddRegion(moduleViewName, data);
             }
             catch (Exception ex)
             {
@@ -70,6 +80,8 @@ namespace Ferretto.Common.Controls.Services
                     .GetCurrentClassLogger()
                     .Error(ex, string.Format("Cannot show view '{0}' for module '{1}'.", viewModelName, moduleName));
             }
+
+            return null;
         }
 
         public void Disappear(INavigableView view)
@@ -270,7 +282,7 @@ namespace Ferretto.Common.Controls.Services
                              DispatcherPriority.DataBind,
                              new Action(() =>
                              {
-                                 operationBefore.Invoke();
+                                 operationBefore?.Invoke();
                              }));
                         elementFocused.Dispatcher.BeginInvoke(
                             DispatcherPriority.SystemIdle,
@@ -310,29 +322,30 @@ namespace Ferretto.Common.Controls.Services
             }
         }
 
-        private void AddToRegion(string moduleViewName, object data)
+        private INavigableView AddToRegion(string moduleViewName, object data)
         {
-            var registeredView = this.GetView(moduleViewName, data);
-            if (registeredView.ViewType == WmsViewType.Docking)
+            this.lastViewActivated = this.GetView(moduleViewName, data);
+            if (this.lastViewActivated.ViewType == WmsViewType.Docking)
             {
-                WmsMainDockLayoutManager.Current.RegisterView(moduleViewName, registeredView.Title);
-                this.regionManager.AddToRegion(moduleViewName, registeredView);
+                WmsMainDockLayoutManager.Current.RegisterView(moduleViewName, this.lastViewActivated.Title);
+                this.regionManager.AddToRegion(moduleViewName, this.lastViewActivated);
             }
             else
             {
-                this.RegisterDialog(moduleViewName, registeredView);
+                this.RegisterDialog(moduleViewName, this.lastViewActivated);
             }
+
+            return this.lastViewActivated;
         }
 
-        private string CheckAddRegion(string moduleViewName, object data)
+        private INavigableView CheckAddRegion(string moduleViewName, object data)
         {
             var viewModelBind = this.GetViewModelBind(moduleViewName);
             var instanceModuleViewName = $"{moduleViewName}.{viewModelBind.Ids.First()}";
             if (this.regionManager.Regions.ContainsRegionWithName(instanceModuleViewName) == false)
             {
                 // Map Prism region to current layout
-                this.AddToRegion(instanceModuleViewName, data);
-                return instanceModuleViewName;
+                return this.AddToRegion(instanceModuleViewName, data);
             }
 
             // Register new instance of same view type
@@ -340,9 +353,7 @@ namespace Ferretto.Common.Controls.Services
             this.RegisterType(viewModelBind, instanceModuleViewName);
 
             // Map cloned type to current layout
-            this.AddToRegion(instanceModuleViewName, data);
-
-            return instanceModuleViewName;
+            return this.AddToRegion(instanceModuleViewName, data);
         }
 
         private string GetNewRegistrationId<TItemsView, TItemsViewModel>()
@@ -400,7 +411,7 @@ namespace Ferretto.Common.Controls.Services
         private void RegisterDialog(string moduleViewName, INavigableView registeredView)
         {
             this.dialogs.Add(moduleViewName, registeredView);
-            WmsDialogView.ShowDialog(registeredView);
+            WmsDialogView.ShowDialog(registeredView, this.isInUnitTest);
         }
 
         private void RegisterType(ViewModelBind viewModelBind, string instanceModuleViewName)

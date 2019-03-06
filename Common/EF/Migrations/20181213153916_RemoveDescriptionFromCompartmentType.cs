@@ -17,7 +17,7 @@ namespace Ferretto.Common.EF.Migrations
                 name: "Description",
                 table: "CompartmentTypes",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: string.Empty);
         }
 
         protected override void Up(MigrationBuilder migrationBuilder)
