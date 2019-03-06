@@ -93,7 +93,7 @@
                                     Header="{x:Static res:General.Position}">
                         <dxg:GridColumn.CellDisplayTemplate>
                             <DataTemplate>
-                                <TextBlock VerticalAlignment="Center">
+                                <TextBlock Style="{DynamicResource TextBlockCell}">
                                     <TextBlock.Text>
                                         <MultiBinding Converter="{StaticResource SFC}">
                                             <Binding Source="{x:Static res:General.PositionFormat}" />
@@ -111,7 +111,7 @@
                                     Header="{x:Static res:General.Dimension}">
                         <dxg:GridColumn.CellDisplayTemplate>
                             <DataTemplate>
-                                <TextBlock VerticalAlignment="Center">
+                                <TextBlock Style="{DynamicResource TextBlockCell}">
                                     <TextBlock.Text>
                                         <MultiBinding Converter="{StaticResource SFC}">
                                             <Binding Source="{x:Static res:General.DimensionFormat}" />
