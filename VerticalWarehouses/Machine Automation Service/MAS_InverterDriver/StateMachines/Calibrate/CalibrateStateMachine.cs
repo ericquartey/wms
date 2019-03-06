@@ -1,8 +1,8 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Interfaces;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Utilities;
-using Ferretto.VW.InverterDriver.StateMachines.Calibrate;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.Calibrate;
 
-namespace Ferretto.VW.InverterDriver.StateMachines
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 {
     public class CalibrateStateMachine : InverterStateMachineBase
     {
@@ -17,41 +17,39 @@ namespace Ferretto.VW.InverterDriver.StateMachines
         #region Constructors
 
         //TODO remove priority queue
-        public CalibrateStateMachine( Axis axisToCalibrate, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, BlockingConcurrentQueue<InverterMessage> priorityInverterCommandQueue )
+        public CalibrateStateMachine(Axis axisToCalibrate,
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            BlockingConcurrentQueue<InverterMessage> priorityInverterCommandQueue)
         {
             this.axisToCalibrate = axisToCalibrate;
             this.inverterCommandQueue = inverterCommandQueue;
-            this.priorityInverterCommandQueue = priorityInverterCommandQueue;
+            //this.priorityInverterCommandQueue = priorityInverterCommandQueue;
         }
 
         #endregion
 
         #region Methods
 
-        public override void ChangeState( IInverterState newState )
+        public override void ChangeState(IInverterState newState)
         {
-            if(newState is EndState)
-            {
-                if(this.axisToCalibrate == Axis.Both && this.currentAxis == Axis.Horizontal)
+            if (newState is EndState)
+                if (this.axisToCalibrate == Axis.Both && this.currentAxis == Axis.Horizontal)
                 {
                     this.currentAxis = Axis.Vertical;
-                    base.ChangeState( new VoltageDisabledState( this, this.currentAxis ) );
+                    base.ChangeState(new VoltageDisabledState(this, this.currentAxis));
                     return;
                 }
 
-                //TODO Notify operation completed
-            }
-
-            base.ChangeState( newState );
+            base.ChangeState(newState);
         }
 
         public override void Start()
         {
-            switch(this.axisToCalibrate)
+            switch (this.axisToCalibrate)
             {
                 case Axis.Both:
                 case Axis.Horizontal:
-                    currentAxis = Axis.Horizontal;
+                    this.currentAxis = Axis.Horizontal;
                     break;
 
                 case Axis.Vertical:
@@ -59,7 +57,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines
                     break;
             }
 
-            CurrentState = new VoltageDisabledState( this, currentAxis );
+            this.CurrentState = new VoltageDisabledState(this, this.currentAxis);
         }
 
         #endregion

@@ -8,7 +8,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
     {
         #region Constructors
 
-        protected StateMachineBase( IEventAggregator eventAggregator )
+        protected StateMachineBase(IEventAggregator eventAggregator)
         {
             this.EventAggregator = eventAggregator;
         }
@@ -25,23 +25,30 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Methods
 
-        public void ChangeState( IState newState, Event_Message message = null )
+        public void ChangeState(IState newState, CommandMessage message = null)
         {
             this.CurrentState = newState;
-            if(message != null)
-            {
-                this.EventAggregator.GetEvent<MachineAutomationService_Event>().Publish( message );
-            }
+            //x if (message != null) this.EventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
 
-        public void NotifyMessage( Event_Message message )
+        public void ProcessCommandMessage(CommandMessage message)
         {
-            this.CurrentState?.NotifyMessage( message );
+            this.CurrentState?.SendCommandMessage(message);
         }
 
-        public void PublishMessage( Event_Message message )
+        public void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.EventAggregator.GetEvent<MachineAutomationService_Event>().Publish( message );
+            this.CurrentState?.SendNotificationMessage(message);
+        }
+
+        public void PublishCommandMessage(CommandMessage message)
+        {
+            this.EventAggregator.GetEvent<CommandEvent>().Publish(message);
+        }
+
+        public void PublishNotificationMessage(NotificationMessage message)
+        {
+            this.EventAggregator.GetEvent<NotificationEvent>().Publish(message);
         }
 
         public abstract void Start();

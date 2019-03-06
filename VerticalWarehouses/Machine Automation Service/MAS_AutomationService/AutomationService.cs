@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.EventParameters;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
 using Microsoft.AspNetCore.SignalR;
@@ -17,13 +17,15 @@ namespace Ferretto.VW.MAS_AutomationService
     {
         #region Fields
 
+        private readonly Task commadReceiveTask;
+
         private readonly IEventAggregator eventAggregator;
 
         private readonly IHubContext<InstallationHub, IInstallationHub> hub;
 
-        private readonly ConcurrentQueue<Event_Message> messageQueue;
+        private readonly BlockingConcurrentQueue<CommandMessage> messageQueue;
 
-        private readonly ManualResetEventSlim messageReceived;
+        private CancellationToken stoppingToken;
 
         #endregion
 
@@ -34,42 +36,35 @@ namespace Ferretto.VW.MAS_AutomationService
             this.eventAggregator = eventAggregator;
             this.hub = hub;
 
-            this.messageReceived = new ManualResetEventSlim(false);
+            this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
 
-            this.messageQueue = new ConcurrentQueue<Event_Message>();
+            this.commadReceiveTask = new Task(() => CommandReceiveTaskFunction());
 
-            var webApiMessagEvent = this.eventAggregator.GetEvent<MachineAutomationService_Event>();
-            webApiMessagEvent.Subscribe((message) =>
-               {
-                   this.messageQueue.Enqueue(message);
-                   this.messageReceived.Set();
-               },
+            var webApiMessagEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            webApiMessagEvent.Subscribe(message =>
+                {
+                    this.messageQueue.Enqueue(message);
+                },
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Destination == MessageActor.AutomationService);
+            this.TESTStartCycle();
         }
 
         #endregion
 
         #region Methods
 
-        public void SendMessageToAllConnectedClients(Notification_EventParameter eventParameter)
+        public void SendMessageToAllConnectedClients(NotificationMessage notificationMessage)
         {
-            this.hub.Clients.All.OnSendMessageToAllConnectedClients(eventParameter.Description);
-        }
-
-        public new Task StopAsync(CancellationToken stoppingToken)
-        {
-            var returnValue = base.StopAsync(stoppingToken);
-
-            return returnValue;
+            this.hub.Clients.All.OnSendMessageToAllConnectedClients(notificationMessage.Description);
         }
 
         public async void TESTStartCycle()
         {
             while (true)
             {
-                var message = new string[] { "pippo", "topolino", "pluto", "paperino", "minnie", "qui", "quo", "qua" };
+                var message = new[] { "pippo", "topolino", "pluto", "paperino", "minnie", "qui", "quo", "qua" };
                 var randomInt = new Random().Next(message.Length);
                 Console.WriteLine(message[randomInt]);
                 await this.hub.Clients.All.OnSendMessageToAllConnectedClients(message[randomInt]);
@@ -79,48 +74,53 @@ namespace Ferretto.VW.MAS_AutomationService
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            await Task.Run(() => this.AutomationServiceTaskFunction(stoppingToken), stoppingToken);
+            this.stoppingToken = stoppingToken;
+
+            try
+            {
+                this.commadReceiveTask.Start();
+            }
+            catch (Exception ex)
+            {
+                //TODO define custom Exception
+                throw new Exception($"Exception: {ex.Message} while starting service threads", ex);
+            }
         }
 
-        private Task AutomationServiceTaskFunction(CancellationToken stoppingToken)
+        private Task CommandReceiveTaskFunction()
         {
             do
             {
+                CommandMessage receivedMessage;
                 try
                 {
-                    this.messageReceived.Wait(Timeout.Infinite, stoppingToken);
+                    this.messageQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
                 }
                 catch (OperationCanceledException ex)
                 {
                     return Task.FromException(ex);
                 }
-
-                this.messageReceived.Reset();
-
-                while (this.messageQueue.TryDequeue(out var receivedMessage))
+                switch (receivedMessage.Type)
                 {
-                    switch (receivedMessage.Type)
-                    {
-                        case MessageType.AddMission:
-                            this.ProcessAddMissionMessage(receivedMessage);
-                            break;
+                    case MessageType.AddMission:
+                        this.ProcessAddMissionMessage(receivedMessage);
+                        break;
 
-                        case MessageType.HorizontalHoming:
-                            break;
-                    }
+                    case MessageType.HorizontalHoming:
+                        break;
                 }
-            } while (!stoppingToken.IsCancellationRequested);
+            } while (!this.stoppingToken.IsCancellationRequested);
 
             return Task.CompletedTask;
         }
 
-        private void ProcessAddMissionMessage(Event_Message message)
+        private void ProcessAddMissionMessage(CommandMessage message)
         {
             //TODO apply Automation Service Business Logic to the message
 
             message.Source = MessageActor.AutomationService;
             message.Destination = MessageActor.MissionsManager;
-            this.eventAggregator.GetEvent<MachineAutomationService_Event>().Publish(message);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
 
         #endregion

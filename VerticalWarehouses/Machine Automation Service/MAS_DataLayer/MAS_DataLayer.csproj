@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
     <RootNamespace>Ferretto.VW.MAS_DataLayer</RootNamespace>
     <AssemblyName>Ferretto.VW.MAS_DataLayer</AssemblyName>
   </PropertyGroup>
@@ -33,6 +33,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.1.1" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
   </ItemGroup>
 

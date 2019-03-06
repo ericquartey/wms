@@ -1,5 +1,6 @@
-﻿using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.Common_Utils.EventParameters;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_InverterDriver.ActionBlocks;
 
 namespace Ferretto.VW.MAS_InverterDriver
@@ -8,13 +9,14 @@ namespace Ferretto.VW.MAS_InverterDriver
     {
         #region Methods
 
-        public void ExecuteVerticalPosition(int targetPosition, float vMax, float acc, float dec, float weight, short offset)
+        public void ExecuteVerticalPosition(int targetPosition, float vMax, float acc, float dec, float weight,
+            short offset, bool absoluteMovement)
         {
-            if(this.inverterAction != null)
-            {
-                this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
-                    (OperationType.Homing, OperationStatus.Error, "Inverter action has already defined", Verbosity.Info));
-            }
+            if (this.inverterAction != null)
+                this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null,
+                    "Inverter action has already defined", MessageActor.Any, MessageActor.InverterDriver,
+                    MessageType.Homing, MessageStatus.OperationError,
+                    ErrorLevel.Error));
             var inverterAction = new PositioningDrawer();
             this.inverterAction = inverterAction;
 
@@ -23,24 +25,45 @@ namespace Ferretto.VW.MAS_InverterDriver
             inverterAction.SetInverterDriverInterface = this.inverterDriver;
             inverterAction.Initialize();
 
+            inverterAction.AbsoluteMovement = absoluteMovement;
             inverterAction.MoveAlongVerticalAxisToPoint(targetPosition, vMax, acc, dec, weight, offset);
-            
         }
 
-        private void PositioningDrawer_ThrowErrorEvent()
+        public void ExecuteVerticalPositionStop()
         {
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
-                (OperationType.Homing, OperationStatus.Error, "Internal inverter driver error", Verbosity.Info));
+            if (this.inverterAction == null)
+                this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null,
+                    "Internal inverter driver error", MessageActor.Any, MessageActor.InverterDriver, MessageType.Homing,
+                    MessageStatus.OperationError,
+                    ErrorLevel.Error));
+
+            ((PositioningDrawer)this.inverterAction).Stop();
+            ((PositioningDrawer)this.inverterAction).Terminate();
+
+            this.inverterAction.EndEvent -= this.PositioningDrawer_ThrowEndEvent;
+            this.inverterAction.ErrorEvent -= this.PositioningDrawer_ThrowErrorEvent;
+            this.inverterAction = null;
 
             this.inverterAction.ErrorEvent -= this.PositioningDrawer_ThrowErrorEvent;
         }
 
         private void PositioningDrawer_ThrowEndEvent()
         {
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
-                (OperationType.Homing, OperationStatus.End, "Vertical position Ended", Verbosity.Info));
-
             this.inverterAction.EndEvent -= this.PositioningDrawer_ThrowEndEvent;
+            ((PositioningDrawer)this.inverterAction).Terminate();
+            this.inverterAction = null;
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null,
+                "Vertical position Ended", MessageActor.Any, MessageActor.InverterDriver, MessageType.Homing,
+                MessageStatus.OperationEnd));
+        }
+
+        private void PositioningDrawer_ThrowErrorEvent()
+        {
+            this.inverterAction.ErrorEvent -= this.PositioningDrawer_ThrowErrorEvent;
+
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null,
+                "Internal inverter driver error", MessageActor.Any, MessageActor.InverterDriver,
+                MessageType.Positioning, MessageStatus.OperationError, ErrorLevel.Error));
         }
 
         #endregion

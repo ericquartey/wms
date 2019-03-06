@@ -21,7 +21,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public CompartmentAddBulkViewModel()
         {
             this.Title = Common.Resources.MasterData.BulkAddCompartment;
-            this.IsValidationEnabled = false;
+            this.ColorRequired = ColorRequired.CreateMode;
         }
 
         #endregion
@@ -37,9 +37,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async Task ExecuteSaveCommand()
         {
-            this.IsValidationEnabled = true;
-
-            if (string.IsNullOrWhiteSpace(this.Model.Error) == false)
+            if (!this.IsModelValid)
             {
                 return;
             }

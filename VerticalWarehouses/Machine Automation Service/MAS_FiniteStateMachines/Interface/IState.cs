@@ -16,16 +16,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         #region Methods
 
         /// <summary>
-        /// Make the operation required by the current state.
+        /// Send a command message.
         /// </summary>
-        void MakeOperation();
-
-        void NotifyMessage(Event_Message message);
+        /// <param name="message">A <see cref="CommandMessage"/> is published from state</param>
+        void SendCommandMessage(CommandMessage message);
 
         /// <summary>
-        /// Stop operation for the state.
+        /// Send a notification message.
         /// </summary>
-        void Stop();
+        /// <param name="message">A <see cref="NotificationMessage"/> is published from state.</param>
+        void SendNotificationMessage(NotificationMessage message);
 
         #endregion
     }

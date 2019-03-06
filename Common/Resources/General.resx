@@ -259,4 +259,16 @@
   <data name="Create" xml:space="preserve">
     <value>Create</value>
   </data>
+  <data name="PositionFormat" xml:space="preserve">
+    <value>X={0} Y={1}</value>
+  </data>
+  <data name="DimensionFormat" xml:space="preserve">
+    <value>{0}X{1}</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="Dimension" xml:space="preserve">
+    <value>Dimension</value>
+  </data>
 </root>

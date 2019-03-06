@@ -5,6 +5,9 @@ namespace Ferretto.Common.BusinessModels
 {
     public enum ItemListType
     {
+        [Display(Name = "")]
+        NotSpecified,
+
         [Display(Name = nameof(BusinessObjects.ItemListTypePick), ResourceType = typeof(BusinessObjects))]
         Pick = 'P',
 

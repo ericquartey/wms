@@ -17,7 +17,7 @@ namespace Ferretto.VW.InverterDriver
        #endregion
 
         #region -BuildReadPacket Method-
-        public byte[] BuildReadPacket(byte Read_SystemIndex, byte Read_DataSetIndex, Int16 Read_ParamID)
+        public byte[] BuildReadPacket(byte Read_SystemIndex, byte Read_DataSetIndex, short Read_ParamID)
         {
             byte[] ReadPacket = new byte[6];
             ReadPacket[0] = Read_Header; 
@@ -44,7 +44,7 @@ namespace Ferretto.VW.InverterDriver
         #endregion
 
         #region -BuildWritePacket Method-
-        public byte[] BuildWritePacket(byte Write_SystemIndex, byte Write_DataSetIndex, Int16 Write_ParamID, ValueDataType Write_DataType, object value)
+        public byte[] BuildWritePacket(byte Write_SystemIndex, byte Write_DataSetIndex, short Write_ParamID, ValueDataType Write_DataType, object value)
         {
             int nBytesPayLoad = 0;
             switch (Write_DataType)
@@ -128,7 +128,7 @@ namespace Ferretto.VW.InverterDriver
                 case ValueDataType.Int32:
             
                 var ans_Write_data_Int32 = new byte[4];
-                var parameterNo_Write_data_Int32 = new byte[sizeof(Int32)];
+                var parameterNo_Write_data_Int32 = new byte[sizeof(int)];
                 parameterNo_Write_data_Int32 = BitConverter.GetBytes(Convert.ToInt32(value));
                 parameterNo_Write_data_Int32.CopyTo(ans_Write_data_Int32, 0);
                 Array.Copy(ans_Write_data_Int32, 0, WritePacket, 6, 4);
@@ -150,7 +150,7 @@ namespace Ferretto.VW.InverterDriver
 
         #region -ParseDataBuffer Properties-
         public ParameterID ParameterIDFromParse { get; private set; }
-        public Object RetValueFromParse { get; private set; }
+        public object RetValueFromParse { get; private set; }
         int N_BITS_8 = 8;
 
         #endregion

@@ -22,13 +22,19 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
 
                     b.Property<decimal>("Coord");
 
+                    b.Property<int>("LoadingUnitId");
+
                     b.Property<int>("Priority");
 
                     b.Property<long>("Side");
 
                     b.Property<long>("Status");
 
+                    b.Property<long>("WorkingStatus");
+
                     b.HasKey("CellId");
+
+                    b.HasIndex("LoadingUnitId");
 
                     b.ToTable("Cells");
                 });
@@ -44,6 +50,11 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                     b.HasKey("VarName");
 
                     b.ToTable("ConfigurationValues");
+
+                    b.HasData(
+                        new { VarName = 8L, VarType = 3L, VarValue = "169.254.231.248" },
+                        new { VarName = 9L, VarType = 0L, VarValue = "17221" }
+                    );
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.FreeBlock", b =>
@@ -57,6 +68,8 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
 
                     b.Property<decimal>("Coord");
 
+                    b.Property<int>("LoadingUnitId");
+
                     b.Property<int>("Priority");
 
                     b.Property<long>("Side");
@@ -65,7 +78,27 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
 
                     b.HasKey("FreeBlockId");
 
+                    b.HasIndex("LoadingUnitId");
+
                     b.ToTable("FreeBlocks");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.LoadingUnit", b =>
+                {
+                    b.Property<int>("LoadingUnitId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("CellPosition");
+
+                    b.Property<decimal>("Height");
+
+                    b.Property<long>("Status");
+
+                    b.Property<decimal>("Weight");
+
+                    b.HasKey("LoadingUnitId");
+
+                    b.ToTable("LoadingUnits");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.RuntimeValue", b =>
@@ -91,6 +124,22 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                     b.HasKey("StatusLogId");
 
                     b.ToTable("StatusLogs");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.Cell", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS_DataLayer.LoadingUnit", "LoadingUnit")
+                        .WithMany("Cells")
+                        .HasForeignKey("LoadingUnitId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.FreeBlock", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS_DataLayer.LoadingUnit", "LoadingUnit")
+                        .WithMany("FreeBlocks")
+                        .HasForeignKey("LoadingUnitId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

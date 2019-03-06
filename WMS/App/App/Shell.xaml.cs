@@ -32,7 +32,6 @@ namespace Ferretto.WMS.App
             // Load the root module of the application
             this.moduleManager.LoadModule(nameof(Layout));
             this.moduleManager.LoadModule(nameof(MasterData));
-            this.moduleManager.LoadModule(nameof(Common.Utils.Modules.Scheduler));
         }
 
         #endregion

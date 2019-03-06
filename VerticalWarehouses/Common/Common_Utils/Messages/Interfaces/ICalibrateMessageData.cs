@@ -1,25 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 
 namespace Ferretto.VW.Common_Utils.Messages.Interfaces
 {
-    public enum Axis
-    {
-        Horizontal,
-
-        Vertical,
-
-        Both
-    }
-
-    public interface ICalibrateMessageData : IEventMessageData
+    public interface ICalibrateMessageData : IMessageData
     {
         #region Properties
 
+        float Acceleration { get; }
+
         Axis AxisToCalibrate { get; }
+
+        float CreepSpeed { get; }
+
+        float FastSpeed { get; }
 
         #endregion
     }

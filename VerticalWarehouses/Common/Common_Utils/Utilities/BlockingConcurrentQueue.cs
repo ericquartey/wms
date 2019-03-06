@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Threading;
 
 namespace Ferretto.VW.Common_Utils.Utilities
@@ -7,7 +8,7 @@ namespace Ferretto.VW.Common_Utils.Utilities
     {
         #region Fields
 
-        private ManualResetEventSlim dataReady;
+        private readonly ManualResetEventSlim dataReady;
 
         #endregion
 
@@ -15,7 +16,7 @@ namespace Ferretto.VW.Common_Utils.Utilities
 
         public BlockingConcurrentQueue()
         {
-            this.dataReady = new ManualResetEventSlim( false );
+            this.dataReady = new ManualResetEventSlim(false);
         }
 
         #endregion
@@ -28,21 +29,21 @@ namespace Ferretto.VW.Common_Utils.Utilities
 
         #region Methods
 
-        public new void Enqueue( T item )
+        public new void Enqueue(T item)
         {
-            base.Enqueue( item );
+            base.Enqueue(item);
             this.dataReady?.Set();
         }
 
-        public new bool TryDequeue( int timeout, CancellationToken cancellationToken, out T result )
+        public bool TryDequeue(int timeout, CancellationToken cancellationToken, out T result)
         {
-            if(this.dataReady?.Wait( timeout, cancellationToken ) ?? false)
+            if (this.dataReady?.Wait(timeout, cancellationToken) ?? false)
             {
                 this.dataReady.Reset();
-                return base.TryDequeue( out result );
+                return base.TryDequeue(out result);
             }
 
-            result = default( T );
+            result = default(T);
 
             return false;
         }

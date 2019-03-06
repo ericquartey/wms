@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Media;
 using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
+using Ferretto.Common.Utils.Extensions;
 
 namespace Ferretto.Common.Controls
 {
