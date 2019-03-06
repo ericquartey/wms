@@ -73,32 +73,29 @@ namespace Ferretto.VW.MAS_AutomationService
         [HttpGet("HomingStop")]
         public void ExecuteStopHoming()
         {
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null,
-                "Stop Homing",
-                MessageActor.FiniteStateMachines,
-                MessageActor.AutomationService,
-                MessageType.StopHoming,
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Stop Homing",
+                MessageActor.FiniteStateMachines, MessageActor.AutomationService, MessageType.Stop,
                 MessageVerbosity.Info));
         }
 
         [HttpGet("MissionExecutedTest")]
         public void MissionExecuted()
         {
-            var message = new CommandMessage(
+            var message = new NotificationMessage(
                 null,
                 "Mission Executed",
                 MessageActor.MissionsManager,
                 MessageActor.FiniteStateMachines,
                 MessageType.EndAction,
-                MessageVerbosity.Debug);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
+                MessageStatus.OperationEnd);
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(message);
         }
 
         [HttpGet("StopFSM")]
         public void StopFiniteStateMachine()
         {
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Stop Homing",
-                MessageActor.FiniteStateMachines, MessageActor.AutomationService, MessageType.StopAction,
+                MessageActor.FiniteStateMachines, MessageActor.AutomationService, MessageType.Stop,
                 MessageVerbosity.Info));
         }
 
