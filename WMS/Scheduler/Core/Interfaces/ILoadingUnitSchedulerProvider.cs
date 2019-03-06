@@ -1,14 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.WMS.Scheduler.Core.Models;
 
 namespace Ferretto.WMS.Scheduler.Core.Interfaces
 {
-    public interface ILoadingUnitSchedulerProvider
+    public interface ILoadingUnitSchedulerProvider :
+        IUpdateAsyncProvider<LoadingUnit, int>,
+        IReadSingleAsyncProvider<LoadingUnit, int>
     {
-        #region Methods
-
-        Task<LoadingUnit> GetByIdAsync(int id);
-
-        #endregion
     }
 }
