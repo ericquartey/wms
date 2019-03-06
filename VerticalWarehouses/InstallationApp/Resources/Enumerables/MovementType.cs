@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces
+namespace Ferretto.VW.InstallationApp.Resources.Enumerables
 {
-    public interface ContainerIInstallationHubClient
+    public enum MovementType
     {
+        Absolute,
+
+        Relative
     }
 }

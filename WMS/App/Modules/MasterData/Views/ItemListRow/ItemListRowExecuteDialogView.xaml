@@ -130,7 +130,7 @@
 
                 <TextBlock Margin="5"
                            Style="{DynamicResource TextBlockErrorMessageStyle}"
-                           Text="{Binding ValidationError}" />
+                           Text="{Binding Errors}" />
 
                 <wms:ActionBar Grid.Column="1"
                                Margin="5"

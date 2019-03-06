@@ -9,6 +9,8 @@ namespace Ferretto.VW.MAS_AutomationService.Interfaces
 
         Task OnSendMessageToAllConnectedClients(string message);
 
+        Task OnSensorsChangedToAllConnectedClients(bool[] sensors);
+
         #endregion
     }
 }

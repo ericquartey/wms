@@ -24,7 +24,7 @@
 
         StartAction,
 
-        StopAction,
+        Stop,
 
         EndAction,
 
@@ -42,8 +42,18 @@
 
         ExecuteVerticalPositioning,
 
+        ExecuteHorizontalPositioning,
+
         ExecuteStopVerticalPositioning,
 
-        SwitchAxis
+        SwitchAxis,
+
+        IOPowerUp,
+
+        SensorsChanged,
+
+        Movement,
+
+        StopAction
     }
 }

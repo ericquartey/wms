@@ -35,14 +35,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
         {
             switch (message.Type)
             {
-                case MessageType.StopAction:
+                case MessageType.Stop:
                     //TODO add state business logic to stop current action
 
                     var newMessage = new CommandMessage(null,
                         "Mission Error",
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
-                        MessageType.StopAction,
+                        MessageType.Stop,
                         MessageVerbosity.Info);
                     this.parentStateMachine.PublishCommandMessage(newMessage);
                     break;

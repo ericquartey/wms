@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Resources;
 
-namespace Ferretto.Common.Modules.BLL.Services
+namespace Ferretto.Common.Controls.Services
 {
     public class ImageProvider : IImageProvider
     {

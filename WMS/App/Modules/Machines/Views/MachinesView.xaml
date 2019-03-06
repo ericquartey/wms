@@ -169,13 +169,6 @@
                                       ShowGroupedColumns="False"
                                       ShowSearchPanelMode="Never"
                                       ShowSelectionRectangle="False">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="RowDoubleClick">
-                                    <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentItem.Id, Mode=OneWay}"
-                                                              StartModuleName="{wms:NameOf Type={x:Type modules:Machines}}"
-                                                              StartViewName="{x:Static modules:Machines.MACHINEDETAILS}" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
                         </dxg:CardView>
                     </dxg:GridControl.View>
 

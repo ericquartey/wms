@@ -1,8 +1,9 @@
-﻿using Ferretto.VW.Common_Utils.Messages;
+﻿using System;
+using Ferretto.VW.Common_Utils.Messages;
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines
 {
-    public interface IIoStateMachine
+    public interface IIoStateMachine : IDisposable
     {
         #region Methods
 

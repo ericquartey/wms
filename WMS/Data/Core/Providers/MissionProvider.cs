@@ -79,15 +79,24 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             return (m) =>
-                m.Lot.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                m.BayDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                m.RegistrationNumber.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                m.ItemDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                m.Sub1.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                m.ItemListDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                m.Sub2.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                m.ItemListRowCode.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                m.Quantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
+                m.LoadingUnitCode.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                m.Priority.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                m.RequiredQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                m.Type.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                m.Status.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ;
         }
 
         private IQueryable<Mission> GetAllBase()

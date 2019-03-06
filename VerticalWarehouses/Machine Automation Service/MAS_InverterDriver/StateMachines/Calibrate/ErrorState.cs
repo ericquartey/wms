@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Calibrate
 
         #region Methods
 
-        public override void NotifyMessage(InverterMessage message)
+        public override void ProcessMessage(InverterMessage message)
         {
             throw new NotImplementedException();
         }
