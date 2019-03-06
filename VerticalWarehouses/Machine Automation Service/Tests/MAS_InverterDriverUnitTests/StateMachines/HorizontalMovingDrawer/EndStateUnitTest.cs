@@ -5,10 +5,10 @@ using Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalMovingDrawer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
+namespace MAS_InverterDriverUnitTests.StateMachines.HorizontalMovingDrawer
 {
     [TestClass]
-    public class IdleStateUnitTest
+    public class EndStateUnitTest
     {
         #region Fields
 
@@ -20,13 +20,13 @@ namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
         #region Methods
 
         [TestMethod]
-        public void IsNotNullIdleState()
+        public void IsNotNullEndState()
         {
             var parentStateMachineMock = new Mock<IInverterStateMachine>();
-            var IdleState = new IdleState(parentStateMachineMock.Object, Axis.Vertical);
+            var endState = new EndState(parentStateMachineMock.Object, Axis.Horizontal);
             var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue);
 
-            Assert.IsNotNull(IdleState);
+            Assert.IsNotNull(endState);
             Assert.IsNotNull(inverterMessage);
         }
 
@@ -36,21 +36,14 @@ namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
         {
             var parentStateMachineMock = new Mock<IInverterStateMachine>();
 
-            var errorState = new ErrorState(parentStateMachineMock.Object, Axis.Vertical);
-            var voltageDisabledState = new VoltageDisabledState(parentStateMachineMock.Object, Axis.Vertical);
-            
+            var errorState = new ErrorState(parentStateMachineMock.Object, Axis.Horizontal);
+
             if (message.IsError)
             {
-                Assert.IsTrue(errorState);
+               Assert.IsTrue(errorState);
             }
-
-            if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)           
-                if (message.ShortPayload == this.parameterValue)
-                {
-                   Assert.IsTrue(voltageDisabledState);
-                }
         }
-        */
+       */
         #endregion
     }
 }
