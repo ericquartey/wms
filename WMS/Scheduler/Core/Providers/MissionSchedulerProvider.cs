@@ -50,7 +50,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         public async Task<IOperationResult<Mission>> CompleteAsync(int id)
         {
-            using (var scope = new TransactionScope())
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var mission = await this.GetByIdAsync(id);
                 if (mission == null)
@@ -89,6 +89,8 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 mission.Status = MissionStatus.Completed;
 
                 var updatedMission = await this.UpdateAsync(mission);
+
+                scope.Complete();
 
                 return new SuccessOperationResult<Mission>(updatedMission);
             }
