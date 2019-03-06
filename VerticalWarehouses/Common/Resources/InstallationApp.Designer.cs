@@ -160,6 +160,123 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControl.
+        /// </summary>
+        public static string BayControl {
+            get {
+                return ResourceManager.GetString("BayControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControlActualHeight.
+        /// </summary>
+        public static string BayControlActualHeight {
+            get {
+                return ResourceManager.GetString("BayControlActualHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControlAdjust.
+        /// </summary>
+        public static string BayControlAdjust {
+            get {
+                return ResourceManager.GetString("BayControlAdjust", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControlCorrectionValue.
+        /// </summary>
+        public static string BayControlCorrectionValue {
+            get {
+                return ResourceManager.GetString("BayControlCorrectionValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControlHeader.
+        /// </summary>
+        public static string BayControlHeader {
+            get {
+                return ResourceManager.GetString("BayControlHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControlMoveToPosition.
+        /// </summary>
+        public static string BayControlMoveToPosition {
+            get {
+                return ResourceManager.GetString("BayControlMoveToPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControlNextPosition.
+        /// </summary>
+        public static string BayControlNextPosition {
+            get {
+                return ResourceManager.GetString("BayControlNextPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControlPositionHeight.
+        /// </summary>
+        public static string BayControlPositionHeight {
+            get {
+                return ResourceManager.GetString("BayControlPositionHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControlSelectedBay.
+        /// </summary>
+        public static string BayControlSelectedBay {
+            get {
+                return ResourceManager.GetString("BayControlSelectedBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControlSelectedPosition.
+        /// </summary>
+        public static string BayControlSelectedPosition {
+            get {
+                return ResourceManager.GetString("BayControlSelectedPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControlStepMeno.
+        /// </summary>
+        public static string BayControlStepMeno {
+            get {
+                return ResourceManager.GetString("BayControlStepMeno", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControlStepPiu.
+        /// </summary>
+        public static string BayControlStepPiu {
+            get {
+                return ResourceManager.GetString("BayControlStepPiu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a BayControlStepValue.
+        /// </summary>
+        public static string BayControlStepValue {
+            get {
+                return ResourceManager.GetString("BayControlStepValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Bays and height control.
         /// </summary>
         public static string Bays {
@@ -237,6 +354,60 @@ namespace Ferretto.VW.Resources {
         public static string CellsPanelControl {
             get {
                 return ResourceManager.GetString("CellsPanelControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a CellsSideControlButton.
+        /// </summary>
+        public static string CellsSideControlButton {
+            get {
+                return ResourceManager.GetString("CellsSideControlButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a CellsSideControlCorrection.
+        /// </summary>
+        public static string CellsSideControlCorrection {
+            get {
+                return ResourceManager.GetString("CellsSideControlCorrection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a CellsSideControlDescription.
+        /// </summary>
+        public static string CellsSideControlDescription {
+            get {
+                return ResourceManager.GetString("CellsSideControlDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a CellsSideControlFinalCell.
+        /// </summary>
+        public static string CellsSideControlFinalCell {
+            get {
+                return ResourceManager.GetString("CellsSideControlFinalCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a CellsSideControlInitialCell.
+        /// </summary>
+        public static string CellsSideControlInitialCell {
+            get {
+                return ResourceManager.GetString("CellsSideControlInitialCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a CellsSideControlSelectedSide.
+        /// </summary>
+        public static string CellsSideControlSelectedSide {
+            get {
+                return ResourceManager.GetString("CellsSideControlSelectedSide", resourceCulture);
             }
         }
         
@@ -831,6 +1002,159 @@ namespace Ferretto.VW.Resources {
         public static string Laser3Done {
             get {
                 return ResourceManager.GetString("Laser3Done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadFirstDrawerActualCellToCheck.
+        /// </summary>
+        public static string LoadFirstDrawerActualCellToCheck {
+            get {
+                return ResourceManager.GetString("LoadFirstDrawerActualCellToCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadFirstDrawerButton.
+        /// </summary>
+        public static string LoadFirstDrawerButton {
+            get {
+                return ResourceManager.GetString("LoadFirstDrawerButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadFirstDrawerDrawerToInsert.
+        /// </summary>
+        public static string LoadFirstDrawerDrawerToInsert {
+            get {
+                return ResourceManager.GetString("LoadFirstDrawerDrawerToInsert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadFirstDrawerMaxWeight.
+        /// </summary>
+        public static string LoadFirstDrawerMaxWeight {
+            get {
+                return ResourceManager.GetString("LoadFirstDrawerMaxWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadFirstDrawerPageHeader.
+        /// </summary>
+        public static string LoadFirstDrawerPageHeader {
+            get {
+                return ResourceManager.GetString("LoadFirstDrawerPageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadFirstDrawerRecallDrawer.
+        /// </summary>
+        public static string LoadFirstDrawerRecallDrawer {
+            get {
+                return ResourceManager.GetString("LoadFirstDrawerRecallDrawer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadFirstDrawerStartLoading.
+        /// </summary>
+        public static string LoadFirstDrawerStartLoading {
+            get {
+                return ResourceManager.GetString("LoadFirstDrawerStartLoading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadFirstDrawerTotCellsChecked.
+        /// </summary>
+        public static string LoadFirstDrawerTotCellsChecked {
+            get {
+                return ResourceManager.GetString("LoadFirstDrawerTotCellsChecked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadFirstDrawerTotCellsToCheck.
+        /// </summary>
+        public static string LoadFirstDrawerTotCellsToCheck {
+            get {
+                return ResourceManager.GetString("LoadFirstDrawerTotCellsToCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadingDrawersButton.
+        /// </summary>
+        public static string LoadingDrawersButton {
+            get {
+                return ResourceManager.GetString("LoadingDrawersButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadingDrawersDrawerToInsert.
+        /// </summary>
+        public static string LoadingDrawersDrawerToInsert {
+            get {
+                return ResourceManager.GetString("LoadingDrawersDrawerToInsert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadingDrawersInsertedDrawers.
+        /// </summary>
+        public static string LoadingDrawersInsertedDrawers {
+            get {
+                return ResourceManager.GetString("LoadingDrawersInsertedDrawers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadingDrawersMaxWeight.
+        /// </summary>
+        public static string LoadingDrawersMaxWeight {
+            get {
+                return ResourceManager.GetString("LoadingDrawersMaxWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadingDrawersNextDrawer.
+        /// </summary>
+        public static string LoadingDrawersNextDrawer {
+            get {
+                return ResourceManager.GetString("LoadingDrawersNextDrawer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadingDrawersPageHeader.
+        /// </summary>
+        public static string LoadingDrawersPageHeader {
+            get {
+                return ResourceManager.GetString("LoadingDrawersPageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadingDrawersStartInsertion.
+        /// </summary>
+        public static string LoadingDrawersStartInsertion {
+            get {
+                return ResourceManager.GetString("LoadingDrawersStartInsertion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LoadingDrawersTotalDrawers.
+        /// </summary>
+        public static string LoadingDrawersTotalDrawers {
+            get {
+                return ResourceManager.GetString("LoadingDrawersTotalDrawers", resourceCulture);
             }
         }
         

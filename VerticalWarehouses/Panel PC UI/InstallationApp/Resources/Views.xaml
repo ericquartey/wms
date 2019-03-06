@@ -89,4 +89,18 @@
     <DataTemplate DataType="{x:Type local:SSMainViewModel}">
         <local:SSMainView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type local:CellsSideControlViewModel}">
+        <local:CellsSideControlView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:LoadFirstDrawerViewModel}">
+        <local:LoadFirstDrawerView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:LoadingDrawersViewModel}">
+        <local:LoadingDrawersView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:BayControlViewModel}">
+        <local:BayControlView />
+    </DataTemplate>
+
+
 </ResourceDictionary>

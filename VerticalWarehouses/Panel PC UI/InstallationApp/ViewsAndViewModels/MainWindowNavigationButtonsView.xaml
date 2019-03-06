@@ -100,6 +100,27 @@
                         Content="{x:Static res:InstallationApp.WeightControl}"
                         IsEnabled="{Binding IsWeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+
+                <Button Command="{Binding DataContext.CellsSideControlButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                        Content="{x:Static res:InstallationApp.CellsSideControlButton}"
+                        IsEnabled="{Binding IsWeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+
+                <Button Command="{Binding DataContext.BayControlButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                        Content="{x:Static res:InstallationApp.BayControl}"
+                        IsEnabled="{Binding IsWeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+
+                <Button Command="{Binding DataContext.LoadFirstDrawerButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                        Content="{x:Static res:InstallationApp.LoadFirstDrawerButton}"
+                        IsEnabled="{Binding IsWeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+
+                <Button Command="{Binding DataContext.LoadingDrawersButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                        Content="{x:Static res:InstallationApp.LoadingDrawersButton}"
+                        IsEnabled="{Binding IsWeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+
             </StackPanel>
         </ScrollViewer>
     </Grid>

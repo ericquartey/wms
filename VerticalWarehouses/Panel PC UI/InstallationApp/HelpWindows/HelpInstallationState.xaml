@@ -27,7 +27,7 @@
                                         SensorState="False"
                                         Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
         
-        <Controls:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,220,0,0" Width="180"
+        <Controls:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0" Width="180"
                                         LabelText="{x:Static res:InstallationApp.VerticalOffsetVerify}"
                                         SensorState="True"
                                         Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
@@ -42,7 +42,7 @@
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpInstallationStateToDo}" />
         
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,220,0,0"
+        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,210,0,0"
                      Width="260" Height="70"
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpInstallationStateDone}" />
