@@ -220,7 +220,7 @@ namespace Ferretto.VW.InverterDriver
                         {
                             if (this.currentStateMachine is CalibrateStateMachine)
                             {
-                                this.currentStateMachine.ChangeState();
+                                //this.currentStateMachine.ChangeState();
                             }
                         }
                         break;
