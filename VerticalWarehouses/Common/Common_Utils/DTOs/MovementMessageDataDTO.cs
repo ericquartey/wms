@@ -10,9 +10,9 @@ namespace Ferretto.VW.Common_Utils.DTOs
     {
         #region Constructors
 
-        public MovementMessageDataDTO(decimal mm, int axis, int movementType, uint speedPercentage)
+        public MovementMessageDataDTO(decimal displacement, int axis, int movementType, uint speedPercentage)
         {
-            this.Mm = mm;
+            this.Displacement = displacement;
             this.Axis = axis;
             this.MovementType = movementType;
             this.SpeedPercentage = speedPercentage;
@@ -24,7 +24,7 @@ namespace Ferretto.VW.Common_Utils.DTOs
 
         public int Axis { get; set; }
 
-        public decimal Mm { get; set; }
+        public decimal Displacement { get; set; }
 
         public int MovementType { get; set; }
 

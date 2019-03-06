@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.Enumerations;
 
 namespace Ferretto.VW.Common_Utils.Messages.Interfaces
 {
@@ -10,9 +11,9 @@ namespace Ferretto.VW.Common_Utils.Messages.Interfaces
     {
         #region Properties
 
-        MovementDirections Axis { get; set; }
+        Axis Axis { get; set; }
 
-        decimal Mm { get; set; }
+        decimal Displacement { get; set; }
 
         MovementType MovementType { get; set; }
 
