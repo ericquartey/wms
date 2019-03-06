@@ -1,6 +1,8 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.MAS_InverterDriver;
+using Ferretto.VW.MAS_InverterDriver.StateMachines;
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Calibrate
+namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 {
     public class HomingModeState : InverterStateBase
     {
@@ -21,8 +23,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Calibrate
 
             this.parameterValue = 0x0006;
 
-            var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.SetOperatingModeParam,
-                this.parameterValue);
+            var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.SetOperatingModeParam, this.parameterValue);
 
             parentStateMachine.EnqueueMessage(inverterMessage);
         }
