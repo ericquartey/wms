@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Scheduler.Core.Providers
 {
-    public class CompartmentSchedulerProvider : ICompartmentSchedulerProvider
+    internal class CompartmentSchedulerProvider : ICompartmentSchedulerProvider
     {
         #region Fields
 
