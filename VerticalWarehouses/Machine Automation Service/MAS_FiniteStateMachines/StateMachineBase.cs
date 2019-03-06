@@ -1,11 +1,18 @@
 ﻿using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Utilities;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines
 {
     public abstract class StateMachineBase : IStateMachine
     {
+        #region Fields
+
+        protected BlockingConcurrentQueue<CommandMessage> stateMachineCommandQueue;
+
+        #endregion
+
         #region Constructors
 
         protected StateMachineBase(IEventAggregator eventAggregator)
@@ -28,7 +35,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         public void ChangeState(IState newState, CommandMessage message = null)
         {
             this.CurrentState = newState;
-            //x if (message != null) this.EventAggregator.GetEvent<CommandEvent>().Publish(message);
+            if (message != null) this.EventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
 
         public void ProcessCommandMessage(CommandMessage message)

@@ -77,7 +77,7 @@ namespace Ferretto.VW.MAS_AutomationService
                 "Stop Homing",
                 MessageActor.FiniteStateMachines,
                 MessageActor.AutomationService,
-                MessageType.StopHoming,
+                MessageType.Stop,
                 MessageVerbosity.Info));
         }
 
