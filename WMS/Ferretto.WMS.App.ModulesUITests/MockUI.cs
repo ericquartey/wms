@@ -11,14 +11,20 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ferretto.WMS.App.ModulesUITests
 {
-    [TestClass]
     public class MockUI
     {
         #region Fields
 
-        private static readonly Application application = new Application() { ShutdownMode = ShutdownMode.OnMainWindowClose };
+#pragma warning disable SA1311 // Static readonly fields must begin with upper-case letter
+#pragma warning disable S1144 // Unused private types or members should be removed
+#pragma warning disable CA1823 // Unused field application
+        private static readonly Application application = new Application { ShutdownMode = ShutdownMode.OnMainWindowClose };
 
-        private static readonly Queue<ViewInfo> viewsToProcess = new Queue<ViewInfo>();
+#pragma warning restore S1144 // Unused private types or members should be removed
+
+#pragma warning restore SA1311 // Static readonly fields must begin with upper-case letter
+
+        private static readonly Queue<ViewInfo> ViewsToProcess = new Queue<ViewInfo>();
 
         private INavigationService navigationService;
 
@@ -35,18 +41,23 @@ namespace Ferretto.WMS.App.ModulesUITests
 
         #region Methods
 
-        public void AppearViews(Type type)
+        public static void AppearViews(Type type)
         {
+            if (type == null)
+            {
+                return;
+            }
+
             var moduleName = type.Name;
             foreach (var viewName in GetAllPublicConstantValues<string>(type))
             {
-                viewsToProcess.Enqueue(new ViewInfo(moduleName, viewName));
+                ViewsToProcess.Enqueue(new ViewInfo(moduleName, viewName));
             }
         }
 
-        public void WaitUIComplete()
+        public void WaitUiComplete()
         {
-            Application.Current.MainWindow.Dispatcher.BeginInvoke(new Action(() => this.AppearOnLoaed(viewsToProcess)), DispatcherPriority.ContextIdle);
+            Application.Current.MainWindow.Dispatcher.BeginInvoke(new Action(() => this.AppearOnLoaded(ViewsToProcess)), DispatcherPriority.ContextIdle);
             Application.Current.MainWindow.ShowDialog();
         }
 
@@ -59,7 +70,7 @@ namespace Ferretto.WMS.App.ModulesUITests
                 .ToList();
         }
 
-        private void AppearOnLoaed(Queue<ViewInfo> viewsToProcess)
+        private void AppearOnLoaded(Queue<ViewInfo> viewsToProcess)
         {
             if (viewsToProcess.Count == 0)
             {
@@ -90,7 +101,7 @@ namespace Ferretto.WMS.App.ModulesUITests
                 view.Disappear();
             }
 
-            this.AppearOnLoaed(viewsToProcess);
+            this.AppearOnLoaded(viewsToProcess);
         }
 
         private void InitializeContext()
@@ -108,36 +119,6 @@ namespace Ferretto.WMS.App.ModulesUITests
 
             this.navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
             this.navigationService.IsUnitTest = true;
-        }
-
-        #endregion
-    }
-
-    public class ViewInfo
-    {
-        #region Constructors
-
-        public ViewInfo(string moduleName, string viewName)
-        {
-            this.ModuleName = moduleName;
-            this.ViewName = viewName;
-        }
-
-        #endregion
-
-        #region Properties
-
-        public string ModuleName { get; set; }
-
-        public string ViewName { get; set; }
-
-        #endregion
-
-        #region Methods
-
-        public override string ToString()
-        {
-            return $"{this.ModuleName}.{this.ViewName}";
         }
 
         #endregion

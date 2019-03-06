@@ -24,13 +24,15 @@ namespace Ferretto.WMS.App.ModulesUITests
         [DeploymentItem("DevExpress.Xpf.Ribbon.v18.2.dll")]
         [DeploymentItem("DevExpress.Xpf.Themes.Office2016White.v18.2.dll")]
         [DeploymentItem("DevExpress.Xpo.v18.2.dll")]
-        public void TestUIModuleLayout()
+#pragma warning disable S2699 // Tests should include assertions
+        public void TestUiModuleLayout()
+#pragma warning restore S2699 // Tests should include assertions
         {
-            this.AppearViews(typeof(Common.Utils.Modules.Layout));
-            this.AppearViews(typeof(Common.Utils.Modules.Machines));
-            this.AppearViews(typeof(Common.Utils.Modules.Scheduler));
-            this.AppearViews(typeof(Common.Utils.Modules.MasterData));
-            this.WaitUIComplete();
+            AppearViews(typeof(Common.Utils.Modules.Layout));
+            AppearViews(typeof(Common.Utils.Modules.Machines));
+            AppearViews(typeof(Common.Utils.Modules.Scheduler));
+            AppearViews(typeof(Common.Utils.Modules.MasterData));
+            this.WaitUiComplete();
         }
 
         #endregion
