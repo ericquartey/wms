@@ -31,11 +31,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         #region Methods
 
-        public override void MakeOperation()
-        {
-            throw new NotImplementedException();
-        }
-
         public override void SendCommandMessage(CommandMessage message)
         {
             switch (message.Type)
@@ -55,11 +50,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
         }
 
         public override void SendNotificationMessage(NotificationMessage message)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Stop()
         {
             throw new NotImplementedException();
         }

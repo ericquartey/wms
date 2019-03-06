@@ -45,9 +45,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         public void MakeOperation()
         {
+            throw new NotImplementedException();
         }
 
-        public void NotifyMessage(CommandMessage message)
+        public void ProcessCommandMessage(CommandMessage message)
         {
             throw new NotImplementedException();
         }
@@ -60,13 +61,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
         public void SendNotificationMessage(NotificationMessage message)
         {
             throw new NotImplementedException();
-        }
-
-        public void Stop()
-        {
-            var notifyEvent = new NotificationMessage(null, "Positioning Done", MessageActor.Any,
-                MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationStop);
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notifyEvent);
         }
 
         #endregion

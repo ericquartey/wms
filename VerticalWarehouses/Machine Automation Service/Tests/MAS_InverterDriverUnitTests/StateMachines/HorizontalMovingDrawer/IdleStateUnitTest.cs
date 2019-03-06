@@ -5,7 +5,7 @@ using Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalMovingDrawer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
+namespace MAS_InverterDriverUnitTests.StateMachines.HorizontalMovingDrawer
 {
     [TestClass]
     public class IdleStateUnitTest
@@ -23,7 +23,7 @@ namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
         public void IsNotNullIdleState()
         {
             var parentStateMachineMock = new Mock<IInverterStateMachine>();
-            var IdleState = new IdleState(parentStateMachineMock.Object, Axis.Vertical);
+            var IdleState = new IdleState(parentStateMachineMock.Object, Axis.Horizontal);
             var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue);
 
             Assert.IsNotNull(IdleState);
@@ -36,8 +36,8 @@ namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
         {
             var parentStateMachineMock = new Mock<IInverterStateMachine>();
 
-            var errorState = new ErrorState(parentStateMachineMock.Object, Axis.Vertical);
-            var voltageDisabledState = new VoltageDisabledState(parentStateMachineMock.Object, Axis.Vertical);
+            var errorState = new ErrorState(parentStateMachineMock.Object, Axis.Horizontal);
+            var voltageDisabledState = new VoltageDisabledState(parentStateMachineMock.Object, Axis.Horizontal);
             
             if (message.IsError)
             {
@@ -50,7 +50,9 @@ namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
                    Assert.IsTrue(voltageDisabledState);
                 }
         }
+
         */
+
         #endregion
     }
 }
