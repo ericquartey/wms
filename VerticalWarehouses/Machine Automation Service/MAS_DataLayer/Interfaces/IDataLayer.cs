@@ -1,18 +1,9 @@
-﻿using System;
-using System.Net;
-using Ferretto.VW.Common_Utils;
+﻿using System.Net;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
     public interface IDataLayer
     {
-        // TEMP Maybe obsolete
-        ///// <summary>
-        /////     Get a list of cells from the configuration table
-        ///// </summary>
-        ///// <returns>Return a list of cell</returns>
-        //List<Cell> GetCellList();
-
         #region Methods
 
         /// <summary>
@@ -34,14 +25,6 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
         decimal GetDecimalRuntimeValue(RuntimeValueEnum runtimeValueEnum);
-
-        /// <summary>
-        ///     Get an object with the vertical position and side to place a drawer
-        /// </summary>
-        /// <param name="drawerHeight">Drawer height to insert in the magazine</param>
-        /// <param name="loadingUnitId">Id of the Drawer we take into account</param>
-        /// <returns>An object with position and side for a return mission</returns>
-        LoadingUnitPosition GetFreeBlockPosition(decimal loadingUnitHeight, int loadingUnitId);
 
         /// <summary>
         ///     Get an integer variable from the configuration table
@@ -74,13 +57,6 @@ namespace Ferretto.VW.MAS_DataLayer
         IPAddress GetIPAddressConfigurationValue(ConfigurationValueEnum configurationValueEnum);
 
         /// <summary>
-        /// Get to the mission the lowest cell position for a drawer
-        /// </summary>
-        /// <param name="cellId">Id of the lowest drawer cell</param>
-        /// <returns>The dawer side and height</returns>
-        LoadingUnitPosition GetLoadingUnitPosition(int cellId);
-
-        /// <summary>
         ///     Get a string variable from the configuration table
         /// </summary>
         /// <param name="configurationValueEnum">Configuration parameter to get</param>
@@ -106,13 +82,6 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
         void SetDecimalConfigurationValue(ConfigurationValueEnum configurationValueEnum, decimal value);
 
-        ///// <summary>
-        ///// Set one or more cells to a list cell to new value
-        ///// </summary>
-        ///// <param name="listCells">A list of cells</param>
-        ///// <returns>A boolean value about the set outcome</returns>
-        ///// <exception cref="ArgumentNullException">Exception when there is not a variable of list in the table</exception>
-        //bool SetCellList(List<Cell> listCells);
         /// <summary>
         ///     Set a decimal variable in the runtime table to a new value
         /// </summary>
@@ -138,14 +107,6 @@ namespace Ferretto.VW.MAS_DataLayer
         void SetIntegerRuntimeValue(RuntimeValueEnum runtimeValueEnum, int value);
 
         /// <summary>
-        /// This methods is been invoked when a drawer backs from the bay to cells
-        /// </summary>
-        /// <param name="loadingUnitId">Id of the Drawer we take into account</param>
-        /// <exception cref="DataLayerExceptionEnum.NO_FREE_BLOCK_BOOKED_EXCEPTION">Thrown when a drawer backs from bay, but we don't find booked cells in a Free Blocks table</exception>
-        /// <exception cref="DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION">Thrown when we have booked cells in the Free Blocks table, but we don't find one of them in the cells table</exception>
-        void SetReturnLoadingUnitInLocation(int loadingUnitId);
-
-        /// <summary>
         ///     Set a string variable in the configuration table to a new value
         /// </summary>
         /// <param name="configurationValueEnum">Configuration parameter to set</param>
@@ -160,13 +121,6 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
         void SetStringRuntimeValue(RuntimeValueEnum runtimeValueEnum, string value);
-
-        /// <summary>
-        /// Set the status of a cell, when a drawer free some cells
-        /// </summary>
-        /// <param name="loadingUnitId">Id of the Drawer we take into account</param>
-        /// <exception cref="DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION">Thrown when we don't find cells in the Free Blocks table</exception>
-        void SetWithdrawalLoadingUnitFromLocation(int loadingUnitId);
 
         #endregion
     }

@@ -1,13 +1,10 @@
 ﻿using Ferretto.VW.InverterDriver;
-using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_DataLayer;
-using Ferretto.VW.MAS_FiniteStateMachines;
 using Ferretto.VW.MAS_InverterDriver;
+using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_IODriver;
 using Ferretto.VW.MAS_IODriver.Interface;
-using Ferretto.VW.MAS_MissionsManager;
-using Ferretto.VW.RemoteIODriver;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -82,6 +79,14 @@ namespace Ferretto.VW.MAS_AutomationService
 
             services.AddSingleton<IHostedService, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
+
+            // Begin changes - 06/03/2019
+            services.AddSingleton<IDataLayerCellManagment, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            //services.AddSingleton<IDataLayerValueManagment, DataLayer>(provider =>
+            //    provider.GetService<IDataLayer>() as DataLayer);
+            // End changes - 06/03/2019
 
             services.AddSingleton<ISocketTransport, SocketTransport>();
 

@@ -17,7 +17,7 @@ namespace MAS_InverterDriverUnitTests.StateMachines.Calibrate
             var inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
             var priorityInverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
 
-            var calibrateStateMachine = new CalibrateStateMachine(Axis.Both, inverterCommandQueue, priorityInverterCommandQueue);
+            var calibrateStateMachine = new CalibrateStateMachine(Axis.Both, inverterCommandQueue);
 
             Assert.IsNotNull(calibrateStateMachine);
         }
@@ -29,7 +29,7 @@ namespace MAS_InverterDriverUnitTests.StateMachines.Calibrate
 
             var inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
             var priorityInverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
-            var calibrateStateMachine = new CalibrateStateMachine(Axis.Both, inverterCommandQueue, priorityInverterCommandQueue);
+            var calibrateStateMachine = new CalibrateStateMachine(Axis.Both, inverterCommandQueue);
 
             calibrateStateMachine.ChangeState(newStateMock.Object);
 
@@ -42,7 +42,7 @@ namespace MAS_InverterDriverUnitTests.StateMachines.Calibrate
             var inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
             var priorityInverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
 
-            var calibrateStateMachine = new CalibrateStateMachine(Axis.Both, inverterCommandQueue, priorityInverterCommandQueue);
+            var calibrateStateMachine = new CalibrateStateMachine(Axis.Both, inverterCommandQueue);
 
             calibrateStateMachine.Start();
 

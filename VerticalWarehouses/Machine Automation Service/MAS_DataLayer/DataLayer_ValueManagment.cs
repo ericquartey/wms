@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net;
 using Ferretto.VW.Common_Utils;
 
@@ -183,18 +182,23 @@ namespace Ferretto.VW.MAS_DataLayer
             // If they are the same i convert the return value
             var returnStringValue = "";
 
-            var runtimeValue =
-                this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
+            var runtimeValue = this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
 
             if (runtimeValue != null)
             {
                 if (runtimeValue.VarType == DataTypeEnum.stringType)
+                {
                     returnStringValue = runtimeValue.VarValue;
+                }
                 else
+                {
                     throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                }
             }
             else
+            {
                 throw new ArgumentNullException();
+            }
 
             return returnStringValue;
         }
@@ -230,7 +234,9 @@ namespace Ferretto.VW.MAS_DataLayer
                     this.inMemoryDataContext.SaveChanges();
                 }
                 else
+                {
                     throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                }
             }
         }
 
@@ -244,8 +250,7 @@ namespace Ferretto.VW.MAS_DataLayer
             // if the type is different from decimal, throw an invalid data type excpetion
             // if the var exist i update it
             // if the var doesn't exist i create it
-            var runtimeValue =
-                this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
+            var runtimeValue = this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
 
             if (runtimeValue == null)
             {
@@ -265,7 +270,9 @@ namespace Ferretto.VW.MAS_DataLayer
                     this.inMemoryDataContext.SaveChanges();
                 }
                 else
+                {
                     throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                }
             }
         }
 
@@ -300,7 +307,9 @@ namespace Ferretto.VW.MAS_DataLayer
                     this.inMemoryDataContext.SaveChanges();
                 }
                 else
+                {
                     throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                }
             }
         }
 
@@ -335,7 +344,9 @@ namespace Ferretto.VW.MAS_DataLayer
                     this.inMemoryDataContext.SaveChanges();
                 }
                 else
+                {
                     throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                }
             }
         }
 
@@ -349,8 +360,7 @@ namespace Ferretto.VW.MAS_DataLayer
             // if the type is different from string, throw an invalid data type excpetion
             // if the var exist i update it
             // if the var doesn't exist i create it
-            var configurationValue =
-                this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
 
             if (configurationValue == null)
             {
@@ -370,7 +380,9 @@ namespace Ferretto.VW.MAS_DataLayer
                     this.inMemoryDataContext.SaveChanges();
                 }
                 else
+                {
                     throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                }
             }
         }
 
@@ -384,8 +396,7 @@ namespace Ferretto.VW.MAS_DataLayer
             // if the type is different from string, throw an invalid data type excpetion
             // if the var exist i update it
             // if the var doesn't exist i create it
-            var runtimeValue =
-                this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
+            var runtimeValue = this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
 
             if (runtimeValue == null)
             {
@@ -405,7 +416,9 @@ namespace Ferretto.VW.MAS_DataLayer
                     this.inMemoryDataContext.SaveChanges();
                 }
                 else
+                {
                     throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                }
             }
         }
 
