@@ -16,14 +16,6 @@ namespace MAS_DataLayerUnitTests
 
         protected DataLayer dataLayer;
 
-        protected decimal setDecResolution = 100.01m;
-
-        protected int setIntBayHeight = 100;
-
-        protected string setStrInvAddress = "169.254.231.248";
-
-        protected string strBayHeightFromGround = "10.000025";
-
         #endregion
 
         #region Methods
@@ -32,7 +24,6 @@ namespace MAS_DataLayerUnitTests
         public void CreateNewContext()
         {
             this.context = this.CreateContext();
-            // this.InitializeContext(context);
 
             var mockEventAggregator = new Mock<IEventAggregator>();
             mockEventAggregator.Setup(s => s.GetEvent<CommandEvent>()).Returns(new CommandEvent());
@@ -43,49 +34,56 @@ namespace MAS_DataLayerUnitTests
         [TestMethod]
         public void NewGetDecimalConfigurationValue()
         {
-            var decimalValue = new ConfigurationValue { VarName = ConfigurationValueEnum.resolution, VarType = DataTypeEnum.decimalType, VarValue = this.setDecResolution.ToString() };
+            var setDecResolution = 100.01m;
+
+            var decimalValue = new ConfigurationValue { VarName = ConfigurationValueEnum.resolution, VarType = DataTypeEnum.decimalType, VarValue = setDecResolution.ToString() };
 
             this.context.ConfigurationValues.Add(decimalValue);
 
             this.context.SaveChanges();
 
-            Assert.AreEqual(this.setDecResolution, this.dataLayer.GetDecimalConfigurationValue(ConfigurationValueEnum.resolution));
+            Assert.AreEqual(setDecResolution, this.dataLayer.GetDecimalConfigurationValue(ConfigurationValueEnum.resolution));
         }
 
         [TestMethod]
         public void NewGetIntegerConfigurationValue()
         {
-            var integerValue = new ConfigurationValue { VarName = ConfigurationValueEnum.bayHeight, VarType = DataTypeEnum.integerType, VarValue = this.setIntBayHeight.ToString() };
+            var setIntBayHeight = 100;
+            var integerValue = new ConfigurationValue { VarName = ConfigurationValueEnum.bayHeight, VarType = DataTypeEnum.integerType, VarValue = setIntBayHeight.ToString() };
 
             this.context.ConfigurationValues.Add(integerValue);
 
             this.context.SaveChanges();
 
-            Assert.AreEqual(this.setIntBayHeight, this.dataLayer.GetIntegerConfigurationValue(ConfigurationValueEnum.bayHeight));
+            Assert.AreEqual(setIntBayHeight, this.dataLayer.GetIntegerConfigurationValue(ConfigurationValueEnum.bayHeight));
         }
 
         [TestMethod]
         public void NewGetIPAddressConfigurationValue()
         {
-            var ipAddrrValue = new ConfigurationValue { VarName = ConfigurationValueEnum.InverterAddress, VarType = DataTypeEnum.IPAddressType, VarValue = this.setStrInvAddress };
+            var setStrInvAddress = "169.254.231.248";
+
+            var ipAddrrValue = new ConfigurationValue { VarName = ConfigurationValueEnum.InverterAddress, VarType = DataTypeEnum.IPAddressType, VarValue = setStrInvAddress };
 
             this.context.ConfigurationValues.Add(ipAddrrValue);
 
             this.context.SaveChanges();
 
-            Assert.AreEqual(this.setStrInvAddress, this.dataLayer.GetIPAddressConfigurationValue(ConfigurationValueEnum.InverterAddress).ToString());
+            Assert.AreEqual(setStrInvAddress, this.dataLayer.GetIPAddressConfigurationValue(ConfigurationValueEnum.InverterAddress).ToString());
         }
 
         [TestMethod]
         public void NewGetStringConfigurationValue()
         {
-            var stringBHFGrn = new ConfigurationValue { VarName = ConfigurationValueEnum.bayHeightFromGround, VarType = DataTypeEnum.stringType, VarValue = this.strBayHeightFromGround };
+            var strBayHeightFromGround = "10.000025";
+
+            var stringBHFGrn = new ConfigurationValue { VarName = ConfigurationValueEnum.bayHeightFromGround, VarType = DataTypeEnum.stringType, VarValue = strBayHeightFromGround };
 
             this.context.ConfigurationValues.Add(stringBHFGrn);
 
             this.context.SaveChanges();
 
-            Assert.AreEqual(this.strBayHeightFromGround, this.dataLayer.GetStringConfigurationValue(ConfigurationValueEnum.bayHeightFromGround));
+            Assert.AreEqual(strBayHeightFromGround, this.dataLayer.GetStringConfigurationValue(ConfigurationValueEnum.bayHeightFromGround));
         }
 
         protected DataLayerContext CreateContext()
@@ -97,10 +95,5 @@ namespace MAS_DataLayerUnitTests
         }
 
         #endregion
-
-        // TEMP
-        //private void InitializeContext(DataLayerContext context)
-        //{
-        //}
     }
 }
