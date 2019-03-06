@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalMovingDrawer;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

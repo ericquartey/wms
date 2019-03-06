@@ -1,12 +1,10 @@
-﻿using System;
-
-namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
+﻿namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 {
-    public class PulseReset : IoStateBase
+    public class PulseResetState : IoStateBase
     {
         #region Constructors
 
-        public PulseReset(IIoStateMachine parentStateMachine)
+        public PulseResetState(IIoStateMachine parentStateMachine)
         {
             this.parentStateMachine = parentStateMachine;
             var resetSecurityIoMessage = new IoMessage(false);
@@ -21,7 +19,10 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         public override void ProcessMessage(IoMessage message)
         {
-            throw new NotImplementedException();
+            if (message.ValidOutputs && !message.ResetSecurity)
+            {
+                this.parentStateMachine.ChangeState(new EndState(this.parentStateMachine));
+            }
         }
 
         #endregion

@@ -54,6 +54,10 @@ namespace Ferretto.VW.InstallationApp
             var mainWindowVMInstance = new MainWindowViewModel(container.Resolve<IEventAggregator>());
             var helpMainWindowInstance = new HelpMainWindow(container.Resolve<IEventAggregator>());
             var installationHubClientInstance = new InstallationHubClient("http://localhost:5000", "/installation-endpoint");
+            var bayControlVMInstance = new BayControlViewModel();
+            var loadFirstDrawerVMInstance = new LoadFirstDrawerViewModel();
+            var loadingDrawersVMInstance = new LoadingDrawersViewModel();
+            var cellsSideControlVMInstance = new CellsSideControlViewModel();
 
             this.container.RegisterInstance<IContainerInstallationHubClient>(installationHubClientInstance);
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
@@ -88,6 +92,10 @@ namespace Ferretto.VW.InstallationApp
             this.container.RegisterInstance<IWeightControlViewModel>(weightControlVMInstance);
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
             this.container.RegisterInstance<IHelpMainWindow>(helpMainWindowInstance);
+            this.container.RegisterInstance<IBayControlViewModel>(bayControlVMInstance);
+            this.container.RegisterInstance<ILoadFirstDrawerViewModel>(loadFirstDrawerVMInstance);
+            this.container.RegisterInstance<ILoadingDrawersViewModel>(loadingDrawersVMInstance);
+            this.container.RegisterInstance<ICellsSideControlViewModel>(cellsSideControlVMInstance);
 
             lSMTNavigationButtonsVMInstance.InitializeViewModel(this.container);
             lSMTMainVMInstance.InitializeViewModel(this.container);

@@ -195,7 +195,12 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             var result = await this.GetAllDetailsBase()
                        .SingleOrDefaultAsync(c => c.Id == id);
-            result.AllowedItemsCount = allowedItemsCount;
+
+            if (result != null)
+            {
+                result.AllowedItemsCount = allowedItemsCount;
+            }
+
             return result;
         }
 

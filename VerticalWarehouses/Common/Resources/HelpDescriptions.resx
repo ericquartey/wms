@@ -517,4 +517,136 @@
     <value>HelpVOCApplyCorrection</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpCSCDescription" xml:space="preserve">
+    <value>HelpCSCDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpCSCInitialCell" xml:space="preserve">
+    <value>HelpCSCInitialCell</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCSCFinalCell" xml:space="preserve">
+    <value>HelpCSCFinalCell</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCSCCorrection" xml:space="preserve">
+    <value>HelpCSCCorrection</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCSCSelectedSide" xml:space="preserve">
+    <value>HelpCSCSelectedSide</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCSCApplyCorrection" xml:space="preserve">
+    <value>HelpCSCApplyCorrection</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLFDTotalCells" xml:space="preserve">
+    <value>HelpLFDTotalCells</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLFDTestedCells" xml:space="preserve">
+    <value>HelpLFDTestedCells</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLFDCellInTest" xml:space="preserve">
+    <value>HelpLFDCellInTest</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLFDDrawerNumber" xml:space="preserve">
+    <value>HelpLFDDrawerNumber</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLFDMaxLoad" xml:space="preserve">
+    <value>HelpLFDMaxLoad</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLFDInsertDrawer" xml:space="preserve">
+    <value>HelpLFDInsertDrawer</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLFDRecallDrawer" xml:space="preserve">
+    <value>HelpLFDRecallDrawer</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLFDDescription" xml:space="preserve">
+    <value>HelpLFDDescription</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLDRDescription" xml:space="preserve">
+    <value>HelpLDRDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpLDRTotalDrawers" xml:space="preserve">
+    <value>HelpLDRTotalDrawers</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLDRInsertedDrawers" xml:space="preserve">
+    <value>HelpLDRInsertedDrawers</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLDRDrawerToInsert" xml:space="preserve">
+    <value>HelpLDRDrawerToInsert</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLDRMaxLoad" xml:space="preserve">
+    <value>HelpLDRMaxLoad</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLDRNextDrawer" xml:space="preserve">
+    <value>HelpLDRNextDrawer</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLDRStart" xml:space="preserve">
+    <value>HelpLDRStart</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRDescription" xml:space="preserve">
+    <value>HelpBCTRDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpBCTRSelectedBay" xml:space="preserve">
+    <value>HelpBCTRSelectedBay</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRSelectedPosition" xml:space="preserve">
+    <value>HelpBCTRSelectedPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRPositionHeight" xml:space="preserve">
+    <value>HelpBCTRPositionHeight</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRStepValue" xml:space="preserve">
+    <value>HelpBCTRStepValue</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRActualHeight" xml:space="preserve">
+    <value>HelpBCTRActualHeight</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRCorrectionValue" xml:space="preserve">
+    <value>HelpBCTRCorrectionValue</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRMoveToPosition" xml:space="preserve">
+    <value>HelpBCTRMoveToPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRStepPiu" xml:space="preserve">
+    <value>HelpBCTRStepPiu</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRStepMeno" xml:space="preserve">
+    <value>HelpBCTRStepMeno</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRAdjust" xml:space="preserve">
+    <value>HelpBCTRAdjust</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRNextPosition" xml:space="preserve">
+    <value>HelpBCTRNextPosition</value>
+    <comment>Nore text</comment>
+  </data>
 </root>

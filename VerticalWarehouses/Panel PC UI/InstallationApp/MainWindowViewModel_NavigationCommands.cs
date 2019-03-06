@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Windows.Input;
+using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.InstallationApp.Resources.Enumerables;
 using Microsoft.Practices.Unity;
@@ -16,11 +17,15 @@ namespace Ferretto.VW.InstallationApp
 
         private ICommand backToVWAPPCommand;
 
+        private ICommand bayControlButtonCommand;
+
         private ICommand beltBurnishingButtonCommand;
 
         private ICommand cellsControlButtonCommand;
 
         private ICommand cellsPanelControlButtonCommand;
+
+        private ICommand cellsSideControlButtonCommand;
 
         private ICommand errorButtonCommand;
 
@@ -37,6 +42,10 @@ namespace Ferretto.VW.InstallationApp
         private ICommand gates3ControlNavigationButtonCommand;
 
         private ICommand installationStateButtonCommand;
+
+        private ICommand loadFirstDrawerButtonCommand;
+
+        private ICommand loadingDrawersButtonCommand;
 
         private ICommand lowSpeedMovementsTestButtonCommand;
 
@@ -91,11 +100,19 @@ namespace Ferretto.VW.InstallationApp
             ClickedOnMachineOnMarchEventHandler = null;
         }));
 
-        public ICommand BeltBurnishingButtonCommand => this.beltBurnishingButtonCommand ?? (this.beltBurnishingButtonCommand = new DelegateCommand(() =>
+        public ICommand BayControlButtonCommand => this.bayControlButtonCommand ?? (this.bayControlButtonCommand = new DelegateCommand(() =>
         {
             this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (BeltBurnishingViewModel)this.container.Resolve<IBeltBurnishingViewModel>();
+            this.ContentRegionCurrentViewModel = (BayControlViewModel)this.container.Resolve<IBayControlViewModel>();
+            ((BayControlViewModel)this.container.Resolve<IBayControlViewModel>()).SubscribeMethodToEvent();
+            ((MainWindowBackToIAPPButtonViewModel)this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand(((BayControlViewModel)this.container.Resolve<IBayControlViewModel>()).ExitFromViewCommand);
         }));
+
+        public ICommand BeltBurnishingButtonCommand => this.beltBurnishingButtonCommand ?? (this.beltBurnishingButtonCommand = new DelegateCommand(() =>
+                {
+                    this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
+                    this.ContentRegionCurrentViewModel = (BeltBurnishingViewModel)this.container.Resolve<IBeltBurnishingViewModel>();
+                }));
 
         public ICommand CellsControlButtonCommand => this.cellsControlButtonCommand ?? (this.cellsControlButtonCommand = new DelegateCommand(() =>
         {
@@ -109,10 +126,16 @@ namespace Ferretto.VW.InstallationApp
             this.ContentRegionCurrentViewModel = (CellsPanelsControlViewModel)this.container.Resolve<ICellsPanelsControlViewModel>();
         }));
 
-        public ICommand ErrorButtonCommand => this.errorButtonCommand ?? (this.errorButtonCommand = new DelegateCommand(() =>
+        public ICommand CellsSideControlButtonCommand => this.cellsSideControlButtonCommand ?? (this.cellsSideControlButtonCommand = new DelegateCommand(() =>
         {
-            Debug.Print("TODO: IMPLEMENT ERROR SYSTEM");
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
+            this.ContentRegionCurrentViewModel = (CellsSideControlViewModel)this.container.Resolve<ICellsSideControlViewModel>();
         }));
+
+        public ICommand ErrorButtonCommand => this.errorButtonCommand ?? (this.errorButtonCommand = new DelegateCommand(() =>
+                {
+                    Debug.Print("TODO: IMPLEMENT ERROR SYSTEM");
+                }));
 
         public ICommand Gate1HeightControlNavigationButtonCommand => this.gate1HeightControlNavigationButtonCommand ?? (this.gate1HeightControlNavigationButtonCommand = new DelegateCommand(() =>
         {
@@ -156,11 +179,23 @@ namespace Ferretto.VW.InstallationApp
             this.ContentRegionCurrentViewModel = (InstallationStateViewModel)this.container.Resolve<IInstallationStateViewModel>();
         }));
 
-        public ICommand LowSpeedMovementsTestButtonCommand => this.lowSpeedMovementsTestButtonCommand ?? (this.lowSpeedMovementsTestButtonCommand = new DelegateCommand(() =>
+        public ICommand LoadFirstDrawerButtonCommand => this.loadFirstDrawerButtonCommand ?? (this.loadFirstDrawerButtonCommand = new DelegateCommand(() =>
         {
             this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (LSMTMainViewModel)this.container.Resolve<ILSMTMainViewModel>();
+            this.ContentRegionCurrentViewModel = (LoadFirstDrawerViewModel)this.container.Resolve<ILoadFirstDrawerViewModel>();
         }));
+
+        public ICommand LoadingDrawersButtonCommand => this.loadingDrawersButtonCommand ?? (this.loadingDrawersButtonCommand = new DelegateCommand(() =>
+        {
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
+            this.ContentRegionCurrentViewModel = (LoadingDrawersViewModel)this.container.Resolve<ILoadingDrawersViewModel>();
+        }));
+
+        public ICommand LowSpeedMovementsTestButtonCommand => this.lowSpeedMovementsTestButtonCommand ?? (this.lowSpeedMovementsTestButtonCommand = new DelegateCommand(() =>
+                        {
+                            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
+                            this.ContentRegionCurrentViewModel = (LSMTMainViewModel)this.container.Resolve<ILSMTMainViewModel>();
+                        }));
 
         public ICommand LSMTGateEngineButtonCommand => this.lsmtGateEngineButtonCommand ?? (this.lsmtGateEngineButtonCommand = new DelegateCommand(() =>
         {

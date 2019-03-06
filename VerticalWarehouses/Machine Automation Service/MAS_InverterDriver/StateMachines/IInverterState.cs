@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 {
-    public interface IInverterState
+    public interface IInverterState : IDisposable
     {
         #region Properties
 
@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 
         #region Methods
 
-        void NotifyMessage(InverterMessage message);
+        void ProcessMessage(InverterMessage message);
 
         #endregion
     }

@@ -38,12 +38,12 @@
                                                        LabelText="{x:Static res:InstallationApp.DesiredInitialPosition}"
                                                        Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
         
-        <Controls:CustomLabelTextBlockControl          HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,167,0,0"
+        <Controls:CustomLabelTextBlockControl          HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,140,0,0"
                                                        Width="180"
                                                        ContentText="125,36"
                                                        LabelText="{x:Static res:InstallationApp.CurrentResolution}"/>
         
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,165,0,0"
+        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,140,0,0"
                      Width="260" Height="70"
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.ResolutionCalibrationActualResolutionHelp}" />

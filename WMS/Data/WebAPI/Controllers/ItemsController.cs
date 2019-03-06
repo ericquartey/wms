@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using SchedulerRequest = Ferretto.WMS.Scheduler.Core.Models.SchedulerRequest;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
@@ -187,11 +187,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result.Entity);
         }
 
-        [ProducesResponseType(201, Type = typeof(Scheduler.Core.SchedulerRequest))]
+        [ProducesResponseType(201, Type = typeof(SchedulerRequest))]
         [ProducesResponseType(400)]
         [ProducesResponseType(422)]
         [HttpPost(nameof(Withdraw))]
-        public async Task<IActionResult> Withdraw([FromBody] Scheduler.Core.SchedulerRequest request)
+        public async Task<IActionResult> Withdraw([FromBody] SchedulerRequest request)
         {
             if (request == null)
             {

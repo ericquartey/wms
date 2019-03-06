@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Ferretto.WMS.Scheduler.Core
+namespace Ferretto.WMS.Scheduler.Core.Models
 {
-    public class Area : BusinessObject
+    public class Area : Model
     {
         #region Properties
 

@@ -1,6 +1,8 @@
-﻿namespace Ferretto.VW.MAS_IODriver.StateMachines
+﻿using System;
+
+namespace Ferretto.VW.MAS_IODriver.StateMachines
 {
-    public interface IIoState
+    public interface IIoState : IDisposable
     {
         #region Properties
 

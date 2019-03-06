@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.WMS.Scheduler.Core.Models;
 
 namespace Ferretto.WMS.Scheduler.Core.Interfaces
 {

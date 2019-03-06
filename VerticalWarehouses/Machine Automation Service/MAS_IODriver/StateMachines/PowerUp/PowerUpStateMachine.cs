@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using Ferretto.VW.Common_Utils.Utilities;
 using Prism.Events;
 
@@ -13,6 +12,8 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         private Timer delayTimer;
 
+        private bool disposed;
+
         #endregion
 
         #region Constructors
@@ -21,6 +22,15 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
         {
             this.ioCommandQueue = ioCommandQueue;
             this.eventAggregator = eventAggregator;
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~PowerUpStateMachine()
+        {
+            Dispose(false);
         }
 
         #endregion
@@ -38,14 +48,32 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         public override void Start()
         {
-            this.CurrentState = new ClearOutputs(this);
+            this.CurrentState = new ClearOutputsState(this);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.delayTimer?.Dispose();
+                CurrentState.Dispose();
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         private void DelayElapsed(object state)
         {
             var pulseIoMessage = new IoMessage(false);
 
-            EnqueueMessage(pulseIoMessage);
+            this.EnqueueMessage(pulseIoMessage);
         }
 
         #endregion

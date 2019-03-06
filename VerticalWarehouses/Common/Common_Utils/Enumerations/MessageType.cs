@@ -46,11 +46,14 @@
 
         ExecuteStopVerticalPositioning,
 
+        SwitchAxis,
+
+        IOPowerUp
         SensorsChanged,
 
         Movement,
 
-        SwitchAxis,
+        
 
         StopAction
     }

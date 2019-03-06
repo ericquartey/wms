@@ -1,8 +1,9 @@
 ﻿using System;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.Controls.Interfaces;
 using Prism.Events;
 
-namespace Ferretto.Common.Modules.BLL.Services
+namespace Ferretto.Common.Controls.Services
 {
     public class EventService : IEventService
     {
@@ -10,13 +11,16 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly INavigationService navigationService;
+
         #endregion
 
         #region Constructors
 
-        public EventService(IEventAggregator eventAggregator)
+        public EventService(IEventAggregator eventAggregator, INavigationService navigationService)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
         }
 
         #endregion
@@ -36,6 +40,11 @@ namespace Ferretto.Common.Modules.BLL.Services
                 bool forceUiThread = false)
             where TEventArgs : IPubSubEvent
         {
+            if (this.navigationService.IsUnitTest)
+            {
+                forceUiThread = false;
+            }
+
             return this.GetEventBus<TEventArgs>().Subscribe(
                 action,
                 forceUiThread ? ThreadOption.UIThread : ThreadOption.PublisherThread,

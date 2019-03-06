@@ -52,6 +52,9 @@ namespace Ferretto.Common.Controls.Services
 
         public static void Initialize()
         {
+            MainKeys.Clear();
+            ViewShortKeys.Clear();
+
             #region ******* MAIN SHORTKEYS
 
             // ******* Main Menu *********
