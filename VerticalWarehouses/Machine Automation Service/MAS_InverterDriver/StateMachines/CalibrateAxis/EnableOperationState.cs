@@ -1,8 +1,10 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.MAS_InverterDriver;
+using Ferretto.VW.MAS_InverterDriver.StateMachines;
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Calibrate
+namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 {
-    public class ShutdownState : InverterStateBase
+    public class EnableOperationState : InverterStateBase
     {
         #region Fields
 
@@ -14,7 +16,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Calibrate
 
         #region Constructors
 
-        public ShutdownState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate)
+        public EnableOperationState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate)
         {
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
@@ -22,11 +24,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Calibrate
             switch (this.axisToCalibrate)
             {
                 case Axis.Horizontal:
-                    this.parameterValue = 0x0006;
+                    this.parameterValue = 0x000F;
                     break;
 
                 case Axis.Vertical:
-                    this.parameterValue = 0x8006;
+                    this.parameterValue = 0x800F;
                     break;
             }
 
@@ -47,8 +49,10 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Calibrate
 
             if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
                 if (message.ShortPayload == this.parameterValue)
-                    this.parentStateMachine.ChangeState(
-                        new SwitchOnState(this.parentStateMachine, this.axisToCalibrate));
+                {
+                    this.parentStateMachine.ChangeState(new EndState(this.parentStateMachine, this.axisToCalibrate));
+                    ;
+                }
         }
 
         #endregion

@@ -7,6 +7,7 @@ using Ferretto.VW.Common_Utils.Exceptions;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.Common_Utils.Utilities;
+using Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
@@ -21,8 +22,6 @@ namespace Ferretto.VW.InverterDriver
         #region Fields
 
         private const int HeartbeatTimeout = 300;
-
-        private const int InverterPortNumber = 17221;
 
         private readonly Task commandReceiveTask;
 
@@ -177,12 +176,19 @@ namespace Ferretto.VW.InverterDriver
                     return Task.CompletedTask;
                 }
 
+                if (this.currentStateMachine != null)
+                {
+                    var errorNotification = new NotificationMessage(null, "Inverter operation already in progress", MessageActor.Any,
+                        MessageActor.InverterDriver, receivedMessage.Type, MessageStatus.OperationError, ErrorLevel.Error);
+                    this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
+                }
+
                 switch (receivedMessage.Type)
                 {
-                    case MessageType.Calibrate:
-                        if (receivedMessage.Data is ICalibrateMessageData data)
+                    case MessageType.CalibrateAxis:
+                        if (receivedMessage.Data is ICalibrateAxisMessageData data)
                         {
-                            this.currentStateMachine = new CalibrateStateMachine(data.AxisToCalibrate, this.inverterCommandQueue);
+                            this.currentStateMachine = new CalibrateAxisStateMachine(data.AxisToCalibrate, this.inverterCommandQueue);
                             this.currentStateMachine.Start();
                         }
 
@@ -215,13 +221,11 @@ namespace Ferretto.VW.InverterDriver
 
                 switch (receivedMessage.Type)
                 {
-                    case MessageType.SwitchAxis:
+                    case MessageType.CalibrateAxis:
                         if (receivedMessage.Status == MessageStatus.OperationEnd)
                         {
-                            if (this.currentStateMachine is CalibrateStateMachine)
-                            {
-                                //this.currentStateMachine.ChangeState();
-                            }
+                            this.currentStateMachine.Dispose();
+                            this.currentStateMachine = null;
                         }
                         break;
                 }
@@ -258,6 +262,11 @@ namespace Ferretto.VW.InverterDriver
                 catch (OperationCanceledException)
                 {
                     return;
+                }
+
+                if (inverterData == null)
+                {
+                    continue;
                 }
 
                 var currentMessage = new InverterMessage(inverterData);

@@ -1,6 +1,10 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.MAS_InverterDriver;
+using Ferretto.VW.MAS_InverterDriver.StateMachines;
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Calibrate
+namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 {
     public class EndState : InverterStateBase
     {
@@ -16,6 +20,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Calibrate
         {
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
+
+            var messageData = new CalibrateAxisMessageData(axisToCalibrate);
+            var endNotification = new NotificationMessage(messageData, "Axis calibration complete", MessageActor.Any,
+                MessageActor.InverterDriver, MessageType.CalibrateAxis, MessageStatus.OperationEnd);
+            this.parentStateMachine.PublishNotificationEvent(endNotification);
         }
 
         #endregion
