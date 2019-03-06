@@ -1,6 +1,9 @@
-﻿namespace Ferretto.VW.MAS_InverterDriver.StateMachines
+﻿using System;
+using Ferretto.VW.Common_Utils.Messages;
+
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 {
-    public interface IInverterStateMachine
+    public interface IInverterStateMachine : IDisposable
     {
         #region Methods
 
@@ -8,7 +11,9 @@
 
         void EnqueueMessage(InverterMessage message);
 
-        void NotifyMessage(InverterMessage message);
+        void ProcessMessage(InverterMessage message);
+
+        void PublishNotificationEvent(NotificationMessage notificationMessage);
 
         void Start();
 

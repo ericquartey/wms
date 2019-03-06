@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.MAS_IODriver.Enumerations;
 
 namespace Ferretto.VW.MAS_IODriver
 {
@@ -110,11 +112,21 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Properties
 
+        public bool BayLightOn => this.outputs?[(int)IoPorts.CradleMotor] ?? false;
+
+        public bool CradleMotorOn => this.outputs?[(int)IoPorts.CradleMotor] ?? false;
+
+        public bool ElevatorMotorOn => this.outputs?[(int)IoPorts.ElevatorMotor] ?? false;
+
         public bool Force { get; set; }
 
         public bool[] Inputs => this.inputs;
 
+        public bool MeasureBarrierOn => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
+
         public bool[] Outputs => this.outputs;
+
+        public bool OutputsCleared => !this.outputs?.Any(o => o) ?? false;
 
         public bool ResetSecurity => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
 

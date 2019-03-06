@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalMovingDrawer
-{ 
+{
     public class VoltageDisabledState : InverterStateBase
     {
         #region Fields
@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalMovingDrawer
 
         #region Methods
 
-        public override void NotifyMessage(InverterMessage message)
+        public override void ProcessMessage(InverterMessage message)
         {
             if (message.IsError)
                 this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.movingDrawer));
