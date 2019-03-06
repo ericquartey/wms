@@ -115,7 +115,7 @@ namespace Ferretto.Common.Controls
                 wmsDialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             }
 
-            if (iNoModal)
+            if (isNoModalDialog)
             {
                 wmsDialog.Show();
             }
