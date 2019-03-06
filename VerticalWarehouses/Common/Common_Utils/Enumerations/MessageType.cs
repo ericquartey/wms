@@ -48,12 +48,11 @@
 
         SwitchAxis,
 
-        IOPowerUp
+        IOPowerUp,
+
         SensorsChanged,
 
         Movement,
-
-        
 
         StopAction
     }
