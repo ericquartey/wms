@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using DevExpress.Mvvm.UI;
+using DevExpress.Xpf.Editors;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls.Interfaces;
 
@@ -49,6 +50,7 @@ namespace Ferretto.Common.Controls
         public WmsLabel()
         {
             this.InitializeComponent();
+            this.Loaded += this.On_Loaded;
         }
 
         #endregion
@@ -63,7 +65,15 @@ namespace Ferretto.Common.Controls
 
         public string OriginalTitle { get => (string)this.GetValue(OriginalTitleProperty); set => this.SetValue(OriginalTitleProperty, value); }
 
-        public string Title { get => (string)this.GetValue(TitleProperty); set => this.SetValue(TitleProperty, value); }
+        public string Title
+        {
+            get => (string)this.GetValue(TitleProperty);
+            set
+            {
+                this.SetValue(TitleProperty, value);
+                this.EvaluateTitle();
+            }
+        }
 
         #endregion
 
@@ -132,7 +142,6 @@ namespace Ferretto.Common.Controls
             double maxTextWidth = 0;
             if (this.defaultControlWidth >= parentGrid.ActualWidth)
             {
-                this.SetEditorCoreWidth(parentGrid.ActualWidth);
                 maxTextWidth = parentGrid.ActualWidth - this.endTitleTextMargin;
                 if (maxTextWidth < 0)
                 {
@@ -141,7 +150,6 @@ namespace Ferretto.Common.Controls
             }
             else
             {
-                this.SetEditorCoreWidth(this.defaultControlWidth);
                 if (this.titleWidth <= parentGrid.ActualWidth)
                 {
                     this.ShowTitle(this.Title);
@@ -185,6 +193,17 @@ namespace Ferretto.Common.Controls
                                                          this.FlowDirection, this.GetInterface, this.FontSize, this.Foreground,
                                                          VisualTreeHelper.GetDpi(this).PixelsPerDip).Width;
 
+        private void On_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (sender is WmsLabel wmsLabel != null)
+            {
+                var p = LayoutTreeHelper.GetVisualParents(this).OfType<BaseEdit>().FirstOrDefault();
+
+                var showProperty = (bool)p.GetValue(Ferretto.Common.Controls.ShowTitle.ShowProperty);
+                this.Show(showProperty);
+            }
+        }
+
         private void SetColorRequiredIcon()
         {
             if (this.DataContext is IExtensionDataEntityViewModel viewModel)
@@ -197,26 +216,14 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        private void SetEditorCoreWidth(double width)
-        {
-            if (!(this.Parent is Grid parentGrid))
-            {
-                return;
-            }
-
-            if (!(parentGrid.Children[1] is Grid gridEditorCore))
-            {
-                return;
-            }
-
-            gridEditorCore.HorizontalAlignment = HorizontalAlignment.Stretch;
-        }
-
         private void SetInitialSizeToAdjustTitle(FrameworkElement parentControl)
         {
+            if (this.Title == null)
+            {
+                return;
+            }
             this.titleWidth = this.GetTextWidth(this.Title);
             this.defaultControlWidth = parentControl.ActualWidth;
-            this.SetEditorCoreWidth(this.defaultControlWidth);
             if (this.titleWidth <= parentControl.ActualWidth)
             {
                 this.ShowTitle(this.Title);
@@ -241,6 +248,10 @@ namespace Ferretto.Common.Controls
             {
                 var editorControl = LayoutTreeHelper.GetVisualParents(childEditor as DependencyObject).FirstOrDefault() as FrameworkElement;
                 var newWidth = width + this.endTitleTextMargin;
+                if (newWidth == 0)
+                {
+                    return;
+                }
                 var size = new Size(newWidth, editorControl.ActualHeight);
                 editorControl.Measure(size);
                 this.Arrange(new Rect(new Size(newWidth, this.DesiredSize.Height)));

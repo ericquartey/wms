@@ -152,11 +152,16 @@ namespace Ferretto.WMS.Data.Core.Providers
             return (i) =>
                 i.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
+                i.Code.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
                 i.Description.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                 i.ItemCategoryDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                i.TotalAvailable.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
+                i.TotalAvailable.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.MeasureUnitDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ;
         }
 
         private IQueryable<Item> GetAllBase(
