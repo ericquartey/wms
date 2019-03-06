@@ -54,6 +54,8 @@ namespace Ferretto.Common.Controls
         public ICommand AddCommand => this.addCommand ??
               (this.addCommand = new DelegateCommand(this.ExecuteAddCommand));
 
+        public ColorRequired ColorRequired => ColorRequired.Default;
+
         public TModel CurrentItem
         {
             get

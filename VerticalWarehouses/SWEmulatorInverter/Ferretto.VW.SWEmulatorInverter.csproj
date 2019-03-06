@@ -134,11 +134,5 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\InvServer\Ferretto.VW.InvServer.csproj">
-      <Project>{640e2e01-c3f4-4785-9728-6ec99e3809fa}</Project>
-      <Name>Ferretto.VW.InvServer</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

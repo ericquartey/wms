@@ -1,6 +1,6 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Interfaces;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 
-namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Calibrate
 {
     public class HomingModeState : InverterStateBase
     {
@@ -14,36 +14,32 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
 
         #region Constructors
 
-        public HomingModeState( IInverterStateMachine parentStateMachine, Axis axisToCalibrate )
+        public HomingModeState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate)
         {
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
 
             this.parameterValue = 0x0006;
 
-            var inverterMessage = new InverterMessage( 0x00, (short)InverterParameterId.SetOperatingModeParam, this.parameterValue );
+            var inverterMessage = new InverterMessage(0x00, (short) InverterParameterId.SetOperatingModeParam,
+                this.parameterValue);
 
-            parentStateMachine.EnqueueMessage( inverterMessage );
+            parentStateMachine.EnqueueMessage(inverterMessage);
         }
 
         #endregion
 
         #region Methods
 
-        public override void NotifyMessage( InverterMessage message )
+        public override void NotifyMessage(InverterMessage message)
         {
-            if(message.IsError)
-            {
-                this.parentStateMachine.ChangeState( new ErrorState( this.parentStateMachine, this.axisToCalibrate ) );
-            }
+            if (message.IsError)
+                this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate));
 
-            if(message.IsWriteMessage && message.ParameterId == InverterParameterId.SetOperatingModeParam)
-            {
-                if(message.ShortPayload == this.parameterValue)
-                {
-                    this.parentStateMachine.ChangeState( new ShutdownState( this.parentStateMachine, this.axisToCalibrate ) );
-                }
-            }
+            if (message.IsWriteMessage && message.ParameterId == InverterParameterId.SetOperatingModeParam)
+                if (message.ShortPayload == this.parameterValue)
+                    this.parentStateMachine.ChangeState(
+                        new ShutdownState(this.parentStateMachine, this.axisToCalibrate));
         }
 
         #endregion

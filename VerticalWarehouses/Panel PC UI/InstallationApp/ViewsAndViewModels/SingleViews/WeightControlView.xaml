@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="Ferretto.VW.InstallationApp.WeightControlView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Ferretto.VW.InstallationApp"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d">
+    <Grid    Width="1024"
+             Height="608">
+
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="250,30,0,0"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.WeightControl}"  />
+
+        <custom:CustomInputFieldControlFocusable   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="600,120,0,0"
+                                                   Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                   InputText="{Binding InsertedWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   LabelText="{x:Static res:InstallationApp.InsertedWeight}" />
+
+        <custom:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="250,120,0,0" 
+                                                ContentText="{Binding AcceptableWeightTolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                LabelText="{x:Static res:InstallationApp.AcceptableWeightTolerance}" />
+
+        <custom:CustomInputFieldControlFocusable     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,210,0,0"
+                                                     Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                     InputText="{Binding TestRun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     LabelText="{x:Static res:InstallationApp.TestRun}" />
+
+        <custom:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="600,210,0,0"
+                                                ContentText="{Binding MesuredWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                LabelText="{x:Static res:InstallationApp.MesuredWeight}"  />
+
+        <custom:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="250,320,0,0" Width="500"
+                                                ContentText="{Binding NoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                LabelText="{x:Static res:InstallationApp.Output}" />
+
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="600,460,0,0"
+                    Content="{x:Static res:InstallationApp.Start}"
+                    Command="{Binding SetBeginButtonCommand}"
+                    IsEnabled="{Binding IsSetBeginButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"  />
+
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="250,460,0,0"
+                    Content="{x:Static res:InstallationApp.Stop}"
+                    Command="{Binding SetStopButtonCommand}"
+                    IsEnabled="{Binding IsSetStopButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"  />
+    </Grid>
+</UserControl>

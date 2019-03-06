@@ -43,28 +43,20 @@ namespace Ferretto.Common.BusinessProviders
             {
                 var itemList = await this.itemListsDataService.CreateAsync(new WMS.Data.WebAPI.Contracts.ItemListDetails
                 {
-                    Id = model.Id,
-                    Code = model.Code,
-                    Description = model.Description,
-                    Priority = model.Priority,
-                    ItemListStatus = (WMS.Data.WebAPI.Contracts.ItemListStatus)model.ItemListStatus,
-                    ItemListType = (WMS.Data.WebAPI.Contracts.ItemListType)model.ItemListType,
-                    CreationDate = model.CreationDate,
                     AreaName = model.AreaName,
-                    ItemListItemsCount = model.ItemListItemsCount,
-                    Job = model.Job,
+                    Code = model.Code,
                     CustomerOrderCode = model.CustomerOrderCode,
                     CustomerOrderDescription = model.CustomerOrderDescription,
+                    Description = model.Description,
+                    ItemListItemsCount = model.ItemListItemsCount,
+                    ItemListStatus = (WMS.Data.WebAPI.Contracts.ItemListStatus)model.ItemListStatus,
+                    ItemListType = (WMS.Data.WebAPI.Contracts.ItemListType)model.ItemListType,
+                    ItemListTypeDescription = model.ItemListTypeDescription,
+                    Job = model.Job,
+                    Priority = model.Priority,
                     ShipmentUnitAssociated = model.ShipmentUnitAssociated,
                     ShipmentUnitCode = model.ShipmentUnitCode,
                     ShipmentUnitDescription = model.ShipmentUnitDescription,
-                    LastModificationDate = model.LastModificationDate,
-                    FirstExecutionDate = model.FirstExecutionDate,
-                    ExecutionEndDate = model.ExecutionEndDate,
-                    CanAddNewRow = model.CanAddNewRow,
-                    ItemListRowsCount = model.ItemListRowsCount,
-                    ItemListTypeDescription = model.ItemListTypeDescription,
-                    CanBeExecuted = model.CanBeExecuted
                 });
 
                 model.Id = itemList.Id;
@@ -100,14 +92,12 @@ namespace Ferretto.Common.BusinessProviders
         public async Task<IEnumerable<ItemList>> GetAllAsync(
             int skip,
             int take,
-            IEnumerable<SortOption> orderBy = null,
-            IExpression whereExpression = null,
+            IEnumerable<SortOption> orderBySortOptions = null,
+            string whereString = null,
             string searchString = null)
         {
-            var orderByString = orderBy != null ? string.Join(",", orderBy.Select(s => $"{s.PropertyName} {s.Direction}")) : null;
-
             var itemLists = await this.itemListsDataService
-                .GetAllAsync(skip, take, whereExpression?.ToString(), orderByString, searchString);
+                .GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString);
 
             return itemLists
                 .Select(l => new ItemList
@@ -124,10 +114,10 @@ namespace Ferretto.Common.BusinessProviders
                 });
         }
 
-        public async Task<int> GetAllCountAsync(IExpression whereExpression = null, string searchString = null)
+        public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
         {
             return await this.itemListsDataService
-                .GetAllCountAsync(whereExpression?.ToString(), searchString);
+                .GetAllCountAsync(whereString, searchString);
         }
 
         public async Task<ItemListDetails> GetByIdAsync(int id)

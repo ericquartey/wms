@@ -5,6 +5,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using DevExpress.Mvvm.UI;
+using DevExpress.Xpf.Editors;
+using Ferretto.Common.BusinessModels;
+using Ferretto.Common.Controls.Interfaces;
 
 namespace Ferretto.Common.Controls
 {
@@ -32,6 +35,8 @@ namespace Ferretto.Common.Controls
 
         private bool adjustSizeAfterFirstUpdate;
 
+        private SolidColorBrush colorRequiredIcon;
+
         private double defaultControlWidth;
 
         private double endTitleTextMargin;
@@ -45,6 +50,7 @@ namespace Ferretto.Common.Controls
         public WmsLabel()
         {
             this.InitializeComponent();
+            this.Loaded += this.On_Loaded;
         }
 
         #endregion
@@ -59,7 +65,15 @@ namespace Ferretto.Common.Controls
 
         public string OriginalTitle { get => (string)this.GetValue(OriginalTitleProperty); set => this.SetValue(OriginalTitleProperty, value); }
 
-        public string Title { get => (string)this.GetValue(TitleProperty); set => this.SetValue(TitleProperty, value); }
+        public string Title
+        {
+            get => (string)this.GetValue(TitleProperty);
+            set
+            {
+                this.SetValue(TitleProperty, value);
+                this.EvaluateTitle();
+            }
+        }
 
         #endregion
 
@@ -71,6 +85,8 @@ namespace Ferretto.Common.Controls
             var trimTextWidth = this.GetTextWidth(TRIMTEXT);
             this.endTitleTextMargin = trimTextWidth + this.WmsIcon.Width + EXTRATEXTOFFSET;
             this.SizeChanged += this.WmsLabel_SizeChanged;
+
+            this.SetColorRequiredIcon();
         }
 
         public void Show(bool show)
@@ -81,6 +97,21 @@ namespace Ferretto.Common.Controls
         public void ShowIcon(bool show)
         {
             this.WmsIcon.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private SolidColorBrush ConvertColor(ColorRequired color)
+        {
+            switch (color)
+            {
+                case ColorRequired.CreateMode:
+                    return (SolidColorBrush)Application.Current.Resources[nameof(ColorRequired.CreateMode)];
+
+                case ColorRequired.EditMode:
+                    return (SolidColorBrush)Application.Current.Resources[nameof(ColorRequired.EditMode)];
+
+                default:
+                    return (SolidColorBrush)Application.Current.Resources[nameof(ColorRequired.Default)];
+            }
         }
 
         private void EvaluateTitle()
@@ -111,7 +142,6 @@ namespace Ferretto.Common.Controls
             double maxTextWidth = 0;
             if (this.defaultControlWidth >= parentGrid.ActualWidth)
             {
-                this.SetEditorCoreWidth(parentGrid.ActualWidth);
                 maxTextWidth = parentGrid.ActualWidth - this.endTitleTextMargin;
                 if (maxTextWidth < 0)
                 {
@@ -120,7 +150,6 @@ namespace Ferretto.Common.Controls
             }
             else
             {
-                this.SetEditorCoreWidth(this.defaultControlWidth);
                 if (this.titleWidth <= parentGrid.ActualWidth)
                 {
                     this.ShowTitle(this.Title);
@@ -164,26 +193,37 @@ namespace Ferretto.Common.Controls
                                                          this.FlowDirection, this.GetInterface, this.FontSize, this.Foreground,
                                                          VisualTreeHelper.GetDpi(this).PixelsPerDip).Width;
 
-        private void SetEditorCoreWidth(double width)
+        private void On_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!(this.Parent is Grid parentGrid))
+            if (sender is WmsLabel wmsLabel != null)
             {
-                return;
-            }
+                var p = LayoutTreeHelper.GetVisualParents(this).OfType<BaseEdit>().FirstOrDefault();
 
-            if (!(parentGrid.Children[1] is Grid gridEditorCore))
+                var showProperty = (bool)p.GetValue(Ferretto.Common.Controls.ShowTitle.ShowProperty);
+                this.Show(showProperty);
+            }
+        }
+
+        private void SetColorRequiredIcon()
+        {
+            if (this.DataContext is IExtensionDataEntityViewModel viewModel)
             {
-                return;
+                this.colorRequiredIcon = this.ConvertColor(viewModel.ColorRequired);
+                if (this.colorRequiredIcon != null)
+                {
+                    this.WmsIcon.ColorizeBrush = this.colorRequiredIcon;
+                }
             }
-
-            gridEditorCore.HorizontalAlignment = HorizontalAlignment.Stretch;
         }
 
         private void SetInitialSizeToAdjustTitle(FrameworkElement parentControl)
         {
+            if (this.Title == null)
+            {
+                return;
+            }
             this.titleWidth = this.GetTextWidth(this.Title);
             this.defaultControlWidth = parentControl.ActualWidth;
-            this.SetEditorCoreWidth(this.defaultControlWidth);
             if (this.titleWidth <= parentControl.ActualWidth)
             {
                 this.ShowTitle(this.Title);
@@ -208,6 +248,10 @@ namespace Ferretto.Common.Controls
             {
                 var editorControl = LayoutTreeHelper.GetVisualParents(childEditor as DependencyObject).FirstOrDefault() as FrameworkElement;
                 var newWidth = width + this.endTitleTextMargin;
+                if (newWidth == 0)
+                {
+                    return;
+                }
                 var size = new Size(newWidth, editorControl.ActualHeight);
                 editorControl.Measure(size);
                 this.Arrange(new Rect(new Size(newWidth, this.DesiredSize.Height)));

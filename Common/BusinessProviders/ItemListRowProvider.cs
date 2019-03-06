@@ -109,13 +109,11 @@ namespace Ferretto.Common.BusinessProviders
         public async Task<IEnumerable<BusinessModels.ItemListRow>> GetAllAsync(
             int skip,
             int take,
-            IEnumerable<SortOption> orderBy = null,
-            IExpression whereExpression = null,
+            IEnumerable<SortOption> orderBySortOptions = null,
+            string whereString = null,
             string searchString = null)
         {
-            var orderByString = orderBy != null ? string.Join(",", orderBy.Select(s => $"{s.PropertyName} {s.Direction}")) : null;
-
-            return (await this.itemListRowsDataService.GetAllAsync(skip, take, whereExpression?.ToString(), orderByString, searchString))
+            return (await this.itemListRowsDataService.GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString))
                 .Select(l => new BusinessModels.ItemListRow
                 {
                     Id = l.Id,
@@ -131,9 +129,9 @@ namespace Ferretto.Common.BusinessProviders
                 });
         }
 
-        public async Task<int> GetAllCountAsync(IExpression whereExpression = null, string searchString = null)
+        public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
         {
-            return await this.itemListRowsDataService.GetAllCountAsync(whereExpression?.ToString(), searchString);
+            return await this.itemListRowsDataService.GetAllCountAsync(whereString, searchString);
         }
 
         public async Task<ItemListRowDetails> GetByIdAsync(int id)
@@ -169,7 +167,8 @@ namespace Ferretto.Common.BusinessProviders
                 MaterialStatusId = itemListRow.MaterialStatusId,
                 ItemUnitMeasure = itemListRow.ItemUnitMeasure,
                 MaterialStatusChoices = materialStatusChoices,
-                PackageTypeChoices = packageTypeChoices
+                PackageTypeChoices = packageTypeChoices,
+                ItemListId = itemListRow.ItemListId,
             };
         }
 
@@ -224,7 +223,7 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
-                await this.itemListRowsDataService.CreateAsync(new WMS.Data.WebAPI.Contracts.ItemListRowDetails
+                await this.itemListRowsDataService.UpdateAsync(new WMS.Data.WebAPI.Contracts.ItemListRowDetails
                 {
                     Id = model.Id,
                     Code = model.Code,
@@ -249,6 +248,7 @@ namespace Ferretto.Common.BusinessProviders
                     PackageTypeId = model.PackageTypeId,
                     MaterialStatusId = model.MaterialStatusId,
                     ItemUnitMeasure = model.ItemUnitMeasure,
+                    ItemListId = model.ItemListId,
                 });
 
                 return new OperationResult<ItemListRowDetails>(true);

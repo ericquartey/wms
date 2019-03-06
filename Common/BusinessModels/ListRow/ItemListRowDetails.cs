@@ -25,6 +25,8 @@ namespace Ferretto.Common.BusinessModels
 
         private string itemListDescription;
 
+        private int itemListId;
+
         private ItemListRowStatus itemListRowStatus;
 
         private ItemListStatus itemListStatus;
@@ -88,6 +90,9 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(General.Description), ResourceType = typeof(General))]
         public string ItemListDescription { get => this.itemListDescription; set => this.SetProperty(ref this.itemListDescription, value); }
+
+        [Display(Name = nameof(BusinessObjects.ItemList), ResourceType = typeof(BusinessObjects))]
+        public int ItemListId { get => this.itemListId; set => this.SetProperty(ref this.itemListId, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusDescription), ResourceType = typeof(BusinessObjects))]
         public ItemListRowStatus ItemListRowStatus { get => this.itemListRowStatus; set => this.SetProperty(ref this.itemListRowStatus, value); }

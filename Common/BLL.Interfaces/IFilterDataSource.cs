@@ -9,7 +9,7 @@ namespace Ferretto.Common.BLL.Interfaces
     {
         #region Properties
 
-        string Expression { get; }
+        string FilterString { get; }
 
         Func<IQueryable<TModel>> GetData { get; }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.Resources;
@@ -47,6 +48,28 @@ namespace Ferretto.Common.BusinessModels
             return this.MemberwiseClone();
         }
 
+        public bool HasEmptyValue(PropertyInfo propertyInfo)
+        {
+            if (propertyInfo == null)
+            {
+                return true;
+            }
+
+            var propertyType = propertyInfo.PropertyType;
+            var propertyValue = propertyInfo.GetValue(this);
+            if (propertyType.IsEnum)
+            {
+                return propertyValue == null || (int)propertyValue == 0;
+            }
+
+            if (propertyType == typeof(DateTime))
+            {
+                return propertyValue == null || (DateTime)propertyValue == DateTime.MinValue;
+            }
+
+            return propertyValue == null;
+        }
+
         public bool IsRequiredValid(string columnName)
         {
             var propertyInfo = this.GetType().GetProperty(columnName);
@@ -61,9 +84,7 @@ namespace Ferretto.Common.BusinessModels
                 return true;
             }
 
-            var propertyValue = propertyInfo.GetValue(this);
-
-            return propertyValue != null;
+            return !this.HasEmptyValue(propertyInfo);
         }
 
         protected bool SetIfPositive(ref int? member, int? value, [CallerMemberName] string propertyName = null)

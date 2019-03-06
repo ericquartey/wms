@@ -12,17 +12,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Properties
 
-        public virtual string Type => $"BaseState";
+        public virtual string Type => "BaseState";
 
         #endregion
 
         #region Methods
 
-        public abstract void MakeOperation();
+        public abstract void SendCommandMessage(CommandMessage message);
 
-        public abstract void NotifyMessage(Event_Message message);
-
-        public abstract void Stop();
+        public abstract void SendNotificationMessage(NotificationMessage message);
 
         #endregion
     }

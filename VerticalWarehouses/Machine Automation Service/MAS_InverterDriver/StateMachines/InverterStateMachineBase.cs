@@ -1,14 +1,17 @@
-﻿using Ferretto.VW.Common_Utils.Utilities;
+﻿using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Utilities;
+using Prism.Events;
 
-namespace Ferretto.VW.InverterDriver.StateMachines
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 {
     public abstract class InverterStateMachineBase : IInverterStateMachine
     {
         #region Fields
 
-        protected BlockingConcurrentQueue<InverterMessage> inverterCommandQueue;
+        protected IEventAggregator eventAggregator;
 
-        protected BlockingConcurrentQueue<InverterMessage> priorityInverterCommandQueue;
+        protected BlockingConcurrentQueue<InverterMessage> inverterCommandQueue;
 
         #endregion
 
@@ -20,19 +23,24 @@ namespace Ferretto.VW.InverterDriver.StateMachines
 
         #region Methods
 
-        public virtual void ChangeState( IInverterState newState )
+        public virtual void ChangeState(IInverterState newState)
         {
             this.CurrentState = newState;
         }
 
-        public void EnqueueMessage( InverterMessage message )
+        public void EnqueueMessage(InverterMessage message)
         {
-            this.inverterCommandQueue.Enqueue( message );
+            this.inverterCommandQueue.Enqueue(message);
         }
 
-        public void NotifyMessage( InverterMessage message )
+        public void NotifyMessage(InverterMessage message)
         {
-            this.CurrentState?.NotifyMessage( message );
+            this.CurrentState?.NotifyMessage(message);
+        }
+
+        public void PublishNotificationEvent(NotificationMessage notificationMessage)
+        {
+            this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
         }
 
         public abstract void Start();

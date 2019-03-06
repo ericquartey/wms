@@ -12,6 +12,10 @@
 
         public int FreeBlockId { get; set; }
 
+        public LoadingUnit LoadingUnit { get; set; }
+
+        public int LoadingUnitId { get; set; }
+
         public int Priority { get; set; }
 
         public Side Side { get; set; }

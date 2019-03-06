@@ -1,6 +1,7 @@
-﻿using Ferretto.VW.Common_Utils.Events;
-using System.Collections.Generic;
-using Ferretto.VW.Common_Utils.EventParameters;
+﻿using System.Collections.Generic;
+using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_InverterDriver.ActionBlocks;
 
 namespace Ferretto.VW.MAS_InverterDriver
@@ -9,12 +10,11 @@ namespace Ferretto.VW.MAS_InverterDriver
     {
         #region Methods
 
-        public void ExecuteHorizontalPosition(int target, int speed, int direction, List<ProfilePosition> profile)
+        public void ExecuteHorizontalPosition(int target, int speed, int direction, List<ProfilePosition> profile, float weight)
         {
-            if(this.inverterAction != null)
+            if (this.inverterAction != null)
             {
-                this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
-                    (OperationType.Homing, OperationStatus.Error, "Inverter action has already defined", Verbosity.Info));
+                this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null, "Inverter action has already defined", MessageActor.Any, MessageActor.InverterDriver, MessageType.Homing, MessageStatus.OperationError, ErrorLevel.Error));
             }
             var inverterAction = new HorizontalMovingDrawer();
             this.inverterAction = inverterAction;
@@ -25,23 +25,24 @@ namespace Ferretto.VW.MAS_InverterDriver
             inverterAction.Initialize();
 
             inverterAction.Run(target, speed, direction, profile);
-            
         }
 
-        private void HorizontalPosition_ThrowErrorEvent()
+        public void ExecuteHorizontalPositionStop()
         {
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
-                (OperationType.Homing, OperationStatus.Error, "Internal inverter driver error", Verbosity.Info));
-
-            this.inverterAction.ErrorEvent -= this.HorizontalPosition_ThrowErrorEvent;
         }
 
         private void HorizontalPosition_ThrowEndEvent()
         {
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(new Notification_EventParameter
-                (OperationType.Homing, OperationStatus.End, "Horizontal position Ended", Verbosity.Info));
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null, "Horizontal position Ended", MessageActor.Any, MessageActor.InverterDriver, MessageType.Homing, MessageStatus.OperationEnd));
 
             this.inverterAction.EndEvent -= this.HorizontalPosition_ThrowEndEvent;
+        }
+
+        private void HorizontalPosition_ThrowErrorEvent()
+        {
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null, "Internal inverter driver error", MessageActor.Any, MessageActor.InverterDriver, MessageType.Homing, MessageStatus.OperationError, ErrorLevel.Error));
+
+            this.inverterAction.ErrorEvent -= this.HorizontalPosition_ThrowErrorEvent;
         }
 
         #endregion

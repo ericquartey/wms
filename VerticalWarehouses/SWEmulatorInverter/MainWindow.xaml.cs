@@ -64,7 +64,7 @@ namespace Ferretto.VW.SWEmulatorInverter
 
             this.DataContext = this;
 
-            logger.Log(LogLevel.Debug, String.Format("SW Emulator Inverter is running..."));
+            logger.Log(LogLevel.Debug, string.Format("SW Emulator Inverter is running..."));
         }
 
         #endregion Constructors
@@ -116,7 +116,7 @@ namespace Ferretto.VW.SWEmulatorInverter
         /// <summary>
         /// Impose the END of an operation.
         /// </summary>
-        private void Button_Done(Object sender, RoutedEventArgs e)
+        private void Button_Done(object sender, RoutedEventArgs e)
         {
             // The <DONE> condition is obtained via setup of status word bit line (dedicated).
             // TODO: develop this feature...
@@ -129,7 +129,7 @@ namespace Ferretto.VW.SWEmulatorInverter
         /// <summary>
         /// Set an error condition (via UI).
         /// </summary>
-        private void Button_Error(Object sender, RoutedEventArgs e)
+        private void Button_Error(object sender, RoutedEventArgs e)
         {
             this.RBNO.IsChecked = true;
 
@@ -144,7 +144,7 @@ namespace Ferretto.VW.SWEmulatorInverter
         /// </summary>
         private void Button_Esci(object sender, RoutedEventArgs e)
         {
-            logger.Log(LogLevel.Debug, String.Format("SW Emulator Inverter quit."));
+            logger.Log(LogLevel.Debug, string.Format("SW Emulator Inverter quit."));
             this.MainWin?.Close();
         }
 
@@ -219,7 +219,7 @@ namespace Ferretto.VW.SWEmulatorInverter
             return value;
         }
 
-        private void RBNO_Checked(Object sender, RoutedEventArgs e)
+        private void RBNO_Checked(object sender, RoutedEventArgs e)
         {
             if (this.Inverter != null)
             {
@@ -227,7 +227,7 @@ namespace Ferretto.VW.SWEmulatorInverter
             }
         }
 
-        private void RBYES_Checked(Object sender, RoutedEventArgs e)
+        private void RBYES_Checked(object sender, RoutedEventArgs e)
         {
             if (this.Inverter != null)
             {

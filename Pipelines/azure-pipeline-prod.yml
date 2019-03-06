@@ -16,9 +16,6 @@ trigger:
     - release/*
     - bugfix/*
     - hotfix/*
-  paths:
-    exclude:
-    - VerticalWarehouses
 
 variables:
   BuildPlatform: 'any cpu'
@@ -44,26 +41,53 @@ steps:
     ArtifactName: 'common_sources'
 
 
-- template: azure-pipeline-net4-nuget-template.yml
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Common Sources'
+- task: DotNetCoreCLI@2
+  displayName: 'NuGet restore'
   inputs:
-    PathtoPublish: '.'
-    ArtifactName: 'common_sources'
+    command: restore
+    projects: '$(RestoreBuildProjects)'
+    feedsToUse: config
+    nugetConfigPath: nuget.config
+
+
+- template: azure-pipeline-net4-nuget-template.yml
 
 
 - template: azure-pipeline-assembly-versioning-template.yml
 
 
 - task: VSBuild@1
-  displayName: 'Build solution WMS.App'
+  displayName: 'Build WMS App'
   inputs:
     solution: 'WMS\WMS.App.sln'
     msbuildArgs: '-v:normal'
     platform: '$(BuildPlatform)'
     configuration: '$(BuildConfiguration)'
     msbuildArchitecture: x64
+
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build Data Service'
+  inputs:
+    projects: 'WMS/Data/**/*.csproj'
+    arguments: '--configuration $(BuildConfiguration) --framework $(TargetFramework)'
+
+
+- task: VSBuild@1
+  displayName: 'Build VerticalWarehouses'
+  inputs:
+    solution: 'VerticalWarehouses\VerticalWarehouses.sln'
+    msbuildArgs: '-v:normal'
+    platform: '$(BuildPlatform)'
+    configuration: '$(BuildConfiguration)'
+    msbuildArchitecture: x64
+
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build Machine Automation Service'
+  inputs:
+    projects: 'VerticalWarehouses/Machine Automation Service/**/*.csproj'
+    arguments: '--configuration $(BuildConfiguration) --framework $(TargetFramework)'
 
 
 - task: VSTest@2
@@ -83,5 +107,39 @@ steps:
     SourceFolder: '$(system.defaultworkingdirectory)'
     Contents: '**\bin\$(BuildConfiguration)\**'
     TargetFolder: '$(build.artifactstagingdirectory)'
-- template: azure-pipeline-publish-artifacts-template.yml
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Desktop App'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)/WMS/App/App/bin/$(BuildConfiguration)/net471'
+    ArtifactName: 'desktop_app'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Data Service'
+  inputs:
+    PathtoPublish: 'WMS/Data/WebAPI/bin/$(BuildConfiguration)/$(TargetFramework)/win7-x64/publish'
+    ArtifactName: 'data_service'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Panel Pc App'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/Panel PC UI/VWApp/bin/$(BuildConfiguration)/net471'
+    ArtifactName: 'panelpc_app'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Machine Automation Service'
+  inputs:
+    PathtoPublish: 'VerticalWarehouses/Machine Automation Service/MAS_AutomationService/bin/$(BuildConfiguration)/$(TargetFramework)/publish'
+    ArtifactName: 'automation_service'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: on_premises_appconfig_transform'
+  inputs:
+    PathtoPublish: 'WMS/App/App'
+    ArtifactName: 'on_premises_appconfig_transform'
 

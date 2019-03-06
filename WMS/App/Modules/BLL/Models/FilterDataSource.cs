@@ -51,7 +51,7 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         #region Properties
 
-        public string Expression => null;
+        public string FilterString => null;
 
         public Func<IQueryable<TModel>> GetData { get; protected set; }
 

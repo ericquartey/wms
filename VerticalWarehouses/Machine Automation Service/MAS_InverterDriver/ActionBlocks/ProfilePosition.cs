@@ -16,10 +16,13 @@
 
         #region Properties
 
-        public int Acceleration { get; private set; }
-        public int Deceleration { get; private set; }
+        public int Acceleration { get; }
+
+        public int Deceleration { get; }
+
         public int Quote { get; set; }
-        public int Speed { get; private set; }
+
+        public int Speed { get; }
 
         #endregion
     }

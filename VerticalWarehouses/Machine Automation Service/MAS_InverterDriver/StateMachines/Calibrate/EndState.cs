@@ -1,6 +1,7 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Interfaces;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Messages;
 
-namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Calibrate
 {
     public class EndState : InverterStateBase
     {
@@ -12,7 +13,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
 
         #region Constructors
 
-        public EndState( IInverterStateMachine parentStateMachine, Axis axisToCalibrate )
+        public EndState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate)
         {
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
@@ -22,12 +23,10 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Calibrate
 
         #region Methods
 
-        public override void NotifyMessage( InverterMessage message )
+        public override void NotifyMessage(InverterMessage message)
         {
-            if(message.IsError)
-            {
-                this.parentStateMachine.ChangeState( new ErrorState( this.parentStateMachine, this.axisToCalibrate ) );
-            }
+            if (message.IsError)
+                this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate));
         }
 
         #endregion

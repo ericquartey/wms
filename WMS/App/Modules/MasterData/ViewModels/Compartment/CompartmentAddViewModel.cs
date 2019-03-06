@@ -30,8 +30,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public CompartmentAddViewModel()
         {
             this.Title = Common.Resources.MasterData.AddCompartment;
-
-            this.IsValidationEnabled = false;
+            this.ColorRequired = ColorRequired.CreateMode;
 
             this.LoadData();
         }
@@ -65,9 +64,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async Task ExecuteSaveCommand()
         {
-            this.IsValidationEnabled = true;
-
-            if (string.IsNullOrWhiteSpace(this.Model.Error) == false)
+            if (!this.IsModelValid)
             {
                 return;
             }

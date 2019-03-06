@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.InverterDriver.StateMachines
+﻿using System;
+
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 {
     public abstract class InverterStateBase : IInverterState
     {
@@ -10,13 +12,13 @@
 
         #region Properties
 
-        public string Type => "InverterBaseState";
+        public virtual string Type => this.GetType().ToString();
 
         #endregion
 
         #region Methods
 
-        public abstract void NotifyMessage( InverterMessage message );
+        public abstract void NotifyMessage(InverterMessage message);
 
         #endregion
     }

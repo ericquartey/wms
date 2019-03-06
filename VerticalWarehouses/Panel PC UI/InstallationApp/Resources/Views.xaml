@@ -1,0 +1,92 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
+                    xmlns:local="clr-namespace:Ferretto.VW.InstallationApp">
+    <DataTemplate DataType="{x:Type local:SSNavigationButtonsViewModel}">
+        <local:SSNavigationButtonsView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:SSVerticalAxisViewModel}">
+        <local:SSVerticalAxisView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:SSCradleViewModel}">
+        <local:SSCradleView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:SSBaysViewModel}">
+        <local:SSBaysView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:SSShutterViewModel}">
+        <local:SSShutterView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:SSVariousInputsViewModel}">
+        <local:SSVariousInputsView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:LSMTShutterEngineViewModel}">
+        <local:LSMTShutterEngineView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:LSMTHorizontalEngineViewModel}">
+        <local:LSMTHorizontalEngineView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:LSMTVerticalEngineViewModel}">
+        <local:LSMTVerticalEngineView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:LSMTNavigationButtonsViewModel}">
+        <local:LSMTNavigationButtonsView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:VerticalAxisCalibrationViewModel}">
+        <local:VerticalAxisCalibrationView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:ResolutionCalibrationVerticalAxisViewModel}">
+        <local:ResolutionCalibrationVerticalAxisView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:BeltBurnishingViewModel}">
+        <local:BeltBurnishingView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:WeightControlViewModel}">
+        <local:WeightControlView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:CellsPanelsControlViewModel}">
+        <local:CellsPanelsControlView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:VerticalOffsetCalibrationViewModel}">
+        <local:VerticalOffsetCalibrationView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:InstallationStateViewModel}">
+        <local:InstallationStateView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:CellsControlViewModel}">
+        <local:CellsControlView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:IdleViewModel}">
+        <local:IdleView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:Shutter1ControlViewModel}">
+        <local:Shutter1ControlView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:Shutter2ControlViewModel}">
+        <local:Shutter2ControlView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:Shutter3ControlViewModel}">
+        <local:Shutter3ControlView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:Shutter1HeightControlViewModel}">
+        <local:Shutter1HeightControlView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:Shutter2HeightControlViewModel}">
+        <local:Shutter2HeightControlView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:Shutter3HeightControlViewModel}">
+        <local:Shutter3HeightControlView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:MainWindowNavigationButtonsViewModel}">
+        <local:MainWindowNavigationButtonsView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:MainWindowBackToIAPPButtonViewModel}">
+        <local:MainWindowBackToIAPPButtonView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:LSMTMainViewModel}">
+        <local:LSMTMainView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:SSMainViewModel}">
+        <local:SSMainView />
+    </DataTemplate>
+</ResourceDictionary>

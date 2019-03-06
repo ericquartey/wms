@@ -58,7 +58,7 @@ namespace Ferretto.Common.Controls
             nameof(SelectedItem), typeof(ICompartment), typeof(WmsTrayControl));
 
         public static readonly DependencyProperty ShowBackgroundProperty = DependencyProperty.Register(
-            nameof(ShowBackground), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(true));
+            nameof(ShowBackground), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(false));
 
         public static readonly DependencyProperty ShowInfoProperty = DependencyProperty.Register(
             nameof(ShowInfo), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(true));
@@ -85,7 +85,6 @@ namespace Ferretto.Common.Controls
             var wmsTrayControl = this;
             this.RootTrayGrid.DataContext = wmsTrayControl;
             this.SizeChanged += this.WmsTrayControl_SizeChanged;
-            this.Unloaded += this.WmsTrayControl_Unloaded;
         }
 
         #endregion
@@ -252,12 +251,6 @@ namespace Ferretto.Common.Controls
         {
             this.CanvasListBoxControl.SetSize(e.NewSize.Height - 1, e.NewSize.Width - 1);
         }
-
-        private void WmsTrayControl_Unloaded(object sender, RoutedEventArgs e)
-        {
-            this.SizeChanged -= this.WmsTrayControl_SizeChanged;
-        }
-
         #endregion
     }
 }

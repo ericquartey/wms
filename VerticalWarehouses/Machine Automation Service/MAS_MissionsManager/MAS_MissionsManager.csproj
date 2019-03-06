@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <AssemblyName>Ferretto.VW.MAS_MissionsManager</AssemblyName>
     <RootNamespace>Ferretto.VW.MAS_MissionsManager</RootNamespace>
+    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>

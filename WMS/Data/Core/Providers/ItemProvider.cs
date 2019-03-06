@@ -79,26 +79,26 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<Item>> GetAllAsync(
             int skip,
             int take,
-            IEnumerable<SortOption> orderBy = null,
-            IExpression whereExpression = null,
+            IEnumerable<SortOption> orderBySortOptions = null,
+            string whereString = null,
             string searchString = null)
         {
             return await this.GetAllBase()
-                .ToArrayAsync(
+                .ToArrayAsync<Item, Common.DataModels.Item>(
                     skip,
                     take,
-                    orderBy,
-                    whereExpression,
+                    orderBySortOptions,
+                    whereString,
                     BuildSearchExpression(searchString));
         }
 
         public async Task<int> GetAllCountAsync(
-            IExpression whereExpression = null,
+            string whereString = null,
             string searchString = null)
         {
             return await this.GetAllBase()
-                .CountAsync(
-                    whereExpression,
+                .CountAsync<Item, Common.DataModels.Item>(
+                    whereString,
                     BuildSearchExpression(searchString));
         }
 
@@ -152,11 +152,16 @@ namespace Ferretto.WMS.Data.Core.Providers
             return (i) =>
                 i.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
+                i.Code.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
                 i.Description.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                 i.ItemCategoryDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                i.TotalAvailable.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
+                i.TotalAvailable.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                i.MeasureUnitDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ;
         }
 
         private IQueryable<Item> GetAllBase(

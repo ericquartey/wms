@@ -1,4 +1,6 @@
-﻿using Ferretto.VW.Common_Utils.Messages;
+﻿using System;
+using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Messages;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 {
@@ -10,41 +12,34 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
         {
             this.parentStateMachine = parentMachine;
 
-            var newMessage = new Event_Message(null,
-                $"Mission State Started",
+            var newMessage = new CommandMessage(null,
+                "Mission State Started",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageStatus.Start,
                 MessageType.StartAction,
                 MessageVerbosity.Info);
-            this.parentStateMachine.PublishMessage(newMessage);
+            this.parentStateMachine.PublishCommandMessage(newMessage);
 
-            var inverterMessage = new Event_Message(null,
-                $"Mission State Started",
+            var inverterMessage = new CommandMessage(null,
+                "Mission State Started",
                 MessageActor.InverterDriver,
                 MessageActor.FiniteStateMachines,
-                MessageStatus.Start,
                 MessageType.StartAction,
                 MessageVerbosity.Info);
-            this.parentStateMachine.PublishMessage(newMessage);
+            this.parentStateMachine.PublishCommandMessage(newMessage);
         }
 
         #endregion
 
         #region Properties
 
-        public override string Type => $"MissionStartState";
+        public override string Type => "MissionStartState";
 
         #endregion
 
         #region Methods
 
-        public override void MakeOperation()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void NotifyMessage(Event_Message message)
+        public override void SendCommandMessage(CommandMessage message)
         {
             switch (message.Type)
             {
@@ -64,42 +59,39 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
             }
         }
 
-        public override void Stop()
+        public override void SendNotificationMessage(NotificationMessage message)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        private void ProcessEndAction(Event_Message message)
+        private void ProcessEndAction(CommandMessage message)
         {
-            var newMessage = new Event_Message(null,
-                $"End Mission",
+            var newMessage = new CommandMessage(null,
+                "End Mission",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageStatus.End,
                 MessageType.EndAction,
                 MessageVerbosity.Info);
             this.parentStateMachine.ChangeState(new MissionEndState(this.parentStateMachine), newMessage);
         }
 
-        private void ProcessErrorAction(Event_Message message)
+        private void ProcessErrorAction(CommandMessage message)
         {
-            var newMessage = new Event_Message(null,
-                $"Stop Requested",
+            var newMessage = new CommandMessage(null,
+                "Stop Requested",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageStatus.End,
                 MessageType.StopAction,
                 MessageVerbosity.Info);
             this.parentStateMachine.ChangeState(new MissionErrorState(this.parentStateMachine), newMessage);
         }
 
-        private void ProcessStopAction(Event_Message message)
+        private void ProcessStopAction(CommandMessage message)
         {
-            var newMessage = new Event_Message(null,
-                $"Stop Requested",
+            var newMessage = new CommandMessage(null,
+                "Stop Requested",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageStatus.End,
                 MessageType.StopAction,
                 MessageVerbosity.Info);
             this.parentStateMachine.ChangeState(new MissionEndState(this.parentStateMachine), newMessage);

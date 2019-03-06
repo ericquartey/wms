@@ -19,7 +19,14 @@ namespace Ferretto.Common.Controls
             {
                 throw new InvalidOperationException(Errors.ConverterCanConvertOnlyToDoubleType);
             }
-
+            for(var i = 1; i < values.Length; i++)
+            {
+                if (string.IsNullOrWhiteSpace($"{values[i]}"))
+                {
+                    return string.Empty;
+                }
+            }
+            
             return string.Format(values[0].ToString(), values.Skip(1).ToArray());
         }
 

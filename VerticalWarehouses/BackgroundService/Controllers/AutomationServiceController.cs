@@ -15,16 +15,16 @@ namespace BackgroundService
 
         private readonly IHubContext<AutomationServiceHub, IAutomationServiceHub> hub;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
-        public AutomationServiceController(IHubContext<AutomationServiceHub, IAutomationServiceHub> _hub)
+        public AutomationServiceController(IHubContext<AutomationServiceHub, IAutomationServiceHub> hub)
         {
-            this.hub = _hub;
+            this.hub = hub;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -34,6 +34,6 @@ namespace BackgroundService
             return "test-method executed.\n";
         }
 
-        #endregion Methods
+        #endregion
     }
 }

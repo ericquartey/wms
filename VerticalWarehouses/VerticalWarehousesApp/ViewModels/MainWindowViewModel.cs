@@ -28,7 +28,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.ViewModels
 
         #region Properties
 
-        public Boolean IsUserLoggedIn { get => this.isUserLoggedIn; set { this.isUserLoggedIn = value; this.RaisePropertyChanged("IsUserLoggedIn"); } }
+        public bool IsUserLoggedIn { get => this.isUserLoggedIn; set { this.isUserLoggedIn = value; this.RaisePropertyChanged("IsUserLoggedIn"); } }
 
         #endregion Properties
 

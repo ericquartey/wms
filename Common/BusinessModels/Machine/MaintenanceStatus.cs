@@ -5,6 +5,9 @@ namespace Ferretto.Common.BusinessModels
 {
     public enum MaintenanceStatus
     {
+        [Display(Name = "")]
+        NotSpecified,
+
         [Display(Name = nameof(BusinessObjects.MachineMaintenanceStatusValid), ResourceType = typeof(BusinessObjects))]
         Valid = 'V',
 

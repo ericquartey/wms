@@ -1,67 +1,31 @@
-﻿using Ferretto.VW.Common_Utils.EventParameters;
-using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.InverterDriver;
-using Prism.Events;
+﻿using System;
+using Ferretto.VW.Common_Utils.Enumerations;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
 {
-    public class ErrorState : IState
+    public class ErrorState : InverterStateBase
     {
         #region Fields
 
-        private readonly IEventAggregator eventAggregator;
-
-        private readonly IInverterDriver inverterDriver;
-
-        private readonly StateMachineHorizontalMoving stateMachineHorizontalMoving;
+        private readonly Axis movingDrawer;
 
         #endregion
 
         #region Constructors
 
-        public ErrorState(StateMachineHorizontalMoving stateMachineHorizontalMoving, IInverterDriver inverterDriver, IEventAggregator eventAggregator)
+        public ErrorState(IInverterStateMachine parentStateMachine, Axis movingDrawer)
         {
-            this.inverterDriver = inverterDriver;
-            this.eventAggregator = eventAggregator;
-            this.stateMachineHorizontalMoving = stateMachineHorizontalMoving;
-
-            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Subscribe(this.notifyEventHandler);
+            this.parentStateMachine = parentStateMachine;
+            this.movingDrawer = movingDrawer;
         }
-
-        #endregion
-
-        #region Properties
-
-        public string Type => "Error State";
 
         #endregion
 
         #region Methods
 
-        private void notifyEventHandler(Notification_EventParameter notification)
+        public override void NotifyMessage(InverterMessage message)
         {
-
-            if (notification.OperationType == OperationType.SwitchVerticalToHorizontal)
-            {
-                switch (notification.OperationStatus)
-                {
-                    case OperationStatus.End:
-                        {
-                            break;
-                        }
-                    case OperationStatus.Error:
-                        {
-                            var notifyEvent = new Notification_EventParameter(OperationType.SwitchVerticalToHorizontal, OperationStatus.Error, "Unknown Operation!", Verbosity.Info);
-                            this.eventAggregator.GetEvent<InverterDriver_NotificationEvent>().Publish(notifyEvent);
-
-                            break;
-                        }
-                    default:
-                        {
-                            break;
-                        }
-                }
-            }
+            throw new NotImplementedException();
         }
 
         #endregion

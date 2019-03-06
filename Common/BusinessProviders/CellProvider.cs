@@ -63,12 +63,12 @@ namespace Ferretto.Common.BusinessProviders
         public async Task<IEnumerable<Cell>> GetAllAsync(
             int skip,
             int take,
-            IEnumerable<SortOption> orderBy = null,
-            IExpression whereExpression = null,
+            IEnumerable<SortOption> orderBySortOptions = null,
+            string whereString = null,
             string searchString = null)
         {
             var cells = await this.cellsDataService
-                .GetAllAsync(skip, take, whereExpression?.ToString(), orderBy.ToQueryString(), searchString);
+                .GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString);
 
             return cells
                 .Select(c => new Cell
@@ -80,7 +80,7 @@ namespace Ferretto.Common.BusinessProviders
                     LoadingUnitsCount = c.LoadingUnitsCount,
                     LoadingUnitsDescription = c.LoadingUnitsDescription,
                     Status = c.Status,
-                    Type = c.Type,
+                    CellTypeDescription = c.CellTypeDescription,
                     Column = c.Column,
                     Floor = c.Floor,
                     Number = c.Number,
@@ -92,10 +92,10 @@ namespace Ferretto.Common.BusinessProviders
                 });
         }
 
-        public async Task<int> GetAllCountAsync(IExpression whereExpression = null, string searchString = null)
+        public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
         {
             return await this.cellsDataService
-                .GetAllCountAsync(whereExpression?.ToString(), searchString);
+                .GetAllCountAsync(whereString, searchString);
         }
 
         public async Task<IEnumerable<Enumeration>> GetByAisleIdAsync(int aisleId)
@@ -127,24 +127,25 @@ namespace Ferretto.Common.BusinessProviders
 
             return new CellDetails
             {
-                Id = cell.Id,
+                AbcClassChoices = abcClassChoices,
                 AbcClassId = cell.AbcClassId,
+                AisleChoices = aisleChoices,
                 AisleId = cell.AisleId,
                 AreaId = cell.AreaId,
+                CellStatusChoices = cellStatusChoices,
                 CellStatusId = cell.CellStatusId,
+                CellTypeChoices = cellTypeChoices,
                 CellTypeId = cell.CellTypeId,
                 Column = cell.Column,
                 Floor = cell.Floor,
+                Id = cell.Id,
+                LoadingUnitsCount = cell.LoadingUnitsCount,
                 Number = cell.Number,
                 Priority = cell.Priority,
                 Side = (Side)cell.Side,
                 XCoordinate = cell.XCoordinate,
                 YCoordinate = cell.YCoordinate,
                 ZCoordinate = cell.ZCoordinate,
-                AbcClassChoices = abcClassChoices,
-                AisleChoices = aisleChoices,
-                CellStatusChoices = cellStatusChoices,
-                CellTypeChoices = cellTypeChoices
             };
         }
 
@@ -162,25 +163,23 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
-                var cell = await this.cellsDataService.GetByIdAsync(model.Id);
-
                 await this.cellsDataService.UpdateAsync(new WMS.Data.WebAPI.Contracts.CellDetails
                 {
-                    Id = cell.Id,
-                    AbcClassId = cell.AbcClassId,
-                    AisleId = cell.AisleId,
-                    AreaId = cell.AreaId,
-                    CellStatusId = cell.CellStatusId,
-                    CellTypeId = cell.CellTypeId,
-                    Column = cell.Column,
-                    Floor = cell.Floor,
-                    Number = cell.Number,
-                    Priority = cell.Priority,
-                    Side = cell.Side,
-                    XCoordinate = cell.XCoordinate,
-                    YCoordinate = cell.YCoordinate,
-                    ZCoordinate = cell.ZCoordinate,
-                    LoadingUnitsCount = cell.LoadingUnitsCount
+                    AbcClassId = model.AbcClassId,
+                    AisleId = model.AisleId,
+                    AreaId = model.AreaId,
+                    CellStatusId = model.CellStatusId,
+                    CellTypeId = model.CellTypeId,
+                    Column = model.Column,
+                    Floor = model.Floor,
+                    Id = model.Id,
+                    LoadingUnitsCount = model.LoadingUnitsCount,
+                    Number = model.Number,
+                    Priority = model.Priority,
+                    Side = (WMS.Data.WebAPI.Contracts.Side)model.Side,
+                    XCoordinate = model.XCoordinate,
+                    YCoordinate = model.YCoordinate,
+                    ZCoordinate = model.ZCoordinate,
                 });
 
                 return new OperationResult<CellDetails>(true);
