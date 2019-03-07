@@ -73,18 +73,18 @@ namespace Ferretto.WMS.Data.Tests
         {
             #region Arrange
 
-            var controller = this.MockController();
+            var schedulerRequestsController = this.MockController();
 
             #endregion
 
             #region Act
 
-            var actionResult1 = await controller.GetAllAsync(
+            var actionResult1 = await schedulerRequestsController.GetAllAsync(
                 0,
                 int.MaxValue,
                 $"StartsWith([BayDescription], 'Bay') And StartsWith([AreaDescription], 'Area')");
 
-            var actionResult2 = await controller.GetAllAsync(
+            var actionResult2 = await schedulerRequestsController.GetAllAsync(
                 0,
                 int.MaxValue,
                 "StartsWith([BayDescription], 'Bay') And StartsWith([AreaDescription], 'NOT PRESENT')");
@@ -109,18 +109,18 @@ namespace Ferretto.WMS.Data.Tests
         {
             #region Arrange
 
-            var controller = this.MockController();
+            var schedulerRequestsController = this.MockController();
 
             #endregion
 
             #region Act
 
-            var actionResult1 = await controller.GetAllAsync(
+            var actionResult1 = await schedulerRequestsController.GetAllAsync(
                 0,
                 int.MaxValue,
                 "StartsWith([BayDescription], 'Bay') And Contains([BayDescription], '#1')");
 
-            var actionResult2 = await controller.GetAllAsync(
+            var actionResult2 = await schedulerRequestsController.GetAllAsync(
                 0,
                 int.MaxValue,
                 "StartsWith([BayDescription], 'Bay') And Contains([BayDescription], 'NOT PRESENT')");
@@ -145,18 +145,18 @@ namespace Ferretto.WMS.Data.Tests
         {
             #region Arrange
 
-            var controller = this.MockController();
+            var schedulerRequestsController = this.MockController();
 
             #endregion
 
             #region Act
 
-            var actionResult1 = await controller.GetAllAsync(
+            var actionResult1 = await schedulerRequestsController.GetAllAsync(
                 0,
                 int.MaxValue,
                 "Contains([BayDescription], '#1')");
 
-            var actionResult2 = await controller.GetAllAsync(
+            var actionResult2 = await schedulerRequestsController.GetAllAsync(
                 0,
                 int.MaxValue,
                 "Contains([BayDescription], 'NOT PRESENT')");
@@ -181,18 +181,18 @@ namespace Ferretto.WMS.Data.Tests
         {
             #region Arrange
 
-            var controller = this.MockController();
+            var schedulerRequestsController = this.MockController();
 
             #endregion
 
             #region Act
 
-            var actionResult1 = await controller.GetAllAsync(
+            var actionResult1 = await schedulerRequestsController.GetAllAsync(
                 0,
                 int.MaxValue,
                 "Not Contains([BayDescription], 'Bay')");
 
-            var actionResult2 = await controller.GetAllAsync(
+            var actionResult2 = await schedulerRequestsController.GetAllAsync(
                 0,
                 int.MaxValue,
                 "Not Contains([BayDescription], 'NOT PRESENT')");
@@ -217,18 +217,18 @@ namespace Ferretto.WMS.Data.Tests
         {
             #region Arrange
 
-            var controller = this.MockController();
+            var schedulerRequestsController = this.MockController();
 
             #endregion
 
             #region Act
 
-            var actionResult1 = await controller.GetAllAsync(
+            var actionResult1 = await schedulerRequestsController.GetAllAsync(
                 0,
                 int.MaxValue,
                 "[BayDescription] <> 'Bay #1'");
 
-            var actionResult2 = await controller.GetAllAsync(
+            var actionResult2 = await schedulerRequestsController.GetAllAsync(
                 0,
                 int.MaxValue,
                 "[BayDescription] <> 'NOT PRESENT'");
@@ -253,18 +253,18 @@ namespace Ferretto.WMS.Data.Tests
         {
             #region Arrange
 
-            var controller = this.MockController();
+            var schedulerRequestsController = this.MockController();
 
             #endregion
 
             #region Act
 
-            var actionResult1 = await controller.GetAllAsync(
+            var actionResult1 = await schedulerRequestsController.GetAllAsync(
                 0,
                 int.MaxValue,
                 "EndsWith([BayDescription], '#1')");
 
-            var actionResult2 = await controller.GetAllAsync(
+            var actionResult2 = await schedulerRequestsController.GetAllAsync(
                 0,
                 int.MaxValue,
                 "EndsWith([BayDescription], 'NOT PRESENT')");
@@ -289,18 +289,18 @@ namespace Ferretto.WMS.Data.Tests
         {
             #region Arrange
 
-            var controller = this.MockController();
+            var schedulerRequestsController = this.MockController();
 
             #endregion
 
             #region Act
 
-            var actionResult1 = await controller.GetAllAsync(
+            var actionResult1 = await schedulerRequestsController.GetAllAsync(
                 0,
                 int.MaxValue,
                 "[BayDescription] = 'Bay #1'");
 
-            var actionResult2 = await controller.GetAllAsync(
+            var actionResult2 = await schedulerRequestsController.GetAllAsync(
                 0,
                 int.MaxValue,
                 "[BayDescription] = 'NOT PRESENT'");
@@ -325,18 +325,18 @@ namespace Ferretto.WMS.Data.Tests
         {
             #region Arrange
 
-            var controller = this.MockController();
+            var schedulerRequestsController = this.MockController();
 
             #endregion
 
             #region Act
 
-            var actionResult1 = await controller.GetAllAsync(
+            var actionResult1 = await schedulerRequestsController.GetAllAsync(
                 0,
                 int.MaxValue,
                 "StartsWith([BayDescription], 'Bay')");
 
-            var actionResult2 = await controller.GetAllAsync(
+            var actionResult2 = await schedulerRequestsController.GetAllAsync(
                 0,
                 int.MaxValue,
                 "StartsWith([BayDescription], 'NOT PRESENT')");
@@ -361,13 +361,13 @@ namespace Ferretto.WMS.Data.Tests
         {
             #region Arrange
 
-            var controller = this.MockController();
+            var schedulerRequestsController = this.MockController();
 
             #endregion
 
             #region Act
 
-            var actionResult1 = await controller.GetAllAsync(
+            var actionResult1 = await schedulerRequestsController.GetAllAsync(
                 0,
                 int.MaxValue,
                 "StartsWith([BayDescription], 'Bay') And [OperationType] = ##ToString#Insertion# Or [BayDescription] <> 'Bay #2' And [RequestedQuantity] = 2");
