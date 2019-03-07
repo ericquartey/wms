@@ -27,7 +27,7 @@ variables:
 
 steps:
 
-- template: WMS/Pipelines/azure-pipeline-wms-services-template.yml
+- template: ../WMS/Pipelines/azure-pipeline-wms-services-template.yml
 
 
 - template: azure-pipeline-net4-nuget-template.yml
