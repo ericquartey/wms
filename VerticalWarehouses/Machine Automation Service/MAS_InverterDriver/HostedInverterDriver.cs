@@ -7,10 +7,10 @@ using Ferretto.VW.Common_Utils.Exceptions;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.Common_Utils.Utilities;
-using Ferretto.VW.MAS_InverterDriver.Interface;
-using Ferretto.VW.MAS_InverterDriver;
-using Ferretto.VW.MAS_InverterDriver.StateMachines;
 using Ferretto.VW.MAS_DataLayer;
+using Ferretto.VW.MAS_InverterDriver;
+using Ferretto.VW.MAS_InverterDriver.Interface;
+using Ferretto.VW.MAS_InverterDriver.StateMachines;
 using Microsoft.Extensions.Hosting;
 using Prism.Events;
 
@@ -26,7 +26,7 @@ namespace Ferretto.VW.InverterDriver
 
         private readonly Task commandReceiveTask;
 
-        private readonly IDataLayer dataLayer;
+        private readonly IDataLayerValueManagment dataLayerValueManagment;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -62,11 +62,11 @@ namespace Ferretto.VW.InverterDriver
 
         #region Constructors
 
-        public HostedInverterDriver(IEventAggregator eventAggregator, ISocketTransport socketTransport, IDataLayer dataLayer)
+        public HostedInverterDriver(IEventAggregator eventAggregator, ISocketTransport socketTransport, IDataLayerValueManagment dataLayerValueManagment)
         {
             this.socketTransport = socketTransport;
             this.eventAggregator = eventAggregator;
-            this.dataLayer = dataLayer;
+            this.dataLayerValueManagment = dataLayerValueManagment;
 
             this.heartbeatQueue = new BlockingConcurrentQueue<InverterMessage>();
             this.inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
@@ -76,8 +76,8 @@ namespace Ferretto.VW.InverterDriver
 
             this.commandReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
             this.notificationReceiveTask = new Task(() => this.NotificationReceiveTaskFunction());
-            this.inverterReceiveTask = new Task(async () => await ReceiveInverterData());
-            this.inverterSendTask = new Task(async () => await SendInverterCommand());
+            this.inverterReceiveTask = new Task(async () => await this.ReceiveInverterData());
+            this.inverterSendTask = new Task(async () => await this.SendInverterCommand());
 
             var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
             commandEvent.Subscribe(message => { this.messageQueue.Enqueue(message); },
@@ -98,7 +98,7 @@ namespace Ferretto.VW.InverterDriver
 
         ~HostedInverterDriver()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion
@@ -123,8 +123,8 @@ namespace Ferretto.VW.InverterDriver
         {
             this.stoppingToken = stoppingToken;
 
-            var inverterAddress = this.dataLayer.GetIPAddressConfigurationValue(ConfigurationValueEnum.InverterAddress);
-            var inverterPort = this.dataLayer.GetIntegerConfigurationValue(ConfigurationValueEnum.InverterPort);
+            var inverterAddress = this.dataLayerValueManagment.GetIPAddressConfigurationValue(ConfigurationValueEnum.InverterAddress);
+            var inverterPort = this.dataLayerValueManagment.GetIntegerConfigurationValue(ConfigurationValueEnum.InverterPort);
 
             this.socketTransport.Configure(inverterAddress, inverterPort);
 

@@ -5,18 +5,12 @@ using Ferretto.VW.Common_Utils;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
-    public partial class DataLayer : IDataLayer
+    public partial class DataLayer : IDataLayerValueManagment
     {
         #region Methods
 
         public decimal GetDecimalConfigurationValue(ConfigurationValueEnum configurationValueEnum)
         {
-            // TEMP
-            // Comments to keep until the method won't be tested
-            // Search the var in the DB
-            // Check if the type in the DB is decimal
-            // If it is not decimal i throw an exception for "Invalid Data Type"
-            // If they are the same i convert the return value
             decimal returnDecimalValue = 0;
 
             var configurationValue =
@@ -40,12 +34,6 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public decimal GetDecimalRuntimeValue(RuntimeValueEnum runtimeValueEnum)
         {
-            // TEMP
-            // Comments to keep until the method won't be tested
-            // Search the var in the DB
-            // Check if the type in the DB is decimal
-            // If it is not decimal i throw an exception for "Invalid Data Type"
-            // If they are the same i convert the return value
             decimal returnDecimalValue = 0;
 
             var runtimeValue =
@@ -69,12 +57,6 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public int GetIntegerConfigurationValue(ConfigurationValueEnum configurationValueEnum)
         {
-            // TEMP
-            // Comments to keep until the method won't be tested
-            // Search the var in the DB
-            // Check if the type in the DB is integer
-            // If it is not integer i throw an exception for "Invalid Data Type"
-            // If they are the same i convert the return value
             var returnIntegerValue = 0;
 
             var configurationValue =
@@ -98,12 +80,6 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public int GetIntegerRuntimeValue(RuntimeValueEnum runtimeValueEnum)
         {
-            // TEMP
-            // Comments to keep until the method won't be tested
-            // Search the var in the DB
-            // Check if the type in the DB is integer
-            // If it is not decimal i throw an exception for "Invalid Data Type"
-            // If they are the same i convert the return value
             var returnIntegerValue = 0;
 
             var runtimeValue =
@@ -148,12 +124,6 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public string GetStringConfigurationValue(ConfigurationValueEnum configurationValueEnum)
         {
-            // TEMP
-            // Comments to keep until the method won't be tested
-            // Search the var in the DB
-            // Check if the type in the DB is string
-            // If it is not string i throw an exception for "Invalid Data Type"
-            // If they are the same i convert the return value
             var returnStringValue = "";
 
             var configurationValue =
@@ -174,12 +144,6 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public string GetStringRuntimeValue(RuntimeValueEnum runtimeValueEnum)
         {
-            // TEMP
-            // Comments to keep until the method won't be tested
-            // Search the var in the DB
-            // Check if the type in the DB is string
-            // If it is not string i throw an exception for "Invalid Data Type"
-            // If they are the same i convert the return value
             var returnStringValue = "";
 
             var runtimeValue = this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
@@ -205,14 +169,6 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public void SetDecimalConfigurationValue(ConfigurationValueEnum configurationValueEnum, decimal value)
         {
-            // TEMP
-            // Comments to keep until the method won't be tested
-            // Get an input value
-            // DB var search in DB
-            // if the var exist check the type in the record
-            // if the type is different from decimal, throw an invalid data type excpetion
-            // if the var exist i update it
-            // if the var doesn't exist i create it
             var configurationValue =
                 this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
 
@@ -242,14 +198,6 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public void SetDecimalRuntimeValue(RuntimeValueEnum runtimeValueEnum, decimal value)
         {
-            // TEMP
-            // Comments to keep until the method won't be tested
-            // Get an input value
-            // DB var search in DB
-            // if the var exist check the type in the record
-            // if the type is different from decimal, throw an invalid data type excpetion
-            // if the var exist i update it
-            // if the var doesn't exist i create it
             var runtimeValue = this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
 
             if (runtimeValue == null)
@@ -278,14 +226,6 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public void SetIntegerConfigurationValue(ConfigurationValueEnum configurationValueEnum, int value)
         {
-            // TEMP
-            // Comments to keep until the method won't be tested
-            // Get an input value
-            // DB var search in DB
-            // if the var exist check the type in the record
-            // if the type is different from integer, throw an invalid data type excpetion
-            // if the var exist i update it
-            // if the var doesn't exist i create it
             var configurationValue =
                 this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
 
@@ -315,14 +255,6 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public void SetIntegerRuntimeValue(RuntimeValueEnum runtimeValueEnum, int value)
         {
-            // TEMP
-            // Comments to keep until the method won't be tested
-            // Get an input value
-            // DB var search in DB
-            // if the var exist check the type in the record
-            // if the type is different from int, throw an invalid data type excpetion
-            // if the var exist i update it
-            // if the var doesn't exist i create it
             var runtimeValue =
                 this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
 
@@ -352,14 +284,6 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public void SetStringConfigurationValue(ConfigurationValueEnum configurationValueEnum, string value)
         {
-            // TEMP
-            // Comments to keep until the method won't be tested
-            // Get an input value
-            // DB var search in DB
-            // if the var exist check the type in the record
-            // if the type is different from string, throw an invalid data type excpetion
-            // if the var exist i update it
-            // if the var doesn't exist i create it
             var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
 
             if (configurationValue == null)
@@ -388,14 +312,6 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public void SetStringRuntimeValue(RuntimeValueEnum runtimeValueEnum, string value)
         {
-            // TEMP
-            // Comments to keep until the method won't be tested
-            // Get an input value
-            // DB var search in DB
-            // if the var exist check the type in the record
-            // if the type is different from string, throw an invalid data type excpetion
-            // if the var exist i update it
-            // if the var doesn't exist i create it
             var runtimeValue = this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
 
             if (runtimeValue == null)
