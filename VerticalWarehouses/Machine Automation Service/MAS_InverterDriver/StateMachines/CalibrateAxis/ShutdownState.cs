@@ -1,9 +1,11 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
+﻿using System;
+using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.MAS_InverterDriver;
+using Ferretto.VW.MAS_InverterDriver.StateMachines;
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Calibrate
+namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 {
-    public class VoltageDisabledState : InverterStateBase
+    public class ShutdownState : InverterStateBase
     {
         #region Fields
 
@@ -15,19 +17,20 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Calibrate
 
         #region Constructors
 
-        public VoltageDisabledState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate)
+        public ShutdownState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate)
         {
+            Console.WriteLine("ShutdownState");
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
 
             switch (this.axisToCalibrate)
             {
                 case Axis.Horizontal:
-                    this.parameterValue = 0;
+                    this.parameterValue = 0x8006;
                     break;
 
                 case Axis.Vertical:
-                    this.parameterValue = 0x8000;
+                    this.parameterValue = 0x0006;
                     break;
             }
 
@@ -43,13 +46,14 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Calibrate
 
         public override void ProcessMessage(InverterMessage message)
         {
+            Console.WriteLine("ShutdownState-ProcessMessage");
             if (message.IsError)
                 this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate));
 
             if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
                 if (message.ShortPayload == this.parameterValue)
-                    this.parentStateMachine.ChangeState(new HomingModeState(this.parentStateMachine,
-                        this.axisToCalibrate));
+                    this.parentStateMachine.ChangeState(
+                        new SwitchOnState(this.parentStateMachine, this.axisToCalibrate));
         }
 
         #endregion

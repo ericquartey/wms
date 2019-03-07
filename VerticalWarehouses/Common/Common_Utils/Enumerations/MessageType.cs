@@ -36,8 +36,6 @@
 
         SwitchHorizontalToVertical,
 
-        StopHoming,
-
         Positioning,
 
         ExecuteVerticalPositioning,
