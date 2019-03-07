@@ -17,13 +17,6 @@ steps:
     targetFolder: '$(Build.ArtifactStagingDirectory)\sources'
 
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Common Sources'
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)\sources'
-    ArtifactName: 'common_sources'
-
-
 - task: DotNetCoreCLI@2
   displayName: 'NuGet restore (netcore)'
   inputs:
@@ -44,10 +37,10 @@ steps:
 
 
 - task: DotNetCoreCLI@2
-  displayName: Test
+  displayName: 'Test (netcore)'
   inputs:
     command: test
-    projects: '$(TestProjects)'
+    projects: ${{ parameters.TestProjects }}
     arguments: '--configuration ${{ parameters.BuildConfiguration }} /p:CollectCoverage=true'
 
 
@@ -56,7 +49,7 @@ steps:
   inputs:
     command: publish
     publishWebProjects: false
-    projects: '$(RestoreBuildProjects)'
+    projects: ${{ parameters.RestoreBuildProjects }} 
     arguments: '--configuration ${{ parameters.BuildConfiguration }} --framework ${{ parameters.TargetFramework }} --no-build --no-restore'
     zipAfterPublish: false
 
@@ -66,3 +59,9 @@ steps:
   inputs:
     PathtoPublish: 'WMS/Data/WebAPI/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/win7-x64/publish'
     ArtifactName: 'data_service'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Common Sources'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)\sources'
+    ArtifactName: 'common_sources'
