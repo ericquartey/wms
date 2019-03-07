@@ -45,6 +45,11 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         public InverterMessage(byte[] rawMessage)
         {
+            if (rawMessage[1] == 0x00)
+            {
+                throw new InverterDriverException($"Invalid raw data");
+            }
+
             this.IsWriteMessage = (rawMessage[0] & 0x80) > 0;
 
             this.IsError = (rawMessage[0] & 0x40) > 0;
@@ -218,7 +223,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             return writeMessage;
         }
 
-        public byte[] GteHeartbeatMessage()
+        public byte[] GteHeartbeatMessage(bool setBit)
         {
             if (this.parameterId != (short)InverterParameterId.ControlWordParam)
                 throw new InverterDriverException("Invalid parameter id");
@@ -226,7 +231,14 @@ namespace Ferretto.VW.MAS_InverterDriver
             var heartbeatMessage = this.GetWriteMessage();
 
             //VALUE 14th byte of control word value represents Heartbeat flag
-            heartbeatMessage[7] |= 0x40;
+            if (setBit)
+            {
+                heartbeatMessage[7] |= 0x40;
+            }
+            else
+            {
+                heartbeatMessage[7] &= 0xBF;
+            }
 
             return heartbeatMessage;
         }
