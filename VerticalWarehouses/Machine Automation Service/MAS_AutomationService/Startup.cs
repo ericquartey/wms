@@ -1,10 +1,12 @@
 ﻿using Ferretto.VW.InverterDriver;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_DataLayer;
+using Ferretto.VW.MAS_FiniteStateMachines;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_IODriver;
 using Ferretto.VW.MAS_IODriver.Interface;
+using Ferretto.VW.MAS_MissionsManager;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -90,9 +92,9 @@ namespace Ferretto.VW.MAS_AutomationService
 
             services.AddSingleton<ISocketTransport, SocketTransport>();
 
-            //this.RegisterRemoteIODriver(services);
+            this.RegisterRemoteIODriver(services);
 
-            //this.RegisterInverterDriver(services);
+            this.RegisterInverterDriver(services);
 
             ////TODO Old InverterDriver Registration to be removed after code refactoring completed
             //services.AddSingleton<IInverterDriver, InverterDriver.InverterDriver>();
@@ -105,11 +107,11 @@ namespace Ferretto.VW.MAS_AutomationService
 
             services.AddHostedService<HostedInverterDriver>();
 
-            //services.AddHostedService<FiniteStateMachines>();
+            services.AddHostedService<FiniteStateMachines>();
 
-            //services.AddHostedService<MissionsManager>();
+            services.AddHostedService<MissionsManager>();
 
-            //services.AddHostedService<AutomationService>();
+            services.AddHostedService<AutomationService>();
         }
 
         private void RegisterInverterDriver(IServiceCollection services)
