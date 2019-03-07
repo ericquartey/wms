@@ -85,26 +85,26 @@ namespace Ferretto.VW.MAS_AutomationService
 
             services.AddSingleton<ISocketTransport, SocketTransport>();
 
-            //this.RegisterRemoteIODriver(services);
+            this.RegisterRemoteIODriver(services);
 
-            //this.RegisterInverterDriver(services);
+            this.RegisterInverterDriver(services);
 
             ////TODO Old InverterDriver Registration to be removed after code refactoring completed
             //services.AddSingleton<IInverterDriver, InverterDriver.InverterDriver>();
 
             ////TODO Old RemoteIODriver Registration to be removed after code refactoring completed
-            //services.AddSingleton<IRemoteIO, RemoteIO>();
+            services.AddSingleton<IRemoteIO, RemoteIO>();
             services.AddSingleton<IModbusTransport, ModbusTransport>();
 
             services.AddHostedService<HostedIoDriver>();
 
             services.AddHostedService<HostedInverterDriver>();
 
-            //services.AddHostedService<FiniteStateMachines>();
+            services.AddHostedService<FiniteStateMachines>();
 
-            //services.AddHostedService<MissionsManager>();
+            services.AddHostedService<MissionsManager>();
 
-            //services.AddHostedService<AutomationService>();
+            services.AddHostedService<AutomationService>();
         }
 
         private void RegisterInverterDriver(IServiceCollection services)
