@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
@@ -15,11 +16,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             var calibrateData = ((IHomingStateMachine)this.parentStateMachine).CalibrateData;
 
             //TEMP send a message to start the homing (to inverter and other components)
-            var newMessage = new CommandMessage(calibrateData,
+            var calibrateAxisData = new CalibrateAxisMessageData(calibrateData.AxisToCalibrate);
+            var newMessage = new CommandMessage(calibrateAxisData,
                 "Homing State Started",
                 MessageActor.InverterDriver,
                 MessageActor.FiniteStateMachines,
-                MessageType.Calibrate, //TEMP or MessageType.Homing
+                MessageType.CalibrateAxis, //TEMP or MessageType.Homing
                 MessageVerbosity.Info);
             this.parentStateMachine.PublishCommandMessage(newMessage);
         }

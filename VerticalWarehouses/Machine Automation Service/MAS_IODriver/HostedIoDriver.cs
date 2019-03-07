@@ -244,6 +244,11 @@ namespace Ferretto.VW.MAS_IODriver
 
                 var inputData = await this.modbusTransport.ReadAsync();
 
+                if (inputData == null)
+                {
+                    continue;
+                }
+
                 if (this.ioStatus.UpdateInputStates(inputData))
                 {
                     this.currentStateMachine?.ProcessMessage(new IoMessage(inputData, true));

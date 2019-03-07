@@ -108,12 +108,17 @@ namespace Ferretto.VW.VWApp
 
         private async void ExecuteLoginButtonCommand()
         {
-            if (this.CheckInputCorrectness(this.UserLogin, this.PasswordLogin))
+            ((App)Application.Current).InstallationAppMainWindowInstance = ((InstallationApp.MainWindow)this.Container.Resolve<InstallationApp.IMainWindow>());
+            ((App)Application.Current).InstallationAppMainWindowInstance.DataContext = ((InstallationApp.MainWindowViewModel)this.Container.Resolve<IMainWindowViewModel>());
+            ((App)Application.Current).InstallationAppMainWindowInstance.Show();
+
+           /* if (this.CheckInputCorrectness(this.UserLogin, this.PasswordLogin))
             {
                 switch (this.UserLogin)
                 {
                     case "Installer":
-                        try
+                        ((App)Application.Current).InstallationAppMainWindowInstance.Show();
+                        /*try
                         {
                             var ts = ((InstallationHubClient)this.Container.Resolve<IContainerInstallationHubClient>()).ConnectAsync();
                             ((App)Application.Current).InstallationAppMainWindowInstance = ((InstallationApp.MainWindow)this.Container.Resolve<InstallationApp.IMainWindow>());
@@ -146,7 +151,7 @@ namespace Ferretto.VW.VWApp
             else
             {
                 this.LoginErrorMessage = Resources.VWApp.ErrorLogin;
-            }
+            }*/
         }
 
         private string Validate(string propertyName)
