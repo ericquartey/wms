@@ -15,6 +15,7 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              EnableHistoryView="True"
+             IsVisibleBackButton="{Binding IsSidePanelOpen, Converter={StaticResource BNC}}"
              SubTitle="{Binding LoadingUnitDetails.Code, StringFormat={x:Static res:Title.LoadingUnitEditView}}"
              mc:Ignorable="d">
     <Grid Margin="10,5,0,10">
@@ -93,7 +94,7 @@
                                     Header="{x:Static res:General.Position}">
                         <dxg:GridColumn.CellDisplayTemplate>
                             <DataTemplate>
-                                <TextBlock VerticalAlignment="Center">
+                                <TextBlock Style="{DynamicResource TextBlockCell}">
                                     <TextBlock.Text>
                                         <MultiBinding Converter="{StaticResource SFC}">
                                             <Binding Source="{x:Static res:General.PositionFormat}" />
@@ -111,7 +112,7 @@
                                     Header="{x:Static res:General.Dimension}">
                         <dxg:GridColumn.CellDisplayTemplate>
                             <DataTemplate>
-                                <TextBlock VerticalAlignment="Center">
+                                <TextBlock Style="{DynamicResource TextBlockCell}">
                                     <TextBlock.Text>
                                         <MultiBinding Converter="{StaticResource SFC}">
                                             <Binding Source="{x:Static res:General.DimensionFormat}" />

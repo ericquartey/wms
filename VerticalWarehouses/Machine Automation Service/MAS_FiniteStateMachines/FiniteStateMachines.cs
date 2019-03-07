@@ -40,6 +40,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.eventAggregator = eventAggregator;
 
             this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
+
             this.notifyQueue = new BlockingConcurrentQueue<NotificationMessage>();
 
             this.commadReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
@@ -113,8 +114,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         this.ProcessHomingMessage(receivedMessage);
                         break;
 
-                    case MessageType.StopHoming:
-                        this.ProcessStopHomingMessage(receivedMessage);
+                    case MessageType.Stop:
+                        this.ProcessStopMessage(receivedMessage);
                         break;
 
                     case MessageType.StopAction:
@@ -188,7 +189,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             }
         }
 
-        private void ProcessStopHomingMessage(CommandMessage receivedMessage)
+        private void ProcessStopMessage(CommandMessage receivedMessage)
         {
             if (this.currentStateMachine == null)
             {

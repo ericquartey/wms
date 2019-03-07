@@ -39,6 +39,7 @@ namespace Ferretto.Common.BusinessProviders
             return schedulerRequests
                 .Select(r => new SchedulerRequest
                 {
+                    Id = r.Id,
                     BayDescription = r.BayDescription,
                     ItemDescription = r.ItemDescription,
                     ListDescription = r.ListDescription,

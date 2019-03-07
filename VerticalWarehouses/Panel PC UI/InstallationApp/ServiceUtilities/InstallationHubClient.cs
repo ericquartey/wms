@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Ferretto.VW.InstallationApp.ServiceUtilities
 {
-    public class InstallationHubClient : ContainerIInstallationHubClient
+    public class InstallationHubClient : IContainerInstallationHubClient
     {
         #region Fields
 
-        public HubConnection connection;
+        private readonly HubConnection hubConnection;
 
         #endregion
 
@@ -17,16 +17,17 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
 
         public InstallationHubClient(string url, string sensorStatePath)
         {
-            this.connection = new HubConnectionBuilder()
+            this.hubConnection = new HubConnectionBuilder()
               .WithUrl(new Uri(new Uri(url), sensorStatePath).AbsoluteUri)
               .Build();
 
-            this.connection.On<string>("OnSendMessageToAllConnectedClients", this.OnSendMessageToAllConnectedClients);
+            this.hubConnection.On<string>("OnSendMessageToAllConnectedClients", this.OnSendMessageToAllConnectedClients);
+            this.hubConnection.On<bool[]>("OnSensorsChangedToAllConnectedClients", this.OnSensorsChangedToAllConnectedClients);
 
-            this.connection.Closed += async (error) =>
+            this.hubConnection.Closed += async (error) =>
             {
                 await Task.Delay(new Random().Next(0, 5) * 1000);
-                await this.connection.StartAsync();
+                await this.hubConnection.StartAsync();
             };
         }
 
@@ -34,7 +35,9 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
 
         #region Events
 
-        public event EventHandler<string> ReceivedMessageToAllConnectedClients;
+        public event EventHandler<string> ReceivedMessage;
+
+        public event EventHandler<bool[]> SensorsChanged;
 
         #endregion
 
@@ -42,17 +45,22 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
 
         public async Task ConnectAsync()
         {
-            await this.connection.StartAsync();
+            await this.hubConnection.StartAsync();
         }
 
         public async Task DisconnectAsync()
         {
-            await this.connection.DisposeAsync();
+            await this.hubConnection.DisposeAsync();
         }
 
         private void OnSendMessageToAllConnectedClients(string message)
         {
-            this.ReceivedMessageToAllConnectedClients?.Invoke(this, message);
+            this.ReceivedMessage?.Invoke(this, message);
+        }
+
+        private void OnSensorsChangedToAllConnectedClients(bool[] sensorsStates)
+        {
+            this.SensorsChanged?.Invoke(this, sensorsStates);
         }
 
         #endregion

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using DevExpress.Mvvm.UI;
@@ -11,7 +12,10 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty EnableHistoryViewProperty = DependencyProperty.Register(nameof(EnableHistoryView), typeof(bool), typeof(WmsView));
+        public static readonly DependencyProperty EnableHistoryViewProperty = DependencyProperty.Register(
+            nameof(EnableHistoryView),
+            typeof(bool),
+            typeof(WmsView));
 
         public static readonly DependencyProperty FocusedStartProperty = DependencyProperty.Register(
             nameof(FocusedStart),
@@ -19,7 +23,15 @@ namespace Ferretto.Common.Controls
             typeof(WmsView),
             new FrameworkPropertyMetadata(default(string), null));
 
-        public static readonly DependencyProperty SubTitleProperty = DependencyProperty.Register(nameof(SubTitle), typeof(string), typeof(WmsView));
+        public static readonly DependencyProperty IsVisibleBackButtonProperty = DependencyProperty.Register(
+            nameof(IsVisibleBackButton),
+            typeof(bool),
+            typeof(WmsView),
+            new FrameworkPropertyMetadata(true));
+
+        public static readonly DependencyProperty SubTitleProperty = DependencyProperty.Register(
+            nameof(SubTitle), typeof(string), typeof(WmsView)
+            );
 
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(nameof(ViewModel), typeof(INavigableViewModel), typeof(WmsView));
 
@@ -59,6 +71,12 @@ namespace Ferretto.Common.Controls
         }
 
         public bool IsClosed { get; set; }
+
+        public bool IsVisibleBackButton
+        {
+            get => (bool)this.GetValue(IsVisibleBackButtonProperty);
+            set => this.SetValue(IsVisibleBackButtonProperty, value);
+        }
 
         public string MapId { get; set; }
 

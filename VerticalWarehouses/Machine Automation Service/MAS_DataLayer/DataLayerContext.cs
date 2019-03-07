@@ -77,6 +77,8 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = ConfigurationValueEnum.InverterAddress, VarType = DataTypeEnum.IPAddressType, VarValue = "169.254.231.248" });
             modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = ConfigurationValueEnum.InverterPort, VarType = DataTypeEnum.integerType, VarValue = "17221" });
+            modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = ConfigurationValueEnum.IoAddress, VarType = DataTypeEnum.IPAddressType, VarValue = "169.254.231.10" });
+            modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = ConfigurationValueEnum.IoPort, VarType = DataTypeEnum.integerType, VarValue = "502" });
         }
 
         #endregion
