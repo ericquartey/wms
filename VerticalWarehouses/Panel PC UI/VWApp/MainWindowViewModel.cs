@@ -108,22 +108,17 @@ namespace Ferretto.VW.VWApp
 
         private async void ExecuteLoginButtonCommand()
         {
-            ((App)Application.Current).InstallationAppMainWindowInstance = ((InstallationApp.MainWindow)this.Container.Resolve<InstallationApp.IMainWindow>());
-            ((App)Application.Current).InstallationAppMainWindowInstance.DataContext = ((InstallationApp.MainWindowViewModel)this.Container.Resolve<IMainWindowViewModel>());
-            ((App)Application.Current).InstallationAppMainWindowInstance.Show();
-
-           /* if (this.CheckInputCorrectness(this.UserLogin, this.PasswordLogin))
+            if (this.CheckInputCorrectness(this.UserLogin, this.PasswordLogin))
             {
                 switch (this.UserLogin)
                 {
                     case "Installer":
-                        ((App)Application.Current).InstallationAppMainWindowInstance.Show();
-                        /*try
+                        try
                         {
-                            var ts = ((InstallationHubClient)this.Container.Resolve<IContainerInstallationHubClient>()).ConnectAsync();
+                            //var ts = ((InstallationHubClient)this.Container.Resolve<IContainerInstallationHubClient>()).ConnectAsync();
                             ((App)Application.Current).InstallationAppMainWindowInstance = ((InstallationApp.MainWindow)this.Container.Resolve<InstallationApp.IMainWindow>());
                             ((App)Application.Current).InstallationAppMainWindowInstance.DataContext = ((InstallationApp.MainWindowViewModel)this.Container.Resolve<IMainWindowViewModel>());
-                            await ts;
+                            //await ts;
                             ((App)Application.Current).InstallationAppMainWindowInstance.Show();
                         }
                         catch (Exception)
@@ -151,7 +146,7 @@ namespace Ferretto.VW.VWApp
             else
             {
                 this.LoginErrorMessage = Resources.VWApp.ErrorLogin;
-            }*/
+            }
         }
 
         private string Validate(string propertyName)
