@@ -40,12 +40,14 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             if (inMemoryDataContext == null)
             {
+                // TEMP
                 //throw new DataLayerException(DataLayerExceptionEnum.DATALAYER_CONTEXT_EXCEPTION);
                 new ArgumentNullException();
             }
 
             if (eventAggregator == null)
             {
+                // TEMP
                 //throw new DataLayerException(DataLayerExceptionEnum.EVENTAGGREGATOR_EXCEPTION);
                 new ArgumentNullException();
             }
@@ -106,12 +108,14 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             if (inMemoryDataContext == null)
             {
+                // TEMP
                 //throw new DataLayerException(DataLayerExceptionEnum.DATALAYER_CONTEXT_EXCEPTION);
                 new ArgumentNullException();
             }
 
             if (eventAggregator == null)
             {
+                // TEMP
                 //throw new DataLayerException(DataLayerExceptionEnum.EVENTAGGREGATOR_EXCEPTION);
                 new ArgumentNullException();
             }
