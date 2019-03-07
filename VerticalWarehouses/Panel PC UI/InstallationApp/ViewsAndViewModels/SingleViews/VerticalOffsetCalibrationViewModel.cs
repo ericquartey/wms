@@ -6,7 +6,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class VerticalOffsetCalibrationViewModel : BindableBase, IViewModel, IVerticalOffsetCalibrationViewModel
+    public class VerticalOffsetCalibrationViewModel : BindableBase, IVerticalOffsetCalibrationViewModel
     {
         #region Fields
 

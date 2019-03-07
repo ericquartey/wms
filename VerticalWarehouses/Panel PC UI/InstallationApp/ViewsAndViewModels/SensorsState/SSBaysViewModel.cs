@@ -1,4 +1,6 @@
-﻿using Ferretto.VW.InstallationApp.Resources;
+﻿using Ferretto.VW.InstallationApp.Interfaces;
+using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.InstallationApp.Resources.Enumerables;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Microsoft.Practices.Unity;
@@ -7,7 +9,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class SSBaysViewModel : BindableBase, IViewModel, ISSBaysViewModel
+    public class SSBaysViewModel : BindableBase, ISSBaysViewModel
     {
         #region Fields
 
@@ -24,6 +26,8 @@ namespace Ferretto.VW.InstallationApp
         private InstallationHubClient installationHubClient;
 
         private bool luPresentInBay1;
+
+        private SubscriptionToken updateSensorsStateToken;
 
         #endregion
 
@@ -62,17 +66,18 @@ namespace Ferretto.VW.InstallationApp
 
         public void SubscribeMethodToEvent()
         {
-            this.installationHubClient = (InstallationHubClient)this.container.Resolve<IContainerInstallationHubClient>();
-            this.installationHubClient.SensorsChanged += this.UpdateSensorsStates;
+            this.updateSensorsStateToken = this.eventAggregator.GetEvent<MAS_Event>()
+                .Subscribe(
+                message => this.UpdateSensorsStates(((INotificationMessageSensorsChangedData)message.Data).SensorsStates),
+                ThreadOption.PublisherThread, false, message => message.NotificationType == NotificationType.SensorsChanged);
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Unsubscribe((message) => { this.SubscribeMethodToEvent(); });
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Unsubscribe((message) => { this.UnSubscribeMethodFromEvent(); });
+            this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.updateSensorsStateToken);
         }
 
-        private void UpdateSensorsStates(object sender, bool[] message)
+        private void UpdateSensorsStates(bool[] message)
         {
             this.LuPresentInBay1 = message[0];
             this.HeightControlCheck1 = message[1];

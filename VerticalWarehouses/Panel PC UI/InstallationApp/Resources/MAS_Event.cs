@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Prism.Events;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.InstallationApp.Resources
 {
-    public interface IResolutionCalibrationVerticalAxisViewModel : IViewModel
+    public class MAS_Event : PubSubEvent<MAS_EventMessage>
     {
     }
 }

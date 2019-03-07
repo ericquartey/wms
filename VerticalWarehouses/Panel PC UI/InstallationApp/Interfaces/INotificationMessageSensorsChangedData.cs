@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Ferretto.VW.InstallationApp.Interfaces
 {
-    public interface ILoadFirstDrawerViewModel : IViewModel
+    public interface INotificationMessageSensorsChangedData : INotificationMessageData
     {
+        #region Properties
+
+        bool[] SensorsStates { get; set; }
+
+        #endregion
     }
 }

@@ -11,7 +11,7 @@ using System.Net.Http;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class VerticalAxisCalibrationViewModel : BindableBase, IViewModel, IVerticalAxisCalibrationViewModel
+    public class VerticalAxisCalibrationViewModel : BindableBase, IVerticalAxisCalibrationViewModel
     {
         #region Fields
 

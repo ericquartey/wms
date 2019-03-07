@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public interface ISSVerticalAxisViewModel
+    public interface ISSVerticalAxisViewModel : IViewModel
     {
     }
 }

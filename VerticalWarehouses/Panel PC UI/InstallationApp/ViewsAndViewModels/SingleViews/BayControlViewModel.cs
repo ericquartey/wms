@@ -4,7 +4,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    internal class BayControlViewModel : BindableBase, IViewModel, IBayControlViewModel
+    internal class BayControlViewModel : BindableBase, IBayControlViewModel
     {
         #region Fields
 
