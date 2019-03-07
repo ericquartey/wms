@@ -1,7 +1,7 @@
 parameters:
     BuildConfiguration: 'debug'
     RestoreBuildProjects: '**/*.csproj'
-    TestProjects: '**/*.Tests.csproj'
+    TestProjects: 'WMS/**/*.Tests.csproj'
     TargetFramework: 'netcoreapp2.1'
 
 steps:
@@ -59,6 +59,7 @@ steps:
   inputs:
     PathtoPublish: 'WMS/Data/WebAPI/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/win7-x64/publish'
     ArtifactName: 'data_service'
+
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Common Sources'

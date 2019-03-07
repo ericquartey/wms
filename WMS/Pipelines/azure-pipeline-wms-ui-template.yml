@@ -34,7 +34,7 @@ steps:
 - task: PublishSymbols@2
   displayName: 'Publish symbols path'
   inputs:
-    SearchPattern: '**\bin\**\*.pdb'
+    SearchPattern: 'WMS/App/App/bin/${{ parameters.BuildConfiguration }}/**/*.pdb'
     PublishSymbols: true
   continueOnError: true
 
@@ -42,7 +42,7 @@ steps:
   displayName: 'Copy Files to staging directory'
   inputs:
     SourceFolder: '$(system.defaultworkingdirectory)'
-    Contents: '**\bin\${{ parameters.BuildConfiguration }}\**'
+    Contents: 'WMS/App/App/bin/${{ parameters.BuildConfiguration }}/**'
     TargetFolder: '$(build.artifactstagingdirectory)'
 
 
