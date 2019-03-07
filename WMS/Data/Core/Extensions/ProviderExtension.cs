@@ -61,7 +61,7 @@ namespace Ferretto.WMS.Data.Core.Extensions
             return (Expression<Func<TDataModel, string>>)Expression.Lambda(lambdaBody, lambdaInParameter);
         }
 
-        private static string ToStringLambda<TProperty>(TProperty property) => property.ToString();
+        private static string ToStringLambda<TProperty>(TProperty property) => property?.ToString();
 
         #endregion
     }
