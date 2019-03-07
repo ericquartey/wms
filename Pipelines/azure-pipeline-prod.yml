@@ -46,7 +46,6 @@ steps:
   displayName: 'Build VerticalWarehouses'
   inputs:
     solution: 'VerticalWarehouses\VerticalWarehouses.sln'
-    msbuildArgs: '-v:normal'
     platform: '$(BuildPlatform)'
     configuration: '$(BuildConfiguration)'
     msbuildArchitecture: x64
@@ -90,11 +89,3 @@ steps:
   inputs:
     PathtoPublish: 'VerticalWarehouses/Machine Automation Service/MAS_AutomationService/bin/$(BuildConfiguration)/$(TargetFramework)/publish'
     ArtifactName: 'automation_service'
-
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: on_premises_appconfig_transform'
-  inputs:
-    PathtoPublish: 'WMS/App/App'
-    ArtifactName: 'on_premises_appconfig_transform'
-
