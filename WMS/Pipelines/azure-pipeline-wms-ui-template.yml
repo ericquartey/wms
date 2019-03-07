@@ -2,8 +2,6 @@ parameters:
   BuildConfiguration: 'debug'
   BuildPlatform: 'any cpu'
 
-variables:
-  TargetSolution: 'WMS\WMS.App.sln'
 
 steps:
 
@@ -16,8 +14,7 @@ steps:
 - task: VSBuild@1
   displayName: 'Build solution WMS.App'
   inputs:
-    solution: '$(TargetSolution)'
-    msbuildArgs: '-v:normal'
+    solution: 'WMS\WMS.App.sln'
     platform: ${{ parameters.BuildPlatform }}
     configuration: ${{ parameters.BuildConfiguration }}
     msbuildArchitecture: x64
