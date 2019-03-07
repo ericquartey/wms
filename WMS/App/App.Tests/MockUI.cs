@@ -9,7 +9,7 @@ using Ferretto.Common.Utils;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Ferretto.WMS.App.ModulesUITests
+namespace Ferretto.WMS.App.Tests
 {
     public class MockUI
     {

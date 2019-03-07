@@ -74,7 +74,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App.Modules.BL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App.Modules.Scheduler", "App\Modules\Scheduler\Ferretto.WMS.App.Modules.Scheduler.csproj", "{C69DA2F3-7DC3-438E-AF99-ADCE627DD05F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App.ModulesUITests", "App.ModulesUiTests\Ferretto.WMS.App.ModulesUITests.csproj", "{4DC82DA4-FF1D-48FB-92AC-A13D984770AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App.Tests", "App\App.Tests\Ferretto.WMS.App.Tests.csproj", "{4DC82DA4-FF1D-48FB-92AC-A13D984770AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

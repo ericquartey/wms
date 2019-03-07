@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Ferretto.WMS.App.ModulesUITests
+namespace Ferretto.WMS.App.Tests
 {
     [TestClass]
     public class ModulesUITest : MockUI

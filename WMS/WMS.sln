@@ -80,7 +80,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App.Modules.BL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App.Modules.Scheduler", "App\Modules\Scheduler\Ferretto.WMS.App.Modules.Scheduler.csproj", "{7A77F732-7D10-4D86-B003-A5585AB87C83}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App.ModulesUITests", "App.ModulesUiTests\Ferretto.WMS.App.ModulesUITests.csproj", "{4AB56B79-7B0C-4D1D-87F7-B17BBE185D85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App.Tests", "App\App.Tests\Ferretto.WMS.App.Tests.csproj", "{4AB56B79-7B0C-4D1D-87F7-B17BBE185D85}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -264,6 +264,7 @@ Global
 		{1008942C-480E-43AA-8FFE-F396106A96C4} = {12BF6A8D-AC9B-4ECE-B134-FB3644430056}
 		{7A77F732-7D10-4D86-B003-A5585AB87C83} = {12BF6A8D-AC9B-4ECE-B134-FB3644430056}
 		{58F7A999-6F21-40C4-AB0B-8032F0884F50} = {97B1C3A8-48D9-42B8-B32D-75369C5E7B9A}
+		{4AB56B79-7B0C-4D1D-87F7-B17BBE185D85} = {97B1C3A8-48D9-42B8-B32D-75369C5E7B9A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B998A0C5-DD2C-4088-9C42-300A146A4118}

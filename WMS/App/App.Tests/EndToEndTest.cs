@@ -7,12 +7,12 @@ using TestStack.White.UIItems.WindowItems;
 
 namespace Ferretto.WMS.App.Tests
 {
-    [TestClass]
     public class EndToEndTest
     {
         #region Fields
 
         private Application application;
+
         private Window mainWindow;
 
         #endregion
@@ -27,16 +27,17 @@ namespace Ferretto.WMS.App.Tests
 
         #region Methods
 
-        [TestCleanup]
         public void Cleanup()
         {
             this.application?.Close();
         }
 
-        [TestInitialize]
         public void Initialize()
         {
-            var applicationPath = Directory.GetParent(Assembly.GetExecutingAssembly().Location).Parent.FullName;
+#pragma warning disable S3902 // "Assembly.GetExecutingAssembly" should not be called
+
+            var applicationPath = System.Environment.CurrentDirectory;
+#pragma warning restore S3902 // "Assembly.GetExecutingAssembly" should not be called
 
             var applicationFilePath = Path.Combine(applicationPath, "Ferretto.WMS.App.exe");
 
@@ -44,6 +45,8 @@ namespace Ferretto.WMS.App.Tests
             appProcess.StartInfo.WorkingDirectory = applicationPath;
             appProcess.StartInfo.FileName = applicationFilePath;
             appProcess.Start();
+            appProcess.Exited += AppProcess_Exited;
+
             appProcess.WaitForInputIdle();
 
             this.application = Application.Attach(appProcess);
@@ -51,6 +54,8 @@ namespace Ferretto.WMS.App.Tests
             this.mainWindow =
                 this.application.GetWindow(Common.Resources.DesktopApp.Application_Title, InitializeOption.NoCache);
         }
+
+        private static void AppProcess_Exited(object sender, System.EventArgs e) => Assert.Fail("Main application closed unnaturally.");
 
         #endregion
     }
