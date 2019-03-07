@@ -1,13 +1,14 @@
 resources:
 - repo: self
   clean: true
+  fetchDepth: 15
 
 queue:
   name: Hosted VS2017
   demands:
-  - msbuild
-  - visualstudio
-  - vstest
+    - msbuild
+    - visualstudio
+    - vstest
 
 trigger:
   branches:
@@ -20,31 +21,16 @@ trigger:
 variables:
   BuildPlatform: 'any cpu'
   BuildConfiguration: 'release'
+  RestoreBuildProjects: 'WMS/Data/**/*.csproj'
+  TestProjects: 'WMS/Data/**/*.Tests.csproj'
+  TargetFramework: 'netcoreapp2.1'
 
 steps:
 
-- task: CopyFiles@2
-  displayName: 'Copy sources to staging directory'
-  inputs:
-    Contents: |
-     **
-     !**\.git\**
-     !**\*.png
-     !**\*.jpg
-    targetFolder: '$(Build.ArtifactStagingDirectory)\sources'
-
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Common Sources'
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)\sources'
-    ArtifactName: 'common_sources'
+- template: WMS/Pipelines/azure-pipeline-wms-services-dev-template.yml
 
 
 - template: azure-pipeline-net4-nuget-template.yml
-
-
-- template: azure-pipeline-assembly-versioning-template.yml
 
 
 - task: VSBuild@1
@@ -55,13 +41,6 @@ steps:
     platform: '$(BuildPlatform)'
     configuration: '$(BuildConfiguration)'
     msbuildArchitecture: x64
-
-
-- task: DotNetCoreCLI@2
-  displayName: 'Build Data Service'
-  inputs:
-    projects: 'WMS/Data/**/*.csproj'
-    arguments: '--configuration $(BuildConfiguration) --framework $(TargetFramework)'
 
 
 - task: VSBuild@1
@@ -105,13 +84,6 @@ steps:
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)/WMS/App/App/bin/$(BuildConfiguration)/net471'
     ArtifactName: 'desktop_app'
-
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Data Service'
-  inputs:
-    PathtoPublish: 'WMS/Data/WebAPI/bin/$(BuildConfiguration)/$(TargetFramework)/win7-x64/publish'
-    ArtifactName: 'data_service'
 
 
 - task: PublishBuildArtifacts@1
