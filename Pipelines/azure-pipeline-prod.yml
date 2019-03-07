@@ -30,7 +30,7 @@ steps:
   displayName: 'NuGet restore (netcore)'
   inputs:
     command: restore
-    projects:  **/*.csproj 
+    projects:  '**/*.csproj'
     feedsToUse: config
     nugetConfigPath: nuget.config
 
