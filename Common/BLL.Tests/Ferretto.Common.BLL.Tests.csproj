@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\WMS\Scheduler\Core\Ferretto.WMS.Scheduler.Core.csproj" />
     <ProjectReference Include="..\BusinessProviders\Ferretto.Common.BusinessProviders.csproj" />
   </ItemGroup>
 </Project>
