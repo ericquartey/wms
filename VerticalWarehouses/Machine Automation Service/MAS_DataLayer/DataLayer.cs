@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -186,6 +187,15 @@ namespace Ferretto.VW.MAS_DataLayer
             catch (Exception ex)
             {
                 throw new DataLayerException($"Exception: {ex.Message} while starting service threads", ex);
+            }
+        }
+
+        private void LoadGeneralInfo()
+        {
+            using (var r = new StreamReader("general_info.json"))
+            {
+                var json = r.ReadToEnd();
+                // List<Item> items = JsonConvert.DeserializeObject<List<Item>>(json);
             }
         }
 
