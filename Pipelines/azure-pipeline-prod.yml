@@ -41,15 +41,6 @@ steps:
     ArtifactName: 'common_sources'
 
 
-- task: DotNetCoreCLI@2
-  displayName: 'NuGet restore'
-  inputs:
-    command: restore
-    projects: '$(RestoreBuildProjects)'
-    feedsToUse: config
-    nugetConfigPath: nuget.config
-
-
 - template: azure-pipeline-net4-nuget-template.yml
 
 
