@@ -31,8 +31,11 @@ namespace Ferretto.VW.Common_Utils.Utilities
 
         public new void Enqueue(T item)
         {
-            base.Enqueue(item);
-            this.dataReady?.Set();
+            if (item != null)
+            {
+                base.Enqueue(item);
+                this.dataReady?.Set();
+            }
         }
 
         public bool TryDequeue(int timeout, CancellationToken cancellationToken, out T result)

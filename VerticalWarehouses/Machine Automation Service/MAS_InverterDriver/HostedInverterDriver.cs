@@ -8,10 +8,10 @@ using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis;
-using Ferretto.VW.MAS_InverterDriver.Interface;
-using Ferretto.VW.MAS_InverterDriver;
-using Ferretto.VW.MAS_InverterDriver.StateMachines;
 using Ferretto.VW.MAS_DataLayer;
+using Ferretto.VW.MAS_InverterDriver;
+using Ferretto.VW.MAS_InverterDriver.Interface;
+using Ferretto.VW.MAS_InverterDriver.StateMachines;
 using Microsoft.Extensions.Hosting;
 using Prism.Events;
 
@@ -51,6 +51,8 @@ namespace Ferretto.VW.InverterDriver
 
         private bool disposed;
 
+        private bool heartbeatSet;
+
         private Timer heartBeatTimer;
 
         private InverterMessage lastControlMessage;
@@ -77,6 +79,8 @@ namespace Ferretto.VW.InverterDriver
             this.notificationReceiveTask = new Task(() => this.NotificationReceiveTaskFunction());
             this.inverterReceiveTask = new Task(async () => await ReceiveInverterData());
             this.inverterSendTask = new Task(async () => await SendInverterCommand());
+
+            this.lastControlMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, (ushort)0x0000);
 
             var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
             commandEvent.Subscribe(message => { this.messageQueue.Enqueue(message); },
@@ -247,7 +251,10 @@ namespace Ferretto.VW.InverterDriver
         private async Task ProcessHeartbeat()
         {
             while (this.heartbeatQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out var message))
-                await this.socketTransport.WriteAsync(message.GetWriteMessage(), this.stoppingToken);
+            {
+                await this.socketTransport.WriteAsync(message.GteHeartbeatMessage(this.heartbeatSet), this.stoppingToken);
+                this.heartbeatSet = !this.heartbeatSet;
+            }
         }
 
         private async Task ReceiveInverterData()
@@ -269,7 +276,17 @@ namespace Ferretto.VW.InverterDriver
                     continue;
                 }
 
-                var currentMessage = new InverterMessage(inverterData);
+                InverterMessage currentMessage;
+
+                try
+                {
+                    currentMessage = new InverterMessage(inverterData);
+                }
+                catch (InverterDriverException)
+                {
+                    continue;
+                }
+                //TODO catch other exceptions
 
                 if (currentMessage.IsWriteMessage && currentMessage.ParameterId == InverterParameterId.ControlWordParam)
                 {
@@ -303,6 +320,7 @@ namespace Ferretto.VW.InverterDriver
 
         private async Task SendInverterCommand()
         {
+            Console.WriteLine("SendInverterCommandTask");
             var cancellationEventSlim = new ManualResetEventSlim(false);
 
             this.stoppingToken.Register(() => cancellationEventSlim.Set());
@@ -325,6 +343,7 @@ namespace Ferretto.VW.InverterDriver
                         break;
 
                     case 1:
+                        Console.WriteLine("ProcessCommand");
                         await this.ProcessCommand();
                         break;
 

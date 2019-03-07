@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Utilities;
+using Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -17,7 +18,7 @@ namespace MAS_InverterDriverUnitTests.StateMachines.Calibrate
             var inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
             var priorityInverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
 
-            var calibrateStateMachine = new CalibrateStateMachine(Axis.Both, inverterCommandQueue, priorityInverterCommandQueue);
+            var calibrateStateMachine = new CalibrateAxisStateMachine(Axis.Both, inverterCommandQueue);
 
             Assert.IsNotNull(calibrateStateMachine);
         }
@@ -29,7 +30,7 @@ namespace MAS_InverterDriverUnitTests.StateMachines.Calibrate
 
             var inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
             var priorityInverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
-            var calibrateStateMachine = new CalibrateStateMachine(Axis.Both, inverterCommandQueue, priorityInverterCommandQueue);
+            var calibrateStateMachine = new CalibrateAxisStateMachine(Axis.Both, inverterCommandQueue);
 
             calibrateStateMachine.ChangeState(newStateMock.Object);
 
@@ -42,7 +43,7 @@ namespace MAS_InverterDriverUnitTests.StateMachines.Calibrate
             var inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
             var priorityInverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
 
-            var calibrateStateMachine = new CalibrateStateMachine(Axis.Both, inverterCommandQueue, priorityInverterCommandQueue);
+            var calibrateStateMachine = new CalibrateAxisStateMachine(Axis.Both, inverterCommandQueue);
 
             calibrateStateMachine.Start();
 

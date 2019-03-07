@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
+﻿using System;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.MAS_InverterDriver;
@@ -18,6 +19,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         public ErrorState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate)
         {
+            Console.WriteLine("ErrorState");
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
 
@@ -34,6 +36,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         public override void ProcessMessage(InverterMessage message)
         {
+            Console.WriteLine("ErrorState-ProcessMessage");
         }
 
         #endregion
