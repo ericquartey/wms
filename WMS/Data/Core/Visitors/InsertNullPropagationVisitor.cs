@@ -1,3 +1,4 @@
+using System.Linq;
 using DevExpress.Data.Filtering;
 using DevExpress.Data.Filtering.Helpers;
 
@@ -20,8 +21,8 @@ namespace Ferretto.WMS.Data.Core.Visitors
             }
 
             var visitedOperator = (FunctionOperator)base.Visit(theOperator);
-            var parameter = theOperator.Operands[0];
-            return CriteriaOperator.And(new NotOperator(new NullOperator(parameter)), visitedOperator);
+            var parameter = theOperator.Operands.FirstOrDefault();
+            return AndNotNullCriteriaOperator(parameter, visitedOperator);
         }
 
         public override CriteriaOperator Visit(BinaryOperator theOperator)
@@ -31,17 +32,24 @@ namespace Ferretto.WMS.Data.Core.Visitors
             CriteriaOperator modifiedCriteriaOperator = visitedOperator;
             if (visitedOperator.LeftOperand is FunctionOperator leftOperandFunction)
             {
-                var parameter = leftOperandFunction.Operands[0];
-                modifiedCriteriaOperator = CriteriaOperator.And(new NotOperator(new NullOperator(parameter)), modifiedCriteriaOperator);
+                var parameter = leftOperandFunction.Operands.FirstOrDefault();
+                modifiedCriteriaOperator = AndNotNullCriteriaOperator(parameter, modifiedCriteriaOperator);
             }
 
             if (visitedOperator.RightOperand is FunctionOperator rightOperandFunction)
             {
-                var parameter = rightOperandFunction.Operands[0];
-                modifiedCriteriaOperator = CriteriaOperator.And(new NotOperator(new NullOperator(parameter)), modifiedCriteriaOperator);
+                var parameter = rightOperandFunction.Operands.FirstOrDefault();
+                modifiedCriteriaOperator = AndNotNullCriteriaOperator(parameter, modifiedCriteriaOperator);
             }
 
             return modifiedCriteriaOperator;
+        }
+
+        private static CriteriaOperator AndNotNullCriteriaOperator(
+            CriteriaOperator parameter,
+            CriteriaOperator theOperator)
+        {
+            return CriteriaOperator.And(new NotOperator(new NullOperator(parameter)), theOperator);
         }
 
         #endregion
