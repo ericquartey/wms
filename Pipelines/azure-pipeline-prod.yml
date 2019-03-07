@@ -25,13 +25,6 @@ variables:
 
 steps:
 
-#- template: ../WMS/Pipelines/azure-pipeline-wms-services-template.yml
-#  parameters:
-#    BuildConfiguration: $(BuildConfiguration)
-#    TargetFramework: $(TargetFramework)
-#    RestoreBuildProjects: 'WMS/Data/**/*.csproj'
-#    TestProjects: 'WMS/Data/**/*.Tests.csproj'
-    
 
 - task: DotNetCoreCLI@2
   displayName: 'NuGet restore (netcore)'
