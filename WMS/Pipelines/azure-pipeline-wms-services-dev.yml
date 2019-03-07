@@ -28,4 +28,4 @@ variables:
 steps:
 
 
-- template: azure-pipeline-wms-services-dev-template.yml
+- template: azure-pipeline-wms-services-template.yml
