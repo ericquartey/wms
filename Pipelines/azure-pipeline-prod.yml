@@ -53,22 +53,20 @@ steps:
     msbuildArchitecture: x64
 
 
-- task: DotNetCoreCLI@2
-  displayName: 'Build Machine Automation Service'
-  inputs:
-    projects: 'VerticalWarehouses/Machine Automation Service/**/*.csproj'
-    arguments: '--configuration $(BuildConfiguration) --framework $(TargetFramework)'
+- template: '../Vertical Warehouses/Pipelines/azure-pipeline-vw-services-template.yml'
+  parameters:
+    BuildConfiguration: $(BuildConfiguration)
+    TargetFramework: $(TargetFramework)
+    RestoreBuildProjects: 'VerticalWarehouses/Machine Automation Service/**/*.csproj'
+    TestProjects: 'VerticalWarehouses/Machine Automation Service/**/*[Tt]ests/*.csproj'
+    
 
-
-- task: VSTest@2
-  displayName: 'Run Tests'
-  inputs:
-    testAssemblyVer2: |
-     **\$(BuildConfiguration)\**\*tests.dll
-     !**\obj\**
-    codeCoverageEnabled: true
-    platform: '$(BuildPlatform)'
-    configuration: '$(BuildConfiguration)'
+- template: '../WMS/Pipelines/azure-pipeline-wms-services-template.yml'
+  parameters:
+    BuildConfiguration: $(BuildConfiguration)
+    TargetFramework: $(TargetFramework)
+    RestoreBuildProjects: 'WMS/Data/**/*.csproj'
+    TestProjects: 'WMS/Data/**/*.Tests.csproj'
 
 
 - task: CopyFiles@2
@@ -85,9 +83,3 @@ steps:
     PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/Panel PC UI/VWApp/bin/$(BuildConfiguration)/net471'
     ArtifactName: 'panelpc_app'
 
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Machine Automation Service'
-  inputs:
-    PathtoPublish: 'VerticalWarehouses/Machine Automation Service/MAS_AutomationService/bin/$(BuildConfiguration)/$(TargetFramework)/publish'
-    ArtifactName: 'automation_service'

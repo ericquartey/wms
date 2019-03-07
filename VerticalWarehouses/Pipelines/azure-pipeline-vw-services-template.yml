@@ -1,0 +1,51 @@
+parameters:
+  BuildConfiguration: 'debug'
+  RestoreBuildProjects: '**/*.csproj'
+  TestProjects: 'VerticalWarehouses/**/*.Tests.csproj'
+  TargetFramework: 'netcoreapp2.1'
+
+
+steps:
+
+- task: DotNetCoreCLI@2
+  displayName: 'NuGet restore (dotnet)'
+  inputs:
+    command: restore
+    projects: ${{ parameters.RestoreBuildProjects }} 
+    feedsToUse: config
+    nugetConfigPath: nuget.config
+
+
+- template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
+
+
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    projects: ${{ parameters.RestoreBuildProjects }} 
+    arguments: '--configuration ${{ parameters.BuildConfiguration }} --framework ${{ parameters.TargetFramework }}'
+
+
+- task: DotNetCoreCLI@2
+  displayName: Test
+  inputs:
+    command: test
+    projects: ${{ parameters.TestProjects }}
+    arguments: '--configuration ${{ parameters.BuildConfiguration }} /p:CollectCoverage=true'
+
+
+- task: DotNetCoreCLI@2
+  displayName: Publish
+  inputs:
+    command: publish
+    publishWebProjects: false
+    projects: ${{ parameters.RestoreBuildProjects }}
+    arguments: '--configuration ${{ parameters.BuildConfiguration }}  --framework ${{ parameters.TargetFramework }} --no-build --no-restore'
+    zipAfterPublish: false
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Machine Automation Service'
+  inputs:
+    PathtoPublish: 'VerticalWarehouses/Machine Automation Service/MAS_AutomationService/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/publish'
+    ArtifactName: 'automation_service'
