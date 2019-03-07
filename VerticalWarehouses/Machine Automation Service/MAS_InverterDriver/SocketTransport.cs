@@ -37,7 +37,7 @@ namespace Ferretto.VW.InverterDriver
 
         #region Properties
 
-        public bool IsConnected => this.transportClient?.Connected ?? false && this.transportStream != null;
+        public bool IsConnected => this.transportClient?.Connected ?? false;
 
         #endregion
 

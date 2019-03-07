@@ -53,10 +53,10 @@
                                                     InputText="0,5"
                                                     Highlighted="True" IsEnabled="True"
                                                     LabelText="{x:Static res:InstallationApp.StepValue}" />
-        
-        <Controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0"
+
+        <Controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0" Width="180"
                                                 ContentText="1,5"
-            LabelText="{x:Static res:InstallationApp.CellCorrection}" />
+                                                LabelText="{x:Static res:InstallationApp.CellCorrection}" />
         <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,140,0,0"
             Content="{x:Static res:InstallationApp.GoToInitialPosition}"
             Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />

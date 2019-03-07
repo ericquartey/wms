@@ -52,6 +52,7 @@
                                                   LabelText="{x:Static res:InstallationApp.SystemErrorMM}"  />
 
         <Controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,420,0,0"
+                                                  Width="180"
                                                   ContentText="568,5"
                                                   LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
 

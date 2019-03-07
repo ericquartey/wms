@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.Calibrate;
+using Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -13,6 +13,7 @@ namespace MAS_InverterDriverUnitTests.StateMachines.Calibrate
         #region Fields
 
         private readonly ushort parameterValue;
+
         private InverterMessage message;
 
         #endregion
@@ -29,6 +30,8 @@ namespace MAS_InverterDriverUnitTests.StateMachines.Calibrate
             Assert.IsNotNull(startingHomeState);
             Assert.IsNotNull(inverterMessage);
         }
+
+        #endregion
 
         /*TEMP
         [TestMethod]
@@ -49,8 +52,7 @@ namespace MAS_InverterDriverUnitTests.StateMachines.Calibrate
                 {
                     Assert.IsTrue(endState);
                 }
-        }     
+        }
        */
-        #endregion
     }
 }

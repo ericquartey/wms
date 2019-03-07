@@ -326,7 +326,7 @@
     <value>Sposta</value>
   </data>
   <data name="GoToInitialPosition" xml:space="preserve">
-    <value>Posiziona su cella</value>
+    <value>Vai a quota iniziale</value>
   </data>
   <data name="InitialPosition" xml:space="preserve">
     <value>Posizione iniziale:</value>

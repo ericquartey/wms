@@ -33,11 +33,9 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var missionProvider = this.ServiceProvider
-                .GetService(typeof(IMissionSchedulerProvider)) as IMissionSchedulerProvider;
+            var missionProvider = this.GetService<IMissionSchedulerProvider>();
 
-            var requestProvider = this.ServiceProvider
-                .GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
+            var requestProvider = this.GetService<ISchedulerRequestProvider>();
 
             var compartment1 = new Common.DataModels.Compartment
             {
@@ -110,11 +108,9 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var requestProvider = this.ServiceProvider
-                .GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
+            var requestProvider = this.GetService<ISchedulerRequestProvider>();
 
-            var missionProvider = this.ServiceProvider
-                .GetService(typeof(IMissionSchedulerProvider)) as IMissionSchedulerProvider;
+            var missionProvider = this.GetService<IMissionSchedulerProvider>();
 
             var now = System.DateTime.Now;
 
