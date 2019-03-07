@@ -234,8 +234,18 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand SsBaysButtonCommand => this.ssBaysButtonCommand ?? (this.ssBaysButtonCommand = new DelegateCommand(() =>
         {
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
+                (message) => { ((SSBaysViewModel)this.container.Resolve<IVerticalAxisCalibrationViewModel>()).SubscribeMethodToEvent(); },
+                ThreadOption.PublisherThread,
+                false,
+                message => message.Type == InstallationApp_EventMessageType.EnterView);
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
+                (message) => { ((SSBaysViewModel)this.container.Resolve<IVerticalAxisCalibrationViewModel>()).UnSubscribeMethodFromEvent(); },
+                ThreadOption.PublisherThread,
+                false,
+                message => message.Type == InstallationApp_EventMessageType.ExitView);
             this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (SSBaysViewModel)this.container.Resolve<ISSBaysViewModel>();
+            this.ContentRegionCurrentViewModel = (SSBaysViewModel)this.container.Resolve<IVerticalAxisCalibrationViewModel>();
         }));
 
         public ICommand SsCradleButtonCommand => this.ssCradleButtonCommand ?? (this.ssCradleButtonCommand = new DelegateCommand(() =>

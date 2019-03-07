@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         {
             switch (message.Type)
             {
-                case MessageType.StopHoming:
+                case MessageType.Stop:
                     //TODO add state business logic to stop current action
                     this.ProcessStopHoming(message);
                     break;
@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 "End Homing",
                 MessageActor.InverterDriver,
                 MessageActor.FiniteStateMachines,
-                MessageType.StopHoming,
+                MessageType.Stop,
                 MessageVerbosity.Info);
 
             this.parentStateMachine.ChangeState(new HomingEndState(this.parentStateMachine), null);
@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 "Stop Requested",
                 MessageActor.InverterDriver,
                 MessageActor.FiniteStateMachines,
-                MessageType.StopHoming,
+                MessageType.Stop,
                 MessageVerbosity.Info);
 
             this.parentStateMachine.ChangeState(new HomingEndState(this.parentStateMachine), null);

@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 "Homing Stop",
                 MessageActor.InverterDriver,
                 MessageActor.FiniteStateMachines,
-                MessageType.StopHoming, //TEMP or MessageType.Homing
+                MessageType.Stop, //TEMP or MessageType.Homing
                 MessageVerbosity.Info);
             this.parentStateMachine.PublishCommandMessage(inverterMessage);
 
@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 "End Homing",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.StopHoming,  //TEMP or MessageType.Homing
+                MessageType.Stop,  //TEMP or MessageType.Homing
                 MessageStatus.OperationEnd,
                 ErrorLevel.NoError,
                 MessageVerbosity.Info);

@@ -8,6 +8,8 @@
 
         cellSpacing,
 
+        homingModeAcceleration,
+
         homingCreepSpeed,
 
         homingFastSpeed,
@@ -24,6 +26,14 @@
 
         IoAddress,
 
-        IoPort
+        IoPort,
+
+        positioningOverrideTargetPosition,
+
+        positioningOverrideTargetSpeed,
+
+        positioningOverrideTargetAcceleration,
+
+        positioningOverrideTargetDeceleration,
     }
 }

@@ -52,8 +52,10 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                     b.ToTable("ConfigurationValues");
 
                     b.HasData(
-                        new { VarName = 8L, VarType = 3L, VarValue = "169.254.231.248" },
-                        new { VarName = 9L, VarType = 0L, VarValue = "17221" }
+                        new { VarName = 9L, VarType = 3L, VarValue = "169.254.231.248" },
+                        new { VarName = 10L, VarType = 0L, VarValue = "17221" },
+                        new { VarName = 11L, VarType = 3L, VarValue = "169.254.231.10" },
+                        new { VarName = 12L, VarType = 0L, VarValue = "502" }
                     );
                 });
 
