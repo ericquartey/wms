@@ -32,14 +32,14 @@ steps:
     RestoreBuildProjects: 'WMS/Data/**/*.csproj'
     TestProjects: 'WMS/Data/**/*.Tests.csproj'
 
+
 - template: ../WMS/Pipelines/azure-pipeline-wms-ui-template.yml
   parameters:
     BuildConfiguration: $(BuildConfiguration)
     BuildPlatform:  $(BuildPlatform)
 
+
 - template: azure-pipeline-net4-nuget-template.yml
-
-
 
 
 - task: VSBuild@1
@@ -76,13 +76,6 @@ steps:
     SourceFolder: '$(system.defaultworkingdirectory)'
     Contents: '**\bin\$(BuildConfiguration)\**'
     TargetFolder: '$(build.artifactstagingdirectory)'
-
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Desktop App'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/WMS/App/App/bin/$(BuildConfiguration)/net471'
-    ArtifactName: 'desktop_app'
 
 
 - task: PublishBuildArtifacts@1
