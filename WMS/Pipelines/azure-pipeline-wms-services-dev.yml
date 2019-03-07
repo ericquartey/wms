@@ -1,5 +1,6 @@
 resources:
 - repo: self
+  clean: true
   fetchDepth: 15
 
 queue:
@@ -24,67 +25,7 @@ variables:
   TestProjects: 'WMS/Data/**/*.Tests.csproj'
   TargetFramework: 'netcoreapp2.1'
 
-
 steps:
 
 
-- task: CopyFiles@2
-  displayName: 'Copy sources to staging directory'
-  inputs:
-    Contents: |
-      **
-      !**\.git\**
-      !**\*.png
-      !**\*.jpg
-    targetFolder: '$(Build.ArtifactStagingDirectory)\sources'
-
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Common Sources'
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)\sources'
-    ArtifactName: 'common_sources'
-
-
-- task: DotNetCoreCLI@2
-  displayName: 'NuGet restore'
-  inputs:
-    command: restore
-    projects: '$(RestoreBuildProjects)'
-    feedsToUse: config
-    nugetConfigPath: nuget.config
-
-
-- template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
-
-
-- task: DotNetCoreCLI@2
-  displayName: Build
-  inputs:
-    projects: '$(RestoreBuildProjects)'
-    arguments: '--configuration $(BuildConfiguration) --framework $(TargetFramework)'
-
-
-- task: DotNetCoreCLI@2
-  displayName: Test
-  inputs:
-    command: test
-    projects: '$(TestProjects)'
-    arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true'
-
-
-- task: DotNetCoreCLI@2
-  displayName: Publish
-  inputs:
-    command: publish
-    publishWebProjects: false
-    projects: '$(RestoreBuildProjects)'
-    arguments: '--configuration $(BuildConfiguration) --framework $(TargetFramework) --no-build --no-restore'
-    zipAfterPublish: false
-
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Data Service'
-  inputs:
-    PathtoPublish: 'WMS/Data/WebAPI/bin/$(BuildConfiguration)/$(TargetFramework)/win7-x64/publish'
-    ArtifactName: 'data_service'
+- template: azure-pipeline-wms-services-dev-template.yml
