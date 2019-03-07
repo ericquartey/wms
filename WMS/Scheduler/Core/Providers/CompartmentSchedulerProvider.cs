@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Ferretto.WMS.Scheduler.Core.Models;
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Scheduler.Core.Providers
 {
-    public class CompartmentSchedulerProvider : ICompartmentSchedulerProvider
+    internal class CompartmentSchedulerProvider : ICompartmentSchedulerProvider
     {
         #region Fields
 
@@ -38,6 +39,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     ReservedForPick = c.ReservedForPick,
                     IsItemPairingFixed = c.IsItemPairingFixed,
                     Stock = c.Stock,
+                    LoadingUnitId = c.LoadingUnitId
                 })
                 .Where(c => c.Id == id)
                 .SingleOrDefaultAsync();
@@ -129,34 +131,34 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             }
         }
 
-        public async Task<Compartment> UpdateAsync(Compartment compartment)
+        public async Task<IOperationResult<Compartment>> UpdateAsync(Compartment model)
         {
-            if (compartment == null)
+            if (model == null)
             {
-                throw new ArgumentNullException(nameof(compartment));
+                throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.databaseContext.Compartments.Find(compartment.Id);
-            this.databaseContext.Entry(existingModel).CurrentValues.SetValues(compartment);
+            var existingModel = this.databaseContext.Compartments.Find(model.Id);
+            this.databaseContext.Entry(existingModel).CurrentValues.SetValues(model);
 
             await this.databaseContext.SaveChangesAsync();
 
-            return compartment;
+            return new SuccessOperationResult<Compartment>(model);
         }
 
-        public async Task<StockUpdateCompartment> UpdateAsync(StockUpdateCompartment compartment)
+        public async Task<IOperationResult<StockUpdateCompartment>> UpdateAsync(StockUpdateCompartment model)
         {
-            if (compartment == null)
+            if (model == null)
             {
-                throw new ArgumentNullException(nameof(compartment));
+                throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.databaseContext.Compartments.Find(compartment.Id);
-            this.databaseContext.Entry(existingModel).CurrentValues.SetValues(compartment);
+            var existingModel = this.databaseContext.Compartments.Find(model.Id);
+            this.databaseContext.Entry(existingModel).CurrentValues.SetValues(model);
 
             await this.databaseContext.SaveChangesAsync();
 
-            return compartment;
+            return new SuccessOperationResult<StockUpdateCompartment>(model);
         }
 
         #endregion

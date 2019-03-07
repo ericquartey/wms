@@ -36,8 +36,7 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var listProvider = this.ServiceProvider
-                .GetService(typeof(IItemListSchedulerProvider)) as IItemListSchedulerProvider;
+            var listProvider = this.GetService<IItemListSchedulerProvider>();
 
             var listId = 1;
 
