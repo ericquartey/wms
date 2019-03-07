@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.Calibrate;
+using Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -13,6 +13,7 @@ namespace MAS_InverterDriverUnitTests.StateMachines.Calibrate
         #region Fields
 
         private readonly ushort parameterValue;
+
         private InverterMessage message;
 
         #endregion
@@ -29,27 +30,28 @@ namespace MAS_InverterDriverUnitTests.StateMachines.Calibrate
             Assert.IsNotNull(inverterMessage);
         }
 
-       /*TEMP
-        [TestMethod]
-        public void IsTrueNotifyMessage()
-        {
-            var parentStateMachineMock = new Mock<IInverterStateMachine>();
-
-            var errorState = new ErrorState(parentStateMachineMock.Object, Axis.Both);
-            var enableOperationState = new EnableOperationState(parentStateMachineMock.Object, Axis.Both);
-
-            if (message.IsError)
-            {
-                Assert.IsTrue(errorState);
-            }
-
-            if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
-                if (message.ShortPayload == this.parameterValue)
-                {
-                    Assert.IsTrue(enableOperationState);
-                }
-        }     
-       */
         #endregion
+
+        /*TEMP
+         [TestMethod]
+         public void IsTrueNotifyMessage()
+         {
+             var parentStateMachineMock = new Mock<IInverterStateMachine>();
+
+             var errorState = new ErrorState(parentStateMachineMock.Object, Axis.Both);
+             var enableOperationState = new EnableOperationState(parentStateMachineMock.Object, Axis.Both);
+
+             if (message.IsError)
+             {
+                 Assert.IsTrue(errorState);
+             }
+
+             if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
+                 if (message.ShortPayload == this.parameterValue)
+                 {
+                     Assert.IsTrue(enableOperationState);
+                 }
+         }
+        */
     }
 }
