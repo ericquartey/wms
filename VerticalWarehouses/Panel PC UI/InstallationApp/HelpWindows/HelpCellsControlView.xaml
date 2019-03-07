@@ -40,7 +40,7 @@
                                                 ContentText="125"
                                                 LabelText="{x:Static res:InstallationApp.CurrentCell}"  />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0" Width="180"
                                                ContentText="1250,0"
                                                LabelText="{x:Static res:InstallationApp.ReferenceCellHeight}" />
 
