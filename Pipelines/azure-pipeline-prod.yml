@@ -21,6 +21,7 @@ trigger:
 variables:
   BuildPlatform: 'any cpu'
   BuildConfiguration: 'debug'
+  TargetFramework: 'netcoreapp2.1'
 
 steps:
 
