@@ -20,14 +20,14 @@ steps:
 
 
 - task: DotNetCoreCLI@2
-  displayName: Build
+  displayName: 'Build VW Services (netcore)'
   inputs:
     projects: ${{ parameters.RestoreBuildProjects }} 
     arguments: '--configuration ${{ parameters.BuildConfiguration }} --framework ${{ parameters.TargetFramework }}'
 
 
 - task: DotNetCoreCLI@2
-  displayName: Test
+  displayName: 'Test (netcore)'
   inputs:
     command: test
     projects: ${{ parameters.TestProjects }}
@@ -35,7 +35,7 @@ steps:
 
 
 - task: DotNetCoreCLI@2
-  displayName: Publish
+  displayName: 'Publish (netcore)'
   inputs:
     command: publish
     publishWebProjects: false

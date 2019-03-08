@@ -38,30 +38,21 @@ steps:
     BuildPlatform:  $(BuildPlatform)
 
 
-- template: '../VerticalWarehouses/Pipelines/azure-pipeline-vw-services-template.yml'
-  parameters:
-    BuildConfiguration: $(BuildConfiguration)
-    TargetFramework: $(TargetFramework)
-    RestoreBuildProjects: 'VerticalWarehouses/Machine Automation Service/**/*.csproj'
-    TestProjects: 'VerticalWarehouses/Machine Automation Service/**/*[Tt]ests/*.csproj'
-    
-
 - template: '../WMS/Pipelines/azure-pipeline-wms-services-template.yml'
   parameters:
     BuildConfiguration: $(BuildConfiguration)
     TargetFramework: 'netcoreapp2.1'
     RestoreBuildProjects: 'WMS/Data/**/*.csproj'
     TestProjects: 'WMS/Data/**/*.Tests.csproj'
+   
+   
+- template: '../VerticalWarehouses/Pipelines/azure-pipeline-vw-services-template.yml'
+  parameters:
+    BuildConfiguration: $(BuildConfiguration)
+    TargetFramework: 'netcoreapp2.1'
+    RestoreBuildProjects: 'VerticalWarehouses/Machine Automation Service/**/*.csproj'
+    TestProjects: 'VerticalWarehouses/Machine Automation Service/**/*Tests/*.csproj'
 
-    
-- task: VSBuild@1
-  displayName: 'Build VerticalWarehouses'
-  inputs:
-    solution: 'VerticalWarehouses\VerticalWarehouses.sln'
-    platform: '$(BuildPlatform)'
-    configuration: '$(BuildConfiguration)'
-    msbuildArchitecture: x64
-    
     
 - task: CopyFiles@2
   displayName: 'Copy Files to staging directory'
