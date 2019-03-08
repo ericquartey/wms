@@ -12,13 +12,12 @@ namespace Ferretto.WMS.App.Tests
 
         private Application application;
 
-        private Window mainWindow;
-
         #endregion
 
         #region Properties
 
-        public Window MainWindow => this.mainWindow;
+        public Window MainWindow =>
+            this.application?.GetWindow(Common.Resources.DesktopApp.Application_Title, InitializeOption.NoCache);
 
         public TestContext TestContext { get; set; }
 
@@ -26,12 +25,12 @@ namespace Ferretto.WMS.App.Tests
 
         #region Methods
 
-        public void Cleanup()
+        public void CloseApp()
         {
             this.application?.Close();
         }
 
-        public void Initialize()
+        public void StartupApp()
         {
             var applicationPath = System.Environment.CurrentDirectory;
             var applicationFilePath = Path.Combine(applicationPath, "Ferretto.WMS.App.exe");
@@ -40,17 +39,13 @@ namespace Ferretto.WMS.App.Tests
             appProcess.StartInfo.WorkingDirectory = applicationPath;
             appProcess.StartInfo.FileName = applicationFilePath;
             appProcess.Start();
-            appProcess.Exited += AppProcess_Exited;
 
+            System.Threading.Thread.Sleep(1000);
+            Assert.IsFalse(appProcess.HasExited);
             appProcess.WaitForInputIdle();
 
             this.application = Application.Attach(appProcess);
-
-            this.mainWindow =
-                this.application.GetWindow(Common.Resources.DesktopApp.Application_Title, InitializeOption.NoCache);
         }
-
-        private static void AppProcess_Exited(object sender, System.EventArgs e) => Assert.Fail("Main application closed unnaturally.");
 
         #endregion
     }
