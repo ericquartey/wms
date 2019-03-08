@@ -35,22 +35,68 @@ steps:
     nugetConfigPath: nuget.config
 
 
-- template: ../WMS/Pipelines/azure-pipeline-wms-ui-template.yml
-  parameters:
-    BuildConfiguration: $(BuildConfiguration)
-    BuildPlatform:  $(BuildPlatform)
+# - template: ../WMS/Pipelines/azure-pipeline-wms-ui-template.yml
+#  parameters:
+#    BuildConfiguration: $(BuildConfiguration)
+#    BuildPlatform:  $(BuildPlatform)
+
+- template: ../../Pipelines/azure-pipeline-net4-nuget-template.yml
 
 
-- template: azure-pipeline-net4-nuget-template.yml
+- template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
 
 - task: VSBuild@1
-  displayName: 'Build VerticalWarehouses'
+  displayName: 'Build solution WMS.App'
   inputs:
-    solution: 'VerticalWarehouses\VerticalWarehouses.sln'
-    platform: '$(BuildPlatform)'
-    configuration: '$(BuildConfiguration)'
+    solution: 'WMS\WMS.App.sln'
+    platform: $(BuildPlatform)
+    configuration: $(BuildConfiguration)
     msbuildArchitecture: x64
+
+
+- task: VSTest@2
+  displayName: 'Run Tests'
+  inputs:
+    testAssemblyVer2: |
+     **\$(BuildConfiguration)\**\*tests.dll
+     !**\obj\**
+    codeCoverageEnabled: true
+    platform: $(BuildPlatform)
+    configuration:  $(BuildConfiguration)
+
+
+- task: PublishSymbols@2
+  displayName: 'Publish symbols path'
+  inputs:
+    SearchPattern: 'WMS/App/App/bin/$(BuildConfiguration)/**/*.pdb'
+    PublishSymbols: false
+  continueOnError: true
+
+  
+- task: CopyFiles@2
+  displayName: 'Copy Files to staging directory'
+  inputs:
+    SourceFolder: '$(system.defaultworkingdirectory)'
+    Contents: 'WMS/App/App/bin/$(BuildConfiguration)/**'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Desktop App'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)/WMS/App/App/bin/$(BuildConfiguration)/net471'
+    ArtifactName: 'desktop_app'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: on_premises_appconfig_transform'
+  inputs:
+    PathtoPublish: 'WMS/App/App'
+    ArtifactName: 'on_premises_appconfig_transform'
+
+
+# end of '../WMS/Pipelines/azure-pipeline-wms-ui-template.yml'
 
 
 - template: '../VerticalWarehouses/Pipelines/azure-pipeline-vw-services-template.yml'
@@ -68,7 +114,16 @@ steps:
     RestoreBuildProjects: 'WMS/Data/**/*.csproj'
     TestProjects: 'WMS/Data/**/*.Tests.csproj'
 
-
+    
+- task: VSBuild@1
+  displayName: 'Build VerticalWarehouses'
+  inputs:
+    solution: 'VerticalWarehouses\VerticalWarehouses.sln'
+    platform: '$(BuildPlatform)'
+    configuration: '$(BuildConfiguration)'
+    msbuildArchitecture: x64
+    
+    
 - task: CopyFiles@2
   displayName: 'Copy Files to staging directory'
   inputs:
