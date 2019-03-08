@@ -53,7 +53,7 @@ steps:
     msbuildArchitecture: x64
 
 
-- template: '../Vertical Warehouses/Pipelines/azure-pipeline-vw-services-template.yml'
+- template: '../VerticalWarehouses/Pipelines/azure-pipeline-vw-services-template.yml'
   parameters:
     BuildConfiguration: $(BuildConfiguration)
     TargetFramework: $(TargetFramework)
