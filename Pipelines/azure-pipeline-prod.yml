@@ -59,18 +59,3 @@ steps:
     BuildConfiguration: $(BuildConfiguration)
     BuildPlatform:  $(BuildPlatform)
 
-
-- task: CopyFiles@2
-  displayName: 'Copy Files to staging directory'
-  inputs:
-    SourceFolder: '$(system.defaultworkingdirectory)'
-    Contents: '**\bin\$(BuildConfiguration)\**'
-    TargetFolder: '$(build.artifactstagingdirectory)'
-
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Panel Pc App'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/Panel PC UI/VWApp/bin/$(BuildConfiguration)/net471'
-    ArtifactName: 'panelpc_app'
-
