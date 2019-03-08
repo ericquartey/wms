@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.InstallationApp.Interfaces;
+﻿using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
+using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.InstallationApp.Resources.Enumerables;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
@@ -68,7 +69,7 @@ namespace Ferretto.VW.InstallationApp
         {
             this.updateSensorsStateToken = this.eventAggregator.GetEvent<MAS_Event>()
                 .Subscribe(
-                message => this.UpdateSensorsStates(((INotificationMessageSensorsChangedData)message.Data).SensorsStates),
+                message => this.UpdateSensorsStates((message.Data as INotificationMessageSensorsChangedData).SensorsStates),
                 ThreadOption.PublisherThread, false, message => message.NotificationType == NotificationType.SensorsChanged);
         }
 

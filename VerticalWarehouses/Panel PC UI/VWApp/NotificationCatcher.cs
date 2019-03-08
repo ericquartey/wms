@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Interfaces;
 using Ferretto.VW.InstallationApp.Resources;
-using Ferretto.VW.InstallationApp.Resources.Enumerables;
-using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.VWApp.Interfaces;
 using Microsoft.Practices.Unity;
@@ -17,9 +12,9 @@ namespace Ferretto.VW.VWApp
     {
         #region Fields
 
-        private IUnityContainer container;
+        private readonly IUnityContainer container;
 
-        private IEventAggregator eventAggregator;
+        private readonly IEventAggregator eventAggregator;
 
         #endregion
 
@@ -37,14 +32,22 @@ namespace Ferretto.VW.VWApp
 
         public void SubscribeInstallationMethodsToMAService()
         {
-            var installationHubClient = this.container.Resolve<IContainerInstallationHubClient>() as InstallationHubClient;
+            var installationHubClient = this.container.Resolve<IContainerInstallationHubClient>();
             installationHubClient.SensorsChanged += this.RaiseSensorsChangedEvent;
             installationHubClient.ReceivedMessage += this.RaiseReceivedMessageEvent;
+            installationHubClient.ActionUpdated += this.RaiseActionUpdatedEvent;
+        }
+
+        private void RaiseActionUpdatedEvent(object sender, IActionUpdateData data)
+        {
+            var messageData = new MAS_EventMessage(data.NotificationType, data.ActionType, data.ActionStatus);
+            this.eventAggregator.GetEvent<MAS_Event>().Publish(messageData);
         }
 
         private void RaiseReceivedMessageEvent(object sender, string message)
         {
-            this.eventAggregator.GetEvent<MAS_Event>().Publish(new MAS_EventMessage(NotificationType.Action, ActionType.None, ActionStatus.None, null));
+            var messageData = new NotificationMessageReceivedMessageData(message);
+            this.eventAggregator.GetEvent<MAS_Event>().Publish(new MAS_EventMessage(NotificationType.Action, ActionType.None, ActionStatus.None, messageData));
         }
 
         private void RaiseSensorsChangedEvent(object sender, bool[] message)

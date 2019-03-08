@@ -8,6 +8,9 @@ using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Prism.Events;
 using Ferretto.VW.InstallationApp.Resources;
 using System.Net.Http;
+using Ferretto.VW.InstallationApp.Resources.Enumerables;
+using Ferretto.VW.InstallationApp.Interfaces;
+using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -19,8 +22,6 @@ namespace Ferretto.VW.InstallationApp
 
         private IUnityContainer container;
 
-        private InstallationHubClient installationHubClient;
-
         private bool isStartButtonActive = true;
 
         private bool isStopButtonActive;
@@ -30,6 +31,8 @@ namespace Ferretto.VW.InstallationApp
         private string noteString = VW.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
 
         private string offset;
+
+        private SubscriptionToken receivedMessageToken;
 
         private string resolution;
 
@@ -97,19 +100,19 @@ namespace Ferretto.VW.InstallationApp
             this.container = container;
         }
 
-        public async void SubscribeMethodToEvent()
+        public void SubscribeMethodToEvent()
         {
-            this.installationHubClient = (InstallationHubClient)this.container.Resolve<IContainerInstallationHubClient>();
-            this.installationHubClient.ReceivedMessage += this.UpdateNoteString;
+            this.receivedMessageToken = this.eventAggregator.GetEvent<MAS_Event>().Subscribe(
+                (msg) => this.UpdateNoteString((msg.Data as INotificationMessageReceivedMessageData).Message),
+                ThreadOption.PublisherThread, false, message => message.NotificationType == NotificationType.Action);
         }
 
-        public async void UnSubscribeMethodFromEvent()
+        public void UnSubscribeMethodFromEvent()
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Unsubscribe((message) => { this.SubscribeMethodToEvent(); });
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Unsubscribe((message) => { this.UnSubscribeMethodFromEvent(); });
+            this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.receivedMessageToken);
         }
 
-        public void UpdateNoteString(object sender, string message)
+        public void UpdateNoteString(string message)
         {
             this.NoteString = message;
         }

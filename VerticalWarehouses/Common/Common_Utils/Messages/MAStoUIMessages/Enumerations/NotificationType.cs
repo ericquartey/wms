@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ferretto.VW.InstallationApp.Resources.Enumerables
+namespace Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations
 {
     public enum NotificationType
     {

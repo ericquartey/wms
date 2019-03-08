@@ -14,17 +14,17 @@ namespace Ferretto.VW.InstallationApp
 
         public void ExitFromViewMethod()
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         public void SubscribeMethodToEvent()
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         #endregion
