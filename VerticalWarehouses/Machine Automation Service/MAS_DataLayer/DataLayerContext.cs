@@ -36,6 +36,8 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public DbSet<FreeBlock> FreeBlocks { get; set; }
 
+        public DbSet<GeneralInfo> GeneralInfos { get; set; }
+
         public DbSet<LoadingUnit> LoadingUnits { get; set; }
 
         public DbSet<RuntimeValue> RuntimeValues { get; set; }

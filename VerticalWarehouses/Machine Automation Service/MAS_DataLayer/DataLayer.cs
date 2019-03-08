@@ -138,19 +138,20 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Methods
 
-        public GeneralInfo LoadGeneralInfo()
+        public void LoadGeneralInfo()
         {
-            var JSON_GENERAL_INFO_PATH = string.Concat(Environment.CurrentDirectory, "general_info.json");
+            var jsonGeneralInfoPath = "C:\\Users\\mmorbelli\\source\\repos\\Warehouse Management System\\VerticalWarehouses\\Machine Automation Service\\MAS_AutomationService\\general_info.json";
 
             GeneralInfo generalInfo;
 
-            using (var r = new StreamReader(JSON_GENERAL_INFO_PATH))
+            using (var r = new StreamReader(jsonGeneralInfoPath))
             {
                 var json = r.ReadToEnd();
                 generalInfo = JsonConvert.DeserializeObject<GeneralInfo>(json);
-            }
 
-            return generalInfo;
+                this.inMemoryDataContext.GeneralInfos.Add(generalInfo);
+                this.inMemoryDataContext.SaveChanges();
+            }
         }
 
         public bool LogWriting(string logMessage)
