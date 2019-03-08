@@ -6,7 +6,7 @@ using Prism.Modularity;
 using Prism.Regions;
 using Prism.Unity;
 
-namespace Ferretto.WMS.App.ModulesUITests
+namespace Ferretto.WMS.App.Tests
 {
     public class Bootstrapper : UnityBootstrapper
     {

@@ -2,7 +2,7 @@
 using System.Text;
 using System.Threading;
 
-namespace Ferretto.WMS.App.ModulesUITests
+namespace Ferretto.WMS.App.Tests
 {
     internal class BindingListener : TraceListener
     {

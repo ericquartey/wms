@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ferretto.WMS.App.ModulesUITests
+namespace Ferretto.WMS.App.Tests
 {
     public class ViewInfo
     {
