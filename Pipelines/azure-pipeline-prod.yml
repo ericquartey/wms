@@ -23,20 +23,6 @@ variables:
   BuildConfiguration: 'release'
 
 steps:
-- task: DotNetCoreCLI@2
-  displayName: 'NuGet restore (netcore)'
-  inputs:
-    command: restore
-    projects:  '**/*.csproj'
-    feedsToUse: config
-    nugetConfigPath: nuget.config
-
-
-- template: ../WMS/Pipelines/azure-pipeline-wms-ui-template.yml
-  parameters:
-    BuildConfiguration: $(BuildConfiguration)
-    BuildPlatform:  $(BuildPlatform)
-
 
 - template: '../WMS/Pipelines/azure-pipeline-wms-services-template.yml'
   parameters:
@@ -44,7 +30,13 @@ steps:
     TargetFramework: 'netcoreapp2.1'
     RestoreBuildProjects: 'WMS/Data/**/*.csproj'
     TestProjects: 'WMS/Data/**/*.Tests.csproj'
-   
+
+    
+- template: ../WMS/Pipelines/azure-pipeline-wms-ui-template.yml
+  parameters:
+    BuildConfiguration: $(BuildConfiguration)
+    BuildPlatform:  $(BuildPlatform)
+
    
 - template: '../VerticalWarehouses/Pipelines/azure-pipeline-vw-services-template.yml'
   parameters:
