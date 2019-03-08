@@ -140,11 +140,11 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public GeneralInfo LoadGeneralInfo()
         {
-            //private static readonly string JSON_GENERAL_INFO_PATH = string.Concat(Environment.CurrentDirectory, ConfigurationManager.AppSettings["GeneralInfoFilePath"]);
+            var JSON_GENERAL_INFO_PATH = string.Concat(Environment.CurrentDirectory, "general_info.json");
 
             GeneralInfo generalInfo;
 
-            using (var r = new StreamReader("general_info.json"))
+            using (var r = new StreamReader(JSON_GENERAL_INFO_PATH))
             {
                 var json = r.ReadToEnd();
                 generalInfo = JsonConvert.DeserializeObject<GeneralInfo>(json);
