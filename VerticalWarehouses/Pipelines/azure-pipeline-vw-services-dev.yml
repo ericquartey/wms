@@ -27,4 +27,3 @@ steps:
     RestoreBuildProjects: 'VerticalWarehouses/Machine Automation Service/**/*.csproj'
     TestProjects: 'VerticalWarehouses/Machine Automation Service/**/*Tests/*.csproj'
     TargetFramework: 'netcoreapp2.1'
-

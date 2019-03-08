@@ -53,7 +53,13 @@ steps:
     RestoreBuildProjects: 'VerticalWarehouses/Machine Automation Service/**/*.csproj'
     TestProjects: 'VerticalWarehouses/Machine Automation Service/**/*Tests/*.csproj'
 
-    
+
+- template: '../VerticalWarehouses/Pipelines/azure-pipeline-vw-ui-template.yml'
+  parameters:
+    BuildConfiguration: $(BuildConfiguration)
+    BuildPlatform:  $(BuildPlatform)
+
+
 - task: CopyFiles@2
   displayName: 'Copy Files to staging directory'
   inputs:
