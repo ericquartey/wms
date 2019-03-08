@@ -40,10 +40,10 @@ steps:
 #    BuildConfiguration: $(BuildConfiguration)
 #    BuildPlatform:  $(BuildPlatform)
 
-- template: ../../Pipelines/azure-pipeline-net4-nuget-template.yml
+- template: azure-pipeline-net4-nuget-template.yml
 
 
-- template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
+- template: azure-pipeline-assembly-versioning-template.yml
 
 
 - task: VSBuild@1

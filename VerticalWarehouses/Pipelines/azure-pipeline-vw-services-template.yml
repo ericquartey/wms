@@ -1,7 +1,7 @@
 parameters:
   BuildConfiguration: 'debug'
   RestoreBuildProjects: '**/*.csproj'
-  TestProjects: 'VerticalWarehouses/**/*.Tests.csproj'
+  TestProjects: 'VerticalWarehouses/**/*Tests.csproj'
   TargetFramework: 'netcoreapp2.1'
 
 
