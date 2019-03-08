@@ -21,24 +21,9 @@ trigger:
 variables:
   BuildPlatform: 'any cpu'
   BuildConfiguration: 'debug'
-  TargetFramework: 'netcoreapp2.1'
 
 steps:
 
-
-- task: DotNetCoreCLI@2
-  displayName: 'NuGet restore (netcore)'
-  inputs:
-    command: restore
-    projects:  '**/*.csproj'
-    feedsToUse: config
-    nugetConfigPath: nuget.config
-
-
-# - template: ../WMS/Pipelines/azure-pipeline-wms-ui-template.yml
-#  parameters:
-#    BuildConfiguration: $(BuildConfiguration)
-#    BuildPlatform:  $(BuildPlatform)
 
 - template: azure-pipeline-net4-nuget-template.yml
 
@@ -54,87 +39,4 @@ steps:
     configuration: $(BuildConfiguration)
     msbuildArchitecture: x64
 
-
-- task: VSTest@2
-  displayName: 'Run Tests'
-  inputs:
-    testAssemblyVer2: |
-     **\$(BuildConfiguration)\**\*tests.dll
-     !**\obj\**
-    codeCoverageEnabled: true
-    platform: $(BuildPlatform)
-    configuration:  $(BuildConfiguration)
-
-
-- task: PublishSymbols@2
-  displayName: 'Publish symbols path'
-  inputs:
-    SearchPattern: 'WMS/App/App/bin/$(BuildConfiguration)/**/*.pdb'
-    PublishSymbols: false
-  continueOnError: true
-
-  
-- task: CopyFiles@2
-  displayName: 'Copy Files to staging directory'
-  inputs:
-    SourceFolder: '$(system.defaultworkingdirectory)'
-    Contents: 'WMS/App/App/bin/$(BuildConfiguration)/**'
-    TargetFolder: '$(build.artifactstagingdirectory)'
-
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Desktop App'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/WMS/App/App/bin/$(BuildConfiguration)/net471'
-    ArtifactName: 'desktop_app'
-
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: on_premises_appconfig_transform'
-  inputs:
-    PathtoPublish: 'WMS/App/App'
-    ArtifactName: 'on_premises_appconfig_transform'
-
-
-# end of '../WMS/Pipelines/azure-pipeline-wms-ui-template.yml'
-
-
-- template: '../VerticalWarehouses/Pipelines/azure-pipeline-vw-services-template.yml'
-  parameters:
-    BuildConfiguration: $(BuildConfiguration)
-    TargetFramework: $(TargetFramework)
-    RestoreBuildProjects: 'VerticalWarehouses/Machine Automation Service/**/*.csproj'
-    TestProjects: 'VerticalWarehouses/Machine Automation Service/**/*[Tt]ests/*.csproj'
-    
-
-- template: '../WMS/Pipelines/azure-pipeline-wms-services-template.yml'
-  parameters:
-    BuildConfiguration: $(BuildConfiguration)
-    TargetFramework: $(TargetFramework)
-    RestoreBuildProjects: 'WMS/Data/**/*.csproj'
-    TestProjects: 'WMS/Data/**/*.Tests.csproj'
-
-    
-- task: VSBuild@1
-  displayName: 'Build VerticalWarehouses'
-  inputs:
-    solution: 'VerticalWarehouses\VerticalWarehouses.sln'
-    platform: '$(BuildPlatform)'
-    configuration: '$(BuildConfiguration)'
-    msbuildArchitecture: x64
-    
-    
-- task: CopyFiles@2
-  displayName: 'Copy Files to staging directory'
-  inputs:
-    SourceFolder: '$(system.defaultworkingdirectory)'
-    Contents: '**\bin\$(BuildConfiguration)\**'
-    TargetFolder: '$(build.artifactstagingdirectory)'
-
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Panel Pc App'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/Panel PC UI/VWApp/bin/$(BuildConfiguration)/net471'
-    ArtifactName: 'panelpc_app'
 
