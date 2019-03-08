@@ -10,6 +10,7 @@ using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_DataLayer
@@ -39,6 +40,8 @@ namespace Ferretto.VW.MAS_DataLayer
         public DataLayer(string connectionString, DataLayerContext inMemoryDataContext,
             IEventAggregator eventAggregator)
         {
+            var dir = Environment.CurrentDirectory;
+
             if (inMemoryDataContext == null)
                 throw new DataLayerException(DataLayerExceptionEnum.DATALAYER_CONTEXT_EXCEPTION);
 
@@ -135,6 +138,21 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Methods
 
+        public GeneralInfo LoadGeneralInfo()
+        {
+            //private static readonly string JSON_GENERAL_INFO_PATH = string.Concat(Environment.CurrentDirectory, ConfigurationManager.AppSettings["GeneralInfoFilePath"]);
+
+            GeneralInfo generalInfo;
+
+            using (var r = new StreamReader("general_info.json"))
+            {
+                var json = r.ReadToEnd();
+                generalInfo = JsonConvert.DeserializeObject<GeneralInfo>(json);
+            }
+
+            return generalInfo;
+        }
+
         public bool LogWriting(string logMessage)
         {
             var updateOperation = true;
@@ -187,15 +205,6 @@ namespace Ferretto.VW.MAS_DataLayer
             catch (Exception ex)
             {
                 throw new DataLayerException($"Exception: {ex.Message} while starting service threads", ex);
-            }
-        }
-
-        private void LoadGeneralInfo()
-        {
-            using (var r = new StreamReader("general_info.json"))
-            {
-                var json = r.ReadToEnd();
-                // List<Item> items = JsonConvert.DeserializeObject<List<Item>>(json);
             }
         }
 
