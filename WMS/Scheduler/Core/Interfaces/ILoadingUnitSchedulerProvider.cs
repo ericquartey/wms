@@ -3,8 +3,9 @@ using Ferretto.WMS.Scheduler.Core.Models;
 
 namespace Ferretto.WMS.Scheduler.Core.Interfaces
 {
-    public interface IAreaSchedulerProvider
-        : IReadSingleAsyncProvider<Area, int>
+    public interface ILoadingUnitSchedulerProvider :
+        IUpdateAsyncProvider<LoadingUnit, int>,
+        IReadSingleAsyncProvider<LoadingUnit, int>
     {
     }
 }

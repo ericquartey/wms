@@ -4,6 +4,8 @@ namespace Ferretto.WMS.Scheduler.Core.Models
     {
         #region Properties
 
+        public System.DateTime? LastPickDate { get; set; }
+
         public ItemManagementType ManagementType { get; set; }
 
         #endregion

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Scheduler.Core.Providers
 {
-    internal class ItemSchedulerProvider : IItemSchedulerProvider
+    internal class LoadingUnitSchedulerProvider : ILoadingUnitSchedulerProvider
     {
         #region Fields
 
@@ -18,7 +18,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         #region Constructors
 
-        public ItemSchedulerProvider(DatabaseContext databaseContext)
+        public LoadingUnitSchedulerProvider(DatabaseContext databaseContext)
         {
             this.databaseContext = databaseContext;
         }
@@ -27,31 +27,30 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         #region Methods
 
-        public async Task<Item> GetByIdAsync(int id)
+        public async Task<LoadingUnit> GetByIdAsync(int id)
         {
-            return await this.databaseContext.Items
-               .Select(i => new Item
+            return await this.databaseContext.LoadingUnits
+               .Select(l => new LoadingUnit
                {
-                   Id = i.Id,
-                   ManagementType = (ItemManagementType)i.ManagementType,
-                   LastPickDate = i.LastPickDate
+                   Id = l.Id,
+                   LastPickDate = l.LastPickDate
                })
-               .SingleAsync(i => i.Id == id);
+               .SingleOrDefaultAsync(l => l.Id == id);
         }
 
-        public async Task<IOperationResult<Item>> UpdateAsync(Item model)
+        public async Task<IOperationResult<LoadingUnit>> UpdateAsync(LoadingUnit model)
         {
             if (model == null)
             {
                 throw new System.ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.databaseContext.Items.Find(model.Id);
+            var existingModel = this.databaseContext.LoadingUnits.Find(model.Id);
             this.databaseContext.Entry(existingModel).CurrentValues.SetValues(model);
 
             await this.databaseContext.SaveChangesAsync();
 
-            return new SuccessOperationResult<Item>(model);
+            return new SuccessOperationResult<LoadingUnit>(model);
         }
 
         #endregion
