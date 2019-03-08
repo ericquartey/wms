@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Ferretto.VW.Common_Utils.Events;
+﻿using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.MAS_DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -88,12 +87,12 @@ namespace MAS_DataLayerUnitTests
         }
 
         [TestMethod]
-        public void ReadGeneralInfoJson()
-        {
-            this.dataLayer.LoadGeneralInfo();
+        //public void ReadGeneralInfoJson()
+        //{
+        //    this.dataLayer.LoadGeneralInfo();
 
-            Assert.IsTrue(this.context.GeneralInfos.Any());
-        }
+        //    Assert.IsTrue(this.context.GeneralInfos.Any());
+        //}
 
         protected DataLayerContext CreateContext()
         {
