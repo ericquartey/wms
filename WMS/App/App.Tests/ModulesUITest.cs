@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Ferretto.WMS.App.ModulesUITests
+namespace Ferretto.WMS.App.Tests
 {
     [TestClass]
     public class ModulesUITest : MockUI
@@ -9,7 +9,7 @@ namespace Ferretto.WMS.App.ModulesUITests
 
         [TestMethod]
         [DeploymentItem("Ferretto.WMS.App.Themes.dll")]
-        [DeploymentItem("DevExpress.Xpf.Accordion.v18.2")]
+        [DeploymentItem("DevExpress.Xpf.Accordion.v18.2.dll")]
         [DeploymentItem("DevExpress.Xpf.Controls.v18.2.dll")]
         [DeploymentItem("DevExpress.Xpf.Core.v18.2.dll")]
         [DeploymentItem("DevExpress.Xpf.Core.v18.2.Extensions.dll")]
@@ -24,6 +24,11 @@ namespace Ferretto.WMS.App.ModulesUITests
         [DeploymentItem("DevExpress.Xpf.Ribbon.v18.2.dll")]
         [DeploymentItem("DevExpress.Xpf.Themes.Office2016White.v18.2.dll")]
         [DeploymentItem("DevExpress.Xpo.v18.2.dll")]
+        [DeploymentItem("Ferretto.WMS.App.Modules.BLL.dll")]
+        [DeploymentItem("Ferretto.WMS.App.Modules.Layout.dll")]
+        [DeploymentItem("Ferretto.WMS.App.Modules.Machines.dll")]
+        [DeploymentItem("Ferretto.WMS.App.Modules.MasterData.dll")]
+        [DeploymentItem("Ferretto.WMS.App.Modules.Scheduler.dll")]
 #pragma warning disable S2699 // Tests should include assertions
         public void TestUiModuleLayout()
 #pragma warning restore S2699 // Tests should include assertions

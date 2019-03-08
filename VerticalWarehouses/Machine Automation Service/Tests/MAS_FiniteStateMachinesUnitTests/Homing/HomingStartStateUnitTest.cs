@@ -25,7 +25,7 @@ namespace MAS_FiniteStateMachinesUnitTests.Homing
             var parent = new Mock<IStateMachine>();
             parent.As<IHomingStateMachine>().Setup(p => p.CalibrateData).Returns(calibrateMessageData.Object);
 
-            var state = new HomingStartState(parent.Object);
+            var state = new HomingStartState(parent.Object, Axis.Vertical);
 
             Assert.IsNotNull(state);
         }
