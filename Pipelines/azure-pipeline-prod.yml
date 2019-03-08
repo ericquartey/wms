@@ -20,24 +20,60 @@ trigger:
 
 variables:
   BuildPlatform: 'any cpu'
-  BuildConfiguration: 'debug'
-  TargetFramework: 'netcoreapp2.1'
+  BuildConfiguration: 'release'
 
 steps:
-
-
-- template: azure-pipeline-net4-nuget-template.yml
-
-
-- template: azure-pipeline-assembly-versioning-template.yml
-
-
-- task: VSBuild@1
-  displayName: 'Build solution WMS.App'
+- task: DotNetCoreCLI@2
+  displayName: 'NuGet restore (netcore)'
   inputs:
-    solution: 'WMS\WMS.App.sln'
-    platform: $(BuildPlatform)
-    configuration: $(BuildConfiguration)
-    msbuildArchitecture: x64
+    command: restore
+    projects:  '**/*.csproj'
+    feedsToUse: config
+    nugetConfigPath: nuget.config
 
+
+- template: ../WMS/Pipelines/azure-pipeline-wms-ui-template.yml
+  parameters:
+    BuildConfiguration: $(BuildConfiguration)
+    BuildPlatform:  $(BuildPlatform)
+
+
+- template: '../VerticalWarehouses/Pipelines/azure-pipeline-vw-services-template.yml'
+  parameters:
+    BuildConfiguration: $(BuildConfiguration)
+    TargetFramework: $(TargetFramework)
+    RestoreBuildProjects: 'VerticalWarehouses/Machine Automation Service/**/*.csproj'
+    TestProjects: 'VerticalWarehouses/Machine Automation Service/**/*[Tt]ests/*.csproj'
+    
+
+- template: '../WMS/Pipelines/azure-pipeline-wms-services-template.yml'
+  parameters:
+    BuildConfiguration: $(BuildConfiguration)
+    TargetFramework: 'netcoreapp2.1'
+    RestoreBuildProjects: 'WMS/Data/**/*.csproj'
+    TestProjects: 'WMS/Data/**/*.Tests.csproj'
+
+    
+- task: VSBuild@1
+  displayName: 'Build VerticalWarehouses'
+  inputs:
+    solution: 'VerticalWarehouses\VerticalWarehouses.sln'
+    platform: '$(BuildPlatform)'
+    configuration: '$(BuildConfiguration)'
+    msbuildArchitecture: x64
+    
+    
+- task: CopyFiles@2
+  displayName: 'Copy Files to staging directory'
+  inputs:
+    SourceFolder: '$(system.defaultworkingdirectory)'
+    Contents: '**\bin\$(BuildConfiguration)\**'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Panel Pc App'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/Panel PC UI/VWApp/bin/$(BuildConfiguration)/net471'
+    ArtifactName: 'panelpc_app'
 
