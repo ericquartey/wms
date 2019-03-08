@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestStack.White;
 using TestStack.White.Factory;
@@ -34,11 +33,7 @@ namespace Ferretto.WMS.App.Tests
 
         public void Initialize()
         {
-#pragma warning disable S3902 // "Assembly.GetExecutingAssembly" should not be called
-
             var applicationPath = System.Environment.CurrentDirectory;
-#pragma warning restore S3902 // "Assembly.GetExecutingAssembly" should not be called
-
             var applicationFilePath = Path.Combine(applicationPath, "Ferretto.WMS.App.exe");
 
             var appProcess = new System.Diagnostics.Process();

@@ -24,6 +24,11 @@ namespace Ferretto.WMS.App.Tests
         [DeploymentItem("DevExpress.Xpf.Ribbon.v18.2.dll")]
         [DeploymentItem("DevExpress.Xpf.Themes.Office2016White.v18.2.dll")]
         [DeploymentItem("DevExpress.Xpo.v18.2.dll")]
+        [DeploymentItem("Ferretto.WMS.App.Modules.BLL.dll")]
+        [DeploymentItem("Ferretto.WMS.App.Modules.Layout.dll")]
+        [DeploymentItem("Ferretto.WMS.App.Modules.Machines.dll")]
+        [DeploymentItem("Ferretto.WMS.App.Modules.MasterData.dll")]
+        [DeploymentItem("Ferretto.WMS.App.Modules.Scheduler.dll")]
 #pragma warning disable S2699 // Tests should include assertions
         public void TestUiModuleLayout()
 #pragma warning restore S2699 // Tests should include assertions
