@@ -30,11 +30,6 @@
         <wms:ActionBar Margin="10,10,10,0"
                        HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
-            <wms:ActionBarItem Command="{Binding EditCommand}"
-                               Content="{x:Static res:MasterData.EditLoadingUnit}"
-                               CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/ic_edit_black_24dp.png"
-                               GlyphSize="Custom" />
             <wms:ActionBarItem Command="{Binding SaveCommand}"
                                Content="{x:Static res:General.Save}"
                                CustomGlyphSize="24,24"
@@ -341,17 +336,41 @@
 
                 <GroupBox Grid.Row="2"
                           Grid.ColumnSpan="3"
+                          MinHeight="250"
                           VerticalContentAlignment="Stretch"
                           Header="{x:Static res:MasterData.CompartmentPosition}"
                           Visibility="{Binding SelectedCompartmentTray.LoadingUnitHasCompartments, Converter={StaticResource BTVC}}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
 
-                    <wms:WmsTrayControl Compartments="{Binding LoadingUnitDetails.Compartments}"
-                                        DimensionHeight="{Binding LoadingUnitDetails.Length}"
-                                        DimensionWidth="{Binding LoadingUnitDetails.Width}"
-                                        IsCompartmentSelectable="{Binding IsCompartmentSelectableTray, Mode=OneWay}"
-                                        RulerInfo="mm"
-                                        SelectedItem="{Binding SelectedCompartmentTray, Mode=TwoWay}"
-                                        ShowBackground="False" />
+
+                        <Grid Width="{Binding TrayWidth, ElementName=trayControl}" HorizontalAlignment="Left">
+                            <wms:ActionBar Height="28"
+                                           Margin="0,0,0,5"
+                                           HorizontalAlignment="Right"
+                                           Style="{DynamicResource ActionBarNotCustomizable}">
+                                <wms:ActionBarItem Command="{Binding EditCommand}"
+                                                   Content="{x:Static res:MasterData.EditLoadingUnit}"
+                                                   CustomGlyphSize="24,24"
+                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/ic_edit_black_24dp.png"
+                                                   GlyphSize="Custom" />
+                            </wms:ActionBar>
+                        </Grid>
+
+                        <wms:WmsTrayControl x:Name="trayControl"
+                                            Grid.Row="1"
+                                            Compartments="{Binding LoadingUnitDetails.Compartments}"
+                                            DimensionHeight="{Binding LoadingUnitDetails.Length}"
+                                            DimensionWidth="{Binding LoadingUnitDetails.Width}"
+                                            IsCompartmentSelectable="{Binding IsCompartmentSelectableTray, Mode=OneWay}"
+                                            RulerInfo="mm"
+                                            SelectedItem="{Binding SelectedCompartmentTray, Mode=TwoWay}"
+                                            ShowBackground="False" />
+
+                    </Grid>
                 </GroupBox>
 
             </Grid>

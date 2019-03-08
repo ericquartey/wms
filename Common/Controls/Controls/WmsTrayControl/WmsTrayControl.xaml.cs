@@ -75,6 +75,9 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty ShowRulerProperty = DependencyProperty.Register(
             nameof(ShowRuler), typeof(bool), typeof(WmsTrayControl));
 
+        public static readonly DependencyProperty TrayWidthProperty =
+            DependencyProperty.Register(nameof(TrayWidth), typeof(double), typeof(WmsTrayControl));
+
         #endregion
 
         #region Constructors
@@ -218,15 +221,19 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(ShowRulerProperty, value);
         }
 
+        public double TrayWidth
+        {
+            get => (double)this.GetValue(TrayWidthProperty);
+            set => this.SetValue(TrayWidthProperty, value);
+        }
+
         #endregion
 
         #region Methods
 
         public static void OnCommandDoubleClickChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            Control control = d as Control;
-
-            if (control != null)
+            if (d is Control control)
             {
                 if (e.NewValue != null && e.OldValue == null)
                 {
@@ -241,15 +248,16 @@ namespace Ferretto.Common.Controls
 
         private static void OnMouseDoubleClick(object sender, RoutedEventArgs e)
         {
-            Control control = sender as Control;
-            ICommand command = (ICommand)control.GetValue(CommandDoubleClickProperty);
-            object commandParameter = control.GetValue(CommandDoubleClickProperty);
+            var control = sender as Control;
+            var command = (ICommand)control.GetValue(CommandDoubleClickProperty);
+            var commandParameter = control.GetValue(CommandDoubleClickProperty);
             command.Execute(commandParameter);
         }
 
         private void WmsTrayControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.CanvasListBoxControl.SetSize(e.NewSize.Height - 1, e.NewSize.Width - 1);
+            this.TrayWidth = this.CanvasListBoxControl.TrayWidth;
         }
         #endregion
     }
