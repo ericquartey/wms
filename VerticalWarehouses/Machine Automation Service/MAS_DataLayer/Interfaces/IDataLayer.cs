@@ -2,5 +2,10 @@
 {
     public interface IDataLayer
     {
+        #region Methods
+
+        void LoadGeneralInfo(string generalInfoPath);
+
+        #endregion
     }
 }

@@ -9,6 +9,7 @@ using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Prism.Events;
@@ -40,8 +41,6 @@ namespace Ferretto.VW.MAS_DataLayer
         public DataLayer(string connectionString, DataLayerContext inMemoryDataContext,
             IEventAggregator eventAggregator)
         {
-            var dir = Environment.CurrentDirectory;
-
             if (inMemoryDataContext == null)
             {
                 // TEMP
@@ -151,18 +150,22 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #endregion
 
+        #region Properties
+
+        public IConfiguration Configuration { get; }
+
+        #endregion
+
         #region Methods
 
-        public void LoadGeneralInfo()
+        public void LoadGeneralInfo(string generalInfoPath)
         {
-            var jsonGeneralInfoPath = "C:\\Users\\mmorbelli\\source\\repos\\Warehouse Management System\\VerticalWarehouses\\Machine Automation Service\\MAS_AutomationService\\general_info.json";
+            var dir = Directory.GetCurrentDirectory();
 
-            GeneralInfo generalInfo;
-
-            using (var r = new StreamReader(jsonGeneralInfoPath))
+            using (var streamReader = new StreamReader(generalInfoPath))
             {
-                var json = r.ReadToEnd();
-                generalInfo = JsonConvert.DeserializeObject<GeneralInfo>(json);
+                var json = streamReader.ReadToEnd();
+                var generalInfo = JsonConvert.DeserializeObject<GeneralInfo>(json);
 
                 this.inMemoryDataContext.GeneralInfos.Add(generalInfo);
                 this.inMemoryDataContext.SaveChanges();

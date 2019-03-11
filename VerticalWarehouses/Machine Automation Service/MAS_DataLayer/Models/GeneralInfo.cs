@@ -24,6 +24,8 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public string Country { get; set; }
 
+        public int GeneralInfoId { get; set; }
+
         public double Height { get; set; }
 
         public double Height_Bay1 { get; set; }
