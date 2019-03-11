@@ -7,9 +7,13 @@ namespace Ferretto.WMS.Data.Core.Models
         #region Fields
 
         private int? handlingParametersCorrection;
+
         private int height;
+
         private int length;
+
         private int weight;
+
         private int width;
 
         #endregion
@@ -20,15 +24,15 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string AbcClassId { get; set; }
 
-        public int AisleId { get; set; }
+        public int? AisleId { get; set; }
 
-        public int AreaId { get; set; }
+        public int? AreaId { get; set; }
 
-        public int CellId { get; set; }
+        public int? CellId { get; set; }
 
         public string CellPositionDescription { get; set; }
 
-        public int CellPositionId { get; set; }
+        public int? CellPositionId { get; set; }
 
         public string Code { get; set; }
 
@@ -52,7 +56,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public DateTime? InventoryDate { get; set; }
 
-        public bool IsCellPairingFixed { get; set; }
+        public bool? IsCellPairingFixed { get; set; }
 
         public DateTime? LastHandlingDate { get; set; }
 
