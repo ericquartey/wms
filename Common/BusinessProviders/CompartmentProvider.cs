@@ -26,6 +26,8 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly ICellPositionProvider cellPositionProvider;
 
+        private readonly WMS.Data.WebAPI.Contracts.ICellsDataService cellsDataService;
+
         private readonly WMS.Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService;
 
         private readonly ICompartmentStatusProvider compartmentStatusProvider;
@@ -60,12 +62,14 @@ namespace Ferretto.Common.BusinessProviders
             WMS.Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService,
             WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService,
             WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService,
-            WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService)
+            WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService,
+            WMS.Data.WebAPI.Contracts.ICellsDataService cellsDataService)
         {
             this.compartmentsDataService = compartmentsDataService;
             this.itemsDataService = itemsDataService;
             this.loadingUnitsDataService = loadingUnitsDataService;
             this.areasDataService = areasDataService;
+            this.cellsDataService = cellsDataService;
 
             this.abcClassProvider = abcClassProvider;
             this.cellPositionProvider = cellPositionProvider;
@@ -217,6 +221,14 @@ namespace Ferretto.Common.BusinessProviders
                 });
         }
 
+        public async Task<IEnumerable<Enumeration>> GetAllCellsAsync()
+        {
+            return (await this.cellsDataService.GetAllAsync(null, null, null, null, null))
+                .Select(c => new Enumeration(
+                    c.Id,
+                    $"{c.AreaName} - {c.AisleName} - Cell {c.Number} (Floor {c.Floor}, Column {c.Column}, {c.Side})")); // TODO: localize string
+        }
+
         public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
         {
             return await this.compartmentsDataService.GetAllCountAsync(whereString, searchString);
@@ -350,7 +362,15 @@ namespace Ferretto.Common.BusinessProviders
             var cellPositionChoices = await this.cellPositionProvider.GetAllAsync();
             var loadingUnitStatusChoices = await this.loadingUnitStatusProvider.GetAllAsync();
             var loadingUnitTypeChoices = await this.loadingUnitTypeProvider.GetAllAsync();
-            var cellChoices = await this.GetCellsByAreaIdAsync(loadingUnit.AreaId);
+            IEnumerable<Enumeration> cellChoices;
+            if (loadingUnit.AreaId.HasValue)
+            {
+                cellChoices = await this.GetCellsByAreaIdAsync(loadingUnit.AreaId.Value);
+            }
+            else
+            {
+                cellChoices = await this.GetAllCellsAsync();
+            }
 
             var l = new LoadingUnitDetails
             {
