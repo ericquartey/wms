@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Scheduler.Core.Services
 {
-    public class SchedulerService : BackgroundService
+    internal class SchedulerService : BackgroundService, ISchedulerService
     {
         private readonly ILogger<SchedulerService> logger;
 
@@ -35,20 +35,7 @@ namespace Ferretto.WMS.Scheduler.Core.Services
             await base.StartAsync(cancellationToken);
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            try
-            {
-                await this.ProcessPendingRequestsAsync();
-            }
-            catch
-            {
-                this.logger.LogWarning("Scheduler start-up request processing failed.");
-                await this.StopAsync(stoppingToken);
-            }
-        }
-
-        private async Task ProcessPendingRequestsAsync()
+        public async Task ProcessPendingRequestsAsync()
         {
             this.logger.LogDebug("Checking for pending scheduler requests to process ...");
 
@@ -66,22 +53,39 @@ namespace Ferretto.WMS.Scheduler.Core.Services
 
         public async Task<SchedulerRequest> WithdrawItemAsync(SchedulerRequest request)
         {
-            using (var scope = this.scopeFactory.CreateScope())
+            using (var serviceScope = this.scopeFactory.CreateScope())
             {
-                var requestsProvider = scope.ServiceProvider.GetRequiredService<ISchedulerRequestProvider>();
+                var requestsProvider = serviceScope.ServiceProvider.GetRequiredService<ISchedulerRequestProvider>();
 
                 SchedulerRequest qualifiedRequest = null;
-                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
                     qualifiedRequest = await requestsProvider.FullyQualifyWithdrawalRequestAsync(request);
                     if (qualifiedRequest != null)
                     {
                         await requestsProvider.CreateAsync(qualifiedRequest);
 
-                        scope.Complete();
+                        transactionScope.Complete();
                         this.logger.LogDebug($"Scheduler Request (id={qualifiedRequest.Id}): Withdrawal for item={qualifiedRequest.ItemId} was accepted and stored.");
                     }
                 }
+
+                await this.ProcessPendingRequestsAsync();
+
+                return qualifiedRequest;
+            }
+        }
+
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            try
+            {
+                await this.ProcessPendingRequestsAsync();
+            }
+            catch
+            {
+                this.logger.LogWarning("Scheduler start-up request processing failed.");
+                await this.StopAsync(stoppingToken);
             }
         }
 
