@@ -44,8 +44,6 @@ namespace Ferretto.Common.DataModels
 
         public string ShipmentUnitDescription { get; set; }
 
-        public ItemListStatus Status { get; set; }
-
         #endregion
     }
 }
