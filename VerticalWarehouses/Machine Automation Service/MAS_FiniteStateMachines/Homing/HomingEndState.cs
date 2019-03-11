@@ -1,6 +1,7 @@
 ﻿using System;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
@@ -17,17 +18,19 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 "Homing Stop",
                 MessageActor.InverterDriver,
                 MessageActor.FiniteStateMachines,
-                MessageType.StopHoming, //TEMP or MessageType.Homing
+                MessageType.Stop, //TEMP or MessageType.Homing
                 MessageVerbosity.Info);
             this.parentStateMachine.PublishCommandMessage(inverterMessage);
 
-            //TEMP Send a notification about the end operation
+            var messageStatus = ((IHomingStateMachine)this.parentStateMachine).IsStopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd;
+
+            //TEMP Send a notification about the end (/stop) operation to all the world
             var newMessage = new NotificationMessage(null,
                 "End Homing",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.StopHoming,  //TEMP or MessageType.Homing
-                MessageStatus.OperationEnd,
+                MessageType.Stop,  //TEMP or MessageType.Homing
+                messageStatus,
                 ErrorLevel.NoError,
                 MessageVerbosity.Info);
 

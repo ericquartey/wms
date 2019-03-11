@@ -151,13 +151,15 @@
                    Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
                    Text="{x:Static res:HelpDescriptions.VerticalResolutionCalibrationStep4}" />
         
-        <Controls:CustomInputFieldControlFocusable   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,225,0,0" 
+        <Controls:CustomInputFieldControlFocusable   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,225,0,0"
+                                                     Width="180"
                                                      Highlighted="True"
                                                      InputText="875,5"
                                                      LabelText="{x:Static res:InstallationApp.ReadInitialPosition}"
                                                      Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 
         <Controls:CustomInputFieldControlFocusable     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,520,0,0"
+                                                       Width="180"
                                                        Highlighted="True"
                                                        InputText="5045,5"
                                                        IsEnabled="True"

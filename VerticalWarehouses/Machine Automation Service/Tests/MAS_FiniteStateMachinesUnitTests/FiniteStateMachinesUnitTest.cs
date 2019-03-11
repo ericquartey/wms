@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.MAS_FiniteStateMachines;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,7 +15,14 @@ namespace MAS_FiniteStateMachinesUnitTests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void TestFiniteStateMachinesCreate()
+        public void TestFiniteStateMachinesInvalidCreation()
+        {
+            Assert.ThrowsException<NullReferenceException>(() => new FiniteStateMachines(null));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void TestFiniteStateMachinesSuccessCreation()
         {
             var eventAggregatorMock = new Mock<IEventAggregator>();
 
@@ -26,8 +34,6 @@ namespace MAS_FiniteStateMachinesUnitTests
             var fsm = new FiniteStateMachines(eventAggregatorMock.Object);
 
             fsm.StartAsync(new CancellationToken()).Wait();
-
-            Assert.IsNotNull(fsm);
         }
 
         #endregion

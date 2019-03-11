@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         {
             this.parentStateMachine = parentMachine;
 
-            //TEMP Notify the error condition
+            //TEMP Notify the error condition all the world
             var newMessage = new NotificationMessage(null,
                 "Error Homing State",
                 MessageActor.Any,

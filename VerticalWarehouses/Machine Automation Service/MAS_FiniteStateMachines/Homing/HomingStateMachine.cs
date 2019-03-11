@@ -13,6 +13,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         private readonly ICalibrateMessageData calibrateMessageData;
 
+        private Axis currentAxis;
+
         #endregion
 
         #region Constructors
@@ -32,13 +34,55 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         public IState GetState => this.CurrentState;
 
+        public bool IsStopRequested { get; set; }
+
+        public int NMaxSteps { get; private set; }
+
+        public int NumberOfExecutedSteps { get; set; }
+
         #endregion
 
         #region Methods
 
+        public void ChangeAxis(Axis axisToCalibrate)
+        {
+            this.currentAxis = axisToCalibrate;
+        }
+
         public override void Start()
         {
-            this.CurrentState = new HomingStartState(this);
+            switch (this.calibrateAxis)
+            {
+                case Axis.Both:
+                    {
+                        this.NMaxSteps = 3;
+                        this.NumberOfExecutedSteps = 0;
+                        this.currentAxis = Axis.Horizontal;
+                        break;
+                    }
+                case Axis.Horizontal:
+                    {
+                        this.NMaxSteps = 1;
+                        this.NumberOfExecutedSteps = 0;
+                        this.currentAxis = Axis.Horizontal;
+                        break;
+                    }
+
+                case Axis.Vertical:
+                    {
+                        this.NMaxSteps = 1;
+                        this.NumberOfExecutedSteps = 0;
+                        this.currentAxis = Axis.Vertical;
+                        break;
+                    }
+
+                default:
+                    {
+                        break;
+                    }
+            }
+
+            this.CurrentState = new HomingStartState(this, this.currentAxis);
         }
 
         #endregion

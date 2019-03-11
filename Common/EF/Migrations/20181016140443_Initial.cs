@@ -10,6 +10,11 @@ namespace Ferretto.Common.EF.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.DropTable(
                 name: "CellConfigurationCellPositionLoadingUnitTypes");
 

@@ -4,7 +4,7 @@ using Ferretto.VW.Common_Utils;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
-    public partial class DataLayer : IDataLayer
+    public partial class DataLayer : IDataLayerCellManagment
     {
         // TEMP Maybe obsolete
         //public List<Cell> GetCellList()
