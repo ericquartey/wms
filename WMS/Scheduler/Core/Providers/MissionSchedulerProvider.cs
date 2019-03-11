@@ -20,8 +20,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         private readonly DatabaseContext databaseContext;
 
-        private readonly IItemListSchedulerProvider itemListSchedulerProvider;
-
         private readonly IItemSchedulerProvider itemProvider;
 
         private readonly ILoadingUnitSchedulerProvider loadingUnitProvider;
@@ -48,7 +46,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             this.schedulerRequestProvider = schedulerRequestProvider;
             this.compartmentProvider = compartmentProvider;
             this.loadingUnitProvider = loadingUnitProvider;
-            this.itemListSchedulerProvider = itemListSchedulerProvider;
             this.itemProvider = itemProvider;
         }
 

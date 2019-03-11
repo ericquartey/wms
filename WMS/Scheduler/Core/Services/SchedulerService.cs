@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -73,6 +74,23 @@ namespace Ferretto.WMS.Scheduler.Core.Services
                 await this.ProcessPendingRequestsAsync();
 
                 return qualifiedRequest;
+            }
+        }
+
+        public async Task<IEnumerable<SchedulerRequest>> ExecuteListAsync(ListExecutionRequest request)
+        {
+            using (var serviceScope = this.scopeFactory.CreateScope())
+            {
+                var requestsProvider = serviceScope.ServiceProvider.GetRequiredService<ISchedulerRequestProvider>();
+                var listsProvider = serviceScope.ServiceProvider.GetRequiredService<IItemListSchedulerProvider>();
+                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionSchedulerProvider>();
+
+                var acceptedRequests = await listsProvider.PrepareForExecutionAsync(request);
+
+                var requestsToProcess = await requestsProvider.GetRequestsToProcessAsync();
+                await missionsProvider.CreateForRequestsAsync(requestsToProcess);
+
+                return acceptedRequests;
             }
         }
 
