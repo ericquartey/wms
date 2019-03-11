@@ -290,11 +290,11 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         System.Threading.Tasks.Task<CompartmentDetails> CreateAsync(CompartmentDetails model, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task DeleteAsync(CompartmentDetails model);
+        System.Threading.Tasks.Task DeleteAsync(int id);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task DeleteAsync(CompartmentDetails model, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Compartment>> GetAllAsync(int? skip, int? take, string where, string orderBy, string search);
@@ -1422,6 +1422,9 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("allowedItemsCount", Required = Newtonsoft.Json.Required.Always)]
         public int AllowedItemsCount { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("canDelete", Required = Newtonsoft.Json.Required.Always)]
+        public bool CanDelete { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("compartmentStatusDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string CompartmentStatusDescription { get; set; }
     
@@ -2292,7 +2295,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class BusinessObject 
+    public partial class Model 
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
         public int Id { get; set; }
@@ -2302,15 +2305,15 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
         
-        public static BusinessObject FromJson(string data)
+        public static Model FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<BusinessObject>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Model>(data);
         }
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class SchedulerRequest : BusinessObject
+    public partial class SchedulerRequest : Model
     {
         [Newtonsoft.Json.JsonProperty("areaId", Required = Newtonsoft.Json.Required.Always)]
         public int AreaId { get; set; }

@@ -19,7 +19,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         IReadAllPagedController<Compartment>,
         IReadSingleController<CompartmentDetails, int>,
         IUpdateController<CompartmentDetails>,
-        IDeleteController<CompartmentDetails>,
+        IDeleteController<int>,
         IGetUniqueValuesController
     {
         #region Fields
@@ -73,19 +73,22 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
+        [ProducesResponseType(422)]
         [HttpDelete]
-        public async Task<ActionResult> DeleteAsync(CompartmentDetails model)
+        public async Task<ActionResult> DeleteAsync(int id)
         {
-            if (model == null)
-            {
-                return this.BadRequest();
-            }
-
-            var result = await this.compartmentProvider.DeleteAsync(model.Id);
+            var result = await this.compartmentProvider.DeleteAsync(id);
 
             if (!result.Success)
             {
-                return this.NotFound();
+                if (result is UnprocessableEntityOperationResult<CompartmentDetails>)
+                {
+                    return this.UnprocessableEntity();
+                }
+                else
+                {
+                    return this.NotFound();
+                }
             }
 
             return this.Ok();
