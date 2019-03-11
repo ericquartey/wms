@@ -130,6 +130,38 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             }
         }
 
+        public async Task<IEnumerable<Mission>> GetAllAsync()
+        {
+            return await this.databaseContext.Missions
+                .Select(m => new Mission
+                {
+                    Id = m.Id,
+                    BayId = m.BayId,
+                    CellId = m.CellId,
+                    CompartmentId = m.CompartmentId,
+                    ItemId = m.ItemId,
+                    ItemListId = m.ItemListId,
+                    ItemListRowId = m.ItemListRowId,
+                    LoadingUnitId = m.LoadingUnitId,
+                    MaterialStatusId = m.MaterialStatusId,
+                    PackageTypeId = m.PackageTypeId,
+                    Lot = m.Lot,
+                    Quantity = m.RequiredQuantity,
+                    RegistrationNumber = m.RegistrationNumber,
+                    Status = (MissionStatus)m.Status,
+                    Sub1 = m.Sub1,
+                    Sub2 = m.Sub2,
+                    Type = (MissionType)m.Type
+                })
+                .ToArrayAsync();
+        }
+
+        public async Task<int> GetAllCountAsync()
+        {
+            return await this.databaseContext.Missions
+                .CountAsync();
+        }
+
         public async Task<Mission> GetByIdAsync(int id)
         {
             return await this.databaseContext.Missions
