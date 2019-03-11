@@ -511,4 +511,34 @@
   <data name="HelpBCTRNextPosition" xml:space="preserve">
     <value>Se abilitato, il pulsante permette di scegliere la prossima posizione presente nella baia attualmente selezionata. La procedura va ripetuta per la nuova posizione.</value>
   </data>
+  <data name="HelpIPGDescription" xml:space="preserve">
+    <value>Il menu' principale permette di accedere a tutte le funzioni previste per la fase di messa in servizio della macchina.</value>
+  </data>
+  <data name="HelpIPGHeder" xml:space="preserve">
+    <value>Menu' principale.</value>
+  </data>
+  <data name="HelpIPGError" xml:space="preserve">
+    <value>Indica, quando visibile, la presenza di un errore. La pressione del pulsante apre la finestra dedicata al ripristino della situazione.</value>
+  </data>
+  <data name="HelpIPGOff" xml:space="preserve">
+    <value>Lo stato di Off di questo pulsante indica la disabilitazione dei movimenti della macchina.</value>
+  </data>
+  <data name="HelpIPGOn" xml:space="preserve">
+    <value>Lo stato di On di questo pulsante indica che la macchina a abilitata a muoversi.</value>
+  </data>
+  <data name="HelpIPGInstaller" xml:space="preserve">
+    <value>Indica il nome dell'utente correntemente loggato. Se premuto permette di effettuare il logout dal sistema.</value>
+  </data>
+  <data name="HelpIPGHelp" xml:space="preserve">
+    <value>Se premuto, apre il menu' contestuale alla funzione correntemente selezionata.</value>
+  </data>
+  <data name="HelpIPGUp" xml:space="preserve">
+    <value>Permette di scorrere verso l'alto la lista dei pulsanti di accesso alle varie funzioni.</value>
+  </data>
+  <data name="HelpIPGButton" xml:space="preserve">
+    <value>Elenco dei pulsanti di accesso alle funzioni di installazione.</value>
+  </data>
+  <data name="HelpIPGDown" xml:space="preserve">
+    <value>Permette di scorrere verso il basso la lista dei pulsanti di accesso alle varie funzioni.</value>
+  </data>
 </root>

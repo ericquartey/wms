@@ -40,6 +40,7 @@
     <None Remove="CellsControlHelpView.xaml" />
     <None Remove="HelpWindows\HelpBeltBurnishingView.xaml" />
     <None Remove="HelpWindows\HelpCellsPanelControl.xaml" />
+    <None Remove="HelpWindows\HelpInitialPage.xaml" />
     <None Remove="HelpWindows\HelpInstallationState.xaml" />
     <None Remove="HelpWindows\HelpLowSpeedMovements.xaml" />
     <None Remove="HelpWindows\HelpMainWindow.xaml" />
@@ -86,6 +87,9 @@
     </Compile>
     <Compile Update="HelpWindows\HelpLowSpeedMovements.xaml.cs">
       <DependentUpon>HelpLowSpeedMovements.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpInitialPage.xaml.cs">
+      <DependentUpon>HelpInitialPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="HelpWindows\HelpShutterControl.xaml.cs">
       <DependentUpon>HelpShutterControl.xaml</DependentUpon>

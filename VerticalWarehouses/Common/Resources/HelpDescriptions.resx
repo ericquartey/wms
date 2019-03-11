@@ -649,4 +649,44 @@
     <value>HelpBCTRNextPosition</value>
     <comment>Nore text</comment>
   </data>
+  <data name="HelpIPGDescription" xml:space="preserve">
+    <value>HelpIPGDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpIPGHeder" xml:space="preserve">
+    <value>HelpIPGHeder</value>
+    <comment>Procedure header</comment>
+  </data>
+  <data name="HelpIPGError" xml:space="preserve">
+    <value>HelpIPGError</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpIPGOff" xml:space="preserve">
+    <value>HelpIPGOff</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpIPGOn" xml:space="preserve">
+    <value>HelpIPGOn</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpIPGInstaller" xml:space="preserve">
+    <value>HelpIPGInstaller</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpIPGHelp" xml:space="preserve">
+    <value>HelpIPGHelp</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpIPGUp" xml:space="preserve">
+    <value>HelpIPGUp</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpIPGButton" xml:space="preserve">
+    <value>HelpIPGButton</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpIPGDown" xml:space="preserve">
+    <value>HelpIPGDown</value>
+    <comment>Note text</comment>
+  </data>
 </root>

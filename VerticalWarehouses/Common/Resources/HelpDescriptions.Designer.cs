@@ -574,6 +574,96 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpIPGButton.
+        /// </summary>
+        public static string HelpIPGButton {
+            get {
+                return ResourceManager.GetString("HelpIPGButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpIPGDescription.
+        /// </summary>
+        public static string HelpIPGDescription {
+            get {
+                return ResourceManager.GetString("HelpIPGDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpIPGDown.
+        /// </summary>
+        public static string HelpIPGDown {
+            get {
+                return ResourceManager.GetString("HelpIPGDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpIPGError.
+        /// </summary>
+        public static string HelpIPGError {
+            get {
+                return ResourceManager.GetString("HelpIPGError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpIPGHeder.
+        /// </summary>
+        public static string HelpIPGHeder {
+            get {
+                return ResourceManager.GetString("HelpIPGHeder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpIPGHelp.
+        /// </summary>
+        public static string HelpIPGHelp {
+            get {
+                return ResourceManager.GetString("HelpIPGHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpIPGInstaller.
+        /// </summary>
+        public static string HelpIPGInstaller {
+            get {
+                return ResourceManager.GetString("HelpIPGInstaller", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpIPGOff.
+        /// </summary>
+        public static string HelpIPGOff {
+            get {
+                return ResourceManager.GetString("HelpIPGOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpIPGOn.
+        /// </summary>
+        public static string HelpIPGOn {
+            get {
+                return ResourceManager.GetString("HelpIPGOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpIPGUp.
+        /// </summary>
+        public static string HelpIPGUp {
+            get {
+                return ResourceManager.GetString("HelpIPGUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpLDRDescription.
         /// </summary>
         public static string HelpLDRDescription {
