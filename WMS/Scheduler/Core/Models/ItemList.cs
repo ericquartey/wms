@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Ferretto.WMS.Scheduler.Core.Models
 {
@@ -10,7 +11,28 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public IEnumerable<ItemListRow> Rows { get; set; }
 
-        public ListStatus Status { get; set; }
+        public ListStatus Status
+        {
+            get
+            {
+                if (this.Rows.All(r => r.Status == ListRowStatus.Completed))
+                {
+                    return ListStatus.Completed;
+                }
+
+                if (this.Rows.Any(r => r.Status == ListRowStatus.Executing))
+                {
+                    return ListStatus.Executing;
+                }
+
+                if (this.Rows.Any(r => r.Status == ListRowStatus.Incomplete))
+                {
+                    return ListStatus.Incomplete;
+                }
+
+                return ListStatus.NotSpecified;
+            }
+        }
 
         #endregion
     }
