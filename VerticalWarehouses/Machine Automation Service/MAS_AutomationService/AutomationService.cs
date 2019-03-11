@@ -50,7 +50,6 @@ namespace Ferretto.VW.MAS_AutomationService
             this.commadReceiveTask = new Task(() => CommandReceiveTaskFunction());
 
             this.InitializeMethodSubscription();
-            this.StartTestCycles();
         }
 
         #endregion
