@@ -10,20 +10,20 @@ using Moq;
 namespace MAS_FiniteStateMachinesUnitTests.Homing
 {
     [TestClass]
-    public class HomingEndStateUnitTest
+    public class HomingCalibrateAxisDoneStateUnitTest
     {
         #region Methods
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void TestHomingEndStateInvalidCreation()
+        public void TestHomingCalibrateAxisDoneStateInvalidCreation()
         {
-            Assert.ThrowsException<NullReferenceException>(() => new HomingEndState(null));
+            Assert.ThrowsException<NullReferenceException>(() => new HomingCalibrateAxisDoneState(null, Axis.Horizontal));
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void TestHomingEndStateSuccessCreation()
+        public void TestHomingCalibrateAxisDoneStateSuccessCreation()
         {
             var calibrateMessageData = new Mock<ICalibrateMessageData>();
 
@@ -33,9 +33,9 @@ namespace MAS_FiniteStateMachinesUnitTests.Homing
             var parent = new Mock<IStateMachine>();
             parent.As<IHomingStateMachine>().Setup(p => p.CalibrateData).Returns(calibrateMessageData.Object);
 
-            var state = new HomingEndState(parent.Object);
+            var state = new HomingCalibrateAxisDoneState(parent.Object, Axis.Vertical);
 
-            Assert.AreEqual(state.Type, "HomingEndState");
+            Assert.AreEqual(state.Type, "HomingCalibrateAxisDoneState");
         }
 
         #endregion
