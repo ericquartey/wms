@@ -196,8 +196,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
             await this.UpdateLastPickDatesAsync(mission.ItemId.Value, compartment);
 
-            await this.UpdateListStatusAsync(mission);
-
             await this.compartmentProvider.UpdateAsync(compartment);
 
             mission.Status = MissionStatus.Completed;
