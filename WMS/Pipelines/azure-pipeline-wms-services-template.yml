@@ -1,0 +1,68 @@
+parameters:
+    BuildConfiguration: 'debug'
+    RestoreBuildProjects: '**/*.csproj'
+    TestProjects: 'WMS/**/*.Tests.csproj'
+    TargetFramework: 'netcoreapp2.1'
+
+steps:
+
+- task: CopyFiles@2
+  displayName: 'Copy sources to staging directory'
+  inputs:
+    Contents: |
+      **
+      !**\.git\**
+      !**\*.png
+      !**\*.jpg
+    targetFolder: '$(Build.ArtifactStagingDirectory)\sources'
+
+
+- task: DotNetCoreCLI@2
+  displayName: 'NuGet restore (netcore)'
+  inputs:
+    command: restore
+    projects:  ${{ parameters.RestoreBuildProjects }} 
+    feedsToUse: config
+    nugetConfigPath: nuget.config
+
+
+- template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
+
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build projects (netcore)'
+  inputs:
+    projects: ${{ parameters.RestoreBuildProjects }} 
+    arguments: '--configuration ${{ parameters.BuildConfiguration }} --framework ${{ parameters.TargetFramework }}'
+
+
+- task: DotNetCoreCLI@2
+  displayName: 'Test (netcore)'
+  inputs:
+    command: test
+    projects: ${{ parameters.TestProjects }}
+    arguments: '--configuration ${{ parameters.BuildConfiguration }} /p:CollectCoverage=true'
+
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publish (netcore)'
+  inputs:
+    command: publish
+    publishWebProjects: false
+    projects: ${{ parameters.RestoreBuildProjects }} 
+    arguments: '--configuration ${{ parameters.BuildConfiguration }} --framework ${{ parameters.TargetFramework }} --no-build --no-restore'
+    zipAfterPublish: false
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Data Service'
+  inputs:
+    PathtoPublish: 'WMS/Data/WebAPI/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/win7-x64/publish'
+    ArtifactName: 'data_service'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Common Sources'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)\sources'
+    ArtifactName: 'common_sources'

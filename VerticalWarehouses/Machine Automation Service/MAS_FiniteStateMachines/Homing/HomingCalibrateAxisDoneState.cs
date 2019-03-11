@@ -49,7 +49,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Properties
 
-        public override string Type => "HomingCalibratedAxisDoneState";
+        public override string Type => "HomingCalibrateAxisDoneState";
 
         #endregion
 

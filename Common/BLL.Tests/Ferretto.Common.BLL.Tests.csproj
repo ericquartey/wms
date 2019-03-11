@@ -1,10 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-      <TargetFramework>net471</TargetFramework>
-      <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
-      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-
+    <TargetFramework>net471</TargetFramework>
+    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 

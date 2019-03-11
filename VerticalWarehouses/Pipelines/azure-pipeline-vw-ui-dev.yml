@@ -19,59 +19,8 @@ trigger:
     - WMS
     - VerticalWarehouses\Machine Automation Service
 
-variables:
-  BuildPlatform: 'any cpu'
-  BuildConfiguration: 'debug'
-  TargetSolution: 'VerticalWarehouses\VerticalWarehouses.sln'
-
 steps:
-
-- template: ../../Pipelines/azure-pipeline-net4-nuget-template.yml
-
-
-- template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
-
-
-- task: VSBuild@1
-  displayName: 'Build solution VerticalWarehouses.sln'
-  inputs:
-    solution: '$(TargetSolution)'
-    msbuildArgs: '-v:normal'
-    platform: '$(BuildPlatform)'
-    configuration: '$(BuildConfiguration)'
-    msbuildArchitecture: x64
-
-
-- task: VSTest@2
-  displayName: 'Run Tests'
-  inputs:
-    testAssemblyVer2: |
-     **\$(BuildConfiguration)\*test*.dll
-     !**\obj\**
-    codeCoverageEnabled: true
-    platform: '$(BuildPlatform)'
-    configuration: '$(BuildConfiguration)'
-
-
-- task: PublishSymbols@2
-  displayName: 'Publish symbols path'
-  inputs:
-    SearchPattern: '**\bin\**\*.pdb'
-    PublishSymbols: false
-  continueOnError: true
-
-- task: CopyFiles@2
-  displayName: 'Copy Files to staging directory'
-  inputs:
-    SourceFolder: '$(system.defaultworkingdirectory)'
-    Contents: '**\bin\$(BuildConfiguration)\**'
-    TargetFolder: '$(build.artifactstagingdirectory)'
-
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Panel Pc App'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/Panel PC UI/VWApp/bin/$(BuildConfiguration)/net471'
-    ArtifactName: 'panelpc_app'
-
-
+- template: azure-pipeline-vw-ui-template.yml
+  parameters:
+    BuildConfiguration: 'debug'
+    BuildPlatform: 'any cpu'
