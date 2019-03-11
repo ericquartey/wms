@@ -128,6 +128,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(compartments);
         }
 
+        [ProducesResponseType(200, Type = typeof(LoadingUnitSize))]
+        [ProducesResponseType(404)]
+        [HttpGet("{id}/size")]
+        public async Task<ActionResult<LoadingUnitSize>> GetSizeByTypeIdAsync(int id)
+        {
+            var info = await this.loadingUnitProvider.GetSizeByTypeIdAsync(id);
+
+            return this.Ok(info);
+        }
+
         [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
         [ProducesResponseType(400)]
         [HttpGet("unique/{propertyName}")]
