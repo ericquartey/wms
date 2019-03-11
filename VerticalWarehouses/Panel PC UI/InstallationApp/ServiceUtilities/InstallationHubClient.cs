@@ -25,7 +25,7 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
 
             this.hubConnection.On<string>("OnSendMessageToAllConnectedClients", this.OnSendMessageToAllConnectedClients);
             this.hubConnection.On<bool[]>("OnSensorsChangedToAllConnectedClients", this.OnSensorsChangedToAllConnectedClients);
-            this.hubConnection.On<IActionUpdateData>("OnActionUpdateToAllConnectedClients", this.OnActionUpdateToAllConnectedClients);
+            this.hubConnection.On<ActionUpdateData>("OnActionUpdateToAllConnectedClients", this.OnActionUpdateToAllConnectedClients);
 
             this.hubConnection.Closed += async (error) =>
             {
@@ -38,7 +38,7 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
 
         #region Events
 
-        public event EventHandler<IActionUpdateData> ActionUpdated;
+        public event EventHandler<ActionUpdateData> ActionUpdated;
 
         public event EventHandler<string> ReceivedMessage;
 
@@ -58,7 +58,7 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
             await this.hubConnection.DisposeAsync();
         }
 
-        private void OnActionUpdateToAllConnectedClients(IActionUpdateData data)
+        private void OnActionUpdateToAllConnectedClients(ActionUpdateData data)
         {
             this.ActionUpdated?.Invoke(this, data);
         }

@@ -12,6 +12,12 @@
 
         Homing = 4,
 
+        VerticalHoming = 5,
+
+        HorizontalHoming = 6,
+
+        SwitchEngine = 7,
+
         Stop = 99,
     }
 }

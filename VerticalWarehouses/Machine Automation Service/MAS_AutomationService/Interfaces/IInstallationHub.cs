@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages;
+using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Interfaces;
 
 namespace Ferretto.VW.MAS_AutomationService.Interfaces
 {

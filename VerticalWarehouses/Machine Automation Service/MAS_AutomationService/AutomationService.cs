@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
 using Prism.Events;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Interfaces;
+using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages;
+using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
@@ -126,13 +129,15 @@ namespace Ferretto.VW.MAS_AutomationService
                     case MessageType.HorizontalHoming:
                         break;
                 }
-            } while (!stoppingToken.IsCancellationRequested);
+            } while (!this.stoppingToken.IsCancellationRequested);
             return Task.CompletedTask;
         }
 
         private void InitializeMethodSubscription()
         {
             var webApiMessagEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            var finiteStateMachineMessageEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+
             webApiMessagEvent.Subscribe(message =>
             {
                 this.messageQueue.Enqueue(message);
@@ -142,7 +147,6 @@ namespace Ferretto.VW.MAS_AutomationService
                 false,
                 message => message.Destination == MessageActor.AutomationService);
 
-            var finiteStateMachineMessageEvent = this.eventAggregator.GetEvent<NotificationEvent>();
             finiteStateMachineMessageEvent.Subscribe(message =>
             {
                 if (message.Data is ISensorsChangedMessageData)
@@ -152,6 +156,22 @@ namespace Ferretto.VW.MAS_AutomationService
             }, ThreadOption.PublisherThread,
             false,
             (message) => message.Source == MessageActor.FiniteStateMachines && message.Type == MessageType.SensorsChanged);
+
+            finiteStateMachineMessageEvent.Subscribe(message =>
+            {
+                try
+                {
+                    var dataMessage = MessageParser.GetActionUpdateData(message);
+                    this.hub.Clients.All.OnActionUpdateToAllConnectedClients(dataMessage);
+                }
+                catch
+                {
+                    throw;
+                }
+            },
+            ThreadOption.PublisherThread,
+            false,
+            (message) => message.Source == MessageActor.FiniteStateMachines && message.Destination == MessageActor.AutomationService);
         }
 
         private void ProcessAddMissionMessage(CommandMessage message)

@@ -3,13 +3,9 @@ using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
 using Microsoft.Practices.Unity;
-using Ferretto.VW.InstallationApp.ServiceUtilities;
-using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Prism.Events;
 using Ferretto.VW.InstallationApp.Resources;
 using System.Net.Http;
-using Ferretto.VW.InstallationApp.Resources.Enumerables;
-using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
 
 namespace Ferretto.VW.InstallationApp
@@ -32,7 +28,7 @@ namespace Ferretto.VW.InstallationApp
 
         private string offset;
 
-        private SubscriptionToken receivedMessageToken;
+        private SubscriptionToken receivedActionUpdateToken;
 
         private string resolution;
 
@@ -102,14 +98,92 @@ namespace Ferretto.VW.InstallationApp
 
         public void SubscribeMethodToEvent()
         {
-            this.receivedMessageToken = this.eventAggregator.GetEvent<MAS_Event>().Subscribe(
-                (msg) => this.UpdateNoteString((msg.Data as INotificationMessageReceivedMessageData).Message),
-                ThreadOption.PublisherThread, false, message => message.NotificationType == NotificationType.CurrentActionStatus);
+            this.receivedActionUpdateToken = this.eventAggregator.GetEvent<MAS_Event>().Subscribe(
+                (msg) => this.UpdateCurrentActionStatus(msg),
+                ThreadOption.PublisherThread,
+                false,
+                message => message.NotificationType == NotificationType.CurrentActionStatus &&
+                (message.ActionType == ActionType.Homing || message.ActionType == ActionType.HorizontalHoming || message.ActionType == ActionType.VerticalHoming || message.ActionType == ActionType.SwitchEngine));
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.receivedMessageToken);
+            this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.receivedActionUpdateToken);
+        }
+
+        public void UpdateCurrentActionStatus(MAS_EventMessage message)
+        {
+            if (message != null)
+            {
+                switch (message.ActionType)
+                {
+                    case ActionType.Homing:
+                        switch (message.ActionStatus)
+                        {
+                            case ActionStatus.Start:
+                                this.NoteString = VW.Resources.InstallationApp.HomingStarted;
+                                break;
+
+                            case ActionStatus.Completed:
+                                this.NoteString = VW.Resources.InstallationApp.HomingCompleted;
+                                this.IsStartButtonActive = true;
+                                this.IsStopButtonActive = false;
+                                break;
+                        }
+                        break;
+
+                    case ActionType.HorizontalHoming:
+                        switch (message.ActionStatus)
+                        {
+                            case ActionStatus.Start:
+                                this.NoteString = VW.Resources.InstallationApp.HorizontalHomingStarted;
+                                break;
+
+                            case ActionStatus.Executing:
+                                this.NoteString = VW.Resources.InstallationApp.HorizontalHomingExecuting;
+                                break;
+
+                            case ActionStatus.Completed:
+                                this.NoteString = VW.Resources.InstallationApp.HorizontalHomingCompleted;
+                                break;
+                        }
+                        break;
+
+                    case ActionType.VerticalHoming:
+                        switch (message.ActionStatus)
+                        {
+                            case ActionStatus.Start:
+                                this.NoteString = VW.Resources.InstallationApp.VerticalHomingStarted;
+                                break;
+
+                            case ActionStatus.Executing:
+                                this.NoteString = VW.Resources.InstallationApp.VerticalHomingExecuting;
+                                break;
+
+                            case ActionStatus.Completed:
+                                this.NoteString = VW.Resources.InstallationApp.VerticalHomingCompleted;
+                                break;
+                        }
+                        break;
+
+                    case ActionType.SwitchEngine:
+                        switch (message.ActionStatus)
+                        {
+                            case ActionStatus.Start:
+                                this.NoteString = VW.Resources.InstallationApp.SwitchEngineStarted;
+                                break;
+
+                            case ActionStatus.Completed:
+                                this.NoteString = VW.Resources.InstallationApp.SwitchEngineCompleted;
+                                break;
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                throw new ArgumentNullException();
+            }
         }
 
         public void UpdateNoteString(string message)
@@ -137,7 +211,7 @@ namespace Ferretto.VW.InstallationApp
             try
             {
                 var client = new HttpClient();
-                await client.GetStringAsync("http://localhost:5000/api/Installation/ExecuteHoming");
+                await client.GetStringAsync("http://localhost:5000/api/Test/HomingTest");
                 this.IsStartButtonActive = false;
                 this.IsStopButtonActive = true;
             }
