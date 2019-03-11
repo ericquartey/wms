@@ -27,6 +27,10 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         #region Constructors
 
+        public ItemListSchedulerProvider()
+        {
+        }
+
         public ItemListSchedulerProvider(
             DatabaseContext databaseContext,
             IItemListRowSchedulerProvider itemListRowSchedulerProvider,
@@ -43,7 +47,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         #region Methods
 
-        public async Task<ItemList> GetByIdAsync(int listId)
+        public async Task<ItemList> GetByIdAsync(int id)
         {
             var list = await this.databaseContext.ItemLists
                 .Include(l => l.ItemListRows)
@@ -65,11 +69,11 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                         Sub2 = r.Sub2,
                     })
                 })
-                .SingleOrDefaultAsync(l => l.Id == listId);
+                .SingleOrDefaultAsync(l => l.Id == id);
 
             if (list == null)
             {
-                throw new ArgumentException($"No list with id={listId} exists.");
+                throw new ArgumentException($"No list with id={id} exists.");
             }
 
             return list;
