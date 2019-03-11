@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations
+﻿namespace Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations
 {
     public enum NotificationType
     {
-        Action = 0,
+        CurrentActionStatus = 0,
 
         SensorsChanged = 1,
+
+        CurrentActionPosition = 2,
+
+        Error = 999,
     }
 }

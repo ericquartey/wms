@@ -46,14 +46,14 @@ namespace Ferretto.VW.VWApp
 
         private void RaiseReceivedMessageEvent(object sender, string message)
         {
-            var messageData = new NotificationMessageReceivedMessageData(message);
-            this.eventAggregator.GetEvent<MAS_Event>().Publish(new MAS_EventMessage(NotificationType.Action, ActionType.None, ActionStatus.None, messageData));
+            var messageData = new MAS_EventMessage(NotificationType.CurrentActionStatus, ActionType.None, ActionStatus.None, new NotificationMessageReceivedMessageData(message));
+            this.eventAggregator.GetEvent<MAS_Event>().Publish(messageData);
         }
 
         private void RaiseSensorsChangedEvent(object sender, bool[] message)
         {
-            var messageData = new NotificationMessageSensorsChangedData(message);
-            this.eventAggregator.GetEvent<MAS_Event>().Publish(new MAS_EventMessage(NotificationType.SensorsChanged, ActionType.None, ActionStatus.None, messageData));
+            var messageData = new MAS_EventMessage(NotificationType.SensorsChanged, ActionType.None, ActionStatus.None, new NotificationMessageSensorsChangedData(message));
+            this.eventAggregator.GetEvent<MAS_Event>().Publish(messageData);
         }
 
         #endregion

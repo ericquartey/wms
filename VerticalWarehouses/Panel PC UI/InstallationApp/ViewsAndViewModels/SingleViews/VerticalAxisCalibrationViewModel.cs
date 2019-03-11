@@ -104,7 +104,7 @@ namespace Ferretto.VW.InstallationApp
         {
             this.receivedMessageToken = this.eventAggregator.GetEvent<MAS_Event>().Subscribe(
                 (msg) => this.UpdateNoteString((msg.Data as INotificationMessageReceivedMessageData).Message),
-                ThreadOption.PublisherThread, false, message => message.NotificationType == NotificationType.Action);
+                ThreadOption.PublisherThread, false, message => message.NotificationType == NotificationType.CurrentActionStatus);
         }
 
         public void UnSubscribeMethodFromEvent()
