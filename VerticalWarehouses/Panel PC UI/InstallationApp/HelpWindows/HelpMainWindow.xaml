@@ -81,6 +81,10 @@
             <local:HelpInitialPage></local:HelpInitialPage>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewmodels:DrawerLoadingUnloadingTestViewModel}">
+            <local:HelpDLUTest></local:HelpDLUTest>
+        </DataTemplate>
+
 
     </Window.Resources>
     <Grid Width="1024"

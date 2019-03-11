@@ -81,6 +81,8 @@ namespace Ferretto.VW.InstallationApp
 
         private ICommand weightControlButtonCommand;
 
+        private ICommand drawerLoadingUnloadingTestButtonCommand;
+
         #endregion
 
         #region Properties
@@ -306,6 +308,14 @@ namespace Ferretto.VW.InstallationApp
         {
             this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
             this.ContentRegionCurrentViewModel = (WeightControlViewModel)this.container.Resolve<IWeightControlViewModel>();
+            ((WeightControlViewModel)this.container.Resolve<IWeightControlViewModel>()).SubscribeMethodToEvent();
+            ((MainWindowBackToIAPPButtonViewModel)this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand(((WeightControlViewModel)this.container.Resolve<IWeightControlViewModel>()).ExitFromViewCommand);
+        }));
+
+        public ICommand DrawerLoadingUnloadingTestButtonCommand => this.drawerLoadingUnloadingTestButtonCommand ?? (this.drawerLoadingUnloadingTestButtonCommand = new DelegateCommand(() =>
+        {
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
+            this.ContentRegionCurrentViewModel = (DrawerLoadingUnloadingTestViewModel)this.container.Resolve<IDrawerLoadingUnloadingTestViewModel>();
             ((WeightControlViewModel)this.container.Resolve<IWeightControlViewModel>()).SubscribeMethodToEvent();
             ((MainWindowBackToIAPPButtonViewModel)this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand(((WeightControlViewModel)this.container.Resolve<IWeightControlViewModel>()).ExitFromViewCommand);
         }));

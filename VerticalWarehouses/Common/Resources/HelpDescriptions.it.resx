@@ -541,4 +541,34 @@
   <data name="HelpIPGDown" xml:space="preserve">
     <value>Permette di scorrere verso il basso la lista dei pulsanti di accesso alle varie funzioni.</value>
   </data>
+  <data name="HelpDLUTDescription" xml:space="preserve">
+    <value>La procedura permette di effettuare una serie di test di imbarco e sbarco di un cassetto utilizzando la baia selezionata negli appositi campi di input. Per il test e' possibile variare il feed rate di accelerazione, decelerazione e velocita' secondo quanto indicato nell'apposito campo. Il test prosegue fino al raggiungimento del numero di cicli richiesti o fino alla pressione del tasto di arresto.</value>
+  </data>
+  <data name="HelpDLUTBay" xml:space="preserve">
+    <value>Inserire il numero della baia su cui si vuole effettuare il test.</value>
+  </data>
+  <data name="HelpDLUTPosition" xml:space="preserve">
+    <value>Inserire la posizione all'interno della baia su cui si vuole effettuare il test.</value>
+  </data>
+  <data name="HelpDLUTFeedRate" xml:space="preserve">
+    <value>Inserire il feed rate richiesto per il test. La riduzione riguarda anche i valori di accelerazione e decelerazione.</value>
+  </data>
+  <data name="HelpDLUTChain" xml:space="preserve">
+    <value>Riporta la posizione corrente dell'asse catena come valore relativo alla quota di partenza.</value>
+  </data>
+  <data name="HelpDLUTCyclesRequired" xml:space="preserve">
+    <value>Inserire il numero di cicli di test richiesti.</value>
+  </data>
+  <data name="HelpDLUTCycleCompleted" xml:space="preserve">
+    <value>Riporta il numero di cicli completi correntemente eseguiti.</value>
+  </data>
+  <data name="HelpDLUTGotoPosition" xml:space="preserve">
+    <value>Muove l'asse verticale in corrispondenza della posizione interna alla baia selezionata. La quota tiene conto dell'offset di imbarco.</value>
+  </data>
+  <data name="HelpDLUTStart" xml:space="preserve">
+    <value>Avvia la procedura di test. Il pulsante e' attivo solo dopo che l'asse verticale e' in corrispondenza della posizione nella baia richiesta.</value>
+  </data>
+  <data name="HelpDLUTStop" xml:space="preserve">
+    <value>Arresta il ciclo di test.</value>
+  </data>
 </root>

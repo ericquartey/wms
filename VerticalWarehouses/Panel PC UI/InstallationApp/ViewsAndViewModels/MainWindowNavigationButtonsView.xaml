@@ -111,6 +111,11 @@
                         IsEnabled="{Binding IsWeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
+                <Button Command="{Binding DataContext.DrawerLoadingUnloadingTestButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                        Content="{x:Static res:InstallationApp.DrawerLoadingUnloadingTest}"
+                        IsEnabled="{Binding IsWeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+
                 <Button Command="{Binding DataContext.LoadFirstDrawerButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.LoadFirstDrawerButton}"
                         IsEnabled="{Binding IsWeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

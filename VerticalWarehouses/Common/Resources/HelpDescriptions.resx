@@ -689,4 +689,44 @@
     <value>HelpIPGDown</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpDLUTDescription" xml:space="preserve">
+    <value>HelpDLUTDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpDLUTBay" xml:space="preserve">
+    <value>HelpDLUTBay</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDLUTPosition" xml:space="preserve">
+    <value>HelpDLUTPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDLUTFeedRate" xml:space="preserve">
+    <value>HelpDLUTFeedRate</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDLUTChain" xml:space="preserve">
+    <value>HelpDLUTChain</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDLUTCyclesRequired" xml:space="preserve">
+    <value>HelpDLUTCyclesRequired</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDLUTCycleCompleted" xml:space="preserve">
+    <value>HelpDLUTCycleCompleted</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDLUTGotoPosition" xml:space="preserve">
+    <value>HelpDLUTGotoPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDLUTStart" xml:space="preserve">
+    <value>HelpDLUTStart</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDLUTStop" xml:space="preserve">
+    <value>HelpDLUTStop</value>
+    <comment>Note text</comment>
+  </data>
 </root>

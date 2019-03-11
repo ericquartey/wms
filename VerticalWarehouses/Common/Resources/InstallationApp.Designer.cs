@@ -565,6 +565,69 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a DLUTestActualposition.
+        /// </summary>
+        public static string DLUTestActualposition {
+            get {
+                return ResourceManager.GetString("DLUTestActualposition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DLUTestCompletedCycles.
+        /// </summary>
+        public static string DLUTestCompletedCycles {
+            get {
+                return ResourceManager.GetString("DLUTestCompletedCycles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DLUTestCycleRequired.
+        /// </summary>
+        public static string DLUTestCycleRequired {
+            get {
+                return ResourceManager.GetString("DLUTestCycleRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DLUTestFeedRate.
+        /// </summary>
+        public static string DLUTestFeedRate {
+            get {
+                return ResourceManager.GetString("DLUTestFeedRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DLUTestHeader.
+        /// </summary>
+        public static string DLUTestHeader {
+            get {
+                return ResourceManager.GetString("DLUTestHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DLUTestStart.
+        /// </summary>
+        public static string DLUTestStart {
+            get {
+                return ResourceManager.GetString("DLUTestStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DLUTestStop.
+        /// </summary>
+        public static string DLUTestStop {
+            get {
+                return ResourceManager.GetString("DLUTestStop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Correct Offset.
         /// </summary>
         public static string DoCorrectOffset {
@@ -579,6 +642,15 @@ namespace Ferretto.VW.Resources {
         public static string Down {
             get {
                 return ResourceManager.GetString("Down", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerLadingUnloadingTest.
+        /// </summary>
+        public static string DrawerLoadingUnloadingTest {
+            get {
+                return ResourceManager.GetString("DrawerLoadingUnloadingTest", resourceCulture);
             }
         }
         

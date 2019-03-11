@@ -59,6 +59,7 @@ namespace Ferretto.VW.InstallationApp
             var loadFirstDrawerVMInstance = new LoadFirstDrawerViewModel();
             var loadingDrawersVMInstance = new LoadingDrawersViewModel();
             var cellsSideControlVMInstance = new CellsSideControlViewModel();
+            var drawerLoadingUnloadingTestVMInstance = new DrawerLoadingUnloadingTestViewModel();
 
             this.container.RegisterInstance<IContainerInstallationHubClient>(installationHubClientInstance);
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
@@ -97,6 +98,7 @@ namespace Ferretto.VW.InstallationApp
             this.container.RegisterInstance<ILoadFirstDrawerViewModel>(loadFirstDrawerVMInstance);
             this.container.RegisterInstance<ILoadingDrawersViewModel>(loadingDrawersVMInstance);
             this.container.RegisterInstance<ICellsSideControlViewModel>(cellsSideControlVMInstance);
+            this.container.RegisterInstance<IDrawerLoadingUnloadingTestViewModel>(drawerLoadingUnloadingTestVMInstance);
 
             lSMTNavigationButtonsVMInstance.InitializeViewModel(this.container);
             lSMTMainVMInstance.InitializeViewModel(this.container);

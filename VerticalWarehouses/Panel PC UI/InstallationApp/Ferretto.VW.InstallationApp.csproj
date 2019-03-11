@@ -21,6 +21,7 @@
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -40,6 +41,7 @@
     <None Remove="CellsControlHelpView.xaml" />
     <None Remove="HelpWindows\HelpBeltBurnishingView.xaml" />
     <None Remove="HelpWindows\HelpCellsPanelControl.xaml" />
+    <None Remove="HelpWindows\HelpDLUTest.xaml" />
     <None Remove="HelpWindows\HelpInitialPage.xaml" />
     <None Remove="HelpWindows\HelpInstallationState.xaml" />
     <None Remove="HelpWindows\HelpLowSpeedMovements.xaml" />
@@ -56,6 +58,7 @@
     <None Remove="ViewsAndViewModels\LowSpeedMovements\LSMTMainView.xaml" />
     <None Remove="ViewsAndViewModels\MainWindowBackToIAPPButtonView.xaml" />
     <None Remove="ViewsAndViewModels\SensorsState\SSMainView.xaml" />
+    <None Remove="ViewsAndViewModels\SingleViews\DrawerLoadingUnloadingTestView.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -90,6 +93,9 @@
     </Compile>
     <Compile Update="HelpWindows\HelpInitialPage.xaml.cs">
       <DependentUpon>HelpInitialPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpDLUTest.xaml.cs">
+      <DependentUpon>HelpDLUTest.xaml</DependentUpon>
     </Compile>
     <Compile Update="HelpWindows\HelpShutterControl.xaml.cs">
       <DependentUpon>HelpShutterControl.xaml</DependentUpon>
@@ -143,6 +149,9 @@
     </Compile>
     <Compile Update="ViewsAndViewModels\ShuttersHeightControl\Shutter1HeightControlView.xaml.cs">
       <DependentUpon>Shutter1HeightControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\SingleViews\DrawerLoadingUnloadingTestView.xaml.cs">
+      <DependentUpon>DrawerLoadingUnloadingTestView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 

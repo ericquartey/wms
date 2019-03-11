@@ -787,4 +787,28 @@
   <data name="BayControlNextPosition" xml:space="preserve">
     <value>Prossima posizione</value>
   </data>
+  <data name="DrawerLoadingUnloadingTest" xml:space="preserve">
+    <value>Test imbarco sbarco</value>
+  </data>
+  <data name="DLUTestHeader" xml:space="preserve">
+    <value>Test imbarco sbarco cassetto in baia.</value>
+  </data>
+  <data name="DLUTestFeedRate" xml:space="preserve">
+    <value>Feed rate %:</value>
+  </data>
+  <data name="DLUTestCycleRequired" xml:space="preserve">
+    <value>Cicli richiesti :</value>
+  </data>
+  <data name="DLUTestActualposition" xml:space="preserve">
+    <value>Posizione attuale catena:</value>
+  </data>
+  <data name="DLUTestCompletedCycles" xml:space="preserve">
+    <value>Cicli completati :</value>
+  </data>
+  <data name="DLUTestStop" xml:space="preserve">
+    <value>Arresta ciclo</value>
+  </data>
+  <data name="DLUTestStart" xml:space="preserve">
+    <value>Avvia ciclo</value>
+  </data>
 </root>

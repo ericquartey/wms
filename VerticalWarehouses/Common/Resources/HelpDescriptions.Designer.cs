@@ -385,6 +385,96 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDLUTBay.
+        /// </summary>
+        public static string HelpDLUTBay {
+            get {
+                return ResourceManager.GetString("HelpDLUTBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDLUTChain.
+        /// </summary>
+        public static string HelpDLUTChain {
+            get {
+                return ResourceManager.GetString("HelpDLUTChain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDLUTCycleCompleted.
+        /// </summary>
+        public static string HelpDLUTCycleCompleted {
+            get {
+                return ResourceManager.GetString("HelpDLUTCycleCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDLUTCyclesRequired.
+        /// </summary>
+        public static string HelpDLUTCyclesRequired {
+            get {
+                return ResourceManager.GetString("HelpDLUTCyclesRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDLUTDescription.
+        /// </summary>
+        public static string HelpDLUTDescription {
+            get {
+                return ResourceManager.GetString("HelpDLUTDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDLUTFeedRate.
+        /// </summary>
+        public static string HelpDLUTFeedRate {
+            get {
+                return ResourceManager.GetString("HelpDLUTFeedRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDLUTGotoPosition.
+        /// </summary>
+        public static string HelpDLUTGotoPosition {
+            get {
+                return ResourceManager.GetString("HelpDLUTGotoPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDLUTPosition.
+        /// </summary>
+        public static string HelpDLUTPosition {
+            get {
+                return ResourceManager.GetString("HelpDLUTPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDLUTStart.
+        /// </summary>
+        public static string HelpDLUTStart {
+            get {
+                return ResourceManager.GetString("HelpDLUTStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDLUTStop.
+        /// </summary>
+        public static string HelpDLUTStop {
+            get {
+                return ResourceManager.GetString("HelpDLUTStop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpGCCompleted.
         /// </summary>
         public static string HelpGCCompleted {

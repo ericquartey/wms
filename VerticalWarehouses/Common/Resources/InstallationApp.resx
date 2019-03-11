@@ -1004,4 +1004,36 @@
     <value>BayControlNextPosition</value>
     <comment>Button text</comment>
   </data>
+  <data name="DrawerLoadingUnloadingTest" xml:space="preserve">
+    <value>DrawerLadingUnloadingTest</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DLUTestHeader" xml:space="preserve">
+    <value>DLUTestHeader</value>
+    <comment>Page Header</comment>
+  </data>
+  <data name="DLUTestFeedRate" xml:space="preserve">
+    <value>DLUTestFeedRate</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DLUTestCycleRequired" xml:space="preserve">
+    <value>DLUTestCycleRequired</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DLUTestActualposition" xml:space="preserve">
+    <value>DLUTestActualposition</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DLUTestCompletedCycles" xml:space="preserve">
+    <value>DLUTestCompletedCycles</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DLUTestStop" xml:space="preserve">
+    <value>DLUTestStop</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DLUTestStart" xml:space="preserve">
+    <value>DLUTestStart</value>
+    <comment>Button text</comment>
+  </data>
 </root>
