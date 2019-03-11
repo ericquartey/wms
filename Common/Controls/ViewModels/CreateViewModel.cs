@@ -18,6 +18,8 @@ namespace Ferretto.Common.Controls
 
         private readonly IDialogService dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
 
+        private bool canShowError;
+
         private ICommand clearCommand;
 
         private ICommand closeDialogCommand;
@@ -25,6 +27,8 @@ namespace Ferretto.Common.Controls
         private ICommand createCommand;
 
         private bool isBusy;
+
+        private bool isEnableError;
 
         private bool isModelValid;
 
@@ -36,6 +40,7 @@ namespace Ferretto.Common.Controls
 
         public CreateViewModel()
         {
+            this.CanShowError = false;
             this.changeDetector.ModifiedChanged += this.ChangeDetector_ModifiedChanged;
         }
 
@@ -43,14 +48,24 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
+        public bool CanShowError
+        {
+            get => this.canShowError;
+            set
+            {
+                this.SetProperty(ref this.canShowError, value);
+                this.UpdateIsEnableError();
+            }
+        }
+
         public ICommand ClearCommand => this.clearCommand ??
-            (this.clearCommand = new DelegateCommand(
+                    (this.clearCommand = new DelegateCommand(
                 this.ExecuteClearCommand,
                 this.CanExecuteClearCommand));
 
         public ICommand CloseDialogCommand => this.closeDialogCommand ??
-                                           (this.closeDialogCommand = new Prism.Commands.DelegateCommand(
-                               this.ExecuteCloseDialogCommand));
+             (this.closeDialogCommand = new DelegateCommand(
+                 this.ExecuteCloseDialogCommand));
 
         public ColorRequired ColorRequired { get => ColorRequired.CreateMode; }
 
@@ -73,6 +88,8 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        public bool IsEnableError { get; set; }
+
         public bool IsModelValid
         {
             get
@@ -87,6 +104,7 @@ namespace Ferretto.Common.Controls
                     temp = string.IsNullOrWhiteSpace(this.Model.Error);
                 }
                 this.SetProperty(ref this.isModelValid, temp);
+                this.UpdateIsEnableError();
                 return temp;
             }
         }
@@ -152,11 +170,17 @@ namespace Ferretto.Common.Controls
 
         protected virtual bool CanExecuteCreateCommand()
         {
-            return this.Model != null
+            var canExecute = this.Model != null
                 && this.changeDetector.IsModified
                 && this.IsModelValid
                 && !this.IsBusy
                 && this.changeDetector.IsRequiredValid;
+
+            if (canExecute)
+            {
+                this.CanShowError = true;
+            }
+            return canExecute;
         }
 
         protected virtual void EvaluateCanExecuteCommands()
@@ -197,6 +221,11 @@ namespace Ferretto.Common.Controls
         private void ChangeDetector_ModifiedChanged(object sender, System.EventArgs e)
         {
             this.EvaluateCanExecuteCommands();
+        }
+
+        private void UpdateIsEnableError()
+        {
+            this.SetProperty(ref this.isEnableError, this.isModelValid && this.CanShowError);
         }
 
         #endregion
