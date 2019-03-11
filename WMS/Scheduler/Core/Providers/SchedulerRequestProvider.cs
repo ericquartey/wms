@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
@@ -234,33 +233,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             await this.dataContext.SaveChangesAsync();
 
             return new SuccessOperationResult<SchedulerRequest>(model);
-        }
-
-        public async Task<SchedulerRequest> WithdrawAsync(SchedulerRequest request)
-        {
-            SchedulerRequest qualifiedRequest = null;
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-            {
-                qualifiedRequest = await this.FullyQualifyWithdrawalRequestAsync(request);
-                if (qualifiedRequest != null)
-                {
-                    await this.CreateAsync(qualifiedRequest);
-
-                    scope.Complete();
-                    this.logger.LogDebug($"Scheduler Request (id={qualifiedRequest.Id}): Withdrawal for item={qualifiedRequest.ItemId} was accepted and stored.");
-                }
-            }
-
-            // this should not be done here
-#pragma warning disable S125 // Sections of code should not be commented out
-            /*
-                        var requestsToProcess = await this.GetRequestsToProcessAsync();
-                        await this.missionSchedulerProvider.CreateForRequestsAsync(requestsToProcess);
-                        */
-
-#pragma warning restore S125 // Sections of code should not be commented out
-
-            return qualifiedRequest;
         }
 
         private static Common.DataModels.SchedulerRequest CreateDataModel(SchedulerRequest model)

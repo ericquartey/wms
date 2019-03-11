@@ -1,8 +1,10 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
+using Ferretto.WMS.Scheduler.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -37,23 +39,49 @@ namespace Ferretto.WMS.Scheduler.Core.Services
         {
             try
             {
-                this.logger.LogDebug("Checking for pending scheduler requests to process ...");
-
-                using (var scope = this.scopeFactory.CreateScope())
-                {
-                    var requestsProvider = scope.ServiceProvider.GetRequiredService<ISchedulerRequestProvider>();
-                    var missionsProvider = scope.ServiceProvider.GetRequiredService<IMissionSchedulerProvider>();
-
-                    var requests = await requestsProvider.GetRequestsToProcessAsync();
-                    await missionsProvider.CreateForRequestsAsync(requests);
-                }
-
-                this.logger.LogDebug("Done processing pending requests.");
+                await this.ProcessPendingRequestsAsync();
             }
             catch
             {
                 this.logger.LogWarning("Scheduler start-up request processing failed.");
                 await this.StopAsync(stoppingToken);
+            }
+        }
+
+        private async Task ProcessPendingRequestsAsync()
+        {
+            this.logger.LogDebug("Checking for pending scheduler requests to process ...");
+
+            using (var scope = this.scopeFactory.CreateScope())
+            {
+                var requestsProvider = scope.ServiceProvider.GetRequiredService<ISchedulerRequestProvider>();
+                var missionsProvider = scope.ServiceProvider.GetRequiredService<IMissionSchedulerProvider>();
+
+                var requests = await requestsProvider.GetRequestsToProcessAsync();
+                await missionsProvider.CreateForRequestsAsync(requests);
+            }
+
+            this.logger.LogDebug("Done processing pending requests.");
+        }
+
+        public async Task<SchedulerRequest> WithdrawItemAsync(SchedulerRequest request)
+        {
+            using (var scope = this.scopeFactory.CreateScope())
+            {
+                var requestsProvider = scope.ServiceProvider.GetRequiredService<ISchedulerRequestProvider>();
+
+                SchedulerRequest qualifiedRequest = null;
+                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    qualifiedRequest = await requestsProvider.FullyQualifyWithdrawalRequestAsync(request);
+                    if (qualifiedRequest != null)
+                    {
+                        await requestsProvider.CreateAsync(qualifiedRequest);
+
+                        scope.Complete();
+                        this.logger.LogDebug($"Scheduler Request (id={qualifiedRequest.Id}): Withdrawal for item={qualifiedRequest.ItemId} was accepted and stored.");
+                    }
+                }
             }
         }
 
