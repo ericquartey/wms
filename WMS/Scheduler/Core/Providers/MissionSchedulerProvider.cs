@@ -20,6 +20,8 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         private readonly DatabaseContext databaseContext;
 
+        private readonly IItemListSchedulerProvider itemListSchedulerProvider;
+
         private readonly IItemSchedulerProvider itemProvider;
 
         private readonly ILoadingUnitSchedulerProvider loadingUnitProvider;
@@ -38,6 +40,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             ICompartmentSchedulerProvider compartmentProvider,
             IItemSchedulerProvider itemProvider,
             ILoadingUnitSchedulerProvider loadingUnitProvider,
+            IItemListSchedulerProvider itemListSchedulerProvider,
             ILogger<MissionSchedulerProvider> logger)
         {
             this.databaseContext = databaseContext;
@@ -45,6 +48,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             this.schedulerRequestProvider = schedulerRequestProvider;
             this.compartmentProvider = compartmentProvider;
             this.loadingUnitProvider = loadingUnitProvider;
+            this.itemListSchedulerProvider = itemListSchedulerProvider;
             this.itemProvider = itemProvider;
         }
 
@@ -190,17 +194,9 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 compartment.ItemId = null;
             }
 
-            var item = await this.itemProvider.GetByIdAsync(mission.ItemId.Value);
-            var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId);
+            await this.UpdateLastPickDatesAsync(mission.ItemId.Value, compartment);
 
-            var now = DateTime.UtcNow;
-            compartment.LastPickDate = now;
-            item.LastPickDate = now;
-            loadingUnit.LastPickDate = now;
-
-            await this.loadingUnitProvider.UpdateAsync(loadingUnit);
-
-            await this.itemProvider.UpdateAsync(item);
+            await this.UpdateListStatusAsync(mission);
 
             await this.compartmentProvider.UpdateAsync(compartment);
 
@@ -296,6 +292,22 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             await this.databaseContext.Missions.AddRangeAsync(missions);
 
             await this.databaseContext.SaveChangesAsync();
+        }
+
+        private async Task UpdateLastPickDatesAsync(int itemId, StockUpdateCompartment compartment)
+        {
+            var now = DateTime.UtcNow;
+            compartment.LastPickDate = now;
+
+            var item = await this.itemProvider.GetByIdAsync(itemId);
+            var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId);
+
+            item.LastPickDate = now;
+            loadingUnit.LastPickDate = now;
+
+            await this.loadingUnitProvider.UpdateAsync(loadingUnit);
+
+            await this.itemProvider.UpdateAsync(item);
         }
 
         #endregion
