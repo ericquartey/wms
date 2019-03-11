@@ -1,4 +1,3 @@
-using System;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls;
@@ -6,7 +5,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemsViewModel : EntityListViewModel<Item>
+    public class ItemsViewModel : EntityPagedListViewModel<Item, int>
     {
         #region Fields
 
@@ -14,22 +13,29 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ICommand withdrawCommand;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
         public ICommand ShowDetailsCommand => this.showDetailsCommand ??
-                         (this.showDetailsCommand = new DelegateCommand(this.ExecuteShowDetailsCommand, this.CanShowDetailsCommand)
-           .ObservesProperty(() => this.CurrentItem));
+            (this.showDetailsCommand = new DelegateCommand(this.ExecuteShowDetailsCommand, this.CanShowDetailsCommand)
+                .ObservesProperty(() => this.CurrentItem));
 
         public ICommand WithdrawCommand => this.withdrawCommand ??
-                                                   (this.withdrawCommand = new DelegateCommand(
-                                                        this.ExecuteWithdraw,
-                                                        this.CanExecuteWithdraw).ObservesProperty(() => this.CurrentItem));
+            (this.withdrawCommand = new DelegateCommand(
+                this.ExecuteWithdraw,
+                this.CanExecuteWithdraw).ObservesProperty(() => this.CurrentItem));
 
-        #endregion Properties
+        #endregion
 
         #region Methods
+
+        protected override void ExecuteAddCommand()
+        {
+            this.NavigationService.Appear(
+                nameof(MasterData),
+                Common.Utils.Modules.MasterData.ITEMADDDIALOG);
+        }
 
         private bool CanExecuteWithdraw()
         {
@@ -43,7 +49,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteShowDetailsCommand()
         {
-            this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.ITEMDETAILS, this.CurrentItem.Id);
+            this.HistoryViewService.Appear(
+                nameof(Modules.MasterData),
+                Common.Utils.Modules.MasterData.ITEMDETAILS,
+                this.CurrentItem.Id);
         }
 
         private void ExecuteWithdraw()
@@ -57,6 +66,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 });
         }
 
-        #endregion Methods
+        #endregion
     }
 }

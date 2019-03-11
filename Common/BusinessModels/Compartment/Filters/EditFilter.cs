@@ -8,8 +8,7 @@ namespace Ferretto.Common.BusinessModels
 
         public Func<ICompartment, ICompartment, string> ColorFunc => (compartment, selected) =>
         {
-            var color = "#57A639";
-            return color;
+            return "#57A639";
         };
 
         public string Description => "Compartment";
@@ -18,6 +17,6 @@ namespace Ferretto.Common.BusinessModels
 
         public ICompartment Selected { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

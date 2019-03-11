@@ -1,6 +1,6 @@
-﻿namespace Ferretto.WMS.Scheduler.Core
+﻿namespace Ferretto.WMS.Scheduler.Core.Models
 {
-    public class Bay : BusinessObject
+    public class Bay : Model
     {
         #region Properties
 
@@ -8,7 +8,7 @@
 
         public int LoadingUnitsBufferUsage { get; internal set; }
 
-        #endregion Properties
+        #endregion
 
         // TODO: should LoadingUnitsBufferSize this be a non-nullable?
     }

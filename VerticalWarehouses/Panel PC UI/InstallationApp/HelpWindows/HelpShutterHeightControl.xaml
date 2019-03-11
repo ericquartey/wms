@@ -1,0 +1,116 @@
+﻿<UserControl x:Class="Ferretto.VW.InstallationApp.HelpWindows.HelpShutterHeightControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Ferretto.VW.InstallationApp.HelpWindows"            
+             xmlns:Controls="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls" 
+             xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
+             mc:Ignorable="d">
+    <Grid Width="1024"
+          Height="688"
+          Background="{DynamicResource VWAPP_BACKGROUND}">
+
+        <Image Width="200"
+               Height="60"
+               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"
+               Source="{DynamicResource Ferretto_Logo}"
+               Stretch="Uniform" />
+
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
+                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
+                    Text="{x:Static res:InstallationApp.Gate1HeightControl}" />
+
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
+                    Width="670" Height="50"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpGHCDescription}" />
+
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,140,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpGHCVelocity}" />
+
+        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,140,0,0"
+                     Width="260" Height="70"
+                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                     Text="{x:Static res:HelpDescriptions.HelpGHCFinalResult}" />
+
+        <Controls:CustomInputFieldControlFocusable    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0"
+                                                      Width="180"
+                                                      Highlighted="True" IsEnabled="True"
+                                                      InputText="120,0"
+                                                      Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                      LabelText="{x:Static res:InstallationApp.SpeedMMSec}" />
+
+        <Controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,280,0,0" Width="180"
+                                                  ContentText="4,5"
+                                                  LabelText="{x:Static res:InstallationApp.Tolerance}"/>
+
+        <Controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0" Width="180"
+                                                  ContentText="3,5"
+                                                  LabelText="{x:Static res:InstallationApp.SystemErrorMM}"  />
+
+        <Controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,420,0,0"
+                                                  Width="180"
+                                                  ContentText="568,5"
+                                                  LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
+
+        <Controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,490,0,0" Width="180"
+                                                  ContentText="-3,5"
+                                                  LabelText="{x:Static res:InstallationApp.GateCorrection}" />
+
+        <Controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,140,0,0" Width="180"
+                                                  ContentText="Fuori tolleranza"
+                                                  LabelText="{x:Static res:InstallationApp.Output}" />
+
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,210,0,0"
+                    Content="{x:Static res:InstallationApp.Start}"
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"  />
+
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,280,0,0"
+            Content="{x:Static res:InstallationApp.Stop}"
+            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+
+        <Controls:CustomSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0" Width="180"
+                                        LabelText="{x:Static res:InstallationApp.Gate1HeightReaced}"
+                                        SensorState="True"
+                                        Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,210,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpGHCSystemError}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,280,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpGHCTollerance}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,350,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpGHCHeightReaced}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,420,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpGHCCurrentPosition}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,490,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpGHCBarrierCorrection}" />
+        
+        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,210,0,0"
+                     Width="260" Height="70"
+                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                     Text="{x:Static res:HelpDescriptions.HelpGHCStart}" />
+        
+        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,280,0,0"
+                     Width="260" Height="70"
+                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                     Text="{x:Static res:HelpDescriptions.HelpGHCStop}" />
+
+    </Grid>
+</UserControl>

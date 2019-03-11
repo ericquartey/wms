@@ -50,6 +50,6 @@ namespace Ferretto.Common.EF.Configurations
                .HasConversion(x => (char)x, x => (ItemListRowStatus)Enum.ToObject(typeof(ItemListRowStatus), x));
         }
 
-        #endregion Methods
+        #endregion
     }
 }

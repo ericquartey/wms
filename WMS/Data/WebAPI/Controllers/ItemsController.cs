@@ -1,164 +1,212 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using Ferretto.WMS.Data.WebAPI.Models.Expressions;
+using System.Threading.Tasks;
+using Ferretto.WMS.Data.Core.Extensions;
+using Ferretto.WMS.Data.Core.Interfaces;
+using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.WebAPI.Interfaces;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using SchedulerRequest = Ferretto.WMS.Scheduler.Core.Models.SchedulerRequest;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ItemsController : ControllerBase
+    public class ItemsController :
+        ControllerBase,
+        ICreateController<ItemDetails>,
+        IReadAllPagedController<Item>,
+        IReadSingleController<ItemDetails, int>,
+        IUpdateController<ItemDetails>,
+        IGetUniqueValuesController
     {
         #region Fields
 
-        private readonly ILogger logger;
+        private readonly IAreaProvider areaProvider;
 
-        private readonly Models.IWarehouse warehouse;
+        private readonly ICompartmentProvider compartmentProvider;
 
-        #endregion Fields
+        private readonly IItemProvider itemProvider;
+
+        private readonly Scheduler.Core.Interfaces.ISchedulerRequestProvider schedulerRequestProvider;
+
+        #endregion
 
         #region Constructors
 
         public ItemsController(
-            ILogger<ItemsController> logger,
-            Models.IWarehouse warehouse)
+            IItemProvider itemProvider,
+            IAreaProvider areaProvider,
+            Scheduler.Core.Interfaces.ISchedulerRequestProvider schedulerRequestProvider,
+            ICompartmentProvider compartmentProvider)
         {
-            this.logger = logger;
-            this.warehouse = warehouse;
+            this.itemProvider = itemProvider;
+            this.areaProvider = areaProvider;
+            this.compartmentProvider = compartmentProvider;
+            this.schedulerRequestProvider = schedulerRequestProvider;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Models.Item>))]
-        [ProducesResponseType(400, Type = typeof(string))]
-        [ProducesResponseType(404, Type = typeof(string))]
+        [ProducesResponseType(201, Type = typeof(ItemDetails))]
+        [ProducesResponseType(400)]
+        [HttpPost]
+        public async Task<ActionResult<ItemDetails>> CreateAsync(ItemDetails model)
+        {
+            var result = await this.itemProvider.CreateAsync(model);
+
+            if (!result.Success)
+            {
+                return this.BadRequest();
+            }
+
+            return this.Created(this.Request.GetUri(), result.Entity);
+        }
+
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Item>))]
+        [ProducesResponseType(400)]
         [HttpGet]
-        public ActionResult<IEnumerable<Models.Item>> GetAll(
+        public async Task<ActionResult<IEnumerable<Item>>> GetAllAsync(
             int skip = 0,
             int take = int.MaxValue,
             string where = null,
             string orderBy = null,
             string search = null)
         {
-            this.logger.LogInformation(
-                $"Get All items (skip:{skip}, take:{take}, orderBy:'{orderBy}', where:'{where}', search:'{search}')");
+            try
+            {
+                var orderByExpression = orderBy.ParseSortOptions();
 
-            var searchExpression = BuildSearchExpression(search);
-
-            var whereExpression = BuildWhereExpression<Models.Item>(where);
-
-            var transformedItems = this.ApplyTransform(
-                skip: skip,
-                take: take,
-                orderBy: orderBy,
-                where: whereExpression,
-                searchFunction: searchExpression,
-                entities: this.warehouse.Items.AsQueryable());
-
-            return transformedItems.ToArray();
+                return this.Ok(
+                    await this.itemProvider.GetAllAsync(
+                        skip,
+                        take,
+                        orderByExpression,
+                        where,
+                        search));
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
-        [ProducesResponseType(200, Type = typeof(Models.Item))]
+        [ProducesResponseType(200, Type = typeof(int))]
         [ProducesResponseType(400, Type = typeof(string))]
-        [ProducesResponseType(404, Type = typeof(string))]
-        [HttpGet("{id}")]
-        public ActionResult<Models.Item> GetById(int id)
+        [ProducesResponseType(404)]
+        [HttpGet("count")]
+        public async Task<ActionResult<int>> GetAllCountAsync(
+            string where = null,
+            string search = null)
         {
             try
             {
-                var result = this.warehouse.Items.SingleOrDefault(i => i.Id == id);
-                if (result == null)
+                return await this.itemProvider.GetAllCountAsync(where, search);
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e.Message);
+            }
+        }
+
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Area>))]
+        [ProducesResponseType(404)]
+        [HttpGet("{id}/areas_with_availability")]
+        public async Task<ActionResult<IEnumerable<Area>>> GetAreasWithAvailabilityAsync(int id)
+        {
+            var areas = await this.areaProvider.GetByItemIdAvailabilityAsync(id);
+
+            return this.Ok(areas);
+        }
+
+        [ProducesResponseType(200, Type = typeof(ItemDetails))]
+        [ProducesResponseType(404)]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ItemDetails>> GetByIdAsync(int id)
+        {
+            var result = await this.itemProvider.GetByIdAsync(id);
+            if (result == null)
+            {
+                return this.NotFound();
+            }
+
+            return this.Ok(result);
+        }
+
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Compartment>))]
+        [ProducesResponseType(404)]
+        [HttpGet("{id}/compartments")]
+        public async Task<ActionResult<IEnumerable<Compartment>>> GetCompartmentsAsync(int id)
+        {
+            var compartments = await this.compartmentProvider.GetByItemIdAsync(id);
+
+            return this.Ok(compartments);
+        }
+
+        [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
+        [ProducesResponseType(400)]
+        [HttpGet("unique/{propertyName}")]
+        public async Task<ActionResult<object[]>> GetUniqueValuesAsync(
+            string propertyName)
+        {
+            try
+            {
+                return this.Ok(await this.itemProvider.GetUniqueValuesAsync(propertyName));
+            }
+            catch (InvalidOperationException e)
+            {
+                return this.BadRequest(e.Message);
+            }
+        }
+
+        [ProducesResponseType(200, Type = typeof(ItemDetails))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [HttpPatch]
+        public async Task<ActionResult<ItemDetails>> UpdateAsync(ItemDetails model)
+        {
+            if (model == null)
+            {
+                return this.BadRequest();
+            }
+
+            var result = await this.itemProvider.UpdateAsync(model);
+            if (!result.Success)
+            {
+                if (result is NotFoundOperationResult<ItemDetails>)
                 {
-                    var message = string.Format("No entity with the specified id={0} exists.", id);
-                    this.logger.LogWarning(message);
-                    return this.NotFound(message);
+                    return this.NotFound();
                 }
 
-                return this.Ok(result);
+                return this.BadRequest();
             }
-            catch (Exception ex)
-            {
-                var message = string.Format("An error occurred while retrieving the requested entity with id={0}.", id);
-                this.logger.LogError(ex, message);
-                return this.BadRequest(message);
-            }
+
+            return this.Ok(result.Entity);
         }
 
-        private static Expression<Func<Models.Item, bool>> BuildSearchExpression(string search)
+        [ProducesResponseType(201, Type = typeof(SchedulerRequest))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(422)]
+        [HttpPost(nameof(Withdraw))]
+        public async Task<IActionResult> Withdraw([FromBody] SchedulerRequest request)
         {
-            if (string.IsNullOrWhiteSpace(search))
+            if (request == null)
             {
-                return null;
+                return this.BadRequest();
             }
 
-            return (i) =>
-                i.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.Description.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.ItemCategoryDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.TotalAvailable.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
+            var acceptedRequest = await this.schedulerRequestProvider.WithdrawAsync(request);
+            if (acceptedRequest == null)
+            {
+                return this.UnprocessableEntity(this.ModelState);
+            }
+
+            return this.CreatedAtAction(nameof(this.Withdraw), new { id = acceptedRequest.Id }, acceptedRequest);
         }
 
-        private static Expression<Func<T, bool>> BuildWhereExpression<T>(string where)
-        {
-            if (string.IsNullOrWhiteSpace(where))
-            {
-                return null;
-            }
-
-            var lambdaInParameter = Expression.Parameter(typeof(T), typeof(T).Name.ToLower());
-
-            var expression = where.BuildExpression();
-
-            var lambdaBody = expression?.GetLambdaBody<Models.Item>(lambdaInParameter);
-
-            return (Expression<Func<T, bool>>)Expression.Lambda(lambdaBody, lambdaInParameter);
-        }
-
-        private IQueryable<T> ApplyTransform<T>(
-            int skip,
-            int take,
-            string orderBy,
-            Expression<Func<T, bool>> where,
-            Expression<Func<T, bool>> searchFunction,
-            IQueryable<T> entities)
-        {
-            // TODO: if skip or take, then orderby should be defined (throw exception)
-            var filteredItems = entities;
-            if (where != null)
-            {
-                filteredItems = filteredItems.Where(where);
-            }
-
-            if (searchFunction != null)
-            {
-                filteredItems = filteredItems.Where(searchFunction);
-            }
-
-            filteredItems = this.ApplyOrderByClause(orderBy, filteredItems);
-
-            var skipValue = skip < 0 ? 0 : skip;
-            if (skipValue > 0)
-            {
-                filteredItems = filteredItems.Skip(skipValue);
-            }
-
-            var takeValue = take < 0 ? int.MaxValue : take;
-            if (takeValue != int.MaxValue)
-            {
-                filteredItems = filteredItems.Take(takeValue);
-            }
-
-            return filteredItems;
-        }
-
-        #endregion Methods
+        #endregion
     }
 }

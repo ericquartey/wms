@@ -1,8 +1,8 @@
-﻿using Ferretto.Common.BLL.Interfaces;
+﻿using Ferretto.Common.BLL.Interfaces.Base;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public class Enumeration : BindableBase, IBusinessObject
+    public class Enumeration : BindableBase, IModel<int>
     {
         #region Constructors
 
@@ -12,7 +12,7 @@ namespace Ferretto.Common.BusinessModels
             this.Id = id;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -20,6 +20,6 @@ namespace Ferretto.Common.BusinessModels
 
         public int Id { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

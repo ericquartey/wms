@@ -10,7 +10,7 @@ namespace Ferretto.WMS.App
 
         private readonly NLog.ILogger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -19,7 +19,7 @@ namespace Ferretto.WMS.App
             System.AppDomain.CurrentDomain.UnhandledException += this.CurrentDomain_UnhandledException;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -77,6 +77,6 @@ namespace Ferretto.WMS.App
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

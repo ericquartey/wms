@@ -1,23 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
 {
-    public interface ISchedulerRequestProvider : IBusinessProvider<SchedulerRequest, SchedulerRequest>
+    public interface ISchedulerRequestProvider :
+        IPagedBusinessProvider<SchedulerRequest, int>,
+        IReadSingleAsyncProvider<SchedulerRequest, int>
     {
-        #region Methods
-
-        IQueryable<SchedulerRequest> GetWithOperationTypeInsertion();
-
-        int GetWithOperationTypeInsertionCount();
-
-        IQueryable<SchedulerRequest> GetWithOperationTypeWithdrawal();
-
-        int GetWithOperationTypeWithdrawalCount();
-
-        #endregion Methods
     }
 }

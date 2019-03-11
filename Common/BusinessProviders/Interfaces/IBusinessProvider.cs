@@ -1,17 +1,20 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BusinessModels;
+using Ferretto.Common.BLL.Interfaces.Base;
 
 namespace Ferretto.Common.BusinessProviders
 {
-    public interface IBusinessProvider<out TModel, TDetailsModel>
-        where TModel : IBusinessObject
-        where TDetailsModel : IBusinessObject
+#pragma warning disable S2436 // Types and methods should not have too many generic parameters - this interface is soon going to be dismissed
+
+    public interface IBusinessProvider<out TModel, TDetailsModel, TKey>
+#pragma warning restore S2436 // Types and methods should not have too many generic parameters
+        where TModel : IModel<TKey>
+        where TDetailsModel : IModel<TKey>
     {
         #region Methods
 
-        Task<OperationResult> AddAsync(TDetailsModel model);
+        Task<IOperationResult<TDetailsModel>> AddAsync(TDetailsModel model);
 
         Task<int> DeleteAsync(int id);
 
@@ -21,8 +24,10 @@ namespace Ferretto.Common.BusinessProviders
 
         Task<TDetailsModel> GetByIdAsync(int id);
 
-        Task<OperationResult> SaveAsync(TDetailsModel model);
+        TDetailsModel GetNew();
 
-        #endregion Methods
+        Task<IOperationResult<TDetailsModel>> SaveAsync(TDetailsModel model);
+
+        #endregion
     }
 }

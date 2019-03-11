@@ -1,42 +1,30 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
 {
-    public interface ICompartmentProvider : IBusinessProvider<Compartment, CompartmentDetails>
+    public interface ICompartmentProvider :
+        IPagedBusinessProvider<Compartment, int>,
+        IReadSingleAsyncProvider<CompartmentDetails, int>,
+        ICreateAsyncProvider<CompartmentDetails, int>,
+        IUpdateAsyncProvider<CompartmentDetails, int>,
+        IDeleteAsyncProvider<CompartmentDetails, int>
     {
         #region Methods
 
-        Task<OperationResult> AddRangeAsync(IEnumerable<ICompartment> compartments);
+        Task<IOperationResult<ICompartment>> AddRangeAsync(IEnumerable<ICompartment> compartments);
 
-        IQueryable<Compartment> GetByItemId(int id);
+        Task<IEnumerable<Compartment>> GetByItemIdAsync(int id);
 
-        IQueryable<CompartmentDetails> GetByLoadingUnitId(int id);
+        Task<IEnumerable<CompartmentDetails>> GetByLoadingUnitIdAsync(int id);
 
         Task<int?> GetMaxCapacityAsync(int? width, int? height, int itemId);
 
-        CompartmentDetails GetNew();
+        Task<CompartmentDetails> GetNewAsync();
 
-        IQueryable<Compartment> GetWithStatusAvailable();
-
-        int GetWithStatusAvailableCount();
-
-        IQueryable<Compartment> GetWithStatusAwaiting();
-
-        int GetWithStatusAwaitingCount();
-
-        IQueryable<Compartment> GetWithStatusBlocked();
-
-        int GetWithStatusBlockedCount();
-
-        IQueryable<Compartment> GetWithStatusExpired();
-
-        int GetWithStatusExpiredCount();
-
-        bool HasAnyAllowedItem(int modelId);
-
-        #endregion Methods
+        #endregion
     }
 }

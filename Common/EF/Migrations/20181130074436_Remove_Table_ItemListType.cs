@@ -5,29 +5,15 @@ namespace Ferretto.Common.EF.Migrations
 {
     public partial class Remove_Table_ItemListType : Migration
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropForeignKey(
-                name: "FK_ItemLists_ItemListTypes_ItemListTypeId",
-                table: "ItemLists");
-
-            migrationBuilder.DropTable(
-                name: "ItemListTypes");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ItemLists_ItemListTypeId",
-                table: "ItemLists");
-
-            migrationBuilder.AddColumn<string>(
-                name: "ItemListType",
-                table: "ItemLists",
-                type: "char(1)",
-                nullable: false,
-                defaultValue: "");
-        }
+        #region Methods
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.DropColumn(
                 name: "ItemListType",
                 table: "ItemLists");
@@ -58,5 +44,33 @@ namespace Ferretto.Common.EF.Migrations
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }
+
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_ItemLists_ItemListTypes_ItemListTypeId",
+                table: "ItemLists");
+
+            migrationBuilder.DropTable(
+                name: "ItemListTypes");
+
+            migrationBuilder.DropIndex(
+                name: "IX_ItemLists_ItemListTypeId",
+                table: "ItemLists");
+
+            migrationBuilder.AddColumn<string>(
+                name: "ItemListType",
+                table: "ItemLists",
+                type: "char(1)",
+                nullable: false,
+                defaultValue: string.Empty);
+        }
+
+        #endregion
     }
 }

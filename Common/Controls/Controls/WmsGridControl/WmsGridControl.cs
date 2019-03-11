@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -6,6 +5,7 @@ using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Grid;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
@@ -24,16 +24,17 @@ namespace Ferretto.Common.Controls
 
         public static readonly DependencyProperty SelectedBusinessObjectProperty = DependencyProperty.Register(
         nameof(SelectedBusinessObject),
-        typeof(IBusinessObject),
+        typeof(IModel<int>),
         typeof(WmsGridControl),
         new FrameworkPropertyMetadata(OnSelectedValueChanged));
 
         private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
+
         private string token;
 
-        private IRefreshDataEntityViewModel wmsViewModel;
+        private IExtensionDataEntityViewModel wmsViewModel;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -43,13 +44,13 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(RefreshCommandProperty, value);
         }
 
-        public IBusinessObject SelectedBusinessObject
+        public IModel<int> SelectedBusinessObject
         {
-            get => (IBusinessObject)this.GetValue(SelectedBusinessObjectProperty);
+            get => (IModel<int>)this.GetValue(SelectedBusinessObjectProperty);
             set => this.SetValue(SelectedBusinessObjectProperty, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -66,15 +67,15 @@ namespace Ferretto.Common.Controls
 
         private static void OnSelectedValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsGridControl gridControl && e.NewValue is IBusinessObject bo)
+            if (d is WmsGridControl gridControl && e.NewValue is IModel<int> bo)
             {
                 SetSelectedItem(gridControl, bo);
             }
         }
 
-        private static void SetSelectedItem(WmsGridControl gridControl, IBusinessObject bo)
+        private static void SetSelectedItem(WmsGridControl gridControl, IModel<int> bo)
         {
-            var rowHandle = gridControl.FindRowByValue(nameof(IBusinessObject.Id), bo.Id);
+            var rowHandle = gridControl.FindRowByValue(nameof(IModel<int>.Id), bo.Id);
             if (rowHandle > -1)
             {
                 gridControl.View.FocusedRowHandle = rowHandle;
@@ -107,7 +108,7 @@ namespace Ferretto.Common.Controls
                 var wmsView = wmsViews.First();
                 this.token = wmsView.Token;
                 var wmsViewViewModel = ((INavigableView)wmsView).DataContext as INavigableViewModel;
-                this.wmsViewModel = wmsViewViewModel as IRefreshDataEntityViewModel;
+                this.wmsViewModel = wmsViewViewModel as IExtensionDataEntityViewModel;
                 this.SelectedItem = -1;
                 this.Loaded -= this.WmsGridControl_Loaded;
             }
@@ -115,12 +116,13 @@ namespace Ferretto.Common.Controls
 
         private void WmsGridControl_SelectedItemChanged(object sender, SelectedItemChangedEventArgs e)
         {
-            this.SelectedBusinessObject = e.NewItem is IBusinessObject bo ? bo : null;
+            this.SelectedBusinessObject = e.NewItem is IModel<int> bo ? bo : null;
             if (this.SelectedBusinessObject != null)
             {
-                this.eventService.Invoke(new ModelSelectionChangedPubSubEvent<IBusinessObject>(this.SelectedBusinessObject.Id, this.token));
+                this.eventService.Invoke(new ModelSelectionChangedPubSubEvent<IModel<int>>(this.SelectedBusinessObject.Id, this.token));
             }
         }
-        #endregion Methods
+
+        #endregion
     }
 }

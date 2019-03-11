@@ -1,10 +1,7 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
-using Ferretto.Common.EF;
-using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.Common.BusinessProviders
 {
@@ -12,102 +9,29 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
-        private readonly IDatabaseContextService dataContext;
+        private readonly WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService;
 
-        #endregion Fields
+        private readonly WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService;
+
+        #endregion
 
         #region Constructors
 
-        public AreaProvider(IDatabaseContextService dataContext)
+        public AreaProvider(
+            WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService,
+            WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService)
         {
-            this.dataContext = dataContext;
+            this.areasDataService = areasDataService;
+            this.itemsDataService = itemsDataService;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
-        public Task<OperationResult> AddAsync(Area model) => throw new NotSupportedException();
-
-        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
-
-        public IQueryable<Area> GetAll()
+        public async Task<IEnumerable<Area>> GetAllAsync()
         {
-            return GetAllAreasWithFilter(this.dataContext.Current);
-        }
-
-        public int GetAllCount()
-        {
-            using (var dc = this.dataContext.Current)
-            {
-                return dc.Areas.AsNoTracking().Count();
-            }
-        }
-
-        public async Task<Area> GetByIdAsync(int id)
-        {
-            return await this.dataContext.Current.Areas
-                .Where(a => a.Id == id)
-                .Select(a => new Area
-                {
-                    Id = a.Id,
-                    Name = a.Name,
-                })
-                .SingleAsync();
-        }
-
-        public IQueryable<Area> GetByItemIdAvailability(int id)
-        {
-            return this.dataContext.Current.Compartments
-                .Include(c => c.LoadingUnit)
-                    .ThenInclude(l => l.Cell)
-                    .ThenInclude(c => c.Aisle)
-                    .ThenInclude(a => a.Area)
-                .Where(c => c.ItemId == id)
-                .Where(c => (c.Stock - c.ReservedForPick + c.ReservedToStore) > 0)
-                .Select(c => new Area
-                {
-                    Id = c.LoadingUnit.Cell.Aisle.AreaId,
-                    Name = c.LoadingUnit.Cell.Aisle.Area.Name,
-                })
-                .Distinct();
-        }
-
-        public async Task<OperationResult> SaveAsync(Area model)
-        {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            try
-            {
-                using (var dc = this.dataContext.Current)
-                {
-                    var existingModel = dc.Areas.Find(model.Id);
-
-                    dc.Entry(existingModel).CurrentValues.SetValues(model);
-
-                    var changedEntityCount = await dc.SaveChangesAsync();
-
-                    return new OperationResult(changedEntityCount > 0);
-                }
-            }
-            catch (Exception ex)
-            {
-                return new OperationResult(ex);
-            }
-        }
-
-        private static IQueryable<Area> GetAllAreasWithFilter(
-            DatabaseContext context,
-            Expression<Func<DataModels.Area, bool>> whereFunc = null)
-        {
-            var actualWhereFunc = whereFunc ?? ((i) => true);
-
-            return context.Areas
-                .AsNoTracking()
-                .Where(actualWhereFunc)
+            return (await this.areasDataService.GetAllAsync())
                 .Select(a => new Area
                 {
                     Id = a.Id,
@@ -115,6 +39,31 @@ namespace Ferretto.Common.BusinessProviders
                 });
         }
 
-        #endregion Methods
+        public async Task<int> GetAllCountAsync()
+        {
+            return await this.areasDataService.GetAllCountAsync();
+        }
+
+        public async Task<IEnumerable<Area>> GetAreasWithAvailabilityAsync(int id)
+        {
+            return (await this.itemsDataService.GetAreasWithAvailabilityAsync(id))
+                .Select(a => new Area
+                {
+                    Id = a.Id,
+                    Name = a.Name
+                });
+        }
+
+        public async Task<Area> GetByIdAsync(int id)
+        {
+            var area = await this.areasDataService.GetByIdAsync(id);
+            return new Area
+            {
+                Id = area.Id,
+                Name = area.Name,
+            };
+        }
+
+        #endregion
     }
 }

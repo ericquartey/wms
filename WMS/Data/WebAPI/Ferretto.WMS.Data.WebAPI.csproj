@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -12,6 +12,7 @@
     <ApplicationInsightsAnnotationResourceId>/subscriptions/c6ebcf1a-1377-424e-8c05-4cd7aaa4e685/resourcegroups/Resource_Group_NicolaMoro/providers/microsoft.insights/components/Ferretto.WMS.Data.WebAPI</ApplicationInsightsAnnotationResourceId>
     <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Configurations>Debug;Release;Autogen</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -25,7 +26,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="2.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.0.2105168" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.5" />
-    <PackageReference Include="NSwag.AspNetCore" Version="11.20.1" Condition=" '$(Configuration)' == 'debug'" />
+    <PackageReference Include="NSwag.AspNetCore" Version="11.20.1" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.1.1" />
 
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.2">
@@ -38,7 +39,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="NSwag.MSBuild" Version="11.20.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\Common\EF\Ferretto.Common.EF.csproj" />
+    <ProjectReference Include="..\..\..\Common\Utils\Ferretto.Common.Utils.csproj" />
+    <ProjectReference Include="..\..\Scheduler\Core\Ferretto.WMS.Scheduler.Core.csproj" />
+    <ProjectReference Include="..\Core\Ferretto.WMS.Data.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -62,5 +73,11 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services" />
   </ItemGroup>
+
+    <Target Name="NSwag" AfterTargets="Build" Condition=" '$(Configuration)' == 'autogen' and $(TargetFramework.StartsWith('netcore')) ">
+        <Copy SourceFiles="@(Reference)" DestinationFolder="$(OutDir)References" />
+        <Exec Command="$(NSwagExe_Core21) run nswag.json /variables:Configuration=$(Configuration)" />
+        <RemoveDir Directories="$(OutDir)References" />
+    </Target>
 
 </Project>

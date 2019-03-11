@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
-using Ferretto.Common.EF;
-using Microsoft.EntityFrameworkCore;
+using Ferretto.Common.Utils.Expressions;
 
 namespace Ferretto.Common.BusinessProviders
 {
@@ -12,161 +12,149 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
-        private static readonly Expression<Func<DataModels.Cell, bool>> ClassAFilter =
-                   cell => cell.AbcClassId == "A";
+        private readonly WMS.Data.WebAPI.Contracts.IAbcClassesDataService abcClassesDataService;
 
-        private static readonly Expression<Func<DataModels.Cell, bool>> StatusEmptyFilter =
-cell => cell.CellStatusId == 1;
+        private readonly WMS.Data.WebAPI.Contracts.IAislesDataService aislesDataService;
 
-        private static readonly Expression<Func<DataModels.Cell, bool>> StatusFullFilter =
-                   cell => cell.CellStatusId == 3;
+        private readonly WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService;
 
-        private readonly IDatabaseContextService dataContext;
+        private readonly WMS.Data.WebAPI.Contracts.ICellsDataService cellsDataService;
 
-        private readonly EnumerationProvider enumerationProvider;
+        private readonly ICellStatusProvider cellStatusProvider;
 
-        #endregion Fields
+        private readonly ICellTypeProvider cellTypeProvider;
+
+        #endregion
 
         #region Constructors
 
         public CellProvider(
-            IDatabaseContextService context,
-            EnumerationProvider enumerationProvider)
+            ICellStatusProvider cellStatusProvider,
+            ICellTypeProvider cellTypeProvider,
+            WMS.Data.WebAPI.Contracts.ICellsDataService cellsDataService,
+            WMS.Data.WebAPI.Contracts.IAbcClassesDataService abcClassesDataService,
+            WMS.Data.WebAPI.Contracts.IAislesDataService aislesDataService,
+            WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService)
         {
-            this.dataContext = context;
-            this.enumerationProvider = enumerationProvider;
+            this.cellStatusProvider = cellStatusProvider;
+            this.cellTypeProvider = cellTypeProvider;
+            this.cellsDataService = cellsDataService;
+            this.abcClassesDataService = abcClassesDataService;
+            this.aislesDataService = aislesDataService;
+            this.areasDataService = areasDataService;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
-        public Task<OperationResult> AddAsync(CellDetails model) => throw new NotSupportedException();
-
-        public Task<int> DeleteAsync(int id) => throw new NotSupportedException();
-
-        public IQueryable<Cell> GetAll()
+        public async Task<IEnumerable<Aisle>> GetAislesByAreaIdAsync(int areaId)
         {
-            return GetAllCellsWithFilter(this.dataContext.Current);
+            return (await this.areasDataService.GetAislesAsync(areaId))
+                .Select(a => new Aisle
+                {
+                    Id = a.Id,
+                    AreaId = a.AreaId,
+                    AreaName = a.AreaName,
+                    Name = a.Name
+                });
         }
 
-        public int GetAllCount()
+        public async Task<IEnumerable<Cell>> GetAllAsync(
+            int skip,
+            int take,
+            IEnumerable<SortOption> orderBySortOptions = null,
+            string whereString = null,
+            string searchString = null)
         {
-            using (var dc = this.dataContext.Current)
-            {
-                return dc.Cells.AsNoTracking().Count();
-            }
-        }
+            var cells = await this.cellsDataService
+                .GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString);
 
-        public IQueryable<Enumeration> GetByAisleId(int aisleId)
-        {
-            return this.dataContext.Current.Cells
-                       .AsNoTracking()
-                       .Include(c => c.Aisle)
-                       .ThenInclude(a => a.Area)
-                       .Where(c => c.AisleId == aisleId)
-                       .OrderBy(c => c.CellNumber)
-                       .Select(c => new Enumeration(
-                                   c.Id,
-                                   $"{c.Aisle.Area.Name} - {c.Aisle.Name} - Cell {c.CellNumber} (Floor {c.Floor}, Column {c.Column}, {c.Side})")); // TODO: localize string
-        }
-
-        public IQueryable<Enumeration> GetByAreaId(int areaId)
-        {
-            return this.dataContext.Current.Cells
-                .AsNoTracking()
-                .Include(c => c.Aisle)
-                .ThenInclude(a => a.Area)
-                .Where(c => c.Aisle.AreaId == areaId)
-                .OrderBy(c => c.Aisle.Name)
-                .ThenBy(c => c.CellNumber)
-                .Select(c => new Enumeration(
-                    c.Id,
-                    $"{c.Aisle.Area.Name} - {c.Aisle.Name} - Cell {c.CellNumber} (Floor {c.Floor}, Column {c.Column}, {c.Side})")); // TODO: localize string
-        }
-
-        public async Task<CellDetails> GetByIdAsync(int id)
-        {
-            var dc = this.dataContext.Current;
-
-            var cellDetails = await dc.Cells
-                .Where(c => c.Id == id)
-                .Include(c => c.Aisle)
-                .Select(c => new CellDetails
+            return cells
+                .Select(c => new Cell
                 {
                     Id = c.Id,
-                    AbcClassId = c.AbcClassId,
-                    AisleId = c.AisleId,
-                    AreaId = c.Aisle.AreaId,
-                    CellStatusId = c.CellStatusId,
-                    CellTypeId = c.CellTypeId,
+                    AbcClassDescription = c.AbcClassDescription,
+                    AisleName = c.AisleName,
+                    AreaName = c.AreaName,
+                    LoadingUnitsCount = c.LoadingUnitsCount,
+                    LoadingUnitsDescription = c.LoadingUnitsDescription,
+                    Status = c.Status,
+                    CellTypeDescription = c.CellTypeDescription,
                     Column = c.Column,
                     Floor = c.Floor,
-                    Number = c.CellNumber,
+                    Number = c.Number,
                     Priority = c.Priority,
                     Side = (Side)c.Side,
                     XCoordinate = c.XCoordinate,
                     YCoordinate = c.YCoordinate,
                     ZCoordinate = c.ZCoordinate,
-                })
-                .SingleAsync();
-
-            cellDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
-            cellDetails.AisleChoices = this.enumerationProvider.GetAislesByAreaId(cellDetails.AreaId);
-            cellDetails.CellStatusChoices = this.enumerationProvider.GetAllCellStatuses();
-            cellDetails.CellTypeChoices = this.enumerationProvider.GetAllCellTypes();
-
-            return cellDetails;
+                });
         }
 
-        public IQueryable<Cell> GetWithClassA()
+        public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
         {
-            return GetAllCellsWithFilter(this.dataContext.Current, ClassAFilter);
+            return await this.cellsDataService
+                .GetAllCountAsync(whereString, searchString);
         }
 
-        public int GetWithClassACount()
+        public async Task<IEnumerable<Enumeration>> GetByAisleIdAsync(int aisleId)
         {
-            using (var dc = this.dataContext.Current)
+            return (await this.aislesDataService.GetCellsAsync(aisleId))
+                .Select(c => new Enumeration(
+                                   c.Id,
+                                   $"{c.AreaName} - {c.AisleName} - Cell {c.Number} (Floor {c.Floor}, Column {c.Column}, {c.Side})")); // TODO: localize string
+        }
+
+        public async Task<IEnumerable<Enumeration>> GetByAreaIdAsync(int areaId)
+        {
+            return (await this.areasDataService.GetCellsAsync(areaId))
+                .Select(c => new Enumeration(
+                    c.Id,
+                    $"{c.AreaName} - {c.AisleName} - Cell {c.Number} (Floor {c.Floor}, Column {c.Column}, {c.Side})")); // TODO: localize string
+        }
+
+        public async Task<CellDetails> GetByIdAsync(int id)
+        {
+            var cell = await this.cellsDataService.GetByIdAsync(id);
+
+            var abcClass = await this.abcClassesDataService.GetAllAsync();
+            var abcClassChoices = abcClass.Select(abc => new EnumerationString(abc.Id, abc.Description));
+            var aisles = await this.GetAislesByAreaIdAsync(cell.AreaId);
+            var aisleChoices = aisles.Select(aisle => new Enumeration(aisle.Id, aisle.Name));
+            var cellStatusChoices = await this.cellStatusProvider.GetAllAsync();
+            var cellTypeChoices = await this.cellTypeProvider.GetAllAsync();
+
+            return new CellDetails
             {
-                return dc.Cells.AsNoTracking().Count(ClassAFilter);
-            }
+                AbcClassChoices = abcClassChoices,
+                AbcClassId = cell.AbcClassId,
+                AisleChoices = aisleChoices,
+                AisleId = cell.AisleId,
+                AreaId = cell.AreaId,
+                CellStatusChoices = cellStatusChoices,
+                CellStatusId = cell.CellStatusId,
+                CellTypeChoices = cellTypeChoices,
+                CellTypeId = cell.CellTypeId,
+                Column = cell.Column,
+                Floor = cell.Floor,
+                Id = cell.Id,
+                LoadingUnitsCount = cell.LoadingUnitsCount,
+                Number = cell.Number,
+                Priority = cell.Priority,
+                Side = (Side)cell.Side,
+                XCoordinate = cell.XCoordinate,
+                YCoordinate = cell.YCoordinate,
+                ZCoordinate = cell.ZCoordinate,
+            };
         }
 
-        public IQueryable<Cell> GetWithStatusEmpty()
+        public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
-            return GetAllCellsWithFilter(this.dataContext.Current, StatusEmptyFilter);
+            return await this.cellsDataService.GetUniqueValuesAsync(propertyName);
         }
 
-        public int GetWithStatusEmptyCount()
-        {
-            using (var dc = this.dataContext.Current)
-            {
-                return dc.Cells.AsNoTracking().Count(StatusEmptyFilter);
-            }
-        }
-
-        public IQueryable<Cell> GetWithStatusFull()
-        {
-            return GetAllCellsWithFilter(this.dataContext.Current, StatusFullFilter);
-        }
-
-        public int GetWithStatusFullCount()
-        {
-            using (var dc = this.dataContext.Current)
-            {
-                return dc.Cells.AsNoTracking().Count(StatusFullFilter);
-            }
-        }
-
-        public bool HasAnyLoadingUnits(int cellId)
-        {
-            using (var dc = this.dataContext.Current)
-            {
-                return dc.LoadingUnits.AsNoTracking().Any(l => l.CellId == cellId);
-            }
-        }
-
-        public async Task<OperationResult> SaveAsync(CellDetails model)
+        public async Task<IOperationResult<CellDetails>> UpdateAsync(CellDetails model)
         {
             if (model == null)
             {
@@ -175,75 +163,33 @@ cell => cell.CellStatusId == 1;
 
             try
             {
-                using (var dc = this.dataContext.Current)
+                await this.cellsDataService.UpdateAsync(new WMS.Data.WebAPI.Contracts.CellDetails
                 {
-                    var existingModel = dc.Cells.Find(model.Id);
+                    AbcClassId = model.AbcClassId,
+                    AisleId = model.AisleId,
+                    AreaId = model.AreaId,
+                    CellStatusId = model.CellStatusId,
+                    CellTypeId = model.CellTypeId,
+                    Column = model.Column,
+                    Floor = model.Floor,
+                    Id = model.Id,
+                    LoadingUnitsCount = model.LoadingUnitsCount,
+                    Number = model.Number,
+                    Priority = model.Priority,
+                    Side = (WMS.Data.WebAPI.Contracts.Side)model.Side,
+                    XCoordinate = model.XCoordinate,
+                    YCoordinate = model.YCoordinate,
+                    ZCoordinate = model.ZCoordinate,
+                });
 
-                    dc.Entry(existingModel).CurrentValues.SetValues(model);
-
-                    var changedEntityCount = await dc.SaveChangesAsync();
-
-                    return new OperationResult(changedEntityCount > 0);
-                }
+                return new OperationResult<CellDetails>(true);
             }
             catch (Exception ex)
             {
-                return new OperationResult(ex);
+                return new OperationResult<CellDetails>(ex);
             }
         }
 
-        private static IQueryable<Cell> GetAllCellsWithFilter(DatabaseContext context, Expression<Func<DataModels.Cell, bool>> whereFunc = null)
-        {
-            var actualWhereFunc = whereFunc ?? ((i) => true);
-
-            return context.Cells
-               .AsNoTracking()
-               .Include(c => c.AbcClass)
-               .Include(c => c.Aisle)
-               .ThenInclude(a => a.Area)
-               .Include(c => c.CellStatus)
-               .Include(c => c.CellType)
-               .Where(actualWhereFunc)
-               .GroupJoin(
-                    context.LoadingUnits
-                        .AsNoTracking()
-                        .GroupBy(l => l.CellId)
-                        .Select(j => new
-                        {
-                            CellId = j.Key,
-                            LoadingUnitsCount = j.Count(),
-                            LoadingUnitsDescription = string.Join(",", j.Select(x => x.Code)),
-                        }),
-                    c => c.Id,
-                    l => l.CellId,
-                    (c, l) => new
-                    {
-                        Cell = c,
-                        LoadingUnitsAggregation = l.DefaultIfEmpty(),
-                    })
-               .SelectMany(
-                    x => x.LoadingUnitsAggregation.DefaultIfEmpty(),
-                    (a, b) => new Cell
-                    {
-                        Id = a.Cell.Id,
-                        AbcClassDescription = a.Cell.AbcClass.Description,
-                        AisleName = a.Cell.Aisle.Name,
-                        AreaName = a.Cell.Aisle.Area.Name,
-                        Column = a.Cell.Column,
-                        Floor = a.Cell.Floor,
-                        Number = a.Cell.CellNumber,
-                        Priority = a.Cell.Priority,
-                        Side = (Side)a.Cell.Side,
-                        Status = a.Cell.CellStatus.Description,
-                        Type = a.Cell.CellType.Description,
-                        XCoordinate = a.Cell.XCoordinate,
-                        YCoordinate = a.Cell.YCoordinate,
-                        ZCoordinate = a.Cell.ZCoordinate,
-                        LoadingUnitsCount = b != null ? b.LoadingUnitsCount : 0,
-                        LoadingUnitsDescription = b != null ? b.LoadingUnitsDescription : string.Empty,
-                    });
-        }
-
-        #endregion Methods
+        #endregion
     }
 }

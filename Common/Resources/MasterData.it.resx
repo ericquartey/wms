@@ -461,4 +461,10 @@
   <data name="QuantityWithUnitMeasure" xml:space="preserve">
     <value>{0} [{1}]</value>
   </data>
+  <data name="ItemImage" xml:space="preserve">
+    <value>Immagine Articolo</value>
+  </data>
+  <data name="EditLoadingUnit" xml:space="preserve">
+    <value>Modica Unità di Carico</value>
+  </data>
 </root>

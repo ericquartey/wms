@@ -18,13 +18,13 @@ namespace Ferretto.Common.Controls
             this.Items = items;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public ObservableCollection<NavMenuItem> Items { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -38,6 +38,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

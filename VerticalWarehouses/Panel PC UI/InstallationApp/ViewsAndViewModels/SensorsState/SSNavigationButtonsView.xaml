@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="Ferretto.VW.InstallationApp.SSNavigationButtonsView"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:local="clr-namespace:Ferretto.VW.InstallationApp"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:myType="clr-namespace:Ferretto.VW.Utils.Source;assembly=Ferretto.VW.Utils"
+                 xmlns:prism="http://prismlibrary.com/"
+                 xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
+                 prism:ViewModelLocator.AutoWireViewModel="True"
+                 mc:Ignorable="d">
+    <Grid Height="608"
+          Margin="25,0,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="500" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="1"
+                    VerticalAlignment="Top">
+            <Button Command="{Binding VerticalButtonCommand}"
+                    Content="{x:Static res:InstallationApp.VerticalAxisButton}"
+                    Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+            <Button Command="{Binding BaysButtonCommand}"
+                    Content="{x:Static res:InstallationApp.Bays}"
+                    Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+            <Button Command="{Binding VariousButtonCommand}"
+                    Content="{x:Static res:InstallationApp.VariousInputs}"
+                    Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+        </StackPanel>
+    </Grid>
+</UserControl>

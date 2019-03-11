@@ -1,31 +1,22 @@
-﻿using System;
-using System.Linq;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
 {
-    public interface ICellProvider : IBusinessProvider<Cell, CellDetails>
+    public interface ICellProvider :
+        IPagedBusinessProvider<Cell, int>,
+        IReadSingleAsyncProvider<CellDetails, int>,
+        IUpdateAsyncProvider<CellDetails, int>
     {
         #region Methods
 
-        IQueryable<Enumeration> GetByAisleId(int aisleId);
+        Task<IEnumerable<Enumeration>> GetByAisleIdAsync(int aisleId);
 
-        IQueryable<Enumeration> GetByAreaId(int areaId);
+        Task<IEnumerable<Enumeration>> GetByAreaIdAsync(int areaId);
 
-        IQueryable<Cell> GetWithClassA();
-
-        int GetWithClassACount();
-
-        IQueryable<Cell> GetWithStatusEmpty();
-
-        int GetWithStatusEmptyCount();
-
-        IQueryable<Cell> GetWithStatusFull();
-
-        int GetWithStatusFullCount();
-
-        bool HasAnyLoadingUnits(int cellId);
-
-        #endregion Methods
+        #endregion
     }
 }

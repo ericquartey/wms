@@ -14,19 +14,19 @@ namespace Ferretto.WMS.Modules.Machines
             this.MainGridControl.AsyncOperationCompleted += this.MainGridControl_AsyncOperationCompleted;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
         private async void MainGridControl_AsyncOperationCompleted(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (this.DataContext is EntityListViewModel<Machine> viewModel)
+            if (this.DataContext is EntityListViewModel<Machine, int> viewModel)
             {
                 await viewModel.UpdateFilterTilesCountsAsync().ConfigureAwait(true);
                 this.MainGridControl.AsyncOperationCompleted -= this.MainGridControl_AsyncOperationCompleted;
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -1,0 +1,26 @@
+resources:
+- repo: self
+  clean: true
+
+queue:
+  name: Hosted VS2017
+  demands:
+  - msbuild
+  - visualstudio
+  - vstest
+
+trigger:
+  branches:
+    include:
+    - develop
+  paths:
+    exclude:
+    - Common
+    - WMS
+    - VerticalWarehouses\Machine Automation Service
+
+steps:
+- template: azure-pipeline-vw-ui-template.yml
+  parameters:
+    BuildConfiguration: 'debug'
+    BuildPlatform: 'any cpu'

@@ -2,18 +2,18 @@
 
 namespace Ferretto.Common.Controls.Interfaces
 {
-    public interface IEntityListViewModel : IRefreshDataEntityViewModel
+    public interface IEntityListViewModel : IExtensionDataEntityViewModel
     {
         #region Properties
 
         bool FlattenDataSource { get; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
         Task UpdateFilterTilesCountsAsync();
 
-        #endregion Methods
+        #endregion
     }
 }

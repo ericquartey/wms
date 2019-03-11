@@ -19,6 +19,8 @@ namespace Ferretto.Common.DataModels
 
         public int Id { get; set; }
 
+        public bool IsActive { get; set; }
+
         public int? LoadingUnitsBufferSize { get; set; }
 
         public Machine Machine { get; set; }
@@ -29,6 +31,6 @@ namespace Ferretto.Common.DataModels
 
         public IEnumerable<SchedulerRequest> SchedulerRequests { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

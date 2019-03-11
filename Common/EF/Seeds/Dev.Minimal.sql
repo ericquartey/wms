@@ -7,20 +7,20 @@ EXEC sp_MSforeachtable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL'
 DECLARE @tablename nvarchar(max)
 
 DECLARE cur CURSOR FOR
-SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME NOT IN ('__EFMigrationsHistory')
+  SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME NOT IN ('__EFMigrationsHistory')
 OPEN cur
 
 FETCH cur into @tablename
 WHILE @@FETCH_STATUS = 0
 BEGIN
-	EXEC('DELETE FROM ' + @tablename)
+  EXEC('DELETE FROM ' + @tablename)
 
-	IF EXISTS (Select * from sys.identity_columns where object_name(object_id) = @tablename)
-	BEGIN
-		EXEC('DBCC CHECKIDENT (''' + @tablename + ''', RESEED, 0) WITH NO_INFOMSGS')
-	END
+  IF EXISTS (Select * from sys.identity_columns where object_name(object_id) = @tablename)
+    BEGIN
+      EXEC('DBCC CHECKIDENT (''' + @tablename + ''', RESEED, 0) WITH NO_INFOMSGS')
+    END
 
-    FETCH cur into @tablename
+  FETCH cur into @tablename
 END
 
 CLOSE cur
@@ -29,22 +29,21 @@ DEALLOCATE cur
 EXEC sp_MSforeachtable 'ALTER TABLE ? ENABLE TRIGGER ALL'
 EXEC sp_MSforeachtable 'ALTER TABLE ? CHECK CONSTRAINT ALL'
 
-
 BEGIN TRANSACTION;
 
 -- Areas / Aisles
 DECLARE
-    @manual_area int = 1,
-    @vrtmag_area int = 2,
+  @manual_area int = 1,
+  @vrtmag_area int = 2,
 
-    @manual_aisle1 int = 1,
-    @manual_aisle2 int = 2,
-    @manual_aisle3 int = 3,
+  @manual_aisle1 int = 1,
+  @manual_aisle2 int = 2,
+  @manual_aisle3 int = 3,
 
-    @vrtmag_aisle1 int = 4,
-    @vrtmag_aisle2 int = 5,
-    @vrtmag_aisle3 int = 6,
-    @vrtmag_aisle4 int = 7;
+  @vrtmag_aisle1 int = 4,
+  @vrtmag_aisle2 int = 5,
+  @vrtmag_aisle3 int = 6,
+  @vrtmag_aisle4 int = 7;
 
 SET IDENTITY_INSERT Areas ON;
 INSERT INTO Areas (Id, Name) VALUES (@manual_area, 'Manual Area');
@@ -63,8 +62,8 @@ SET IDENTITY_INSERT Aisles OFF;
 
 -- Item management types
 DECLARE
-    @item_management_fifo char(1) = 'F',
-    @item_management_vol  char(1) = 'V'
+  @item_management_fifo char(1) = 'F',
+  @item_management_vol  char(1) = 'V'
 
 --Items
 INSERT INTO AbcClasses (Id, Description) VALUES ('A', 'A Class');
@@ -85,17 +84,17 @@ INSERT INTO MeasureUnits (Id, Description) VALUES ('L' , 'Liters');
 
 SET IDENTITY_INSERT Items ON;
 INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ManagementType, ItemCategoryId, Image, InventoryDate, LastModificationDate, LastPickDate, LastStoreDate)
-  VALUES (1, '0U000498', '000498        FRESA SMUSSO PUNTA KABA'   , 'A', 'PZ', @item_management_fifo, 1, 'Articolo1.jpg', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+VALUES (1, '0U000498', '000498        FRESA SMUSSO PUNTA KABA'   , 'A', 'PZ', @item_management_fifo, 1, 'Articolo1.jpg', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ManagementType, ItemCategoryId, Image, InventoryDate, LastModificationDate, LastPickDate, LastStoreDate)
-  VALUES (2, '0U000499', '000499        FRESA SMUSSO PUNTA KESO'   , 'A', 'PZ', @item_management_fifo, 2, 'Articolo2.jpg', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+VALUES (2, '0U000499', '000499        FRESA SMUSSO PUNTA KESO'   , 'A', 'PZ', @item_management_fifo, 2, 'Articolo2.jpg', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ManagementType, ItemCategoryId, Image, InventoryDate, LastModificationDate, LastPickDate, LastStoreDate)
-  VALUES (3, '0U000524', '000524        FRESA DESTRA 50X50X22 Z=12', 'B', 'PZ', @item_management_vol , 3, 'Articolo3.jpg', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+VALUES (3, '0U000524', '000524        FRESA DESTRA 50X50X22 Z=12', 'B', 'PZ', @item_management_vol , 3, 'Articolo3.jpg', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ManagementType, ItemCategoryId, Image, InventoryDate, LastModificationDate, LastPickDate, LastStoreDate)
-  VALUES (4, '0U000578', '000578        FRESA DORSI VAC91'         , 'B', 'PZ', @item_management_fifo, 4, 'Articolo4.jpg', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+VALUES (4, '0U000578', '000578        FRESA DORSI VAC91'         , 'B', 'PZ', @item_management_fifo, 4, 'Articolo4.jpg', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ManagementType, ItemCategoryId, Image, InventoryDate, LastModificationDate, LastPickDate, LastStoreDate)
-  VALUES (5, '0U000585', '000585        FR.PROF.COSTANTE FR.LAT.'  , 'C', 'PZ', @item_management_vol , 5, 'Articolo5.jpg', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+VALUES (5, '0U000585', '000585        FR.PROF.COSTANTE FR.LAT.'  , 'C', 'PZ', @item_management_vol , 5, 'Articolo5.jpg', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ManagementType, ItemCategoryId, Image, InventoryDate, LastModificationDate, LastPickDate, LastStoreDate)
-  VALUES (6, '0U000640', '000640        FRESA A PLACCHE RIPORTATE' , 'C', 'PZ', @item_management_fifo, 1, 'Articolo6.jpg', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+VALUES (6, '0U000640', '000640        FRESA A PLACCHE RIPORTATE' , 'C', 'PZ', @item_management_fifo, 1, 'Articolo6.jpg', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 SET IDENTITY_INSERT Items OFF;
 
 INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (1, @manual_area);
@@ -176,8 +175,8 @@ SET IDENTITY_INSERT CellTypes OFF;
 
 SET IDENTITY_INSERT Cells ON;
 -- automatic warehouse
-INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (1, @manual_aisle1, 1, 1, 'L', 1, 1, 1, 'A', 1);
-INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (2, @manual_aisle1, 1, 1, 'R', 2, 2, 1, 'A', 1);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (1, @manual_aisle1, 1, 1, 'L', 1, 1, 1, 'A', 3);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (2, @manual_aisle1, 1, 1, 'R', 2, 2, 1, 'A', 3);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (3, @manual_aisle1, 1, 2, 'L', 3, 3, 1, 'A', 1);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (4, @manual_aisle1, 1, 2, 'R', 4, 4, 1, 'A', 1);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (5, @manual_aisle1, 1, 3, 'L', 5, 5, 1, 'A', 1);
@@ -477,11 +476,11 @@ INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, Cel
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (299, @manual_aisle3, 5, 10, 'L', 99, 99, 2, 'C', 1);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (300, @manual_aisle3, 5, 10, 'R', 100, 100, 2, 'C', 1);
 -- vertimag warehouses
-INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (301, @vrtmag_aisle1, 1, 1, 'F', 1, 1, 15, 'A', 1);
-INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (302, @vrtmag_aisle1, 2, 1, 'F', 3, 3, 15, 'A', 1);
-INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (303, @vrtmag_aisle1, 3, 1, 'F', 5, 5, 15, 'A', 1);
-INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (304, @vrtmag_aisle1, 4, 1, 'F', 7, 7, 15, 'A', 1);
-INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (305, @vrtmag_aisle1, 5, 1, 'F', 9, 9, 15, 'A', 1);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (301, @vrtmag_aisle1, 1, 1, 'F', 1, 1, 15, 'A', 3);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (302, @vrtmag_aisle1, 2, 1, 'F', 3, 3, 15, 'A', 3);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (303, @vrtmag_aisle1, 3, 1, 'F', 5, 5, 15, 'A', 3);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (304, @vrtmag_aisle1, 4, 1, 'F', 7, 7, 15, 'A', 3);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (305, @vrtmag_aisle1, 5, 1, 'F', 9, 9, 15, 'A', 3);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (306, @vrtmag_aisle1, 6, 1, 'F', 11, 11, 15, 'A', 1);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (307, @vrtmag_aisle1, 7, 1, 'F', 13, 13, 15, 'A', 1);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (308, @vrtmag_aisle1, 8, 1, 'F', 15, 15, 15, 'A', 1);
@@ -497,11 +496,11 @@ INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, Cel
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (318, @vrtmag_aisle1, 8, 1, 'B', 16, 16, 15, 'A', 1);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (319, @vrtmag_aisle1, 9, 1, 'B', 18, 18, 15, 'A', 1);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (320, @vrtmag_aisle1, 10, 1, 'B', 20, 20, 15, 'A', 1);
-INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (321, @vrtmag_aisle2, 1, 1, 'F', 1, 1, 5, 'A', 1);
-INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (322, @vrtmag_aisle2, 2, 1, 'F', 3, 3, 5, 'A', 1);
-INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (323, @vrtmag_aisle2, 3, 1, 'F', 5, 5, 5, 'A', 1);
-INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (324, @vrtmag_aisle2, 4, 1, 'F', 7, 7, 5, 'A', 1);
-INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (325, @vrtmag_aisle2, 5, 1, 'F', 9, 9, 5, 'A', 1);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (321, @vrtmag_aisle2, 1, 1, 'F', 1, 1, 5, 'A', 3);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (322, @vrtmag_aisle2, 2, 1, 'F', 3, 3, 5, 'A', 3);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (323, @vrtmag_aisle2, 3, 1, 'F', 5, 5, 5, 'A', 3);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (324, @vrtmag_aisle2, 4, 1, 'F', 7, 7, 5, 'A', 3);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (325, @vrtmag_aisle2, 5, 1, 'F', 9, 9, 5, 'A', 3);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (326, @vrtmag_aisle2, 6, 1, 'F', 11, 11, 5, 'A', 1);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (327, @vrtmag_aisle2, 7, 1, 'F', 13, 13, 5, 'A', 1);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (328, @vrtmag_aisle2, 8, 1, 'F', 15, 15, 5, 'A', 1);
@@ -517,11 +516,11 @@ INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, Cel
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (338, @vrtmag_aisle2, 8, 1, 'B', 16, 16, 5, 'A', 1);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (339, @vrtmag_aisle2, 9, 1, 'B', 18, 18, 5, 'A', 1);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (340, @vrtmag_aisle2, 10, 1, 'B', 20, 20, 5, 'A', 1);
-INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (341, @vrtmag_aisle3, 1, 1, 'F', 1, 1, 10, 'A', 1);
-INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (342, @vrtmag_aisle3, 2, 1, 'F', 3, 3, 10, 'A', 1);
-INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (343, @vrtmag_aisle3, 3, 1, 'F', 5, 5, 10, 'A', 1);
-INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (344, @vrtmag_aisle3, 4, 1, 'F', 7, 7, 10, 'A', 1);
-INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (345, @vrtmag_aisle3, 5, 1, 'F', 9, 9, 10, 'A', 1);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (341, @vrtmag_aisle3, 1, 1, 'F', 1, 1, 10, 'A', 3);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (342, @vrtmag_aisle3, 2, 1, 'F', 3, 3, 10, 'A', 3);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (343, @vrtmag_aisle3, 3, 1, 'F', 5, 5, 10, 'A', 3);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (344, @vrtmag_aisle3, 4, 1, 'F', 7, 7, 10, 'A', 3);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (345, @vrtmag_aisle3, 5, 1, 'F', 9, 9, 10, 'A', 3);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (346, @vrtmag_aisle3, 6, 1, 'F', 11, 11, 10, 'A', 1);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (347, @vrtmag_aisle3, 7, 1, 'F', 13, 13, 10, 'A', 1);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (348, @vrtmag_aisle3, 8, 1, 'F', 15, 15, 10, 'A', 1);
@@ -537,11 +536,11 @@ INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, Cel
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (358, @vrtmag_aisle3, 8, 1, 'B', 16, 16, 10, 'A', 1);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (359, @vrtmag_aisle3, 9, 1, 'B', 18, 18, 10, 'A', 1);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (360, @vrtmag_aisle3, 10, 1, 'B', 20, 20, 10, 'A', 1);
-INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (361, @vrtmag_aisle4, 1, 1, 'F', 1, 1, 13, 'A', 1);
-INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (362, @vrtmag_aisle4, 2, 1, 'F', 3, 3, 13, 'A', 1);
-INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (363, @vrtmag_aisle4, 3, 1, 'F', 5, 5, 13, 'A', 1);
-INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (364, @vrtmag_aisle4, 4, 1, 'F', 7, 7, 13, 'A', 1);
-INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (365, @vrtmag_aisle4, 5, 1, 'F', 9, 9, 13, 'A', 1);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (361, @vrtmag_aisle4, 1, 1, 'F', 1, 1, 13, 'A', 3);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (362, @vrtmag_aisle4, 2, 1, 'F', 3, 3, 13, 'A', 3);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (363, @vrtmag_aisle4, 3, 1, 'F', 5, 5, 13, 'A', 3);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (364, @vrtmag_aisle4, 4, 1, 'F', 7, 7, 13, 'A', 3);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (365, @vrtmag_aisle4, 5, 1, 'F', 9, 9, 13, 'A', 3);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (366, @vrtmag_aisle4, 6, 1, 'F', 11, 11, 13, 'A', 1);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (367, @vrtmag_aisle4, 7, 1, 'F', 13, 13, 13, 'A', 1);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (368, @vrtmag_aisle4, 8, 1, 'F', 15, 15, 13, 'A', 1);
@@ -744,11 +743,11 @@ INSERT INTO CompartmentStatuses (Id, Description) VALUES (6, 'Disabled');
 SET IDENTITY_INSERT CompartmentStatuses OFF;
 
 DECLARE
-    @CompTypesId_100x100 int = 3,
-    @CompTypesId_50x50 int = 2,
-    @CompTypesId_800x1200 int = 1,
-    @CompTypesId_500x215 int = 5,
-    @CompTypesId_500x325 int = 4;
+  @CompTypesId_100x100 int = 3,
+  @CompTypesId_50x50 int = 2,
+  @CompTypesId_800x1200 int = 1,
+  @CompTypesId_500x215 int = 5,
+  @CompTypesId_500x325 int = 4;
 
 SET IDENTITY_INSERT CompartmentTypes ON;
 INSERT INTO CompartmentTypes (Id, Width, Height) VALUES (@CompTypesId_800x1200, 800, 1200);
@@ -775,36 +774,36 @@ INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUE
 SET IDENTITY_INSERT Compartments ON;
 -- manual area
 INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (1, 1, @CompTypesId_50x50, 0, 1, 1, 1, 2, 5, 's1s1s1', 's2s2s2', 'llllll', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+VALUES (1, 1, @CompTypesId_50x50, 0, 1, 1, 1, 2, 5, 's1s1s1', 's2s2s2', 'llllll', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (2, 2, @CompTypesId_50x50, 0, 1, 1, 1, 2, 10, 's3s3s3', 's4s4s4', 'mmmmmm', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+VALUES (2, 2, @CompTypesId_50x50, 0, 1, 1, 1, 2, 10, 's3s3s3', 's4s4s4', 'mmmmmm', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 -- vertimag
 INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (3, 3, @CompTypesId_500x325, 0, 1, 1, 1, 2, 0, 's5s5s5', 's6s6s6', 'nnnnnn', 0, 0, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+VALUES (3, 3, @CompTypesId_500x325, 0, 1, 1, 1, 2, 0, 's5s5s5', 's6s6s6', 'nnnnnn', 0, 0, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (4, 3, @CompTypesId_500x325, 0, 1, 1, 1, 2, 5, 's7s7s7', 's8s8s8', 'pppppp', 0, 325, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+VALUES (4, 3, @CompTypesId_500x325, 0, 1, 1, 1, 2, 5, 's7s7s7', 's8s8s8', 'pppppp', 0, 325, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (5, 3, @CompTypesId_500x215, 0, 1, 1, 1, 2, 10, 's9s9s9', 's10s10s10', 'rrrrrr', 500, 0, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+VALUES (5, 3, @CompTypesId_500x215, 0, 1, 1, 1, 2, 10, 's9s9s9', 's10s10s10', 'rrrrrr', 500, 0, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (6, 3, @CompTypesId_500x215, 0, 1, 1, 1, 2, 20, 's11s11s11', 's12s12s12', 'tttttt', 500, 215, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+VALUES (6, 3, @CompTypesId_500x215, 1, 1, 1, 1, 2, 20, 's11s11s11', 's12s12s12', 'tttttt', 500, 215, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (7, 3, @CompTypesId_500x215, 0, 1, 1, 1, 2, 30, 's13s13s13', 's14s14s14', 'uuuuuu', 500, 430, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+VALUES (7, 3, @CompTypesId_500x215, 1, 1, 1, 1, 2, 30, 's13s13s13', 's14s14s14', 'uuuuuu', 500, 430, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (8, 3, @CompTypesId_500x325, 0, 1, 1, 1, 2, 40, 's15s15s15', 's16s16s16', 'vvvvvv', 1000, 0, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+VALUES (8, 3, @CompTypesId_500x325, 1, 1, 1, 1, 2, 40, 's15s15s15', 's16s16s16', 'vvvvvv', 1000, 0, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (9, 3, @CompTypesId_500x325, 0, 1, 1, 1, 2, 50, 's17s17s17', 's18s18s18', 'wwwwww', 1000, 325, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+VALUES (9, 3, @CompTypesId_500x325, 1, 1, 1, 1, 2, 50, 's17s17s17', 's18s18s18', 'wwwwww', 1000, 325, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (10, 3, @CompTypesId_500x215, 0, 1, 1, 1, 2, 60, 's19s19s19', 's20s20s20', 'xxxxxx', 1500, 0, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+VALUES (10, 3, @CompTypesId_500x215, 1, 1, 1, 1, 2, 60, 's19s19s19', 's20s20s20', 'xxxxxx', 1500, 0, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (11, 3, @CompTypesId_500x215, 0, 1, 1, 1, 2, 70, 's21s21s21', 's22s22s22', 'yyyyyy', 1500, 215, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+VALUES (11, 3, @CompTypesId_500x215, 0, 1, 1, 1, 2, 70, 's21s21s21', 's22s22s22', 'yyyyyy', 1500, 215, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (12, 3, @CompTypesId_500x215, 0, 1, 1, 1, 2, 80, 's5s5s5', 's6s6s6', 'nnnnnn', 1500, 430, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+VALUES (12, 3, @CompTypesId_500x215, 0, 1, 1, 1, 2, 80, 's5s5s5', 's6s6s6', 'nnnnnn', 1500, 430, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (13, 3, @CompTypesId_500x325, 0, 1, 1, 1, 2, 90, 's7s7s7', 's8s8s8', 'pppppp', 2000, 0, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+VALUES (13, 3, @CompTypesId_500x325, 0, 1, 1, 1, 2, 90, 's7s7s7', 's8s8s8', 'pppppp', 2000, 0, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (14, 3, @CompTypesId_500x325, 0, 1, 1, 1, 2, 100, 's9s9s9', 's10s10s10', 'rrrrrr', 2000, 325, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+VALUES (14, 3, @CompTypesId_500x325, 0, 1, 1, 1, 2, 100, 's9s9s9', 's10s10s10', 'rrrrrr', 2000, 325, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, LastHandlingDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-  VALUES (15, 4, @CompTypesId_50x50, 0, 3, 1, 1, 2, 40, 'sss111', 'sss222', 'qqqqqq', 0, 0, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+VALUES (15, 4, @CompTypesId_50x50, 0, 3, 1, 1, 2, 40, 'sss111', 'sss222', 'qqqqqq', 0, 0, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 SET IDENTITY_INSERT Compartments OFF;
 
 -- Machines
@@ -823,12 +822,12 @@ SET IDENTITY_INSERT Machines OFF;
 
 -- Bay Types
 DECLARE
-    @BayTypes_Input char(1) = 'I',
-    @BayTypes_Output char(1) = 'W',
-    @BayTypes_Picking char(1) = 'P',
-    @BayTypes_TrasloLoad char(1) = 'L',
-    @BayTypes_TrasloUnload char(1) = 'U',
-    @BayTypes_Vertimag char(1) = 'V';
+  @BayTypes_Input char(1) = 'I',
+  @BayTypes_Output char(1) = 'W',
+  @BayTypes_Picking char(1) = 'P',
+  @BayTypes_TrasloLoad char(1) = 'L',
+  @BayTypes_TrasloUnload char(1) = 'U',
+  @BayTypes_Vertimag char(1) = 'V';
 
 -- Bays
 INSERT INTO BayTypes (Id, Description) VALUES (@BayTypes_Input, 'Input Bay');
@@ -848,10 +847,10 @@ SET IDENTITY_INSERT Bays OFF;
 
 -- Operation Types
 DECLARE
-    @OperationType_Insertion char(1) = 'I',
-    @OperationType_Withdrawal char(1) = 'W',
-    @OperationType_Replacement char(1) = 'R',
-    @OperationType_Reorder char(1) = 'O';
+  @OperationType_Insertion char(1) = 'I',
+  @OperationType_Withdrawal char(1) = 'W',
+  @OperationType_Replacement char(1) = 'R',
+  @OperationType_Reorder char(1) = 'O';
 
 -- Scheduler Requests
 SET IDENTITY_INSERT SchedulerRequests ON;
@@ -863,20 +862,20 @@ SET IDENTITY_INSERT SchedulerRequests OFF;
 
 --Lists
 DECLARE
-    @ItemList1_Id int = 1,
-    @ItemList2_Id int = 2;
+  @ItemList1_Id int = 1,
+  @ItemList2_Id int = 2;
 
 DECLARE
-    @ItemListType_Put char(1) = 'U',
-    @ItemListType_Pik char(1) = 'P',
-    @ItemListType_Inv char(1) = 'I';
+  @ItemListType_Put char(1) = 'U',
+  @ItemListType_Pik char(1) = 'P',
+  @ItemListType_Inv char(1) = 'I';
 
 DECLARE
-   @ItemListStatus_Exec char(1) = 'E',
-   @ItemListStatus_Comp char(1) = 'C',
-   @ItemListStatus_Incm char(1) = 'I',
-   @ItemListStatus_Susp char(1) = 'S',
-   @ItemListStatus_Wait char(1) = 'W';
+  @ItemListStatus_Exec char(1) = 'E',
+  @ItemListStatus_Comp char(1) = 'C',
+  @ItemListStatus_Incm char(1) = 'I',
+  @ItemListStatus_Susp char(1) = 'S',
+  @ItemListStatus_Wait char(1) = 'W';
 
 SET IDENTITY_INSERT ItemLists ON;
 INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, Status, ShipmentUnitAssociated, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList1_Id, 'List-1', @ItemListType_Pik, 'First List', 1, 'W', 1, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');

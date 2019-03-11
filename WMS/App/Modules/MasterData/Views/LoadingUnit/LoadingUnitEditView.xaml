@@ -15,9 +15,10 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              EnableHistoryView="True"
-             SubTitle="{Binding LoadingUnit.Code, StringFormat={x:Static res:Title.LoadingUnitEditView}}"
+             IsVisibleBackButton="{Binding IsSidePanelOpen, Converter={StaticResource BNC}}"
+             SubTitle="{Binding LoadingUnitDetails.Code, StringFormat={x:Static res:Title.LoadingUnitEditView}}"
              mc:Ignorable="d">
-    <Grid>
+    <Grid Margin="10,5,0,10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
@@ -35,7 +36,7 @@
                            Margin="10,10,10,0"
                            HorizontalAlignment="Right"
                            Style="{DynamicResource ActionBarNotCustomizable}">
-                <wms:ActionBarItem Command="{Binding EditCommand, IsAsync=True}"
+                <wms:ActionBarItem Command="{Binding EditCommand}"
                                    Content="{x:Static res:MasterData.EditCompartment}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/ic_edit_black_24dp.png"
@@ -55,13 +56,20 @@
             <wms:WmsTrayControl x:Name="TrayControl"
                                 Grid.Row="1"
                                 Margin="0,10,0,0"
-                                IsCompartmentSelectable="{Binding IsSidePanelOpen}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                CommandDoubleClick="{Binding EditCommand}"
+                                Compartments="{Binding LoadingUnitDetails.Compartments}"
+                                DimensionHeight="{Binding LoadingUnitDetails.Length}"
+                                DimensionWidth="{Binding LoadingUnitDetails.Width}"
+                                IsCompartmentSelectable="{Binding IsSidePanelOpen, Converter={StaticResource BNC}}"
                                 IsReadOnly="{Binding IsSidePanelOpen}"
+                                RulerFontSize="8"
+                                RulerInfo="mm"
                                 SelectedColorFilterFunc="{Binding FilterColorFunc}"
                                 SelectedItem="{Binding SelectedCompartmentTray, Mode=TwoWay}"
                                 ShowBackground="True"
-                                ShowRuler="True"
-                                Tray="{Binding Tray, Mode=OneWay}" />
+                                ShowRuler="True" />
 
             <wms:WmsGridControl Grid.Row="2"
                                 MinHeight="50"
@@ -69,14 +77,13 @@
                                 MaxHeight="500"
                                 HorizontalAlignment="Left"
                                 ItemsSource="{Binding CompartmentsDataSource, Mode=OneWay}"
-                                SelectedBusinessObject="{Binding SelectedCompartmentTray, Mode=TwoWay}">
+                                SelectedBusinessObject="{Binding SelectedCompartmentTray, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <wms:WmsGridControl.View>
                     <dxg:TableView NavigationStyle="Row">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="RowDoubleClick">
-                                <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartmentTray.Id, Mode=OneWay}"
-                                                          StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
-                                                          StartViewName="{x:Static modules:MasterData.COMPARTMENTDETAILS}" />
+                                <i:InvokeCommandAction Command="{Binding EditCommand}"
+                                                       CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartmentTray.Id, Mode=OneWay}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </dxg:TableView>
@@ -84,16 +91,72 @@
 
                 <wms:WmsGridControl.Columns>
                     <dxg:GridColumn Width="100*"
+                                    Header="{x:Static res:General.Position}">
+                        <dxg:GridColumn.CellDisplayTemplate>
+                            <DataTemplate>
+                                <TextBlock Style="{DynamicResource TextBlockCell}">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource SFC}">
+                                            <Binding Source="{x:Static res:General.PositionFormat}" />
+                                            <Binding Path="Data.XPosition"
+                                                     TargetNullValue="" />
+                                            <Binding Path="Data.YPosition"
+                                                     TargetNullValue="" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellDisplayTemplate>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn Width="100*"
+                                    Header="{x:Static res:General.Dimension}">
+                        <dxg:GridColumn.CellDisplayTemplate>
+                            <DataTemplate>
+                                <TextBlock Style="{DynamicResource TextBlockCell}">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource SFC}">
+                                            <Binding Source="{x:Static res:General.DimensionFormat}" />
+                                            <Binding Path="Data.Width"
+                                                     TargetNullValue="" />
+                                            <Binding Path="Data.Height"
+                                                     TargetNullValue="" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellDisplayTemplate>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn Width="100*"
+                                    FieldName="ItemCode" />
+                    <dxg:GridColumn Width="250*"
+                                    FieldName="ItemDescription" />
+                    <dxg:GridColumn Width="100*"
                                     FieldName="Sub1" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="Sub2" />
                     <dxg:GridColumn Width="200*"
                                     FieldName="Lot" />
-                    <dxg:GridColumn Width="200*"
+                    <dxg:GridColumn Width="120*"
                                     FieldName="CompartmentStatusDescription" />
                     <dxg:GridColumn Width="100*"
-                                    FieldName="Stock" />
-                    <dxg:GridColumn Width="200*"
+                                    FieldName="Stock">
+                        <dxg:GridColumn.CellDisplayTemplate>
+                            <DataTemplate>
+                                <TextBlock VerticalAlignment="Center">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource SFC}">
+                                            <Binding Source="{x:Static res:MasterData.QuantityWithUnitMeasure}" />
+                                            <Binding Path="Data.Stock"
+                                                     TargetNullValue="" />
+                                            <Binding Path="Data.ItemMeasureUnit"
+                                                     TargetNullValue="" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellDisplayTemplate>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn Width="100*"
                                     CellDisplayTemplate="{DynamicResource BooleanCellTemplate}"
                                     FieldName="IsItemPairingFixed" />
                 </wms:WmsGridControl.Columns>

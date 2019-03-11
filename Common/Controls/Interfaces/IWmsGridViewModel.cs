@@ -8,6 +8,6 @@ namespace Ferretto.Common.Controls.Interfaces
 
         ICommand CmdRefresh { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

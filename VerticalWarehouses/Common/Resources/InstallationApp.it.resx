@@ -1,0 +1,790 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="UpperBound" xml:space="preserve">
+    <value>Limite superiore [mm]:</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="Resolution" xml:space="preserve">
+    <value>Risoluzione [imp/mm]:</value>
+  </data>
+  <data name="ActualPosition" xml:space="preserve">
+    <value>Posizione corrente:</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="Backward" xml:space="preserve">
+    <value>Indietro</value>
+  </data>
+  <data name="BeltBurnishing" xml:space="preserve">
+    <value>Rodaggio cinghia</value>
+  </data>
+  <data name="Down" xml:space="preserve">
+    <value>Giù</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Errore</value>
+  </data>
+  <data name="Forward" xml:space="preserve">
+    <value>Avanti</value>
+  </data>
+  <data name="GateSetUp" xml:space="preserve">
+    <value>Set Up barriera</value>
+  </data>
+  <data name="Installer" xml:space="preserve">
+    <value>Installatore</value>
+  </data>
+  <data name="LogOff" xml:space="preserve">
+    <value>Disconnetti</value>
+  </data>
+  <data name="LowSpeedMovementsTest" xml:space="preserve">
+    <value>Movimenti bassa velocità</value>
+  </data>
+  <data name="LSMTGateEngineButton" xml:space="preserve">
+    <value>Serranda</value>
+  </data>
+  <data name="LSMTGateEngineTitle" xml:space="preserve">
+    <value>Movimenti motore serranda</value>
+  </data>
+  <data name="LSMTHorizontalEngineButton" xml:space="preserve">
+    <value>Asse orizzontale</value>
+  </data>
+  <data name="LSMTHorizontalEngineTitle" xml:space="preserve">
+    <value>Movimenti asse orizzontale</value>
+  </data>
+  <data name="LSMTVerticalEngineButton" xml:space="preserve">
+    <value>Asse verticale</value>
+  </data>
+  <data name="LSMTVerticalEngineTitle" xml:space="preserve">
+    <value>Movimenti asse verticale</value>
+  </data>
+  <data name="Manual" xml:space="preserve">
+    <value>Manu</value>
+  </data>
+  <data name="NextButton" xml:space="preserve">
+    <value>Prossimo &gt;</value>
+  </data>
+  <data name="Off" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="OffsetCalibration" xml:space="preserve">
+    <value>Calibrazione offset</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>Su</value>
+  </data>
+  <data name="VerifyCircuitIntegrity" xml:space="preserve">
+    <value>Verifica integrità circuito</value>
+  </data>
+  <data name="VerifyPanelPosition" xml:space="preserve">
+    <value>Verifica posizione pannello</value>
+  </data>
+  <data name="VerifyWeightController" xml:space="preserve">
+    <value>Verifica controllo peso</value>
+  </data>
+  <data name="VerticalAxisCalibration" xml:space="preserve">
+    <value>Calibrazione asse verticale</value>
+  </data>
+  <data name="AxisCalibratedSuccessfully" xml:space="preserve">
+    <value>Calibrazione asse completata</value>
+  </data>
+  <data name="AxisNotCalibratedYet" xml:space="preserve">
+    <value>Calibrazione asse non effettuata</value>
+  </data>
+  <data name="LowerBound" xml:space="preserve">
+    <value>Limite inferiore [mm]:</value>
+  </data>
+  <data name="Offset" xml:space="preserve">
+    <value>Offset [mm]:</value>
+  </data>
+  <data name="Output" xml:space="preserve">
+    <value>Risultato:</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Inizia</value>
+  </data>
+  <data name="ResolutionCalibration" xml:space="preserve">
+    <value>Calibrazione risoluzione</value>
+  </data>
+  <data name="SensorsState" xml:space="preserve">
+    <value>Stato sensori</value>
+  </data>
+  <data name="Bays" xml:space="preserve">
+    <value>Baie e controllo altezza</value>
+  </data>
+  <data name="Cradle" xml:space="preserve">
+    <value>Culla</value>
+  </data>
+  <data name="Gate" xml:space="preserve">
+    <value>Barriera</value>
+  </data>
+  <data name="VariousInputs" xml:space="preserve">
+    <value>Input vari</value>
+  </data>
+  <data name="VerticalAxis" xml:space="preserve">
+    <value>Elevatore</value>
+  </data>
+  <data name="AntiIntrusionGate" xml:space="preserve">
+    <value>Barriera anti intrusione baia 1</value>
+  </data>
+  <data name="CradleEngineSelected" xml:space="preserve">
+    <value>Motore culla selezionato</value>
+  </data>
+  <data name="ElevatorEngineSelected" xml:space="preserve">
+    <value>Motore elevatore selezionato</value>
+  </data>
+  <data name="EmergencyEndRun" xml:space="preserve">
+    <value>Fine corsa d'emergenza</value>
+  </data>
+  <data name="GateSensorA" xml:space="preserve">
+    <value>Sensore A barriera</value>
+  </data>
+  <data name="GateSensorB" xml:space="preserve">
+    <value>Sensore B barriera</value>
+  </data>
+  <data name="LuPresenceOnMachineCradleSide" xml:space="preserve">
+    <value>Presenza UDC in culla lato macchina</value>
+  </data>
+  <data name="LuPresenceOnOperatorCradleSide" xml:space="preserve">
+    <value>Presenza UDC in culla lato operatore</value>
+  </data>
+  <data name="LuPresentInBay" xml:space="preserve">
+    <value>Presenza UDC in baia 1</value>
+  </data>
+  <data name="MicroCarterLeftSide" xml:space="preserve">
+    <value>Micro carter lato sinistro baia 1</value>
+  </data>
+  <data name="MicroCarterRightSide" xml:space="preserve">
+    <value>Micro carter lato destro baia 1</value>
+  </data>
+  <data name="MushroomHeadButton" xml:space="preserve">
+    <value>Fungo emergenza baia 1</value>
+  </data>
+  <data name="PawlEncoder" xml:space="preserve">
+    <value>Encoder nottolino</value>
+  </data>
+  <data name="ResetSecurityFunction" xml:space="preserve">
+    <value>Reset funzioni di sicurezza</value>
+  </data>
+  <data name="SecurityFunctionActive" xml:space="preserve">
+    <value>Funzione di sicurezza attiva</value>
+  </data>
+  <data name="ShapeControl" xml:space="preserve">
+    <value>Controllo sagoma</value>
+  </data>
+  <data name="VerticalAxisBrake" xml:space="preserve">
+    <value>Freno asse verticale</value>
+  </data>
+  <data name="ZeroPawlSensor" xml:space="preserve">
+    <value>Sensore nottolino a zero </value>
+  </data>
+  <data name="ZeroVerticalSensor" xml:space="preserve">
+    <value>Sensore zero asse verticale</value>
+  </data>
+  <data name="GateControl" xml:space="preserve">
+    <value>Test serranda</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="SetOriginVerticalAxisCompleted" xml:space="preserve">
+    <value>L'origine dell'asse verticale è stata effettuata correttamente.</value>
+  </data>
+  <data name="SetOriginVerticalAxisNotCompleted" xml:space="preserve">
+    <value>L'origine dell'asse verticale non è stata effettuata.</value>
+  </data>
+  <data name="FeedRate" xml:space="preserve">
+    <value>Feed rate %:</value>
+  </data>
+  <data name="OriginVerticalAxis" xml:space="preserve">
+    <value>Origine asse verticale</value>
+  </data>
+  <data name="BrakeResistanceOvertemperature" xml:space="preserve">
+    <value>Resistenza freni sovratemperatura</value>
+  </data>
+  <data name="Move" xml:space="preserve">
+    <value>Sposta</value>
+  </data>
+  <data name="GoToInitialPosition" xml:space="preserve">
+    <value>Vai a quota iniziale</value>
+  </data>
+  <data name="InitialPosition" xml:space="preserve">
+    <value>Posizione iniziale:</value>
+  </data>
+  <data name="MesuredLenght" xml:space="preserve">
+    <value>Spostamento misurato [mm]:</value>
+  </data>
+  <data name="NewResolution" xml:space="preserve">
+    <value>Nuova risoluzione [imp/mm]:</value>
+  </data>
+  <data name="RepositionLenght" xml:space="preserve">
+    <value>Lunghezza spostamento [mm]:</value>
+  </data>
+  <data name="ResolutionModified" xml:space="preserve">
+    <value>Risoluzione modificata correttamente.</value>
+  </data>
+  <data name="CurrentResolution" xml:space="preserve">
+    <value>Risoluzione attuale [imp/mm]:</value>
+  </data>
+  <data name="DesiredInitialPosition" xml:space="preserve">
+    <value>Quota iniziale [mm]:</value>
+  </data>
+  <data name="DesiredMovement" xml:space="preserve">
+    <value>Spostamento desiderato [mm]:</value>
+  </data>
+  <data name="InsertDesiredMovement" xml:space="preserve">
+    <value>Inserire lo spostamento desiderato.</value>
+  </data>
+  <data name="InsertiDesiredInitialPosition" xml:space="preserve">
+    <value>Inserire la posizione iniziale desiderata.</value>
+  </data>
+  <data name="InsertMesuredMovement" xml:space="preserve">
+    <value>Inserire lo spostamento misurato.</value>
+  </data>
+  <data name="MesuredMovement" xml:space="preserve">
+    <value>Corsa misurata [mm]:</value>
+  </data>
+  <data name="VerticalResolutionCalibration" xml:space="preserve">
+    <value>Calibrazione risoluzione asse verticale</value>
+  </data>
+  <data name="VerticalAxisCalibrating" xml:space="preserve">
+    <value>Calibrando l'asse verticale...</value>
+  </data>
+  <data name="Closed" xml:space="preserve">
+    <value>Chiuso</value>
+  </data>
+  <data name="CompletedCicles" xml:space="preserve">
+    <value>Cicli completati:</value>
+  </data>
+  <data name="CurrentPosition" xml:space="preserve">
+    <value>Posizione attuale [mm]:</value>
+  </data>
+  <data name="DelayBetweenCicles" xml:space="preserve">
+    <value>Ritardo tra i cicli [s]:</value>
+  </data>
+  <data name="Middle" xml:space="preserve">
+    <value>Intermedia</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Aperta</value>
+  </data>
+  <data name="RequiredCicles" xml:space="preserve">
+    <value>Cicli richiesti:</value>
+  </data>
+  <data name="Gate1Control" xml:space="preserve">
+    <value>Test serranda baia 1</value>
+  </data>
+  <data name="Gate2Control" xml:space="preserve">
+    <value>Controllo barriera 2</value>
+  </data>
+  <data name="Gate3Control" xml:space="preserve">
+    <value>Controllo barriera 3</value>
+  </data>
+  <data name="ActiveRaysQuantity" xml:space="preserve">
+    <value>Raggi attivati:</value>
+  </data>
+  <data name="CurrentHeight" xml:space="preserve">
+    <value>Quota corrente [mm]:</value>
+  </data>
+  <data name="GateCalibrated" xml:space="preserve">
+    <value>Barriera calibrata.</value>
+  </data>
+  <data name="GateCorrection" xml:space="preserve">
+    <value>Correzione barriera [mm]:</value>
+  </data>
+  <data name="GateOutOfTolerance" xml:space="preserve">
+    <value>La barriera è fuori tolleranza</value>
+  </data>
+  <data name="Gate1HeightControl" xml:space="preserve">
+    <value>Regolazione barriera misura altezza cassetto baia 1</value>
+  </data>
+  <data name="PanelsControl" xml:space="preserve">
+    <value>Controllo pannelli</value>
+  </data>
+  <data name="SpeedMMSec" xml:space="preserve">
+    <value>Velocità [mm/s]:</value>
+  </data>
+  <data name="SystemErrorMM" xml:space="preserve">
+    <value>Errore di sistema [mm]:</value>
+  </data>
+  <data name="Tolerance" xml:space="preserve">
+    <value>Tolleranza richiesta (+/-) [mm]:</value>
+  </data>
+  <data name="VerticalOffsetCalibration" xml:space="preserve">
+    <value>Calibrazione offset asse verticale</value>
+  </data>
+  <data name="WeightControl" xml:space="preserve">
+    <value>Controllo peso</value>
+  </data>
+  <data name="Gate2HeightControl" xml:space="preserve">
+    <value>Regolazione barriera misura altezza cassetto baia 2</value>
+  </data>
+  <data name="Gate3HeightControl" xml:space="preserve">
+    <value>Regolazione barriera misura altezza cassetto baia 3</value>
+  </data>
+  <data name="GateHeightControl" xml:space="preserve">
+    <value>Barriera misura altezza </value>
+  </data>
+  <data name="AcceptableWeightTolerance" xml:space="preserve">
+    <value>Tolleranza richiesta [%]:</value>
+  </data>
+  <data name="InsertedWeight" xml:space="preserve">
+    <value>Peso inserito [kg]:</value>
+  </data>
+  <data name="MesuredWeight" xml:space="preserve">
+    <value>Peso misurato [kg]:</value>
+  </data>
+  <data name="MesuredWeightInTolerance" xml:space="preserve">
+    <value>Il peso misurato rientra nella tolleranza.</value>
+  </data>
+  <data name="MesuredWeightOutOfTolerance" xml:space="preserve">
+    <value>Il peso misurato è fuori tolleranza.</value>
+  </data>
+  <data name="TestRun" xml:space="preserve">
+    <value>Corsa di test [mm]:</value>
+  </data>
+  <data name="CorrectOffset" xml:space="preserve">
+    <value>Offset corretto [mm]:</value>
+  </data>
+  <data name="CurrentOffset" xml:space="preserve">
+    <value>Offset attuale [mm]:</value>
+  </data>
+  <data name="DoCorrectOffset" xml:space="preserve">
+    <value>Correggi</value>
+  </data>
+  <data name="ReferenceCellHeight" xml:space="preserve">
+    <value>Quota cella selezionata [mm]:</value>
+  </data>
+  <data name="ReferenceCellNumber" xml:space="preserve">
+    <value>Numero cella di riferimento:</value>
+  </data>
+  <data name="StepDown" xml:space="preserve">
+    <value>Step -</value>
+  </data>
+  <data name="StepUp" xml:space="preserve">
+    <value>Step +</value>
+  </data>
+  <data name="StepValue" xml:space="preserve">
+    <value>Valore step [mm]:</value>
+  </data>
+  <data name="CellHeight" xml:space="preserve">
+    <value>Quota cella selezionata [mm]:</value>
+  </data>
+  <data name="CellsPanelControl" xml:space="preserve">
+    <value>Controllo pannelli mensola</value>
+  </data>
+  <data name="CurrentCell" xml:space="preserve">
+    <value>Cella selezionata:</value>
+  </data>
+  <data name="CurrentPanel" xml:space="preserve">
+    <value>Pannello attuale:</value>
+  </data>
+  <data name="PanelCorrection" xml:space="preserve">
+    <value>Correzione pannello [mm]:</value>
+  </data>
+  <data name="TotalPanels" xml:space="preserve">
+    <value>Pannelli totali:</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Indietro</value>
+  </data>
+  <data name="Front" xml:space="preserve">
+    <value>Anteriore</value>
+  </data>
+  <data name="Correct" xml:space="preserve">
+    <value>Correggi</value>
+  </data>
+  <data name="InstallationState" xml:space="preserve">
+    <value>Stato installazione</value>
+  </data>
+  <data name="BeltBurnishingDone" xml:space="preserve">
+    <value>Rodaggio cinghia</value>
+  </data>
+  <data name="Gate1Done" xml:space="preserve">
+    <value>Serranda baia 1</value>
+  </data>
+  <data name="Gate2Done" xml:space="preserve">
+    <value>Serranda baia 2</value>
+  </data>
+  <data name="Gate3Done" xml:space="preserve">
+    <value>Serranda baia 3</value>
+  </data>
+  <data name="HorizontalAxisHomedDone" xml:space="preserve">
+    <value>Origine asse orizzontale</value>
+  </data>
+  <data name="Laser1Done" xml:space="preserve">
+    <value>Puntatore laser 1</value>
+  </data>
+  <data name="Laser2Done" xml:space="preserve">
+    <value>Puntatore laser 2</value>
+  </data>
+  <data name="Laser3Done" xml:space="preserve">
+    <value>Puntatore laser 3</value>
+  </data>
+  <data name="MachineDone" xml:space="preserve">
+    <value>Installazione completata</value>
+  </data>
+  <data name="Shape1Done" xml:space="preserve">
+    <value>Controllo altezza baia 1</value>
+  </data>
+  <data name="Shape2Done" xml:space="preserve">
+    <value>Controllo altezza baia 2</value>
+  </data>
+  <data name="Shape3Done" xml:space="preserve">
+    <value>Controllo altezza baia 3</value>
+  </data>
+  <data name="VerticalAxisHomedDone" xml:space="preserve">
+    <value>Origine asse verticale</value>
+  </data>
+  <data name="VerticalResolutionDone" xml:space="preserve">
+    <value>Risoluzione asse verticale</value>
+  </data>
+  <data name="CellsControl" xml:space="preserve">
+    <value>Controllo quote celle</value>
+  </data>
+  <data name="CellCorrection" xml:space="preserve">
+    <value>Correzione cella [mm]:</value>
+  </data>
+  <data name="MesuredInitialPosition" xml:space="preserve">
+    <value>Posizione iniziale misurata [mm]:</value>
+  </data>
+  <data name="MoveToInitialPosition" xml:space="preserve">
+    <value>Sposta nella posizione iniziale.</value>
+  </data>
+  <data name="InsertMesuredInitialPosition" xml:space="preserve">
+    <value>Inserisci posizione iniziale misurata.</value>
+  </data>
+  <data name="MoveToPosition" xml:space="preserve">
+    <value>Sposta nella posizione.</value>
+  </data>
+  <data name="ConfirmResolution" xml:space="preserve">
+    <value>Conferma nuova risoluzione o cancella l'operazione.</value>
+  </data>
+  <data name="MovingToDesiredPosition" xml:space="preserve">
+    <value>Spostamento nella posizione desiderata ...</value>
+  </data>
+  <data name="SettingInitialPosition" xml:space="preserve">
+    <value>Impostazione della posizione iniziale ...</value>
+  </data>
+  <data name="VerticalOffsetVerify" xml:space="preserve">
+    <value>Verifica offset verticale</value>
+  </data>
+  <data name="CellPositionDone" xml:space="preserve">
+    <value>Quote celle verificate</value>
+  </data>
+  <data name="LuPresentInBay2" xml:space="preserve">
+    <value>Presenza UDC in baia 2</value>
+  </data>
+  <data name="LuPresentInBay3" xml:space="preserve">
+    <value>Presenza UDC in baia 3</value>
+  </data>
+  <data name="HeightControlCheck1" xml:space="preserve">
+    <value>Controllo altezza baia 1</value>
+  </data>
+  <data name="HeightControlCheck2" xml:space="preserve">
+    <value>Controllo altezza baia 2</value>
+  </data>
+  <data name="HeightControlCheck3" xml:space="preserve">
+    <value>Controllo altezza baia 3</value>
+  </data>
+  <data name="GateSensorABay1" xml:space="preserve">
+    <value>Sensore A barriera baia 1</value>
+  </data>
+  <data name="GateSensorBBay1" xml:space="preserve">
+    <value>Sensore B barriera baia 1</value>
+  </data>
+  <data name="GateSensorABay2" xml:space="preserve">
+    <value>Sensore A barriera baia 2</value>
+  </data>
+  <data name="GateSensorBBay2" xml:space="preserve">
+    <value>Sensore B barriera baia 2</value>
+  </data>
+  <data name="GateSensorABay3" xml:space="preserve">
+    <value>Sensore A barriera baia 3</value>
+  </data>
+  <data name="GateSensorBBay3" xml:space="preserve">
+    <value>Sensore B barriera baia 3</value>
+  </data>
+  <data name="MushroomHeadButton2" xml:space="preserve">
+    <value>Fungo emergenza baia 2</value>
+  </data>
+  <data name="MushroomHeadButton3" xml:space="preserve">
+    <value>Fungo emergenza baia 3</value>
+  </data>
+  <data name="MicroCarterLeftSide2" xml:space="preserve">
+    <value>Micro carter lato sinistro baia 2</value>
+  </data>
+  <data name="MicroCarterLeftSide3" xml:space="preserve">
+    <value>Micro carter lato sinistro baia 3</value>
+  </data>
+  <data name="MicroCarterRightSide2" xml:space="preserve">
+    <value>Micro carter lato destro baia 2</value>
+  </data>
+  <data name="MicroCarterRightSide3" xml:space="preserve">
+    <value>Micro carter lato destro baia 3</value>
+  </data>
+  <data name="AntiIntrusionGate2" xml:space="preserve">
+    <value>Barriera anti intrusione baia 2</value>
+  </data>
+  <data name="AntiIntrusionGate3" xml:space="preserve">
+    <value>Barriera anti intrusione baia 3</value>
+  </data>
+  <data name="RequestedFinalPosition" xml:space="preserve">
+    <value>Quota finale [mm]:</value>
+  </data>
+  <data name="StartResolutionProcedure" xml:space="preserve">
+    <value>Avvia procedura</value>
+  </data>
+  <data name="CloseProcedure" xml:space="preserve">
+    <value>Chiudi procedura</value>
+  </data>
+  <data name="LSMTElevator" xml:space="preserve">
+    <value>Elevatore</value>
+  </data>
+  <data name="NextPanel" xml:space="preserve">
+    <value>Pannello successivo</value>
+  </data>
+  <data name="PanelsControlDescription" xml:space="preserve">
+    <value>Verifica posizione pannelli mensola</value>
+  </data>
+  <data name="ReadInitialPosition" xml:space="preserve">
+    <value>Quota iniziale letta [mm]:</value>
+  </data>
+  <data name="ReadFinalPosition" xml:space="preserve">
+    <value>Quota finale letta [mm]:</value>
+  </data>
+  <data name="Gate1HeightReaced" xml:space="preserve">
+    <value>Altezza raggiunta</value>
+  </data>
+  <data name="VerticalAxisButton" xml:space="preserve">
+    <value>Elevatore e culla</value>
+  </data>
+  <data name="CellsSideControlButton" xml:space="preserve">
+    <value>Modifica blocco celle</value>
+  </data>
+  <data name="CellsSideControlDescription" xml:space="preserve">
+    <value>Modifica quote gruppo celle.</value>
+  </data>
+  <data name="CellsSideControlInitialCell" xml:space="preserve">
+    <value>Cella iniziale:</value>
+  </data>
+  <data name="CellsSideControlFinalCell" xml:space="preserve">
+    <value>Cella finale:</value>
+  </data>
+  <data name="CellsSideControlCorrection" xml:space="preserve">
+    <value>Correzione richiesta [mm]:</value>
+  </data>
+  <data name="CellsSideControlSelectedSide" xml:space="preserve">
+    <value>Lato selezionato:</value>
+  </data>
+  <data name="LoadingDrawersButton" xml:space="preserve">
+    <value>Carico cassetti</value>
+  </data>
+  <data name="LoadingDrawersPageHeader" xml:space="preserve">
+    <value>Carico cassetti.</value>
+  </data>
+  <data name="LoadingDrawersTotalDrawers" xml:space="preserve">
+    <value>Totale cassetti:</value>
+  </data>
+  <data name="LoadingDrawersMaxWeight" xml:space="preserve">
+    <value>Portata max. [kg]:</value>
+  </data>
+  <data name="LoadingDrawersInsertedDrawers" xml:space="preserve">
+    <value>Cassetti inseriti:</value>
+  </data>
+  <data name="LoadingDrawersDrawerToInsert" xml:space="preserve">
+    <value>Cassetto da inserire:</value>
+  </data>
+  <data name="LoadingDrawersNextDrawer" xml:space="preserve">
+    <value>Prossimo cassetto</value>
+  </data>
+  <data name="LoadingDrawersStartInsertion" xml:space="preserve">
+    <value>Inizia inserimento</value>
+  </data>
+  <data name="LoadFirstDrawerButton" xml:space="preserve">
+    <value>Carica primo cassetto</value>
+  </data>
+  <data name="LoadFirstDrawerPageHeader" xml:space="preserve">
+    <value>Carico primo cassetto e test celle.</value>
+  </data>
+  <data name="LoadFirstDrawerTotCellsToCheck" xml:space="preserve">
+    <value>Totale celle da testare:</value>
+  </data>
+  <data name="LoadFirstDrawerTotCellsChecked" xml:space="preserve">
+    <value>Totale celle testate:</value>
+  </data>
+  <data name="LoadFirstDrawerActualCellToCheck" xml:space="preserve">
+    <value>Cella in fase di test:</value>
+  </data>
+  <data name="LoadFirstDrawerDrawerToInsert" xml:space="preserve">
+    <value>Cassetto da inserire:</value>
+  </data>
+  <data name="LoadFirstDrawerMaxWeight" xml:space="preserve">
+    <value>Portata massima cassetto [kg]:</value>
+  </data>
+  <data name="LoadFirstDrawerStartLoading" xml:space="preserve">
+    <value>Inserisci cassetto</value>
+  </data>
+  <data name="LoadFirstDrawerRecallDrawer" xml:space="preserve">
+    <value>Richiama cassetto</value>
+  </data>
+  <data name="BayControl" xml:space="preserve">
+    <value>Controllo baie</value>
+  </data>
+  <data name="BayControlHeader" xml:space="preserve">
+    <value>Controllo quote baie.</value>
+  </data>
+  <data name="BayControlSelectedBay" xml:space="preserve">
+    <value>Baia selezionata:</value>
+  </data>
+  <data name="BayControlSelectedPosition" xml:space="preserve">
+    <value>Posizione nella baia:</value>
+  </data>
+  <data name="BayControlPositionHeight" xml:space="preserve">
+    <value>Quota posizione baia [mm]:</value>
+  </data>
+  <data name="BayControlStepValue" xml:space="preserve">
+    <value>Valore di step [mm]:</value>
+  </data>
+  <data name="BayControlActualHeight" xml:space="preserve">
+    <value>Posizione attuale [mm]:</value>
+  </data>
+  <data name="BayControlCorrectionValue" xml:space="preserve">
+    <value>Valore della correzione [mm]:</value>
+  </data>
+  <data name="BayControlMoveToPosition" xml:space="preserve">
+    <value>Muovi a posizione</value>
+  </data>
+  <data name="BayControlStepPiu" xml:space="preserve">
+    <value>Step +</value>
+  </data>
+  <data name="BayControlStepMeno" xml:space="preserve">
+    <value>Step -</value>
+  </data>
+  <data name="BayControlAdjust" xml:space="preserve">
+    <value>Correggi quota</value>
+  </data>
+  <data name="BayControlNextPosition" xml:space="preserve">
+    <value>Prossima posizione</value>
+  </data>
+</root>

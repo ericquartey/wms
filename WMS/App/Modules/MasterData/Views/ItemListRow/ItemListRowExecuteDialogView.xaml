@@ -11,6 +11,7 @@
                    Height="600"
                    d:DesignHeight="500"
                    d:DesignWidth="500"
+                   Mode="DialogPopup"
                    ResizeMode="NoResize"
                    SizeToContent="Height"
                    mc:Ignorable="d">
@@ -92,12 +93,14 @@
                     </Grid.ColumnDefinitions>
                     <wms:ComboBox x:Name="SelectedArea"
                                   Grid.Row="0"
+                                  wms:ShowTitle.Show="True"
                                   DisplayMember="Name"
                                   EditValue="{Binding ExecutionRequest.AreaId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   IsTextEditable="False"
                                   ItemsSource="{Binding ExecutionRequest.AreaChoices}" />
                     <wms:ComboBox x:Name="SelectedBay"
                                   Grid.Column="2"
+                                  wms:ShowTitle.Show="True"
                                   EditValue="{Binding ExecutionRequest.BayId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   IsTextEditable="False"
                                   ItemsSource="{Binding ExecutionRequest.BayChoices}"
@@ -127,18 +130,19 @@
 
                 <TextBlock Margin="5"
                            Style="{DynamicResource TextBlockErrorMessageStyle}"
-                           Text="{Binding ValidationError}" />
+                           Text="{Binding Errors}" />
 
                 <wms:ActionBar Grid.Column="1"
                                Margin="5"
                                HorizontalAlignment="Right"
                                VerticalAlignment="Bottom"
                                Style="{DynamicResource ActionBarNotCustomizable}">
-                    <wms:ActionBarItem Command="{Binding RunListRowExecuteCommand, IsAsync=True}"
+                    <wms:ActionBarItem Command="{Binding RunListRowExecuteCommand}"
                                        Content="{x:Static res:MasterData.RunItemListRow}"
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/av/ic_play_circle_outline_black_24dp.png"
-                                       GlyphSize="Custom" />
+                                       GlyphSize="Custom"
+                                       IsEnabled="False" />
                 </wms:ActionBar>
 
             </Grid>

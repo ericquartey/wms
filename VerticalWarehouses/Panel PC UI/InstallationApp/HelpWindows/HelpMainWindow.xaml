@@ -1,0 +1,103 @@
+﻿<Window x:Class="Ferretto.VW.InstallationApp.HelpMainWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Ferretto.VW.InstallationApp.HelpWindows"
+        xmlns:viewmodels="clr-namespace:Ferretto.VW.InstallationApp"
+             Width="1024"
+             Height="768"
+             mc:Ignorable="d"
+             ResizeMode="NoResize"
+             WindowStartupLocation="CenterScreen"
+             WindowStyle="None">
+    <Window.Resources>
+        
+        <DataTemplate DataType="{x:Type viewmodels:BeltBurnishingViewModel}">
+            <local:BeltBurnishingHelpView></local:BeltBurnishingHelpView>
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type viewmodels:CellsControlViewModel}">
+            <local:CellsControlHelpView></local:CellsControlHelpView>
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type viewmodels:ResolutionCalibrationVerticalAxisViewModel}">
+            <local:ResolutionCalibrationVerticalAxisHelpView></local:ResolutionCalibrationVerticalAxisHelpView>
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type viewmodels:InstallationStateViewModel}">
+            <local:HelpInstallationState></local:HelpInstallationState>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:SSMainViewModel}">
+            <local:HelpSensorState></local:HelpSensorState>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:LSMTMainViewModel}">
+            <local:HelpLowSpeedMovements></local:HelpLowSpeedMovements>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:Shutter1ControlViewModel}">
+            <local:HelpShutterControl></local:HelpShutterControl>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:VerticalAxisCalibrationViewModel}">
+            <local:HelpVerticalAxisCalibration></local:HelpVerticalAxisCalibration>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:CellsPanelsControlViewModel}">
+            <local:HelpCellsPanelControl></local:HelpCellsPanelControl>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:Shutter1HeightControlViewModel}">
+            <local:HelpShutterHeightControl></local:HelpShutterHeightControl>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:WeightControlViewModel}">
+            <local:HelpWeightControl></local:HelpWeightControl>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:VerticalOffsetCalibrationViewModel}">
+            <local:HelpVerticalOffsetCalibration></local:HelpVerticalOffsetCalibration>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:CellsSideControlViewModel}">
+            <local:HelpCellsSideControl></local:HelpCellsSideControl>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:LoadFirstDrawerViewModel}">
+            <local:HelpLoadFirstDrawer></local:HelpLoadFirstDrawer>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:LoadingDrawersViewModel}">
+            <local:HelpLoadingDrawers></local:HelpLoadingDrawers>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:BayControlViewModel}">
+            <local:HelpBayControl></local:HelpBayControl>
+        </DataTemplate>
+
+
+    </Window.Resources>
+    <Grid Width="1024"
+          Height="768"
+          Background="{DynamicResource VWAPP_BACKGROUND}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="688"></RowDefinition>
+            <RowDefinition Height="80"></RowDefinition>
+        </Grid.RowDefinitions>
+        <ContentPresenter Name="HelpContentRegion" Grid.Row="0"
+                          Height="688"
+                          Width="1024"
+                          Content="{Binding ContentRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        </ContentPresenter>
+        <Button Grid.Row="1"
+                Content="Back"
+                HorizontalAlignment="Right"
+                Margin="0,0,10,0"
+                Click="Button_Click"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}">
+
+        </Button>
+    </Grid>
+</Window>

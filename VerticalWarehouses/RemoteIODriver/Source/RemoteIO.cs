@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading;
 using Modbus.Device;
@@ -34,7 +35,7 @@ namespace Ferretto.VW.RemoteIODriver
 
         private const int PULSE_TIME = 350; // ms
 
-        private const int TIME_OUT = 100; // ms
+        private const int TIME_OUT = 50; // ms
 
         private static readonly object locker = new object();
 
@@ -52,7 +53,7 @@ namespace Ferretto.VW.RemoteIODriver
 
         private RegisteredWaitHandle regMainThreadWaitHandle;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -70,7 +71,7 @@ namespace Ferretto.VW.RemoteIODriver
             this.bConnected = false;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Destructors
 
@@ -85,7 +86,7 @@ namespace Ferretto.VW.RemoteIODriver
             }
         }
 
-        #endregion Destructors
+        #endregion
 
         #region Properties
 
@@ -127,7 +128,7 @@ namespace Ferretto.VW.RemoteIODriver
         /// </summary>
         public int Port { get; set; } = 502;
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -136,25 +137,38 @@ namespace Ferretto.VW.RemoteIODriver
         /// </summary>
         public void Connect()
         {
-            this.client = new TcpClient(this.IPAddress, this.Port);
-            this.master = ModbusIpMaster.CreateIp(this.client);
+            try
+            {
+                this.client = new TcpClient(this.IPAddress, this.Port);
+                this.master = ModbusIpMaster.CreateIp(this.client);
+            }
+            catch (Exception)
+            {
+                this.client = null;
+            }
 
-            // Power up the machine
-            this.powerUp();
+            if (this.client != null)
+            {
+                if (this.client.Connected)
+                {
+                    // Power up the machine
+                    this.powerUp();  // uncomment these code lines
 
-            // Set the digital signal to high level related to the encoder of vertical motor enabling (as default).
-            this.outputs.Clear();
-            this.outputs = new List<bool>();
-            this.outputs.Add(false);
-            this.outputs.Add(true);
-            this.outputs.Add(false);
-            this.outputs.Add(false);
-            this.outputs.Add(false);
-            this.writeData();
+                    // Set the digital signal to high level related to the encoder of vertical motor enabling (as default).
+                    this.outputs.Clear();
+                    this.outputs = new List<bool>();
+                    this.outputs.Add(false);
+                    this.outputs.Add(true);
+                    this.outputs.Add(false);
+                    this.outputs.Add(false);
+                    this.outputs.Add(false);
+                    this.writeData();
 
-            // Create and start internal thread to read/write digital lines
-            this.createThread();
-            this.bConnected = true;
+                    // Create and start internal thread to read/write digital lines
+                    this.createThread();
+                    this.bConnected = true;
+                }
+            }
         }
 
         /// <summary>
@@ -265,6 +279,6 @@ namespace Ferretto.VW.RemoteIODriver
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

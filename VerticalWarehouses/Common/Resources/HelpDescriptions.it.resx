@@ -1,0 +1,514 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+		Microsoft ResX Schema
+
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BeltBurnishingUpLimit" xml:space="preserve">
+    <value>Indica il valore della quota superiore richiesta dal test. Impostare il valore solo se il campo risulta editabile.</value>
+  </data>
+  <data name="BeltBurnishingDownLimit" xml:space="preserve">
+    <value>Indica il valore della quota inferiore richiesta dal test. Impostare il valore solo se il campo risulta editabile.</value>
+  </data>
+  <data name="BeltBurnishingRequiredCycles" xml:space="preserve">
+    <value>Impostare il numero di cicli richiesti.</value>
+  </data>
+  <data name="BeltBurnishingCompletedCycles" xml:space="preserve">
+    <value>Visualizza il numero di cicli attualmente completati.</value>
+  </data>
+  <data name="BeltBurnishingActualPosition" xml:space="preserve">
+    <value>Riporta la posizione corrente dell'asse.</value>
+  </data>
+  <data name="BeltBurnishingStartCycle" xml:space="preserve">
+    <value>Avvia il test. Il test continua fino al raggiungimento del numero di cicli richiesti o fino alla pressione del tasto di arresto.</value>
+  </data>
+  <data name="BeltBurnishingStopCycle" xml:space="preserve">
+    <value>Arresta il test. Il ciclo si arresta al termine del movimento corrente. La pressione del tasto di avvio ciclo riprende l'esecuzione del test fino a completamento.</value>
+  </data>
+  <data name="BeltBurnishingFunctionDescription" xml:space="preserve">
+    <value>La procedura permette di effettuare una serie di cicli di spostamento dell'asse verticale fra due punti indicati nei dati di input. Il ciclo, quando avviato, prosegue o fino al raggiungimento dei cicli richiesti o alla pressione del tasto di fine.</value>
+  </data>
+  <data name="ResolutionCalibrationFunctionDescription" xml:space="preserve">
+    <value>La funzione di calibrazione della risoluzione dell'asse verticale permette di tarare il corretto valore tramite misura sul campo aggiornando poi il valore di default proposto dal sistema. La procedura opera per passi successivi fino al corretto completamento.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialPositionHelp" xml:space="preserve">
+    <value>Se il campo e' editabile impostare la quota iniziale richiesta.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialStartHelp" xml:space="preserve">
+    <value>Il pulsante avvia la procedura con l'esecuzione dell'origine asse ed il successivo posizionamento alla quota indicata in precedenza.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalPositionHelp" xml:space="preserve">
+    <value>Se il campo e' editabile impostare la quota finale richiesta.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalPosizionStartHelp" xml:space="preserve">
+    <value>Il pulsante avvia lo spostamento dell'asse alla quota finale impostata in precedenza.</value>
+  </data>
+  <data name="ResolutionCalibrationMeasuredeValueHelp" xml:space="preserve">
+    <value>Indica la corsa misurata dalla posizione iniziale a quella finale.</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep1" xml:space="preserve">
+    <value>Passo 1 : posiziona asse alla quota iniziale</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep2" xml:space="preserve">
+    <value>Passo 2 : posiziona asse alla quota finale</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep3" xml:space="preserve">
+    <value>Passo 3 : aggiorna la risoluzione al nuovo valore</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep4" xml:space="preserve">
+    <value>Passo 4 : riposiziona asse e chiude la procedura</value>
+  </data>
+  <data name="ResolutionCalibrationActualResolutionHelp" xml:space="preserve">
+    <value>Visualizza la risoluzione attuale dell'asse</value>
+  </data>
+  <data name="ResolutionCalibrationNewResolutionHelp" xml:space="preserve">
+    <value>Visualizza il nuovo valore di risoluzione calcolato dalla procedura.</value>
+  </data>
+  <data name="ResolutionCalibrationAcceptNewResolution" xml:space="preserve">
+    <value>Sostituisce il valore precedente di risoluzione con il nuovo valore calcolato.</value>
+  </data>
+  <data name="ResolutionCalibrationGoToInitialPosizion" xml:space="preserve">
+    <value>Riporta l'asse nella posizione iniziale.</value>
+  </data>
+  <data name="ResolutionCalibrationCloseProcedure" xml:space="preserve">
+    <value>Effettua l'origine dell'asse e chiude la procedura.</value>
+  </data>
+  <data name="HelpInstallationStateDescription" xml:space="preserve">
+    <value>Visualizza lo stato corrente dell'installazione. Le parti gia' completate sono evidenziate in verde mentre quelle da completare o da fare sono in grigio. Alcune procedure sono possibili solo dopo avere correttamente completato quelle propedeutiche.</value>
+  </data>
+  <data name="HelpInstallationStateToDo" xml:space="preserve">
+    <value>L'indicatore in grigio indica una procedura ancora da fare</value>
+  </data>
+  <data name="HelpInstallationStateDone" xml:space="preserve">
+    <value>Lìndicatore in verde indica una procedura correttamente completata.</value>
+  </data>
+  <data name="HelpSSTitle" xml:space="preserve">
+    <value>Visualizzazione stato sensori</value>
+  </data>
+  <data name="HelpSSDescription" xml:space="preserve">
+    <value>Le varie pagine permettono la visualizzazione dello stato sensori presenti nelle varie parti costituenti la macchina. La visualizzazione avviene in tempo reale e cambia al variare dello stato dei vari sensori.</value>
+  </data>
+  <data name="HelpSSStateOn" xml:space="preserve">
+    <value>Il colore verde indica lo stato attivo del sensore.</value>
+  </data>
+  <data name="HelpSSStateOff" xml:space="preserve">
+    <value>Il colore grigio indica lo stato non attivo del sensore.</value>
+  </data>
+  <data name="HelpLSMTTitle" xml:space="preserve">
+    <value>Comandi manuali a bassa velocita'.</value>
+  </data>
+  <data name="HelpLSMTDescription" xml:space="preserve">
+    <value>Permette di effettuare il movimento dei vari assi a bassa velocita. E' impostato uno spazio di movimento ridotto in entrambe le direzioni. Il testo dei pulsanti cambia in base al movimento richiesto.</value>
+  </data>
+  <data name="HelpLSMTActualPosition" xml:space="preserve">
+    <value>Indica lo posizione corrente o lo stato per quelle parti che hanno solo posizioni discrete.</value>
+  </data>
+  <data name="HelpLSMTMoveUp" xml:space="preserve">
+    <value>Pulsante di movimento avanti, salita o apertura in base alla parte selezionata</value>
+  </data>
+  <data name="HelpLSMTMoveDown" xml:space="preserve">
+    <value>Pulsante di movimento indietro, discesa o chiusura in base alla parte selezionata</value>
+  </data>
+  <data name="HelpGCDescription" xml:space="preserve">
+    <value>Permette di effettuare una serie di test ripetitivi per la serranda di chiusura della baia selezionata. E' possibile impostare un tempo di attesa fra due movimenti consecutivi. La procedura termina al raggiungimento del numero di cicli impostati o all'uscita.</value>
+  </data>
+  <data name="HelpGCRequiredCycles" xml:space="preserve">
+    <value>Impostare il numero di cicli richiesti.</value>
+  </data>
+  <data name="HelpGCDelay" xml:space="preserve">
+    <value>Impostare il tempo di ritardo fra due cicli consecutivi.</value>
+  </data>
+  <data name="HelpGCCompleted" xml:space="preserve">
+    <value>Indica il numero di cicli attualmente completati.</value>
+  </data>
+  <data name="HelpGCSensorA" xml:space="preserve">
+    <value>Stato del sensore A della barriera.</value>
+  </data>
+  <data name="HelpGCSensorB" xml:space="preserve">
+    <value>Stato del sensore B della barriera.</value>
+  </data>
+  <data name="HelpGCStartButton" xml:space="preserve">
+    <value>Avvia l'inizio dei test richiesti. Il pulsante e' attivo se il numero di cicli richiesti e' maggiore di zero.</value>
+  </data>
+  <data name="HelpGCStopButton" xml:space="preserve">
+    <value>Arresta il ciclo al completamento del movimento corrente. La successiva pressione del pulsante di avvio riprende il test dal ciclo successivo a quello arrestato.</value>
+  </data>
+  <data name="HelpVACDescription" xml:space="preserve">
+    <value>La procedura permette di effettuare l'origine dell'asse verticale al termine del quale viene settata la posizione corrente indicata dal valore di offset. La procedura e' propedeutica per la realizzazione di altre funzioni che richiedono lo spostamento a quota dell'asse.</value>
+  </data>
+  <data name="HelpVACDownLimit" xml:space="preserve">
+    <value>Limite di movimento inferiore.</value>
+  </data>
+  <data name="HelpVACUpLimit" xml:space="preserve">
+    <value>Limite di movimento superiore.</value>
+  </data>
+  <data name="HelpVACOffset" xml:space="preserve">
+    <value>Valore attuale di offset. Al termine della origine asse la quota attuale e' impostata a questo valore.</value>
+  </data>
+  <data name="HelpVACResolution" xml:space="preserve">
+    <value>Risoluzione attuale dell'asse.</value>
+  </data>
+  <data name="HelpVACFinalResult" xml:space="preserve">
+    <value>Riporta l'esito finale della procedura.</value>
+  </data>
+  <data name="HelpVacStart" xml:space="preserve">
+    <value>Avvia la procedura di origine dell'asse verticale.</value>
+  </data>
+  <data name="HelpVACStop" xml:space="preserve">
+    <value>Arresta la procedura di origine dell'asse verticale.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialReadValueHelp" xml:space="preserve">
+    <value>Valore iniziale della posizione corrente letto dal metro.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalReadValueHelp" xml:space="preserve">
+    <value>Valore finale della posizione corrente letto dal metro.</value>
+  </data>
+  <data name="HelpCCVDescription" xml:space="preserve">
+    <value>La procedura permette di verificare ed eventualmente correggere la quota della cella selezionata. La correzione e' applicata alla sola cella selezionata.</value>
+  </data>
+  <data name="HelpCCVSelectedCell" xml:space="preserve">
+    <value>Impostare la cella di cui si vuole controllare la quota.</value>
+  </data>
+  <data name="HelpCCVCellPosition" xml:space="preserve">
+    <value>Indica la quota della cella correntemente selezionata.</value>
+  </data>
+  <data name="HelpCCVStepValue" xml:space="preserve">
+    <value>Valore della variazione di quota in fase di aggiustaggio.</value>
+  </data>
+  <data name="HelpCCVAttualPosition" xml:space="preserve">
+    <value>Valore corrente della quota dell'asse.</value>
+  </data>
+  <data name="HelpCCVCorrectionValue" xml:space="preserve">
+    <value>Valore totale della correzione da applicare.</value>
+  </data>
+  <data name="HelpCCVSetPosition" xml:space="preserve">
+    <value>Posiziona l'asse verticale in corrispondenza della cella selezionata.</value>
+  </data>
+  <data name="HelpCCVStepPiu" xml:space="preserve">
+    <value>Incrementa la quota corrente dell'asse del valore indicato dallo step.</value>
+  </data>
+  <data name="HelpCCVStepMeno" xml:space="preserve">
+    <value>Decrementa la quota corrente dell'asse del valore indicato dallo step.</value>
+  </data>
+  <data name="HelpCCVApplyCorrection" xml:space="preserve">
+    <value>Corregge la quota della cella selezionata del valore indicato nel campo che riporta il valore totale richiesto.</value>
+  </data>
+  <data name="HelpVPPMDescription" xml:space="preserve">
+    <value>La procedura permette di verificare il corretto posizionamento dei vari pannelli porta mensola. L'eventuale correzione viene applicata a tutte le celle appartenenti al pannello in verifica. La cella di partenza viene impostata solo all'inizio per selezionare il lato della macchina su cui operare. Tutte le celle pari sono su un lato e le dispari sull'altro.</value>
+  </data>
+  <data name="HelpVPPMTotalPanels" xml:space="preserve">
+    <value>Indica il numero totale di pannelli presenti nel lato selezionato dalla cella di riferimento.</value>
+  </data>
+  <data name="HelpVPPMActualPanel" xml:space="preserve">
+    <value>Indica il pannello attualmente selezionato su cui viene fatto il controllo.</value>
+  </data>
+  <data name="HelpVPPMSelectedCell" xml:space="preserve">
+    <value>Cella selezionata da cui deriva il pannello da controllare. I numeri dispari o pari selezionano il lato anteriore o posteriore.</value>
+  </data>
+  <data name="HelpVPPMSelectedCellPosition" xml:space="preserve">
+    <value>Quota della cella selezionata.</value>
+  </data>
+  <data name="HelpVPPMActualPosition" xml:space="preserve">
+    <value>Indica la posizione corrente dell'asse. Viene modificato dall'azione dei pulsanti di step.</value>
+  </data>
+  <data name="HelpVPPMStepValue" xml:space="preserve">
+    <value>Valore dello step da usare nella modifica della quota.</value>
+  </data>
+  <data name="HelpVPPMCorrectionValue" xml:space="preserve">
+    <value>Valore totale della correzione che sara' applicata alla quota della cella selezionata.</value>
+  </data>
+  <data name="HelpVPPMNextPanel" xml:space="preserve">
+    <value>Permette di passare al prossimo pannello da controllare.</value>
+  </data>
+  <data name="HelpVPPMGoToCell" xml:space="preserve">
+    <value>Posiziona l'asse in corrispondenza della cella selezionata.</value>
+  </data>
+  <data name="HelpVPPMStepPiu" xml:space="preserve">
+    <value>Incrementa la quota corrente dell'asse del valore indicato dallo step.</value>
+  </data>
+  <data name="HelpVPPMStepMeno" xml:space="preserve">
+    <value>Decrementa la quota corrente dell'asse del valore indicato dallo step.</value>
+  </data>
+  <data name="HelpVPPMApplyCorrection" xml:space="preserve">
+    <value>Applica la correzione al gruppo di celle presenti nel pannello correntemente selezionato.</value>
+  </data>
+  <data name="HelpGHCDescription" xml:space="preserve">
+    <value>La procedura permette di effettuale la regolazione della barriera di rilevamento altezza del cassetto. Il segnale di altezza raggiunta va usato anche in fase di pre posizionamento della sagoma di test.</value>
+  </data>
+  <data name="HelpGHCVelocity" xml:space="preserve">
+    <value>Impostare la velocita' da usare durante la fase di taratura.</value>
+  </data>
+  <data name="HelpGHCSystemError" xml:space="preserve">
+    <value>Indica l'errore di sistema che deriva dalla velocita' di taratura impostata e dallo scan time del sistema. Ridurre la velocita' per diminuire l'errore.</value>
+  </data>
+  <data name="HelpGHCTollerance" xml:space="preserve">
+    <value>Imposta la tolleranza massima ammessa nella misura. Il test da' esito negativo se il risultato eccede il valore richiesto.</value>
+  </data>
+  <data name="HelpGHCHeightReaced" xml:space="preserve">
+    <value>Indica l'attivazione del raggio utilizzato come elemento di verifica dell'altezza. </value>
+  </data>
+  <data name="HelpGHCCurrentPosition" xml:space="preserve">
+    <value>Riporta la posizione corrente dell'asse catena.</value>
+  </data>
+  <data name="HelpGHCBarrierCorrection" xml:space="preserve">
+    <value>Indica la correzione da applicare alla barriera. Il segno piu' richiede di alzare la barriera, il segno meno di abbassarla del valore indicato.</value>
+  </data>
+  <data name="HelpGHCFinalResult" xml:space="preserve">
+    <value>Riporta il risultato finale del test.</value>
+  </data>
+  <data name="HelpGHCStart" xml:space="preserve">
+    <value>Il pulsante avvia la procedura di controllo.</value>
+  </data>
+  <data name="HelpGHCStop" xml:space="preserve">
+    <value>Il pulsante arresta la procedura di controllo.</value>
+  </data>
+  <data name="HelpWCDescription" xml:space="preserve">
+    <value>La procedura permette di verificare che la misura del peso rientri all'interno della tolleranza prevista. Per la misura vengono utilizzati dei pesi campione nella quantita' indicata nell'apposito campo.</value>
+  </data>
+  <data name="HelpWCTestRun" xml:space="preserve">
+    <value>Indica la corsa effettuata a bassa velocita' durante la quale vengono effettuati i campionamenti della corrente erogata.</value>
+  </data>
+  <data name="HelpWCWeightInserted" xml:space="preserve">
+    <value>Indica il peso campione inserito per il test.</value>
+  </data>
+  <data name="HelpWCWeightTollerance" xml:space="preserve">
+    <value>Indica la tolleranza richiesta dalla misura.</value>
+  </data>
+  <data name="HelpWCWeightMeasured" xml:space="preserve">
+    <value>Indica il peso misurato dal sistema.</value>
+  </data>
+  <data name="HelpWCFinalResult" xml:space="preserve">
+    <value>Segnala l'esito finale della procedura. L'esito sara' positivo se il peso misurato rientra nella tolleranza impostata.</value>
+  </data>
+  <data name="HelpWCStart" xml:space="preserve">
+    <value>Avvia la procedura di test.</value>
+  </data>
+  <data name="HelpWCStop" xml:space="preserve">
+    <value>Arresta la procedura di test.</value>
+  </data>
+  <data name="HelpVOCDescription" xml:space="preserve">
+    <value>La procedura consente di correggere l'offset dell'asse verticale in modo da allineare la quota delle varie celle al sistema di riferimento dell'asse verticale.</value>
+  </data>
+  <data name="HelpVOCSelectedCell" xml:space="preserve">
+    <value>Cella selezionata per il controllo.</value>
+  </data>
+  <data name="HelpVOCCellPosition" xml:space="preserve">
+    <value>Quota attuale della cella selezionata</value>
+  </data>
+  <data name="HelpVOCStepValue" xml:space="preserve">
+    <value>Valore della variazione di quota da applicare ad ogni pressione dei tasti di spostamento asse.</value>
+  </data>
+  <data name="HelpVOCActualPosition" xml:space="preserve">
+    <value>Posizione attuale dell'asse verticale.</value>
+  </data>
+  <data name="HelpVOCActualOffset" xml:space="preserve">
+    <value>Valore attuale dell'offset asse verticale.</value>
+  </data>
+  <data name="HelpVOCAdjustedOffset" xml:space="preserve">
+    <value>Nuovo valore di offset.</value>
+  </data>
+  <data name="HelpVOCGoToCell" xml:space="preserve">
+    <value>Sposta l'asse verticale in alla quota della cella selezionata.</value>
+  </data>
+  <data name="HelpVOCStepPiu" xml:space="preserve">
+    <value>Incrementa la quota attuale dell'asse verticale del valore di step impostato.</value>
+  </data>
+  <data name="HelpVOCStepMeno" xml:space="preserve">
+    <value>Decrementa la quota attuale dell'asse verticale del valore di step impostato.</value>
+  </data>
+  <data name="HelpVOCApplyCorrection" xml:space="preserve">
+    <value>Aggiorna l'offset dell'asse verticale al valore indicato.</value>
+  </data>
+  <data name="HelpCSCDescription" xml:space="preserve">
+    <value>La procedura permette di modifica un blocco di celle comprese fra la prima e l'ultima selezionata. Il lato selezionato viene automaticamente indicato sulla base del numero cella iniziale a seconda sia pari o dispari.</value>
+  </data>
+  <data name="HelpCSCInitialCell" xml:space="preserve">
+    <value>Impostare il numero della cella iniziale del blocco.</value>
+  </data>
+  <data name="HelpCSCFinalCell" xml:space="preserve">
+    <value>Impostare il numero della cella finale del blocco.</value>
+  </data>
+  <data name="HelpCSCCorrection" xml:space="preserve">
+    <value>Impostare il valore desiderato della correzione che verra' applicata al gruppo celle selezionato.</value>
+  </data>
+  <data name="HelpCSCSelectedSide" xml:space="preserve">
+    <value>Riporta il lato su cui si sta effettuando la modifica. Il lato e' automaticamente determinato sulla base del numero cella iniziale selezionato se pari o dispari.</value>
+  </data>
+  <data name="HelpCSCApplyCorrection" xml:space="preserve">
+    <value>Applica la correzione al gruppo celle selezionato.</value>
+  </data>
+  <data name="HelpLFDTotalCells" xml:space="preserve">
+    <value>Indica il numero totale di celle da sottoporre a test.</value>
+  </data>
+  <data name="HelpLFDTestedCells" xml:space="preserve">
+    <value>Indica il numero di celle attualmente testate.</value>
+  </data>
+  <data name="HelpLFDCellInTest" xml:space="preserve">
+    <value>Numero della cella attualmente in test.</value>
+  </data>
+  <data name="HelpLFDDrawerNumber" xml:space="preserve">
+    <value>Numero del cassetto in fase di inserimento.</value>
+  </data>
+  <data name="HelpLFDMaxLoad" xml:space="preserve">
+    <value>Portata massima del cassetto in fase di carico.</value>
+  </data>
+  <data name="HelpLFDInsertDrawer" xml:space="preserve">
+    <value>Avvia la procedura di inserimento del cassetto. La procedura termina al completamento dei cicli previsti.</value>
+  </data>
+  <data name="HelpLFDRecallDrawer" xml:space="preserve">
+    <value>Richiama in baia il cassetto utilizzato per il test.</value>
+  </data>
+  <data name="HelpLFDDescription" xml:space="preserve">
+    <value>La procedura permette di utilizzare il cassetto selezionato nell'apposito campo di input per testare le celle inferiori e superiori della macchina oltre alle celle sottostanti e sovrastanti blocchi di celle indicate come disabilitate. Scopo della procedura e' quello di verificare che non vi siano interferenze meccaniche in queste aree.</value>
+  </data>
+  <data name="HelpLDRDescription" xml:space="preserve">
+    <value>La procedura permette di inserire i cassetti vuoti all'interno della macchina al termine della procedura di messa in servizio. I cassetti vengono inseriti all'interno dei blocchi liberi scegliendoli in base alla priorita' piu' bassa.</value>
+  </data>
+  <data name="HelpLDRTotalDrawers" xml:space="preserve">
+    <value>Numero totali di cassetti da inserire.</value>
+  </data>
+  <data name="HelpLDRInsertedDrawers" xml:space="preserve">
+    <value>Cassetti gia' inseriti in macchina.</value>
+  </data>
+  <data name="HelpLDRDrawerToInsert" xml:space="preserve">
+    <value>Numero del cassetto in fase di inserimento. Puo' essere generato dal pulsante apposito oppure inserito nell'apposito campo.</value>
+  </data>
+  <data name="HelpLDRMaxLoad" xml:space="preserve">
+    <value>Indica la portata massima ammessa per il cassetto attualmente in inserimento.</value>
+  </data>
+  <data name="HelpLDRNextDrawer" xml:space="preserve">
+    <value>Il pulsante imposta il prossimo cassetto da inserire. il numero e' quello successivo all'ultimo inserito.</value>
+  </data>
+  <data name="HelpLDRStart" xml:space="preserve">
+    <value>Avvia la procedura di inserimento del cassetto selezionato.</value>
+  </data>
+  <data name="HelpBCTRDescription" xml:space="preserve">
+    <value>La procedura permette di verificare ed eventualmente correggere la quota delle varie posizioni possibili sulle varie baie. La procedura si adatta alla tipologia di baia indicata nel documento che descrive la configurazione macchina. Nel caso di piu' posizioni sulla stessa baia la procedura permette verifiche multiple.</value>
+  </data>
+  <data name="HelpBCTRSelectedBay" xml:space="preserve">
+    <value>Seleziona la baia di cui si vogliono verificare le quote.</value>
+  </data>
+  <data name="HelpBCTRSelectedPosition" xml:space="preserve">
+    <value>Indica la posizione all'interno della baia selezionata di cui si vogliono controllare le quote. Viene impostata automaticamente.</value>
+  </data>
+  <data name="HelpBCTRPositionHeight" xml:space="preserve">
+    <value>Visualizza la quota della posizione selezionata nell'ambito della baia sotto controllo.</value>
+  </data>
+  <data name="HelpBCTRStepValue" xml:space="preserve">
+    <value>Valore dello step applicato alla quota corrente dell'asse ad ogni pressione dei pulsanti di spostamento.</value>
+  </data>
+  <data name="HelpBCTRActualHeight" xml:space="preserve">
+    <value>Posizione attuale dell'asse verticale.</value>
+  </data>
+  <data name="HelpBCTRCorrectionValue" xml:space="preserve">
+    <value>Valore cumulativo della correzione che verra' applicata all quota della baia-posizione selezionata. </value>
+  </data>
+  <data name="HelpBCTRMoveToPosition" xml:space="preserve">
+    <value>Posiziona l'asse verticale in corrispondenza della baia-posizione selezionata.</value>
+  </data>
+  <data name="HelpBCTRStepPiu" xml:space="preserve">
+    <value>Incrementa la quota corrente dell'asse del valore indicato dallo step.</value>
+  </data>
+  <data name="HelpBCTRStepMeno" xml:space="preserve">
+    <value>Decrementa la quota corrente dell'asse del valore indicato dallo step.</value>
+  </data>
+  <data name="HelpBCTRAdjust" xml:space="preserve">
+    <value>Corregge la quota attuale della baia-posizione corrente del valore indicato nell'apposito campo.</value>
+  </data>
+  <data name="HelpBCTRNextPosition" xml:space="preserve">
+    <value>Se abilitato, il pulsante permette di scegliere la prossima posizione presente nella baia attualmente selezionata. La procedura va ripetuta per la nuova posizione.</value>
+  </data>
+</root>

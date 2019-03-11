@@ -1,28 +1,28 @@
-namespace Ferretto.WMS.Scheduler.Core
+namespace Ferretto.WMS.Scheduler.Core.Models
 {
-    public class Mission : BusinessObject
+    public class Mission : Model
     {
         #region Fields
 
         private int quantity;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
-        public int BayId { get; set; }
+        public int? BayId { get; set; }
 
-        public int CellId { get; set; }
+        public int? CellId { get; set; }
 
-        public int CompartmentId { get; set; }
+        public int? CompartmentId { get; set; }
 
-        public int ItemId { get; set; }
+        public int? ItemId { get; set; }
 
         public int? ItemListId { get; set; }
 
         public int? ItemListRowId { get; set; }
 
-        public int LoadingUnitId { get; set; }
+        public int? LoadingUnitId { get; set; }
 
         public string Lot { get; set; }
 
@@ -46,6 +46,6 @@ namespace Ferretto.WMS.Scheduler.Core
 
         public MissionType Type { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

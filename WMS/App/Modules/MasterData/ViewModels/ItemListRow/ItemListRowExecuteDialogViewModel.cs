@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
@@ -16,13 +17,18 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly IAreaProvider areaProvider = ServiceLocator.Current.GetInstance<IAreaProvider>();
+
         private readonly IBayProvider bayProvider = ServiceLocator.Current.GetInstance<IBayProvider>();
+
         private readonly IItemListRowProvider itemListRowProvider = ServiceLocator.Current.GetInstance<IItemListRowProvider>();
+
         private ItemListRowExecutionRequest executionRequest;
+
         private bool isBusy;
+
         private ICommand runListRowExecuteCommand;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -31,9 +37,11 @@ namespace Ferretto.WMS.Modules.MasterData
             this.Initialize();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
+
+        public string Errors => this.executionRequest.Error;
 
         public ItemListRowExecutionRequest ExecutionRequest
         {
@@ -68,25 +76,28 @@ namespace Ferretto.WMS.Modules.MasterData
                          async () => await this.ExecuteListRowCommandAsync(),
                          this.CanExecuteListRowCommand));
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
-        protected override async void OnAppear()
+        protected override async Task OnAppearAsync()
         {
+            await base.OnAppearAsync().ConfigureAwait(true);
+
             var modelId = (int?)this.Data.GetType().GetProperty("Id")?.GetValue(this.Data);
             if (!modelId.HasValue)
             {
                 return;
             }
 
-            this.executionRequest.ItemListRowDetails = await this.itemListRowProvider.GetByIdAsync(modelId.Value);
-            this.executionRequest.AreaChoices = this.areaProvider.GetAll();
+            this.executionRequest.ItemListRowDetails = await this.itemListRowProvider.GetByIdAsync(modelId.Value).ConfigureAwait(true);
+            this.executionRequest.AreaChoices = await this.areaProvider.GetAllAsync();
             this.executionRequest.PropertyChanged += this.OnAreaIdChanged;
         }
 
         private bool CanExecuteListRowCommand()
         {
+            this.RaisePropertyChanged(nameof(this.executionRequest.Error));
             return string.IsNullOrEmpty(this.executionRequest.Error);
         }
 
@@ -95,7 +106,7 @@ namespace Ferretto.WMS.Modules.MasterData
             Debug.Assert(this.executionRequest.AreaId.HasValue, "The parameter must always have a value.");
 
             this.IsBusy = true;
-            OperationResult result = null;
+            IOperationResult<ItemListRow> result = null;
             if (!this.executionRequest.Schedule)
             {
                 Debug.Assert(this.executionRequest.BayId.HasValue, "The parameter must always have a value.");
@@ -119,12 +130,12 @@ namespace Ferretto.WMS.Modules.MasterData
             this.ExecutionRequest = new ItemListRowExecutionRequest();
         }
 
-        private void OnAreaIdChanged(object sender, PropertyChangedEventArgs e)
+        private async void OnAreaIdChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(this.executionRequest.AreaId) &&
                 this.executionRequest.AreaId.HasValue)
             {
-                this.executionRequest.BayChoices = this.bayProvider.GetByAreaId(this.ExecutionRequest.AreaId.Value);
+                this.executionRequest.BayChoices = await this.bayProvider.GetByAreaIdAsync(this.ExecutionRequest.AreaId.Value);
             }
         }
 
@@ -133,6 +144,6 @@ namespace Ferretto.WMS.Modules.MasterData
             ((DelegateCommand)this.RunListRowExecuteCommand)?.RaiseCanExecuteChanged();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

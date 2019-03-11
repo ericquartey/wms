@@ -10,6 +10,6 @@ namespace Ferretto.Common.Controls.Interfaces
 
         Task StartAsync();
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -1,24 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Resources;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
-    public class EntityListViewModel<TModel> : BaseServiceNavigationViewModel, IEntityListViewModel
-        where TModel : IBusinessObject
+    public class EntityListViewModel<TModel, TKey> : BaseServiceNavigationViewModel, IEntityListViewModel
+        where TModel : IModel<TKey>
     {
         #region Fields
 
-        private IEnumerable<IFilterDataSource<TModel>> filterDataSources;
+        protected Tile selectedFilterTile;
+
+        private ICommand addCommand;
+
+        private IEnumerable<IFilterDataSource<TModel, TKey>> filterDataSources;
 
         private IEnumerable<Tile> filterTiles;
 
@@ -32,11 +36,9 @@ namespace Ferretto.Common.Controls
 
         private object selectedFilterDataSource;
 
-        private Tile selectedFilterTile;
-
         private object selectedItem;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -45,9 +47,14 @@ namespace Ferretto.Common.Controls
             this.InitializeEvent();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
+
+        public ICommand AddCommand => this.addCommand ??
+              (this.addCommand = new DelegateCommand(this.ExecuteAddCommand));
+
+        public ColorRequired ColorRequired => ColorRequired.Default;
 
         public TModel CurrentItem
         {
@@ -56,6 +63,11 @@ namespace Ferretto.Common.Controls
                 if (this.selectedItem == null)
                 {
                     return default(TModel);
+                }
+
+                if (this.selectedItem is TModel)
+                {
+                    return (TModel)this.selectedItem;
                 }
 
                 if ((this.selectedItem is DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread) == false)
@@ -86,10 +98,7 @@ namespace Ferretto.Common.Controls
                (this.refreshCommand = new DelegateCommand(
                this.ExecuteRefreshCommand));
 
-        [Display(Name = nameof(DesktopApp.SearchLabel), ResourceType = typeof(DesktopApp))]
-        public string SearchText { get; set; }
-
-        public Tile SelectedFilter
+        public virtual Tile SelectedFilter
         {
             get => this.selectedFilterTile;
             set
@@ -102,7 +111,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public object SelectedFilterDataSource
+        public virtual object SelectedFilterDataSource
         {
             get => this.selectedFilterDataSource;
             protected set => this.SetProperty(ref this.selectedFilterDataSource, value);
@@ -120,26 +129,32 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        #endregion Properties
+        protected IEnumerable<IFilterDataSource<TModel, TKey>> FilterDataSources => this.filterDataSources;
+
+        #endregion
 
         #region Methods
 
-        public void LoadRelatedData()
+        public virtual void LoadRelatedData()
         {
             var oldFilterDataSource = this.selectedFilterDataSource;
             this.SelectedFilterDataSource = null;
             this.SelectedFilterDataSource = oldFilterDataSource;
         }
 
-        public async Task UpdateFilterTilesCountsAsync()
+        public virtual async Task UpdateFilterTilesCountsAsync()
         {
             await Task.Run(() =>
             {
                 foreach (var filterTile in this.filterTiles)
                 {
-                    filterTile.Count = this.filterDataSources.Single(d => d.Key == filterTile.Key).GetDataCount();
+                    filterTile.Count = this.filterDataSources.Single(d => d.Key == filterTile.Key).GetDataCount?.Invoke();
                 }
             }).ConfigureAwait(true);
+        }
+
+        protected virtual void ExecuteAddCommand()
+        {
         }
 
         protected void ExecuteRefreshCommand()
@@ -147,39 +162,43 @@ namespace Ferretto.Common.Controls
             this.LoadRelatedData();
         }
 
-        protected override async void OnAppear()
+        protected override async Task OnAppearAsync()
         {
-            base.OnAppear();
+            // TODO: check cycle because OnAppear is Async
+            // await base.OnAppearAsync();
 
-            var dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
-            this.filterDataSources = dataSourceService.GetAllFilters<TModel>(this.GetType().Name, this.Data);
-            this.filterTiles = new BindingList<Tile>(this.filterDataSources.Select(filterDataSource => new Tile
+            try
             {
-                Key = filterDataSource.Key,
-                Name = filterDataSource.Name
-            }).ToList());
+                var dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
+                this.filterDataSources = dataSourceService.GetAllFilters<TModel, TKey>(this.GetType().Name, this.Data);
+                this.filterTiles = new BindingList<Tile>(this.filterDataSources.Select(filterDataSource => new Tile
+                {
+                    Key = filterDataSource.Key,
+                    Name = filterDataSource.Name
+                }).ToList());
 
-            await this.UpdateFilterTilesCountsAsync();
-        }
-
-        protected override void OnDisappear()
-        {
-            base.OnDisappear();
+                await this.UpdateFilterTilesCountsAsync().ConfigureAwait(true);
+            }
+            catch (System.Exception ex)
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(ex));
+            }
         }
 
         protected override void OnDispose()
         {
             this.EventService.Unsubscribe<RefreshModelsPubSubEvent<TModel>>(this.modelRefreshSubscription);
-            this.EventService.Unsubscribe<ModelChangedPubSubEvent<TModel>>(this.modelChangedEventSubscription);
+            this.EventService.Unsubscribe<ModelChangedPubSubEvent<TModel, TKey>>(this.modelChangedEventSubscription);
+
             base.OnDispose();
         }
 
         private void InitializeEvent()
         {
             this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<TModel>>(eventArgs => { this.LoadRelatedData(); }, this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<TModel>>(eventArgs => { this.LoadRelatedData(); });
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<TModel, TKey>>(eventArgs => { this.LoadRelatedData(); });
         }
 
-        #endregion Methods
+        #endregion
     }
 }

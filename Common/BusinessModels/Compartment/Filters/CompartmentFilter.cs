@@ -11,22 +11,21 @@ namespace Ferretto.Common.BusinessModels
             var compartmentDetails = compartment as CompartmentDetails;
             var selectedDetails = selected as CompartmentDetails;
 
-            var color = "Red";
             if (selectedDetails != null && compartmentDetails != null)
             {
                 if ((compartmentDetails.CompartmentTypeId != 0 || compartmentDetails == selectedDetails)
                     &&
                     compartmentDetails.CompartmentTypeId == selectedDetails.CompartmentTypeId)
                 {
-                    color = "#76FF03";
+                    return "#76FF03";
                 }
                 else
                 {
-                    color = "#90A4AE";
+                    return "#90A4AE";
                 }
             }
 
-            return color;
+            return "Red";
         };
 
         public string Description => "Compartment";
@@ -35,6 +34,6 @@ namespace Ferretto.Common.BusinessModels
 
         public ICompartment Selected { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

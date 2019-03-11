@@ -13,7 +13,7 @@ namespace Ferretto.Common.Controls
         private const double Million = Thousand * Thousand;
         private const double Thousand = 1000.0;
 
-        #endregion Fields
+        #endregion
 
         #region Methods
 
@@ -50,6 +50,6 @@ namespace Ferretto.Common.Controls
             return null;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -12,6 +12,7 @@
                    d:DesignHeight="500"
                    d:DesignWidth="500"
                    HeaderIsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}"
+                   Mode="DialogPopup"
                    ResizeMode="NoResize"
                    SizeToContent="Height"
                    mc:Ignorable="d">
@@ -68,6 +69,7 @@
                 </Grid.ColumnDefinitions>
 
                 <wms:ComboBox x:Name="SelectedArea"
+                              wms:ShowTitle.Show="True"
                               AllowNullInput="False"
                               DisplayMember="Name"
                               EditValue="{Binding ItemWithdraw.AreaId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -75,30 +77,37 @@
                               ItemsSource="{Binding ItemWithdraw.AreaChoices}" />
                 <wms:ComboBox x:Name="SelectedBay"
                               Grid.Column="2"
+                              wms:ShowTitle.Show="True"
                               AllowNullInput="False"
                               EditValue="{Binding ItemWithdraw.BayId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               IsTextEditable="False"
                               ItemsSource="{Binding ItemWithdraw.BayChoices}"
                               Visibility="{Binding ElementName=SelectedArea, Path=SelectedItem, Converter={StaticResource RTVC}}" />
                 <wms:TextBox Grid.Row="1"
+                             wms:ShowTitle.Show="True"
                              EditValue="{Binding ItemWithdraw.Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
                 <wms:TextBox Grid.Row="1"
                              Grid.Column="2"
+                             wms:ShowTitle.Show="True"
                              EditValue="{Binding ItemWithdraw.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
                 <wms:TextBox Grid.Row="2"
+                             wms:ShowTitle.Show="True"
                              EditValue="{Binding ItemWithdraw.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
                 <wms:TextBox Grid.Row="2"
                              Grid.Column="2"
+                             wms:ShowTitle.Show="True"
                              EditValue="{Binding ItemWithdraw.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
                 <wms:InfoText Grid.Row="3"
+                              wms:ShowTitle.Show="True"
                               Content="{Binding ItemWithdraw.ItemDetails.TotalAvailable}"
                               Visibility="{Binding ElementName=SelectedBay, Path=SelectedItem, Converter={StaticResource RTVC}}" />
                 <wms:SpinEdit Grid.Row="3"
                               Grid.Column="2"
+                              wms:ShowTitle.Show="True"
                               AllowNullInput="False"
                               EditValue="{Binding ItemWithdraw.Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               MinValue="1"
@@ -136,7 +145,7 @@
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/editor/ic_format_align_justify_black_24dp.png"
                                        GlyphSize="Custom"
                                        IsVisible="{Binding SimpleWithdraw}" />
-                    <wms:ActionBarItem Command="{Binding RunWithdrawCommand, IsAsync=True}"
+                    <wms:ActionBarItem Command="{Binding RunWithdrawCommand}"
                                        Content="{x:Static res:MasterData.RunItemWithdraw}"
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/av/ic_play_circle_outline_black_24dp.png"

@@ -9,20 +9,32 @@ namespace Ferretto.Common.BusinessModels
         #region Fields
 
         private string abcClassId;
+
         private int aisleId;
+
         private int areaId;
+
         private int cellStatusId;
+
         private int? cellTypeId;
+
         private int? column;
+
         private int? floor;
+
         private int? number;
+
         private int priority;
+
         private Side side;
+
         private int? xCoordinate;
+
         private int? yCoordinate;
+
         private int? zCoordinate;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -84,6 +96,8 @@ namespace Ferretto.Common.BusinessModels
 
         public IEnumerable<LoadingUnitDetails> LoadingUnits { get; set; }
 
+        public int LoadingUnitsCount { get; set; }
+
         [Display(Name = nameof(BusinessObjects.CellNumber), ResourceType = typeof(BusinessObjects))]
         public int? Number
         {
@@ -128,6 +142,6 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetIfPositive(ref this.zCoordinate, value);
         }
 
-        #endregion Properties
+        #endregion
     }
 }

@@ -1,0 +1,269 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <LanguageTargets>$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
+    <TargetFramework>net471</TargetFramework>
+    <OutputType>Library</OutputType>
+    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <RootNamespace>Ferretto.VW.InstallationApp</RootNamespace>
+    <AssemblyName>Ferretto.VW.InstallationApp</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>Bin\Debug\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>Bin\Release\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="**\*.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="**\*.xaml" Exclude="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="CellsControlHelpView.xaml" />
+    <None Remove="HelpWindows\HelpBeltBurnishingView.xaml" />
+    <None Remove="HelpWindows\HelpCellsPanelControl.xaml" />
+    <None Remove="HelpWindows\HelpInstallationState.xaml" />
+    <None Remove="HelpWindows\HelpLowSpeedMovements.xaml" />
+    <None Remove="HelpWindows\HelpMainWindow.xaml" />
+    <None Remove="HelpWindows\HelpPageBase.xaml" />
+    <None Remove="HelpWindows\HelpResolutionCalibrationVerticalAxisView.xaml" />
+    <None Remove="HelpWindows\HelpSensorState.xaml" />
+    <None Remove="HelpWindows\HelpShutterControl.xaml" />
+    <None Remove="HelpWindows\HelpShutterHeightControl.xaml" />
+    <None Remove="HelpWindows\HelpVerticalAxisCalibration.xaml" />
+    <None Remove="HelpWindows\HelpVerticalOffsetCalibration.xaml" />
+    <None Remove="HelpWindows\HelpWeightControl.xaml" />
+    <None Remove="MainWindowBackToIAPPButtonView.xaml" />
+    <None Remove="ViewsAndViewModels\LowSpeedMovements\LSMTMainView.xaml" />
+    <None Remove="ViewsAndViewModels\MainWindowBackToIAPPButtonView.xaml" />
+    <None Remove="ViewsAndViewModels\SensorsState\SSMainView.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommonServiceLocator" Version="1.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.1" />
+    <PackageReference Include="Prism.Core" Version="6.3.0" />
+    <PackageReference Include="Prism.Unity" Version="6.3.0" />
+    <PackageReference Include="Prism.Wpf" Version="6.3.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+    <PackageReference Include="Unity" Version="4.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common_Utils\Ferretto.VW.Common_Utils.csproj" />
+    <ProjectReference Include="..\..\Common\Resources\Ferretto.VW.Resources.csproj" />
+    <ProjectReference Include="..\CustomControls\Ferretto.VW.CustomControls.csproj" />
+    <ProjectReference Include="..\Utils\Ferretto.VW.Utils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="HelpWindows\HelpBeltBurnishingView.xaml.cs">
+      <DependentUpon>HelpBeltBurnishingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpCellsControlView.xaml.cs">
+      <DependentUpon>HelpCellsControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpInstallationState.xaml.cs">
+      <DependentUpon>HelpInstallationState.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpLowSpeedMovements.xaml.cs">
+      <DependentUpon>HelpLowSpeedMovements.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpShutterControl.xaml.cs">
+      <DependentUpon>HelpShutterControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpCellsPanelControl.xaml.cs">
+      <DependentUpon>HelpCellsPanelControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpShutterHeightControl.xaml.cs">
+      <DependentUpon>HelpShutterHeightControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpVerticalOffsetCalibration.xaml.cs">
+      <DependentUpon>HelpVerticalOffsetCalibration.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpWeightControl.xaml.cs">
+      <DependentUpon>HelpWeightControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpVerticalAxisCalibration.xaml.cs">
+      <DependentUpon>HelpVerticalAxisCalibration.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpSensorState.xaml.cs">
+      <DependentUpon>HelpSensorState.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpResolutionCalibrationVerticalAxisView.xaml.cs">
+      <DependentUpon>HelpResolutionCalibrationVerticalAxisView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\LowSpeedMovements\LSMTShutterEngineView.xaml.cs">
+      <DependentUpon>LSMTShutterEngineView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\SensorsState\SSShutterView.xaml.cs">
+      <DependentUpon>SSShutterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\ShuttersControl\Shutter3ControlView.xaml.cs">
+      <DependentUpon>Shutter3ControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\ShuttersControl\Shutter2ControlView.xaml.cs">
+      <DependentUpon>Shutter2ControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\ShuttersControl\Shutter1ControlView.xaml.cs">
+      <DependentUpon>Shutter1ControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\ShuttersHeightControl\Shutter3HeightControlView.xaml.cs">
+      <DependentUpon>Shutter3HeightControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\ShuttersHeightControl\Shutter2HeightControlView.xaml.cs">
+      <DependentUpon>Shutter2HeightControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\ShuttersHeightControl\Shutter1HeightControlView.xaml.cs">
+      <DependentUpon>Shutter1HeightControlView.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="HelpWindows\HelpBayControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="HelpWindows\HelpCellsControlView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="HelpWindows\HelpCellsSideControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="HelpWindows\HelpLoadFirstDrawer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="HelpWindows\HelpLoadingDrawers.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="Resources\Views.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\ShuttersControl\Shutter1ControlView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\ShuttersControl\Shutter2ControlView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\ShuttersControl\Shutter3ControlView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\ShuttersHeightControl\Shutter1HeightControlView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\ShuttersHeightControl\Shutter2HeightControlView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\ShuttersHeightControl\Shutter3HeightControlView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\LowSpeedMovements\LSMTShutterEngineView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\LowSpeedMovements\LSMTHorizontalEngineView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\LowSpeedMovements\LSMTNavigationButtonsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\LowSpeedMovements\LSMTVerticalEngineView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\MainWindowNavigationButtonsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\SensorsState\SSBaysView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\SensorsState\SSCradleView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\SensorsState\SSShutterView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\SensorsState\SSNavigationButtonsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\SensorsState\SSVariousInputsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\SensorsState\SSVerticalAxisView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\SingleViews\BayControlView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\SingleViews\BeltBurnishingView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\SingleViews\CellsControlView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\SingleViews\CellsPanelsControlView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\SingleViews\CellsSideControlView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\SingleViews\IdleView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\SingleViews\InstallationStateView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\SingleViews\LoadFirstDrawerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\SingleViews\LoadingDrawersView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\SingleViews\ResolutionCalibrationVerticalAxisView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\SingleViews\VerticalAxisCalibrationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\SingleViews\VerticalOffsetCalibrationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\SingleViews\WeightControlView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="ViewsAndViewModels\SensorsState\SSMainView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+</Project>

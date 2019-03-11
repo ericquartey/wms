@@ -1,15 +1,16 @@
 ﻿using System;
 
-namespace Ferretto.WMS.Scheduler.Core
+namespace Ferretto.WMS.Scheduler.Core.Models
 {
-    public class SchedulerRequest : BusinessObject
+    public class SchedulerRequest : Model
     {
         #region Fields
 
         private int dispatchedQuantity;
+
         private int requestedQuantity;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -42,7 +43,7 @@ namespace Ferretto.WMS.Scheduler.Core
             this.Type = request.Type;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -104,6 +105,6 @@ namespace Ferretto.WMS.Scheduler.Core
 
         public OperationType Type { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

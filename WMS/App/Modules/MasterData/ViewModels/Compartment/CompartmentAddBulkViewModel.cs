@@ -14,17 +14,17 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
         public CompartmentAddBulkViewModel()
         {
             this.Title = Common.Resources.MasterData.BulkAddCompartment;
-            this.IsValidationEnabled = false;
+            this.ColorRequired = ColorRequired.CreateMode;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -37,9 +37,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async Task ExecuteSaveCommand()
         {
-            this.IsValidationEnabled = true;
-
-            if (string.IsNullOrWhiteSpace(this.Model.Error) == false)
+            if (!this.IsModelValid)
             {
                 return;
             }
@@ -52,7 +50,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<LoadingUnit>(this.Model.LoadingUnit.Id));
+                this.EventService.Invoke(new ModelChangedPubSubEvent<LoadingUnit, int>(this.Model.LoadingUnit.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(
                     Common.Resources.MasterData.LoadingUnitSavedSuccessfully,
                     StatusType.Success));
@@ -67,6 +65,6 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = false;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

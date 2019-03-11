@@ -9,9 +9,10 @@ namespace Ferretto.Common.Controls
 
         public WmsStatusBar()
         {
+            this.AllowCustomizationMenu = false;
             this.DataContext = new StatusBarViewModel();
         }
 
-        #endregion Constructors
+        #endregion
     }
 }

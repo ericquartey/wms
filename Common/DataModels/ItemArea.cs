@@ -13,6 +13,6 @@
 
         public int ItemId { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

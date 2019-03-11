@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ferretto.Common.BusinessModels
+﻿namespace Ferretto.Common.BusinessModels
 {
     public class ItemCompartmentType : BusinessObject
     {
@@ -14,6 +10,6 @@ namespace Ferretto.Common.BusinessModels
 
         public int? MaxCapacity { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

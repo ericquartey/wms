@@ -1,0 +1,652 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+		Microsoft ResX Schema
+
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BeltBurnishingUpLimit" xml:space="preserve">
+    <value>BeltBurnishingUpLimit</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="BeltBurnishingDownLimit" xml:space="preserve">
+    <value>BeltBurnishingDownLimit</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="BeltBurnishingRequiredCycles" xml:space="preserve">
+    <value>BeltBurnishingRequiredCycles</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="BeltBurnishingCompletedCycles" xml:space="preserve">
+    <value>BeltBurnishingCompletedCycles</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="BeltBurnishingActualPosition" xml:space="preserve">
+    <value>BeltBurnishingActualPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="BeltBurnishingStartCycle" xml:space="preserve">
+    <value>BeltBurnishingStartCycle</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="BeltBurnishingStopCycle" xml:space="preserve">
+    <value>BeltBurnishingStopCycle</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="BeltBurnishingFunctionDescription" xml:space="preserve">
+    <value>BeltBurnishingFunctionDescription</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="ResolutionCalibrationFunctionDescription" xml:space="preserve">
+    <value>ResolutionCalibrationFunctionDescription</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="ResolutionCalibrationInitialPositionHelp" xml:space="preserve">
+    <value>ResolutionCalibrationInitialPositionHelp</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="ResolutionCalibrationInitialStartHelp" xml:space="preserve">
+    <value>ResolutionCalibrationInitialStartHelp</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="ResolutionCalibrationFinalPositionHelp" xml:space="preserve">
+    <value>ResolutionCalibrationFinalPositionHelp</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="ResolutionCalibrationFinalPosizionStartHelp" xml:space="preserve">
+    <value>ResolutionCalibrationFinalPosizionStartHelp</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="ResolutionCalibrationMeasuredeValueHelp" xml:space="preserve">
+    <value>ResolutionCalibrationMeasuredeValueHelp</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="VerticalResolutionCalibrationStep1" xml:space="preserve">
+    <value>VerticalResolutionCalibrationStep1</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="VerticalResolutionCalibrationStep2" xml:space="preserve">
+    <value>VerticalResolutionCalibrationStep2</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="VerticalResolutionCalibrationStep3" xml:space="preserve">
+    <value>VerticalResolutionCalibrationStep3</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="VerticalResolutionCalibrationStep4" xml:space="preserve">
+    <value>VerticalResolutionCalibrationStep4</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="ResolutionCalibrationActualResolutionHelp" xml:space="preserve">
+    <value>ResolutionCalibrationActualResolutionHelp</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="ResolutionCalibrationNewResolutionHelp" xml:space="preserve">
+    <value>ResolutionCalibrationNewResolutionHelp</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="ResolutionCalibrationAcceptNewResolution" xml:space="preserve">
+    <value>ResolutionCalibrationAcceptNewResolution</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="ResolutionCalibrationGoToInitialPosizion" xml:space="preserve">
+    <value>ResolutionCalibrationGoToInitialPosizion</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="ResolutionCalibrationCloseProcedure" xml:space="preserve">
+    <value>ResolutionCalibrationCloseProcedure</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpInstallationStateDescription" xml:space="preserve">
+    <value>HelpInstallationStateDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpInstallationStateToDo" xml:space="preserve">
+    <value>HelpInstallationStateToDo</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpInstallationStateDone" xml:space="preserve">
+    <value>HelpInstallationStateDone</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpSSTitle" xml:space="preserve">
+    <value>HelpSSTitle</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="HelpSSDescription" xml:space="preserve">
+    <value>HelpSSDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpSSStateOn" xml:space="preserve">
+    <value>HelpSSStateOn</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpSSStateOff" xml:space="preserve">
+    <value>HelpSSStateOff</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLSMTTitle" xml:space="preserve">
+    <value>HelpLSMTTitle</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="HelpLSMTDescription" xml:space="preserve">
+    <value>HelpLSMTDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpLSMTActualPosition" xml:space="preserve">
+    <value>HelpLSMTActualPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLSMTMoveUp" xml:space="preserve">
+    <value>HelpLSMTMoveUp</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLSMTMoveDown" xml:space="preserve">
+    <value>HelpLSMTMoveDown</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGCDescription" xml:space="preserve">
+    <value>HelpGCDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpGCRequiredCycles" xml:space="preserve">
+    <value>HelpGCRequiredCycles</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGCDelay" xml:space="preserve">
+    <value>HelpGCDelay</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGCCompleted" xml:space="preserve">
+    <value>HelpGCCompleted</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGCSensorA" xml:space="preserve">
+    <value>HelpGCSensorA</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGCSensorB" xml:space="preserve">
+    <value>HelpGCSensorB</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGCStartButton" xml:space="preserve">
+    <value>HelpGCStartButton</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGCStopButton" xml:space="preserve">
+    <value>HelpGCStopButton</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVACDescription" xml:space="preserve">
+    <value>HelpVACDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpVACDownLimit" xml:space="preserve">
+    <value>HelpVACDownLimit</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVACUpLimit" xml:space="preserve">
+    <value>HelpVACUpLimit</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVACOffset" xml:space="preserve">
+    <value>HelpVACOffset</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVACResolution" xml:space="preserve">
+    <value>HelpVACResolution</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVACFinalResult" xml:space="preserve">
+    <value>HelpVACFinalResult</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVacStart" xml:space="preserve">
+    <value>HelpVacStart</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVACStop" xml:space="preserve">
+    <value>HelpVACStop</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="ResolutionCalibrationInitialReadValueHelp" xml:space="preserve">
+    <value>ResolutionCalibrationInitialReadValueHelp</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="ResolutionCalibrationFinalReadValueHelp" xml:space="preserve">
+    <value>ResolutionCalibrationFinalReadValueHelp</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCCVDescription" xml:space="preserve">
+    <value>HelpCCVDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpCCVSelectedCell" xml:space="preserve">
+    <value>HelpCCVSelectedCell</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCCVCellPosition" xml:space="preserve">
+    <value>HelpCCVCellPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCCVStepValue" xml:space="preserve">
+    <value>HelpCCVStepValue</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCCVAttualPosition" xml:space="preserve">
+    <value>HelpCCVAttualPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCCVCorrectionValue" xml:space="preserve">
+    <value>HelpCCVCorrectionValue</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCCVSetPosition" xml:space="preserve">
+    <value>HelpCCVSetPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCCVStepPiu" xml:space="preserve">
+    <value>HelpCCVStepPiu</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCCVStepMeno" xml:space="preserve">
+    <value>HelpCCVStepMeno</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCCVApplyCorrection" xml:space="preserve">
+    <value>HelpCCVApplyCorrection</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVPPMDescription" xml:space="preserve">
+    <value>HelpVPPMDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpVPPMTotalPanels" xml:space="preserve">
+    <value>HelpVPPMTotalPanels</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVPPMActualPanel" xml:space="preserve">
+    <value>HelpVPPMActualPanel</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVPPMSelectedCell" xml:space="preserve">
+    <value>HelpVPPMSelectedCell</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVPPMSelectedCellPosition" xml:space="preserve">
+    <value>HelpVPPMSelectedCellPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVPPMActualPosition" xml:space="preserve">
+    <value>HelpVPPMActualPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVPPMStepValue" xml:space="preserve">
+    <value>HelpVPPMStepValue</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVPPMCorrectionValue" xml:space="preserve">
+    <value>HelpVPPMCorrectionValue</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVPPMNextPanel" xml:space="preserve">
+    <value>HelpVPPMNextPanel</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVPPMGoToCell" xml:space="preserve">
+    <value>HelpVPPMGoToCell</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVPPMStepPiu" xml:space="preserve">
+    <value>HelpVPPMStepPiu</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVPPMStepMeno" xml:space="preserve">
+    <value>HelpVPPMStepMeno</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVPPMApplyCorrection" xml:space="preserve">
+    <value>HelpVPPMApplyCorrection</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGHCDescription" xml:space="preserve">
+    <value>HelpGHCDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpGHCVelocity" xml:space="preserve">
+    <value>HelpGHCVelocity</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGHCSystemError" xml:space="preserve">
+    <value>HelpGHCSystemError</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGHCTollerance" xml:space="preserve">
+    <value>HelpGHCTollerance</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGHCHeightReaced" xml:space="preserve">
+    <value>HelpGHCHeightReaced</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGHCCurrentPosition" xml:space="preserve">
+    <value>HelpGHCCurrentPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGHCBarrierCorrection" xml:space="preserve">
+    <value>HelpGHCBarrierCorrection</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGHCFinalResult" xml:space="preserve">
+    <value>HelpGHCFinalResult</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGHCStart" xml:space="preserve">
+    <value>HelpGHCStart</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGHCStop" xml:space="preserve">
+    <value>HelpGHCStop</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpWCDescription" xml:space="preserve">
+    <value>HelpWCDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpWCTestRun" xml:space="preserve">
+    <value>HelpWCTestRun</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpWCWeightInserted" xml:space="preserve">
+    <value>HelpWCWeightInserted</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpWCWeightTollerance" xml:space="preserve">
+    <value>HelpWCWeightTollerance</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpWCWeightMeasured" xml:space="preserve">
+    <value>HelpWCWeightMeasured</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpWCFinalResult" xml:space="preserve">
+    <value>HelpWCFinalResult</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpWCStart" xml:space="preserve">
+    <value>HelpWCStart</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpWCStop" xml:space="preserve">
+    <value>HelpWCStop</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVOCDescription" xml:space="preserve">
+    <value>HelpVOCDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpVOCSelectedCell" xml:space="preserve">
+    <value>HelpVOCSelectedCell</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVOCCellPosition" xml:space="preserve">
+    <value>HelpVOCCellPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVOCStepValue" xml:space="preserve">
+    <value>HelpVOCStepValue</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVOCActualPosition" xml:space="preserve">
+    <value>HelpVOCActualPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVOCActualOffset" xml:space="preserve">
+    <value>HelpVOCActualOffset</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVOCAdjustedOffset" xml:space="preserve">
+    <value>HelpVOCAdjustedOffset</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVOCGoToCell" xml:space="preserve">
+    <value>HelpVOCGoToCell</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVOCStepPiu" xml:space="preserve">
+    <value>HelpVOCStepPiu</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVOCStepMeno" xml:space="preserve">
+    <value>HelpVOCStepMeno</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpVOCApplyCorrection" xml:space="preserve">
+    <value>HelpVOCApplyCorrection</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCSCDescription" xml:space="preserve">
+    <value>HelpCSCDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpCSCInitialCell" xml:space="preserve">
+    <value>HelpCSCInitialCell</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCSCFinalCell" xml:space="preserve">
+    <value>HelpCSCFinalCell</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCSCCorrection" xml:space="preserve">
+    <value>HelpCSCCorrection</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCSCSelectedSide" xml:space="preserve">
+    <value>HelpCSCSelectedSide</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCSCApplyCorrection" xml:space="preserve">
+    <value>HelpCSCApplyCorrection</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLFDTotalCells" xml:space="preserve">
+    <value>HelpLFDTotalCells</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLFDTestedCells" xml:space="preserve">
+    <value>HelpLFDTestedCells</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLFDCellInTest" xml:space="preserve">
+    <value>HelpLFDCellInTest</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLFDDrawerNumber" xml:space="preserve">
+    <value>HelpLFDDrawerNumber</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLFDMaxLoad" xml:space="preserve">
+    <value>HelpLFDMaxLoad</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLFDInsertDrawer" xml:space="preserve">
+    <value>HelpLFDInsertDrawer</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLFDRecallDrawer" xml:space="preserve">
+    <value>HelpLFDRecallDrawer</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLFDDescription" xml:space="preserve">
+    <value>HelpLFDDescription</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLDRDescription" xml:space="preserve">
+    <value>HelpLDRDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpLDRTotalDrawers" xml:space="preserve">
+    <value>HelpLDRTotalDrawers</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLDRInsertedDrawers" xml:space="preserve">
+    <value>HelpLDRInsertedDrawers</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLDRDrawerToInsert" xml:space="preserve">
+    <value>HelpLDRDrawerToInsert</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLDRMaxLoad" xml:space="preserve">
+    <value>HelpLDRMaxLoad</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLDRNextDrawer" xml:space="preserve">
+    <value>HelpLDRNextDrawer</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpLDRStart" xml:space="preserve">
+    <value>HelpLDRStart</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRDescription" xml:space="preserve">
+    <value>HelpBCTRDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpBCTRSelectedBay" xml:space="preserve">
+    <value>HelpBCTRSelectedBay</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRSelectedPosition" xml:space="preserve">
+    <value>HelpBCTRSelectedPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRPositionHeight" xml:space="preserve">
+    <value>HelpBCTRPositionHeight</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRStepValue" xml:space="preserve">
+    <value>HelpBCTRStepValue</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRActualHeight" xml:space="preserve">
+    <value>HelpBCTRActualHeight</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRCorrectionValue" xml:space="preserve">
+    <value>HelpBCTRCorrectionValue</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRMoveToPosition" xml:space="preserve">
+    <value>HelpBCTRMoveToPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRStepPiu" xml:space="preserve">
+    <value>HelpBCTRStepPiu</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRStepMeno" xml:space="preserve">
+    <value>HelpBCTRStepMeno</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRAdjust" xml:space="preserve">
+    <value>HelpBCTRAdjust</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpBCTRNextPosition" xml:space="preserve">
+    <value>HelpBCTRNextPosition</value>
+    <comment>Nore text</comment>
+  </data>
+</root>

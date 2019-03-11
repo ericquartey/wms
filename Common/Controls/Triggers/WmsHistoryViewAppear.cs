@@ -20,7 +20,7 @@ namespace Ferretto.Common.Controls
 
         private readonly IHistoryViewService historyViewService = ServiceLocator.Current.GetInstance<IHistoryViewService>();
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -48,7 +48,7 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(StartViewNameProperty, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -69,6 +69,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

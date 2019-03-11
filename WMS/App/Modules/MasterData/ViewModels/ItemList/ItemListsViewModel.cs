@@ -1,12 +1,11 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemListsViewModel : EntityListViewModel<ItemList>
+    public class ItemListsViewModel : EntityPagedListViewModel<ItemList, int>
     {
         #region Fields
 
@@ -14,7 +13,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ICommand showDetailsCommand;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -28,9 +27,16 @@ namespace Ferretto.WMS.Modules.MasterData
                           (this.showDetailsCommand = new DelegateCommand(this.ExecuteShowDetailsCommand, this.CanShowDetailsCommand)
             .ObservesProperty(() => this.CurrentItem));
 
-        #endregion Properties
+        #endregion
 
         #region Methods
+
+        protected override void ExecuteAddCommand()
+        {
+            this.NavigationService.Appear(
+                nameof(MasterData),
+                Common.Utils.Modules.MasterData.ITEMLISTADDDIALOG);
+        }
 
         private bool CanExecuteListCommand()
         {
@@ -69,6 +75,6 @@ namespace Ferretto.WMS.Modules.MasterData
             this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.ITEMLISTDETAILS, this.CurrentItem.Id);
         }
 
-        #endregion Methods
+        #endregion
     }
 }

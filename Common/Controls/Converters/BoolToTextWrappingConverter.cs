@@ -32,6 +32,6 @@ namespace Ferretto.Common.Controls
             return (TextWrapping)value != TextWrapping.NoWrap;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -80,7 +80,7 @@ namespace Ferretto.Common.BusinessModels
         public string MachineTypeDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineMaintenanceStatus), ResourceType = typeof(BusinessObjects))]
-        public MaintenanceStatus MaintenanceStatus => (MaintenanceStatus)((this.Id - 1) % 3);
+        public MaintenanceStatus MaintenanceStatus { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineManualTime), ResourceType = typeof(BusinessObjects))]
         public long? ManualTime { get; set; }
@@ -110,7 +110,7 @@ namespace Ferretto.Common.BusinessModels
         public string RegistrationNumber { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineStatus), ResourceType = typeof(BusinessObjects))]
-        public MachineStatus Status => (MachineStatus)(this.Id - 1);
+        public MachineStatus Status { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineTestDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? TestDate { get; set; }
@@ -118,6 +118,6 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.MachineTotalMaxWeight), ResourceType = typeof(BusinessObjects))]
         public long? TotalMaxWeight { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

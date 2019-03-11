@@ -22,9 +22,9 @@
                        Style="{DynamicResource ActionBarNotCustomizable}">
 
             <wms:ActionBarItem Command="{Binding SaveCommand, Mode=OneWay}"
-                               Content="{x:Static res:General.Save}"
+                               Content="{x:Static res:General.Create}"
                                CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_save_black_24dp.png"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-create-36.png"
                                GlyphSize="Custom" />
 
             <wms:ActionBarItem Command="{Binding CancelCommand, Mode=OneWay}"
@@ -53,46 +53,51 @@
 
                     <wms:SpinEdit Grid.Row="0"
                                   Grid.Column="0"
-                                  MinValue="0"
                                   HorizontalAlignment="Stretch"
+                                  wms:ShowTitle.Show="True"
                                   AllowNullInput="False"
-                                  EditValue="{Binding Model.XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                  EditValue="{Binding Model.XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  MinValue="0" />
 
                     <wms:SpinEdit Grid.Row="0"
                                   Grid.Column="2"
-                                  MinValue="0"
                                   HorizontalAlignment="Stretch"
+                                  wms:ShowTitle.Show="True"
                                   AllowNullInput="False"
-                                  EditValue="{Binding Model.YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                  EditValue="{Binding Model.YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  MinValue="0" />
 
                     <wms:SpinEdit Grid.Row="1"
                                   Grid.Column="0"
-                                  MinValue="0"
                                   HorizontalAlignment="Stretch"
+                                  wms:ShowTitle.Show="True"
                                   AllowNullInput="False"
-                                  EditValue="{Binding Model.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                  EditValue="{Binding Model.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  MinValue="0" />
 
                     <wms:SpinEdit Grid.Row="1"
                                   Grid.Column="2"
-                                  MinValue="0"
-                                  
                                   HorizontalAlignment="Stretch"
+                                  wms:ShowTitle.Show="True"
                                   AllowNullInput="False"
-                                  EditValue="{Binding Model.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                  EditValue="{Binding Model.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  MinValue="0" />
 
                     <wms:SpinEdit Grid.Row="2"
                                   Grid.Column="0"
-                                  MinValue="1"
                                   HorizontalAlignment="Stretch"
+                                  wms:ShowTitle.Show="True"
                                   AllowNullInput="False"
-                                  EditValue="{Binding Model.Rows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                  EditValue="{Binding Model.Rows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  MinValue="1" />
 
                     <wms:SpinEdit Grid.Row="2"
                                   Grid.Column="2"
-                                  MinValue="1"
                                   HorizontalAlignment="Stretch"
+                                  wms:ShowTitle.Show="True"
                                   AllowNullInput="False"
-                                  EditValue="{Binding Model.Columns, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                  EditValue="{Binding Model.Columns, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  MinValue="1" />
                 </Grid>
             </GroupBox>
         </ScrollViewer>
@@ -101,6 +106,6 @@
                    MaxWidth="300"
                    Style="{DynamicResource TextBlockErrorMessageStyle}"
                    Text="{Binding Model.Error}"
-                   Visibility="{Binding IsValidationEnabled, Converter={StaticResource BTVC}}" />
+                   Visibility="{Binding IsModelValid, Converter={StaticResource BTVIC}}" />
     </Grid>
 </UserControl>

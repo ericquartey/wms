@@ -1,12 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.Common.BLL.Interfaces;
+using DevExpress.Xpf.Data;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -21,20 +21,21 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool itemIdHasValue;
 
-        private IDataSource<Item> itemsDataSource;
+        private InfiniteAsyncSource itemsDataSource;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
         public CompartmentAddViewModel()
         {
             this.Title = Common.Resources.MasterData.AddCompartment;
-            this.ItemsDataSource = new DataSource<Item>(() => this.itemProvider.GetAll());
-            this.IsValidationEnabled = false;
+            this.ColorRequired = ColorRequired.CreateMode;
+
+            this.LoadData();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -44,13 +45,13 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.itemIdHasValue, value);
         }
 
-        public IDataSource<Item> ItemsDataSource
+        public InfiniteAsyncSource ItemsDataSource
         {
             get => this.itemsDataSource;
             set => this.SetProperty(ref this.itemsDataSource, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -63,21 +64,19 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async Task ExecuteSaveCommand()
         {
-            this.IsValidationEnabled = true;
-
-            if (string.IsNullOrWhiteSpace(this.Model.Error) == false)
+            if (!this.IsModelValid)
             {
                 return;
             }
 
             this.IsBusy = true;
 
-            var result = await this.compartmentProvider.AddAsync(this.Model);
+            var result = await this.compartmentProvider.CreateAsync(this.Model);
             if (result.Success)
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<LoadingUnit>(this.Model.LoadingUnit.Id));
+                this.EventService.Invoke(new ModelChangedPubSubEvent<LoadingUnit, int>(this.Model.LoadingUnit.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(
                     Common.Resources.MasterData.LoadingUnitSavedSuccessfully,
                     StatusType.Success));
@@ -124,6 +123,11 @@ namespace Ferretto.WMS.Modules.MasterData
             base.Model_PropertyChanged(sender, e);
         }
 
-        #endregion Methods
+        private void LoadData()
+        {
+            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(this.itemProvider).DataSource;
+        }
+
+        #endregion
     }
 }

@@ -21,11 +21,11 @@ namespace Ferretto.Common.Controls
 
         private readonly Stack<INavigableView> registeredViews = new Stack<INavigableView>();
 
-        private ActionBar actionBarHsitoryView;
+        private ActionBar actionBarHistoryView;
 
         private INavigableView viewToAdd;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -40,7 +40,7 @@ namespace Ferretto.Common.Controls
             this.viewToAdd = view;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -56,7 +56,7 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(StartViewNameProperty, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -96,7 +96,7 @@ namespace Ferretto.Common.Controls
         {
             base.OnApplyTemplate();
 
-            this.actionBarHsitoryView = LayoutTreeHelper.GetVisualChildren(this)
+            this.actionBarHistoryView = LayoutTreeHelper.GetVisualChildren(this)
                 .OfType<ActionBar>()
                 .FirstOrDefault();
 
@@ -150,7 +150,7 @@ namespace Ferretto.Common.Controls
 
         private void CheckBackVisibility()
         {
-            this.actionBarHsitoryView.Visibility = (this.registeredViews.Count == 1) ? Visibility.Hidden : Visibility.Visible;
+            this.actionBarHistoryView.Visibility = (this.registeredViews.Count == 1) ? Visibility.Hidden : Visibility.Visible;
         }
 
         private object GetParentWmsViewData()
@@ -162,6 +162,6 @@ namespace Ferretto.Common.Controls
             return parentWmsView?.Data;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

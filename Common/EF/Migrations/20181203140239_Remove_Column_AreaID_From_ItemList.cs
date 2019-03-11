@@ -4,23 +4,15 @@ namespace Ferretto.Common.EF.Migrations
 {
     public partial class Remove_Column_AreaID_From_ItemList : Migration
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropForeignKey(
-                name: "FK_ItemLists_Areas_AreaId",
-                table: "ItemLists");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ItemLists_AreaId",
-                table: "ItemLists");
-
-            migrationBuilder.DropColumn(
-                name: "AreaId",
-                table: "ItemLists");
-        }
+        #region Methods
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.AddColumn<int>(
                 name: "AreaId",
                 table: "ItemLists",
@@ -40,5 +32,27 @@ namespace Ferretto.Common.EF.Migrations
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }
+
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_ItemLists_Areas_AreaId",
+                table: "ItemLists");
+
+            migrationBuilder.DropIndex(
+                name: "IX_ItemLists_AreaId",
+                table: "ItemLists");
+
+            migrationBuilder.DropColumn(
+                name: "AreaId",
+                table: "ItemLists");
+        }
+
+        #endregion
     }
 }

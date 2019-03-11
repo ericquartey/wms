@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
@@ -26,6 +24,8 @@ namespace Ferretto.Common.BusinessModels
         private string itemListCode;
 
         private string itemListDescription;
+
+        private int itemListId;
 
         private ItemListRowStatus itemListRowStatus;
 
@@ -59,16 +59,13 @@ namespace Ferretto.Common.BusinessModels
 
         private string sub2;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
-        public bool CanBeExecuted
-        {
-            get => this.itemListRowStatus == ItemListRowStatus.Incomplete
+        public bool CanBeExecuted => this.itemListRowStatus == ItemListRowStatus.Incomplete
                     || this.itemListRowStatus == ItemListRowStatus.Suspended
                     || this.itemListRowStatus == ItemListRowStatus.Waiting;
-        }
 
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string Code { get => this.code; set => this.SetProperty(ref this.code, value); }
@@ -93,6 +90,9 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(General.Description), ResourceType = typeof(General))]
         public string ItemListDescription { get => this.itemListDescription; set => this.SetProperty(ref this.itemListDescription, value); }
+
+        [Display(Name = nameof(BusinessObjects.ItemList), ResourceType = typeof(BusinessObjects))]
+        public int ItemListId { get => this.itemListId; set => this.SetProperty(ref this.itemListId, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusDescription), ResourceType = typeof(BusinessObjects))]
         public ItemListRowStatus ItemListRowStatus { get => this.itemListRowStatus; set => this.SetProperty(ref this.itemListRowStatus, value); }
@@ -147,6 +147,6 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.ItemListRowSub2), ResourceType = typeof(BusinessObjects))]
         public string Sub2 { get => this.sub2; set => this.SetProperty(ref this.sub2, value); }
 
-        #endregion Properties
+        #endregion
     }
 }

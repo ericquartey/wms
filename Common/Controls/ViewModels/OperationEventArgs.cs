@@ -1,5 +1,5 @@
 ﻿using System;
-using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Base;
 
 namespace Ferretto.Common.Controls
 {
@@ -7,20 +7,20 @@ namespace Ferretto.Common.Controls
     {
         #region Constructors
 
-        public OperationEventArgs(IBusinessObject model, bool isCanceled)
+        public OperationEventArgs(IModel<int> model, bool isCanceled)
         {
             this.Model = model;
             this.IsCanceled = isCanceled;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
         public bool IsCanceled { get; }
 
-        public IBusinessObject Model { get; }
+        public IModel<int> Model { get; }
 
-        #endregion Properties
+        #endregion
     }
 }

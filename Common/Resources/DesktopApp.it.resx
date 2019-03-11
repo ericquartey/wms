@@ -186,4 +186,10 @@
   <data name="InitializingSchedulerModule" xml:space="preserve">
     <value>Inizializzazione modulo Schedulatore...</value>
   </data>
+  <data name="Version" xml:space="preserve">
+    <value>Versione: {0}</value>
+  </data>
+  <data name="CustomFilter" xml:space="preserve">
+    <value>Filtro Personalizzato</value>
+  </data>
 </root>

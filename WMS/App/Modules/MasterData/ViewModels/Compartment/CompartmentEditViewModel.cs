@@ -1,14 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.Common.BLL.Interfaces;
+using DevExpress.Xpf.Data;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Modules.BLL.Models;
 using Ferretto.Common.Resources;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
@@ -27,19 +27,20 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool itemIdHasValue;
 
-        private IDataSource<Item> itemsDataSource;
+        private InfiniteAsyncSource itemsDataSource;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
         public CompartmentEditViewModel()
         {
             this.Title = Common.Resources.MasterData.EditCompartment;
-            this.ItemsDataSource = new DataSource<Item>(() => this.itemProvider.GetAll());
+
+            this.LoadData();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -52,13 +53,13 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.itemIdHasValue, value);
         }
 
-        public IDataSource<Item> ItemsDataSource
+        public InfiniteAsyncSource ItemsDataSource
         {
             get => this.itemsDataSource;
             set => this.SetProperty(ref this.itemsDataSource, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -80,12 +81,12 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.IsBusy = true;
 
-            var result = await this.compartmentProvider.SaveAsync(this.Model);
+            var result = await this.compartmentProvider.UpdateAsync(this.Model);
             if (result.Success)
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<LoadingUnit>(this.Model.LoadingUnit.Id));
+                this.EventService.Invoke(new ModelChangedPubSubEvent<LoadingUnit, int>(this.Model.LoadingUnit.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
 
                 this.CompleteOperation();
@@ -139,25 +140,26 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.IsBusy = true;
 
-            var result = this.DialogService.ShowMessage(
+            var userChoice = this.DialogService.ShowMessage(
                 DesktopApp.AreYouSureToDeleteCompartment,
                 DesktopApp.ConfirmOperation,
                 DialogType.Question,
                 DialogButtons.YesNo);
 
-            if (result == DialogResult.Yes)
+            if (userChoice == DialogResult.Yes)
             {
                 var loadingUnit = this.Model.LoadingUnit;
-                var affectedRowsCount = await this.compartmentProvider.DeleteAsync(this.Model.Id);
-                if (affectedRowsCount > 0)
+                var result = await this.compartmentProvider.DeleteAsync(this.Model.Id);
+                if (result.Success)
                 {
                     loadingUnit.Compartments.Remove(this.Model as ICompartment);
 
                     this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.CompartmentDeletedSuccessfully, StatusType.Success));
 
                     this.IsBusy = false;
-                    this.Model = null;
                     this.CompleteOperation();
+
+                    this.Model = null;
                 }
                 else
                 {
@@ -168,6 +170,11 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = false;
         }
 
-        #endregion Methods
+        private void LoadData()
+        {
+            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(this.itemProvider).DataSource;
+        }
+
+        #endregion
     }
 }

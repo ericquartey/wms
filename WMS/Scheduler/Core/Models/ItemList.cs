@@ -1,15 +1,17 @@
 ﻿using System.Collections.Generic;
 
-namespace Ferretto.WMS.Scheduler.Core
+namespace Ferretto.WMS.Scheduler.Core.Models
 {
-    public class ItemList : BusinessObject
+    public class ItemList : Model
     {
         #region Properties
+
+        public string Code { get; set; }
 
         public IEnumerable<ItemListRow> Rows { get; set; }
 
         public ListStatus Status { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

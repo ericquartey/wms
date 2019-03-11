@@ -14,6 +14,6 @@ namespace Ferretto.Common.BusinessModels
 
         ICompartment Selected { get; set; }
 
-        #endregion Properties
+        #endregion
     }
 }

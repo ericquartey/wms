@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using DevExpress.Mvvm.UI;
+using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls.Interfaces;
 
 namespace Ferretto.Common.Controls
@@ -16,9 +17,28 @@ namespace Ferretto.Common.Controls
 
         private const string DisplayAttributeResourceTypeProperty = "ResourceType";
 
-        #endregion Fields
+        #endregion
 
         #region Methods
+
+        public static bool IsFieldRequired(Type type, string fieldName)
+        {
+            if (type == null || fieldName == null)
+            {
+                return false;
+            }
+
+            var property = GetProperty(type, fieldName);
+            if (property == null)
+            {
+                return false;
+            }
+
+            // locate the Required attribute
+            return property
+                .CustomAttributes
+                .Any(attr => attr.AttributeType == typeof(RequiredAttribute));
+        }
 
         public static string RetrieveLocalizedFieldName(Type type, string fieldName)
         {
@@ -44,7 +64,7 @@ namespace Ferretto.Common.Controls
                    .GetCurrentClassLogger()
                    .Warn(string.Format("Form control: cannot determine label value because no DisplayAttribute is available on the property '{0}'.", fieldName));
 
-                return $"[{fieldName}]";
+                return null;
             }
 
             // get the Display attribute argument values
@@ -104,6 +124,11 @@ namespace Ferretto.Common.Controls
                 type = p.PropertyType;
             }
 
+            if (type == typeof(BusinessObject))
+            {
+                return null;
+            }
+
             var property = type.GetProperty(splits[splits.Length - 1]);
             if (property == null)
             {
@@ -115,6 +140,6 @@ namespace Ferretto.Common.Controls
             return property;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

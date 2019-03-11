@@ -14,6 +14,6 @@ namespace Ferretto.WMS.Modules.Layout
             this.InitializeComponent();
         }
 
-        #endregion Constructors
+        #endregion
     }
 }

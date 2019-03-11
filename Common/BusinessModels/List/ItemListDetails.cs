@@ -42,7 +42,7 @@ namespace Ferretto.Common.BusinessModels
 
         private string shipmentUnitDescription;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -53,23 +53,22 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.areaName, value);
         }
 
-        public bool CanAddNewRow
-        {
-            get => this.itemListStatus != ItemListStatus.Completed;
-        }
+        public bool CanAddNewRow { get; set; }
 
-        public bool CanBeExecuted
-        {
-            get => this.itemListStatus == ItemListStatus.Incomplete
-                    || this.itemListStatus == ItemListStatus.Suspended
-                    || this.itemListStatus == ItemListStatus.Waiting;
-        }
+        public bool CanBeExecuted { get; set; }
 
+        [Required]
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string Code
         {
             get => this.code;
-            set => this.SetProperty(ref this.code, value);
+            set
+            {
+                if (this.SetProperty(ref this.code, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
@@ -100,6 +99,16 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.description, value);
         }
 
+        public override string Error => string.Join(Environment.NewLine, new[]
+            {
+                this[nameof(this.Code)],
+                this[nameof(this.ItemListType)],
+                this[nameof(this.ItemListStatus)],
+                this[nameof(this.Priority)],
+            }
+          .Distinct()
+          .Where(s => !string.IsNullOrEmpty(s)));
+
         [Display(Name = nameof(BusinessObjects.ItemListExecutionEndDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? ExecutionEndDate { get; set; }
 
@@ -122,20 +131,34 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.ItemListRowsCount), ResourceType = typeof(BusinessObjects))]
         public int ItemListRowsCount => this.itemListRows.Count();
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.ItemListStatus), ResourceType = typeof(BusinessObjects))]
         public ItemListStatus ItemListStatus
         {
             get => this.itemListStatus;
-            set => this.SetProperty(ref this.itemListStatus, value);
+            set
+            {
+                if (this.SetProperty(ref this.itemListStatus, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
         public IEnumerable<Enumeration> ItemListStatusChoices { get; set; }
 
+        [Required]
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
         public ItemListType ItemListType
         {
             get => this.itemListType;
-            set => this.SetProperty(ref this.itemListType, value);
+            set
+            {
+                if (this.SetProperty(ref this.itemListType, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
@@ -155,11 +178,18 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(General.LastModificationDate), ResourceType = typeof(General))]
         public DateTime? LastModificationDate { get; set; }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.ItemListPriority), ResourceType = typeof(BusinessObjects))]
         public int Priority
         {
             get => this.priority;
-            set => this.SetIfStrictlyPositive(ref this.priority, value);
+            set
+            {
+                if (this.SetIfStrictlyPositive(ref this.priority, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
         [Display(Name = nameof(BusinessObjects.ItemListShipmentUnitAssociated), ResourceType = typeof(BusinessObjects))]
@@ -183,6 +213,6 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.shipmentUnitDescription, value);
         }
 
-        #endregion Properties
+        #endregion
     }
 }

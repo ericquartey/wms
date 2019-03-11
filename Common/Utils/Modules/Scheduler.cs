@@ -8,6 +8,6 @@
 
         public const string SCHEDULERREQUESTS = "SchedulerRequestsViewModel";
 
-        #endregion Fields
+        #endregion
     }
 }

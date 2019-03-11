@@ -5,13 +5,16 @@ namespace Ferretto.Common.BusinessModels
 {
     public enum MaintenanceStatus
     {
+        [Display(Name = "")]
+        NotSpecified,
+
         [Display(Name = nameof(BusinessObjects.MachineMaintenanceStatusValid), ResourceType = typeof(BusinessObjects))]
-        Valid,
+        Valid = 'V',
 
         [Display(Name = nameof(BusinessObjects.MachineMaintenanceStatusExpiring), ResourceType = typeof(BusinessObjects))]
-        Expiring,
+        Expiring = 'G',
 
         [Display(Name = nameof(BusinessObjects.MachineMaintenanceStatusExpired), ResourceType = typeof(BusinessObjects))]
-        Expired,
+        Expired = 'X',
     }
 }

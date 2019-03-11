@@ -9,7 +9,7 @@ namespace Ferretto.Common.Controls
 
         private object dataContext;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -19,7 +19,7 @@ namespace Ferretto.Common.Controls
             this.Loaded += this.CustomGrid_Loaded;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -29,6 +29,7 @@ namespace Ferretto.Common.Controls
             {
                 this.dataContext = e.NewValue;
             }
+
             this.DataContext = null;
             this.DataContextChanged -= this.CustomBorder_DataContextChanged;
         }
@@ -42,6 +43,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

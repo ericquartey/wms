@@ -10,6 +10,7 @@
                    d:DesignHeight="600"
                    d:DesignWidth="700"
                    FocusedStart="LoginTB"
+                   Mode="DialogPopup"
                    ResizeMode="NoResize"
                    SizeToContent="Height"
                    mc:Ignorable="d">
@@ -17,15 +18,16 @@
     <Grid IsEnabled="{Binding IsEnabled}">
         <Grid.Background>
             <ImageBrush ImageSource="pack://application:,,,/Ferretto.WMS.App.Themes;component/Images/splash.png"
-                        Opacity="0.5" />
+                        Opacity="0.3"
+                        Stretch="UniformToFill" />
         </Grid.Background>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="60" />
+            <RowDefinition Height="20" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="60" />
+            <RowDefinition Height="20" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -54,9 +56,11 @@
 
             <wms:TextBox Name="LoginTB"
                          EditValue="{Binding User.Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         MaxLength="20" />
+                         MaxLength="20"
+                         wms:ShowTitle.Show="True" />
             <wms:PasswordBox EditValue="{Binding User.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             MaxLength="20" />
+                             MaxLength="20"
+                             wms:ShowTitle.Show="True" />
         </StackPanel>
 
         <TextBlock Grid.Row="3"

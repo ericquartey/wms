@@ -1,11 +1,12 @@
 ﻿using DevExpress.Xpf.Core;
+using Ferretto.Common.Controls;
 using Ferretto.Common.Utils.Modules;
 using Prism.Modularity;
 using Prism.Regions;
 
 namespace Ferretto.WMS.App
 {
-    public partial class Shell : DXWindow
+    public partial class Shell : WmsWindow
     {
         #region Fields
 
@@ -13,7 +14,7 @@ namespace Ferretto.WMS.App
 
         private readonly IRegionManager regionManager;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -31,9 +32,8 @@ namespace Ferretto.WMS.App
             // Load the root module of the application
             this.moduleManager.LoadModule(nameof(Layout));
             this.moduleManager.LoadModule(nameof(MasterData));
-            this.moduleManager.LoadModule(nameof(Common.Utils.Modules.Scheduler));
         }
 
-        #endregion Constructors
+        #endregion
     }
 }

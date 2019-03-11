@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Prism.Mvvm;
@@ -13,7 +14,7 @@ namespace Ferretto.Common.Controls
         {
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Destructors
 
@@ -24,7 +25,7 @@ namespace Ferretto.Common.Controls
             this.Dispose(false);
         }
 
-        #endregion Destructors
+        #endregion
 
         #region Properties
 
@@ -42,13 +43,15 @@ namespace Ferretto.Common.Controls
 
         public string Token { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
         public void Appear()
         {
-            this.OnAppear();
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            this.OnAppearAsync();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
         public virtual bool CanDisappear()
@@ -72,10 +75,11 @@ namespace Ferretto.Common.Controls
             return false;
         }
 
-        protected virtual void OnAppear()
+        protected virtual async Task OnAppearAsync()
         {
             // Nothing to do here.
             // Derived classes can implement custom logic overriding this method.
+            await Task.Run(() => { });
         }
 
         protected virtual void OnDisappear()
@@ -114,6 +118,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

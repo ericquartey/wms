@@ -17,7 +17,7 @@ namespace Ferretto.Common.Controls
 
         public DependencyProperty Property { get; set; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -61,7 +61,18 @@ namespace Ferretto.Common.Controls
             {
                 var type = control.DataContext.GetType();
                 var path = bindingExpression.ParentBinding.Path.Path;
-                return FormControl.RetrieveLocalizedFieldName(type, path);
+
+                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(type, path);
+
+                var isFieldRequired = FormControl.IsFieldRequired(type, path);
+
+                if (control is WmsLabel wmsLabel)
+                {
+                    wmsLabel.Title = localizedFieldName;
+                    wmsLabel.ShowIcon(isFieldRequired);
+                }
+
+                return $"{localizedFieldName}";
             }
 
             return null;
@@ -72,6 +83,6 @@ namespace Ferretto.Common.Controls
             throw new NotSupportedException();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

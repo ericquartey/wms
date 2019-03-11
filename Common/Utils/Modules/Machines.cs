@@ -4,10 +4,8 @@
     {
         #region Fields
 
-        public const string MACHINEDETAILS = "MachineDetailsViewModel";
-
         public const string MACHINES = "MachinesViewModel";
 
-        #endregion Fields
+        #endregion
     }
 }

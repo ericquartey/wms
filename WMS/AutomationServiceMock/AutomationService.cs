@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Ferretto.WMS.Scheduler.WebAPI.Contracts;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.AutomationServiceMock
@@ -10,34 +10,36 @@ namespace Ferretto.WMS.AutomationServiceMock
     {
         #region Fields
 
-        private readonly IBaysService baysService;
+        private readonly IBaysDataService baysDataService;
 
         private readonly ILogger logger;
-        private readonly IMissionsService missionsService;
+
+        private readonly IMissionsDataService missionsDataService;
 
         private readonly Random random = new Random();
+
         private readonly IWakeupHubClient wakeupHubClient;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
         public AutomationService(
             ILogger<AutomationService> logger,
             IWakeupHubClient wakeupHubClient,
-            IMissionsService missionsService,
-            IBaysService baysService)
+            IMissionsDataService missionsDataService,
+            IBaysDataService baysDataService)
         {
             this.logger = logger;
-            this.missionsService = missionsService;
-            this.baysService = baysService;
+            this.missionsDataService = missionsDataService;
+            this.baysDataService = baysDataService;
             this.wakeupHubClient = wakeupHubClient;
 
             this.wakeupHubClient.WakeupReceived += this.WakeupReceived;
             this.wakeupHubClient.NewMissionReceived += this.NewMissionReceived;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
@@ -51,7 +53,7 @@ namespace Ferretto.WMS.AutomationServiceMock
         public async Task NotifyUserLoginAsync(int bayId)
         {
             this.logger.LogInformation($"Notifying the scheduler that bay '{bayId}' is operational.");
-            await this.baysService.MarkAsOperationalAsync(bayId);
+            await this.baysDataService.ActivateAsync(bayId);
         }
 
         private async Task ExecuteMissionAsync(Mission mission)
@@ -65,12 +67,12 @@ namespace Ferretto.WMS.AutomationServiceMock
             if (success)
             {
                 this.logger.LogInformation($"Mission completed.");
-                await this.missionsService.CompleteAsync(new Mission());
+                await this.missionsDataService.CompleteAsync(mission.Id);
             }
             else
             {
                 this.logger.LogWarning($"Mission failed.");
-                await this.missionsService.AbortAsync(new Mission());
+                await this.missionsDataService.AbortAsync(mission.Id);
             }
         }
 
@@ -88,6 +90,6 @@ namespace Ferretto.WMS.AutomationServiceMock
             this.logger.LogInformation($"Wakeup from Scheduler received.");
         }
 
-        #endregion Methods
+        #endregion
     }
 }

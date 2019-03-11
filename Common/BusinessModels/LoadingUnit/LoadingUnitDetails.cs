@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
 using System.Linq;
 using Ferretto.Common.Resources;
 
@@ -47,7 +48,7 @@ namespace Ferretto.Common.BusinessModels
 
         private int width;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
@@ -104,6 +105,8 @@ namespace Ferretto.Common.BusinessModels
         }
 
         public BindingList<ICompartment> Compartments => this.compartments;
+
+        public int CompartmentsCount { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitCreationDate), ResourceType = typeof(BusinessObjects))]
         public DateTime CreationDate { get; set; }
@@ -190,7 +193,7 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.note, value);
         }
 
-        public Position OriginTray { get; set; }
+        public Point OriginTray { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitOtherCycleCount), ResourceType = typeof(BusinessObjects))]
         public int OtherCycleCount { get; set; }
@@ -221,12 +224,17 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetIfStrictlyPositive(ref this.width, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
         public void AddCompartment(ICompartment compartmentDetails)
         {
+            if (compartmentDetails == null)
+            {
+                throw new ArgumentNullException(nameof(compartmentDetails));
+            }
+
             if (this.CanAddCompartment(compartmentDetails))
             {
                 this.compartments.Add(compartmentDetails);
@@ -235,13 +243,6 @@ namespace Ferretto.Common.BusinessModels
             {
                 throw new ArgumentException(string.Format(Resources.Errors.LoadingUnitOverlappingCompartment, compartmentDetails.Id, this.Id));
             }
-        }
-
-        public void AddDynamicCompartments(int row, int column, int xPosition, int yPosition, int width, int height)
-        {
-            // TODO: add logic of dynamic scompartition
-            //      n: is calculated number of compartment to add
-            //      n: based on row/column
         }
 
         public bool CanAddCompartment(ICompartment compartment)
@@ -321,6 +322,6 @@ namespace Ferretto.Common.BusinessModels
             return false;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

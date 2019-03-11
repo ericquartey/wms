@@ -5,23 +5,15 @@ namespace Ferretto.Common.EF.Migrations
 {
     public partial class AddDateToMission : Migration
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AddColumn<DateTime>(
-                name: "CreationDate",
-                table: "Missions",
-                nullable: false,
-                defaultValueSql: "GETUTCDATE()");
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "LastModificationDate",
-                table: "Missions",
-                nullable: false,
-                defaultValueSql: "GETUTCDATE()");
-        }
+        #region Methods
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.DropColumn(
                 name: "CreationDate",
                 table: "Missions");
@@ -30,5 +22,27 @@ namespace Ferretto.Common.EF.Migrations
                 name: "LastModificationDate",
                 table: "Missions");
         }
+
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "CreationDate",
+                table: "Missions",
+                nullable: false,
+                defaultValueSql: "GETUTCDATE()");
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "LastModificationDate",
+                table: "Missions",
+                nullable: false,
+                defaultValueSql: "GETUTCDATE()");
+        }
+
+        #endregion
     }
 }

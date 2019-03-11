@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ferretto.WMS.Scheduler.Core
+namespace Ferretto.WMS.Scheduler.Core.Models
 {
     public interface IOrderableCompartment
     {
@@ -10,6 +10,6 @@ namespace Ferretto.WMS.Scheduler.Core
 
         DateTime? FirstStoreDate { get; }
 
-        #endregion Properties
+        #endregion
     }
 }

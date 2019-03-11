@@ -1,18 +1,17 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemDetailsViewModel : DetailsViewModel<ItemDetails>, IRefreshDataEntityViewModel, IEdit
+    public class ItemDetailsViewModel : DetailsViewModel<ItemDetails>, IExtensionDataEntityViewModel, IEdit
     {
         #region Fields
 
@@ -20,7 +19,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
-        private IDataSource<Compartment> compartmentsDataSource;
+        private IEnumerable<Compartment> compartmentsDataSource;
 
         private bool itemHasCompartments;
 
@@ -30,11 +29,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private object modelSelectionChangedSubscription;
 
-        private object selectedCompartment;
+        private Compartment selectedCompartment;
 
         private ICommand withdrawCommand;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -43,32 +42,14 @@ namespace Ferretto.WMS.Modules.MasterData
             this.Initialize();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
-        public IDataSource<Compartment> CompartmentsDataSource
+        public IEnumerable<Compartment> CompartmentsDataSource
         {
             get => this.compartmentsDataSource;
             set => this.SetProperty(ref this.compartmentsDataSource, value);
-        }
-
-        public Compartment CurrentCompartment
-        {
-            get
-            {
-                if (this.selectedCompartment == null)
-                {
-                    return default(Compartment);
-                }
-
-                if ((this.selectedCompartment is DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread) == false)
-                {
-                    return default(Compartment);
-                }
-
-                return (Compartment)((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedCompartment).OriginalRow;
-            }
         }
 
         public bool ItemHasCompartments
@@ -77,14 +58,10 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.itemHasCompartments, value);
         }
 
-        public object SelectedCompartment
+        public Compartment SelectedCompartment
         {
             get => this.selectedCompartment;
-            set
-            {
-                this.SetProperty(ref this.selectedCompartment, value);
-                this.RaisePropertyChanged(nameof(this.CurrentCompartment));
-            }
+            set => this.SetProperty(ref this.selectedCompartment, value);
         }
 
         public ICommand WithdrawCommand => this.withdrawCommand ??
@@ -92,17 +69,15 @@ namespace Ferretto.WMS.Modules.MasterData
                                                this.ExecuteWithdraw,
                                                this.CanExecuteWithdraw));
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
-        public override void LoadRelatedData()
+        public override async void LoadRelatedData()
         {
             this.CompartmentsDataSource = this.Model != null
-                ? new DataSource<Compartment>(() => this.compartmentProvider.GetByItemId(this.Model.Id))
+                ? await this.compartmentProvider.GetByItemIdAsync(this.Model.Id)
                 : null;
-
-            base.LoadRelatedData();
         }
 
         protected override void EvaluateCanExecuteCommands()
@@ -126,12 +101,12 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.IsBusy = true;
 
-            var result = await this.itemProvider.SaveAsync(this.Model);
+            var result = await this.itemProvider.UpdateAsync(this.Model);
             if (result.Success)
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<Item>(this.Model.Id));
+                this.EventService.Invoke(new ModelChangedPubSubEvent<Item, int>(this.Model.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
             }
             else
@@ -142,17 +117,17 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = false;
         }
 
-        protected override async void OnAppear()
+        protected override async Task OnAppearAsync()
         {
-            base.OnAppear();
+            await base.OnAppearAsync().ConfigureAwait(true);
 
-            await this.LoadDataAsync();
+            await this.LoadDataAsync().ConfigureAwait(true);
         }
 
         protected override void OnDispose()
         {
             this.EventService.Unsubscribe<RefreshModelsPubSubEvent<Item>>(this.modelRefreshSubscription);
-            this.EventService.Unsubscribe<ModelChangedPubSubEvent<Item>>(this.modelChangedEventSubscription);
+            this.EventService.Unsubscribe<ModelChangedPubSubEvent<Item, int>>(this.modelChangedEventSubscription);
             this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<Item>>(this.modelSelectionChangedSubscription);
             base.OnDispose();
         }
@@ -180,7 +155,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private void Initialize()
         {
             this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<Item>>(async eventArgs => await this.LoadDataAsync(), this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<Item>>(async eventArgs => await this.LoadDataAsync());
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<Item, int>>(async eventArgs => await this.LoadDataAsync());
             this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<Item>>(
                 async eventArgs =>
                 {
@@ -208,7 +183,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 if (this.Data is int modelId)
                 {
                     this.Model = await this.itemProvider.GetByIdAsync(modelId);
-                    this.ItemHasCompartments = this.itemProvider.HasAnyCompartments(modelId);
+                    this.ItemHasCompartments = this.Model.CompartmentsCount > 0 ? true : false;
                 }
 
                 this.IsBusy = false;
@@ -219,6 +194,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

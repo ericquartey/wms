@@ -9,7 +9,7 @@ using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
-    public abstract class DetailsViewModel<T> : BaseServiceNavigationViewModel, IRefreshDataEntityViewModel
+    public abstract class DetailsViewModel<T> : BaseServiceNavigationViewModel, IExtensionDataEntityViewModel
         where T : BusinessObject
     {
         #region Fields
@@ -18,9 +18,11 @@ namespace Ferretto.Common.Controls
 
         private readonly IDialogService dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
 
+        private ColorRequired colorRequired = ColorRequired.EditMode;
+
         private bool isBusy;
 
-        private bool isValidationEnabled;
+        private bool isModelValid;
 
         private T model;
 
@@ -30,7 +32,7 @@ namespace Ferretto.Common.Controls
 
         private ICommand saveCommand;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -39,9 +41,15 @@ namespace Ferretto.Common.Controls
             this.changeDetector.ModifiedChanged += this.ChangeDetector_ModifiedChanged;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
+
+        public ColorRequired ColorRequired
+        {
+            get => this.colorRequired;
+            set => this.SetProperty(ref this.colorRequired, value);
+        }
 
         public IDialogService DialogService => this.dialogService;
 
@@ -57,15 +65,21 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public bool IsValidationEnabled
+        public bool IsModelValid
         {
-            get => this.isValidationEnabled;
-            set
+            get
             {
-                if (this.SetProperty(ref this.isValidationEnabled, value))
+                var temp = false;
+                if (!this.changeDetector.IsModified || this.Model == null)
                 {
-                    this.EvaluateCanExecuteCommands();
+                    temp = true;
                 }
+                else
+                {
+                    temp = string.IsNullOrWhiteSpace(this.Model.Error);
+                }
+                this.SetProperty(ref this.isModelValid, temp);
+                return temp;
             }
         }
 
@@ -108,7 +122,7 @@ namespace Ferretto.Common.Controls
                 async () => await this.ExecuteSaveCommand(),
                 this.CanExecuteSaveCommand));
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -146,8 +160,9 @@ namespace Ferretto.Common.Controls
         {
             return this.Model != null
                 && this.changeDetector.IsModified
-                && (!this.isValidationEnabled || string.IsNullOrWhiteSpace(this.Model.Error))
-                && !this.IsBusy;
+                && this.IsModelValid
+                && !this.IsBusy
+                && this.changeDetector.IsRequiredValid;
         }
 
         protected virtual void EvaluateCanExecuteCommands()
@@ -209,6 +224,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        #endregion Methods
+        #endregion
     }
 }

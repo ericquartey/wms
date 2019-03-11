@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="Ferretto.VW.InstallationApp.InstallationStateView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Ferretto.VW.InstallationApp"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d">
+    <Grid    Width="1024"
+             Height="608">
+        <TextBlock
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.InstallationState}"
+                   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,30,0,0" />
+        <custom:CustomSensorControl HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="220,120,0,0"
+                                        LabelText="{x:Static res:InstallationApp.VerticalAxisHomedDone}"
+                                        SensorState="{Binding IsVerticalHomingDone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+        <custom:CustomSensorControl HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,160,0,0"
+                                        LabelText="{x:Static res:InstallationApp.HorizontalAxisHomedDone}"
+                                        SensorState="{Binding IsHorizontalHomingDone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+        <custom:CustomSensorControl HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,240,0,0"
+                                        LabelText="{x:Static res:InstallationApp.VerticalResolutionDone}"
+                                        SensorState="{Binding IsSetResolutionDone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+        <custom:CustomSensorControl HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,280,0,0"
+                                        LabelText="{x:Static res:InstallationApp.VerticalOffsetVerify}"
+                                        SensorState="{Binding IsOffsetVerifyDone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+        <custom:CustomSensorControl HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,320,0,0"
+                                        LabelText="{x:Static res:InstallationApp.CellPositionDone}"
+                                        SensorState="{Binding IsCellPositionDone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+        <custom:CustomSensorControl HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,200,0,0"
+                                        LabelText="{x:Static res:InstallationApp.BeltBurnishingDone}"
+                                        SensorState="{Binding IsBeltBurnishingDone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+        <custom:CustomSensorControl HorizontalAlignment="Left" VerticalAlignment="Top" Margin="600,120,0,0"
+                                        LabelText="{x:Static res:InstallationApp.Gate1Done}"
+                                        SensorState="{Binding IsGate1Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+        <custom:CustomSensorControl HorizontalAlignment="Left" VerticalAlignment="Top" Margin="600,160,0,0"
+                                        LabelText="{x:Static res:InstallationApp.Gate2Done}"
+                                        SensorState="{Binding IsGate2Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+        <custom:CustomSensorControl HorizontalAlignment="Left" VerticalAlignment="Top" Margin="600,200,0,0"
+                                        LabelText="{x:Static res:InstallationApp.Gate3Done}"
+                                        SensorState="{Binding IsGate3Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+        <custom:CustomSensorControl HorizontalAlignment="Left" VerticalAlignment="Top" Margin="600,240,0,0"
+                                        LabelText="{x:Static res:InstallationApp.Shape1Done}"
+                                        SensorState="{Binding IsShapeGate1Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource VWAPP_CustomSensorControlStyle}"/>
+        <custom:CustomSensorControl HorizontalAlignment="Left" VerticalAlignment="Top" Margin="600,280,0,0"
+                                        LabelText="{x:Static res:InstallationApp.Shape2Done}"
+                                        SensorState="{Binding IsShapeGate2Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+        <custom:CustomSensorControl HorizontalAlignment="Left" VerticalAlignment="Top" Margin="600,320,0,0"
+                                        LabelText="{x:Static res:InstallationApp.Shape3Done}"
+                                        SensorState="{Binding IsShapeGate3Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+        <custom:CustomSensorControl HorizontalAlignment="Left" VerticalAlignment="Top" Margin="600,360,0,0"
+                                        LabelText="{x:Static res:InstallationApp.Laser1Done}"
+                                        SensorState="{Binding IsLaserGate1Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+        <custom:CustomSensorControl HorizontalAlignment="Left" VerticalAlignment="Top" Margin="600,400,0,0"
+                                        LabelText="{x:Static res:InstallationApp.Laser2Done}"
+                                        SensorState="{Binding IsLaserGate2Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+        <custom:CustomSensorControl HorizontalAlignment="Left" VerticalAlignment="Top" Margin="600,440,0,0"
+                                        LabelText="{x:Static res:InstallationApp.Laser3Done}"
+                                        SensorState="{Binding IsLaserGate3Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+        <custom:CustomSensorControl HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,520,0,0"
+                                        LabelText="{x:Static res:InstallationApp.MachineDone}"
+                                        SensorState="{Binding IsMachineDone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+    </Grid>
+</UserControl>
