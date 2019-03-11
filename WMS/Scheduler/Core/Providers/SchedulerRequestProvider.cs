@@ -7,7 +7,6 @@ using Ferretto.Common.EF;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Ferretto.WMS.Scheduler.Core.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Scheduler.Core.Providers
 {
@@ -19,19 +18,15 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         private readonly DatabaseContext dataContext;
 
-        private readonly ILogger<SchedulerRequestProvider> logger;
-
         #endregion
 
         #region Constructors
 
         public SchedulerRequestProvider(
             DatabaseContext dataContext,
-            ILogger<SchedulerRequestProvider> logger,
             ICompartmentSchedulerProvider compartmentSchedulerProvider)
         {
             this.dataContext = dataContext;
-            this.logger = logger;
             this.compartmentSchedulerProvider = compartmentSchedulerProvider;
         }
 
@@ -170,7 +165,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
         /// - are not completed (dispatched qty is not equal to requested qty)
         /// - are already allocated to a bay
         /// - the allocated bay has buffer to accept new missions
-        /// - are associated to a list that is in execution
+        /// - if related to a list row, the row is marked for execution
         ///
         /// Requests are sorted by:
         /// - Instant first
@@ -188,9 +183,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     &&
                     r.Bay.LoadingUnitsBufferSize > r.Bay.Missions.Count
                     &&
-                    (r.ListRowId.HasValue == false || r.ListRow.Status == Common.DataModels.ItemListRowStatus.Executing)
-                    &&
-                    (r.ListId.HasValue == false || r.List.Status == Common.DataModels.ItemListStatus.Executing))
+                    (r.ListRowId.HasValue == false || r.ListRow.Status == Common.DataModels.ItemListRowStatus.Executing))
                .OrderBy(r => r.ListId.HasValue ? r.List.Priority : int.MaxValue)
                .ThenBy(r => r.ListRowId.HasValue ? r.ListRow.Priority : int.MaxValue)
                .Select(r => new SchedulerRequest
@@ -200,7 +193,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                    BayId = r.BayId,
                    CreationDate = r.CreationDate,
                    IsInstant = r.IsInstant,
-                   ListStatus = r.List != null ? (ListStatus)r.List.Status : ListStatus.NotSpecified,
                    ListRowStatus = r.ListRow != null ? (ListRowStatus)r.ListRow.Status : ListRowStatus.NotSpecified,
                    ItemId = r.ItemId,
                    ListId = r.ListId,

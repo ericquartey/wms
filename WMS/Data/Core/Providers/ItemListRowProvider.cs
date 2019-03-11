@@ -202,7 +202,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     ItemListDescription = l.ItemList.Description,
                     ItemListId = l.ItemListId,
                     ItemListType = (ItemListType)l.ItemList.ItemListType,
-                    ItemListStatus = (ItemListStatus)l.ItemList.Status,
                     CompletionDate = l.CompletionDate,
                     LastExecutionDate = l.LastExecutionDate,
                     LastModificationDate = l.LastModificationDate,

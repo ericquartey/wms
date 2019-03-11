@@ -50,8 +50,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Priority = model.Priority,
                 ShipmentUnitAssociated = model.ShipmentUnitAssociated,
                 ShipmentUnitCode = model.ShipmentUnitCode,
-                ShipmentUnitDescription = model.ShipmentUnitDescription,
-                Status = (Common.DataModels.ItemListStatus)model.ItemListStatus,
+                ShipmentUnitDescription = model.ShipmentUnitDescription
             });
 
             var changedEntitiesCount = await this.dataContext.SaveChangesAsync();
@@ -154,7 +153,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Code = i.Code,
                     Description = i.Description,
                     Priority = i.Priority,
-                    ItemListStatus = (ItemListStatus)i.Status,
                     ItemListType = (ItemListType)i.ItemListType,
                     ItemListRowsCount = i.ItemListRows.Count(),
                     ItemListItemsCount = i.ItemListRows.Sum(row => row.RequiredQuantity),
@@ -172,7 +170,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Code = i.Code,
                     Description = i.Description,
                     Priority = i.Priority,
-                    ItemListStatus = (ItemListStatus)i.Status,
                     ItemListType = (ItemListType)i.ItemListType,
                     ItemListItemsCount = i.ItemListRows.Sum(row => row.RequiredQuantity),
                     CreationDate = i.CreationDate,

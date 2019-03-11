@@ -25,9 +25,19 @@ namespace Ferretto.WMS.Scheduler.Core.Models
                     return ListStatus.Executing;
                 }
 
+                if (this.Rows.Any(r => r.Status == ListRowStatus.Suspended))
+                {
+                    return ListStatus.Waiting;
+                }
+
                 if (this.Rows.Any(r => r.Status == ListRowStatus.Incomplete))
                 {
                     return ListStatus.Incomplete;
+                }
+
+                if (this.Rows.Any(r => r.Status == ListRowStatus.Waiting))
+                {
+                    return ListStatus.Waiting;
                 }
 
                 return ListStatus.NotSpecified;

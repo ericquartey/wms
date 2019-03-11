@@ -19,8 +19,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         private readonly IItemListRowSchedulerProvider itemListRowSchedulerProvider;
 
-        private readonly IMissionSchedulerProvider missionSchedulerProvider;
-
         private readonly ISchedulerRequestProvider schedulerRequestProvider;
 
         #endregion
@@ -34,13 +32,11 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
         public ItemListSchedulerProvider(
             DatabaseContext databaseContext,
             IItemListRowSchedulerProvider itemListRowSchedulerProvider,
-            ISchedulerRequestProvider schedulerRequestProvider,
-            IMissionSchedulerProvider missionSchedulerProvider)
+            ISchedulerRequestProvider schedulerRequestProvider)
         {
             this.databaseContext = databaseContext;
             this.itemListRowSchedulerProvider = itemListRowSchedulerProvider;
             this.schedulerRequestProvider = schedulerRequestProvider;
-            this.missionSchedulerProvider = missionSchedulerProvider;
         }
 
         #endregion
@@ -65,6 +61,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                         PackageTypeId = r.PackageTypeId,
                         RegistrationNumber = r.RegistrationNumber,
                         RequestedQuantity = r.RequiredQuantity,
+                        Status = (ListRowStatus)r.Status,
                         Sub1 = r.Sub1,
                         Sub2 = r.Sub2,
                     })
@@ -86,22 +83,14 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var list = await this.GetByIdAsync(request.ListId);
-                list.Status = request.BayId.HasValue ? ListStatus.Executing : ListStatus.Waiting;
 
                 requests = await this.BuildRequestsAsync(list, request);
-                if (!requests.Any())
-                {
-                    list.Status = ListStatus.Suspended;
-                }
 
                 await this.UpdateAsync(list);
                 await this.schedulerRequestProvider.CreateRangeAsync(requests);
 
                 scope.Complete();
             }
-
-            var requestsToProcess = await this.schedulerRequestProvider.GetRequestsToProcessAsync();
-            await this.missionSchedulerProvider.CreateForRequestsAsync(requestsToProcess);
 
             return requests;
         }
