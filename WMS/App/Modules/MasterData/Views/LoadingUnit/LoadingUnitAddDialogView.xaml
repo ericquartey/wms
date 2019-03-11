@@ -133,40 +133,6 @@
                     </Grid>
                 </GroupBox>
 
-                <!--<GroupBox Grid.Row="0"
-                          Grid.Column="1"
-                          Margin="0"
-                          Header="{x:Static res:MasterData.CurrentCellInformation}">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <wms:ComboBox Grid.ColumnSpan="2"
-                                      Margin="0,0,20,0"
-                                      wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Path=Model.CellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Path=Model.CellChoices}" />
-                        <wms:ComboBox Grid.Row="1"
-                                      Margin="0,0,20,0"
-                                      wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Model.CellPositionId}"
-                                      ItemsSource="{Binding Model.CellPositionChoices}" />
-
-                        <wms:WmsCheckEdit Grid.Row="1"
-                                          Grid.Column="1"
-                                          Margin="0,0,20,0"
-                                          wms:ShowTitle.Show="True"
-                                          Content="{x:Static res:BusinessObjects.PairingFixed}"
-                                          IsChecked="{Binding Path=Model.IsCellPairingFixed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                    </Grid>
-                </GroupBox>-->
-
                 <GroupBox Grid.Row="1"
                           Grid.Column="0"
                           Margin="0"
