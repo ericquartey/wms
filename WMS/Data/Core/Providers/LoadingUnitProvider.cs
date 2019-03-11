@@ -116,6 +116,11 @@ namespace Ferretto.WMS.Data.Core.Providers
             return result;
         }
 
+        public async Task<LoadingUnitSize> GetSizeByTypeIdAsync(int typeId)
+        {
+            return await this.GetInfoOfSize(typeId).SingleOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.GetUniqueValuesAsync(
@@ -238,6 +243,19 @@ namespace Ferretto.WMS.Data.Core.Providers
                     AisleId = l.Cell.AisleId,
                     AreaId = l.Cell.Aisle.AreaId,
                 });
+        }
+
+        private IQueryable<LoadingUnitSize> GetInfoOfSize(int typeId)
+        {
+            return this.dataContext.LoadingUnitTypes
+                .Include(t => t.LoadingUnitSizeClass)
+                .Where(t => t.Id == typeId)
+                .Select(t => new LoadingUnitSize
+                {
+                    Length = t.LoadingUnitSizeClass.Length,
+                    Width = t.LoadingUnitSizeClass.Width,
+                })
+                .Distinct();
         }
 
         #endregion
