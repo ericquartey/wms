@@ -466,6 +466,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The property {0}  should be strictly positive..
+        /// </summary>
+        public static string PropertyMustBeStriclyPositive {
+            get {
+                return ResourceManager.GetString("PropertyMustBeStriclyPositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The property {0} must have a value..
+        /// </summary>
+        public static string PropertyMustHaveValue {
+            get {
+                return ResourceManager.GetString("PropertyMustHaveValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The specified path is not contained in the image directory..
         /// </summary>
         public static string SpecifiedPathNotInConfiguredImageFolder {
