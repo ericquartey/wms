@@ -24,6 +24,11 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int AllowedItemsCount { get; set; }
 
+        public bool CanDelete
+        {
+            get => !this.IsItemPairingFixed && this.Stock == 0 ? true : false;
+        }
+
         public string CompartmentStatusDescription { get; set; }
 
         public int? CompartmentStatusId { get; set; }
