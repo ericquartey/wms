@@ -34,7 +34,9 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <wms:TileBar ItemsSource="{Binding Filters}"
+
+                <wms:TileBar HorizontalAlignment="Right"
+                             ItemsSource="{Binding Filters}"
                              SelectedItem="{Binding SelectedFilter, Mode=OneWayToSource}" />
 
                 <dxa:AccordionControl Grid.Row="1"
