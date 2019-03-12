@@ -8,8 +8,25 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    class LoadFirstDrawerViewModel : BindableBase, ILoadFirstDrawerViewModel
-
+    internal class LoadFirstDrawerViewModel : BindableBase, ILoadFirstDrawerViewModel
     {
+        #region Methods
+
+        public void ExitFromViewMethod()
+        {
+            // TODO
+        }
+
+        public void SubscribeMethodToEvent()
+        {
+            // TODO
+        }
+
+        public void UnSubscribeMethodFromEvent()
+        {
+            // TODO
+        }
+
+        #endregion
     }
 }

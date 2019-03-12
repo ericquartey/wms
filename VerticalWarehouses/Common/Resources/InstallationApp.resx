@@ -1004,4 +1004,44 @@
     <value>BayControlNextPosition</value>
     <comment>Button text</comment>
   </data>
+  <data name="HomingCompleted" xml:space="preserve">
+    <value>Homing procedure completed successfully</value>
+    <comment>TextBlock content</comment>
+  </data>
+  <data name="HomingStarted" xml:space="preserve">
+    <value>Homing procedure started</value>
+    <comment>TextBlock content</comment>
+  </data>
+  <data name="HorizontalHomingCompleted" xml:space="preserve">
+    <value>Horizontal homing completed</value>
+    <comment>TextBlock content</comment>
+  </data>
+  <data name="HorizontalHomingExecuting" xml:space="preserve">
+    <value>Executing horizontal homing </value>
+    <comment>TextBlock content</comment>
+  </data>
+  <data name="HorizontalHomingStarted" xml:space="preserve">
+    <value>Horizontal homing procedure started</value>
+    <comment>TextBlock content</comment>
+  </data>
+  <data name="SwitchEngineCompleted" xml:space="preserve">
+    <value>Switch engine done</value>
+    <comment>TextBlock content</comment>
+  </data>
+  <data name="SwitchEngineStarted" xml:space="preserve">
+    <value>Swithing engine</value>
+    <comment>TextBlock content</comment>
+  </data>
+  <data name="VerticalHomingCompleted" xml:space="preserve">
+    <value>Vertical homing completed</value>
+    <comment>TextBlock content</comment>
+  </data>
+  <data name="VerticalHomingExecuting" xml:space="preserve">
+    <value>Executing vertical homing</value>
+    <comment>TextBlock content</comment>
+  </data>
+  <data name="VerticalHomingStarted" xml:space="preserve">
+    <value>Vertical homing procedure started</value>
+    <comment>TextBlock content</comment>
+  </data>
 </root>

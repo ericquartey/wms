@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ferretto.VW.InstallationApp.Interfaces
 {
-    public interface ICellsSideControlViewModel
+    public interface ICellsSideControlViewModel : IViewModel
     {
     }
 }
