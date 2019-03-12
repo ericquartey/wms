@@ -40,7 +40,6 @@ namespace Ferretto.Common.Controls
 
         public CreateViewModel()
         {
-            this.CanShowError = false;
             this.changeDetector.ModifiedChanged += this.ChangeDetector_ModifiedChanged;
         }
 
@@ -88,7 +87,11 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public bool IsEnableError { get; set; }
+        public bool IsEnableError
+        {
+            get => this.isEnableError;
+            set => this.SetProperty(ref this.isEnableError, value);
+        }
 
         public bool IsModelValid
         {
@@ -225,7 +228,7 @@ namespace Ferretto.Common.Controls
 
         private void UpdateIsEnableError()
         {
-            this.SetProperty(ref this.isEnableError, this.isModelValid && this.CanShowError);
+            this.IsEnableError = this.isModelValid && this.CanShowError;
         }
 
         #endregion

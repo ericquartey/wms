@@ -466,7 +466,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The property {0}  should be strictly positive..
+        ///   Looks up a localized string similar to The property {0} must be strictly positive..
         /// </summary>
         public static string PropertyMustBeStriclyPositive {
             get {
