@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.WMS.Scheduler.Core.Models;
 
 namespace Ferretto.WMS.Scheduler.Core.Interfaces
@@ -8,7 +9,11 @@ namespace Ferretto.WMS.Scheduler.Core.Interfaces
     {
         #region Methods
 
+        Task<IOperationResult<Mission>> CompleteMissionAsync(int id);
+
         Task<IEnumerable<SchedulerRequest>> ExecuteListAsync(ListExecutionRequest request);
+
+        Task<IOperationResult<Mission>> ExecuteMissionAsync(int id);
 
         Task ProcessPendingRequestsAsync();
 

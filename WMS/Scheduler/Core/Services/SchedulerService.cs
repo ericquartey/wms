@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Ferretto.WMS.Scheduler.Core.Models;
@@ -91,6 +92,26 @@ namespace Ferretto.WMS.Scheduler.Core.Services
                 await missionsProvider.CreateForRequestsAsync(requestsToProcess);
 
                 return acceptedRequests;
+            }
+        }
+
+        public async Task<IOperationResult<Mission>> CompleteMissionAsync(int id)
+        {
+            using (var serviceScope = this.scopeFactory.CreateScope())
+            {
+                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionSchedulerProvider>();
+
+                return await missionsProvider.CompleteAsync(id);
+            }
+        }
+
+        public async Task<IOperationResult<Mission>> ExecuteMissionAsync(int id)
+        {
+            using (var serviceScope = this.scopeFactory.CreateScope())
+            {
+                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionSchedulerProvider>();
+
+                return await missionsProvider.ExecuteAsync(id);
             }
         }
 

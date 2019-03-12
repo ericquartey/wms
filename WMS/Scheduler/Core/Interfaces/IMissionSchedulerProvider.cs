@@ -16,6 +16,8 @@ namespace Ferretto.WMS.Scheduler.Core.Interfaces
 
         Task<IEnumerable<Mission>> CreateForRequestsAsync(IEnumerable<SchedulerRequest> requests);
 
+        Task<IOperationResult<Mission>> ExecuteAsync(int id);
+
         #endregion
     }
 }

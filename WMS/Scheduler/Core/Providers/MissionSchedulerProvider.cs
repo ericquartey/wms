@@ -130,6 +130,26 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             }
         }
 
+        public async Task<IOperationResult<Mission>> ExecuteAsync(int id)
+        {
+            var mission = await this.GetByIdAsync(id);
+            if (mission == null)
+            {
+                return new NotFoundOperationResult<Mission>();
+            }
+
+            if (mission.Status != MissionStatus.New
+                &&
+                mission.Status != MissionStatus.Waiting)
+            {
+                return new BadRequestOperationResult<Mission>(mission);
+            }
+
+            mission.Status = MissionStatus.Executing;
+
+            return await this.UpdateAsync(mission);
+        }
+
         public async Task<IEnumerable<Mission>> GetAllAsync()
         {
             return await this.databaseContext.Missions
