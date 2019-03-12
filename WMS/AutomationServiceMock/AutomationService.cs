@@ -43,11 +43,18 @@ namespace Ferretto.WMS.AutomationServiceMock
 
         #region Methods
 
+        public Task CompleteMission(int missionId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task InitializeAsync()
         {
+            this.logger.LogInformation("Connecting to service hub ...");
+
             await this.wakeupHubClient.ConnectAsync();
 
-            this.logger.LogInformation("Automation service initialized");
+            this.logger.LogInformation("Automation service initialized.");
         }
 
         public async Task NotifyUserLoginAsync(int bayId)
