@@ -74,7 +74,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(422)]
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAsync(int id)
         {
             var result = await this.compartmentProvider.DeleteAsync(id);
