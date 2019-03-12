@@ -108,7 +108,8 @@
                     <wms:WmsGridControl.View>
                         <dxg:TableView SearchPanelHorizontalAlignment="Right"
                                        ShowFilterPanelMode="Never"
-                                       ShowSearchPanelMode="Never">
+                                       ShowSearchPanelMode="Never"
+                                       ShowFixedTotalSummary="True">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="RowDoubleClick">
                                     <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentItem.Id, Mode=OneWay}"
@@ -155,6 +156,12 @@
                         <dxg:GridSortInfo FieldName="Number"
                                           SortOrder="Ascending" />
                     </wms:WmsGridControl.SortInfo>
+
+                    <wms:WmsGridControl.TotalSummary>
+                        <dxg:GridSummaryItem SummaryType="Count"
+                                             Alignment="Left"
+                                             DisplayFormat="{x:Static res:DesktopApp.GridRowCounter}" />
+                    </wms:WmsGridControl.TotalSummary>
 
                 </wms:WmsGridControl>
             </Grid>

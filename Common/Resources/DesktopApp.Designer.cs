@@ -169,6 +169,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Row Count={0}.
+        /// </summary>
+        public static string GridRowCounter {
+            get {
+                return ResourceManager.GetString("GridRowCounter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Initializing Compartment module ....
         /// </summary>
         public static string InitializingCompartmentModule {

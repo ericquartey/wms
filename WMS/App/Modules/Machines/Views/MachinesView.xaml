@@ -170,7 +170,8 @@
                                       ShowGroupPanel="False"
                                       ShowGroupedColumns="False"
                                       ShowSearchPanelMode="Never"
-                                      ShowSelectionRectangle="False">
+                                      ShowSelectionRectangle="False"
+                                      ShowFixedTotalSummary="True">
                         </dxg:CardView>
                     </dxg:GridControl.View>
 
@@ -214,6 +215,12 @@
                         <dxg:GridSortInfo FieldName="Nickname"
                                           SortOrder="Ascending" />
                     </wms:WmsGridControl.SortInfo>
+
+                    <wms:WmsGridControl.TotalSummary>
+                        <dxg:GridSummaryItem SummaryType="Count"
+                                             Alignment="Left"
+                                             DisplayFormat="{x:Static res:DesktopApp.GridRowCounter}" />
+                    </wms:WmsGridControl.TotalSummary>
 
                 </wms:WmsGridControl>
             </Grid>
