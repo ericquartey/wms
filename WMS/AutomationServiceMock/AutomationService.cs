@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Ferretto.WMS.Scheduler.WebAPI.Contracts;
@@ -45,17 +46,39 @@ namespace Ferretto.WMS.AutomationServiceMock
 
         public async Task CompleteMissionAsync(int missionId)
         {
-            await this.missionsDataService.CompleteAsync(missionId);
+            try
+            {
+                await this.missionsDataService.CompleteAsync(missionId);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError($"Unable to complete mission with id={missionId}: {ex.Message}");
+            }
         }
 
         public async Task ExecuteMissionAsync(int missionId)
         {
-            await this.missionsDataService.ExecuteAsync(missionId);
+            try
+            {
+                await this.missionsDataService.ExecuteAsync(missionId);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError($"Unable to execute mission with id={missionId}: {ex.Message}");
+            }
         }
 
         public async Task<System.Collections.Generic.IEnumerable<Mission>> GetMissionsAsync()
         {
-            return await this.missionsDataService.GetAllAsync(null, null, null, null, null);
+            try
+            {
+                return await this.missionsDataService.GetAllAsync(null, null, null, null, null);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError($"Unable to retrieve the list of missions: {ex.Message}");
+                return new List<Mission>();
+            }
         }
 
         public async Task InitializeAsync()

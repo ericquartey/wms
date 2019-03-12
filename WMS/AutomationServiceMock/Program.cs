@@ -10,11 +10,20 @@ namespace Ferretto.WMS.AutomationServiceMock
 {
     internal static class Program
     {
+        private static ILogger logger;
         #region Enums
 
         private enum UserSelection
         {
-            Login, CompleteMission, ExecuteMission, ListMissions, Exit
+            Login,
+
+            ListMissions,
+
+            CompleteMission,
+
+            ExecuteMission,
+
+            Exit
         }
 
         #endregion
@@ -23,8 +32,6 @@ namespace Ferretto.WMS.AutomationServiceMock
 
         private static IAutomationService BuildConfiguration(string[] args)
         {
-            Console.Write("Configuring service ... ");
-
             var configuration = new ConfigurationBuilder()
              .AddJsonFile("appsettings.json", optional: false)
              .AddCommandLine(args)
@@ -34,7 +41,7 @@ namespace Ferretto.WMS.AutomationServiceMock
 
             var automationService = serviceProvider.GetService<IAutomationService>();
 
-            Console.WriteLine("done.");
+            logger = serviceProvider.GetService<ILogger>();
 
             return automationService;
         }
@@ -84,12 +91,12 @@ namespace Ferretto.WMS.AutomationServiceMock
 
                 case UserSelection.ListMissions:
                     Console.WriteLine("Available missions:");
-                    Console.WriteLine($"{nameof(Mission.Id):3}, {nameof(Mission.Status):10}, {nameof(Mission.ItemDescription):20}, {nameof(Mission.RequiredQuantity):3}");
+                    Console.WriteLine($"{nameof(Mission.Id), 3}, {nameof(Mission.Status), 10}, {nameof(Mission.ItemDescription), 20}, {nameof(Mission.RequiredQuantity), 3}");
 
                     var missions = await automationService.GetMissionsAsync();
                     foreach (var mission in missions)
                     {
-                        Console.WriteLine($"{mission.Id:3}, {mission.Status:10}, {mission.ItemDescription:20}, {mission.RequiredQuantity:3}");
+                        Console.WriteLine($"{mission.Id, 3}, {mission.Status, 10}, {mission.ItemDescription,  20}, {mission.RequiredQuantity, 3}");
                     }
 
                     break;
@@ -116,6 +123,7 @@ namespace Ferretto.WMS.AutomationServiceMock
         private static int GetMissionId()
         {
             Console.WriteLine("Insert mission id: ");
+            Console.Write("> ");
             var missionIdString = Console.ReadLine();
 
             if (int.TryParse(missionIdString, out var missionId))
@@ -134,12 +142,11 @@ namespace Ferretto.WMS.AutomationServiceMock
         {
             try
             {
-                Console.WriteLine("Press <ENTER> to start the automation service.");
-                Console.ReadLine();
+                Console.WriteLine("VertiMAG Panel PC");
+                Console.WriteLine("-----------------");
+                Console.WriteLine();
 
                 var automationService = BuildConfiguration(args);
-
-                await automationService.InitializeAsync();
 
                 var exitRequested = false;
                 while (exitRequested == false)
@@ -147,14 +154,15 @@ namespace Ferretto.WMS.AutomationServiceMock
                     Console.WriteLine("Select option: ");
                     Console.WriteLine($"{(int)UserSelection.Login} - Login to PPC");
                     Console.WriteLine($"{(int)UserSelection.ListMissions} - List missions");
-                    Console.WriteLine($"{(int)UserSelection.ExecuteMission} - Execute mission");
                     Console.WriteLine($"{(int)UserSelection.CompleteMission} - Complete mission");
+                    Console.WriteLine($"{(int)UserSelection.ExecuteMission} - Execute mission");
                     Console.WriteLine($"{(int)UserSelection.Exit} - Exit");
+                    Console.Write("> ");
 
                     var selectionString = Console.ReadLine();
-                    if (int.TryParse(selectionString, out var selection))
+                    if (int.TryParse(selectionString, out var selection) == false)
                     {
-                        Console.WriteLine("Invalid selection.");
+                        Console.WriteLine("Unable to parse selection.");
                     }
                     else
                     {
@@ -164,7 +172,7 @@ namespace Ferretto.WMS.AutomationServiceMock
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred: {ex.Message}");
+                Console.WriteLine($"An unexpected error occurred: {ex.Message}");
                 Console.WriteLine();
             }
             finally
