@@ -25,10 +25,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         #region Constructors
 
-        public ItemListSchedulerProvider()
-        {
-        }
-
         public ItemListSchedulerProvider(
             DatabaseContext databaseContext,
             IItemListRowSchedulerProvider itemListRowSchedulerProvider,
