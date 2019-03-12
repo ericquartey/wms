@@ -40,8 +40,6 @@ namespace Ferretto.WMS.AutomationServiceMock
 
             var automationService = serviceProvider.GetService<IAutomationService>();
 
-            logger = serviceProvider.GetService<ILogger>();
-
             return automationService;
         }
 
