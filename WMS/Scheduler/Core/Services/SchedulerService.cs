@@ -105,7 +105,7 @@ namespace Ferretto.WMS.Scheduler.Core.Services
             }
         }
 
-        public Task<IEnumerable<SchedulerRequest>> ExecuteListRowAsync(ListRowExecutionRequest request)
+        public async Task<IOperationResult<SchedulerRequest>> ExecuteListRowAsync(ListRowExecutionRequest request)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
