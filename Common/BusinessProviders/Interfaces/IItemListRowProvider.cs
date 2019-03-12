@@ -10,7 +10,8 @@ namespace Ferretto.Common.BusinessProviders
         IPagedBusinessProvider<ItemListRow, int>,
         IReadSingleAsyncProvider<ItemListRowDetails, int>,
         ICreateAsyncProvider<ItemListRowDetails, int>,
-        IUpdateAsyncProvider<ItemListRowDetails, int>
+        IUpdateAsyncProvider<ItemListRowDetails, int>,
+        IDeleteAsyncProvider<ItemListRowDetails, int>
     {
         #region Methods
 

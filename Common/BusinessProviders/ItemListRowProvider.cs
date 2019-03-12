@@ -86,6 +86,20 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
+        public async Task<IOperationResult<ItemListRowDetails>> DeleteAsync(int id)
+        {
+            try
+            {
+                await this.itemListRowsDataService.DeleteAsync(id);
+
+                return new OperationResult<ItemListRowDetails>(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<ItemListRowDetails>(ex);
+            }
+        }
+
         public async Task<IOperationResult<ItemListRow>> ExecuteImmediatelyAsync(int listRowId, int areaId, int bayId)
         {
             try
@@ -169,6 +183,7 @@ namespace Ferretto.Common.BusinessProviders
                 MaterialStatusChoices = materialStatusChoices,
                 PackageTypeChoices = packageTypeChoices,
                 ItemListId = itemListRow.ItemListId,
+                CanDelete = itemListRow.CanDelete,
             };
         }
 
