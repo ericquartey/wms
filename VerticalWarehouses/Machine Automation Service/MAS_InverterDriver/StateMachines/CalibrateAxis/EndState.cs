@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
@@ -19,7 +20,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         public EndState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate)
         {
-            Console.WriteLine("EndState");
+            Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - EndState:Ctor");
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
 
@@ -33,11 +34,15 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         #region Methods
 
-        public override void ProcessMessage(InverterMessage message)
+        public override bool ProcessMessage(InverterMessage message)
         {
-            Console.WriteLine("EndState-ProcessMessage");
+            Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - EndState:ProcessMessage");
             if (message.IsError)
+            {
                 this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate));
+            }
+
+            return true;
         }
 
         #endregion

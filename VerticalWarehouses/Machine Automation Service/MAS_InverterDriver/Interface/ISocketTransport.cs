@@ -43,13 +43,12 @@ namespace Ferretto.VW.MAS_InverterDriver.Interface
         ///     (1024-65535)
         /// </exception>
         /// <exception cref="InverterDriverException">Connection operation Failed. Inspect exception details for more details</exception>
-        Task<bool> ConnectAsync();
+        Task ConnectAsync();
 
         /// <summary>
         ///     Disconnects from the remote host and closes communication sockets
         /// </summary>
-        /// <param name="delay">Delaty time in milliseconds to allow Network Stream to complete sending data before closing</param>
-        void Disconnect(int delay);
+        void Disconnect();
 
         /// <summary>
         ///     Reads data from the remote host. Blocks the calling thread until new data is received from the host
@@ -65,7 +64,7 @@ namespace Ferretto.VW.MAS_InverterDriver.Interface
         /// <param name="inverterMessage">Byte array containing the message to be sent to the Inverter hardware</param>
         /// <param name="stoppingToken">Cancellation token used to cancel wait operations</param>
         /// <exception cref="InverterDriverException">Write operation Failed. Inspect exception details for more details</exception>
-        Task WriteAsync(byte[] inverterMessage, CancellationToken stoppingToken);
+        ValueTask<int> WriteAsync(byte[] inverterMessage, CancellationToken stoppingToken);
 
         #endregion
     }
