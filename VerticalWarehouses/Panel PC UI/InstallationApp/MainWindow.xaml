@@ -52,6 +52,7 @@
                             Background="{DynamicResource VWAPP_BACKGROUND}"
                             BorderBrush="{DynamicResource VWAPP_CustomMachineModeToggleButton_BorderBrush_Normal}"
                             BorderThickness="1">
+
                         <TextBlock FontSize="25"
                                    Foreground="{DynamicResource FerrettoPureWhite}"
                                    TextAlignment="Center">
