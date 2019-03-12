@@ -29,10 +29,10 @@
                Stretch="Fill" />
 
         <Image Grid.Row="1"
-               Width="340"
+               Width="330"
                Height="530"
                Stretch="Fill"
-               VerticalAlignment="Top" HorizontalAlignment="Left"  Margin="530,60,0,0"
+               VerticalAlignment="Top" HorizontalAlignment="Left"  Margin="520,60,0,0"
                Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/background_machine.png" />
 
         <TextBlock Grid.Row="1"
