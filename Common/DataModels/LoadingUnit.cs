@@ -36,7 +36,7 @@ namespace Ferretto.Common.DataModels
 
         public DateTime? InventoryDate { get; set; }
 
-        public bool? IsCellPairingFixed { get; set; }
+        public bool IsCellPairingFixed { get; set; }
 
         public DateTime? LastHandlingDate { get; set; }
 

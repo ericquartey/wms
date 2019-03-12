@@ -32,7 +32,7 @@ namespace Ferretto.Common.BusinessModels
 
         private int inCycleCount;
 
-        private bool? isCellPairingFixed;
+        private bool isCellPairingFixed;
 
         private int length;
 
@@ -182,7 +182,7 @@ namespace Ferretto.Common.BusinessModels
         public DateTime? InventoryDate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitIsCellPairingFixed), ResourceType = typeof(BusinessObjects))]
-        public bool? IsCellPairingFixed
+        public bool IsCellPairingFixed
         {
             get => this.isCellPairingFixed;
             set => this.SetProperty(ref this.isCellPairingFixed, value);
