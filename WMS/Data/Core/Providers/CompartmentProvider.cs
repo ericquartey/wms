@@ -164,14 +164,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             return await this.dataContext.Compartments
                 .Where(c => c.Id == id)
-                .Include(c => c.CompartmentType)
-                .ThenInclude(ct => ct.ItemsCompartmentTypes)
-                .ThenInclude(ict => ict.Item)
-                .ThenInclude(i => i.AbcClass)
-                .Include(c => c.CompartmentType)
-                .ThenInclude(ct => ct.ItemsCompartmentTypes)
-                .ThenInclude(ict => ict.Item)
-                .ThenInclude(i => i.ItemCategory)
                 .SelectMany(
                     c => c.CompartmentType.ItemsCompartmentTypes,
                     (c, ict) => new AllowedItemInCompartment
@@ -194,10 +186,6 @@ namespace Ferretto.WMS.Data.Core.Providers
             var allowedItemsCount =
                 await this.dataContext.Compartments
                     .Where(c => c.Id == id)
-                    .Include(c => c.CompartmentType)
-                    .ThenInclude(ct => ct.ItemsCompartmentTypes)
-                    .Include(c => c.CompartmentType)
-                    .ThenInclude(ct => ct.ItemsCompartmentTypes)
                     .SelectMany(c => c.CompartmentType.ItemsCompartmentTypes)
                     .CountAsync();
 
@@ -229,7 +217,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<int?> GetMaxCapacityAsync(int width, int height, int itemId)
         {
             var compartmentType = await this.dataContext.ItemsCompartmentTypes
-                                      .Include(ict => ict.CompartmentType)
                                       .SingleOrDefaultAsync(ict =>
                                                                 ict.ItemId == itemId &&
                                                                 ((ict.CompartmentType.Width == width &&
@@ -316,13 +303,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         private IQueryable<Compartment> GetAllBase()
         {
             return this.dataContext.Compartments
-                .Include(c => c.LoadingUnit)
-                .Include(c => c.MaterialStatus)
-                .Include(c => c.Item)
-                .ThenInclude(i => i.MeasureUnit)
-                .Include(c => c.CompartmentType)
-                .Include(c => c.CompartmentStatus)
-                .Include(c => c.PackageType)
                 .Select(c => new Compartment
                 {
                     Id = c.Id,
@@ -349,12 +329,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         private IQueryable<CompartmentDetails> GetAllDetailsBase()
         {
             return this.dataContext.Compartments
-                .Include(c => c.LoadingUnit)
-                .ThenInclude(l => l.LoadingUnitType)
-                .Include(c => c.Item)
-                .ThenInclude(i => i.MeasureUnit)
-                .Include(c => c.CompartmentStatus)
-                .Include(c => c.CompartmentType)
                 .GroupJoin(
                     this.dataContext.ItemsCompartmentTypes,
                     cmp => new { CompartmentTypeId = cmp.CompartmentTypeId, ItemId = cmp.ItemId.Value },

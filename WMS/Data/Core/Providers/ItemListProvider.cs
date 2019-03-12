@@ -147,7 +147,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         private IQueryable<ItemList> GetAllBase()
         {
             return this.dataContext.ItemLists
-                .Include(i => i.ItemListRows)
                 .Select(i => new ItemList
                 {
                     Id = i.Id,
@@ -165,7 +164,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         private IQueryable<ItemListDetails> GetAllDetailsBase()
         {
             return this.dataContext.ItemLists
-                .Include(i => i.ItemListRows)
                 .Select(i => new ItemListDetails
                 {
                     Id = i.Id,
