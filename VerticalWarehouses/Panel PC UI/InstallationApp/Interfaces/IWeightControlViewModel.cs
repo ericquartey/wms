@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public interface IWeightControlViewModel
+    public interface IWeightControlViewModel : IViewModel
     {
     }
 }
