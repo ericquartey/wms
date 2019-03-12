@@ -20,7 +20,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         IReadAllPagedController<ItemListRow>,
         IReadSingleController<ItemListRowDetails, int>,
         IUpdateController<ItemListRowDetails>,
-        IGetUniqueValuesController
+        IGetUniqueValuesController,
+        IDeleteController<int>
     {
         #region Fields
 
@@ -61,6 +62,30 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return this.Created(this.Request.GetUri(), result.Entity);
+        }
+
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(422)]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteAsync(int id)
+        {
+            var result = await this.itemListRowProvider.DeleteAsync(id);
+
+            if (!result.Success)
+            {
+                if (result is UnprocessableEntityOperationResult<ItemListRowDetails>)
+                {
+                    return this.UnprocessableEntity();
+                }
+                else
+                {
+                    return this.NotFound();
+                }
+            }
+
+            return this.Ok();
         }
 
         [HttpPost("execute")]

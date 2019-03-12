@@ -39,10 +39,25 @@ namespace Ferretto.VW.InstallationApp
 
         #region Methods
 
+        public void ExitFromViewMethod()
+        {
+            // TODO
+        }
+
         public void InitializeViewModel(IUnityContainer _container)
         {
             this.container = _container;
             this.SSNavigationRegionCurrentViewModel = (SSNavigationButtonsViewModel)this.container.Resolve<ISSNavigationButtonsViewModel>();
+        }
+
+        public void SubscribeMethodToEvent()
+        {
+            // TODO
+        }
+
+        public void UnSubscribeMethodFromEvent()
+        {
+            // TODO
         }
 
         #endregion

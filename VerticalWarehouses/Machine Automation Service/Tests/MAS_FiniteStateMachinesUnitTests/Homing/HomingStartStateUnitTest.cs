@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
+﻿using System;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines;
 using Ferretto.VW.MAS_FiniteStateMachines.Homing;
@@ -15,7 +16,14 @@ namespace MAS_FiniteStateMachinesUnitTests.Homing
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void TestHomingStartStateCreate()
+        public void TestHomingStartStateInvalidCreation()
+        {
+            Assert.ThrowsException<NullReferenceException>(() => new HomingStartState(null, Axis.Vertical));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void TestHomingStartStateSuccessCreation()
         {
             var calibrateMessageData = new Mock<ICalibrateMessageData>();
 
@@ -27,7 +35,7 @@ namespace MAS_FiniteStateMachinesUnitTests.Homing
 
             var state = new HomingStartState(parent.Object, Axis.Vertical);
 
-            Assert.IsNotNull(state);
+            Assert.AreEqual(state.Type, "HomingStartState");
         }
 
         #endregion

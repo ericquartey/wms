@@ -69,8 +69,29 @@ namespace Ferretto.WMS.Data.Core.Providers
             return new SuccessOperationResult<ItemListRowDetails>(model);
         }
 
+        public async Task<IOperationResult<ItemListRowDetails>> DeleteAsync(int id)
+        {
+            var existingModel = this.dataContext.ItemListRows.Find(id);
+            if (existingModel == null)
+            {
+                return new NotFoundOperationResult<ItemListRowDetails>();
+            }
+
+            var itemListRow = await this.GetByIdAsync(id);
+            if (itemListRow.CanDelete)
+            {
+                this.dataContext.Remove(existingModel);
+                await this.dataContext.SaveChangesAsync();
+                return new SuccessOperationResult<ItemListRowDetails>();
+            }
+            else
+            {
+                return new UnprocessableEntityOperationResult<ItemListRowDetails>();
+            }
+        }
+
         public async Task<IEnumerable<ItemListRow>> GetAllAsync(
-            int skip,
+                    int skip,
             int take,
             IEnumerable<SortOption> orderBySortOptions = null,
             string whereString = null,
@@ -97,8 +118,20 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<ItemListRowDetails> GetByIdAsync(int id)
         {
-            return await this.GetAllDetailsBase()
+            var itemListRowDetails = await this.GetAllDetailsBase()
                        .SingleOrDefaultAsync(i => i.Id == id);
+
+            var count = await this.HasSchedulerRequestsAssociated(id).CountAsync();
+            if (count > 0)
+            {
+                itemListRowDetails.HasSchedulerRequestAssociated = true;
+            }
+            else
+            {
+                itemListRowDetails.HasSchedulerRequestAssociated = false;
+            }
+
+            return itemListRowDetails;
         }
 
         public async Task<IEnumerable<ItemListRow>> GetByItemListIdAsync(int id)
@@ -211,8 +244,15 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Sub2 = l.Sub2,
                     PackageTypeId = l.PackageTypeId,
                     MaterialStatusId = l.MaterialStatusId,
-                    ItemUnitMeasure = l.Item.MeasureUnit.Description
+                    ItemUnitMeasure = l.Item.MeasureUnit.Description,
                 });
+        }
+
+        private IQueryable<ItemListRowDetails> HasSchedulerRequestsAssociated(int id)
+        {
+            return this.dataContext.SchedulerRequests
+                .Where(r => r.ListRowId == id)
+                .Select(r => new ItemListRowDetails { });
         }
 
         #endregion

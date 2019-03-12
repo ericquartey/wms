@@ -1,0 +1,54 @@
+parameters:
+  BuildConfiguration: 'debug'
+  BuildPlatform: 'any cpu'
+
+steps:
+
+- template: ../../Pipelines/azure-pipeline-net4-nuget-template.yml
+
+
+- template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
+
+
+- task: VSBuild@1
+  displayName: 'Build solution VerticalWarehouses'
+  inputs:
+    solution: 'VerticalWarehouses/VerticalWarehouses.sln'
+    platform: ${{ parameters.BuildPlatform }}
+    configuration: ${{ parameters.BuildConfiguration }}
+    msbuildArchitecture: x64
+
+
+- task: VSTest@2
+  displayName: 'Run Tests'
+  inputs:
+    testAssemblyVer2: |
+     VerticalWarehouses/Panel PC UI/**/${{ parameters.BuildConfiguration }}/*Tests.dll
+     !**\obj\**
+    codeCoverageEnabled: true
+    platform: ${{ parameters.BuildPlatform }}
+    configuration: ${{ parameters.BuildConfiguration }}
+
+
+- task: PublishSymbols@2
+  displayName: 'Publish symbols path'
+  inputs:
+    SearchPattern: 'VerticalWarehouses/Panel PC UI/**/bin/**/*.pdb'
+    PublishSymbols: false
+  continueOnError: true
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to staging directory'
+  inputs:
+    SourceFolder: '$(system.defaultworkingdirectory)'
+    Contents: 'VerticalWarehouses/Panel PC UI/**/bin/${{ parameters.BuildConfiguration }}/**'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Panel PC App'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/Panel PC UI/VWApp/bin/${{ parameters.BuildConfiguration }}/net471'
+    ArtifactName: 'panelpc_app'
+
+

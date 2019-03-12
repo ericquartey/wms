@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages;
+using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Interfaces;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Microsoft.AspNetCore.SignalR.Client;
 
@@ -23,6 +25,7 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
 
             this.hubConnection.On<string>("OnSendMessageToAllConnectedClients", this.OnSendMessageToAllConnectedClients);
             this.hubConnection.On<bool[]>("OnSensorsChangedToAllConnectedClients", this.OnSensorsChangedToAllConnectedClients);
+            this.hubConnection.On<ActionUpdateData>("OnActionUpdateToAllConnectedClients", this.OnActionUpdateToAllConnectedClients);
 
             this.hubConnection.Closed += async (error) =>
             {
@@ -34,6 +37,8 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
         #endregion
 
         #region Events
+
+        public event EventHandler<ActionUpdateData> ActionUpdated;
 
         public event EventHandler<string> ReceivedMessage;
 
@@ -51,6 +56,11 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
         public async Task DisconnectAsync()
         {
             await this.hubConnection.DisposeAsync();
+        }
+
+        private void OnActionUpdateToAllConnectedClients(ActionUpdateData data)
+        {
+            this.ActionUpdated?.Invoke(this, data);
         }
 
         private void OnSendMessageToAllConnectedClients(string message)

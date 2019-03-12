@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.Resources;
@@ -6,6 +7,7 @@ using Ferretto.VW.InstallationApp.Resources.Enumerables;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
+using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -85,230 +87,168 @@ namespace Ferretto.VW.InstallationApp
 
         #region Properties
 
-        public ICommand BackToMainWindowNavigationButtonsViewButtonCommand => this.backToMainWindowNavigationButtonsViewCommand ?? (this.backToMainWindowNavigationButtonsViewCommand = new DelegateCommand(() =>
-        {
-            this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
-            this.ContentRegionCurrentViewModel = (IdleViewModel)this.container.Resolve<IIdleViewModel>();
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.ExitView));
-        }));
-
-        public ICommand BackToVWAPPCommand => this.backToVWAPPCommand ?? (this.backToVWAPPCommand = new DelegateCommand(() =>
-        {
-            this.IsPopupOpen = false;
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.BackToVWApp));
-            ClickedOnMachineModeEventHandler = null;
-            ClickedOnMachineOnMarchEventHandler = null;
-        }));
-
         public ICommand BayControlButtonCommand => this.bayControlButtonCommand ?? (this.bayControlButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (BayControlViewModel)this.container.Resolve<IBayControlViewModel>();
-            ((BayControlViewModel)this.container.Resolve<IBayControlViewModel>()).SubscribeMethodToEvent();
-            ((MainWindowBackToIAPPButtonViewModel)this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand(((BayControlViewModel)this.container.Resolve<IBayControlViewModel>()).ExitFromViewCommand);
+            this.NavigateToView<BayControlViewModel, IBayControlViewModel>();
         }));
 
         public ICommand BeltBurnishingButtonCommand => this.beltBurnishingButtonCommand ?? (this.beltBurnishingButtonCommand = new DelegateCommand(() =>
-                {
-                    this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-                    this.ContentRegionCurrentViewModel = (BeltBurnishingViewModel)this.container.Resolve<IBeltBurnishingViewModel>();
-                }));
+        {
+            this.NavigateToView<BeltBurnishingViewModel, IBeltBurnishingViewModel>();
+        }));
 
         public ICommand CellsControlButtonCommand => this.cellsControlButtonCommand ?? (this.cellsControlButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (CellsControlViewModel)this.container.Resolve<ICellsControlViewModel>();
+            this.NavigateToView<CellsControlViewModel, ICellsControlViewModel>();
         }));
 
         public ICommand CellsPanelControlButtonCommand => this.cellsPanelControlButtonCommand ?? (this.cellsPanelControlButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (CellsPanelsControlViewModel)this.container.Resolve<ICellsPanelsControlViewModel>();
+            this.NavigateToView<CellsPanelsControlViewModel, ICellsPanelsControlViewModel>();
         }));
 
         public ICommand CellsSideControlButtonCommand => this.cellsSideControlButtonCommand ?? (this.cellsSideControlButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (CellsSideControlViewModel)this.container.Resolve<ICellsSideControlViewModel>();
+            this.NavigateToView<CellsSideControlViewModel, ICellsSideControlViewModel>();
         }));
 
         public ICommand ErrorButtonCommand => this.errorButtonCommand ?? (this.errorButtonCommand = new DelegateCommand(() =>
-                {
-                    Debug.Print("TODO: IMPLEMENT ERROR SYSTEM");
-                }));
+        {
+            Debug.Print("TODO: IMPLEMENT ERROR SYSTEM");
+        }));
 
         public ICommand Gate1HeightControlNavigationButtonCommand => this.gate1HeightControlNavigationButtonCommand ?? (this.gate1HeightControlNavigationButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (Shutter1HeightControlViewModel)this.container.Resolve<IShutter1HeightControlViewModel>();
+            this.NavigateToView<Shutter1HeightControlViewModel, IShutter1HeightControlViewModel>();
         }));
 
         public ICommand Gate2HeightControlNavigationButtonCommand => this.gate2HeightControlNavigationButtonCommand ?? (this.gate2HeightControlNavigationButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (Shutter2HeightControlViewModel)this.container.Resolve<IShutter2HeightControlViewModel>();
+            this.NavigateToView<Shutter2HeightControlViewModel, IShutter2HeightControlViewModel>();
         }));
 
         public ICommand Gate3HeightControlNavigationButtonCommand => this.gate3HeightControlNavigationButtonCommand ?? (this.gate3HeightControlNavigationButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (Shutter3HeightControlViewModel)this.container.Resolve<IShutter3HeightControlViewModel>();
+            this.NavigateToView<Shutter3HeightControlViewModel, IShutter3HeightControlViewModel>();
         }));
 
         public ICommand Gates1ControlNavigationButtonCommand => this.gates1ControlNavigationButtonCommand ?? (this.gates1ControlNavigationButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (Shutter1ControlViewModel)this.container.Resolve<IShutter1ControlViewModel>();
+            this.NavigateToView<Shutter1ControlViewModel, IShutter1ControlViewModel>();
         }));
 
         public ICommand Gates2ControlNavigationButtonCommand => this.gates2ControlNavigationButtonCommand ?? (this.gates2ControlNavigationButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (Shutter2ControlViewModel)this.container.Resolve<IShutter2ControlViewModel>();
+            this.NavigateToView<Shutter2ControlViewModel, IShutter2ControlViewModel>();
         }));
 
         public ICommand Gates3ControlNavigationButtonCommand => this.gates3ControlNavigationButtonCommand ?? (this.gates3ControlNavigationButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (Shutter3ControlViewModel)this.container.Resolve<IShutter3ControlViewModel>();
+            this.NavigateToView<Shutter3ControlViewModel, IShutter3ControlViewModel>();
         }));
 
         public ICommand InstallationStateButtonCommand => this.installationStateButtonCommand ?? (this.installationStateButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (InstallationStateViewModel)this.container.Resolve<IInstallationStateViewModel>();
+            this.NavigateToView<InstallationStateViewModel, IInstallationStateViewModel>();
         }));
 
         public ICommand LoadFirstDrawerButtonCommand => this.loadFirstDrawerButtonCommand ?? (this.loadFirstDrawerButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (LoadFirstDrawerViewModel)this.container.Resolve<ILoadFirstDrawerViewModel>();
+            this.NavigateToView<LoadFirstDrawerViewModel, ILoadFirstDrawerViewModel>();
         }));
 
         public ICommand LoadingDrawersButtonCommand => this.loadingDrawersButtonCommand ?? (this.loadingDrawersButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (LoadingDrawersViewModel)this.container.Resolve<ILoadingDrawersViewModel>();
+            this.NavigateToView<LoadingDrawersViewModel, ILoadingDrawersViewModel>();
         }));
 
         public ICommand LowSpeedMovementsTestButtonCommand => this.lowSpeedMovementsTestButtonCommand ?? (this.lowSpeedMovementsTestButtonCommand = new DelegateCommand(() =>
-                        {
-                            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-                            this.ContentRegionCurrentViewModel = (LSMTMainViewModel)this.container.Resolve<ILSMTMainViewModel>();
-                        }));
+        {
+            this.NavigateToView<LSMTMainViewModel, ILSMTMainViewModel>();
+        }));
 
         public ICommand LSMTGateEngineButtonCommand => this.lsmtGateEngineButtonCommand ?? (this.lsmtGateEngineButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (LSMTShutterEngineViewModel)this.container.Resolve<ILSMTShutterEngineViewModel>();
+            this.NavigateToView<LSMTShutterEngineViewModel, ILSMTShutterEngineViewModel>();
         }));
 
         public ICommand LSMTHorizontalEngineButtonCommand => this.lsmtHorizontalEngineButtonCommand ?? (this.lsmtHorizontalEngineButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (LSMTHorizontalEngineViewModel)this.container.Resolve<ILSMTHorizontalEngineViewModel>();
+            this.NavigateToView<LSMTHorizontalEngineViewModel, ILSMTHorizontalEngineViewModel>();
         }));
 
         public ICommand LSMTVerticalEngineButtonCommand => this.lsmtVerticalEngineButtonCommand ?? (this.lsmtVerticalEngineButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (LSMTVerticalEngineViewModel)this.container.Resolve<ILSMTVerticalEngineViewModel>();
-        }));
-
-        public ICommand MachineModeCustomCommand => this.machineModeCustomCommand ?? (this.machineModeCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineModeEvent()));
-
-        public ICommand MachineOnMarchCustomCommand => this.machineOnMarchCustomCommand ?? (this.machineOnMarchCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineOnMarchEvent()));
-
-        public ICommand OpenHelpWindow => this.openHelpWindow ?? (this.openHelpWindow = new DelegateCommand(() =>
-        {
-            this.helpWindow.Show();
-            this.helpWindow.HelpContentRegion.Content = this.contentRegionCurrentViewModel;
+            this.NavigateToView<LSMTVerticalEngineViewModel, ILSMTVerticalEngineViewModel>();
         }));
 
         public ICommand ResolutionCalibrationVerticalAxisButtonCommand => this.resolutionCalibrationVerticalAxisButtonCommand ?? (this.resolutionCalibrationVerticalAxisButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (ResolutionCalibrationVerticalAxisViewModel)this.container.Resolve<IResolutionCalibrationVerticalAxisViewModel>();
-            ((ResolutionCalibrationVerticalAxisViewModel)this.ContentRegionCurrentViewModel)?.SubscribeMethodToEvent();
+            this.NavigateToView<ResolutionCalibrationVerticalAxisViewModel, IResolutionCalibrationVerticalAxisViewModel>();
         }));
 
         public ICommand SsBaysButtonCommand => this.ssBaysButtonCommand ?? (this.ssBaysButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
-                (message) => { ((SSBaysViewModel)this.container.Resolve<IVerticalAxisCalibrationViewModel>()).SubscribeMethodToEvent(); },
-                ThreadOption.PublisherThread,
-                false,
-                message => message.Type == InstallationApp_EventMessageType.EnterView);
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
-                (message) => { ((SSBaysViewModel)this.container.Resolve<IVerticalAxisCalibrationViewModel>()).UnSubscribeMethodFromEvent(); },
-                ThreadOption.PublisherThread,
-                false,
-                message => message.Type == InstallationApp_EventMessageType.ExitView);
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (SSBaysViewModel)this.container.Resolve<IVerticalAxisCalibrationViewModel>();
+            this.NavigateToView<SSBaysViewModel, ISSBaysViewModel>();
         }));
 
         public ICommand SsCradleButtonCommand => this.ssCradleButtonCommand ?? (this.ssCradleButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (SSCradleViewModel)this.container.Resolve<ISSCradleViewModel>();
+            this.NavigateToView<SSCradleViewModel, ISSCradleViewModel>();
         }));
 
         public ICommand SsGateButtonCommand => this.ssGateButtonCommand ?? (this.ssGateButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (SSShutterViewModel)this.container.Resolve<ISSShutterViewModel>();
+            this.NavigateToView<SSShutterViewModel, ISSShutterViewModel>();
         }));
 
-        public ICommand SSNavigationButtonsButtonCommand => this.ssNavigationButtonsButtonCommand ?? (this.ssNavigationButtonsButtonCommand = new DelegateCommand(() =>
+        public ICommand SsNavigationButtonsButtonCommand => this.ssNavigationButtonsButtonCommand ?? (this.ssNavigationButtonsButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (SSMainViewModel)this.container.Resolve<ISSMainViewModel>();
+            this.isNavigationButtonRegionExpanded = Visibility.Collapsed;
+            this.NavigateToView<SSMainViewModel, ISSMainViewModel>();
+            (this.contentRegionCurrentViewModel as SSMainViewModel).SSNavigationRegionCurrentViewModel = (this.container.Resolve<ISSNavigationButtonsViewModel>() as SSNavigationButtonsViewModel);
         }));
 
         public ICommand SsVariousInputsButtonCommand => this.ssVariousInputsButtonCommand ?? (this.ssVariousInputsButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (SSVariousInputsViewModel)this.container.Resolve<ISSVariousInputsViewModel>();
+            this.NavigateToView<SSVariousInputsViewModel, ISSVariousInputsViewModel>();
         }));
 
         public ICommand SsVerticalAxisButtonCommand => this.ssVerticalAxisButtonCommand ?? (this.ssVerticalAxisButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (SSVerticalAxisViewModel)this.container.Resolve<ISSVerticalAxisViewModel>();
+            this.NavigateToView<SSVerticalAxisViewModel, ISSVerticalAxisViewModel>();
         }));
 
         public ICommand VerticalAxisCalibrationButtonCommand => this.verticalAxisCalibrationButtonCommand ?? (this.verticalAxisCalibrationButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
-                (message) => { ((VerticalAxisCalibrationViewModel)this.container.Resolve<IVerticalAxisCalibrationViewModel>()).SubscribeMethodToEvent(); },
-                ThreadOption.PublisherThread,
-                false,
-                message => message.Type == InstallationApp_EventMessageType.EnterView);
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
-                (message) => { ((VerticalAxisCalibrationViewModel)this.container.Resolve<IVerticalAxisCalibrationViewModel>()).UnSubscribeMethodFromEvent(); },
-                ThreadOption.PublisherThread,
-                false,
-                message => message.Type == InstallationApp_EventMessageType.ExitView);
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (VerticalAxisCalibrationViewModel)this.container.Resolve<IVerticalAxisCalibrationViewModel>();
+            this.NavigateToView<VerticalAxisCalibrationViewModel, IVerticalAxisCalibrationViewModel>();
         }));
 
         public ICommand VerticalOffsetCalibrationButtonCommand => this.verticalOffsetCalibrationButtonCommand ?? (this.verticalOffsetCalibrationButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (VerticalOffsetCalibrationViewModel)this.container.Resolve<IVerticalOffsetCalibrationViewModel>();
-            ((VerticalOffsetCalibrationViewModel)this.container.Resolve<IVerticalOffsetCalibrationViewModel>()).SubscribeMethodToEvent();
-            ((MainWindowBackToIAPPButtonViewModel)this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand(((VerticalOffsetCalibrationViewModel)this.container.Resolve<IVerticalOffsetCalibrationViewModel>()).ExitFromViewCommand);
+            this.NavigateToView<VerticalOffsetCalibrationViewModel, IVerticalOffsetCalibrationViewModel>();
         }));
 
         public ICommand WeightControlButtonCommand => this.weightControlButtonCommand ?? (this.weightControlButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            this.ContentRegionCurrentViewModel = (WeightControlViewModel)this.container.Resolve<IWeightControlViewModel>();
-            ((WeightControlViewModel)this.container.Resolve<IWeightControlViewModel>()).SubscribeMethodToEvent();
-            ((MainWindowBackToIAPPButtonViewModel)this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand(((WeightControlViewModel)this.container.Resolve<IWeightControlViewModel>()).ExitFromViewCommand);
+            this.NavigateToView<WeightControlViewModel, IWeightControlViewModel>();
         }));
+
+        #endregion
+
+        #region Methods
+
+        private void NavigateToView<T, I>()
+            where T : BindableBase, I
+            where I : IViewModel
+        {
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
+            var desiredViewModel = this.container.Resolve<I>() as T;
+            desiredViewModel.SubscribeMethodToEvent();
+            (this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>() as MainWindowBackToIAPPButtonViewModel)
+                .BackButtonCommand.RegisterCommand(new DelegateCommand(desiredViewModel.ExitFromViewMethod));
+            this.ContentRegionCurrentViewModel = desiredViewModel;
+        }
 
         #endregion
     }
