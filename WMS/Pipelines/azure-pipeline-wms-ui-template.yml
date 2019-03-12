@@ -1,0 +1,60 @@
+parameters:
+  BuildConfiguration: 'debug'
+  BuildPlatform: 'any cpu'
+
+
+steps:
+
+- template: ../../Pipelines/azure-pipeline-net4-nuget-template.yml
+
+
+- template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
+
+
+- task: VSBuild@1
+  displayName: 'Build solution WMS.App'
+  inputs:
+    solution: 'WMS\WMS.App.sln'
+    platform: ${{ parameters.BuildPlatform }}
+    configuration: ${{ parameters.BuildConfiguration }}
+    msbuildArchitecture: x64
+
+
+- task: VSTest@2
+  displayName: 'Run Tests'
+  inputs:
+    testAssemblyVer2: |
+     **\${{ parameters.BuildConfiguration }}\**\*tests.dll
+     !**\obj\**
+    codeCoverageEnabled: true
+    platform: ${{ parameters.BuildPlatform }}
+    configuration:  ${{ parameters.BuildConfiguration }}
+
+
+- task: PublishSymbols@2
+  displayName: 'Publish symbols path'
+  inputs:
+    SearchPattern: 'WMS/App/App/bin/${{ parameters.BuildConfiguration }}/**/*.pdb'
+    PublishSymbols: false
+  continueOnError: true
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to staging directory'
+  inputs:
+    SourceFolder: '$(system.defaultworkingdirectory)'
+    Contents: 'WMS/App/App/bin/${{ parameters.BuildConfiguration }}/**'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Desktop App'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)/WMS/App/App/bin/${{ parameters.BuildConfiguration }}/net471'
+    ArtifactName: 'desktop_app'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: on_premises_appconfig_transform'
+  inputs:
+    PathtoPublish: 'WMS/App/App'
+    ArtifactName: 'on_premises_appconfig_transform'

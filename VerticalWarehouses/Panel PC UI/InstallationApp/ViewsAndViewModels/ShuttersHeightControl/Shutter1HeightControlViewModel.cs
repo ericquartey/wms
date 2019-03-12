@@ -4,7 +4,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class Shutter1HeightControlViewModel : BindableBase, IViewModel, IShutter1HeightControlViewModel
+    public class Shutter1HeightControlViewModel : BindableBase, IShutter1HeightControlViewModel
     {
         #region Fields
 

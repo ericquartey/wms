@@ -78,7 +78,7 @@ namespace Ferretto.Common.EF.Migrations
                 table: "ItemListRows",
                 type: "char(1)",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: string.Empty);
         }
 
         #endregion

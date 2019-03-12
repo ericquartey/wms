@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Ferretto.WMS.Scheduler.Core.Models;
@@ -39,23 +40,22 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         #region Methods
 
-        public async Task<SchedulerRequest> CreateAsync(SchedulerRequest model)
+        public async Task<IOperationResult<SchedulerRequest>> CreateAsync(SchedulerRequest model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var entry = this.dataContext.SchedulerRequests.Add(
-                CreateDataModel(model));
+            var entry = this.dataContext.SchedulerRequests
+                .Add(CreateDataModel(model));
 
             if (await this.dataContext.SaveChangesAsync() > 0)
             {
                 model.Id = entry.Entity.Id;
-                return model;
             }
 
-            return null;
+            return new SuccessOperationResult<SchedulerRequest>(model);
         }
 
         public async Task<IEnumerable<SchedulerRequest>> CreateRangeAsync(IEnumerable<SchedulerRequest> models)
@@ -221,19 +221,19 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                .ToArrayAsync();
         }
 
-        public async Task<SchedulerRequest> UpdateAsync(SchedulerRequest request)
+        public async Task<IOperationResult<SchedulerRequest>> UpdateAsync(SchedulerRequest model)
         {
-            if (request == null)
+            if (model == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.dataContext.SchedulerRequests.Find(request.Id);
-            this.dataContext.Entry(existingModel).CurrentValues.SetValues(request);
+            var existingModel = this.dataContext.SchedulerRequests.Find(model.Id);
+            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
             await this.dataContext.SaveChangesAsync();
 
-            return request;
+            return new SuccessOperationResult<SchedulerRequest>(model);
         }
 
         public async Task<SchedulerRequest> WithdrawAsync(SchedulerRequest request)

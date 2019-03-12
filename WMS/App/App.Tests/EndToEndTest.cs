@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestStack.White;
 using TestStack.White.Factory;
@@ -7,19 +6,18 @@ using TestStack.White.UIItems.WindowItems;
 
 namespace Ferretto.WMS.App.Tests
 {
-    [TestClass]
     public class EndToEndTest
     {
         #region Fields
 
         private Application application;
-        private Window mainWindow;
 
         #endregion
 
         #region Properties
 
-        public Window MainWindow => this.mainWindow;
+        public Window MainWindow =>
+            this.application?.GetWindow(Common.Resources.DesktopApp.Application_Title, InitializeOption.NoCache);
 
         public TestContext TestContext { get; set; }
 
@@ -27,29 +25,26 @@ namespace Ferretto.WMS.App.Tests
 
         #region Methods
 
-        [TestCleanup]
-        public void Cleanup()
+        public void CloseApp()
         {
             this.application?.Close();
         }
 
-        [TestInitialize]
-        public void Initialize()
+        public void StartupApp()
         {
-            var applicationPath = Directory.GetParent(Assembly.GetExecutingAssembly().Location).Parent.FullName;
-
+            var applicationPath = System.Environment.CurrentDirectory;
             var applicationFilePath = Path.Combine(applicationPath, "Ferretto.WMS.App.exe");
 
             var appProcess = new System.Diagnostics.Process();
             appProcess.StartInfo.WorkingDirectory = applicationPath;
             appProcess.StartInfo.FileName = applicationFilePath;
             appProcess.Start();
+
+            System.Threading.Thread.Sleep(1000);
+            Assert.IsFalse(appProcess.HasExited);
             appProcess.WaitForInputIdle();
 
             this.application = Application.Attach(appProcess);
-
-            this.mainWindow =
-                this.application.GetWindow(Common.Resources.DesktopApp.Application_Title, InitializeOption.NoCache);
         }
 
         #endregion

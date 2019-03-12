@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         private readonly Task commandReceiveTask;
 
-        private readonly IDataLayer dataLayer;
+        private readonly IDataLayerValueManagment dataLayerValueManagment;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -58,10 +58,10 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Constructors
 
-        public HostedIoDriver(IEventAggregator eventAggregator, IModbusTransport modbusTransport, IDataLayer dataLayer)
+        public HostedIoDriver(IEventAggregator eventAggregator, IModbusTransport modbusTransport, IDataLayerValueManagment dataLayerValueManagment)
         {
             this.eventAggregator = eventAggregator;
-            this.dataLayer = dataLayer;
+            this.dataLayerValueManagment = dataLayerValueManagment;
             this.modbusTransport = modbusTransport;
 
             this.ioStatus = new IoStatus();
@@ -73,7 +73,7 @@ namespace Ferretto.VW.MAS_IODriver
 
             this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
 
-            this.commandReceiveTask = new Task(() => CommandReceiveTaskFunction());
+            this.commandReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
             this.notificationReceiveTask = new Task(() => this.NotificationReceiveTaskFunction());
             this.ioReceiveTask = new Task(async () => await this.ReceiveIoDataTaskFunction());
             this.ioSendTask = new Task(async () => await this.SendIoCommandTaskFunction());
@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         ~HostedIoDriver()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion
@@ -122,8 +122,8 @@ namespace Ferretto.VW.MAS_IODriver
         {
             this.stoppingToken = stoppingToken;
 
-            var ioAddress = this.dataLayer.GetIPAddressConfigurationValue(ConfigurationValueEnum.IoAddress);
-            var ioPort = this.dataLayer.GetIntegerConfigurationValue(ConfigurationValueEnum.IoPort);
+            var ioAddress = this.dataLayerValueManagment.GetIPAddressConfigurationValue(ConfigurationValueEnum.IoAddress);
+            var ioPort = this.dataLayerValueManagment.GetIntegerConfigurationValue(ConfigurationValueEnum.IoPort);
 
             this.modbusTransport.Configure(ioAddress, ioPort);
 
@@ -185,7 +185,7 @@ namespace Ferretto.VW.MAS_IODriver
                 switch (receivedMessage.Type)
                 {
                     case MessageType.SwitchAxis:
-                        ExecuteSwitchAxis(receivedMessage);
+                        this.ExecuteSwitchAxis(receivedMessage);
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
@@ -234,7 +234,7 @@ namespace Ferretto.VW.MAS_IODriver
             {
                 try
                 {
-                    this.pollIoEvent.Wait(Timeout.Infinite, stoppingToken);
+                    this.pollIoEvent.Wait(Timeout.Infinite, this.stoppingToken);
                     this.pollIoEvent.Reset();
                 }
                 catch (OperationCanceledException)

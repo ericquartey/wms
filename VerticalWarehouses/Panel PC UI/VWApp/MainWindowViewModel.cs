@@ -6,6 +6,7 @@ using Ferretto.VW.InstallationApp;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.Utils.Source;
+using Ferretto.VW.VWApp.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -108,6 +109,10 @@ namespace Ferretto.VW.VWApp
 
         private async void ExecuteLoginButtonCommand()
         {
+            ((App)Application.Current).InstallationAppMainWindowInstance = ((InstallationApp.MainWindow)this.Container.Resolve<InstallationApp.IMainWindow>());
+            ((App)Application.Current).InstallationAppMainWindowInstance.DataContext = ((InstallationApp.MainWindowViewModel)this.Container.Resolve<IMainWindowViewModel>());
+            ((App)Application.Current).InstallationAppMainWindowInstance.Show();
+
             if (this.CheckInputCorrectness(this.UserLogin, this.PasswordLogin))
             {
                 switch (this.UserLogin)
@@ -119,6 +124,7 @@ namespace Ferretto.VW.VWApp
                             ((App)Application.Current).InstallationAppMainWindowInstance = ((InstallationApp.MainWindow)this.Container.Resolve<InstallationApp.IMainWindow>());
                             ((App)Application.Current).InstallationAppMainWindowInstance.DataContext = ((InstallationApp.MainWindowViewModel)this.Container.Resolve<IMainWindowViewModel>());
                             await ts;
+                            this.Container.Resolve<INotificationCatcher>().SubscribeInstallationMethodsToMAService();
                             ((App)Application.Current).InstallationAppMainWindowInstance.Show();
                         }
                         catch (Exception)
@@ -129,12 +135,10 @@ namespace Ferretto.VW.VWApp
                         break;
 
                     case "Operator":
-                        if (this.installationCompleted)
-                        {
-                        }
-                        else
+                        if (!this.installationCompleted)
                         {
                             this.LoginErrorMessage = "Error: Machine's installation not completed yet.";
+                            break;
                         }
                         break;
 
@@ -160,9 +164,6 @@ namespace Ferretto.VW.VWApp
                         validationMessage = "Error";
                     }
 
-                    break;
-
-                default:
                     break;
             }
             return validationMessage;

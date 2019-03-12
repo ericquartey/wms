@@ -81,6 +81,13 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSingleton<IHostedService, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
+            services.AddSingleton<IDataLayerCellManagment, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<IDataLayerValueManagment, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<ISocketTransport, SocketTransport>();
             this.RegisterSocketTransport(services);
 
             this.RegisterModbusTransport(services);

@@ -39,9 +39,18 @@ namespace Ferretto.VW.MAS_DataLayer
             IEventAggregator eventAggregator)
         {
             if (inMemoryDataContext == null)
-                throw new DataLayerException(DataLayerExceptionEnum.DATALAYER_CONTEXT_EXCEPTION);
+            {
+                // TEMP
+                //throw new DataLayerException(DataLayerExceptionEnum.DATALAYER_CONTEXT_EXCEPTION);
+                new ArgumentNullException();
+            }
 
-            if (eventAggregator == null) throw new DataLayerException(DataLayerExceptionEnum.EVENTAGGREGATOR_EXCEPTION);
+            if (eventAggregator == null)
+            {
+                // TEMP
+                //throw new DataLayerException(DataLayerExceptionEnum.EVENTAGGREGATOR_EXCEPTION);
+                new ArgumentNullException();
+            }
 
             this.inMemoryDataContext = inMemoryDataContext;
 
@@ -58,7 +67,9 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
 
                 foreach (var configurationValue in initialContext.ConfigurationValues)
+                {
                     this.inMemoryDataContext.ConfigurationValues.Add(configurationValue);
+                }
 
                 this.inMemoryDataContext.SaveChanges();
             }
@@ -97,12 +108,16 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             if (inMemoryDataContext == null)
             {
-                throw new DataLayerException(DataLayerExceptionEnum.DATALAYER_CONTEXT_EXCEPTION);
+                // TEMP
+                //throw new DataLayerException(DataLayerExceptionEnum.DATALAYER_CONTEXT_EXCEPTION);
+                new ArgumentNullException();
             }
 
             if (eventAggregator == null)
             {
-                throw new DataLayerException(DataLayerExceptionEnum.EVENTAGGREGATOR_EXCEPTION);
+                // TEMP
+                //throw new DataLayerException(DataLayerExceptionEnum.EVENTAGGREGATOR_EXCEPTION);
+                new ArgumentNullException();
             }
 
             this.inMemoryDataContext = inMemoryDataContext;

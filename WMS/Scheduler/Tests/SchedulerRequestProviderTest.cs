@@ -20,8 +20,7 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var provider = this.ServiceProvider
-                .GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
+            var provider = this.GetService<ISchedulerRequestProvider>();
 
             var request = new SchedulerRequest
             {
@@ -50,7 +49,7 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
+            var provider = this.GetService<ISchedulerRequestProvider>();
             SchedulerRequest request = null;
 
             #endregion

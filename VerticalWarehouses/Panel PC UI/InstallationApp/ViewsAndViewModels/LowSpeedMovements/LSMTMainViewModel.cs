@@ -39,10 +39,25 @@ namespace Ferretto.VW.InstallationApp
 
         #region Methods
 
-        public void InitializeViewModel(IUnityContainer _container)
+        public void ExitFromViewMethod()
         {
-            this.container = _container;
+            // TODO
+        }
+
+        public void InitializeViewModel(IUnityContainer container)
+        {
+            this.container = container;
             this.LSMTNavigationRegionCurrentViewModel = (LSMTNavigationButtonsViewModel)this.container.Resolve<ILSMTNavigationButtonsViewModel>();
+        }
+
+        public void SubscribeMethodToEvent()
+        {
+            // TODO
+        }
+
+        public void UnSubscribeMethodFromEvent()
+        {
+            // TODO
         }
 
         #endregion
