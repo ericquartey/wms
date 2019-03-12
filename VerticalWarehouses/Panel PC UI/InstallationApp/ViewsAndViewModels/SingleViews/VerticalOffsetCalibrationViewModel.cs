@@ -28,9 +28,9 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isSetPositionButtonActive = true;
 
-        private bool isStepDownButtonActive;
+        private bool isStepDownButtonActive = true;
 
-        private bool isStepUpButtonActive;
+        private bool isStepUpButtonActive = true;
 
         private string noteString = Ferretto.VW.Resources.InstallationApp.VerticalOffsetCalibration;
 

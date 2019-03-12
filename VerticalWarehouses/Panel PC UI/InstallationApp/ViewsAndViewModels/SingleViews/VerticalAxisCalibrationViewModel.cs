@@ -23,7 +23,7 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isStartButtonActive = true;
 
-        private bool isStopButtonActive;
+        private bool isStopButtonActive = true;
 
         private string lowerBound;
 
