@@ -181,7 +181,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     &&
                     r.RequestedQuantity > r.DispatchedQuantity
                     &&
-                    r.Bay.LoadingUnitsBufferSize > r.Bay.Missions.Count
+                    r.Bay.LoadingUnitsBufferSize > r.Bay.Missions.Count(m => m.Status != Common.DataModels.MissionStatus.Completed)
                     &&
                     (r.ListRowId.HasValue == false || r.ListRow.Status == Common.DataModels.ItemListRowStatus.Executing))
                .OrderBy(r => r.ListId.HasValue ? r.List.Priority : int.MaxValue)
