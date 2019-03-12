@@ -35,7 +35,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
             GC.SuppressFinalize(this);
         }
 
-        public abstract void ProcessMessage(InverterMessage message);
+        public abstract bool ProcessMessage(InverterMessage message);
 
         protected virtual void Dispose(bool disposing)
         {

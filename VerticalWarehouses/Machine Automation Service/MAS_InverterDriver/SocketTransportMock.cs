@@ -19,12 +19,12 @@ namespace Ferretto.VW.InverterDriver
         {
         }
 
-        public async Task<bool> ConnectAsync()
+        public Task ConnectAsync()
         {
-            return true;
+            return Task.CompletedTask;
         }
 
-        public void Disconnect(int delay)
+        public void Disconnect()
         {
         }
 
@@ -33,8 +33,9 @@ namespace Ferretto.VW.InverterDriver
             return null;
         }
 
-        public async Task WriteAsync(byte[] inverterMessage, CancellationToken stoppingToken)
+        public async ValueTask<int> WriteAsync(byte[] inverterMessage, CancellationToken stoppingToken)
         {
+            return 0;
         }
 
         #endregion
