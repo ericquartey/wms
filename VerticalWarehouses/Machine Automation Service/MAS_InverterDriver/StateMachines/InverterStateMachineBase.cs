@@ -51,9 +51,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
             this.inverterCommandQueue.Enqueue(message);
         }
 
-        public void ProcessMessage(InverterMessage message)
+        public bool ProcessMessage(InverterMessage message)
         {
-            this.CurrentState?.ProcessMessage(message);
+            return this.CurrentState?.ProcessMessage(message) ?? false;
         }
 
         public void PublishNotificationEvent(NotificationMessage notificationMessage)
