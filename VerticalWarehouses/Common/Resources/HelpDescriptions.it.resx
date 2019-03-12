@@ -191,7 +191,7 @@
     <value>Comandi manuali a bassa velocita'.</value>
   </data>
   <data name="HelpLSMTDescription" xml:space="preserve">
-    <value>Permette di effettuare il movimento dei vari assi a bassa velocita. E' impostato uno spazio di movimento ridotto in entrambe le direzioni. Il testo dei pulsanti cambia in base al movimento richiesto.</value>
+    <value>Permette di effettuare il movimento dei vari assi a bassa velocita. E' impostato uno spazio di movimento ridotto in entrambe le direzioni. Il testo dei pulsanti cambia in base al movimento richiesto. A collaudo macchina completato sara' possibile comandare a bassa velocita' tutti i vari assi senza interblocchi e per corse non limitate.</value>
   </data>
   <data name="HelpLSMTActualPosition" xml:space="preserve">
     <value>Indica lo posizione corrente o lo stato per quelle parti che hanno solo posizioni discrete.</value>
@@ -570,5 +570,8 @@
   </data>
   <data name="HelpDLUTStop" xml:space="preserve">
     <value>Arresta il ciclo di test.</value>
+  </data>
+  <data name="HelpLSMTComandMode" xml:space="preserve">
+    <value>Riporta la modalita' correntemente abilitata per i comandi manuali. La modalita' a corsa estesa e' settata automaticamente a messa in servizio completata.</value>
   </data>
 </root>

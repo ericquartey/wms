@@ -55,6 +55,7 @@
     <None Remove="HelpWindows\HelpVerticalOffsetCalibration.xaml" />
     <None Remove="HelpWindows\HelpWeightControl.xaml" />
     <None Remove="MainWindowBackToIAPPButtonView.xaml" />
+    <None Remove="ViewsAndViewModels\LowSpeedMovements\LSMTCarouselView.xaml" />
     <None Remove="ViewsAndViewModels\LowSpeedMovements\LSMTMainView.xaml" />
     <None Remove="ViewsAndViewModels\MainWindowBackToIAPPButtonView.xaml" />
     <None Remove="ViewsAndViewModels\SensorsState\SSMainView.xaml" />

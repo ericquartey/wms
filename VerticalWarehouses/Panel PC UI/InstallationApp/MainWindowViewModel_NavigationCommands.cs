@@ -83,6 +83,8 @@ namespace Ferretto.VW.InstallationApp
 
         private ICommand drawerLoadingUnloadingTestButtonCommand;
 
+        private ICommand carouselButtonCommand;
+
         #endregion
 
         #region Properties
@@ -216,6 +218,13 @@ namespace Ferretto.VW.InstallationApp
             this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
             this.ContentRegionCurrentViewModel = (LSMTVerticalEngineViewModel)this.container.Resolve<ILSMTVerticalEngineViewModel>();
         }));
+
+        public ICommand CarouselButtonCommand => this.carouselButtonCommand ?? (this.carouselButtonCommand = new DelegateCommand(() =>
+        {
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
+            this.ContentRegionCurrentViewModel = (LSMTCarouselViewModel)this.container.Resolve<ILSMTCarouselViewModel>();
+        }));
+
 
         public ICommand MachineModeCustomCommand => this.machineModeCustomCommand ?? (this.machineModeCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineModeEvent()));
 

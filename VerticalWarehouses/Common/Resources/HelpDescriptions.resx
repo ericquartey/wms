@@ -729,4 +729,8 @@
     <value>HelpDLUTStop</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpLSMTComandMode" xml:space="preserve">
+    <value>HelpLSMTComandMode</value>
+    <comment>Note text</comment>
+  </data>
 </root>

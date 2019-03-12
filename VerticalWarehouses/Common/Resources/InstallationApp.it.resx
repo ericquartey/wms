@@ -817,4 +817,10 @@
   <data name="LSMTComandNote" xml:space="preserve">
     <value>I comandi manuali sono attualmente abilitati ad effettuare piccoli spostamenti a bassa velocita' senza interblocchi.</value>
   </data>
+  <data name="LSMTCarouselButton" xml:space="preserve">
+    <value>Giostra</value>
+  </data>
+  <data name="LSMTCarouselPageHeader" xml:space="preserve">
+    <value>Movimenti giostra.</value>
+  </data>
 </root>

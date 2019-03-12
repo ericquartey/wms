@@ -1044,4 +1044,12 @@
     <value>LSMTComandNote</value>
     <comment>Note text</comment>
   </data>
+  <data name="LSMTCarouselButton" xml:space="preserve">
+    <value>LSMTCarouselButton</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LSMTCarouselPageHeader" xml:space="preserve">
+    <value>LSMTCarouselPageHeader</value>
+    <comment>Page header</comment>
+  </data>
 </root>

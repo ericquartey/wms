@@ -1258,6 +1258,24 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a LSMTCarouselButton.
+        /// </summary>
+        public static string LSMTCarouselButton {
+            get {
+                return ResourceManager.GetString("LSMTCarouselButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LSMTCarouselPageHeader.
+        /// </summary>
+        public static string LSMTCarouselPageHeader {
+            get {
+                return ResourceManager.GetString("LSMTCarouselPageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a LSMTComandNote.
         /// </summary>
         public static string LSMTComandNote {

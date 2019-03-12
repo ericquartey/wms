@@ -898,6 +898,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLSMTComandMode.
+        /// </summary>
+        public static string HelpLSMTComandMode {
+            get {
+                return ResourceManager.GetString("HelpLSMTComandMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpLSMTDescription.
         /// </summary>
         public static string HelpLSMTDescription {

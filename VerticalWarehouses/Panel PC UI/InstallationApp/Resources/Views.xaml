@@ -104,6 +104,9 @@
     <DataTemplate DataType="{x:Type local:DrawerLoadingUnloadingTestViewModel}">
         <local:DrawerLoadingUnloadingTestView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type local:LSMTCarouselViewModel}">
+        <local:LSMTCarouselView />
+    </DataTemplate>
 
 
 </ResourceDictionary>

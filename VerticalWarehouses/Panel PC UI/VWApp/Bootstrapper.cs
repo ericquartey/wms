@@ -57,6 +57,7 @@ namespace Ferretto.VW.VWApp
             this.BindViewModelToView<IVerticalOffsetCalibrationViewModel, VerticalOffsetCalibrationView>();
             this.BindViewModelToView<IWeightControlViewModel, WeightControlView>();
             this.BindViewModelToView<IMainWindowViewModel, InstallationApp.MainWindow>();
+            this.BindViewModelToView<ILSMTCarouselViewModel, LSMTCarouselView>();
         }
 
         protected override DependencyObject CreateShell()
