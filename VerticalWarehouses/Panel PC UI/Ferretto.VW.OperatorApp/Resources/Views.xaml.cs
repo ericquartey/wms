@@ -13,16 +13,20 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Ferretto.VW.OperatorApp
+namespace Ferretto.VW.OperatorApp.Resources
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Views.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Views : ResourceDictionary
     {
-        public MainWindow()
+        #region Constructors
+
+        public Views()
         {
             InitializeComponent();
         }
+
+        #endregion
     }
 }

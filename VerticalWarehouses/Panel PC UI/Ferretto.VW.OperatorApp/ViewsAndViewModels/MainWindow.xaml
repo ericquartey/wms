@@ -1,0 +1,105 @@
+﻿<Window x:Class="Ferretto.VW.OperatorApp.ViewsAndViewModels.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
+                xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
+        Width="1024"
+        Height="768"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        mc:Ignorable="d">
+    <Window.Resources>
+        <ResourceDictionary Source="../Resources/Views.xaml" />
+    </Window.Resources>
+
+    <Grid Background="{DynamicResource VWAPP_BACKGROUND}">
+        <Grid.RowDefinitions>
+            <RowDefinition Name="upperRow"
+                           Height="80" />
+            <RowDefinition Height="608" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="280" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0"
+                    Background="{DynamicResource VWAPP_BACKGROUND}"
+                    BorderThickness="0">
+                <Image Width="250"
+                       Height="50"
+                       VerticalAlignment="Top" HorizontalAlignment="Left"
+                       Margin="10,15,0,0"
+                       Source="{DynamicResource Ferretto_Logo}"
+                       Stretch="Uniform" />
+            </Border>
+            <Border Grid.Column="1"
+                    Background="{DynamicResource VWAPP_BACKGROUND}"
+                    BorderThickness="0">
+                <StackPanel FlowDirection="RightToLeft"
+                            Orientation="Horizontal" ScrollViewer.CanContentScroll="True">
+                    <Button Width="60"
+                            Height="60"
+                            Margin="10,0,10,0"
+                            Command="{Binding OpenHelpWindow}"
+                            VerticalContentAlignment="Center"
+                            Background="{DynamicResource VWAPP_BACKGROUND}"
+                            BorderBrush="{DynamicResource VWAPP_CustomMachineModeToggleButton_BorderBrush_Normal}"
+                            BorderThickness="1">
+                        <TextBlock FontSize="25"
+                                   Foreground="{DynamicResource FerrettoPureWhite}"
+                                   TextAlignment="Center">
+                            ?
+                        </TextBlock>
+                    </Button>
+                    <custom:CustomControlLoggedUser IsPopupOpen="{Binding IsPopupOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    LogOffCommand="{Binding BackToVWAPPCommand}"
+                                                    OpenClosePopupCommand="{Binding OpenClosePopupCommand}"
+                                                    UserText="Installer" />
+                    <Image Height="30"
+                           HorizontalAlignment="Center"
+                           Margin="10,0,10,0"
+                           Source="/Ferretto.VW.CustomControls;Component/Assets/ic_account_circle_black_48dp.png" />
+                    <custom:CustomMachineModeToggleButton Name="MachineModeControl"
+                                                          CustomCommand="{Binding MachineModeCustomCommand}"
+                                                          MachineModeState="{Binding MachineModeSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          Style="{StaticResource VWAPP_CustomMachineModeToggleButtonStyle}" />
+                    <custom:CustomMachineOnMarchToggleButton Name="MachineOnMarchControl"
+                                                             Margin="10,0,0,0"
+                                                             CustomCommand="{Binding MachineOnMarchCustomCommand}"
+                                                             MachineOnMarchState="{Binding MachineOnMarchSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                             Style="{StaticResource VWAPP_CustomMachineOnMarchToggleButtonStyle}" />
+                    <custom:CustomMainWindowErrorButton Margin="10,0,0,0"
+                                                        ContentText="Error"
+                                                        CustomCommand="{Binding ErrorButtonCommand}"
+                                                        Visibility="Visible"/>
+                    <custom:CustomMainWindowServiceButton Margin="10,0,0,0"
+                                                         ContentText="Service"
+                                                        CustomCommand="{Binding ErrorButtonCommand}" />
+                </StackPanel>
+            </Border>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <ContentControl Name="InstallationPageRegionContentControl"
+                            Grid.Column="1"
+                            Width="auto"
+                            Height="610"
+                            Content="{Binding ContentRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <ContentControl Name="InstallationPageNavigationButtonsRegionContentControl"
+                            Grid.Column="0"
+                            Height="610"
+                            Content="{Binding NavigationRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </Grid>
+        <ContentControl Grid.Row="2"
+                        Content="{Binding ExitViewButtonRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+    </Grid>
+</Window>

@@ -40,7 +40,7 @@ namespace Ferretto.VW.VWApp
 
         private ICommand switchOffCommand;
 
-        private string userLogin = "Installer";
+        private string userLogin = "Operator";
 
         #endregion
 
@@ -109,10 +109,6 @@ namespace Ferretto.VW.VWApp
 
         private async void ExecuteLoginButtonCommand()
         {
-            ((App)Application.Current).InstallationAppMainWindowInstance = ((InstallationApp.MainWindow)this.Container.Resolve<InstallationApp.IMainWindow>());
-            ((App)Application.Current).InstallationAppMainWindowInstance.DataContext = ((InstallationApp.MainWindowViewModel)this.Container.Resolve<IMainWindowViewModel>());
-            ((App)Application.Current).InstallationAppMainWindowInstance.Show();
-
             if (this.CheckInputCorrectness(this.UserLogin, this.PasswordLogin))
             {
                 switch (this.UserLogin)
@@ -135,15 +131,10 @@ namespace Ferretto.VW.VWApp
                         break;
 
                     case "Operator":
-                        if (!this.installationCompleted)
-                        {
-                            this.LoginErrorMessage = "Error: Machine's installation not completed yet.";
-                            break;
-                        }
-                        break;
-
-                    default:
-                        this.LoginErrorMessage = Resources.VWApp.ErrorLogin;
+                        ((App)Application.Current).OperatorAppMainWindowInstance = ((OperatorApp.ViewsAndViewModels.MainWindow)this.Container.Resolve<OperatorApp.ViewsAndViewModels.Interfaces.IMainWindow>());
+                        ((App)Application.Current).OperatorAppMainWindowInstance.DataContext = ((OperatorApp.ViewsAndViewModels.MainWindowViewModel)this.Container.Resolve<OperatorApp.ViewsAndViewModels.Interfaces.IMainWindowViewModel>());
+                        this.Container.Resolve<INotificationCatcher>().SubscribeInstallationMethodsToMAService();
+                        ((App)Application.Current).OperatorAppMainWindowInstance.Show();
                         break;
                 }
             }

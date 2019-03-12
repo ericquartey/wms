@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.Utils.Interfaces;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces
 {
-    public interface IBeltBurnishingViewModel : IViewModel
+    public interface IMainWindowViewModel
     {
     }
 }

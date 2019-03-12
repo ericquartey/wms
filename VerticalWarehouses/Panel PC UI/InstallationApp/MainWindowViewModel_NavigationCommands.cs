@@ -8,6 +8,7 @@ using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Ferretto.VW.Utils.Interfaces;
 
 namespace Ferretto.VW.InstallationApp
 {

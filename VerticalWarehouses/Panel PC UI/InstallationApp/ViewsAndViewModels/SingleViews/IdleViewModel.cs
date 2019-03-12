@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Prism.Events;
 using Prism.Mvvm;
+using Ferretto.VW.Utils.Interfaces;
 
 namespace Ferretto.VW.InstallationApp
 {
