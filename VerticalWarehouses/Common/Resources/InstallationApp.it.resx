@@ -811,4 +811,10 @@
   <data name="DLUTestStart" xml:space="preserve">
     <value>Avvia ciclo</value>
   </data>
+  <data name="LSMTNoteHeader" xml:space="preserve">
+    <value>Modalita' dei comandi manuali attualmente abilitate:</value>
+  </data>
+  <data name="LSMTComandNote" xml:space="preserve">
+    <value>I comandi manuali sono attualmente abilitati ad effettuare piccoli spostamenti a bassa velocita' senza interblocchi.</value>
+  </data>
 </root>

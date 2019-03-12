@@ -1036,4 +1036,12 @@
     <value>DLUTestStart</value>
     <comment>Button text</comment>
   </data>
+  <data name="LSMTNoteHeader" xml:space="preserve">
+    <value>LSMTNoteHeader</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LSMTComandNote" xml:space="preserve">
+    <value>LSMTComandNote</value>
+    <comment>Note text</comment>
+  </data>
 </root>

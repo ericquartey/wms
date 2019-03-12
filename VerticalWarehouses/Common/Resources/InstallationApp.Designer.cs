@@ -1258,6 +1258,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a LSMTComandNote.
+        /// </summary>
+        public static string LSMTComandNote {
+            get {
+                return ResourceManager.GetString("LSMTComandNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Elevator.
         /// </summary>
         public static string LSMTElevator {
@@ -1299,6 +1308,15 @@ namespace Ferretto.VW.Resources {
         public static string LSMTHorizontalEngineTitle {
             get {
                 return ResourceManager.GetString("LSMTHorizontalEngineTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LSMTNoteHeader.
+        /// </summary>
+        public static string LSMTNoteHeader {
+            get {
+                return ResourceManager.GetString("LSMTNoteHeader", resourceCulture);
             }
         }
         
