@@ -43,9 +43,19 @@ namespace Ferretto.WMS.AutomationServiceMock
 
         #region Methods
 
-        public Task CompleteMission(int missionId)
+        public async Task CompleteMissionAsync(int missionId)
         {
-            throw new NotImplementedException();
+            await this.missionsDataService.CompleteAsync(missionId);
+        }
+
+        public async Task ExecuteMissionAsync(int missionId)
+        {
+            await this.missionsDataService.ExecuteAsync(missionId);
+        }
+
+        public async Task<System.Collections.Generic.IEnumerable<Mission>> GetMissionsAsync()
+        {
+            return await this.missionsDataService.GetAllAsync(null, null, null, null, null);
         }
 
         public async Task InitializeAsync()

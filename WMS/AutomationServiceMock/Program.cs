@@ -66,7 +66,7 @@ namespace Ferretto.WMS.AutomationServiceMock
                     var completeMissionId = GetMissionId();
                     if (completeMissionId > 0)
                     {
-                        await automationService.CompleteMission(completeMissionId);
+                        await automationService.CompleteMissionAsync(completeMissionId);
                         Console.WriteLine($"Request sent.");
                     }
 
@@ -76,7 +76,7 @@ namespace Ferretto.WMS.AutomationServiceMock
                     var executeMissionId = GetMissionId();
                     if (executeMissionId > 0)
                     {
-                        await automationService.ExecuteMission(executeMissionId);
+                        await automationService.ExecuteMissionAsync(executeMissionId);
                         Console.WriteLine($"Request sent.");
                     }
 
@@ -84,11 +84,14 @@ namespace Ferretto.WMS.AutomationServiceMock
 
                 case UserSelection.ListMissions:
                     Console.WriteLine("Available missions:");
-                    var missions = await automationService.GetMissions();
+                    Console.WriteLine($"{nameof(Mission.Id):3}, {nameof(Mission.Status):10}, {nameof(Mission.ItemDescription):20}, {nameof(Mission.RequiredQuantity):3}");
+
+                    var missions = await automationService.GetMissionsAsync();
                     foreach (var mission in missions)
                     {
-                        Console.WriteLine($"{mission.Id}, {mission.Status}, {mission.RequiredQuantity}");
+                        Console.WriteLine($"{mission.Id:3}, {mission.Status:10}, {mission.ItemDescription:20}, {mission.RequiredQuantity:3}");
                     }
+
                     break;
 
                 case UserSelection.Exit:

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.WMS.AutomationServiceMock
 {
@@ -7,11 +8,11 @@ namespace Ferretto.WMS.AutomationServiceMock
     {
         #region Methods
 
-        Task CompleteMission(int missionId);
+        Task CompleteMissionAsync(int missionId);
 
-        Task ExecuteMission(int missionId);
+        Task ExecuteMissionAsync(int missionId);
 
-        Task<IEnumerable<Mission>> GetMissions();
+        Task<IEnumerable<Mission>> GetMissionsAsync();
 
         Task InitializeAsync();
 
