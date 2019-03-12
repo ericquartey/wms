@@ -26,7 +26,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public bool CanDelete
         {
-            get => !this.IsItemPairingFixed && this.Stock == 0 ? true : false;
+            get => !this.IsItemPairingFixed && this.Stock == 0;
         }
 
         public string CompartmentStatusDescription { get; set; }
