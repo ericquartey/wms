@@ -66,48 +66,30 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
-                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                var loadingUnit = await this.loadingUnitsDataService.CreateAsync(new WMS.Data.WebAPI.Contracts.LoadingUnitCreating
                 {
-                    var sizes = await this.loadingUnitsDataService.GetSizeByTypeIdAsync(model.LoadingUnitTypeId);
+                    Id = model.Id,
+                    Code = model.Code,
+                    AbcClassId = model.AbcClassId,
+                    CellPositionId = model.CellPositionId,
+                    LoadingUnitStatusId = model.LoadingUnitStatusId,
+                    LoadingUnitTypeId = model.LoadingUnitTypeId,
+                    Note = model.Note,
+                    IsCellPairingFixed = model.IsCellPairingFixed,
+                    ReferenceType = (WMS.Data.WebAPI.Contracts.ReferenceType)model.ReferenceType,
+                    Height = model.Height,
+                    Weight = model.Weight,
+                    InCycleCount = model.InCycleCount,
+                    OutCycleCount = model.OutCycleCount,
+                    OtherCycleCount = model.OtherCycleCount,
+                    CellId = model.CellId,
+                    AisleId = model.AisleId,
+                    AreaId = model.AreaId,
+                    HandlingParametersCorrection = model.HandlingParametersCorrection,
+                });
 
-                    var item = await this.loadingUnitsDataService.CreateAsync(new WMS.Data.WebAPI.Contracts.LoadingUnitDetails
-                    {
-                        Id = model.Id,
-                        Code = model.Code,
-                        AbcClassId = model.AbcClassId,
-                        AbcClassDescription = model.AbcClassDescription,
-                        CellPositionId = model.CellPositionId,
-                        CellPositionDescription = model.CellPositionDescription,
-                        LoadingUnitStatusId = model.LoadingUnitStatusId,
-                        LoadingUnitStatusDescription = model.LoadingUnitStatusDescription,
-                        LoadingUnitTypeId = model.LoadingUnitTypeId,
-                        LoadingUnitTypeDescription = model.LoadingUnitTypeDescription,
-                        Width = sizes.Width,
-                        Length = sizes.Length,
-                        Note = model.Note,
-                        IsCellPairingFixed = model.IsCellPairingFixed,
-                        ReferenceType = (WMS.Data.WebAPI.Contracts.ReferenceType)model.ReferenceType,
-                        Height = model.Height,
-                        Weight = model.Weight,
-                        HandlingParametersCorrection = model.HandlingParametersCorrection,
-                        LoadingUnitTypeHasCompartments = model.LoadingUnitTypeHasCompartments,
-                        CreationDate = model.CreationDate,
-                        LastHandlingDate = model.LastHandlingDate,
-                        InventoryDate = model.InventoryDate,
-                        LastPickDate = model.LastPickDate,
-                        LastStoreDate = model.LastStoreDate,
-                        InCycleCount = model.InCycleCount,
-                        OutCycleCount = model.OutCycleCount,
-                        OtherCycleCount = model.OtherCycleCount,
-                        CellId = model.CellId,
-                        AisleId = model.AisleId,
-                        AreaId = model.AreaId,
-                    });
-
-                    model.Id = item.Id;
-                    scope.Complete();
-                    return new OperationResult<LoadingUnitDetails>(true);
-                }
+                model.Id = loadingUnit.Id;
+                return new OperationResult<LoadingUnitDetails>(true);
             }
             catch (Exception ex)
             {

@@ -32,7 +32,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public async Task<IOperationResult<LoadingUnitDetails>> CreateAsync(LoadingUnitDetails model)
+        public async Task<IOperationResult<LoadingUnitCreating>> CreateAsync(LoadingUnitCreating model)
         {
             if (model == null)
             {
@@ -60,15 +60,11 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (changedEntitiesCount > 0)
             {
                 model.Id = entry.Entity.Id;
-                model.CreationDate = entry.Entity.CreationDate;
-                model.LastModificationDate = entry.Entity.LastModificationDate;
-                model.LastPickDate = entry.Entity.LastPickDate;
-                model.LastStoreDate = entry.Entity.LastStoreDate;
                 model.OtherCycleCount = entry.Entity.OtherCycleCount;
                 model.OutCycleCount = entry.Entity.OutCycleCount;
             }
 
-            return new SuccessOperationResult<LoadingUnitDetails>(model);
+            return new SuccessOperationResult<LoadingUnitCreating>(model);
         }
 
         public async Task<IEnumerable<LoadingUnit>> GetAllAsync(
@@ -118,7 +114,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<LoadingUnitSize> GetSizeByTypeIdAsync(int typeId)
         {
-            return await this.GetInfoOfSize(typeId).SingleOrDefaultAsync();
+            return await this.GetSizeInfo(typeId).SingleOrDefaultAsync();
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
@@ -245,10 +241,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 });
         }
 
-        private IQueryable<LoadingUnitSize> GetInfoOfSize(int typeId)
+        private IQueryable<LoadingUnitSize> GetSizeInfo(int typeId)
         {
             return this.dataContext.LoadingUnitTypes
-                .Include(t => t.LoadingUnitSizeClass)
                 .Where(t => t.Id == typeId)
                 .Select(t => new LoadingUnitSize
                 {
