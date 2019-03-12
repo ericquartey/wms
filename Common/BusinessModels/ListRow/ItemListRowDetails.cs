@@ -67,6 +67,8 @@ namespace Ferretto.Common.BusinessModels
                     || this.itemListRowStatus == ItemListRowStatus.Suspended
                     || this.itemListRowStatus == ItemListRowStatus.Waiting;
 
+        public bool CanDelete { get; set; }
+
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string Code { get => this.code; set => this.SetProperty(ref this.code, value); }
 

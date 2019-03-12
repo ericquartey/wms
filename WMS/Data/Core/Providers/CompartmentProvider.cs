@@ -121,9 +121,17 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new NotFoundOperationResult<CompartmentDetails>();
             }
 
-            this.dataContext.Remove(existingModel);
-            await this.dataContext.SaveChangesAsync();
-            return new SuccessOperationResult<CompartmentDetails>();
+            var compartment = await this.GetByIdAsync(id);
+            if (compartment.CanDelete)
+            {
+                this.dataContext.Remove(existingModel);
+                await this.dataContext.SaveChangesAsync();
+                return new SuccessOperationResult<CompartmentDetails>();
+            }
+            else
+            {
+                return new UnprocessableEntityOperationResult<CompartmentDetails>();
+            }
         }
 
         public async Task<IEnumerable<Compartment>> GetAllAsync(
@@ -386,7 +394,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     LoadingUnitId = j.cmp.LoadingUnitId,
                     ItemId = j.cmp.ItemId,
                     LoadingUnitHasCompartments = j.cmp.LoadingUnit.LoadingUnitType.HasCompartments,
-                    ItemMeasureUnit = j.cmp.Item.MeasureUnit.Description
+                    ItemMeasureUnit = j.cmp.Item.MeasureUnit.Description,
                 });
         }
 

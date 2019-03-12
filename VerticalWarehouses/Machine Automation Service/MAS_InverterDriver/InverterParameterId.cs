@@ -2,7 +2,7 @@
 {
     public enum InverterParameterId : short
     {
-        ControlWordParam = 410,
+        ControlWordParam = 410, //INFO:Writeonly
 
         HomingCreepSpeedParam = 1133,
 
@@ -20,7 +20,7 @@
 
         SetOperatingModeParam = 1454,
 
-        StatusWordParam = 411,
+        StatusWordParam = 411, //INFO:Readonly
 
         ActualPositionShaft = 1108,
 

@@ -177,9 +177,7 @@ namespace Ferretto.Common.BusinessProviders
         {
             try
             {
-                var compartment = await this.compartmentsDataService.GetByIdAsync(id);
-
-                await this.compartmentsDataService.DeleteAsync(compartment);
+                await this.compartmentsDataService.DeleteAsync(id);
 
                 return new OperationResult<CompartmentDetails>(true);
             }
@@ -271,6 +269,7 @@ namespace Ferretto.Common.BusinessProviders
                 Width = compartment.HasRotation ? compartment.Height : compartment.Width,
                 XPosition = compartment.XPosition,
                 YPosition = compartment.YPosition,
+                CanDelete = compartment.CanDelete,
             };
         }
 

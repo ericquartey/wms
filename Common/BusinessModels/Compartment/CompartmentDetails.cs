@@ -70,6 +70,8 @@ namespace Ferretto.Common.BusinessModels
 
         #region Properties
 
+        public bool CanDelete { get; set; }
+
         public IEnumerable<Enumeration> CompartmentStatusChoices
         {
             get => this.compartmentStatusChoices;
