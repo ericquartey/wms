@@ -10,7 +10,6 @@ namespace Ferretto.WMS.AutomationServiceMock
 {
     internal static class Program
     {
-        private static ILogger logger;
         #region Enums
 
         private enum UserSelection
