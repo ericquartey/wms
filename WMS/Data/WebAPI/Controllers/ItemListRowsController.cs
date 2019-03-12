@@ -5,6 +5,7 @@ using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
+using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -25,9 +26,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IItemListRowProvider itemListRowProvider;
 
-        private readonly Scheduler.Core.Interfaces.IItemListRowSchedulerProvider itemListRowSchedulerProvider;
-
         private readonly ILogger logger;
+
+        private readonly ISchedulerService schedulerService;
 
         #endregion
 
@@ -35,11 +36,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public ItemListRowsController(
             ILogger<ItemListRowsController> logger,
-            Scheduler.Core.Interfaces.IItemListRowSchedulerProvider itemListRowSchedulerProvider,
+            ISchedulerService schedulerService,
             IItemListRowProvider itemListRowProvider)
         {
             this.logger = logger;
-            this.itemListRowSchedulerProvider = itemListRowSchedulerProvider;
+            this.schedulerService = schedulerService;
             this.itemListRowProvider = itemListRowProvider;
         }
 
@@ -73,7 +74,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.BadRequest();
             }
 
-            var acceptedRequests = await this.itemListRowSchedulerProvider.PrepareForExecutionAsync(request);
+            var acceptedRequests = await this.schedulerService.ExecuteListRowAsync(request);
             if (acceptedRequests == null)
             {
                 this.logger.LogWarning($"Request of execution for list row (id={request.ListRowId}) could not be processed.");

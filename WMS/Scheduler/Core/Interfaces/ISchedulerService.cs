@@ -13,6 +13,8 @@ namespace Ferretto.WMS.Scheduler.Core.Interfaces
 
         Task<IEnumerable<SchedulerRequest>> ExecuteListAsync(ListExecutionRequest request);
 
+        Task<IEnumerable<SchedulerRequest>> ExecuteListRowAsync(ListRowExecutionRequest request);
+
         Task<IOperationResult<Mission>> ExecuteMissionAsync(int id);
 
         Task ProcessPendingRequestsAsync();
