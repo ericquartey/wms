@@ -5,8 +5,7 @@ using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Grid;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Base;
-using Ferretto.Common.Controls.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
 

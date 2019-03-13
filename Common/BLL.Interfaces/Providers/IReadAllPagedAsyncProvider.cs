@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Utils.Expressions;
 
-namespace Ferretto.Common.BLL.Interfaces.Base
+namespace Ferretto.Common.BLL.Interfaces.Providers
 {
     public interface IReadAllPagedAsyncProvider<TModel, TKey>
         where TModel : IModel<TKey>

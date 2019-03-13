@@ -224,4 +224,7 @@
     <value>Row Count={0}</value>
     <comment>Grid Row Counter Format</comment>
   </data>
+  <data name="AreYouSureToDeleteGeneric" xml:space="preserve">
+    <value>Are you sure you want to delete this {0}?</value>
+  </data>
 </root>

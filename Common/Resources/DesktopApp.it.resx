@@ -195,4 +195,7 @@
   <data name="GridRowCounter" xml:space="preserve">
     <value>Numero Righe={0}</value>
   </data>
+  <data name="AreYouSureToDeleteGeneric" xml:space="preserve">
+    <value>Sei sicuro di voler eliminare questo {0}?</value>
+  </data>
 </root>

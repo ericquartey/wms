@@ -565,6 +565,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item List Row deleted successfully.
+        /// </summary>
+        public static string ItemListRowDeletedSuccessfully {
+            get {
+                return ResourceManager.GetString("ItemListRowDeletedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Execute Row List.
         /// </summary>
         public static string ItemListRowExecute {

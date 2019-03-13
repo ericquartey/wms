@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Ferretto.Common.BLL.Interfaces.Base;
+using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.Common.BLL.Interfaces.Providers;
 
 namespace Ferretto.Common.BLL.Interfaces
 {
