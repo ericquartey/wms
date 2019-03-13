@@ -11,6 +11,7 @@ using Ferretto.VW.Common_Utils.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Prism.Events;
 
@@ -26,6 +27,8 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IOptions<FilesInfo> filesInfo;
+
         private readonly DataLayerContext inMemoryDataContext;
 
         private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
@@ -38,26 +41,28 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Constructors
 
-        public DataLayer(string connectionString, DataLayerContext inMemoryDataContext,
-            IEventAggregator eventAggregator)
+        public DataLayer(string connectionString, DataLayerContext inMemoryDataContext, IEventAggregator eventAggregator, IOptions<FilesInfo> filesInfo)
         {
             if (inMemoryDataContext == null)
             {
-                // TEMP
-                //throw new DataLayerException(DataLayerExceptionEnum.DATALAYER_CONTEXT_EXCEPTION);
                 new ArgumentNullException();
             }
 
             if (eventAggregator == null)
             {
-                // TEMP
-                //throw new DataLayerException(DataLayerExceptionEnum.EVENTAGGREGATOR_EXCEPTION);
+                new ArgumentNullException();
+            }
+
+            if (filesInfo == null)
+            {
                 new ArgumentNullException();
             }
 
             this.inMemoryDataContext = inMemoryDataContext;
 
             this.eventAggregator = eventAggregator;
+
+            this.filesInfo = filesInfo;
 
             using (var initialContext = new DataLayerContext(
                 new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(connectionString).Options))
@@ -107,25 +112,28 @@ namespace Ferretto.VW.MAS_DataLayer
         /// </summary>
         /// <param name="inMemoryDataContext"></param>
         /// <param name="eventAggregator"></param>
-        public DataLayer(DataLayerContext inMemoryDataContext, IEventAggregator eventAggregator)
+        public DataLayer(DataLayerContext inMemoryDataContext, IEventAggregator eventAggregator, IOptions<FilesInfo> filesInfo)
         {
             if (inMemoryDataContext == null)
             {
-                // TEMP
-                //throw new DataLayerException(DataLayerExceptionEnum.DATALAYER_CONTEXT_EXCEPTION);
                 new ArgumentNullException();
             }
 
             if (eventAggregator == null)
             {
-                // TEMP
-                //throw new DataLayerException(DataLayerExceptionEnum.EVENTAGGREGATOR_EXCEPTION);
+                new ArgumentNullException();
+            }
+
+            if (filesInfo == null)
+            {
                 new ArgumentNullException();
             }
 
             this.inMemoryDataContext = inMemoryDataContext;
 
             this.eventAggregator = eventAggregator;
+
+            this.filesInfo = filesInfo;
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
 
@@ -158,9 +166,9 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Methods
 
-        public void LoadGeneralInfo(string generalInfoPath)
+        public void LoadGeneralInfo()
         {
-            var dir = Directory.GetCurrentDirectory();
+            var generalInfoPath = this.filesInfo.Value.GeneralInfoPath;
 
             using (var streamReader = new StreamReader(generalInfoPath))
             {

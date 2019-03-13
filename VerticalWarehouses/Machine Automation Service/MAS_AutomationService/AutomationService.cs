@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
 using Prism.Events;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Microsoft.Extensions.Options;
+using Ferretto.VW.MAS_DataLayer;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
@@ -22,6 +24,8 @@ namespace Ferretto.VW.MAS_AutomationService
         private readonly Task commadReceiveTask;
 
         private readonly IEventAggregator eventAggregator;
+
+        private readonly IOptions<FilesInfo> filesInfo;
 
         private readonly IHubContext<InstallationHub, IInstallationHub> hub;
 
@@ -35,10 +39,11 @@ namespace Ferretto.VW.MAS_AutomationService
 
         #region Constructors
 
-        public AutomationService(IEventAggregator eventAggregator, IHubContext<InstallationHub, IInstallationHub> hub)
+        public AutomationService(IEventAggregator eventAggregator, IHubContext<InstallationHub, IInstallationHub> hub, IOptions<FilesInfo> filesInfo)
         {
             this.eventAggregator = eventAggregator;
             this.hub = hub;
+            this.filesInfo = filesInfo;
 
             this.messageReceived = new ManualResetEventSlim(false);
             this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();

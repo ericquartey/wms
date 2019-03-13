@@ -4,7 +4,7 @@
     {
         #region Methods
 
-        void LoadGeneralInfo(string generalInfoPath);
+        void LoadGeneralInfo();
 
         #endregion
     }
