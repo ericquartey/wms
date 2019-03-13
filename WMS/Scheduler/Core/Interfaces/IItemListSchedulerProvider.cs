@@ -6,7 +6,8 @@ using Ferretto.WMS.Scheduler.Core.Models;
 namespace Ferretto.WMS.Scheduler.Core.Interfaces
 {
     public interface IItemListSchedulerProvider :
-        IUpdateAsyncProvider<ItemList, int>
+        IUpdateAsyncProvider<ItemList, int>,
+        IReadSingleAsyncProvider<ItemList, int>
     {
         #region Methods
 

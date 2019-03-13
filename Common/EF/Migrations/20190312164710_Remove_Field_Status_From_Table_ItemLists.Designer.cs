@@ -4,14 +4,16 @@ using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.Common.EF.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190312164710_Remove_Field_Status_From_Table_ItemLists")]
+    partial class Remove_Field_Status_From_Table_ItemLists
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -792,9 +794,9 @@ namespace Ferretto.Common.EF.Migrations
                         .IsRequired()
                         .HasColumnType("char(1)");
 
-                    b.Property<int?>("CellId");
+                    b.Property<int>("CellId");
 
-                    b.Property<int?>("CellPositionId");
+                    b.Property<int>("CellPositionId");
 
                     b.Property<string>("Code")
                         .IsRequired();
@@ -813,7 +815,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<DateTime?>("InventoryDate");
 
-                    b.Property<bool?>("IsCellPairingFixed");
+                    b.Property<bool>("IsCellPairingFixed");
 
                     b.Property<DateTime?>("LastHandlingDate");
 

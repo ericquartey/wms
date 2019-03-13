@@ -28,9 +28,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IItemListRowProvider itemListRowProvider;
 
-        private readonly IItemListSchedulerProvider itemListSchedulerProvider;
-
         private readonly ILogger logger;
+
+        private readonly ISchedulerService schedulerService;
 
         #endregion
 
@@ -38,14 +38,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public ItemListsController(
             ILogger<ItemListsController> logger,
-            IItemListSchedulerProvider itemListSchedulerProvider,
             IItemListProvider itemListProvider,
-            IItemListRowProvider itemListRowProvider)
+            IItemListRowProvider itemListRowProvider,
+            ISchedulerService schedulerService)
         {
             this.logger = logger;
             this.itemListProvider = itemListProvider;
             this.itemListRowProvider = itemListRowProvider;
-            this.itemListSchedulerProvider = itemListSchedulerProvider;
+            this.schedulerService = schedulerService;
         }
 
         #endregion
@@ -78,7 +78,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.BadRequest();
             }
 
-            var acceptedRequests = await this.itemListSchedulerProvider.PrepareForExecutionAsync(request);
+            var acceptedRequests = await this.schedulerService.ExecuteListAsync(request);
             if (acceptedRequests == null)
             {
                 this.logger.LogWarning($"Request of execution for list (id={request.ListId}) could not be processed.");
