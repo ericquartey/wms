@@ -7,7 +7,6 @@ using System.Windows.Data;
 using System.Windows.Media;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Editors;
-using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls.Interfaces;
 
 namespace Ferretto.Common.Controls
@@ -172,7 +171,7 @@ namespace Ferretto.Common.Controls
         private string GetTextSize(double maxTextWidth)
         {
             var posChar = (this.Title.Length < STARTMAXLENGTHCHECK) ? this.Title.Length : STARTMAXLENGTHCHECK;
-            StringBuilder currText = new StringBuilder(this.Title.Substring(0, posChar));
+            var currText = new StringBuilder(this.Title.Substring(0, posChar));
             while (posChar < this.Title.Length)
             {
                 currText.Append(this.Title[posChar]);
@@ -198,7 +197,7 @@ namespace Ferretto.Common.Controls
 
         private void On_Loaded(object sender, RoutedEventArgs e)
         {
-            if (sender is WmsLabel wmsLabel != null)
+            if (sender is WmsLabel wmsLabel)
             {
                 var parent = LayoutTreeHelper.GetVisualParents(this).OfType<BaseEdit>().FirstOrDefault();
 

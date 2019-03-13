@@ -41,6 +41,12 @@
                               MaxWidth="400" />
         </Grid.ColumnDefinitions>
 
+        <dxt:WaitIndicator Grid.Row="1"
+                           VerticalAlignment="Center"
+                           Panel.ZIndex="1"
+                           Content="{x:Static res:DesktopApp.Loading}"
+                           DeferedVisibility="{Binding IsBusy}" />
+
         <wms:ActionBar Margin="10,10,10,0"
                        HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
@@ -80,7 +86,8 @@
         <ScrollViewer Grid.Row="1"
                       Margin="10,0,10,10"
                       Focusable="False"
-                      IsTabStop="True">
+                      IsTabStop="True"
+                      Visibility="{Binding Model, Converter={StaticResource RTVC}}">
 
             <Grid>
                 <Grid.RowDefinitions>
@@ -266,11 +273,11 @@
             </Grid>
         </ScrollViewer>
 
-
         <ScrollViewer Grid.RowSpan="3"
                       Grid.Column="1"
                       Focusable="False"
-                      IsTabStop="False">
+                      IsTabStop="False"
+                      Visibility="{Binding Model, Converter={StaticResource RTVC}}">
 
             <Border Style="{StaticResource InfoBoxBorderStyle}">
                 <Grid>
@@ -309,5 +316,6 @@
             </Border>
 
         </ScrollViewer>
+
     </Grid>
 </wms:WmsView>
