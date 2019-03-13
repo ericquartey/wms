@@ -192,4 +192,7 @@
   <data name="CustomFilter" xml:space="preserve">
     <value>Filtro Personalizzato</value>
   </data>
+  <data name="AreYouSureToDeleteGeneric" xml:space="preserve">
+    <value>Sei sicuro di voler eliminare questo {0}?</value>
+  </data>
 </root>
