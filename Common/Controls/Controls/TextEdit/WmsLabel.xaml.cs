@@ -7,7 +7,6 @@ using System.Windows.Data;
 using System.Windows.Media;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Editors;
-using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls.Interfaces;
 
 namespace Ferretto.Common.Controls
@@ -172,7 +171,7 @@ namespace Ferretto.Common.Controls
         private string GetTextSize(double maxTextWidth)
         {
             var posChar = (this.Title.Length < STARTMAXLENGTHCHECK) ? this.Title.Length : STARTMAXLENGTHCHECK;
-            StringBuilder currText = new StringBuilder(this.Title.Substring(0, posChar));
+            var currText = new StringBuilder(this.Title.Substring(0, posChar));
             while (posChar < this.Title.Length)
             {
                 currText.Append(this.Title[posChar]);
@@ -227,6 +226,7 @@ namespace Ferretto.Common.Controls
             {
                 return;
             }
+
             this.titleWidth = this.GetTextWidth(this.Title);
             this.defaultControlWidth = parentControl.ActualWidth;
             if (this.titleWidth <= parentControl.ActualWidth)
@@ -257,6 +257,7 @@ namespace Ferretto.Common.Controls
                 {
                     return;
                 }
+
                 var size = new Size(newWidth, editorControl.ActualHeight);
                 editorControl.Measure(size);
                 this.Arrange(new Rect(new Size(newWidth, this.DesiredSize.Height)));
@@ -265,23 +266,23 @@ namespace Ferretto.Common.Controls
 
         private void ShowBusinessObjectValueComboBox(BaseEdit parent)
         {
-            DependencyProperty depProperty = null;
-         
             var type = this.DataContext.GetType();
             var bindingExpression = BindingOperations.GetBindingExpression(
                     parent,
                     BaseEdit.EditValueProperty);
+
             if (bindingExpression == null)
             {
                 bindingExpression = BindingOperations.GetBindingExpression(
                     parent,
                     ComboBox.BusinessObjectValueProperty);
             }
-                var path = bindingExpression.ParentBinding.Path.Path;
-                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(type, path);
-                var isFieldRequired = FormControl.IsFieldRequired(type, path);
-                this.Title = localizedFieldName;
-                this.ShowIcon(isFieldRequired);
+
+            var path = bindingExpression.ParentBinding.Path.Path;
+            var localizedFieldName = FormControl.RetrieveLocalizedFieldName(type, path);
+            var isFieldRequired = FormControl.IsFieldRequired(type, path);
+            this.Title = localizedFieldName;
+            this.ShowIcon(isFieldRequired);
         }
 
         private void ShowTitle(string text)
