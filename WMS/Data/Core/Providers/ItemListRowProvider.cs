@@ -121,16 +121,6 @@ namespace Ferretto.WMS.Data.Core.Providers
             var itemListRowDetails = await this.GetAllDetailsBase()
                        .SingleOrDefaultAsync(i => i.Id == id);
 
-            var count = await this.HasSchedulerRequestsAssociated(id).CountAsync();
-            if (count > 0)
-            {
-                itemListRowDetails.HasSchedulerRequestAssociated = true;
-            }
-            else
-            {
-                itemListRowDetails.HasSchedulerRequestAssociated = false;
-            }
-
             return itemListRowDetails;
         }
 
@@ -198,6 +188,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Include(l => l.MaterialStatus)
                 .Include(l => l.Item)
                 .ThenInclude(i => i.MeasureUnit)
+                .Include(lr => lr.SchedulerRequests)
                 .Select(l => new ItemListRow
                 {
                     Id = l.Id,
@@ -210,7 +201,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     ItemListRowStatus = (ItemListRowStatus)l.Status,
                     MaterialStatusDescription = l.MaterialStatus.Description,
                     CreationDate = l.CreationDate,
-                    ItemUnitMeasure = l.Item.MeasureUnit.Description
+                    ItemUnitMeasure = l.Item.MeasureUnit.Description,
+                    HasSchedulerRequestAssociated = l.SchedulerRequests.Any(),
                 });
         }
 
@@ -220,6 +212,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Include(lr => lr.ItemList)
                 .Include(lr => lr.Item)
                 .ThenInclude(i => i.MeasureUnit)
+                .Include(lr => lr.SchedulerRequests)
                 .Select(l => new ItemListRowDetails
                 {
                     Id = l.Id,
@@ -246,14 +239,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     PackageTypeId = l.PackageTypeId,
                     MaterialStatusId = l.MaterialStatusId,
                     ItemUnitMeasure = l.Item.MeasureUnit.Description,
+                    HasSchedulerRequestAssociated = l.SchedulerRequests.Any(),
                 });
-        }
-
-        private IQueryable<ItemListRowDetails> HasSchedulerRequestsAssociated(int id)
-        {
-            return this.dataContext.SchedulerRequests
-                .Where(r => r.ListRowId == id)
-                .Select(r => new ItemListRowDetails { });
         }
 
         #endregion

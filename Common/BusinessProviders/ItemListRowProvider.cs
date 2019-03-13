@@ -139,7 +139,8 @@ namespace Ferretto.Common.BusinessProviders
                     MaterialStatusDescription = l.MaterialStatusDescription,
                     RequiredQuantity = l.RequiredQuantity,
                     RowPriority = l.RowPriority,
-                    CreationDate = l.CreationDate
+                    CreationDate = l.CreationDate,
+                    CanDelete = l.CanDelete,
                 });
         }
 
@@ -201,7 +202,8 @@ namespace Ferretto.Common.BusinessProviders
                     ItemListRowStatus = (BusinessModels.ItemListRowStatus)l.ItemListRowStatus,
                     MaterialStatusDescription = l.MaterialStatusDescription,
                     CreationDate = l.CreationDate,
-                    ItemUnitMeasure = l.ItemUnitMeasure
+                    ItemUnitMeasure = l.ItemUnitMeasure,
+                    CanDelete = l.CanDelete,
                 });
         }
 
