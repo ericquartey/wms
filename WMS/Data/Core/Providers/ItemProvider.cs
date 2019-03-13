@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
@@ -76,8 +77,79 @@ namespace Ferretto.WMS.Data.Core.Providers
             return new SuccessOperationResult<ItemDetails>(model);
         }
 
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
+
+        public async Task<IOperationResult<ItemDetails>> DeleteAsync(int id)
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
+        {
+            var existingModel = this.dataContext.Items.Find(id);
+            if (existingModel == null)
+            {
+                return new NotFoundOperationResult<ItemDetails>();
+            }
+
+            var item = await this.GetByIdAsync(id);
+            if (item.CanDelete)
+            {
+                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    if (item.HasAreaAssociated)
+                    {
+                        var area = await this.dataContext.ItemsAreas
+                            .Where(a => a.ItemId == item.Id)
+                            .ToListAsync();
+                        this.dataContext.RemoveRange(area);
+                    }
+
+                    if (item.HasCompartmentTypeAssociated)
+                    {
+                        var compartmentType = await this.dataContext.ItemsCompartmentTypes
+                            .Where(t => t.ItemId == item.Id)
+                            .ToListAsync();
+                        this.dataContext.RemoveRange(compartmentType);
+                    }
+
+                    this.dataContext.Remove(existingModel);
+                    await this.dataContext.SaveChangesAsync();
+                    scope.Complete();
+
+                    return new SuccessOperationResult<ItemDetails>();
+                }
+            }
+            else
+            {
+                var entity = new List<string>();
+                if (item.HasCompartmentAssociated)
+                {
+                    entity.Add($"{Common.Resources.BusinessObjects.Compartment} [{item.CompartmentsCount}]");
+                }
+
+                if (item.HasItemListRowAssociated)
+                {
+                    entity.Add($"{Common.Resources.BusinessObjects.ItemListRow} [{item.ItemListRowsCount}]");
+                }
+
+                if (item.HasMissionAssociated)
+                {
+                    entity.Add($"{Common.Resources.BusinessObjects.Mission} [{item.MissionsCount}]");
+                }
+
+                if (item.HasSchedulerRequestAssociated)
+                {
+                    entity.Add($"{Common.Resources.BusinessObjects.SchedulerRequest} [{item.SchedulerRequestsCount}]");
+                }
+
+                return new UnprocessableEntityOperationResult<ItemDetails>
+                {
+                    Description = string.Format(
+                        Common.Resources.Errors.NotPossibleExecuteOperation,
+                        string.Join(", ", entity.ToArray()))
+                };
+            }
+        }
+
         public async Task<IEnumerable<Item>> GetAllAsync(
-            int skip,
+                    int skip,
             int take,
             IEnumerable<SortOption> orderBySortOptions = null,
             string whereString = null,
@@ -107,10 +179,22 @@ namespace Ferretto.WMS.Data.Core.Providers
             var compartmentsCount =
                 await this.dataContext.Compartments
                     .CountAsync(c => c.ItemId == id);
+            var missionsCount =
+                await this.dataContext.Missions
+                    .CountAsync(m => m.ItemId == id);
+            var schedulerRequestsCount =
+                await this.dataContext.SchedulerRequests
+                    .CountAsync(r => r.ItemId == id);
+            var itemListRowsCount =
+                await this.dataContext.ItemListRows
+                    .CountAsync(r => r.ItemId == id);
 
             var result = await this.GetAllDetailsBase()
                              .SingleOrDefaultAsync(i => i.Id == id);
             result.CompartmentsCount = compartmentsCount;
+            result.MissionsCount = missionsCount;
+            result.SchedulerRequestsCount = schedulerRequestsCount;
+            result.ItemListRowsCount = itemListRowsCount;
             return result;
         }
 
@@ -295,6 +379,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                             b != null
                                 ? b.TotalStock + b.TotalReservedToStore - b.TotalReservedForPick
                                 : 0,
+
+                        HasCompartmentAssociated = a.Item.Compartments.Any(),
+                        HasItemListRowAssociated = a.Item.ItemListRows.Any(),
+                        HasMissionAssociated = a.Item.Missions.Any(),
+                        HasSchedulerRequestAssociated = a.Item.SchedulerRequests.Any(),
+                        HasAreaAssociated = a.Item.ItemAreas.Any(),
+                        HasCompartmentTypeAssociated = a.Item.ItemsCompartmentTypes.Any(),
                     });
         }
 
