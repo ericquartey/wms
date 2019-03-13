@@ -107,7 +107,19 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public Task<IOperationResult<ItemDetails>> DeleteAsync(int id) => throw new NotSupportedException();
+        public async Task<IOperationResult<ItemDetails>> DeleteAsync(int id)
+        {
+            try
+            {
+                await this.itemsDataService.DeleteAsync(id);
+
+                return new OperationResult<ItemDetails>(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<ItemDetails>(ex);
+            }
+        }
 
         public async Task<IEnumerable<Item>> GetAllAsync(
             int skip,
