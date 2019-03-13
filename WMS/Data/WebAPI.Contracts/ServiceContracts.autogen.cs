@@ -645,11 +645,11 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     public partial interface ILoadingUnitsDataService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<LoadingUnitDetails> CreateAsync(LoadingUnitDetails model);
+        System.Threading.Tasks.Task<LoadingUnitCreating> CreateAsync(LoadingUnitCreating model);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<LoadingUnitDetails> CreateAsync(LoadingUnitDetails model, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<LoadingUnitCreating> CreateAsync(LoadingUnitCreating model, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<LoadingUnit>> GetAllAsync(int? skip, int? take, string where, string orderBy, string search);
@@ -685,6 +685,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<CompartmentDetails>> GetCompartmentsAsync(int id, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<LoadingUnitSize> GetSizeByTypeIdAsync(int id);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<LoadingUnitSize> GetSizeByTypeIdAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<object>> GetUniqueValuesAsync(string propertyName);
@@ -1276,20 +1283,20 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("abcClassId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string AbcClassId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("aisleId", Required = Newtonsoft.Json.Required.Always)]
-        public int AisleId { get; set; }
+        [Newtonsoft.Json.JsonProperty("aisleId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? AisleId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("areaId", Required = Newtonsoft.Json.Required.Always)]
-        public int AreaId { get; set; }
+        [Newtonsoft.Json.JsonProperty("areaId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? AreaId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("cellId", Required = Newtonsoft.Json.Required.Always)]
-        public int CellId { get; set; }
+        [Newtonsoft.Json.JsonProperty("cellId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CellId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("cellPositionDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string CellPositionDescription { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("cellPositionId", Required = Newtonsoft.Json.Required.Always)]
-        public int CellPositionId { get; set; }
+        [Newtonsoft.Json.JsonProperty("cellPositionId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CellPositionId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Code { get; set; }
@@ -1379,8 +1386,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
     public enum ReferenceType
     {
-        NotSpecified = 0,
-    
         MonoReference = 77,
     
         PluriReference = 80,
@@ -2453,6 +2458,75 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class LoadingUnitCreating : BaseModelOfInt32
+    {
+        [Newtonsoft.Json.JsonProperty("abcClassId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string AbcClassId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("aisleId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? AisleId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("areaId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? AreaId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("cellId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CellId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("cellPositionId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CellPositionId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Code { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("compartmentsCount", Required = Newtonsoft.Json.Required.Always)]
+        public int CompartmentsCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("handlingParametersCorrection", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? HandlingParametersCorrection { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Always)]
+        public int Height { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("inCycleCount", Required = Newtonsoft.Json.Required.Always)]
+        public int InCycleCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("isCellPairingFixed", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsCellPairingFixed { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("loadingUnitStatusId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string LoadingUnitStatusId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("loadingUnitTypeId", Required = Newtonsoft.Json.Required.Always)]
+        public int LoadingUnitTypeId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("note", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Note { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("otherCycleCount", Required = Newtonsoft.Json.Required.Always)]
+        public int OtherCycleCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("outCycleCount", Required = Newtonsoft.Json.Required.Always)]
+        public int OutCycleCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("referenceType", Required = Newtonsoft.Json.Required.Always)]
+        public ReferenceType ReferenceType { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("weight", Required = Newtonsoft.Json.Required.Always)]
+        public int Weight { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static LoadingUnitCreating FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LoadingUnitCreating>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class LoadingUnit : BaseModelOfInt32
     {
         [Newtonsoft.Json.JsonProperty("abcClassDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2476,8 +2550,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("cellPositionDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string CellPositionDescription { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("cellSide", Required = Newtonsoft.Json.Required.Always)]
-        public Side CellSide { get; set; }
+        [Newtonsoft.Json.JsonProperty("cellSide", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Side? CellSide { get; set; }
     
         [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Code { get; set; }
@@ -2496,6 +2570,33 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public static LoadingUnit FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<LoadingUnit>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class LoadingUnitSize 
+    {
+        [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Always)]
+        public int Height { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("length", Required = Newtonsoft.Json.Required.Always)]
+        public int Length { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("weight", Required = Newtonsoft.Json.Required.Always)]
+        public int Weight { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("width", Required = Newtonsoft.Json.Required.Always)]
+        public int Width { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static LoadingUnitSize FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LoadingUnitSize>(data);
         }
     
     }

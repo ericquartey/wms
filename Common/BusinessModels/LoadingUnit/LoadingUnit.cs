@@ -8,7 +8,9 @@ namespace Ferretto.Common.BusinessModels
         #region Fields
 
         private int? cellColumn;
+
         private int? cellFloor;
+
         private int? cellNumber;
 
         #endregion
@@ -49,7 +51,7 @@ namespace Ferretto.Common.BusinessModels
         public string CellPositionDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellSide_extended), ResourceType = typeof(BusinessObjects))]
-        public Side CellSide { get; set; }
+        public Side? CellSide { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitCode), ResourceType = typeof(BusinessObjects))]
         public string Code { get; set; }

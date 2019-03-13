@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Editors;
@@ -85,13 +86,15 @@ namespace Ferretto.Common.Controls
             var trimTextWidth = this.GetTextWidth(TRIMTEXT);
             this.endTitleTextMargin = trimTextWidth + this.WmsIcon.Width + EXTRATEXTOFFSET;
             this.SizeChanged += this.WmsLabel_SizeChanged;
-
-            this.SetColorRequiredIcon();
         }
 
-        public void Show(bool show)
+        public void Show(bool show, BaseEdit parent)
         {
             this.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
+            if (show)
+            {
+                this.ShowBusinessObjectValueComboBox(parent);
+            }
         }
 
         public void ShowIcon(bool show)
@@ -197,10 +200,12 @@ namespace Ferretto.Common.Controls
         {
             if (sender is WmsLabel wmsLabel != null)
             {
-                var p = LayoutTreeHelper.GetVisualParents(this).OfType<BaseEdit>().FirstOrDefault();
+                var parent = LayoutTreeHelper.GetVisualParents(this).OfType<BaseEdit>().FirstOrDefault();
 
-                var showProperty = (bool)p.GetValue(Ferretto.Common.Controls.ShowTitle.ShowProperty);
-                this.Show(showProperty);
+                var showProperty = (bool)parent.GetValue(Ferretto.Common.Controls.ShowTitle.ShowProperty);
+                this.Show(showProperty, parent);
+
+                this.SetColorRequiredIcon();
             }
         }
 
@@ -256,6 +261,27 @@ namespace Ferretto.Common.Controls
                 editorControl.Measure(size);
                 this.Arrange(new Rect(new Size(newWidth, this.DesiredSize.Height)));
             }
+        }
+
+        private void ShowBusinessObjectValueComboBox(BaseEdit parent)
+        {
+            DependencyProperty depProperty = null;
+         
+            var type = this.DataContext.GetType();
+            var bindingExpression = BindingOperations.GetBindingExpression(
+                    parent,
+                    BaseEdit.EditValueProperty);
+            if (bindingExpression == null)
+            {
+                bindingExpression = BindingOperations.GetBindingExpression(
+                    parent,
+                    ComboBox.BusinessObjectValueProperty);
+            }
+                var path = bindingExpression.ParentBinding.Path.Path;
+                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(type, path);
+                var isFieldRequired = FormControl.IsFieldRequired(type, path);
+                this.Title = localizedFieldName;
+                this.ShowIcon(isFieldRequired);
         }
 
         private void ShowTitle(string text)

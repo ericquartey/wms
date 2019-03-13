@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Utils.Expressions;
@@ -65,42 +66,29 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
-                var item = await this.loadingUnitsDataService.CreateAsync(new WMS.Data.WebAPI.Contracts.LoadingUnitDetails
+                var loadingUnit = await this.loadingUnitsDataService.CreateAsync(new WMS.Data.WebAPI.Contracts.LoadingUnitCreating
                 {
                     Id = model.Id,
                     Code = model.Code,
                     AbcClassId = model.AbcClassId,
-                    AbcClassDescription = model.AbcClassDescription,
                     CellPositionId = model.CellPositionId,
-                    CellPositionDescription = model.CellPositionDescription,
                     LoadingUnitStatusId = model.LoadingUnitStatusId,
-                    LoadingUnitStatusDescription = model.LoadingUnitStatusDescription,
                     LoadingUnitTypeId = model.LoadingUnitTypeId,
-                    LoadingUnitTypeDescription = model.LoadingUnitTypeDescription,
-                    Width = model.Width,
-                    Length = model.Length,
                     Note = model.Note,
                     IsCellPairingFixed = model.IsCellPairingFixed,
                     ReferenceType = (WMS.Data.WebAPI.Contracts.ReferenceType)model.ReferenceType,
                     Height = model.Height,
                     Weight = model.Weight,
-                    HandlingParametersCorrection = model.HandlingParametersCorrection,
-                    LoadingUnitTypeHasCompartments = model.LoadingUnitTypeHasCompartments,
-                    CreationDate = model.CreationDate,
-                    LastHandlingDate = model.LastHandlingDate,
-                    InventoryDate = model.InventoryDate,
-                    LastPickDate = model.LastPickDate,
-                    LastStoreDate = model.LastStoreDate,
                     InCycleCount = model.InCycleCount,
                     OutCycleCount = model.OutCycleCount,
                     OtherCycleCount = model.OtherCycleCount,
                     CellId = model.CellId,
                     AisleId = model.AisleId,
                     AreaId = model.AreaId,
+                    HandlingParametersCorrection = model.HandlingParametersCorrection,
                 });
 
-                model.Id = item.Id;
-
+                model.Id = loadingUnit.Id;
                 return new OperationResult<LoadingUnitDetails>(true);
             }
             catch (Exception ex)
@@ -131,10 +119,18 @@ namespace Ferretto.Common.BusinessProviders
                     AisleName = l.AisleName,
                     CellFloor = l.CellFloor,
                     CellColumn = l.CellColumn,
-                    CellSide = (Side)l.CellSide,
+                    CellSide = (Side?)l.CellSide,
                     CellNumber = l.CellNumber,
                     CellPositionDescription = l.CellPositionDescription,
                 });
+        }
+
+        public async Task<IEnumerable<Enumeration>> GetAllCellsAsync()
+        {
+            return (await this.cellsDataService.GetAllAsync(null, null, null, null, null))
+                .Select(c => new Enumeration(
+                    c.Id,
+                    $"{c.AreaName} - {c.AisleName} - Cell {c.Number} (Floor {c.Floor}, Column {c.Column}, {c.Side})")); // TODO: localize string
         }
 
         public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
@@ -186,11 +182,18 @@ namespace Ferretto.Common.BusinessProviders
         {
             var loadingUnit = await this.loadingUnitsDataService.GetByIdAsync(id);
 
-            var abcClassChoices = await this.abcClassProvider.GetAllAsync();
-            var cellPositionChoices = await this.cellPositionProvider.GetAllAsync();
-            var loadingUnitStatusChoices = await this.loadingUnitStatusProvider.GetAllAsync();
-            var loadingUnitTypeChoices = await this.loadingUnitTypeProvider.GetAllAsync();
-            var cellChoices = await this.GetCellsByAreaIdAsync(loadingUnit.AreaId);
+            var loadingUnitEnumeration = new LoadingUnitDetails();
+            await this.AddEnumerationsAsync(loadingUnitEnumeration);
+
+            IEnumerable<Enumeration> cellChoices;
+            if (loadingUnit.AreaId.HasValue)
+            {
+                cellChoices = await this.GetCellsByAreaIdAsync(loadingUnit.AreaId.Value);
+            }
+            else
+            {
+                cellChoices = await this.GetAllCellsAsync();
+            }
 
             var l = new LoadingUnitDetails
             {
@@ -226,10 +229,10 @@ namespace Ferretto.Common.BusinessProviders
                 AreaId = loadingUnit.AreaId,
                 CompartmentsCount = loadingUnit.CompartmentsCount,
 
-                AbcClassChoices = abcClassChoices,
-                CellPositionChoices = cellPositionChoices,
-                LoadingUnitStatusChoices = loadingUnitStatusChoices,
-                LoadingUnitTypeChoices = loadingUnitTypeChoices,
+                AbcClassChoices = loadingUnitEnumeration.AbcClassChoices,
+                CellPositionChoices = loadingUnitEnumeration.CellPositionChoices,
+                LoadingUnitStatusChoices = loadingUnitEnumeration.LoadingUnitStatusChoices,
+                LoadingUnitTypeChoices = loadingUnitEnumeration.LoadingUnitTypeChoices,
                 CellChoices = cellChoices
             };
 
@@ -290,6 +293,14 @@ namespace Ferretto.Common.BusinessProviders
                 });
         }
 
+        public async Task<LoadingUnitDetails> GetNewAsync()
+        {
+            var loadingUnitDetails = new LoadingUnitDetails();
+            loadingUnitDetails.Length = 1;
+            await this.AddEnumerationsAsync(loadingUnitDetails);
+            return loadingUnitDetails;
+        }
+
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.loadingUnitsDataService.GetUniqueValuesAsync(propertyName);
@@ -344,6 +355,17 @@ namespace Ferretto.Common.BusinessProviders
             catch (Exception ex)
             {
                 return new OperationResult<LoadingUnitDetails>(ex);
+            }
+        }
+
+        private async Task AddEnumerationsAsync(LoadingUnitDetails loadingUnitDetails)
+        {
+            if (loadingUnitDetails != null)
+            {
+                loadingUnitDetails.AbcClassChoices = await this.abcClassProvider.GetAllAsync();
+                loadingUnitDetails.CellPositionChoices = await this.cellPositionProvider.GetAllAsync();
+                loadingUnitDetails.LoadingUnitStatusChoices = await this.loadingUnitStatusProvider.GetAllAsync();
+                loadingUnitDetails.LoadingUnitTypeChoices = await this.loadingUnitTypeProvider.GetAllAsync();
             }
         }
 
