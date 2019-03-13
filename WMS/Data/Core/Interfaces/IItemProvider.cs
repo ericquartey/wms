@@ -8,7 +8,8 @@ namespace Ferretto.WMS.Data.Core.Interfaces
         IReadAllPagedAsyncProvider<Item, int>,
         IReadSingleAsyncProvider<ItemDetails, int>,
         IUpdateAsyncProvider<ItemDetails, int>,
-        IGetUniqueValuesAsyncProvider
+        IGetUniqueValuesAsyncProvider,
+        IDeleteAsyncProvider<ItemDetails, int>
     {
     }
 }
