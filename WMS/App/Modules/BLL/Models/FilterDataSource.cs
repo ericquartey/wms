@@ -4,7 +4,7 @@ using DevExpress.Data.Linq;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Base;
 
-namespace Ferretto.Common.Modules.BLL.Models
+namespace Ferretto.WMS.App.Modules.BLL
 {
     public class FilterDataSource<TModel, TKey> : EntityInstantFeedbackSource, IFilterDataSource<TModel, TKey>
         where TModel : IModel<TKey>
