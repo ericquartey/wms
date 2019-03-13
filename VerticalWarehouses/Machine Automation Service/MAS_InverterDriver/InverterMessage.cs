@@ -264,11 +264,11 @@ namespace Ferretto.VW.MAS_InverterDriver
             //VALUE 14th byte of control word value represents Heartbeat flag
             if (setBit)
             {
-                this.payload[0] |= 0x40;
+                this.payload[1] |= 0x40;
             }
             else
             {
-                this.payload[0] &= 0xBF;
+                this.payload[1] &= 0xBF;
             }
 
             return this.GetWriteMessage();

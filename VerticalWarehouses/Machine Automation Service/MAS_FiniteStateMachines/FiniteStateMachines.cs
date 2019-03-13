@@ -44,7 +44,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.notifyQueue = new BlockingConcurrentQueue<NotificationMessage>();
 
             this.commadReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
-            this.messageReceiveTask = new Task(async () => await this.MessageReceiveData());
+            this.messageReceiveTask = new Task(() => this.MessageReceiveData());
 
             var machineManagerMessagEvent = this.eventAggregator.GetEvent<CommandEvent>();
             machineManagerMessagEvent.Subscribe(message =>
@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 },
                 ThreadOption.PublisherThread,
                 false,
-                message => message.Destination == MessageActor.FiniteStateMachines);
+                message => message.Destination == MessageActor.FiniteStateMachines || message.Destination == MessageActor.Any);
 
             var notificationMessageEvent = this.eventAggregator.GetEvent<NotificationEvent>();
             notificationMessageEvent.Subscribe(message =>
@@ -62,7 +62,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 },
                 ThreadOption.PublisherThread,
                 false,
-                message => message.Destination == MessageActor.FiniteStateMachines);
+                message => message.Destination == MessageActor.FiniteStateMachines || message.Destination == MessageActor.Any);
         }
 
         #endregion
@@ -76,6 +76,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             try
             {
                 this.commadReceiveTask.Start();
+                this.messageReceiveTask.Start();
             }
             catch (Exception ex)
             {

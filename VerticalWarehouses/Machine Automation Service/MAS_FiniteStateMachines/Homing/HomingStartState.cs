@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         public override void SendNotificationMessage(NotificationMessage message)
         {
-            if (message.Type == MessageType.Homing)
+            if (message.Type == MessageType.SwitchAxis)
             {
                 switch (message.Status)
                 {
