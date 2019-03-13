@@ -98,16 +98,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         private IQueryable<SchedulerRequest> GetAllBase()
         {
             return this.dataContext.SchedulerRequests
-                .Include(r => r.Bay)
-                .Include(r => r.Area)
-                .Include(r => r.Item)
-                .ThenInclude(i => i.MeasureUnit)
-                .Include(r => r.List)
-                .Include(r => r.ListRow)
-                .Include(r => r.LoadingUnit)
-                .Include(r => r.LoadingUnitType)
-                .Include(m => m.MaterialStatus)
-                .Include(m => m.PackageType)
                 .Select(r => new SchedulerRequest
                 {
                     Id = r.Id,

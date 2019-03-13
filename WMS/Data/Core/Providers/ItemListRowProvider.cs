@@ -195,9 +195,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         private IQueryable<ItemListRow> GetAllBase()
         {
             return this.dataContext.ItemListRows
-                .Include(l => l.MaterialStatus)
-                .Include(l => l.Item)
-                .ThenInclude(i => i.MeasureUnit)
                 .Select(l => new ItemListRow
                 {
                     Id = l.Id,
@@ -217,9 +214,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         private IQueryable<ItemListRowDetails> GetAllDetailsBase()
         {
             return this.dataContext.ItemListRows
-                .Include(lr => lr.ItemList)
-                .Include(lr => lr.Item)
-                .ThenInclude(i => i.MeasureUnit)
                 .Select(l => new ItemListRowDetails
                 {
                     Id = l.Id,
