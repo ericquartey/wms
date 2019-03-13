@@ -21,6 +21,7 @@
             </Button.Template>
         </Button>
     </DataTemplate>
+
     <Style x:Shared="False"
            BasedOn="{StaticResource {dxdst:DefaultStyleThemeKey Type=dxe:ComboBoxEdit,
                                                                 ThemeName=Office2016White}}"

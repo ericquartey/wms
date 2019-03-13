@@ -16,6 +16,8 @@ namespace Ferretto.Common.BusinessProviders
 
         Task<IEnumerable<LoadingUnitDetails>> GetByCellIdAsync(int id);
 
+        Task<LoadingUnitDetails> GetNewAsync();
+
         #endregion
     }
 }

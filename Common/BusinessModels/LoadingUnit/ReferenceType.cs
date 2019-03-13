@@ -5,9 +5,6 @@ namespace Ferretto.Common.BusinessModels
 {
     public enum ReferenceType
     {
-        [Display(Name = "")]
-        NotSpecified,
-
         [Display(Name = nameof(BusinessObjects.MonoReference), ResourceType = typeof(BusinessObjects))]
         MonoReference = 'M',
 

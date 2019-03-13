@@ -403,6 +403,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select a value.
+        /// </summary>
+        public static string SelectValue {
+            get {
+                return ResourceManager.GetString("SelectValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show Details.
         /// </summary>
         public static string ShowDetails {
