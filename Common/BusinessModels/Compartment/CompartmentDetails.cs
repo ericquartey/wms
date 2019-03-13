@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Ferretto.Common.Interface;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public sealed class CompartmentDetails : BusinessObject, ICompartment
+    public sealed class CompartmentDetails : BusinessObject, ICompartment,
+        ICanDelete
     {
         #region Fields
 
