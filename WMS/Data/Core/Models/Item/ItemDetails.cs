@@ -1,22 +1,35 @@
 using System;
+using Ferretto.Common.BLL.Interfaces.Models;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class ItemDetails : BaseModel<int>
+    public class ItemDetails : BaseModel<int>,
+        ICanDelete
     {
         #region Fields
 
         private int? averageWeight;
+
         private int? fifoTimePick;
+
         private int? fifoTimeStore;
+
         private int? height;
+
         private int? inventoryTolerance;
+
         private int? length;
+
         private int? pickTolerance;
+
         private int? reorderPoint;
+
         private int? reorderQuantity;
+
         private int? storeTolerance;
+
         private int totalAvailable;
+
         private int? width;
 
         #endregion
@@ -29,6 +42,12 @@ namespace Ferretto.WMS.Data.Core.Models
         {
             get => this.averageWeight;
             set => this.averageWeight = CheckIfStrictlyPositive(value);
+        }
+
+        public bool CanDelete
+        {
+            get => !this.HasCompartmentAssociated && !this.HasItemListRowAssociated
+                && !this.HasMissionAssociated && !this.HasSchedulerRequestAssociated;
         }
 
         public string Code { get; set; }
@@ -51,6 +70,18 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.fifoTimeStore = CheckIfStrictlyPositive(value);
         }
 
+        public bool HasAreaAssociated { get; set; }
+
+        public bool HasCompartmentAssociated { get; set; }
+
+        public bool HasCompartmentTypeAssociated { get; set; }
+
+        public bool HasItemListRowAssociated { get; set; }
+
+        public bool HasMissionAssociated { get; set; }
+
+        public bool HasSchedulerRequestAssociated { get; set; }
+
         public int? Height
         {
             get => this.height;
@@ -71,6 +102,8 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? ItemCategoryId { get; set; }
 
+        public int ItemListRowsCount { get; set; }
+
         public DateTime? LastModificationDate { get; set; }
 
         public DateTime? LastPickDate { get; set; }
@@ -88,6 +121,8 @@ namespace Ferretto.WMS.Data.Core.Models
         public string MeasureUnitDescription { get; set; }
 
         public string MeasureUnitId { get; set; }
+
+        public int MissionsCount { get; set; }
 
         public string Note { get; set; }
 
@@ -108,6 +143,8 @@ namespace Ferretto.WMS.Data.Core.Models
             get => this.reorderQuantity;
             set => this.reorderQuantity = CheckIfStrictlyPositive(value);
         }
+
+        public int SchedulerRequestsCount { get; set; }
 
         public int? StoreTolerance
         {
