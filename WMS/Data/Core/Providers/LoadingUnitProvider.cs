@@ -174,10 +174,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         private IQueryable<LoadingUnit> GetAllBase()
         {
             return this.dataContext.LoadingUnits
-                .Include(l => l.LoadingUnitType)
-                .Include(l => l.LoadingUnitStatus)
-                .Include(l => l.AbcClass)
-                .Include(l => l.CellPosition)
                 .Select(l => new LoadingUnit
                 {
                     Id = l.Id,
@@ -198,13 +194,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         private IQueryable<LoadingUnitDetails> GetAllDetailsBase()
         {
             return this.dataContext.LoadingUnits
-                .Include(l => l.AbcClass)
-                .Include(l => l.CellPosition)
-                .Include(l => l.LoadingUnitStatus)
-                .Include(l => l.LoadingUnitType)
-                .ThenInclude(l => l.LoadingUnitSizeClass)
-                .Include(l => l.Cell)
-                .ThenInclude(c => c.Aisle)
                 .Select(l => new LoadingUnitDetails
                 {
                     Id = l.Id,

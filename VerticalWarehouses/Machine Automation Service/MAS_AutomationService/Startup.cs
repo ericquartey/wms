@@ -128,6 +128,7 @@ namespace Ferretto.VW.MAS_AutomationService
             }
             else
             {
+                //services.AddSingleton<ISocketTransport, AsyncSocketTransport>();
                 services.AddSingleton<ISocketTransport, SocketTransport>();
             }
         }

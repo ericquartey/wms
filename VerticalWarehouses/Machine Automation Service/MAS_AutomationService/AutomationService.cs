@@ -4,16 +4,15 @@ using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
+using Ferretto.VW.MAS_DataLayer;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
-using Prism.Events;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Microsoft.Extensions.Options;
-using Ferretto.VW.MAS_DataLayer;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
@@ -49,10 +48,9 @@ namespace Ferretto.VW.MAS_AutomationService
             this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
             this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
 
-            this.commadReceiveTask = new Task(() => CommandReceiveTaskFunction());
+            this.commadReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
 
             this.InitializeMethodSubscription();
-            //this.StartTestCycles();
         }
 
         #endregion
@@ -131,13 +129,15 @@ namespace Ferretto.VW.MAS_AutomationService
                     case MessageType.HorizontalHoming:
                         break;
                 }
-            } while (!stoppingToken.IsCancellationRequested);
+            } while (!this.stoppingToken.IsCancellationRequested);
             return Task.CompletedTask;
         }
 
         private void InitializeMethodSubscription()
         {
             var webApiMessagEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            var finiteStateMachineMessageEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+
             webApiMessagEvent.Subscribe(message =>
             {
                 this.messageQueue.Enqueue(message);
@@ -147,7 +147,6 @@ namespace Ferretto.VW.MAS_AutomationService
                 false,
                 message => message.Destination == MessageActor.AutomationService);
 
-            var finiteStateMachineMessageEvent = this.eventAggregator.GetEvent<NotificationEvent>();
             finiteStateMachineMessageEvent.Subscribe(message =>
             {
                 if (message.Data is ISensorsChangedMessageData)
@@ -157,6 +156,22 @@ namespace Ferretto.VW.MAS_AutomationService
             }, ThreadOption.PublisherThread,
             false,
             (message) => message.Source == MessageActor.FiniteStateMachines && message.Type == MessageType.SensorsChanged);
+
+            finiteStateMachineMessageEvent.Subscribe(message =>
+            {
+                try
+                {
+                    var dataMessage = MessageParser.GetActionUpdateData(message);
+                    this.hub.Clients.All.OnActionUpdateToAllConnectedClients(dataMessage);
+                }
+                catch
+                {
+                    throw;
+                }
+            },
+            ThreadOption.PublisherThread,
+            false,
+            (message) => message.Source == MessageActor.FiniteStateMachines && message.Destination == MessageActor.AutomationService);
         }
 
         private void ProcessAddMissionMessage(CommandMessage message)

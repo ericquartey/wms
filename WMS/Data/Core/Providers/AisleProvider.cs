@@ -30,7 +30,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<Aisle>> GetAllAsync()
         {
             return await this.dataContext.Aisles
-                       .Include(a => a.Area)
                        .Select(a => new Aisle
                        {
                            Id = a.Id,
@@ -49,7 +48,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<Aisle> GetByIdAsync(int id)
         {
             return await this.dataContext.Aisles
-                       .Include(a => a.Area)
                        .Select(a => new Aisle
                        {
                            Id = a.Id,

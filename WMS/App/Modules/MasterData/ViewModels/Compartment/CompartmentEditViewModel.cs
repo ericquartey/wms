@@ -133,7 +133,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool CanExecuteDeleteCommand()
         {
-            return this.Model != null;
+            return this.Model != null && this.Model.CanDelete;
         }
 
         private async Task ExecuteDeleteCommandAsync()

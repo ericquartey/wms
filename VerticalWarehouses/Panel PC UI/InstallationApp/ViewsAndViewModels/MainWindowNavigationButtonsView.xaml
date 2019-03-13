@@ -46,7 +46,7 @@
                         IsEnabled="{Binding IsInstallationStateButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
-                <Button Command="{Binding DataContext.SSNavigationButtonsButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                <Button Command="{Binding DataContext.SsNavigationButtonsButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.SensorsState}"
                         IsEnabled="{Binding IsSensorsStateButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />

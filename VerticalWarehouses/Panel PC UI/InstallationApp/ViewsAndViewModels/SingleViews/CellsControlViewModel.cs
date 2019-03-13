@@ -3,7 +3,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class CellsControlViewModel : BindableBase, IViewModel, ICellsControlViewModel
+    public class CellsControlViewModel : BindableBase, ICellsControlViewModel
     {
         #region Fields
 

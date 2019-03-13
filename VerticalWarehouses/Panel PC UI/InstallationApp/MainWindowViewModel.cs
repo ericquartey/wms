@@ -31,8 +31,6 @@ namespace Ferretto.VW.InstallationApp
 
         private BindableBase exitViewButtonRegionCurrentViewModel;
 
-        private string internalMessages;
-
         private bool isExitViewButtonRegionExpanded;
 
         private Visibility isNavigationButtonRegionExpanded = Visibility.Visible;
@@ -42,8 +40,6 @@ namespace Ferretto.VW.InstallationApp
         private bool machineModeSelectionBool;
 
         private bool machineOnMarchSelectionBool;
-
-        private string messageFromServer;
 
         private BindableBase navigationRegionCurrentViewModel;
 
@@ -71,11 +67,24 @@ namespace Ferretto.VW.InstallationApp
 
         #region Properties
 
+        public ICommand BackToMainWindowNavigationButtonsViewButtonCommand => this.backToMainWindowNavigationButtonsViewCommand ?? (this.backToMainWindowNavigationButtonsViewCommand = new DelegateCommand(() =>
+        {
+            this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
+            this.ContentRegionCurrentViewModel = (IdleViewModel)this.container.Resolve<IIdleViewModel>();
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.ExitView));
+        }));
+
+        public ICommand BackToVWAPPCommand => this.backToVWAPPCommand ?? (this.backToVWAPPCommand = new DelegateCommand(() =>
+                {
+                    this.IsPopupOpen = false;
+                    this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.BackToVWApp));
+                    ClickedOnMachineModeEventHandler = null;
+                    ClickedOnMachineOnMarchEventHandler = null;
+                }));
+
         public BindableBase ContentRegionCurrentViewModel { get => this.contentRegionCurrentViewModel; set => this.SetProperty(ref this.contentRegionCurrentViewModel, value); }
 
         public BindableBase ExitViewButtonRegionCurrentViewModel { get => this.exitViewButtonRegionCurrentViewModel; set => this.SetProperty(ref this.exitViewButtonRegionCurrentViewModel, value); }
-
-        public string InternalMessages { get => this.internalMessages; set => this.internalMessages = value; }
 
         public bool IsExitViewButtonRegionExpanded { get => this.isExitViewButtonRegionExpanded; set => this.SetProperty(ref this.isExitViewButtonRegionExpanded, value); }
 
@@ -83,15 +92,23 @@ namespace Ferretto.VW.InstallationApp
 
         public bool IsPopupOpen { get => this.isPopupOpen; set => this.SetProperty(ref this.isPopupOpen, value); }
 
+        public ICommand MachineModeCustomCommand => this.machineModeCustomCommand ?? (this.machineModeCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineModeEvent()));
+
         public bool MachineModeSelectionBool { get => this.machineModeSelectionBool; set => this.SetProperty(ref this.machineModeSelectionBool, value); }
 
-        public bool MachineOnMarchSelectionBool { get => this.machineOnMarchSelectionBool; set => this.SetProperty(ref this.machineOnMarchSelectionBool, value); }
+        public ICommand MachineOnMarchCustomCommand => this.machineOnMarchCustomCommand ?? (this.machineOnMarchCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineOnMarchEvent()));
 
-        public string MessageFromServer { get => this.messageFromServer; set => this.messageFromServer = value; }
+        public bool MachineOnMarchSelectionBool { get => this.machineOnMarchSelectionBool; set => this.SetProperty(ref this.machineOnMarchSelectionBool, value); }
 
         public BindableBase NavigationRegionCurrentViewModel { get => this.navigationRegionCurrentViewModel; set => this.SetProperty(ref this.navigationRegionCurrentViewModel, value); }
 
         public ICommand OpenClosePopupCommand => this.openClosePopupCommand ?? (this.openClosePopupCommand = new DelegateCommand(() => this.IsPopupOpen = !this.IsPopupOpen));
+
+        public ICommand OpenHelpWindow => this.openHelpWindow ?? (this.openHelpWindow = new DelegateCommand(() =>
+        {
+            this.helpWindow.Show();
+            this.helpWindow.HelpContentRegion.Content = this.contentRegionCurrentViewModel;
+        }));
 
         #endregion
 

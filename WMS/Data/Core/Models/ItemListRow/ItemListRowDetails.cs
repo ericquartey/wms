@@ -13,6 +13,12 @@ namespace Ferretto.WMS.Data.Core.Models
                    this.ItemListRowStatus == ItemListRowStatus.Waiting;
         }
 
+        public bool CanDelete
+        {
+            get => this.ItemListRowStatus == ItemListRowStatus.Waiting
+                && !this.HasSchedulerRequestAssociated;
+        }
+
         public string Code { get; set; }
 
         public DateTime? CompletionDate { get; set; }
@@ -20,6 +26,8 @@ namespace Ferretto.WMS.Data.Core.Models
         public DateTime CreationDate { get; set; }
 
         public int DispatchedQuantity { get; set; }
+
+        public bool HasSchedulerRequestAssociated { get; set; }
 
         public string ItemDescription { get; set; }
 

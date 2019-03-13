@@ -10,7 +10,8 @@ namespace Ferretto.WMS.Data.Core.Interfaces
         IReadAllPagedAsyncProvider<ItemListRow, int>,
         IReadSingleAsyncProvider<ItemListRowDetails, int>,
         IUpdateAsyncProvider<ItemListRowDetails, int>,
-        IGetUniqueValuesAsyncProvider
+        IGetUniqueValuesAsyncProvider,
+        IDeleteAsyncProvider<ItemListRowDetails, int>
     {
         #region Methods
 

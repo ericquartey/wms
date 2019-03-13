@@ -22,10 +22,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalMovingDrawer
 
         #region Methods
 
-        public override void ProcessMessage(InverterMessage message)
+        public override bool ProcessMessage(InverterMessage message)
         {
             if (message.IsError)
                 this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.movingDrawer));
+
+            return false;
         }
 
         #endregion
