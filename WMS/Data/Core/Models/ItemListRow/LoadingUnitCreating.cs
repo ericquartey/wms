@@ -1,8 +1,10 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class LoadingUnitDetails : BaseModel<int>
+    public class LoadingUnitCreating : BaseModel<int>
     {
         #region Fields
 
@@ -10,17 +12,11 @@ namespace Ferretto.WMS.Data.Core.Models
 
         private int height;
 
-        private int length;
-
         private int weight;
-
-        private int width;
 
         #endregion
 
         #region Properties
-
-        public string AbcClassDescription { get; set; }
 
         public string AbcClassId { get; set; }
 
@@ -30,15 +26,11 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? CellId { get; set; }
 
-        public string CellPositionDescription { get; set; }
-
         public int? CellPositionId { get; set; }
 
         public string Code { get; set; }
 
         public int CompartmentsCount { get; set; }
-
-        public DateTime CreationDate { get; set; }
 
         public int? HandlingParametersCorrection
         {
@@ -54,31 +46,9 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int InCycleCount { get; set; }
 
-        public DateTime? InventoryDate { get; set; }
-
         public bool IsCellPairingFixed { get; set; }
 
-        public DateTime? LastHandlingDate { get; set; }
-
-        public DateTime? LastModificationDate { get; set; }
-
-        public DateTime? LastPickDate { get; set; }
-
-        public DateTime? LastStoreDate { get; set; }
-
-        public int Length
-        {
-            get => this.length;
-            set => this.length = CheckIfStrictlyPositive(value);
-        }
-
-        public string LoadingUnitStatusDescription { get; set; }
-
         public string LoadingUnitStatusId { get; set; }
-
-        public string LoadingUnitTypeDescription { get; set; }
-
-        public bool LoadingUnitTypeHasCompartments { get; set; }
 
         public int LoadingUnitTypeId { get; set; }
 
@@ -94,12 +64,6 @@ namespace Ferretto.WMS.Data.Core.Models
         {
             get => this.weight;
             set => this.weight = CheckIfPositive(value);
-        }
-
-        public int Width
-        {
-            get => this.width;
-            set => this.width = CheckIfStrictlyPositive(value);
         }
 
         #endregion

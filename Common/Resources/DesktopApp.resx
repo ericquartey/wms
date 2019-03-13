@@ -220,6 +220,10 @@
   <data name="CustomFilter" xml:space="preserve">
     <value>Custom Filter</value>
   </data>
+  <data name="GridRowCounter" xml:space="preserve">
+    <value>Row Count={0}</value>
+    <comment>Grid Row Counter Format</comment>
+  </data>
   <data name="AreYouSureToDeleteGeneric" xml:space="preserve">
     <value>Are you sure you want to delete this {0}?</value>
   </data>
