@@ -5,7 +5,7 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
 
-namespace Ferretto.Common.Modules.BLL.Models
+namespace Ferretto.WMS.App.Modules.BLL
 {
     public class FilterDataSource<TModel, TKey> : EntityInstantFeedbackSource, IFilterDataSource<TModel, TKey>
         where TModel : IModel<TKey>

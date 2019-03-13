@@ -19,6 +19,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
 
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<IItemsDataService>(baseUrl));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IBaysDataService>(baseUrl));
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<IMissionsDataService>(baseUrl));
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<ISchedulerRequestsDataService>(baseUrl));
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<IItemListsDataService>(baseUrl));

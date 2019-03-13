@@ -17,8 +17,6 @@ namespace Ferretto.WMS.Scheduler.Core.Interfaces
 
         Task<IEnumerable<SchedulerRequest>> GetRequestsToProcessAsync();
 
-        Task<SchedulerRequest> WithdrawAsync(SchedulerRequest request);
-
         #endregion
     }
 }
