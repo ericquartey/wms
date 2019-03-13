@@ -48,7 +48,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(200, Type = typeof(Mission))]
         [ProducesResponseType(404)]
         [HttpPost("{id}/abort")]
-        public Task<ActionResult<Mission>> Abort(int id)
+        public Task<ActionResult<Mission>> AbortAsync(int id)
         {
             throw new System.NotImplementedException();
         }
