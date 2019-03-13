@@ -25,8 +25,7 @@ namespace Ferretto.VW.MAS_IODriver.Interface
         /// <summary>
         /// Connect to ioClient
         /// </summary>
-        /// <exception cref="IoDriverException">Invalid hostAddress and port: remote endpoint not connected</exception>
-        /// <exception cref="IoDriverException">Invalid IpMaster: remote endpoint not connected</exception>
+        /// <exception cref="IoDriverException">Invalid hostAddress and port: remote endpoint not connected, Invalid IpMaster: remote endpoint not connected</exception>
         /// <returns></returns>
         bool Connect();
 
@@ -39,7 +38,6 @@ namespace Ferretto.VW.MAS_IODriver.Interface
         /// Asynchronously Read Inputs parameters from remote host device
         /// </summary>
         /// <exception cref="IoDriverException">Invalid Read request: remote endpoint not connected</exception>
-        /// <exception cref="IoDriverException">Error reading data from Transport Stream</exception>
         /// <returns></returns>
         Task<bool[]> ReadAsync();
 
@@ -48,7 +46,6 @@ namespace Ferretto.VW.MAS_IODriver.Interface
         /// </summary>
         /// <param name="outputs">bool array outputs of write method </param>
         /// <exception cref="IoDriverException">Invalid Write request: remote endpoint not connected</exception>
-        /// <exception cref="IoDriverException">Error writing data to Transport Stream</exception>
         /// <returns></returns>
         Task WriteAsync(bool[] outputs);
 

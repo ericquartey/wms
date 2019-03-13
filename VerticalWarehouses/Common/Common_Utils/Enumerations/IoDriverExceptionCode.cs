@@ -12,9 +12,5 @@ namespace Ferretto.VW.Common_Utils.Enumerations
         GetIpMasterFailed,
 
         IoClientCreationFailed,
-
-        NetworkStreamReadFailure,
-
-        NetworkStreamWriteFailure
     }
 }

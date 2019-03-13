@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Exceptions;
@@ -13,8 +12,6 @@ namespace Ferretto.VW.MAS_IODriver
     public class ModbusTransport : IModbusTransport
     {
         #region Fields
-
-        private readonly byte[] receiveBuffer = new byte[1024];
 
         private const ushort InputsAddress = 0;
 
@@ -30,7 +27,6 @@ namespace Ferretto.VW.MAS_IODriver
 
         private ModbusIpMaster ioMaster;
 
-        private NetworkStream transportStream;
 
         private int port;
 
@@ -70,7 +66,7 @@ namespace Ferretto.VW.MAS_IODriver
 
             catch(Exception ex)
             {
-                throw new IoDriverException("Invalid hostAddress and port: remote endpoint not connected.", IoDriverExceptionCode.IoClientCreationFailed);
+                throw new IoDriverException("Invalid hostAddress and port: remote endpoint not connected.", IoDriverExceptionCode.IoClientCreationFailed, ex);
             }
 
             try
@@ -80,7 +76,7 @@ namespace Ferretto.VW.MAS_IODriver
 
             catch (Exception ex)
             {
-                throw new IoDriverException("Invalid IpMaster: remote endpoint not connected.", IoDriverExceptionCode.GetIpMasterFailed);
+                throw new IoDriverException("Invalid IpMaster: remote endpoint not connected.", IoDriverExceptionCode.GetIpMasterFailed, ex);
             }
 
 
@@ -101,51 +97,26 @@ namespace Ferretto.VW.MAS_IODriver
         }
 
         /// <inheritdoc />
-        public async Task<bool[]> ReadAsync(CancellationToken stoppingToken)
+        public async Task<bool[]> ReadAsync()
         {
             if (this.ioClient.Connected)
             {
-                /*return await*/ this.ioMaster.ReadInputsAsync(InputsAddress, InputsNomber);
+                return await this.ioMaster.ReadInputsAsync(InputsAddress, InputsNomber);
             }
-
-            else
-            {
-                throw new IoDriverException("Invalid Read request: remote endpoint not connected.", IoDriverExceptionCode.CreationFailure);
-            }             
-
-            try 
-            {
-                await this.transportStream.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer.Length, stoppingToken);
-            }
-            catch (Exception ex)
-            {
-                
-
-                throw new IoDriverException("Error reading data from Transport Stream", IoDriverExceptionCode.NetworkStreamReadFailure, ex);
-            }
-
-            return this.receiveBuffer;
+            
+            throw new IoDriverException("Invalid Read request: remote endpoint not connected.", IoDriverExceptionCode.CreationFailure);
         }
 
         /// <inheritdoc />
-        public async Task WriteAsync(bool[] outputs, CancellationToken stoppingToken)
+        public async Task WriteAsync(bool[] outputs)
         {
             if (this.ioClient.Connected)
             {
-                /*return await*/ this.ioMaster.WriteMultipleCoilsAsync(OutputAddress, outputs);
+                await this.ioMaster.WriteMultipleCoilsAsync(OutputAddress, outputs);
             }
             else
             {
                 throw new IoDriverException("Invalid Write request: remote endpoint not connected.", IoDriverExceptionCode.CreationFailure);
-            }
-
-            try
-            {
-                await this.transportStream.WriteAsync(outputs, 0, outputs.Length, stoppingToken);
-            }
-            catch (Exception ex)
-            {
-                throw new IoDriverException("Error writing data to Transport Stream", IoDriverExceptionCode.NetworkStreamWriteFailure, ex);
             }
         }
 
