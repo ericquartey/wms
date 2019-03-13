@@ -34,9 +34,10 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         #region Methods
 
-        public override void ProcessMessage(InverterMessage message)
+        public override bool ProcessMessage(InverterMessage message)
         {
             Console.WriteLine("ErrorState-ProcessMessage");
+            return false;
         }
 
         #endregion

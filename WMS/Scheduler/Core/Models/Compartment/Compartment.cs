@@ -24,7 +24,7 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public int Availability => this.stock - this.reservedForPick + this.reservedToStore;
 
-        public int CellId { get; set; }
+        public int? CellId { get; set; }
 
         public int? FifoTime
         {

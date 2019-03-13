@@ -220,4 +220,8 @@
   <data name="CustomFilter" xml:space="preserve">
     <value>Custom Filter</value>
   </data>
+  <data name="GridRowCounter" xml:space="preserve">
+    <value>Row Count={0}</value>
+    <comment>Grid Row Counter Format</comment>
+  </data>
 </root>

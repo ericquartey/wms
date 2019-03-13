@@ -6,7 +6,7 @@ using Ferretto.WMS.Data.Core.Models;
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
     public interface ILoadingUnitProvider :
-        ICreateAsyncProvider<LoadingUnitDetails, int>,
+        ICreateAsyncProvider<LoadingUnitCreating, int>,
         IReadAllPagedAsyncProvider<LoadingUnit, int>,
         IReadSingleAsyncProvider<LoadingUnitDetails, int>,
         IUpdateAsyncProvider<LoadingUnitDetails, int>,
@@ -15,6 +15,8 @@ namespace Ferretto.WMS.Data.Core.Interfaces
         #region Methods
 
         Task<IEnumerable<LoadingUnitDetails>> GetByCellIdAsync(int id);
+
+        Task<LoadingUnitSize> GetSizeByTypeIdAsync(int typeId);
 
         #endregion
     }

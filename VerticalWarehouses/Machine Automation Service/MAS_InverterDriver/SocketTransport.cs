@@ -51,7 +51,7 @@ namespace Ferretto.VW.InverterDriver
         }
 
         /// <inheritdoc />
-        public async Task<bool> ConnectAsync()
+        public async Task ConnectAsync()
         {
             if (this.inverterAddress == null)
                 throw new ArgumentNullException(nameof(this.inverterAddress),
@@ -105,16 +105,14 @@ namespace Ferretto.VW.InverterDriver
                 throw new InverterDriverException("Failed to retrieve socket communication stream",
                     InverterDriverExceptionCode.GetNetworkStreamFailed, ex);
             }
-
-            return this.transportClient?.Connected ?? false;
         }
 
         /// <inheritdoc />
-        public void Disconnect(int delay)
+        public void Disconnect()
         {
             if (!this.transportClient?.Connected ?? false) return;
 
-            this.transportStream?.Close(delay);
+            this.transportStream?.Close();
             this.transportClient?.Close();
 
             this.Dispose(true);
@@ -139,7 +137,7 @@ namespace Ferretto.VW.InverterDriver
 
             try
             {
-                await this.transportStream.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer.Length, stoppingToken);
+                var readBytes = await this.transportStream.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer.Length, stoppingToken);
             }
             catch (Exception ex)
             {
@@ -151,7 +149,7 @@ namespace Ferretto.VW.InverterDriver
         }
 
         /// <inheritdoc />
-        public async Task WriteAsync(byte[] inverterMessage, CancellationToken stoppingToken)
+        public async ValueTask<int> WriteAsync(byte[] inverterMessage, CancellationToken stoppingToken)
         {
             if (this.transportStream == null)
                 throw new InverterDriverException("Transport Stream is null",
@@ -170,6 +168,8 @@ namespace Ferretto.VW.InverterDriver
                 throw new InverterDriverException("Error writing data to Transport Stream",
                     InverterDriverExceptionCode.NetworkStreamWriteFailure, ex);
             }
+
+            return 0;
         }
 
         protected virtual void Dispose(bool disposing)

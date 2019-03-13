@@ -7,23 +7,30 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
     public class HomingStartState : StateBase
     {
+        #region Fields
+
+        private readonly Axis axisToCalibrate;
+
+        #endregion
+
         #region Constructors
 
-        public HomingStartState(IStateMachine parentMachine)
+        public HomingStartState(IStateMachine parentMachine, Axis axisToCalibrate)
         {
             this.parentStateMachine = parentMachine;
+            this.axisToCalibrate = axisToCalibrate;
 
             var calibrateData = ((IHomingStateMachine)this.parentStateMachine).CalibrateData;
 
-            //TEMP send a message to start the homing (to inverter and other components)
-            var calibrateAxisData = new CalibrateAxisMessageData(calibrateData.AxisToCalibrate);
-            var newMessage = new CommandMessage(calibrateAxisData,
-                "Homing State Started",
-                MessageActor.InverterDriver,
+            // TEMP send a message to switch axis (to IODriver)
+            var switchAxisData = new SwitchAxisMessageData(this.axisToCalibrate);
+            var message = new CommandMessage(switchAxisData,
+                string.Format("Switch Axis {0}", this.axisToCalibrate),
+                MessageActor.IODriver,
                 MessageActor.FiniteStateMachines,
-                MessageType.CalibrateAxis, //TEMP or MessageType.Homing
+                MessageType.SwitchAxis,
                 MessageVerbosity.Info);
-            this.parentStateMachine.PublishCommandMessage(newMessage);
+            this.parentStateMachine.PublishCommandMessage(message);
         }
 
         #endregion
@@ -74,20 +81,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         private void ProcessEndHoming(NotificationMessage message)
         {
-            //TEMP The homing operation has been done
-            var newMessage = new CommandMessage(null,
-                "End Homing",
-                MessageActor.InverterDriver,
-                MessageActor.FiniteStateMachines,
-                MessageType.Stop,
-                MessageVerbosity.Info);
-
-            this.parentStateMachine.ChangeState(new HomingEndState(this.parentStateMachine), null);
+            //TEMP Change to switch axis end state (the operation of switching axis has been done)
+            this.parentStateMachine.ChangeState(new HomingSwitchAxisDoneState(this.parentStateMachine, this.axisToCalibrate));
         }
 
         private void ProcessErrorHoming(NotificationMessage message)
         {
-            this.parentStateMachine.ChangeState(new HomingErrorState(this.parentStateMachine), null);
+            this.parentStateMachine.ChangeState(new HomingErrorState(this.parentStateMachine));
         }
 
         private void ProcessStopHoming(CommandMessage message)
@@ -100,7 +100,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 MessageType.Stop,
                 MessageVerbosity.Info);
 
-            this.parentStateMachine.ChangeState(new HomingEndState(this.parentStateMachine), null);
+            ((IHomingStateMachine)this.parentStateMachine).IsStopRequested = true;
+            //TEMP Change to homing end state (a request of stop operation has been made)
+            this.parentStateMachine.ChangeState(new HomingEndState(this.parentStateMachine));
         }
 
         #endregion

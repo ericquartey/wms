@@ -62,7 +62,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 },
                 ThreadOption.PublisherThread,
                 false,
-                message => message.Destination == MessageActor.FiniteStateMachines || message.Destination == MessageActor.Any);
+                message => message.Destination == MessageActor.FiniteStateMachines);
         }
 
         #endregion

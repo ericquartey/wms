@@ -32,8 +32,6 @@ namespace Ferretto.Common.Controls
 
         private string token;
 
-        private IExtensionDataEntityViewModel wmsViewModel;
-
         #endregion
 
         #region Properties
@@ -107,8 +105,6 @@ namespace Ferretto.Common.Controls
             {
                 var wmsView = wmsViews.First();
                 this.token = wmsView.Token;
-                var wmsViewViewModel = ((INavigableView)wmsView).DataContext as INavigableViewModel;
-                this.wmsViewModel = wmsViewViewModel as IExtensionDataEntityViewModel;
                 this.SelectedItem = -1;
                 this.Loaded -= this.WmsGridControl_Loaded;
             }

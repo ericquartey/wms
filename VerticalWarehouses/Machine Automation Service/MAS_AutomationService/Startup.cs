@@ -2,7 +2,6 @@
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_FiniteStateMachines;
-using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_IODriver;
 using Ferretto.VW.MAS_IODriver.Interface;
@@ -82,6 +81,13 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSingleton<IHostedService, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
+            services.AddSingleton<IDataLayerCellManagment, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<IDataLayerValueManagment, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<ISocketTransport, SocketTransport>();
             this.RegisterSocketTransport(services);
 
             this.RegisterModbusTransport(services);
@@ -119,6 +125,7 @@ namespace Ferretto.VW.MAS_AutomationService
             }
             else
             {
+                //services.AddSingleton<ISocketTransport, AsyncSocketTransport>();
                 services.AddSingleton<ISocketTransport, SocketTransport>();
             }
         }

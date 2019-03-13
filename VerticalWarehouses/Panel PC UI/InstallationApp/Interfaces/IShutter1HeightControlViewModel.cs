@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public interface IShutter1HeightControlViewModel
+    public interface IShutter1HeightControlViewModel : IViewModel
     {
     }
 }

@@ -1,10 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-      <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
-      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-
+    <TargetFramework>net471</TargetFramework>
+    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -24,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\WMS\Scheduler\Core\Ferretto.WMS.Scheduler.Core.csproj" />
     <ProjectReference Include="..\BusinessProviders\Ferretto.Common.BusinessProviders.csproj" />
   </ItemGroup>
 </Project>
