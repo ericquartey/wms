@@ -18,7 +18,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         #region Properties
 
-        public string Description { get; private set; }
+        public string Description { get; set; }
 
         public T Entity { get; private set; }
 
