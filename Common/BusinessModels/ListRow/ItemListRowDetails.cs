@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.Interface;
+using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.Common.BusinessModels.Interfaces;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels

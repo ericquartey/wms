@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Windows;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.Editors;
-using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.Controls
