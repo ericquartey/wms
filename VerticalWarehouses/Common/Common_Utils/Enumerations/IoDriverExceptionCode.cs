@@ -7,6 +7,14 @@ namespace Ferretto.VW.Common_Utils.Enumerations
     {
         CreationFailure = 1,
 
-        DeviceNotConnected
+        DeviceNotConnected,
+
+        GetIpMasterFailed,
+
+        IoClientCreationFailed,
+
+        NetworkStreamReadFailure,
+
+        NetworkStreamWriteFailure
     }
 }
