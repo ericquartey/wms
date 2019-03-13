@@ -45,21 +45,28 @@
                        HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
 
+            <wms:ActionBarItem Command="{Binding ListRowExecuteCommand}"
+                               Content="{x:Static res:MasterData.ItemListRowExecute}"
+                               CustomGlyphSize="24,24"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_play_arrow_black_24dp.png"
+                               GlyphSize="Custom" />
 
             <wms:ActionBarItem Command="{Binding SaveCommand}"
                                Content="{x:Static res:General.Save}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_save_black_24dp.png"
                                GlyphSize="Custom" />
+
             <wms:ActionBarItem Command="{Binding RevertCommand}"
                                Content="{x:Static res:General.Revert}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_undo_black_24dp.png"
                                GlyphSize="Custom" />
-            <wms:ActionBarItem Command="{Binding ListRowExecuteCommand}"
-                               Content="{x:Static res:MasterData.ItemListRowExecute}"
+
+            <wms:ActionBarItem Command="{Binding DeleteCommand}"
+                               Content="{x:Static res:General.Delete}"
                                CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_play_arrow_black_24dp.png"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_delete_black_24dp.png"
                                GlyphSize="Custom" />
 
             <wms:ActionBarItem Command="{Binding RefreshCommand}"
