@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public class ChangeDetector<T> : IDisposable
+    public sealed class ChangeDetector<T> : IDisposable
         where T : BusinessObject, ICloneable, INotifyPropertyChanged
     {
         #region Fields

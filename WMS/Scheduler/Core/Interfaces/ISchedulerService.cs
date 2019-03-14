@@ -17,8 +17,6 @@ namespace Ferretto.WMS.Scheduler.Core.Interfaces
 
         Task<IOperationResult<Mission>> ExecuteMissionAsync(int id);
 
-        Task ProcessPendingRequestsAsync();
-
         Task<SchedulerRequest> WithdrawItemAsync(SchedulerRequest request);
 
         #endregion

@@ -16,7 +16,7 @@
       "defaultPropertyNameHandling": "Default",
       "defaultReferenceTypeNullHandling": "Null",
       "defaultEnumHandling": "Integer",
-      "flattenInheritanceHierarchy": false,
+      "flattenInheritanceHierarchy": true,
       "generateKnownTypes": true,
       "generateXmlObjects": false,
       "generateAbstractProperties": false,
