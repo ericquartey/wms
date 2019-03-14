@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
 using DevExpress.Data.Filtering;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces.Models;
@@ -117,7 +119,13 @@ namespace Ferretto.Common.Controls
 
         public override void LoadRelatedData()
         {
-            (this.dataSource as InfiniteAsyncSource)?.RefreshRows();
+            Application.Current.Dispatcher.BeginInvoke(
+                DispatcherPriority.Normal,
+                new Action(() =>
+                {
+                    (this.dataSource as InfiniteAsyncSource)?.RefreshRows();
+                    (this.dataSource as InfiniteAsyncSource)?.UpdateSummaries();
+                }));
         }
 
         public override async Task UpdateFilterTilesCountsAsync()
