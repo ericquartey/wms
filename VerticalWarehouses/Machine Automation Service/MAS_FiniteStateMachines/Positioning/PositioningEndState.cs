@@ -54,12 +54,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #region Methods
 
-        public override void SendCommandMessage(CommandMessage message)
+        public override void ProcessCommandMessage(CommandMessage message)
         {
             throw new NotImplementedException();
         }
 
-        public override void SendNotificationMessage(NotificationMessage message)
+        public override void ProcessNotificationMessage(NotificationMessage message)
         {
             if (message.Type == MessageType.Positioning && message.Status == MessageStatus.OperationError)
             {

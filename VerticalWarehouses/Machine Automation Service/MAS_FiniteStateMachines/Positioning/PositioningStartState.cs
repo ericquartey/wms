@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #region Methods
 
-        public override void SendCommandMessage(CommandMessage message)
+        public override void ProcessCommandMessage(CommandMessage message)
         {
             switch (message.Type)
             {
@@ -55,7 +55,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             }
         }
 
-        public override void SendNotificationMessage(NotificationMessage message)
+        public override void ProcessNotificationMessage(NotificationMessage message)
         {
             if (message.Type == MessageType.Positioning)
             {

@@ -48,6 +48,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Methods
 
+        /// <inheritdoc/>
         public void Configure(IPAddress hostAddress, int port)
         {
             this.hostAddress = hostAddress;

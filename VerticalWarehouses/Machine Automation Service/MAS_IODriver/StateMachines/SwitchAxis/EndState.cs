@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         public EndState(Axis axisToSwitchOn, IIoStateMachine parentStateMachine)
         {
-            Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - EndState:Ctor");
+            Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - MAS_IODriver:EndState:Ctor");
             this.parentStateMachine = parentStateMachine;
 
             SwitchAxisMessageData messageData = new SwitchAxisMessageData(axisToSwitchOn);
