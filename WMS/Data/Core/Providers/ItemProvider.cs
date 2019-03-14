@@ -77,10 +77,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return new SuccessOperationResult<ItemDetails>(model);
         }
 
-#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
-
         public async Task<IOperationResult<ItemDetails>> DeleteAsync(int id)
-#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
         {
             var existingModel = this.dataContext.Items.Find(id);
             if (existingModel == null)
@@ -91,59 +88,14 @@ namespace Ferretto.WMS.Data.Core.Providers
             var item = await this.GetByIdAsync(id);
             if (item.CanDelete)
             {
-                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-                {
-                    if (item.HasAreaAssociated)
-                    {
-                        var area = await this.dataContext.ItemsAreas
-                            .Where(a => a.ItemId == item.Id)
-                            .ToListAsync();
-                        this.dataContext.RemoveRange(area);
-                    }
-
-                    if (item.HasCompartmentTypeAssociated)
-                    {
-                        var compartmentType = await this.dataContext.ItemsCompartmentTypes
-                            .Where(t => t.ItemId == item.Id)
-                            .ToListAsync();
-                        this.dataContext.RemoveRange(compartmentType);
-                    }
-
-                    this.dataContext.Remove(existingModel);
-                    await this.dataContext.SaveChangesAsync();
-                    scope.Complete();
-
-                    return new SuccessOperationResult<ItemDetails>();
-                }
+                return await this.DeleteItemWithRelatedDataAsync(item, existingModel);
             }
             else
             {
-                var entity = new List<string>();
-                if (item.HasCompartmentAssociated)
-                {
-                    entity.Add($"{Common.Resources.BusinessObjects.Compartment} [{item.CompartmentsCount}]");
-                }
-
-                if (item.HasItemListRowAssociated)
-                {
-                    entity.Add($"{Common.Resources.BusinessObjects.ItemListRow} [{item.ItemListRowsCount}]");
-                }
-
-                if (item.HasMissionAssociated)
-                {
-                    entity.Add($"{Common.Resources.BusinessObjects.Mission} [{item.MissionsCount}]");
-                }
-
-                if (item.HasSchedulerRequestAssociated)
-                {
-                    entity.Add($"{Common.Resources.BusinessObjects.SchedulerRequest} [{item.SchedulerRequestsCount}]");
-                }
-
+                var description = GetConstraintCanDeleteItem(item);
                 return new UnprocessableEntityOperationResult<ItemDetails>
                 {
-                    Description = string.Format(
-                        Common.Resources.Errors.NotPossibleExecuteOperation,
-                        string.Join(", ", entity.ToArray()))
+                    Description = description,
                 };
             }
         }
@@ -246,6 +198,62 @@ namespace Ferretto.WMS.Data.Core.Providers
                 ||
                 i.MeasureUnitDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ;
+        }
+
+        private static string GetConstraintCanDeleteItem(ItemDetails item)
+        {
+            var entity = new List<string>();
+            if (item.HasCompartmentAssociated)
+            {
+                entity.Add($"{Common.Resources.BusinessObjects.Compartment} [{item.CompartmentsCount}]");
+            }
+
+            if (item.HasItemListRowAssociated)
+            {
+                entity.Add($"{Common.Resources.BusinessObjects.ItemListRow} [{item.ItemListRowsCount}]");
+            }
+
+            if (item.HasMissionAssociated)
+            {
+                entity.Add($"{Common.Resources.BusinessObjects.Mission} [{item.MissionsCount}]");
+            }
+
+            if (item.HasSchedulerRequestAssociated)
+            {
+                entity.Add($"{Common.Resources.BusinessObjects.SchedulerRequest} [{item.SchedulerRequestsCount}]");
+            }
+
+            return string.Format(
+                        Common.Resources.Errors.NotPossibleExecuteOperation,
+                        string.Join(", ", entity.ToArray()));
+        }
+
+        private async Task<OperationResult<ItemDetails>> DeleteItemWithRelatedDataAsync(ItemDetails item, Common.DataModels.Item existingModel)
+        {
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                if (item.HasAreaAssociated)
+                {
+                    var area = await this.dataContext.ItemsAreas
+                        .Where(a => a.ItemId == item.Id)
+                        .ToListAsync();
+                    this.dataContext.RemoveRange(area);
+                }
+
+                if (item.HasCompartmentTypeAssociated)
+                {
+                    var compartmentType = await this.dataContext.ItemsCompartmentTypes
+                        .Where(t => t.ItemId == item.Id)
+                        .ToListAsync();
+                    this.dataContext.RemoveRange(compartmentType);
+                }
+
+                this.dataContext.Remove(existingModel);
+                await this.dataContext.SaveChangesAsync();
+                scope.Complete();
+
+                return new SuccessOperationResult<ItemDetails>();
+            }
         }
 
         private IQueryable<Item> GetAllBase(

@@ -2140,24 +2140,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("fifoTimeStore", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? FifoTimeStore { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("hasAreaAssociated", Required = Newtonsoft.Json.Required.Always)]
-        public bool HasAreaAssociated { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("hasCompartmentAssociated", Required = Newtonsoft.Json.Required.Always)]
-        public bool HasCompartmentAssociated { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("hasCompartmentTypeAssociated", Required = Newtonsoft.Json.Required.Always)]
-        public bool HasCompartmentTypeAssociated { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("hasItemListRowAssociated", Required = Newtonsoft.Json.Required.Always)]
-        public bool HasItemListRowAssociated { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("hasMissionAssociated", Required = Newtonsoft.Json.Required.Always)]
-        public bool HasMissionAssociated { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("hasSchedulerRequestAssociated", Required = Newtonsoft.Json.Required.Always)]
-        public bool HasSchedulerRequestAssociated { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? Height { get; set; }
     
