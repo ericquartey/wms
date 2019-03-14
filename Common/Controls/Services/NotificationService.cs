@@ -30,7 +30,7 @@ namespace Ferretto.Common.Controls.Services
 
         private HubConnection connection;
 
-        private bool isConnected;
+        private bool isServiceHubConnected;
 
         #endregion
 
@@ -47,15 +47,15 @@ namespace Ferretto.Common.Controls.Services
 
         #region Properties
 
-        public bool IsConnected
+        public bool IsServiceHubConnected
         {
-            get => this.isConnected;
+            get => this.isServiceHubConnected;
             private set
             {
-                if (value != this.isConnected)
+                if (value != this.isServiceHubConnected)
                 {
-                    this.isConnected = value;
-                    this.eventService.Invoke(new StatusPubSubEvent() { IsSchedulerOnline = this.isConnected });
+                    this.isServiceHubConnected = value;
+                    this.eventService.Invoke(new StatusPubSubEvent() { IsSchedulerOnline = this.isServiceHubConnected });
                 }
             }
         }
@@ -84,14 +84,14 @@ namespace Ferretto.Common.Controls.Services
 
         private async Task ConnectAsync()
         {
-            while (!this.IsConnected)
+            while (!this.IsServiceHubConnected)
             {
                 try
                 {
                     this.logger.Trace("Hub connecting...");
                     await this.connection.StartAsync();
                     this.logger.Trace("Hub connected.");
-                    this.IsConnected = true;
+                    this.IsServiceHubConnected = true;
                 }
                 catch (Exception ex)
                 {
@@ -112,7 +112,7 @@ namespace Ferretto.Common.Controls.Services
             this.connection.Closed += async (error) =>
             {
                 this.logger.Debug("Connection to hub closed.");
-                this.IsConnected = false;
+                this.IsServiceHubConnected = false;
                 await this.WaitForReconnection();
                 await this.ConnectAsync();
             };

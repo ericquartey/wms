@@ -36,7 +36,7 @@ namespace Ferretto.Common.Controls
         public StatusBarViewModel(INotificationService notificationService, IEventService eventService)
         {
             this.eventService = eventService;
-            this.SchedulerStatusIconName = this.GetConnectionStatusIcon(notificationService.IsConnected);
+            this.SchedulerStatusIconName = this.GetConnectionStatusIcon(notificationService.IsServiceHubConnected);
             this.keepInfoTimer.Tick += this.KeepInfoTimer_Tick;
             this.keepInfoTimer.Interval = new TimeSpan(0, 0, timeToKeepText);
         }
@@ -92,9 +92,9 @@ namespace Ferretto.Common.Controls
             this.eventService.Unsubscribe<StatusPubSubEvent>(this.statusbarEventSubscription);
         }
 
-        private string GetConnectionStatusIcon(bool isConnected)
+        private string GetConnectionStatusIcon(bool isServiceHubConnected)
         {
-            return isConnected ? nameof(Icons.SchedulerOnLine) : nameof(Icons.SchedulerOffLine);
+            return isServiceHubConnected ? nameof(Icons.SchedulerOnLine) : nameof(Icons.SchedulerOffLine);
         }
 
         private string GetIconNameFromStatusType(StatusType status)

@@ -6,7 +6,7 @@ namespace Ferretto.Common.Controls.Interfaces
     {
         #region Properties
 
-        bool IsConnected { get; }
+        bool IsServiceHubConnected { get; }
 
         #endregion
 
