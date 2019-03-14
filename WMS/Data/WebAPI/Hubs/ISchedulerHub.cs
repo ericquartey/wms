@@ -10,7 +10,7 @@ namespace Ferretto.WMS.Data.WebAPI.Hubs
     {
         #region Methods
 
-        Task MissionCompleted(int id);
+        Task MissionUpdated(int id);
 
         #endregion
     }

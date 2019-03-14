@@ -76,7 +76,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.BadRequest(result.Description);
             }
 
-            await this.schedulerHubContext.Clients.All.MissionCompleted(id);
+            await this.schedulerHubContext.Clients.All.MissionUpdated(id);
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
             return this.Ok(updatedMission);
         }
@@ -97,8 +97,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.BadRequest(result.Description);
             }
 
+            await this.schedulerHubContext.Clients.All.MissionUpdated(id);
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
-
             return this.Ok(updatedMission);
         }
 

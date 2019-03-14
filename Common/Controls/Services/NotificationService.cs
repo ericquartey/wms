@@ -16,7 +16,7 @@ namespace Ferretto.Common.Controls.Services
 
         private const int MaxRetryConnectionTimeout = 10000;
 
-        private const string MissionCompletedMessage = "MissionCompleted";
+        private const string MissionUpdatedMessage = "MissionUpdated";
 
         private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
 
@@ -107,7 +107,7 @@ namespace Ferretto.Common.Controls.Services
                 .WithUrl(new Uri(new Uri(this.url), this.schedulerHubPath).AbsoluteUri)
                 .Build();
 
-            this.connection.On(MissionCompletedMessage, (int id) => this.MissionCompleted_MessageReceived(id));
+            this.connection.On(MissionUpdatedMessage, (int id) => this.MissionUpdated_MessageReceived(id));
 
             this.connection.Closed += async (error) =>
             {
@@ -120,9 +120,9 @@ namespace Ferretto.Common.Controls.Services
             await this.ConnectAsync();
         }
 
-        private void MissionCompleted_MessageReceived(int id)
+        private void MissionUpdated_MessageReceived(int id)
         {
-            this.logger.Debug($"Message {MissionCompletedMessage} received from server");
+            this.logger.Debug($"Message {MissionUpdatedMessage} received from server");
             this.eventService.Invoke(new ModelChangedPubSubEvent<Mission, int>(id));
         }
 

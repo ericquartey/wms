@@ -11,9 +11,9 @@ namespace Ferretto.WMS.Data.WebAPI.Hubs
     {
         #region Methods
 
-        public Task MissionCompleted(int id)
+        public Task MissionUpdated(int id)
         {
-            return this.Clients.All.MissionCompleted(id);
+            return this.Clients.All.MissionUpdated(id);
         }
 
         #endregion
