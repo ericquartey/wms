@@ -16,133 +16,133 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                 .HasAnnotation("ProductVersion", "2.1.4-rtm-31024");
 
             modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.Cell", b =>
-                {
-                    b.Property<int>("CellId")
-                        .ValueGeneratedOnAdd();
+            {
+                b.Property<int>("CellId")
+                    .ValueGeneratedOnAdd();
 
-                    b.Property<decimal>("Coord");
+                b.Property<decimal>("Coord");
 
-                    b.Property<int>("LoadingUnitId");
+                b.Property<int>("LoadingUnitId");
 
-                    b.Property<int>("Priority");
+                b.Property<int>("Priority");
 
-                    b.Property<long>("Side");
+                b.Property<long>("Side");
 
-                    b.Property<long>("Status");
+                b.Property<long>("Status");
 
-                    b.Property<long>("WorkingStatus");
+                b.Property<long>("WorkingStatus");
 
-                    b.HasKey("CellId");
+                b.HasKey("CellId");
 
-                    b.HasIndex("LoadingUnitId");
+                b.HasIndex("LoadingUnitId");
 
-                    b.ToTable("Cells");
-                });
+                b.ToTable("Cells");
+            });
 
             modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.ConfigurationValue", b =>
-                {
-                    b.Property<long>("VarName");
+            {
+                b.Property<long>("VarName");
 
-                    b.Property<long>("VarType");
+                b.Property<long>("VarType");
 
-                    b.Property<string>("VarValue");
+                b.Property<string>("VarValue");
 
-                    b.HasKey("VarName");
+                b.HasKey("VarName");
 
-                    b.ToTable("ConfigurationValues");
+                b.ToTable("ConfigurationValues");
 
-                    b.HasData(
-                        new { VarName = 9L, VarType = 3L, VarValue = "169.254.231.248" },
-                        new { VarName = 10L, VarType = 0L, VarValue = "17221" },
-                        new { VarName = 11L, VarType = 3L, VarValue = "169.254.231.10" },
-                        new { VarName = 12L, VarType = 0L, VarValue = "502" }
-                    );
-                });
+                b.HasData(
+                    new { VarName = 9L, VarType = 3L, VarValue = "169.254.231.248" },
+                    new { VarName = 10L, VarType = 0L, VarValue = "17221" },
+                    new { VarName = 11L, VarType = 3L, VarValue = "169.254.231.10" },
+                    new { VarName = 12L, VarType = 0L, VarValue = "502" }
+                );
+            });
 
             modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.FreeBlock", b =>
-                {
-                    b.Property<int>("FreeBlockId")
-                        .ValueGeneratedOnAdd();
+            {
+                b.Property<int>("FreeBlockId")
+                    .ValueGeneratedOnAdd();
 
-                    b.Property<int>("BlockSize");
+                b.Property<int>("BlockSize");
 
-                    b.Property<int>("BookedCellsNumber");
+                b.Property<int>("BookedCellsNumber");
 
-                    b.Property<decimal>("Coord");
+                b.Property<decimal>("Coord");
 
-                    b.Property<int>("LoadingUnitId");
+                b.Property<int>("LoadingUnitId");
 
-                    b.Property<int>("Priority");
+                b.Property<int>("Priority");
 
-                    b.Property<long>("Side");
+                b.Property<long>("Side");
 
-                    b.Property<int>("StartCell");
+                b.Property<int>("StartCell");
 
-                    b.HasKey("FreeBlockId");
+                b.HasKey("FreeBlockId");
 
-                    b.HasIndex("LoadingUnitId");
+                b.HasIndex("LoadingUnitId");
 
-                    b.ToTable("FreeBlocks");
-                });
+                b.ToTable("FreeBlocks");
+            });
 
             modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.LoadingUnit", b =>
-                {
-                    b.Property<int>("LoadingUnitId")
-                        .ValueGeneratedOnAdd();
+            {
+                b.Property<int>("LoadingUnitId")
+                    .ValueGeneratedOnAdd();
 
-                    b.Property<decimal>("CellPosition");
+                b.Property<decimal>("CellPosition");
 
-                    b.Property<decimal>("Height");
+                b.Property<decimal>("Height");
 
-                    b.Property<long>("Status");
+                b.Property<long>("Status");
 
-                    b.Property<decimal>("Weight");
+                b.Property<decimal>("Weight");
 
-                    b.HasKey("LoadingUnitId");
+                b.HasKey("LoadingUnitId");
 
-                    b.ToTable("LoadingUnits");
-                });
+                b.ToTable("LoadingUnits");
+            });
 
             modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.RuntimeValue", b =>
-                {
-                    b.Property<long>("VarName");
+            {
+                b.Property<long>("VarName");
 
-                    b.Property<long>("VarType");
+                b.Property<long>("VarType");
 
-                    b.Property<string>("VarValue");
+                b.Property<string>("VarValue");
 
-                    b.HasKey("VarName");
+                b.HasKey("VarName");
 
-                    b.ToTable("RuntimeValues");
-                });
+                b.ToTable("RuntimeValues");
+            });
 
             modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.StatusLog", b =>
-                {
-                    b.Property<int>("StatusLogId")
-                        .ValueGeneratedOnAdd();
+            {
+                b.Property<int>("StatusLogId")
+                    .ValueGeneratedOnAdd();
 
-                    b.Property<string>("LogMessage");
+                b.Property<string>("LogMessage");
 
-                    b.HasKey("StatusLogId");
+                b.HasKey("StatusLogId");
 
-                    b.ToTable("StatusLogs");
-                });
+                b.ToTable("StatusLogs");
+            });
 
             modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.Cell", b =>
-                {
-                    b.HasOne("Ferretto.VW.MAS_DataLayer.LoadingUnit", "LoadingUnit")
-                        .WithMany("Cells")
-                        .HasForeignKey("LoadingUnitId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
+            {
+                b.HasOne("Ferretto.VW.MAS_DataLayer.LoadingUnit", "LoadingUnit")
+                    .WithMany("Cells")
+                    .HasForeignKey("LoadingUnitId")
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
 
             modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.FreeBlock", b =>
-                {
-                    b.HasOne("Ferretto.VW.MAS_DataLayer.LoadingUnit", "LoadingUnit")
-                        .WithMany("FreeBlocks")
-                        .HasForeignKey("LoadingUnitId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
+            {
+                b.HasOne("Ferretto.VW.MAS_DataLayer.LoadingUnit", "LoadingUnit")
+                    .WithMany("FreeBlocks")
+                    .HasForeignKey("LoadingUnitId")
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
 #pragma warning restore 612, 618
         }
     }
