@@ -19,7 +19,7 @@ namespace Ferretto.Common.Controls
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private string iconName;
+        private string messageIconName;
 
         private bool isSubscriptionActive;
 
@@ -45,10 +45,10 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
-        public string IconName
+        public string MessageIconName
         {
-            get => this.iconName;
-            set => this.SetProperty(ref this.iconName, value);
+            get => this.messageIconName;
+            set => this.SetProperty(ref this.messageIconName, value);
         }
 
         public bool IsSubscriptionActive
@@ -105,7 +105,7 @@ namespace Ferretto.Common.Controls
         private void KeepInfoTimer_Tick(object sender, EventArgs e)
         {
             this.Message = string.Empty;
-            this.IconName = string.Empty;
+            this.MessageIconName = string.Empty;
             this.keepInfoTimer.Stop();
         }
 
@@ -122,7 +122,7 @@ namespace Ferretto.Common.Controls
 
             this.keepInfoTimer.Stop();
             this.Message = eventArgs.Message;
-            this.IconName = this.GetIconNameFromStatusType(eventArgs.Type);
+            this.MessageIconName = this.GetIconNameFromStatusType(eventArgs.Type);
             if (eventArgs.IsSchedulerOnline.HasValue)
             {
                 this.SchedulerStatusIconName = this.GetConnectionStatusIcon(eventArgs.IsSchedulerOnline.Value);
