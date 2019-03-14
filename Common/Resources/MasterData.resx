@@ -503,4 +503,7 @@
   <data name="EditLoadingUnit" xml:space="preserve">
     <value>Edit Loading Unit</value>
   </data>
+  <data name="ItemListRowDeletedSuccessfully" xml:space="preserve">
+    <value>Item List Row deleted successfully</value>
+  </data>
 </root>

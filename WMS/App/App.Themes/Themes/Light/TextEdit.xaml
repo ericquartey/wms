@@ -7,8 +7,7 @@
                     xmlns:dxn="http://schemas.devexpress.com/winfx/2008/xaml/core/internal"
                     xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls">
 
-    <wms:PropertyDescriptionConverter x:Key="DNC"
-                                      Property="{x:Static dxe:BaseEdit.EditValueProperty}" />
+
 
     <dxn:RenderTemplate x:Key="{dxet:InplaceBaseEditThemeKey ResourceKey=TextEditBorderTemplate}">
         <dxn:RenderPanel Name="PART_Root">
@@ -46,15 +45,8 @@
             </Grid.RowDefinitions>
             <wms:WmsLabel x:Name="TitleLabel"
                           Grid.ColumnSpan="2"
-                          Visibility="Visible">
-                <wms:WmsLabel.Title>
-                    <MultiBinding Converter="{StaticResource DNC}">
-                        <Binding RelativeSource="{RelativeSource Self}" />
-                        <Binding Path="DataContext"
-                                 RelativeSource="{RelativeSource Self}" />
-                    </MultiBinding>
-                </wms:WmsLabel.Title>
-            </wms:WmsLabel>
+                          Visibility="Visible" />
+
             <Grid Name="GridEditorCore"
                   Grid.Row="1"
                   Grid.Column="0">

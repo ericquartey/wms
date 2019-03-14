@@ -10,6 +10,8 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
     {
         #region Fields
 
+        private const int sendDelay = 50;
+
         private const ushort StatusWordValue = 0x1037;
 
         private readonly Axis axisToCalibrate;
@@ -38,7 +40,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
             }
 
             var inverterMessage =
-                new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue);
+                new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue, sendDelay);
 
             parentStateMachine.EnqueueMessage(inverterMessage);
         }

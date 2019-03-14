@@ -93,8 +93,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<Cell>> GetByAisleIdAsync(int aisleId)
         {
             return await this.dataContext.Cells
-                       .Include(c => c.Aisle)
-                       .ThenInclude(a => a.Area)
                        .Where(c => c.AisleId == aisleId)
                        .OrderBy(c => c.CellNumber)
                        .Select(c => new Cell
@@ -120,14 +118,9 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<Cell>> GetByAreaIdAsync(int areaId)
         {
             return await this.dataContext.Cells
-                       .Include(c => c.Aisle)
-                       .ThenInclude(a => a.Area)
                        .Where(c => c.Aisle.AreaId == areaId)
                        .OrderBy(c => c.Aisle.Name)
                        .ThenBy(c => c.CellNumber)
-                       .Include(c => c.AbcClass)
-                       .Include(c => c.CellType)
-                       .Include(c => c.CellStatus)
                        .Select(c => new Cell
                        {
                            Id = c.Id,
@@ -154,8 +147,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                                         .CountAsync(l => l.CellId == id);
 
             return await this.dataContext.Cells
-                       .Include(c => c.Aisle)
-                       .ThenInclude(a => a.Area)
                        .Select(c => new CellDetails
                        {
                            Id = c.Id,
@@ -239,11 +230,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         private IQueryable<Cell> GetAllBase()
         {
             return this.dataContext.Cells
-                .Include(c => c.AbcClass)
-                .Include(c => c.Aisle)
-                .ThenInclude(a => a.Area)
-                .Include(c => c.CellStatus)
-                .Include(c => c.CellType)
                 .GroupJoin(
                     this.dataContext.LoadingUnits
                         .GroupBy(l => l.CellId)

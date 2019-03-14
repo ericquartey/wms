@@ -6,6 +6,7 @@
              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
@@ -64,6 +65,12 @@
                               MaxWidth="400" />
         </Grid.ColumnDefinitions>
 
+        <dxt:WaitIndicator Grid.Row="1"
+                           VerticalAlignment="Center"
+                           Panel.ZIndex="1"
+                           Content="{x:Static res:DesktopApp.Loading}"
+                           DeferedVisibility="{Binding IsBusy}" />
+
         <wms:ActionBar Margin="10,10,10,0"
                        HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
@@ -100,7 +107,8 @@
         <ScrollViewer Grid.Row="1"
                       Margin="10,0,10,10"
                       Focusable="False"
-                      IsTabStop="True">
+                      IsTabStop="True"
+                      Visibility="{Binding Model, Converter={StaticResource RTVC}}">
             <Grid Margin="0,0,5,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -366,7 +374,8 @@
         <ScrollViewer Grid.RowSpan="2"
                       Grid.Column="1"
                       Focusable="False"
-                      IsTabStop="False">
+                      IsTabStop="False"
+                      Visibility="{Binding Model, Converter={StaticResource RTVC}}">
 
             <Border Style="{StaticResource InfoBoxBorderStyle}">
                 <GroupBox Margin="20,0"

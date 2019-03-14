@@ -467,4 +467,7 @@
   <data name="EditLoadingUnit" xml:space="preserve">
     <value>Modica Unità di Carico</value>
   </data>
+  <data name="ItemListRowDeletedSuccessfully" xml:space="preserve">
+    <value>Riga lista rimossa con successo</value>
+  </data>
 </root>

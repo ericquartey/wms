@@ -35,6 +35,12 @@
                               MaxWidth="400" />
         </Grid.ColumnDefinitions>
 
+        <dxc:WaitIndicator Grid.Row="1"
+                           VerticalAlignment="Center"
+                           Panel.ZIndex="1"
+                           Content="{x:Static res:DesktopApp.Loading}"
+                           DeferedVisibility="{Binding IsBusy}" />
+
         <wms:ActionBar Margin="10,10,10,0"
                        HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
@@ -62,10 +68,12 @@
                                GlyphSize="Custom" />
         </wms:ActionBar>
 
+
         <ScrollViewer Grid.Row="1"
                       Margin="10,0,10,10"
                       Focusable="False"
-                      IsTabStop="True">
+                      IsTabStop="True"
+                      Visibility="{Binding Model, Converter={StaticResource RTVC}}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -304,7 +312,8 @@
         <ScrollViewer Grid.RowSpan="2"
                       Grid.Column="1"
                       Focusable="False"
-                      IsTabStop="False">
+                      IsTabStop="False"
+                      Visibility="{Binding Model, Converter={StaticResource RTVC}}">
 
             <Border Style="{StaticResource InfoBoxBorderStyle}">
 

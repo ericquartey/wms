@@ -1,5 +1,5 @@
 ﻿using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Base;
+using Ferretto.Common.BLL.Interfaces.Models;
 
 namespace Ferretto.Common.Controls.Services
 {

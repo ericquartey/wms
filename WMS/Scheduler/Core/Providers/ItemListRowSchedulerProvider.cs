@@ -25,9 +25,11 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         #region Methods
 
-        public Task<IOperationResult<ItemListRow>> PrepareForExecutionAsync(ListRowExecutionRequest model)
+        public async Task<IOperationResult<SchedulerRequest>> PrepareForExecutionAsync(ListRowExecutionRequest model)
         {
-            throw new System.NotSupportedException();
+            await this.databaseContext.SaveChangesAsync();
+
+            return new SuccessOperationResult<SchedulerRequest>(null);
         }
 
         public async Task<IOperationResult<ItemListRow>> UpdateAsync(ItemListRow model)

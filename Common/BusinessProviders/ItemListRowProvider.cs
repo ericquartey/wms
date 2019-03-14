@@ -63,7 +63,6 @@ namespace Ferretto.Common.BusinessProviders
                     ItemListCode = model.ItemListCode,
                     ItemListDescription = model.ItemListDescription,
                     ItemListType = (WMS.Data.WebAPI.Contracts.ItemListType)model.ItemListType,
-                    ItemListStatus = (WMS.Data.WebAPI.Contracts.ItemListStatus)model.ItemListStatus,
                     CompletionDate = model.CompletionDate,
                     LastExecutionDate = model.LastExecutionDate,
                     LastModificationDate = model.LastModificationDate,
@@ -139,7 +138,8 @@ namespace Ferretto.Common.BusinessProviders
                     MaterialStatusDescription = l.MaterialStatusDescription,
                     RequiredQuantity = l.RequiredQuantity,
                     RowPriority = l.RowPriority,
-                    CreationDate = l.CreationDate
+                    CreationDate = l.CreationDate,
+                    CanDelete = l.CanDelete,
                 });
         }
 
@@ -169,7 +169,6 @@ namespace Ferretto.Common.BusinessProviders
                 ItemListCode = itemListRow.ItemListCode,
                 ItemListDescription = itemListRow.ItemListDescription,
                 ItemListType = (ItemListType)itemListRow.ItemListType,
-                ItemListStatus = (ItemListStatus)itemListRow.ItemListStatus,
                 CompletionDate = itemListRow.CompletionDate,
                 LastExecutionDate = itemListRow.LastExecutionDate,
                 LastModificationDate = itemListRow.LastModificationDate,
@@ -201,7 +200,8 @@ namespace Ferretto.Common.BusinessProviders
                     ItemListRowStatus = (BusinessModels.ItemListRowStatus)l.ItemListRowStatus,
                     MaterialStatusDescription = l.MaterialStatusDescription,
                     CreationDate = l.CreationDate,
-                    ItemUnitMeasure = l.ItemUnitMeasure
+                    ItemUnitMeasure = l.ItemUnitMeasure,
+                    CanDelete = l.CanDelete,
                 });
         }
 
@@ -252,7 +252,6 @@ namespace Ferretto.Common.BusinessProviders
                     ItemListCode = model.ItemListCode,
                     ItemListDescription = model.ItemListDescription,
                     ItemListType = (WMS.Data.WebAPI.Contracts.ItemListType)model.ItemListType,
-                    ItemListStatus = (WMS.Data.WebAPI.Contracts.ItemListStatus)model.ItemListStatus,
                     CompletionDate = model.CompletionDate,
                     LastExecutionDate = model.LastExecutionDate,
                     LastModificationDate = model.LastModificationDate,

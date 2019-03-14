@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Base;
+using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.Common.BLL.Interfaces.Providers;
 
-namespace Ferretto.Common.Modules.BLL.Models
+namespace Ferretto.WMS.App.Modules.BLL
 {
     public class PagedDataSource<TModel, TKey> : IFilterDataSource<TModel, TKey>
         where TModel : IModel<TKey>

@@ -1,6 +1,6 @@
-﻿using Ferretto.Common.BLL.Interfaces.Base;
+﻿using Ferretto.Common.BLL.Interfaces.Models;
 
-namespace Ferretto.Common.BLL.Interfaces
+namespace Ferretto.Common.BLL.Interfaces.Providers
 {
     public interface IPagedBusinessProvider<TModel, TKey> :
         IReadAllPagedAsyncProvider<TModel, TKey>,

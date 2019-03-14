@@ -1,16 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using Ferretto.Common.BLL.Interfaces;
+﻿using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
-using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.Practices.ServiceLocation;
-using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
