@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Utils.Expressions;
 

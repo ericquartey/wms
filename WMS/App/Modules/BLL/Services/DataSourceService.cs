@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Base;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Microsoft.Practices.ServiceLocation;

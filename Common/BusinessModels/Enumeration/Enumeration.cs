@@ -1,4 +1,4 @@
-﻿using Ferretto.Common.BLL.Interfaces.Base;
+﻿using Ferretto.Common.BLL.Interfaces.Models;
 
 namespace Ferretto.Common.BusinessModels
 {

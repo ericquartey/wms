@@ -7,6 +7,7 @@ using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.Controls.Services

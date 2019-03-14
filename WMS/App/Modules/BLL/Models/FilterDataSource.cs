@@ -2,7 +2,8 @@
 using System.Linq;
 using DevExpress.Data.Linq;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Base;
+using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.Common.BLL.Interfaces.Providers;
 
 namespace Ferretto.WMS.App.Modules.BLL
 {

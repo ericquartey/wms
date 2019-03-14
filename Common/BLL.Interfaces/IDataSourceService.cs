@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Ferretto.Common.BLL.Interfaces.Base;
+using Ferretto.Common.BLL.Interfaces.Models;
 
 namespace Ferretto.Common.BLL.Interfaces
 {
