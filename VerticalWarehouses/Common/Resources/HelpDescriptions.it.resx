@@ -574,4 +574,40 @@
   <data name="HelpLSMTComandMode" xml:space="preserve">
     <value>Riporta la modalita' correntemente abilitata per i comandi manuali. La modalita' a corsa estesa e' settata automaticamente a messa in servizio completata.</value>
   </data>
+  <data name="HelpSRCPageHeader" xml:space="preserve">
+    <value>Salvataggio e ripristino configurazione macchina.</value>
+  </data>
+  <data name="HelpSRCDescription" xml:space="preserve">
+    <value>La procedura permette di effettuare il salvataggio o il ripristino dei files che contengono le informazioni verificate in fase di messa in servizio della macchina.</value>
+  </data>
+  <data name="HelpSRCSaveSide" xml:space="preserve">
+    <value>Procedura di salvataggio configurazione.</value>
+  </data>
+  <data name="HelpSRCSaveFolder" xml:space="preserve">
+    <value>Indica la cartella creata automaticamente dove verranno salvati i files di configurazione.</value>
+  </data>
+  <data name="HelpSRCSaveButton" xml:space="preserve">
+    <value>Avvia la procedura di salvataggio dei files di configurazione. Eventuali files gia' presenti saranno sovrascritti.</value>
+  </data>
+  <data name="HelpSRCSaveConfirmButton" xml:space="preserve">
+    <value>Conferma la procedura di salvataggio dei files.</value>
+  </data>
+  <data name="HelpSRCSaveAbortButton" xml:space="preserve">
+    <value>Annulla la procedura di salvataggio dei files.</value>
+  </data>
+  <data name="HelpSRCLoadSide" xml:space="preserve">
+    <value>Procedura di ripristino configurazione.</value>
+  </data>
+  <data name="HelpSRCLoadFolder" xml:space="preserve">
+    <value>Indica la cartella rilevata da cui verranno prelevati i files da ripristinare.</value>
+  </data>
+  <data name="HelpSRCLoadButton" xml:space="preserve">
+    <value>Avvia la procedura di caricamento dei files di configurazione. Eventuali files gia' presenti verranno sovrascritti.</value>
+  </data>
+  <data name="HelpSRCLoadConfirmButton" xml:space="preserve">
+    <value>Conferma la procedura di caricamento dei files.</value>
+  </data>
+  <data name="HelpSRCLoadAbortButton" xml:space="preserve">
+    <value>Annulla la procedura di caricamento dei files.</value>
+  </data>
 </root>

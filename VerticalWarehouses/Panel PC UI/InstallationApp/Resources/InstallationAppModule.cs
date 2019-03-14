@@ -58,6 +58,7 @@ namespace Ferretto.VW.InstallationApp
             var bayControlVMInstance = new BayControlViewModel();
             var loadFirstDrawerVMInstance = new LoadFirstDrawerViewModel();
             var loadingDrawersVMInstance = new LoadingDrawersViewModel();
+            var saveRestoreConfigVMInstance = new SaveRestoreConfigViewModel();
             var cellsSideControlVMInstance = new CellsSideControlViewModel();
             var drawerLoadingUnloadingTestVMInstance = new DrawerLoadingUnloadingTestViewModel();
             var lSMTCarouselVMInstance = new LSMTCarouselViewModel(container.Resolve<IEventAggregator>());
@@ -98,6 +99,7 @@ namespace Ferretto.VW.InstallationApp
             this.container.RegisterInstance<IBayControlViewModel>(bayControlVMInstance);
             this.container.RegisterInstance<ILoadFirstDrawerViewModel>(loadFirstDrawerVMInstance);
             this.container.RegisterInstance<ILoadingDrawersViewModel>(loadingDrawersVMInstance);
+            this.container.RegisterInstance<ISaveRestoreConfigViewModel>(saveRestoreConfigVMInstance);
             this.container.RegisterInstance<ICellsSideControlViewModel>(cellsSideControlVMInstance);
             this.container.RegisterInstance<IDrawerLoadingUnloadingTestViewModel>(drawerLoadingUnloadingTestVMInstance);
             this.container.RegisterInstance<ILSMTCarouselViewModel>(lSMTCarouselVMInstance);

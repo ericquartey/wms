@@ -733,4 +733,52 @@
     <value>HelpLSMTComandMode</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpSRCPageHeader" xml:space="preserve">
+    <value>HelpSRCPageHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="HelpSRCDescription" xml:space="preserve">
+    <value>HelpSRCDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpSRCSaveSide" xml:space="preserve">
+    <value>HelpSRCSaveSide</value>
+    <comment>Block description</comment>
+  </data>
+  <data name="HelpSRCSaveFolder" xml:space="preserve">
+    <value>HelpSRCSaveFolder</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpSRCSaveButton" xml:space="preserve">
+    <value>HelpSRCSaveButton</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpSRCSaveConfirmButton" xml:space="preserve">
+    <value>HelpSRCSaveConfirmButton</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpSRCSaveAbortButton" xml:space="preserve">
+    <value>HelpSRCSaveAbortButton</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpSRCLoadSide" xml:space="preserve">
+    <value>HelpSRCLoadSide</value>
+    <comment>Block description</comment>
+  </data>
+  <data name="HelpSRCLoadFolder" xml:space="preserve">
+    <value>HelpSRCLoadFolder</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpSRCLoadButton" xml:space="preserve">
+    <value>HelpSRCLoadButton</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpSRCLoadConfirmButton" xml:space="preserve">
+    <value>HelpSRCLoadConfirmButton</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpSRCLoadAbortButton" xml:space="preserve">
+    <value>HelpSRCLoadAbortButton</value>
+    <comment>Note text</comment>
+  </data>
 </root>

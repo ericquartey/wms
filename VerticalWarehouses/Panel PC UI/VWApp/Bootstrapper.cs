@@ -58,6 +58,7 @@ namespace Ferretto.VW.VWApp
             this.BindViewModelToView<IWeightControlViewModel, WeightControlView>();
             this.BindViewModelToView<IMainWindowViewModel, InstallationApp.MainWindow>();
             this.BindViewModelToView<ILSMTCarouselViewModel, LSMTCarouselView>();
+            this.BindViewModelToView<ISaveRestoreConfigViewModel, SaveRestoreConfigView>();
         }
 
         protected override DependencyObject CreateShell()

@@ -4,7 +4,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class DrawerLoadingUnloadingTestViewModel : BindableBase, IDrawerLoadingUnloadingTestViewModel, IViewModel
+    internal class SaveRestoreConfigViewModel : BindableBase, IViewModel, ISaveRestoreConfigViewModel
     {
         #region Fields
 

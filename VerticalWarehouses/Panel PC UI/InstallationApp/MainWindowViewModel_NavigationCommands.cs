@@ -85,6 +85,8 @@ namespace Ferretto.VW.InstallationApp
 
         private ICommand carouselButtonCommand;
 
+        private ICommand saveRestoreConfigButtonCommand;
+
         #endregion
 
         #region Properties
@@ -325,8 +327,16 @@ namespace Ferretto.VW.InstallationApp
         {
             this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
             this.ContentRegionCurrentViewModel = (DrawerLoadingUnloadingTestViewModel)this.container.Resolve<IDrawerLoadingUnloadingTestViewModel>();
-            ((WeightControlViewModel)this.container.Resolve<IWeightControlViewModel>()).SubscribeMethodToEvent();
-            ((MainWindowBackToIAPPButtonViewModel)this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand(((WeightControlViewModel)this.container.Resolve<IWeightControlViewModel>()).ExitFromViewCommand);
+            ((DrawerLoadingUnloadingTestViewModel)this.container.Resolve<IDrawerLoadingUnloadingTestViewModel>()).SubscribeMethodToEvent();
+            ((MainWindowBackToIAPPButtonViewModel)this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand(((DrawerLoadingUnloadingTestViewModel)this.container.Resolve<IDrawerLoadingUnloadingTestViewModel>()).ExitFromViewCommand);
+        }));
+
+        public ICommand SaveRestoreConfigButtonCommand => this.saveRestoreConfigButtonCommand ?? (this.saveRestoreConfigButtonCommand = new DelegateCommand(() =>
+        {
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
+            this.ContentRegionCurrentViewModel = (SaveRestoreConfigViewModel)this.container.Resolve<ISaveRestoreConfigViewModel>();
+            ((SaveRestoreConfigViewModel)this.container.Resolve<ISaveRestoreConfigViewModel>()).SubscribeMethodToEvent();
+            ((MainWindowBackToIAPPButtonViewModel)this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand(((SaveRestoreConfigViewModel)this.container.Resolve<ISaveRestoreConfigViewModel>()).ExitFromViewCommand);
         }));
 
         #endregion

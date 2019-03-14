@@ -13,7 +13,7 @@
            TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="{DynamicResource VWAPP_SSTitleViewTextBlock_Foreground_Normal}" />
         <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-        <Setter Property="FontSize" Value="35" />
+        <Setter Property="FontSize" Value="30" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Left" />

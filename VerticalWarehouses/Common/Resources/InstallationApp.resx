@@ -1052,4 +1052,44 @@
     <value>LSMTCarouselPageHeader</value>
     <comment>Page header</comment>
   </data>
+  <data name="SaveRestoreConfigButton" xml:space="preserve">
+    <value>SaveRestoreConfigButton</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="SaveRestoreConfigPageHeader" xml:space="preserve">
+    <value>SaveRestoreConfigPageHeader</value>
+    <comment>Page header alto</comment>
+  </data>
+  <data name="SaveRestoreConfigPageHeader2" xml:space="preserve">
+    <value>SaveRestoreConfigPageHeader</value>
+    <comment>Page header basso</comment>
+  </data>
+  <data name="SaveRestoreConfigSelectedFolder" xml:space="preserve">
+    <value>SaveRestoreConfigSelectedFolder</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="SaveRestoreConfigSaveButton" xml:space="preserve">
+    <value>SaveRestoreConfigSaveButton</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="SaveRestoreConfigConfirmSaveButton" xml:space="preserve">
+    <value>SaveRestoreConfigConfirmSaveButton</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="SaveRestoreConfigAbortSaveButton" xml:space="preserve">
+    <value>SaveRestoreConfigAbortSaveButton</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="SaveRestoreConfigRestoreButton" xml:space="preserve">
+    <value>SaveRestoreConfigRestoreButton</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="SaveRestoreConfigConfirmRestoreButton" xml:space="preserve">
+    <value>SaveRestoreConfigConfirmRestoreButton</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="SaveRestoreConfigAbortRestoreButton" xml:space="preserve">
+    <value>SaveRestoreConfigAbortRestoreButton</value>
+    <comment>Button text</comment>
+  </data>
 </root>
