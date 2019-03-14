@@ -85,44 +85,6 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                 b.ToTable("FreeBlocks");
             });
 
-            modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.InstallationInfo", b =>
-            {
-                b.Property<int>("InstallationInfoId")
-                    .ValueGeneratedOnAdd();
-
-                b.Property<bool>("Belt_Burnishing");
-
-                b.Property<bool>("Machine_Ok");
-
-                b.Property<bool>("Ok_Laser1");
-
-                b.Property<bool>("Ok_Laser2");
-
-                b.Property<bool>("Ok_Laser3");
-
-                b.Property<bool>("Ok_Shape1");
-
-                b.Property<bool>("Ok_Shape2");
-
-                b.Property<bool>("Ok_Shape3");
-
-                b.Property<bool>("Ok_Shutter1");
-
-                b.Property<bool>("Ok_Shutter2");
-
-                b.Property<bool>("Ok_Shutter3");
-
-                b.Property<bool>("Origin_X_Axis");
-
-                b.Property<bool>("Origin_Y_Axis");
-
-                b.Property<bool>("Set_Y_Resolution");
-
-                b.HasKey("InstallationInfoId");
-
-                b.ToTable("InstallationInfos");
-            });
-
             modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.LoadingUnit", b =>
             {
                 b.Property<int>("LoadingUnitId")

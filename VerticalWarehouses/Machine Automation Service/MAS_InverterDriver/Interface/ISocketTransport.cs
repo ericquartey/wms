@@ -66,6 +66,15 @@ namespace Ferretto.VW.MAS_InverterDriver.Interface
         /// <exception cref="InverterDriverException">Write operation Failed. Inspect exception details for more details</exception>
         ValueTask<int> WriteAsync(byte[] inverterMessage, CancellationToken stoppingToken);
 
+        /// <summary>
+        ///     Sends data to the remote host asynchronously.
+        /// </summary>
+        /// <param name="inverterMessage">Byte array containing the message to be sent to the Inverter hardware</param>
+        /// <param name="delay"></param>
+        /// <param name="stoppingToken">Cancellation token used to cancel wait operations</param>
+        /// <exception cref="InverterDriverException">Write operation Failed. Inspect exception details for more details</exception>
+        ValueTask<int> WriteAsync(byte[] inverterMessage, int delay, CancellationToken stoppingToken);
+
         #endregion
     }
 }

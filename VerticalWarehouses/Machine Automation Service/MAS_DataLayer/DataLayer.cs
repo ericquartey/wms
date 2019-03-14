@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,7 +9,10 @@ using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Linq;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_DataLayer
@@ -23,6 +27,8 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IOptions<FilesInfo> filesInfo;
+
         private readonly DataLayerContext inMemoryDataContext;
 
         private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
@@ -35,26 +41,28 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Constructors
 
-        public DataLayer(string connectionString, DataLayerContext inMemoryDataContext,
-            IEventAggregator eventAggregator)
+        public DataLayer(string connectionString, DataLayerContext inMemoryDataContext, IEventAggregator eventAggregator, IOptions<FilesInfo> filesInfo)
         {
             if (inMemoryDataContext == null)
             {
-                // TEMP
-                //throw new DataLayerException(DataLayerExceptionEnum.DATALAYER_CONTEXT_EXCEPTION);
-                new ArgumentNullException();
+                throw new ArgumentNullException();
             }
 
             if (eventAggregator == null)
             {
-                // TEMP
-                //throw new DataLayerException(DataLayerExceptionEnum.EVENTAGGREGATOR_EXCEPTION);
-                new ArgumentNullException();
+                throw new ArgumentNullException();
+            }
+
+            if (filesInfo == null)
+            {
+                throw new ArgumentNullException();
             }
 
             this.inMemoryDataContext = inMemoryDataContext;
 
             this.eventAggregator = eventAggregator;
+
+            this.filesInfo = filesInfo;
 
             using (var initialContext = new DataLayerContext(
                 new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(connectionString).Options))
@@ -104,25 +112,28 @@ namespace Ferretto.VW.MAS_DataLayer
         /// </summary>
         /// <param name="inMemoryDataContext"></param>
         /// <param name="eventAggregator"></param>
-        public DataLayer(DataLayerContext inMemoryDataContext, IEventAggregator eventAggregator)
+        public DataLayer(DataLayerContext inMemoryDataContext, IEventAggregator eventAggregator, IOptions<FilesInfo> filesInfo)
         {
             if (inMemoryDataContext == null)
             {
-                // TEMP
-                //throw new DataLayerException(DataLayerExceptionEnum.DATALAYER_CONTEXT_EXCEPTION);
-                new ArgumentNullException();
+                throw new ArgumentNullException();
             }
 
             if (eventAggregator == null)
             {
-                // TEMP
-                //throw new DataLayerException(DataLayerExceptionEnum.EVENTAGGREGATOR_EXCEPTION);
-                new ArgumentNullException();
+                throw new ArgumentNullException();
+            }
+
+            if (filesInfo == null)
+            {
+                throw new ArgumentNullException();
             }
 
             this.inMemoryDataContext = inMemoryDataContext;
 
             this.eventAggregator = eventAggregator;
+
+            this.filesInfo = filesInfo;
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
 
@@ -147,7 +158,86 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #endregion
 
+        #region Properties
+
+        public IConfiguration Configuration { get; }
+
+        #endregion
+
         #region Methods
+
+        /// <inheritdoc/>
+        public void LoadConfigurationValuesInfo(InfoFilesEnum configurationValueRequest)
+        {
+            string requestPath;
+
+            switch (configurationValueRequest)
+            {
+                case InfoFilesEnum.GeneralInfo:
+                    {
+                        requestPath = this.filesInfo.Value.GeneralInfoPath;
+                        break;
+                    }
+                case InfoFilesEnum.InstallationInfo:
+                    {
+                        requestPath = this.filesInfo.Value.InstallationInfoPath;
+                        break;
+                    }
+                default:
+                    {
+                        throw new InMemoryDataLayerException(DataLayerExceptionEnum.UNKNOWN_INFO_FILE_EXCEPTION);
+                    }
+            }
+
+            using (var streamReader = new StreamReader(requestPath))
+            {
+                var json = streamReader.ReadToEnd();
+                var jsonObject = JObject.Parse(json);
+
+                ConfigurationValueEnum jsonElementName;
+                DataTypeEnum jsonElementType;
+
+                foreach (var jsonElement in jsonObject)
+                {
+                    jsonElementName = (ConfigurationValueEnum)Enum.Parse(typeof(ConfigurationValueEnum), jsonElement.Key);
+
+                    jsonElementType = this.ConvertConfigurationValue(jsonElementName);
+
+                    switch (jsonElementType)
+                    {
+                        case (DataTypeEnum.booleanType):
+                            {
+                                this.SetBoolConfigurationValue(jsonElementName, (bool)jsonElement.Value.ToObject(typeof(bool)));
+                                break;
+                            }
+                        case (DataTypeEnum.dateTimeType):
+                            {
+                                this.SetDateTimeConfigurationValue(jsonElementName, (DateTime)jsonElement.Value.ToObject(typeof(DateTime)));
+                                break;
+                            }
+                        case (DataTypeEnum.decimalType):
+                            {
+                                this.SetDecimalConfigurationValue(jsonElementName, (decimal)jsonElement.Value.ToObject(typeof(decimal)));
+                                break;
+                            }
+                        case (DataTypeEnum.integerType):
+                            {
+                                this.SetIntegerConfigurationValue(jsonElementName, (int)jsonElement.Value.ToObject(typeof(int)));
+                                break;
+                            }
+                        case (DataTypeEnum.stringType):
+                            {
+                                this.SetStringConfigurationValue(jsonElementName, jsonElement.Value.ToString());
+                                break;
+                            }
+                        default:
+                            {
+                                throw new InMemoryDataLayerException(DataLayerExceptionEnum.UNDEFINED_TYPE_EXCEPTION);
+                            }
+                    }
+                }
+            }
+        }
 
         public bool LogWriting(string logMessage)
         {

@@ -9,12 +9,229 @@ namespace Ferretto.VW.MAS_DataLayer
     {
         #region Methods
 
+        /// <inheritdoc/>
+        public DataTypeEnum ConvertConfigurationValue(ConfigurationValueEnum configurationValueEnum)
+        {
+            DataTypeEnum returnValue;
+
+            switch (configurationValueEnum)
+            {
+                // INFO General info variables
+                case ConfigurationValueEnum.Address:
+                case ConfigurationValueEnum.City:
+                case ConfigurationValueEnum.Client_Code:
+                case ConfigurationValueEnum.Client_Name:
+                case ConfigurationValueEnum.Country:
+                case ConfigurationValueEnum.Latitude:
+                case ConfigurationValueEnum.Longitude:
+                case ConfigurationValueEnum.Model:
+                case ConfigurationValueEnum.Order:
+                case ConfigurationValueEnum.Province:
+                case ConfigurationValueEnum.Serial:
+                    {
+                        returnValue = DataTypeEnum.stringType;
+                        break;
+                    }
+
+                // INFO General info variables
+                case ConfigurationValueEnum.Alfa_Num_1:
+                case ConfigurationValueEnum.Alfa_Num_2:
+                case ConfigurationValueEnum.Alfa_Num_3:
+                case ConfigurationValueEnum.Laser_1:
+                case ConfigurationValueEnum.Laser_2:
+                case ConfigurationValueEnum.Laser_3:
+                case ConfigurationValueEnum.WMS_ON:
+                // INFO Installation Info
+                case ConfigurationValueEnum.Belt_Burnishing:
+                case ConfigurationValueEnum.Machine_Ok:
+                case ConfigurationValueEnum.Shutter_1_Ok:
+                case ConfigurationValueEnum.Shutter_2_Ok:
+                case ConfigurationValueEnum.Shutter_3_Ok:
+                case ConfigurationValueEnum.Laser_1_Ok:
+                case ConfigurationValueEnum.Laser_2_Ok:
+                case ConfigurationValueEnum.Laser_3_Ok:
+                case ConfigurationValueEnum.Shape_1_Ok:
+                case ConfigurationValueEnum.Shape_2_Ok:
+                case ConfigurationValueEnum.Shape_3_Ok:
+                case ConfigurationValueEnum.Weight_Check:
+                case ConfigurationValueEnum.Origin_Y_Axis:
+                case ConfigurationValueEnum.Origin_Z_Axis:
+                case ConfigurationValueEnum.Check_Y_Offset:
+                case ConfigurationValueEnum.Cells_Check:
+                case ConfigurationValueEnum.Check_Shelf_Panel:
+                case ConfigurationValueEnum.Check_Bay_1:
+                case ConfigurationValueEnum.Check_Bay_2:
+                case ConfigurationValueEnum.Check_Bay_3:
+                case ConfigurationValueEnum.Load_First_Drawer:
+                case ConfigurationValueEnum.Load_Empty_Drawers:
+                case ConfigurationValueEnum.Set_Y_Resolution:
+                    {
+                        returnValue = DataTypeEnum.booleanType;
+                        break;
+                    }
+
+                case ConfigurationValueEnum.InverterPort:
+                case ConfigurationValueEnum.IoPort:
+                // INFO General info variables
+                case ConfigurationValueEnum.Bays_Quantity:
+                case ConfigurationValueEnum.Machine_Number_In_Area:
+                case ConfigurationValueEnum.Type_Bay1:
+                case ConfigurationValueEnum.Type_Bay2:
+                case ConfigurationValueEnum.Type_Bay3:
+                case ConfigurationValueEnum.Type_Shutter1:
+                case ConfigurationValueEnum.Type_Shutter2:
+                case ConfigurationValueEnum.Type_Shutter3:
+                case ConfigurationValueEnum.Drawers:
+                case ConfigurationValueEnum.Carrying_Capacity:
+                    {
+                        returnValue = DataTypeEnum.integerType;
+                        break;
+                    }
+
+                case ConfigurationValueEnum.cellSpacing:
+                case ConfigurationValueEnum.resolution:
+                // INFO General info variables
+                case ConfigurationValueEnum.Height:
+                case ConfigurationValueEnum.Height_Bay_1_Position_1:
+                case ConfigurationValueEnum.Height_Bay_1_Position_2:
+                case ConfigurationValueEnum.Height_Bay_2_Position_1:
+                case ConfigurationValueEnum.Height_Bay_2_Position_2:
+                case ConfigurationValueEnum.Height_Bay_3_Position_1:
+                case ConfigurationValueEnum.Height_Bay_3_Position_2:
+                case ConfigurationValueEnum.Bay_1_Position_1:
+                case ConfigurationValueEnum.Bay_1_Position_2:
+                case ConfigurationValueEnum.Bay_2_Position_1:
+                case ConfigurationValueEnum.Bay_2_Position_2:
+                case ConfigurationValueEnum.Bay_3_Position_1:
+                case ConfigurationValueEnum.Bay_3_Position_2:
+                    {
+                        returnValue = DataTypeEnum.decimalType;
+                        break;
+                    }
+
+                // INFO General info variables
+                case ConfigurationValueEnum.Installation_Date:
+                    {
+                        returnValue = DataTypeEnum.dateTimeType;
+                        break;
+                    }
+
+                case ConfigurationValueEnum.InverterAddress:
+                case ConfigurationValueEnum.IoAddress:
+                    {
+                        returnValue = DataTypeEnum.IPAddressType;
+                        break;
+                    }
+
+                // INFO Unknow variable type
+                default:
+                    {
+                        returnValue = DataTypeEnum.UndefinedType;
+                        break;
+                    }
+            }
+
+            return returnValue;
+        }
+
+        /// <inheritdoc/>
+        public bool GetBoolConfigurationValue(ConfigurationValueEnum configurationValueEnum)
+        {
+            var returnBoolValue = false;
+
+            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+
+            if (configurationValue != null)
+            {
+                if (configurationValue.VarType == DataTypeEnum.booleanType)
+                {
+                    if (!bool.TryParse(configurationValue.VarValue, out returnBoolValue))
+                        throw new InMemoryDataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
+                }
+                else
+                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+            }
+            else
+                throw new ArgumentNullException();
+
+            return returnBoolValue;
+        }
+
+        /// <inheritdoc/>
+        public bool GetBoolRuntimeValue(RuntimeValueEnum runtimeValueEnum)
+        {
+            var returnBoolValue = false;
+
+            var runtimeValue = this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
+
+            if (runtimeValue != null)
+            {
+                if (runtimeValue.VarType == DataTypeEnum.booleanType)
+                {
+                    if (!bool.TryParse(runtimeValue.VarValue, out returnBoolValue))
+                        throw new InMemoryDataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
+                }
+                else
+                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+            }
+            else
+                throw new ArgumentNullException();
+
+            return returnBoolValue;
+        }
+
+        /// <inheritdoc/>
+        public DateTime GetDateTimeConfigurationValue(ConfigurationValueEnum configurationValueEnum)
+        {
+            DateTime returnDateTimeValue;
+
+            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+
+            if (configurationValue != null)
+            {
+                if (configurationValue.VarType == DataTypeEnum.dateTimeType)
+                {
+                    if (!DateTime.TryParse(configurationValue.VarValue, out returnDateTimeValue))
+                        throw new InMemoryDataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
+                }
+                else
+                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+            }
+            else
+                throw new ArgumentNullException();
+
+            return returnDateTimeValue;
+        }
+
+        /// <inheritdoc/>
+        public DateTime GetDateTimeRuntimeValue(RuntimeValueEnum runtimeValueEnum)
+        {
+            DateTime returnDateTimeValue;
+
+            var runtimeValue = this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
+
+            if (runtimeValue != null)
+            {
+                if (runtimeValue.VarType == DataTypeEnum.dateTimeType)
+                {
+                    if (!DateTime.TryParse(runtimeValue.VarValue, out returnDateTimeValue))
+                        throw new InMemoryDataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
+                }
+                else
+                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+            }
+            else
+                throw new ArgumentNullException();
+
+            return returnDateTimeValue;
+        }
+
+        /// <inheritdoc/>
         public decimal GetDecimalConfigurationValue(ConfigurationValueEnum configurationValueEnum)
         {
             decimal returnDecimalValue = 0;
 
-            var configurationValue =
-                this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
 
             if (configurationValue != null)
             {
@@ -32,6 +249,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnDecimalValue;
         }
 
+        /// <inheritdoc/>
         public decimal GetDecimalRuntimeValue(RuntimeValueEnum runtimeValueEnum)
         {
             decimal returnDecimalValue = 0;
@@ -55,6 +273,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnDecimalValue;
         }
 
+        /// <inheritdoc/>
         public int GetIntegerConfigurationValue(ConfigurationValueEnum configurationValueEnum)
         {
             var returnIntegerValue = 0;
@@ -78,6 +297,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnIntegerValue;
         }
 
+        /// <inheritdoc/>
         public int GetIntegerRuntimeValue(RuntimeValueEnum runtimeValueEnum)
         {
             var returnIntegerValue = 0;
@@ -122,6 +342,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnIPAddressValue;
         }
 
+        /// <inheritdoc/>
         public string GetStringConfigurationValue(ConfigurationValueEnum configurationValueEnum)
         {
             var returnStringValue = "";
@@ -142,6 +363,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnStringValue;
         }
 
+        /// <inheritdoc/>
         public string GetStringRuntimeValue(RuntimeValueEnum runtimeValueEnum)
         {
             var returnStringValue = "";
@@ -167,10 +389,126 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnStringValue;
         }
 
+        /// <inheritdoc/>
+        public void SetBoolConfigurationValue(ConfigurationValueEnum configurationValueEnum, bool value)
+        {
+            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+
+            if (configurationValue == null)
+            {
+                var newConfigurationValue = new ConfigurationValue();
+                newConfigurationValue.VarName = configurationValueEnum;
+                newConfigurationValue.VarType = DataTypeEnum.booleanType;
+                newConfigurationValue.VarValue = value.ToString();
+
+                this.inMemoryDataContext.ConfigurationValues.Add(newConfigurationValue);
+                this.inMemoryDataContext.SaveChanges();
+            }
+            else
+            {
+                if (configurationValue.VarType == DataTypeEnum.booleanType)
+                {
+                    configurationValue.VarValue = value.ToString();
+                    this.inMemoryDataContext.SaveChanges();
+                }
+                else
+                {
+                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public void SetBoolRuntimeValue(RuntimeValueEnum runtimeValueEnum, bool value)
+        {
+            var runtimeValue = this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
+
+            if (runtimeValue == null)
+            {
+                var newRuntimeValue = new RuntimeValue();
+                newRuntimeValue.VarName = runtimeValueEnum;
+                newRuntimeValue.VarType = DataTypeEnum.booleanType;
+                newRuntimeValue.VarValue = value.ToString();
+
+                this.inMemoryDataContext.RuntimeValues.Add(newRuntimeValue);
+                this.inMemoryDataContext.SaveChanges();
+            }
+            else
+            {
+                if (runtimeValue.VarType == DataTypeEnum.booleanType)
+                {
+                    runtimeValue.VarValue = value.ToString();
+                    this.inMemoryDataContext.SaveChanges();
+                }
+                else
+                {
+                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public void SetDateTimeConfigurationValue(ConfigurationValueEnum configurationValueEnum, DateTime value)
+        {
+            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+
+            if (configurationValue == null)
+            {
+                var newConfigurationValue = new ConfigurationValue();
+                newConfigurationValue.VarName = configurationValueEnum;
+                newConfigurationValue.VarType = DataTypeEnum.dateTimeType;
+                newConfigurationValue.VarValue = value.ToString();
+
+                this.inMemoryDataContext.ConfigurationValues.Add(newConfigurationValue);
+                this.inMemoryDataContext.SaveChanges();
+            }
+            else
+            {
+                if (configurationValue.VarType == DataTypeEnum.dateTimeType)
+                {
+                    configurationValue.VarValue = value.ToString();
+                    this.inMemoryDataContext.SaveChanges();
+                }
+                else
+                {
+                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public void SetDateTimeRuntimeValue(RuntimeValueEnum runtimeValueEnum, DateTime value)
+        {
+            var runtimeValue = this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
+
+            if (runtimeValue == null)
+            {
+                var newRuntimeValue = new RuntimeValue();
+                newRuntimeValue.VarName = runtimeValueEnum;
+                newRuntimeValue.VarType = DataTypeEnum.dateTimeType;
+                newRuntimeValue.VarValue = value.ToString();
+
+                this.inMemoryDataContext.RuntimeValues.Add(newRuntimeValue);
+                this.inMemoryDataContext.SaveChanges();
+            }
+            else
+            {
+                if (runtimeValue.VarType == DataTypeEnum.dateTimeType)
+                {
+                    runtimeValue.VarValue = value.ToString();
+                    this.inMemoryDataContext.SaveChanges();
+                }
+                else
+                {
+                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                }
+            }
+        }
+
+        /// <inheritdoc/>
         public void SetDecimalConfigurationValue(ConfigurationValueEnum configurationValueEnum, decimal value)
         {
-            var configurationValue =
-                this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
 
             if (configurationValue == null)
             {
@@ -196,6 +534,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
         }
 
+        /// <inheritdoc/>
         public void SetDecimalRuntimeValue(RuntimeValueEnum runtimeValueEnum, decimal value)
         {
             var runtimeValue = this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
@@ -224,6 +563,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
         }
 
+        /// <inheritdoc/>
         public void SetIntegerConfigurationValue(ConfigurationValueEnum configurationValueEnum, int value)
         {
             var configurationValue =
@@ -253,6 +593,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
         }
 
+        /// <inheritdoc/>
         public void SetIntegerRuntimeValue(RuntimeValueEnum runtimeValueEnum, int value)
         {
             var runtimeValue =
@@ -282,6 +623,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
         }
 
+        /// <inheritdoc/>
         public void SetStringConfigurationValue(ConfigurationValueEnum configurationValueEnum, string value)
         {
             var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
@@ -310,6 +652,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
         }
 
+        /// <inheritdoc/>
         public void SetStringRuntimeValue(RuntimeValueEnum runtimeValueEnum, string value)
         {
             var runtimeValue = this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
