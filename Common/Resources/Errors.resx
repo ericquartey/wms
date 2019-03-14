@@ -277,6 +277,6 @@
     <value>The property {0} must have a value.</value>
   </data>
   <data name="NotPossibleExecuteOperation" xml:space="preserve">
-    <value>Not it possible to complete the request because there are constraints on: {0}</value>
+    <value>Unable to complete the request because there are constraints on: {0}</value>
   </data>
 </root>
