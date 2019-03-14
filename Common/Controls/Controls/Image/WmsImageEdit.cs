@@ -1,13 +1,11 @@
-﻿namespace Ferretto.Common.Controls
-{
-    using System.IO;
-    using System.Windows;
-    using System.Windows.Media;
-    using DevExpress.Xpf.Core.Native;
-    using DevExpress.Xpf.Editors;
-    using Ferretto.Common.BLL.Interfaces.Providers;
-    using CommonServiceLocator;
-    using Microsoft.Win32;
+﻿using System.IO;
+using System.Windows;
+using System.Windows.Media;
+using DevExpress.Xpf.Core.Native;
+using DevExpress.Xpf.Editors;
+using CommonServiceLocator;
+using Microsoft.Win32;
+using Ferretto.Common.BLL.Interfaces.Providers;
 
 namespace Ferretto.Common.Controls
 {

@@ -6,8 +6,6 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
-using Ferretto.Common.Modules.BLL.Models;
-using Ferretto.Common.Utils.Modules;
 using Compartment = Ferretto.Common.BusinessModels.Compartment;
 
 namespace Ferretto.WMS.App.Modules.BLL

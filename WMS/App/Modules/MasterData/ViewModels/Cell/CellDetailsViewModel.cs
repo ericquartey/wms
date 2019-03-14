@@ -7,7 +7,6 @@ using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Ferretto.WMS.App.Modules.BLL;
-using Ferretto.Common.Modules.BLL.Models;
 
 namespace Ferretto.WMS.Modules.MasterData
 {

@@ -1,14 +1,10 @@
-﻿using System;
-using CommonServiceLocator;
-using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Providers;
+﻿using CommonServiceLocator;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
 using Unity;
-using Unity.Lifetime;
 
 namespace Ferretto.WMS.Modules.Layout
 {
@@ -40,16 +36,6 @@ namespace Ferretto.WMS.Modules.Layout
 
         public void OnInitialized(IContainerProvider containerProvider)
         {
-            SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingLayoutModule);
-
-            NLog.LogManager
-               .GetCurrentClassLogger()
-               .Trace("Loading module ...");
-            var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
-            navigationService.Register<LayoutView, LayoutViewModel>();
-            navigationService.Register<MenuView, MenuViewModel>();
-            navigationService.Register<LoginView, LoginViewModel>();
-
             var notificationService = ServiceLocator.Current.GetInstance<INotificationServiceClient>();
             notificationService.StartAsync().ConfigureAwait(true);
             var inputService = ServiceLocator.Current.GetInstance<IInputService>();
@@ -67,7 +53,15 @@ namespace Ferretto.WMS.Modules.Layout
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            // Method intentionally left empty.
+            SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingLayoutModule);
+
+            NLog.LogManager
+               .GetCurrentClassLogger()
+               .Trace("Loading module ...");
+            var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
+            navigationService.Register<LayoutView, LayoutViewModel>();
+            navigationService.Register<MenuView, MenuViewModel>();
+            navigationService.Register<LoginView, LoginViewModel>();
         }
 
         #endregion
