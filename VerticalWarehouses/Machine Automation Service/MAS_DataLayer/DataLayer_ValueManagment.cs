@@ -9,6 +9,7 @@ namespace Ferretto.VW.MAS_DataLayer
     {
         #region Methods
 
+        /// <inheritdoc/>
         public DataTypeEnum ConvertConfigurationValue(ConfigurationValueEnum configurationValueEnum)
         {
             DataTypeEnum returnValue;
@@ -102,6 +103,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnValue;
         }
 
+        /// <inheritdoc/>
         public bool GetBoolConfigurationValue(ConfigurationValueEnum configurationValueEnum)
         {
             var returnBoolValue = false;
@@ -124,6 +126,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnBoolValue;
         }
 
+        /// <inheritdoc/>
         public bool GetBoolRuntimeValue(RuntimeValueEnum runtimeValueEnum)
         {
             var returnBoolValue = false;
@@ -146,6 +149,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnBoolValue;
         }
 
+        /// <inheritdoc/>
         public DateTime GetDateTimeConfigurationValue(ConfigurationValueEnum configurationValueEnum)
         {
             DateTime returnDateTimeValue;
@@ -168,6 +172,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnDateTimeValue;
         }
 
+        /// <inheritdoc/>
         public DateTime GetDateTimeRuntimeValue(RuntimeValueEnum runtimeValueEnum)
         {
             DateTime returnDateTimeValue;
@@ -190,6 +195,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnDateTimeValue;
         }
 
+        /// <inheritdoc/>
         public decimal GetDecimalConfigurationValue(ConfigurationValueEnum configurationValueEnum)
         {
             decimal returnDecimalValue = 0;
@@ -212,6 +218,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnDecimalValue;
         }
 
+        /// <inheritdoc/>
         public decimal GetDecimalRuntimeValue(RuntimeValueEnum runtimeValueEnum)
         {
             decimal returnDecimalValue = 0;
@@ -235,6 +242,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnDecimalValue;
         }
 
+        /// <inheritdoc/>
         public int GetIntegerConfigurationValue(ConfigurationValueEnum configurationValueEnum)
         {
             var returnIntegerValue = 0;
@@ -258,6 +266,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnIntegerValue;
         }
 
+        /// <inheritdoc/>
         public int GetIntegerRuntimeValue(RuntimeValueEnum runtimeValueEnum)
         {
             var returnIntegerValue = 0;
@@ -302,6 +311,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnIPAddressValue;
         }
 
+        /// <inheritdoc/>
         public string GetStringConfigurationValue(ConfigurationValueEnum configurationValueEnum)
         {
             var returnStringValue = "";
@@ -322,6 +332,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnStringValue;
         }
 
+        /// <inheritdoc/>
         public string GetStringRuntimeValue(RuntimeValueEnum runtimeValueEnum)
         {
             var returnStringValue = "";
@@ -347,6 +358,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnStringValue;
         }
 
+        /// <inheritdoc/>
         public void SetBoolConfigurationValue(ConfigurationValueEnum configurationValueEnum, bool value)
         {
             var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
@@ -375,6 +387,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
         }
 
+        /// <inheritdoc/>
         public void SetBoolRuntimeValue(RuntimeValueEnum runtimeValueEnum, bool value)
         {
             var runtimeValue = this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
@@ -403,6 +416,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
         }
 
+        /// <inheritdoc/>
         public void SetDateTimeConfigurationValue(ConfigurationValueEnum configurationValueEnum, DateTime value)
         {
             var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
@@ -431,6 +445,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
         }
 
+        /// <inheritdoc/>
         public void SetDateTimeRuntimeValue(RuntimeValueEnum runtimeValueEnum, DateTime value)
         {
             var runtimeValue = this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
@@ -459,6 +474,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
         }
 
+        /// <inheritdoc/>
         public void SetDecimalConfigurationValue(ConfigurationValueEnum configurationValueEnum, decimal value)
         {
             var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
@@ -487,6 +503,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
         }
 
+        /// <inheritdoc/>
         public void SetDecimalRuntimeValue(RuntimeValueEnum runtimeValueEnum, decimal value)
         {
             var runtimeValue = this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
@@ -515,6 +532,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
         }
 
+        /// <inheritdoc/>
         public void SetIntegerConfigurationValue(ConfigurationValueEnum configurationValueEnum, int value)
         {
             var configurationValue =
@@ -544,6 +562,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
         }
 
+        /// <inheritdoc/>
         public void SetIntegerRuntimeValue(RuntimeValueEnum runtimeValueEnum, int value)
         {
             var runtimeValue =
@@ -573,6 +592,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
         }
 
+        /// <inheritdoc/>
         public void SetStringConfigurationValue(ConfigurationValueEnum configurationValueEnum, string value)
         {
             var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
@@ -601,6 +621,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
         }
 
+        /// <inheritdoc/>
         public void SetStringRuntimeValue(RuntimeValueEnum runtimeValueEnum, string value)
         {
             var runtimeValue = this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
