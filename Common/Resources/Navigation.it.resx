@@ -261,4 +261,7 @@
   <data name="ItemListAdd" xml:space="preserve">
     <value>Aggiungi Lista Articoli</value>
   </data>
+  <data name="LoadingUnitAdd" xml:space="preserve">
+    <value>Aggiungi Unità di Carico</value>
+  </data>
 </root>

@@ -18,7 +18,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string CellPositionDescription { get; set; }
 
-        public Side CellSide { get; set; }
+        public Side? CellSide { get; set; }
 
         public string Code { get; set; }
 

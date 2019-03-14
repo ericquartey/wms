@@ -7,8 +7,6 @@ namespace MAS_InverterDriverUnitTests
     [TestClass]
     public class InverterMessageUnitTests
     {
-        #region Fields
-
         private InverterMessage readMessage;
 
         private InverterMessage writeByteMessage;
@@ -25,20 +23,16 @@ namespace MAS_InverterDriverUnitTests
 
         private InverterMessage writeUnsignedShortMessage;
 
-        #endregion
-
-        #region Methods
-
         [TestInitialize]
         public void ConfigureMessages()
         {
-            this.readMessage = new InverterMessage(0x01, 3, 3);
-            this.writeByteMessage = new InverterMessage(0x01, 3, (byte) 16);
-            this.writeShortMessage = new InverterMessage(0x01, 3, (short) 16);
-            this.writeUnsignedShortMessage = new InverterMessage(0x01, 3, (ushort) 16);
+            this.readMessage = new InverterMessage(0x01, 3);
+            this.writeByteMessage = new InverterMessage(0x01, 3, (byte)16);
+            this.writeShortMessage = new InverterMessage(0x01, 3, (short)16);
+            this.writeUnsignedShortMessage = new InverterMessage(0x01, 3, (ushort)16);
             this.writeIntMessage = new InverterMessage(0x01, 3, 16);
-            this.writeFloatMessage = new InverterMessage(0x01, 3, (float) 16);
-            this.writeDoubleMessage = new InverterMessage(0x01, 3, (double) 16);
+            this.writeFloatMessage = new InverterMessage(0x01, 3, (float)16);
+            this.writeDoubleMessage = new InverterMessage(0x01, 3, (double)16);
             this.writeStringMessage = new InverterMessage(0x01, 3, "16");
         }
 
@@ -95,26 +89,24 @@ namespace MAS_InverterDriverUnitTests
         {
             byte[] rawMessage =
             {
-                0x40, 0x07, 0x01, 0x02, 0x9A, 0x01, 0x01, 0x00
+                0x40, 0x06, 0x01, 0x02, 0x9A, 0x01, 0x01, 0x00
             }; //VALUE 0x9A, 0x01 represent InverterParameterId.ControlWordParam that is a UInt16 type parameter
 
             var parsedMessage = new InverterMessage(rawMessage);
 
             Assert.IsTrue(parsedMessage.IsError);
             Assert.IsInstanceOfType(parsedMessage.Payload, typeof(ushort));
-            Assert.AreEqual((ushort) 1, parsedMessage.Payload);
+            Assert.AreEqual((ushort)1, parsedMessage.Payload);
         }
 
         [TestMethod]
         public void ParseRawMessage()
         {
-            byte[] rawMessage = {0x20, 0x07, 0x01, 0x02, 0x03, 0x00, 0x01};
+            byte[] rawMessage = { 0x20, 0x06, 0x01, 0x02, 0x9A, 0x01, 0x01, 0x00 };
 
             var parsedMessage = new InverterMessage(rawMessage);
 
             Assert.IsFalse(parsedMessage.IsError);
         }
-
-        #endregion
     }
 }

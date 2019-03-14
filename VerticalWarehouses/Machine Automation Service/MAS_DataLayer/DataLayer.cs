@@ -39,9 +39,18 @@ namespace Ferretto.VW.MAS_DataLayer
             IEventAggregator eventAggregator)
         {
             if (inMemoryDataContext == null)
-                throw new DataLayerException(DataLayerExceptionEnum.DATALAYER_CONTEXT_EXCEPTION);
+            {
+                // TEMP
+                //throw new DataLayerException(DataLayerExceptionEnum.DATALAYER_CONTEXT_EXCEPTION);
+                new ArgumentNullException();
+            }
 
-            if (eventAggregator == null) throw new DataLayerException(DataLayerExceptionEnum.EVENTAGGREGATOR_EXCEPTION);
+            if (eventAggregator == null)
+            {
+                // TEMP
+                //throw new DataLayerException(DataLayerExceptionEnum.EVENTAGGREGATOR_EXCEPTION);
+                new ArgumentNullException();
+            }
 
             this.inMemoryDataContext = inMemoryDataContext;
 
@@ -58,7 +67,9 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
 
                 foreach (var configurationValue in initialContext.ConfigurationValues)
+                {
                     this.inMemoryDataContext.ConfigurationValues.Add(configurationValue);
+                }
 
                 this.inMemoryDataContext.SaveChanges();
             }
@@ -67,8 +78,58 @@ namespace Ferretto.VW.MAS_DataLayer
 
             this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
 
-            this.commadReceiveTask = new Task(async () => await ReceiveCommandTaskFunction());
-            this.notificationReceiveTask = new Task(async () => await ReceiveNotificationTaskFunction());
+            this.commadReceiveTask = new Task(async () => await this.ReceiveCommandTaskFunction());
+            this.notificationReceiveTask = new Task(async () => await this.ReceiveNotificationTaskFunction());
+
+            var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            commandEvent.Subscribe(message => { this.commandQueue.Enqueue(message); },
+                ThreadOption.PublisherThread,
+                false,
+                message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
+
+            // The old WriteLogService
+            var NotificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            NotificationEvent.Subscribe(message => { this.notificationQueue.Enqueue(message); },
+                ThreadOption.PublisherThread,
+                false,
+                message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
+
+            this.SetDecimalConfigurationValue(ConfigurationValueEnum.cellSpacing, 25.01m);
+
+            this.GetDecimalConfigurationValue(ConfigurationValueEnum.cellSpacing);
+        }
+
+        /// <summary>
+        /// FAKE constructor to be used EXCLUSIVELLY for unit testing
+        /// </summary>
+        /// <param name="inMemoryDataContext"></param>
+        /// <param name="eventAggregator"></param>
+        public DataLayer(DataLayerContext inMemoryDataContext, IEventAggregator eventAggregator)
+        {
+            if (inMemoryDataContext == null)
+            {
+                // TEMP
+                //throw new DataLayerException(DataLayerExceptionEnum.DATALAYER_CONTEXT_EXCEPTION);
+                new ArgumentNullException();
+            }
+
+            if (eventAggregator == null)
+            {
+                // TEMP
+                //throw new DataLayerException(DataLayerExceptionEnum.EVENTAGGREGATOR_EXCEPTION);
+                new ArgumentNullException();
+            }
+
+            this.inMemoryDataContext = inMemoryDataContext;
+
+            this.eventAggregator = eventAggregator;
+
+            this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
+
+            this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
+
+            this.commadReceiveTask = new Task(async () => await this.ReceiveCommandTaskFunction());
+            this.notificationReceiveTask = new Task(async () => await this.ReceiveNotificationTaskFunction());
 
             var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
             commandEvent.Subscribe(message => { this.commandQueue.Enqueue(message); },
@@ -157,7 +218,7 @@ namespace Ferretto.VW.MAS_DataLayer
                     return;
                 }
 
-                LogWriting(receivedMessage);
+                this.LogWriting(receivedMessage);
 
                 switch (receivedMessage.Type)
                 {

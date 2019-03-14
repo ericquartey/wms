@@ -21,7 +21,7 @@ namespace Ferretto.Common.Controls
 
         private readonly Stack<INavigableView> registeredViews = new Stack<INavigableView>();
 
-        private ActionBar actionBarHsitoryView;
+        private ActionBar actionBarHistoryView;
 
         private INavigableView viewToAdd;
 
@@ -96,7 +96,7 @@ namespace Ferretto.Common.Controls
         {
             base.OnApplyTemplate();
 
-            this.actionBarHsitoryView = LayoutTreeHelper.GetVisualChildren(this)
+            this.actionBarHistoryView = LayoutTreeHelper.GetVisualChildren(this)
                 .OfType<ActionBar>()
                 .FirstOrDefault();
 
@@ -150,7 +150,7 @@ namespace Ferretto.Common.Controls
 
         private void CheckBackVisibility()
         {
-            this.actionBarHsitoryView.Visibility = (this.registeredViews.Count == 1) ? Visibility.Hidden : Visibility.Visible;
+            this.actionBarHistoryView.Visibility = (this.registeredViews.Count == 1) ? Visibility.Hidden : Visibility.Visible;
         }
 
         private object GetParentWmsViewData()

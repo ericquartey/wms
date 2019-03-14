@@ -3,7 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
-using Ferretto.Common.BLL.Interfaces.Base;
+using Ferretto.Common.BLL.Interfaces.Providers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Extensions
@@ -61,7 +61,7 @@ namespace Ferretto.WMS.Data.Core.Extensions
             return (Expression<Func<TDataModel, string>>)Expression.Lambda(lambdaBody, lambdaInParameter);
         }
 
-        private static string ToStringLambda<TProperty>(TProperty property) => property.ToString();
+        private static string ToStringLambda<TProperty>(TProperty property) => property?.ToString();
 
         #endregion
     }

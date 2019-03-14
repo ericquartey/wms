@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
@@ -51,9 +52,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
             this.inverterCommandQueue.Enqueue(message);
         }
 
-        public void ProcessMessage(InverterMessage message)
+        public bool ProcessMessage(InverterMessage message)
         {
-            this.CurrentState?.ProcessMessage(message);
+            return this.CurrentState?.ProcessMessage(message) ?? false;
         }
 
         public void PublishNotificationEvent(NotificationMessage notificationMessage)

@@ -88,6 +88,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this {0}?.
+        /// </summary>
+        public static string AreYouSureToDeleteGeneric {
+            get {
+                return ResourceManager.GetString("AreYouSureToDeleteGeneric", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Leaving the page will revert all your usaved changes. Are you sure you want to proceed?.
         /// </summary>
         public static string AreYouSureToLeaveThePage {
@@ -165,6 +174,15 @@ namespace Ferretto.Common.Resources {
         public static string EmptyString {
             get {
                 return ResourceManager.GetString("EmptyString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Row Count={0}.
+        /// </summary>
+        public static string GridRowCounter {
+            get {
+                return ResourceManager.GetString("GridRowCounter", resourceCulture);
             }
         }
         

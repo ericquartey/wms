@@ -37,7 +37,7 @@ namespace Ferretto.VW.InverterDriver
 
         #region Properties
 
-        public bool IsConnected => this.transportClient?.Connected ?? false && this.transportStream != null;
+        public bool IsConnected => this.transportClient?.Connected ?? false;
 
         #endregion
 
@@ -51,7 +51,7 @@ namespace Ferretto.VW.InverterDriver
         }
 
         /// <inheritdoc />
-        public async Task<bool> ConnectAsync()
+        public async Task ConnectAsync()
         {
             if (this.inverterAddress == null)
                 throw new ArgumentNullException(nameof(this.inverterAddress),
@@ -105,16 +105,14 @@ namespace Ferretto.VW.InverterDriver
                 throw new InverterDriverException("Failed to retrieve socket communication stream",
                     InverterDriverExceptionCode.GetNetworkStreamFailed, ex);
             }
-
-            return this.transportClient?.Connected ?? false;
         }
 
         /// <inheritdoc />
-        public void Disconnect(int delay)
+        public void Disconnect()
         {
             if (!this.transportClient?.Connected ?? false) return;
 
-            this.transportStream?.Close(delay);
+            this.transportStream?.Close();
             this.transportClient?.Close();
 
             this.Dispose(true);
@@ -139,7 +137,11 @@ namespace Ferretto.VW.InverterDriver
 
             try
             {
-                await this.transportStream.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer.Length, stoppingToken);
+                var readBytes = await this.transportStream.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer.Length, stoppingToken);
+                byte[] receivedData = new byte[readBytes];
+
+                Array.Copy(this.receiveBuffer, receivedData, readBytes);
+                Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - ReadAsync:{BitConverter.ToString(receivedData)}");
             }
             catch (Exception ex)
             {
@@ -151,7 +153,7 @@ namespace Ferretto.VW.InverterDriver
         }
 
         /// <inheritdoc />
-        public async Task WriteAsync(byte[] inverterMessage, CancellationToken stoppingToken)
+        public async ValueTask<int> WriteAsync(byte[] inverterMessage, CancellationToken stoppingToken)
         {
             if (this.transportStream == null)
                 throw new InverterDriverException("Transport Stream is null",
@@ -163,13 +165,43 @@ namespace Ferretto.VW.InverterDriver
 
             try
             {
+                Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - WriteAsync:{BitConverter.ToString(inverterMessage)}");
+                await Task.Delay(50);
                 await this.transportStream.WriteAsync(inverterMessage, 0, inverterMessage.Length, stoppingToken);
             }
             catch (Exception ex)
             {
-                throw new InverterDriverException("Error writing data to Transport Stream",
-                    InverterDriverExceptionCode.NetworkStreamWriteFailure, ex);
+                throw new InverterDriverException("Error writing data to Transport Stream", InverterDriverExceptionCode.NetworkStreamWriteFailure, ex);
             }
+
+            return 0;
+        }
+
+        public async ValueTask<int> WriteAsync(byte[] inverterMessage, int delay, CancellationToken stoppingToken)
+        {
+            if (this.transportStream == null)
+                throw new InverterDriverException("Transport Stream is null",
+                    InverterDriverExceptionCode.UninitializedNetworkStream);
+
+            if (!this.transportStream.CanWrite)
+                throw new InverterDriverException("Transport Stream not configured for sending data",
+                    InverterDriverExceptionCode.MisconfiguredNetworkStream);
+
+            try
+            {
+                Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - WriteAsyncDelay:{BitConverter.ToString(inverterMessage)} - Delay:{delay}");
+                if (delay > 0)
+                {
+                    await Task.Delay(delay);
+                }
+                await this.transportStream.WriteAsync(inverterMessage, 0, inverterMessage.Length, stoppingToken);
+            }
+            catch (Exception ex)
+            {
+                throw new InverterDriverException("Error writing data to Transport Stream", InverterDriverExceptionCode.NetworkStreamWriteFailure, ex);
+            }
+
+            return 0;
         }
 
         protected virtual void Dispose(bool disposing)

@@ -31,25 +31,25 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         #region Methods
 
-        public override void SendCommandMessage(CommandMessage message)
+        public override void ProcessCommandMessage(CommandMessage message)
         {
             switch (message.Type)
             {
-                case MessageType.StopAction:
+                case MessageType.Stop:
                     //TODO add state business logic to stop current action
 
                     var newMessage = new CommandMessage(null,
                         "Mission Error",
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
-                        MessageType.StopAction,
+                        MessageType.Stop,
                         MessageVerbosity.Info);
                     this.parentStateMachine.PublishCommandMessage(newMessage);
                     break;
             }
         }
 
-        public override void SendNotificationMessage(NotificationMessage message)
+        public override void ProcessNotificationMessage(NotificationMessage message)
         {
             throw new NotImplementedException();
         }

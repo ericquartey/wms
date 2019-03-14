@@ -3,7 +3,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class CellsSideControlViewModel : BindableBase, ICellsSideControlViewModel, IViewModel
+    public class CellsSideControlViewModel : BindableBase, ICellsSideControlViewModel
     {
         #region Methods
 

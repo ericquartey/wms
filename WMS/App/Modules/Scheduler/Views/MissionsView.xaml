@@ -4,13 +4,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:dxa="http://schemas.devexpress.com/winfx/2008/xaml/accordion"
-             xmlns:dxdst="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:models="clr-namespace:Ferretto.Common.BusinessModels;assembly=Ferretto.Common.BusinessModels"
-             xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
              Title="{x:Static res:Navigation.Missions}"
@@ -93,7 +90,9 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <wms:TileBar ItemsSource="{Binding Filters}"
+
+                <wms:TileBar HorizontalAlignment="Right"
+                             ItemsSource="{Binding Filters}"
                              SelectedItem="{Binding SelectedFilter, Mode=OneWayToSource}" />
 
                 <dxa:AccordionControl Grid.Row="1"
@@ -141,8 +140,7 @@
                                        GlyphSize="Custom">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="ItemClick">
-                                <wms:WmsTooltipViewAppear Grid="{Binding RelativeSource={RelativeSource AncestorType={x:Type Grid}}, Path=Children[1]}"
-                                                          Tooltip="Details" />
+                                <wms:WmsTooltipViewAppear Tooltip="Details" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </wms:ActionBarItem>
@@ -216,13 +214,15 @@
                     <wms:WmsGridControl.View>
                         <dxg:TableView SearchPanelHorizontalAlignment="Right"
                                        ShowFilterPanelMode="Never"
-                                       ShowSearchPanelMode="Never" />
+                                       ShowSearchPanelMode="Never"
+                                       ShowFixedTotalSummary="True" />
                     </wms:WmsGridControl.View>
 
                     <wms:WmsGridControl.Columns>
 
                         <dxg:GridColumn Width="90*"
                                         CellToolTipBinding="{Binding}"
+                                        FieldName="Details"
                                         Header="{x:Static res:General.Details}">
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
@@ -327,6 +327,12 @@
                         <dxg:GridSortInfo FieldName="Priority"
                                           SortOrder="Descending" />
                     </wms:WmsGridControl.SortInfo>
+
+                    <wms:WmsGridControl.TotalSummary>
+                        <dxg:GridSummaryItem SummaryType="Count"
+                                             Alignment="Left"
+                                             DisplayFormat="{x:Static res:DesktopApp.GridRowCounter}" />
+                    </wms:WmsGridControl.TotalSummary>
 
                 </wms:WmsGridControl>
             </Grid>

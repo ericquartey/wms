@@ -10,9 +10,9 @@ steps:
 - task: NuGetCommand@2
   displayName: 'NuGet restore'
   inputs:
-    restoreSolution: '$(TargetSolution)'
+    restoreSolution: '**/*.sln'
     feedsToUse: config
-    nugetConfigPath: nuget.config
-    restoreDirectory: ./packages
+    nugetConfigPath: 'nuget.config'
+    restoreDirectory: './packages'
     verbosityRestore: Normal
 

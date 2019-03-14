@@ -3,24 +3,20 @@ using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
 using Microsoft.Practices.Unity;
-using Ferretto.VW.InstallationApp.ServiceUtilities;
-using System.Net;
-using System.IO;
-using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Prism.Events;
 using Ferretto.VW.InstallationApp.Resources;
+using System.Net.Http;
+using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class VerticalAxisCalibrationViewModel : BindableBase, IViewModel, IVerticalAxisCalibrationViewModel
+    public class VerticalAxisCalibrationViewModel : BindableBase, IVerticalAxisCalibrationViewModel
     {
         #region Fields
 
+        private readonly IEventAggregator eventAggregator;
+
         private IUnityContainer container;
-
-        private IEventAggregator eventAggregator;
-
-        private InstallationHubClient installationHubClient;
 
         private bool isStartButtonActive = true;
 
@@ -28,9 +24,11 @@ namespace Ferretto.VW.InstallationApp
 
         private string lowerBound;
 
-        private string noteString = Ferretto.VW.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
+        private string noteString = VW.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
 
         private string offset;
+
+        private SubscriptionToken receivedActionUpdateToken;
 
         private string resolution;
 
@@ -98,19 +96,97 @@ namespace Ferretto.VW.InstallationApp
             this.container = container;
         }
 
-        public async void SubscribeMethodToEvent()
+        public void SubscribeMethodToEvent()
         {
-            this.installationHubClient = (InstallationHubClient)this.container.Resolve<ContainerIInstallationHubClient>();
-            this.installationHubClient.ReceivedMessageToAllConnectedClients += this.UpdateNoteString;
+            this.receivedActionUpdateToken = this.eventAggregator.GetEvent<MAS_Event>().Subscribe(
+                (msg) => this.UpdateCurrentActionStatus(msg),
+                ThreadOption.PublisherThread,
+                false,
+                message => message.NotificationType == NotificationType.CurrentActionStatus &&
+                (message.ActionType == ActionType.Homing || message.ActionType == ActionType.HorizontalHoming || message.ActionType == ActionType.VerticalHoming || message.ActionType == ActionType.SwitchEngine));
         }
 
-        public async void UnSubscribeMethodFromEvent()
+        public void UnSubscribeMethodFromEvent()
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Unsubscribe((message) => { this.SubscribeMethodToEvent(); });
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Unsubscribe((message) => { this.UnSubscribeMethodFromEvent(); });
+            this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.receivedActionUpdateToken);
         }
 
-        public void UpdateNoteString(object sender, string message)
+        public void UpdateCurrentActionStatus(MAS_EventMessage message)
+        {
+            if (message != null)
+            {
+                switch (message.ActionType)
+                {
+                    case ActionType.Homing:
+                        switch (message.ActionStatus)
+                        {
+                            case ActionStatus.Start:
+                                this.NoteString = VW.Resources.InstallationApp.HomingStarted;
+                                break;
+
+                            case ActionStatus.Completed:
+                                this.NoteString = VW.Resources.InstallationApp.HomingCompleted;
+                                this.IsStartButtonActive = true;
+                                this.IsStopButtonActive = false;
+                                break;
+                        }
+                        break;
+
+                    case ActionType.HorizontalHoming:
+                        switch (message.ActionStatus)
+                        {
+                            case ActionStatus.Start:
+                                this.NoteString = VW.Resources.InstallationApp.HorizontalHomingStarted;
+                                break;
+
+                            case ActionStatus.Executing:
+                                this.NoteString = VW.Resources.InstallationApp.HorizontalHomingExecuting;
+                                break;
+
+                            case ActionStatus.Completed:
+                                this.NoteString = VW.Resources.InstallationApp.HorizontalHomingCompleted;
+                                break;
+                        }
+                        break;
+
+                    case ActionType.VerticalHoming:
+                        switch (message.ActionStatus)
+                        {
+                            case ActionStatus.Start:
+                                this.NoteString = VW.Resources.InstallationApp.VerticalHomingStarted;
+                                break;
+
+                            case ActionStatus.Executing:
+                                this.NoteString = VW.Resources.InstallationApp.VerticalHomingExecuting;
+                                break;
+
+                            case ActionStatus.Completed:
+                                this.NoteString = VW.Resources.InstallationApp.VerticalHomingCompleted;
+                                break;
+                        }
+                        break;
+
+                    case ActionType.SwitchEngine:
+                        switch (message.ActionStatus)
+                        {
+                            case ActionStatus.Start:
+                                this.NoteString = VW.Resources.InstallationApp.SwitchEngineStarted;
+                                break;
+
+                            case ActionStatus.Completed:
+                                this.NoteString = VW.Resources.InstallationApp.SwitchEngineCompleted;
+                                break;
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                throw new ArgumentNullException();
+            }
+        }
+
+        public void UpdateNoteString(string message)
         {
             this.NoteString = message;
         }
@@ -130,19 +206,14 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        private void ExecuteStartButtonCommand()
+        private async void ExecuteStartButtonCommand()
         {
             try
             {
-                var request = (HttpWebRequest)WebRequest.Create("https://localhost:5001/api/Test/HomingTest");
-                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-
-                using (var response = (HttpWebResponse)request.GetResponse())
-                using (var stream = response.GetResponseStream())
-                using (var reader = new StreamReader(stream))
-                {
-                    this.NoteString = reader.ReadToEnd();
-                }
+                var client = new HttpClient();
+                await client.GetStringAsync("http://localhost:5000/api/Installation/ExecuteHoming");
+                this.IsStartButtonActive = false;
+                this.IsStopButtonActive = true;
             }
             catch (Exception)
             {
@@ -151,9 +222,21 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        private void StopButtonMethod()
+        private async void StopButtonMethod()
         {
-            this.NoteString = Ferretto.VW.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
+            try
+            {
+                var client = new HttpClient();
+                await client.GetStringAsync("http://localhost:5000/api/Installation/StopCommand");
+                this.IsStartButtonActive = true;
+                this.IsStopButtonActive = false;
+                this.NoteString = VW.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
+            }
+            catch (Exception)
+            {
+                this.NoteString = "Couldn't get response from this http get request.";
+                throw;
+            }
         }
 
         #endregion

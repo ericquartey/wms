@@ -36,8 +36,7 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var listProvider = this.ServiceProvider
-                .GetService(typeof(IItemListSchedulerProvider)) as IItemListSchedulerProvider;
+            var schedulerService = this.GetService<ISchedulerService>();
 
             var listId = 1;
 
@@ -81,8 +80,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             var list1 = new Common.DataModels.ItemList
             {
                 Id = listId,
-                ItemListRows = new[] { row1, row2, row3 },
-                Status = Common.DataModels.ItemListStatus.Waiting
+                ItemListRows = new[] { row1, row2, row3 }
             };
 
             var compartment1 = new Common.DataModels.Compartment
@@ -106,58 +104,68 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             #endregion
 
-            using (var context = this.CreateContext())
-            {
-                #region Act
+            #region Act
 
-                var requests = await listProvider.PrepareForExecutionAsync(
-                    new ListExecutionRequest
-                    {
-                        ListId = list1.Id,
-                        AreaId = bay2.AreaId,
-                        BayId = bay2.Id
-                    });
+            var requests = await schedulerService.ExecuteListAsync(
+                new ListExecutionRequest
+                {
+                    ListId = list1.Id,
+                    AreaId = bay2.AreaId,
+                    BayId = bay2.Id
+                });
 
-                #endregion
+            #endregion
 
-                #region Assert
+            #region Assert
 
-                Assert.AreEqual(
-                    3,
-                    requests.Count(),
-                    "Number of scheduler requests should match the number of list rows.");
+            var missionProvider = this.GetService<IMissionSchedulerProvider>();
+            var listProvider = this.GetService<IItemListSchedulerProvider>();
 
-                Assert.IsTrue(
-                    requests.All(r => r.BayId == bay2.Id),
-                    "All requests should address the same bay.");
+            var updatedList = await listProvider.GetByIdAsync(list1.Id);
+            var missions = await missionProvider.GetAllAsync();
 
-                Assert.AreEqual(
-                    list1.ItemListRows.Sum(r => r.RequiredQuantity),
-                    requests.Sum(r => r.RequestedQuantity),
-                    "The total quantity recorded in the requests should be the same as the quantity reported in the list rows.");
+            Assert.AreEqual(ListStatus.Executing, updatedList.Status);
 
-                Assert.AreEqual(
-                    3,
-                    context.Missions.Count(),
-                    "A total of three missions should be generated.");
+            Assert.AreEqual(
+                3,
+                requests.Count(),
+                "Number of scheduler requests should match the number of list rows.");
 
-                Assert.AreEqual(
-                    listId,
-                    context.Missions.First().ItemListId,
-                    "The first generated mission should refer to the list with highest priority.");
+            Assert.AreEqual(
+                3,
+                requests.Count(),
+                "Number of scheduler requests should match the number of list rows.");
 
-                Assert.AreEqual(
-                    row2.Id,
-                    context.Missions.First().ItemListRowId,
-                    "The first generated mission should refer to the row with highest priority.");
+            Assert.IsTrue(
+                requests.All(r => r.BayId == bay2.Id),
+                "All requests should address the same bay.");
 
-                Assert.AreEqual(
-                    row1.Id,
-                    context.Missions.Last().ItemListRowId,
-                    "The last generated mission should refer to the row with lowest priority.");
+            Assert.AreEqual(
+                list1.ItemListRows.Sum(r => r.RequiredQuantity),
+                requests.Sum(r => r.RequestedQuantity),
+                "The total quantity recorded in the requests should be the same as the quantity reported in the list rows.");
 
-                #endregion
-            }
+            Assert.AreEqual(
+                3,
+                missions.Count(),
+                "A total of three missions should be generated.");
+
+            Assert.AreEqual(
+                listId,
+                missions.First().ItemListId,
+                "The first generated mission should refer to the list with highest priority.");
+
+            Assert.AreEqual(
+                row2.Id,
+                missions.First().ItemListRowId,
+                "The first generated mission should refer to the row with highest priority.");
+
+            Assert.AreEqual(
+                row1.Id,
+                missions.Last().ItemListRowId,
+                "The last generated mission should refer to the row with lowest priority.");
+
+            #endregion
         }
 
         #endregion

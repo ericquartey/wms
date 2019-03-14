@@ -1,10 +1,28 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Net.Http;
+using System.Text;
+using System.Windows.Controls;
 using System.Windows.Input;
+using Ferretto.VW.Common_Utils.DTOs;
+using Newtonsoft.Json;
+using System.Configuration;
 
 namespace Ferretto.VW.InstallationApp
 {
     public partial class LSMTVerticalEngineView : UserControl
     {
+        #region Fields
+
+        private string contentType = ConfigurationManager.AppSettings["HttpPostContentTypeJSON"];
+
+        private string executeMovementPath = ConfigurationManager.AppSettings["InstallationExecuteMovement"];
+
+        private string installationUrl = ConfigurationManager.AppSettings["InstallationController"];
+
+        private string stopCommandPath = ConfigurationManager.AppSettings["InstallationStopCommand"];
+
+        #endregion
+
         #region Constructors
 
         public LSMTVerticalEngineView()
@@ -16,19 +34,29 @@ namespace Ferretto.VW.InstallationApp
 
         #region Methods
 
-        private void MoveDownVerticalAxisHandler(object sender, MouseButtonEventArgs e)
+        private async void MoveDownVerticalAxisHandler(object sender, MouseButtonEventArgs e)
         {
-            // TODO implement service call
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+            var messageData = new MovementMessageDataDTO(-100m, 0, 1, 50u);
+            var json = JsonConvert.SerializeObject(messageData);
+            HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
+            await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
         }
 
-        private void MoveUpVerticalAxisHandler(object sender, MouseButtonEventArgs e)
+        private async void MoveUpVerticalAxisHandler(object sender, MouseButtonEventArgs e)
         {
-            // TODO implement service call
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+            var messageData = new MovementMessageDataDTO(100m, 0, 1, 50u);
+            var json = JsonConvert.SerializeObject(messageData);
+            HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
+            await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
         }
 
-        private void StopVerticalAxisHandler(object sender, MouseButtonEventArgs e)
+        private async void StopVerticalAxisHandler(object sender, MouseButtonEventArgs e)
         {
-            // TODO implement service call
+            await new HttpClient().GetAsync(new Uri(string.Concat(this.installationUrl, this.stopCommandPath)));
         }
 
         #endregion

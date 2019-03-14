@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
@@ -57,48 +58,80 @@ namespace Ferretto.VW.MAS_AutomationService
         }
 
         [HttpGet("HomingTest")]
-        public void ExecuteHoming()
+        public async void ExecuteHoming()
         {
-            var calibrateData = new CalibrateMessageData(Axis.Vertical);
-
-            var message = new CommandMessage(calibrateData,
-                "Execute Homing",
-                MessageActor.FiniteStateMachines,
-                MessageActor.AutomationService,
-                MessageType.Homing,
-                MessageVerbosity.Info);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
+            this.eventAggregator.GetEvent<NotificationEvent>()
+                .Publish(new NotificationMessage(null, "Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationStart));
+            await Task.Delay(2000);
+            this.eventAggregator.GetEvent<NotificationEvent>()
+                .Publish(new NotificationMessage(null, "Horizontal Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationStart));
+            await Task.Delay(2000);
+            this.eventAggregator.GetEvent<NotificationEvent>()
+                .Publish(new NotificationMessage(null, "Horizontal Homing Executing", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationExecuting));
+            await Task.Delay(4000);
+            this.eventAggregator.GetEvent<NotificationEvent>()
+                .Publish(new NotificationMessage(null, "Horizontal Homing Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationEnd));
+            await Task.Delay(2000);
+            this.eventAggregator.GetEvent<NotificationEvent>()
+                .Publish(new NotificationMessage(null, "Switching Engine Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.SwitchAxis, MessageStatus.OperationStart));
+            await Task.Delay(2000);
+            this.eventAggregator.GetEvent<NotificationEvent>()
+                .Publish(new NotificationMessage(null, "Switching Engine Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.SwitchAxis, MessageStatus.OperationEnd));
+            await Task.Delay(2000);
+            this.eventAggregator.GetEvent<NotificationEvent>()
+                .Publish(new NotificationMessage(null, "Vertical Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.VerticalHoming, MessageStatus.OperationStart));
+            await Task.Delay(2000);
+            this.eventAggregator.GetEvent<NotificationEvent>()
+                .Publish(new NotificationMessage(null, "Vertical Homing Executing", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.VerticalHoming, MessageStatus.OperationExecuting));
+            await Task.Delay(4000);
+            this.eventAggregator.GetEvent<NotificationEvent>()
+                .Publish(new NotificationMessage(null, "Vertical Homing Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.VerticalHoming, MessageStatus.OperationEnd));
+            await Task.Delay(2000);
+            this.eventAggregator.GetEvent<NotificationEvent>()
+                .Publish(new NotificationMessage(null, "Switching Engine Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.SwitchAxis, MessageStatus.OperationStart));
+            await Task.Delay(2000);
+            this.eventAggregator.GetEvent<NotificationEvent>()
+                .Publish(new NotificationMessage(null, "Switching Engine Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.SwitchAxis, MessageStatus.OperationEnd));
+            await Task.Delay(2000);
+            this.eventAggregator.GetEvent<NotificationEvent>()
+                .Publish(new NotificationMessage(null, "Horizontal Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationStart));
+            await Task.Delay(2000);
+            this.eventAggregator.GetEvent<NotificationEvent>()
+                .Publish(new NotificationMessage(null, "Horizontal Homing Executing", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationExecuting));
+            await Task.Delay(4000);
+            this.eventAggregator.GetEvent<NotificationEvent>()
+                .Publish(new NotificationMessage(null, "Horizontal Homing Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationEnd));
+            await Task.Delay(2000);
+            this.eventAggregator.GetEvent<NotificationEvent>()
+                .Publish(new NotificationMessage(null, "Homing Completed", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationEnd));
         }
 
         [HttpGet("HomingStop")]
         public void ExecuteStopHoming()
         {
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null,
-                "Stop Homing",
-                MessageActor.FiniteStateMachines,
-                MessageActor.AutomationService,
-                MessageType.StopHoming,
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Stop Homing",
+                MessageActor.FiniteStateMachines, MessageActor.AutomationService, MessageType.Stop,
                 MessageVerbosity.Info));
         }
 
         [HttpGet("MissionExecutedTest")]
         public void MissionExecuted()
         {
-            var message = new CommandMessage(
+            var message = new NotificationMessage(
                 null,
                 "Mission Executed",
                 MessageActor.MissionsManager,
                 MessageActor.FiniteStateMachines,
                 MessageType.EndAction,
-                MessageVerbosity.Debug);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
+                MessageStatus.OperationEnd);
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(message);
         }
 
         [HttpGet("StopFSM")]
         public void StopFiniteStateMachine()
         {
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Stop Homing",
-                MessageActor.FiniteStateMachines, MessageActor.AutomationService, MessageType.StopAction,
+                MessageActor.FiniteStateMachines, MessageActor.AutomationService, MessageType.Stop,
                 MessageVerbosity.Info));
         }
 

@@ -8,6 +8,10 @@
 
         OperationError,
 
-        OperationStop
+        OperationStop,
+
+        OperationStart,
+
+        OperationExecuting,
     }
 }

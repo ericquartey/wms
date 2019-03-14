@@ -5,7 +5,9 @@ using CommonServiceLocator;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
+using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Resources;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -16,7 +18,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IItemListProvider itemListProvider = ServiceLocator.Current.GetInstance<IItemListProvider>();
 
+        private readonly IItemListRowProvider itemListRowProvider = ServiceLocator.Current.GetInstance<IItemListRowProvider>();
+
         private ICommand addListRowCommand;
+
+        private ICommand deleteCommand;
 
         private IEnumerable<ItemListRow> itemListRowDataSource;
 
@@ -53,6 +59,11 @@ namespace Ferretto.WMS.Modules.MasterData
                                    (this.addListRowCommand = new DelegateCommand(
                                         this.ExecuteAddListRowCommand,
                                         this.CanExecuteAddListRowCommand));
+
+        public ICommand DeleteCommand => this.deleteCommand ??
+            (this.deleteCommand = new DelegateCommand(
+                async () => await this.ExecuteDeleteCommandAsync(),
+                this.CanExecuteDeleteCommand).ObservesProperty(() => this.SelectedItemListRow));
 
         public IEnumerable<ItemListRow> ItemListRowDataSource
         {
@@ -103,6 +114,7 @@ namespace Ferretto.WMS.Modules.MasterData
             ((DelegateCommand)this.ListRowExecuteCommand)?.RaiseCanExecuteChanged();
             ((DelegateCommand)this.ShowDetailsListRowCommand)?.RaiseCanExecuteChanged();
             ((DelegateCommand)this.AddListRowCommand)?.RaiseCanExecuteChanged();
+            ((DelegateCommand)this.DeleteCommand)?.RaiseCanExecuteChanged();
         }
 
         protected override async Task ExecuteRefreshCommandAsync()
@@ -156,6 +168,11 @@ namespace Ferretto.WMS.Modules.MasterData
             return this.Model?.CanAddNewRow == true;
         }
 
+        private bool CanExecuteDeleteCommand()
+        {
+            return this.selectedItemListRow?.CanDelete == true;
+        }
+
         private bool CanExecuteListCommand()
         {
             return this.Model?.CanBeExecuted == true;
@@ -176,6 +193,36 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = true;
 
             // TODO
+            this.IsBusy = false;
+        }
+
+        private async Task ExecuteDeleteCommandAsync()
+        {
+            this.IsBusy = true;
+
+            var userChoice = this.DialogService.ShowMessage(
+                string.Format(DesktopApp.AreYouSureToDeleteGeneric, BusinessObjects.ItemListRow),
+                DesktopApp.ConfirmOperation,
+                DialogType.Question,
+                DialogButtons.YesNo);
+
+            if (userChoice == DialogResult.Yes)
+            {
+                var result = await this.itemListRowProvider.DeleteAsync(this.SelectedItemListRow.Id);
+                if (result.Success)
+                {
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemListRowDeletedSuccessfully, StatusType.Success));
+                    this.IsBusy = false;
+                    this.SelectedItemListRow = null;
+
+                    await this.LoadDataAsync();
+                }
+                else
+                {
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+                }
+            }
+
             this.IsBusy = false;
         }
 

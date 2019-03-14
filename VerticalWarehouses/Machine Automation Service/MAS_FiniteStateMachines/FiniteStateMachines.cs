@@ -40,10 +40,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.eventAggregator = eventAggregator;
 
             this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
+
             this.notifyQueue = new BlockingConcurrentQueue<NotificationMessage>();
 
             this.commadReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
-            this.messageReceiveTask = new Task(async () => await this.MessageReceiveData());
+            this.messageReceiveTask = new Task(() => this.MessageReceiveData());
 
             var machineManagerMessagEvent = this.eventAggregator.GetEvent<CommandEvent>();
             machineManagerMessagEvent.Subscribe(message =>
@@ -52,7 +53,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 },
                 ThreadOption.PublisherThread,
                 false,
-                message => message.Destination == MessageActor.FiniteStateMachines);
+                message => message.Destination == MessageActor.FiniteStateMachines || message.Destination == MessageActor.Any);
 
             var notificationMessageEvent = this.eventAggregator.GetEvent<NotificationEvent>();
             notificationMessageEvent.Subscribe(message =>
@@ -75,6 +76,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             try
             {
                 this.commadReceiveTask.Start();
+                this.messageReceiveTask.Start();
             }
             catch (Exception ex)
             {
@@ -113,8 +115,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         this.ProcessHomingMessage(receivedMessage);
                         break;
 
-                    case MessageType.StopHoming:
-                        this.ProcessStopHomingMessage(receivedMessage);
+                    case MessageType.Stop:
+                        this.ProcessStopMessage(receivedMessage);
                         break;
 
                     case MessageType.StopAction:
@@ -188,7 +190,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             }
         }
 
-        private void ProcessStopHomingMessage(CommandMessage receivedMessage)
+        private void ProcessStopMessage(CommandMessage receivedMessage)
         {
             if (this.currentStateMachine == null)
             {

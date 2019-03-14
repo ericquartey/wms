@@ -59,7 +59,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
+                var provider = this.GetService<ISchedulerRequestProvider>();
 
                 var schedulerRequest = new SchedulerRequest
                 {
@@ -138,7 +138,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
+                var provider = this.GetService<ISchedulerRequestProvider>();
 
                 var schedulerRequest = new SchedulerRequest
                 {
@@ -170,6 +170,8 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
+            var provider = this.GetService<ISchedulerRequestProvider>();
+
             var sub1 = "S1";
 
             var compartment1 = new Common.DataModels.Compartment
@@ -193,8 +195,6 @@ namespace Ferretto.WMS.Scheduler.Tests
             using (var context = this.CreateContext())
             {
                 #region Act
-
-                var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
 
                 var schedulerRequest = new SchedulerRequest
                 {
@@ -227,6 +227,8 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
+            var provider = this.GetService<ISchedulerRequestProvider>();
+
             var compartment1 = new Common.DataModels.Compartment
             {
                 Id = 1,
@@ -253,8 +255,6 @@ namespace Ferretto.WMS.Scheduler.Tests
             using (var context = this.CreateContext())
             {
                 #region Act
-
-                var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
 
                 var schedulerRequest = new SchedulerRequest
                 {
@@ -358,7 +358,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
+                var provider = this.GetService<ISchedulerRequestProvider>();
 
                 var schedulerRequest = new SchedulerRequest
                 {
@@ -414,7 +414,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
+                var provider = this.GetService<ISchedulerRequestProvider>();
 
                 var schedulerRequest = new SchedulerRequest
                 {
@@ -482,7 +482,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
+                var provider = this.GetService<ISchedulerRequestProvider>();
 
                 var schedulerRequest = new SchedulerRequest
                 {
@@ -560,7 +560,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
+                var provider = this.GetService<ISchedulerRequestProvider>();
 
                 var schedulerRequest = new SchedulerRequest
                 {
@@ -661,7 +661,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
+                var provider = this.GetService<ISchedulerRequestProvider>();
 
                 var schedulerRequest = new SchedulerRequest
                 {
@@ -751,7 +751,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
+                var provider = this.GetService<ISchedulerRequestProvider>();
 
                 var schedulerRequest = new SchedulerRequest
                 {
@@ -838,7 +838,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var provider = this.ServiceProvider.GetService(typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider;
+                var provider = this.GetService<ISchedulerRequestProvider>();
 
                 var schedulerRequest = new SchedulerRequest
                 {

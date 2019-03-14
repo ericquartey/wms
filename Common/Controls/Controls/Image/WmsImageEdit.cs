@@ -5,10 +5,12 @@
     using System.Windows.Media;
     using DevExpress.Xpf.Core.Native;
     using DevExpress.Xpf.Editors;
-    using Ferretto.Common.BLL.Interfaces;
+    using Ferretto.Common.BLL.Interfaces.Providers;
     using CommonServiceLocator;
     using Microsoft.Win32;
 
+namespace Ferretto.Common.Controls
+{
     public class WmsImageEdit : ImageEdit
     {
         #region Fields

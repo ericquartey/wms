@@ -58,7 +58,9 @@ namespace Ferretto.Common.EF.Migrations
                 throw new System.ArgumentNullException(nameof(migrationBuilder));
             }
 
-            using (var db = new DatabaseContext())
+            var factory = new DatabaseContextFactory();
+
+            using (var db = factory.CreateDbContext(null))
             {
                 var now = DateTime.UtcNow;
 
@@ -137,7 +139,11 @@ namespace Ferretto.Common.EF.Migrations
             where T : class, IDataModel
         {
             var ids = dbSet.Select(r => (object)r.Id).ToArray();
+#pragma warning disable S3967 // Multidimensional arrays should not be used
+
+            // Justification: Multidimensional array is required here as an input for migrationBuilder.UpdateData
             var dates = new object[ids.Length, 1];
+#pragma warning restore S3967 // Multidimensional arrays should not be used
 
             for (var i = 0; i < ids.Length; i++)
             {
@@ -149,8 +155,7 @@ namespace Ferretto.Common.EF.Migrations
                 keyColumn: "Id",
                 keyValues: ids,
                 columns: new[] { "LastModificationDate" },
-                values: dates
-                );
+                values: dates);
         }
 
         #endregion

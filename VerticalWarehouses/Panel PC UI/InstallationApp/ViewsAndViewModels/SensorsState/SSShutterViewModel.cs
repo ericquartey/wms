@@ -3,7 +3,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class SSShutterViewModel : BindableBase, IViewModel, ISSShutterViewModel
+    public class SSShutterViewModel : BindableBase, ISSShutterViewModel
     {
         #region Fields
 

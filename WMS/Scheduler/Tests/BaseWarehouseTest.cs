@@ -33,7 +33,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
         protected Common.DataModels.LoadingUnit LoadingUnit1 { get; private set; }
 
-        protected ServiceProvider ServiceProvider => this.serviceProvider ?? (this.serviceProvider = CreateServices());
+        private ServiceProvider ServiceProvider => this.serviceProvider ?? (this.serviceProvider = CreateServices());
 
         #endregion
 
@@ -64,6 +64,12 @@ namespace Ferretto.WMS.Scheduler.Tests
         protected DatabaseContext CreateContext()
         {
             return this.ServiceProvider.GetService<DatabaseContext>();
+        }
+
+        protected T GetService<T>()
+            where T : class
+        {
+            return this.ServiceProvider.GetService(typeof(T)) as T;
         }
 
         protected void InitializeDatabase()

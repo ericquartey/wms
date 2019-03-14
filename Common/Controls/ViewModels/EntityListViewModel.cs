@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Base;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using CommonServiceLocator;

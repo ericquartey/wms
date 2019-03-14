@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 
         void EnqueueMessage(InverterMessage message);
 
-        void ProcessMessage(InverterMessage message);
+        bool ProcessMessage(InverterMessage message);
 
         void PublishNotificationEvent(NotificationMessage notificationMessage);
 

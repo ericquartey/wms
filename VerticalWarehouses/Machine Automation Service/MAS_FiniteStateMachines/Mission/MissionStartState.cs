@@ -39,11 +39,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         #region Methods
 
-        public override void SendCommandMessage(CommandMessage message)
+        public override void ProcessCommandMessage(CommandMessage message)
         {
             switch (message.Type)
             {
-                case MessageType.StopAction:
+                case MessageType.Stop:
                     //TODO add state business logic to stop current action
                     this.ProcessStopAction(message);
                     break;
@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
             }
         }
 
-        public override void SendNotificationMessage(NotificationMessage message)
+        public override void ProcessNotificationMessage(NotificationMessage message)
         {
             throw new NotImplementedException();
         }
@@ -81,7 +81,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
                 "Stop Requested",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.StopAction,
+                MessageType.Stop,
                 MessageVerbosity.Info);
             this.parentStateMachine.ChangeState(new MissionErrorState(this.parentStateMachine), newMessage);
         }
@@ -92,7 +92,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
                 "Stop Requested",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.StopAction,
+                MessageType.Stop,
                 MessageVerbosity.Info);
             this.parentStateMachine.ChangeState(new MissionEndState(this.parentStateMachine), newMessage);
         }

@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Transactions;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Ferretto.WMS.Scheduler.Core.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Scheduler.Core.Providers
 {
@@ -19,19 +18,15 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         private readonly DatabaseContext dataContext;
 
-        private readonly ILogger<SchedulerRequestProvider> logger;
-
         #endregion
 
         #region Constructors
 
         public SchedulerRequestProvider(
             DatabaseContext dataContext,
-            ILogger<SchedulerRequestProvider> logger,
             ICompartmentSchedulerProvider compartmentSchedulerProvider)
         {
             this.dataContext = dataContext;
-            this.logger = logger;
             this.compartmentSchedulerProvider = compartmentSchedulerProvider;
         }
 
@@ -39,23 +34,22 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         #region Methods
 
-        public async Task<SchedulerRequest> CreateAsync(SchedulerRequest model)
+        public async Task<IOperationResult<SchedulerRequest>> CreateAsync(SchedulerRequest model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var entry = this.dataContext.SchedulerRequests.Add(
-                CreateDataModel(model));
+            var entry = this.dataContext.SchedulerRequests
+                .Add(CreateDataModel(model));
 
             if (await this.dataContext.SaveChangesAsync() > 0)
             {
                 model.Id = entry.Entity.Id;
-                return model;
             }
 
-            return null;
+            return new SuccessOperationResult<SchedulerRequest>(model);
         }
 
         public async Task<IEnumerable<SchedulerRequest>> CreateRangeAsync(IEnumerable<SchedulerRequest> models)
@@ -171,7 +165,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
         /// - are not completed (dispatched qty is not equal to requested qty)
         /// - are already allocated to a bay
         /// - the allocated bay has buffer to accept new missions
-        /// - are associated to a list that is in execution
+        /// - if related to a list row, the row is marked for execution
         ///
         /// Requests are sorted by:
         /// - Instant first
@@ -187,11 +181,9 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     &&
                     r.RequestedQuantity > r.DispatchedQuantity
                     &&
-                    r.Bay.LoadingUnitsBufferSize > r.Bay.Missions.Count
+                    r.Bay.LoadingUnitsBufferSize > r.Bay.Missions.Count(m => m.Status != Common.DataModels.MissionStatus.Completed)
                     &&
-                    (r.ListRowId.HasValue == false || r.ListRow.Status == Common.DataModels.ItemListRowStatus.Executing)
-                    &&
-                    (r.ListId.HasValue == false || r.List.Status == Common.DataModels.ItemListStatus.Executing))
+                    (r.ListRowId.HasValue == false || r.ListRow.Status == Common.DataModels.ItemListRowStatus.Executing))
                .OrderBy(r => r.ListId.HasValue ? r.List.Priority : int.MaxValue)
                .ThenBy(r => r.ListRowId.HasValue ? r.ListRow.Priority : int.MaxValue)
                .Select(r => new SchedulerRequest
@@ -201,7 +193,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                    BayId = r.BayId,
                    CreationDate = r.CreationDate,
                    IsInstant = r.IsInstant,
-                   ListStatus = r.List != null ? (ListStatus)r.List.Status : ListStatus.NotSpecified,
                    ListRowStatus = r.ListRow != null ? (ListRowStatus)r.ListRow.Status : ListRowStatus.NotSpecified,
                    ItemId = r.ItemId,
                    ListId = r.ListId,
@@ -221,46 +212,19 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                .ToArrayAsync();
         }
 
-        public async Task<SchedulerRequest> UpdateAsync(SchedulerRequest request)
+        public async Task<IOperationResult<SchedulerRequest>> UpdateAsync(SchedulerRequest model)
         {
-            if (request == null)
+            if (model == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.dataContext.SchedulerRequests.Find(request.Id);
-            this.dataContext.Entry(existingModel).CurrentValues.SetValues(request);
+            var existingModel = this.dataContext.SchedulerRequests.Find(model.Id);
+            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
             await this.dataContext.SaveChangesAsync();
 
-            return request;
-        }
-
-        public async Task<SchedulerRequest> WithdrawAsync(SchedulerRequest request)
-        {
-            SchedulerRequest qualifiedRequest = null;
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-            {
-                qualifiedRequest = await this.FullyQualifyWithdrawalRequestAsync(request);
-                if (qualifiedRequest != null)
-                {
-                    await this.CreateAsync(qualifiedRequest);
-
-                    scope.Complete();
-                    this.logger.LogDebug($"Scheduler Request (id={qualifiedRequest.Id}): Withdrawal for item={qualifiedRequest.ItemId} was accepted and stored.");
-                }
-            }
-
-            // this should not be done here
-#pragma warning disable S125 // Sections of code should not be commented out
-            /*
-                        var requestsToProcess = await this.GetRequestsToProcessAsync();
-                        await this.missionSchedulerProvider.CreateForRequestsAsync(requestsToProcess);
-                        */
-
-#pragma warning restore S125 // Sections of code should not be commented out
-
-            return qualifiedRequest;
+            return new SuccessOperationResult<SchedulerRequest>(model);
         }
 
         private static Common.DataModels.SchedulerRequest CreateDataModel(SchedulerRequest model)

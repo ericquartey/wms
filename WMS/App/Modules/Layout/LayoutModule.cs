@@ -1,6 +1,7 @@
 ﻿using System;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Prism.Ioc;

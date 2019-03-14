@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
 
         #region Methods
 
-        public override void ProcessMessage(InverterMessage message)
+        public override bool ProcessMessage(InverterMessage message)
         {
             if (message.IsError)
                 this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.movingDrawer));
@@ -37,6 +37,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
                 if (message.ShortPayload == this.parameterValue)
                     this.parentStateMachine.ChangeState(new EnableOperationState(this.parentStateMachine,
                         this.movingDrawer));
+
+            return false;
         }
 
         #endregion
