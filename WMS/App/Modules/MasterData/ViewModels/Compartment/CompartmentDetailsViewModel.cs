@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommonServiceLocator;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces;
@@ -9,7 +10,6 @@ using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Modules.BLL.Models;
-using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.WMS.Modules.MasterData
 {

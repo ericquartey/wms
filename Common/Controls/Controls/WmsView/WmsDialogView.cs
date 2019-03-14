@@ -5,7 +5,7 @@ using DevExpress.Mvvm.Native;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
 using Ferretto.Common.Controls.Interfaces;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 
 namespace Ferretto.Common.Controls
 {

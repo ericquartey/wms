@@ -2,7 +2,7 @@
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Resources;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 
 namespace Ferretto.Common.Controls
 {

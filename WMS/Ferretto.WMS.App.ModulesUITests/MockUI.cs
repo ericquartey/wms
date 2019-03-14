@@ -4,9 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
+using CommonServiceLocator;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Utils;
-using Microsoft.Practices.ServiceLocation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ferretto.WMS.App.ModulesUITests
@@ -57,8 +57,8 @@ namespace Ferretto.WMS.App.ModulesUITests
 
         public void WaitUiComplete()
         {
-            Application.Current.MainWindow.Dispatcher.BeginInvoke(new Action(() => this.AppearOnLoaded(ViewsToProcess)), DispatcherPriority.ContextIdle);
-            Application.Current.MainWindow.ShowDialog();
+            application.MainWindow.Dispatcher.BeginInvoke(new Action(() => this.AppearOnLoaded(ViewsToProcess)), DispatcherPriority.ContextIdle);
+            application.MainWindow.ShowDialog();
         }
 
         private static List<T> GetAllPublicConstantValues<T>(Type type)
@@ -97,7 +97,7 @@ namespace Ferretto.WMS.App.ModulesUITests
         {
             if (view != null)
             {
-                Assert.IsTrue(view.DataContext != null, $"Failed to initialize ViewModel om view {view.MapId}");
+                Assert.IsTrue(view.DataContext != null, $"Failed to initialize ViewModel om v   iew {view.MapId}");
                 view.Disappear();
             }
 
@@ -108,7 +108,7 @@ namespace Ferretto.WMS.App.ModulesUITests
         {
             BindingListener.Current.Initialise();
 
-            new Bootstrapper().Run();
+            new WmsApplicationTest().InitializeTest();
 
             DevExpress.Xpf.Core.ApplicationThemeHelper.ApplicationThemeName = Common.Utils.Common.THEMECONTROLSNAME;
 

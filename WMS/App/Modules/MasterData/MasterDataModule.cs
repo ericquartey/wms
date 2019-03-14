@@ -1,9 +1,10 @@
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Microsoft.Practices.Unity;
 using NLog;
+using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
+using Unity;
 #if DEBUG
 #else
 using Ferretto.Common.BusinessProviders;
@@ -44,7 +45,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public void Initialize()
+        public void OnInitialized(IContainerProvider containerProvider)
+        {
+            this.logger.Trace("Module loaded.");
+        }
+
+        public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingMasterDataModule);
 
@@ -75,8 +81,6 @@ namespace Ferretto.WMS.Modules.MasterData
             this.NavigationService.Register<ItemListRowDetailsView, ItemListRowDetailsViewModel>();
 
             this.NavigationService.Register<FilterDialogView, FilterDialogViewModel>();
-
-            this.logger.Trace("Module loaded.");
         }
 
         #endregion

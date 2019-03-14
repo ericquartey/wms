@@ -4,7 +4,7 @@ using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Resources;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Prism.Commands;
 
 namespace Ferretto.Common.Controls

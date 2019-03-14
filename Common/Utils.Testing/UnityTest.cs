@@ -1,28 +1,30 @@
-﻿using Microsoft.Practices.ServiceLocation;
-using Microsoft.Practices.Unity;
+﻿using CommonServiceLocator;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Unity;
+using Unity.ServiceLocation;
 
 namespace Ferretto.Common.Utils.Testing
 {
     [TestClass]
     public class UnityTest
     {
+        #region Fields
+
         private UnityContainer container;
+
         private TestContext testContext;
+
+        #endregion
+
+        #region Constructors
 
         protected UnityTest()
         {
         }
 
-        public virtual void Initialize()
-        {
-            this.container = new UnityContainer();
-            var locator = new UnityServiceLocator(this.container);
+        #endregion
 
-            ServiceLocator.SetLocatorProvider(() => locator);
-
-            this.container.RegisterInstance<IUnityContainer>(this.container);
-        }
+        #region Properties
 
         public UnityContainer Container => this.container;
 
@@ -35,5 +37,21 @@ namespace Ferretto.Common.Utils.Testing
             get => this.testContext;
             set => this.testContext = value;
         }
+
+        #endregion
+
+        #region Methods
+
+        public virtual void Initialize()
+        {
+            this.container = new UnityContainer();
+            var locator = new UnityServiceLocator(this.container);
+
+            ServiceLocator.SetLocatorProvider(() => locator);
+
+            this.container.RegisterInstance<IUnityContainer>(this.container);
+        }
+
+        #endregion
     }
 }

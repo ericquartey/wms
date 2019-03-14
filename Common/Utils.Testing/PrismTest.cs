@@ -1,16 +1,22 @@
-﻿using Microsoft.Practices.Unity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Prism.Regions;
+using Unity;
 
 namespace Ferretto.Common.Utils.Testing
 {
     [TestClass]
     public class PrismTest : UnityTest
     {
+        #region Constructors
+
         protected PrismTest()
         {
         }
+
+        #endregion
+
+        #region Methods
 
         public override void Initialize()
         {
@@ -19,5 +25,7 @@ namespace Ferretto.Common.Utils.Testing
 
             this.Container.RegisterInstance<IRegionManager>(mockRegionManager.Object);
         }
+
+        #endregion
     }
 }

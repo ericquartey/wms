@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using NLog;
 
 namespace Ferretto.Common.Controls.Services
@@ -14,21 +14,30 @@ namespace Ferretto.Common.Controls.Services
         #region Fields
 
         private const string HealthIsOnLineMessage = "IsOnline";
+
         private const int MaxRetryConnectionTimeout = 10000;
-        private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
+
+        private readonly IEventService eventService;
+
         private readonly string healthPath;
+
         private readonly Logger logger;
+
         private readonly Random random = new Random();
+
         private readonly string url;
+
         private Microsoft.AspNetCore.SignalR.Client.HubConnection connection;
+
         private bool isConnected;
 
         #endregion
 
         #region Constructors
 
-        public NotificationServiceClient()
+        public NotificationServiceClient(IEventService eventService)
         {
+            this.eventService = eventService;
             this.url = ConfigurationManager.AppSettings["NotificationHubEndpoint"];
             this.healthPath = ConfigurationManager.AppSettings["NotificationHubStatus"];
             this.logger = NLog.LogManager.GetCurrentClassLogger();

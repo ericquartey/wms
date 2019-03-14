@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Base;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Modules.BLL.Models;
 using Ferretto.Common.Utils.Modules;
-using Microsoft.Practices.ServiceLocation;
 using Compartment = Ferretto.Common.BusinessModels.Compartment;
 
 namespace Ferretto.Common.Modules.BLL.Services

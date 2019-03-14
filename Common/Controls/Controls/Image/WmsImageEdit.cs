@@ -6,7 +6,7 @@
     using DevExpress.Xpf.Core.Native;
     using DevExpress.Xpf.Editors;
     using Ferretto.Common.BLL.Interfaces;
-    using Microsoft.Practices.ServiceLocation;
+    using CommonServiceLocator;
     using Microsoft.Win32;
 
     public class WmsImageEdit : ImageEdit

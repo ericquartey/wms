@@ -1,235 +1,253 @@
 ﻿using System.Linq;
+using CommonServiceLocator;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Utils.Testing;
-using Microsoft.Practices.ServiceLocation;
-using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Prism.Ioc;
+using Unity;
+
+#pragma warning disable S3261 // Namespaces should not be empty
 
 namespace Feretto.Common.Controls.Tests
 {
-    [TestClass]
-    public class NavigationServiceTest : PrismTest
-    {
-        #region Fields
+#pragma warning disable SA1005
+#pragma warning disable S125 // Sections of code should not be commented out
+    // Single line comments must begin with single space
+    //[TestClass]
+    //public class NavigationServiceTest : PrismTest
 
-        private INavigationService navigationService;
+    //{
+    //    #region Fields
 
-        #endregion
+    //    private INavigationService navigationService;
 
-        #region Methods
+    //    #endregion
 
-        [TestInitialize]
-        public override void Initialize()
-        {
-            base.Initialize();
+    //    #region Methods
 
-            this.Container.RegisterType<INavigationService, NavigationService>();
+    //    [TestInitialize]
+    //    public override void Initialize()
+    //    {
+    //        base.Initialize();
 
-            this.navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
-        }
+    //        this.Container.RegisterType<INavigationService, NavigationService>();
 
-        [TestMethod]
-        public void TestRegister()
-        {
-            // Arrange
-            // (nothing)
+    //        this.navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
+    //    }
 
-            // Act
-            this.navigationService.Register<TestView, TestViewModel>();
+    //    [TestMethod]
+    //    public void TestRegister()
+    //    {
+    //        var unityContainer = this.Container. containerRegistry.GetContainer();
+    //        this.Container.Lo
+    //        IUnityContainer configuration = new UnityContainer().LoadConfiguration();
+    //        // var containerRegistry = ServiceLocator.Current.GetInstance<IContainerRegistration>();
+    //        // Arrange
+    //        // (nothing)
 
-            // Assert
-            var expectedRegistrationName = $"{typeof(TestView).FullName}.1";
+    //        // Act
+    //        this.navigationService.Register<TestView, TestViewModel>();
 
-            Assert.IsNotNull(this.Container.Registrations.SingleOrDefault(registration =>
-                registration.RegisteredType == typeof(INavigableView)
-                &&
-                registration.MappedToType == typeof(TestView)
-                &&
-                registration.Name == expectedRegistrationName));
+    //        // Assert
+    //        var expectedRegistrationName = $"{typeof(TestView).FullName}.1";
 
-            Assert.IsNotNull(this.Container.Registrations.SingleOrDefault(registration =>
-                registration.RegisteredType == typeof(INavigableViewModel)
-                &&
-                registration.MappedToType == typeof(TestViewModel)
-                &&
-                registration.Name == expectedRegistrationName));
-        }
+    //        //var reg = containerRegistry.GetContainer().Registrations;
+    //        Assert.IsNotNull(this.Container.Registrations.SingleOrDefault(registration =>
+    //            registration.RegisteredType == typeof(INavigableView)
+    //            &&
+    //            registration.MappedToType == typeof(TestView)
+    //            &&
+    //            registration.Name == expectedRegistrationName));
 
-        [TestMethod]
-        public void TestRegisterAndGetViewModel()
-        {
-            // Arrange
-            this.navigationService.Register<TestView, TestViewModel>();
+    //        Assert.IsNotNull(this.Container.Registrations.SingleOrDefault(registration =>
+    //            registration.RegisteredType == typeof(INavigableViewModel)
+    //            &&
+    //            registration.MappedToType == typeof(TestViewModel)
+    //            &&
+    //            registration.Name == expectedRegistrationName));
+    //    }
 
-            // Act
-            var viewName = typeof(TestView).FullName;
-            var token = "a-token";
-            var data = "id=1";
-            var viewModel = this.navigationService.RegisterAndGetViewModel(viewName, token, data);
+    //    [TestMethod]
+    //    public void TestRegisterAndGetViewModel()
+    //    {
+    //        // Arrange
+    //        this.navigationService.Register<TestView, TestViewModel>();
 
-            // Assert
-            Assert.IsNotNull(viewModel);
-            Assert.AreEqual(viewModel.Token, token);
-            Assert.AreEqual(viewModel.GetType(), typeof(TestViewModel));
-            Assert.AreEqual(2, this.Container.Registrations.Count(registration =>
-                registration.RegisteredType == typeof(INavigableViewModel)
-                &&
-                registration.MappedToType == typeof(TestViewModel)));
-        }
+    //        // Act
+    //        var viewName = typeof(TestView).FullName;
+    //        var token = "a-token";
+    //        var data = "id=1";
+    //        var viewModel = this.navigationService.RegisterAndGetViewModel(viewName, token, data);
 
-        [TestMethod]
-        public void TestRegisterAndGetViewModelMoreThanOnce()
-        {
-            // Arrange
-            this.navigationService.Register<TestView, TestViewModel>();
+    //        // Assert
+    //        Assert.IsNotNull(viewModel);
+    //        Assert.AreEqual(viewModel.Token, token);
+    //        Assert.AreEqual(viewModel.GetType(), typeof(TestViewModel));
+    //        Assert.AreEqual(2, this.Container.Registrations.Count(registration =>
+    //            registration.RegisteredType == typeof(INavigableViewModel)
+    //            &&
+    //            registration.MappedToType == typeof(TestViewModel)));
+    //    }
 
-            // Act
-            var viewName = typeof(TestView).FullName;
-            this.navigationService.RegisterAndGetViewModel(viewName, null, null);
-            this.navigationService.RegisterAndGetViewModel(viewName, null, null);
-            this.navigationService.RegisterAndGetViewModel(viewName, null, null);
+    //    [TestMethod]
+    //    public void TestRegisterAndGetViewModelMoreThanOnce()
+    //    {
+    //        // Arrange
+    //        this.navigationService.Register<TestView, TestViewModel>();
 
-            // Assert
-            Assert.AreEqual(1 + 3, this.Container.Registrations.Count(registration =>
-                registration.RegisteredType == typeof(INavigableViewModel)
-                &&
-                registration.MappedToType == typeof(TestViewModel)));
-        }
+    //        // Act
+    //        var viewName = typeof(TestView).FullName;
+    //        this.navigationService.RegisterAndGetViewModel(viewName, null, null);
+    //        this.navigationService.RegisterAndGetViewModel(viewName, null, null);
+    //        this.navigationService.RegisterAndGetViewModel(viewName, null, null);
 
-        [TestMethod]
-        public void TestRegisterAndGetViewModelWithoutInitialRegistration()
-        {
-            // Arrange
-            // Do not call the INavigationService.Register method so that the call INavigationService.RegisterAndGetViewModel should fail
+    //        // Assert
+    //        Assert.AreEqual(1 + 3, this.Container.Registrations.Count(registration =>
+    //            registration.RegisteredType == typeof(INavigableViewModel)
+    //            &&
+    //            registration.MappedToType == typeof(TestViewModel)));
 
-            // Act + Assert
-            var viewName = typeof(TestView).FullName;
-            var token = "a-token";
-            var data = "id=1";
-            Assert.ThrowsException<System.InvalidOperationException>(
-                () => this.navigationService.RegisterAndGetViewModel(viewName, token, data));
-        }
+    //    }
 
-        [TestMethod]
-        public void TestRegisterTwice()
-        {
-            // Arrange
-            this.navigationService.Register<TestView, TestViewModel>();
+    //    [TestMethod]
+    //    public void TestRegisterAndGetViewModelWithoutInitialRegistration()
+    //    {
+    //        // Arrange
+    //        // Do not call the INavigationService.Register method so that the call INavigationService.RegisterAndGetViewModel should fail
 
-            // Act
-            this.navigationService.Register<TestView, TestViewModel>();
+    //        // Act + Assert
+    //        var viewName = typeof(TestView).FullName;
+    //        var token = "a-token";
+    //        var data = "id=1";
+    //        Assert.ThrowsException<System.InvalidOperationException>(
+    //            () => this.navigationService.RegisterAndGetViewModel(viewName, token, data));
+    //    }
 
-            // Assert
-            var expectedRegistrationName = $"{typeof(TestView).FullName}.2";
+    //    [TestMethod]
+    //    public void TestRegisterTwice()
+    //    {
+    //        // Arrange
+    //        this.navigationService.Register<TestView, TestViewModel>();
 
-            Assert.AreEqual(2, this.Container.Registrations.Count(registration =>
-                registration.RegisteredType == typeof(INavigableView)
-                &&
-                registration.MappedToType == typeof(TestView)));
+    //        // Act
+    //        this.navigationService.Register<TestView, TestViewModel>();
 
-            Assert.AreEqual(2, this.Container.Registrations.Count(registration =>
-                registration.RegisteredType == typeof(INavigableView)
-                &&
-                registration.MappedToType == typeof(TestView)));
+    //        // Assert
+    //        var expectedRegistrationName = $"{typeof(TestView).FullName}.2";
 
-            Assert.IsNotNull(this.Container.Registrations.SingleOrDefault(registration =>
-                registration.RegisteredType == typeof(INavigableView)
-                &&
-                registration.MappedToType == typeof(TestView)
-                &&
-                registration.Name == expectedRegistrationName));
+    //        Assert.AreEqual(2, this.Container.Registrations.Count(registration =>
+    //            registration.RegisteredType == typeof(INavigableView)
+    //            &&
+    //            registration.MappedToType == typeof(TestView)));
 
-            Assert.IsNotNull(this.Container.Registrations.SingleOrDefault(registration =>
-                registration.RegisteredType == typeof(INavigableViewModel)
-                &&
-                registration.MappedToType == typeof(TestViewModel)
-                &&
-                registration.Name == expectedRegistrationName));
-        }
+    //        Assert.AreEqual(2, this.Container.Registrations.Count(registration =>
+    //            registration.RegisteredType == typeof(INavigableView)
+    //            &&
+    //            registration.MappedToType == typeof(TestView)));
 
-        #endregion
+    //        Assert.IsNotNull(this.Container.Registrations.SingleOrDefault(registration =>
+    //            registration.RegisteredType == typeof(INavigableView)
+    //            &&
+    //            registration.MappedToType == typeof(TestView)
+    //            &&
+    //            registration.Name == expectedRegistrationName));
 
-        #region Classes
+    //        Assert.IsNotNull(this.Container.Registrations.SingleOrDefault(registration =>
+    //            registration.RegisteredType == typeof(INavigableViewModel)
+    //            &&
+    //            registration.MappedToType == typeof(TestViewModel)
+    //            &&
+    //            registration.Name == expectedRegistrationName));
+    //    }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Major Code Smell",
-            "CA1812: NavigationServiceTest.TestView is an internal class that is apparently never instantiated.",
-            Justification = "Prism test class")]
-        private class TestView : INavigableView
-        {
-            #region Properties
+    //    #endregion
 
-            public object Data { get; set; }
+    //    #region Classes
 
-            public object DataContext { get; set; }
+    //    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+    //        "Major Code Smell",
+    //        "CA1812: NavigationServiceTest.TestView is an internal class that is apparently never instantiated.",
+    //        Justification = "Prism test class")]
+    //    private class TestView : INavigableView
+    //    {
+    //        #region Properties
 
-            public bool IsClosed { get; set; }
+    //        public object Data { get; set; }
 
-            public string MapId { get; set; }
+    //        public object DataContext { get; set; }
 
-            public string Title { get; set; }
+    //        public bool IsClosed { get; set; }
 
-            public string Token { get; set; }
+    //        public string MapId { get; set; }
 
-            public WmsViewType ViewType { get; }
+    //        public string Title { get; set; }
 
-            #endregion
+    //        public string Token { get; set; }
 
-            #region Methods
+    //        public WmsViewType ViewType { get; }
 
-            public void Disappear()
-            {
-                // TODO
-            }
+    //        #endregion
 
-            #endregion
-        }
+    //        #region Methods
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Major Code Smell",
-            "CA1812: NavigationServiceTest.TestView is an internal class that is apparently never instantiated.",
-            Justification = "Prism test class")]
-        private class TestViewModel : INavigableViewModel
-        {
-            #region Properties
+    //        public void Disappear()
+    //        {
+    //            // TODO
+    //        }
 
-            public object Data { get; set; }
+    //        #endregion
+    //    }
 
-            public string MapId { get; set; }
+    //    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+    //        "Major Code Smell",
+    //        "CA1812: NavigationServiceTest.TestView is an internal class that is apparently never instantiated.",
+    //        Justification = "Prism test class")]
+    //    private class TestViewModel : INavigableViewModel
+    //    {
+    //        #region Properties
 
-            public string StateId { get; set; }
+    //        public object Data { get; set; }
 
-            public string Token { get; set; }
+    //        public string MapId { get; set; }
 
-            #endregion
+    //        public string StateId { get; set; }
 
-            #region Methods
+    //        public string Token { get; set; }
 
-            public void Appear()
-            {
-                // Test method. Nothing to do here.
-            }
+    //        #endregion
 
-            public bool CanDisappear()
-            {
-                return true;
-            }
+    //        #region Methods
 
-            public void Disappear()
-            {
-                // Test method. Nothing to do here.
-            }
+    //        public void Appear()
+    //        {
+    //            // Test method. Nothing to do here.
+    //        }
 
-            public void Dispose()
-            {
-                // Test method. Implement dispose
-            }
+    //        public bool CanDisappear()
+    //        {
+    //            return true;
+    //        }
 
-            #endregion
-        }
+    //        public void Disappear()
+    //        {
+    //            // Test method. Nothing to do here.
+    //        }
 
-        #endregion
-    }
+    //        public void Dispose()
+    //        {
+    //            // Test method. Implement dispose
+    //        }
+
+    //        #endregion
+    //    }
+
+    //    #endregion
+    //}
 }
+
+#pragma warning restore S125 // Sections of code should not be commented out
+#pragma warning restore SA1005 // Single line comments must begin with single space
+
+#pragma warning restore S3261 // Namespaces should not be empty

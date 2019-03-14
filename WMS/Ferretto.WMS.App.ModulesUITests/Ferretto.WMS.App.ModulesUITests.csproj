@@ -28,8 +28,8 @@
     <PackageReference Include="SonarAnalyzer.CSharp" Version="7.10.0.7896" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
     <PackageReference Include="Moq" Version="4.10.1" />
-    <PackageReference Include="Prism.Unity" Version="6.3.0" />
-    <PackageReference Include="Prism.Wpf" Version="6.3.0" />
+    <PackageReference Include="Prism.Unity" Version="7.1.0.431" />
+    <PackageReference Include="Prism.Wpf" Version="7.1.0.431" />
   </ItemGroup>
 
   <ItemGroup>

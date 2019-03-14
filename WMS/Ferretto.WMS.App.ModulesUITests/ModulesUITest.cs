@@ -9,7 +9,7 @@ namespace Ferretto.WMS.App.ModulesUITests
 
         [TestMethod]
         [DeploymentItem("Ferretto.WMS.App.Themes.dll")]
-        [DeploymentItem("DevExpress.Xpf.Accordion.v18.2")]
+        [DeploymentItem("DevExpress.Xpf.Accordion.v18.2.dll")]
         [DeploymentItem("DevExpress.Xpf.Controls.v18.2.dll")]
         [DeploymentItem("DevExpress.Xpf.Core.v18.2.dll")]
         [DeploymentItem("DevExpress.Xpf.Core.v18.2.Extensions.dll")]
