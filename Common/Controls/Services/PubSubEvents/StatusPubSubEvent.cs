@@ -45,7 +45,7 @@ namespace Ferretto.Common.Controls.Services
 
         public System.Exception Exception { get; }
 
-        public bool IsSchedulerOnline { get; set; }
+        public bool? IsSchedulerOnline { get; set; }
 
         public string Message { get; set; }
 
