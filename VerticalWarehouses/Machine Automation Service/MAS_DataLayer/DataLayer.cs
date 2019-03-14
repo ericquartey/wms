@@ -45,17 +45,17 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             if (inMemoryDataContext == null)
             {
-                new ArgumentNullException();
+                throw new ArgumentNullException();
             }
 
             if (eventAggregator == null)
             {
-                new ArgumentNullException();
+                throw new ArgumentNullException();
             }
 
             if (filesInfo == null)
             {
-                new ArgumentNullException();
+                throw new ArgumentNullException();
             }
 
             this.inMemoryDataContext = inMemoryDataContext;
@@ -116,17 +116,17 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             if (inMemoryDataContext == null)
             {
-                new ArgumentNullException();
+                throw new ArgumentNullException();
             }
 
             if (eventAggregator == null)
             {
-                new ArgumentNullException();
+                throw new ArgumentNullException();
             }
 
             if (filesInfo == null)
             {
-                new ArgumentNullException();
+                throw new ArgumentNullException();
             }
 
             this.inMemoryDataContext = inMemoryDataContext;
@@ -166,6 +166,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Methods
 
+        /// <inheritdoc/>
         public void LoadGeneralInfo()
         {
             var generalInfoPath = this.filesInfo.Value.GeneralInfoPath;
