@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.MAS_DataLayer;
@@ -41,7 +42,34 @@ namespace MAS_DataLayerUnitTests
         }
 
         [TestMethod]
-        public void NewGetDecimalConfigurationValue()
+        public void GetBoolConfigurationValue()
+        {
+            var alfaNum1 = true;
+
+            var stringAN1 = new ConfigurationValue { VarName = ConfigurationValueEnum.AlfaNum1, VarType = DataTypeEnum.booleanType, VarValue = alfaNum1.ToString() };
+
+            this.context.ConfigurationValues.Add(stringAN1);
+
+            this.context.SaveChanges();
+
+            Assert.AreEqual(alfaNum1, this.dataLayer.GetBoolConfigurationValue(ConfigurationValueEnum.AlfaNum1));
+        }
+
+        [TestMethod]
+        public void GetDateTimeConfigurationValue()
+        {
+            var strInstallationDate = "2018-10-23T15:32:21.9961723+02:00";
+
+            if (DateTime.TryParse(strInstallationDate, out var dateTimeInstallationDate))
+            {
+                this.dataLayer.SetDateTimeConfigurationValue(ConfigurationValueEnum.Installation_Date, dateTimeInstallationDate);
+                var returnDateTime = this.dataLayer.GetDateTimeConfigurationValue(ConfigurationValueEnum.Installation_Date);
+                Assert.AreEqual(dateTimeInstallationDate.ToString(), returnDateTime.ToString());
+            }
+        }
+
+        [TestMethod]
+        public void GetDecimalConfigurationValue()
         {
             var setDecResolution = 100.01m;
 
@@ -55,20 +83,20 @@ namespace MAS_DataLayerUnitTests
         }
 
         [TestMethod]
-        public void NewGetIntegerConfigurationValue()
+        public void GetIntegerConfigurationValue()
         {
-            var setIntBayHeight = 100;
-            var integerValue = new ConfigurationValue { VarName = ConfigurationValueEnum.bayHeight, VarType = DataTypeEnum.integerType, VarValue = setIntBayHeight.ToString() };
+            var setTypeBay1 = 1;
+            var integerValue = new ConfigurationValue { VarName = ConfigurationValueEnum.Type_Bay1, VarType = DataTypeEnum.integerType, VarValue = setTypeBay1.ToString() };
 
             this.context.ConfigurationValues.Add(integerValue);
 
             this.context.SaveChanges();
 
-            Assert.AreEqual(setIntBayHeight, this.dataLayer.GetIntegerConfigurationValue(ConfigurationValueEnum.bayHeight));
+            Assert.AreEqual(setTypeBay1, this.dataLayer.GetIntegerConfigurationValue(ConfigurationValueEnum.Type_Bay1));
         }
 
         [TestMethod]
-        public void NewGetIPAddressConfigurationValue()
+        public void GetIPAddressConfigurationValue()
         {
             var setStrInvAddress = "169.254.231.248";
 
@@ -82,17 +110,17 @@ namespace MAS_DataLayerUnitTests
         }
 
         [TestMethod]
-        public void NewGetStringConfigurationValue()
+        public void GetStringConfigurationValue()
         {
-            var strBayHeightFromGround = "10.000025";
+            var strAddress = "Corso Andrea Palladio";
 
-            var stringBHFGrn = new ConfigurationValue { VarName = ConfigurationValueEnum.bayHeightFromGround, VarType = DataTypeEnum.stringType, VarValue = strBayHeightFromGround };
+            var stringA = new ConfigurationValue { VarName = ConfigurationValueEnum.Address, VarType = DataTypeEnum.stringType, VarValue = strAddress };
 
-            this.context.ConfigurationValues.Add(stringBHFGrn);
+            this.context.ConfigurationValues.Add(stringA);
 
             this.context.SaveChanges();
 
-            Assert.AreEqual(strBayHeightFromGround, this.dataLayer.GetStringConfigurationValue(ConfigurationValueEnum.bayHeightFromGround));
+            Assert.AreEqual(strAddress, this.dataLayer.GetStringConfigurationValue(ConfigurationValueEnum.Address));
         }
 
         [TestMethod]
@@ -100,7 +128,7 @@ namespace MAS_DataLayerUnitTests
         {
             this.dataLayer.LoadGeneralInfo();
 
-            Assert.IsTrue(this.context.GeneralInfos.Any());
+            Assert.IsTrue(this.context.ConfigurationValues.Any());
         }
 
         protected DataLayerContext CreateContext()

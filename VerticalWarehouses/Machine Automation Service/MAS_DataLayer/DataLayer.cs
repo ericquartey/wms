@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_DataLayer
@@ -173,10 +173,50 @@ namespace Ferretto.VW.MAS_DataLayer
             using (var streamReader = new StreamReader(generalInfoPath))
             {
                 var json = streamReader.ReadToEnd();
-                var generalInfo = JsonConvert.DeserializeObject<GeneralInfo>(json);
+                var jsonObject = JObject.Parse(json);
 
-                this.inMemoryDataContext.GeneralInfos.Add(generalInfo);
-                this.inMemoryDataContext.SaveChanges();
+                ConfigurationValueEnum jsonElementName;
+                DataTypeEnum jsonElementType;
+
+                foreach (var jsonElement in jsonObject)
+                {
+                    jsonElementName = (ConfigurationValueEnum)System.Enum.Parse(typeof(ConfigurationValueEnum), jsonElement.Key);
+
+                    jsonElementType = this.ConvertConfigurationValue(jsonElementName);
+
+                    switch (jsonElementType)
+                    {
+                        case (DataTypeEnum.booleanType):
+                            {
+                                this.SetBoolConfigurationValue(jsonElementName, (bool)jsonElement.Value.ToObject(typeof(bool)));
+                                break;
+                            }
+                        case (DataTypeEnum.dateTimeType):
+                            {
+                                this.SetDateTimeConfigurationValue(jsonElementName, (DateTime)jsonElement.Value.ToObject(typeof(DateTime)));
+                                break;
+                            }
+                        case (DataTypeEnum.decimalType):
+                            {
+                                this.SetDecimalConfigurationValue(jsonElementName, (decimal)jsonElement.Value.ToObject(typeof(decimal)));
+                                break;
+                            }
+                        case (DataTypeEnum.integerType):
+                            {
+                                this.SetIntegerConfigurationValue(jsonElementName, (int)jsonElement.Value.ToObject(typeof(int)));
+                                break;
+                            }
+                        case (DataTypeEnum.stringType):
+                            {
+                                this.SetStringConfigurationValue(jsonElementName, jsonElement.Value.ToString());
+                                break;
+                            }
+                        default:
+                            {
+                                throw new InMemoryDataLayerException(DataLayerExceptionEnum.UNDEFINED_TYPE_EXCEPTION);
+                            }
+                    }
+                }
             }
         }
 
