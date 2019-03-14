@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ferretto.WMS.Data.WebAPI.Interfaces
 {
-    public interface IDeleteController<in T>
+    public interface IDeleteController<in TKey>
     {
         #region Methods
 
-        Task<ActionResult> DeleteAsync(T model);
+        Task<ActionResult> DeleteAsync(TKey id);
 
         #endregion
     }

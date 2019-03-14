@@ -38,6 +38,8 @@
 
         public const string ITEMS = "ItemsViewModel";
 
+        public const string LOADINGUNITADD = "LoadingUnitAddDialogViewModel";
+
         public const string LOADINGUNITDETAILS = "LoadingUnitDetailsViewModel";
 
         public const string LOADINGUNITEDIT = "LoadingUnitEditViewModel";

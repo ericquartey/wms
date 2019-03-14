@@ -14,11 +14,11 @@ namespace Ferretto.Common.DataModels
 
         public Cell Cell { get; set; }
 
-        public int CellId { get; set; }
+        public int? CellId { get; set; }
 
         public CellPosition CellPosition { get; set; }
 
-        public int CellPositionId { get; set; }
+        public int? CellPositionId { get; set; }
 
         public string Code { get; set; }
 

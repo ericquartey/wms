@@ -15,6 +15,44 @@
     <dx:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <dx:BoolToVisibilityInverseConverter x:Key="BoolToVisibilityInverseConverter" />
 
+    <!--  FixedTotalSummaryContainerControl style  -->
+    <Style TargetType="{x:Type dxg:FixedTotalSummaryContainerControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type dxg:FixedTotalSummaryContainerControl}">
+                    <Grid>
+                        <Border Background="{DynamicResource {dxgt:GridRowThemeKey ResourceKey=FixedSummaryFillBrush, ThemeName=Office2016White}}"
+                                BorderBrush="{DynamicResource {dxgt:GridRowThemeKey ResourceKey=TotalSummaryBorderBrush, ThemeName=Office2016White}}">
+                            <Border.BorderThickness>
+                                <Binding Path="View.IsRootView">
+                                    <Binding.Converter>
+                                        <dx:BoolToObjectConverter FalseValue="0,0,0,1" TrueValue="0,1,0,0" />
+                                    </Binding.Converter>
+                                </Binding>
+                            </Border.BorderThickness>
+                        </Border>
+                        <dxg:FixedTotalSummaryControl x:Name="PART_FixedTotalSummary" MinHeight="20"
+                                                      Foreground="{DynamicResource {dxgt:GridRowThemeKey ResourceKey=TotalSummaryBrush}}"
+                                                      Margin="0,0,0,0">
+                            <dx:DXDockPanel LastChildFill="True" Background="Transparent">
+                                <dxg:FixedTotalSummaryItemsTextBlock x:Name="PART_FixedTotalSummaryLeftPart"
+                                                                     dx:DXDockPanel.Dock="Left"
+                                                                     HorizontalAlignment="Left" Margin="6"
+                                                                     TotalSummariesSource="{Binding Path=(dxg:GridControl.CurrentView).FixedSummariesLeft, RelativeSource={RelativeSource TemplatedParent}}"
+                                                                     FixedTotalSummaryElementStyle="{Binding Path=(dxg:GridControl.CurrentView).FixedTotalSummaryElementStyle, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <dxg:FixedTotalSummaryItemsTextBlock x:Name="PART_FixedTotalSummaryRightPart"
+                                                                     dx:DXDockPanel.Dock="Right"
+                                                                     HorizontalAlignment="Right" Margin="6"
+                                                                     TotalSummariesSource="{Binding Path=(dxg:GridControl.CurrentView).FixedSummariesRight, RelativeSource={RelativeSource TemplatedParent}}"
+                                                                     FixedTotalSummaryElementStyle="{Binding Path=(dxg:GridControl.CurrentView).FixedTotalSummaryElementStyle, RelativeSource={RelativeSource TemplatedParent}}" />
+                            </dx:DXDockPanel>
+                        </dxg:FixedTotalSummaryControl>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!--  GridColumn style  -->
     <Style TargetType="dxg:GridColumn">
         <Setter Property="IsSmart" Value="True" />

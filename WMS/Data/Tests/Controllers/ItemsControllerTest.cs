@@ -158,8 +158,8 @@ namespace Ferretto.WMS.Data.Tests
             return new ItemsController(
                 this.ServiceProvider.GetService(typeof(IItemProvider)) as IItemProvider,
                 this.ServiceProvider.GetService(typeof(IAreaProvider)) as IAreaProvider,
-                this.ServiceProvider.GetService(typeof(Scheduler.Core.Interfaces.ISchedulerRequestProvider)) as Scheduler.Core.Interfaces.ISchedulerRequestProvider,
-                this.ServiceProvider.GetService(typeof(ICompartmentProvider)) as ICompartmentProvider);
+                this.ServiceProvider.GetService(typeof(ICompartmentProvider)) as ICompartmentProvider,
+                this.ServiceProvider.GetService(typeof(Scheduler.Core.Interfaces.ISchedulerService)) as Scheduler.Core.Interfaces.ISchedulerService);
         }
 
         #endregion

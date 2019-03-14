@@ -38,6 +38,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             ICompartmentSchedulerProvider compartmentProvider,
             IItemSchedulerProvider itemProvider,
             ILoadingUnitSchedulerProvider loadingUnitProvider,
+            IItemListSchedulerProvider itemListSchedulerProvider,
             ILogger<MissionSchedulerProvider> logger)
         {
             this.databaseContext = databaseContext;
@@ -129,6 +130,58 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             }
         }
 
+        public async Task<IOperationResult<Mission>> ExecuteAsync(int id)
+        {
+            var mission = await this.GetByIdAsync(id);
+            if (mission == null)
+            {
+                return new NotFoundOperationResult<Mission>();
+            }
+
+            if (mission.Status != MissionStatus.New
+                &&
+                mission.Status != MissionStatus.Waiting)
+            {
+                return new BadRequestOperationResult<Mission>(mission);
+            }
+
+            mission.Status = MissionStatus.Executing;
+
+            return await this.UpdateAsync(mission);
+        }
+
+        public async Task<IEnumerable<Mission>> GetAllAsync()
+        {
+            return await this.databaseContext.Missions
+                .Select(m => new Mission
+                {
+                    Id = m.Id,
+                    BayId = m.BayId,
+                    CellId = m.CellId,
+                    CompartmentId = m.CompartmentId,
+                    ItemId = m.ItemId,
+                    ItemListId = m.ItemListId,
+                    ItemListRowId = m.ItemListRowId,
+                    LoadingUnitId = m.LoadingUnitId,
+                    MaterialStatusId = m.MaterialStatusId,
+                    PackageTypeId = m.PackageTypeId,
+                    Lot = m.Lot,
+                    Quantity = m.RequiredQuantity,
+                    RegistrationNumber = m.RegistrationNumber,
+                    Status = (MissionStatus)m.Status,
+                    Sub1 = m.Sub1,
+                    Sub2 = m.Sub2,
+                    Type = (MissionType)m.Type
+                })
+                .ToArrayAsync();
+        }
+
+        public async Task<int> GetAllCountAsync()
+        {
+            return await this.databaseContext.Missions
+                .CountAsync();
+        }
+
         public async Task<Mission> GetByIdAsync(int id)
         {
             return await this.databaseContext.Missions
@@ -190,17 +243,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 compartment.ItemId = null;
             }
 
-            var item = await this.itemProvider.GetByIdAsync(mission.ItemId.Value);
-            var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId);
-
-            var now = DateTime.UtcNow;
-            compartment.LastPickDate = now;
-            item.LastPickDate = now;
-            loadingUnit.LastPickDate = now;
-
-            await this.loadingUnitProvider.UpdateAsync(loadingUnit);
-
-            await this.itemProvider.UpdateAsync(item);
+            await this.UpdateLastPickDatesAsync(mission.ItemId.Value, compartment);
 
             await this.compartmentProvider.UpdateAsync(compartment);
 
@@ -296,6 +339,22 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             await this.databaseContext.Missions.AddRangeAsync(missions);
 
             await this.databaseContext.SaveChangesAsync();
+        }
+
+        private async Task UpdateLastPickDatesAsync(int itemId, StockUpdateCompartment compartment)
+        {
+            var now = DateTime.UtcNow;
+            compartment.LastPickDate = now;
+
+            var item = await this.itemProvider.GetByIdAsync(itemId);
+            var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId);
+
+            item.LastPickDate = now;
+            loadingUnit.LastPickDate = now;
+
+            await this.loadingUnitProvider.UpdateAsync(loadingUnit);
+
+            await this.itemProvider.UpdateAsync(item);
         }
 
         #endregion

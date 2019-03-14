@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Ferretto.Common.BLL.Interfaces.Base
+namespace Ferretto.Common.BLL.Interfaces.Providers
 {
     public interface IGetUniqueValuesAsyncProvider
     {

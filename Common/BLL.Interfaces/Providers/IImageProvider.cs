@@ -1,4 +1,4 @@
-﻿namespace Ferretto.Common.BLL.Interfaces
+﻿namespace Ferretto.Common.BLL.Interfaces.Providers
 {
     public interface IImageProvider
     {

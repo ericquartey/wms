@@ -16,13 +16,13 @@ namespace Ferretto.Common.BusinessModels
 
         private string abcClassId;
 
-        private int aisleId;
+        private int? aisleId;
 
-        private int areaId;
+        private int? areaId;
 
-        private int cellId;
+        private int? cellId;
 
-        private int cellPositionId;
+        private int? cellPositionId;
 
         private string code;
 
@@ -42,7 +42,7 @@ namespace Ferretto.Common.BusinessModels
 
         private string note;
 
-        private ReferenceType referenceType;
+        private ReferenceType? referenceType;
 
         private int weight;
 
@@ -57,20 +57,27 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.AbcClass), ResourceType = typeof(BusinessObjects))]
         public string AbcClassDescription { get; set; }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.AbcClass), ResourceType = typeof(BusinessObjects))]
         public string AbcClassId
         {
             get => this.abcClassId;
-            set => this.SetProperty(ref this.abcClassId, value);
+            set
+            {
+                if (this.SetProperty(ref this.abcClassId, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
-        public int AisleId
+        public int? AisleId
         {
             get => this.aisleId;
             set => this.SetProperty(ref this.aisleId, value);
         }
 
-        public int AreaId
+        public int? AreaId
         {
             get => this.areaId;
             set => this.SetProperty(ref this.areaId, value);
@@ -79,7 +86,7 @@ namespace Ferretto.Common.BusinessModels
         public IEnumerable<Enumeration> CellChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitCurrentCell), ResourceType = typeof(BusinessObjects))]
-        public int CellId
+        public int? CellId
         {
             get => this.cellId;
             set => this.SetProperty(ref this.cellId, value);
@@ -91,17 +98,24 @@ namespace Ferretto.Common.BusinessModels
         public string CellPositionDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellPosition), ResourceType = typeof(BusinessObjects))]
-        public int CellPositionId
+        public int? CellPositionId
         {
             get => this.cellPositionId;
             set => this.SetProperty(ref this.cellPositionId, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.LoadingUnitCode), ResourceType = typeof(BusinessObjects))]
         public string Code
         {
             get => this.code;
-            set => this.SetProperty(ref this.code, value);
+            set
+            {
+                if (this.SetProperty(ref this.code, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
         public BindingList<ICompartment> Compartments => this.compartments;
@@ -111,8 +125,24 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.LoadingUnitCreationDate), ResourceType = typeof(BusinessObjects))]
         public DateTime CreationDate { get; set; }
 
+        public override string Error => string.Join(Environment.NewLine, new[]
+            {
+                this[nameof(this.Code)],
+                this[nameof(this.LoadingUnitTypeId)],
+                this[nameof(this.AbcClassId)],
+                this[nameof(this.Height)],
+                this[nameof(this.Weight)],
+                this[nameof(this.LoadingUnitStatusId)],
+                this[nameof(this.ReferenceType)],
+                this[nameof(this.InCycleCount)],
+                this[nameof(this.OutCycleCount)],
+                this[nameof(this.OtherCycleCount)],
+            }
+          .Distinct()
+         .Where(s => !string.IsNullOrEmpty(s)));
+
         [Display(
-            Name = nameof(BusinessObjects.LoadingUnitHandlingParametersCorrection),
+                    Name = nameof(BusinessObjects.LoadingUnitHandlingParametersCorrection),
             ResourceType = typeof(BusinessObjects))]
         public int? HandlingParametersCorrection
         {
@@ -120,18 +150,32 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetIfPositive(ref this.handlingParametersCorrection, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.LoadingUnitHeight), ResourceType = typeof(BusinessObjects))]
         public int Height
         {
             get => this.height;
-            set => this.SetIfStrictlyPositive(ref this.height, value);
+            set
+            {
+                if (this.SetProperty(ref this.height, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.LoadingUnitInCycleCount), ResourceType = typeof(BusinessObjects))]
         public int InCycleCount
         {
             get => this.inCycleCount;
-            set => this.SetProperty(ref this.inCycleCount, value);
+            set
+            {
+                if (this.SetProperty(ref this.inCycleCount, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitInventoryDate), ResourceType = typeof(BusinessObjects))]
@@ -165,11 +209,18 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.LoadingUnitStatus), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitStatusDescription { get; set; }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.LoadingUnitStatus), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitStatusId
         {
             get => this.loadingUnitStatusId;
-            set => this.SetProperty(ref this.loadingUnitStatusId, value);
+            set
+            {
+                if (this.SetProperty(ref this.loadingUnitStatusId, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
         public IEnumerable<Enumeration> LoadingUnitTypeChoices { get; set; }
@@ -179,11 +230,18 @@ namespace Ferretto.Common.BusinessModels
 
         public bool LoadingUnitTypeHasCompartments { get; set; }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.LoadingUnitType), ResourceType = typeof(BusinessObjects))]
         public int LoadingUnitTypeId
         {
             get => this.loadingUnitTypeId;
-            set => this.SetProperty(ref this.loadingUnitTypeId, value);
+            set
+            {
+                if (this.SetProperty(ref this.loadingUnitTypeId, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitNotes), ResourceType = typeof(BusinessObjects))]
@@ -195,26 +253,42 @@ namespace Ferretto.Common.BusinessModels
 
         public Point OriginTray { get; set; }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.LoadingUnitOtherCycleCount), ResourceType = typeof(BusinessObjects))]
         public int OtherCycleCount { get; set; }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.LoadingUnitOutCycleCount), ResourceType = typeof(BusinessObjects))]
         public int OutCycleCount { get; set; }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.LoadingUnitReferenceType), ResourceType = typeof(BusinessObjects))]
-        public ReferenceType ReferenceType
+        public ReferenceType? ReferenceType
         {
             get => this.referenceType;
-            set => this.SetProperty(ref this.referenceType, value);
+            set
+            {
+                if (this.SetProperty(ref this.referenceType, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
         public IEnumerable<EnumerationString> ReferenceTypeChoices { get; set; }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.LoadingUnitWeight), ResourceType = typeof(BusinessObjects))]
         public int Weight
         {
             get => this.weight;
-            set => this.SetIfPositive(ref this.weight, value);
+            set
+            {
+                if (this.SetIfPositive(ref this.weight, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitWidth), ResourceType = typeof(BusinessObjects))]
@@ -222,6 +296,51 @@ namespace Ferretto.Common.BusinessModels
         {
             get => this.width;
             set => this.SetIfStrictlyPositive(ref this.width, value);
+        }
+
+        #endregion
+
+        #region Indexers
+
+        public override string this[string columnName]
+        {
+            get
+            {
+                var baseError = base[columnName];
+
+                if (!string.IsNullOrEmpty(baseError))
+                {
+                    return baseError;
+                }
+                switch (columnName)
+                {
+                    case nameof(this.Height):
+                        if (this.height < 1)
+                        {
+                            return string.Format(Common.Resources.Errors.PropertyMustBeStriclyPositive, nameof(this.Height));
+                        }
+
+                        break;
+
+                    case nameof(this.Weight):
+                        if (this.weight < 1)
+                        {
+                            return string.Format(Common.Resources.Errors.PropertyMustBeStriclyPositive, nameof(this.Weight));
+                        }
+
+                        break;
+
+                    case nameof(this.LoadingUnitTypeId):
+                        if (this.LoadingUnitTypeId == 0)
+                        {
+                            return string.Format(Common.Resources.Errors.PropertyMustHaveValue, nameof(this.LoadingUnitTypeId));
+                        }
+
+                        break;
+                }
+
+                return null;
+            }
         }
 
         #endregion

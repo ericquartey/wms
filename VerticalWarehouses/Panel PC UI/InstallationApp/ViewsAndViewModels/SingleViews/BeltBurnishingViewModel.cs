@@ -14,7 +14,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class BeltBurnishingViewModel : BindableBase, IViewModel, IBeltBurnishingViewModel
+    public class BeltBurnishingViewModel : BindableBase, IBeltBurnishingViewModel
     {
         #region Fields
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Base;
+using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
@@ -10,7 +10,8 @@ namespace Ferretto.Common.BusinessProviders
         IPagedBusinessProvider<ItemListRow, int>,
         IReadSingleAsyncProvider<ItemListRowDetails, int>,
         ICreateAsyncProvider<ItemListRowDetails, int>,
-        IUpdateAsyncProvider<ItemListRowDetails, int>
+        IUpdateAsyncProvider<ItemListRowDetails, int>,
+        IDeleteAsyncProvider<ItemListRowDetails, int>
     {
         #region Methods
 

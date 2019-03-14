@@ -255,4 +255,7 @@
   <data name="Dimension" xml:space="preserve">
     <value>Dimensione</value>
   </data>
+  <data name="SelectValue" xml:space="preserve">
+    <value>Seleziona un valore</value>
+  </data>
 </root>

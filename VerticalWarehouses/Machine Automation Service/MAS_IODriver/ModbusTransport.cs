@@ -27,6 +27,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         private ModbusIpMaster ioMaster;
 
+
         private int port;
 
         #endregion
@@ -48,20 +49,41 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Methods
 
+        /// <inheritdoc />
         public void Configure(IPAddress hostAddress, int port)
         {
             this.hostAddress = hostAddress;
             this.port = port;
         }
 
+        /// <inheritdoc />
         public bool Connect()
         {
-            this.ioClient = new TcpClient(this.hostAddress.ToString(), this.port);
-            this.ioMaster = ModbusIpMaster.CreateIp(this.ioClient);
+            try
+            {
+                this.ioClient = new TcpClient(this.hostAddress.ToString(), this.port);
+            }
+
+            catch(Exception ex)
+            {
+                throw new IoDriverException("Invalid hostAddress and port: remote endpoint not connected.", IoDriverExceptionCode.IoClientCreationFailed, ex);
+            }
+
+            try
+            {
+                this.ioMaster = ModbusIpMaster.CreateIp(this.ioClient);
+            }
+
+            catch (Exception ex)
+            {
+                throw new IoDriverException("Invalid IpMaster: remote endpoint not connected.", IoDriverExceptionCode.GetIpMasterFailed, ex);
+            }
+
 
             return this.ioClient.Connected;
         }
 
+        /// <inheritdoc />
         public void Disconnect()
         {
             this.ioClient?.Close();
@@ -74,16 +96,18 @@ namespace Ferretto.VW.MAS_IODriver
             GC.SuppressFinalize(this);
         }
 
+        /// <inheritdoc />
         public async Task<bool[]> ReadAsync()
         {
             if (this.ioClient.Connected)
             {
                 return await this.ioMaster.ReadInputsAsync(InputsAddress, InputsNomber);
             }
-
+            
             throw new IoDriverException("Invalid Read request: remote endpoint not connected.", IoDriverExceptionCode.CreationFailure);
         }
 
+        /// <inheritdoc />
         public async Task WriteAsync(bool[] outputs)
         {
             if (this.ioClient.Connected)

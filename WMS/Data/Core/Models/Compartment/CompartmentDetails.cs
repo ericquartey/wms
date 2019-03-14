@@ -1,8 +1,11 @@
 using System;
+using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class CompartmentDetails : BaseModel<int>
+    public class CompartmentDetails : BaseModel<int>,
+        ICanDelete
     {
         #region Fields
 
@@ -23,6 +26,11 @@ namespace Ferretto.WMS.Data.Core.Models
         #region Properties
 
         public int AllowedItemsCount { get; set; }
+
+        public bool CanDelete
+        {
+            get => !this.IsItemPairingFixed && this.Stock == 0;
+        }
 
         public string CompartmentStatusDescription { get; set; }
 

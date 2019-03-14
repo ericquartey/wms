@@ -1,4 +1,4 @@
-﻿namespace Ferretto.Common.BLL.Interfaces.Base
+﻿namespace Ferretto.Common.BLL.Interfaces.Models
 {
     public interface IModel<TKey>
     {

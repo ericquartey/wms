@@ -32,7 +32,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public async Task<IOperationResult<LoadingUnitDetails>> CreateAsync(LoadingUnitDetails model)
+        public async Task<IOperationResult<LoadingUnitCreating>> CreateAsync(LoadingUnitCreating model)
         {
             if (model == null)
             {
@@ -60,15 +60,11 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (changedEntitiesCount > 0)
             {
                 model.Id = entry.Entity.Id;
-                model.CreationDate = entry.Entity.CreationDate;
-                model.LastModificationDate = entry.Entity.LastModificationDate;
-                model.LastPickDate = entry.Entity.LastPickDate;
-                model.LastStoreDate = entry.Entity.LastStoreDate;
                 model.OtherCycleCount = entry.Entity.OtherCycleCount;
                 model.OutCycleCount = entry.Entity.OutCycleCount;
             }
 
-            return new SuccessOperationResult<LoadingUnitDetails>(model);
+            return new SuccessOperationResult<LoadingUnitCreating>(model);
         }
 
         public async Task<IEnumerable<LoadingUnit>> GetAllAsync(
@@ -114,6 +110,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                              .SingleOrDefaultAsync(l => l.Id == id);
             result.CompartmentsCount = compartmentsCount;
             return result;
+        }
+
+        public async Task<LoadingUnitSize> GetSizeByTypeIdAsync(int typeId)
+        {
+            return await this.GetSizeInfo(typeId).SingleOrDefaultAsync();
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
@@ -174,10 +175,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         private IQueryable<LoadingUnit> GetAllBase()
         {
             return this.dataContext.LoadingUnits
-                .Include(l => l.LoadingUnitType)
-                .Include(l => l.LoadingUnitStatus)
-                .Include(l => l.AbcClass)
-                .Include(l => l.CellPosition)
                 .Select(l => new LoadingUnit
                 {
                     Id = l.Id,
@@ -198,13 +195,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         private IQueryable<LoadingUnitDetails> GetAllDetailsBase()
         {
             return this.dataContext.LoadingUnits
-                .Include(l => l.AbcClass)
-                .Include(l => l.CellPosition)
-                .Include(l => l.LoadingUnitStatus)
-                .Include(l => l.LoadingUnitType)
-                .ThenInclude(l => l.LoadingUnitSizeClass)
-                .Include(l => l.Cell)
-                .ThenInclude(c => c.Aisle)
                 .Select(l => new LoadingUnitDetails
                 {
                     Id = l.Id,
@@ -238,6 +228,18 @@ namespace Ferretto.WMS.Data.Core.Providers
                     AisleId = l.Cell.AisleId,
                     AreaId = l.Cell.Aisle.AreaId,
                 });
+        }
+
+        private IQueryable<LoadingUnitSize> GetSizeInfo(int typeId)
+        {
+            return this.dataContext.LoadingUnitTypes
+                .Where(t => t.Id == typeId)
+                .Select(t => new LoadingUnitSize
+                {
+                    Length = t.LoadingUnitSizeClass.Length,
+                    Width = t.LoadingUnitSizeClass.Width,
+                })
+                .Distinct();
         }
 
         #endregion

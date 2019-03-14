@@ -50,8 +50,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Priority = model.Priority,
                 ShipmentUnitAssociated = model.ShipmentUnitAssociated,
                 ShipmentUnitCode = model.ShipmentUnitCode,
-                ShipmentUnitDescription = model.ShipmentUnitDescription,
-                Status = (Common.DataModels.ItemListStatus)model.ItemListStatus,
+                ShipmentUnitDescription = model.ShipmentUnitDescription
             });
 
             var changedEntitiesCount = await this.dataContext.SaveChangesAsync();
@@ -147,14 +146,12 @@ namespace Ferretto.WMS.Data.Core.Providers
         private IQueryable<ItemList> GetAllBase()
         {
             return this.dataContext.ItemLists
-                .Include(i => i.ItemListRows)
                 .Select(i => new ItemList
                 {
                     Id = i.Id,
                     Code = i.Code,
                     Description = i.Description,
                     Priority = i.Priority,
-                    ItemListStatus = (ItemListStatus)i.Status,
                     ItemListType = (ItemListType)i.ItemListType,
                     ItemListRowsCount = i.ItemListRows.Count(),
                     ItemListItemsCount = i.ItemListRows.Sum(row => row.RequiredQuantity),
@@ -165,14 +162,12 @@ namespace Ferretto.WMS.Data.Core.Providers
         private IQueryable<ItemListDetails> GetAllDetailsBase()
         {
             return this.dataContext.ItemLists
-                .Include(i => i.ItemListRows)
                 .Select(i => new ItemListDetails
                 {
                     Id = i.Id,
                     Code = i.Code,
                     Description = i.Description,
                     Priority = i.Priority,
-                    ItemListStatus = (ItemListStatus)i.Status,
                     ItemListType = (ItemListType)i.ItemListType,
                     ItemListItemsCount = i.ItemListRows.Sum(row => row.RequiredQuantity),
                     CreationDate = i.CreationDate,
