@@ -50,6 +50,8 @@ namespace Ferretto.VW.MAS_IODriver
 
         private bool disposed;
 
+        private bool[] inputData;
+
         private Timer pollIoTimer;
 
         private CancellationToken stoppingToken;
@@ -158,7 +160,15 @@ namespace Ferretto.VW.MAS_IODriver
         private Task CommandReceiveTaskFunction()
         {
             this.pollIoTimer?.Dispose();
-            this.pollIoTimer = new Timer(this.ReadIoData, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IoPollingInterval));
+            try
+            {
+                this.pollIoTimer = new Timer(this.ReadIoData, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IoPollingInterval));
+            }
+
+            catch (Exception ex)
+            {
+                throw new IOException($"Exception: {ex.Message} Timer Creation Failed", ex);
+            }
 
             this.currentStateMachine = new PowerUpStateMachine(this.ioCommandQueue, this.eventAggregator);
             this.currentStateMachine.Start();
@@ -242,16 +252,24 @@ namespace Ferretto.VW.MAS_IODriver
                     return;
                 }
 
-                var inputData = await this.modbusTransport.ReadAsync();
+                try
+                {
+                    this.inputData = await this.modbusTransport.ReadAsync();
+                }
 
-                if (inputData == null)
+                catch(Exception ex)
+                {
+                    throw new IoDriverException($"Exception: {ex.Message} while reading async error", IoDriverExceptionCode.CreationFailure, ex);
+                }
+
+                if (this.inputData == null)
                 {
                     continue;
                 }
 
-                if (this.ioStatus.UpdateInputStates(inputData))
+                if (this.ioStatus.UpdateInputStates(this.inputData))
                 {
-                    this.currentStateMachine?.ProcessMessage(new IoMessage(inputData, true));
+                    this.currentStateMachine?.ProcessMessage(new IoMessage(this.inputData, true));
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
         }

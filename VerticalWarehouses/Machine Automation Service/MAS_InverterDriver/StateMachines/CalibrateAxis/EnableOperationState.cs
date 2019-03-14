@@ -51,7 +51,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         {
             bool returnValue = false;
 
-            Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - EnableOperationState:ProcessMessage");
+            //Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - EnableOperationState:ProcessMessage");
             if (message.IsError)
             {
                 this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate));

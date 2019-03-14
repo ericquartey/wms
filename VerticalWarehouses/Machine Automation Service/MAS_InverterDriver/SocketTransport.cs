@@ -138,6 +138,10 @@ namespace Ferretto.VW.InverterDriver
             try
             {
                 var readBytes = await this.transportStream.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer.Length, stoppingToken);
+                byte[] receivedData = new byte[readBytes];
+
+                Array.Copy(this.receiveBuffer, receivedData, readBytes);
+                Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - ReadAsync:{BitConverter.ToString(receivedData)}");
             }
             catch (Exception ex)
             {
@@ -161,12 +165,40 @@ namespace Ferretto.VW.InverterDriver
 
             try
             {
+                Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - WriteAsync:{BitConverter.ToString(inverterMessage)}");
+                await Task.Delay(50);
                 await this.transportStream.WriteAsync(inverterMessage, 0, inverterMessage.Length, stoppingToken);
             }
             catch (Exception ex)
             {
-                throw new InverterDriverException("Error writing data to Transport Stream",
-                    InverterDriverExceptionCode.NetworkStreamWriteFailure, ex);
+                throw new InverterDriverException("Error writing data to Transport Stream", InverterDriverExceptionCode.NetworkStreamWriteFailure, ex);
+            }
+
+            return 0;
+        }
+
+        public async ValueTask<int> WriteAsync(byte[] inverterMessage, int delay, CancellationToken stoppingToken)
+        {
+            if (this.transportStream == null)
+                throw new InverterDriverException("Transport Stream is null",
+                    InverterDriverExceptionCode.UninitializedNetworkStream);
+
+            if (!this.transportStream.CanWrite)
+                throw new InverterDriverException("Transport Stream not configured for sending data",
+                    InverterDriverExceptionCode.MisconfiguredNetworkStream);
+
+            try
+            {
+                Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - WriteAsyncDelay:{BitConverter.ToString(inverterMessage)} - Delay:{delay}");
+                if (delay > 0)
+                {
+                    await Task.Delay(delay);
+                }
+                await this.transportStream.WriteAsync(inverterMessage, 0, inverterMessage.Length, stoppingToken);
+            }
+            catch (Exception ex)
+            {
+                throw new InverterDriverException("Error writing data to Transport Stream", InverterDriverExceptionCode.NetworkStreamWriteFailure, ex);
             }
 
             return 0;

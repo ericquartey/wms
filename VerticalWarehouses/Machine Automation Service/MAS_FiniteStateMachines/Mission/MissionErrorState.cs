@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         #region Methods
 
-        public override void SendCommandMessage(CommandMessage message)
+        public override void ProcessCommandMessage(CommandMessage message)
         {
             switch (message.Type)
             {
@@ -49,7 +49,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
             }
         }
 
-        public override void SendNotificationMessage(NotificationMessage message)
+        public override void ProcessNotificationMessage(NotificationMessage message)
         {
             throw new NotImplementedException();
         }
