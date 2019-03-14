@@ -578,7 +578,7 @@
     <value>Salvataggio e ripristino configurazione macchina.</value>
   </data>
   <data name="HelpSRCDescription" xml:space="preserve">
-    <value>La procedura permette di effettuare il salvataggio o il ripristino dei files che contengono le informazioni verificate in fase di messa in servizio della macchina.</value>
+    <value>La procedura permette di effettuare il salvataggio o il ripristino dei files che contengono le informazioni verificate in fase di messa in servizio della macchina. Il drive e la cartella di salvataggio o restore vengono automaticamente individuate dal sistema.</value>
   </data>
   <data name="HelpSRCSaveSide" xml:space="preserve">
     <value>Procedura di salvataggio configurazione.</value>

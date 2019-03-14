@@ -289,7 +289,7 @@
     <value>Reset funzioni di sicurezza</value>
   </data>
   <data name="SecurityFunctionActive" xml:space="preserve">
-    <value>Identificare funzione</value>
+    <value>Funzione di sicurezza attiva</value>
   </data>
   <data name="ShapeControl" xml:space="preserve">
     <value>Controllo sagoma</value>
