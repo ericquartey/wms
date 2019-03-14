@@ -1,8 +1,11 @@
 using System;
+using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class CompartmentDetails : BaseModel<int>
+    public class CompartmentDetails : BaseModel<int>,
+        ICanDelete
     {
         #region Fields
 

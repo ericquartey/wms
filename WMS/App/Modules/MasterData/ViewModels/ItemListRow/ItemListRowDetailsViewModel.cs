@@ -5,7 +5,9 @@ using DevExpress.Xpf.Data;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
+using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Resources;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
@@ -18,6 +20,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly IItemListRowProvider itemListRowProvider = ServiceLocator.Current.GetInstance<IItemListRowProvider>();
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
+
+        private ICommand deleteCommand;
 
         private InfiniteAsyncSource itemsDataSource;
 
@@ -42,6 +46,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
+        public ICommand DeleteCommand => this.deleteCommand ??
+            (this.deleteCommand = new DelegateCommand(async () => await this.ExecuteDeleteCommandAsync(), this.CanExecuteDeleteCommand));
+
         public InfiniteAsyncSource ItemsDataSource
         {
             get => this.itemsDataSource;
@@ -62,6 +69,7 @@ namespace Ferretto.WMS.Modules.MasterData
             base.EvaluateCanExecuteCommands();
 
             ((DelegateCommand)this.ListRowExecuteCommand)?.RaiseCanExecuteChanged();
+            ((DelegateCommand)this.DeleteCommand)?.RaiseCanExecuteChanged();
         }
 
         protected override async Task ExecuteRefreshCommandAsync()
@@ -109,9 +117,42 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnDispose();
         }
 
+        private bool CanExecuteDeleteCommand()
+        {
+            return this.Model?.CanDelete == true;
+        }
+
         private bool CanExecuteListRowCommand()
         {
             return this.Model?.CanBeExecuted == true;
+        }
+
+        private async Task ExecuteDeleteCommandAsync()
+        {
+            this.IsBusy = true;
+
+            var userChoice = this.DialogService.ShowMessage(
+                string.Format(DesktopApp.AreYouSureToDeleteGeneric, BusinessObjects.ItemListRow),
+                DesktopApp.ConfirmOperation,
+                DialogType.Question,
+                DialogButtons.YesNo);
+
+            if (userChoice == DialogResult.Yes)
+            {
+                var result = await this.itemListRowProvider.DeleteAsync(this.Model.Id);
+                if (result.Success)
+                {
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemListRowDeletedSuccessfully, StatusType.Success));
+                    this.EventService.Invoke(new RefreshModelsPubSubEvent<ItemList>(this.Model.ItemListId));
+                    this.HistoryViewService.Previous();
+                }
+                else
+                {
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+                }
+            }
+
+            this.IsBusy = false;
         }
 
         private void ExecuteListRowCommand()

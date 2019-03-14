@@ -62,8 +62,6 @@
         </MultiBinding>
     </wms:WmsView.SubTitle>
 
-
-
     <Grid HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch"
           IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
@@ -79,10 +77,21 @@
                               MaxWidth="400" />
         </Grid.ColumnDefinitions>
 
+        <dxt:WaitIndicator Grid.Row="1"
+                           VerticalAlignment="Center"
+                           Panel.ZIndex="1"
+                           Content="{x:Static res:DesktopApp.Loading}"
+                           DeferedVisibility="{Binding IsBusy}" />
+
         <wms:ActionBar Margin="10,10,10,0"
                        HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
 
+            <wms:ActionBarItem Command="{Binding ListExecuteCommand}"
+                               Content="{x:Static res:MasterData.ListExecute}"
+                               CustomGlyphSize="24,24"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_play_arrow_black_24dp.png"
+                               GlyphSize="Custom" />
 
             <wms:ActionBarItem Command="{Binding SaveCommand}"
                                Content="{x:Static res:General.Save}"
@@ -93,11 +102,6 @@
                                Content="{x:Static res:General.Revert}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_undo_black_24dp.png"
-                               GlyphSize="Custom" />
-            <wms:ActionBarItem Command="{Binding ListExecuteCommand}"
-                               Content="{x:Static res:MasterData.ListExecute}"
-                               CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_play_arrow_black_24dp.png"
                                GlyphSize="Custom" />
 
             <wms:ActionBarItem Command="{Binding RefreshCommand}"
@@ -111,7 +115,8 @@
         <ScrollViewer Grid.Row="1"
                       Margin="10,0,10,10"
                       Focusable="False"
-                      IsTabStop="True">
+                      IsTabStop="True"
+                      Visibility="{Binding Model, Converter={StaticResource RTVC}}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -288,6 +293,12 @@
                                                    Content="{x:Static res:MasterData.ItemListRowShowDetails}"
                                                    CustomGlyphSize="24,24"
                                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_info_outline_black_24dp.png"
+                                                   GlyphSize="Custom" />
+
+                                <wms:ActionBarItem Command="{Binding DeleteCommand}"
+                                                   Content="{x:Static res:General.Delete}"
+                                                   CustomGlyphSize="24,24"
+                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_delete_black_24dp.png"
                                                    GlyphSize="Custom" />
 
                                 <wms:ActionBarItem Command="{Binding AddListRowCommand}"

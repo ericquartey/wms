@@ -5,8 +5,7 @@ using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Grid;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Base;
-using Ferretto.Common.Controls.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
 
@@ -31,8 +30,6 @@ namespace Ferretto.Common.Controls
         private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
 
         private string token;
-
-        private IExtensionDataEntityViewModel wmsViewModel;
 
         #endregion
 
@@ -107,8 +104,6 @@ namespace Ferretto.Common.Controls
             {
                 var wmsView = wmsViews.First();
                 this.token = wmsView.Token;
-                var wmsViewViewModel = ((INavigableView)wmsView).DataContext as INavigableViewModel;
-                this.wmsViewModel = wmsViewViewModel as IExtensionDataEntityViewModel;
                 this.SelectedItem = -1;
                 this.Loaded -= this.WmsGridControl_Loaded;
             }

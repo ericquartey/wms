@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using DevExpress.Xpf.Layout.Core;
-using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Providers;
 using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Controls

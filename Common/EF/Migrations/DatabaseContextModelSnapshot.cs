@@ -710,11 +710,6 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<string>("ShipmentUnitDescription");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
-                        .HasColumnType("char(1)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("Code")
@@ -797,9 +792,9 @@ namespace Ferretto.Common.EF.Migrations
                         .IsRequired()
                         .HasColumnType("char(1)");
 
-                    b.Property<int>("CellId");
+                    b.Property<int?>("CellId");
 
-                    b.Property<int>("CellPositionId");
+                    b.Property<int?>("CellPositionId");
 
                     b.Property<string>("Code")
                         .IsRequired();
@@ -818,7 +813,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<DateTime?>("InventoryDate");
 
-                    b.Property<bool>("IsCellPairingFixed");
+                    b.Property<bool?>("IsCellPairingFixed");
 
                     b.Property<DateTime?>("LastHandlingDate");
 

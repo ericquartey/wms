@@ -322,6 +322,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Loading Unit.
+        /// </summary>
+        public static string LoadingUnitAdd {
+            get {
+                return ResourceManager.GetString("LoadingUnitAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading Unit Details.
         /// </summary>
         public static string LoadingUnitDetails {

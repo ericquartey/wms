@@ -1,17 +1,17 @@
 ﻿using System;
+using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class ItemListRowDetails : BaseModel<int>
+    public class ItemListRowDetails : BaseModel<int>,
+        ICanDelete, ICanBeExecuted
     {
         #region Properties
 
-        public bool CanBeExecuted
-        {
-            get => this.ItemListRowStatus == ItemListRowStatus.Incomplete ||
+        public bool CanBeExecuted => this.ItemListRowStatus == ItemListRowStatus.Incomplete ||
                    this.ItemListRowStatus == ItemListRowStatus.Suspended ||
                    this.ItemListRowStatus == ItemListRowStatus.Waiting;
-        }
 
         public bool CanDelete
         {
@@ -40,8 +40,6 @@ namespace Ferretto.WMS.Data.Core.Models
         public int ItemListId { get; set; }
 
         public ItemListRowStatus ItemListRowStatus { get; set; }
-
-        public ItemListStatus ItemListStatus { get; set; }
 
         public ItemListType ItemListType { get; set; }
 
