@@ -45,7 +45,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(200, Type = typeof(Scheduler.Core.Models.Mission))]
+        [ProducesResponseType(200, Type = typeof(Mission))]
         [ProducesResponseType(404)]
         [HttpPost("{id}/abort")]
         public Task<ActionResult<Mission>> AbortAsync(int id)
@@ -53,11 +53,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             throw new System.NotImplementedException();
         }
 
-        [ProducesResponseType(200, Type = typeof(Scheduler.Core.Models.Mission))]
+        [ProducesResponseType(200, Type = typeof(Mission))]
         [ProducesResponseType(404)]
         [ProducesResponseType(400)]
         [HttpPost("{id}/complete")]
-        public async Task<ActionResult<Scheduler.Core.Models.Mission>> CompleteAsync(int id)
+        public async Task<ActionResult<Mission>> CompleteAsync(int id)
         {
             var result = await this.schedulerService.CompleteMissionAsync(id);
             if (result is NotFoundOperationResult<Scheduler.Core.Models.Mission>)
@@ -69,14 +69,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.BadRequest(result.Description);
             }
 
-            return this.Ok(result.Entity);
+            var updatedMission = await this.missionProvider.GetByIdAsync(id);
+
+            return this.Ok(updatedMission);
         }
 
-        [ProducesResponseType(200, Type = typeof(Scheduler.Core.Models.Mission))]
+        [ProducesResponseType(200, Type = typeof(Mission))]
         [ProducesResponseType(404)]
         [ProducesResponseType(400)]
         [HttpPost("{id}/execute")]
-        public async Task<ActionResult<Scheduler.Core.Models.Mission>> ExecuteAsync(int id)
+        public async Task<ActionResult<Mission>> ExecuteAsync(int id)
         {
             var result = await this.schedulerService.ExecuteMissionAsync(id);
             if (result is NotFoundOperationResult<Scheduler.Core.Models.Mission>)
@@ -88,7 +90,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.BadRequest(result.Description);
             }
 
-            return this.Ok(result.Entity);
+            var updatedMission = await this.missionProvider.GetByIdAsync(id);
+
+            return this.Ok(updatedMission);
         }
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<Mission>))]
