@@ -15,5 +15,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces
         CompositeCommand BackButtonCommand { get; set; }
 
         #endregion
+
+        #region Methods
+
+        void FinalizeBottomButtons();
+
+        void InitializeBottomButtons();
+
+        #endregion
     }
 }

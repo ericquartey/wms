@@ -18,6 +18,10 @@ namespace Ferretto.VW.OperatorApp
 
         private ICommand backToVWAPPCommand;
 
+        private ICommand machineModeCustomCommand;
+
+        private ICommand machineOnMarchCustomCommand;
+
         #endregion
 
         #region Properties
@@ -37,6 +41,10 @@ namespace Ferretto.VW.OperatorApp
             ClickedOnMachineModeEventHandler = null;
             ClickedOnMachineOnMarchEventHandler = null;
         }));
+
+        public ICommand MachineModeCustomCommand => this.machineModeCustomCommand ?? (this.machineModeCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineModeEvent()));
+
+        public ICommand MachineOnMarchCustomCommand => this.machineOnMarchCustomCommand ?? (this.machineOnMarchCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineOnMarchEvent()));
 
         #endregion
 
