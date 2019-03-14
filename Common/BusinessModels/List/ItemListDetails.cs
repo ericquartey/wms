@@ -227,6 +227,7 @@ namespace Ferretto.Common.BusinessModels
                 {
                     return baseError;
                 }
+
                 switch (columnName)
                 {
                     case nameof(this.Priority):
@@ -237,6 +238,7 @@ namespace Ferretto.Common.BusinessModels
 
                         break;
                 }
+
                 return null;
             }
         }

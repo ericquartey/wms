@@ -312,6 +312,7 @@ namespace Ferretto.Common.BusinessModels
                 {
                     return baseError;
                 }
+
                 switch (columnName)
                 {
                     case nameof(this.Height):

@@ -37,22 +37,6 @@ namespace Ferretto.WMS.Scheduler.Core.Services
             await base.StartAsync(cancellationToken);
         }
 
-        public async Task ProcessPendingRequestsAsync()
-        {
-            this.logger.LogDebug("Checking for pending scheduler requests to process ...");
-
-            using (var scope = this.scopeFactory.CreateScope())
-            {
-                var requestsProvider = scope.ServiceProvider.GetRequiredService<ISchedulerRequestProvider>();
-                var missionsProvider = scope.ServiceProvider.GetRequiredService<IMissionSchedulerProvider>();
-
-                var requests = await requestsProvider.GetRequestsToProcessAsync();
-                await missionsProvider.CreateForRequestsAsync(requests);
-            }
-
-            this.logger.LogDebug("Done processing pending requests.");
-        }
-
         public async Task<SchedulerRequest> WithdrawItemAsync(SchedulerRequest request)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
@@ -82,14 +66,11 @@ namespace Ferretto.WMS.Scheduler.Core.Services
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
-                var requestsProvider = serviceScope.ServiceProvider.GetRequiredService<ISchedulerRequestProvider>();
                 var listsProvider = serviceScope.ServiceProvider.GetRequiredService<IItemListSchedulerProvider>();
-                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionSchedulerProvider>();
 
                 var acceptedRequests = await listsProvider.PrepareForExecutionAsync(request);
 
-                var requestsToProcess = await requestsProvider.GetRequestsToProcessAsync();
-                await missionsProvider.CreateForRequestsAsync(requestsToProcess);
+                await this.ProcessPendingRequestsAsync();
 
                 return acceptedRequests;
             }
@@ -101,7 +82,11 @@ namespace Ferretto.WMS.Scheduler.Core.Services
             {
                 var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionSchedulerProvider>();
 
-                return await missionsProvider.CompleteAsync(id);
+                var result = await missionsProvider.CompleteAsync(id);
+
+                await this.ProcessPendingRequestsAsync();
+
+                return result;
             }
         }
 
@@ -136,6 +121,22 @@ namespace Ferretto.WMS.Scheduler.Core.Services
                 this.logger.LogWarning("Scheduler start-up request processing failed.");
                 await this.StopAsync(stoppingToken);
             }
+        }
+
+        private async Task ProcessPendingRequestsAsync()
+        {
+            this.logger.LogDebug("Checking for pending scheduler requests to process ...");
+
+            using (var scope = this.scopeFactory.CreateScope())
+            {
+                var requestsProvider = scope.ServiceProvider.GetRequiredService<ISchedulerRequestProvider>();
+                var missionsProvider = scope.ServiceProvider.GetRequiredService<IMissionSchedulerProvider>();
+
+                var requests = await requestsProvider.GetRequestsToProcessAsync();
+                await missionsProvider.CreateForRequestsAsync(requests);
+            }
+
+            this.logger.LogDebug("Done processing pending requests.");
         }
 
         private async Task CheckDatabaseStatusAsync(CancellationToken stoppingToken)
