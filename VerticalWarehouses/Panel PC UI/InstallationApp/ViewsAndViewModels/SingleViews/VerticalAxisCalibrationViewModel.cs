@@ -182,7 +182,7 @@ namespace Ferretto.VW.InstallationApp
             }
             else
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Message is null");
             }
         }
 

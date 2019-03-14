@@ -1,11 +1,11 @@
-﻿<Window x:Class="Ferretto.VW.OperatorApp.ViewsAndViewModels.MainWindow"
+﻿<Window x:Class="Ferretto.VW.OperatorApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels"
+        xmlns:local="clr-namespace:Ferretto.VW.OperatorApp"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
-                xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
+        xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
         Width="1024"
         Height="768"
         ResizeMode="NoResize"
@@ -13,7 +13,7 @@
         WindowStyle="None"
         mc:Ignorable="d">
     <Window.Resources>
-        <ResourceDictionary Source="../Resources/Views.xaml" />
+        <ResourceDictionary Source="Resources/Views.xaml" />
     </Window.Resources>
 
     <Grid Background="{DynamicResource VWAPP_BACKGROUND}">
@@ -33,8 +33,9 @@
                     BorderThickness="0">
                 <Image Width="250"
                        Height="50"
-                       VerticalAlignment="Top" HorizontalAlignment="Left"
                        Margin="10,15,0,0"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
                        Source="{DynamicResource Ferretto_Logo}"
                        Stretch="Uniform" />
             </Border>
@@ -42,15 +43,16 @@
                     Background="{DynamicResource VWAPP_BACKGROUND}"
                     BorderThickness="0">
                 <StackPanel FlowDirection="RightToLeft"
-                            Orientation="Horizontal" ScrollViewer.CanContentScroll="True">
+                            Orientation="Horizontal"
+                            ScrollViewer.CanContentScroll="True">
                     <Button Width="60"
                             Height="60"
                             Margin="10,0,10,0"
-                            Command="{Binding OpenHelpWindow}"
                             VerticalContentAlignment="Center"
                             Background="{DynamicResource VWAPP_BACKGROUND}"
                             BorderBrush="{DynamicResource VWAPP_CustomMachineModeToggleButton_BorderBrush_Normal}"
-                            BorderThickness="1">
+                            BorderThickness="1"
+                            Command="{Binding OpenHelpWindow}">
                         <TextBlock FontSize="25"
                                    Foreground="{DynamicResource FerrettoPureWhite}"
                                    TextAlignment="Center">
@@ -62,8 +64,8 @@
                                                     OpenClosePopupCommand="{Binding OpenClosePopupCommand}"
                                                     UserText="Installer" />
                     <Image Height="30"
-                           HorizontalAlignment="Center"
                            Margin="10,0,10,0"
+                           HorizontalAlignment="Center"
                            Source="/Ferretto.VW.CustomControls;Component/Assets/ic_account_circle_black_48dp.png" />
                     <custom:CustomMachineModeToggleButton Name="MachineModeControl"
                                                           CustomCommand="{Binding MachineModeCustomCommand}"
@@ -77,10 +79,10 @@
                     <custom:CustomMainWindowErrorButton Margin="10,0,0,0"
                                                         ContentText="Error"
                                                         CustomCommand="{Binding ErrorButtonCommand}"
-                                                        Visibility="Visible"/>
+                                                        Visibility="Visible" />
                     <custom:CustomMainWindowServiceButton Margin="10,0,0,0"
-                                                         ContentText="Service"
-                                                        CustomCommand="{Binding ErrorButtonCommand}" />
+                                                          ContentText="Service"
+                                                          CustomCommand="{Binding ErrorButtonCommand}" />
                 </StackPanel>
             </Border>
         </Grid>

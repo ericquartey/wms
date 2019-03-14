@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels;
+﻿using Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
+using Prism.Events;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels;
 
 namespace Ferretto.VW.OperatorApp.Resources
 {
@@ -24,11 +20,19 @@ namespace Ferretto.VW.OperatorApp.Resources
         {
             this.container = container;
 
-            var mainWindowVMInstance = new MainWindowViewModel();
+            var mainWindowVMInstance = new MainWindowViewModel(this.container.Resolve<IEventAggregator>());
             var mainWindowInstance = new MainWindow();
+            var idleVMInstance = new IdleViewModel();
+            var mainWindowBackToOAPPButtonVMInstance = new MainWindowBackToOAPPButtonViewModel(this.container.Resolve<IEventAggregator>());
+            var mainWindowNavigationButtonsVMInstance = new MainWindowNavigationButtonsViewModel(this.container.Resolve<IEventAggregator>());
 
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
+            this.container.RegisterInstance<IIdleViewModel>(idleVMInstance);
+            this.container.RegisterInstance<IMainWindowBackToOAPPButtonViewModel>(mainWindowBackToOAPPButtonVMInstance);
+            this.container.RegisterInstance<IMainWindowNavigationButtonsViewModel>(mainWindowNavigationButtonsVMInstance);
+
+            mainWindowVMInstance.InitializeViewModel(this.container);
         }
 
         #endregion

@@ -12,22 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for IdleView.xaml
     /// </summary>
-    public partial class MainWindow : Window, IMainWindow
+    public partial class IdleView : UserControl
     {
-        #region Constructors
-
-        public MainWindow()
+        public IdleView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
-
-        #endregion
     }
 }

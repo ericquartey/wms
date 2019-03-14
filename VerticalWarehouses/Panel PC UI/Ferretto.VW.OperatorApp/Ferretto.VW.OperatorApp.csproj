@@ -41,6 +41,9 @@
     <ItemGroup>
       <None Remove="MainWindow.xaml" />
       <None Remove="Resources\Views.xaml" />
+      <None Remove="ViewsAndViewModels\IdleView.xaml" />
+      <None Remove="ViewsAndViewModels\MainWindowBackToOAPPButtonView.xaml" />
+      <None Remove="ViewsAndViewModels\MainWindowNavigationButtonsView.xaml" />
     </ItemGroup>
 
   <ItemGroup>
@@ -48,6 +51,12 @@
     <ProjectReference Include="..\..\Common\Resources\Ferretto.VW.Resources.csproj" />
     <ProjectReference Include="..\CustomControls\Ferretto.VW.CustomControls.csproj" />
     <ProjectReference Include="..\Utils\Ferretto.VW.Utils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="ViewsAndViewModels\MainWindowNavigationButtonsView.xaml.cs">
+      <DependentUpon>MainWindowNavigationButtonsView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

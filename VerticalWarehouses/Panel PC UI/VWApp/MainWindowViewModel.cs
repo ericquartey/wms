@@ -131,8 +131,8 @@ namespace Ferretto.VW.VWApp
                         break;
 
                     case "Operator":
-                        ((App)Application.Current).OperatorAppMainWindowInstance = ((OperatorApp.ViewsAndViewModels.MainWindow)this.Container.Resolve<OperatorApp.ViewsAndViewModels.Interfaces.IMainWindow>());
-                        ((App)Application.Current).OperatorAppMainWindowInstance.DataContext = ((OperatorApp.ViewsAndViewModels.MainWindowViewModel)this.Container.Resolve<OperatorApp.ViewsAndViewModels.Interfaces.IMainWindowViewModel>());
+                        ((App)Application.Current).OperatorAppMainWindowInstance = ((OperatorApp.MainWindow)this.Container.Resolve<OperatorApp.ViewsAndViewModels.Interfaces.IMainWindow>());
+                        ((App)Application.Current).OperatorAppMainWindowInstance.DataContext = ((OperatorApp.MainWindowViewModel)this.Container.Resolve<OperatorApp.ViewsAndViewModels.Interfaces.IMainWindowViewModel>());
                         this.Container.Resolve<INotificationCatcher>().SubscribeInstallationMethodsToMAService();
                         ((App)Application.Current).OperatorAppMainWindowInstance.Show();
                         break;
