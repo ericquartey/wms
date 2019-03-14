@@ -13,7 +13,7 @@ namespace Ferretto.WMS.AutomationServiceMock
 
         Task ExecuteMissionAsync(int missionId);
 
-        Task<IEnumerable<Mission2>> GetMissionsAsync();
+        Task<IEnumerable<Mission>> GetMissionsAsync();
 
         Task InitializeAsync();
 

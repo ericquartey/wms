@@ -15,8 +15,6 @@ namespace Ferretto.Common.EF
     {
         #region Fields
 
-        private const string cloudInitialCatalogEnvVariable = "cloudInitialCatalog";
-
         private const string ConnectionStringName = "WmsConnectionString";
 
         private const string DefaultApplicationSettingsFile = "appsettings.json";
@@ -25,10 +23,14 @@ namespace Ferretto.Common.EF
 
         private const string ParametrizedApplicationSettingsFile = "appsettings.{0}.json";
 
+#if !NET4
+        private const string cloudInitialCatalogEnvVariable = "cloudInitialCatalog";
+
         private static readonly System.Text.RegularExpressions.Regex ConnectionStringInitialCatalog =
             new System.Text.RegularExpressions.Regex(
                 @"Initial Catalog=(?<dbname>[^;]+)",
                 System.Text.RegularExpressions.RegexOptions.Compiled);
+#endif
 
         #endregion
 

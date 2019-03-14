@@ -115,10 +115,10 @@ namespace Ferretto.WMS.AutomationServiceMock
             return exitRequested;
         }
 
-        private static void PrintMissionsTable(IEnumerable<Mission2> missions)
+        private static void PrintMissionsTable(IEnumerable<Mission> missions)
         {
             Console.WriteLine("Available missions (newer first):");
-            Console.WriteLine($"|{nameof(Mission2.Id), 3}| {nameof(Mission2.Status), -10}| {nameof(Mission2.ItemDescription), -40}| {nameof(Mission2.RequiredQuantity)} |");
+            Console.WriteLine($"|{nameof(Mission.Id), 3}| {nameof(Mission.Status), -10}| {nameof(Mission.ItemDescription), -40}| {nameof(Mission.RequiredQuantity)} |");
             Console.WriteLine($"|---|-----------|-----------------------------------------|------------------|");
 
             foreach (var mission in missions.OrderByDescending(m => m.CreationDate))

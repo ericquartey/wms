@@ -5,6 +5,7 @@ namespace Ferretto.Common.EF.Migrations
 {
     public partial class Remove_Table_ItemListType : Migration
     {
+        [System.CodeDom.Compiler.GeneratedCode("EntityFramework", "v2.1")]
         #region Methods
 
         protected override void Down(MigrationBuilder migrationBuilder)
