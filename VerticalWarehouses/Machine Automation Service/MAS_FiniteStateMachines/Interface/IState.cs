@@ -19,13 +19,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         /// Send a command message.
         /// </summary>
         /// <param name="message">A <see cref="CommandMessage"/> is published from state</param>
-        void SendCommandMessage(CommandMessage message);
+        void ProcessCommandMessage(CommandMessage message);
 
         /// <summary>
         /// Send a notification message.
         /// </summary>
         /// <param name="message">A <see cref="NotificationMessage"/> is published from state.</param>
-        void SendNotificationMessage(NotificationMessage message);
+        void ProcessNotificationMessage(NotificationMessage message);
 
         #endregion
     }

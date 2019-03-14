@@ -1,18 +1,19 @@
 ﻿using System;
-using System.Threading;
 using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
 
-namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
+namespace Ferretto.VW.InverterDriver.StateMachines.Stop
 {
-    public class VoltageDisabledState : InverterStateBase
+    public class StopState : InverterStateBase
     {
         #region Fields
 
         private const ushort StatusWordValue = 0x0050;
 
-        private readonly Axis axisToCalibrate;
+        private readonly Axis axisToStop;
 
         private readonly ushort parameterValue;
 
@@ -20,14 +21,12 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         #region Constructors
 
-        public VoltageDisabledState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate)
+        public StopState(IInverterStateMachine parentStateMachine, Axis axisToStop)
         {
-            Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - VoltageDisabledState:Ctor");
-
             this.parentStateMachine = parentStateMachine;
-            this.axisToCalibrate = axisToCalibrate;
+            this.axisToStop = axisToStop;
 
-            switch (this.axisToCalibrate)
+            switch (this.axisToStop)
             {
                 case Axis.Horizontal:
                     this.parameterValue = 0x8000;
@@ -37,10 +36,9 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
                     this.parameterValue = 0x0000;
                     break;
             }
+            InverterMessage stopMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue);
 
-            var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue);
-
-            parentStateMachine.EnqueueMessage(inverterMessage);
+            parentStateMachine.EnqueueMessage(stopMessage);
         }
 
         #endregion
@@ -54,14 +52,16 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
             //Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - VoltageDisabledState:ProcessMessage");
             if (message.IsError)
             {
-                this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate));
+                this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToStop));
             }
-
             if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
             {
                 if ((message.UShortPayload & StatusWordValue) == StatusWordValue)
                 {
-                    this.parentStateMachine.ChangeState(new HomingModeState(this.parentStateMachine, this.axisToCalibrate));
+                    var messageData = new StopAxisMessageData(axisToStop);
+                    var endNotification = new NotificationMessage(messageData, "Axis calibration complete", MessageActor.Any,
+                        MessageActor.InverterDriver, MessageType.Stop, MessageStatus.OperationEnd);
+                    this.parentStateMachine.PublishNotificationEvent(endNotification);
                     returnValue = true;
                 }
             }

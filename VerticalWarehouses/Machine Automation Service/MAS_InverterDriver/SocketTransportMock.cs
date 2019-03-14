@@ -30,10 +30,17 @@ namespace Ferretto.VW.InverterDriver
 
         public async Task<byte[]> ReadAsync(CancellationToken stoppingToken)
         {
-            return null;
+            byte[] rawMessage = { 0x20, 0x06, 0x00, 0x05, 0x9A, 0x01, 0x01, 0x00 };
+            await Task.Delay(1000);
+            return rawMessage;
         }
 
         public async ValueTask<int> WriteAsync(byte[] inverterMessage, CancellationToken stoppingToken)
+        {
+            return 0;
+        }
+
+        public async ValueTask<int> WriteAsync(byte[] inverterMessage, int delay, CancellationToken stoppingToken)
         {
             return 0;
         }
