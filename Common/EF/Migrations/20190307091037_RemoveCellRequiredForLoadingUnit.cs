@@ -2,6 +2,7 @@
 
 namespace Ferretto.Common.EF.Migrations
 {
+    [System.CodeDom.Compiler.GeneratedCode("EntityFramework", "v2.1")]
     public partial class RemoveCellRequiredForLoadingUnit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
