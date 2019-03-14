@@ -45,7 +45,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(200, Type = typeof(Mission))]
+        [ProducesResponseType(200, Type = typeof(Scheduler.Core.Models.Mission))]
         [ProducesResponseType(404)]
         [HttpPost("{id}/abort")]
         public Task<ActionResult<Mission>> AbortAsync(int id)
@@ -53,7 +53,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             throw new System.NotImplementedException();
         }
 
-        [ProducesResponseType(200, Type = typeof(Mission))]
+        [ProducesResponseType(200, Type = typeof(Scheduler.Core.Models.Mission))]
         [ProducesResponseType(404)]
         [ProducesResponseType(400)]
         [HttpPost("{id}/complete")]
@@ -72,7 +72,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result.Entity);
         }
 
-        [ProducesResponseType(200, Type = typeof(Mission))]
+        [ProducesResponseType(200, Type = typeof(Scheduler.Core.Models.Mission))]
         [ProducesResponseType(404)]
         [ProducesResponseType(400)]
         [HttpPost("{id}/execute")]
