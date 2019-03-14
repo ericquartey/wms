@@ -1,5 +1,6 @@
 using System;
 using Ferretto.Common.BLL.Interfaces.Models;
+using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -70,16 +71,22 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.fifoTimeStore = CheckIfStrictlyPositive(value);
         }
 
+        [JsonIgnore]
         public bool HasAreaAssociated { get; set; }
 
+        [JsonIgnore]
         public bool HasCompartmentAssociated { get; set; }
 
+        [JsonIgnore]
         public bool HasCompartmentTypeAssociated { get; set; }
 
+        [JsonIgnore]
         public bool HasItemListRowAssociated { get; set; }
 
+        [JsonIgnore]
         public bool HasMissionAssociated { get; set; }
 
+        [JsonIgnore]
         public bool HasSchedulerRequestAssociated { get; set; }
 
         public int? Height

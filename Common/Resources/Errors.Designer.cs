@@ -421,7 +421,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not it possible to complete the request because there are constraints on: {0}.
+        ///   Looks up a localized string similar to Unable to complete the request because there are constraints on: {0}.
         /// </summary>
         public static string NotPossibleExecuteOperation {
             get {
