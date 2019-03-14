@@ -63,7 +63,7 @@ namespace Ferretto.WMS.AutomationServiceMock
             }
         }
 
-        public async Task<IEnumerable<Mission2>> GetMissionsAsync()
+        public async Task<IEnumerable<Mission>> GetMissionsAsync()
         {
             try
             {
