@@ -2,6 +2,7 @@
 
 namespace Ferretto.Common.EF.Migrations
 {
+    [System.CodeDom.Compiler.GeneratedCode("EntityFramework", "v2.1")]
     public partial class Add_HasCompartments_Field_In_Table_LoadingUnitType : Migration
     {
         #region Methods

@@ -4,9 +4,11 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -27,6 +29,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ISchedulerService schedulerService;
 
+        private readonly IHubContext<SchedulerHub, ISchedulerHub> schedulerHubContext;
+
         #endregion
 
         #region Constructors
@@ -34,11 +38,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public MissionsController(
             ILogger<MissionsController> logger,
             IMissionProvider missionProvider,
-            ISchedulerService schedulerService)
+            ISchedulerService schedulerService,
+            IHubContext<SchedulerHub, ISchedulerHub> schedulerHubContext)
         {
             this.logger = logger;
             this.missionProvider = missionProvider;
             this.schedulerService = schedulerService;
+            this.schedulerHubContext = schedulerHubContext;
         }
 
         #endregion
@@ -64,13 +70,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.NotFound(id);
             }
-            else if (result is Scheduler.Core.Models.BadRequestOperationResult<Scheduler.Core.Models.Mission>)
+
+            if (result is Scheduler.Core.Models.BadRequestOperationResult<Scheduler.Core.Models.Mission>)
             {
                 return this.BadRequest(result.Description);
             }
 
+            await this.schedulerHubContext.Clients.All.MissionUpdated(id);
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
-
             return this.Ok(updatedMission);
         }
 
@@ -90,8 +97,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.BadRequest(result.Description);
             }
 
+            await this.schedulerHubContext.Clients.All.MissionUpdated(id);
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
-
             return this.Ok(updatedMission);
         }
 
