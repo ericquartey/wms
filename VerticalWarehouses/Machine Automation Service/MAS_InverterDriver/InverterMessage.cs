@@ -24,6 +24,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private bool heartbeatMessage;
 
+        private int sendDelay;
+
         private byte writeBytesLength;
 
         #endregion
@@ -41,6 +43,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.responseMessage = message.responseMessage;
             this.payload = new byte[message.payload.Length];
             this.payloadLenght = message.payloadLenght;
+            this.sendDelay = message.sendDelay;
             try
             {
                 Array.Copy(message.payload, this.payload, message.payload.Length);
@@ -57,6 +60,8 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.responseMessage = true;
 
             this.heartbeatMessage = false;
+
+            this.sendDelay = 0;
 
             if (rawMessage[1] == 0x00)
             {
@@ -98,14 +103,15 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.heartbeatMessage = false;
         }
 
-        public InverterMessage(byte systemIndex, short parametrerId, object payload)
+        public InverterMessage(byte systemIndex, short parameterId, object payload, int sendDelay = 0)
         {
             this.responseMessage = false;
             this.SystemIndex = systemIndex;
             this.DataSetIndex = ActualDataSetIndex;
-            this.parameterId = parametrerId;
+            this.parameterId = parameterId;
             this.IsWriteMessage = true;
             this.heartbeatMessage = false;
+            this.sendDelay = sendDelay;
 
             var payloadType = payload.GetType();
 
@@ -168,6 +174,8 @@ namespace Ferretto.VW.MAS_InverterDriver
         public InverterParameterId ParameterId => (InverterParameterId)this.parameterId;
 
         public object Payload => this.ConvertPayload();
+
+        public int SendDelay => this.sendDelay;
 
         public short ShortPayload => this.ConvertPayloadToShort();
 
@@ -264,11 +272,11 @@ namespace Ferretto.VW.MAS_InverterDriver
             //VALUE 14th byte of control word value represents Heartbeat flag
             if (setBit)
             {
-                this.payload[0] |= 0x40;
+                this.payload[1] |= 0x40;
             }
             else
             {
-                this.payload[0] &= 0xBF;
+                this.payload[1] &= 0xBF;
             }
 
             return this.GetWriteMessage();
