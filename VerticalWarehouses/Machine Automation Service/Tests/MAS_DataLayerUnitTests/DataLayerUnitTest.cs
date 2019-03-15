@@ -38,8 +38,8 @@ namespace MAS_DataLayerUnitTests
 
             var filesInfo = new FilesInfo
             {
-                GeneralInfoPath = "..\\..\\..\\..\\..\\MAS_AutomationService\\general_info.json",
-                InstallationInfoPath = "..\\..\\..\\..\\..\\MAS_AutomationService\\installation_info.json"
+                GeneralInfoPath = @"..\..\..\..\..\MAS_AutomationService\general_info.json",
+                InstallationInfoPath = @"..\..\..\..\..\MAS_AutomationService\installation_info.json"
             };
             var iOptions = Options.Create(filesInfo);
 
