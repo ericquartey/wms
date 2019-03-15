@@ -52,10 +52,6 @@ namespace Ferretto.WMS.App.Tests
 
 #pragma warning restore S1185 // Overriding members should do more than simply call the same member in the base class
 
-#pragma warning disable S1185 // Overriding members should do more than simply call the same member in the base class
-
-#pragma warning restore S1185 // Overriding members should do more than simply call the same member in the base class
-
         protected override void RegisterRequiredTypes(IContainerRegistry containerRegistry)
         {
             base.RegisterRequiredTypes(containerRegistry);
