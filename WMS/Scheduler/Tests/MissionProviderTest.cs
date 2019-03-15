@@ -71,7 +71,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var result = await missionProvider.CompleteAsync(mission.Id);
+                var result = await missionProvider.CompleteAsync(mission.Id, mission.RequestedQuantity);
 
                 #endregion
 
@@ -164,7 +164,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var result = await missionProvider.CompleteAsync(mission.Id);
+                var result = await missionProvider.CompleteAsync(mission.Id, mission.RequestedQuantity);
 
                 #endregion
 

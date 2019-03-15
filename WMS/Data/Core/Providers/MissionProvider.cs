@@ -129,6 +129,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     PackageTypeDescription = m.PackageType.Description,
                     PackageTypeId = m.PackageTypeId,
                     Priority = m.Priority,
+                    DispatchedQuantity = m.DispatchedQuantity,
                     RegistrationNumber = m.RegistrationNumber,
                     RequestedQuantity = m.RequestedQuantity,
                     Status = (MissionStatus)m.Status,
