@@ -115,22 +115,6 @@ namespace Ferretto.WMS.AutomationServiceMock
             return exitRequested;
         }
 
-        private static void PrintMissionsTable(IEnumerable<Mission> missions)
-        {
-            Console.WriteLine("Available missions (newer first):");
-            Console.WriteLine($"|{nameof(Mission.Id), 3}| {nameof(Mission.Status), -10}| {nameof(Mission.ItemDescription), -40}| {nameof(Mission.RequiredQuantity)} |");
-            Console.WriteLine($"|---|-----------|-----------------------------------------|------------------|");
-
-            foreach (var mission in missions.OrderByDescending(m => m.CreationDate))
-            {
-                var trimmedDescription = mission.ItemDescription.Substring(0, Math.Min(40, mission.ItemDescription.Length));
-                Console.WriteLine(
-                    $"|{mission.Id, 3}| {mission.Status, -10}| {trimmedDescription, -40}| {mission.RequiredQuantity, 16} |");
-            }
-
-            Console.WriteLine($"|___|___________|_________________________________________|__________________|");
-        }
-
         private static int GetMissionId()
         {
             Console.Write("Insert mission id: ");
@@ -187,9 +171,39 @@ namespace Ferretto.WMS.AutomationServiceMock
             }
             finally
             {
-                Console.WriteLine("Press <ENTER> to terminate the automation service.");
+                Console.WriteLine("Press <ENTER> to shut down the Panel PC.");
                 Console.ReadLine();
             }
+        }
+
+        private static void PrintMissionsTable(IEnumerable<Mission> missions)
+        {
+            if (!missions.Any())
+            {
+                Console.WriteLine("No missions are available.");
+
+                return;
+            }
+
+            Console.WriteLine("Available missions:");
+
+            Console.WriteLine(
+                $"| {nameof(Mission.Priority), 8} " +
+                $"| {nameof(Mission.Id), 3} " +
+                $"| {nameof(Mission.Status), -10} " +
+                $"| {nameof(Mission.ItemDescription), -40} " +
+                $"| {nameof(Mission.RequiredQuantity)} |");
+
+            Console.WriteLine($"|----------|-----|------------|------------------------------------------|------------------|");
+
+            foreach (var mission in missions.OrderByDescending(m => m.Priority))
+            {
+                var trimmedDescription = mission.ItemDescription.Substring(0, Math.Min(40, mission.ItemDescription.Length));
+                Console.WriteLine(
+                    $"| {mission.Priority, 8} | {mission.Id, 3} | {mission.Status, -10} | {trimmedDescription, -40} | {mission.RequiredQuantity, 16} |");
+            }
+
+            Console.WriteLine($"|__________|_____|____________|__________________________________________|__________________|");
         }
 
         #endregion

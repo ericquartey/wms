@@ -107,7 +107,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     switch (request.Type)
                     {
                         case OperationType.Withdrawal:
-                            missions = await this.CreateMissionsFromRequestAsync(request);
+                            missions = await this.CreateWithdrawalMissionsAsync(request);
                             break;
 
                         case OperationType.Insertion:
@@ -223,6 +223,16 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             return new SuccessOperationResult<Mission>(model);
         }
 
+        private static int ComputePriority(SchedulerRequest request)
+        {
+            if (request.IsInstant)
+            {
+                return 1;
+            }
+
+            return 0;
+        }
+
         private async Task<IOperationResult<Mission>> CompletePickMissionAsync(Mission mission)
         {
             if (mission.CompartmentId.HasValue == false
@@ -252,7 +262,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             return await this.UpdateAsync(mission);
         }
 
-        private async Task<IEnumerable<Mission>> CreateMissionsFromRequestAsync(SchedulerRequest request)
+        private async Task<IEnumerable<Mission>> CreateWithdrawalMissionsAsync(SchedulerRequest request)
         {
             var item = await this.itemProvider.GetByIdAsync(request.ItemId);
 
@@ -293,6 +303,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                         MaterialStatusId = compartment.MaterialStatusId,
                         Sub1 = compartment.Sub1,
                         Sub2 = compartment.Sub2,
+                        Priority = ComputePriority(request),
                         Quantity = quantityToExtractFromCompartment,
                         Type = MissionType.Pick
                     };
@@ -326,8 +337,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     LoadingUnitId = m.LoadingUnitId,
                     MaterialStatusId = m.MaterialStatusId,
                     PackageTypeId = m.PackageTypeId,
-
-                    // TODO: add Priority field
+                    Priority = m.Priority,
                     RegistrationNumber = m.RegistrationNumber,
                     RequiredQuantity = m.Quantity,
                     Status = (Common.DataModels.MissionStatus)m.Status,
