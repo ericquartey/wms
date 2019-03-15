@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
+using CommonServiceLocator;
 using DevExpress.Mvvm.Native;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
 using Ferretto.Common.Controls.Interfaces;
-using CommonServiceLocator;
 
 namespace Ferretto.Common.Controls
 {
@@ -157,10 +157,7 @@ namespace Ferretto.Common.Controls
         private static void EnableControls(WmsDialogView dialogView, bool isEnabled)
         {
             var childrenToCheck = LayoutTreeHelper.GetVisualChildren(dialogView).OfType<IEnabled>();
-            if (childrenToCheck != null)
-            {
-                childrenToCheck.ForEach(c => c.IsEnabled = isEnabled);
-            }
+            childrenToCheck.ForEach(c => c.IsEnabled = isEnabled);
         }
 
         private static void OnHeaderIsEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -180,7 +177,9 @@ namespace Ferretto.Common.Controls
 
             this.DataContext = string.IsNullOrEmpty(this.MapId) == false
                 ? this.navigationService.GetRegisteredViewModel(this.MapId, this.Data)
-                : this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken(),
+                : this.navigationService.RegisterAndGetViewModel(
+                    this.GetType().ToString(),
+                    this.GetMainViewToken(),
                     this.Data);
 
             ((INavigableViewModel)this.DataContext)?.Appear();

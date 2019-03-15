@@ -1,6 +1,6 @@
 ﻿using System.Windows;
+using CommonServiceLocator;
 using DevExpress.Xpf.Bars;
-using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Controls
 {
