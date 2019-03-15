@@ -1,43 +1,25 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using CommonServiceLocator;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
-using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Utils.Testing;
-using Microsoft.Practices.ServiceLocation;
-using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Feretto.Common.Controls.Tests
+namespace Ferretto.WMS.App.Tests
 {
     [TestClass]
-    public class NavigationServiceTest : PrismTest
+    public class NavigationServiceTest : MockUI
     {
-        #region Fields
-
-        private INavigationService navigationService;
-
-        #endregion
-
         #region Methods
-
-        [TestInitialize]
-        public override void Initialize()
-        {
-            base.Initialize();
-
-            this.Container.RegisterType<INavigationService, NavigationService>();
-
-            this.navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
-        }
 
         [TestMethod]
         public void TestRegister()
         {
-            // Arrange
-            // (nothing)
-
             // Act
-            this.navigationService.Register<TestView, TestViewModel>();
+            this.NavigationService.Register<TestView, TestViewModel>();
 
             // Assert
             var expectedRegistrationName = $"{typeof(TestView).FullName}.1";
@@ -61,13 +43,13 @@ namespace Feretto.Common.Controls.Tests
         public void TestRegisterAndGetViewModel()
         {
             // Arrange
-            this.navigationService.Register<TestView, TestViewModel>();
+            this.NavigationService.Register<TestView, TestViewModel>();
 
             // Act
             var viewName = typeof(TestView).FullName;
             var token = "a-token";
             var data = "id=1";
-            var viewModel = this.navigationService.RegisterAndGetViewModel(viewName, token, data);
+            var viewModel = this.NavigationService.RegisterAndGetViewModel(viewName, token, data);
 
             // Assert
             Assert.IsNotNull(viewModel);
@@ -83,13 +65,13 @@ namespace Feretto.Common.Controls.Tests
         public void TestRegisterAndGetViewModelMoreThanOnce()
         {
             // Arrange
-            this.navigationService.Register<TestView, TestViewModel>();
+            this.NavigationService.Register<TestView, TestViewModel>();
 
             // Act
             var viewName = typeof(TestView).FullName;
-            this.navigationService.RegisterAndGetViewModel(viewName, null, null);
-            this.navigationService.RegisterAndGetViewModel(viewName, null, null);
-            this.navigationService.RegisterAndGetViewModel(viewName, null, null);
+            this.NavigationService.RegisterAndGetViewModel(viewName, null, null);
+            this.NavigationService.RegisterAndGetViewModel(viewName, null, null);
+            this.NavigationService.RegisterAndGetViewModel(viewName, null, null);
 
             // Assert
             Assert.AreEqual(1 + 3, this.Container.Registrations.Count(registration =>
@@ -109,17 +91,17 @@ namespace Feretto.Common.Controls.Tests
             var token = "a-token";
             var data = "id=1";
             Assert.ThrowsException<System.InvalidOperationException>(
-                () => this.navigationService.RegisterAndGetViewModel(viewName, token, data));
+                () => this.NavigationService.RegisterAndGetViewModel(viewName, token, data));
         }
 
         [TestMethod]
         public void TestRegisterTwice()
         {
             // Arrange
-            this.navigationService.Register<TestView, TestViewModel>();
+            this.NavigationService.Register<TestView, TestViewModel>();
 
             // Act
-            this.navigationService.Register<TestView, TestViewModel>();
+            this.NavigationService.Register<TestView, TestViewModel>();
 
             // Assert
             var expectedRegistrationName = $"{typeof(TestView).FullName}.2";
@@ -147,87 +129,6 @@ namespace Feretto.Common.Controls.Tests
                 registration.MappedToType == typeof(TestViewModel)
                 &&
                 registration.Name == expectedRegistrationName));
-        }
-
-        #endregion
-
-        #region Classes
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Major Code Smell",
-            "CA1812: NavigationServiceTest.TestView is an internal class that is apparently never instantiated.",
-            Justification = "Prism test class")]
-        private class TestView : INavigableView
-        {
-            #region Properties
-
-            public object Data { get; set; }
-
-            public object DataContext { get; set; }
-
-            public bool IsClosed { get; set; }
-
-            public string MapId { get; set; }
-
-            public string Title { get; set; }
-
-            public string Token { get; set; }
-
-            public WmsViewType ViewType { get; }
-
-            #endregion
-
-            #region Methods
-
-            public void Disappear()
-            {
-                // TODO
-            }
-
-            #endregion
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Major Code Smell",
-            "CA1812: NavigationServiceTest.TestView is an internal class that is apparently never instantiated.",
-            Justification = "Prism test class")]
-        private class TestViewModel : INavigableViewModel
-        {
-            #region Properties
-
-            public object Data { get; set; }
-
-            public string MapId { get; set; }
-
-            public string StateId { get; set; }
-
-            public string Token { get; set; }
-
-            #endregion
-
-            #region Methods
-
-            public void Appear()
-            {
-                // Test method. Nothing to do here.
-            }
-
-            public bool CanDisappear()
-            {
-                return true;
-            }
-
-            public void Disappear()
-            {
-                // Test method. Nothing to do here.
-            }
-
-            public void Dispose()
-            {
-                // Test method. Implement dispose
-            }
-
-            #endregion
         }
 
         #endregion

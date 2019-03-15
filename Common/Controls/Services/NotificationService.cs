@@ -5,7 +5,7 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls.Interfaces;
 using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using NLog;
 
 namespace Ferretto.Common.Controls.Services
@@ -18,7 +18,7 @@ namespace Ferretto.Common.Controls.Services
 
         private const string MissionUpdatedMessage = "MissionUpdated";
 
-        private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
+        private readonly IEventService eventService;
 
         private readonly Logger logger;
 
@@ -36,8 +36,9 @@ namespace Ferretto.Common.Controls.Services
 
         #region Constructors
 
-        public NotificationService()
+        public NotificationService(IEventService eventService)
         {
+            this.eventService = eventService;
             this.url = ConfigurationManager.AppSettings["NotificationHubEndpoint"];
             this.schedulerHubPath = ConfigurationManager.AppSettings["SchedulerHubPath"];
             this.logger = LogManager.GetCurrentClassLogger();

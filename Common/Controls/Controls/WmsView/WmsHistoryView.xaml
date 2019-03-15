@@ -32,7 +32,8 @@
                         Grid.Column="1"
                         Margin="7,15,0,0"
                         FontSize="{DynamicResource FontSizeMedium}"
-                        Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsHistoryView}}, Path=Content.SubTitle}" />
+                        Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsHistoryView}}, Path=Content.SubTitle}"
+                        Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsHistoryView}}, Path=Content.SubTitleVisibility}"/>
                 </Grid>
                 <ContentPresenter />
             </Grid>

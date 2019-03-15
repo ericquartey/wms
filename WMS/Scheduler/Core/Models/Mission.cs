@@ -30,6 +30,8 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public int? PackageTypeId { get; set; }
 
+        public int Priority { get; set; }
+
         public int Quantity
         {
             get => this.quantity;
