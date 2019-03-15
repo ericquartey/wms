@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
+using CommonServiceLocator;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Utils;
-using Microsoft.Practices.ServiceLocation;
-using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Regions;
+using Unity;
 
 namespace Ferretto.Common.Controls.Services
 {
@@ -327,7 +327,7 @@ namespace Ferretto.Common.Controls.Services
             this.lastViewActivated = this.GetView(moduleViewName, data);
             if (this.lastViewActivated.ViewType == WmsViewType.Docking)
             {
-                WmsMainDockLayoutManager.Current.RegisterView(moduleViewName, this.lastViewActivated.Title);
+                WmsMainDockLayoutManager.Current.RegisterView(moduleViewName, this.lastViewActivated.Title, this.lastViewActivated, this.regionManager);
                 this.regionManager.AddToRegion(moduleViewName, this.lastViewActivated);
             }
             else

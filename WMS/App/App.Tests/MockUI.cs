@@ -4,16 +4,20 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
+using CommonServiceLocator;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Utils;
-using Microsoft.Practices.ServiceLocation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Prism.Unity.Ioc;
+using Unity;
 
 namespace Ferretto.WMS.App.Tests
 {
     public class MockUI
     {
         #region Fields
+
+        private const string Model = "Model";
 
 #pragma warning disable SA1311 // Static readonly fields must begin with upper-case letter
 #pragma warning disable S1144 // Unused private types or members should be removed
@@ -25,6 +29,8 @@ namespace Ferretto.WMS.App.Tests
 #pragma warning restore SA1311 // Static readonly fields must begin with upper-case letter
 
         private static readonly Queue<ViewInfo> ViewsToProcess = new Queue<ViewInfo>();
+
+        private IUnityContainer container;
 
         private INavigationService navigationService;
 
@@ -38,6 +44,10 @@ namespace Ferretto.WMS.App.Tests
         }
 
         #endregion
+
+        protected IUnityContainer Container => this.container;
+
+        protected INavigationService NavigationService => this.navigationService;
 
         #region Methods
 
@@ -57,8 +67,13 @@ namespace Ferretto.WMS.App.Tests
 
         public void WaitUiComplete()
         {
-            Application.Current.MainWindow.Dispatcher.BeginInvoke(new Action(() => this.AppearOnLoaded(ViewsToProcess)), DispatcherPriority.ContextIdle);
-            Application.Current.MainWindow.ShowDialog();
+            application.MainWindow.Dispatcher.BeginInvoke(new Action(() => this.AppearOnLoaded(ViewsToProcess)), DispatcherPriority.ContextIdle);
+            application.MainWindow.ShowDialog();
+        }
+
+        public virtual void CheckViewModel(INavigableViewModel viewModel)
+        {
+            SetDefaultValue(viewModel, Model);
         }
 
         private static List<T> GetAllPublicConstantValues<T>(Type type)
@@ -68,6 +83,17 @@ namespace Ferretto.WMS.App.Tests
                 .Where(fi => fi.IsLiteral && !fi.IsInitOnly && fi.FieldType == typeof(T))
                 .Select(x => (T)x.GetRawConstantValue())
                 .ToList();
+        }
+
+        private static void SetDefaultValue(object propObject, string p_propertyName)
+        {
+            var property = propObject.GetType().GetProperty(p_propertyName);
+            if (property != null)
+            {
+                var newtype = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
+                var valueObject = Activator.CreateInstance(newtype);
+                property.SetValue(propObject, valueObject, null);
+            }
         }
 
         private void AppearOnLoaded(Queue<ViewInfo> viewsToProcess)
@@ -97,7 +123,9 @@ namespace Ferretto.WMS.App.Tests
         {
             if (view != null)
             {
-                Assert.IsTrue(view.DataContext != null, $"Failed to initialize ViewModel om view {view.MapId}");
+                var viewModel = view.DataContext as INavigableViewModel;
+                Assert.IsTrue(viewModel != null, $"Failed to initialize ViewModel om v   iew {view.MapId}");
+                this.CheckViewModel(viewModel);
                 view.Disappear();
             }
 
@@ -108,7 +136,9 @@ namespace Ferretto.WMS.App.Tests
         {
             BindingListener.Current.Initialise();
 
-            new Bootstrapper().Run();
+            var wmsAppTest = new WmsApplicationTest();
+            wmsAppTest.InitializeTest();
+            this.container = ((UnityContainerExtension)wmsAppTest.Container).Instance;
 
             DevExpress.Xpf.Core.ApplicationThemeHelper.ApplicationThemeName = Common.Utils.Common.THEMECONTROLSNAME;
 

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
+using CommonServiceLocator;
 using DevExpress.Xpf.Bars;
-using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Controls
 {
@@ -12,16 +12,6 @@ namespace Ferretto.Common.Controls
         {
             this.AllowCustomizationMenu = false;
             this.DataContext = ServiceLocator.Current.GetInstance<StatusBarViewModel>();
-            this.IsVisibleChanged += this.OnIsVisibleChanged;
-        }
-
-        #endregion
-
-        #region Methods
-
-        private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            ((StatusBarViewModel)this.DataContext).IsSubscriptionActive = (bool)e.NewValue;
         }
 
         #endregion

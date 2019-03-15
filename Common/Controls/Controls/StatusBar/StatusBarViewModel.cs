@@ -21,8 +21,6 @@ namespace Ferretto.Common.Controls
 
         private string messageIconName;
 
-        private bool isSubscriptionActive;
-
         private string message;
 
         private string schedulerStatusIconName;
@@ -39,6 +37,7 @@ namespace Ferretto.Common.Controls
             this.SchedulerStatusIconName = this.GetConnectionStatusIcon(notificationService.IsServiceHubConnected);
             this.keepInfoTimer.Tick += this.KeepInfoTimer_Tick;
             this.keepInfoTimer.Interval = new TimeSpan(0, 0, timeToKeepText);
+            this.statusbarEventSubscription = this.eventService.Subscribe<StatusPubSubEvent>(this.OnStatusbarInfoChanged);
         }
 
         #endregion
@@ -49,26 +48,6 @@ namespace Ferretto.Common.Controls
         {
             get => this.messageIconName;
             set => this.SetProperty(ref this.messageIconName, value);
-        }
-
-        public bool IsSubscriptionActive
-        {
-            get => this.isSubscriptionActive;
-            set
-            {
-                if (this.SetProperty(ref this.isSubscriptionActive, value))
-                {
-                    if (value)
-                    {
-                        this.statusbarEventSubscription =
-                            this.eventService.Subscribe<StatusPubSubEvent>(this.OnStatusbarInfoChanged);
-                    }
-                    else
-                    {
-                        this.eventService.Unsubscribe<StatusPubSubEvent>(this.statusbarEventSubscription);
-                    }
-                }
-            }
         }
 
         public string Message
