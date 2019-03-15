@@ -11,8 +11,6 @@ namespace Ferretto.Common.Controls
     public abstract class DetailsViewModel<T> : BaseServiceNavigationViewModel, IExtensionDataEntityViewModel
         where T : BusinessObject
     {
-        #region Fields
-
         private readonly ChangeDetector<T> changeDetector = new ChangeDetector<T>();
 
         private readonly IDialogService dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
@@ -31,18 +29,10 @@ namespace Ferretto.Common.Controls
 
         private ICommand saveCommand;
 
-        #endregion
-
-        #region Constructors
-
         public DetailsViewModel()
         {
             this.changeDetector.ModifiedChanged += this.ChangeDetector_ModifiedChanged;
         }
-
-        #endregion
-
-        #region Properties
 
         public ColorRequired ColorRequired
         {
@@ -83,7 +73,7 @@ namespace Ferretto.Common.Controls
             get
             {
                 var temp = false;
-                if ((!this.changeDetector.IsModified || this.Model == null) && this.Model.Id != 0)
+                if (!this.changeDetector.IsModified || this.Model == null)
                 {
                     temp = true;
                 }
@@ -134,10 +124,6 @@ namespace Ferretto.Common.Controls
             (this.saveCommand = new DelegateCommand(
                 async () => await this.ExecuteSaveCommand(),
                 this.CanExecuteSaveCommand));
-
-        #endregion
-
-        #region Methods
 
         public override bool CanDisappear()
         {
@@ -236,7 +222,5 @@ namespace Ferretto.Common.Controls
                 await this.ExecuteRevertCommand();
             }
         }
-
-        #endregion
     }
 }
