@@ -85,11 +85,6 @@ namespace Ferretto.WMS.App
             return this.Container.Resolve<Shell>();
         }
 
-        protected virtual IUnityContainer CreateContainer()
-        {
-            return new UnityContainer();
-        }
-
         protected override IContainerExtension CreateContainerExtension()
         {
             return new UnityContainerExtension();

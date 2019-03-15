@@ -2,8 +2,8 @@
 
     <PropertyGroup>
         <TargetFramework>net471</TargetFramework>
-        <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <!--<CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>-->
     </PropertyGroup>
 
     <ItemGroup>
@@ -21,6 +21,7 @@
         <PackageReference Include="SonarAnalyzer.CSharp" Version="7.10.0.7896" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
         <PackageReference Include="Unity" Version="5.9.7" />
+        <PackageReference Include="Unity.Abstractions" Version="4.1.0" />
         <PackageReference Include="Unity.Container" Version="5.9.7" />
         <PackageReference Include="Unity.RegistrationByConvention" Version="5.9.3" />
     </ItemGroup>

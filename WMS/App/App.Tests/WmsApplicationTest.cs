@@ -43,11 +43,6 @@ namespace Ferretto.WMS.App.Tests
             return this.Container.Resolve<Shell>();
         }
 
-        protected virtual IUnityContainer CreateContainer()
-        {
-            return new UnityContainer();
-        }
-
 #pragma warning disable S1185 // Overriding members should do more than simply call the same member in the base class
 
         protected override IContainerExtension CreateContainerExtension()

@@ -8,6 +8,8 @@ using CommonServiceLocator;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Prism.Unity.Ioc;
+using Unity;
 
 namespace Ferretto.WMS.App.Tests
 {
@@ -26,6 +28,8 @@ namespace Ferretto.WMS.App.Tests
 
         private static readonly Queue<ViewInfo> ViewsToProcess = new Queue<ViewInfo>();
 
+        private IUnityContainer container;
+
         private INavigationService navigationService;
 
         #endregion
@@ -38,6 +42,10 @@ namespace Ferretto.WMS.App.Tests
         }
 
         #endregion
+
+        protected IUnityContainer Container => this.container;
+
+        protected INavigationService NavigationService => this.navigationService;
 
         #region Methods
 
@@ -108,7 +116,9 @@ namespace Ferretto.WMS.App.Tests
         {
             BindingListener.Current.Initialise();
 
-            new WmsApplicationTest().InitializeTest();
+            var wmsAppTest = new WmsApplicationTest();
+            wmsAppTest.InitializeTest();
+            this.container = ((UnityContainerExtension)wmsAppTest.Container).Instance;
 
             DevExpress.Xpf.Core.ApplicationThemeHelper.ApplicationThemeName = Common.Utils.Common.THEMECONTROLSNAME;
 
