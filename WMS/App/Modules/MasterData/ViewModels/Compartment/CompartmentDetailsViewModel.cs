@@ -97,6 +97,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public override async void LoadRelatedData()
         {
+            if (!this.IsModelIdValid)
+            {
+                return;
+            }
+
             var items = await this.itemProvider.GetAllowedByCompartmentIdAsync(this.Model.Id);
             this.AllowedItemsDataSource = this.Model != null
                 ? new DataSource<AllowedItemInCompartment, int>(items.AsQueryable<AllowedItemInCompartment>)

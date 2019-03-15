@@ -17,6 +17,8 @@ namespace Ferretto.WMS.App.Tests
     {
         #region Fields
 
+        private const string Model = "Model";
+
 #pragma warning disable SA1311 // Static readonly fields must begin with upper-case letter
 #pragma warning disable S1144 // Unused private types or members should be removed
 #pragma warning disable CA1823 // Unused field application
@@ -69,6 +71,11 @@ namespace Ferretto.WMS.App.Tests
             application.MainWindow.ShowDialog();
         }
 
+        public virtual void CheckViewModel(INavigableViewModel viewModel)
+        {
+            SetDefaultValue(viewModel, Model);
+        }
+
         private static List<T> GetAllPublicConstantValues<T>(Type type)
         {
             return type
@@ -76,6 +83,17 @@ namespace Ferretto.WMS.App.Tests
                 .Where(fi => fi.IsLiteral && !fi.IsInitOnly && fi.FieldType == typeof(T))
                 .Select(x => (T)x.GetRawConstantValue())
                 .ToList();
+        }
+
+        private static void SetDefaultValue(object propObject, string p_propertyName)
+        {
+            var property = propObject.GetType().GetProperty(p_propertyName);
+            if (property != null)
+            {
+                var newtype = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
+                var valueObject = Activator.CreateInstance(newtype);
+                property.SetValue(propObject, valueObject, null);
+            }
         }
 
         private void AppearOnLoaded(Queue<ViewInfo> viewsToProcess)
@@ -105,7 +123,9 @@ namespace Ferretto.WMS.App.Tests
         {
             if (view != null)
             {
-                Assert.IsTrue(view.DataContext != null, $"Failed to initialize ViewModel om v   iew {view.MapId}");
+                var viewModel = view.DataContext as INavigableViewModel;
+                Assert.IsTrue(viewModel != null, $"Failed to initialize ViewModel om v   iew {view.MapId}");
+                this.CheckViewModel(viewModel);
                 view.Disappear();
             }
 

@@ -89,6 +89,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public override async void LoadRelatedData()
         {
+            if (!this.IsModelIdValid)
+            {
+                return;
+            }
+
             var loadingUnit = await this.loadingUnitsProvider.GetByCellIdAsync(this.Model.Id);
             this.LoadingUnitsDataSource = this.Model != null
                 ? new DataSource<LoadingUnitDetails, int>(() => loadingUnit.AsQueryable<LoadingUnitDetails>())

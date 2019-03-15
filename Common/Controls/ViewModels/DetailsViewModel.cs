@@ -64,12 +64,26 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        public bool IsModelIdValid
+        {
+            get
+            {
+                if (this.Model != null &&
+                    this.Model.Id > 0)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
         public bool IsModelValid
         {
             get
             {
                 var temp = false;
-                if (!this.changeDetector.IsModified || this.Model == null)
+                if ((!this.changeDetector.IsModified || this.Model == null) && this.Model.Id != 0)
                 {
                     temp = true;
                 }

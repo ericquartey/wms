@@ -121,7 +121,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public async void LoadRelatedData()
         {
-            this.CompartmentsDataSource = this.loadingUnit != null
+            this.CompartmentsDataSource = (this.loadingUnit != null && this.loadingUnit.Id != 0)
                 ? await this.compartmentProvider.GetByLoadingUnitIdAsync(this.loadingUnit.Id)
                 : null;
         }

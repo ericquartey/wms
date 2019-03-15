@@ -75,6 +75,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public override async void LoadRelatedData()
         {
+            if (!this.IsModelIdValid)
+            {
+                return;
+            }
+
             this.CompartmentsDataSource = this.Model != null
                 ? await this.compartmentProvider.GetByItemIdAsync(this.Model.Id)
                 : null;
