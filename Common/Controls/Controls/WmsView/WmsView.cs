@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using DevExpress.Mvvm.UI;
@@ -30,15 +29,19 @@ namespace Ferretto.Common.Controls
             new FrameworkPropertyMetadata(true));
 
         public static readonly DependencyProperty SubTitleProperty = DependencyProperty.Register(
-            nameof(SubTitle), typeof(string), typeof(WmsView)
-            );
+            nameof(SubTitle), typeof(string), typeof(WmsView));
 
-        public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(nameof(ViewModel), typeof(INavigableViewModel), typeof(WmsView));
+        public static readonly DependencyProperty SubTitleVisibilityProperty = DependencyProperty.Register(
+            nameof(SubTitleVisibility),
+            typeof(Visibility),
+            typeof(WmsView),
+            new FrameworkPropertyMetadata(Visibility.Hidden));
+
+        public static readonly DependencyProperty ViewModelProperty =
+            DependencyProperty.Register(nameof(ViewModel), typeof(INavigableViewModel), typeof(WmsView));
 
         private readonly INavigationService
             navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
-
-        private readonly WmsViewType viewType;
 
         private WmsHistoryView wmsHistoryView;
 
@@ -48,13 +51,15 @@ namespace Ferretto.Common.Controls
 
         protected WmsView()
         {
-            this.viewType = WmsViewType.Docking;
+            this.ViewType = WmsViewType.Docking;
             this.Loaded += this.WMSView_Loaded;
         }
 
         #endregion
 
         #region Properties
+
+        public WmsViewType ViewType { get; }
 
         public object Data { get; set; }
 
@@ -86,6 +91,12 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(SubTitleProperty, value);
         }
 
+        public Visibility SubTitleVisibility
+        {
+            get => (Visibility)this.GetValue(SubTitleVisibilityProperty);
+            set => this.SetValue(SubTitleVisibilityProperty, value);
+        }
+
         public string Title { get; set; }
 
         public string Token { get; set; }
@@ -95,8 +106,6 @@ namespace Ferretto.Common.Controls
             get => (INavigableViewModel)this.GetValue(ViewModelProperty);
             set => this.SetValue(ViewModelProperty, value);
         }
-
-        public WmsViewType ViewType => this.viewType;
 
         #endregion
 
@@ -126,9 +135,11 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            this.DataContext = !string.IsNullOrEmpty(this.MapId) ?
-                this.navigationService.GetRegisteredViewModel(this.MapId, this.Data) : // Is Main WMSView registered
-                this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken(), this.Data);
+            this.DataContext = !string.IsNullOrEmpty(this.MapId)
+                ? this.navigationService.GetRegisteredViewModel(this.MapId, this.Data)
+                : // Is Main WMSView registered
+                this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken(),
+                    this.Data);
 
             this.ViewModel = (INavigableViewModel)this.DataContext;
             ((INavigableViewModel)this.DataContext)?.Appear();
@@ -147,7 +158,8 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            if (LayoutTreeHelper.GetVisualParents(this).OfType<WmsView>().FirstOrDefault(v => v.EnableHistoryView) != null)
+            if (LayoutTreeHelper.GetVisualParents(this).OfType<WmsView>().FirstOrDefault(v => v.EnableHistoryView) !=
+                null)
             {
                 return;
             }
