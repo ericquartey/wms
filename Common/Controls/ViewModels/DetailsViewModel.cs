@@ -44,19 +44,7 @@ namespace Ferretto.Common.Controls
 
         public IDialogService DialogService { get; } = ServiceLocator.Current.GetInstance<IDialogService>();
 
-        public bool IsModelIdValid
-        {
-            get
-            {
-                if (this.Model != null &&
-                    this.Model.Id > 0)
-                {
-                    return true;
-                }
-
-                return false;
-            }
-        }
+        public bool IsModelIdValid => this.Model?.Id > 0;
 
         public bool IsModelValid
         {
