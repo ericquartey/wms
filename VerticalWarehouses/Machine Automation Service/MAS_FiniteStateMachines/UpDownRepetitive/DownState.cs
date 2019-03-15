@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
                 MessageActor.AutomationService,
                 MessageActor.FiniteStateMachines,
                 MessageType.UpDown,
-                MessageStatus.OperationRunning);
+                MessageStatus.OperationExecuting);
             this.parentStateMachine.PublishNotificationMessage(notifyMessage);
 
             // Go to the UP
@@ -55,7 +55,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 
         #region Methods
 
-        public override void SendCommandMessage(CommandMessage message)
+        public override void ProcessCommandMessage(CommandMessage message)
         {
             switch (message.Type)
             {
@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
             }
         }
 
-        public override void SendNotificationMessage(NotificationMessage message)
+        public override void ProcessNotificationMessage(NotificationMessage message)
         {
             if (message.Type == MessageType.Positioning)
             {

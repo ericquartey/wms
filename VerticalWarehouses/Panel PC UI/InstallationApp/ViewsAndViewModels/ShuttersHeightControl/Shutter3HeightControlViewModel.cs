@@ -4,7 +4,7 @@ using System;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class Shutter3HeightControlViewModel : BindableBase, IViewModel, IShutter3HeightControlViewModel
+    public class Shutter3HeightControlViewModel : BindableBase, IShutter3HeightControlViewModel
     {
         #region Fields
 

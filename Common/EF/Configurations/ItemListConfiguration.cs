@@ -27,10 +27,6 @@ namespace Ferretto.Common.EF.Configurations
             builder.Property(i => i.Priority)
                 .HasDefaultValue(1);
 
-            builder.Property(i => i.Status).IsRequired()
-                .HasColumnType("char(1)")
-                .HasConversion(x => (char)x, x => (ItemListStatus)Enum.ToObject(typeof(ItemListStatus), x));
-
             builder.Property(i => i.ItemListType).IsRequired()
                  .HasColumnType("char(1)")
                  .HasConversion(x => (char)x, x => (ItemListType)Enum.ToObject(typeof(ItemListType), x));

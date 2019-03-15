@@ -18,6 +18,8 @@
 
         HorizontalHoming,
 
+        VerticalHoming,
+
         AddMission,
 
         CreateMission,

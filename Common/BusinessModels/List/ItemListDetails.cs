@@ -214,5 +214,35 @@ namespace Ferretto.Common.BusinessModels
         }
 
         #endregion
+
+        #region Indexers
+
+        public override string this[string columnName]
+        {
+            get
+            {
+                var baseError = base[columnName];
+
+                if (!string.IsNullOrEmpty(baseError))
+                {
+                    return baseError;
+                }
+
+                switch (columnName)
+                {
+                    case nameof(this.Priority):
+                        if (this.priority < 1)
+                        {
+                            return string.Format(Common.Resources.Errors.PropertyMustBeStriclyPositive, nameof(this.Priority));
+                        }
+
+                        break;
+                }
+
+                return null;
+            }
+        }
+
+        #endregion
     }
 }

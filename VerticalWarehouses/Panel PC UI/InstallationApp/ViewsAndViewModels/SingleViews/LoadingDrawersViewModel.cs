@@ -9,7 +9,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class LoadingDrawersViewModel : BindableBase, IViewModel, ILoadingDrawersViewModel
+    public class LoadingDrawersViewModel : BindableBase, ILoadingDrawersViewModel
     {
         #region Methods
 
@@ -29,6 +29,5 @@ namespace Ferretto.VW.InstallationApp
         }
 
         #endregion
-
     }
 }

@@ -7,7 +7,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class ResolutionCalibrationVerticalAxisViewModel : BindableBase, IViewModel, IResolutionCalibrationVerticalAxisViewModel, IViewModelRequiresContainer
+    public class ResolutionCalibrationVerticalAxisViewModel : BindableBase, IResolutionCalibrationVerticalAxisViewModel, IViewModelRequiresContainer
     {
         #region Fields
 

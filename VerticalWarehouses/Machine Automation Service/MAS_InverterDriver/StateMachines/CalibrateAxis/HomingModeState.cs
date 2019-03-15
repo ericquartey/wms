@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
@@ -11,7 +12,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         private readonly Axis axisToCalibrate;
 
-        private readonly short parameterValue;
+        private readonly ushort parameterValue;
 
         #endregion
 
@@ -19,7 +20,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         public HomingModeState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate)
         {
-            Console.WriteLine("HomingModeState");
+            Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HomingModeState:Ctor");
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
 
@@ -34,16 +35,22 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         #region Methods
 
-        public override void ProcessMessage(InverterMessage message)
+        public override bool ProcessMessage(InverterMessage message)
         {
-            Console.WriteLine("HomingModeState-ProcessMessage");
+            bool returnValue = false;
+
+            //Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HomingModeState:ProcessMessage");
             if (message.IsError)
+            {
                 this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate));
+            }
 
             if (message.IsWriteMessage && message.ParameterId == InverterParameterId.SetOperatingModeParam)
-                if (message.ShortPayload == this.parameterValue)
-                    this.parentStateMachine.ChangeState(
-                        new ShutdownState(this.parentStateMachine, this.axisToCalibrate));
+            {
+                this.parentStateMachine.ChangeState(new ShutdownState(this.parentStateMachine, this.axisToCalibrate));
+                returnValue = true;
+            }
+            return returnValue;
         }
 
         #endregion

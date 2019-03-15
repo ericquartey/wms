@@ -1,4 +1,6 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
+﻿using System;
+using System.Threading;
+using Ferretto.VW.Common_Utils.Enumerations;
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 {
@@ -14,6 +16,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         public SwitchOnMotorState(Axis axisToSwitchOn, IIoStateMachine parentStateMachine)
         {
+            Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - SwitchOnMotorState:Ctor");
             this.axisToSwitchOn = axisToSwitchOn;
             this.parentStateMachine = parentStateMachine;
 

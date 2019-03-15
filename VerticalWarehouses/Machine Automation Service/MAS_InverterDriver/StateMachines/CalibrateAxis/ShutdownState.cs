@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
@@ -8,6 +9,8 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
     public class ShutdownState : InverterStateBase
     {
         #region Fields
+
+        private const ushort StatusWordValue = 0x0031;
 
         private readonly Axis axisToCalibrate;
 
@@ -19,7 +22,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         public ShutdownState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate)
         {
-            Console.WriteLine("ShutdownState");
+            Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - ShutdownState:Ctor");
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
 
@@ -44,16 +47,26 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         #region Methods
 
-        public override void ProcessMessage(InverterMessage message)
+        public override bool ProcessMessage(InverterMessage message)
         {
-            Console.WriteLine("ShutdownState-ProcessMessage");
+            bool returnValue = false;
+
+            //Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - ShutdownState:ProcessMessage");
             if (message.IsError)
+            {
                 this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate));
+            }
 
             if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
-                if (message.ShortPayload == this.parameterValue)
-                    this.parentStateMachine.ChangeState(
-                        new SwitchOnState(this.parentStateMachine, this.axisToCalibrate));
+            {
+                if ((message.UShortPayload & StatusWordValue) == StatusWordValue)
+                {
+                    this.parentStateMachine.ChangeState(new SwitchOnState(this.parentStateMachine, this.axisToCalibrate));
+                    returnValue = true;
+                }
+            }
+
+            return returnValue;
         }
 
         #endregion

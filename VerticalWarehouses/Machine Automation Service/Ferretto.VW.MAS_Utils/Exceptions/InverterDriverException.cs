@@ -21,7 +21,11 @@ namespace Ferretto.VW.Common_Utils.Exceptions
 
         NetworkStreamReadFailure,
 
-        NetworkStreamWriteFailure
+        NetworkStreamWriteFailure,
+
+        RequestReadOnWriteOnlyParameter,
+
+        RequerstWriteOnReadOnlyParameter
     }
 
     public class InverterDriverException : Exception

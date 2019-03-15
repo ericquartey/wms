@@ -1,14 +1,13 @@
 ﻿using System.Configuration;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessProviders;
-using Ferretto.Common.Modules.BLL.Services;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 
-namespace Ferretto.Common.Modules.BLL
+namespace Ferretto.WMS.App.Modules.BLL
 {
-    [Module(ModuleName = nameof(Utils.Modules.BusinessLogic))]
+    [Module(ModuleName = nameof(Common.Utils.Modules.BusinessLogic))]
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Major Code Smell",
         "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",

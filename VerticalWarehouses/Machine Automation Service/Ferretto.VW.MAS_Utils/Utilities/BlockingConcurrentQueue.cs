@@ -29,6 +29,12 @@ namespace Ferretto.VW.Common_Utils.Utilities
 
         #region Methods
 
+        public bool Dequeue(out T result)
+        {
+            this.dataReady?.Reset();
+            return base.TryDequeue(out result);
+        }
+
         public new void Enqueue(T item)
         {
             if (item != null)
@@ -40,10 +46,17 @@ namespace Ferretto.VW.Common_Utils.Utilities
 
         public bool TryDequeue(int timeout, CancellationToken cancellationToken, out T result)
         {
-            if (this.dataReady?.Wait(timeout, cancellationToken) ?? false)
+            try
             {
-                this.dataReady.Reset();
-                return base.TryDequeue(out result);
+                if (this.dataReady?.Wait(timeout, cancellationToken) ?? false)
+                {
+                    this.dataReady.Reset();
+                    return base.TryDequeue(out result);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                //INFO Just exit as timeout expiration eve if the operation was actually cancelled
             }
 
             result = default(T);

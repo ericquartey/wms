@@ -130,7 +130,7 @@
                                                 <ctrls:WmsIcon Width="18"
                                                                Height="18"
                                                                ColorizeBrush="White"
-                                                               SymbolName="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsStatusBar}}, Path=DataContext.IconName, Mode=OneWay}" />
+                                                               SymbolName="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsStatusBar}}, Path=DataContext.MessageIconName, Mode=OneWay}" />
                                                 <TextBlock Margin="5,0,0,0"
                                                            VerticalAlignment="Center"
                                                            FontFamily="{DynamicResource FontSmall}"
@@ -151,7 +151,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Top"
                                                            ColorizeBrush="White"
-                                                           SymbolName="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsStatusBar}}, Path=DataContext.SchedulerStatus, Mode=OneWay}" />
+                                                           SymbolName="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsStatusBar}}, Path=DataContext.SchedulerStatusIconName, Mode=OneWay}" />
                                         </DataTemplate>
                                     </dxb:BarButtonItem.ContentTemplate>
                                 </dxb:BarButtonItem>

@@ -10,6 +10,8 @@
 
         OperationStop,
 
-        OperationRunning
+        OperationStart,
+
+        OperationExecuting,
     }
 }

@@ -5,6 +5,7 @@ using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
+using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -19,15 +20,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         IReadAllPagedController<ItemListRow>,
         IReadSingleController<ItemListRowDetails, int>,
         IUpdateController<ItemListRowDetails>,
-        IGetUniqueValuesController
+        IGetUniqueValuesController,
+        IDeleteController<int>
     {
         #region Fields
 
         private readonly IItemListRowProvider itemListRowProvider;
 
-        private readonly Scheduler.Core.Interfaces.IItemListRowSchedulerProvider itemListRowSchedulerProvider;
-
         private readonly ILogger logger;
+
+        private readonly ISchedulerService schedulerService;
 
         #endregion
 
@@ -35,11 +37,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public ItemListRowsController(
             ILogger<ItemListRowsController> logger,
-            Scheduler.Core.Interfaces.IItemListRowSchedulerProvider itemListRowSchedulerProvider,
+            ISchedulerService schedulerService,
             IItemListRowProvider itemListRowProvider)
         {
             this.logger = logger;
-            this.itemListRowSchedulerProvider = itemListRowSchedulerProvider;
+            this.schedulerService = schedulerService;
             this.itemListRowProvider = itemListRowProvider;
         }
 
@@ -62,6 +64,30 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Created(this.Request.GetUri(), result.Entity);
         }
 
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(422)]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteAsync(int id)
+        {
+            var result = await this.itemListRowProvider.DeleteAsync(id);
+
+            if (!result.Success)
+            {
+                if (result is UnprocessableEntityOperationResult<ItemListRowDetails>)
+                {
+                    return this.UnprocessableEntity();
+                }
+                else
+                {
+                    return this.NotFound();
+                }
+            }
+
+            return this.Ok();
+        }
+
         [HttpPost("execute")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
@@ -73,7 +99,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.BadRequest();
             }
 
-            var acceptedRequests = await this.itemListRowSchedulerProvider.PrepareForExecutionAsync(request);
+            var acceptedRequests = await this.schedulerService.ExecuteListRowAsync(request);
             if (acceptedRequests == null)
             {
                 this.logger.LogWarning($"Request of execution for list row (id={request.ListRowId}) could not be processed.");
