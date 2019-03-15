@@ -34,13 +34,37 @@ namespace Ferretto.VW.MAS_DataLayer
                     }
 
                 // INFO General info variables
-                case ConfigurationValueEnum.AlfaNum1:
-                case ConfigurationValueEnum.AlfaNum2:
-                case ConfigurationValueEnum.AlfaNum3:
-                case ConfigurationValueEnum.Laser1:
-                case ConfigurationValueEnum.Laser2:
-                case ConfigurationValueEnum.Laser3:
+                case ConfigurationValueEnum.Alfa_Num_1:
+                case ConfigurationValueEnum.Alfa_Num_2:
+                case ConfigurationValueEnum.Alfa_Num_3:
+                case ConfigurationValueEnum.Laser_1:
+                case ConfigurationValueEnum.Laser_2:
+                case ConfigurationValueEnum.Laser_3:
                 case ConfigurationValueEnum.WMS_ON:
+                // INFO Installation Info
+                case ConfigurationValueEnum.Belt_Burnishing:
+                case ConfigurationValueEnum.Machine_Ok:
+                case ConfigurationValueEnum.Shutter_1_Ok:
+                case ConfigurationValueEnum.Shutter_2_Ok:
+                case ConfigurationValueEnum.Shutter_3_Ok:
+                case ConfigurationValueEnum.Laser_1_Ok:
+                case ConfigurationValueEnum.Laser_2_Ok:
+                case ConfigurationValueEnum.Laser_3_Ok:
+                case ConfigurationValueEnum.Shape_1_Ok:
+                case ConfigurationValueEnum.Shape_2_Ok:
+                case ConfigurationValueEnum.Shape_3_Ok:
+                case ConfigurationValueEnum.Weight_Check:
+                case ConfigurationValueEnum.Origin_Y_Axis:
+                case ConfigurationValueEnum.Origin_Z_Axis:
+                case ConfigurationValueEnum.Check_Y_Offset:
+                case ConfigurationValueEnum.Cells_Check:
+                case ConfigurationValueEnum.Check_Shelf_Panel:
+                case ConfigurationValueEnum.Check_Bay_1:
+                case ConfigurationValueEnum.Check_Bay_2:
+                case ConfigurationValueEnum.Check_Bay_3:
+                case ConfigurationValueEnum.Load_First_Drawer:
+                case ConfigurationValueEnum.Load_Empty_Drawers:
+                case ConfigurationValueEnum.Set_Y_Resolution:
                     {
                         returnValue = DataTypeEnum.booleanType;
                         break;
@@ -50,14 +74,15 @@ namespace Ferretto.VW.MAS_DataLayer
                 case ConfigurationValueEnum.IoPort:
                 // INFO General info variables
                 case ConfigurationValueEnum.Bays_Quantity:
-                case ConfigurationValueEnum.GeneralInfoId:
                 case ConfigurationValueEnum.Machine_Number_In_Area:
-                case ConfigurationValueEnum.Type_Bay1:
-                case ConfigurationValueEnum.Type_Bay2:
-                case ConfigurationValueEnum.Type_Bay3:
-                case ConfigurationValueEnum.Type_Shutter1:
-                case ConfigurationValueEnum.Type_Shutter2:
-                case ConfigurationValueEnum.Type_Shutter3:
+                case ConfigurationValueEnum.Type_Bay_1:
+                case ConfigurationValueEnum.Type_Bay_2:
+                case ConfigurationValueEnum.Type_Bay_3:
+                case ConfigurationValueEnum.Type_Shutter_1:
+                case ConfigurationValueEnum.Type_Shutter_2:
+                case ConfigurationValueEnum.Type_Shutter_3:
+                case ConfigurationValueEnum.Drawers:
+                case ConfigurationValueEnum.Carrying_Capacity:
                     {
                         returnValue = DataTypeEnum.integerType;
                         break;
@@ -67,12 +92,18 @@ namespace Ferretto.VW.MAS_DataLayer
                 case ConfigurationValueEnum.resolution:
                 // INFO General info variables
                 case ConfigurationValueEnum.Height:
-                case ConfigurationValueEnum.Height_Bay1:
-                case ConfigurationValueEnum.Height_Bay2:
-                case ConfigurationValueEnum.Height_Bay3:
-                case ConfigurationValueEnum.Position_Bay1:
-                case ConfigurationValueEnum.Position_Bay2:
-                case ConfigurationValueEnum.Position_Bay3:
+                case ConfigurationValueEnum.Height_Bay_1_Position_1:
+                case ConfigurationValueEnum.Height_Bay_1_Position_2:
+                case ConfigurationValueEnum.Height_Bay_2_Position_1:
+                case ConfigurationValueEnum.Height_Bay_2_Position_2:
+                case ConfigurationValueEnum.Height_Bay_3_Position_1:
+                case ConfigurationValueEnum.Height_Bay_3_Position_2:
+                case ConfigurationValueEnum.Bay_1_Position_1:
+                case ConfigurationValueEnum.Bay_1_Position_2:
+                case ConfigurationValueEnum.Bay_2_Position_1:
+                case ConfigurationValueEnum.Bay_2_Position_2:
+                case ConfigurationValueEnum.Bay_3_Position_1:
+                case ConfigurationValueEnum.Bay_3_Position_2:
                     {
                         returnValue = DataTypeEnum.decimalType;
                         break;

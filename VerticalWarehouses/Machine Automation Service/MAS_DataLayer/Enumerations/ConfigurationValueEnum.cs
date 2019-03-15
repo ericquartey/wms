@@ -30,15 +30,18 @@
 
         positioningOverrideTargetDeceleration,
 
+        // INFO General Info parameters
         Address,
 
-        AlfaNum1,
+        Alfa_Num_1,
 
-        AlfaNum2,
+        Alfa_Num_2,
 
-        AlfaNum3,
+        Alfa_Num_3,
 
         Bays_Quantity,
+
+        Carrying_Capacity,
 
         City,
 
@@ -48,23 +51,41 @@
 
         Country,
 
-        GeneralInfoId,
+        Drawers,
 
         Height,
 
-        Height_Bay1,
+        Height_Bay_1_Position_1,
 
-        Height_Bay2,
+        Height_Bay_1_Position_2,
 
-        Height_Bay3,
+        Bay_1_Position_1,
+
+        Bay_1_Position_2,
+
+        Height_Bay_2_Position_1,
+
+        Height_Bay_2_Position_2,
+
+        Bay_2_Position_1,
+
+        Bay_2_Position_2,
+
+        Height_Bay_3_Position_1,
+
+        Height_Bay_3_Position_2,
+
+        Bay_3_Position_1,
+
+        Bay_3_Position_2,
 
         Installation_Date,
 
-        Laser1,
+        Laser_1,
 
-        Laser2,
+        Laser_2,
 
-        Laser3,
+        Laser_3,
 
         Latitude,
 
@@ -74,30 +95,71 @@
 
         Model,
 
-        Order,
-
-        Position_Bay1,
-
-        Position_Bay2,
-
-        Position_Bay3,
+        Order, // INFO Commessa
 
         Province,
 
         Serial,
 
-        Type_Bay1,
+        Type_Bay_1,
 
-        Type_Bay2,
+        Type_Bay_2,
 
-        Type_Bay3,
+        Type_Bay_3,
 
-        Type_Shutter1,
+        Type_Shutter_1,
 
-        Type_Shutter2,
+        Type_Shutter_2,
 
-        Type_Shutter3,
+        Type_Shutter_3,
 
         WMS_ON,
+
+        // INFO Installation Info parameters
+        Belt_Burnishing,
+
+        Machine_Ok,
+
+        Shutter_1_Ok,
+
+        Shutter_2_Ok,
+
+        Shutter_3_Ok,
+
+        Laser_1_Ok,
+
+        Laser_2_Ok,
+
+        Laser_3_Ok,
+
+        Shape_1_Ok,
+
+        Shape_2_Ok,
+
+        Shape_3_Ok,
+
+        Weight_Check,
+
+        Origin_Y_Axis,
+
+        Origin_Z_Axis,
+
+        Check_Y_Offset,
+
+        Cells_Check,
+
+        Check_Shelf_Panel,
+
+        Check_Bay_1, // INFO Controllo baia 1
+
+        Check_Bay_2, // INFO Controllo baia 2
+
+        Check_Bay_3, // INFO Controllo baia 3
+
+        Load_First_Drawer, // INFO The first drawer has passed all the tests
+
+        Load_Empty_Drawers, // INFO All the drawers are loaded
+
+        Set_Y_Resolution,
     }
 }
