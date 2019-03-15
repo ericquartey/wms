@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Utils.Expressions;
@@ -59,6 +60,16 @@ namespace Ferretto.Common.BusinessProviders
                     .Select(i => new Enumeration((int)i, i.ToString())).ToList();
                 itemDetails.ItemCategoryChoices = await this.itemCategoryProvider.GetAllAsync();
             }
+        }
+
+        public async Task<ActionModel> CanDeleteAsync(int id)
+        {
+            var action = await this.itemsDataService.CanDeleteAsync(id);
+            return new ActionModel
+            {
+                IsAllowed = action.IsAllowed,
+                Reason = action.Reason,
+            };
         }
 
         public async Task<IOperationResult<ItemDetails>> CreateAsync(ItemDetails model)
