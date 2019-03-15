@@ -4,7 +4,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Utils.Menu;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Prism.Commands;
 
 namespace Ferretto.Common.Controls

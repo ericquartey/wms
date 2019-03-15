@@ -1,12 +1,12 @@
 using System.Linq;
 using System.Threading.Tasks;
+using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Ferretto.WMS.App.Modules.BLL;
-using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
@@ -89,6 +89,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public override async void LoadRelatedData()
         {
+            if (!this.IsModelIdValid)
+            {
+                return;
+            }
+
             var loadingUnit = await this.loadingUnitsProvider.GetByCellIdAsync(this.Model.Id);
             this.LoadingUnitsDataSource = this.Model != null
                 ? new DataSource<LoadingUnitDetails, int>(() => loadingUnit.AsQueryable<LoadingUnitDetails>())

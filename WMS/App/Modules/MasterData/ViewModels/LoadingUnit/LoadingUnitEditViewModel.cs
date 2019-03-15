@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommonServiceLocator;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
-using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -121,7 +121,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public async void LoadRelatedData()
         {
-            this.CompartmentsDataSource = this.loadingUnit != null
+            this.CompartmentsDataSource = (this.loadingUnit != null && this.loadingUnit.Id != 0)
                 ? await this.compartmentProvider.GetByLoadingUnitIdAsync(this.loadingUnit.Id)
                 : null;
         }
