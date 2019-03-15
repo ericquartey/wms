@@ -151,7 +151,7 @@ namespace MAS_DataLayerUnitTests
             // INFO Arrange - Empty
 
             // INFO Act
-            this.dataLayer.LoadConfigurationValuesInfo((InfoFilesEnum)3);
+            this.dataLayer.LoadConfigurationValuesInfo((InfoFilesEnum)100);
 
             // INFO Assert - Expects exception
         }
