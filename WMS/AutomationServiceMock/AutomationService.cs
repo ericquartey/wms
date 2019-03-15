@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Ferretto.WMS.Scheduler.WebAPI.Contracts;
-using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.AutomationServiceMock
 {
@@ -12,8 +11,6 @@ namespace Ferretto.WMS.AutomationServiceMock
         #region Fields
 
         private readonly IBaysDataService baysDataService;
-
-        private readonly ILogger logger;
 
         private readonly IMissionsDataService missionsDataService;
 
@@ -26,17 +23,15 @@ namespace Ferretto.WMS.AutomationServiceMock
         #region Constructors
 
         public AutomationService(
-            ILogger<AutomationService> logger,
             IWakeupHubClient wakeupHubClient,
             IMissionsDataService missionsDataService,
             IBaysDataService baysDataService)
         {
-            this.logger = logger;
             this.missionsDataService = missionsDataService;
             this.baysDataService = baysDataService;
             this.wakeupHubClient = wakeupHubClient;
 
-            this.wakeupHubClient.WakeupReceived += this.WakeupReceived;
+            this.wakeupHubClient.WakeupReceived += WakeupReceived;
             this.wakeupHubClient.NewMissionReceived += this.NewMissionReceived;
         }
 
@@ -52,7 +47,7 @@ namespace Ferretto.WMS.AutomationServiceMock
             }
             catch (Exception ex)
             {
-                this.logger.LogError($"Unable to complete mission with id={missionId}: {ex.Message}");
+                Console.WriteLine($"Unable to complete mission with id={missionId}: {ex.Message}");
             }
         }
 
@@ -64,11 +59,11 @@ namespace Ferretto.WMS.AutomationServiceMock
             }
             catch (Exception ex)
             {
-                this.logger.LogError($"Unable to execute mission with id={missionId}: {ex.Message}");
+                Console.WriteLine($"Unable to execute mission with id={missionId}: {ex.Message}");
             }
         }
 
-        public async Task<System.Collections.Generic.IEnumerable<Mission>> GetMissionsAsync()
+        public async Task<IEnumerable<Mission>> GetMissionsAsync()
         {
             try
             {
@@ -76,29 +71,34 @@ namespace Ferretto.WMS.AutomationServiceMock
             }
             catch (Exception ex)
             {
-                this.logger.LogError($"Unable to retrieve the list of missions: {ex.Message}");
-                return new List<Mission>();
+                Console.WriteLine($"Unable to retrieve the list of missions: {ex.Message}");
+                return null;
             }
         }
 
         public async Task InitializeAsync()
         {
-            this.logger.LogInformation("Connecting to service hub ...");
+            Console.WriteLine("Connecting to service hub ...");
 
             await this.wakeupHubClient.ConnectAsync();
 
-            this.logger.LogInformation("Automation service initialized.");
+            Console.WriteLine("Automation service initialized.");
         }
 
         public async Task NotifyUserLoginAsync(int bayId)
         {
-            this.logger.LogInformation($"Notifying the scheduler that bay '{bayId}' is operational.");
+            Console.WriteLine($"Notifying the scheduler that bay '{bayId}' is operational.");
             await this.baysDataService.ActivateAsync(bayId);
+        }
+
+        private static void WakeupReceived(object sender, WakeUpEventArgs e)
+        {
+            Console.WriteLine($"Wakeup from Scheduler received.");
         }
 
         private async Task ExecuteMissionAsync(Mission mission)
         {
-            this.logger.LogInformation($"Executing mission '{mission.Type}' on item {mission.ItemId}, quantity {mission.Quantity}");
+            Console.WriteLine($"Executing mission '{mission.Type}' on item {mission.ItemId}, quantity {mission.Quantity}");
 
             // simulate mission execution
             await Task.Delay(1000);
@@ -106,28 +106,23 @@ namespace Ferretto.WMS.AutomationServiceMock
             var success = this.random.NextDouble() > 0.5;
             if (success)
             {
-                this.logger.LogInformation($"Mission completed.");
+                Console.WriteLine($"Mission completed.");
                 await this.missionsDataService.CompleteAsync(mission.Id);
             }
             else
             {
-                this.logger.LogWarning($"Mission failed.");
+                Console.WriteLine($"Mission failed.");
                 await this.missionsDataService.AbortAsync(mission.Id);
             }
         }
 
         private async void NewMissionReceived(object sender, MissionEventArgs e)
         {
-            this.logger.LogInformation($"New mission received from Scheduler id={e.Mission.Id}.");
+            Console.WriteLine($"New mission received from Scheduler id={e.Mission.Id}.");
 
             // TODO CHECK
             // Cannot convert from "Ferretto.WMS.Scheduler.Core.Mission" => "Ferretto.WMS.Scheduler.WebAPI.Contracts.Mission"
             await this.ExecuteMissionAsync(e.Mission);
-        }
-
-        private void WakeupReceived(object sender, WakeUpEventArgs e)
-        {
-            this.logger.LogInformation($"Wakeup from Scheduler received.");
         }
 
         #endregion

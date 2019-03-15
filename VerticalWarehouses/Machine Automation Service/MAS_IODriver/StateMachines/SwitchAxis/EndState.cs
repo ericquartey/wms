@@ -1,4 +1,6 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
+﻿using System;
+using System.Threading;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
 
@@ -10,6 +12,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         public EndState(Axis axisToSwitchOn, IIoStateMachine parentStateMachine)
         {
+            Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - MAS_IODriver:EndState:Ctor");
             this.parentStateMachine = parentStateMachine;
 
             SwitchAxisMessageData messageData = new SwitchAxisMessageData(axisToSwitchOn);

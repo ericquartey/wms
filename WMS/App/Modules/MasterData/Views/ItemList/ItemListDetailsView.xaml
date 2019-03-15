@@ -17,6 +17,7 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              EnableHistoryView="True"
+             SubTitleVisibility="{Binding Model, Converter={StaticResource RTVC}}"
              mc:Ignorable="d">
     <wms:WmsView.Resources>
         <wms:StringFormatConverter x:Key="SFC" />
@@ -62,8 +63,6 @@
         </MultiBinding>
     </wms:WmsView.SubTitle>
 
-
-
     <Grid HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch"
           IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
@@ -78,6 +77,12 @@
             <ColumnDefinition Width="Auto"
                               MaxWidth="400" />
         </Grid.ColumnDefinitions>
+
+        <dxt:WaitIndicator Grid.Row="1"
+                           VerticalAlignment="Center"
+                           Panel.ZIndex="1"
+                           Content="{x:Static res:DesktopApp.Loading}"
+                           DeferedVisibility="{Binding IsBusy}" />
 
         <wms:ActionBar Margin="10,10,10,0"
                        HorizontalAlignment="Right"
@@ -111,7 +116,8 @@
         <ScrollViewer Grid.Row="1"
                       Margin="10,0,10,10"
                       Focusable="False"
-                      IsTabStop="True">
+                      IsTabStop="True"
+                      Visibility="{Binding Model, Converter={StaticResource RTVC}}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />

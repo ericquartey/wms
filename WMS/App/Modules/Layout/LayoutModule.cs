@@ -1,5 +1,6 @@
 ﻿using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Providers;
+using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
@@ -9,6 +10,10 @@ using Prism.Regions;
 
 namespace Ferretto.WMS.Modules.Layout
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Major Code Smell",
+        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
+        Justification = "This class associate all Views to related ViewModels")]
     [Module(ModuleName = nameof(Common.Utils.Modules.Layout), OnDemand = true)]
     [ModuleDependency(nameof(Common.Utils.Modules.BusinessLogic))]
     public class LayoutModule : IModule
@@ -47,14 +52,15 @@ namespace Ferretto.WMS.Modules.Layout
             this.Container.RegisterType<IInputService, InputService>(new ContainerControlledLifetimeManager());
             this.Container.RegisterType<IDialogService, DialogService>(new ContainerControlledLifetimeManager());
             this.Container.RegisterType<IHistoryViewService, HistoryViewService>(new ContainerControlledLifetimeManager());
-            this.Container.RegisterType<INotificationServiceClient, NotificationServiceClient>(new ContainerControlledLifetimeManager());
+            this.Container.RegisterType<INotificationService, NotificationService>(new ContainerControlledLifetimeManager());
+            this.Container.RegisterType<StatusBarViewModel, StatusBarViewModel>();
 
             var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
             navigationService.Register<LayoutView, LayoutViewModel>();
             navigationService.Register<MenuView, MenuViewModel>();
             navigationService.Register<LoginView, LoginViewModel>();
 
-            var notificationService = ServiceLocator.Current.GetInstance<INotificationServiceClient>();
+            var notificationService = ServiceLocator.Current.GetInstance<INotificationService>();
             notificationService.StartAsync().ConfigureAwait(true);
             var inputService = ServiceLocator.Current.GetInstance<IInputService>();
             inputService.Start();

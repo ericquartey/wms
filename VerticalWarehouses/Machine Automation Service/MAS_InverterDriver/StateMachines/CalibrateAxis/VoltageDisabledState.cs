@@ -34,7 +34,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
                     break;
 
                 case Axis.Vertical:
-                    this.parameterValue = 0;
+                    this.parameterValue = 0x0000;
                     break;
             }
 
@@ -51,7 +51,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         {
             bool returnValue = false;
 
-            Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - VoltageDisabledState:ProcessMessage");
+            //Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - VoltageDisabledState:ProcessMessage");
             if (message.IsError)
             {
                 this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate));

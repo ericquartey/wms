@@ -4,17 +4,13 @@ using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
 using Prism.Events;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Interfaces;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
@@ -47,7 +43,7 @@ namespace Ferretto.VW.MAS_AutomationService
             this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
             this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
 
-            this.commadReceiveTask = new Task(() => CommandReceiveTaskFunction());
+            this.commadReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
 
             this.InitializeMethodSubscription();
         }

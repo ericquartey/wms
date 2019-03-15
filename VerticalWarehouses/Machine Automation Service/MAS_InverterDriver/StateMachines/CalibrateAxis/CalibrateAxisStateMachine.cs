@@ -2,6 +2,7 @@
 using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
+using Prism.Events;
 
 namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 {
@@ -19,10 +20,11 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         #region Constructors
 
-        public CalibrateAxisStateMachine(Axis axisToCalibrate, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue)
+        public CalibrateAxisStateMachine(Axis axisToCalibrate, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator)
         {
             this.axisToCalibrate = axisToCalibrate;
             this.inverterCommandQueue = inverterCommandQueue;
+            this.eventAggregator = eventAggregator;
         }
 
         #endregion
