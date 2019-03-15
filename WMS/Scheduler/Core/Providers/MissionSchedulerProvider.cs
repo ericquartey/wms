@@ -107,7 +107,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     switch (request.Type)
                     {
                         case OperationType.Withdrawal:
-                            missions = await this.CreateMissionsFromRequestAsync(request);
+                            missions = await this.CreateWithdrawalMissionsAsync(request);
                             break;
 
                         case OperationType.Insertion:
@@ -262,7 +262,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             return await this.UpdateAsync(mission);
         }
 
-        private async Task<IEnumerable<Mission>> CreateMissionsFromRequestAsync(SchedulerRequest request)
+        private async Task<IEnumerable<Mission>> CreateWithdrawalMissionsAsync(SchedulerRequest request)
         {
             var item = await this.itemProvider.GetByIdAsync(request.ItemId);
 
