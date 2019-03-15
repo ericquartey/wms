@@ -16,6 +16,15 @@ namespace Ferretto.WMS.App
 
         #endregion
 
+        #region Constructors
+
+        public App()
+        {
+            System.AppDomain.CurrentDomain.UnhandledException += this.CurrentDomain_UnhandledException;
+        }
+
+        #endregion
+
         #region Methods
 
         protected override void OnInitialized()
@@ -51,6 +60,11 @@ namespace Ferretto.WMS.App
             base.OnStartup(e);
         }
 
+        private void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
+        {
+            this.logger.Error(e.ExceptionObject as System.Exception, "An unhandled exception was thrown.");
+        }
+
         private void SetLanguage()
         {
             var defaultLanguage = ConfigurationManager.AppSettings["DefaultLanguage"];
@@ -61,8 +75,10 @@ namespace Ferretto.WMS.App
                 this.logger.Info(
                     $"Overriding user's UI language '{System.Globalization.CultureInfo.CurrentUICulture.Name}' with '{defaultLanguage}' as specified in configuration.");
 
-                System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(defaultLanguage);
-                System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(defaultLanguage);
+                System.Globalization.CultureInfo.CurrentUICulture =
+                    System.Globalization.CultureInfo.GetCultureInfo(defaultLanguage);
+                System.Globalization.CultureInfo.CurrentCulture =
+                    System.Globalization.CultureInfo.GetCultureInfo(defaultLanguage);
             }
         }
 
