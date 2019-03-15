@@ -2,6 +2,7 @@
 
 namespace Ferretto.Common.EF.Migrations
 {
+    [System.CodeDom.Compiler.GeneratedCode("EntityFramework", "v2.1")]
     public partial class Remove_Column_AreaID_From_ItemList : Migration
     {
         #region Methods

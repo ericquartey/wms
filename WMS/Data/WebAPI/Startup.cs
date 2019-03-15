@@ -94,12 +94,12 @@ namespace Ferretto.WMS.Data.WebAPI
                 });
             }
 
-            var healthHubEndpoint = this.Configuration["Hubs:Health"];
-            if (string.IsNullOrWhiteSpace(healthHubEndpoint) == false)
+            var schedulerHubEndpoint = this.Configuration["Hubs:Scheduler"];
+            if (string.IsNullOrWhiteSpace(schedulerHubEndpoint) == false)
             {
                 app.UseSignalR(routes =>
                 {
-                    routes.MapHub<HealthHub>($"/{healthHubEndpoint}");
+                    routes.MapHub<SchedulerHub>($"/{schedulerHubEndpoint}");
                 });
             }
 

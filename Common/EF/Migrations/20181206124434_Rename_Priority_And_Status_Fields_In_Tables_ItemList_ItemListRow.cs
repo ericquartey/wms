@@ -2,6 +2,7 @@
 
 namespace Ferretto.Common.EF.Migrations
 {
+    [System.CodeDom.Compiler.GeneratedCode("EntityFramework", "v2.1")]
     public partial class Rename_Priority_And_Status_Fields_In_Tables_ItemList_ItemListRow : Migration
     {
         #region Methods

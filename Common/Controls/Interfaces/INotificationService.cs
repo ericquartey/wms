@@ -2,8 +2,14 @@
 
 namespace Ferretto.Common.Controls.Interfaces
 {
-    public interface INotificationServiceClient
+    public interface INotificationService
     {
+        #region Properties
+
+        bool IsServiceHubConnected { get; }
+
+        #endregion
+
         #region Methods
 
         Task EndAsync();

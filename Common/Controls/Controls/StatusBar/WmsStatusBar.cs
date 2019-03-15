@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using CommonServiceLocator;
 using DevExpress.Xpf.Bars;
 
 namespace Ferretto.Common.Controls
@@ -10,7 +11,7 @@ namespace Ferretto.Common.Controls
         public WmsStatusBar()
         {
             this.AllowCustomizationMenu = false;
-            this.DataContext = new StatusBarViewModel();
+            this.DataContext = ServiceLocator.Current.GetInstance<StatusBarViewModel>();
         }
 
         #endregion

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.Common.EF.Migrations
 {
+    [System.CodeDom.Compiler.GeneratedCode("EntityFramework", "v2.1")]
     [DbContext(typeof(DatabaseContext))]
     partial class DatabaseContextModelSnapshot : ModelSnapshot
     {

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Ferretto.WMS.Scheduler.WebAPI.Contracts;
@@ -87,14 +89,10 @@ namespace Ferretto.WMS.AutomationServiceMock
                     break;
 
                 case UserSelection.ListMissions:
-                    Console.WriteLine("Available missions:");
-                    Console.WriteLine($"{nameof(Mission.Id), 3}, {nameof(Mission.Status), 10}, {nameof(Mission.ItemDescription), 20}, {nameof(Mission.RequiredQuantity), 3}");
 
                     var missions = await automationService.GetMissionsAsync();
-                    foreach (var mission in missions)
-                    {
-                        Console.WriteLine($"{mission.Id, 3}, {mission.Status, 10}, {mission.ItemDescription,  20}, {mission.RequiredQuantity, 3}");
-                    }
+
+                    PrintMissionsTable(missions);
 
                     break;
 
@@ -117,10 +115,25 @@ namespace Ferretto.WMS.AutomationServiceMock
             return exitRequested;
         }
 
+        private static void PrintMissionsTable(IEnumerable<Mission> missions)
+        {
+            Console.WriteLine("Available missions (newer first):");
+            Console.WriteLine($"|{nameof(Mission.Id), 3}| {nameof(Mission.Status), -10}| {nameof(Mission.ItemDescription), -40}| {nameof(Mission.RequiredQuantity)} |");
+            Console.WriteLine($"|---|-----------|-----------------------------------------|------------------|");
+
+            foreach (var mission in missions.OrderByDescending(m => m.CreationDate))
+            {
+                var trimmedDescription = mission.ItemDescription.Substring(0, Math.Min(40, mission.ItemDescription.Length));
+                Console.WriteLine(
+                    $"|{mission.Id, 3}| {mission.Status, -10}| {trimmedDescription, -40}| {mission.RequiredQuantity, 16} |");
+            }
+
+            Console.WriteLine($"|___|___________|_________________________________________|__________________|");
+        }
+
         private static int GetMissionId()
         {
-            Console.WriteLine("Insert mission id: ");
-            Console.Write("> ");
+            Console.Write("Insert mission id: ");
             var missionIdString = Console.ReadLine();
 
             if (int.TryParse(missionIdString, out var missionId))
@@ -129,7 +142,7 @@ namespace Ferretto.WMS.AutomationServiceMock
             }
             else
             {
-                Console.WriteLine("Unable to parse mission id");
+                Console.WriteLine("Unable to parse mission id.");
             }
 
             return -1;
@@ -141,13 +154,13 @@ namespace Ferretto.WMS.AutomationServiceMock
             {
                 Console.WriteLine("VertiMAG Panel PC");
                 Console.WriteLine("-----------------");
-                Console.WriteLine();
 
                 var automationService = BuildConfiguration(args);
 
                 var exitRequested = false;
                 while (exitRequested == false)
                 {
+                    Console.WriteLine();
                     Console.WriteLine("Select option: ");
                     Console.WriteLine($"{(int)UserSelection.Login} - Login to PPC");
                     Console.WriteLine($"{(int)UserSelection.ListMissions} - List missions");

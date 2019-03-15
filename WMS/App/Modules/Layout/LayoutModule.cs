@@ -1,4 +1,4 @@
-﻿using CommonServiceLocator;
+using CommonServiceLocator;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Prism.Ioc;
@@ -8,11 +8,13 @@ using Unity;
 
 namespace Ferretto.WMS.Modules.Layout
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Major Code Smell",
+        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
+        Justification = "This class associate all Views to related ViewModels")]
     [Module(ModuleName = nameof(Common.Utils.Modules.Layout), OnDemand = true)]
     [ModuleDependency(nameof(Common.Utils.Modules.BusinessLogic))]
-#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     public class LayoutModule : IModule
-#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         #region Constructors
 
@@ -36,7 +38,7 @@ namespace Ferretto.WMS.Modules.Layout
 
         public void OnInitialized(IContainerProvider containerProvider)
         {
-            var notificationService = ServiceLocator.Current.GetInstance<INotificationServiceClient>();
+            var notificationService = ServiceLocator.Current.GetInstance<INotificationService>();
             notificationService.StartAsync().ConfigureAwait(true);
             var inputService = ServiceLocator.Current.GetInstance<IInputService>();
             inputService.Start();

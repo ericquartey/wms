@@ -4,6 +4,7 @@ namespace Ferretto.Common.EF.Migrations
 {
     public partial class RemoveRequiredToCellPairingInLoadingUnit : Migration
     {
+        [System.CodeDom.Compiler.GeneratedCode("EntityFramework", "v2.1")]
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<bool>(

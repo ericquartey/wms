@@ -8,6 +8,7 @@ using DevExpress.Xpf.Docking;
 using DevExpress.Xpf.Prism;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Providers;
+using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Prism;
@@ -40,8 +41,10 @@ namespace Ferretto.WMS.App
             containerRegistry.RegisterInstance<IDialogService>(dialogService);
             var histViewService = container.Resolve<HistoryViewService>();
             containerRegistry.RegisterInstance<IHistoryViewService>(histViewService);
-            var notificationServiceClient = container.Resolve<NotificationServiceClient>();
-            containerRegistry.RegisterInstance<INotificationServiceClient>(notificationServiceClient);
+            var notificationService = container.Resolve<NotificationService>();
+            containerRegistry.RegisterInstance<INotificationService>(notificationService);
+            var statusBarViewModel = container.Resolve<StatusBarViewModel>();
+            containerRegistry.RegisterInstance(statusBarViewModel);
         }
 
         public static void RegisterAdapterMappings(RegionAdapterMappings regionAdapterMappings, IContainerProvider container)
