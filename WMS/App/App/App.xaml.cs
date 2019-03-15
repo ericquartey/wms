@@ -22,6 +22,8 @@ namespace Ferretto.WMS.App
         {
             try
             {
+                this.SetLanguage();
+
                 SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingLogin);
                 SplashScreenService.Hide();
 
@@ -36,8 +38,6 @@ namespace Ferretto.WMS.App
                 var versionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
 
                 this.logger.Info($"Starting application, version '{versionInfo.ProductVersion}'.");
-
-                this.SetLanguage();
             }
             catch (System.Exception ex)
             {
