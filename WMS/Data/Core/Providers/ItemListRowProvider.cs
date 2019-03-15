@@ -52,12 +52,18 @@ namespace Ferretto.WMS.Data.Core.Providers
                 entity.Add($"{Common.Resources.BusinessObjects.ItemListStatus} [{ItemListRowStatus.Waiting}]");
             }
 
+            string reason = null;
+            if (entity.Any())
+            {
+                reason = string.Format(
+                        Common.Resources.Errors.NotPossibleExecuteOperation,
+                        string.Join(", ", entity.ToArray()));
+            }
+
             return new ActionModel
             {
                 IsAllowed = !entity.Any(),
-                Reason = string.Format(
-                        Common.Resources.Errors.NotPossibleExecuteOperation,
-                        string.Join(", ", entity.ToArray()))
+                Reason = reason,
             };
         }
 

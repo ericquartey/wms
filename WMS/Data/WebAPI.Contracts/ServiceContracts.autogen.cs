@@ -1807,9 +1807,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("dispatchedQuantity", Required = Newtonsoft.Json.Required.Always)]
         public int DispatchedQuantity { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("hasSchedulerRequestAssociated", Required = Newtonsoft.Json.Required.Always)]
-        public bool HasSchedulerRequestAssociated { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("itemDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ItemDescription { get; set; }
     
@@ -1945,9 +1942,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     
         [Newtonsoft.Json.JsonProperty("dispatchedQuantity", Required = Newtonsoft.Json.Required.Always)]
         public int DispatchedQuantity { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("hasSchedulerRequestAssociated", Required = Newtonsoft.Json.Required.Always)]
-        public bool HasSchedulerRequestAssociated { get; set; }
     
         [Newtonsoft.Json.JsonProperty("itemDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ItemDescription { get; set; }

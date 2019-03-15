@@ -73,8 +73,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (entity.Any())
             {
                 reason = string.Format(
-                                        Common.Resources.Errors.NotPossibleExecuteOperation,
-                                        string.Join(", ", entity.ToArray()));
+                     Common.Resources.Errors.NotPossibleExecuteOperation,
+                     string.Join(", ", entity.ToArray()));
             }
 
             return new ActionModel
