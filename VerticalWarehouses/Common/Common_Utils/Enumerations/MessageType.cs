@@ -52,6 +52,8 @@
 
         Movement,
 
-        StopAction
+        StopAction,
+
+        UpDown
     }
 }
