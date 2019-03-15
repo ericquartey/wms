@@ -170,7 +170,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool CanExecuteDeleteCommand()
         {
-            return this.selectedItemListRow?.CanDelete == true;
+            return this.selectedItemListRow != null;
         }
 
         private bool CanExecuteListCommand()
@@ -188,15 +188,7 @@ namespace Ferretto.WMS.Modules.MasterData
             return this.selectedItemListRow != null;
         }
 
-        private void ExecuteAddListRowCommand()
-        {
-            this.IsBusy = true;
-
-            // TODO
-            this.IsBusy = false;
-        }
-
-        private async Task ExecuteDeleteCommandAsync()
+        private async Task DeleteItemListRowAsync()
         {
             this.IsBusy = true;
 
@@ -224,6 +216,27 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.IsBusy = false;
+        }
+
+        private void ExecuteAddListRowCommand()
+        {
+            this.IsBusy = true;
+
+            // TODO
+            this.IsBusy = false;
+        }
+
+        private async Task ExecuteDeleteCommandAsync()
+        {
+            var deleteAction = await this.itemListRowProvider.CanDeleteAsync(this.SelectedItemListRow.Id);
+            if (deleteAction.IsAllowed)
+            {
+                await this.DeleteItemListRowAsync();
+            }
+            else
+            {
+                this.ShowErrorDialog(deleteAction);
+            }
         }
 
         private void ExecuteListCommand()

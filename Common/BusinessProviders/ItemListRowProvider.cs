@@ -40,6 +40,16 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
+        public async Task<ActionModel> CanDeleteAsync(int id)
+        {
+            var action = await this.itemListRowsDataService.CanDeleteAsync(id);
+            return new ActionModel
+            {
+                IsAllowed = action.IsAllowed,
+                Reason = action.Reason,
+            };
+        }
+
         public async Task<IOperationResult<ItemListRowDetails>> CreateAsync(ItemListRowDetails model)
         {
             if (model == null)
@@ -139,7 +149,7 @@ namespace Ferretto.Common.BusinessProviders
                     RequiredQuantity = l.RequiredQuantity,
                     RowPriority = l.RowPriority,
                     CreationDate = l.CreationDate,
-                    CanDelete = l.CanDelete,
+                    CanBeExecuted = l.CanBeExecuted,
                 });
         }
 
@@ -182,7 +192,7 @@ namespace Ferretto.Common.BusinessProviders
                 MaterialStatusChoices = materialStatusChoices,
                 PackageTypeChoices = packageTypeChoices,
                 ItemListId = itemListRow.ItemListId,
-                CanDelete = itemListRow.CanDelete,
+                CanBeExecuted = itemListRow.CanBeExecuted,
             };
         }
 
@@ -201,7 +211,7 @@ namespace Ferretto.Common.BusinessProviders
                     MaterialStatusDescription = l.MaterialStatusDescription,
                     CreationDate = l.CreationDate,
                     ItemUnitMeasure = l.ItemUnitMeasure,
-                    CanDelete = l.CanDelete,
+                    CanBeExecuted = l.CanBeExecuted,
                 });
         }
 

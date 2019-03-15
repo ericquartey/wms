@@ -15,6 +15,8 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     {
         #region Methods
 
+        Task<ActionModel> CanDeleteAsync(int id);
+
         Task<IEnumerable<ItemListRow>> GetByItemListIdAsync(int id);
 
         #endregion
