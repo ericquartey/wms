@@ -49,9 +49,6 @@
     <Content Include="Images\*.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Compile Remove="MainWindow.xaml.cs" />
-    <None Remove="MainWindow.xaml" />
-    <Page Remove="MainWindow.xaml" />
     <None Update="App.Production.config">
       <DependentUpon>App.config</DependentUpon>
     </None>
