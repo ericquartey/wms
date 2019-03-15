@@ -1,4 +1,4 @@
-﻿<wms:WmsView x:Class="Ferretto.WMS.Modules.MasterData.LoadingUnitEditView"
+<wms:WmsView x:Class="Ferretto.WMS.Modules.MasterData.LoadingUnitEditView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:businessModels="clr-namespace:Ferretto.Common.BusinessModels;assembly=Ferretto.Common.BusinessModels"
@@ -18,7 +18,7 @@
              IsVisibleBackButton="{Binding IsSidePanelOpen, Converter={StaticResource BNC}}"
              SubTitle="{Binding LoadingUnitDetails.Code, StringFormat={x:Static res:Title.LoadingUnitEditView}}"
              mc:Ignorable="d">
-    <Grid Margin="10,5,0,10">
+    <Grid Margin="10,0,0,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
