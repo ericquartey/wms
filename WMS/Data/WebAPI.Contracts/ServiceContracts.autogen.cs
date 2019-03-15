@@ -283,6 +283,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     public partial interface ICompartmentsDataService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ActionModel> CanDeleteAsync(int id);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<ActionModel> CanDeleteAsync(int id, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<CompartmentDetails> CreateAsync(CompartmentDetails model);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -455,6 +462,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     public partial interface IItemListRowsDataService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ActionModel> CanDeleteAsync(int id);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<ActionModel> CanDeleteAsync(int id, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ItemListRowDetails> CreateAsync(ItemListRowDetails model);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -576,6 +590,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial interface IItemsDataService
     {
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ActionModel> CanDeleteAsync(int id);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<ActionModel> CanDeleteAsync(int id, System.Threading.CancellationToken cancellationToken);
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ItemDetails> CreateAsync(ItemDetails model);
     
@@ -1443,13 +1464,31 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class ActionModel 
+    {
+        [Newtonsoft.Json.JsonProperty("isAllowed", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsAllowed { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("reason", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Reason { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static ActionModel FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ActionModel>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class CompartmentDetails : BaseModelOfInt32
     {
         [Newtonsoft.Json.JsonProperty("allowedItemsCount", Required = Newtonsoft.Json.Required.Always)]
         public int AllowedItemsCount { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("canDelete", Required = Newtonsoft.Json.Required.Always)]
-        public bool CanDelete { get; set; }
     
         [Newtonsoft.Json.JsonProperty("compartmentStatusDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string CompartmentStatusDescription { get; set; }
@@ -1755,9 +1794,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("canBeExecuted", Required = Newtonsoft.Json.Required.Always)]
         public bool CanBeExecuted { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("canDelete", Required = Newtonsoft.Json.Required.Always)]
-        public bool CanDelete { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Code { get; set; }
     
@@ -1899,9 +1935,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     {
         [Newtonsoft.Json.JsonProperty("canBeExecuted", Required = Newtonsoft.Json.Required.Always)]
         public bool CanBeExecuted { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("canDelete", Required = Newtonsoft.Json.Required.Always)]
-        public bool CanDelete { get; set; }
     
         [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Code { get; set; }
@@ -2118,9 +2151,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("averageWeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? AverageWeight { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("canDelete", Required = Newtonsoft.Json.Required.Always)]
-        public bool CanDelete { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Code { get; set; }
     
@@ -2158,9 +2188,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("itemCategoryId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? ItemCategoryId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("itemListRowsCount", Required = Newtonsoft.Json.Required.Always)]
-        public int ItemListRowsCount { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("lastModificationDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? LastModificationDate { get; set; }
     
@@ -2182,9 +2209,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("measureUnitId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string MeasureUnitId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("missionsCount", Required = Newtonsoft.Json.Required.Always)]
-        public int MissionsCount { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("note", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Note { get; set; }
     
@@ -2196,9 +2220,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     
         [Newtonsoft.Json.JsonProperty("reorderQuantity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? ReorderQuantity { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("schedulerRequestsCount", Required = Newtonsoft.Json.Required.Always)]
-        public int SchedulerRequestsCount { get; set; }
     
         [Newtonsoft.Json.JsonProperty("storeTolerance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? StoreTolerance { get; set; }
