@@ -34,11 +34,11 @@
   "Bay_3_Position_2": 0.0,
   "Province": "Provincia di Vicenza",
   "Serial": "Sn. 125658",
-  "Type_Bay1": 1,
-  "Type_Bay2": 2,
-  "Type_Bay3": 0,
-  "Type_Shutter1": 1,
-  "Type_Shutter2": 2,
-  "Type_Shutter3": 0,
+  "Type_Bay_1": 1,
+  "Type_Bay_2": 2,
+  "Type_Bay_3": 0,
+  "Type_Shutter_1": 1,
+  "Type_Shutter_2": 2,
+  "Type_Shutter_3": 0,
   "WMS_ON": true
 }

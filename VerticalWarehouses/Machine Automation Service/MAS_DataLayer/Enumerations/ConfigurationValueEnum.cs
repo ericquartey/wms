@@ -101,17 +101,17 @@
 
         Serial,
 
-        Type_Bay1,
+        Type_Bay_1,
 
-        Type_Bay2,
+        Type_Bay_2,
 
-        Type_Bay3,
+        Type_Bay_3,
 
-        Type_Shutter1,
+        Type_Shutter_1,
 
-        Type_Shutter2,
+        Type_Shutter_2,
 
-        Type_Shutter3,
+        Type_Shutter_3,
 
         WMS_ON,
 

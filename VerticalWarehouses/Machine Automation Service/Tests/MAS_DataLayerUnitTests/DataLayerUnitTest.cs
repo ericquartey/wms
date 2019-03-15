@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Ferretto.VW.Common_Utils;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.MAS_DataLayer;
 using Microsoft.EntityFrameworkCore;
@@ -90,13 +91,13 @@ namespace MAS_DataLayerUnitTests
         public void GetIntegerConfigurationValue()
         {
             var setTypeBay1 = 1;
-            var integerValue = new ConfigurationValue { VarName = ConfigurationValueEnum.Type_Bay1, VarType = DataTypeEnum.integerType, VarValue = setTypeBay1.ToString() };
+            var integerValue = new ConfigurationValue { VarName = ConfigurationValueEnum.Type_Bay_1, VarType = DataTypeEnum.integerType, VarValue = setTypeBay1.ToString() };
 
             this.context.ConfigurationValues.Add(integerValue);
 
             this.context.SaveChanges();
 
-            Assert.AreEqual(setTypeBay1, this.dataLayer.GetIntegerConfigurationValue(ConfigurationValueEnum.Type_Bay1));
+            Assert.AreEqual(setTypeBay1, this.dataLayer.GetIntegerConfigurationValue(ConfigurationValueEnum.Type_Bay_1));
         }
 
         [TestMethod]
@@ -132,7 +133,6 @@ namespace MAS_DataLayerUnitTests
         {
             this.dataLayer.LoadConfigurationValuesInfo(InfoFilesEnum.GeneralInfo);
 
-            // TEMP Change the test
             Assert.IsTrue(this.context.ConfigurationValues.Any());
         }
 
@@ -141,8 +141,19 @@ namespace MAS_DataLayerUnitTests
         {
             this.dataLayer.LoadConfigurationValuesInfo(InfoFilesEnum.InstallationInfo);
 
-            // TEMP Change the test
             Assert.IsTrue(this.context.ConfigurationValues.Any());
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InMemoryDataLayerException))]
+        public void TestErrorLoadFilesJson()
+        {
+            // INFO Arrange - Empty
+
+            // INFO Act
+            this.dataLayer.LoadConfigurationValuesInfo((InfoFilesEnum)3);
+
+            // INFO Assert - Expects exception
         }
 
         protected DataLayerContext CreateContext()

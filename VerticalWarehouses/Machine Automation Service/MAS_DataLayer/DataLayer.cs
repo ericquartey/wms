@@ -200,7 +200,6 @@ namespace Ferretto.VW.MAS_DataLayer
                 foreach (var jsonElement in jsonObject)
                 {
                     jsonElementName = (ConfigurationValueEnum)Enum.Parse(typeof(ConfigurationValueEnum), jsonElement.Key);
-
                     jsonElementType = this.ConvertConfigurationValue(jsonElementName);
 
                     switch (jsonElementType)

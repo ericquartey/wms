@@ -75,12 +75,12 @@ namespace Ferretto.VW.MAS_DataLayer
                 // INFO General info variables
                 case ConfigurationValueEnum.Bays_Quantity:
                 case ConfigurationValueEnum.Machine_Number_In_Area:
-                case ConfigurationValueEnum.Type_Bay1:
-                case ConfigurationValueEnum.Type_Bay2:
-                case ConfigurationValueEnum.Type_Bay3:
-                case ConfigurationValueEnum.Type_Shutter1:
-                case ConfigurationValueEnum.Type_Shutter2:
-                case ConfigurationValueEnum.Type_Shutter3:
+                case ConfigurationValueEnum.Type_Bay_1:
+                case ConfigurationValueEnum.Type_Bay_2:
+                case ConfigurationValueEnum.Type_Bay_3:
+                case ConfigurationValueEnum.Type_Shutter_1:
+                case ConfigurationValueEnum.Type_Shutter_2:
+                case ConfigurationValueEnum.Type_Shutter_3:
                 case ConfigurationValueEnum.Drawers:
                 case ConfigurationValueEnum.Carrying_Capacity:
                     {
