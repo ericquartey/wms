@@ -16,6 +16,7 @@
              d:DesignWidth="800"
              EnableHistoryView="True"
              SubTitle="{x:Static res:Title.CellDetailsView}"
+             SubTitleVisibility="{Binding Model, Converter={StaticResource RTVC}}"
              mc:Ignorable="d">
 
     <Grid HorizontalAlignment="Stretch"

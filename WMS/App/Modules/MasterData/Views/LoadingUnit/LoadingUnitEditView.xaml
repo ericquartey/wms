@@ -1,13 +1,11 @@
-<wms:WmsView x:Class="Ferretto.WMS.Modules.MasterData.LoadingUnitEditView"
+﻿<wms:WmsView x:Class="Ferretto.WMS.Modules.MasterData.LoadingUnitEditView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:businessModels="clr-namespace:Ferretto.Common.BusinessModels;assembly=Ferretto.Common.BusinessModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:masterData="clr-namespace:Ferretto.WMS.Modules.MasterData"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
              Title="{x:Static res:Navigation.LoadingUnitEdit}"
@@ -17,6 +15,7 @@
              EnableHistoryView="True"
              IsVisibleBackButton="{Binding IsSidePanelOpen, Converter={StaticResource BNC}}"
              SubTitle="{Binding LoadingUnitDetails.Code, StringFormat={x:Static res:Title.LoadingUnitEditView}}"
+             SubTitleVisibility="{Binding Model, Converter={StaticResource RTVC}}"
              mc:Ignorable="d">
     <Grid Margin="10,0,0,0">
         <Grid.ColumnDefinitions>
