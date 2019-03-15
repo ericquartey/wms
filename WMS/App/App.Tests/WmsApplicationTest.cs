@@ -7,7 +7,6 @@ using Prism.Regions;
 using Prism.Unity;
 using Prism.Unity.Ioc;
 using Prism.Unity.Regions;
-using Unity;
 using Unity.Exceptions;
 
 namespace Ferretto.WMS.App.Tests
