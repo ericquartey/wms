@@ -15,7 +15,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     [ApiController]
     public class LoadingUnitsController :
         ControllerBase,
-        ICreateController<LoadingUnitDetails>,
+        ICreateController<LoadingUnitCreating>,
         IReadAllPagedController<LoadingUnit>,
         IReadSingleController<LoadingUnitDetails, int>,
         IUpdateController<LoadingUnitDetails>,
@@ -43,10 +43,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(201, Type = typeof(LoadingUnitDetails))]
+        [ProducesResponseType(201, Type = typeof(LoadingUnitCreating))]
         [ProducesResponseType(400)]
         [HttpPost]
-        public async Task<ActionResult<LoadingUnitDetails>> CreateAsync(LoadingUnitDetails model)
+        public async Task<ActionResult<LoadingUnitCreating>> CreateAsync(LoadingUnitCreating model)
         {
             var result = await this.loadingUnitProvider.CreateAsync(model);
 
@@ -126,6 +126,22 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var compartments = await this.compartmentProvider.GetByLoadingUnitIdAsync(id);
 
             return this.Ok(compartments);
+        }
+
+        [ProducesResponseType(200, Type = typeof(LoadingUnitSize))]
+        [ProducesResponseType(404)]
+        [HttpGet("{id}/size")]
+        public async Task<ActionResult<LoadingUnitSize>> GetSizeByTypeIdAsync(int id)
+        {
+            var info = await this.loadingUnitProvider.GetSizeByTypeIdAsync(id);
+            if (info != null)
+            {
+                return this.Ok(info);
+            }
+            else
+            {
+                return this.NotFound(info);
+            }
         }
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]

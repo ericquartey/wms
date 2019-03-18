@@ -9,9 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-#if DEBUG
 using NSwag.AspNetCore;
-#endif
 
 namespace Ferretto.WMS.Data.WebAPI
 {
@@ -25,6 +23,11 @@ namespace Ferretto.WMS.Data.WebAPI
 
         public Startup(IConfiguration configuration)
         {
+            if (configuration == null)
+            {
+                throw new System.ArgumentNullException(nameof(configuration));
+            }
+
             this.Configuration = configuration;
         }
 
@@ -91,12 +94,12 @@ namespace Ferretto.WMS.Data.WebAPI
                 });
             }
 
-            var healthHubEndpoint = this.Configuration["Hubs:Health"];
-            if (string.IsNullOrWhiteSpace(healthHubEndpoint) == false)
+            var schedulerHubEndpoint = this.Configuration["Hubs:Scheduler"];
+            if (string.IsNullOrWhiteSpace(schedulerHubEndpoint) == false)
             {
                 app.UseSignalR(routes =>
                 {
-                    routes.MapHub<HealthHub>($"/{healthHubEndpoint}");
+                    routes.MapHub<SchedulerHub>($"/{schedulerHubEndpoint}");
                 });
             }
 
@@ -123,5 +126,6 @@ namespace Ferretto.WMS.Data.WebAPI
         }
 
         #endregion
+
     }
 }

@@ -45,6 +45,7 @@ namespace Ferretto.WMS.Data.Core.Extensions
         {
             var whereCriteriaOperator = CriteriaOperator.Parse(whereString);
             whereCriteriaOperator = RemoveNullPropertiesVisitor.Patch(whereCriteriaOperator);
+            whereCriteriaOperator = InsertNullPropagationVisitor.Patch(whereCriteriaOperator);
             var containsOnlyTypePropertiesVisitor = new ContainsOnlyTypePropertiesVisitor<TDataModel>();
             var containsOnlyTypeProperties = containsOnlyTypePropertiesVisitor.ProcessCriteria(whereCriteriaOperator);
 
@@ -92,6 +93,7 @@ namespace Ferretto.WMS.Data.Core.Extensions
         {
             var whereCriteriaOperator = CriteriaOperator.Parse(whereString);
             whereCriteriaOperator = RemoveNullPropertiesVisitor.Patch(whereCriteriaOperator);
+            whereCriteriaOperator = InsertNullPropagationVisitor.Patch(whereCriteriaOperator);
             var containsOnlyTypePropertiesVisitor = new ContainsOnlyTypePropertiesVisitor<TDataModel>();
             var containsOnlyTypeProperties = containsOnlyTypePropertiesVisitor.ProcessCriteria(whereCriteriaOperator);
 

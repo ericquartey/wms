@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
+using CommonServiceLocator;
 using DevExpress.Mvvm.Native;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
 using Ferretto.Common.Controls.Interfaces;
-using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Controls
 {
@@ -32,9 +32,7 @@ namespace Ferretto.Common.Controls
             new FrameworkPropertyMetadata(WmsDialogType.None));
 
         private readonly INavigationService
-                    navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
-
-        private readonly WmsViewType viewType;
+            navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
 
         #endregion
 
@@ -42,13 +40,15 @@ namespace Ferretto.Common.Controls
 
         protected WmsDialogView()
         {
-            this.viewType = WmsViewType.Dialog;
+            this.ViewType = WmsViewType.Dialog;
             this.Loaded += this.WMSView_Loaded;
         }
 
         #endregion
 
         #region Properties
+
+        public WmsViewType ViewType { get; }
 
         public object Data { get; set; }
 
@@ -75,8 +75,6 @@ namespace Ferretto.Common.Controls
         }
 
         public string Token { get; set; }
-
-        public WmsViewType ViewType => this.viewType;
 
         #endregion
 
@@ -159,10 +157,7 @@ namespace Ferretto.Common.Controls
         private static void EnableControls(WmsDialogView dialogView, bool isEnabled)
         {
             var childrenToCheck = LayoutTreeHelper.GetVisualChildren(dialogView).OfType<IEnabled>();
-            if (childrenToCheck != null)
-            {
-                childrenToCheck.ForEach(c => c.IsEnabled = isEnabled);
-            }
+            childrenToCheck.ForEach(c => c.IsEnabled = isEnabled);
         }
 
         private static void OnHeaderIsEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -180,9 +175,12 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            this.DataContext = string.IsNullOrEmpty(this.MapId) == false ?
-                this.navigationService.GetRegisteredViewModel(this.MapId, this.Data) :
-                this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken(), this.Data);
+            this.DataContext = string.IsNullOrEmpty(this.MapId) == false
+                ? this.navigationService.GetRegisteredViewModel(this.MapId, this.Data)
+                : this.navigationService.RegisterAndGetViewModel(
+                    this.GetType().ToString(),
+                    this.GetMainViewToken(),
+                    this.Data);
 
             ((INavigableViewModel)this.DataContext)?.Appear();
             FormControl.SetFocus(this, this.FocusedStart);
@@ -190,7 +188,7 @@ namespace Ferretto.Common.Controls
 
         private string GetAttachedViewModel()
         {
-            return $"{this.GetType().ToString()}{Utils.Common.MODEL_SUFFIX}";
+            return $"{this.GetType()}{Utils.Common.MODEL_SUFFIX}";
         }
 
         private string GetMainViewToken()
@@ -234,24 +232,25 @@ namespace Ferretto.Common.Controls
             }
 
             if (this.MapId != null && this.DataContext is INavigableViewModel navViewModel &&
-             this.MapId.Equals(navViewModel.MapId, System.StringComparison.Ordinal))
+                this.MapId.Equals(navViewModel.MapId, StringComparison.Ordinal))
             {
                 return false;
             }
 
             var dataContextName = this.DataContext.GetType().ToString();
-            return !this.GetAttachedViewModel().Equals(dataContextName, System.StringComparison.Ordinal);
+            return !this.GetAttachedViewModel().Equals(dataContextName, StringComparison.Ordinal);
         }
 
         private void LoadTheme(string theme)
         {
             var dictionary = new ResourceDictionary();
-            var resourceUri = $"pack://application:,,,/{Utils.Common.ASSEMBLY_THEMENAME};Component/Themes/{Utils.Common.THEME_DEFAULTNAME}/{theme}.xaml";
+            var resourceUri =
+                $"pack://application:,,,/{Utils.Common.ASSEMBLY_THEMENAME};Component/Themes/{Utils.Common.THEME_DEFAULTNAME}/{theme}.xaml";
             dictionary.Source = new Uri(resourceUri, UriKind.Absolute);
             this.Resources.MergedDictionaries.Add(dictionary);
         }
 
-        private void WMSView_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private void WMSView_Loaded(object sender, RoutedEventArgs e)
         {
             this.CheckDataContext();
 

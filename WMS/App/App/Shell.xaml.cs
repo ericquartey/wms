@@ -1,6 +1,4 @@
-﻿using DevExpress.Xpf.Core;
-using Ferretto.Common.Controls;
-using Ferretto.Common.Utils.Modules;
+﻿using Ferretto.Common.Utils.Modules;
 using Prism.Modularity;
 using Prism.Regions;
 
@@ -29,9 +27,10 @@ namespace Ferretto.WMS.App
             this.moduleManager = moduleManager;
             this.regionManager = regionManager;
 
-            // Load the root module of the application
             this.moduleManager.LoadModule(nameof(Layout));
+            this.moduleManager.LoadModule(nameof(Machines));
             this.moduleManager.LoadModule(nameof(MasterData));
+            this.moduleManager.LoadModule(nameof(Scheduler));
         }
 
         #endregion

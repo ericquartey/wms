@@ -61,10 +61,6 @@ namespace Ferretto.VW.InstallationApp
             base.OnClosed(e);
         }
 
-        private void Button_Click(Object sender, RoutedEventArgs e)
-        {
-        }
-
         private void HideAndUnsubscribe()
         {
             this.UnsubscribeEvents();

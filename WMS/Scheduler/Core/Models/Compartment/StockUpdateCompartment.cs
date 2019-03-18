@@ -10,6 +10,8 @@
 
         public System.DateTime? LastPickDate { get; set; }
 
+        public int LoadingUnitId { get; set; }
+
         public int ReservedForPick { get; set; }
 
         public int Stock { get; set; }

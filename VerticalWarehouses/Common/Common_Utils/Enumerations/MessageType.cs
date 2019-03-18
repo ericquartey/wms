@@ -18,6 +18,8 @@
 
         HorizontalHoming,
 
+        VerticalHoming,
+
         AddMission,
 
         CreateMission,
@@ -52,6 +54,8 @@
 
         Movement,
 
-        StopAction
+        StopAction,
+
+        UpDown
     }
 }

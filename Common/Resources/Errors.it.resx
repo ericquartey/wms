@@ -258,4 +258,10 @@
   <data name="PropertyIsRequired" xml:space="preserve">
     <value>La proprietà {0} è obbligatoria.</value>
   </data>
+  <data name="PropertyMustBeStriclyPositive" xml:space="preserve">
+    <value>La proprietà {0} deve essere maggiore di 0.</value>
+  </data>
+  <data name="PropertyMustHaveValue" xml:space="preserve">
+    <value>La proprietà {0} deve avere un valore.</value>
+  </data>
 </root>

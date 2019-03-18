@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         {
             this.parentStateMachine = parentMachine;
 
-            //TEMP Notify the error condition
+            //TEMP Notify the error condition all the world
             var newMessage = new NotificationMessage(null,
                 "Error Homing State",
                 MessageActor.Any,
@@ -34,12 +34,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Methods
 
-        public override void SendCommandMessage(CommandMessage message)
+        public override void ProcessCommandMessage(CommandMessage message)
         {
             throw new NotImplementedException();
         }
 
-        public override void SendNotificationMessage(NotificationMessage message)
+        public override void ProcessNotificationMessage(NotificationMessage message)
         {
             throw new NotImplementedException();
         }

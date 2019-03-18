@@ -4,17 +4,19 @@ using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
 using DevExpress.Data.Filtering;
 using DevExpress.Xpf.Data;
-using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Base;
+using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Utils.Expressions;
 using NLog;
 
 namespace Ferretto.Common.Controls
 {
     public class EntityPagedListViewModel<TModel, TKey> : EntityListViewModel<TModel, TKey>
-       where TModel : IModel<TKey>
+        where TModel : IModel<TKey>
     {
         #region Fields
 
@@ -117,7 +119,13 @@ namespace Ferretto.Common.Controls
 
         public override void LoadRelatedData()
         {
-            (this.dataSource as InfiniteAsyncSource)?.RefreshRows();
+            Application.Current.Dispatcher.BeginInvoke(
+                DispatcherPriority.Normal,
+                new Action(() =>
+                {
+                    (this.dataSource as InfiniteAsyncSource)?.RefreshRows();
+                    (this.dataSource as InfiniteAsyncSource)?.UpdateSummaries();
+                }));
         }
 
         public override async Task UpdateFilterTilesCountsAsync()
@@ -180,8 +188,8 @@ namespace Ferretto.Common.Controls
             var newOverallFilter = CriteriaOperator.TryParse(filterDataSource.FilterString);
 
             this.OverallFilter = JoinFilters(newOverallFilter, this.customFilter);
-            this.logger.Debug($"Data source filter: '{this.OverallFilter}'");
             (this.dataSource as InfiniteAsyncSource)?.RefreshRows();
+            (this.dataSource as InfiniteAsyncSource)?.UpdateSummaries();
         }
 
         private async Task<FetchRowsResult> FetchRowsAsync(FetchRowsAsyncEventArgs e)
@@ -197,7 +205,25 @@ namespace Ferretto.Common.Controls
                 whereString,
                 this.searchText);
 
-            return new FetchRowsResult(entities.Cast<object>().ToArray(), hasMoreRows: entities.Count() == GetPageSize());
+            return new FetchRowsResult(entities.Cast<object>().ToArray(),
+                hasMoreRows: entities.Count() == GetPageSize());
+        }
+
+        private void GetTotalSummaries(GetSummariesAsyncEventArgs e)
+        {
+            e.Result = this.GetTotalSummariesAsync();
+        }
+
+        private async Task<object[]> GetTotalSummariesAsync()
+        {
+            var whereString = this.overallFilter?.ToString();
+
+            return new object[]
+            {
+                await this.Provider.GetAllCountAsync(
+                    whereString,
+                    this.searchText)
+            };
         }
 
         private void GetUniqueValues(GetUniqueValuesAsyncEventArgs e)
@@ -226,15 +252,11 @@ namespace Ferretto.Common.Controls
 
             if (this.provider != null)
             {
-                source.FetchRows += (o, e) =>
-                {
-                    e.Result = this.FetchRowsAsync(e);
-                };
+                source.FetchRows += (o, e) => { e.Result = this.FetchRowsAsync(e); };
 
-                source.GetUniqueValues += (o, e) =>
-                {
-                    this.GetUniqueValues(e);
-                };
+                source.GetUniqueValues += (o, e) => { this.GetUniqueValues(e); };
+
+                source.GetTotalSummaries += (o, e) => { this.GetTotalSummaries(e); };
             }
 
             return source;

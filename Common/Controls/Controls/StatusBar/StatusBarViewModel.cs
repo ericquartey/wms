@@ -1,65 +1,53 @@
 ﻿using System;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Resources;
-using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Controls
 {
-    public class StatusBarViewModel : Prism.Mvvm.BindableBase
+    public sealed class StatusBarViewModel : Prism.Mvvm.BindableBase, IDisposable
     {
         #region Fields
 
         private const int timeToKeepText = 15;
 
-        private readonly System.Windows.Threading.DispatcherTimer keepInfoTimer = new System.Windows.Threading.DispatcherTimer();
+        private readonly IEventService eventService;
+
+        private readonly System.Windows.Threading.DispatcherTimer keepInfoTimer =
+            new System.Windows.Threading.DispatcherTimer();
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private string iconName;
+        private string messageIconName;
 
         private string message;
 
-        private string schedulerStatus;
+        private string schedulerStatusIconName;
+
+        private object statusbarEventSubscription;
 
         #endregion
 
         #region Constructors
 
-        public StatusBarViewModel()
+        public StatusBarViewModel(INotificationService notificationService, IEventService eventService)
         {
-            this.SchedulerStatus = nameof(Icons.SchedulerOffLine);
+            this.eventService = eventService;
+            this.SchedulerStatusIconName = this.GetConnectionStatusIcon(notificationService.IsServiceHubConnected);
             this.keepInfoTimer.Tick += this.KeepInfoTimer_Tick;
             this.keepInfoTimer.Interval = new TimeSpan(0, 0, timeToKeepText);
-
-            ServiceLocator.Current.GetInstance<IEventService>()
-               .Subscribe((StatusPubSubEvent eventArgs) =>
-               {
-                   if (eventArgs.Exception != null)
-                   {
-                       this.logger.Error(eventArgs.Exception, "Displaying status error message.");
-                   }
-                   else
-                   {
-                       this.logger.Trace(string.Format("Displaying status message '{0}'.", eventArgs.Message));
-                   }
-
-                   this.keepInfoTimer.Stop();
-                   this.Message = eventArgs.Message;
-                   this.IconName = this.GetIconNameFromStatusType(eventArgs.Type);
-                   this.SchedulerStatus = eventArgs.IsSchedulerOnline ? nameof(Icons.SchedulerOnLine) : nameof(Icons.SchedulerOffLine);
-                   this.keepInfoTimer.Start();
-               });
+            this.statusbarEventSubscription = this.eventService.Subscribe<StatusPubSubEvent>(this.OnStatusbarInfoChanged);
         }
 
         #endregion
 
         #region Properties
 
-        public string IconName
+        public string MessageIconName
         {
-            get => this.iconName;
-            set => this.SetProperty(ref this.iconName, value);
+            get => this.messageIconName;
+            set => this.SetProperty(ref this.messageIconName, value);
         }
 
         public string Message
@@ -68,15 +56,25 @@ namespace Ferretto.Common.Controls
             set => this.SetProperty(ref this.message, value);
         }
 
-        public string SchedulerStatus
+        public string SchedulerStatusIconName
         {
-            get => this.schedulerStatus;
-            set => this.SetProperty(ref this.schedulerStatus, value);
+            get => this.schedulerStatusIconName;
+            set => this.SetProperty(ref this.schedulerStatusIconName, value);
         }
 
         #endregion
 
         #region Methods
+
+        public void Dispose()
+        {
+            this.eventService.Unsubscribe<StatusPubSubEvent>(this.statusbarEventSubscription);
+        }
+
+        private string GetConnectionStatusIcon(bool isServiceHubConnected)
+        {
+            return isServiceHubConnected ? nameof(Icons.SchedulerOnLine) : nameof(Icons.SchedulerOffLine);
+        }
 
         private string GetIconNameFromStatusType(StatusType status)
         {
@@ -86,8 +84,30 @@ namespace Ferretto.Common.Controls
         private void KeepInfoTimer_Tick(object sender, EventArgs e)
         {
             this.Message = string.Empty;
-            this.IconName = string.Empty;
+            this.MessageIconName = string.Empty;
             this.keepInfoTimer.Stop();
+        }
+
+        private void OnStatusbarInfoChanged(StatusPubSubEvent eventArgs)
+        {
+            if (eventArgs.Exception != null)
+            {
+                this.logger.Error(eventArgs.Exception, "Displaying status error message.");
+            }
+            else
+            {
+                this.logger.Trace($"Displaying status message '{eventArgs.Message}'.");
+            }
+
+            this.keepInfoTimer.Stop();
+            this.Message = eventArgs.Message;
+            this.MessageIconName = this.GetIconNameFromStatusType(eventArgs.Type);
+            if (eventArgs.IsSchedulerOnline.HasValue)
+            {
+                this.SchedulerStatusIconName = this.GetConnectionStatusIcon(eventArgs.IsSchedulerOnline.Value);
+            }
+
+            this.keepInfoTimer.Start();
         }
 
         #endregion

@@ -4,7 +4,7 @@ using System.Windows.Input;
 using DevExpress.Mvvm.UI;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Utils;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 
 namespace Ferretto.Common.Controls.Services
 {
@@ -12,19 +12,30 @@ namespace Ferretto.Common.Controls.Services
     {
         #region Fields
 
-        private readonly IInputService inputService = ServiceLocator.Current.GetInstance<IInputService>();
-        private readonly INavigationService navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
+        private readonly IInputService inputService;
+
+        private readonly INavigationService navigationService;
+
         private IWmsHistoryView currentHistoryView;
+
         private bool isControlPressed;
 
         #endregion
 
         #region Constructors
 
-        public HistoryViewService()
+        public HistoryViewService(IInputService inputService, INavigationService navigationService)
         {
+            this.inputService = inputService;
+            this.navigationService = navigationService;
             this.inputService.BeginMouseNotify(this, this.OnMouseDown);
         }
+
+        #endregion
+
+        #region Properties
+
+        public IInputService InputService => this.inputService;
 
         #endregion
 

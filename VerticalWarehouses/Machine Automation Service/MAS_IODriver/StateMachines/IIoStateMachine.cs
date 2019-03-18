@@ -15,6 +15,9 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
 
         void PublishNotificationEvent(NotificationMessage notificationMessage);
 
+        /// <summary>
+        ///
+        /// </summary>
         void Start();
 
         #endregion

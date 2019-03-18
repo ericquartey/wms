@@ -2,10 +2,30 @@
 
 namespace Ferretto.Common.EF.Migrations
 {
+    [System.CodeDom.Compiler.GeneratedCode("EntityFramework", "v2.1")]
     public partial class Add_Field_IsActive_To_Table_Bays : Migration
     {
+        #region Methods
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
+            migrationBuilder.DropColumn(
+                name: "IsActive",
+                table: "Bays");
+        }
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.AddColumn<bool>(
                 name: "IsActive",
                 table: "Bays",
@@ -13,11 +33,6 @@ namespace Ferretto.Common.EF.Migrations
                 defaultValue: false);
         }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "IsActive",
-                table: "Bays");
-        }
+        #endregion
     }
 }

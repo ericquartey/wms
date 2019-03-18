@@ -4,7 +4,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    internal class SaveRestoreConfigViewModel : BindableBase, IViewModel, ISaveRestoreConfigViewModel
+    internal class SaveRestoreConfigViewModel : BindableBase, ISaveRestoreConfigViewModel
     {
         #region Fields
 

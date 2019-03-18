@@ -1,10 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
+using CommonServiceLocator;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Resources;
-using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
 namespace Ferretto.Common.Controls
@@ -15,8 +14,6 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         private readonly ChangeDetector<T> changeDetector = new ChangeDetector<T>();
-
-        private readonly IDialogService dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
 
         private ColorRequired colorRequired = ColorRequired.EditMode;
 
@@ -45,25 +42,9 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
-        public ColorRequired ColorRequired
-        {
-            get => this.colorRequired;
-            set => this.SetProperty(ref this.colorRequired, value);
-        }
+        public IDialogService DialogService { get; } = ServiceLocator.Current.GetInstance<IDialogService>();
 
-        public IDialogService DialogService => this.dialogService;
-
-        public bool IsBusy
-        {
-            get => this.isBusy;
-            set
-            {
-                if (this.SetProperty(ref this.isBusy, value))
-                {
-                    this.EvaluateCanExecuteCommands();
-                }
-            }
-        }
+        public bool IsModelIdValid => this.Model?.Id > 0;
 
         public bool IsModelValid
         {
@@ -78,8 +59,41 @@ namespace Ferretto.Common.Controls
                 {
                     temp = string.IsNullOrWhiteSpace(this.Model.Error);
                 }
+
                 this.SetProperty(ref this.isModelValid, temp);
                 return temp;
+            }
+        }
+
+        public ICommand RefreshCommand => this.refreshCommand ??
+            (this.refreshCommand = new DelegateCommand(
+                async () => await this.ExecuteRefreshCommandAsync(), this.CanExecuteRefreshCommand));
+
+        public ICommand RevertCommand => this.revertCommand ??
+            (this.revertCommand = new DelegateCommand(
+                async () => await this.ExecuteRevertWithPrompt(),
+                this.CanExecuteRevertCommand));
+
+        public ICommand SaveCommand => this.saveCommand ??
+            (this.saveCommand = new DelegateCommand(
+                async () => await this.ExecuteSaveCommand(),
+                this.CanExecuteSaveCommand));
+
+        public ColorRequired ColorRequired
+        {
+            get => this.colorRequired;
+            set => this.SetProperty(ref this.colorRequired, value);
+        }
+
+        public bool IsBusy
+        {
+            get => this.isBusy;
+            set
+            {
+                if (this.SetProperty(ref this.isBusy, value))
+                {
+                    this.EvaluateCanExecuteCommands();
+                }
             }
         }
 
@@ -107,20 +121,6 @@ namespace Ferretto.Common.Controls
                 }
             }
         }
-
-        public ICommand RefreshCommand => this.refreshCommand ??
-                                                       (this.refreshCommand = new DelegateCommand(
-               async () => await this.ExecuteRefreshCommandAsync(), this.CanExecuteRefreshCommand));
-
-        public ICommand RevertCommand => this.revertCommand ??
-            (this.revertCommand = new DelegateCommand(
-                async () => await this.ExecuteRevertWithPrompt(),
-                this.CanExecuteRevertCommand));
-
-        public ICommand SaveCommand => this.saveCommand ??
-            (this.saveCommand = new DelegateCommand(
-                async () => await this.ExecuteSaveCommand(),
-                this.CanExecuteSaveCommand));
 
         #endregion
 

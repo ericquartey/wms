@@ -44,6 +44,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         #region Methods
 
+        /// <inheritdoc/>
         public override void ProcessMessage(IoMessage message)
         {
             if (message.ValidOutputs && !message.ElevatorMotorOn && !message.CradleMotorOn)

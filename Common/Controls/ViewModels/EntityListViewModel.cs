@@ -1,14 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Base;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Prism.Commands;
 
 namespace Ferretto.Common.Controls
@@ -137,9 +140,14 @@ namespace Ferretto.Common.Controls
 
         public virtual void LoadRelatedData()
         {
-            var oldFilterDataSource = this.selectedFilterDataSource;
-            this.SelectedFilterDataSource = null;
-            this.SelectedFilterDataSource = oldFilterDataSource;
+            Application.Current.Dispatcher.BeginInvoke(
+                DispatcherPriority.Normal,
+                new Action(() =>
+                {
+                    var oldFilterDataSource = this.selectedFilterDataSource;
+                    this.SelectedFilterDataSource = null;
+                    this.SelectedFilterDataSource = oldFilterDataSource;
+                }));
         }
 
         public virtual async Task UpdateFilterTilesCountsAsync()

@@ -30,7 +30,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<Aisle>> GetAislesAsync(int id)
         {
             return await this.dataContext.Aisles
-                       .Include(a => a.Area)
                        .Where(a => a.AreaId == id)
                        .OrderBy(a => a.Area.Name)
                        .ThenBy(a => a.Name)
@@ -74,10 +73,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<Area>> GetByItemIdAvailabilityAsync(int id)
         {
             return await this.dataContext.Compartments
-                       .Include(c => c.LoadingUnit)
-                       .ThenInclude(l => l.Cell)
-                       .ThenInclude(c => c.Aisle)
-                       .ThenInclude(a => a.Area)
                        .Where(c => c.ItemId == id)
                        .Where(c => (c.Stock - c.ReservedForPick + c.ReservedToStore) > 0)
                        .Select(c => new

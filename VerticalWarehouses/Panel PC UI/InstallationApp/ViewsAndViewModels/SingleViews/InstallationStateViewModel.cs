@@ -8,7 +8,7 @@ using Ferretto.VW.InstallationApp.Resources.Enumerables;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class InstallationStateViewModel : BindableBase, IViewModel, IInstallationStateViewModel
+    public class InstallationStateViewModel : BindableBase, IInstallationStateViewModel
     {
         #region Fields
 

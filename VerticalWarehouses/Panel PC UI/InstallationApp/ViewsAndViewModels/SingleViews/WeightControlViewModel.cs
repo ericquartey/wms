@@ -6,7 +6,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class WeightControlViewModel : BindableBase, IViewModel, IWeightControlViewModel
+    public class WeightControlViewModel : BindableBase, IWeightControlViewModel
     {
         #region Fields
 

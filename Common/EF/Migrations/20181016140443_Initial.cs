@@ -4,12 +4,18 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.Common.EF.Migrations
 {
+    [System.CodeDom.Compiler.GeneratedCode("EntityFramework", "v2.1")]
     public partial class Initial : Migration
     {
         #region Methods
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder == null)
+            {
+                throw new System.ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.DropTable(
                 name: "CellConfigurationCellPositionLoadingUnitTypes");
 

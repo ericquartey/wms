@@ -16,11 +16,13 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
     {
         #region Fields
 
-        private readonly ICompartmentSchedulerProvider compartmentSchedulerProvider;
+        private readonly ICompartmentSchedulerProvider compartmentProvider;
 
         private readonly DatabaseContext databaseContext;
 
-        private readonly IItemSchedulerProvider itemSchedulerProvider;
+        private readonly IItemSchedulerProvider itemProvider;
+
+        private readonly ILoadingUnitSchedulerProvider loadingUnitProvider;
 
         private readonly ILogger<MissionSchedulerProvider> logger;
 
@@ -33,15 +35,18 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
         public MissionSchedulerProvider(
             DatabaseContext databaseContext,
             ISchedulerRequestProvider schedulerRequestProvider,
-            ICompartmentSchedulerProvider compartmentSchedulerProvider,
-            IItemSchedulerProvider itemSchedulerProvider,
+            ICompartmentSchedulerProvider compartmentProvider,
+            IItemSchedulerProvider itemProvider,
+            ILoadingUnitSchedulerProvider loadingUnitProvider,
+            IItemListSchedulerProvider itemListSchedulerProvider,
             ILogger<MissionSchedulerProvider> logger)
         {
             this.databaseContext = databaseContext;
             this.logger = logger;
             this.schedulerRequestProvider = schedulerRequestProvider;
-            this.compartmentSchedulerProvider = compartmentSchedulerProvider;
-            this.itemSchedulerProvider = itemSchedulerProvider;
+            this.compartmentProvider = compartmentProvider;
+            this.loadingUnitProvider = loadingUnitProvider;
+            this.itemProvider = itemProvider;
         }
 
         #endregion
@@ -50,7 +55,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         public async Task<IOperationResult<Mission>> CompleteAsync(int id)
         {
-            using (var scope = new TransactionScope())
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var mission = await this.GetByIdAsync(id);
                 if (mission == null)
@@ -63,34 +68,20 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     return new BadRequestOperationResult<Mission>(mission);
                 }
 
-                if (mission.Type == MissionType.Pick
-                    && mission.CompartmentId.HasValue
-                    && mission.ItemId.HasValue)
+                IOperationResult<Mission> result = null;
+                switch (mission.Type)
                 {
-                    var compartment = await this.compartmentSchedulerProvider
-                        .GetByIdForStockUpdateAsync(mission.CompartmentId.Value);
+                    case MissionType.Pick:
+                        result = await this.CompletePickMissionAsync(mission);
+                        break;
 
-                    compartment.ReservedForPick -= mission.Quantity;
-                    compartment.Stock -= mission.Quantity;
-
-                    if (compartment.Stock == 0
-                        && compartment.IsItemPairingFixed == false)
-                    {
-                        compartment.ItemId = null;
-                    }
-
-                    await this.compartmentSchedulerProvider.UpdateAsync(compartment);
-                }
-                else
-                {
-                    throw new NotSupportedException("Only item pick operations are allowed.");
+                    default:
+                        throw new NotSupportedException("Only item pick operations are allowed.");
                 }
 
-                mission.Status = MissionStatus.Completed;
+                scope.Complete();
 
-                var updatedMission = await this.UpdateAsync(mission);
-
-                return new SuccessOperationResult<Mission>(updatedMission);
+                return result;
             }
         }
 
@@ -116,7 +107,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     switch (request.Type)
                     {
                         case OperationType.Withdrawal:
-                            missions = await this.CreateMissionsFromRequestAsync(request);
+                            missions = await this.CreateWithdrawalMissionsAsync(request);
                             break;
 
                         case OperationType.Insertion:
@@ -137,6 +128,58 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
                 return missions;
             }
+        }
+
+        public async Task<IOperationResult<Mission>> ExecuteAsync(int id)
+        {
+            var mission = await this.GetByIdAsync(id);
+            if (mission == null)
+            {
+                return new NotFoundOperationResult<Mission>();
+            }
+
+            if (mission.Status != MissionStatus.New
+                &&
+                mission.Status != MissionStatus.Waiting)
+            {
+                return new BadRequestOperationResult<Mission>(mission);
+            }
+
+            mission.Status = MissionStatus.Executing;
+
+            return await this.UpdateAsync(mission);
+        }
+
+        public async Task<IEnumerable<Mission>> GetAllAsync()
+        {
+            return await this.databaseContext.Missions
+                .Select(m => new Mission
+                {
+                    Id = m.Id,
+                    BayId = m.BayId,
+                    CellId = m.CellId,
+                    CompartmentId = m.CompartmentId,
+                    ItemId = m.ItemId,
+                    ItemListId = m.ItemListId,
+                    ItemListRowId = m.ItemListRowId,
+                    LoadingUnitId = m.LoadingUnitId,
+                    MaterialStatusId = m.MaterialStatusId,
+                    PackageTypeId = m.PackageTypeId,
+                    Lot = m.Lot,
+                    Quantity = m.RequiredQuantity,
+                    RegistrationNumber = m.RegistrationNumber,
+                    Status = (MissionStatus)m.Status,
+                    Sub1 = m.Sub1,
+                    Sub2 = m.Sub2,
+                    Type = (MissionType)m.Type
+                })
+                .ToArrayAsync();
+        }
+
+        public async Task<int> GetAllCountAsync()
+        {
+            return await this.databaseContext.Missions
+                .CountAsync();
         }
 
         public async Task<Mission> GetByIdAsync(int id)
@@ -165,33 +208,72 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 .SingleOrDefaultAsync(m => m.Id == id);
         }
 
-        public async Task<Mission> UpdateAsync(Mission mission)
+        public async Task<IOperationResult<Mission>> UpdateAsync(Mission model)
         {
-            if (mission == null)
+            if (model == null)
             {
-                throw new ArgumentNullException(nameof(mission));
+                throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.databaseContext.Missions.Find(mission.Id);
-            this.databaseContext.Entry(existingModel).CurrentValues.SetValues(mission);
+            var existingModel = this.databaseContext.Missions.Find(model.Id);
+            this.databaseContext.Entry(existingModel).CurrentValues.SetValues(model);
 
             await this.databaseContext.SaveChangesAsync();
 
-            return mission;
+            return new SuccessOperationResult<Mission>(model);
         }
 
-        private async Task<IEnumerable<Mission>> CreateMissionsFromRequestAsync(SchedulerRequest request)
+        private static int ComputePriority(SchedulerRequest request)
         {
-            var item = await this.itemSchedulerProvider.GetByIdAsync(request.ItemId);
+            if (request.IsInstant)
+            {
+                return 1;
+            }
+
+            return 0;
+        }
+
+        private async Task<IOperationResult<Mission>> CompletePickMissionAsync(Mission mission)
+        {
+            if (mission.CompartmentId.HasValue == false
+               || mission.ItemId.HasValue == false)
+            {
+                throw new InvalidOperationException();
+            }
+
+            var compartment = await this.compartmentProvider
+                .GetByIdForStockUpdateAsync(mission.CompartmentId.Value);
+
+            compartment.ReservedForPick -= mission.Quantity;
+            compartment.Stock -= mission.Quantity;
+
+            if (compartment.Stock == 0
+                && compartment.IsItemPairingFixed == false)
+            {
+                compartment.ItemId = null;
+            }
+
+            await this.UpdateLastPickDatesAsync(mission.ItemId.Value, compartment);
+
+            await this.compartmentProvider.UpdateAsync(compartment);
+
+            mission.Status = MissionStatus.Completed;
+
+            return await this.UpdateAsync(mission);
+        }
+
+        private async Task<IEnumerable<Mission>> CreateWithdrawalMissionsAsync(SchedulerRequest request)
+        {
+            var item = await this.itemProvider.GetByIdAsync(request.ItemId);
 
             var missions = new List<Mission>();
             var availableCompartments = true;
             while (request.QuantityLeftToDispatch > 0 && availableCompartments)
             {
-                var compartments = this.compartmentSchedulerProvider
+                var compartments = this.compartmentProvider
                     .GetCandidateWithdrawalCompartments(request);
 
-                var orderedCompartments = this.compartmentSchedulerProvider
+                var orderedCompartments = this.compartmentProvider
                     .OrderCompartmentsByManagementType(compartments, item.ManagementType);
 
                 var compartment = orderedCompartments.FirstOrDefault();
@@ -206,7 +288,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     compartment.ReservedForPick += quantityToExtractFromCompartment;
                     request.DispatchedQuantity += quantityToExtractFromCompartment;
 
-                    await this.compartmentSchedulerProvider.UpdateAsync(compartment);
+                    await this.compartmentProvider.UpdateAsync(compartment);
                     await this.schedulerRequestProvider.UpdateAsync(request);
 
                     var mission = new Mission
@@ -221,6 +303,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                         MaterialStatusId = compartment.MaterialStatusId,
                         Sub1 = compartment.Sub1,
                         Sub2 = compartment.Sub2,
+                        Priority = ComputePriority(request),
                         Quantity = quantityToExtractFromCompartment,
                         Type = MissionType.Pick
                     };
@@ -254,8 +337,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     LoadingUnitId = m.LoadingUnitId,
                     MaterialStatusId = m.MaterialStatusId,
                     PackageTypeId = m.PackageTypeId,
-
-                    // TODO: add Priority field
+                    Priority = m.Priority,
                     RegistrationNumber = m.RegistrationNumber,
                     RequiredQuantity = m.Quantity,
                     Status = (Common.DataModels.MissionStatus)m.Status,
@@ -267,6 +349,22 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             await this.databaseContext.Missions.AddRangeAsync(missions);
 
             await this.databaseContext.SaveChangesAsync();
+        }
+
+        private async Task UpdateLastPickDatesAsync(int itemId, StockUpdateCompartment compartment)
+        {
+            var now = DateTime.UtcNow;
+            compartment.LastPickDate = now;
+
+            var item = await this.itemProvider.GetByIdAsync(itemId);
+            var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId);
+
+            item.LastPickDate = now;
+            loadingUnit.LastPickDate = now;
+
+            await this.loadingUnitProvider.UpdateAsync(loadingUnit);
+
+            await this.itemProvider.UpdateAsync(item);
         }
 
         #endregion

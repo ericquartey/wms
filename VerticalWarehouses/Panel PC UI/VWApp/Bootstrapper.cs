@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using Ferretto.VW.InstallationApp;
 using Ferretto.VW.Utils.Source;
+using Ferretto.VW.OperatorApp.Resources;
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Modularity;
@@ -23,6 +24,7 @@ namespace Ferretto.VW.VWApp
             var catalog = (ModuleCatalog)this.ModuleCatalog;
             catalog.AddModule(typeof(VWAppModule));
             catalog.AddModule(typeof(InstallationAppModule));
+            catalog.AddModule(typeof(OperatorAppModule));
         }
 
         protected override void ConfigureViewModelLocator()
@@ -56,9 +58,11 @@ namespace Ferretto.VW.VWApp
             this.BindViewModelToView<IVerticalAxisCalibrationViewModel, VerticalAxisCalibrationView>();
             this.BindViewModelToView<IVerticalOffsetCalibrationViewModel, VerticalOffsetCalibrationView>();
             this.BindViewModelToView<IWeightControlViewModel, WeightControlView>();
-            this.BindViewModelToView<IMainWindowViewModel, InstallationApp.MainWindow>();
             this.BindViewModelToView<ILSMTCarouselViewModel, LSMTCarouselView>();
             this.BindViewModelToView<ISaveRestoreConfigViewModel, SaveRestoreConfigView>();
+            this.BindViewModelToView<InstallationApp.IMainWindowViewModel, InstallationApp.MainWindow>();
+
+            this.BindViewModelToView<OperatorApp.ViewsAndViewModels.Interfaces.IMainWindowViewModel, OperatorApp.MainWindow>();
         }
 
         protected override DependencyObject CreateShell()

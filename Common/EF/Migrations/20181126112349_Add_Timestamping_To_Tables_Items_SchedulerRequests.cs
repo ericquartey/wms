@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.Common.EF.Migrations
 {
+    [System.CodeDom.Compiler.GeneratedCode("EntityFramework", "v2.1")]
     public partial class Add_Timestamping_To_Tables_Items_SchedulerRequests : Migration
     {
         #region Methods
@@ -139,7 +140,11 @@ namespace Ferretto.Common.EF.Migrations
             where T : class, IDataModel
         {
             var ids = dbSet.Select(r => (object)r.Id).ToArray();
+#pragma warning disable CA1814 // Multidimensional arrays should not be used
+
+            // Justification: Multidimensional array is required here as an input for migrationBuilder.UpdateData
             var dates = new object[ids.Length, 1];
+#pragma warning restore CA1814 // Multidimensional arrays should not be used
 
             for (var i = 0; i < ids.Length; i++)
             {
@@ -151,8 +156,7 @@ namespace Ferretto.Common.EF.Migrations
                 keyColumn: "Id",
                 keyValues: ids,
                 columns: new[] { "LastModificationDate" },
-                values: dates
-                );
+                values: dates);
         }
 
         #endregion

@@ -4,7 +4,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class LSMTCarouselViewModel : BindableBase, IViewModel, ILSMTCarouselViewModel
+    public class LSMTCarouselViewModel : BindableBase, ILSMTCarouselViewModel
     {
         #region Fields
 

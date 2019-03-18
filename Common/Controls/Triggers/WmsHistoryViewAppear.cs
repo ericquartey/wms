@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Interactivity;
 using Ferretto.Common.Controls.Interfaces;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 
 namespace Ferretto.Common.Controls
 {

@@ -6,6 +6,7 @@ using Ferretto.VW.InstallationApp;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.Utils.Source;
+using Ferretto.VW.VWApp.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -39,7 +40,7 @@ namespace Ferretto.VW.VWApp
 
         private ICommand switchOffCommand;
 
-        private string userLogin = "Installer";
+        private string userLogin = "Operator";
 
         #endregion
 
@@ -115,10 +116,11 @@ namespace Ferretto.VW.VWApp
                     case "Installer":
                         try
                         {
-                            //var ts = ((InstallationHubClient)this.Container.Resolve<IContainerInstallationHubClient>()).ConnectAsync();
+                            var ts = ((InstallationHubClient)this.Container.Resolve<IContainerInstallationHubClient>()).ConnectAsync();
                             ((App)Application.Current).InstallationAppMainWindowInstance = ((InstallationApp.MainWindow)this.Container.Resolve<InstallationApp.IMainWindow>());
                             ((App)Application.Current).InstallationAppMainWindowInstance.DataContext = ((InstallationApp.MainWindowViewModel)this.Container.Resolve<IMainWindowViewModel>());
-                            //await ts;
+                            await ts;
+                            this.Container.Resolve<INotificationCatcher>().SubscribeInstallationMethodsToMAService();
                             ((App)Application.Current).InstallationAppMainWindowInstance.Show();
                         }
                         catch (Exception)
@@ -129,17 +131,10 @@ namespace Ferretto.VW.VWApp
                         break;
 
                     case "Operator":
-                        if (this.installationCompleted)
-                        {
-                        }
-                        else
-                        {
-                            this.LoginErrorMessage = "Error: Machine's installation not completed yet.";
-                        }
-                        break;
-
-                    default:
-                        this.LoginErrorMessage = Resources.VWApp.ErrorLogin;
+                        ((App)Application.Current).OperatorAppMainWindowInstance = ((OperatorApp.MainWindow)this.Container.Resolve<OperatorApp.ViewsAndViewModels.Interfaces.IMainWindow>());
+                        ((App)Application.Current).OperatorAppMainWindowInstance.DataContext = ((OperatorApp.MainWindowViewModel)this.Container.Resolve<OperatorApp.ViewsAndViewModels.Interfaces.IMainWindowViewModel>());
+                        this.Container.Resolve<INotificationCatcher>().SubscribeInstallationMethodsToMAService();
+                        ((App)Application.Current).OperatorAppMainWindowInstance.Show();
                         break;
                 }
             }
@@ -160,9 +155,6 @@ namespace Ferretto.VW.VWApp
                         validationMessage = "Error";
                     }
 
-                    break;
-
-                default:
                     break;
             }
             return validationMessage;

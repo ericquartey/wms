@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.Common.EF.Migrations
 {
+    [System.CodeDom.Compiler.GeneratedCode("EntityFramework", "v2.1")]
     public partial class Remove_Table_ItemListRowType : Migration
     {
         #region Methods
@@ -78,7 +79,7 @@ namespace Ferretto.Common.EF.Migrations
                 table: "ItemListRows",
                 type: "char(1)",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: string.Empty);
         }
 
         #endregion

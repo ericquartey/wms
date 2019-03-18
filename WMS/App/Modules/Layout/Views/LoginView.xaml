@@ -9,7 +9,7 @@
                    Width="450"
                    d:DesignHeight="600"
                    d:DesignWidth="700"
-                   FocusedStart="LoginTB"
+                   FocusedStart="UsernameTextBox"
                    Mode="DialogPopup"
                    ResizeMode="NoResize"
                    SizeToContent="Height"
@@ -54,11 +54,13 @@
                        FontWeight="Bold"
                        Text="{x:Static res:Layout.UserLogin}" />
 
-            <wms:TextBox Name="LoginTB"
+            <wms:TextBox Name="UsernameTextBox"
+                         AutomationProperties.AutomationId="UsernameTextBox"
                          EditValue="{Binding User.Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          MaxLength="20"
                          wms:ShowTitle.Show="True" />
-            <wms:PasswordBox EditValue="{Binding User.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            <wms:PasswordBox AutomationProperties.AutomationId="PasswordTextBox"
+                             EditValue="{Binding User.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              MaxLength="20"
                              wms:ShowTitle.Show="True" />
         </StackPanel>
@@ -83,7 +85,8 @@
                            HorizontalContentAlignment="Right"
                            Background="Transparent"
                            Style="{DynamicResource ActionBarNotCustomizable}">
-                <wms:ActionBarItem Command="{Binding LoginCommand, Delay=25}"
+                <wms:ActionBarItem AutomationProperties.AutomationId="LoginButton"
+                                   Command="{Binding LoginCommand, Delay=25}"
                                    Content="{Binding LoginCheck}"
                                    CustomGlyphSize="24,24"
                                    Glyph="{Binding Status}"

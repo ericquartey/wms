@@ -2,7 +2,6 @@
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_FiniteStateMachines;
-using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_IODriver;
 using Ferretto.VW.MAS_IODriver.Interface;
@@ -14,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Prism.Events;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
@@ -60,8 +60,9 @@ namespace Ferretto.VW.MAS_AutomationService
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-
         {
+            services.Configure<FilesInfo>(this.Configuration.GetSection("FilesInfo"));
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSignalR();
 
@@ -74,7 +75,8 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSingleton<IDataLayer, DataLayer>(provider => new DataLayer(
                 connectionString,
                 provider.GetService<DataLayerContext>(),
-                provider.GetService<IEventAggregator>()));
+                provider.GetService<IEventAggregator>(),
+                provider.GetService<IOptions<FilesInfo>>()));
 
             services.AddSingleton<IWriteLogService, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
@@ -82,6 +84,13 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSingleton<IHostedService, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
+            services.AddSingleton<IDataLayerCellManagment, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<IDataLayerValueManagment, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<ISocketTransport, SocketTransport>();
             this.RegisterSocketTransport(services);
 
             this.RegisterModbusTransport(services);
