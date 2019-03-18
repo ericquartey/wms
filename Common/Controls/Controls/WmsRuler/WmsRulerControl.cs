@@ -575,6 +575,10 @@ namespace Ferretto.Common.Controls
                 if (this.OriginVertical == OriginVertical.Top)
                 {
                     position.Y = position.Y + margin + ft.Width;
+                    if (position.Y + ft.Width > this.ActualHeight)
+                    {
+                        return;
+                    }
                 }
                 else if (this.OriginVertical == OriginVertical.Bottom)
                 {
@@ -585,11 +589,6 @@ namespace Ferretto.Common.Controls
                     {
                         return;
                     }
-                }
-
-                if (position.Y + ft.Width > this.ActualHeight)
-                {
-                    return;
                 }
 
                 drawingContext.PushTransform(new RotateTransform(-90, position.X, position.Y));
