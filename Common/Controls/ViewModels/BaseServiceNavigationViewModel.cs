@@ -1,6 +1,6 @@
 ﻿using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 
 namespace Ferretto.Common.Controls
 {

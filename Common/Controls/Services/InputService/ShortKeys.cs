@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using CommonServiceLocator;
 using DevExpress.Mvvm.UI;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Utils;
-using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Controls.Services
 {

@@ -1,12 +1,10 @@
-﻿using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Providers;
-using Ferretto.Common.Controls;
+using CommonServiceLocator;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Microsoft.Practices.ServiceLocation;
-using Microsoft.Practices.Unity;
+using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
+using Unity;
 
 namespace Ferretto.WMS.Modules.Layout
 {
@@ -38,33 +36,12 @@ namespace Ferretto.WMS.Modules.Layout
 
         #region Methods
 
-        public void Initialize()
+        public void OnInitialized(IContainerProvider containerProvider)
         {
-            SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingLayoutModule);
-
-            NLog.LogManager
-               .GetCurrentClassLogger()
-               .Trace("Loading module ...");
-
-            this.Container.RegisterType<INavigationService, NavigationService>(new ContainerControlledLifetimeManager());
-            this.Container.RegisterType<IEventService, EventService>();
-            this.Container.RegisterType<IImageProvider, ImageProvider>();
-            this.Container.RegisterType<IInputService, InputService>(new ContainerControlledLifetimeManager());
-            this.Container.RegisterType<IDialogService, DialogService>(new ContainerControlledLifetimeManager());
-            this.Container.RegisterType<IHistoryViewService, HistoryViewService>(new ContainerControlledLifetimeManager());
-            this.Container.RegisterType<INotificationService, NotificationService>(new ContainerControlledLifetimeManager());
-            this.Container.RegisterType<StatusBarViewModel, StatusBarViewModel>();
-
-            var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
-            navigationService.Register<LayoutView, LayoutViewModel>();
-            navigationService.Register<MenuView, MenuViewModel>();
-            navigationService.Register<LoginView, LoginViewModel>();
-
             var notificationService = ServiceLocator.Current.GetInstance<INotificationService>();
             notificationService.StartAsync().ConfigureAwait(true);
             var inputService = ServiceLocator.Current.GetInstance<IInputService>();
             inputService.Start();
-
             this.RegionManager.RegisterViewWithRegion(
                 $"{nameof(Common.Utils.Modules.Layout)}.{Common.Utils.Modules.Layout.REGION_MAINCONTENT}",
                 typeof(LayoutView));
@@ -74,6 +51,19 @@ namespace Ferretto.WMS.Modules.Layout
             NLog.LogManager
                .GetCurrentClassLogger()
                .Trace("Module loaded.");
+        }
+
+        public void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+            SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingLayoutModule);
+
+            NLog.LogManager
+               .GetCurrentClassLogger()
+               .Trace("Loading module ...");
+            var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
+            navigationService.Register<LayoutView, LayoutViewModel>();
+            navigationService.Register<MenuView, MenuViewModel>();
+            navigationService.Register<LoginView, LoginViewModel>();
         }
 
         #endregion
