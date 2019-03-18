@@ -112,7 +112,7 @@ namespace Ferretto.VW.InverterDriver
                 false,
                 message => message.Destination == MessageActor.InverterDriver || message.Destination == MessageActor.Any);
 
-            this.logger.LogInformation("Hosted Inverter Driver Constructor");
+            this.logger?.LogInformation("Hosted Inverter Driver Constructor");
         }
 
         #endregion

@@ -72,7 +72,7 @@ namespace Ferretto.VW.MAS_MissionsManager
                 notificationMessage => notificationMessage.Source == MessageActor.FiniteStateMachines &&
                                        notificationMessage.Status == MessageStatus.OperationEnd);
 
-            this.logger.LogInformation("Mission Manager Constructor");
+            this.logger?.LogInformation("Mission Manager Constructor");
         }
 
         #endregion

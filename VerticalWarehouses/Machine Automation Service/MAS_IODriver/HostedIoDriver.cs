@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS_IODriver
                 false,
                 message => message.Destination == MessageActor.IODriver || message.Destination == MessageActor.Any);
 
-            this.logger.LogInformation("Hosted I/O Driver Constructor");
+            this.logger?.LogInformation("Hosted I/O Driver Constructor");
         }
 
         #endregion

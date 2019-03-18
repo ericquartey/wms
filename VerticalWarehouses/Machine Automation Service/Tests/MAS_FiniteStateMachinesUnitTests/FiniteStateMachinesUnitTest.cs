@@ -31,7 +31,7 @@ namespace MAS_FiniteStateMachinesUnitTests
             eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<CommandEvent>()).Returns(commandServiceEvent);
             eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<NotificationEvent>()).Returns(notifyServiceEvent);
 
-            var fsm = new FiniteStateMachines(eventAggregatorMock.Object);
+            var fsm = new FiniteStateMachines(eventAggregatorMock.Object, null);
 
             fsm.StartAsync(new CancellationToken()).Wait();
         }

@@ -69,37 +69,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 false,
                 message => message.Destination == MessageActor.FiniteStateMachines || message.Destination == MessageActor.Any);
 
-            this.logger.LogInformation("Finite State Machine Constructor");
-        }
-
-        public FiniteStateMachines(IEventAggregator eventAggregator)
-        {
-            this.eventAggregator = eventAggregator;
-
-            this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
-
-            this.notifyQueue = new BlockingConcurrentQueue<NotificationMessage>();
-
-            this.commadReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
-            this.messageReceiveTask = new Task(() => this.MessageReceiveData());
-
-            var machineManagerMessagEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            machineManagerMessagEvent.Subscribe(message =>
-            {
-                this.messageQueue.Enqueue(message);
-            },
-                ThreadOption.PublisherThread,
-                false,
-                message => message.Destination == MessageActor.FiniteStateMachines || message.Destination == MessageActor.Any);
-
-            var notificationMessageEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            notificationMessageEvent.Subscribe(message =>
-            {
-                this.notifyQueue.Enqueue(message);
-            },
-                ThreadOption.PublisherThread,
-                false,
-                message => message.Destination == MessageActor.FiniteStateMachines || message.Destination == MessageActor.Any);
+            this.logger?.LogInformation("Finite State Machine Constructor");
         }
 
         #endregion

@@ -52,7 +52,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
             this.InitializeMethodSubscription();
 
-            this.logger.LogInformation("Automation Service Constructor");
+            this.logger?.LogInformation("Automation Service Constructor");
         }
 
         #endregion
