@@ -6,14 +6,19 @@ using Prism.Events;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.DTOs;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_DataLayer;
+using System;
+using System.Threading.Tasks;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class InstallationController
+    public class InstallationController : ControllerBase
     {
         #region Fields
+
+        private readonly IDataLayerValueManagment dataLayerValueManagement;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -21,9 +26,10 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         #region Constructors
 
-        public InstallationController(IEventAggregator eventAggregator)
+        public InstallationController(IEventAggregator eventAggregator, IServiceProvider services)
         {
             this.eventAggregator = eventAggregator;
+            this.dataLayerValueManagement = services.GetService(typeof(IDataLayerValueManagment)) as IDataLayerValueManagment;
         }
 
         #endregion
@@ -43,6 +49,37 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         {
             var messageData = new MovementMessageData(data);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebAPI, MessageType.Movement));
+        }
+
+        [ProducesResponseType(200, Type = typeof(decimal))]
+        [ProducesResponseType(404)]
+        [HttpGet("DecimalConfigurationParameter/{parameter}")]
+        public ActionResult<decimal> GetDecimalConfigurationParameter(string parameter)
+        {
+            decimal returnValue;
+            switch (parameter)
+            {
+                case nameof(ConfigurationValueEnum.UpperBound):
+                    returnValue = this.dataLayerValueManagement.GetDecimalConfigurationValue(ConfigurationValueEnum.UpperBound);
+                    break;
+
+                case nameof(ConfigurationValueEnum.LowerBound):
+                    returnValue = this.dataLayerValueManagement.GetDecimalConfigurationValue(ConfigurationValueEnum.LowerBound);
+                    break;
+
+                case nameof(ConfigurationValueEnum.Offset):
+                    returnValue = this.dataLayerValueManagement.GetDecimalConfigurationValue(ConfigurationValueEnum.Offset);
+                    break;
+
+                case nameof(ConfigurationValueEnum.Resolution):
+                    returnValue = this.dataLayerValueManagement.GetDecimalConfigurationValue(ConfigurationValueEnum.Resolution);
+                    break;
+
+                default:
+                    var message = $"No entity with the specified parameter={parameter} exists.";
+                    return this.NotFound(message);
+            }
+            return this.Ok(returnValue);
         }
 
         [HttpGet("StopCommand")]
