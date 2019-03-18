@@ -17,7 +17,7 @@ namespace MAS_FiniteStateMachinesUnitTests
         [TestCategory("Unit")]
         public void TestFiniteStateMachinesInvalidCreation()
         {
-            Assert.ThrowsException<NullReferenceException>(() => new FiniteStateMachines(null));
+            Assert.ThrowsException<NullReferenceException>(() => new FiniteStateMachines(null, null));
         }
 
         [TestMethod]

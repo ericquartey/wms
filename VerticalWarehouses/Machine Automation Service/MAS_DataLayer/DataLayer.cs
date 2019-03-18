@@ -116,7 +116,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 false,
                 message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
 
-            logger.LogInformation("DataLayer Constructor");
+            this.logger.LogInformation("DataLayer Constructor");
         }
 
         /// <summary>

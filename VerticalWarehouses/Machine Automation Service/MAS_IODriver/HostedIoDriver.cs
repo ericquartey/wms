@@ -12,6 +12,7 @@ using Ferretto.VW.MAS_IODriver.Interface;
 using Ferretto.VW.MAS_IODriver.StateMachines;
 using Ferretto.VW.MAS_IODriver.StateMachines.PowerUp;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_IODriver
@@ -38,6 +39,8 @@ namespace Ferretto.VW.MAS_IODriver
 
         private readonly IoStatus ioStatus;
 
+        private readonly ILogger logger;
+
         private readonly IModbusTransport modbusTransport;
 
         private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
@@ -60,11 +63,13 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Constructors
 
-        public HostedIoDriver(IEventAggregator eventAggregator, IModbusTransport modbusTransport, IDataLayerValueManagment dataLayerValueManagment)
+        public HostedIoDriver(IEventAggregator eventAggregator, IModbusTransport modbusTransport, IDataLayerValueManagment dataLayerValueManagment, ILogger<HostedIoDriver> logger)
         {
             this.eventAggregator = eventAggregator;
             this.dataLayerValueManagment = dataLayerValueManagment;
             this.modbusTransport = modbusTransport;
+
+            this.logger = logger;
 
             this.ioStatus = new IoStatus();
             this.pollIoEvent = new ManualResetEventSlim(false);
@@ -91,6 +96,8 @@ namespace Ferretto.VW.MAS_IODriver
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Destination == MessageActor.IODriver || message.Destination == MessageActor.Any);
+
+            this.logger.LogInformation("Hosted I/O Driver Constructor");
         }
 
         #endregion
@@ -164,7 +171,6 @@ namespace Ferretto.VW.MAS_IODriver
             {
                 this.pollIoTimer = new Timer(this.ReadIoData, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IoPollingInterval));
             }
-
             catch (Exception ex)
             {
                 throw new IOException($"Exception: {ex.Message} Timer Creation Failed", ex);
@@ -256,8 +262,7 @@ namespace Ferretto.VW.MAS_IODriver
                 {
                     this.inputData = await this.modbusTransport.ReadAsync();
                 }
-
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     throw new IoDriverException($"Exception: {ex.Message} while reading async error", IoDriverExceptionCode.CreationFailure, ex);
                 }

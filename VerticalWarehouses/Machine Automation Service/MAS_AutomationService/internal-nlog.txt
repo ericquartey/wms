@@ -6,3 +6,43 @@
 2019-03-18 15:15:20.0831 Info Found 45 configuration items
 2019-03-18 15:15:20.1077 Info Configuration initialized.
 2019-03-18 15:15:20.1319 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.5.11.8645. Product version: 4.5.11.
+2019-03-18 16:07:54.2311 Info Message Template Auto Format enabled
+2019-03-18 16:07:54.2632 Info Loading assembly: NLog.Web.AspNetCore
+2019-03-18 16:07:54.4777 Info Adding target File Target[allfile]
+2019-03-18 16:07:54.4777 Info Adding target File Target[ownFile-web]
+2019-03-18 16:07:54.4973 Info Configured from an XML element in C:\Users\mmorbelli\source\repos\Warehouse Management System\VerticalWarehouses\Machine Automation Service\MAS_AutomationService\bin\Debug\netcoreapp2.1\NLog.config...
+2019-03-18 16:07:54.5384 Info Found 45 configuration items
+2019-03-18 16:07:54.5852 Info Configuration initialized.
+2019-03-18 16:07:54.6052 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.5.11.8645. Product version: 4.5.11.
+2019-03-18 16:09:52.6521 Info Message Template Auto Format enabled
+2019-03-18 16:09:52.6880 Info Loading assembly: NLog.Web.AspNetCore
+2019-03-18 16:09:52.9461 Info Adding target File Target[allfile]
+2019-03-18 16:09:52.9461 Info Adding target File Target[ownFile-web]
+2019-03-18 16:09:52.9591 Info Configured from an XML element in C:\Users\mmorbelli\source\repos\Warehouse Management System\VerticalWarehouses\Machine Automation Service\MAS_AutomationService\bin\Debug\netcoreapp2.1\NLog.config...
+2019-03-18 16:09:52.9845 Info Found 45 configuration items
+2019-03-18 16:09:53.0173 Info Configuration initialized.
+2019-03-18 16:09:53.0355 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.5.11.8645. Product version: 4.5.11.
+2019-03-18 16:11:20.0573 Info Message Template Auto Format enabled
+2019-03-18 16:11:20.0776 Info Loading assembly: NLog.Web.AspNetCore
+2019-03-18 16:11:20.3001 Info Adding target File Target[allfile]
+2019-03-18 16:11:20.3001 Info Adding target File Target[ownFile-web]
+2019-03-18 16:11:20.3182 Info Configured from an XML element in C:\Users\mmorbelli\source\repos\Warehouse Management System\VerticalWarehouses\Machine Automation Service\MAS_AutomationService\bin\Debug\netcoreapp2.1\NLog.config...
+2019-03-18 16:11:20.3420 Info Found 45 configuration items
+2019-03-18 16:11:20.3743 Info Configuration initialized.
+2019-03-18 16:11:20.3990 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.5.11.8645. Product version: 4.5.11.
+2019-03-18 16:32:24.5572 Info Message Template Auto Format enabled
+2019-03-18 16:32:24.5859 Info Loading assembly: NLog.Web.AspNetCore
+2019-03-18 16:32:24.7372 Info Adding target File Target[allfile]
+2019-03-18 16:32:24.7634 Info Adding target File Target[ownFile-web]
+2019-03-18 16:32:24.7757 Info Configured from an XML element in C:\Users\mmorbelli\source\repos\Warehouse Management System\VerticalWarehouses\Machine Automation Service\MAS_AutomationService\bin\Debug\netcoreapp2.1\NLog.config...
+2019-03-18 16:32:24.8125 Info Found 45 configuration items
+2019-03-18 16:32:24.8631 Info Configuration initialized.
+2019-03-18 16:32:24.8822 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.5.11.8645. Product version: 4.5.11.
+2019-03-18 16:54:55.9326 Info Message Template Auto Format enabled
+2019-03-18 16:54:55.9575 Info Loading assembly: NLog.Web.AspNetCore
+2019-03-18 16:54:56.0922 Info Adding target File Target[allfile]
+2019-03-18 16:54:56.0965 Info Adding target File Target[ownFile-web]
+2019-03-18 16:54:56.0965 Info Configured from an XML element in C:\Users\mmorbelli\source\repos\Warehouse Management System\VerticalWarehouses\Machine Automation Service\MAS_AutomationService\bin\Debug\netcoreapp2.1\NLog.config...
+2019-03-18 16:54:56.1536 Info Found 45 configuration items
+2019-03-18 16:54:56.1929 Info Configuration initialized.
+2019-03-18 16:54:56.2142 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.5.11.8645. Product version: 4.5.11.
