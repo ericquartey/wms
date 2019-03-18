@@ -2,17 +2,19 @@
 {
     public enum ConfigurationValueEnum : long
     {
-        cellSpacing,
+        CellSpacing,
 
-        homingModeAcceleration,
+        HomingModeAcceleration,
 
-        homingCreepSpeed,
+        HomingCreepSpeed,
 
-        homingFastSpeed,
+        HomingFastSpeed,
 
-        inverterOperationTimeout,
+        InverterOperationTimeout,
 
-        resolution,
+        Resolution,
+
+        Offset,
 
         InverterAddress,
 
@@ -22,15 +24,19 @@
 
         IoPort,
 
-        positioningOverrideTargetPosition,
+        PositioningOverrideTargetPosition,
 
-        positioningOverrideTargetSpeed,
+        PositioningOverrideTargetSpeed,
 
-        positioningOverrideTargetAcceleration,
+        PositioningOverrideTargetAcceleration,
 
-        positioningOverrideTargetDeceleration,
+        PositioningOverrideTargetDeceleration,
 
         // INFO General Info parameters
+        UpperBound,
+
+        LowerBound,
+
         Address,
 
         Alfa_Num_1,
