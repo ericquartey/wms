@@ -58,6 +58,8 @@ namespace Ferretto.VW.VWApp
             this.BindViewModelToView<IVerticalAxisCalibrationViewModel, VerticalAxisCalibrationView>();
             this.BindViewModelToView<IVerticalOffsetCalibrationViewModel, VerticalOffsetCalibrationView>();
             this.BindViewModelToView<IWeightControlViewModel, WeightControlView>();
+            this.BindViewModelToView<ILSMTCarouselViewModel, LSMTCarouselView>();
+            this.BindViewModelToView<ISaveRestoreConfigViewModel, SaveRestoreConfigView>();
             this.BindViewModelToView<InstallationApp.IMainWindowViewModel, InstallationApp.MainWindow>();
 
             this.BindViewModelToView<OperatorApp.ViewsAndViewModels.Interfaces.IMainWindowViewModel, OperatorApp.MainWindow>();

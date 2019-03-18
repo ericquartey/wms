@@ -41,7 +41,7 @@
                                                 ContentText="{Binding NoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 LabelText="{x:Static res:InstallationApp.Output}" />
 
-        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="430,490,0,0"
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="410,490,0,0"
                     Content="{x:Static res:InstallationApp.Start}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"  />
 

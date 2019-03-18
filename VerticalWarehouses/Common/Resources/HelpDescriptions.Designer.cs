@@ -385,6 +385,96 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDLUTBay.
+        /// </summary>
+        public static string HelpDLUTBay {
+            get {
+                return ResourceManager.GetString("HelpDLUTBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDLUTChain.
+        /// </summary>
+        public static string HelpDLUTChain {
+            get {
+                return ResourceManager.GetString("HelpDLUTChain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDLUTCycleCompleted.
+        /// </summary>
+        public static string HelpDLUTCycleCompleted {
+            get {
+                return ResourceManager.GetString("HelpDLUTCycleCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDLUTCyclesRequired.
+        /// </summary>
+        public static string HelpDLUTCyclesRequired {
+            get {
+                return ResourceManager.GetString("HelpDLUTCyclesRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDLUTDescription.
+        /// </summary>
+        public static string HelpDLUTDescription {
+            get {
+                return ResourceManager.GetString("HelpDLUTDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDLUTFeedRate.
+        /// </summary>
+        public static string HelpDLUTFeedRate {
+            get {
+                return ResourceManager.GetString("HelpDLUTFeedRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDLUTGotoPosition.
+        /// </summary>
+        public static string HelpDLUTGotoPosition {
+            get {
+                return ResourceManager.GetString("HelpDLUTGotoPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDLUTPosition.
+        /// </summary>
+        public static string HelpDLUTPosition {
+            get {
+                return ResourceManager.GetString("HelpDLUTPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDLUTStart.
+        /// </summary>
+        public static string HelpDLUTStart {
+            get {
+                return ResourceManager.GetString("HelpDLUTStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDLUTStop.
+        /// </summary>
+        public static string HelpDLUTStop {
+            get {
+                return ResourceManager.GetString("HelpDLUTStop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpGCCompleted.
         /// </summary>
         public static string HelpGCCompleted {
@@ -574,6 +664,96 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpIPGButton.
+        /// </summary>
+        public static string HelpIPGButton {
+            get {
+                return ResourceManager.GetString("HelpIPGButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpIPGDescription.
+        /// </summary>
+        public static string HelpIPGDescription {
+            get {
+                return ResourceManager.GetString("HelpIPGDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpIPGDown.
+        /// </summary>
+        public static string HelpIPGDown {
+            get {
+                return ResourceManager.GetString("HelpIPGDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpIPGError.
+        /// </summary>
+        public static string HelpIPGError {
+            get {
+                return ResourceManager.GetString("HelpIPGError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpIPGHeder.
+        /// </summary>
+        public static string HelpIPGHeder {
+            get {
+                return ResourceManager.GetString("HelpIPGHeder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpIPGHelp.
+        /// </summary>
+        public static string HelpIPGHelp {
+            get {
+                return ResourceManager.GetString("HelpIPGHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpIPGInstaller.
+        /// </summary>
+        public static string HelpIPGInstaller {
+            get {
+                return ResourceManager.GetString("HelpIPGInstaller", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpIPGOff.
+        /// </summary>
+        public static string HelpIPGOff {
+            get {
+                return ResourceManager.GetString("HelpIPGOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpIPGOn.
+        /// </summary>
+        public static string HelpIPGOn {
+            get {
+                return ResourceManager.GetString("HelpIPGOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpIPGUp.
+        /// </summary>
+        public static string HelpIPGUp {
+            get {
+                return ResourceManager.GetString("HelpIPGUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpLDRDescription.
         /// </summary>
         public static string HelpLDRDescription {
@@ -718,6 +898,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpLSMTComandMode.
+        /// </summary>
+        public static string HelpLSMTComandMode {
+            get {
+                return ResourceManager.GetString("HelpLSMTComandMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpLSMTDescription.
         /// </summary>
         public static string HelpLSMTDescription {
@@ -750,6 +939,114 @@ namespace Ferretto.VW.Resources {
         public static string HelpLSMTTitle {
             get {
                 return ResourceManager.GetString("HelpLSMTTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpSRCDescription.
+        /// </summary>
+        public static string HelpSRCDescription {
+            get {
+                return ResourceManager.GetString("HelpSRCDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpSRCLoadAbortButton.
+        /// </summary>
+        public static string HelpSRCLoadAbortButton {
+            get {
+                return ResourceManager.GetString("HelpSRCLoadAbortButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpSRCLoadButton.
+        /// </summary>
+        public static string HelpSRCLoadButton {
+            get {
+                return ResourceManager.GetString("HelpSRCLoadButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpSRCLoadConfirmButton.
+        /// </summary>
+        public static string HelpSRCLoadConfirmButton {
+            get {
+                return ResourceManager.GetString("HelpSRCLoadConfirmButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpSRCLoadFolder.
+        /// </summary>
+        public static string HelpSRCLoadFolder {
+            get {
+                return ResourceManager.GetString("HelpSRCLoadFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpSRCLoadSide.
+        /// </summary>
+        public static string HelpSRCLoadSide {
+            get {
+                return ResourceManager.GetString("HelpSRCLoadSide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpSRCPageHeader.
+        /// </summary>
+        public static string HelpSRCPageHeader {
+            get {
+                return ResourceManager.GetString("HelpSRCPageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpSRCSaveAbortButton.
+        /// </summary>
+        public static string HelpSRCSaveAbortButton {
+            get {
+                return ResourceManager.GetString("HelpSRCSaveAbortButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpSRCSaveButton.
+        /// </summary>
+        public static string HelpSRCSaveButton {
+            get {
+                return ResourceManager.GetString("HelpSRCSaveButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpSRCSaveConfirmButton.
+        /// </summary>
+        public static string HelpSRCSaveConfirmButton {
+            get {
+                return ResourceManager.GetString("HelpSRCSaveConfirmButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpSRCSaveFolder.
+        /// </summary>
+        public static string HelpSRCSaveFolder {
+            get {
+                return ResourceManager.GetString("HelpSRCSaveFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpSRCSaveSide.
+        /// </summary>
+        public static string HelpSRCSaveSide {
+            get {
+                return ResourceManager.GetString("HelpSRCSaveSide", resourceCulture);
             }
         }
         

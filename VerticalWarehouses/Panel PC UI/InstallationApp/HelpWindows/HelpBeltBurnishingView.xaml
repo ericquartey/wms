@@ -54,7 +54,7 @@
 
         <TextBlock Grid.Row="0"
                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
-                   Width="670" Height="50"
+                   Width="670" Height="60"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                    Text="{x:Static res:HelpDescriptions.BeltBurnishingFunctionDescription}" />
 

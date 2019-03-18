@@ -6,12 +6,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
     <StackPanel x:Name="LayoutRoot"
-                VerticalAlignment="Center">
+                VerticalAlignment="Top" HorizontalAlignment="Left">
         <TextBlock Margin="0,1,5,1"
                    Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
                    Text="{Binding LabelText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <TextBlock Margin="0,3,5,5"
                    Background="Transparent"
+                   TextWrapping="Wrap"
                    Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
                    Text="{Binding ContentText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </StackPanel>
