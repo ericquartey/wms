@@ -102,9 +102,9 @@ namespace Ferretto.VW.MAS_DataLayer
                 false,
                 message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
 
-            this.SetDecimalConfigurationValue(ConfigurationValueEnum.cellSpacing, 25.01m);
+            this.SetDecimalConfigurationValue(ConfigurationValueEnum.CellSpacing, 25.01m);
 
-            this.GetDecimalConfigurationValue(ConfigurationValueEnum.cellSpacing);
+            this.GetDecimalConfigurationValue(ConfigurationValueEnum.CellSpacing);
         }
 
         /// <summary>
@@ -167,11 +167,29 @@ namespace Ferretto.VW.MAS_DataLayer
         #region Methods
 
         /// <inheritdoc/>
-        public void LoadGeneralInfo()
+        public void LoadConfigurationValuesInfo(InfoFilesEnum configurationValueRequest)
         {
-            var generalInfoPath = this.filesInfo.Value.GeneralInfoPath;
+            string requestPath;
 
-            using (var streamReader = new StreamReader(generalInfoPath))
+            switch (configurationValueRequest)
+            {
+                case InfoFilesEnum.GeneralInfo:
+                    {
+                        requestPath = this.filesInfo.Value.GeneralInfoPath;
+                        break;
+                    }
+                case InfoFilesEnum.InstallationInfo:
+                    {
+                        requestPath = this.filesInfo.Value.InstallationInfoPath;
+                        break;
+                    }
+                default:
+                    {
+                        throw new InMemoryDataLayerException(DataLayerExceptionEnum.UNKNOWN_INFO_FILE_EXCEPTION);
+                    }
+            }
+
+            using (var streamReader = new StreamReader(requestPath))
             {
                 var json = streamReader.ReadToEnd();
                 var jsonObject = JObject.Parse(json);
@@ -181,8 +199,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
                 foreach (var jsonElement in jsonObject)
                 {
-                    jsonElementName = (ConfigurationValueEnum)System.Enum.Parse(typeof(ConfigurationValueEnum), jsonElement.Key);
-
+                    jsonElementName = (ConfigurationValueEnum)Enum.Parse(typeof(ConfigurationValueEnum), jsonElement.Key);
                     jsonElementType = this.ConvertConfigurationValue(jsonElementName);
 
                     switch (jsonElementType)

@@ -11,15 +11,15 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
+        private readonly IEventAggregator eventAggregator;
+
         private Visibility cancelButtonVisibility = Visibility.Hidden;
 
         private IUnityContainer container;
 
-        private IEventAggregator eventAggregator;
-
         private bool isBackButtonActive = true;
 
-        private bool isCancelButtonActive = false;
+        private bool isCancelButtonActive;
 
         #endregion
 
@@ -59,9 +59,9 @@ namespace Ferretto.VW.InstallationApp
             this.BackButtonCommand.RegisterCommand(((MainWindowViewModel)this.container.Resolve<IMainWindowViewModel>()).BackToMainWindowNavigationButtonsViewButtonCommand);
         }
 
-        public void InitializeViewModel(IUnityContainer _container)
+        public void InitializeViewModel(IUnityContainer container)
         {
-            this.container = _container;
+            this.container = container;
         }
 
         #endregion

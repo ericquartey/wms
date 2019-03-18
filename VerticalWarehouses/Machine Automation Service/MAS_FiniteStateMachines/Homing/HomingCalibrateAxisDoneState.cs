@@ -98,7 +98,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             if (((IHomingStateMachine)this.parentStateMachine).NumberOfExecutedSteps == ((IHomingStateMachine)this.parentStateMachine).NMaxSteps)
             {
                 //TEMP Change to end state (the operation is done)
-                this.parentStateMachine.ChangeState(new HomingEndState(this.parentStateMachine));
+                this.parentStateMachine.ChangeState(new HomingEndState(this.parentStateMachine, this.axisToSwitch));
             }
             else
             {
@@ -118,7 +118,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             //TEMP This is a request to stop the operation
             ((IHomingStateMachine)this.parentStateMachine).IsStopRequested = true;
 
-            this.parentStateMachine.ChangeState(new HomingEndState(this.parentStateMachine));
+            this.parentStateMachine.ChangeState(new HomingEndState(this.parentStateMachine, this.axisToSwitch));
         }
 
         #endregion

@@ -7,8 +7,10 @@ using DevExpress.Xpf.Docking.Base;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Resources;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Prism.Regions;
+using System.Windows.Threading;
+using System;
 
 namespace Ferretto.Common.Controls
 {
@@ -120,12 +122,13 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public void RegisterView(string regionName, string title)
+        public void RegisterView(string regionName, string title, INavigableView viewToActivate, IRegionManager regionManager)
         {
             DocumentGroup activeGroup = null;
 
             var newLayoutPanel = new LayoutPanel();
             newLayoutPanel.Caption = title;
+            RegionManager.SetRegionManager(newLayoutPanel, regionManager);
             RegionManager.SetRegionName(newLayoutPanel, regionName);
 
             if (this.ActiveDockItem != null && (this.ActiveDockItem.Parent is DocumentGroup))
@@ -174,16 +177,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        private void WmsMainDockLayoutManager_DockItemClosing(object sender, ItemCancelEventArgs e)
-        {
-            if (!(((DevExpress.Xpf.Docking.ContentItem)e.Item).Content is INavigableView vmsView))
-            {
-                return;
-            }
-
-            vmsView.Disappear();
-        }
-
         private void NewLayoutPanel_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             if (this.busyIndicator != null &&
@@ -202,6 +195,16 @@ namespace Ferretto.Common.Controls
         private void OnMouseDown(MouseDownInfo mouseDownInfo)
         {
             this.isControlPressed = (Keyboard.Modifiers & System.Windows.Input.ModifierKeys.Control) == System.Windows.Input.ModifierKeys.Control;
+        }
+
+        private void WmsMainDockLayoutManager_DockItemClosing(object sender, ItemCancelEventArgs e)
+        {
+            if (!(((DevExpress.Xpf.Docking.ContentItem)e.Item).Content is INavigableView vmsView))
+            {
+                return;
+            }
+
+            vmsView.Disappear();
         }
 
         private void WmsMainDockLayoutManager_DockOperationCompleted(object sender, DevExpress.Xpf.Docking.Base.DockOperationCompletedEventArgs e)
@@ -244,7 +247,10 @@ namespace Ferretto.Common.Controls
             if ((string.IsNullOrEmpty(this.StartModuleName) &&
                 string.IsNullOrEmpty(this.StartViewName)) == false)
             {
-                this.navigationService.Appear(this.StartModuleName, this.StartViewName);
+                if (this.navigationService.IsUnitTest == false)
+                {
+                    this.navigationService.Appear(this.StartModuleName, this.StartViewName);
+                }
             }
         }
 

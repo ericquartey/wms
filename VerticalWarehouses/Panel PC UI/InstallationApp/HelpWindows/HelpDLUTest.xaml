@@ -1,0 +1,113 @@
+﻿<UserControl x:Class="Ferretto.VW.InstallationApp.HelpWindows.HelpDLUTest"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Ferretto.VW.InstallationApp.HelpWindows"            
+             xmlns:Controls="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls" 
+             xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
+             mc:Ignorable="d">
+
+    <Grid Width="1024" Height="688"
+          Background="{DynamicResource VWAPP_BACKGROUND}">
+
+        <Image Width="200"
+               Height="60"
+               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"
+               Source="{DynamicResource Ferretto_Logo}"
+               Stretch="Uniform" />
+
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
+                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
+                    Text="{x:Static res:InstallationApp.DLUTestHeader}" />
+
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
+                    Width="670" Height="60"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpDLUTDescription}" />
+
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,140,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpDLUTBay}" />
+
+        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,140,0,0"
+                     Width="260" Height="70"
+                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                     Text="{x:Static res:HelpDescriptions.HelpDLUTGotoPosition}" />
+        
+        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,280,0,0" Width="180"
+                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                    Highlighted="True" IsEnabled="True"
+                                                    InputText="10"
+                                                    LabelText="{x:Static res:InstallationApp.DLUTestFeedRate}" />
+        
+        <Controls:CustomLabelTextBlockControl      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,490,0,0" Width="180"
+                                                   LabelText="{x:Static res:InstallationApp.DLUTestCompletedCycles}"  
+                                                   ContentText="12" />
+        
+        <Controls:CustomLabelTextBlockControl      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0"
+                                                   ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   LabelText="{x:Static res:InstallationApp.DLUTestActualposition}" />
+
+        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0" Width="180"
+                                                    Highlighted="True" IsEnabled="True"
+                                                    InputText="20"
+                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                    LabelText="{x:Static res:InstallationApp.DLUTestCycleRequired}" />
+
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,140,0,0"
+                    Content="{x:Static res:InstallationApp.BayControlMoveToPosition}"
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,280,0,0"
+                    Content="{x:Static res:InstallationApp.DLUTestStop}"
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        
+        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,210,0,0"
+                    Content="{x:Static res:InstallationApp.DLUTestStart}"
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,210,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpDLUTPosition}" />
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,280,0,0"
+            Width="260" Height="70"
+            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+            Text="{x:Static res:HelpDescriptions.HelpDLUTFeedRate}" />
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,350,0,0"
+            Width="260" Height="70"
+            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+            Text="{x:Static res:HelpDescriptions.HelpDLUTChain}" />
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,420,0,0"
+            Width="260" Height="70"
+            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+            Text="{x:Static res:HelpDescriptions.HelpDLUTCyclesRequired}" />
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,490,0,0"
+            Width="260" Height="70"
+            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+            Text="{x:Static res:HelpDescriptions.HelpDLUTCycleCompleted}" />
+        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,210,0,0"
+            Width="260" Height="70"
+            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+            Text="{x:Static res:HelpDescriptions.HelpDLUTStart}" />
+        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,280,0,0"
+            Width="260" Height="70"
+            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+            Text="{x:Static res:HelpDescriptions.HelpDLUTStop}" />
+        
+        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0" Width="180"
+                                                    Highlighted="True" IsEnabled="True"
+                                                    InputText="1"
+                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                    LabelText="{x:Static res:InstallationApp.BayControlSelectedBay}" />
+        
+        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0" Width="180"
+                                                    Highlighted="True" IsEnabled="True"
+                                                    InputText="1"
+                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                    LabelText="{x:Static res:InstallationApp.BayControlSelectedPosition}" />
+
+    </Grid>
+</UserControl>

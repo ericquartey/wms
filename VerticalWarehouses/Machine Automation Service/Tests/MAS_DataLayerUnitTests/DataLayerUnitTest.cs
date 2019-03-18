@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Ferretto.VW.Common_Utils;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.MAS_DataLayer;
 using Microsoft.EntityFrameworkCore;
@@ -35,7 +36,11 @@ namespace MAS_DataLayerUnitTests
 
             var path = Directory.GetCurrentDirectory();
 
-            var filesInfo = new FilesInfo { GeneralInfoPath = "..\\..\\..\\..\\..\\MAS_AutomationService\\general_info.json" };
+            var filesInfo = new FilesInfo
+            {
+                GeneralInfoPath = @"..\..\..\..\..\MAS_AutomationService\general_info.json",
+                InstallationInfoPath = @"..\..\..\..\..\MAS_AutomationService\installation_info.json"
+            };
             var iOptions = Options.Create(filesInfo);
 
             this.dataLayer = new DataLayer(this.context, mockEventAggregator.Object, iOptions);
@@ -46,13 +51,13 @@ namespace MAS_DataLayerUnitTests
         {
             var alfaNum1 = true;
 
-            var stringAN1 = new ConfigurationValue { VarName = ConfigurationValueEnum.AlfaNum1, VarType = DataTypeEnum.booleanType, VarValue = alfaNum1.ToString() };
+            var stringAN1 = new ConfigurationValue { VarName = ConfigurationValueEnum.Alfa_Num_1, VarType = DataTypeEnum.booleanType, VarValue = alfaNum1.ToString() };
 
             this.context.ConfigurationValues.Add(stringAN1);
 
             this.context.SaveChanges();
 
-            Assert.AreEqual(alfaNum1, this.dataLayer.GetBoolConfigurationValue(ConfigurationValueEnum.AlfaNum1));
+            Assert.AreEqual(alfaNum1, this.dataLayer.GetBoolConfigurationValue(ConfigurationValueEnum.Alfa_Num_1));
         }
 
         [TestMethod]
@@ -73,26 +78,26 @@ namespace MAS_DataLayerUnitTests
         {
             var setDecResolution = 100.01m;
 
-            var decimalValue = new ConfigurationValue { VarName = ConfigurationValueEnum.resolution, VarType = DataTypeEnum.decimalType, VarValue = setDecResolution.ToString() };
+            var decimalValue = new ConfigurationValue { VarName = ConfigurationValueEnum.Resolution, VarType = DataTypeEnum.decimalType, VarValue = setDecResolution.ToString() };
 
             this.context.ConfigurationValues.Add(decimalValue);
 
             this.context.SaveChanges();
 
-            Assert.AreEqual(setDecResolution, this.dataLayer.GetDecimalConfigurationValue(ConfigurationValueEnum.resolution));
+            Assert.AreEqual(setDecResolution, this.dataLayer.GetDecimalConfigurationValue(ConfigurationValueEnum.Resolution));
         }
 
         [TestMethod]
         public void GetIntegerConfigurationValue()
         {
             var setTypeBay1 = 1;
-            var integerValue = new ConfigurationValue { VarName = ConfigurationValueEnum.Type_Bay1, VarType = DataTypeEnum.integerType, VarValue = setTypeBay1.ToString() };
+            var integerValue = new ConfigurationValue { VarName = ConfigurationValueEnum.Type_Bay_1, VarType = DataTypeEnum.integerType, VarValue = setTypeBay1.ToString() };
 
             this.context.ConfigurationValues.Add(integerValue);
 
             this.context.SaveChanges();
 
-            Assert.AreEqual(setTypeBay1, this.dataLayer.GetIntegerConfigurationValue(ConfigurationValueEnum.Type_Bay1));
+            Assert.AreEqual(setTypeBay1, this.dataLayer.GetIntegerConfigurationValue(ConfigurationValueEnum.Type_Bay_1));
         }
 
         [TestMethod]
@@ -126,9 +131,29 @@ namespace MAS_DataLayerUnitTests
         [TestMethod]
         public void ReadGeneralInfoJson()
         {
-            this.dataLayer.LoadGeneralInfo();
+            this.dataLayer.LoadConfigurationValuesInfo(InfoFilesEnum.GeneralInfo);
 
             Assert.IsTrue(this.context.ConfigurationValues.Any());
+        }
+
+        [TestMethod]
+        public void ReadInstallationInfoJson()
+        {
+            this.dataLayer.LoadConfigurationValuesInfo(InfoFilesEnum.InstallationInfo);
+
+            Assert.IsTrue(this.context.ConfigurationValues.Any());
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InMemoryDataLayerException))]
+        public void TestErrorLoadFilesJson()
+        {
+            // INFO Arrange - Empty
+
+            // INFO Act
+            this.dataLayer.LoadConfigurationValuesInfo((InfoFilesEnum)100);
+
+            // INFO Assert - Expects exception
         }
 
         protected DataLayerContext CreateContext()

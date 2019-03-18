@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
@@ -83,6 +84,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public override async void LoadRelatedData()
         {
+            if (!this.IsModelIdValid)
+            {
+                return;
+            }
+
             this.CompartmentsDataSource = this.Model != null
                 ? await this.compartmentProvider.GetByItemIdAsync(this.Model.Id)
                 : null;

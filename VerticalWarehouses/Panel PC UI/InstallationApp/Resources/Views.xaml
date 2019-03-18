@@ -101,6 +101,15 @@
     <DataTemplate DataType="{x:Type local:BayControlViewModel}">
         <local:BayControlView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type local:DrawerLoadingUnloadingTestViewModel}">
+        <local:DrawerLoadingUnloadingTestView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:LSMTCarouselViewModel}">
+        <local:LSMTCarouselView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:SaveRestoreConfigViewModel}">
+        <local:SaveRestoreConfigView />
+    </DataTemplate>
 
 
 </ResourceDictionary>

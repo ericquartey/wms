@@ -29,7 +29,7 @@ namespace MAS_FiniteStateMachinesUnitTests.Homing
             eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<NotificationEvent>()).Returns(notifyEvent);
 
             var sm = new HomingStateMachine(eventAggregatorMock.Object, calibrateMessageData.Object);
-            sm.ChangeState(new HomingEndState(sm), null);
+            sm.ChangeState(new HomingEndState(sm, Axis.Horizontal), null);
 
             Assert.AreEqual(sm.GetState.Type, "HomingEndState");
         }

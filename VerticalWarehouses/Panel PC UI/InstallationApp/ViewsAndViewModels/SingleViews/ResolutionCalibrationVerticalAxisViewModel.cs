@@ -29,19 +29,19 @@ namespace Ferretto.VW.InstallationApp
 
         private IEventAggregator eventAggregator;
 
-        private bool isAcceptButtonActive;
+        private bool isAcceptButtonActive = true;
 
         private bool isMesuredInitialPositionHighlighted;
 
-        private bool isMesuredInitialPositionTextInputActive;
+        private bool isMesuredInitialPositionTextInputActive = true;
 
         private bool isMesuredMovementHighlighted;
 
-        private bool isMesuredMovementTextInputActive;
+        private bool isMesuredMovementTextInputActive = true;
 
-        private bool isMoveButtonActive;
+        private bool isMoveButtonActive = true;
 
-        private bool isSetPositionButtonActive;
+        private bool isSetPositionButtonActive = true;
 
         private string mesuredInitialPosition;
 
