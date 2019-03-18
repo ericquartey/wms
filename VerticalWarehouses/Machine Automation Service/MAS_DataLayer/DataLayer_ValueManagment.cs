@@ -88,8 +88,8 @@ namespace Ferretto.VW.MAS_DataLayer
                         break;
                     }
 
-                case ConfigurationValueEnum.cellSpacing:
-                case ConfigurationValueEnum.resolution:
+                case ConfigurationValueEnum.CellSpacing:
+                case ConfigurationValueEnum.Resolution:
                 // INFO General info variables
                 case ConfigurationValueEnum.Height:
                 case ConfigurationValueEnum.Height_Bay_1_Position_1:
