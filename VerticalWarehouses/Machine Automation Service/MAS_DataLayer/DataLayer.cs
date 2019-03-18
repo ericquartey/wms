@@ -102,9 +102,9 @@ namespace Ferretto.VW.MAS_DataLayer
                 false,
                 message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
 
-            this.SetDecimalConfigurationValue(ConfigurationValueEnum.cellSpacing, 25.01m);
+            this.SetDecimalConfigurationValue(ConfigurationValueEnum.CellSpacing, 25.01m);
 
-            this.GetDecimalConfigurationValue(ConfigurationValueEnum.cellSpacing);
+            this.GetDecimalConfigurationValue(ConfigurationValueEnum.CellSpacing);
         }
 
         /// <summary>
