@@ -4,15 +4,16 @@ using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.Common.EF.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [System.CodeDom.Compiler.GeneratedCode("EntityFramework", "v2.1")]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190315085056_Rename_Field_RequiredQuantity_From_Table_Missions")]
+    partial class Rename_Field_RequiredQuantity_From_Table_Missions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
