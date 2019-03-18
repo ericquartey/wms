@@ -20,7 +20,7 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isStartButtonActive = true;
 
-        private bool isStopButtonActive;
+        private bool isStopButtonActive = true;
 
         private string lowerBound;
 
@@ -182,7 +182,7 @@ namespace Ferretto.VW.InstallationApp
             }
             else
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Message is null");
             }
         }
 

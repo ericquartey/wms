@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Interfaces;
 
 namespace Ferretto.VW.Common_Utils.Messages.MAStoUIMessages

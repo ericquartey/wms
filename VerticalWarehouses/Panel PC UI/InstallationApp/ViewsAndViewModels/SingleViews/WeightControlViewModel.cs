@@ -26,7 +26,7 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isSetBeginButtonActive = true;
 
-        private bool isSetStopButtonActive;
+        private bool isSetStopButtonActive = true;
 
         private int mesuredWeight;
 

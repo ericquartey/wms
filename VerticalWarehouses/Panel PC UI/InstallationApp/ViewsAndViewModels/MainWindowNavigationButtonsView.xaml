@@ -10,13 +10,15 @@
              xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
+    
     <Grid Name="NavigationButtonViewRoot"
+          Margin="0,40,0,0"
           Width="auto"
-          Height="600">
+          Height="538">
         <Grid.RowDefinitions>
             <RowDefinition Height="60" />
             <RowDefinition Height="10" />
-            <RowDefinition Height="460" />
+            <RowDefinition Height="398" />
             <RowDefinition Height="10" />
             <RowDefinition Height="60" />
         </Grid.RowDefinitions>
@@ -111,6 +113,11 @@
                         IsEnabled="{Binding IsWeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
+                <Button Command="{Binding DataContext.DrawerLoadingUnloadingTestButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                        Content="{x:Static res:InstallationApp.DrawerLoadingUnloadingTest}"
+                        IsEnabled="{Binding IsWeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+
                 <Button Command="{Binding DataContext.LoadFirstDrawerButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.LoadFirstDrawerButton}"
                         IsEnabled="{Binding IsWeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -118,6 +125,11 @@
 
                 <Button Command="{Binding DataContext.LoadingDrawersButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.LoadingDrawersButton}"
+                        IsEnabled="{Binding IsWeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+
+                <Button Command="{Binding DataContext.SaveRestoreConfigButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                        Content="{x:Static res:InstallationApp.SaveRestoreConfigButton}"
                         IsEnabled="{Binding IsWeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 

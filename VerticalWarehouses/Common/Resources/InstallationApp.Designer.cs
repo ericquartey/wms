@@ -565,7 +565,70 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Correct Offset.
+        ///   Cerca una stringa localizzata simile a DLUTestActualposition.
+        /// </summary>
+        public static string DLUTestActualposition {
+            get {
+                return ResourceManager.GetString("DLUTestActualposition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DLUTestCompletedCycles.
+        /// </summary>
+        public static string DLUTestCompletedCycles {
+            get {
+                return ResourceManager.GetString("DLUTestCompletedCycles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DLUTestCycleRequired.
+        /// </summary>
+        public static string DLUTestCycleRequired {
+            get {
+                return ResourceManager.GetString("DLUTestCycleRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DLUTestFeedRate.
+        /// </summary>
+        public static string DLUTestFeedRate {
+            get {
+                return ResourceManager.GetString("DLUTestFeedRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DLUTestHeader.
+        /// </summary>
+        public static string DLUTestHeader {
+            get {
+                return ResourceManager.GetString("DLUTestHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DLUTestStart.
+        /// </summary>
+        public static string DLUTestStart {
+            get {
+                return ResourceManager.GetString("DLUTestStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DLUTestStop.
+        /// </summary>
+        public static string DLUTestStop {
+            get {
+                return ResourceManager.GetString("DLUTestStop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Correct Offset.
         /// </summary>
         public static string DoCorrectOffset {
             get {
@@ -583,7 +646,16 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Elevator Engine Selected.
+        ///   Cerca una stringa localizzata simile a DrawerLadingUnloadingTest.
+        /// </summary>
+        public static string DrawerLoadingUnloadingTest {
+            get {
+                return ResourceManager.GetString("DrawerLoadingUnloadingTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Elevator Engine Selected.
         /// </summary>
         public static string ElevatorEngineSelected {
             get {
@@ -1231,7 +1303,34 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Elevator.
+        ///   Cerca una stringa localizzata simile a LSMTCarouselButton.
+        /// </summary>
+        public static string LSMTCarouselButton {
+            get {
+                return ResourceManager.GetString("LSMTCarouselButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LSMTCarouselPageHeader.
+        /// </summary>
+        public static string LSMTCarouselPageHeader {
+            get {
+                return ResourceManager.GetString("LSMTCarouselPageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a LSMTComandNote.
+        /// </summary>
+        public static string LSMTComandNote {
+            get {
+                return ResourceManager.GetString("LSMTComandNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Elevator.
         /// </summary>
         public static string LSMTElevator {
             get {
@@ -1276,7 +1375,16 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vertical Axis.
+        ///   Cerca una stringa localizzata simile a LSMTNoteHeader.
+        /// </summary>
+        public static string LSMTNoteHeader {
+            get {
+                return ResourceManager.GetString("LSMTNoteHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Vertical Axis.
         /// </summary>
         public static string LSMTVerticalEngineButton {
             get {
@@ -1762,7 +1870,97 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Security Function Active.
+        ///   Cerca una stringa localizzata simile a SaveRestoreConfigAbortRestoreButton.
+        /// </summary>
+        public static string SaveRestoreConfigAbortRestoreButton {
+            get {
+                return ResourceManager.GetString("SaveRestoreConfigAbortRestoreButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a SaveRestoreConfigAbortSaveButton.
+        /// </summary>
+        public static string SaveRestoreConfigAbortSaveButton {
+            get {
+                return ResourceManager.GetString("SaveRestoreConfigAbortSaveButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a SaveRestoreConfigButton.
+        /// </summary>
+        public static string SaveRestoreConfigButton {
+            get {
+                return ResourceManager.GetString("SaveRestoreConfigButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a SaveRestoreConfigConfirmRestoreButton.
+        /// </summary>
+        public static string SaveRestoreConfigConfirmRestoreButton {
+            get {
+                return ResourceManager.GetString("SaveRestoreConfigConfirmRestoreButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a SaveRestoreConfigConfirmSaveButton.
+        /// </summary>
+        public static string SaveRestoreConfigConfirmSaveButton {
+            get {
+                return ResourceManager.GetString("SaveRestoreConfigConfirmSaveButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a SaveRestoreConfigPageHeader.
+        /// </summary>
+        public static string SaveRestoreConfigPageHeader {
+            get {
+                return ResourceManager.GetString("SaveRestoreConfigPageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a SaveRestoreConfigPageHeader.
+        /// </summary>
+        public static string SaveRestoreConfigPageHeader2 {
+            get {
+                return ResourceManager.GetString("SaveRestoreConfigPageHeader2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a SaveRestoreConfigRestoreButton.
+        /// </summary>
+        public static string SaveRestoreConfigRestoreButton {
+            get {
+                return ResourceManager.GetString("SaveRestoreConfigRestoreButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a SaveRestoreConfigSaveButton.
+        /// </summary>
+        public static string SaveRestoreConfigSaveButton {
+            get {
+                return ResourceManager.GetString("SaveRestoreConfigSaveButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a SaveRestoreConfigSelectedFolder.
+        /// </summary>
+        public static string SaveRestoreConfigSelectedFolder {
+            get {
+                return ResourceManager.GetString("SaveRestoreConfigSelectedFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Security Function Active.
         /// </summary>
         public static string SecurityFunctionActive {
             get {
