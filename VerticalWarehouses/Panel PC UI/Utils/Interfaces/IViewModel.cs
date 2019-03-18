@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.InstallationApp
+﻿namespace Ferretto.VW.Utils.Interfaces
 {
     public interface IViewModel
     {
@@ -10,6 +10,6 @@
 
         void UnSubscribeMethodFromEvent();
 
-        #endregion Methods
+        #endregion
     }
 }

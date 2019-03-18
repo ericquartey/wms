@@ -8,6 +8,7 @@ using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Ferretto.VW.Utils.Interfaces;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -114,7 +115,7 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand ErrorButtonCommand => this.errorButtonCommand ?? (this.errorButtonCommand = new DelegateCommand(() =>
         {
-            Debug.Print("TODO: IMPLEMENT ERROR SYSTEM");
+            // TODO implement error system
         }));
 
         public ICommand Gate1HeightControlNavigationButtonCommand => this.gate1HeightControlNavigationButtonCommand ?? (this.gate1HeightControlNavigationButtonCommand = new DelegateCommand(() =>
@@ -206,7 +207,7 @@ namespace Ferretto.VW.InstallationApp
         {
             this.isNavigationButtonRegionExpanded = Visibility.Collapsed;
             this.NavigateToView<SSMainViewModel, ISSMainViewModel>();
-            (this.contentRegionCurrentViewModel as SSMainViewModel).SSNavigationRegionCurrentViewModel = (this.container.Resolve<ISSNavigationButtonsViewModel>() as SSNavigationButtonsViewModel);
+            this.container.Resolve<ISSMainViewModel>().SSNavigationRegionCurrentViewModel = (this.container.Resolve<ISSNavigationButtonsViewModel>() as SSNavigationButtonsViewModel);
         }));
 
         public ICommand SsVariousInputsButtonCommand => this.ssVariousInputsButtonCommand ?? (this.ssVariousInputsButtonCommand = new DelegateCommand(() =>
@@ -245,8 +246,7 @@ namespace Ferretto.VW.InstallationApp
             this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
             var desiredViewModel = this.container.Resolve<I>() as T;
             desiredViewModel.SubscribeMethodToEvent();
-            (this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>() as MainWindowBackToIAPPButtonViewModel)
-                .BackButtonCommand.RegisterCommand(new DelegateCommand(desiredViewModel.ExitFromViewMethod));
+            this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>().BackButtonCommand.RegisterCommand(new DelegateCommand(desiredViewModel.ExitFromViewMethod));
             this.ContentRegionCurrentViewModel = desiredViewModel;
         }
 
