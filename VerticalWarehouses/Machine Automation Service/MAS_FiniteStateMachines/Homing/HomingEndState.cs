@@ -1,20 +1,29 @@
 ﻿using System;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
     public class HomingEndState : StateBase
     {
+        #region Fields
+
+        private readonly Axis axisToStop;
+
+        #endregion
+
         #region Constructors
 
-        public HomingEndState(IStateMachine parentMachine)
+        public HomingEndState(IStateMachine parentMachine, Axis axisToStop)
         {
             this.parentStateMachine = parentMachine;
+            this.axisToStop = axisToStop;
 
-            //TEMP Send a message to stop the homing to the inverter (is it useful?)
-            var inverterMessage = new CommandMessage(null,
+            //TEMP Send a message to stop the homing to the inverter
+            var stopMessageData = new StopAxisMessageData(this.axisToStop);
+            var inverterMessage = new CommandMessage(stopMessageData,
                 "Homing Stop",
                 MessageActor.InverterDriver,
                 MessageActor.FiniteStateMachines,

@@ -358,7 +358,7 @@ namespace Ferretto.VW.InverterDriver
                     }
                 }
 
-                if (currentStateMachine != null)
+                if (this.currentStateMachine != null)
                 {
                     if (this.currentStateMachine.ProcessMessage(currentMessage))
                     {
