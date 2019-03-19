@@ -17,7 +17,7 @@ namespace MAS_FiniteStateMachinesUnitTests
         [TestCategory("Unit")]
         public void TestFiniteStateMachinesInvalidCreation()
         {
-            Assert.ThrowsException<NullReferenceException>(() => new FiniteStateMachines(null));
+            Assert.ThrowsException<NullReferenceException>(() => new FiniteStateMachines(null, null));
         }
 
         [TestMethod]
@@ -31,7 +31,7 @@ namespace MAS_FiniteStateMachinesUnitTests
             eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<CommandEvent>()).Returns(commandServiceEvent);
             eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<NotificationEvent>()).Returns(notifyServiceEvent);
 
-            var fsm = new FiniteStateMachines(eventAggregatorMock.Object);
+            var fsm = new FiniteStateMachines(eventAggregatorMock.Object, null);
 
             fsm.StartAsync(new CancellationToken()).Wait();
         }

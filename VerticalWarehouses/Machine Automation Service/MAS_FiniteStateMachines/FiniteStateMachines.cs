@@ -9,6 +9,7 @@ using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_FiniteStateMachines.Homing;
 using Ferretto.VW.MAS_FiniteStateMachines.Mission;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines
@@ -20,6 +21,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         private readonly Task commadReceiveTask;
 
         private readonly IEventAggregator eventAggregator;
+
+        private readonly ILogger logger;
 
         private readonly BlockingConcurrentQueue<CommandMessage> messageQueue;
 
@@ -35,9 +38,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Constructors
 
-        public FiniteStateMachines(IEventAggregator eventAggregator)
+        public FiniteStateMachines(IEventAggregator eventAggregator, ILogger<FiniteStateMachines> logger)
         {
             this.eventAggregator = eventAggregator;
+
+            this.logger = logger;
 
             this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
 
@@ -63,6 +68,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Destination == MessageActor.FiniteStateMachines || message.Destination == MessageActor.Any);
+
+            this.logger?.LogInformation("Finite State Machine Constructor");
         }
 
         #endregion
