@@ -132,14 +132,14 @@
 
                     <wms:WmsGridControl.Columns>
                         <dxg:GridColumn Width="200*"
-                                        FieldName="ItemListStatus">
+                                        FieldName="Status">
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
                                         <wms:WmsEnumIndicator Margin="5,0,0,0"
                                                               VerticalAlignment="Center"
                                                               EnumType="{x:Type models:ItemListStatus}"
-                                                              EnumValue="{Binding Data.ItemListStatus}"
+                                                              EnumValue="{Binding Data.Status}"
                                                               HideIcon="True"
                                                               IconSize="8"
                                                               ShowText="True" />
@@ -166,7 +166,7 @@
                     </wms:WmsGridControl.Columns>
 
                     <wms:WmsGridControl.SortInfo>
-                        <dxg:GridSortInfo FieldName="ItemListStatus"
+                        <dxg:GridSortInfo FieldName="Status"
                                           SortOrder="Descending" />
                     </wms:WmsGridControl.SortInfo>
 
