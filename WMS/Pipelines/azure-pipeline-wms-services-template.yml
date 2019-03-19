@@ -21,7 +21,7 @@ steps:
   displayName: 'NuGet restore (netcore)'
   inputs:
     command: restore
-    projects:  ${{ parameters.RestoreBuildProjects }} 
+    projects:  ${{ parameters.RestoreBuildProjects }}
     feedsToUse: config
     nugetConfigPath: nuget.config
 
@@ -32,7 +32,7 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: 'Build projects (netcore)'
   inputs:
-    projects: ${{ parameters.RestoreBuildProjects }} 
+    projects: ${{ parameters.RestoreBuildProjects }}
     arguments: '--configuration ${{ parameters.BuildConfiguration }} --framework ${{ parameters.TargetFramework }}'
 
 
@@ -45,12 +45,12 @@ steps:
 
 
 - task: DotNetCoreCLI@2
-  displayName: 'Publish (netcore)'
+  displayName: 'Publish Projects'
   inputs:
     command: publish
     publishWebProjects: false
-    projects: ${{ parameters.RestoreBuildProjects }} 
-    arguments: '--configuration ${{ parameters.BuildConfiguration }} --framework ${{ parameters.TargetFramework }} --no-build --no-restore'
+    projects: ${{ parameters.RestoreBuildProjects }}
+    arguments: '--configuration ${{ parameters.BuildConfiguration }} --framework ${{ parameters.TargetFramework }} --runtime win7-x64 --no-build --no-restore'
     zipAfterPublish: false
 
 
@@ -59,6 +59,13 @@ steps:
   inputs:
     PathtoPublish: 'WMS/Data/WebAPI/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/win7-x64/publish'
     ArtifactName: 'data_service'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Automation Service Mock'
+  inputs:
+    PathtoPublish: 'WMS/AutomationServiceMock/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/win7-x64/publish'
+    ArtifactName: 'automation_service_mock'
 
 
 - task: PublishBuildArtifacts@1
