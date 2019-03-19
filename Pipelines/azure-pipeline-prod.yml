@@ -33,6 +33,7 @@ steps:
 - template: ../WMS/Pipelines/azure-pipeline-wms-ui-template.yml
   parameters:
     BuildConfiguration: 'ReleaseWmsUI'
+    BuildProjectConfiguration: 'Release'
     BuildPlatform:  $(BuildPlatform)
 
 
