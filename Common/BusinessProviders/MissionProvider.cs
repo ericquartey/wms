@@ -65,7 +65,8 @@ namespace Ferretto.Common.BusinessProviders
                     CompartmentType = string.Format(Common.Resources.MasterData.CompartmentTypeListFormatReduced, m.CompartmentTypeWidth, m.CompartmentTypeHeight),
                     ItemUnitMeasure = m.ItemMeasureUnitDescription,
                     MaterialStatusDescription = m.MaterialStatusDescription,
-                    PackageTypeDescription = m.PackageTypeDescription
+                    PackageTypeDescription = m.PackageTypeDescription,
+                    DispatchedQuantity = m.DispatchedQuantity
                 });
         }
 
@@ -101,7 +102,8 @@ namespace Ferretto.Common.BusinessProviders
                 CompartmentType = string.Format(Common.Resources.MasterData.CompartmentTypeListFormatReduced, mission.CompartmentTypeWidth, mission.CompartmentTypeHeight),
                 ItemUnitMeasure = mission.ItemMeasureUnitDescription,
                 MaterialStatusDescription = mission.MaterialStatusDescription,
-                PackageTypeDescription = mission.PackageTypeDescription
+                PackageTypeDescription = mission.PackageTypeDescription,
+                DispatchedQuantity = mission.DispatchedQuantity
             };
         }
 

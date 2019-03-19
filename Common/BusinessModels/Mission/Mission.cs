@@ -22,6 +22,9 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get; set; }
 
+        [Display(Name = nameof(Scheduler.DispatchedQuantity), ResourceType = typeof(Scheduler))]
+        public int DispatchedQuantity { get; set; }
+
         [Display(Name = nameof(BusinessObjects.Item), ResourceType = typeof(BusinessObjects))]
         public string ItemDescription { get; set; }
 

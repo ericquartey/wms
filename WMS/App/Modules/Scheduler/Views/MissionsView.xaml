@@ -319,6 +319,8 @@
                         <dxg:GridColumn Width="90*"
                                         CellDisplayTemplate="{StaticResource CellDisplayTemplateQuantity}"
                                         FieldName="RequiredQuantity" />
+                        <dxg:GridColumn Width="90*"
+                                        FieldName="DispatchedQuantity" />
                         <dxg:GridColumn Width="120*"
                                         FieldName="Type" />
                     </wms:WmsGridControl.Columns>
