@@ -26,7 +26,7 @@ steps:
   parameters:
     BuildConfiguration: $(BuildConfiguration)
     TargetFramework: 'netcoreapp2.1'
-    RestoreBuildProjects: 'WMS/Data/**/*.csproj'
+    RestoreBuildProjects: 'WMS/**/(Ferretto.WMS.Data.WebAPI.csproj|Ferretto.WMS.AutomationServiceMock.csproj)'
     TestProjects: 'WMS/Data/**/*.Tests.csproj'
 
 
