@@ -18,7 +18,7 @@ namespace MAS_FiniteStateMachinesUnitTests.Homing
         [TestCategory("Unit")]
         public void TestHomingErrorStateInvalidCreation()
         {
-            Assert.ThrowsException<NullReferenceException>(() => new HomingErrorState(null));
+            Assert.ThrowsException<NullReferenceException>(() => new HomingErrorState(null, Axis.Vertical));
         }
 
         [TestMethod]
@@ -33,7 +33,7 @@ namespace MAS_FiniteStateMachinesUnitTests.Homing
             var parent = new Mock<IStateMachine>();
             parent.As<IHomingStateMachine>().Setup(p => p.CalibrateData).Returns(calibrateMessageData.Object);
 
-            var state = new HomingErrorState(parent.Object);
+            var state = new HomingErrorState(parent.Object, Axis.Horizontal);
 
             Assert.AreEqual(state.Type, "HomingErrorState");
         }

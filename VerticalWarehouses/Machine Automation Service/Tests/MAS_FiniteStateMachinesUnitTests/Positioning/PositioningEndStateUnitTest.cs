@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
@@ -18,7 +19,8 @@ namespace MAS_FiniteStateMachinesUnitTests.Positioning
         [TestCategory("Unit")]
         public void TestPositionigEndStateInvalidCreation()
         {
-            Assert.ThrowsException<NullReferenceException>(() => new PositioningEndState(null));
+            var messageData = new PositioningMessageData(Axis.Vertical, MovementType.Absolute, 1000.0m, 20.5m, 5.5m, 10);
+            Assert.ThrowsException<NullReferenceException>(() => new PositioningEndState(null, messageData));
         }
 
         [TestMethod]
@@ -35,7 +37,7 @@ namespace MAS_FiniteStateMachinesUnitTests.Positioning
             var parent = new Mock<IStateMachine>();
             parent.As<IPositioningStateMachine>().Setup(p => p.PositioningData).Returns(positionMessageData.Object);
 
-            var state = new PositioningEndState(parent.Object);
+            var state = new PositioningEndState(parent.Object, positionMessageData.Object);
 
             Assert.AreEqual(state.Type, string.Format("PositioningEndState {0}", Axis.Horizontal));
         }

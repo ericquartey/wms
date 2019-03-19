@@ -69,7 +69,7 @@ namespace MAS_FiniteStateMachinesUnitTests.Homing
             eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<NotificationEvent>()).Returns(notifyEvent);
 
             var sm = new HomingStateMachine(eventAggregatorMock.Object, calibrateMessageData.Object);
-            sm.ChangeState(new HomingErrorState(sm), null);
+            sm.ChangeState(new HomingErrorState(sm, Axis.Vertical), null);
 
             Assert.AreEqual(sm.GetState.Type, "HomingErrorState");
         }
@@ -121,7 +121,7 @@ namespace MAS_FiniteStateMachinesUnitTests.Homing
             calibrateMessageData.Setup(c => c.AxisToCalibrate).Returns(Axis.Vertical);
 
             var sm = new HomingStateMachine(eventAggregatorMock.Object, calibrateMessageData.Object);
-            var errorState = new HomingErrorState(sm);
+            var errorState = new HomingErrorState(sm, Axis.Horizontal);
             sm.ChangeState(errorState, null);
 
             Assert.AreEqual(sm.GetState, errorState);
