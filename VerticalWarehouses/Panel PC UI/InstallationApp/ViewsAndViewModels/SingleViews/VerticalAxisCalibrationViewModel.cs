@@ -211,7 +211,7 @@ namespace Ferretto.VW.InstallationApp
             try
             {
                 var client = new HttpClient();
-                await client.GetStringAsync("http://localhost:5000/api/Installation/ExecuteHoming");
+                await client.GetStringAsync("http://localhost:5000/api/Test/HomingTest");
                 this.IsStartButtonActive = false;
                 this.IsStopButtonActive = true;
             }
