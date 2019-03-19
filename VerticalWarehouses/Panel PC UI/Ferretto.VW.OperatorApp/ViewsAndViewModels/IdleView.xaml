@@ -4,9 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+             mc:Ignorable="d">
+
+    <Grid Height="500" Margin="280,50,0,0">
+        <Image
+            Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/background_machine.png"
+            Stretch="Uniform" />
+
     </Grid>
 </UserControl>

@@ -249,4 +249,20 @@
     <value>Executable Lists' Rows</value>
     <comment>Button - Title text</comment>
   </data>
+  <data name="NavigationMainMenuDrawerOperation" xml:space="preserve">
+    <value>NavigationMainMenuDrawerOperation</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="NavigationMainMenuLists" xml:space="preserve">
+    <value>NavigationMainMenuLists</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="NavigationMainMenuItems" xml:space="preserve">
+    <value>NavigationMainMenuItems</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="NavigationMainMenuOther" xml:space="preserve">
+    <value>NavigationMainMenuOther</value>
+    <comment>Button text</comment>
+  </data>
 </root>

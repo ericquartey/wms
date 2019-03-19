@@ -216,4 +216,16 @@
   <data name="Picking" xml:space="preserve">
     <value>Picking</value>
   </data>
+  <data name="NavigationMainMenuDrawerOperation" xml:space="preserve">
+    <value>Operazioni su cassetto</value>
+  </data>
+  <data name="NavigationMainMenuLists" xml:space="preserve">
+    <value>Liste in attesa</value>
+  </data>
+  <data name="NavigationMainMenuItems" xml:space="preserve">
+    <value>Ricerca articolo</value>
+  </data>
+  <data name="NavigationMainMenuOther" xml:space="preserve">
+    <value>Altro</value>
+  </data>
 </root>
