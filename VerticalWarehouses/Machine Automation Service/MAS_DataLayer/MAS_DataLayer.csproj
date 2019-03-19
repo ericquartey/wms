@@ -35,7 +35,6 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.1.1" />
-    <PackageReference Include="NLog" Version="4.5.11" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
   </ItemGroup>
 
