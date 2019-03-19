@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using Ferretto.VW.MAS_DataLayer.Enumerations;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
@@ -12,7 +13,41 @@ namespace Ferretto.VW.MAS_DataLayer
         /// </summary>
         /// <param name="configurationValueEnum"></param>
         /// <returns></returns>
-        DataTypeEnum ConvertConfigurationValue(ConfigurationValueEnum configurationValueEnum);
+        DataTypeEnum ConvertConfigurationValue(GeneralInfoEnum configurationValueEnum);
+
+        DataTypeEnum ConvertConfigurationValue(SetupNetworkEnum configurationValueEnum);
+
+        DataTypeEnum ConvertConfigurationValue(SetupStatusEnum configurationValueEnum);
+
+        DataTypeEnum ConvertConfigurationValue(VerticalAxisEnum configurationValueEnum);
+
+        DataTypeEnum ConvertConfigurationValue(HorizontalAxisEnum configurationValueEnum);
+
+        DataTypeEnum ConvertConfigurationValue(HorizontalMovementForwardProfileEnum configurationValueEnum);
+
+        DataTypeEnum ConvertConfigurationValue(HorizontalMovementBackwardProfileEnum configurationValueEnum);
+
+        DataTypeEnum ConvertConfigurationValue(VerticalManualMovementsEnum configurationValueEnum);
+
+        DataTypeEnum ConvertConfigurationValue(HorizontalManualMovementsEnum configurationValueEnum);
+
+        DataTypeEnum ConvertConfigurationValue(BeltBurnishingEnum configurationValueEnum);
+
+        DataTypeEnum ConvertConfigurationValue(ResolutionCalibrationEnum configurationValueEnum);
+
+        DataTypeEnum ConvertConfigurationValue(OffsetCalibrationEnum configurationValueEnum);
+
+        DataTypeEnum ConvertConfigurationValue(CellControlEnum configurationValueEnum);
+
+        DataTypeEnum ConvertConfigurationValue(PanelControlEnum configurationValueEnum);
+
+        DataTypeEnum ConvertConfigurationValue(ShutterHeightControlEnum configurationValueEnum);
+
+        DataTypeEnum ConvertConfigurationValue(WeightControlEnum configurationValueEnum);
+
+        DataTypeEnum ConvertConfigurationValue(BayPositionControlEnum configurationValueEnum);
+
+        DataTypeEnum ConvertConfigurationValue(LoadFirstDrawerEnum configurationValueEnum);
 
         /// <summary>
         ///     Get a bool variable from the configuration table
@@ -22,7 +57,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <exception cref="DataLayerExceptionEnum.PARSE_EXCEPTION">Exception for a not possible parse</exception>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
-        bool GetBoolConfigurationValue(ConfigurationValueEnum configurationValueEnum);
+        bool GetBoolConfigurationValue(long configurationValueEnum, long categoryValueEnum);
 
         /// <summary>
         ///     Get a bool variable from the runtime table
@@ -42,7 +77,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <exception cref="DataLayerExceptionEnum.PARSE_EXCEPTION">Exception for a not possible parse</exception>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
-        DateTime GetDateTimeConfigurationValue(ConfigurationValueEnum configurationValueEnum);
+        DateTime GetDateTimeConfigurationValue(long configurationValueEnum, long categoryValueEnum);
 
         /// <summary>
         ///     Get a DateTime variable from the runtime table
@@ -62,7 +97,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <exception cref="DataLayerExceptionEnum.PARSE_EXCEPTION">Exception for a not possible parse</exception>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
-        decimal GetDecimalConfigurationValue(ConfigurationValueEnum configurationValueEnum);
+        decimal GetDecimalConfigurationValue(long configurationValueEnum, long categoryValueEnum);
 
         /// <summary>
         ///     Get a decimal variable from the runtime table
@@ -82,7 +117,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <exception cref="DataLayerExceptionEnum.PARSE_EXCEPTION">Exception for a not possible parse</exception>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
-        int GetIntegerConfigurationValue(ConfigurationValueEnum configurationValueEnum);
+        int GetIntegerConfigurationValue(long configurationValueEnum, long categoryValueEnum);
 
         /// <summary>
         ///     Get an integer variable from the runtime table
@@ -102,7 +137,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <exception cref="DataLayerExceptionEnum.PARSE_EXCEPTION">Exception for a not possible parse</exception>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
-        IPAddress GetIPAddressConfigurationValue(ConfigurationValueEnum configurationValueEnum);
+        IPAddress GetIPAddressConfigurationValue(long configurationValueEnum, long categoryValueEnum);
 
         /// <summary>
         ///     Get a string variable from the configuration table
@@ -111,7 +146,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <returns>Return the value of a string configuration parameter</returns>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
-        string GetStringConfigurationValue(ConfigurationValueEnum configurationValueEnum);
+        string GetStringConfigurationValue(long configurationValueEnum, long categoryValueEnum);
 
         /// <summary>
         ///     Get a string variable from the runtime table
@@ -128,7 +163,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <param name="configurationValueEnum">Configuration parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetBoolConfigurationValue(ConfigurationValueEnum configurationValueEnum, bool value);
+        void SetBoolConfigurationValue(long configurationValueEnum, long categoryValueEnum, bool value);
 
         /// <summary>
         ///     Set a bool variable in the runtime table to a new value or update it
@@ -144,7 +179,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <param name="runtimeValueEnum">Configuration parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetDateTimeConfigurationValue(ConfigurationValueEnum configurationValueEnum, DateTime value);
+        void SetDateTimeConfigurationValue(long configurationValueEnum, long categoryValueEnum, DateTime value);
 
         /// <summary>
         ///     Set a DateTime variable in the runtime table to a new value or update it
@@ -160,7 +195,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <param name="configurationValueEnum">Configuration parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetDecimalConfigurationValue(ConfigurationValueEnum configurationValueEnum, decimal value);
+        void SetDecimalConfigurationValue(long configurationValueEnum, long categoryValueEnum, decimal value);
 
         /// <summary>
         ///     Set a decimal variable in the runtime table to a new value or update it
@@ -176,7 +211,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <param name="configurationValueEnum">Configuration parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetIntegerConfigurationValue(ConfigurationValueEnum configurationValueEnum, int value);
+        void SetIntegerConfigurationValue(long configurationValueEnum, long categoryValueEnum, int value);
 
         /// <summary>
         ///     Set an integer variable in the runtime table to a new value or update it
@@ -192,7 +227,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <param name="configurationValueEnum">Configuration parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetStringConfigurationValue(ConfigurationValueEnum configurationValueEnum, string value);
+        void SetStringConfigurationValue(long configurationValueEnum, long categoryValueEnum, string value);
 
         /// <summary>
         ///     Set a string variable in the runtime table to a new value or update it
