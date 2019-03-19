@@ -1,7 +1,6 @@
 ﻿using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.WebAPI.Hubs;
-using Ferretto.WMS.Data.WebAPI.Middleware;
 using Ferretto.WMS.Scheduler.Core.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -67,22 +66,9 @@ namespace Ferretto.WMS.Data.WebAPI
             {
                 app.UseDeveloperExceptionPage();
 
-                app.UseSwaggerUi3WithApiExplorer(settings =>
-                {
-                    settings.PostProcess = document =>
-                    {
-                        var assembly = typeof(Startup).Assembly;
-                        var versionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+                app.UseSwagger();
 
-                        document.Info.Version = versionInfo.FileVersion;
-                        document.Info.Title = "WMS Data API";
-                        document.Info.Description = "REST API for the WMS Data Service";
-                    };
-                    settings.GeneratorSettings.DefaultPropertyNameHandling =
-                        NJsonSchema.PropertyNameHandling.CamelCase;
-
-                    settings.GeneratorSettings.DefaultEnumHandling = NJsonSchema.EnumHandling.String;
-                });
+                app.UseSwaggerUi3();
             }
 
             var wakeupHubEndpoint = this.Configuration["Hubs:WakeUp"];
@@ -109,7 +95,7 @@ namespace Ferretto.WMS.Data.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             var connectionString = this.Configuration.GetConnectionString("WmsConnectionString");
 
@@ -122,10 +108,19 @@ namespace Ferretto.WMS.Data.WebAPI
 
             services.AddSchedulerServiceProviders();
 
+            services.AddSwaggerDocument(settings =>
+            {
+                settings.PostProcess = document =>
+                {
+                    document.Info.Version = "v1";
+                    document.Info.Title = "WMS Data API";
+                    document.Info.Description = "REST API for the WMS Data Service";
+                };
+            });
+
             services.AddSignalR();
         }
 
         #endregion
-
     }
 }
