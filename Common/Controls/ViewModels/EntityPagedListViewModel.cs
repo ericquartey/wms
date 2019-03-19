@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using CommonServiceLocator;
 using DevExpress.Data.Filtering;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces.Models;
@@ -13,7 +14,6 @@ using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils.Expressions;
-using Microsoft.Practices.ServiceLocation;
 using NLog;
 
 namespace Ferretto.Common.Controls
