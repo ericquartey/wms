@@ -119,8 +119,8 @@
                     <wms:WmsGridControl.View>
                         <dxg:TableView AllowFilterEditor="False"
                                        ShowFilterPanelMode="Never"
-                                       ShowSearchPanelMode="Never"
-                                       ShowFixedTotalSummary="True">
+                                       ShowFixedTotalSummary="True"
+                                       ShowSearchPanelMode="Never">
 
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="RowDoubleClick">
@@ -134,15 +134,25 @@
                     </wms:WmsGridControl.View>
 
                     <wms:WmsGridControl.Columns>
-                        <dxg:GridColumn Width="100*" FieldName="Code" />
-                        <dxg:GridColumn Width="400*" FieldName="Description" />
-                        <dxg:GridColumn Width="100*" FieldName="ItemCategoryDescription" />
-                        <dxg:GridColumn Width="90*" FieldName="AbcClassDescription" FilterPopupMode="CheckedList" />
-                        <dxg:GridColumn Width="80*" FieldName="MeasureUnitDescription" />
-                        <dxg:GridColumn Width="50*" FieldName="TotalStock" />
-                        <dxg:GridColumn Width="100*" FieldName="TotalReservedForPick" />
-                        <dxg:GridColumn Width="100*" FieldName="TotalReservedToStore" />
-                        <dxg:GridColumn Width="50*" FieldName="TotalAvailable" />
+                        <dxg:GridColumn Width="100*"
+                                        FieldName="Code" />
+                        <dxg:GridColumn Width="400*"
+                                        FieldName="Description" />
+                        <dxg:GridColumn Width="100*"
+                                        FieldName="ItemCategoryDescription" />
+                        <dxg:GridColumn Width="90*"
+                                        FieldName="AbcClassDescription"
+                                        FilterPopupMode="CheckedList" />
+                        <dxg:GridColumn Width="80*"
+                                        FieldName="MeasureUnitDescription" />
+                        <dxg:GridColumn Width="50*"
+                                        FieldName="TotalStock" />
+                        <dxg:GridColumn Width="100*"
+                                        FieldName="TotalReservedForPick" />
+                        <dxg:GridColumn Width="100*"
+                                        FieldName="TotalReservedToStore" />
+                        <dxg:GridColumn Width="50*"
+                                        FieldName="TotalAvailable" />
                     </wms:WmsGridControl.Columns>
 
                     <wms:WmsGridControl.SortInfo>
@@ -151,9 +161,9 @@
                     </wms:WmsGridControl.SortInfo>
 
                     <wms:WmsGridControl.TotalSummary>
-                        <dxg:GridSummaryItem SummaryType="Count"
-                                             Alignment="Left"
-                                             DisplayFormat="{x:Static res:DesktopApp.GridRowCounter}" />
+                        <dxg:GridSummaryItem Alignment="Left"
+                                             DisplayFormat="{x:Static res:DesktopApp.GridRowCounter}"
+                                             SummaryType="Count" />
                     </wms:WmsGridControl.TotalSummary>
 
                 </wms:WmsGridControl>
