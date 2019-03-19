@@ -38,6 +38,8 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public DbSet<LoadingUnit> LoadingUnits { get; set; }
 
+        public DbSet<LogEntry> LogEntries { get; set; }
+
         public DbSet<RuntimeValue> RuntimeValues { get; set; }
 
         public DbSet<StatusLog> StatusLogs { get; set; }
