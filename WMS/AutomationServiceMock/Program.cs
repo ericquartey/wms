@@ -116,23 +116,6 @@ namespace Ferretto.WMS.AutomationServiceMock
             return exitRequested;
         }
 
-        private static int GetQuantity()
-        {
-            Console.Write("Insert quantity: ");
-            var quantityString = Console.ReadLine();
-
-            if (int.TryParse(quantityString, out var quantity))
-            {
-                return quantity;
-            }
-            else
-            {
-                Console.WriteLine("Unable to parse mission quantity.");
-            }
-
-            return -1;
-        }
-
         private static int GetMissionId()
         {
             Console.Write("Insert mission id: ");
@@ -145,6 +128,23 @@ namespace Ferretto.WMS.AutomationServiceMock
             else
             {
                 Console.WriteLine("Unable to parse mission id.");
+            }
+
+            return -1;
+        }
+
+        private static int GetQuantity()
+        {
+            Console.Write("Insert quantity: ");
+            var quantityString = Console.ReadLine();
+
+            if (int.TryParse(quantityString, out var quantity))
+            {
+                return quantity;
+            }
+            else
+            {
+                Console.WriteLine("Unable to parse mission quantity.");
             }
 
             return -1;
@@ -203,7 +203,7 @@ namespace Ferretto.WMS.AutomationServiceMock
                 return;
             }
 
-            Console.WriteLine("Available missions (by priority):");
+            Console.WriteLine("Available missions (by priority, then by creation date):");
 
             Console.WriteLine(
                 $"| {nameof(Mission.Priority), 8} " +
@@ -214,16 +214,39 @@ namespace Ferretto.WMS.AutomationServiceMock
 
             Console.WriteLine($"|----------|-----|------------|------------------------------------------|------------|");
 
-            foreach (var mission in missions.OrderByDescending(m => m.Priority))
-            {
-                var trimmedDescription = mission.ItemDescription.Substring(0, Math.Min(40, mission.ItemDescription.Length));
-                var quantities = $"{mission.DispatchedQuantity, 2} / {mission.RequestedQuantity, 2}";
+            var completedMissions = missions
+                   .Where(m => m.Status == MissionStatus.Completed || m.Status == MissionStatus.Incomplete)
+                   .OrderBy(m => m.Priority)
+                   .ThenBy(m => m.CreationDate);
 
-                Console.WriteLine(
-                    $"| {mission.Priority, 8} | {mission.Id, 3} | {mission.Status, -10} | {trimmedDescription, -40} | {quantities, 10} |");
+            foreach (var mission in missions
+                                        .Except(completedMissions)
+                                        .OrderBy(m => m.Priority)
+                                        .ThenBy(m => m.CreationDate))
+            {
+                PrintMissionTableRow(mission);
+            }
+
+            if (completedMissions.Any())
+            {
+                Console.WriteLine($"|----------|-----|------------|------------------------------------------|------------|");
+
+                foreach (var mission in completedMissions)
+                {
+                    PrintMissionTableRow(mission);
+                }
             }
 
             Console.WriteLine($"|__________|_____|____________|__________________________________________|____________|");
+        }
+
+        private static void PrintMissionTableRow(Mission mission)
+        {
+            var trimmedDescription = mission.ItemDescription.Substring(0, Math.Min(40, mission.ItemDescription.Length));
+            var quantities = $"{mission.DispatchedQuantity, 2} / {mission.RequestedQuantity, 2}";
+
+            Console.WriteLine(
+                $"| {mission.Priority, 8} | {mission.Id, 3} | {mission.Status, -10} | {trimmedDescription, -40} | {quantities, 10} |");
         }
 
         #endregion
