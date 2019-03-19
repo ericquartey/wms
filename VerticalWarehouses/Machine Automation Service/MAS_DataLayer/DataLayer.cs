@@ -8,6 +8,7 @@ using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
+using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -206,46 +207,44 @@ namespace Ferretto.VW.MAS_DataLayer
                 var json = streamReader.ReadToEnd();
                 var jsonObject = JObject.Parse(json);
 
-                ConfigurationValueEnum jsonElementName;
                 DataTypeEnum jsonElementType;
 
                 foreach (var jsonElement in jsonObject)
                 {
-                    jsonElementName = (ConfigurationValueEnum)Enum.Parse(typeof(ConfigurationValueEnum), jsonElement.Key);
-                    jsonElementType = this.ConvertConfigurationValue(jsonElementName);
+                    if (jsonElement.Value is SetupNetworkEnum)
 
-                    switch (jsonElementType)
-                    {
-                        case (DataTypeEnum.booleanType):
-                            {
-                                this.SetBoolConfigurationValue(jsonElementName, (bool)jsonElement.Value.ToObject(typeof(bool)));
-                                break;
-                            }
-                        case (DataTypeEnum.dateTimeType):
-                            {
-                                this.SetDateTimeConfigurationValue(jsonElementName, (DateTime)jsonElement.Value.ToObject(typeof(DateTime)));
-                                break;
-                            }
-                        case (DataTypeEnum.decimalType):
-                            {
-                                this.SetDecimalConfigurationValue(jsonElementName, (decimal)jsonElement.Value.ToObject(typeof(decimal)));
-                                break;
-                            }
-                        case (DataTypeEnum.integerType):
-                            {
-                                this.SetIntegerConfigurationValue(jsonElementName, (int)jsonElement.Value.ToObject(typeof(int)));
-                                break;
-                            }
-                        case (DataTypeEnum.stringType):
-                            {
-                                this.SetStringConfigurationValue(jsonElementName, jsonElement.Value.ToString());
-                                break;
-                            }
-                        default:
-                            {
-                                throw new InMemoryDataLayerException(DataLayerExceptionEnum.UNDEFINED_TYPE_EXCEPTION);
-                            }
-                    }
+                        switch (jsonElementType)
+                        {
+                            case (DataTypeEnum.booleanType):
+                                {
+                                    this.SetBoolConfigurationValue(jsonElementName, (bool)jsonElement.Value.ToObject(typeof(bool)));
+                                    break;
+                                }
+                            case (DataTypeEnum.dateTimeType):
+                                {
+                                    this.SetDateTimeConfigurationValue(jsonElementName, (DateTime)jsonElement.Value.ToObject(typeof(DateTime)));
+                                    break;
+                                }
+                            case (DataTypeEnum.decimalType):
+                                {
+                                    this.SetDecimalConfigurationValue(jsonElementName, (decimal)jsonElement.Value.ToObject(typeof(decimal)));
+                                    break;
+                                }
+                            case (DataTypeEnum.integerType):
+                                {
+                                    this.SetIntegerConfigurationValue(jsonElementName, (int)jsonElement.Value.ToObject(typeof(int)));
+                                    break;
+                                }
+                            case (DataTypeEnum.stringType):
+                                {
+                                    this.SetStringConfigurationValue(jsonElementName, jsonElement.Value.ToString());
+                                    break;
+                                }
+                            default:
+                                {
+                                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.UNDEFINED_TYPE_EXCEPTION);
+                                }
+                        }
                 }
             }
         }

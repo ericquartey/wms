@@ -39,5 +39,15 @@ namespace Ferretto.VW.MAS_DataLayer.Enumerations
         PPC2SlaveIPAddress = 15L,
 
         PPC3SlaveIPAddress = 16L,
+
+        Inverter1Port = 17L,
+
+        Inverter2Port = 18L,
+
+        IOExpansion1Port = 19L,
+
+        IOExpansion2Port = 20L,
+
+        IOExpansion3Port = 21L,
     }
 }

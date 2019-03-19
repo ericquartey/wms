@@ -85,6 +85,11 @@ namespace Ferretto.VW.MAS_DataLayer
             switch (configurationValueEnum)
             {
                 case SetupNetworkEnum.MachineNumber:
+                case SetupNetworkEnum.Inverter1Port:
+                case SetupNetworkEnum.Inverter2Port:
+                case SetupNetworkEnum.IOExpansion1Port:
+                case SetupNetworkEnum.IOExpansion2Port:
+                case SetupNetworkEnum.IOExpansion3Port:
                     returnValue = DataTypeEnum.integerType;
                     break;
 
@@ -119,82 +124,245 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public DataTypeEnum ConvertConfigurationValue(SetupStatusEnum configurationValueEnum)
         {
-            throw new NotImplementedException();
+            return DataTypeEnum.booleanType;
         }
 
         public DataTypeEnum ConvertConfigurationValue(VerticalAxisEnum configurationValueEnum)
         {
-            throw new NotImplementedException();
+            DataTypeEnum returnValue;
+            switch (configurationValueEnum)
+            {
+                case VerticalAxisEnum.HomingSearchDirection:
+                case VerticalAxisEnum.HomingExecuted:
+                    returnValue = DataTypeEnum.booleanType;
+                    break;
+
+                case VerticalAxisEnum.HomingExitAcceleration:
+                case VerticalAxisEnum.HomingExitDeceleration:
+                case VerticalAxisEnum.HomingExitSpeed:
+                case VerticalAxisEnum.HomingSearchAcceleration:
+                case VerticalAxisEnum.HomingSearchDeceleration:
+                case VerticalAxisEnum.HomingSearchSpeed:
+                case VerticalAxisEnum.LowerBound:
+                case VerticalAxisEnum.MaxAcceleration:
+                case VerticalAxisEnum.MaxDeceleration:
+                case VerticalAxisEnum.MaxSpeed:
+                case VerticalAxisEnum.Offset:
+                case VerticalAxisEnum.Resolution:
+                case VerticalAxisEnum.UpperBound:
+                    returnValue = DataTypeEnum.decimalType;
+                    break;
+
+                default:
+                    returnValue = DataTypeEnum.UndefinedType;
+                    break;
+            }
+            return returnValue;
         }
 
         public DataTypeEnum ConvertConfigurationValue(HorizontalAxisEnum configurationValueEnum)
         {
-            throw new NotImplementedException();
+            DataTypeEnum returnValue;
+            switch (configurationValueEnum)
+            {
+                case HorizontalAxisEnum.HomingExecuted:
+                    returnValue = DataTypeEnum.booleanType;
+                    break;
+
+                case HorizontalAxisEnum.AntiClockWiseRun:
+                case HorizontalAxisEnum.ClockWiseRun:
+                case HorizontalAxisEnum.MaxAcceleration:
+                case HorizontalAxisEnum.MaxDeceleration:
+                case HorizontalAxisEnum.MaxSpeed:
+                case HorizontalAxisEnum.Offset:
+                    returnValue = DataTypeEnum.decimalType;
+                    break;
+
+                default:
+                    returnValue = DataTypeEnum.UndefinedType;
+                    break;
+            }
+            return returnValue;
         }
 
         public DataTypeEnum ConvertConfigurationValue(HorizontalMovementForwardProfileEnum configurationValueEnum)
         {
-            throw new NotImplementedException();
+            DataTypeEnum returnValue;
+            switch (configurationValueEnum)
+            {
+                case HorizontalMovementForwardProfileEnum.TotalSteps:
+                    returnValue = DataTypeEnum.integerType;
+                    break;
+
+                case HorizontalMovementForwardProfileEnum.InitialSpeed:
+                case HorizontalMovementForwardProfileEnum.Step1AccDec:
+                case HorizontalMovementForwardProfileEnum.Step1Position:
+                case HorizontalMovementForwardProfileEnum.Step1Speed:
+                case HorizontalMovementForwardProfileEnum.Step2AccDec:
+                case HorizontalMovementForwardProfileEnum.Step2Position:
+                case HorizontalMovementForwardProfileEnum.Step2Speed:
+                case HorizontalMovementForwardProfileEnum.Step3AccDec:
+                case HorizontalMovementForwardProfileEnum.Step3Position:
+                case HorizontalMovementForwardProfileEnum.Step3Speed:
+                case HorizontalMovementForwardProfileEnum.Step4AccDec:
+                case HorizontalMovementForwardProfileEnum.Step4Position:
+                case HorizontalMovementForwardProfileEnum.Step4Speed:
+                    returnValue = DataTypeEnum.decimalType;
+                    break;
+
+                default:
+                    returnValue = DataTypeEnum.UndefinedType;
+                    break;
+            }
+            return returnValue;
         }
 
         public DataTypeEnum ConvertConfigurationValue(HorizontalMovementBackwardProfileEnum configurationValueEnum)
         {
-            throw new NotImplementedException();
+            DataTypeEnum returnValue;
+            switch (configurationValueEnum)
+            {
+                case HorizontalMovementBackwardProfileEnum.TotalSteps:
+                    returnValue = DataTypeEnum.integerType;
+                    break;
+
+                case HorizontalMovementBackwardProfileEnum.InitialSpeed:
+                case HorizontalMovementBackwardProfileEnum.Step1AccDec:
+                case HorizontalMovementBackwardProfileEnum.Step1Position:
+                case HorizontalMovementBackwardProfileEnum.Step1Speed:
+                case HorizontalMovementBackwardProfileEnum.Step2AccDec:
+                case HorizontalMovementBackwardProfileEnum.Step2Position:
+                case HorizontalMovementBackwardProfileEnum.Step2Speed:
+                case HorizontalMovementBackwardProfileEnum.Step3AccDec:
+                case HorizontalMovementBackwardProfileEnum.Step3Position:
+                case HorizontalMovementBackwardProfileEnum.Step3Speed:
+                case HorizontalMovementBackwardProfileEnum.Step4AccDec:
+                case HorizontalMovementBackwardProfileEnum.Step4Position:
+                case HorizontalMovementBackwardProfileEnum.Step4Speed:
+                    returnValue = DataTypeEnum.decimalType;
+                    break;
+
+                default:
+                    returnValue = DataTypeEnum.UndefinedType;
+                    break;
+            }
+            return returnValue;
         }
 
         public DataTypeEnum ConvertConfigurationValue(VerticalManualMovementsEnum configurationValueEnum)
         {
-            throw new NotImplementedException();
+            DataTypeEnum returnValue;
+            switch (configurationValueEnum)
+            {
+                case VerticalManualMovementsEnum.FeedRate:
+                case VerticalManualMovementsEnum.InitialTargetPosition:
+                case VerticalManualMovementsEnum.RecoveryTargetPosition:
+                    returnValue = DataTypeEnum.decimalType;
+                    break;
+
+                default:
+                    returnValue = DataTypeEnum.UndefinedType;
+                    break;
+            }
+            return returnValue;
         }
 
         public DataTypeEnum ConvertConfigurationValue(HorizontalManualMovementsEnum configurationValueEnum)
         {
-            throw new NotImplementedException();
+            DataTypeEnum returnValue;
+            switch (configurationValueEnum)
+            {
+                case HorizontalManualMovementsEnum.FeedRate:
+                case HorizontalManualMovementsEnum.InitialTargetPosition:
+                case HorizontalManualMovementsEnum.RecoveryTargetPosition:
+                    returnValue = DataTypeEnum.decimalType;
+                    break;
+
+                default:
+                    returnValue = DataTypeEnum.UndefinedType;
+                    break;
+            }
+            return returnValue;
         }
 
         public DataTypeEnum ConvertConfigurationValue(BeltBurnishingEnum configurationValueEnum)
         {
-            throw new NotImplementedException();
+            return DataTypeEnum.integerType;
         }
 
         public DataTypeEnum ConvertConfigurationValue(ResolutionCalibrationEnum configurationValueEnum)
         {
-            throw new NotImplementedException();
+            return DataTypeEnum.decimalType;
         }
 
         public DataTypeEnum ConvertConfigurationValue(OffsetCalibrationEnum configurationValueEnum)
         {
-            throw new NotImplementedException();
+            DataTypeEnum returnValue;
+            switch (configurationValueEnum)
+            {
+                case OffsetCalibrationEnum.ReferenceCell:
+                    returnValue = DataTypeEnum.integerType;
+                    break;
+
+                case OffsetCalibrationEnum.FeedRate:
+                case OffsetCalibrationEnum.StepValue:
+                    returnValue = DataTypeEnum.decimalType;
+                    break;
+
+                default:
+                    returnValue = DataTypeEnum.UndefinedType;
+                    break;
+            }
+            return returnValue;
         }
 
         public DataTypeEnum ConvertConfigurationValue(CellControlEnum configurationValueEnum)
         {
-            throw new NotImplementedException();
+            return DataTypeEnum.decimalType;
         }
 
         public DataTypeEnum ConvertConfigurationValue(PanelControlEnum configurationValueEnum)
         {
-            throw new NotImplementedException();
+            DataTypeEnum returnValue;
+            switch (configurationValueEnum)
+            {
+                case PanelControlEnum.FrontInitialReferenceCell:
+                case PanelControlEnum.FrontPanelQuantity:
+                case PanelControlEnum.BackInitialReferenceCell:
+                case PanelControlEnum.BackPanelQuantity:
+                    returnValue = DataTypeEnum.integerType;
+                    break;
+
+                case PanelControlEnum.StepValue:
+                case PanelControlEnum.FeedRate:
+                    returnValue = DataTypeEnum.decimalType;
+                    break;
+
+                default:
+                    returnValue = DataTypeEnum.UndefinedType;
+                    break;
+            }
+            return returnValue;
         }
 
         public DataTypeEnum ConvertConfigurationValue(ShutterHeightControlEnum configurationValueEnum)
         {
-            throw new NotImplementedException();
+            return DataTypeEnum.decimalType;
         }
 
         public DataTypeEnum ConvertConfigurationValue(WeightControlEnum configurationValueEnum)
         {
-            throw new NotImplementedException();
+            return DataTypeEnum.decimalType;
         }
 
         public DataTypeEnum ConvertConfigurationValue(BayPositionControlEnum configurationValueEnum)
         {
-            throw new NotImplementedException();
+            return DataTypeEnum.decimalType;
         }
 
         public DataTypeEnum ConvertConfigurationValue(LoadFirstDrawerEnum configurationValueEnum)
         {
-            throw new NotImplementedException();
+            return DataTypeEnum.decimalType;
         }
 
         /// <inheritdoc/>
