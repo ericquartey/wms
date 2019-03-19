@@ -67,47 +67,49 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             #endregion
 
-            using (var context = this.CreateContext())
+            #region Act
+
+            var result = await missionProvider.CompleteAsync(mission.Id);
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsTrue(result.Success);
+
+            Assert.AreEqual(
+                MissionStatus.Completed,
+                result.Entity.Status,
+                $"The status of the mission should be '{MissionStatus.Completed}'.");
+
+            var updatedCompartment = await compartmentProvider.GetByIdForStockUpdateAsync(compartment1.Id);
+
+            Assert.IsNotNull(updatedCompartment);
+
+            Assert.AreEqual(
+                0,
+                updatedCompartment.Stock,
+                $"The stock of the compartment should be 0.");
+
+            Assert.AreEqual(
+                isPairingFixed,
+                updatedCompartment.IsItemPairingFixed,
+                $"Item pairing should not be changed.");
+
+            if (isPairingFixed)
             {
-                #region Act
-
-                var result = await missionProvider.CompleteAsync(mission.Id);
-
-                #endregion
-
-                #region Assert
-
-                Assert.IsTrue(result.Success);
-
-                Assert.AreEqual(
-                    MissionStatus.Completed,
-                    result.Entity.Status,
-                    $"The status of the mission should be '{MissionStatus.Completed}'.");
-
-                var updatedCompartment = await compartmentProvider.GetByIdForStockUpdateAsync(compartment1.Id);
-
-                Assert.IsNotNull(updatedCompartment);
-
-                Assert.AreEqual(
-                  0,
-                  updatedCompartment.Stock,
-                  $"The stock of the compartment should be 0.");
-
-                if (isPairingFixed)
-                {
-                    Assert.IsNotNull(
-                        updatedCompartment.ItemId,
-                        $"The item pairing should not be lifted.");
-                }
-                else
-                {
-                    Assert.IsNull(
-                        updatedCompartment.ItemId,
-                        $"The item pairing should be lifted.");
-                }
-
-                #endregion
+                Assert.IsNotNull(
+                    updatedCompartment.ItemId,
+                    $"The item pairing should not be lifted.");
             }
+            else
+            {
+                Assert.IsNull(
+                    updatedCompartment.ItemId,
+                    $"The item pairing should be lifted.");
+            }
+
+            #endregion
         }
 
         [TestMethod]
