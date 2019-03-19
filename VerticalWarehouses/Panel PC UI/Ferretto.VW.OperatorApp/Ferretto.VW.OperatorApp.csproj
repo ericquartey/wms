@@ -39,6 +39,8 @@
   </ItemGroup>
   
     <ItemGroup>
+      <None Remove="HelpWindows\HelpInitialPage.xaml" />
+      <None Remove="HelpWindows\HelpMainWindow.xaml" />
       <None Remove="HelpWindows\HelpPageBase.xaml" />
       <None Remove="MainWindow.xaml" />
       <None Remove="Resources\Views.xaml" />
@@ -55,6 +57,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="HelpWindows\HelpInitialPage.xaml.cs">
+      <DependentUpon>HelpInitialPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpMainWindow.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
     <Compile Update="HelpWindows\HelpPageBase.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>

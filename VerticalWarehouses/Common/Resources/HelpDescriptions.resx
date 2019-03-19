@@ -781,4 +781,64 @@
     <value>HelpSRCLoadAbortButton</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpOpMainPageHeadr" xml:space="preserve">
+    <value>HelpOpMainPageHeadr</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="HelpOpMainPageDescription" xml:space="preserve">
+    <value>HelpOpMainPageDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpOpMainManu" xml:space="preserve">
+    <value>HelpOpMainManu</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpOpMainAuto" xml:space="preserve">
+    <value>HelpOpMainAuto</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpOpMainOff" xml:space="preserve">
+    <value>HelpOpMainOff</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpOpMainOn" xml:space="preserve">
+    <value>HelpOpMainOn</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpOpMainServiceAdvice" xml:space="preserve">
+    <value>HelpOpMainServiceAdvice</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpOpMainServiceAllert" xml:space="preserve">
+    <value>HelpOpMainServiceAllert</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpOpMainError" xml:space="preserve">
+    <value>HelpOpMainError</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpOpMainUser" xml:space="preserve">
+    <value>HelpOpMainUser</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpOpMainHelp" xml:space="preserve">
+    <value>HelpOpMainHelp</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpOpMainDrawerOp" xml:space="preserve">
+    <value>HelpOpMainDrawerOp</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpOpMainItem" xml:space="preserve">
+    <value>HelpOpMainItem</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpOpMainLists" xml:space="preserve">
+    <value>HelpOpMainLists</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpOpMainOther" xml:space="preserve">
+    <value>HelpOpMainOther</value>
+    <comment>Note text</comment>
+  </data>
 </root>

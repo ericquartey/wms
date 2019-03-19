@@ -578,7 +578,7 @@
     <value>Salvataggio e ripristino configurazione macchina.</value>
   </data>
   <data name="HelpSRCDescription" xml:space="preserve">
-    <value>La procedura permette di effettuare il salvataggio o il ripristino dei files che contengono le informazioni verificate in fase di messa in servizio della macchina. Il drive e la cartella di salvataggio o restore vengono automaticamente individuate dal sistema.</value>
+    <value>La procedura consente di effettuare il salvataggio o il recupero dei file di configurazione sul dispositivo esterno.</value>
   </data>
   <data name="HelpSRCSaveSide" xml:space="preserve">
     <value>Procedura di salvataggio configurazione.</value>
@@ -609,5 +609,50 @@
   </data>
   <data name="HelpSRCLoadAbortButton" xml:space="preserve">
     <value>Annulla la procedura di caricamento dei files.</value>
+  </data>
+  <data name="HelpOpMainPageHeadr" xml:space="preserve">
+    <value>Pagina iniziale.</value>
+  </data>
+  <data name="HelpOpMainPageDescription" xml:space="preserve">
+    <value>Il menu principale permette di controllare lo stato macchina tramite gli appositi pulsanti nella parte superiore dello schermo. Nella parte sinistra usando i pulsanti di navigazione e' possibile accedere alle varie funzioni.</value>
+  </data>
+  <data name="HelpOpMainManu" xml:space="preserve">
+    <value>Indica la condizione di manuale. Il ciclo automatico e' sospeso.</value>
+  </data>
+  <data name="HelpOpMainAuto" xml:space="preserve">
+    <value>Indica la condizione di automatico. La macchina gestisce i comandi in arrivo dal sistema di controllo.</value>
+  </data>
+  <data name="HelpOpMainOff" xml:space="preserve">
+    <value>La potenza ai motori e' disabilitata. Non sono possibili movimenti in nessuna modalita'.</value>
+  </data>
+  <data name="HelpOpMainOn" xml:space="preserve">
+    <value>La potenza ai motori e' abilitata. La macchina e' in grado di effettuare movimenti.</value>
+  </data>
+  <data name="HelpOpMainServiceAdvice" xml:space="preserve">
+    <value>Il sistema segnala che alcune parti della macchina si stanno avvicinando al momento di effettuare la manutenzione programmata.</value>
+  </data>
+  <data name="HelpOpMainServiceAllert" xml:space="preserve">
+    <value>Il sistema segnala che alcune parti della macchina sono arrivate al termine del periodo programmato fra due manutenzioni. Manutenzione richiesta!</value>
+  </data>
+  <data name="HelpOpMainError" xml:space="preserve">
+    <value>Si e' verificato un errore durante il funzionamento della macchina. La pressione di questo pulsante apre la pagina di gestione delle procedure di ripristino.</value>
+  </data>
+  <data name="HelpOpMainUser" xml:space="preserve">
+    <value>Riporta il nome dell'operatore attualmente connesso. La pressione del pulsante consente di effettuare il logoff.</value>
+  </data>
+  <data name="HelpOpMainHelp" xml:space="preserve">
+    <value>Il pulsante apre la pagina di help contestuale alla procedura che si sta utilizzando.</value>
+  </data>
+  <data name="HelpOpMainDrawerOp" xml:space="preserve">
+    <value>Il punsante apre la pagina di gestione delle operazioni schedulate sul cassetto presente in baia.</value>
+  </data>
+  <data name="HelpOpMainItem" xml:space="preserve">
+    <value>Il pulsante apre la pagina che permette di effettuare la ricerca di un codice articolo.</value>
+  </data>
+  <data name="HelpOpMainLists" xml:space="preserve">
+    <value>Il pulsante apre la pagina di visualizzazione delle liste in attesa di esecuzione schedulate dal WMS.</value>
+  </data>
+  <data name="HelpOpMainOther" xml:space="preserve">
+    <value>Permette l'accesso alle funzioni meno utilizzate.</value>
   </data>
 </root>

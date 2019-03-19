@@ -22,6 +22,8 @@ namespace Ferretto.VW.OperatorApp
 
         private ICommand machineOnMarchCustomCommand;
 
+        private ICommand openHelpWindow;
+
         #endregion
 
         #region Properties
@@ -46,6 +48,11 @@ namespace Ferretto.VW.OperatorApp
 
         public ICommand MachineOnMarchCustomCommand => this.machineOnMarchCustomCommand ?? (this.machineOnMarchCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineOnMarchEvent()));
 
+        public ICommand OpenHelpWindow => this.openHelpWindow ?? (this.openHelpWindow = new DelegateCommand(() =>
+        {
+            this.helpWindow.Show();
+            this.helpWindow.HelpContentRegion.Content = this.contentRegionCurrentViewModel;
+        }));
         #endregion
 
         #region Methods

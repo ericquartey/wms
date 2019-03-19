@@ -16,13 +16,13 @@ using System.Windows.Shapes;
 namespace Ferretto.VW.OperatorApp.HelpWindows
 {
     /// <summary>
-    /// Logica di interazione per HelpPageBase.xaml
+    /// Logica di interazione per HelpInitialPage.xaml
     /// </summary>
-    public partial class HelpPageBase : UserControl
+    public partial class HelpInitialPage : UserControl
     {
         #region Constructors
 
-        public HelpPageBase()
+        public HelpInitialPage()
         {
             this.InitializeComponent();
         }

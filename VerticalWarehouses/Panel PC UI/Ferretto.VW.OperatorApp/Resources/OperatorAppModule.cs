@@ -22,15 +22,19 @@ namespace Ferretto.VW.OperatorApp.Resources
 
             var mainWindowVMInstance = new MainWindowViewModel(this.container.Resolve<IEventAggregator>());
             var mainWindowInstance = new MainWindow(this.container.Resolve<IEventAggregator>());
-            var idleVMInstance = new IdleViewModel();
+            var idleVMInstance = new IdleViewModel(container.Resolve<IEventAggregator>());
             var mainWindowBackToOAPPButtonVMInstance = new MainWindowBackToOAPPButtonViewModel(this.container.Resolve<IEventAggregator>());
             var mainWindowNavigationButtonsVMInstance = new MainWindowNavigationButtonsViewModel(this.container.Resolve<IEventAggregator>());
+            var helpMainWindowInstance = new HelpMainWindow(container.Resolve<IEventAggregator>());
+
 
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
             this.container.RegisterInstance<IIdleViewModel>(idleVMInstance);
             this.container.RegisterInstance<IMainWindowBackToOAPPButtonViewModel>(mainWindowBackToOAPPButtonVMInstance);
             this.container.RegisterInstance<IMainWindowNavigationButtonsViewModel>(mainWindowNavigationButtonsVMInstance);
+            this.container.RegisterInstance<IHelpMainWindow>(helpMainWindowInstance);
+
 
             mainWindowVMInstance.InitializeViewModel(this.container);
         }

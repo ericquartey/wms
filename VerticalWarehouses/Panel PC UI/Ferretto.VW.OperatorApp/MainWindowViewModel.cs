@@ -18,6 +18,8 @@ namespace Ferretto.VW.OperatorApp
     {
         #region Fields
 
+        private readonly HelpMainWindow helpWindow;
+
         private readonly IEventAggregator eventAggregator;
 
         private IUnityContainer container;
@@ -43,6 +45,7 @@ namespace Ferretto.VW.OperatorApp
         public MainWindowViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.helpWindow = new HelpMainWindow(eventAggregator);
         }
 
         #endregion
