@@ -14,6 +14,7 @@ using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.InverterDriver
@@ -37,6 +38,8 @@ namespace Ferretto.VW.InverterDriver
         private readonly Task inverterReceiveTask;
 
         private readonly Task inverterSendTask;
+
+        private readonly ILogger logger;
 
         private readonly BlockingConcurrentQueue<CommandMessage> messageQueue;
 
@@ -68,11 +71,13 @@ namespace Ferretto.VW.InverterDriver
 
         #region Constructors
 
-        public HostedInverterDriver(IEventAggregator eventAggregator, ISocketTransport socketTransport, IDataLayerValueManagment dataLayerValueManagment)
+        public HostedInverterDriver(IEventAggregator eventAggregator, ISocketTransport socketTransport, IDataLayerValueManagment dataLayerValueManagment, ILogger<HostedInverterDriver> logger)
         {
             this.socketTransport = socketTransport;
             this.eventAggregator = eventAggregator;
             this.dataLayerValueManagment = dataLayerValueManagment;
+
+            this.logger = logger;
 
             this.heartbeatQueue = new BlockingConcurrentQueue<InverterMessage>();
             this.inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
@@ -106,6 +111,8 @@ namespace Ferretto.VW.InverterDriver
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Destination == MessageActor.InverterDriver || message.Destination == MessageActor.Any);
+
+            this.logger?.LogInformation("Hosted Inverter Driver Constructor");
         }
 
         #endregion
