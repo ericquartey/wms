@@ -204,6 +204,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     MaterialStatusId = m.MaterialStatusId,
                     PackageTypeId = m.PackageTypeId,
                     Lot = m.Lot,
+                    Priority = m.Priority,
                     RequestedQuantity = m.RequestedQuantity,
                     DispatchedQuantity = m.DispatchedQuantity,
                     RegistrationNumber = m.RegistrationNumber,
@@ -277,6 +278,34 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             return await this.UpdateAsync(mission);
         }
 
+        private async Task CreateRangeAsync(IEnumerable<Mission> models)
+        {
+            var missions = models.Select(
+                m => new Common.DataModels.Mission
+                {
+                    BayId = m.BayId,
+                    CellId = m.CellId,
+                    CompartmentId = m.CompartmentId,
+                    ItemId = m.ItemId,
+                    ItemListId = m.ItemListId,
+                    ItemListRowId = m.ItemListRowId,
+                    LoadingUnitId = m.LoadingUnitId,
+                    MaterialStatusId = m.MaterialStatusId,
+                    PackageTypeId = m.PackageTypeId,
+                    Priority = m.Priority,
+                    RegistrationNumber = m.RegistrationNumber,
+                    RequestedQuantity = m.RequestedQuantity,
+                    Status = (Common.DataModels.MissionStatus)m.Status,
+                    Sub1 = m.Sub1,
+                    Sub2 = m.Sub2,
+                    Type = (Common.DataModels.MissionType)m.Type
+                });
+
+            await this.databaseContext.Missions.AddRangeAsync(missions);
+
+            await this.databaseContext.SaveChangesAsync();
+        }
+
         private async Task<IEnumerable<Mission>> CreateWithdrawalMissionsAsync(SchedulerRequest request)
         {
             var item = await this.itemProvider.GetByIdAsync(request.ItemId);
@@ -336,34 +365,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             this.logger.LogDebug($"Scheduler Request (id={request.Id}): a total of {missions.Count} mission(s) were created.");
 
             return missions;
-        }
-
-        private async Task CreateRangeAsync(IEnumerable<Mission> models)
-        {
-            var missions = models.Select(
-                m => new Common.DataModels.Mission
-                {
-                    BayId = m.BayId,
-                    CellId = m.CellId,
-                    CompartmentId = m.CompartmentId,
-                    ItemId = m.ItemId,
-                    ItemListId = m.ItemListId,
-                    ItemListRowId = m.ItemListRowId,
-                    LoadingUnitId = m.LoadingUnitId,
-                    MaterialStatusId = m.MaterialStatusId,
-                    PackageTypeId = m.PackageTypeId,
-                    Priority = m.Priority,
-                    RegistrationNumber = m.RegistrationNumber,
-                    RequestedQuantity = m.RequestedQuantity,
-                    Status = (Common.DataModels.MissionStatus)m.Status,
-                    Sub1 = m.Sub1,
-                    Sub2 = m.Sub2,
-                    Type = (Common.DataModels.MissionType)m.Type
-                });
-
-            await this.databaseContext.Missions.AddRangeAsync(missions);
-
-            await this.databaseContext.SaveChangesAsync();
         }
 
         private async Task UpdateLastPickDatesAsync(int itemId, StockUpdateCompartment compartment)

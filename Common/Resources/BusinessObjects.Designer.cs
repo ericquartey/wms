@@ -1951,6 +1951,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Incomplete.
+        /// </summary>
+        public static string MissionStatusIncomplete {
+            get {
+                return ResourceManager.GetString("MissionStatusIncomplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New.
         /// </summary>
         public static string MissionStatusNew {
