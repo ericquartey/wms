@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
@@ -11,13 +9,20 @@ namespace Ferretto.Common.BusinessModels
         #region Fields
 
         private string code;
+
         private DateTime creationDate;
+
         private string description;
+
         private int itemListItemsCount;
+
         private int itemListRowsCount;
-        private ItemListStatus itemListStatus;
+
         private ItemListType itemListType;
+
         private int priority;
+
+        private ItemListStatus status;
 
         #endregion
 
@@ -42,14 +47,14 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.ItemListRowsCount), ResourceType = typeof(BusinessObjects))]
         public int ItemListRowsCount { get => this.itemListRowsCount; set => this.SetProperty(ref this.itemListRowsCount, value); }
 
-        [Display(Name = nameof(BusinessObjects.ItemListStatus), ResourceType = typeof(BusinessObjects))]
-        public ItemListStatus ItemListStatus { get => this.itemListStatus; set => this.SetProperty(ref this.itemListStatus, value); }
-
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
         public ItemListType ItemListType { get => this.itemListType; set => this.SetProperty(ref this.itemListType, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListPriority), ResourceType = typeof(BusinessObjects))]
         public int Priority { get => this.priority; set => this.SetProperty(ref this.priority, value); }
+
+        [Display(Name = nameof(BusinessObjects.ItemListStatus), ResourceType = typeof(BusinessObjects))]
+        public ItemListStatus Status { get => this.status; set => this.SetProperty(ref this.status, value); }
 
         #endregion
     }

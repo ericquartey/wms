@@ -194,7 +194,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     RequiredQuantity = l.RequiredQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
                     ItemListId = l.ItemListId,
-                    ItemListRowStatus = (ItemListRowStatus)l.Status,
+                    Status = (ItemListRowStatus)l.Status,
                     MaterialStatusDescription = l.MaterialStatus.Description,
                     CreationDate = l.CreationDate,
                     ItemUnitMeasure = l.Item.MeasureUnit.Description,
