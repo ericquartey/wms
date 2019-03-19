@@ -12,8 +12,8 @@
     <Grid Height="608"
           Margin="25,0,0,0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
-            <RowDefinition Height="500" />
+            <RowDefinition Height="130" />
+            <RowDefinition Height="350" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         
@@ -27,6 +27,9 @@
                     Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
             <Button Command="{Binding ShutterEngineButtonCommand}"
                     Content="{x:Static res:InstallationApp.LSMTGateEngineButton}"
+                    Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+            <Button Command="{Binding CarouselButtonCommand}"
+                    Content="{x:Static res:InstallationApp.LSMTCarouselButton}"
                     Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
         </StackPanel>
     </Grid>

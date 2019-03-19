@@ -12,7 +12,7 @@ namespace Ferretto.Common.BusinessModels
 
             if (compartmentDetails?.MaxCapacity.HasValue == false)
             {
-                return "#00000000";
+                return "#FF90A4AE";
             }
 
             var fillRatio = (double)compartmentDetails.Stock / compartmentDetails.MaxCapacity.Value;

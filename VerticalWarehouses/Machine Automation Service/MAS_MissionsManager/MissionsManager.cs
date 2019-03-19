@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -11,6 +10,7 @@ using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.Common_Utils.Utilities;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_MissionsManager
@@ -22,6 +22,8 @@ namespace Ferretto.VW.MAS_MissionsManager
         private readonly Task commadReceiveTask;
 
         private readonly IEventAggregator eventAggregator;
+
+        private readonly ILogger logger;
 
         private readonly BlockingConcurrentQueue<CommandMessage> messageQueue;
 
@@ -39,9 +41,11 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         #region Constructors
 
-        public MissionsManager(IEventAggregator eventAggregator)
+        public MissionsManager(IEventAggregator eventAggregator, ILogger<MissionsManager> logger)
         {
             this.eventAggregator = eventAggregator;
+
+            this.logger = logger;
 
             this.missionExecuted = new ManualResetEventSlim(true);
 
@@ -51,9 +55,9 @@ namespace Ferretto.VW.MAS_MissionsManager
 
             this.missionsCollection = new Dictionary<IMissionMessageData, int>();
 
-            this.commadReceiveTask = new Task(() => CommandReceiveTaskFunction());
+            this.commadReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
 
-            this.missionExecutionTask = new Task(() => MissionsExecutionTaskFunction());
+            this.missionExecutionTask = new Task(() => this.MissionsExecutionTaskFunction());
 
             var automationServiceMessageEvent = this.eventAggregator.GetEvent<CommandEvent>();
             automationServiceMessageEvent.Subscribe(commandMessage => this.messageQueue.Enqueue(commandMessage),
@@ -67,6 +71,8 @@ namespace Ferretto.VW.MAS_MissionsManager
                 false,
                 notificationMessage => notificationMessage.Source == MessageActor.FiniteStateMachines &&
                                        notificationMessage.Status == MessageStatus.OperationEnd);
+
+            this.logger?.LogInformation("Mission Manager Constructor");
         }
 
         #endregion

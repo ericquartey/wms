@@ -15,8 +15,6 @@ namespace Ferretto.VW.InstallationApp
 
     public delegate void ClickedOnMachineOnMarchEvent();
 
-    public delegate void SensorsStatesChangedEvent();
-
     public partial class MainWindowViewModel : BindableBase, IMainWindowViewModel, IViewModelRequiresContainer
     {
         #region Fields
@@ -127,9 +125,9 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        public void InitializeViewModel(IUnityContainer _container)
+        public void InitializeViewModel(IUnityContainer container)
         {
-            this.container = _container;
+            this.container = container;
             this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
             this.ExitViewButtonRegionCurrentViewModel = null;
             this.ContentRegionCurrentViewModel = (IdleViewModel)this.container.Resolve<IIdleViewModel>();

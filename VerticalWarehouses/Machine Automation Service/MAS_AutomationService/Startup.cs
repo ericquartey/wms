@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Prism.Events;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
@@ -76,7 +77,8 @@ namespace Ferretto.VW.MAS_AutomationService
                 connectionString,
                 provider.GetService<DataLayerContext>(),
                 provider.GetService<IEventAggregator>(),
-                provider.GetService<IOptions<FilesInfo>>()));
+                provider.GetService<IOptions<FilesInfo>>(),
+                provider.GetService<ILogger<DataLayer>>()));
 
             services.AddSingleton<IWriteLogService, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);

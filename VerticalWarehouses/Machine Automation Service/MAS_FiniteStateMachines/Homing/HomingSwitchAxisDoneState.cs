@@ -100,7 +100,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
             ((IHomingStateMachine)this.parentStateMachine).IsStopRequested = true;
 
-            this.parentStateMachine.ChangeState(new HomingEndState(this.parentStateMachine));
+            this.parentStateMachine.ChangeState(new HomingEndState(this.parentStateMachine, this.axisToCalibrate));
         }
 
         #endregion

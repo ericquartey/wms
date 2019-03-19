@@ -34,7 +34,7 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
 
         public MovementType TypeOfMovement { get; private set; }
 
-        public MessageVerbosity Verbosity { get; }
+        public MessageVerbosity Verbosity { get; private set; }
 
         #endregion
     }

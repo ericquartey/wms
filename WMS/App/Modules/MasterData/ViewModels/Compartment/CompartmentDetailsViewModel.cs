@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommonServiceLocator;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces;
@@ -9,7 +10,6 @@ using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Ferretto.WMS.App.Modules.BLL;
-using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
@@ -97,6 +97,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public override async void LoadRelatedData()
         {
+            if (!this.IsModelIdValid)
+            {
+                return;
+            }
+
             var items = await this.itemProvider.GetAllowedByCompartmentIdAsync(this.Model.Id);
             this.AllowedItemsDataSource = this.Model != null
                 ? new DataSource<AllowedItemInCompartment, int>(items.AsQueryable<AllowedItemInCompartment>)

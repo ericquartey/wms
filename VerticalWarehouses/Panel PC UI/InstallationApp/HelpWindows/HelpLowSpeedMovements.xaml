@@ -21,7 +21,7 @@
                     Text="{x:Static res:HelpDescriptions.HelpLSMTTitle}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
-                    Width="670" Height="50"
+                    Width="670" Height="60"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpLSMTDescription}" />
 
@@ -36,24 +36,32 @@
                                                LabelText="{x:Static res:InstallationApp.ActualPosition}"  />
         
         <Button     x:Name="VerticalEngineUp"
-                    VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,210,0,0"
+                    VerticalAlignment="Top" HorizontalAlignment="Left" Margin="530,140,0,0"
                     Content="{x:Static res:InstallationApp.Up}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"  />
         
         <Button     x:Name="VerticalEngineDown"
-                    VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,280,0,0"
+                    VerticalAlignment="Top" HorizontalAlignment="Left" Margin="530,210,0,0"
                     Content="{x:Static res:InstallationApp.Down}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"  />
         
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,210,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,140,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpLSMTMoveUp}" />
         
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,280,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,210,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpLSMTMoveDown}" />
+        
+        <Controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="20,210,0,0" Width="180" Height="65"
+                                                  LabelText="{x:Static res:InstallationApp.LSMTNoteHeader}"
+                                                  ContentText="{x:Static res:InstallationApp.LSMTComandNote}" />
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,210,0,0"
+            Width="260" Height="70"
+            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+            Text="{x:Static res:HelpDescriptions.HelpLSMTComandMode}" />
 
     </Grid>
 </UserControl>

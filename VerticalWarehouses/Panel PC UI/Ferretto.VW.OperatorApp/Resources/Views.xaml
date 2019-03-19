@@ -1,0 +1,18 @@
+﻿<ResourceDictionary x:Class="Ferretto.VW.OperatorApp.Resources.Views"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Ferretto.VW.OperatorApp.Resources"
+             xmlns:viewsandviewmodels="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels"
+             mc:Ignorable="d">
+    <DataTemplate DataType="{x:Type viewsandviewmodels:IdleViewModel}">
+        <viewsandviewmodels:IdleView></viewsandviewmodels:IdleView>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewsandviewmodels:MainWindowNavigationButtonsViewModel}">
+        <viewsandviewmodels:MainWindowNavigationButtonsView></viewsandviewmodels:MainWindowNavigationButtonsView>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewsandviewmodels:MainWindowBackToOAPPButtonViewModel}">
+        <viewsandviewmodels:MainWindowBackToOAPPButtonView></viewsandviewmodels:MainWindowBackToOAPPButtonView>
+    </DataTemplate>
+</ResourceDictionary>

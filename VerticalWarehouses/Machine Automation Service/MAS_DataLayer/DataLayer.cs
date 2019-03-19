@@ -11,6 +11,7 @@ using Ferretto.VW.Common_Utils.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using Prism.Events;
@@ -31,6 +32,8 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private readonly DataLayerContext inMemoryDataContext;
 
+        private readonly ILogger logger;
+
         private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
 
         private readonly Task notificationReceiveTask;
@@ -41,7 +44,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Constructors
 
-        public DataLayer(string connectionString, DataLayerContext inMemoryDataContext, IEventAggregator eventAggregator, IOptions<FilesInfo> filesInfo)
+        public DataLayer(string connectionString, DataLayerContext inMemoryDataContext, IEventAggregator eventAggregator, IOptions<FilesInfo> filesInfo, ILogger<DataLayer> logger)
         {
             if (inMemoryDataContext == null)
             {
@@ -58,11 +61,18 @@ namespace Ferretto.VW.MAS_DataLayer
                 throw new ArgumentNullException();
             }
 
+            if (logger == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             this.inMemoryDataContext = inMemoryDataContext;
 
             this.eventAggregator = eventAggregator;
 
             this.filesInfo = filesInfo;
+
+            this.logger = logger;
 
             using (var initialContext = new DataLayerContext(
                 new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(connectionString).Options))
@@ -71,8 +81,12 @@ namespace Ferretto.VW.MAS_DataLayer
 
                 if (!initialContext.ConfigurationValues.Any())
                 {
-                    //TODO reovery database from permanent storage
+                    //this.LoadConfigurationValuesInfo(InfoFilesEnum.GeneralInfo);
+                    //this.LoadConfigurationValuesInfo(InfoFilesEnum.InstallationInfo);
                 }
+
+                this.LoadConfigurationValuesInfo(InfoFilesEnum.GeneralInfo);
+                this.LoadConfigurationValuesInfo(InfoFilesEnum.InstallationInfo);
 
                 foreach (var configurationValue in initialContext.ConfigurationValues)
                 {
@@ -102,9 +116,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 false,
                 message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
 
-            this.SetDecimalConfigurationValue(ConfigurationValueEnum.cellSpacing, 25.01m);
-
-            this.GetDecimalConfigurationValue(ConfigurationValueEnum.cellSpacing);
+            this.logger?.LogInformation("DataLayer Constructor");
         }
 
         /// <summary>
@@ -167,11 +179,29 @@ namespace Ferretto.VW.MAS_DataLayer
         #region Methods
 
         /// <inheritdoc/>
-        public void LoadGeneralInfo()
+        public void LoadConfigurationValuesInfo(InfoFilesEnum configurationValueRequest)
         {
-            var generalInfoPath = this.filesInfo.Value.GeneralInfoPath;
+            string requestPath;
 
-            using (var streamReader = new StreamReader(generalInfoPath))
+            switch (configurationValueRequest)
+            {
+                case InfoFilesEnum.GeneralInfo:
+                    {
+                        requestPath = this.filesInfo.Value.GeneralInfoPath;
+                        break;
+                    }
+                case InfoFilesEnum.InstallationInfo:
+                    {
+                        requestPath = this.filesInfo.Value.InstallationInfoPath;
+                        break;
+                    }
+                default:
+                    {
+                        throw new InMemoryDataLayerException(DataLayerExceptionEnum.UNKNOWN_INFO_FILE_EXCEPTION);
+                    }
+            }
+
+            using (var streamReader = new StreamReader(requestPath))
             {
                 var json = streamReader.ReadToEnd();
                 var jsonObject = JObject.Parse(json);
@@ -181,8 +211,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
                 foreach (var jsonElement in jsonObject)
                 {
-                    jsonElementName = (ConfigurationValueEnum)System.Enum.Parse(typeof(ConfigurationValueEnum), jsonElement.Key);
-
+                    jsonElementName = (ConfigurationValueEnum)Enum.Parse(typeof(ConfigurationValueEnum), jsonElement.Key);
                     jsonElementType = this.ConvertConfigurationValue(jsonElementName);
 
                     switch (jsonElementType)

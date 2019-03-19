@@ -191,7 +191,7 @@
     <value>Comandi manuali a bassa velocita'.</value>
   </data>
   <data name="HelpLSMTDescription" xml:space="preserve">
-    <value>Permette di effettuare il movimento dei vari assi a bassa velocita. E' impostato uno spazio di movimento ridotto in entrambe le direzioni. Il testo dei pulsanti cambia in base al movimento richiesto.</value>
+    <value>Permette di effettuare il movimento dei vari assi a bassa velocita. E' impostato uno spazio di movimento ridotto in entrambe le direzioni. Il testo dei pulsanti cambia in base al movimento richiesto. A collaudo macchina completato sara' possibile comandare a bassa velocita' tutti i vari assi senza interblocchi e per corse non limitate.</value>
   </data>
   <data name="HelpLSMTActualPosition" xml:space="preserve">
     <value>Indica lo posizione corrente o lo stato per quelle parti che hanno solo posizioni discrete.</value>
@@ -510,5 +510,104 @@
   </data>
   <data name="HelpBCTRNextPosition" xml:space="preserve">
     <value>Se abilitato, il pulsante permette di scegliere la prossima posizione presente nella baia attualmente selezionata. La procedura va ripetuta per la nuova posizione.</value>
+  </data>
+  <data name="HelpIPGDescription" xml:space="preserve">
+    <value>Il menu' principale permette di accedere a tutte le funzioni previste per la fase di messa in servizio della macchina.</value>
+  </data>
+  <data name="HelpIPGHeder" xml:space="preserve">
+    <value>Menu' principale.</value>
+  </data>
+  <data name="HelpIPGError" xml:space="preserve">
+    <value>Indica, quando visibile, la presenza di un errore. La pressione del pulsante apre la finestra dedicata al ripristino della situazione.</value>
+  </data>
+  <data name="HelpIPGOff" xml:space="preserve">
+    <value>Lo stato di Off di questo pulsante indica la disabilitazione dei movimenti della macchina.</value>
+  </data>
+  <data name="HelpIPGOn" xml:space="preserve">
+    <value>Lo stato di On di questo pulsante indica che la macchina a abilitata a muoversi.</value>
+  </data>
+  <data name="HelpIPGInstaller" xml:space="preserve">
+    <value>Indica il nome dell'utente correntemente loggato. Se premuto permette di effettuare il logout dal sistema.</value>
+  </data>
+  <data name="HelpIPGHelp" xml:space="preserve">
+    <value>Se premuto, apre il menu' contestuale alla funzione correntemente selezionata.</value>
+  </data>
+  <data name="HelpIPGUp" xml:space="preserve">
+    <value>Permette di scorrere verso l'alto la lista dei pulsanti di accesso alle varie funzioni.</value>
+  </data>
+  <data name="HelpIPGButton" xml:space="preserve">
+    <value>Elenco dei pulsanti di accesso alle funzioni di installazione.</value>
+  </data>
+  <data name="HelpIPGDown" xml:space="preserve">
+    <value>Permette di scorrere verso il basso la lista dei pulsanti di accesso alle varie funzioni.</value>
+  </data>
+  <data name="HelpDLUTDescription" xml:space="preserve">
+    <value>La procedura permette di effettuare una serie di test di imbarco e sbarco di un cassetto utilizzando la baia selezionata negli appositi campi di input. Per il test e' possibile variare il feed rate di accelerazione, decelerazione e velocita' secondo quanto indicato nell'apposito campo. Il test prosegue fino al raggiungimento del numero di cicli richiesti o fino alla pressione del tasto di arresto.</value>
+  </data>
+  <data name="HelpDLUTBay" xml:space="preserve">
+    <value>Inserire il numero della baia su cui si vuole effettuare il test.</value>
+  </data>
+  <data name="HelpDLUTPosition" xml:space="preserve">
+    <value>Inserire la posizione all'interno della baia su cui si vuole effettuare il test.</value>
+  </data>
+  <data name="HelpDLUTFeedRate" xml:space="preserve">
+    <value>Inserire il feed rate richiesto per il test. La riduzione riguarda anche i valori di accelerazione e decelerazione.</value>
+  </data>
+  <data name="HelpDLUTChain" xml:space="preserve">
+    <value>Riporta la posizione corrente dell'asse catena come valore relativo alla quota di partenza.</value>
+  </data>
+  <data name="HelpDLUTCyclesRequired" xml:space="preserve">
+    <value>Inserire il numero di cicli di test richiesti.</value>
+  </data>
+  <data name="HelpDLUTCycleCompleted" xml:space="preserve">
+    <value>Riporta il numero di cicli completi correntemente eseguiti.</value>
+  </data>
+  <data name="HelpDLUTGotoPosition" xml:space="preserve">
+    <value>Muove l'asse verticale in corrispondenza della posizione interna alla baia selezionata. La quota tiene conto dell'offset di imbarco.</value>
+  </data>
+  <data name="HelpDLUTStart" xml:space="preserve">
+    <value>Avvia la procedura di test. Il pulsante e' attivo solo dopo che l'asse verticale e' in corrispondenza della posizione nella baia richiesta.</value>
+  </data>
+  <data name="HelpDLUTStop" xml:space="preserve">
+    <value>Arresta il ciclo di test.</value>
+  </data>
+  <data name="HelpLSMTComandMode" xml:space="preserve">
+    <value>Riporta la modalita' correntemente abilitata per i comandi manuali. La modalita' a corsa estesa e' settata automaticamente a messa in servizio completata.</value>
+  </data>
+  <data name="HelpSRCPageHeader" xml:space="preserve">
+    <value>Salvataggio e ripristino configurazione macchina.</value>
+  </data>
+  <data name="HelpSRCDescription" xml:space="preserve">
+    <value>La procedura permette di effettuare il salvataggio o il ripristino dei files che contengono le informazioni verificate in fase di messa in servizio della macchina. Il drive e la cartella di salvataggio o restore vengono automaticamente individuate dal sistema.</value>
+  </data>
+  <data name="HelpSRCSaveSide" xml:space="preserve">
+    <value>Procedura di salvataggio configurazione.</value>
+  </data>
+  <data name="HelpSRCSaveFolder" xml:space="preserve">
+    <value>Indica la cartella creata automaticamente dove verranno salvati i files di configurazione.</value>
+  </data>
+  <data name="HelpSRCSaveButton" xml:space="preserve">
+    <value>Avvia la procedura di salvataggio dei files di configurazione. Eventuali files gia' presenti saranno sovrascritti.</value>
+  </data>
+  <data name="HelpSRCSaveConfirmButton" xml:space="preserve">
+    <value>Conferma la procedura di salvataggio dei files.</value>
+  </data>
+  <data name="HelpSRCSaveAbortButton" xml:space="preserve">
+    <value>Annulla la procedura di salvataggio dei files.</value>
+  </data>
+  <data name="HelpSRCLoadSide" xml:space="preserve">
+    <value>Procedura di ripristino configurazione.</value>
+  </data>
+  <data name="HelpSRCLoadFolder" xml:space="preserve">
+    <value>Indica la cartella rilevata da cui verranno prelevati i files da ripristinare.</value>
+  </data>
+  <data name="HelpSRCLoadButton" xml:space="preserve">
+    <value>Avvia la procedura di caricamento dei files di configurazione. Eventuali files gia' presenti verranno sovrascritti.</value>
+  </data>
+  <data name="HelpSRCLoadConfirmButton" xml:space="preserve">
+    <value>Conferma la procedura di caricamento dei files.</value>
+  </data>
+  <data name="HelpSRCLoadAbortButton" xml:space="preserve">
+    <value>Annulla la procedura di caricamento dei files.</value>
   </data>
 </root>

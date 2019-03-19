@@ -787,4 +787,70 @@
   <data name="BayControlNextPosition" xml:space="preserve">
     <value>Prossima posizione</value>
   </data>
+  <data name="DrawerLoadingUnloadingTest" xml:space="preserve">
+    <value>Test imbarco sbarco</value>
+  </data>
+  <data name="DLUTestHeader" xml:space="preserve">
+    <value>Test imbarco sbarco cassetto in baia.</value>
+  </data>
+  <data name="DLUTestFeedRate" xml:space="preserve">
+    <value>Feed rate %:</value>
+  </data>
+  <data name="DLUTestCycleRequired" xml:space="preserve">
+    <value>Cicli richiesti :</value>
+  </data>
+  <data name="DLUTestActualposition" xml:space="preserve">
+    <value>Posizione attuale catena:</value>
+  </data>
+  <data name="DLUTestCompletedCycles" xml:space="preserve">
+    <value>Cicli completati :</value>
+  </data>
+  <data name="DLUTestStop" xml:space="preserve">
+    <value>Arresta ciclo</value>
+  </data>
+  <data name="DLUTestStart" xml:space="preserve">
+    <value>Avvia ciclo</value>
+  </data>
+  <data name="LSMTNoteHeader" xml:space="preserve">
+    <value>Attenzione:</value>
+  </data>
+  <data name="LSMTComandNote" xml:space="preserve">
+    <value>I comandi manuali sono attualmente abilitati ad effettuare piccoli spostamenti a bassa velocita' senza interblocchi.</value>
+  </data>
+  <data name="LSMTCarouselButton" xml:space="preserve">
+    <value>Giostra</value>
+  </data>
+  <data name="LSMTCarouselPageHeader" xml:space="preserve">
+    <value>Movimenti giostra.</value>
+  </data>
+  <data name="SaveRestoreConfigButton" xml:space="preserve">
+    <value>Salva e riprsitina</value>
+  </data>
+  <data name="SaveRestoreConfigPageHeader" xml:space="preserve">
+    <value>Salva file di configurazione.</value>
+  </data>
+  <data name="SaveRestoreConfigPageHeader2" xml:space="preserve">
+    <value>Ripristina file di configurazione.</value>
+  </data>
+  <data name="SaveRestoreConfigSelectedFolder" xml:space="preserve">
+    <value>Cartella selezionata:</value>
+  </data>
+  <data name="SaveRestoreConfigSaveButton" xml:space="preserve">
+    <value>Salva configurazione</value>
+  </data>
+  <data name="SaveRestoreConfigConfirmSaveButton" xml:space="preserve">
+    <value>Conferma salvataggio</value>
+  </data>
+  <data name="SaveRestoreConfigAbortSaveButton" xml:space="preserve">
+    <value>Annulla salvataggio</value>
+  </data>
+  <data name="SaveRestoreConfigRestoreButton" xml:space="preserve">
+    <value>Carica configurazione</value>
+  </data>
+  <data name="SaveRestoreConfigConfirmRestoreButton" xml:space="preserve">
+    <value>Conferma caricamento</value>
+  </data>
+  <data name="SaveRestoreConfigAbortRestoreButton" xml:space="preserve">
+    <value>Annulla caricamento</value>
+  </data>
 </root>
