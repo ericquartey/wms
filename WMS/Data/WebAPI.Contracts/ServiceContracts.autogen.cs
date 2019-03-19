@@ -3009,6 +3009,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     
         Error = 69,
     
+        Incomplete = 73,
+    
         New = 78,
     
         Waiting = 87,
