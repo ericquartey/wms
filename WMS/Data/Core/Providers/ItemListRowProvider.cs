@@ -69,8 +69,29 @@ namespace Ferretto.WMS.Data.Core.Providers
             return new SuccessOperationResult<ItemListRowDetails>(model);
         }
 
+        public async Task<IOperationResult<ItemListRowDetails>> DeleteAsync(int id)
+        {
+            var existingModel = this.dataContext.ItemListRows.Find(id);
+            if (existingModel == null)
+            {
+                return new NotFoundOperationResult<ItemListRowDetails>();
+            }
+
+            var itemListRow = await this.GetByIdAsync(id);
+            if (itemListRow.CanDelete)
+            {
+                this.dataContext.Remove(existingModel);
+                await this.dataContext.SaveChangesAsync();
+                return new SuccessOperationResult<ItemListRowDetails>();
+            }
+            else
+            {
+                return new UnprocessableEntityOperationResult<ItemListRowDetails>();
+            }
+        }
+
         public async Task<IEnumerable<ItemListRow>> GetAllAsync(
-            int skip,
+                    int skip,
             int take,
             IEnumerable<SortOption> orderBySortOptions = null,
             string whereString = null,
@@ -97,8 +118,10 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<ItemListRowDetails> GetByIdAsync(int id)
         {
-            return await this.GetAllDetailsBase()
+            var itemListRowDetails = await this.GetAllDetailsBase()
                        .SingleOrDefaultAsync(i => i.Id == id);
+
+            return itemListRowDetails;
         }
 
         public async Task<IEnumerable<ItemListRow>> GetByItemListIdAsync(int id)
@@ -162,9 +185,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         private IQueryable<ItemListRow> GetAllBase()
         {
             return this.dataContext.ItemListRows
-                .Include(l => l.MaterialStatus)
-                .Include(l => l.Item)
-                .ThenInclude(i => i.MeasureUnit)
                 .Select(l => new ItemListRow
                 {
                     Id = l.Id,
@@ -174,19 +194,17 @@ namespace Ferretto.WMS.Data.Core.Providers
                     RequiredQuantity = l.RequiredQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
                     ItemListId = l.ItemListId,
-                    ItemListRowStatus = (ItemListRowStatus)l.Status,
+                    Status = (ItemListRowStatus)l.Status,
                     MaterialStatusDescription = l.MaterialStatus.Description,
                     CreationDate = l.CreationDate,
-                    ItemUnitMeasure = l.Item.MeasureUnit.Description
+                    ItemUnitMeasure = l.Item.MeasureUnit.Description,
+                    HasSchedulerRequestAssociated = l.SchedulerRequests.Any(),
                 });
         }
 
         private IQueryable<ItemListRowDetails> GetAllDetailsBase()
         {
             return this.dataContext.ItemListRows
-                .Include(lr => lr.ItemList)
-                .Include(lr => lr.Item)
-                .ThenInclude(i => i.MeasureUnit)
                 .Select(l => new ItemListRowDetails
                 {
                     Id = l.Id,
@@ -202,7 +220,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     ItemListDescription = l.ItemList.Description,
                     ItemListId = l.ItemListId,
                     ItemListType = (ItemListType)l.ItemList.ItemListType,
-                    ItemListStatus = (ItemListStatus)l.ItemList.Status,
                     CompletionDate = l.CompletionDate,
                     LastExecutionDate = l.LastExecutionDate,
                     LastModificationDate = l.LastModificationDate,
@@ -212,7 +229,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Sub2 = l.Sub2,
                     PackageTypeId = l.PackageTypeId,
                     MaterialStatusId = l.MaterialStatusId,
-                    ItemUnitMeasure = l.Item.MeasureUnit.Description
+                    ItemUnitMeasure = l.Item.MeasureUnit.Description,
+                    HasSchedulerRequestAssociated = l.SchedulerRequests.Any(),
                 });
         }
 

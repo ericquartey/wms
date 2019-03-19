@@ -1,13 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Threading.Tasks;
+using CommonServiceLocator;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
-using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.WMS.Modules.MasterData
 {

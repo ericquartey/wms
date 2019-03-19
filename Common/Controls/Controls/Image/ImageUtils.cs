@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Providers;
 
 namespace Ferretto.Common.Controls
 {

@@ -1006,4 +1006,7 @@
   <data name="OperationType" xml:space="preserve">
     <value>Operation Type</value>
   </data>
+  <data name="ItemListRow" xml:space="preserve">
+    <value>Item List Row</value>
+  </data>
 </root>

@@ -34,7 +34,9 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <wms:TileBar ItemsSource="{Binding Filters}"
+
+                <wms:TileBar HorizontalAlignment="Right"
+                             ItemsSource="{Binding Filters}"
                              SelectedItem="{Binding SelectedFilter, Mode=OneWayToSource}" />
                 <dxa:AccordionControl Grid.Row="1"
                                       Background="Transparent"
@@ -106,7 +108,8 @@
                     <wms:WmsGridControl.View>
                         <dxg:TableView SearchPanelHorizontalAlignment="Right"
                                        ShowFilterPanelMode="Never"
-                                       ShowSearchPanelMode="Never">
+                                       ShowSearchPanelMode="Never"
+                                       ShowFixedTotalSummary="True">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="RowDoubleClick">
                                     <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentItem.Id, Mode=OneWay}"
@@ -160,6 +163,12 @@
                         <dxg:GridSortInfo FieldName="LoadingUnitCode"
                                           SortOrder="Ascending" />
                     </wms:WmsGridControl.SortInfo>
+
+                    <wms:WmsGridControl.TotalSummary>
+                        <dxg:GridSummaryItem SummaryType="Count"
+                                             Alignment="Left"
+                                             DisplayFormat="{x:Static res:DesktopApp.GridRowCounter}" />
+                    </wms:WmsGridControl.TotalSummary>
 
                 </wms:WmsGridControl>
             </Grid>

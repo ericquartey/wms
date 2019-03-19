@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.DTOs;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
@@ -32,7 +33,8 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpGet("ExecuteHoming")]
         public void ExecuteHoming()
         {
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Execute Homing Command", MessageActor.WebAPI, MessageActor.FiniteStateMachines, MessageType.Homing));
+            ICalibrateMessageData homingData = new CalibrateMessageData(Axis.Both);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(homingData, "Execute Homing Command", MessageActor.FiniteStateMachines, MessageActor.WebAPI, MessageType.Homing));
         }
 
         [HttpPost]

@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Ferretto.Common.BLL.Interfaces.Base;
+using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.WMS.Scheduler.Core.Models;
 
 namespace Ferretto.WMS.Scheduler.Core.Interfaces
 {
     public interface IItemListSchedulerProvider :
-        IUpdateAsyncProvider<ItemList, int>
+        IUpdateAsyncProvider<ItemList, int>,
+        IReadSingleAsyncProvider<ItemList, int>
     {
         #region Methods
 

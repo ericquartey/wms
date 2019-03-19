@@ -4,9 +4,11 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -25,7 +27,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IMissionProvider missionProvider;
 
-        private readonly IMissionSchedulerProvider missionSchedulerProvider;
+        private readonly ISchedulerService schedulerService;
+
+        private readonly IHubContext<SchedulerHub, ISchedulerHub> schedulerHubContext;
 
         #endregion
 
@@ -34,11 +38,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public MissionsController(
             ILogger<MissionsController> logger,
             IMissionProvider missionProvider,
-            IMissionSchedulerProvider missionSchedulerProvider)
+            ISchedulerService schedulerService,
+            IHubContext<SchedulerHub, ISchedulerHub> schedulerHubContext)
         {
             this.logger = logger;
             this.missionProvider = missionProvider;
-            this.missionSchedulerProvider = missionSchedulerProvider;
+            this.schedulerService = schedulerService;
+            this.schedulerHubContext = schedulerHubContext;
         }
 
         #endregion
@@ -46,19 +52,42 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Methods
 
         [ProducesResponseType(200, Type = typeof(Mission))]
-        [ProducesResponseType(404, Type = typeof(string))]
+        [ProducesResponseType(404)]
         [HttpPost("{id}/abort")]
-        public Task<ActionResult<Mission>> Abort(int id)
+        public Task<ActionResult<Mission>> AbortAsync(int id)
         {
             throw new System.NotImplementedException();
         }
 
         [ProducesResponseType(200, Type = typeof(Mission))]
-        [ProducesResponseType(404, Type = typeof(string))]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
         [HttpPost("{id}/complete")]
-        public async Task<ActionResult<Scheduler.Core.Models.Mission>> Complete(int id)
+        public async Task<ActionResult<Mission>> CompleteAsync(int id)
         {
-            var result = await this.missionSchedulerProvider.CompleteAsync(id);
+            var result = await this.schedulerService.CompleteMissionAsync(id);
+            if (result is NotFoundOperationResult<Scheduler.Core.Models.Mission>)
+            {
+                return this.NotFound(id);
+            }
+
+            if (result is Scheduler.Core.Models.BadRequestOperationResult<Scheduler.Core.Models.Mission>)
+            {
+                return this.BadRequest(result.Description);
+            }
+
+            await this.schedulerHubContext.Clients.All.MissionUpdated(id);
+            var updatedMission = await this.missionProvider.GetByIdAsync(id);
+            return this.Ok(updatedMission);
+        }
+
+        [ProducesResponseType(200, Type = typeof(Mission))]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
+        [HttpPost("{id}/execute")]
+        public async Task<ActionResult<Mission>> ExecuteAsync(int id)
+        {
+            var result = await this.schedulerService.ExecuteMissionAsync(id);
             if (result is NotFoundOperationResult<Scheduler.Core.Models.Mission>)
             {
                 return this.NotFound(id);
@@ -68,11 +97,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.BadRequest(result.Description);
             }
 
-            return this.Ok(result.Entity);
+            await this.schedulerHubContext.Clients.All.MissionUpdated(id);
+            var updatedMission = await this.missionProvider.GetByIdAsync(id);
+            return this.Ok(updatedMission);
         }
 
         [ProducesResponseType(200, Type = typeof(IEnumerable<Mission>))]
-        [ProducesResponseType(400, Type = typeof(string))]
+        [ProducesResponseType(400)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Mission>>> GetAllAsync(
             int skip = 0,

@@ -6,7 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Base;
+using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Utils.Expressions;
 using Prism.Mvvm;
 

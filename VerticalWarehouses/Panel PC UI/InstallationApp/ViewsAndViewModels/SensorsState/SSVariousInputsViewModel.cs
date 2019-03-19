@@ -3,7 +3,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class SSVariousInputsViewModel : BindableBase, IViewModel, ISSVariousInputsViewModel
+    public class SSVariousInputsViewModel : BindableBase, ISSVariousInputsViewModel
     {
         #region Fields
 

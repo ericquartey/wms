@@ -26,8 +26,6 @@ namespace Ferretto.Common.BusinessModels
 
         private IEnumerable<ItemListRow> itemListRows;
 
-        private ItemListStatus itemListStatus;
-
         private ItemListType itemListType;
 
         private string itemListTypeDescription;
@@ -41,6 +39,8 @@ namespace Ferretto.Common.BusinessModels
         private string shipmentUnitCode;
 
         private string shipmentUnitDescription;
+
+        private ItemListStatus status;
 
         #endregion
 
@@ -103,7 +103,7 @@ namespace Ferretto.Common.BusinessModels
             {
                 this[nameof(this.Code)],
                 this[nameof(this.ItemListType)],
-                this[nameof(this.ItemListStatus)],
+                this[nameof(this.Status)],
                 this[nameof(this.Priority)],
             }
           .Distinct()
@@ -130,20 +130,6 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(BusinessObjects.ItemListRowsCount), ResourceType = typeof(BusinessObjects))]
         public int ItemListRowsCount => this.itemListRows.Count();
-
-        [Required]
-        [Display(Name = nameof(BusinessObjects.ItemListStatus), ResourceType = typeof(BusinessObjects))]
-        public ItemListStatus ItemListStatus
-        {
-            get => this.itemListStatus;
-            set
-            {
-                if (this.SetProperty(ref this.itemListStatus, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
-        }
 
         public IEnumerable<Enumeration> ItemListStatusChoices { get; set; }
 
@@ -211,6 +197,50 @@ namespace Ferretto.Common.BusinessModels
         {
             get => this.shipmentUnitDescription;
             set => this.SetProperty(ref this.shipmentUnitDescription, value);
+        }
+
+        [Required]
+        [Display(Name = nameof(BusinessObjects.ItemListStatus), ResourceType = typeof(BusinessObjects))]
+        public ItemListStatus Status
+        {
+            get => this.status;
+            set
+            {
+                if (this.SetProperty(ref this.status, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
+        }
+
+        #endregion
+
+        #region Indexers
+
+        public override string this[string columnName]
+        {
+            get
+            {
+                var baseError = base[columnName];
+
+                if (!string.IsNullOrEmpty(baseError))
+                {
+                    return baseError;
+                }
+
+                switch (columnName)
+                {
+                    case nameof(this.Priority):
+                        if (this.priority < 1)
+                        {
+                            return string.Format(Common.Resources.Errors.PropertyMustBeStriclyPositive, nameof(this.Priority));
+                        }
+
+                        break;
+                }
+
+                return null;
+            }
         }
 
         #endregion

@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS_DataLayer
 
         void LogWriting(CommandMessage command_EventParameter);
 
+        bool LogWriting(string logMessage);
+
         #endregion
     }
 }

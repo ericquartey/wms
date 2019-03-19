@@ -40,12 +40,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         public void ProcessCommandMessage(CommandMessage message)
         {
-            this.CurrentState?.SendCommandMessage(message);
+            this.CurrentState?.ProcessCommandMessage(message);
         }
 
         public void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.CurrentState?.SendNotificationMessage(message);
+            this.CurrentState?.ProcessNotificationMessage(message);
         }
 
         public void PublishCommandMessage(CommandMessage message)

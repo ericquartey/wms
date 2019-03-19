@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Ferretto.Common.BLL.Interfaces.Base;
+using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.WMS.Scheduler.Core.Models;
 
 namespace Ferretto.WMS.Scheduler.Core.Interfaces
@@ -16,8 +16,6 @@ namespace Ferretto.WMS.Scheduler.Core.Interfaces
         Task<SchedulerRequest> FullyQualifyWithdrawalRequestAsync(SchedulerRequest schedulerRequest);
 
         Task<IEnumerable<SchedulerRequest>> GetRequestsToProcessAsync();
-
-        Task<SchedulerRequest> WithdrawAsync(SchedulerRequest request);
 
         #endregion
     }

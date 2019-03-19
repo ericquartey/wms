@@ -50,8 +50,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Priority = model.Priority,
                 ShipmentUnitAssociated = model.ShipmentUnitAssociated,
                 ShipmentUnitCode = model.ShipmentUnitCode,
-                ShipmentUnitDescription = model.ShipmentUnitDescription,
-                Status = (Common.DataModels.ItemListStatus)model.ItemListStatus,
+                ShipmentUnitDescription = model.ShipmentUnitDescription
             });
 
             var changedEntitiesCount = await this.dataContext.SaveChangesAsync();
@@ -147,14 +146,17 @@ namespace Ferretto.WMS.Data.Core.Providers
         private IQueryable<ItemList> GetAllBase()
         {
             return this.dataContext.ItemLists
-                .Include(i => i.ItemListRows)
                 .Select(i => new ItemList
                 {
                     Id = i.Id,
                     Code = i.Code,
                     Description = i.Description,
                     Priority = i.Priority,
-                    ItemListStatus = (ItemListStatus)i.Status,
+                    CompletedRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Completed),
+                    ExecutingRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Executing),
+                    WaitingRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Waiting),
+                    IncompleteRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Incomplete),
+                    SuspendedRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Suspended),
                     ItemListType = (ItemListType)i.ItemListType,
                     ItemListRowsCount = i.ItemListRows.Count(),
                     ItemListItemsCount = i.ItemListRows.Sum(row => row.RequiredQuantity),
@@ -165,16 +167,20 @@ namespace Ferretto.WMS.Data.Core.Providers
         private IQueryable<ItemListDetails> GetAllDetailsBase()
         {
             return this.dataContext.ItemLists
-                .Include(i => i.ItemListRows)
                 .Select(i => new ItemListDetails
                 {
                     Id = i.Id,
                     Code = i.Code,
                     Description = i.Description,
                     Priority = i.Priority,
-                    ItemListStatus = (ItemListStatus)i.Status,
                     ItemListType = (ItemListType)i.ItemListType,
                     ItemListItemsCount = i.ItemListRows.Sum(row => row.RequiredQuantity),
+                    RowsCount = i.ItemListRows.Count(),
+                    CompletedRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Completed),
+                    ExecutingRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Executing),
+                    WaitingRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Waiting),
+                    IncompleteRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Incomplete),
+                    SuspendedRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Suspended),
                     CreationDate = i.CreationDate,
                     Job = i.Job,
                     CustomerOrderCode = i.CustomerOrderCode,

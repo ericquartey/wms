@@ -1,6 +1,7 @@
 ﻿using System;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
@@ -21,13 +22,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 MessageVerbosity.Info);
             this.parentStateMachine.PublishCommandMessage(inverterMessage);
 
-            //TEMP Send a notification about the end operation
+            var messageStatus = ((IHomingStateMachine)this.parentStateMachine).IsStopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd;
+
+            //TEMP Send a notification about the end (/stop) operation to all the world
             var newMessage = new NotificationMessage(null,
                 "End Homing",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.Stop,  //TEMP or MessageType.Homing
-                MessageStatus.OperationEnd,
+                messageStatus,
                 ErrorLevel.NoError,
                 MessageVerbosity.Info);
 
@@ -44,12 +47,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Methods
 
-        public override void SendCommandMessage(CommandMessage message)
+        public override void ProcessCommandMessage(CommandMessage message)
         {
             throw new NotImplementedException();
         }
 
-        public override void SendNotificationMessage(NotificationMessage message)
+        public override void ProcessNotificationMessage(NotificationMessage message)
         {
             if (message.Type == MessageType.Homing && message.Status == MessageStatus.OperationError)
             {

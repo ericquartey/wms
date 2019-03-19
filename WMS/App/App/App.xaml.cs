@@ -1,10 +1,14 @@
 ﻿using System.Configuration;
 using System.Windows;
+using CommonServiceLocator;
+using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Resources;
+using Prism.Modularity;
 
 namespace Ferretto.WMS.App
 {
-    public partial class App : Application
+    public partial class App : WmsApplication
     {
         #region Fields
 
@@ -23,38 +27,37 @@ namespace Ferretto.WMS.App
 
         #region Methods
 
-        protected override void OnExit(ExitEventArgs e)
+        protected override void OnInitialized()
         {
-            this.logger.Trace("Closing application.");
-
-            base.OnExit(e);
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Major Code Smell",
-            "S2221",
-            Justification = "This method log all startup errors")]
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
-
             try
             {
+                this.SetLanguage();
+
+                SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingLogin);
+                SplashScreenService.Hide();
+
+                var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
+                navigationService.Appear(nameof(Common.Utils.Modules.Layout), Common.Utils.Modules.Layout.LOGINVIEW);
+                var moduleManager = ServiceLocator.Current.GetInstance<IModuleManager>();
+                moduleManager.LoadModule(nameof(MasterData));
+                moduleManager.LoadModule(nameof(Machines));
+                moduleManager.LoadModule(nameof(Scheduler));
+
                 var assembly = typeof(App).Assembly;
                 var versionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
 
                 this.logger.Info($"Starting application, version '{versionInfo.ProductVersion}'.");
-
-                this.SetLanguage();
-
-                SplashScreenService.Show();
-
-                new Bootstrapper().Run();
             }
             catch (System.Exception ex)
             {
                 this.logger.Error(ex, "An error occurred on application startup.");
             }
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            SplashScreenService.Show();
+            base.OnStartup(e);
         }
 
         private void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
@@ -72,8 +75,10 @@ namespace Ferretto.WMS.App
                 this.logger.Info(
                     $"Overriding user's UI language '{System.Globalization.CultureInfo.CurrentUICulture.Name}' with '{defaultLanguage}' as specified in configuration.");
 
-                System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(defaultLanguage);
-                System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(defaultLanguage);
+                System.Globalization.CultureInfo.CurrentUICulture =
+                    System.Globalization.CultureInfo.GetCultureInfo(defaultLanguage);
+                System.Globalization.CultureInfo.CurrentCulture =
+                    System.Globalization.CultureInfo.GetCultureInfo(defaultLanguage);
             }
         }
 

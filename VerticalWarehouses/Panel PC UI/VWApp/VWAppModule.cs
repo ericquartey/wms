@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ferretto.VW.VWApp.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Modularity;
@@ -24,6 +25,8 @@ namespace Ferretto.VW.VWApp
             this.container = container;
             var eventAggregator = new EventAggregator();
             this.container.RegisterInstance<IEventAggregator>(eventAggregator);
+            var notificationCatcher = new NotificationCatcher(eventAggregator, container);
+            this.container.RegisterInstance<INotificationCatcher>(notificationCatcher);
         }
 
         #endregion

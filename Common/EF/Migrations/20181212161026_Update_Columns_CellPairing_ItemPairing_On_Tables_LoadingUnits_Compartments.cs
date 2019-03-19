@@ -2,6 +2,7 @@
 
 namespace Ferretto.Common.EF.Migrations
 {
+    [System.CodeDom.Compiler.GeneratedCode("EntityFramework", "v2.1")]
     public partial class Update_Columns_CellPairing_ItemPairing_On_Tables_LoadingUnits_Compartments : Migration
     {
         #region Methods

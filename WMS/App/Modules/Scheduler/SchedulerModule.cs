@@ -1,8 +1,9 @@
 ﻿using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Microsoft.Practices.Unity;
+using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
+using Unity;
 
 namespace Ferretto.WMS.Modules.Scheduler
 {
@@ -33,7 +34,14 @@ namespace Ferretto.WMS.Modules.Scheduler
 
         #region Methods
 
-        public void Initialize()
+        public void OnInitialized(IContainerProvider containerProvider)
+        {
+            NLog.LogManager
+                .GetCurrentClassLogger()
+                .Trace("Module loaded.");
+        }
+
+        public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingSchedulerModule);
 
@@ -43,10 +51,6 @@ namespace Ferretto.WMS.Modules.Scheduler
 
             this.NavigationService.Register<MissionsView, MissionsViewModel>();
             this.NavigationService.Register<SchedulerRequestsView, SchedulerRequestsViewModel>();
-
-            NLog.LogManager
-               .GetCurrentClassLogger()
-               .Trace("Module loaded.");
         }
 
         #endregion

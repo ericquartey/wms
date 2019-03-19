@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.Common.BusinessModels.Interfaces;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public class ItemListRowDetails : BusinessObject
+    public class ItemListRowDetails : BusinessObject,
+        ICanDelete, ICanBeExecuted
     {
         #region Fields
 
@@ -66,6 +69,8 @@ namespace Ferretto.Common.BusinessModels
         public bool CanBeExecuted => this.itemListRowStatus == ItemListRowStatus.Incomplete
                     || this.itemListRowStatus == ItemListRowStatus.Suspended
                     || this.itemListRowStatus == ItemListRowStatus.Waiting;
+
+        public bool CanDelete { get; set; }
 
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string Code { get => this.code; set => this.SetProperty(ref this.code, value); }

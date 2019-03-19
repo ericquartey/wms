@@ -270,4 +270,10 @@
   <data name="PropertyIsRequired" xml:space="preserve">
     <value>The property {0} is required.</value>
   </data>
+  <data name="PropertyMustBeStriclyPositive" xml:space="preserve">
+    <value>The property {0} must be strictly positive.</value>
+  </data>
+  <data name="PropertyMustHaveValue" xml:space="preserve">
+    <value>The property {0} must have a value.</value>
+  </data>
 </root>

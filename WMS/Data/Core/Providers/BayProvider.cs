@@ -61,9 +61,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<Bay>> GetAllAsync()
         {
             return await this.dataContext.Bays
-                             .Include(b => b.Area)
-                             .Include(b => b.BayType)
-                             .Include(b => b.Machine)
                              .Select(b => new Bay
                              {
                                  Id = b.Id,
@@ -87,9 +84,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<Bay>> GetByAreaIdAsync(int id)
         {
             return await this.dataContext.Bays
-                             .Include(b => b.BayType)
-                             .Include(b => b.Area)
-                             .Include(b => b.Machine)
                              .Where(b => b.AreaId == id)
                              .Select(b => new Bay
                              {
@@ -109,9 +103,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<Bay> GetByIdAsync(int id)
         {
             return await this.dataContext.Bays
-                             .Include(b => b.Area)
-                             .Include(b => b.BayType)
-                             .Include(b => b.Machine)
                              .Select(b => new Bay
                              {
                                  Id = b.Id,
