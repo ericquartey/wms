@@ -211,40 +211,44 @@ namespace Ferretto.VW.MAS_DataLayer
 
                 foreach (var jsonElement in jsonObject)
                 {
-                    if (jsonElement.Value is SetupNetworkEnum)
+                    var enumNames = Enum.GetNames(typeof(SetupNetworkEnum));
+                    var jsonElementName = enumNames.FirstOrDefault(x => nameof(jsonElement.Key) == x);
+                    if (jsonElementName != null)
+                    {
+                    }
 
-                        switch (jsonElementType)
-                        {
-                            case (DataTypeEnum.booleanType):
-                                {
-                                    this.SetBoolConfigurationValue(jsonElementName, (bool)jsonElement.Value.ToObject(typeof(bool)));
-                                    break;
-                                }
-                            case (DataTypeEnum.dateTimeType):
-                                {
-                                    this.SetDateTimeConfigurationValue(jsonElementName, (DateTime)jsonElement.Value.ToObject(typeof(DateTime)));
-                                    break;
-                                }
-                            case (DataTypeEnum.decimalType):
-                                {
-                                    this.SetDecimalConfigurationValue(jsonElementName, (decimal)jsonElement.Value.ToObject(typeof(decimal)));
-                                    break;
-                                }
-                            case (DataTypeEnum.integerType):
-                                {
-                                    this.SetIntegerConfigurationValue(jsonElementName, (int)jsonElement.Value.ToObject(typeof(int)));
-                                    break;
-                                }
-                            case (DataTypeEnum.stringType):
-                                {
-                                    this.SetStringConfigurationValue(jsonElementName, jsonElement.Value.ToString());
-                                    break;
-                                }
-                            default:
-                                {
-                                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.UNDEFINED_TYPE_EXCEPTION);
-                                }
-                        }
+                    switch (jsonElementType)
+                    {
+                        case (DataTypeEnum.booleanType):
+                            {
+                                this.SetBoolConfigurationValue(jsonElementName, (bool)jsonElement.Value.ToObject(typeof(bool)));
+                                break;
+                            }
+                        case (DataTypeEnum.dateTimeType):
+                            {
+                                this.SetDateTimeConfigurationValue(jsonElementName, (DateTime)jsonElement.Value.ToObject(typeof(DateTime)));
+                                break;
+                            }
+                        case (DataTypeEnum.decimalType):
+                            {
+                                this.SetDecimalConfigurationValue(jsonElementName, (decimal)jsonElement.Value.ToObject(typeof(decimal)));
+                                break;
+                            }
+                        case (DataTypeEnum.integerType):
+                            {
+                                this.SetIntegerConfigurationValue(jsonElementName, (int)jsonElement.Value.ToObject(typeof(int)));
+                                break;
+                            }
+                        case (DataTypeEnum.stringType):
+                            {
+                                this.SetStringConfigurationValue(jsonElementName, jsonElement.Value.ToString());
+                                break;
+                            }
+                        default:
+                            {
+                                throw new InMemoryDataLayerException(DataLayerExceptionEnum.UNDEFINED_TYPE_EXCEPTION);
+                            }
+                    }
                 }
             }
         }
