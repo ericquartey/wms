@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Ferretto.VW.MAS_DataLayer.Enumerations
 {
-    public enum WheightControlEnum : long
+    public enum WeightControlEnum : long
     {
         FeedRate = 0L,
 

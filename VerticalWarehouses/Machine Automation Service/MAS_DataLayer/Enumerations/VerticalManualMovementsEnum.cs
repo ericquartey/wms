@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Ferretto.VW.MAS_DataLayer.Enumerations
 {
-    public enum VerticalManulMovementsEnum : long
+    public enum VerticalManualMovementsEnum : long
     {
         FeedRate = 0L,
 
