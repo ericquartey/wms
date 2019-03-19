@@ -19,6 +19,7 @@ steps:
     platform: ${{ parameters.BuildPlatform }}
     configuration: ${{ parameters.BuildConfiguration }}
     msbuildArchitecture: x64
+    msbuildArgs: '/m'
 
 
 - task: VSTest@2
@@ -52,6 +53,8 @@ steps:
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)/WMS/App/App/bin/${{ parameters.BuildProjectConfiguration }}/net471'
     ArtifactName: 'desktop_app'
+    parallel: true
+    parallelCount: 8
 
 
 - task: PublishBuildArtifacts@1
@@ -59,3 +62,5 @@ steps:
   inputs:
     PathtoPublish: 'WMS/App/App'
     ArtifactName: 'on_premises_appconfig_transform'
+    parallel: true
+    parallelCount: 8
