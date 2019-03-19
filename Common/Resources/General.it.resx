@@ -258,4 +258,7 @@
   <data name="SelectValue" xml:space="preserve">
     <value>Seleziona un valore</value>
   </data>
+  <data name="NotSpecified" xml:space="preserve">
+    <value>Non Specificato</value>
+  </data>
 </root>
