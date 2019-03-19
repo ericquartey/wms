@@ -26,6 +26,6 @@ steps:
 - template: azure-pipeline-wms-services-template.yml
   parameters:
     BuildConfiguration: 'Debug'
-    RestoreBuildProjects: 'WMS/Data/**/*.csproj'
+    RestoreBuildProjects: 'WMS/(Data|AutomationServiceMock)/**/*.csproj'
     TestProjects: 'WMS/Data/**/*.Tests.csproj'
     TargetFramework: 'netcoreapp2.1'

@@ -31,13 +31,13 @@ steps:
     RestoreBuildProjects: 'WMS/Data/**/*.csproj'
     TestProjects: 'WMS/Data/**/*.Tests.csproj'
 
-    
+
 - template: ../WMS/Pipelines/azure-pipeline-wms-ui-template.yml
   parameters:
-    BuildConfiguration: $(BuildConfiguration)
+    BuildConfiguration: 'Release WMS UI'
     BuildPlatform:  $(BuildPlatform)
 
-   
+
 - template: '../VerticalWarehouses/Pipelines/azure-pipeline-vw-services-template.yml'
   parameters:
     BuildConfiguration: $(BuildConfiguration)

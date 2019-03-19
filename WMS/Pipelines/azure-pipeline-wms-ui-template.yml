@@ -12,9 +12,9 @@ steps:
 
 
 - task: VSBuild@1
-  displayName: 'Build solution WMS.App'
+  displayName: 'Build solution WMS'
   inputs:
-    solution: 'WMS\WMS.App.sln'
+    solution: 'WMS\WMS.sln'
     platform: ${{ parameters.BuildPlatform }}
     configuration: ${{ parameters.BuildConfiguration }}
     msbuildArchitecture: x64
