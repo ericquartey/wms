@@ -15,8 +15,6 @@ trigger:
     include:
     - master
     - release/*
-    - bugfix/*
-    - hotfix/*
 
 variables:
   BuildPlatform: 'any cpu'
