@@ -78,13 +78,13 @@ namespace MAS_DataLayerUnitTests
         {
             var setDecResolution = 100.01m;
 
-            var decimalValue = new ConfigurationValue { VarName = ConfigurationValueEnum.resolution, VarType = DataTypeEnum.decimalType, VarValue = setDecResolution.ToString() };
+            var decimalValue = new ConfigurationValue { VarName = ConfigurationValueEnum.Resolution, VarType = DataTypeEnum.decimalType, VarValue = setDecResolution.ToString() };
 
             this.context.ConfigurationValues.Add(decimalValue);
 
             this.context.SaveChanges();
 
-            Assert.AreEqual(setDecResolution, this.dataLayer.GetDecimalConfigurationValue(ConfigurationValueEnum.resolution));
+            Assert.AreEqual(setDecResolution, this.dataLayer.GetDecimalConfigurationValue(ConfigurationValueEnum.Resolution));
         }
 
         [TestMethod]

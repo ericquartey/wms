@@ -565,6 +565,69 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DLUTestActualposition.
+        /// </summary>
+        public static string DLUTestActualposition {
+            get {
+                return ResourceManager.GetString("DLUTestActualposition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DLUTestCompletedCycles.
+        /// </summary>
+        public static string DLUTestCompletedCycles {
+            get {
+                return ResourceManager.GetString("DLUTestCompletedCycles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DLUTestCycleRequired.
+        /// </summary>
+        public static string DLUTestCycleRequired {
+            get {
+                return ResourceManager.GetString("DLUTestCycleRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DLUTestFeedRate.
+        /// </summary>
+        public static string DLUTestFeedRate {
+            get {
+                return ResourceManager.GetString("DLUTestFeedRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DLUTestHeader.
+        /// </summary>
+        public static string DLUTestHeader {
+            get {
+                return ResourceManager.GetString("DLUTestHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DLUTestStart.
+        /// </summary>
+        public static string DLUTestStart {
+            get {
+                return ResourceManager.GetString("DLUTestStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DLUTestStop.
+        /// </summary>
+        public static string DLUTestStop {
+            get {
+                return ResourceManager.GetString("DLUTestStop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Correct Offset.
         /// </summary>
         public static string DoCorrectOffset {
@@ -579,6 +642,15 @@ namespace Ferretto.VW.Resources {
         public static string Down {
             get {
                 return ResourceManager.GetString("Down", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DrawerLadingUnloadingTest.
+        /// </summary>
+        public static string DrawerLoadingUnloadingTest {
+            get {
+                return ResourceManager.GetString("DrawerLoadingUnloadingTest", resourceCulture);
             }
         }
         
@@ -898,7 +970,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Homing procedure completed successfully.
+        ///   Looks up a localized string similar to Homing Completed....
         /// </summary>
         public static string HomingCompleted {
             get {
@@ -907,7 +979,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Homing procedure started.
+        ///   Looks up a localized string similar to Homing started....
         /// </summary>
         public static string HomingStarted {
             get {
@@ -925,7 +997,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Horizontal homing completed.
+        ///   Looks up a localized string similar to Horizontal Homing Completed....
         /// </summary>
         public static string HorizontalHomingCompleted {
             get {
@@ -934,7 +1006,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Executing horizontal homing .
+        ///   Looks up a localized string similar to Horizontal Homing Executing....
         /// </summary>
         public static string HorizontalHomingExecuting {
             get {
@@ -943,7 +1015,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Horizontal homing procedure started.
+        ///   Looks up a localized string similar to Horizontal Homing Started....
         /// </summary>
         public static string HorizontalHomingStarted {
             get {
@@ -1231,6 +1303,33 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LSMTCarouselButton.
+        /// </summary>
+        public static string LSMTCarouselButton {
+            get {
+                return ResourceManager.GetString("LSMTCarouselButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LSMTCarouselPageHeader.
+        /// </summary>
+        public static string LSMTCarouselPageHeader {
+            get {
+                return ResourceManager.GetString("LSMTCarouselPageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LSMTComandNote.
+        /// </summary>
+        public static string LSMTComandNote {
+            get {
+                return ResourceManager.GetString("LSMTComandNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Elevator.
         /// </summary>
         public static string LSMTElevator {
@@ -1272,6 +1371,15 @@ namespace Ferretto.VW.Resources {
         public static string LSMTHorizontalEngineTitle {
             get {
                 return ResourceManager.GetString("LSMTHorizontalEngineTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LSMTNoteHeader.
+        /// </summary>
+        public static string LSMTNoteHeader {
+            get {
+                return ResourceManager.GetString("LSMTNoteHeader", resourceCulture);
             }
         }
         
@@ -1762,6 +1870,96 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SaveRestoreConfigAbortRestoreButton.
+        /// </summary>
+        public static string SaveRestoreConfigAbortRestoreButton {
+            get {
+                return ResourceManager.GetString("SaveRestoreConfigAbortRestoreButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SaveRestoreConfigAbortSaveButton.
+        /// </summary>
+        public static string SaveRestoreConfigAbortSaveButton {
+            get {
+                return ResourceManager.GetString("SaveRestoreConfigAbortSaveButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SaveRestoreConfigButton.
+        /// </summary>
+        public static string SaveRestoreConfigButton {
+            get {
+                return ResourceManager.GetString("SaveRestoreConfigButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SaveRestoreConfigConfirmRestoreButton.
+        /// </summary>
+        public static string SaveRestoreConfigConfirmRestoreButton {
+            get {
+                return ResourceManager.GetString("SaveRestoreConfigConfirmRestoreButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SaveRestoreConfigConfirmSaveButton.
+        /// </summary>
+        public static string SaveRestoreConfigConfirmSaveButton {
+            get {
+                return ResourceManager.GetString("SaveRestoreConfigConfirmSaveButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SaveRestoreConfigPageHeader.
+        /// </summary>
+        public static string SaveRestoreConfigPageHeader {
+            get {
+                return ResourceManager.GetString("SaveRestoreConfigPageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SaveRestoreConfigPageHeader.
+        /// </summary>
+        public static string SaveRestoreConfigPageHeader2 {
+            get {
+                return ResourceManager.GetString("SaveRestoreConfigPageHeader2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SaveRestoreConfigRestoreButton.
+        /// </summary>
+        public static string SaveRestoreConfigRestoreButton {
+            get {
+                return ResourceManager.GetString("SaveRestoreConfigRestoreButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SaveRestoreConfigSaveButton.
+        /// </summary>
+        public static string SaveRestoreConfigSaveButton {
+            get {
+                return ResourceManager.GetString("SaveRestoreConfigSaveButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SaveRestoreConfigSelectedFolder.
+        /// </summary>
+        public static string SaveRestoreConfigSelectedFolder {
+            get {
+                return ResourceManager.GetString("SaveRestoreConfigSelectedFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Security Function Active.
         /// </summary>
         public static string SecurityFunctionActive {
@@ -1906,7 +2104,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Switch engine done.
+        ///   Looks up a localized string similar to Switch Engine Completed....
         /// </summary>
         public static string SwitchEngineCompleted {
             get {
@@ -1915,7 +2113,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Swithing engine.
+        ///   Looks up a localized string similar to Switch Engine Started....
         /// </summary>
         public static string SwitchEngineStarted {
             get {
@@ -2068,7 +2266,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vertical homing completed.
+        ///   Looks up a localized string similar to Vertical Homing Completed....
         /// </summary>
         public static string VerticalHomingCompleted {
             get {
@@ -2077,7 +2275,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Executing vertical homing.
+        ///   Looks up a localized string similar to Vertical Homing Executing....
         /// </summary>
         public static string VerticalHomingExecuting {
             get {
@@ -2086,7 +2284,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vertical homing procedure started.
+        ///   Looks up a localized string similar to Vertical Homing Started....
         /// </summary>
         public static string VerticalHomingStarted {
             get {

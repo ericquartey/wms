@@ -7,6 +7,7 @@ using Prism.Events;
 using Ferretto.VW.InstallationApp.Resources;
 using System.Net.Http;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
+using System.Configuration;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -20,7 +21,7 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isStartButtonActive = true;
 
-        private bool isStopButtonActive;
+        private bool isStopButtonActive = true;
 
         private string lowerBound;
 
@@ -37,6 +38,10 @@ namespace Ferretto.VW.InstallationApp
         private ICommand stopButtonCommand;
 
         private string upperBound;
+
+        string installationController = ConfigurationManager.AppSettings.Get("InstallationController");
+        string homingController = ConfigurationManager.AppSettings.Get("InstallationExecuteHoming");
+        string stopController = ConfigurationManager.AppSettings.Get("InstallationStopAction");
 
         #endregion
 
@@ -211,7 +216,7 @@ namespace Ferretto.VW.InstallationApp
             try
             {
                 var client = new HttpClient();
-                await client.GetStringAsync("http://localhost:5000/api/Installation/ExecuteHoming");
+                await client.GetStringAsync(this.installationController + this.homingController);
                 this.IsStartButtonActive = false;
                 this.IsStopButtonActive = true;
             }
@@ -227,7 +232,7 @@ namespace Ferretto.VW.InstallationApp
             try
             {
                 var client = new HttpClient();
-                await client.GetStringAsync("http://localhost:5000/api/Installation/StopCommand");
+                await client.GetStringAsync(this.installationController + this.stopController);
                 this.IsStartButtonActive = true;
                 this.IsStopButtonActive = false;
                 this.NoteString = VW.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;

@@ -6,7 +6,6 @@ using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.InstallationApp.Resources.Enumerables;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
-using Prism.Events;
 using Prism.Mvvm;
 using Ferretto.VW.Utils.Interfaces;
 
@@ -24,11 +23,15 @@ namespace Ferretto.VW.InstallationApp
 
         private ICommand beltBurnishingButtonCommand;
 
+        private ICommand carouselButtonCommand;
+
         private ICommand cellsControlButtonCommand;
 
         private ICommand cellsPanelControlButtonCommand;
 
         private ICommand cellsSideControlButtonCommand;
+
+        private ICommand drawerLoadingUnloadingTestButtonCommand;
 
         private ICommand errorButtonCommand;
 
@@ -66,6 +69,8 @@ namespace Ferretto.VW.InstallationApp
 
         private ICommand resolutionCalibrationVerticalAxisButtonCommand;
 
+        private ICommand saveRestoreConfigButtonCommand;
+
         private ICommand ssBaysButtonCommand;
 
         private ICommand ssCradleButtonCommand;
@@ -98,10 +103,15 @@ namespace Ferretto.VW.InstallationApp
             this.NavigateToView<BeltBurnishingViewModel, IBeltBurnishingViewModel>();
         }));
 
-        public ICommand CellsControlButtonCommand => this.cellsControlButtonCommand ?? (this.cellsControlButtonCommand = new DelegateCommand(() =>
+        public ICommand CarouselButtonCommand => this.carouselButtonCommand ?? (this.carouselButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<CellsControlViewModel, ICellsControlViewModel>();
+            this.NavigateToView<LSMTCarouselViewModel, ILSMTCarouselViewModel>();
         }));
+
+        public ICommand CellsControlButtonCommand => this.cellsControlButtonCommand ?? (this.cellsControlButtonCommand = new DelegateCommand(() =>
+                {
+                    this.NavigateToView<CellsControlViewModel, ICellsControlViewModel>();
+                }));
 
         public ICommand CellsPanelControlButtonCommand => this.cellsPanelControlButtonCommand ?? (this.cellsPanelControlButtonCommand = new DelegateCommand(() =>
         {
@@ -111,6 +121,11 @@ namespace Ferretto.VW.InstallationApp
         public ICommand CellsSideControlButtonCommand => this.cellsSideControlButtonCommand ?? (this.cellsSideControlButtonCommand = new DelegateCommand(() =>
         {
             this.NavigateToView<CellsSideControlViewModel, ICellsSideControlViewModel>();
+        }));
+
+        public ICommand DrawerLoadingUnloadingTestButtonCommand => this.drawerLoadingUnloadingTestButtonCommand ?? (this.drawerLoadingUnloadingTestButtonCommand = new DelegateCommand(() =>
+        {
+            this.NavigateToView<DrawerLoadingUnloadingTestViewModel, IDrawerLoadingUnloadingTestViewModel>();
         }));
 
         public ICommand ErrorButtonCommand => this.errorButtonCommand ?? (this.errorButtonCommand = new DelegateCommand(() =>
@@ -186,6 +201,11 @@ namespace Ferretto.VW.InstallationApp
         public ICommand ResolutionCalibrationVerticalAxisButtonCommand => this.resolutionCalibrationVerticalAxisButtonCommand ?? (this.resolutionCalibrationVerticalAxisButtonCommand = new DelegateCommand(() =>
         {
             this.NavigateToView<ResolutionCalibrationVerticalAxisViewModel, IResolutionCalibrationVerticalAxisViewModel>();
+        }));
+
+        public ICommand SaveRestoreConfigButtonCommand => this.saveRestoreConfigButtonCommand ?? (this.saveRestoreConfigButtonCommand = new DelegateCommand(() =>
+        {
+            this.NavigateToView<SaveRestoreConfigViewModel, ISaveRestoreConfigViewModel>();
         }));
 
         public ICommand SsBaysButtonCommand => this.ssBaysButtonCommand ?? (this.ssBaysButtonCommand = new DelegateCommand(() =>

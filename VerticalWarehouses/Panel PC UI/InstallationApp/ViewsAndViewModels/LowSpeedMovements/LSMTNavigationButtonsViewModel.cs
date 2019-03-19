@@ -21,6 +21,8 @@ namespace Ferretto.VW.InstallationApp
 
         private ICommand verticalEngineButtonCommand;
 
+        private ICommand carouselButtonCommand;
+
         #endregion
 
         #region Constructors
@@ -39,6 +41,9 @@ namespace Ferretto.VW.InstallationApp
         public ICommand ShutterEngineButtonCommand => this.shutterEngineButtonCommand ?? (this.shutterEngineButtonCommand = new DelegateCommand(() => ((LSMTMainViewModel)this.container.Resolve<ILSMTMainViewModel>()).LSMTContentRegionCurrentViewModel = (LSMTShutterEngineViewModel)this.container.Resolve<ILSMTShutterEngineViewModel>()));
 
         public ICommand VerticalEngineButtonCommand => this.verticalEngineButtonCommand ?? (this.verticalEngineButtonCommand = new DelegateCommand(() => ((LSMTMainViewModel)this.container.Resolve<ILSMTMainViewModel>()).LSMTContentRegionCurrentViewModel = (LSMTVerticalEngineViewModel)this.container.Resolve<ILSMTVerticalEngineViewModel>()));
+
+        public ICommand CarouselButtonCommand => this.carouselButtonCommand ?? (this.carouselButtonCommand = new DelegateCommand(() => ((LSMTMainViewModel)this.container.Resolve<ILSMTMainViewModel>()).LSMTContentRegionCurrentViewModel = (LSMTCarouselViewModel)this.container.Resolve<ILSMTCarouselViewModel>()));
+
 
         #endregion
 

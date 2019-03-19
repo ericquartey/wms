@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS_DataLayer
         // INFO Method used when a drawer backs in the magazine from bay (return mission).
         public LoadingUnitPosition GetFreeBlockPosition(decimal loadingUnitHeight, int loadingUnitId)
         {
-            var cellSpacing = this.GetIntegerConfigurationValue(ConfigurationValueEnum.cellSpacing);
+            var cellSpacing = this.GetIntegerConfigurationValue(ConfigurationValueEnum.CellSpacing);
 
             var cellsNumber = (int)Math.Ceiling(loadingUnitHeight / cellSpacing);
 

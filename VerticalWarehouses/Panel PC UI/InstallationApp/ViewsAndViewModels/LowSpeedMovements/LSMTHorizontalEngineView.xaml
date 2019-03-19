@@ -19,13 +19,13 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.LSMTHorizontalEngineTitle}" />
 
-        <custom:CustomLabelTextBlockControl Margin="170,160,0,0"
+        <custom:CustomLabelTextBlockControl Margin="170,300,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             ContentText="980,8"
                                             LabelText="{x:Static res:InstallationApp.ActualPosition}" />
 
-        <Button Margin="440,160,0,0"
+        <Button Margin="440,300,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{x:Static res:InstallationApp.Forward}"
@@ -33,12 +33,17 @@
                 PreviewMouseUp="StopHorizontalAxisHandler"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Button Margin="440,280,0,0"
+        <Button Margin="440,420,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 PreviewMouseDown="MoveBackHorizontalAxisHandler"
                 PreviewMouseUp="StopHorizontalAxisHandler"
                 Content="{x:Static res:InstallationApp.Backward}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+
+        <custom:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="170,130,0,0" Width="500" Height="100"
+                                                LabelText="{x:Static res:InstallationApp.LSMTNoteHeader}"
+                                                ContentText="{x:Static res:InstallationApp.LSMTComandNote}" />
+        <!-- ContentText="{Binding NoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" -->
     </Grid>
 </UserControl>

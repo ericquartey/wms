@@ -6,10 +6,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using CommonServiceLocator;
 using DevExpress.Data.Filtering;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
+using Ferretto.Common.Controls.Interfaces;
+using Ferretto.Common.Resources;
 using Ferretto.Common.Utils.Expressions;
 using NLog;
 
@@ -23,6 +26,8 @@ namespace Ferretto.Common.Controls
         private const int DefaultPageSize = 30;
 
         private const string DefaultPageSizeSettingsKey = "DefaultListPageSize";
+
+        private readonly IDialogService dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
 
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -54,6 +59,8 @@ namespace Ferretto.Common.Controls
                 }
             }
         }
+
+        public IDialogService DialogService => this.dialogService;
 
         /// <summary>
         /// Gets or sets the fixed filter of the grid.
@@ -126,6 +133,15 @@ namespace Ferretto.Common.Controls
                     (this.dataSource as InfiniteAsyncSource)?.RefreshRows();
                     (this.dataSource as InfiniteAsyncSource)?.UpdateSummaries();
                 }));
+        }
+
+        public void ShowErrorDialog(IAction action)
+        {
+            this.DialogService.ShowMessage(
+                action.Reason,
+                DesktopApp.ConfirmOperation,
+                DialogType.Warning,
+                DialogButtons.OK);
         }
 
         public override async Task UpdateFilterTilesCountsAsync()

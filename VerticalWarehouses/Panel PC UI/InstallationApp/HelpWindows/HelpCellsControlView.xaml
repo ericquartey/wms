@@ -22,7 +22,7 @@
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}" />
                    
         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
-                   Width="670"  Height="50"
+                   Width="670"  Height="60"
                    Text="{x:Static res:HelpDescriptions.HelpCCVDescription}"
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"  />
         
@@ -40,7 +40,7 @@
                                                 ContentText="125"
                                                 LabelText="{x:Static res:InstallationApp.CurrentCell}"  />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0" Width="180"
                                                ContentText="1250,0"
                                                LabelText="{x:Static res:InstallationApp.ReferenceCellHeight}" />
 

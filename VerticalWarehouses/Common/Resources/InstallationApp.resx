@@ -1004,44 +1004,132 @@
     <value>BayControlNextPosition</value>
     <comment>Button text</comment>
   </data>
+  <data name="DrawerLoadingUnloadingTest" xml:space="preserve">
+    <value>DrawerLadingUnloadingTest</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DLUTestHeader" xml:space="preserve">
+    <value>DLUTestHeader</value>
+    <comment>Page Header</comment>
+  </data>
+  <data name="DLUTestFeedRate" xml:space="preserve">
+    <value>DLUTestFeedRate</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DLUTestCycleRequired" xml:space="preserve">
+    <value>DLUTestCycleRequired</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DLUTestActualposition" xml:space="preserve">
+    <value>DLUTestActualposition</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DLUTestCompletedCycles" xml:space="preserve">
+    <value>DLUTestCompletedCycles</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DLUTestStop" xml:space="preserve">
+    <value>DLUTestStop</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DLUTestStart" xml:space="preserve">
+    <value>DLUTestStart</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LSMTNoteHeader" xml:space="preserve">
+    <value>LSMTNoteHeader</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LSMTComandNote" xml:space="preserve">
+    <value>LSMTComandNote</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="LSMTCarouselButton" xml:space="preserve">
+    <value>LSMTCarouselButton</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LSMTCarouselPageHeader" xml:space="preserve">
+    <value>LSMTCarouselPageHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="SaveRestoreConfigButton" xml:space="preserve">
+    <value>SaveRestoreConfigButton</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="SaveRestoreConfigPageHeader" xml:space="preserve">
+    <value>SaveRestoreConfigPageHeader</value>
+    <comment>Page header alto</comment>
+  </data>
+  <data name="SaveRestoreConfigPageHeader2" xml:space="preserve">
+    <value>SaveRestoreConfigPageHeader</value>
+    <comment>Page header basso</comment>
+  </data>
+  <data name="SaveRestoreConfigSelectedFolder" xml:space="preserve">
+    <value>SaveRestoreConfigSelectedFolder</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="SaveRestoreConfigSaveButton" xml:space="preserve">
+    <value>SaveRestoreConfigSaveButton</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="SaveRestoreConfigConfirmSaveButton" xml:space="preserve">
+    <value>SaveRestoreConfigConfirmSaveButton</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="SaveRestoreConfigAbortSaveButton" xml:space="preserve">
+    <value>SaveRestoreConfigAbortSaveButton</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="SaveRestoreConfigRestoreButton" xml:space="preserve">
+    <value>SaveRestoreConfigRestoreButton</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="SaveRestoreConfigConfirmRestoreButton" xml:space="preserve">
+    <value>SaveRestoreConfigConfirmRestoreButton</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="SaveRestoreConfigAbortRestoreButton" xml:space="preserve">
+    <value>SaveRestoreConfigAbortRestoreButton</value>
+    <comment>Button text</comment>
+  </data>
   <data name="HomingCompleted" xml:space="preserve">
-    <value>Homing procedure completed successfully</value>
-    <comment>TextBlock content</comment>
+    <value>Homing Completed...</value>
+    <comment>Output Text</comment>
   </data>
   <data name="HomingStarted" xml:space="preserve">
-    <value>Homing procedure started</value>
-    <comment>TextBlock content</comment>
+    <value>Homing started...</value>
+    <comment>Output Text</comment>
   </data>
   <data name="HorizontalHomingCompleted" xml:space="preserve">
-    <value>Horizontal homing completed</value>
-    <comment>TextBlock content</comment>
+    <value>Horizontal Homing Completed...</value>
+    <comment>Output Text</comment>
   </data>
   <data name="HorizontalHomingExecuting" xml:space="preserve">
-    <value>Executing horizontal homing </value>
-    <comment>TextBlock content</comment>
+    <value>Horizontal Homing Executing...</value>
+    <comment>Output Text</comment>
   </data>
   <data name="HorizontalHomingStarted" xml:space="preserve">
-    <value>Horizontal homing procedure started</value>
-    <comment>TextBlock content</comment>
+    <value>Horizontal Homing Started...</value>
+    <comment>Output Text</comment>
   </data>
   <data name="SwitchEngineCompleted" xml:space="preserve">
-    <value>Switch engine done</value>
-    <comment>TextBlock content</comment>
+    <value>Switch Engine Completed...</value>
+    <comment>Output Text</comment>
   </data>
   <data name="SwitchEngineStarted" xml:space="preserve">
-    <value>Swithing engine</value>
-    <comment>TextBlock content</comment>
+    <value>Switch Engine Started...</value>
+    <comment>Output Text</comment>
   </data>
   <data name="VerticalHomingCompleted" xml:space="preserve">
-    <value>Vertical homing completed</value>
-    <comment>TextBlock content</comment>
+    <value>Vertical Homing Completed...</value>
+    <comment>Output Text</comment>
   </data>
   <data name="VerticalHomingExecuting" xml:space="preserve">
-    <value>Executing vertical homing</value>
-    <comment>TextBlock content</comment>
+    <value>Vertical Homing Executing...</value>
+    <comment>Output Text</comment>
   </data>
   <data name="VerticalHomingStarted" xml:space="preserve">
-    <value>Vertical homing procedure started</value>
-    <comment>TextBlock content</comment>
+    <value>Vertical Homing Started...</value>
+    <comment>Output Text</comment>
   </data>
 </root>

@@ -48,9 +48,9 @@
         <Button   Command="{Binding StepUpButtonCommand}"
                   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="680,250,0,0"
                   Content="{x:Static res:InstallationApp.StepUp}"
-                  IsEnabled="{Binding IsStepUpButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"  />
-
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"  
+                  IsEnabled="{Binding IsStepUpButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Click="Button_Click"
+/>
         <Button   Command="{Binding StepDownButtonCommand}"
                   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="680,320,0,0"
                   Content="{x:Static res:InstallationApp.StepDown}"

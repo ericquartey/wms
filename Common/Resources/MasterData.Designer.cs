@@ -484,6 +484,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item deleted sucessfully.
+        /// </summary>
+        public static string ItemDeletedSuccessfully {
+            get {
+                return ResourceManager.GetString("ItemDeletedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FIFO.
         /// </summary>
         public static string ItemFIFO {
