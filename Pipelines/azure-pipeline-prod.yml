@@ -22,12 +22,12 @@ variables:
 
 steps:
 
-- template: '../WMS/Pipelines/azure-pipeline-wms-services-template.yml'
-  parameters:
-    BuildConfiguration: $(BuildConfiguration)
-    TargetFramework: 'netcoreapp2.1'
-    RestoreBuildProjects: 'WMS/**/@(Ferretto.WMS.Data.WebAPI.csproj|Ferretto.WMS.AutomationServiceMock.csproj)'
-    TestProjects: 'WMS/Data/**/*.Tests.csproj'
+#- template: '../WMS/Pipelines/azure-pipeline-wms-services-template.yml'
+#  parameters:
+#    BuildConfiguration: $(BuildConfiguration)
+#    TargetFramework: 'netcoreapp2.1'
+#    RestoreBuildProjects: 'WMS/**/@(Ferretto.WMS.Data.WebAPI.csproj|Ferretto.WMS.AutomationServiceMock.csproj)'
+#    TestProjects: 'WMS/Data/**/*.Tests.csproj'
 
 
 - template: ../WMS/Pipelines/azure-pipeline-wms-ui-template.yml
@@ -37,16 +37,16 @@ steps:
     BuildPlatform:  $(BuildPlatform)
 
 
-- template: '../VerticalWarehouses/Pipelines/azure-pipeline-vw-services-template.yml'
-  parameters:
-    BuildConfiguration: $(BuildConfiguration)
-    TargetFramework: 'netcoreapp2.1'
-    RestoreBuildProjects: 'VerticalWarehouses/Machine Automation Service/**/*.csproj'
-    TestProjects: 'VerticalWarehouses/Machine Automation Service/**/*Tests/*.csproj'
-
-
-- template: '../VerticalWarehouses/Pipelines/azure-pipeline-vw-ui-template.yml'
-  parameters:
-    BuildConfiguration: $(BuildConfiguration)
-    BuildPlatform:  $(BuildPlatform)
+#- template: '../VerticalWarehouses/Pipelines/azure-pipeline-vw-services-template.yml'
+#  parameters:
+#    BuildConfiguration: $(BuildConfiguration)
+#    TargetFramework: 'netcoreapp2.1'
+#    RestoreBuildProjects: 'VerticalWarehouses/Machine Automation Service/**/*.csproj'
+#    TestProjects: 'VerticalWarehouses/Machine Automation Service/**/*Tests/*.csproj'
+#
+#
+#- template: '../VerticalWarehouses/Pipelines/azure-pipeline-vw-ui-template.yml'
+#  parameters:
+#    BuildConfiguration: $(BuildConfiguration)
+#    BuildPlatform:  $(BuildPlatform)
 
