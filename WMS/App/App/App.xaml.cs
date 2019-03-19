@@ -31,8 +31,6 @@ namespace Ferretto.WMS.App
         {
             try
             {
-                this.SetLanguage();
-
                 SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingLogin);
                 SplashScreenService.Hide();
 
@@ -56,6 +54,7 @@ namespace Ferretto.WMS.App
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            this.SetLanguage();
             SplashScreenService.Show();
             base.OnStartup(e);
         }
