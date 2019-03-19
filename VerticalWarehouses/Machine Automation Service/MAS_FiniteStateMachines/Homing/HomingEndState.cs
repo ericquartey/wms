@@ -1,8 +1,6 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
@@ -27,23 +25,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 "Homing Stop",
                 MessageActor.InverterDriver,
                 MessageActor.FiniteStateMachines,
-                MessageType.Stop, //TEMP or MessageType.Homing
+                MessageType.Stop,
                 MessageVerbosity.Info);
             this.parentStateMachine.PublishCommandMessage(inverterMessage);
-
-            var messageStatus = ((IHomingStateMachine)this.parentStateMachine).IsStopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd;
 
             //TEMP Send a notification about the end (/stop) operation to all the world
             var newMessage = new NotificationMessage(null,
                 "End Homing",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.Stop,  //TEMP or MessageType.Homing
-                messageStatus,
+                MessageType.Stop,
+                MessageStatus.OperationEnd,
                 ErrorLevel.NoError,
                 MessageVerbosity.Info);
-
-            this.parentStateMachine.PublishNotificationMessage(newMessage);
+            this.parentStateMachine.OnPublishNotification(newMessage);
         }
 
         #endregion
@@ -56,25 +51,19 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Methods
 
+        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            throw new NotImplementedException();
+            //TEMP Add your implementation code here
         }
 
+        /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
             if (message.Type == MessageType.Homing && message.Status == MessageStatus.OperationError)
             {
-                this.ProcessErrorOperation(message);
+                this.parentStateMachine.PublishNotificationMessage(message);
             }
-        }
-
-        private void ProcessErrorOperation(NotificationMessage message)
-        {
-            message.Destination = MessageActor.Any;
-
-            //TEMP Send a notification about the error
-            this.parentStateMachine.PublishNotificationMessage(message);
         }
 
         #endregion

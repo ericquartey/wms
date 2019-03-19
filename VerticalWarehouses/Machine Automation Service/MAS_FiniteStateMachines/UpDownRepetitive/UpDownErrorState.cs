@@ -1,16 +1,23 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 {
     public class UpDownErrorState : StateBase
     {
+        #region Fields
+
+        private readonly IUpDownRepetitiveMessageData upDownMessageData;
+
+        #endregion
+
         #region Constructors
 
-        public UpDownErrorState(IStateMachine parentMachine)
+        public UpDownErrorState(IStateMachine parentMachine, IUpDownRepetitiveMessageData upDownMessageData)
         {
             this.parentStateMachine = parentMachine;
+            this.upDownMessageData = upDownMessageData;
 
             //TEMP Notify the error condition
             var newMessage = new NotificationMessage(null,
@@ -34,14 +41,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 
         #region Methods
 
+        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            throw new NotImplementedException();
+            //TEMP Add your implementation code here
         }
 
+        /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            throw new NotImplementedException();
+            //TEMP Add your implementation code here
         }
 
         #endregion

@@ -181,6 +181,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
             if (message.Data is ICalibrateMessageData data)
             {
+                Console.WriteLine("Process Homing message -->");
+
                 //TODO handle the calibration data and pass to the calibrate states machine
                 //TODO apply Finite State Machine Business Logic to the message
                 this.currentStateMachine = new HomingStateMachine(this.eventAggregator, data);

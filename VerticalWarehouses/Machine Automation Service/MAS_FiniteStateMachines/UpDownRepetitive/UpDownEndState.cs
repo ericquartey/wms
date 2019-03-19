@@ -1,56 +1,45 @@
 ﻿using System;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
-using Ferretto.VW.MAS_Utils.Messages.Data;
+using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 {
     public class UpDownEndState : StateBase
     {
+        #region Fields
+
+        private readonly IUpDownRepetitiveMessageData upDownMessageData;
+
+        #endregion
+
         #region Constructors
 
-        public UpDownEndState(IStateMachine parentMachine)
+        public UpDownEndState(IStateMachine parentMachine, IUpDownRepetitiveMessageData upDownMessageData)
         {
             this.parentStateMachine = parentMachine;
+            this.upDownMessageData = upDownMessageData;
 
-            var upDownMessageData = ((IUpDownRepetitiveStateMachine)this.parentStateMachine).UpDownRepetitiveData;
-            var nRequiredCycles = upDownMessageData.NumberOfRequiredCycles;
-            var numberOfCompletedCycles = ((IUpDownRepetitiveStateMachine)this.parentStateMachine).NumberOfCompletedCycles;
-
-            //TEMP Send a message to stop the inverter (is it useful?)
+            //TEMP Send a message to stop to the inverter
             var inverterMessage = new CommandMessage(null,
-                "Positioning Stop",
+                "Up&Down Stop",
                 MessageActor.InverterDriver,
                 MessageActor.FiniteStateMachines,
-                MessageType.Stop, //TEMP or MessageType.Homing
+                MessageType.Stop,
                 MessageVerbosity.Info);
             this.parentStateMachine.PublishCommandMessage(inverterMessage);
 
-            //TEMP Send a notification about the end/stop operation
-            string description;
-            MessageStatus msgStatus;
-            if (((IUpDownRepetitiveStateMachine)this.parentStateMachine).IsStopRequested)
-            {
-                description = "Up&Down Stop";
-                msgStatus = MessageStatus.OperationStop;
-            }
-            else
-            {
-                description = "Up&Down End operation";
-                msgStatus = MessageStatus.OperationEnd;
-            }
-
-            var message = new UpDownRepetitiveNotificationMessageData(numberOfCompletedCycles);
-            var newMessage = new NotificationMessage(message,
-                description,
+            //TEMP Send a notification about the end (/stop) operation to all the world
+            var newMessage = new NotificationMessage(null,
+                "End Up&Down",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.UpDown,  //TEMP or MessageType.Homing
-                msgStatus,
+                MessageType.Stop,
+                MessageStatus.OperationEnd,
                 ErrorLevel.NoError,
                 MessageVerbosity.Info);
-            this.parentStateMachine.PublishNotificationMessage(newMessage);
+
+            this.parentStateMachine.OnPublishNotification(newMessage);
         }
 
         #endregion
@@ -63,27 +52,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 
         #region Methods
 
+        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
             if (message.Type == MessageType.Positioning && message.Status == MessageStatus.OperationError)
             {
-                this.ProcessErrorOperation(message);
+                //TEMP Send a notification about the error
+                this.parentStateMachine.ChangeState(new UpDownErrorState(this.parentStateMachine, this.upDownMessageData));
             }
-        }
-
-        private void ProcessErrorOperation(NotificationMessage message)
-        {
-            //message.Destination = MessageActor.Any;
-
-            //TEMP Send a notification about the error
-            //this.parentStateMachine.PublishNotificationMessage(message);
-
-            this.parentStateMachine.ChangeState(new UpDownErrorState(this.parentStateMachine), null);
         }
 
         #endregion
