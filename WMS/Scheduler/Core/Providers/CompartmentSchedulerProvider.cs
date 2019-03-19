@@ -106,6 +106,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     Stock = c.Stock,
                     Sub1 = c.Sub1,
                     Sub2 = c.Sub2,
+                    IsItemPairingFixed = c.IsItemPairingFixed,
                 });
         }
 
