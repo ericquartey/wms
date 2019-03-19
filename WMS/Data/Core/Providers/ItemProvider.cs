@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
@@ -31,6 +32,57 @@ namespace Ferretto.WMS.Data.Core.Providers
         #endregion
 
         #region Methods
+
+        public async Task<ActionModel> CanDeleteAsync(int id)
+        {
+            var compartmentsCount =
+                await this.dataContext.Compartments
+                    .CountAsync(c => c.ItemId == id);
+            var missionsCount =
+                await this.dataContext.Missions
+                    .CountAsync(m => m.ItemId == id);
+            var schedulerRequestsCount =
+                await this.dataContext.SchedulerRequests
+                    .CountAsync(r => r.ItemId == id);
+            var itemListRowsCount =
+                await this.dataContext.ItemListRows
+                    .CountAsync(r => r.ItemId == id);
+
+            var entity = new List<string>();
+            if (compartmentsCount > 0)
+            {
+                entity.Add($"{Common.Resources.BusinessObjects.Compartment} [{compartmentsCount}]");
+            }
+
+            if (itemListRowsCount > 0)
+            {
+                entity.Add($"{Common.Resources.BusinessObjects.ItemListRow} [{itemListRowsCount}]");
+            }
+
+            if (missionsCount > 0)
+            {
+                entity.Add($"{Common.Resources.BusinessObjects.Mission} [{missionsCount}]");
+            }
+
+            if (schedulerRequestsCount > 0)
+            {
+                entity.Add($"{Common.Resources.BusinessObjects.SchedulerRequest} [{schedulerRequestsCount}]");
+            }
+
+            string reason = null;
+            if (entity.Any())
+            {
+                reason = string.Format(
+                     Common.Resources.Errors.NotPossibleExecuteOperation,
+                     string.Join(", ", entity.ToArray()));
+            }
+
+            return new ActionModel
+            {
+                IsAllowed = !entity.Any(),
+                Reason = reason,
+            };
+        }
 
         public async Task<IOperationResult<ItemDetails>> CreateAsync(ItemDetails model)
         {
@@ -76,20 +128,44 @@ namespace Ferretto.WMS.Data.Core.Providers
             return new SuccessOperationResult<ItemDetails>(model);
         }
 
+        public async Task<IOperationResult<ItemDetails>> DeleteAsync(int id)
+        {
+            var existingModel = this.dataContext.Items.Find(id);
+            if (existingModel == null)
+            {
+                return new NotFoundOperationResult<ItemDetails>();
+            }
+
+            var item = await this.GetByIdAsync(id);
+
+            var deleteAction = await this.CanDeleteAsync(id);
+            if (deleteAction.IsAllowed)
+            {
+                return await this.DeleteItemWithRelatedDataAsync(item, existingModel);
+            }
+            else
+            {
+                return new UnprocessableEntityOperationResult<ItemDetails>
+                {
+                    Description = deleteAction.Reason,
+                };
+            }
+        }
+
         public async Task<IEnumerable<Item>> GetAllAsync(
-            int skip,
+                    int skip,
             int take,
             IEnumerable<SortOption> orderBySortOptions = null,
             string whereString = null,
             string searchString = null)
         {
             return await this.GetAllBase()
-                .ToArrayAsync<Item, Common.DataModels.Item>(
-                    skip,
-                    take,
-                    orderBySortOptions,
-                    whereString,
-                    BuildSearchExpression(searchString));
+                 .ToArrayAsync<Item, Common.DataModels.Item>(
+                     skip,
+                     take,
+                     orderBySortOptions,
+                     whereString,
+                     BuildSearchExpression(searchString));
         }
 
         public async Task<int> GetAllCountAsync(
@@ -104,14 +180,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<ItemDetails> GetByIdAsync(int id)
         {
-            var compartmentsCount =
-                await this.dataContext.Compartments
-                    .CountAsync(c => c.ItemId == id);
-
-            var result = await this.GetAllDetailsBase()
+            return await this.GetAllDetailsBase()
                              .SingleOrDefaultAsync(i => i.Id == id);
-            result.CompartmentsCount = compartmentsCount;
-            return result;
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
@@ -162,6 +232,42 @@ namespace Ferretto.WMS.Data.Core.Providers
                 ||
                 i.MeasureUnitDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ;
+        }
+
+        private async Task<OperationResult<ItemDetails>> DeleteItemWithRelatedDataAsync(ItemDetails item, Common.DataModels.Item existingModel)
+        {
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                var areaCount =
+                await this.dataContext.ItemsAreas
+                    .CountAsync(c => c.ItemId == item.Id);
+
+                var compartmentTypeCount =
+                await this.dataContext.ItemsAreas
+                    .CountAsync(c => c.ItemId == item.Id);
+
+                if (areaCount > 0)
+                {
+                    var area = await this.dataContext.ItemsAreas
+                        .Where(a => a.ItemId == item.Id)
+                        .ToListAsync();
+                    this.dataContext.RemoveRange(area);
+                }
+
+                if (compartmentTypeCount > 0)
+                {
+                    var compartmentType = await this.dataContext.ItemsCompartmentTypes
+                        .Where(t => t.ItemId == item.Id)
+                        .ToListAsync();
+                    this.dataContext.RemoveRange(compartmentType);
+                }
+
+                this.dataContext.Remove(existingModel);
+                await this.dataContext.SaveChangesAsync();
+                scope.Complete();
+
+                return new SuccessOperationResult<ItemDetails>();
+            }
         }
 
         private IQueryable<Item> GetAllBase(

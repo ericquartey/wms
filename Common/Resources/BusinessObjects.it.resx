@@ -826,4 +826,13 @@
   <data name="ItemListRow" xml:space="preserve">
     <value>Riga Lista</value>
   </data>
+  <data name="Mission" xml:space="preserve">
+    <value>Missione</value>
+  </data>
+  <data name="Compartment" xml:space="preserve">
+    <value>Scomparto</value>
+  </data>
+  <data name="SchedulerRequest" xml:space="preserve">
+    <value>Richiesta Schedulatore</value>
+  </data>
 </root>
