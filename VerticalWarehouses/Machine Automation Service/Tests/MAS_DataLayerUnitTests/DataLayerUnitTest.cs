@@ -1,7 +1,9 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +18,8 @@ namespace MAS_DataLayerUnitTests
     public class DataLayerUnitTest
     {
         #region Fields
+
+        public Mock<IEventAggregator> eventAggregator;
 
         protected DataLayerContext context;
 
@@ -34,7 +38,7 @@ namespace MAS_DataLayerUnitTests
             mockEventAggregator.Setup(s => s.GetEvent<CommandEvent>()).Returns(new CommandEvent());
             mockEventAggregator.Setup(s => s.GetEvent<NotificationEvent>()).Returns(new NotificationEvent());
 
-            var path = Directory.GetCurrentDirectory();
+            this.eventAggregator = mockEventAggregator;
 
             var filesInfo = new FilesInfo
             {
@@ -74,20 +78,6 @@ namespace MAS_DataLayerUnitTests
         }
 
         [TestMethod]
-        public void GetDecimalConfigurationValue()
-        {
-            var setDecResolution = 100.01m;
-
-            var decimalValue = new ConfigurationValue { VarName = (long)VerticalAxisEnum.Resolution, VarType = DataTypeEnum.decimalType, VarValue = setDecResolution.ToString() };
-
-            this.context.ConfigurationValues.Add(decimalValue);
-
-            this.context.SaveChanges();
-
-            Assert.AreEqual(setDecResolution, this.dataLayer.GetDecimalConfigurationValue((long)VerticalAxisEnum.Resolution, (long)ConfigurationCategoryValueEnum.VerticalAxisEnum));
-        }
-
-        [TestMethod]
         public void GetIntegerConfigurationValue()
         {
             var setTypeBay1 = 1;
@@ -98,20 +88,6 @@ namespace MAS_DataLayerUnitTests
             this.context.SaveChanges();
 
             Assert.AreEqual(setTypeBay1, this.dataLayer.GetIntegerConfigurationValue((long)GeneralInfoEnum.Bay1Type, (long)ConfigurationCategoryValueEnum.GeneralInfoEnum));
-        }
-
-        [TestMethod]
-        public void GetIPAddressConfigurationValue()
-        {
-            var setStrInvAddress = "169.254.231.248";
-
-            var ipAddrrValue = new ConfigurationValue { VarName = (long)SetupNetworkEnum.Inverter1, VarType = DataTypeEnum.IPAddressType, VarValue = setStrInvAddress };
-
-            this.context.ConfigurationValues.Add(ipAddrrValue);
-
-            this.context.SaveChanges();
-
-            Assert.AreEqual(setStrInvAddress, this.dataLayer.GetIPAddressConfigurationValue((long)SetupNetworkEnum.Inverter1, (long)ConfigurationCategoryValueEnum.SetupNetworkEnum).ToString());
         }
 
         [TestMethod]
@@ -129,29 +105,46 @@ namespace MAS_DataLayerUnitTests
         }
 
         [TestMethod]
-        public void ReadGeneralInfoJson()
+        public void TestApplicationLogLogicCommand()
         {
-            this.dataLayer.LoadConfigurationValuesInfo(InfoFilesEnum.GeneralInfo);
+            // INFO Arrange - Message class creation
+            ICalibrateMessageData homingData = new CalibrateMessageData(Axis.Both);
 
-            Assert.IsTrue(this.context.ConfigurationValues.Any());
+            var commandMessage = new CommandMessage(
+                homingData,
+                "Execute Homing Command",
+                MessageActor.FiniteStateMachines,
+                MessageActor.WebAPI,
+                MessageType.Homing);
+
+            // INFO Act - Insert the record in the LogEntry table
+            this.eventAggregator.Object.GetEvent<CommandEvent>().Publish(commandMessage);
+
+            // INFO Assert - Expects to find the record in the LogEntry table
+            var returnCommandQuery = this.context.LogEntries.FirstOrDefaultAsync(x => x.Description == "Execute Homing Command");
+            Assert.IsNotNull(returnCommandQuery);
         }
 
         [TestMethod]
-        public void ReadInstallationInfoJson()
+        public void TestApplicationLogLogicNotification()
         {
-            this.dataLayer.LoadConfigurationValuesInfo(InfoFilesEnum.InstallationInfo);
+            // INFO Arrange - Message class creation
+            var notificationMessage = new NotificationMessage(
+                null,
+                "Homing",
+                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
+                MessageType.Homing,
+                MessageStatus.OperationStart,
+                ErrorLevel.NoError,
+                MessageVerbosity.Info);
 
-            Assert.IsTrue(this.context.ConfigurationValues.Any());
-        }
+            // INFO Act - Insert the record in the LogEntry table
+            this.eventAggregator.Object.GetEvent<NotificationEvent>().Publish(notificationMessage);
 
-        [TestMethod]
-        public void TestApplicationLogLogic()
-        {
-            // INFO Arrange - Empty
-
-            // INFO Act
-
-            // INFO Assert - Expects exception
+            // INFO Assert - Expects to find the record in the LogEntry table
+            var returnNotificationQuery = this.context.LogEntries.FirstOrDefaultAsync(x => x.Description == "Homing");
+            Assert.IsNotNull(returnNotificationQuery);
         }
 
         protected DataLayerContext CreateContext()
