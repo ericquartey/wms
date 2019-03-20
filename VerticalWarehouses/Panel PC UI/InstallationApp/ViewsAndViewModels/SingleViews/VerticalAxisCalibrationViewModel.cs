@@ -8,6 +8,7 @@ using Ferretto.VW.InstallationApp.Resources;
 using System.Net.Http;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
 using System.Configuration;
+using System.Net.Http;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -18,6 +19,12 @@ namespace Ferretto.VW.InstallationApp
         private readonly IEventAggregator eventAggregator;
 
         private IUnityContainer container;
+
+        private string getDecimalValuesController = ConfigurationManager.AppSettings.Get("InstallationGetDecimalConfigurationValues");
+
+        private string homingController = ConfigurationManager.AppSettings.Get("InstallationExecuteHoming");
+
+        private string installationController = ConfigurationManager.AppSettings.Get("InstallationController");
 
         private bool isStartButtonActive = true;
 
@@ -37,11 +44,9 @@ namespace Ferretto.VW.InstallationApp
 
         private ICommand stopButtonCommand;
 
-        private string upperBound;
+        private string stopController = ConfigurationManager.AppSettings.Get("InstallationStopAction");
 
-        string installationController = ConfigurationManager.AppSettings.Get("InstallationController");
-        string homingController = ConfigurationManager.AppSettings.Get("InstallationExecuteHoming");
-        string stopController = ConfigurationManager.AppSettings.Get("InstallationStopAction");
+        private string upperBound;
 
         #endregion
 
@@ -96,13 +101,42 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
+        public async void GetParameterValues()
+        {
+            var client = new HttpClient();
+            var response = await client.GetAsync(new Uri(this.installationController + this.getDecimalValuesController + "UpperBound"));
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                this.UpperBound = response.Content.ReadAsAsync<decimal>().Result.ToString();
+            }
+            response = null;
+            response = await client.GetAsync(new Uri(this.installationController + this.getDecimalValuesController + "LowerBound"));
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                this.LowerBound = response.Content.ReadAsAsync<decimal>().Result.ToString();
+            }
+            response = null;
+            response = await client.GetAsync(new Uri(this.installationController + this.getDecimalValuesController + "Offset"));
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                this.Offset = response.Content.ReadAsAsync<decimal>().Result.ToString();
+            }
+            response = null;
+            response = await client.GetAsync(new Uri(this.installationController + this.getDecimalValuesController + "Resolution"));
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                this.Resolution = response.Content.ReadAsAsync<decimal>().Result.ToString();
+            }
+        }
+
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
         }
 
-        public void SubscribeMethodToEvent()
+        public async void SubscribeMethodToEvent()
         {
+            this.GetParameterValues();
             this.receivedActionUpdateToken = this.eventAggregator.GetEvent<MAS_Event>().Subscribe(
                 (msg) => this.UpdateCurrentActionStatus(msg),
                 ThreadOption.PublisherThread,
@@ -191,11 +225,6 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        public void UpdateNoteString(string message)
-        {
-            this.NoteString = message;
-        }
-
         private void CheckInputsCorrectness()
         {
             if (int.TryParse(this.LowerBound, out var _lowerBound) &&
@@ -216,7 +245,7 @@ namespace Ferretto.VW.InstallationApp
             try
             {
                 var client = new HttpClient();
-                await client.GetStringAsync(this.installationController + this.homingController);
+                await client.GetStringAsync(new Uri(this.installationController + this.homingController));
                 this.IsStartButtonActive = false;
                 this.IsStopButtonActive = true;
             }
@@ -232,7 +261,7 @@ namespace Ferretto.VW.InstallationApp
             try
             {
                 var client = new HttpClient();
-                await client.GetStringAsync(this.installationController + this.stopController);
+                await client.GetStringAsync(new Uri(this.installationController + this.stopController));
                 this.IsStartButtonActive = true;
                 this.IsStopButtonActive = false;
                 this.NoteString = VW.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
