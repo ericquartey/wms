@@ -46,7 +46,8 @@ namespace Ferretto.WMS.AutomationServiceMock
             var applicationSettingsFile = GetSettingFileFromEnvironment();
 
             var configuration = new ConfigurationBuilder()
-                .AddJsonFile(applicationSettingsFile, false, false)
+                .AddJsonFile(DefaultApplicationSettingsFile, false, false)
+                .AddJsonFile(applicationSettingsFile, true, false)
                 .AddCommandLine(args)
                 .Build();
 
