@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS_IODriver
                         }
                         else
                         {
-                            this.currentStateMachine = new SwitchAxisSateMachine(Axis.Horizontal, this.ioStatus.ElevatorMotorOn, this.ioCommandQueue, this.eventAggregator);
+                            this.currentStateMachine = new SwitchAxisSateMachine(Axis.Horizontal, this.ioStatus.ElevatorMotorOn, this.ioCommandQueue, this.eventAggregator, this.logger);
                             this.currentStateMachine.Start();
                         }
                         break;
@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS_IODriver
                         }
                         else
                         {
-                            this.currentStateMachine = new SwitchAxisSateMachine(Axis.Vertical, this.ioStatus.CradleMotorOn, this.ioCommandQueue, this.eventAggregator);
+                            this.currentStateMachine = new SwitchAxisSateMachine(Axis.Vertical, this.ioStatus.CradleMotorOn, this.ioCommandQueue, this.eventAggregator, this.logger);
                             this.currentStateMachine.Start();
                         }
                         break;

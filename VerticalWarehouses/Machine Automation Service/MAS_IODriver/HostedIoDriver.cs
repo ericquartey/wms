@@ -177,7 +177,7 @@ namespace Ferretto.VW.MAS_IODriver
                 throw new IOException($"Exception: {ex.Message} Timer Creation Failed", ex);
             }
 
-            this.currentStateMachine = new PowerUpStateMachine(this.ioCommandQueue, this.eventAggregator);
+            this.currentStateMachine = new PowerUpStateMachine(this.ioCommandQueue, this.eventAggregator, this.logger);
             this.currentStateMachine.Start();
 
             do
@@ -197,6 +197,7 @@ namespace Ferretto.VW.MAS_IODriver
                     var errorNotification = new NotificationMessage(null, "I/O operation already in progress", MessageActor.Any,
                         MessageActor.IODriver, receivedMessage.Type, MessageStatus.OperationError, ErrorLevel.Error);
                     this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
+                    continue;
                 }
 
                 switch (receivedMessage.Type)

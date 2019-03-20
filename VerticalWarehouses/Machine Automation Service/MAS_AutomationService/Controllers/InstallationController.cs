@@ -54,7 +54,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(404)]
-        [HttpGet("DecimalConfigurationParameter/{parameter}")]
+        [HttpGet("DecimalConfigurationValues/{parameter}")]
         public ActionResult<decimal> GetDecimalConfigurationParameter(string parameter)
         {
             decimal returnValue;

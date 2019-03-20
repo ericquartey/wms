@@ -58,8 +58,6 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string ItemMeasureUnit { get; set; }
 
-        public DateTime? LastHandlingDate { get; set; }
-
         public DateTime? LastPickDate { get; set; }
 
         public DateTime? LastStoreDate { get; set; }

@@ -27,7 +27,6 @@ namespace Ferretto.VW.MAS_IODriver
 
         private ModbusIpMaster ioMaster;
 
-
         private int port;
 
         #endregion
@@ -36,7 +35,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         ~ModbusTransport()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion
@@ -63,8 +62,7 @@ namespace Ferretto.VW.MAS_IODriver
             {
                 this.ioClient = new TcpClient(this.hostAddress.ToString(), this.port);
             }
-
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new IoDriverException("Invalid hostAddress and port: remote endpoint not connected.", IoDriverExceptionCode.IoClientCreationFailed, ex);
             }
@@ -73,12 +71,10 @@ namespace Ferretto.VW.MAS_IODriver
             {
                 this.ioMaster = ModbusIpMaster.CreateIp(this.ioClient);
             }
-
             catch (Exception ex)
             {
                 throw new IoDriverException("Invalid IpMaster: remote endpoint not connected.", IoDriverExceptionCode.GetIpMasterFailed, ex);
             }
-
 
             return this.ioClient.Connected;
         }
@@ -92,7 +88,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -103,7 +99,7 @@ namespace Ferretto.VW.MAS_IODriver
             {
                 return await this.ioMaster.ReadInputsAsync(InputsAddress, InputsNomber);
             }
-            
+
             throw new IoDriverException("Invalid Read request: remote endpoint not connected.", IoDriverExceptionCode.CreationFailure);
         }
 
@@ -122,15 +118,17 @@ namespace Ferretto.VW.MAS_IODriver
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposed)
+            if (this.disposed)
+            {
                 return;
+            }
 
             if (disposing)
             {
                 this.ioClient.Dispose();
             }
 
-            disposed = true;
+            this.disposed = true;
         }
 
         #endregion

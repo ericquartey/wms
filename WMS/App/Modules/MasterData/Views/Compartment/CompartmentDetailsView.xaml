@@ -400,8 +400,6 @@
                         <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.CreationDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
-                                      Content="{Binding Model.LastHandlingDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.InventoryDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.FirstStoreDate}" />

@@ -276,7 +276,6 @@ namespace Ferretto.Common.BusinessProviders
                     CompartmentStatusId = c.CompartmentStatusId,
                     CompartmentStatusDescription = c.CompartmentStatusDescription,
                     CreationDate = c.CreationDate,
-                    LastHandlingDate = c.LastHandlingDate,
                     InventoryDate = c.InventoryDate,
                     FirstStoreDate = c.FirstStoreDate,
                     LastStoreDate = c.LastStoreDate,

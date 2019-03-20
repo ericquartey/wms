@@ -205,6 +205,7 @@ namespace Ferretto.VW.InverterDriver
                     var errorNotification = new NotificationMessage(null, "Inverter operation already in progress", MessageActor.Any,
                         MessageActor.InverterDriver, receivedMessage.Type, MessageStatus.OperationError, ErrorLevel.Error);
                     this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
+                    continue;
                 }
 
                 //Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:CommandReceiveTaskFunction");
@@ -257,6 +258,14 @@ namespace Ferretto.VW.InverterDriver
                 switch (receivedMessage.Type)
                 {
                     case MessageType.CalibrateAxis:
+                        if (receivedMessage.Status == MessageStatus.OperationEnd)
+                        {
+                            this.currentStateMachine.Dispose();
+                            this.currentStateMachine = null;
+                        }
+                        break;
+
+                    case MessageType.Stop:
                         if (receivedMessage.Status == MessageStatus.OperationEnd)
                         {
                             this.currentStateMachine.Dispose();
