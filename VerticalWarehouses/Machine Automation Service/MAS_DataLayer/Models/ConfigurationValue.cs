@@ -7,9 +7,9 @@ namespace Ferretto.VW.MAS_DataLayer
     {
         #region Properties
 
-        [Key] public long CategoryName { get; set; }
+        public long CategoryName { get; set; }
 
-        [Key] public long VarName { get; set; }
+        public long VarName { get; set; }
 
         public DataTypeEnum VarType { get; set; }
 
