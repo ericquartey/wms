@@ -386,7 +386,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     CompartmentStatusId = j.cmp.CompartmentStatusId,
                     CompartmentStatusDescription = j.cmp.CompartmentStatus.Description,
                     CreationDate = j.cmp.CreationDate,
-                    LastHandlingDate = j.cmp.LastHandlingDate,
                     InventoryDate = j.cmp.InventoryDate,
                     FirstStoreDate = j.cmp.FirstStoreDate,
                     LastStoreDate = j.cmp.LastStoreDate,
