@@ -42,7 +42,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             if (this.CurrentItem != null)
             {
-                var status = this.CurrentItem.ItemListStatus;
+                var status = this.CurrentItem.Status;
                 if (status == ItemListStatus.Incomplete
                     || status == ItemListStatus.Suspended
                     || status == ItemListStatus.Waiting)

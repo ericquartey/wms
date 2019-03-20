@@ -4,41 +4,53 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 {
     public interface IStateMachine
     {
+        #region Properties
+
+        bool OperationDone { get; set; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
         /// Change state.
         /// </summary>
-        /// <param name="newState">The <see cref="IState"/> new state.</param>
-        /// <param name="message">The <see cref="CommandMessage"/> to publish</param>
+        /// <param name="newState">The new state</param>
+        /// <param name="message">A message to be published</param>
         void ChangeState(IState newState, CommandMessage message = null);
 
         /// <summary>
-        /// Process an incoming command message.
+        /// On publishing the notification message by the state machine.
         /// </summary>
-        /// <param name="message">The <see cref="CommandMessage"/> to process.</param>
+        /// <param name="message">A <see cref="NotificationMessage"/> message to be published.</param>
+        void OnPublishNotification(NotificationMessage message);
+
+        /// <summary>
+        /// Process the command message incoming to the Finite State Machines.
+        /// </summary>
+        /// <param name="message">A <see cref="CommandMessage"/> command message to be parsed.</param>
         void ProcessCommandMessage(CommandMessage message);
 
         /// <summary>
-        /// Process an incoming notification message.
+        /// Process the notification message incoming to the Finite State Machines.
         /// </summary>
-        /// <param name="message">The <see cref="NotificationMessage"/> to process.</param>
+        /// <param name="message">A <see cref="NotificationMessage"/> notification message to be parsed.</param>
         void ProcessNotificationMessage(NotificationMessage message);
 
         /// <summary>
-        /// Publish a given command message.
+        /// Publish a given Command message via EventAggregator.
         /// </summary>
-        /// <param name="message">The <see cref="CommandMessage"/> to publish.</param>
+        /// <param name="message">A <see cref="CommandMessage"/> command message to be sent.</param>
         void PublishCommandMessage(CommandMessage message);
 
         /// <summary>
-        /// Publish a given notification message.
+        /// Publish a given Notification message via EventAggregator.
         /// </summary>
-        /// <param name="message">The <see cref="NotificationMessage"/> to publish.</param>
+        /// <param name="message">A <see cref="NotificationMessage"/> notification message to be sent.</param>
         void PublishNotificationMessage(NotificationMessage message);
 
         /// <summary>
-        /// Start.
+        /// Start the states machine.
         /// </summary>
         void Start();
 

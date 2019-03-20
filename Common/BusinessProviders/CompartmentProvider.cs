@@ -132,6 +132,16 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
+        public async Task<ActionModel> CanDeleteAsync(int id)
+        {
+            var action = await this.compartmentsDataService.CanDeleteAsync(id);
+            return new ActionModel
+            {
+                IsAllowed = action.IsAllowed,
+                Reason = action.Reason,
+            };
+        }
+
         public async Task<IOperationResult<CompartmentDetails>> CreateAsync(CompartmentDetails model)
         {
             if (model == null)
@@ -281,7 +291,6 @@ namespace Ferretto.Common.BusinessProviders
                 Width = compartment.HasRotation ? compartment.Height : compartment.Width,
                 XPosition = compartment.XPosition,
                 YPosition = compartment.YPosition,
-                CanDelete = compartment.CanDelete,
             };
         }
 

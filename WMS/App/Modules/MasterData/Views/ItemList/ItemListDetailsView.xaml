@@ -386,7 +386,7 @@
                               Margin="20,0"
                               Header="{x:Static res:MasterData.ExecutionDetails}">
                         <wms:WmsEnumIndicator EnumType="{x:Type models:ItemListStatus}"
-                                              EnumValue="{Binding Model.ItemListStatus}"
+                                              EnumValue="{Binding Model.Status}"
                                               IconSize="48"
                                               ShowText="True" />
                     </GroupBox>
