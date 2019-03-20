@@ -19,7 +19,7 @@ namespace Ferretto.Common.EF
 
         private const string DefaultApplicationSettingsFile = "appsettings.json";
 
-        private const string NetcoreEnvironmentEnvVariable = "NETCORE_ENVIRONMENT";
+        private const string NetcoreEnvironmentEnvVariable = "ASPNETCORE_ENVIRONMENT";
 
         private const string ParametrizedApplicationSettingsFile = "appsettings.{0}.json";
 
