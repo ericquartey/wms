@@ -46,7 +46,7 @@ namespace Ferretto.Common.DataModels
 
         public string RegistrationNumber { get; set; }
 
-        public int RequiredQuantity { get; set; }
+        public int RequestedQuantity { get; set; }
 
         public IEnumerable<SchedulerRequest> SchedulerRequests { get; set; }
 

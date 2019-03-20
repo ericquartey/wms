@@ -154,7 +154,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Priority = i.Priority,
                     ItemListType = (ItemListType)i.ItemListType,
                     ItemListRowsCount = i.ItemListRows.Count(),
-                    ItemListItemsCount = i.ItemListRows.Sum(row => row.RequiredQuantity),
+                    ItemListItemsCount = i.ItemListRows.Sum(row => row.RequestedQuantity),
                     CreationDate = i.CreationDate
                 });
         }
@@ -169,7 +169,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Description = i.Description,
                     Priority = i.Priority,
                     ItemListType = (ItemListType)i.ItemListType,
-                    ItemListItemsCount = i.ItemListRows.Sum(row => row.RequiredQuantity),
+                    ItemListItemsCount = i.ItemListRows.Sum(row => row.RequestedQuantity),
                     CreationDate = i.CreationDate,
                     Job = i.Job,
                     CustomerOrderCode = i.CustomerOrderCode,

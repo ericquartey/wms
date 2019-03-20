@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
@@ -57,8 +55,8 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.RegistrationNumber), ResourceType = typeof(BusinessObjects))]
         public string RegistrationNumber { get; set; }
 
-        [Display(Name = nameof(General.Quantity), ResourceType = typeof(General))]
-        public int RequiredQuantity { get; set; }
+        [Display(Name = nameof(BusinessObjects.MissionRequestedQuantity), ResourceType = typeof(General))]
+        public int RequestedQuantity { get; set; }
 
         [Display(Name = nameof(General.Status), ResourceType = typeof(General))]
         public MissionStatus Status { get; set; } = MissionStatus.New;

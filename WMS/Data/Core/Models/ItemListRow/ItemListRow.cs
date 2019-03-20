@@ -9,18 +9,12 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         #region Properties
 
-        public bool CanBeExecuted
-        {
-            get => this.ItemListRowStatus == ItemListRowStatus.Incomplete
+        public bool CanBeExecuted => this.ItemListRowStatus == ItemListRowStatus.Incomplete
                    || this.ItemListRowStatus == ItemListRowStatus.Suspended
                    || this.ItemListRowStatus == ItemListRowStatus.Waiting;
-        }
 
-        public bool CanDelete
-        {
-            get => this.ItemListRowStatus == ItemListRowStatus.Waiting
+        public bool CanDelete => this.ItemListRowStatus == ItemListRowStatus.Waiting
                 && !this.HasSchedulerRequestAssociated;
-        }
 
         public string Code { get; set; }
 
@@ -40,7 +34,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string MaterialStatusDescription { get; set; }
 
-        public int RequiredQuantity { get; set; }
+        public int RequestedQuantity { get; set; }
 
         public int RowPriority { get; set; }
 

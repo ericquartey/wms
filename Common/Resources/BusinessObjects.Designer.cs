@@ -898,11 +898,11 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Required Quantity.
+        ///   Looks up a localized string similar to Requested Quantity.
         /// </summary>
-        public static string ItemListRowRequiredQuantity {
+        public static string ItemListRowRequestedQuantity {
             get {
-                return ResourceManager.GetString("ItemListRowRequiredQuantity", resourceCulture);
+                return ResourceManager.GetString("ItemListRowRequestedQuantity", resourceCulture);
             }
         }
         
@@ -1920,6 +1920,15 @@ namespace Ferretto.Common.Resources {
         public static string MeasureUnitDescription {
             get {
                 return ResourceManager.GetString("MeasureUnitDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Requested Quantity.
+        /// </summary>
+        public static string MissionRequestedQuantity {
+            get {
+                return ResourceManager.GetString("MissionRequestedQuantity", resourceCulture);
             }
         }
         

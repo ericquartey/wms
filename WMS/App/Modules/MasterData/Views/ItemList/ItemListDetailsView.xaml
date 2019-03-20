@@ -23,12 +23,12 @@
         <wms:StringFormatConverter x:Key="SFC" />
         <wms:DisplayNameConverter x:Key="DNC" />
 
-        <DataTemplate x:Key="CellDisplayTemplateRequiredQuantity">
+        <DataTemplate x:Key="CellDisplayTemplateRequestedQuantity">
             <TextBlock VerticalAlignment="Center">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource SFC}">
                         <Binding Source="{x:Static res:MasterData.QuantityWithUnitMeasure}" />
-                        <Binding Path="RowData.Row.RequiredQuantity"
+                        <Binding Path="RowData.Row.RequestedQuantity"
                                  TargetNullValue="" />
                         <Binding Path="RowData.Row.ItemUnitMeasure"
                                  TargetNullValue="" />
@@ -340,8 +340,8 @@
                                 <dxg:GridColumn Width="400*"
                                                 FieldName="ItemDescription" />
                                 <dxg:GridColumn Width="120*"
-                                                CellDisplayTemplate="{StaticResource CellDisplayTemplateRequiredQuantity}"
-                                                FieldName="RequiredQuantity">
+                                                CellDisplayTemplate="{StaticResource CellDisplayTemplateRequestedQuantity}"
+                                                FieldName="RequestedQuantity">
                                     <dxg:GridColumn.EditSettings>
                                         <dxe:TextEditSettings Mask="{x:Static res:MasterData.CompartmentTypeListFormatReduced}"
                                                               MaskUseAsDisplayFormat="True" />

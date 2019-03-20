@@ -26,7 +26,7 @@
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource SFC}">
                         <Binding Source="{x:Static res:MasterData.QuantityWithUnitMeasure}" />
-                        <Binding Path="Data.RequiredQuantity"
+                        <Binding Path="Data.RequestedQuantity"
                                  TargetNullValue="" />
                         <Binding Path="Data.ItemUnitMeasure"
                                  TargetNullValue="" />
@@ -318,7 +318,7 @@
                                         FieldName="Priority" />
                         <dxg:GridColumn Width="90*"
                                         CellDisplayTemplate="{StaticResource CellDisplayTemplateQuantity}"
-                                        FieldName="RequiredQuantity" />
+                                        FieldName="RequestedQuantity" />
                         <dxg:GridColumn Width="90*"
                                         FieldName="DispatchedQuantity" />
                         <dxg:GridColumn Width="120*"

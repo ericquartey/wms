@@ -749,10 +749,6 @@
     <value>Priority</value>
     <comment>List Row - Priority</comment>
   </data>
-  <data name="ItemListRowRequiredQuantity" xml:space="preserve">
-    <value>Required Quantity</value>
-    <comment>List Row - Required Quantity</comment>
-  </data>
   <data name="ItemListRowStatusDescription" xml:space="preserve">
     <value>Status</value>
     <comment>List Row - Status</comment>
@@ -1012,5 +1008,12 @@
   <data name="MissionStatusIncomplete" xml:space="preserve">
     <value>Incomplete</value>
     <comment>Mission Status - Incomplete</comment>
+  </data>
+  <data name="ItemListRowRequestedQuantity" xml:space="preserve">
+    <value>Requested Quantity</value>
+    <comment>List Row - Requested Quantity</comment>
+  </data>
+  <data name="MissionRequestedQuantity" xml:space="preserve">
+    <value>Requested Quantity</value>
   </data>
 </root>
