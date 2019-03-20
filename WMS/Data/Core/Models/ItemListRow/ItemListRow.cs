@@ -1,6 +1,4 @@
 ﻿using System;
-using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -8,9 +6,9 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         #region Properties
 
-        public bool CanBeExecuted => this.ItemListRowStatus == ItemListRowStatus.Incomplete
-                   || this.ItemListRowStatus == ItemListRowStatus.Suspended
-                   || this.ItemListRowStatus == ItemListRowStatus.Waiting;
+        public bool CanBeExecuted => this.Status == ItemListRowStatus.Incomplete
+                   || this.Status == ItemListRowStatus.Suspended
+                   || this.Status == ItemListRowStatus.Waiting;
 
         public string Code { get; set; }
 

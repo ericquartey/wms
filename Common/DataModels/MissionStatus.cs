@@ -12,6 +12,6 @@
 
         Error = 'E',
 
-        Incomplette = 'I'
+        Incomplete = 'I'
     }
 }
