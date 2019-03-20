@@ -41,5 +41,7 @@ namespace Ferretto.VW.MAS_DataLayer.Enumerations
         BayPositionControlEnum = 16L,
 
         LoadFirstDrawerEnum = 17L,
+
+        Undefined = 99L,
     }
 }

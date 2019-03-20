@@ -9,6 +9,7 @@ using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer;
 using System;
 using System.Threading.Tasks;
+using Ferretto.VW.MAS_DataLayer.Enumerations;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
@@ -60,19 +61,19 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             switch (parameter)
             {
                 case nameof(ConfigurationValueEnum.UpperBound):
-                    returnValue = this.dataLayerValueManagement.GetDecimalConfigurationValue(ConfigurationValueEnum.UpperBound);
+                    returnValue = this.dataLayerValueManagement.GetDecimalConfigurationValue((long)VerticalAxisEnum.UpperBound, (long)ConfigurationCategoryValueEnum.VerticalAxisEnum);
                     break;
 
                 case nameof(ConfigurationValueEnum.LowerBound):
-                    returnValue = this.dataLayerValueManagement.GetDecimalConfigurationValue(ConfigurationValueEnum.LowerBound);
+                    returnValue = this.dataLayerValueManagement.GetDecimalConfigurationValue((long)VerticalAxisEnum.LowerBound, (long)ConfigurationCategoryValueEnum.VerticalAxisEnum);
                     break;
 
                 case nameof(ConfigurationValueEnum.Offset):
-                    returnValue = this.dataLayerValueManagement.GetDecimalConfigurationValue(ConfigurationValueEnum.Offset);
+                    returnValue = this.dataLayerValueManagement.GetDecimalConfigurationValue((long)VerticalAxisEnum.Offset, (long)ConfigurationCategoryValueEnum.VerticalAxisEnum);
                     break;
 
                 case nameof(ConfigurationValueEnum.Resolution):
-                    returnValue = this.dataLayerValueManagement.GetDecimalConfigurationValue(ConfigurationValueEnum.Resolution);
+                    returnValue = this.dataLayerValueManagement.GetDecimalConfigurationValue((long)VerticalAxisEnum.Resolution, (long)ConfigurationCategoryValueEnum.VerticalAxisEnum);
                     break;
 
                 default:

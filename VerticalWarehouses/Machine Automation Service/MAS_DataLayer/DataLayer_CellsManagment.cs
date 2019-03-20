@@ -7,6 +7,10 @@ namespace Ferretto.VW.MAS_DataLayer
 {
     public partial class DataLayer : IDataLayerCellManagment
     {
+        public DataLayer()
+        {
+        }
+
         // TEMP Maybe obsolete
         //public List<Cell> GetCellList()
         //{

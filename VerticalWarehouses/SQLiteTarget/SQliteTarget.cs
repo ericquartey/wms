@@ -48,7 +48,7 @@ namespace Ferretto.VW.SQLiteTarget
             InsertCom.Parameters.Add(new SQLiteParameter("@level") { Value = logEvent.Level });
             InsertCom.Parameters.Add(new SQLiteParameter("@message") { Value = logEvent.Message });
             InsertCom.Parameters.Add(new SQLiteParameter("@exception") { Value = logEvent.Exception });
-            InsertCom.ExecuteNonQuery();
+            //InsertCom.ExecuteNonQuery();
         }
 
         #endregion
