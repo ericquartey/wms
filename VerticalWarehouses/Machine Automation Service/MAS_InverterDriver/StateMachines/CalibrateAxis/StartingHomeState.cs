@@ -11,7 +11,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
     {
         #region Fields
 
-        private const int sendDelay = 50;
+        private const int sendDelay = 100;
 
         private const ushort StatusWordValue = 0x1037;
 
