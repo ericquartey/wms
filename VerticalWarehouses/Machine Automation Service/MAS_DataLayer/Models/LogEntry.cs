@@ -6,6 +6,14 @@ namespace Ferretto.VW.MAS_DataLayer
     {
         #region Properties
 
+        public string Data { get; set; }
+
+        public string Description { get; set; }
+
+        public string Destination { get; set; }
+
+        public string ErrorLevel { get; set; }
+
         public string Exception { get; set; }
 
         public string Level { get; set; }
@@ -16,7 +24,13 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public string Message { get; set; }
 
+        public string Source { get; set; }
+
+        public string Status { get; }
+
         public DateTime TimeStamp { get; set; }
+
+        public string Type { get; set; }
 
         #endregion
     }

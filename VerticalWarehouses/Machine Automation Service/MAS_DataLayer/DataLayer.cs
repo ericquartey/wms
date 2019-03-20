@@ -116,7 +116,26 @@ namespace Ferretto.VW.MAS_DataLayer
                 false,
                 message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
 
-            this.logger?.LogInformation("DataLayer Constructor");
+            // INFO Log events
+            // INFO Command full events
+            //var commandFullEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            //commandFullEvent.Subscribe(message => { this.LogMessages(message); },
+            //    ThreadOption.PublisherThread,
+            //    false);
+
+            // INFO Notification full events
+            //var notificationFullEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            //notificationFullEvent.Subscribe(message => { this.LogMessages(message); },
+            //    ThreadOption.PublisherThread,
+            //    false);
+
+            //this.logger?.LogInformation("DataLayer Constructor");
+
+            var commandMessage = new CommandMessage();
+            commandMessage.Source = MessageActor.DataLayer;
+            commandMessage.Destination = MessageActor.DataLayer;
+
+            this.LogMessages(commandMessage);
         }
 
         /// <summary>
@@ -166,6 +185,19 @@ namespace Ferretto.VW.MAS_DataLayer
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
+
+            // INFO Log events
+            // INFO Command full events
+            var commandFullEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            commandFullEvent.Subscribe(message => { this.LogMessages(message); },
+                ThreadOption.PublisherThread,
+                false);
+
+            // INFO Notification full events
+            var notificationFullEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            notificationFullEvent.Subscribe(message => { this.LogMessages(message); },
+                ThreadOption.PublisherThread,
+                false);
         }
 
         #endregion
@@ -248,6 +280,26 @@ namespace Ferretto.VW.MAS_DataLayer
                     }
                 }
             }
+        }
+
+        public void LogMessages(CommandMessage message)
+        {
+            if (message == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            //string output = JsonConvert.SerializeObject(message.Data);
+        }
+
+        public void LogMessages(NotificationMessage message)
+        {
+            if (message == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            //string output = JsonConvert.SerializeObject(message.Data);
         }
 
         public bool LogWriting(string logMessage)
