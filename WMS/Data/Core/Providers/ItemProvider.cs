@@ -104,13 +104,15 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<ItemDetails> GetByIdAsync(int id)
         {
-            var compartmentsCount =
-                await this.dataContext.Compartments
-                    .CountAsync(c => c.ItemId == id);
-
             var result = await this.GetAllDetailsBase()
                              .SingleOrDefaultAsync(i => i.Id == id);
-            result.CompartmentsCount = compartmentsCount;
+
+            if (result != null)
+            {
+                result.CompartmentsCount = await this.dataContext.Compartments
+                 .CountAsync(c => c.ItemId == id);
+            }
+
             return result;
         }
 
