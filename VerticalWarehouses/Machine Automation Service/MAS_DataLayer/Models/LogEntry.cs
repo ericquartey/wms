@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public string Source { get; set; }
 
-        public string Status { get; }
+        public string Status { get; set; }
 
         public DateTime TimeStamp { get; set; }
 

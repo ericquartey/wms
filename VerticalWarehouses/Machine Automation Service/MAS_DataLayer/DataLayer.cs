@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Prism.Events;
 
@@ -86,8 +87,9 @@ namespace Ferretto.VW.MAS_DataLayer
                     //this.LoadConfigurationValuesInfo(InfoFilesEnum.InstallationInfo);
                 }
 
-                this.LoadConfigurationValuesInfo(InfoFilesEnum.GeneralInfo);
-                this.LoadConfigurationValuesInfo(InfoFilesEnum.InstallationInfo);
+                // TEMP Temporary commented
+                //this.LoadConfigurationValuesInfo(InfoFilesEnum.GeneralInfo);
+                //this.LoadConfigurationValuesInfo(InfoFilesEnum.InstallationInfo);
 
                 foreach (var configurationValue in initialContext.ConfigurationValues)
                 {
@@ -119,24 +121,24 @@ namespace Ferretto.VW.MAS_DataLayer
 
             // INFO Log events
             // INFO Command full events
-            //var commandFullEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            //commandFullEvent.Subscribe(message => { this.LogMessages(message); },
-            //    ThreadOption.PublisherThread,
-            //    false);
+            var commandFullEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            commandFullEvent.Subscribe(message => { this.LogMessages(message); },
+                ThreadOption.PublisherThread,
+                false);
 
             // INFO Notification full events
-            //var notificationFullEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            //notificationFullEvent.Subscribe(message => { this.LogMessages(message); },
-            //    ThreadOption.PublisherThread,
-            //    false);
+            var notificationFullEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            notificationFullEvent.Subscribe(message => { this.LogMessages(message); },
+                ThreadOption.PublisherThread,
+                false);
 
-            //this.logger?.LogInformation("DataLayer Constructor");
+            this.logger?.LogInformation("DataLayer Constructor");
 
-            var commandMessage = new CommandMessage();
-            commandMessage.Source = MessageActor.DataLayer;
-            commandMessage.Destination = MessageActor.DataLayer;
+            //var commandMessage = new CommandMessage();
+            //commandMessage.Source = MessageActor.DataLayer;
+            //commandMessage.Destination = MessageActor.DataLayer;
 
-            this.LogMessages(commandMessage);
+            //this.LogMessages(commandMessage);
         }
 
         /// <summary>
@@ -180,7 +182,6 @@ namespace Ferretto.VW.MAS_DataLayer
                 false,
                 message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
 
-            // The old WriteLogService
             var NotificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
             NotificationEvent.Subscribe(message => { this.notificationQueue.Enqueue(message); },
                 ThreadOption.PublisherThread,
@@ -380,28 +381,6 @@ namespace Ferretto.VW.MAS_DataLayer
             }
         }
 
-        public void LogMessages(CommandMessage message)
-        {
-            if (message == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            //string output = JsonConvert.SerializeObject(message.Data);
-        }
-
-        public void LogMessages(NotificationMessage message)
-        {
-            if (message == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            //string output = JsonConvert.SerializeObject(message.Data);
-
-            //this.inMemoryDataContext.LogEntries.Add(new LogEntry { LogMessage = logMessage });
-        }
-
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             this.stoppingToken = stoppingToken;
@@ -415,6 +394,54 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 throw new DataLayerException($"Exception: {ex.Message} while starting service threads", ex);
             }
+        }
+
+        private void LogMessages(CommandMessage message)
+        {
+            if (message == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            var serializedData = JsonConvert.SerializeObject(message.Data);
+
+            var logEntry = new LogEntry();
+
+            logEntry.Data = serializedData;
+            logEntry.Description = message.Description;
+            logEntry.Destination = message.Destination.ToString();
+            logEntry.Source = message.Source.ToString();
+            logEntry.TimeStamp = DateTime.Now;
+            logEntry.Type = message.Type.ToString();
+
+            this.inMemoryDataContext.LogEntries.Add(logEntry);
+
+            this.inMemoryDataContext.SaveChanges();
+        }
+
+        private void LogMessages(NotificationMessage message)
+        {
+            if (message == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            var serializedData = JsonConvert.SerializeObject(message.Data);
+
+            var logEntry = new LogEntry();
+
+            logEntry.Data = serializedData;
+            logEntry.Description = message.Description;
+            logEntry.Destination = message.Destination.ToString();
+            logEntry.ErrorLevel = message.ErrorLevel.ToString();
+            logEntry.Source = message.Source.ToString();
+            logEntry.Status = message.Status.ToString();
+            logEntry.TimeStamp = DateTime.Now;
+            logEntry.Type = message.Type.ToString();
+
+            this.inMemoryDataContext.LogEntries.Add(logEntry);
+
+            this.inMemoryDataContext.SaveChanges();
         }
 
         private async Task ReceiveCommandTaskFunction()
