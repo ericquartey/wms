@@ -89,6 +89,8 @@ namespace Ferretto.WMS.Data.WebAPI
                 });
             }
 
+            app.UseHealthChecks($"/health");
+
             app.UseMvc();
         }
 
@@ -107,6 +109,8 @@ namespace Ferretto.WMS.Data.WebAPI
             services.AddDataServiceProviders();
 
             services.AddSchedulerServiceProviders();
+
+            services.AddHealthChecks();
 
             services.AddSwaggerDocument(settings =>
             {
