@@ -161,9 +161,9 @@ namespace Ferretto.WMS.Scheduler.Core.Services
 
                         this.logger.LogDebug($"Reseeding database ...");
 
-                        var cleanAll = await System.IO.File.ReadAllTextAsync(@"bin\Debug\netcoreapp2.1\Seeds\Dev.CleanAll.sql");
-                        var initDbScript = await System.IO.File.ReadAllTextAsync(@"bin\Debug\netcoreapp2.1\Seeds\Dev.InitDb.sql");
-                        var itemsScript = await System.IO.File.ReadAllTextAsync(@"bin\Debug\netcoreapp2.1\Seeds\Dev.Items.sql");
+                        var cleanAll = await System.IO.File.ReadAllTextAsync(@"bin\Debug\netcoreapp2.1\win7-x64\Seeds\Dev.CleanAll.sql");
+                        var initDbScript = await System.IO.File.ReadAllTextAsync(@"bin\Debug\netcoreapp2.1\win7-x64\Seeds\Dev.InitDb.sql");
+                        var itemsScript = await System.IO.File.ReadAllTextAsync(@"bin\Debug\netcoreapp2.1\win7-x64\Seeds\Dev.Items.sql");
 
                         await database.ExecuteSqlCommandAsync(cleanAll);
                         await database.ExecuteSqlCommandAsync(initDbScript);
