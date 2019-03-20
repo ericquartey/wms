@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Linq;
 using Ferretto.VW.Common_Utils;
+using Ferretto.VW.MAS_DataLayer.Enumerations;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
     public partial class DataLayer : IDataLayerCellManagment
     {
+        public DataLayer()
+        {
+        }
+
         // TEMP Maybe obsolete
         //public List<Cell> GetCellList()
         //{
@@ -17,7 +22,7 @@ namespace Ferretto.VW.MAS_DataLayer
         // INFO Method used when a drawer backs in the magazine from bay (return mission).
         public LoadingUnitPosition GetFreeBlockPosition(decimal loadingUnitHeight, int loadingUnitId)
         {
-            var cellSpacing = this.GetIntegerConfigurationValue(ConfigurationValueEnum.CellSpacing);
+            var cellSpacing = this.GetIntegerConfigurationValue((long)ConfigurationValueEnum.CellSpacing, (long)ConfigurationCategoryValueEnum.GeneralInfoEnum);
 
             var cellsNumber = (int)Math.Ceiling(loadingUnitHeight / cellSpacing);
 

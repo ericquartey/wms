@@ -42,21 +42,23 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.ConfigurationValue", b =>
                 {
+                    b.Property<long>("CategoryName");
+
                     b.Property<long>("VarName");
 
                     b.Property<long>("VarType");
 
                     b.Property<string>("VarValue");
 
-                    b.HasKey("VarName");
+                    b.HasKey("CategoryName", "VarName");
 
                     b.ToTable("ConfigurationValues");
 
                     b.HasData(
-                        new { VarName = 7L, VarType = 5L, VarValue = "169.254.231.248" },
-                        new { VarName = 8L, VarType = 2L, VarValue = "17221" },
-                        new { VarName = 9L, VarType = 5L, VarValue = "169.254.231.10" },
-                        new { VarName = 10L, VarType = 2L, VarValue = "502" }
+                        new { CategoryName = 0L, VarName = 2L, VarType = 5L, VarValue = "169.254.231.248" },
+                        new { CategoryName = 0L, VarName = 17L, VarType = 2L, VarValue = "17221" },
+                        new { CategoryName = 0L, VarName = 4L, VarType = 5L, VarValue = "169.254.231.10" },
+                        new { CategoryName = 0L, VarName = 19L, VarType = 2L, VarValue = "502" }
                     );
                 });
 
@@ -147,18 +149,6 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                     b.HasKey("VarName");
 
                     b.ToTable("RuntimeValues");
-                });
-
-            modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.StatusLog", b =>
-                {
-                    b.Property<int>("StatusLogId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("LogMessage");
-
-                    b.HasKey("StatusLogId");
-
-                    b.ToTable("StatusLogs");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.Cell", b =>

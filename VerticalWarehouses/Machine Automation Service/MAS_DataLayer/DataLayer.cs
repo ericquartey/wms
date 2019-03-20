@@ -8,6 +8,7 @@ using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
+using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -18,7 +19,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
-    public partial class DataLayer : BackgroundService, IDataLayer, IWriteLogService
+    public partial class DataLayer : BackgroundService, IDataLayer
     {
         #region Fields
 
@@ -238,39 +239,136 @@ namespace Ferretto.VW.MAS_DataLayer
                 var json = streamReader.ReadToEnd();
                 var jsonObject = JObject.Parse(json);
 
-                ConfigurationValueEnum jsonElementName;
                 DataTypeEnum jsonElementType;
+                ConfigurationCategoryValueEnum jsonElementCategory;
 
                 foreach (var jsonElement in jsonObject)
                 {
-                    jsonElementName = (ConfigurationValueEnum)Enum.Parse(typeof(ConfigurationValueEnum), jsonElement.Key);
-                    jsonElementType = this.ConvertConfigurationValue(jsonElementName);
+                    jsonElementCategory = this.GetJSonElementConfigurationCategory(jsonElement);
+                    long elementEnumerationID;
+                    switch (jsonElementCategory)
+                    {
+                        case ConfigurationCategoryValueEnum.GeneralInfoEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((GeneralInfoEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.SetupNetworkEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((SetupNetworkEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.SetupStatusEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((SetupStatusEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.VerticalAxisEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((VerticalAxisEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.HorizontalAxisEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((HorizontalAxisEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.HorizontalMovementForwardProfileEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((HorizontalMovementForwardProfileEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.HorizontalMovementBackwardProfileEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((HorizontalMovementBackwardProfileEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.VerticalManualMovementsEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((VerticalManualMovementsEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.HorizontalManualMovementsEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((HorizontalManualMovementsEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.BeltBurnishingEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((BeltBurnishingEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.ResolutionCalibrationEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((ResolutionCalibrationEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.OffsetCalibrationEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((OffsetCalibrationEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.CellControlEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((CellControlEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.PanelControlEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((PanelControlEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.ShutterHeightControlEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((ShutterHeightControlEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.WeightControlEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((WeightControlEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.BayPositionControlEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((BayPositionControlEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.LoadFirstDrawerEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((LoadFirstDrawerEnum)elementEnumerationID);
+                            break;
+
+                        default:
+                            jsonElementType = DataTypeEnum.UndefinedType;
+                            elementEnumerationID = 0;
+                            break;
+                    }
 
                     switch (jsonElementType)
                     {
                         case (DataTypeEnum.booleanType):
                             {
-                                this.SetBoolConfigurationValue(jsonElementName, (bool)jsonElement.Value.ToObject(typeof(bool)));
+                                this.SetBoolConfigurationValue(elementEnumerationID, (long)jsonElementCategory, (bool)jsonElement.Value.ToObject(typeof(bool)));
                                 break;
                             }
                         case (DataTypeEnum.dateTimeType):
                             {
-                                this.SetDateTimeConfigurationValue(jsonElementName, (DateTime)jsonElement.Value.ToObject(typeof(DateTime)));
+                                this.SetDateTimeConfigurationValue(elementEnumerationID, (long)jsonElementCategory, (DateTime)jsonElement.Value.ToObject(typeof(DateTime)));
                                 break;
                             }
                         case (DataTypeEnum.decimalType):
                             {
-                                this.SetDecimalConfigurationValue(jsonElementName, (decimal)jsonElement.Value.ToObject(typeof(decimal)));
+                                this.SetDecimalConfigurationValue(elementEnumerationID, (long)jsonElementCategory, (decimal)jsonElement.Value.ToObject(typeof(decimal)));
                                 break;
                             }
                         case (DataTypeEnum.integerType):
                             {
-                                this.SetIntegerConfigurationValue(jsonElementName, (int)jsonElement.Value.ToObject(typeof(int)));
+                                this.SetIntegerConfigurationValue(elementEnumerationID, (long)jsonElementCategory, (int)jsonElement.Value.ToObject(typeof(int)));
                                 break;
                             }
                         case (DataTypeEnum.stringType):
                             {
-                                this.SetStringConfigurationValue(jsonElementName, jsonElement.Value.ToString());
+                                this.SetStringConfigurationValue(elementEnumerationID, (long)jsonElementCategory, jsonElement.Value.ToString());
                                 break;
                             }
                         default:
@@ -300,46 +398,8 @@ namespace Ferretto.VW.MAS_DataLayer
             }
 
             //string output = JsonConvert.SerializeObject(message.Data);
-        }
 
-        public bool LogWriting(string logMessage)
-        {
-            var updateOperation = true;
-
-            try
-            {
-                this.inMemoryDataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
-                this.inMemoryDataContext.SaveChanges();
-            }
-            catch (DbUpdateException exception)
-            {
-                updateOperation = false;
-            }
-
-            return updateOperation;
-        }
-
-        public void LogWriting(CommandMessage command_EventParameter)
-        {
-            string logMessage;
-
-            switch (command_EventParameter.Type)
-            {
-                case MessageType.Homing:
-                    {
-                        logMessage = "Vertical Homing";
-                        break;
-                    }
-                default:
-                    {
-                        logMessage = "Unknown Action";
-
-                        break;
-                    }
-            }
-
-            this.inMemoryDataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
-            this.inMemoryDataContext.SaveChanges();
+            //this.inMemoryDataContext.LogEntries.Add(new LogEntry { LogMessage = logMessage });
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -370,8 +430,6 @@ namespace Ferretto.VW.MAS_DataLayer
                 {
                     return;
                 }
-
-                this.LogWriting(receivedMessage);
 
                 switch (receivedMessage.Type)
                 {
