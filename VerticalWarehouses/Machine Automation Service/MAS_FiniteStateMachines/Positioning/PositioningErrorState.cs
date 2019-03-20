@@ -1,7 +1,6 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 {
@@ -11,16 +10,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         private readonly Axis axisMovement;
 
+        private readonly IPositioningMessageData positioningMessageData;
+
         #endregion
 
         #region Constructors
 
-        public PositioningErrorState(IStateMachine parentMachine)
+        public PositioningErrorState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData)
         {
             this.parentStateMachine = parentMachine;
-
-            var positioninigData = ((IPositioningStateMachine)this.parentStateMachine).PositioningData;
-            this.axisMovement = positioninigData.AxisMovement;
+            this.positioningMessageData = positioningMessageData;
+            this.axisMovement = positioningMessageData.AxisMovement;
 
             //TEMP Notify the error condition
             var newMessage = new NotificationMessage(null,
@@ -44,14 +44,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #region Methods
 
+        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            throw new NotImplementedException();
+            //TEMP Add your implementation code here
         }
 
+        /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            throw new NotImplementedException();
+            //TEMP Add your implememtation code here
         }
 
         #endregion

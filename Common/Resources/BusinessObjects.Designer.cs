@@ -331,6 +331,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compartment.
+        /// </summary>
+        public static string Compartment {
+            get {
+                return ResourceManager.GetString("Compartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FIFO Time [days].
         /// </summary>
         public static string CompartmentFifoTime {
@@ -1924,6 +1933,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mission.
+        /// </summary>
+        public static string Mission {
+            get {
+                return ResourceManager.GetString("Mission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Completed.
         /// </summary>
         public static string MissionStatusCompleted {
@@ -2118,6 +2136,15 @@ namespace Ferretto.Common.Resources {
         public static string RegistrationNumber {
             get {
                 return ResourceManager.GetString("RegistrationNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scheduler Request.
+        /// </summary>
+        public static string SchedulerRequest {
+            get {
+                return ResourceManager.GetString("SchedulerRequest", resourceCulture);
             }
         }
         

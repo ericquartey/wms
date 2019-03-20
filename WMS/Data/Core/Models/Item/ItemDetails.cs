@@ -1,4 +1,5 @@
 using System;
+using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -7,16 +8,27 @@ namespace Ferretto.WMS.Data.Core.Models
         #region Fields
 
         private int? averageWeight;
+
         private int? fifoTimePick;
+
         private int? fifoTimeStore;
+
         private int? height;
+
         private int? inventoryTolerance;
+
         private int? length;
+
         private int? pickTolerance;
+
         private int? reorderPoint;
+
         private int? reorderQuantity;
+
         private int? storeTolerance;
+
         private int totalAvailable;
+
         private int? width;
 
         #endregion

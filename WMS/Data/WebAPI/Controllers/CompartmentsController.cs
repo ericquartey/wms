@@ -40,6 +40,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [HttpGet("{id}/candelete")]
+        public async Task<ActionResult<ActionModel>> CanDeleteAsync(int id)
+        {
+            return await this.compartmentProvider.CanDeleteAsync(id);
+        }
+
         [ProducesResponseType(201, Type = typeof(CompartmentDetails))]
         [ProducesResponseType(400)]
         [HttpPost]

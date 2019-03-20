@@ -15,6 +15,8 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Methods
 
+        Task<ActionModel> CanDeleteAsync(int id);
+
         Task<IOperationResult<ItemListRow>> ExecuteImmediatelyAsync(int listRowId, int areaId, int bayId);
 
         Task<IEnumerable<BusinessModels.ItemListRow>> GetByItemListIdAsync(int id);

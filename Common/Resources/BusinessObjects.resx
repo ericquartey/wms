@@ -1009,4 +1009,13 @@
   <data name="ItemListRow" xml:space="preserve">
     <value>Item List Row</value>
   </data>
+  <data name="Mission" xml:space="preserve">
+    <value>Mission</value>
+  </data>
+  <data name="Compartment" xml:space="preserve">
+    <value>Compartment</value>
+  </data>
+  <data name="SchedulerRequest" xml:space="preserve">
+    <value>Scheduler Request</value>
+  </data>
 </root>

@@ -16,6 +16,8 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Methods
 
+        Task<ActionModel> CanDeleteAsync(int id);
+
         Task<IEnumerable<AllowedItemInCompartment>> GetAllowedByCompartmentIdAsync(int compartmentId);
 
         Task<ItemDetails> GetNewAsync();
