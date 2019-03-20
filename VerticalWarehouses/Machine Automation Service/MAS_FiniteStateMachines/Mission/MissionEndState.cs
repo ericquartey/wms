@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
                 MessageActor.FiniteStateMachines,
                 MessageType.EndMission,
                 MessageStatus.OperationEnd);
-            this.parentStateMachine.PublishNotificationMessage(newMessage);
+            this.parentStateMachine.OnPublishNotification(newMessage);
         }
 
         #endregion
@@ -31,13 +31,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         #region Methods
 
+        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
             switch (message.Type)
             {
                 case MessageType.Stop:
                     //TODO add state business logic to stop current action
-
                     var newMessage = new CommandMessage(null,
                         "Stop Requested",
                         MessageActor.Any,
@@ -49,6 +49,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
             }
         }
 
+        /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
             throw new NotImplementedException();
