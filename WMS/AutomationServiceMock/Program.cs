@@ -12,6 +12,16 @@ namespace Ferretto.WMS.AutomationServiceMock
 {
     internal static class Program
     {
+        #region Fields
+
+        private const string DefaultApplicationSettingsFile = "appsettings.json";
+
+        private const string NetcoreEnvironmentEnvVariable = "ASPNETCORE_ENVIRONMENT";
+
+        private const string ParametrizedApplicationSettingsFile = "appsettings.{0}.json";
+
+        #endregion
+
         #region Enums
 
         private enum UserSelection
@@ -33,10 +43,13 @@ namespace Ferretto.WMS.AutomationServiceMock
 
         private static IAutomationService BuildConfiguration(string[] args)
         {
+            var applicationSettingsFile = GetSettingFileFromEnvironment();
+
             var configuration = new ConfigurationBuilder()
-             .AddJsonFile("appsettings.json", optional: false)
-             .AddCommandLine(args)
-             .Build();
+                .AddJsonFile(DefaultApplicationSettingsFile, false, false)
+                .AddJsonFile(applicationSettingsFile, true, false)
+                .AddCommandLine(args)
+                .Build();
 
             var serviceProvider = ConfigureServices(configuration);
 
@@ -130,6 +143,15 @@ namespace Ferretto.WMS.AutomationServiceMock
             }
 
             return -1;
+        }
+
+        private static string GetSettingFileFromEnvironment()
+        {
+            var netcoreEnvironment = System.Environment.GetEnvironmentVariable(NetcoreEnvironmentEnvVariable);
+
+            return netcoreEnvironment != null
+                ? string.Format(ParametrizedApplicationSettingsFile, netcoreEnvironment)
+                : DefaultApplicationSettingsFile;
         }
 
         private static async Task Main(string[] args)

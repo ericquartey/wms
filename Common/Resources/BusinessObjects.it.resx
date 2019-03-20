@@ -285,9 +285,6 @@
   <data name="LoadingUnitLength" xml:space="preserve">
     <value>Lunghezza [mm]</value>
   </data>
-  <data name="CompartmentLastHandlingDate" xml:space="preserve">
-    <value>Data Ultima Movimentazione</value>
-  </data>
   <data name="CompartmentIsItemPairingFixed" xml:space="preserve">
     <value>Abbinamento Fisso</value>
   </data>
@@ -825,5 +822,14 @@
   </data>
   <data name="ItemListRow" xml:space="preserve">
     <value>Riga Lista</value>
+  </data>
+  <data name="Mission" xml:space="preserve">
+    <value>Missione</value>
+  </data>
+  <data name="Compartment" xml:space="preserve">
+    <value>Scomparto</value>
+  </data>
+  <data name="SchedulerRequest" xml:space="preserve">
+    <value>Richiesta Schedulatore</value>
   </data>
 </root>

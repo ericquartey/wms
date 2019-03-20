@@ -15,8 +15,6 @@ trigger:
     include:
     - master
     - release/*
-    - bugfix/*
-    - hotfix/*
 
 variables:
   BuildPlatform: 'any cpu'
@@ -28,16 +26,17 @@ steps:
   parameters:
     BuildConfiguration: $(BuildConfiguration)
     TargetFramework: 'netcoreapp2.2'
-    RestoreBuildProjects: 'WMS/Data/**/*.csproj'
+    RestoreBuildProjects: 'WMS/**/@(Ferretto.WMS.Data.WebAPI.csproj|Ferretto.WMS.AutomationServiceMock.csproj)'
     TestProjects: 'WMS/Data/**/*.Tests.csproj'
 
-    
+
 - template: ../WMS/Pipelines/azure-pipeline-wms-ui-template.yml
   parameters:
-    BuildConfiguration: $(BuildConfiguration)
+    BuildConfiguration: 'ReleaseWmsUI'
+    BuildProjectConfiguration: 'Release'
     BuildPlatform:  $(BuildPlatform)
 
-   
+
 - template: '../VerticalWarehouses/Pipelines/azure-pipeline-vw-services-template.yml'
   parameters:
     BuildConfiguration: $(BuildConfiguration)

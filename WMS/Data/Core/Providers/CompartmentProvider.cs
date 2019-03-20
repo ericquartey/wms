@@ -38,6 +38,36 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
+        public async Task<ActionModel> CanDeleteAsync(int id)
+        {
+            var compartment = await this.GetByIdAsync(id);
+
+            var entity = new List<string>();
+            if (compartment.Stock > 0)
+            {
+                entity.Add($"{Common.Resources.BusinessObjects.ItemStock} [{compartment.Stock}]");
+            }
+
+            if (compartment.IsItemPairingFixed)
+            {
+                entity.Add($"{Common.Resources.BusinessObjects.PairingFixed}");
+            }
+
+            string reason = null;
+            if (entity.Any())
+            {
+                reason = string.Format(
+                        Common.Resources.Errors.NotPossibleExecuteOperation,
+                        string.Join(", ", entity.ToArray()));
+            }
+
+            return new ActionModel
+            {
+                IsAllowed = !entity.Any(),
+                Reason = reason,
+            };
+        }
+
         public async Task<IOperationResult<CompartmentDetails>> CreateAsync(CompartmentDetails model)
         {
             if (model == null || model.Height == null || model.Width == null)
@@ -121,8 +151,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new NotFoundOperationResult<CompartmentDetails>();
             }
 
-            var compartment = await this.GetByIdAsync(id);
-            if (compartment.CanDelete)
+            var deleteAction = await this.CanDeleteAsync(id);
+            if (deleteAction.IsAllowed)
             {
                 this.dataContext.Remove(existingModel);
                 await this.dataContext.SaveChangesAsync();
@@ -356,7 +386,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     CompartmentStatusId = j.cmp.CompartmentStatusId,
                     CompartmentStatusDescription = j.cmp.CompartmentStatus.Description,
                     CreationDate = j.cmp.CreationDate,
-                    LastHandlingDate = j.cmp.LastHandlingDate,
                     InventoryDate = j.cmp.InventoryDate,
                     FirstStoreDate = j.cmp.FirstStoreDate,
                     LastStoreDate = j.cmp.LastStoreDate,

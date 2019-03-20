@@ -32,6 +32,41 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
+        public async Task<ActionModel> CanDeleteAsync(int id)
+        {
+            var schedulerRequestsCount =
+                await this.dataContext.SchedulerRequests
+                    .CountAsync(r => r.ItemId == id);
+
+            var status = (ItemListRowStatus)this.dataContext.ItemListRows.Where(r => r.Id == id)
+                .Select(r => r.Status).FirstOrDefault();
+
+            var entity = new List<string>();
+            if (schedulerRequestsCount > 0)
+            {
+                entity.Add($"{Common.Resources.BusinessObjects.SchedulerRequest} [{schedulerRequestsCount}]");
+            }
+
+            if (status != ItemListRowStatus.Waiting)
+            {
+                entity.Add($"{Common.Resources.BusinessObjects.ItemListStatus} [{ItemListRowStatus.Waiting}]");
+            }
+
+            string reason = null;
+            if (entity.Any())
+            {
+                reason = string.Format(
+                        Common.Resources.Errors.NotPossibleExecuteOperation,
+                        string.Join(", ", entity.ToArray()));
+            }
+
+            return new ActionModel
+            {
+                IsAllowed = !entity.Any(),
+                Reason = reason,
+            };
+        }
+
         public async Task<IOperationResult<ItemListRowDetails>> CreateAsync(ItemListRowDetails model)
         {
             if (model == null)
@@ -77,8 +112,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new NotFoundOperationResult<ItemListRowDetails>();
             }
 
-            var itemListRow = await this.GetByIdAsync(id);
-            if (itemListRow.CanDelete)
+            var deleteAction = await this.CanDeleteAsync(id);
+            if (deleteAction.IsAllowed)
             {
                 this.dataContext.Remove(existingModel);
                 await this.dataContext.SaveChangesAsync();
@@ -194,11 +229,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                     RequiredQuantity = l.RequiredQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
                     ItemListId = l.ItemListId,
-                    ItemListRowStatus = (ItemListRowStatus)l.Status,
+                    Status = (ItemListRowStatus)l.Status,
                     MaterialStatusDescription = l.MaterialStatus.Description,
                     CreationDate = l.CreationDate,
                     ItemUnitMeasure = l.Item.MeasureUnit.Description,
-                    HasSchedulerRequestAssociated = l.SchedulerRequests.Any(),
                 });
         }
 
@@ -230,7 +264,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     PackageTypeId = l.PackageTypeId,
                     MaterialStatusId = l.MaterialStatusId,
                     ItemUnitMeasure = l.Item.MeasureUnit.Description,
-                    HasSchedulerRequestAssociated = l.SchedulerRequests.Any(),
                 });
         }
 

@@ -20,7 +20,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         IReadAllPagedController<Item>,
         IReadSingleController<ItemDetails, int>,
         IUpdateController<ItemDetails>,
-        IGetUniqueValuesController
+        IGetUniqueValuesController,
+        IDeleteController<int>
     {
         #region Fields
 
@@ -52,6 +53,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [HttpGet("{id}/candelete")]
+        public async Task<ActionResult<ActionModel>> CanDeleteAsync(int id)
+        {
+            return await this.itemProvider.CanDeleteAsync(id);
+        }
+
         [ProducesResponseType(typeof(ItemDetails), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
@@ -69,6 +78,29 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return this.Created(this.Request.GetUri(), result.Entity);
+        }
+
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(422)]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteAsync(int id)
+        {
+            var result = await this.itemProvider.DeleteAsync(id);
+
+            if (!result.Success)
+            {
+                if (result is UnprocessableEntityOperationResult<ItemDetails>)
+                {
+                    return this.UnprocessableEntity();
+                }
+                else
+                {
+                    return this.NotFound();
+                }
+            }
+
+            return this.Ok();
         }
 
         [ProducesResponseType(typeof(IEnumerable<Item>), StatusCodes.Status200OK)]

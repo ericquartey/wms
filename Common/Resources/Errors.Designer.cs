@@ -421,6 +421,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to complete the request because there are constraints on: {0}.
+        /// </summary>
+        public static string NotPossibleExecuteOperation {
+            get {
+                return ResourceManager.GetString("NotPossibleExecuteOperation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The parameter cannot be null or whitespace..
         /// </summary>
         public static string ParameterCannotBeNullOrWhitespace {

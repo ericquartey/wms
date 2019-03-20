@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.Common.EF.Migrations
 {
-    [System.CodeDom.Compiler.GeneratedCode("EntityFramework", "v2.1")]
     [DbContext(typeof(DatabaseContext))]
     partial class DatabaseContextModelSnapshot : ModelSnapshot
     {
@@ -411,8 +410,6 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int?>("ItemId");
 
-                    b.Property<DateTime?>("LastHandlingDate");
-
                     b.Property<DateTime>("LastModificationDate")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GETUTCDATE()");
@@ -814,7 +811,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<DateTime?>("InventoryDate");
 
-                    b.Property<bool?>("IsCellPairingFixed");
+                    b.Property<bool>("IsCellPairingFixed");
 
                     b.Property<DateTime?>("LastHandlingDate");
 

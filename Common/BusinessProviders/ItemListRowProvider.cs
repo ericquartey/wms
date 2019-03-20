@@ -40,6 +40,16 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
+        public async Task<ActionModel> CanDeleteAsync(int id)
+        {
+            var action = await this.itemListRowsDataService.CanDeleteAsync(id);
+            return new ActionModel
+            {
+                IsAllowed = action.IsAllowed,
+                Reason = action.Reason,
+            };
+        }
+
         public async Task<IOperationResult<ItemListRowDetails>> CreateAsync(ItemListRowDetails model)
         {
             if (model == null)
@@ -133,13 +143,13 @@ namespace Ferretto.Common.BusinessProviders
                     Code = l.Code,
                     DispatchedQuantity = l.DispatchedQuantity,
                     ItemDescription = l.ItemDescription,
-                    ItemListRowStatus = (BusinessModels.ItemListRowStatus)l.ItemListRowStatus,
+                    ItemListRowStatus = (BusinessModels.ItemListRowStatus)l.Status,
                     ItemUnitMeasure = l.ItemUnitMeasure,
                     MaterialStatusDescription = l.MaterialStatusDescription,
                     RequiredQuantity = l.RequiredQuantity,
                     RowPriority = l.RowPriority,
                     CreationDate = l.CreationDate,
-                    CanDelete = l.CanDelete,
+                    CanBeExecuted = l.CanBeExecuted,
                 });
         }
 
@@ -182,7 +192,7 @@ namespace Ferretto.Common.BusinessProviders
                 MaterialStatusChoices = materialStatusChoices,
                 PackageTypeChoices = packageTypeChoices,
                 ItemListId = itemListRow.ItemListId,
-                CanDelete = itemListRow.CanDelete,
+                CanBeExecuted = itemListRow.CanBeExecuted,
             };
         }
 
@@ -197,11 +207,11 @@ namespace Ferretto.Common.BusinessProviders
                     ItemDescription = l.ItemDescription,
                     RequiredQuantity = l.RequiredQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
-                    ItemListRowStatus = (BusinessModels.ItemListRowStatus)l.ItemListRowStatus,
+                    ItemListRowStatus = (BusinessModels.ItemListRowStatus)l.Status,
                     MaterialStatusDescription = l.MaterialStatusDescription,
                     CreationDate = l.CreationDate,
                     ItemUnitMeasure = l.ItemUnitMeasure,
-                    CanDelete = l.CanDelete,
+                    CanBeExecuted = l.CanBeExecuted,
                 });
         }
 
