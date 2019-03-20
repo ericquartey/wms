@@ -45,7 +45,7 @@ namespace Ferretto.WMS.AutomationServiceMock
             {
                 await this.missionsDataService.CompleteAsync(missionId);
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 Console.WriteLine($"Unable to complete mission with id={missionId}: {ex.Message}");
             }
@@ -57,7 +57,7 @@ namespace Ferretto.WMS.AutomationServiceMock
             {
                 await this.missionsDataService.ExecuteAsync(missionId);
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 Console.WriteLine($"Unable to execute mission with id={missionId}: {ex.Message}");
             }
@@ -69,7 +69,7 @@ namespace Ferretto.WMS.AutomationServiceMock
             {
                 return await this.missionsDataService.GetAllAsync(null, null, null, null, null);
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 Console.WriteLine($"Unable to retrieve the list of missions: {ex.Message}");
                 return null;
