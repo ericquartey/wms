@@ -4,6 +4,7 @@ using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -38,8 +39,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(201, Type = typeof(CompartmentType))]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(typeof(CompartmentType), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
         public async Task<ActionResult<CompartmentType>> CreateAsync(
             CompartmentType model,
@@ -56,22 +57,22 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Created(this.Request.GetUri(), result.Entity);
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<CompartmentType>))]
+        [ProducesResponseType(typeof(IEnumerable<CompartmentType>), StatusCodes.Status200OK)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CompartmentType>>> GetAllAsync()
         {
             return this.Ok(await this.compartmentTypeProvider.GetAllAsync());
         }
 
-        [ProducesResponseType(200, Type = typeof(int))]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync()
         {
             return this.Ok(await this.compartmentTypeProvider.GetAllCountAsync());
         }
 
-        [ProducesResponseType(200, Type = typeof(CompartmentType))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(CompartmentType), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         public async Task<ActionResult<CompartmentType>> GetByIdAsync(int id)
         {

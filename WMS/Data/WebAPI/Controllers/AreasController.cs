@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -46,29 +47,29 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Aisle>))]
+        [ProducesResponseType(typeof(IEnumerable<Aisle>), StatusCodes.Status200OK)]
         [HttpGet("{id}/aisles")]
         public async Task<ActionResult<IEnumerable<Aisle>>> GetAisles(int id)
         {
             return this.Ok(await this.areaProvider.GetAislesAsync(id));
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Area>))]
+        [ProducesResponseType(typeof(IEnumerable<Area>), StatusCodes.Status200OK)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Area>>> GetAllAsync()
         {
             return this.Ok(await this.areaProvider.GetAllAsync());
         }
 
-        [ProducesResponseType(200, Type = typeof(int))]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync()
         {
             return this.Ok(await this.areaProvider.GetAllCountAsync());
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Bay>))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(IEnumerable<Bay>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}/bays")]
         public async Task<ActionResult<IEnumerable<Bay>>> GetBaysAsync(int id)
         {
@@ -84,8 +85,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(bays);
         }
 
-        [ProducesResponseType(200, Type = typeof(Area))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(Area), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         public async Task<ActionResult<Area>> GetByIdAsync(int id)
         {
@@ -100,7 +101,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result);
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Cell>))]
+        [ProducesResponseType(typeof(IEnumerable<Cell>), StatusCodes.Status200OK)]
         [HttpGet("{id}/cells")]
         public async Task<ActionResult<IEnumerable<Cell>>> GetCellsAsync(int id)
         {

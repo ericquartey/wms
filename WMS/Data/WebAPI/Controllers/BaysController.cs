@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -37,36 +38,36 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(200, Type = typeof(Bay))]
+        [ProducesResponseType(typeof(Bay), StatusCodes.Status200OK)]
         [HttpPost("{id}/activate")]
         public async Task<ActionResult<IEnumerable<Bay>>> ActivateAsync(int id)
         {
             return this.Ok(await this.bayProvider.ActivateAsync(id));
         }
 
-        [ProducesResponseType(200, Type = typeof(Bay))]
+        [ProducesResponseType(typeof(Bay), StatusCodes.Status200OK)]
         [HttpPost("{id}/deactivate")]
         public async Task<ActionResult<IEnumerable<Bay>>> DeactivateAsync(int id)
         {
             return this.Ok(await this.bayProvider.DeactivateAsync(id));
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Bay>))]
+        [ProducesResponseType(typeof(IEnumerable<Bay>), StatusCodes.Status200OK)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Bay>>> GetAllAsync()
         {
             return this.Ok(await this.bayProvider.GetAllAsync());
         }
 
-        [ProducesResponseType(200, Type = typeof(int))]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync()
         {
             return this.Ok(await this.bayProvider.GetAllCountAsync());
         }
 
-        [ProducesResponseType(200, Type = typeof(Bay))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(Bay), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         public async Task<ActionResult<Bay>> GetByIdAsync(int id)
         {

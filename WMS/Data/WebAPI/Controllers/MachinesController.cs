@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -41,8 +41,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Machine>))]
-        [ProducesResponseType(400, Type = typeof(string))]
+        [ProducesResponseType(typeof(IEnumerable<Machine>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Machine>>> GetAllAsync(
             int skip = 0,
@@ -69,9 +69,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
-        [ProducesResponseType(200, Type = typeof(int))]
-        [ProducesResponseType(400, Type = typeof(string))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync(
             string where = null,
@@ -87,8 +87,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
-        [ProducesResponseType(200, Type = typeof(Machine))]
-        [ProducesResponseType(404, Type = typeof(SerializableError))]
+        [ProducesResponseType(typeof(Machine), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         public async Task<ActionResult<Machine>> GetByIdAsync(int id)
         {
@@ -97,14 +97,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 var message = $"No entity with the specified id={id} exists.";
                 this.logger.LogWarning(message);
-                return this.NotFound(message);
+                return this.NotFound(new ProblemDetails { Detail = message });
             }
 
             return this.Ok(result);
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(typeof(IEnumerable<object>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("unique/{propertyName}")]
         public async Task<ActionResult<object[]>> GetUniqueValuesAsync(
             string propertyName)

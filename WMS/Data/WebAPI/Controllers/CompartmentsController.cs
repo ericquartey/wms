@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -40,8 +40,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(201, Type = typeof(CompartmentDetails))]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(typeof(CompartmentDetails), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
         public async Task<ActionResult<CompartmentDetails>> CreateAsync(CompartmentDetails model)
         {
@@ -55,8 +55,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Created(this.Request.GetUri(), result.Entity);
         }
 
-        [ProducesResponseType(201, Type = typeof(IEnumerable<CompartmentDetails>))]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(typeof(IEnumerable<CompartmentDetails>), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("range")]
         public async Task<ActionResult<CompartmentDetails>> CreateRangeAsync(IEnumerable<CompartmentDetails> models)
         {
@@ -70,10 +70,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Created(this.Request.GetUri(), result.Entity);
         }
 
-        [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(422)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAsync(int id)
         {
@@ -94,8 +94,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok();
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Compartment>))]
-        [ProducesResponseType(400, Type = typeof(string))]
+        [ProducesResponseType(typeof(IEnumerable<Compartment>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Compartment>>> GetAllAsync(
             int skip = 0,
@@ -122,9 +122,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
-        [ProducesResponseType(200, Type = typeof(int))]
-        [ProducesResponseType(400, Type = typeof(string))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync(
             string where = null,
@@ -140,15 +139,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<AllowedItemInCompartment>))]
+        [ProducesResponseType(typeof(IEnumerable<AllowedItemInCompartment>), StatusCodes.Status200OK)]
         [HttpGet("{id}/allowed_items")]
         public async Task<ActionResult<IEnumerable<AllowedItemInCompartment>>> GetAllowedItemsAsync(int id)
         {
+            // TODO: return 404 if a compartment with the specified id does not exist
             return this.Ok(await this.compartmentProvider.GetAllowedItemsAsync(id));
         }
 
-        [ProducesResponseType(200, Type = typeof(CompartmentDetails))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(CompartmentDetails), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         public async Task<ActionResult<CompartmentDetails>> GetByIdAsync(int id)
         {
@@ -161,16 +161,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result);
         }
 
-        [ProducesResponseType(200, Type = typeof(int?))]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(typeof(int?), StatusCodes.Status200OK)]
         [HttpGet("max_capacity")]
         public async Task<ActionResult<int?>> GetMaxCapacityAsync(int width, int height, int itemId)
         {
             return this.Ok(await this.compartmentProvider.GetMaxCapacityAsync(width, height, itemId));
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
         [ProducesResponseType(400)]
+        [ProducesResponseType(typeof(IEnumerable<object>), StatusCodes.Status200OK)]
         [HttpGet("unique/{propertyName}")]
         public async Task<ActionResult<object[]>> GetUniqueValuesAsync(string propertyName)
         {
@@ -180,11 +179,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (InvalidOperationException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = e.Message
+                });
             }
         }
 
-        [ProducesResponseType(200, Type = typeof(CompartmentDetails))]
+        [ProducesResponseType(typeof(CompartmentDetails), StatusCodes.Status200OK)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [HttpPatch]

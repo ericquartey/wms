@@ -6,6 +6,7 @@ using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SchedulerRequest = Ferretto.WMS.Scheduler.Core.Models.SchedulerRequest;
 
@@ -51,8 +52,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(201, Type = typeof(ItemDetails))]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(typeof(ItemDetails), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
         public async Task<ActionResult<ItemDetails>> CreateAsync(ItemDetails model)
         {
@@ -66,8 +67,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Created(this.Request.GetUri(), result.Entity);
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Item>))]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(typeof(IEnumerable<Item>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Item>>> GetAllAsync(
             int skip = 0,
@@ -94,9 +95,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
-        [ProducesResponseType(200, Type = typeof(int))]
-        [ProducesResponseType(400, Type = typeof(string))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync(
             string where = null,
@@ -112,8 +113,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Area>))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(IEnumerable<Area>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}/areas_with_availability")]
         public async Task<ActionResult<IEnumerable<Area>>> GetAreasWithAvailabilityAsync(int id)
         {
@@ -122,8 +123,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(areas);
         }
 
-        [ProducesResponseType(200, Type = typeof(ItemDetails))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(ItemDetails), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         public async Task<ActionResult<ItemDetails>> GetByIdAsync(int id)
         {
@@ -136,8 +137,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result);
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Compartment>))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(IEnumerable<Compartment>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}/compartments")]
         public async Task<ActionResult<IEnumerable<Compartment>>> GetCompartmentsAsync(int id)
         {
@@ -146,8 +147,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(compartments);
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(typeof(IEnumerable<ItemDetails>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("unique/{propertyName}")]
         public async Task<ActionResult<object[]>> GetUniqueValuesAsync(
             string propertyName)
@@ -162,9 +163,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
-        [ProducesResponseType(200, Type = typeof(ItemDetails))]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(ItemDetails), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPatch]
         public async Task<ActionResult<ItemDetails>> UpdateAsync(ItemDetails model)
         {
@@ -187,9 +188,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result.Entity);
         }
 
-        [ProducesResponseType(201, Type = typeof(SchedulerRequest))]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(422)]
+        [ProducesResponseType(typeof(SchedulerRequest), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPost(nameof(Withdraw))]
         public async Task<IActionResult> Withdraw([FromBody] SchedulerRequest request)
         {
