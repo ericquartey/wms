@@ -133,12 +133,6 @@ namespace Ferretto.VW.MAS_DataLayer
                 false);
 
             this.logger?.LogInformation("DataLayer Constructor");
-
-            //var commandMessage = new CommandMessage();
-            //commandMessage.Source = MessageActor.DataLayer;
-            //commandMessage.Destination = MessageActor.DataLayer;
-
-            //this.LogMessages(commandMessage);
         }
 
         /// <summary>
