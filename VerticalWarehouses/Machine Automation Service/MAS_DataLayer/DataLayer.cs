@@ -88,8 +88,8 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
 
                 // TEMP Temporary commented
-                //this.LoadConfigurationValuesInfo(InfoFilesEnum.GeneralInfo);
-                //this.LoadConfigurationValuesInfo(InfoFilesEnum.InstallationInfo);
+                this.LoadConfigurationValuesInfo(InfoFilesEnum.GeneralInfo);
+                this.LoadConfigurationValuesInfo(InfoFilesEnum.InstallationInfo);
 
                 foreach (var configurationValue in initialContext.ConfigurationValues)
                 {
@@ -191,15 +191,11 @@ namespace Ferretto.VW.MAS_DataLayer
             // INFO Log events
             // INFO Command full events
             var commandFullEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            commandFullEvent.Subscribe(message => { this.LogMessages(message); },
-                ThreadOption.PublisherThread,
-                false);
+            commandFullEvent.Subscribe(message => { this.LogMessages(message); });
 
             // INFO Notification full events
             var notificationFullEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            notificationFullEvent.Subscribe(message => { this.LogMessages(message); },
-                ThreadOption.PublisherThread,
-                false);
+            notificationFullEvent.Subscribe(message => { this.LogMessages(message); });
         }
 
         #endregion
