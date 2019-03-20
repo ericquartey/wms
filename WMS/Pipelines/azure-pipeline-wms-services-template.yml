@@ -2,7 +2,7 @@ parameters:
     BuildConfiguration: 'debug'
     RestoreBuildProjects: '**/*.csproj'
     TestProjects: 'WMS/**/*.Tests.csproj'
-    TargetFramework: 'netcoreapp2.1'
+    TargetFramework: 'netcoreapp2.2'
 
 steps:
 

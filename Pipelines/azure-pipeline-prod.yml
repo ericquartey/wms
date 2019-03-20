@@ -27,7 +27,7 @@ steps:
 - template: '../WMS/Pipelines/azure-pipeline-wms-services-template.yml'
   parameters:
     BuildConfiguration: $(BuildConfiguration)
-    TargetFramework: 'netcoreapp2.1'
+    TargetFramework: 'netcoreapp2.2'
     RestoreBuildProjects: 'WMS/Data/**/*.csproj'
     TestProjects: 'WMS/Data/**/*.Tests.csproj'
 
