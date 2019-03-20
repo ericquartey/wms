@@ -249,7 +249,7 @@ namespace Ferretto.VW.MAS_DataLayer
                     switch (jsonElementCategory)
                     {
                         case ConfigurationCategoryValueEnum.GeneralInfoEnum:
-                            elementEnumerationID = (long)jsonElement.Value;
+                            elementEnumerationID = (long)jsonElement.Key;
                             jsonElementType = this.ConvertConfigurationValue((GeneralInfoEnum)elementEnumerationID);
                             break;
 
