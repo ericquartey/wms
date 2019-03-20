@@ -2,6 +2,7 @@
 using Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -23,7 +24,8 @@ namespace MAS_InverterDriverUnitTests.StateMachines.Calibrate
         public void IsNotNullSwitchOnState()
         {
             var parentStateMachineMock = new Mock<IInverterStateMachine>();
-            var switchOnState = new SwitchOnState(parentStateMachineMock.Object, Axis.Both);
+            var loggerMock = new Mock<ILogger>();
+            var switchOnState = new SwitchOnState(parentStateMachineMock.Object, Axis.Both, loggerMock.Object);
             var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue);
 
             Assert.IsNotNull(switchOnState);

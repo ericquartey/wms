@@ -2,6 +2,7 @@
 using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
@@ -12,6 +13,8 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         private readonly Axis axisToCalibrate;
 
+        private readonly ILogger logger;
+
         private Axis currentAxis;
 
         private bool disposed;
@@ -20,11 +23,12 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         #region Constructors
 
-        public CalibrateAxisStateMachine(Axis axisToCalibrate, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator)
+        public CalibrateAxisStateMachine(Axis axisToCalibrate, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
         {
             this.axisToCalibrate = axisToCalibrate;
             this.inverterCommandQueue = inverterCommandQueue;
             this.eventAggregator = eventAggregator;
+            this.logger = logger;
         }
 
         #endregion
@@ -40,6 +44,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         #region Methods
 
+        /// <inheritdoc />
         public override void Start()
         {
             switch (this.axisToCalibrate)
@@ -54,7 +59,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
                     break;
             }
 
-            this.CurrentState = new VoltageDisabledState(this, this.currentAxis);
+            this.CurrentState = new VoltageDisabledState(this, this.currentAxis, this.logger);
         }
 
         #endregion

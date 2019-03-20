@@ -3,6 +3,7 @@ using System.Threading;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 {
@@ -14,17 +15,21 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         private readonly Axis axisToCalibrate;
 
+        private readonly ILogger logger;
+
         private readonly ushort parameterValue;
 
         #endregion
 
         #region Constructors
 
-        public SwitchOnState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate)
+        public SwitchOnState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate, ILogger logger)
         {
-            Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - SwitchOnState:Ctor");
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
+            this.logger = logger;
+
+            this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - SwitchOnState:Ctor");
 
             switch (this.axisToCalibrate)
             {
@@ -47,21 +52,22 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         #region Methods
 
+        /// <inheritdoc />
         public override bool ProcessMessage(InverterMessage message)
         {
-            bool returnValue = false;
+            var returnValue = false;
 
-            //Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - SwitchOnState:ProcessMessage");
+            //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - SwitchOnState:ProcessMessage");
             if (message.IsError)
             {
-                this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate));
+                this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate, this.logger));
             }
 
             if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
             {
                 if ((message.UShortPayload & StatusWordValue) == StatusWordValue)
                 {
-                    this.parentStateMachine.ChangeState(new EnableOperationState(this.parentStateMachine, this.axisToCalibrate));
+                    this.parentStateMachine.ChangeState(new EnableOperationState(this.parentStateMachine, this.axisToCalibrate, this.logger));
                     returnValue = true;
                 }
             }
