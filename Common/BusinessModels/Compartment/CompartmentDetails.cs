@@ -177,9 +177,6 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.itemMeasureUnit, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentLastHandlingDate), ResourceType = typeof(BusinessObjects))]
-        public DateTime? LastHandlingDate { get; set; }
-
         [Display(Name = nameof(BusinessObjects.CompartmentLastPickDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastPickDate { get; set; }
 
