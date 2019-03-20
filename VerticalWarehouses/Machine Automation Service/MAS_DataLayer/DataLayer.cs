@@ -208,8 +208,28 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Methods
 
-        /// <inheritdoc/>
-        public void LoadConfigurationValuesInfo(InfoFilesEnum configurationValueRequest)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            this.stoppingToken = stoppingToken;
+
+            try
+            {
+                this.commadReceiveTask.Start();
+                this.notificationReceiveTask.Start();
+            }
+            catch (Exception ex)
+            {
+                throw new DataLayerException($"Exception: {ex.Message} while starting service threads", ex);
+            }
+        }
+
+        /// <summary>
+        /// This method is been invoked during the installation, to load the general_info.json file
+        /// </summary>
+        /// <param name="configurationValueRequest">Configuration parameters to load</param>
+        /// <exception cref="DataLayerExceptionEnum.UNKNOWN_INFO_FILE_EXCEPTION">Exception for a wrong info file input name</exception>
+        /// <exception cref="DataLayerExceptionEnum.UNDEFINED_TYPE_EXCEPTION">Exception for an unknown data type</exception>
+        private void LoadConfigurationValuesInfo(InfoFilesEnum configurationValueRequest)
         {
             string requestPath;
 
@@ -374,21 +394,6 @@ namespace Ferretto.VW.MAS_DataLayer
                             }
                     }
                 }
-            }
-        }
-
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            this.stoppingToken = stoppingToken;
-
-            try
-            {
-                this.commadReceiveTask.Start();
-                this.notificationReceiveTask.Start();
-            }
-            catch (Exception ex)
-            {
-                throw new DataLayerException($"Exception: {ex.Message} while starting service threads", ex);
             }
         }
 

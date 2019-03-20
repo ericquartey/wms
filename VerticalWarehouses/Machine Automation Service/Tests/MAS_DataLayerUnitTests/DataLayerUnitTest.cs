@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Ferretto.VW.Common_Utils;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
@@ -146,13 +145,11 @@ namespace MAS_DataLayerUnitTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InMemoryDataLayerException))]
-        public void TestErrorLoadFilesJson()
+        public void TestApplicationLogLogic()
         {
             // INFO Arrange - Empty
 
             // INFO Act
-            this.dataLayer.LoadConfigurationValuesInfo((InfoFilesEnum)100);
 
             // INFO Assert - Expects exception
         }
