@@ -1,5 +1,6 @@
 parameters:
-  BuildConfiguration: 'debug'
+  BuildConfiguration: 'Debug'
+  BuildProjectConfiguration: 'Debug'
   BuildPlatform: 'any cpu'
 
 
@@ -12,29 +13,30 @@ steps:
 
 
 - task: VSBuild@1
-  displayName: 'Build solution WMS.App'
+  displayName: 'Build solution WMS'
   inputs:
-    solution: 'WMS\WMS.App.sln'
+    solution: 'WMS\WMS.sln'
     platform: ${{ parameters.BuildPlatform }}
     configuration: ${{ parameters.BuildConfiguration }}
     msbuildArchitecture: x64
+    msbuildArgs: '/m'
 
 
 - task: VSTest@2
   displayName: 'Run Tests'
   inputs:
     testAssemblyVer2: |
-     **\${{ parameters.BuildConfiguration }}\**\*tests.dll
+     **\${{ parameters.BuildProjectConfiguration }}\**\*tests.dll
      !**\obj\**
     codeCoverageEnabled: true
     platform: ${{ parameters.BuildPlatform }}
-    configuration:  ${{ parameters.BuildConfiguration }}
+    configuration:  ${{ parameters.BuildProjectConfiguration }}
 
 
 - task: PublishSymbols@2
   displayName: 'Publish symbols path'
   inputs:
-    SearchPattern: 'WMS/App/App/bin/${{ parameters.BuildConfiguration }}/**/*.pdb'
+    SearchPattern: 'WMS/App/App/bin/${{ parameters.BuildProjectConfiguration }}/**/*.pdb'
     PublishSymbols: false
   continueOnError: true
 
@@ -42,15 +44,17 @@ steps:
   displayName: 'Copy Files to staging directory'
   inputs:
     SourceFolder: '$(system.defaultworkingdirectory)'
-    Contents: 'WMS/App/App/bin/${{ parameters.BuildConfiguration }}/**'
+    Contents: 'WMS/App/App/bin/${{ parameters.BuildProjectConfiguration }}/**'
     TargetFolder: '$(build.artifactstagingdirectory)'
 
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Desktop App'
   inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/WMS/App/App/bin/${{ parameters.BuildConfiguration }}/net471'
+    PathtoPublish: '$(build.artifactstagingdirectory)/WMS/App/App/bin/${{ parameters.BuildProjectConfiguration }}/net471'
     ArtifactName: 'desktop_app'
+    parallel: true
+    parallelCount: 8
 
 
 - task: PublishBuildArtifacts@1
@@ -58,3 +62,5 @@ steps:
   inputs:
     PathtoPublish: 'WMS/App/App'
     ArtifactName: 'on_premises_appconfig_transform'
+    parallel: true
+    parallelCount: 8

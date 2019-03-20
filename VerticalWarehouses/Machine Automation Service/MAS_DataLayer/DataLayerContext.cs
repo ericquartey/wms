@@ -43,8 +43,6 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public DbSet<RuntimeValue> RuntimeValues { get; set; }
 
-        public DbSet<StatusLog> StatusLogs { get; set; }
-
         #endregion
 
         #region Methods

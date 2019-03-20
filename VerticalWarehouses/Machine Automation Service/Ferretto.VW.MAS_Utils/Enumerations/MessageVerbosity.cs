@@ -4,6 +4,14 @@
     {
         Debug,
 
-        Info
+        Info,
+
+        Trace,
+
+        Warn,
+
+        Error,
+
+        Fatal
     }
 }

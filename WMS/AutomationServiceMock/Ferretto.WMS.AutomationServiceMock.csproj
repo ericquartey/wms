@@ -3,6 +3,8 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
     <LangVersion>latest</LangVersion>
     <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -30,6 +32,15 @@
   <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.Development.json">
+      <DependentUpon>appsettings.json</DependentUpon>
+    </None>
+    <None Update="appsettings.Production.json">
+      <DependentUpon>appsettings.json</DependentUpon>
+    </None>
+    <None Update="appsettings.Testing.json">
+      <DependentUpon>appsettings.json</DependentUpon>
     </None>
   </ItemGroup>
 

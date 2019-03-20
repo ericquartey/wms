@@ -19,7 +19,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
-    public partial class DataLayer : BackgroundService, IDataLayer, IWriteLogService
+    public partial class DataLayer : BackgroundService, IDataLayer
     {
         #region Fields
 
@@ -117,7 +117,26 @@ namespace Ferretto.VW.MAS_DataLayer
                 false,
                 message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
 
-            this.logger?.LogInformation("DataLayer Constructor");
+            // INFO Log events
+            // INFO Command full events
+            //var commandFullEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            //commandFullEvent.Subscribe(message => { this.LogMessages(message); },
+            //    ThreadOption.PublisherThread,
+            //    false);
+
+            // INFO Notification full events
+            //var notificationFullEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            //notificationFullEvent.Subscribe(message => { this.LogMessages(message); },
+            //    ThreadOption.PublisherThread,
+            //    false);
+
+            //this.logger?.LogInformation("DataLayer Constructor");
+
+            var commandMessage = new CommandMessage();
+            commandMessage.Source = MessageActor.DataLayer;
+            commandMessage.Destination = MessageActor.DataLayer;
+
+            this.LogMessages(commandMessage);
         }
 
         /// <summary>
@@ -167,6 +186,19 @@ namespace Ferretto.VW.MAS_DataLayer
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
+
+            // INFO Log events
+            // INFO Command full events
+            var commandFullEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            commandFullEvent.Subscribe(message => { this.LogMessages(message); },
+                ThreadOption.PublisherThread,
+                false);
+
+            // INFO Notification full events
+            var notificationFullEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            notificationFullEvent.Subscribe(message => { this.LogMessages(message); },
+                ThreadOption.PublisherThread,
+                false);
         }
 
         #endregion
@@ -348,44 +380,26 @@ namespace Ferretto.VW.MAS_DataLayer
             }
         }
 
-        public bool LogWriting(string logMessage)
+        public void LogMessages(CommandMessage message)
         {
-            var updateOperation = true;
-
-            try
+            if (message == null)
             {
-                this.inMemoryDataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
-                this.inMemoryDataContext.SaveChanges();
-            }
-            catch (DbUpdateException exception)
-            {
-                updateOperation = false;
+                throw new ArgumentNullException();
             }
 
-            return updateOperation;
+            //string output = JsonConvert.SerializeObject(message.Data);
         }
 
-        public void LogWriting(CommandMessage command_EventParameter)
+        public void LogMessages(NotificationMessage message)
         {
-            string logMessage;
-
-            switch (command_EventParameter.Type)
+            if (message == null)
             {
-                case MessageType.Homing:
-                    {
-                        logMessage = "Vertical Homing";
-                        break;
-                    }
-                default:
-                    {
-                        logMessage = "Unknown Action";
-
-                        break;
-                    }
+                throw new ArgumentNullException();
             }
 
-            this.inMemoryDataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
-            this.inMemoryDataContext.SaveChanges();
+            //string output = JsonConvert.SerializeObject(message.Data);
+
+            //this.inMemoryDataContext.LogEntries.Add(new LogEntry { LogMessage = logMessage });
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -416,8 +430,6 @@ namespace Ferretto.VW.MAS_DataLayer
                 {
                     return;
                 }
-
-                this.LogWriting(receivedMessage);
 
                 switch (receivedMessage.Type)
                 {

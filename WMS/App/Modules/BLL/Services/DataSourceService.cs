@@ -193,14 +193,14 @@ namespace Ferretto.WMS.App.Modules.BLL
                     "ItemListViewStatusWaiting",
                     Common.Resources.MasterData.ItemListStatusWaiting,
                     itemListProvider,
-                    $"[ItemListStatus] == '{ItemListStatus.Waiting}' {typeFilter}"));
+                    $"[Status] == '{ItemListStatus.Waiting}' {typeFilter}"));
 
             listFilters.Add(
                 new PagedDataSource<ItemList, int>(
                     "ItemListViewStatusCompleted",
                     Common.Resources.MasterData.ItemListStatusCompleted,
                     itemListProvider,
-                    $"[ItemListStatus] == '{ItemListStatus.Completed}' {typeFilter}"));
+                    $"[Status] == '{ItemListStatus.Completed}' {typeFilter}"));
 
             return listFilters.Cast<IFilterDataSource<TModel, TKey>>();
         }

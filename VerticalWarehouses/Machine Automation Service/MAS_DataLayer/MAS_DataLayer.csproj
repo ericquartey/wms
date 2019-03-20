@@ -43,4 +43,8 @@
     <ProjectReference Include="..\Ferretto.VW.MAS_Utils\Ferretto.VW.MAS_Utils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
