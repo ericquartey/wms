@@ -51,7 +51,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         public override bool ProcessMessage(InverterMessage message)
         {
-            bool returnValue = false;
+            var returnValue = false;
 
             if (message.IsError)
             {
