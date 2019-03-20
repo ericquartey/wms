@@ -61,7 +61,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             if (!result.Success)
             {
-                return this.BadRequest();
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = result.Description
+                });
             }
 
             return this.Created(this.Request.GetUri(), result.Entity);
@@ -91,7 +95,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = e.Message
+                });
             }
         }
 
@@ -109,7 +117,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = e.Message
+                });
             }
         }
 
@@ -131,7 +143,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.itemProvider.GetByIdAsync(id);
             if (result == null)
             {
-                return this.NotFound();
+                return this.NotFound(new ProblemDetails
+                {
+                    Status = StatusCodes.Status404NotFound
+                });
             }
 
             return this.Ok(result);
@@ -159,7 +174,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (InvalidOperationException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = e.Message
+                });
             }
         }
 
@@ -169,20 +188,23 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpPatch]
         public async Task<ActionResult<ItemDetails>> UpdateAsync(ItemDetails model)
         {
-            if (model == null)
-            {
-                return this.BadRequest();
-            }
-
             var result = await this.itemProvider.UpdateAsync(model);
             if (!result.Success)
             {
                 if (result is NotFoundOperationResult<ItemDetails>)
                 {
-                    return this.NotFound();
+                    return this.NotFound(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status400BadRequest,
+                        Detail = result.Description
+                    });
                 }
 
-                return this.BadRequest();
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = result.Description
+                });
             }
 
             return this.Ok(result.Entity);
@@ -194,15 +216,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpPost(nameof(Withdraw))]
         public async Task<IActionResult> Withdraw([FromBody] SchedulerRequest request)
         {
-            if (request == null)
-            {
-                return this.BadRequest();
-            }
-
             var acceptedRequest = await this.schedulerService.WithdrawItemAsync(request);
             if (acceptedRequest == null)
             {
-                return this.UnprocessableEntity(this.ModelState);
+                return this.UnprocessableEntity(new ProblemDetails
+                {
+                    Status = StatusCodes.Status422UnprocessableEntity
+                });
             }
 
             return this.CreatedAtAction(nameof(this.Withdraw), new { id = acceptedRequest.Id }, acceptedRequest);

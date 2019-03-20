@@ -49,7 +49,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             if (!result.Success)
             {
-                return this.BadRequest();
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = result.Description
+                });
             }
 
             return this.Created(this.Request.GetUri(), result.Entity);
@@ -64,7 +68,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             if (!result.Success)
             {
-                return this.BadRequest();
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = result.Description
+                });
             }
 
             return this.Created(this.Request.GetUri(), result.Entity);
@@ -83,11 +91,19 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 if (result is UnprocessableEntityOperationResult<CompartmentDetails>)
                 {
-                    return this.UnprocessableEntity();
+                    return this.UnprocessableEntity(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status422UnprocessableEntity,
+                        Detail = result.Description
+                    });
                 }
                 else
                 {
-                    return this.NotFound();
+                    return this.NotFound(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status404NotFound,
+                        Detail = result.Description
+                    });
                 }
             }
 
@@ -118,7 +134,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = e.Message
+                });
             }
         }
 
@@ -135,7 +155,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = e.Message
+                });
             }
         }
 
@@ -155,7 +179,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.compartmentProvider.GetByIdAsync(id);
             if (result == null)
             {
-                return this.NotFound();
+                return this.NotFound(new ProblemDetails
+                {
+                    Status = StatusCodes.Status404NotFound
+                });
             }
 
             return this.Ok(result);
@@ -193,20 +220,23 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpPatch]
         public async Task<ActionResult<CompartmentDetails>> UpdateAsync(CompartmentDetails model)
         {
-            if (model == null)
-            {
-                return this.BadRequest();
-            }
-
             var result = await this.compartmentProvider.UpdateAsync(model);
             if (!result.Success)
             {
                 if (result is NotFoundOperationResult<CompartmentDetails>)
                 {
-                    return this.NotFound();
+                    return this.NotFound(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status404NotFound,
+                        Detail = result.Description
+                    });
                 }
 
-                return this.BadRequest();
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = result.Description
+                });
             }
 
             return this.Ok(result.Entity);

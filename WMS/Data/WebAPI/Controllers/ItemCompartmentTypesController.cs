@@ -41,7 +41,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             if (!result.Success)
             {
-                return this.BadRequest();
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = result.Description
+                });
             }
 
             return this.Created(this.Request.GetUri(), result.Entity);

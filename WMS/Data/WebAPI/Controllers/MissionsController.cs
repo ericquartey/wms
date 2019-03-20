@@ -69,17 +69,20 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.schedulerService.CompleteMissionAsync(id);
             if (result is NotFoundOperationResult<Scheduler.Core.Models.Mission>)
             {
-                return this.NotFound(id);
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = id.ToString(),
+                    Status = StatusCodes.Status404NotFound,
+                });
             }
 
             if (result is Scheduler.Core.Models.BadRequestOperationResult<Scheduler.Core.Models.Mission>)
             {
-                return this.BadRequest(
-                    new ProblemDetails
-                    {
-                        Status = StatusCodes.Status400BadRequest,
-                        Detail = result.Description
-                    });
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = result.Description
+                });
             }
 
             await this.schedulerHubContext.Clients.All.MissionUpdated(id);
@@ -96,11 +99,19 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.schedulerService.ExecuteMissionAsync(id);
             if (result is NotFoundOperationResult<Scheduler.Core.Models.Mission>)
             {
-                return this.NotFound(id);
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = id.ToString(),
+                    Status = StatusCodes.Status404NotFound,
+                });
             }
             else if (result is Scheduler.Core.Models.BadRequestOperationResult<Scheduler.Core.Models.Mission>)
             {
-                return this.BadRequest(result.Description);
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = result.Description
+                });
             }
 
             await this.schedulerHubContext.Clients.All.MissionUpdated(id);
@@ -132,7 +143,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = e.Message
+                });
             }
         }
 
@@ -150,7 +165,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = e.Message
+                });
             }
         }
 
@@ -164,7 +183,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 var message = $"No entity with the specified id={id} exists.";
                 this.logger.LogWarning(message);
-                return this.NotFound(message);
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = message,
+                    Status = StatusCodes.Status404NotFound
+                });
             }
 
             return this.Ok(result);
@@ -182,7 +205,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (InvalidOperationException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = e.Message
+                });
             }
         }
 

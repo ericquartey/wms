@@ -49,10 +49,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<LoadingUnitCreating>> CreateAsync(LoadingUnitCreating model)
         {
             var result = await this.loadingUnitProvider.CreateAsync(model);
-
             if (!result.Success)
             {
-                return this.BadRequest();
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = result.Description
+                });
             }
 
             return this.Created(this.Request.GetUri(), result.Entity);
@@ -82,7 +85,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = e.Message
+                });
             }
         }
 
@@ -100,7 +107,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = e.Message
+                });
             }
         }
 
@@ -112,7 +123,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.loadingUnitProvider.GetByIdAsync(id);
             if (result == null)
             {
-                return this.NotFound();
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = id.ToString(),
+                    Status = StatusCodes.Status404NotFound,
+                });
             }
 
             return this.Ok(result);
@@ -134,14 +149,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<LoadingUnitSize>> GetSizeByTypeIdAsync(int id)
         {
             var info = await this.loadingUnitProvider.GetSizeByTypeIdAsync(id);
-            if (info != null)
+            if (info == null)
             {
-                return this.Ok(info);
+                return this.NotFound(new ProblemDetails
+                {
+                    Status = StatusCodes.Status404NotFound
+                });
             }
-            else
-            {
-                return this.NotFound(info);
-            }
+
+            return this.Ok(info);
         }
 
         [ProducesResponseType(typeof(IEnumerable<object>), StatusCodes.Status200OK)]
@@ -156,7 +172,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (InvalidOperationException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = e.Message
+                });
             }
         }
 
@@ -166,20 +186,23 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpPatch]
         public async Task<ActionResult<LoadingUnitDetails>> UpdateAsync(LoadingUnitDetails model)
         {
-            if (model == null)
-            {
-                return this.BadRequest();
-            }
-
             var result = await this.loadingUnitProvider.UpdateAsync(model);
             if (!result.Success)
             {
                 if (result is NotFoundOperationResult<LoadingUnitDetails>)
                 {
-                    return this.NotFound();
+                    return this.NotFound(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status404NotFound,
+                        Detail = result.Description
+                    });
                 }
 
-                return this.BadRequest();
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = result.Description
+                });
             }
 
             return this.Ok(result.Entity);

@@ -62,7 +62,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             if (!result.Success)
             {
-                return this.BadRequest();
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = result.Description
+                });
             }
 
             return this.Created(this.Request.GetUri(), result.Entity);
@@ -74,20 +78,18 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<ActionResult> ExecuteAsync(Scheduler.Core.Models.ListExecutionRequest request)
         {
-            if (request == null)
-            {
-                return this.BadRequest();
-            }
-
             var acceptedRequests = await this.schedulerService.ExecuteListAsync(request);
             if (acceptedRequests == null)
             {
-                this.logger.LogWarning($"Request of execution for list (id={request.ListId}) could not be processed.");
+                this.logger.LogWarning($"Request of execution for list (id={request?.ListId}) could not be processed.");
 
-                return this.UnprocessableEntity(this.ModelState);
+                return this.UnprocessableEntity(new ProblemDetails
+                {
+                    Status = StatusCodes.Status422UnprocessableEntity
+                });
             }
 
-            this.logger.LogInformation($"Request of execution for list (id={request.ListId}) was accepted.");
+            this.logger.LogInformation($"Request of execution for list (id={request?.ListId}) was accepted.");
 
             return this.Ok();
         }
@@ -114,7 +116,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = e.Message
+                });
             }
         }
 
@@ -129,7 +135,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = e.Message
+                });
             }
         }
 
@@ -141,7 +151,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.itemListProvider.GetByIdAsync(id);
             if (result == null)
             {
-                return this.NotFound();
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = id.ToString(),
+                    Status = StatusCodes.Status404NotFound,
+                });
             }
 
             return this.Ok(result);
@@ -155,7 +169,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.itemListRowProvider.GetByItemListIdAsync(id);
             if (result == null)
             {
-                return this.NotFound();
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = id.ToString(),
+                    Status = StatusCodes.Status404NotFound,
+                });
             }
 
             return this.Ok(result);
@@ -173,7 +191,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (InvalidOperationException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = e.Message
+                });
             }
         }
 
@@ -183,20 +205,23 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpPatch]
         public async Task<ActionResult<ItemListDetails>> UpdateAsync(ItemListDetails model)
         {
-            if (model == null)
-            {
-                return this.BadRequest();
-            }
-
             var result = await this.itemListProvider.UpdateAsync(model);
             if (!result.Success)
             {
                 if (result is NotFoundOperationResult<ItemListDetails>)
                 {
-                    return this.NotFound();
+                    return this.NotFound(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status404NotFound,
+                        Detail = result.Description
+                    });
                 }
 
-                return this.BadRequest();
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = result.Description
+                });
             }
 
             return this.Ok(result.Entity);
