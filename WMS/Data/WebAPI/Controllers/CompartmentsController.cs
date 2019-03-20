@@ -168,8 +168,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(await this.compartmentProvider.GetMaxCapacityAsync(width, height, itemId));
         }
 
-        [ProducesResponseType(400)]
         [ProducesResponseType(typeof(IEnumerable<object>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("unique/{propertyName}")]
         public async Task<ActionResult<object[]>> GetUniqueValuesAsync(string propertyName)
         {
