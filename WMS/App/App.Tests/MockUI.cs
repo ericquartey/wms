@@ -19,14 +19,7 @@ namespace Ferretto.WMS.App.Tests
 
         private const string Model = "Model";
 
-#pragma warning disable SA1311 // Static readonly fields must begin with upper-case letter
-#pragma warning disable S1144 // Unused private types or members should be removed
-#pragma warning disable CA1823 // Unused field application
-        private static readonly Application application = new Application { ShutdownMode = ShutdownMode.OnMainWindowClose };
-
-#pragma warning restore S1144 // Unused private types or members should be removed
-
-#pragma warning restore SA1311 // Static readonly fields must begin with upper-case letter
+        private static readonly Application MockedApplication = new Application { ShutdownMode = ShutdownMode.OnMainWindowClose };
 
         private static readonly Queue<ViewInfo> ViewsToProcess = new Queue<ViewInfo>();
 
@@ -67,8 +60,8 @@ namespace Ferretto.WMS.App.Tests
 
         public void WaitUiComplete()
         {
-            application.MainWindow.Dispatcher.BeginInvoke(new Action(() => this.AppearOnLoaded(ViewsToProcess)), DispatcherPriority.ContextIdle);
-            application.MainWindow.ShowDialog();
+            MockedApplication.MainWindow.Dispatcher.BeginInvoke(new Action(() => this.AppearOnLoaded(ViewsToProcess)), DispatcherPriority.ContextIdle);
+            MockedApplication.MainWindow.ShowDialog();
         }
 
         public virtual void CheckViewModel(INavigableViewModel viewModel)
@@ -124,7 +117,7 @@ namespace Ferretto.WMS.App.Tests
             if (view != null)
             {
                 var viewModel = view.DataContext as INavigableViewModel;
-                Assert.IsTrue(viewModel != null, $"Failed to initialize ViewModel om v   iew {view.MapId}");
+                Assert.IsTrue(viewModel != null, $"Failed to initialize ViewModel on view {view.MapId}");
                 this.CheckViewModel(viewModel);
                 view.Disappear();
             }
@@ -145,7 +138,7 @@ namespace Ferretto.WMS.App.Tests
             var dictionary = new ResourceDictionary();
             var resourceUri = $"pack://application:,,,/{Common.Utils.Common.ASSEMBLY_THEMENAME};Component/Themes/{Common.Utils.Common.THEMERESOURCEDICTIONARY}.xaml";
             dictionary.Source = new Uri(resourceUri, UriKind.Absolute);
-            Application.Current.Resources.MergedDictionaries.Add(dictionary);
+            MockedApplication.Resources.MergedDictionaries.Add(dictionary);
 
             this.navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
             this.navigationService.IsUnitTest = true;
