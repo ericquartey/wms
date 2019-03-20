@@ -369,75 +369,75 @@ namespace Ferretto.VW.MAS_DataLayer
         public ConfigurationCategoryValueEnum GetJSonElementConfigurationCategory(KeyValuePair<string, JToken> jsonElement)
         {
             ConfigurationCategoryValueEnum returnValue;
-            if (Enum.GetNames(typeof(GeneralInfoEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
+            if (Enum.GetNames(typeof(GeneralInfoEnum)).FirstOrDefault(x => jsonElement.Key.ToString() == x) != null)
             {
                 returnValue = ConfigurationCategoryValueEnum.GeneralInfoEnum;
             }
-            else if (Enum.GetNames(typeof(SetupNetworkEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
+            else if (Enum.GetNames(typeof(SetupNetworkEnum)).FirstOrDefault(x => jsonElement.Key.ToString() == x) != null)
             {
                 returnValue = ConfigurationCategoryValueEnum.SetupNetworkEnum;
             }
-            else if (Enum.GetNames(typeof(SetupStatusEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
+            else if (Enum.GetNames(typeof(SetupStatusEnum)).FirstOrDefault(x => jsonElement.Key.ToString() == x) != null)
             {
                 returnValue = ConfigurationCategoryValueEnum.SetupStatusEnum;
             }
-            else if (Enum.GetNames(typeof(VerticalAxisEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
+            else if (Enum.GetNames(typeof(VerticalAxisEnum)).FirstOrDefault(x => jsonElement.Key.ToString() == x) != null)
             {
                 returnValue = ConfigurationCategoryValueEnum.VerticalAxisEnum;
             }
-            else if (Enum.GetNames(typeof(HorizontalAxisEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
+            else if (Enum.GetNames(typeof(HorizontalAxisEnum)).FirstOrDefault(x => jsonElement.Key.ToString() == x) != null)
             {
                 returnValue = ConfigurationCategoryValueEnum.HorizontalAxisEnum;
             }
-            else if (Enum.GetNames(typeof(HorizontalMovementForwardProfileEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
+            else if (Enum.GetNames(typeof(HorizontalMovementForwardProfileEnum)).FirstOrDefault(x => jsonElement.Key.ToString() == x) != null)
             {
                 returnValue = ConfigurationCategoryValueEnum.HorizontalMovementForwardProfileEnum;
             }
-            else if (Enum.GetNames(typeof(HorizontalMovementBackwardProfileEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
+            else if (Enum.GetNames(typeof(HorizontalMovementBackwardProfileEnum)).FirstOrDefault(x => jsonElement.Key.ToString() == x) != null)
             {
                 returnValue = ConfigurationCategoryValueEnum.HorizontalMovementBackwardProfileEnum;
             }
-            else if (Enum.GetNames(typeof(VerticalManualMovementsEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
+            else if (Enum.GetNames(typeof(VerticalManualMovementsEnum)).FirstOrDefault(x => jsonElement.Key.ToString() == x) != null)
             {
                 returnValue = ConfigurationCategoryValueEnum.VerticalManualMovementsEnum;
             }
-            else if (Enum.GetNames(typeof(HorizontalManualMovementsEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
+            else if (Enum.GetNames(typeof(HorizontalManualMovementsEnum)).FirstOrDefault(x => jsonElement.Key.ToString() == x) != null)
             {
                 returnValue = ConfigurationCategoryValueEnum.HorizontalManualMovementsEnum;
             }
-            else if (Enum.GetNames(typeof(BeltBurnishingEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
+            else if (Enum.GetNames(typeof(BeltBurnishingEnum)).FirstOrDefault(x => jsonElement.Key.ToString() == x) != null)
             {
                 returnValue = ConfigurationCategoryValueEnum.BeltBurnishingEnum;
             }
-            else if (Enum.GetNames(typeof(ResolutionCalibrationEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
+            else if (Enum.GetNames(typeof(ResolutionCalibrationEnum)).FirstOrDefault(x => jsonElement.Key.ToString() == x) != null)
             {
                 returnValue = ConfigurationCategoryValueEnum.ResolutionCalibrationEnum;
             }
-            else if (Enum.GetNames(typeof(OffsetCalibrationEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
+            else if (Enum.GetNames(typeof(OffsetCalibrationEnum)).FirstOrDefault(x => jsonElement.Key.ToString() == x) != null)
             {
                 returnValue = ConfigurationCategoryValueEnum.OffsetCalibrationEnum;
             }
-            else if (Enum.GetNames(typeof(CellControlEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
+            else if (Enum.GetNames(typeof(CellControlEnum)).FirstOrDefault(x => jsonElement.Key.ToString() == x) != null)
             {
                 returnValue = ConfigurationCategoryValueEnum.CellControlEnum;
             }
-            else if (Enum.GetNames(typeof(PanelControlEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
+            else if (Enum.GetNames(typeof(PanelControlEnum)).FirstOrDefault(x => jsonElement.Key.ToString() == x) != null)
             {
                 returnValue = ConfigurationCategoryValueEnum.PanelControlEnum;
             }
-            else if (Enum.GetNames(typeof(ShutterHeightControlEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
+            else if (Enum.GetNames(typeof(ShutterHeightControlEnum)).FirstOrDefault(x => jsonElement.Key.ToString() == x) != null)
             {
                 returnValue = ConfigurationCategoryValueEnum.ShutterHeightControlEnum;
             }
-            else if (Enum.GetNames(typeof(WeightControlEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
+            else if (Enum.GetNames(typeof(WeightControlEnum)).FirstOrDefault(x => jsonElement.Key.ToString() == x) != null)
             {
                 returnValue = ConfigurationCategoryValueEnum.WeightControlEnum;
             }
-            else if (Enum.GetNames(typeof(BayPositionControlEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
+            else if (Enum.GetNames(typeof(BayPositionControlEnum)).FirstOrDefault(x => jsonElement.Key.ToString() == x) != null)
             {
                 returnValue = ConfigurationCategoryValueEnum.BayPositionControlEnum;
             }
-            else if (Enum.GetNames(typeof(LoadFirstDrawerEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
+            else if (Enum.GetNames(typeof(LoadFirstDrawerEnum)).FirstOrDefault(x => jsonElement.Key.ToString() == x) != null)
             {
                 returnValue = ConfigurationCategoryValueEnum.LoadFirstDrawerEnum;
             }
