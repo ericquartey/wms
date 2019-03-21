@@ -28,13 +28,13 @@ namespace Ferretto.Common.BusinessModels
 
         private int? handlingParametersCorrection;
 
-        private int height;
+        private double height;
 
         private int inCycleCount;
 
         private bool isCellPairingFixed;
 
-        private int length;
+        private double length;
 
         private string loadingUnitStatusId;
 
@@ -46,7 +46,7 @@ namespace Ferretto.Common.BusinessModels
 
         private int weight;
 
-        private int width;
+        private double width;
 
         #endregion
 
@@ -152,7 +152,7 @@ namespace Ferretto.Common.BusinessModels
 
         [Required]
         [Display(Name = nameof(BusinessObjects.LoadingUnitHeight), ResourceType = typeof(BusinessObjects))]
-        public int Height
+        public double Height
         {
             get => this.height;
             set
@@ -198,7 +198,7 @@ namespace Ferretto.Common.BusinessModels
         public DateTime? LastStoreDate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitLength), ResourceType = typeof(BusinessObjects))]
-        public int Length
+        public double Length
         {
             get => this.length;
             set => this.SetIfStrictlyPositive(ref this.length, value);
@@ -292,7 +292,7 @@ namespace Ferretto.Common.BusinessModels
         }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitWidth), ResourceType = typeof(BusinessObjects))]
-        public int Width
+        public double Width
         {
             get => this.width;
             set => this.SetIfStrictlyPositive(ref this.width, value);

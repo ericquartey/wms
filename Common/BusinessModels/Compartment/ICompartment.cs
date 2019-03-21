@@ -6,15 +6,15 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Properties
 
-        int? Height { get; set; }
+        double? Height { get; set; }
 
         int LoadingUnitId { get; set; }
 
-        int? Width { get; set; }
+        double? Width { get; set; }
 
-        int? XPosition { get; set; }
+        double? XPosition { get; set; }
 
-        int? YPosition { get; set; }
+        double? YPosition { get; set; }
 
         #endregion
     }

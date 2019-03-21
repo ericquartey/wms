@@ -21,7 +21,7 @@ namespace Ferretto.Common.BusinessModels
 
         private int? fifoTime;
 
-        private int? height;
+        private double? height;
 
         private bool isItemPairingFixed;
 
@@ -61,11 +61,11 @@ namespace Ferretto.Common.BusinessModels
 
         private string sub2;
 
-        private int? width;
+        private double? width;
 
-        private int? xPosition;
+        private double? xPosition;
 
-        private int? yPosition;
+        private double? yPosition;
 
         #endregion
 
@@ -127,7 +127,7 @@ namespace Ferretto.Common.BusinessModels
 
         [Required]
         [Display(Name = nameof(BusinessObjects.CompartmentHeight), ResourceType = typeof(BusinessObjects))]
-        public int? Height
+        public double? Height
         {
             get => this.height;
 
@@ -303,7 +303,7 @@ namespace Ferretto.Common.BusinessModels
 
         [Required]
         [Display(Name = nameof(BusinessObjects.CompartmentWidth), ResourceType = typeof(BusinessObjects))]
-        public int? Width
+        public double? Width
         {
             get => this.width;
             set
@@ -317,7 +317,7 @@ namespace Ferretto.Common.BusinessModels
 
         [Required]
         [Display(Name = nameof(BusinessObjects.CompartmentXPosition), ResourceType = typeof(BusinessObjects))]
-        public int? XPosition
+        public double? XPosition
         {
             get => this.xPosition;
             set
@@ -331,7 +331,7 @@ namespace Ferretto.Common.BusinessModels
 
         [Required]
         [Display(Name = nameof(BusinessObjects.CompartmentYPosition), ResourceType = typeof(BusinessObjects))]
-        public int? YPosition
+        public double? YPosition
         {
             get => this.yPosition;
             set

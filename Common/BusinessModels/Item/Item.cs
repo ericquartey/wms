@@ -14,13 +14,13 @@ namespace Ferretto.Common.BusinessModels
 
         private int? fifoTimeStore;
 
-        private int? height;
+        private double? height;
 
         private string image;
 
         private int? inventoryTolerance;
 
-        private int? length;
+        private double? length;
 
         private int? pickTolerance;
 
@@ -36,7 +36,7 @@ namespace Ferretto.Common.BusinessModels
 
         private int totalStock;
 
-        private int? width;
+        private double? width;
 
         #endregion
 
@@ -76,7 +76,7 @@ namespace Ferretto.Common.BusinessModels
         }
 
         [Display(Name = nameof(BusinessObjects.ItemHeight), ResourceType = typeof(BusinessObjects))]
-        public int? Height
+        public double? Height
         {
             get => this.height;
             set => this.SetProperty(ref this.height, value);
@@ -111,7 +111,7 @@ namespace Ferretto.Common.BusinessModels
         public DateTime? LastStoreDate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemLength), ResourceType = typeof(BusinessObjects))]
-        public int? Length
+        public double? Length
         {
             get => this.length;
             set => this.SetProperty(ref this.length, value);
@@ -176,7 +176,7 @@ namespace Ferretto.Common.BusinessModels
         }
 
         [Display(Name = nameof(BusinessObjects.ItemWidth), ResourceType = typeof(BusinessObjects))]
-        public int? Width
+        public double? Width
         {
             get => this.width;
             set => this.SetProperty(ref this.width, value);

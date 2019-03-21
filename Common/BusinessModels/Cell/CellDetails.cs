@@ -28,11 +28,11 @@ namespace Ferretto.Common.BusinessModels
 
         private Side side;
 
-        private int? xCoordinate;
+        private double? xCoordinate;
 
-        private int? yCoordinate;
+        private double? yCoordinate;
 
-        private int? zCoordinate;
+        private double? zCoordinate;
 
         #endregion
 
@@ -122,24 +122,24 @@ namespace Ferretto.Common.BusinessModels
         public IEnumerable<Enumeration> SideChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellXCoordinate), ResourceType = typeof(BusinessObjects))]
-        public int? XCoordinate
+        public double? XCoordinate
         {
             get => this.xCoordinate;
-            set => this.SetIfPositive(ref this.xCoordinate, value);
+            set => this.SetProperty(ref this.xCoordinate, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CellYCoordinate), ResourceType = typeof(BusinessObjects))]
-        public int? YCoordinate
+        public double? YCoordinate
         {
             get => this.yCoordinate;
-            set => this.SetIfPositive(ref this.yCoordinate, value);
+            set => this.SetProperty(ref this.yCoordinate, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CellZCoordinate), ResourceType = typeof(BusinessObjects))]
-        public int? ZCoordinate
+        public double? ZCoordinate
         {
             get => this.zCoordinate;
-            set => this.SetIfPositive(ref this.zCoordinate, value);
+            set => this.SetProperty(ref this.zCoordinate, value);
         }
 
         #endregion
