@@ -78,10 +78,10 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             modelBuilder.Entity<ConfigurationValue>().HasKey(cv => new { cv.CategoryName, cv.VarName });
 
-            modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = (long)SetupNetworkEnum.Inverter1, VarType = DataTypeEnum.IPAddressType, VarValue = "169.254.231.248" });
-            modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = (long)SetupNetworkEnum.Inverter1Port, VarType = DataTypeEnum.integerType, VarValue = "17221" });
-            modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = (long)SetupNetworkEnum.IOExpansion1, VarType = DataTypeEnum.IPAddressType, VarValue = "169.254.231.10" });
-            modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = (long)SetupNetworkEnum.IOExpansion1Port, VarType = DataTypeEnum.integerType, VarValue = "502" });
+            modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = (long)SetupNetwork.Inverter1, VarType = DataType.IPAddressType, VarValue = "169.254.231.248" });
+            modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = (long)SetupNetwork.Inverter1Port, VarType = DataType.Integer, VarValue = "17221" });
+            modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = (long)SetupNetwork.IOExpansion1, VarType = DataType.IPAddressType, VarValue = "169.254.231.10" });
+            modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = (long)SetupNetwork.IOExpansion1Port, VarType = DataType.Integer, VarValue = "502" });
         }
 
         #endregion

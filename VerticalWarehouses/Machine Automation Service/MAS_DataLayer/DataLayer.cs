@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils;
@@ -9,6 +10,7 @@ using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
+using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -46,7 +48,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Constructors
 
-        public DataLayer(string connectionString, DataLayerContext inMemoryDataContext, IEventAggregator eventAggregator, IOptions<FilesInfo> filesInfo, ILogger<DataLayer> logger)
+        public DataLayer(DataLayerConfiguration dataLayerConfiguration, DataLayerContext inMemoryDataContext, IEventAggregator eventAggregator, IOptions<FilesInfo> filesInfo, ILogger<DataLayer> logger)
         {
             if (inMemoryDataContext == null)
             {
@@ -77,15 +79,14 @@ namespace Ferretto.VW.MAS_DataLayer
             this.logger = logger;
 
             using (var initialContext = new DataLayerContext(
-                new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(connectionString).Options))
+                new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(dataLayerConfiguration.ConnectionString).Options))
             {
                 initialContext.Database.Migrate();
 
                 if (!initialContext.ConfigurationValues.Any())
                 {
-                    //this.LoadConfigurationValuesInfo(InfoFilesEnum.GeneralInfo);
-                    //this.LoadConfigurationValuesInfo(InfoFilesEnum.InstallationInfo);
                 }
+                this.LoadConfigurationValuesInfo(dataLayerConfiguration.ConfigurationFilePath);
 
                 // TEMP Temporary commented
                 this.LoadConfigurationValuesInfo(InfoFilesEnum.GeneralInfo);
@@ -194,12 +195,6 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #endregion
 
-        #region Properties
-
-        public IConfiguration Configuration { get; }
-
-        #endregion
-
         #region Methods
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -225,167 +220,202 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <exception cref="DataLayerExceptionEnum.UNDEFINED_TYPE_EXCEPTION">Exception for an unknown data type</exception>
         private void LoadConfigurationValuesInfo(InfoFilesEnum configurationValueRequest)
         {
-            string requestPath;
-
-            switch (configurationValueRequest)
-            {
-                case InfoFilesEnum.GeneralInfo:
-                    {
-                        requestPath = this.filesInfo.Value.GeneralInfoPath;
-                        break;
-                    }
-                case InfoFilesEnum.InstallationInfo:
-                    {
-                        requestPath = this.filesInfo.Value.InstallationInfoPath;
-                        break;
-                    }
-                default:
-                    {
-                        throw new InMemoryDataLayerException(DataLayerExceptionEnum.UNKNOWN_INFO_FILE_EXCEPTION);
-                    }
-            }
-
-            using (var streamReader = new StreamReader(requestPath))
+            using (var streamReader = new StreamReader(configurationFilePath))
             {
                 var json = streamReader.ReadToEnd();
                 var jsonObject = JObject.Parse(json);
 
-                DataTypeEnum jsonElementType;
-                ConfigurationCategoryValueEnum jsonElementCategory;
-
-                foreach (var jsonElement in jsonObject)
+                foreach (var jsonCategory in jsonObject)
                 {
-                    jsonElementCategory = this.GetJSonElementConfigurationCategory(jsonElement);
-                    long elementEnumerationID;
-                    switch (jsonElementCategory)
+                    if (!Enum.TryParse(jsonCategory.Key, false, out ConfigurationCategory jsonElementCategory))
                     {
-                        case ConfigurationCategoryValueEnum.GeneralInfoEnum:
-                            elementEnumerationID = (long)jsonElement.Value;
-                            jsonElementType = this.ConvertConfigurationValue((GeneralInfoEnum)elementEnumerationID);
-                            break;
-
-                        case ConfigurationCategoryValueEnum.SetupNetworkEnum:
-                            elementEnumerationID = (long)jsonElement.Value;
-                            jsonElementType = this.ConvertConfigurationValue((SetupNetworkEnum)elementEnumerationID);
-                            break;
-
-                        case ConfigurationCategoryValueEnum.SetupStatusEnum:
-                            elementEnumerationID = (long)jsonElement.Value;
-                            jsonElementType = this.ConvertConfigurationValue((SetupStatusEnum)elementEnumerationID);
-                            break;
-
-                        case ConfigurationCategoryValueEnum.VerticalAxisEnum:
-                            elementEnumerationID = (long)jsonElement.Value;
-                            jsonElementType = this.ConvertConfigurationValue((VerticalAxisEnum)elementEnumerationID);
-                            break;
-
-                        case ConfigurationCategoryValueEnum.HorizontalAxisEnum:
-                            elementEnumerationID = (long)jsonElement.Value;
-                            jsonElementType = this.ConvertConfigurationValue((HorizontalAxisEnum)elementEnumerationID);
-                            break;
-
-                        case ConfigurationCategoryValueEnum.HorizontalMovementForwardProfileEnum:
-                            elementEnumerationID = (long)jsonElement.Value;
-                            jsonElementType = this.ConvertConfigurationValue((HorizontalMovementForwardProfileEnum)elementEnumerationID);
-                            break;
-
-                        case ConfigurationCategoryValueEnum.HorizontalMovementBackwardProfileEnum:
-                            elementEnumerationID = (long)jsonElement.Value;
-                            jsonElementType = this.ConvertConfigurationValue((HorizontalMovementBackwardProfileEnum)elementEnumerationID);
-                            break;
-
-                        case ConfigurationCategoryValueEnum.VerticalManualMovementsEnum:
-                            elementEnumerationID = (long)jsonElement.Value;
-                            jsonElementType = this.ConvertConfigurationValue((VerticalManualMovementsEnum)elementEnumerationID);
-                            break;
-
-                        case ConfigurationCategoryValueEnum.HorizontalManualMovementsEnum:
-                            elementEnumerationID = (long)jsonElement.Value;
-                            jsonElementType = this.ConvertConfigurationValue((HorizontalManualMovementsEnum)elementEnumerationID);
-                            break;
-
-                        case ConfigurationCategoryValueEnum.BeltBurnishingEnum:
-                            elementEnumerationID = (long)jsonElement.Value;
-                            jsonElementType = this.ConvertConfigurationValue((BeltBurnishingEnum)elementEnumerationID);
-                            break;
-
-                        case ConfigurationCategoryValueEnum.ResolutionCalibrationEnum:
-                            elementEnumerationID = (long)jsonElement.Value;
-                            jsonElementType = this.ConvertConfigurationValue((ResolutionCalibrationEnum)elementEnumerationID);
-                            break;
-
-                        case ConfigurationCategoryValueEnum.OffsetCalibrationEnum:
-                            elementEnumerationID = (long)jsonElement.Value;
-                            jsonElementType = this.ConvertConfigurationValue((OffsetCalibrationEnum)elementEnumerationID);
-                            break;
-
-                        case ConfigurationCategoryValueEnum.CellControlEnum:
-                            elementEnumerationID = (long)jsonElement.Value;
-                            jsonElementType = this.ConvertConfigurationValue((CellControlEnum)elementEnumerationID);
-                            break;
-
-                        case ConfigurationCategoryValueEnum.PanelControlEnum:
-                            elementEnumerationID = (long)jsonElement.Value;
-                            jsonElementType = this.ConvertConfigurationValue((PanelControlEnum)elementEnumerationID);
-                            break;
-
-                        case ConfigurationCategoryValueEnum.ShutterHeightControlEnum:
-                            elementEnumerationID = (long)jsonElement.Value;
-                            jsonElementType = this.ConvertConfigurationValue((ShutterHeightControlEnum)elementEnumerationID);
-                            break;
-
-                        case ConfigurationCategoryValueEnum.WeightControlEnum:
-                            elementEnumerationID = (long)jsonElement.Value;
-                            jsonElementType = this.ConvertConfigurationValue((WeightControlEnum)elementEnumerationID);
-                            break;
-
-                        case ConfigurationCategoryValueEnum.BayPositionControlEnum:
-                            elementEnumerationID = (long)jsonElement.Value;
-                            jsonElementType = this.ConvertConfigurationValue((BayPositionControlEnum)elementEnumerationID);
-                            break;
-
-                        case ConfigurationCategoryValueEnum.LoadFirstDrawerEnum:
-                            elementEnumerationID = (long)jsonElement.Value;
-                            jsonElementType = this.ConvertConfigurationValue((LoadFirstDrawerEnum)elementEnumerationID);
-                            break;
-
-                        default:
-                            jsonElementType = DataTypeEnum.UndefinedType;
-                            elementEnumerationID = 0;
-                            break;
+                        throw new DataLayerException($"Invalid configuration category: {jsonCategory.Key} found in configuration file");
                     }
 
-                    switch (jsonElementType)
+                    foreach (var jsonData in (JObject)jsonCategory.Value)
                     {
-                        case (DataTypeEnum.booleanType):
-                            {
-                                this.SetBoolConfigurationValue(elementEnumerationID, (long)jsonElementCategory, (bool)jsonElement.Value.ToObject(typeof(bool)));
+                        switch (jsonElementCategory)
+                        {
+                            case ConfigurationCategory.GeneralInfo:
+                                if (!Enum.TryParse(jsonData.Key, false, out GeneralInfo generalInfoData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                SaveConfigurationData(jsonElementCategory, (long)generalInfoData, jsonData.Value);
+
                                 break;
-                            }
-                        case (DataTypeEnum.dateTimeType):
-                            {
-                                this.SetDateTimeConfigurationValue(elementEnumerationID, (long)jsonElementCategory, (DateTime)jsonElement.Value.ToObject(typeof(DateTime)));
+
+                            case ConfigurationCategory.SetupNetwork:
+                                if (!Enum.TryParse(jsonData.Key, false, out SetupNetwork setupNetworkData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                SaveConfigurationData(jsonElementCategory, (long)setupNetworkData, jsonData.Value);
+
                                 break;
-                            }
-                        case (DataTypeEnum.decimalType):
-                            {
-                                this.SetDecimalConfigurationValue(elementEnumerationID, (long)jsonElementCategory, (decimal)jsonElement.Value.ToObject(typeof(decimal)));
+
+                            case ConfigurationCategory.SetupStatus:
+                                if (!Enum.TryParse(jsonData.Key, false, out SetupStatus setupStatusData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                SaveConfigurationData(jsonElementCategory, (long)setupStatusData, jsonData.Value);
+
                                 break;
-                            }
-                        case (DataTypeEnum.integerType):
-                            {
-                                this.SetIntegerConfigurationValue(elementEnumerationID, (long)jsonElementCategory, (int)jsonElement.Value.ToObject(typeof(int)));
+
+                            case ConfigurationCategory.VerticalAxis:
+                                if (!Enum.TryParse(jsonData.Key, false, out VerticalAxis verticalAxisData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                SaveConfigurationData(jsonElementCategory, (long)verticalAxisData, jsonData.Value);
+
                                 break;
-                            }
-                        case (DataTypeEnum.stringType):
-                            {
-                                this.SetStringConfigurationValue(elementEnumerationID, (long)jsonElementCategory, jsonElement.Value.ToString());
+
+                            case ConfigurationCategory.HorizontalAxis:
+                                if (!Enum.TryParse(jsonData.Key, false, out HorizontalAxis horizontalAxisData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                SaveConfigurationData(jsonElementCategory, (long)horizontalAxisData, jsonData.Value);
+
                                 break;
-                            }
-                        default:
-                            {
-                                throw new InMemoryDataLayerException(DataLayerExceptionEnum.UNDEFINED_TYPE_EXCEPTION);
-                            }
+
+                            case ConfigurationCategory.HorizontalMovementForwardProfile:
+                                if (!Enum.TryParse(jsonData.Key, false, out HorizontalMovementForwardProfile horizontalMovementForwardProfileData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                SaveConfigurationData(jsonElementCategory, (long)horizontalMovementForwardProfileData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.HorizontalMovementBackwardProfile:
+                                if (!Enum.TryParse(jsonData.Key, false, out HorizontalMovementBackwardProfile horizontalMovementBackwardProfileData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                SaveConfigurationData(jsonElementCategory, (long)horizontalMovementBackwardProfileData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.VerticalManualMovements:
+                                if (!Enum.TryParse(jsonData.Key, false, out VerticalManualMovements verticalManualMovementsData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                SaveConfigurationData(jsonElementCategory, (long)verticalManualMovementsData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.HorizontalManualMovements:
+                                if (!Enum.TryParse(jsonData.Key, false, out HorizontalManualMovements horizontalManualMovementsData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                SaveConfigurationData(jsonElementCategory, (long)horizontalManualMovementsData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.BeltBurnishing:
+                                if (!Enum.TryParse(jsonData.Key, false, out BeltBurnishing beltBurnishingData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                SaveConfigurationData(jsonElementCategory, (long)beltBurnishingData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.ResolutionCalibration:
+                                if (!Enum.TryParse(jsonData.Key, false, out ResolutionCalibration resolutionCalibrationData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                SaveConfigurationData(jsonElementCategory, (long)resolutionCalibrationData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.OffsetCalibration:
+                                if (!Enum.TryParse(jsonData.Key, false, out OffsetCalibration offsetCalibrationData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                SaveConfigurationData(jsonElementCategory, (long)offsetCalibrationData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.CellControl:
+                                if (!Enum.TryParse(jsonData.Key, false, out CellControl cellControlData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                SaveConfigurationData(jsonElementCategory, (long)cellControlData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.PanelControl:
+                                if (!Enum.TryParse(jsonData.Key, false, out PanelControl panelControlData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                SaveConfigurationData(jsonElementCategory, (long)panelControlData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.ShutterHeightControl:
+                                if (!Enum.TryParse(jsonData.Key, false, out ShutterHeightControl shutterHeightControlData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                SaveConfigurationData(jsonElementCategory, (long)shutterHeightControlData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.WeightControl:
+                                if (!Enum.TryParse(jsonData.Key, false, out WeightControl weightControlData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                SaveConfigurationData(jsonElementCategory, (long)weightControlData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.BayPositionControl:
+                                if (!Enum.TryParse(jsonData.Key, false, out BayPositionControl bayPositionControlData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                SaveConfigurationData(jsonElementCategory, (long)bayPositionControlData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.LoadFirstDrawer:
+                                if (!Enum.TryParse(jsonData.Key, false, out LoadFirstDrawer loadFirstDrawerData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                SaveConfigurationData(jsonElementCategory, (long)loadFirstDrawerData, jsonData.Value);
+
+                                break;
+                        }
                     }
                 }
             }
@@ -489,6 +519,38 @@ namespace Ferretto.VW.MAS_DataLayer
 
                 await this.inMemoryDataContext.SaveChangesAsync(this.stoppingToken);
             } while (!this.stoppingToken.IsCancellationRequested);
+        }
+
+        private void SaveConfigurationData(ConfigurationCategory elementCategory, long configurationData, JToken jsonDataValue)
+        {
+            DataType generalInfoDataType;
+            if (!Enum.TryParse(jsonDataValue.Type.ToString(), false, out generalInfoDataType))
+            {
+                throw new DataLayerException($"Invalid configuration data type: {jsonDataValue.Type.ToString()} for data {configurationData} in section {elementCategory} found in configuration file");
+            }
+
+            switch (generalInfoDataType)
+            {
+                case DataType.Boolean:
+                    SetBoolConfigurationValue(configurationData, (long)elementCategory, jsonDataValue.Value<bool>());
+                    break;
+
+                case DataType.Date:
+                    SetDateTimeConfigurationValue(configurationData, (long)elementCategory, jsonDataValue.Value<DateTime>());
+                    break;
+
+                case DataType.Integer:
+                    SetIntegerConfigurationValue(configurationData, (long)elementCategory, jsonDataValue.Value<int>());
+                    break;
+
+                case DataType.Float:
+                    SetDecimalConfigurationValue(configurationData, (long)elementCategory, jsonDataValue.Value<decimal>());
+                    break;
+
+                case DataType.String:
+                    SetStringConfigurationValue(configurationData, (long)elementCategory, jsonDataValue.Value<string>());
+                    break;
+            }
         }
 
         #endregion

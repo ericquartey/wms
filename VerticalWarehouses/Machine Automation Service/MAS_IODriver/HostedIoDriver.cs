@@ -132,8 +132,10 @@ namespace Ferretto.VW.MAS_IODriver
         {
             this.stoppingToken = stoppingToken;
 
-            var ioAddress = this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetworkEnum.IOExpansion1, (long)ConfigurationCategoryValueEnum.SetupNetworkEnum);
-            var ioPort = this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetworkEnum.IOExpansion1Port, (long)ConfigurationCategoryValueEnum.SetupNetworkEnum);
+            var ioAddress =
+                this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
+            var ioPort =
+                this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
 
             this.modbusTransport.Configure(ioAddress, ioPort);
 

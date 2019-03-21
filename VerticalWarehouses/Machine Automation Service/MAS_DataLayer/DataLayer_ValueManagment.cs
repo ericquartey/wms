@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (configurationValue != null)
             {
-                if (configurationValue.VarType == DataTypeEnum.booleanType)
+                if (configurationValue.VarType == DataType.Boolean)
                 {
                     if (!bool.TryParse(configurationValue.VarValue, out returnBoolValue))
                         throw new InMemoryDataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
@@ -44,7 +44,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (runtimeValue != null)
             {
-                if (runtimeValue.VarType == DataTypeEnum.booleanType)
+                if (runtimeValue.VarType == DataType.Boolean)
                 {
                     if (!bool.TryParse(runtimeValue.VarValue, out returnBoolValue))
                         throw new InMemoryDataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
@@ -67,7 +67,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (configurationValue != null)
             {
-                if (configurationValue.VarType == DataTypeEnum.dateTimeType)
+                if (configurationValue.VarType == DataType.Date)
                 {
                     if (!DateTime.TryParse(configurationValue.VarValue, out returnDateTimeValue))
                         throw new InMemoryDataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
@@ -90,7 +90,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (runtimeValue != null)
             {
-                if (runtimeValue.VarType == DataTypeEnum.dateTimeType)
+                if (runtimeValue.VarType == DataType.Date)
                 {
                     if (!DateTime.TryParse(runtimeValue.VarValue, out returnDateTimeValue))
                         throw new InMemoryDataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
@@ -113,7 +113,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (configurationValue != null)
             {
-                if (configurationValue.VarType == DataTypeEnum.decimalType)
+                if (configurationValue.VarType == DataType.Float)
                 {
                     if (!decimal.TryParse(configurationValue.VarValue, out returnDecimalValue))
                         throw new InMemoryDataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
@@ -137,7 +137,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (runtimeValue != null)
             {
-                if (runtimeValue.VarType == DataTypeEnum.decimalType)
+                if (runtimeValue.VarType == DataType.Float)
                 {
                     if (!decimal.TryParse(runtimeValue.VarValue, out returnDecimalValue))
                         throw new InMemoryDataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
@@ -161,7 +161,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (configurationValue != null)
             {
-                if (configurationValue.VarType == DataTypeEnum.integerType)
+                if (configurationValue.VarType == DataType.Integer)
                 {
                     if (!int.TryParse(configurationValue.VarValue, out returnIntegerValue))
                         throw new InMemoryDataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
@@ -185,7 +185,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (runtimeValue != null)
             {
-                if (runtimeValue.VarType == DataTypeEnum.integerType)
+                if (runtimeValue.VarType == DataType.Integer)
                 {
                     if (!int.TryParse(runtimeValue.VarValue, out returnIntegerValue))
                         throw new InMemoryDataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
@@ -209,7 +209,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (configurationValue != null)
             {
-                if (configurationValue.VarType == DataTypeEnum.IPAddressType)
+                if (configurationValue.VarType == DataType.IPAddressType)
                     returnIPAddressValue = IPAddress.Parse(configurationValue.VarValue);
                 else
                     throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
@@ -230,7 +230,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (configurationValue != null)
             {
-                if (configurationValue.VarType == DataTypeEnum.stringType)
+                if (configurationValue.VarType == DataType.String)
                     returnStringValue = configurationValue.VarValue;
                 else
                     throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
@@ -250,7 +250,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (runtimeValue != null)
             {
-                if (runtimeValue.VarType == DataTypeEnum.stringType)
+                if (runtimeValue.VarType == DataType.String)
                 {
                     returnStringValue = runtimeValue.VarValue;
                 }
@@ -276,7 +276,7 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 var newConfigurationValue = new ConfigurationValue();
                 newConfigurationValue.VarName = configurationValueEnum;
-                newConfigurationValue.VarType = DataTypeEnum.booleanType;
+                newConfigurationValue.VarType = DataType.Boolean;
                 newConfigurationValue.VarValue = value.ToString();
 
                 this.inMemoryDataContext.ConfigurationValues.Add(newConfigurationValue);
@@ -284,7 +284,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
             else
             {
-                if (configurationValue.VarType == DataTypeEnum.booleanType)
+                if (configurationValue.VarType == DataType.Boolean)
                 {
                     configurationValue.VarValue = value.ToString();
                     this.inMemoryDataContext.SaveChanges();
@@ -305,7 +305,7 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 var newRuntimeValue = new RuntimeValue();
                 newRuntimeValue.VarName = runtimeValueEnum;
-                newRuntimeValue.VarType = DataTypeEnum.booleanType;
+                newRuntimeValue.VarType = DataType.Boolean;
                 newRuntimeValue.VarValue = value.ToString();
 
                 this.inMemoryDataContext.RuntimeValues.Add(newRuntimeValue);
@@ -313,7 +313,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
             else
             {
-                if (runtimeValue.VarType == DataTypeEnum.booleanType)
+                if (runtimeValue.VarType == DataType.Boolean)
                 {
                     runtimeValue.VarValue = value.ToString();
                     this.inMemoryDataContext.SaveChanges();
@@ -334,7 +334,7 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 var newConfigurationValue = new ConfigurationValue();
                 newConfigurationValue.VarName = configurationValueEnum;
-                newConfigurationValue.VarType = DataTypeEnum.dateTimeType;
+                newConfigurationValue.VarType = DataType.Date;
                 newConfigurationValue.VarValue = value.ToString();
 
                 this.inMemoryDataContext.ConfigurationValues.Add(newConfigurationValue);
@@ -342,7 +342,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
             else
             {
-                if (configurationValue.VarType == DataTypeEnum.dateTimeType)
+                if (configurationValue.VarType == DataType.Date)
                 {
                     configurationValue.VarValue = value.ToString();
                     this.inMemoryDataContext.SaveChanges();
@@ -363,7 +363,7 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 var newRuntimeValue = new RuntimeValue();
                 newRuntimeValue.VarName = runtimeValueEnum;
-                newRuntimeValue.VarType = DataTypeEnum.dateTimeType;
+                newRuntimeValue.VarType = DataType.Date;
                 newRuntimeValue.VarValue = value.ToString();
 
                 this.inMemoryDataContext.RuntimeValues.Add(newRuntimeValue);
@@ -371,7 +371,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
             else
             {
-                if (runtimeValue.VarType == DataTypeEnum.dateTimeType)
+                if (runtimeValue.VarType == DataType.Date)
                 {
                     runtimeValue.VarValue = value.ToString();
                     this.inMemoryDataContext.SaveChanges();
@@ -392,7 +392,7 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 var newConfigurationValue = new ConfigurationValue();
                 newConfigurationValue.VarName = configurationValueEnum;
-                newConfigurationValue.VarType = DataTypeEnum.decimalType;
+                newConfigurationValue.VarType = DataType.Float;
                 newConfigurationValue.VarValue = value.ToString();
 
                 this.inMemoryDataContext.ConfigurationValues.Add(newConfigurationValue);
@@ -400,7 +400,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
             else
             {
-                if (configurationValue.VarType == DataTypeEnum.decimalType)
+                if (configurationValue.VarType == DataType.Float)
                 {
                     configurationValue.VarValue = value.ToString();
                     this.inMemoryDataContext.SaveChanges();
@@ -421,7 +421,7 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 var newRuntimeValue = new RuntimeValue();
                 newRuntimeValue.VarName = runtimeValueEnum;
-                newRuntimeValue.VarType = DataTypeEnum.decimalType;
+                newRuntimeValue.VarType = DataType.Float;
                 newRuntimeValue.VarValue = value.ToString();
 
                 this.inMemoryDataContext.RuntimeValues.Add(newRuntimeValue);
@@ -429,7 +429,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
             else
             {
-                if (runtimeValue.VarType == DataTypeEnum.decimalType)
+                if (runtimeValue.VarType == DataType.Float)
                 {
                     runtimeValue.VarValue = value.ToString();
                     this.inMemoryDataContext.SaveChanges();
@@ -451,7 +451,7 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 var newConfigurationValue = new ConfigurationValue();
                 newConfigurationValue.VarName = configurationValueEnum;
-                newConfigurationValue.VarType = DataTypeEnum.integerType;
+                newConfigurationValue.VarType = DataType.Integer;
                 newConfigurationValue.VarValue = value.ToString();
 
                 this.inMemoryDataContext.ConfigurationValues.Add(newConfigurationValue);
@@ -459,7 +459,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
             else
             {
-                if (configurationValue.VarType == DataTypeEnum.integerType)
+                if (configurationValue.VarType == DataType.Integer)
                 {
                     configurationValue.VarValue = value.ToString();
                     this.inMemoryDataContext.SaveChanges();
@@ -481,7 +481,7 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 var newRuntimeValue = new RuntimeValue();
                 newRuntimeValue.VarName = runtimeValueEnum;
-                newRuntimeValue.VarType = DataTypeEnum.integerType;
+                newRuntimeValue.VarType = DataType.Integer;
                 newRuntimeValue.VarValue = value.ToString();
 
                 this.inMemoryDataContext.RuntimeValues.Add(newRuntimeValue);
@@ -489,7 +489,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
             else
             {
-                if (runtimeValue.VarType == DataTypeEnum.integerType)
+                if (runtimeValue.VarType == DataType.Integer)
                 {
                     runtimeValue.VarValue = value.ToString();
                     this.inMemoryDataContext.SaveChanges();
@@ -510,7 +510,7 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 var newConfigurationValue = new ConfigurationValue();
                 newConfigurationValue.VarName = configurationValueEnum;
-                newConfigurationValue.VarType = DataTypeEnum.stringType;
+                newConfigurationValue.VarType = DataType.String;
                 newConfigurationValue.VarValue = value;
 
                 this.inMemoryDataContext.ConfigurationValues.Add(newConfigurationValue);
@@ -518,7 +518,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
             else
             {
-                if (configurationValue.VarType == DataTypeEnum.stringType)
+                if (configurationValue.VarType == DataType.String)
                 {
                     configurationValue.VarValue = value;
                     this.inMemoryDataContext.SaveChanges();
@@ -539,7 +539,7 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 var newRuntimeValue = new RuntimeValue();
                 newRuntimeValue.VarName = runtimeValueEnum;
-                newRuntimeValue.VarType = DataTypeEnum.stringType;
+                newRuntimeValue.VarType = DataType.String;
                 newRuntimeValue.VarValue = value;
 
                 this.inMemoryDataContext.RuntimeValues.Add(newRuntimeValue);
@@ -547,7 +547,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
             else
             {
-                if (runtimeValue.VarType == DataTypeEnum.stringType)
+                if (runtimeValue.VarType == DataType.String)
                 {
                     runtimeValue.VarValue = value;
                     this.inMemoryDataContext.SaveChanges();
