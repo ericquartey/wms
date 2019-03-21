@@ -171,7 +171,7 @@ namespace Ferretto.Common.Controls
 
         private string GetAttachedViewModel()
         {
-            return $"{this.GetType().ToString()}{Utils.Common.MODEL_SUFFIX}";
+            return $"{this.GetType()}{Utils.Common.MODEL_SUFFIX}";
         }
 
         private WmsView GetCloned()
