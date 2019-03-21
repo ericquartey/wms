@@ -12,7 +12,7 @@ using Ferretto.VW.InverterDriver.StateMachines.Stop;
 using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface;
-using Ferretto.VW.MAS_InverterDriver.StateMachines;
+using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;

@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 {

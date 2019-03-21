@@ -2,6 +2,7 @@
 using System.Threading;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.MAS_InverterDriver;
+using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
 using Microsoft.Extensions.Logging;
 

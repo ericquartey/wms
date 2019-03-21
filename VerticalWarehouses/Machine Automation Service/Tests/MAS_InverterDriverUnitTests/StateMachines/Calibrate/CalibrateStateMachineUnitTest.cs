@@ -2,7 +2,7 @@
 using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis;
 using Ferretto.VW.MAS_InverterDriver;
-using Ferretto.VW.MAS_InverterDriver.StateMachines;
+using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
