@@ -35,7 +35,7 @@
         </Grid.ColumnDefinitions>
 
         <dxc:WaitIndicator Grid.Row="1"
-                           VerticalAlignment="Center"                          
+                           VerticalAlignment="Center"
                            Panel.ZIndex="1"
                            Content="{x:Static res:DesktopApp.Loading}"
                            DeferedVisibility="{Binding IsBusy}" />
@@ -315,34 +315,40 @@
                       Visibility="{Binding Model, Converter={StaticResource RTVC}}">
 
             <Border Style="{StaticResource InfoBoxBorderStyle}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <GroupBox Margin="20,0"
+                              Header="{x:Static res:MasterData.Image}">
 
-                <GroupBox Margin="20,0"
-                          Header="{x:Static res:MasterData.OtherInformation}">
-                    <StackPanel Orientation="Vertical">
                         <wms:WmsImageEdit MaxWidth="300"
                                           MaxHeight="400"
                                           BorderBrush="{DynamicResource CommonSecondaryLight}"
                                           BorderThickness="1"
                                           Filename="{Binding Path=Model.Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           Path="{Binding Path=Model.ImagePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <wms:InfoText HorizontalAlignment="Left"
-                                      Content="{Binding Path=Model.CreationDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"
-                                      Content="{Binding Path=Model.LastModificationDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"
-                                      Content="{Binding Path=Model.InventoryDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"
-                                      Content="{Binding Path=Model.LastPickDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"
-                                      Content="{Binding Path=Model.LastStoreDate}" />
-                    </StackPanel>
-
-                </GroupBox>
-
+                    </GroupBox>
+                    <GroupBox Grid.Row="1"
+                              Margin="20,0"
+                              Header="{x:Static res:MasterData.OtherInformation}">
+                        <StackPanel Orientation="Vertical">
+                            <wms:InfoText HorizontalAlignment="Left"
+                                          Content="{Binding Path=Model.CreationDate}" />
+                            <wms:InfoText HorizontalAlignment="Left"
+                                          Content="{Binding Path=Model.LastModificationDate}" />
+                            <wms:InfoText HorizontalAlignment="Left"
+                                          Content="{Binding Path=Model.InventoryDate}" />
+                            <wms:InfoText HorizontalAlignment="Left"
+                                          Content="{Binding Path=Model.LastPickDate}" />
+                            <wms:InfoText HorizontalAlignment="Left"
+                                          Content="{Binding Path=Model.LastStoreDate}" />
+                        </StackPanel>
+                    </GroupBox>
+                </Grid>
             </Border>
-
         </ScrollViewer>
-
     </Grid>
-
 </wms:WmsView>
