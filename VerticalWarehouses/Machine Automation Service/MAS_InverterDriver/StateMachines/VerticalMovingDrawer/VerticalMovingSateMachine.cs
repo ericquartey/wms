@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Utilities;
+using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalMovingDrawer;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines
