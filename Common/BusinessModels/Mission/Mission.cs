@@ -55,7 +55,7 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.RegistrationNumber), ResourceType = typeof(BusinessObjects))]
         public string RegistrationNumber { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.MissionRequestedQuantity), ResourceType = typeof(General))]
+        [Display(Name = nameof(BusinessObjects.MissionRequestedQuantity), ResourceType = typeof(BusinessObjects))]
         public int RequestedQuantity { get; set; }
 
         [Display(Name = nameof(General.Status), ResourceType = typeof(General))]

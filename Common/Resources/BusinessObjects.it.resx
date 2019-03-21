@@ -838,4 +838,7 @@
   <data name="MissionStatusIncomplete" xml:space="preserve">
     <value>Incompleta</value>
   </data>
+  <data name="MissionRequestedQuantity" xml:space="preserve">
+    <value>Quantità Richiesta</value>
+  </data>
 </root>
