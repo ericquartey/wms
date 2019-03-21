@@ -268,6 +268,12 @@ namespace Ferretto.VW.InverterDriver
                             this.currentStateMachine.Dispose();
                             this.currentStateMachine = null;
                         }
+                        if (receivedMessage.Status == MessageStatus.OperationStop)
+                        {
+                            //TODO dispose current states machine
+
+                            //TODO start the states machine for stop operation
+                        }
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);

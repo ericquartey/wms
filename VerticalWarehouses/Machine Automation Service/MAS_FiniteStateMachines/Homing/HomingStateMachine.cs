@@ -72,6 +72,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 case MessageType.Stop:
                     {
                         var msgStatus = (this.IsStopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd;
+
                         //TEMP Send a notification about the end (/stop) operation to all the world
                         var newMessage = new NotificationMessage(null,
                             "End Homing",
