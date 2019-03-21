@@ -21,6 +21,9 @@
   <ItemGroup>
     <ProjectReference Include="..\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj" />
     <ProjectReference Include="..\Resources\Ferretto.Common.Resources.csproj" />
-  </ItemGroup>
+    <ProjectReference Include="..\..\WMS\Data\WebAPI.Contracts\Ferretto.WMS.Data.WebAPI.Contracts.csproj" />
+    <ProjectReference Include="..\BusinessModels\Ferretto.Common.BusinessModels.csproj" />
+    <ProjectReference Include="..\Utils\Ferretto.Common.Utils.csproj" /> 
+ </ItemGroup>
 
 </Project>
