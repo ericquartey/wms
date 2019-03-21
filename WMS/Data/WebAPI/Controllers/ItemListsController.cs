@@ -7,6 +7,7 @@ using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -52,48 +53,50 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(201, Type = typeof(ItemListDetails))]
-        [ProducesResponseType(400)]
         [HttpPost]
+        [ProducesResponseType(typeof(ItemListDetails), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ItemListDetails>> CreateAsync(ItemListDetails model)
         {
             var result = await this.itemListProvider.CreateAsync(model);
 
             if (!result.Success)
             {
-                return this.BadRequest();
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = result.Description
+                });
             }
 
             return this.Created(this.Request.GetUri(), result.Entity);
         }
 
         [HttpPost("execute")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(422)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<ActionResult> ExecuteAsync(Scheduler.Core.Models.ListExecutionRequest request)
         {
-            if (request == null)
-            {
-                return this.BadRequest();
-            }
-
             var acceptedRequests = await this.schedulerService.ExecuteListAsync(request);
             if (acceptedRequests == null)
             {
-                this.logger.LogWarning($"Request of execution for list (id={request.ListId}) could not be processed.");
+                this.logger.LogWarning($"Request of execution for list (id={request?.ListId}) could not be processed.");
 
-                return this.UnprocessableEntity(this.ModelState);
+                return this.UnprocessableEntity(new ProblemDetails
+                {
+                    Status = StatusCodes.Status422UnprocessableEntity
+                });
             }
 
-            this.logger.LogInformation($"Request of execution for list (id={request.ListId}) was accepted.");
+            this.logger.LogInformation($"Request of execution for list (id={request?.ListId}) was accepted.");
 
             return this.Ok();
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<ItemList>))]
-        [ProducesResponseType(400, Type = typeof(string))]
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<ItemList>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IEnumerable<ItemList>>> GetAllAsync(
             int skip = 0,
             int take = int.MaxValue,
@@ -113,12 +116,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = e.Message
+                });
             }
         }
 
-        [ProducesResponseType(200, Type = typeof(int))]
-        [ProducesResponseType(400, Type = typeof(string))]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync(string where = null, string search = null)
         {
@@ -128,40 +135,52 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = e.Message
+                });
             }
         }
 
-        [ProducesResponseType(200, Type = typeof(ItemListDetails))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(ItemListDetails), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         public async Task<ActionResult<ItemListDetails>> GetByIdAsync(int id)
         {
             var result = await this.itemListProvider.GetByIdAsync(id);
             if (result == null)
             {
-                return this.NotFound();
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = id.ToString(),
+                    Status = StatusCodes.Status404NotFound,
+                });
             }
 
             return this.Ok(result);
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<ItemListRow>))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(IEnumerable<ItemListRow>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}/rows")]
         public async Task<ActionResult<IEnumerable<ItemListRow>>> GetRowsAsync(int id)
         {
             var result = await this.itemListRowProvider.GetByItemListIdAsync(id);
             if (result == null)
             {
-                return this.NotFound();
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = id.ToString(),
+                    Status = StatusCodes.Status404NotFound,
+                });
             }
 
             return this.Ok(result);
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(typeof(IEnumerable<object>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("unique/{propertyName}")]
         public async Task<ActionResult<object[]>> GetUniqueValuesAsync(
             string propertyName)
@@ -172,30 +191,37 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (InvalidOperationException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = e.Message
+                });
             }
         }
 
-        [ProducesResponseType(200, Type = typeof(ItemListDetails))]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(ItemListDetails), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPatch]
         public async Task<ActionResult<ItemListDetails>> UpdateAsync(ItemListDetails model)
         {
-            if (model == null)
-            {
-                return this.BadRequest();
-            }
-
             var result = await this.itemListProvider.UpdateAsync(model);
             if (!result.Success)
             {
                 if (result is NotFoundOperationResult<ItemListDetails>)
                 {
-                    return this.NotFound();
+                    return this.NotFound(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status404NotFound,
+                        Detail = result.Description
+                    });
                 }
 
-                return this.BadRequest();
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = result.Description
+                });
             }
 
             return this.Ok(result.Entity);

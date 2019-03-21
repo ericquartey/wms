@@ -1,18 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <OutputType>Exe</OutputType>
     <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
     <StartupObject>Ferretto.WMS.Data.WebAPI.Program</StartupObject>
     <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
     <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
     <UserSecretsId>99a6653a-35f9-45df-a88c-57a09638d6c1</UserSecretsId>
-    <ApplicationInsightsResourceId>/subscriptions/c6ebcf1a-1377-424e-8c05-4cd7aaa4e685/resourcegroups/Resource_Group_NicolaMoro/providers/microsoft.insights/components/Ferretto.WMS.Data.WebAPI</ApplicationInsightsResourceId>
-    <ApplicationInsightsAnnotationResourceId>/subscriptions/c6ebcf1a-1377-424e-8c05-4cd7aaa4e685/resourcegroups/Resource_Group_NicolaMoro/providers/microsoft.insights/components/Ferretto.WMS.Data.WebAPI</ApplicationInsightsAnnotationResourceId>
     <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Configurations>Debug;Release;Autogen</Configurations>
+    <ApplicationInsightsResourceId>/subscriptions/c6ebcf1a-1377-424e-8c05-4cd7aaa4e685/resourcegroups/Resource_Group_NicolaMoro/providers/microsoft.insights/components/Ferretto.WMS.Data.WebAPI</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/c6ebcf1a-1377-424e-8c05-4cd7aaa4e685/resourcegroups/Resource_Group_NicolaMoro/providers/microsoft.insights/components/Ferretto.WMS.Data.WebAPI</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -20,26 +20,29 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.6.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.4" />
-    <PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="2.1.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.0.2105168" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.5" />
-    <PackageReference Include="NSwag.AspNetCore" Version="11.20.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.1.1" />
-
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.2">
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Api.Analyzers" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.4.4" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="NSwag.AspNetCore" Version="12.0.15" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.2.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="SonarAnalyzer" Version="6.6.0.3969" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.10.0.7896" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.11.0.8083">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NSwag.MSBuild" Version="11.20.1">
+    <PackageReference Include="NSwag.MSBuild" Version="12.0.15">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
@@ -68,7 +71,7 @@
 
     <Target Name="NSwag" AfterTargets="Build" Condition=" '$(Configuration)' == 'autogen' and $(TargetFramework.StartsWith('netcore')) ">
         <Copy SourceFiles="@(Reference)" DestinationFolder="$(OutDir)References" />
-        <Exec Command="$(NSwagExe_Core21) run nswag.json /variables:Configuration=$(Configuration)" />
+        <Exec Command="$(NSwagExe_Core22) run nswag.json /variables:Configuration=$(Configuration)" />
         <RemoveDir Directories="$(OutDir)References" />
     </Target>
 

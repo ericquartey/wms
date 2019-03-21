@@ -159,15 +159,7 @@ namespace Ferretto.WMS.Scheduler.Core.Services
 
                         await database.MigrateAsync();
 
-                        this.logger.LogDebug($"Reseeding database ...");
-
-                        var cleanAll = await System.IO.File.ReadAllTextAsync(@"bin\Debug\netcoreapp2.1\win7-x64\Seeds\Dev.CleanAll.sql");
-                        var initDbScript = await System.IO.File.ReadAllTextAsync(@"bin\Debug\netcoreapp2.1\win7-x64\Seeds\Dev.InitDb.sql");
-                        var itemsScript = await System.IO.File.ReadAllTextAsync(@"bin\Debug\netcoreapp2.1\win7-x64\Seeds\Dev.Items.sql");
-
-                        await database.ExecuteSqlCommandAsync(cleanAll);
-                        await database.ExecuteSqlCommandAsync(initDbScript);
-                        await database.ExecuteSqlCommandAsync(itemsScript);
+                        await this.SeedDatabaseAsync(database, stoppingToken);
 #else
                         this.logger.LogCritical("Database is not up to date. Please apply the migrations and restart the service.");
                         await this.StopAsync(stoppingToken);
@@ -182,6 +174,25 @@ namespace Ferretto.WMS.Scheduler.Core.Services
             catch
             {
                 this.logger.LogCritical("Unable to check database structure.");
+                await this.StopAsync(stoppingToken);
+            }
+        }
+
+        private async Task SeedDatabaseAsync(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade database, CancellationToken stoppingToken)
+        {
+            try
+            {
+                this.logger.LogDebug($"Reseeding database (Dev.Minimal.sql) ...");
+                var minimalDbScript = await System.IO.File.ReadAllTextAsync(@"bin\Debug\netcoreapp2.2\win7-x64\Seeds\Dev.Minimal.sql");
+                await database.ExecuteSqlCommandAsync(minimalDbScript);
+
+                this.logger.LogDebug($"Reseeding database (Dev.Items.sql) ...");
+                var itemsScript = await System.IO.File.ReadAllTextAsync(@"bin\Debug\netcoreapp2.2\win7-x64\Seeds\Dev.Items.sql");
+                await database.ExecuteSqlCommandAsync(itemsScript);
+            }
+            catch (System.Exception ex)
+            {
+                this.logger.LogCritical($"Unable to seed database: {ex.Message}");
                 await this.StopAsync(stoppingToken);
             }
         }
