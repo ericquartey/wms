@@ -42,6 +42,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(200, Type = typeof(FileStreamResult))]
         [ProducesResponseType(400)]
+        [ProducesResponseType(422)]
         [HttpGet("{id}")]
         public async Task<ActionResult<FileStreamResult>> DownloadAsync(string id)
         {
