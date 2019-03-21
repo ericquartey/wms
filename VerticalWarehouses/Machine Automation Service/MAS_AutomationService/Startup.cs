@@ -6,6 +6,7 @@ using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_IODriver;
 using Ferretto.VW.MAS_IODriver.Interface;
 using Ferretto.VW.MAS_MissionsManager;
+using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -67,14 +68,18 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSignalR();
 
-            var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
+            DataLayerConfiguration dataLayerConfiguration = new DataLayerConfiguration(
+                this.Configuration.GetConnectionString(ConnectionStringName),
+                this.Configuration.GetValue<string>("Vertimag:DataLayer:ConfigurationFile")
+            );
+
             services.AddDbContext<DataLayerContext>(options => options.UseInMemoryDatabase("InMemoryWorkingDB"),
                 ServiceLifetime.Singleton);
 
             services.AddSingleton<IEventAggregator, EventAggregator>();
 
             services.AddSingleton<IDataLayer, DataLayer>(provider => new DataLayer(
-                connectionString,
+                dataLayerConfiguration,
                 provider.GetService<DataLayerContext>(),
                 provider.GetService<IEventAggregator>(),
                 provider.GetService<IOptions<FilesInfo>>(),
@@ -89,7 +94,6 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSingleton<IDataLayerValueManagment, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
-            services.AddSingleton<ISocketTransport, SocketTransport>();
             this.RegisterSocketTransport(services);
 
             this.RegisterModbusTransport(services);

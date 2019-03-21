@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ferretto.VW.MAS_DataLayer.Enumerations
+﻿namespace Ferretto.VW.MAS_DataLayer.Enumerations
 {
-    public enum VerticalAxisEnum : long
+    public enum VerticalAxis : long
     {
+        Undefined = 0L,
+
         MaxSpeed = 1L,
 
         MaxAcceleration = 2L,

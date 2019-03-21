@@ -1,16 +1,16 @@
 ﻿namespace Ferretto.VW.MAS_DataLayer
 {
-    public enum DataTypeEnum : long
+    public enum DataType : long
     {
-        booleanType,
+        Boolean,
 
-        dateTimeType,
+        Date,
 
-        integerType,
+        Integer,
 
-        decimalType,
+        Float,
 
-        stringType,
+        String,
 
         IPAddressType,
 
