@@ -32,7 +32,6 @@ namespace Ferretto.WMS.App
         public static void RegisterTypes(IContainerRegistry containerRegistry, IContainerProvider container)
         {
             containerRegistry.Register<IEventService, EventService>();
-            containerRegistry.Register<IImageProvider, ImageProvider>();
             var navigationService = container.Resolve<NavigationService>();
             containerRegistry.RegisterInstance<INavigationService>(navigationService);
             var inputService = container.Resolve<InputService>();
