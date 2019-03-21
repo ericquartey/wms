@@ -60,12 +60,13 @@ namespace Ferretto.Common.BusinessProviders
                     ItemListRowDescription = m.ItemListRowCode,
                     LoadingUnitDescription = m.LoadingUnitCode,
                     Priority = m.Priority,
-                    RequiredQuantity = m.RequiredQuantity,
+                    RequestedQuantity = m.RequestedQuantity,
                     CellDescription = m.CellAisleName,
                     CompartmentType = string.Format(Common.Resources.MasterData.CompartmentTypeListFormatReduced, m.CompartmentTypeWidth, m.CompartmentTypeHeight),
                     ItemUnitMeasure = m.ItemMeasureUnitDescription,
                     MaterialStatusDescription = m.MaterialStatusDescription,
-                    PackageTypeDescription = m.PackageTypeDescription
+                    PackageTypeDescription = m.PackageTypeDescription,
+                    DispatchedQuantity = m.DispatchedQuantity
                 });
         }
 
@@ -96,12 +97,13 @@ namespace Ferretto.Common.BusinessProviders
                 ItemListRowDescription = mission.ItemListRowCode,
                 LoadingUnitDescription = mission.LoadingUnitCode,
                 Priority = mission.Priority,
-                RequiredQuantity = mission.RequiredQuantity,
+                RequestedQuantity = mission.RequestedQuantity,
                 CellDescription = mission.CellAisleName,
                 CompartmentType = string.Format(Common.Resources.MasterData.CompartmentTypeListFormatReduced, mission.CompartmentTypeWidth, mission.CompartmentTypeHeight),
                 ItemUnitMeasure = mission.ItemMeasureUnitDescription,
                 MaterialStatusDescription = mission.MaterialStatusDescription,
-                PackageTypeDescription = mission.PackageTypeDescription
+                PackageTypeDescription = mission.PackageTypeDescription,
+                DispatchedQuantity = mission.DispatchedQuantity
             };
         }
 

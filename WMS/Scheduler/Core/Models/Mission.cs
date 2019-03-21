@@ -4,7 +4,9 @@ namespace Ferretto.WMS.Scheduler.Core.Models
     {
         #region Fields
 
-        private int quantity;
+        private int requestedQuantity;
+
+        private int dispatchedQuantity;
 
         #endregion
 
@@ -32,10 +34,21 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public int Priority { get; set; }
 
-        public int Quantity
+        public int RequestedQuantity
         {
-            get => this.quantity;
-            set => SetIfStrictlyPositive(ref this.quantity, value);
+            get => this.requestedQuantity;
+            set => SetIfStrictlyPositive(ref this.requestedQuantity, value);
+        }
+
+        public int DispatchedQuantity
+        {
+            get => this.dispatchedQuantity;
+            set => SetIfPositive(ref this.dispatchedQuantity, value);
+        }
+
+        public int QuantityRemainingToDispatch
+        {
+            get => this.RequestedQuantity - this.dispatchedQuantity;
         }
 
         public string RegistrationNumber { get; set; }

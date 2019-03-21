@@ -9,7 +9,7 @@ namespace Ferretto.WMS.Scheduler.Core.Interfaces
     {
         #region Methods
 
-        Task<IOperationResult<Mission>> CompleteMissionAsync(int id);
+        Task<IOperationResult<Mission>> CompleteMissionAsync(int id, int quantity);
 
         Task<IEnumerable<SchedulerRequest>> ExecuteListAsync(ListExecutionRequest request);
 

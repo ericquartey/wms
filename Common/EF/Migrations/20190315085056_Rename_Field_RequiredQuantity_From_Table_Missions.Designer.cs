@@ -4,14 +4,16 @@ using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.Common.EF.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190315085056_Rename_Field_RequiredQuantity_From_Table_Missions")]
+    partial class Rename_Field_RequiredQuantity_From_Table_Missions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -410,6 +412,8 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int?>("ItemId");
 
+                    b.Property<DateTime?>("LastHandlingDate");
+
                     b.Property<DateTime>("LastModificationDate")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GETUTCDATE()");
@@ -753,7 +757,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<string>("RegistrationNumber");
 
-                    b.Property<int>("RequestedQuantity");
+                    b.Property<int>("RequiredQuantity");
 
                     b.Property<string>("Status")
                         .IsRequired()

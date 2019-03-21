@@ -39,11 +39,11 @@ namespace Ferretto.WMS.AutomationServiceMock
 
         #region Methods
 
-        public async Task CompleteMissionAsync(int missionId)
+        public async Task CompleteMissionAsync(int missionId, int quantity)
         {
             try
             {
-                await this.missionsDataService.CompleteAsync(missionId);
+                await this.missionsDataService.CompleteAsync(missionId, quantity);
             }
             catch (Exception ex)
             {
@@ -98,7 +98,7 @@ namespace Ferretto.WMS.AutomationServiceMock
 
         private async Task ExecuteMissionAsync(Mission mission)
         {
-            Console.WriteLine($"Executing mission '{mission.Type}' on item {mission.ItemId}, quantity {mission.Quantity}");
+            Console.WriteLine($"Executing mission '{mission.Type}' on item {mission.ItemId}, quantity {mission.RequestedQuantity}");
 
             // simulate mission execution
             await Task.Delay(1000);
@@ -107,7 +107,7 @@ namespace Ferretto.WMS.AutomationServiceMock
             if (success)
             {
                 Console.WriteLine($"Mission completed.");
-                await this.missionsDataService.CompleteAsync(mission.Id);
+                await this.missionsDataService.CompleteAsync(mission.Id, mission.RequestedQuantity);
             }
             else
             {
