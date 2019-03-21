@@ -8,17 +8,19 @@ using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
+using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
-    public partial class DataLayer : BackgroundService, IDataLayer, IWriteLogService
+    public partial class DataLayer : BackgroundService, IDataLayer
     {
         #region Fields
 
@@ -85,6 +87,7 @@ namespace Ferretto.VW.MAS_DataLayer
                     //this.LoadConfigurationValuesInfo(InfoFilesEnum.InstallationInfo);
                 }
 
+                // TEMP Temporary commented
                 this.LoadConfigurationValuesInfo(InfoFilesEnum.GeneralInfo);
                 this.LoadConfigurationValuesInfo(InfoFilesEnum.InstallationInfo);
 
@@ -115,6 +118,19 @@ namespace Ferretto.VW.MAS_DataLayer
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
+
+            // INFO Log events
+            // INFO Command full events
+            var commandFullEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            commandFullEvent.Subscribe(message => { this.LogMessages(message); },
+                ThreadOption.PublisherThread,
+                false);
+
+            // INFO Notification full events
+            var notificationFullEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            notificationFullEvent.Subscribe(message => { this.LogMessages(message); },
+                ThreadOption.PublisherThread,
+                false);
 
             this.logger?.LogInformation("DataLayer Constructor");
         }
@@ -160,12 +176,20 @@ namespace Ferretto.VW.MAS_DataLayer
                 false,
                 message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
 
-            // The old WriteLogService
             var NotificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
             NotificationEvent.Subscribe(message => { this.notificationQueue.Enqueue(message); },
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
+
+            // INFO Log events
+            // INFO Command full events
+            var commandFullEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            commandFullEvent.Subscribe(message => { this.LogMessages(message); });
+
+            // INFO Notification full events
+            var notificationFullEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            notificationFullEvent.Subscribe(message => { this.LogMessages(message); });
         }
 
         #endregion
@@ -178,8 +202,28 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Methods
 
-        /// <inheritdoc/>
-        public void LoadConfigurationValuesInfo(InfoFilesEnum configurationValueRequest)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            this.stoppingToken = stoppingToken;
+
+            try
+            {
+                this.commadReceiveTask.Start();
+                this.notificationReceiveTask.Start();
+            }
+            catch (Exception ex)
+            {
+                throw new DataLayerException($"Exception: {ex.Message} while starting service threads", ex);
+            }
+        }
+
+        /// <summary>
+        /// This method is been invoked during the installation, to load the general_info.json file
+        /// </summary>
+        /// <param name="configurationValueRequest">Configuration parameters to load</param>
+        /// <exception cref="DataLayerExceptionEnum.UNKNOWN_INFO_FILE_EXCEPTION">Exception for a wrong info file input name</exception>
+        /// <exception cref="DataLayerExceptionEnum.UNDEFINED_TYPE_EXCEPTION">Exception for an unknown data type</exception>
+        private void LoadConfigurationValuesInfo(InfoFilesEnum configurationValueRequest)
         {
             string requestPath;
 
@@ -206,39 +250,136 @@ namespace Ferretto.VW.MAS_DataLayer
                 var json = streamReader.ReadToEnd();
                 var jsonObject = JObject.Parse(json);
 
-                ConfigurationValueEnum jsonElementName;
                 DataTypeEnum jsonElementType;
+                ConfigurationCategoryValueEnum jsonElementCategory;
 
                 foreach (var jsonElement in jsonObject)
                 {
-                    jsonElementName = (ConfigurationValueEnum)Enum.Parse(typeof(ConfigurationValueEnum), jsonElement.Key);
-                    jsonElementType = this.ConvertConfigurationValue(jsonElementName);
+                    jsonElementCategory = this.GetJSonElementConfigurationCategory(jsonElement);
+                    long elementEnumerationID;
+                    switch (jsonElementCategory)
+                    {
+                        case ConfigurationCategoryValueEnum.GeneralInfoEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((GeneralInfoEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.SetupNetworkEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((SetupNetworkEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.SetupStatusEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((SetupStatusEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.VerticalAxisEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((VerticalAxisEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.HorizontalAxisEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((HorizontalAxisEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.HorizontalMovementForwardProfileEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((HorizontalMovementForwardProfileEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.HorizontalMovementBackwardProfileEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((HorizontalMovementBackwardProfileEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.VerticalManualMovementsEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((VerticalManualMovementsEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.HorizontalManualMovementsEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((HorizontalManualMovementsEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.BeltBurnishingEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((BeltBurnishingEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.ResolutionCalibrationEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((ResolutionCalibrationEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.OffsetCalibrationEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((OffsetCalibrationEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.CellControlEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((CellControlEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.PanelControlEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((PanelControlEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.ShutterHeightControlEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((ShutterHeightControlEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.WeightControlEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((WeightControlEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.BayPositionControlEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((BayPositionControlEnum)elementEnumerationID);
+                            break;
+
+                        case ConfigurationCategoryValueEnum.LoadFirstDrawerEnum:
+                            elementEnumerationID = (long)jsonElement.Value;
+                            jsonElementType = this.ConvertConfigurationValue((LoadFirstDrawerEnum)elementEnumerationID);
+                            break;
+
+                        default:
+                            jsonElementType = DataTypeEnum.UndefinedType;
+                            elementEnumerationID = 0;
+                            break;
+                    }
 
                     switch (jsonElementType)
                     {
                         case (DataTypeEnum.booleanType):
                             {
-                                this.SetBoolConfigurationValue(jsonElementName, (bool)jsonElement.Value.ToObject(typeof(bool)));
+                                this.SetBoolConfigurationValue(elementEnumerationID, (long)jsonElementCategory, (bool)jsonElement.Value.ToObject(typeof(bool)));
                                 break;
                             }
                         case (DataTypeEnum.dateTimeType):
                             {
-                                this.SetDateTimeConfigurationValue(jsonElementName, (DateTime)jsonElement.Value.ToObject(typeof(DateTime)));
+                                this.SetDateTimeConfigurationValue(elementEnumerationID, (long)jsonElementCategory, (DateTime)jsonElement.Value.ToObject(typeof(DateTime)));
                                 break;
                             }
                         case (DataTypeEnum.decimalType):
                             {
-                                this.SetDecimalConfigurationValue(jsonElementName, (decimal)jsonElement.Value.ToObject(typeof(decimal)));
+                                this.SetDecimalConfigurationValue(elementEnumerationID, (long)jsonElementCategory, (decimal)jsonElement.Value.ToObject(typeof(decimal)));
                                 break;
                             }
                         case (DataTypeEnum.integerType):
                             {
-                                this.SetIntegerConfigurationValue(jsonElementName, (int)jsonElement.Value.ToObject(typeof(int)));
+                                this.SetIntegerConfigurationValue(elementEnumerationID, (long)jsonElementCategory, (int)jsonElement.Value.ToObject(typeof(int)));
                                 break;
                             }
                         case (DataTypeEnum.stringType):
                             {
-                                this.SetStringConfigurationValue(jsonElementName, jsonElement.Value.ToString());
+                                this.SetStringConfigurationValue(elementEnumerationID, (long)jsonElementCategory, jsonElement.Value.ToString());
                                 break;
                             }
                         default:
@@ -250,59 +391,52 @@ namespace Ferretto.VW.MAS_DataLayer
             }
         }
 
-        public bool LogWriting(string logMessage)
+        private void LogMessages(CommandMessage message)
         {
-            var updateOperation = true;
-
-            try
+            if (message == null)
             {
-                this.inMemoryDataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
-                this.inMemoryDataContext.SaveChanges();
-            }
-            catch (DbUpdateException exception)
-            {
-                updateOperation = false;
+                throw new ArgumentNullException();
             }
 
-            return updateOperation;
-        }
+            var serializedData = JsonConvert.SerializeObject(message.Data);
 
-        public void LogWriting(CommandMessage command_EventParameter)
-        {
-            string logMessage;
+            var logEntry = new LogEntry();
 
-            switch (command_EventParameter.Type)
-            {
-                case MessageType.Homing:
-                    {
-                        logMessage = "Vertical Homing";
-                        break;
-                    }
-                default:
-                    {
-                        logMessage = "Unknown Action";
+            logEntry.Data = serializedData;
+            logEntry.Description = message.Description;
+            logEntry.Destination = message.Destination.ToString();
+            logEntry.Source = message.Source.ToString();
+            logEntry.TimeStamp = DateTime.Now;
+            logEntry.Type = message.Type.ToString();
 
-                        break;
-                    }
-            }
+            this.inMemoryDataContext.LogEntries.Add(logEntry);
 
-            this.inMemoryDataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
             this.inMemoryDataContext.SaveChanges();
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        private void LogMessages(NotificationMessage message)
         {
-            this.stoppingToken = stoppingToken;
+            if (message == null)
+            {
+                throw new ArgumentNullException();
+            }
 
-            try
-            {
-                this.commadReceiveTask.Start();
-                this.notificationReceiveTask.Start();
-            }
-            catch (Exception ex)
-            {
-                throw new DataLayerException($"Exception: {ex.Message} while starting service threads", ex);
-            }
+            var serializedData = JsonConvert.SerializeObject(message.Data);
+
+            var logEntry = new LogEntry();
+
+            logEntry.Data = serializedData;
+            logEntry.Description = message.Description;
+            logEntry.Destination = message.Destination.ToString();
+            logEntry.ErrorLevel = message.ErrorLevel.ToString();
+            logEntry.Source = message.Source.ToString();
+            logEntry.Status = message.Status.ToString();
+            logEntry.TimeStamp = DateTime.Now;
+            logEntry.Type = message.Type.ToString();
+
+            this.inMemoryDataContext.LogEntries.Add(logEntry);
+
+            this.inMemoryDataContext.SaveChanges();
         }
 
         private async Task ReceiveCommandTaskFunction()
@@ -318,8 +452,6 @@ namespace Ferretto.VW.MAS_DataLayer
                 {
                     return;
                 }
-
-                this.LogWriting(receivedMessage);
 
                 switch (receivedMessage.Type)
                 {

@@ -10,6 +10,7 @@ using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis;
 using Ferretto.VW.InverterDriver.StateMachines.Stop;
 using Ferretto.VW.MAS_DataLayer;
+using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
@@ -146,8 +147,8 @@ namespace Ferretto.VW.InverterDriver
         {
             this.stoppingToken = stoppingToken;
 
-            var inverterAddress = this.dataLayerValueManagment.GetIPAddressConfigurationValue(ConfigurationValueEnum.InverterAddress);
-            var inverterPort = this.dataLayerValueManagment.GetIntegerConfigurationValue(ConfigurationValueEnum.InverterPort);
+            var inverterAddress = this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetworkEnum.Inverter1, (long)ConfigurationCategoryValueEnum.SetupNetworkEnum);
+            var inverterPort = this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetworkEnum.Inverter1Port, (long)ConfigurationCategoryValueEnum.SetupNetworkEnum);
 
             this.socketTransport.Configure(inverterAddress, inverterPort);
 

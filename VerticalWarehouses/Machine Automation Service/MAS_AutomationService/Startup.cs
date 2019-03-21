@@ -80,9 +80,6 @@ namespace Ferretto.VW.MAS_AutomationService
                 provider.GetService<IOptions<FilesInfo>>(),
                 provider.GetService<ILogger<DataLayer>>()));
 
-            services.AddSingleton<IWriteLogService, DataLayer>(provider =>
-                provider.GetService<IDataLayer>() as DataLayer);
-
             services.AddSingleton<IHostedService, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
