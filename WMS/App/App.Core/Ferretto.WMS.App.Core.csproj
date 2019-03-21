@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
-    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
     <!--<TreatWarningsAsErrors>true</TreatWarningsAsErrors>-->
   </PropertyGroup>
 
@@ -19,11 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj" />
-    <ProjectReference Include="..\Resources\Ferretto.Common.Resources.csproj" />
-    <ProjectReference Include="..\..\WMS\Data\WebAPI.Contracts\Ferretto.WMS.Data.WebAPI.Contracts.csproj" />
-    <ProjectReference Include="..\BusinessModels\Ferretto.Common.BusinessModels.csproj" />
-    <ProjectReference Include="..\Utils\Ferretto.Common.Utils.csproj" /> 
+    <ProjectReference Include="..\..\..\Common\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj" />
+    <ProjectReference Include="..\..\..\Common\Resources\Ferretto.Common.Resources.csproj" />
+    <ProjectReference Include="..\..\..\Common\Utils\Ferretto.Common.Utils.csproj" />
+    <ProjectReference Include="..\..\Data\WebAPI.Contracts\Ferretto.WMS.Data.WebAPI.Contracts.csproj" /> 
  </ItemGroup>
 
 </Project>

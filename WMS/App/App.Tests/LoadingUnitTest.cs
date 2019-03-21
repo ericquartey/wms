@@ -1,4 +1,4 @@
-﻿using Ferretto.Common.BusinessModels;
+﻿using Ferretto.WMS.App.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ferretto.Common.BLL.Tests

@@ -28,9 +28,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Common\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj" />
-    <ProjectReference Include="..\..\..\..\Common\BusinessModels\Ferretto.Common.BusinessModels.csproj" />
-    <ProjectReference Include="..\..\..\..\Common\BusinessProviders\Ferretto.Common.BusinessProviders.csproj" />
     <ProjectReference Include="..\..\..\..\Common\Utils\Ferretto.Common.Utils.csproj" />
+    <ProjectReference Include="..\..\App.Core\Ferretto.WMS.App.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
