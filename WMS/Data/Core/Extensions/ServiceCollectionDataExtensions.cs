@@ -1,4 +1,5 @@
-﻿using Ferretto.WMS.Data.Core.Interfaces;
+﻿using Ferretto.Common.BLL.Interfaces.Providers;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Providers;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -43,6 +44,7 @@ namespace Ferretto.WMS.Data.Core.Extensions
                 services.AddTransient<IPackageTypeProvider, PackageTypeProvider>();
                 services.AddTransient<ISchedulerRequestProvider, SchedulerRequestProvider>();
                 services.AddTransient<IUserProvider, UserProvider>();
+                services.AddTransient<IImageFileProvider, ImageFileProvider>();
             }
 
             return services;
