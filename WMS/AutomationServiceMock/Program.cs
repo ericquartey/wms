@@ -204,7 +204,7 @@ namespace Ferretto.WMS.AutomationServiceMock
                     }
                 }
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 Console.WriteLine($"An unexpected error occurred: {ex.Message}");
                 Console.WriteLine();

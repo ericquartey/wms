@@ -105,6 +105,7 @@ namespace Ferretto.Common.Controls
                 {
                     temp = string.IsNullOrWhiteSpace(this.Model.Error);
                 }
+
                 this.SetProperty(ref this.isModelValid, temp);
                 this.UpdateIsEnableError();
                 return temp;
@@ -182,6 +183,7 @@ namespace Ferretto.Common.Controls
             {
                 this.CanShowError = true;
             }
+
             return canExecute;
         }
 

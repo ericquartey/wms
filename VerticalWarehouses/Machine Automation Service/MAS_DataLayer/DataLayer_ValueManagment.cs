@@ -2,144 +2,22 @@
 using System.Linq;
 using System.Net;
 using Ferretto.VW.Common_Utils;
+using Ferretto.VW.MAS_DataLayer.Enumerations;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
     public partial class DataLayer : IDataLayerValueManagment
     {
+        /// <inheritdoc/>
+
         #region Methods
 
         /// <inheritdoc/>
-        public DataTypeEnum ConvertConfigurationValue(ConfigurationValueEnum configurationValueEnum)
-        {
-            DataTypeEnum returnValue;
-
-            switch (configurationValueEnum)
-            {
-                // INFO General info variables
-                case ConfigurationValueEnum.Address:
-                case ConfigurationValueEnum.City:
-                case ConfigurationValueEnum.Client_Code:
-                case ConfigurationValueEnum.Client_Name:
-                case ConfigurationValueEnum.Country:
-                case ConfigurationValueEnum.Latitude:
-                case ConfigurationValueEnum.Longitude:
-                case ConfigurationValueEnum.Model:
-                case ConfigurationValueEnum.Order:
-                case ConfigurationValueEnum.Province:
-                case ConfigurationValueEnum.Serial:
-                    {
-                        returnValue = DataTypeEnum.stringType;
-                        break;
-                    }
-
-                // INFO General info variables
-                case ConfigurationValueEnum.Alfa_Num_1:
-                case ConfigurationValueEnum.Alfa_Num_2:
-                case ConfigurationValueEnum.Alfa_Num_3:
-                case ConfigurationValueEnum.Laser_1:
-                case ConfigurationValueEnum.Laser_2:
-                case ConfigurationValueEnum.Laser_3:
-                case ConfigurationValueEnum.WMS_ON:
-                // INFO Installation Info
-                case ConfigurationValueEnum.Belt_Burnishing:
-                case ConfigurationValueEnum.Machine_Ok:
-                case ConfigurationValueEnum.Shutter_1_Ok:
-                case ConfigurationValueEnum.Shutter_2_Ok:
-                case ConfigurationValueEnum.Shutter_3_Ok:
-                case ConfigurationValueEnum.Laser_1_Ok:
-                case ConfigurationValueEnum.Laser_2_Ok:
-                case ConfigurationValueEnum.Laser_3_Ok:
-                case ConfigurationValueEnum.Shape_1_Ok:
-                case ConfigurationValueEnum.Shape_2_Ok:
-                case ConfigurationValueEnum.Shape_3_Ok:
-                case ConfigurationValueEnum.Weight_Check:
-                case ConfigurationValueEnum.Origin_Y_Axis:
-                case ConfigurationValueEnum.Origin_Z_Axis:
-                case ConfigurationValueEnum.Check_Y_Offset:
-                case ConfigurationValueEnum.Cells_Check:
-                case ConfigurationValueEnum.Check_Shelf_Panel:
-                case ConfigurationValueEnum.Check_Bay_1:
-                case ConfigurationValueEnum.Check_Bay_2:
-                case ConfigurationValueEnum.Check_Bay_3:
-                case ConfigurationValueEnum.Load_First_Drawer:
-                case ConfigurationValueEnum.Load_Empty_Drawers:
-                case ConfigurationValueEnum.Set_Y_Resolution:
-                    {
-                        returnValue = DataTypeEnum.booleanType;
-                        break;
-                    }
-
-                case ConfigurationValueEnum.InverterPort:
-                case ConfigurationValueEnum.IoPort:
-                // INFO General info variables
-                case ConfigurationValueEnum.Bays_Quantity:
-                case ConfigurationValueEnum.Machine_Number_In_Area:
-                case ConfigurationValueEnum.Type_Bay_1:
-                case ConfigurationValueEnum.Type_Bay_2:
-                case ConfigurationValueEnum.Type_Bay_3:
-                case ConfigurationValueEnum.Type_Shutter_1:
-                case ConfigurationValueEnum.Type_Shutter_2:
-                case ConfigurationValueEnum.Type_Shutter_3:
-                case ConfigurationValueEnum.Drawers:
-                case ConfigurationValueEnum.Carrying_Capacity:
-                    {
-                        returnValue = DataTypeEnum.integerType;
-                        break;
-                    }
-
-                case ConfigurationValueEnum.CellSpacing:
-                case ConfigurationValueEnum.Resolution:
-                // INFO General info variables
-                case ConfigurationValueEnum.Height:
-                case ConfigurationValueEnum.Height_Bay_1_Position_1:
-                case ConfigurationValueEnum.Height_Bay_1_Position_2:
-                case ConfigurationValueEnum.Height_Bay_2_Position_1:
-                case ConfigurationValueEnum.Height_Bay_2_Position_2:
-                case ConfigurationValueEnum.Height_Bay_3_Position_1:
-                case ConfigurationValueEnum.Height_Bay_3_Position_2:
-                case ConfigurationValueEnum.Bay_1_Position_1:
-                case ConfigurationValueEnum.Bay_1_Position_2:
-                case ConfigurationValueEnum.Bay_2_Position_1:
-                case ConfigurationValueEnum.Bay_2_Position_2:
-                case ConfigurationValueEnum.Bay_3_Position_1:
-                case ConfigurationValueEnum.Bay_3_Position_2:
-                    {
-                        returnValue = DataTypeEnum.decimalType;
-                        break;
-                    }
-
-                // INFO General info variables
-                case ConfigurationValueEnum.Installation_Date:
-                    {
-                        returnValue = DataTypeEnum.dateTimeType;
-                        break;
-                    }
-
-                case ConfigurationValueEnum.InverterAddress:
-                case ConfigurationValueEnum.IoAddress:
-                    {
-                        returnValue = DataTypeEnum.IPAddressType;
-                        break;
-                    }
-
-                // INFO Unknow variable type
-                default:
-                    {
-                        returnValue = DataTypeEnum.UndefinedType;
-                        break;
-                    }
-            }
-
-            return returnValue;
-        }
-
-        /// <inheritdoc/>
-        public bool GetBoolConfigurationValue(ConfigurationValueEnum configurationValueEnum)
+        public bool GetBoolConfigurationValue(long configurationValueEnum, long categoryValueEnum)
         {
             var returnBoolValue = false;
 
-            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
 
             if (configurationValue != null)
             {
@@ -181,11 +59,11 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public DateTime GetDateTimeConfigurationValue(ConfigurationValueEnum configurationValueEnum)
+        public DateTime GetDateTimeConfigurationValue(long configurationValueEnum, long categoryValueEnum)
         {
             DateTime returnDateTimeValue;
 
-            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
 
             if (configurationValue != null)
             {
@@ -227,11 +105,11 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public decimal GetDecimalConfigurationValue(ConfigurationValueEnum configurationValueEnum)
+        public decimal GetDecimalConfigurationValue(long configurationValueEnum, long categoryValueEnum)
         {
             decimal returnDecimalValue = 0;
 
-            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
 
             if (configurationValue != null)
             {
@@ -274,12 +152,12 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public int GetIntegerConfigurationValue(ConfigurationValueEnum configurationValueEnum)
+        public int GetIntegerConfigurationValue(long configurationValueEnum, long categoryValueEnum)
         {
             var returnIntegerValue = 0;
 
             var configurationValue =
-                this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+                this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
 
             if (configurationValue != null)
             {
@@ -322,12 +200,12 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public IPAddress GetIPAddressConfigurationValue(ConfigurationValueEnum configurationValueEnum)
+        public IPAddress GetIPAddressConfigurationValue(long configurationValueEnum, long categoryValueEnum)
         {
             IPAddress returnIPAddressValue;
 
             var configurationValue =
-                this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+                this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
 
             if (configurationValue != null)
             {
@@ -343,12 +221,12 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public string GetStringConfigurationValue(ConfigurationValueEnum configurationValueEnum)
+        public string GetStringConfigurationValue(long configurationValueEnum, long categoryValueEnum)
         {
             var returnStringValue = "";
 
             var configurationValue =
-                this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+                this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
 
             if (configurationValue != null)
             {
@@ -390,9 +268,9 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public void SetBoolConfigurationValue(ConfigurationValueEnum configurationValueEnum, bool value)
+        public void SetBoolConfigurationValue(long configurationValueEnum, long categoryValueEnum, bool value)
         {
-            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
 
             if (configurationValue == null)
             {
@@ -448,9 +326,9 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public void SetDateTimeConfigurationValue(ConfigurationValueEnum configurationValueEnum, DateTime value)
+        public void SetDateTimeConfigurationValue(long configurationValueEnum, long categoryValueEnum, DateTime value)
         {
-            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
 
             if (configurationValue == null)
             {
@@ -506,9 +384,9 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public void SetDecimalConfigurationValue(ConfigurationValueEnum configurationValueEnum, decimal value)
+        public void SetDecimalConfigurationValue(long configurationValueEnum, long categoryValueEnum, decimal value)
         {
-            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
 
             if (configurationValue == null)
             {
@@ -564,10 +442,10 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public void SetIntegerConfigurationValue(ConfigurationValueEnum configurationValueEnum, int value)
+        public void SetIntegerConfigurationValue(long configurationValueEnum, long categoryValueEnum, int value)
         {
             var configurationValue =
-                this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+                this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
 
             if (configurationValue == null)
             {
@@ -624,9 +502,9 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public void SetStringConfigurationValue(ConfigurationValueEnum configurationValueEnum, string value)
+        public void SetStringConfigurationValue(long configurationValueEnum, long categoryValueEnum, string value)
         {
-            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
 
             if (configurationValue == null)
             {
