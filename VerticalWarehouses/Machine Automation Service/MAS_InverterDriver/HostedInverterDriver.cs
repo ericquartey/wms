@@ -196,7 +196,9 @@ namespace Ferretto.VW.InverterDriver
                     return Task.CompletedTask;
                 }
 
-                if (this.currentStateMachine != null)
+                this.logger?.LogInformation(string.Format("Received Message => Type: {0}", receivedMessage.Type));
+
+                if (this.currentStateMachine != null && receivedMessage.Type != MessageType.Stop)
                 {
                     var errorNotification = new NotificationMessage(null, "Inverter operation already in progress", MessageActor.Any,
                         MessageActor.InverterDriver, receivedMessage.Type, MessageStatus.OperationError, ErrorLevel.Error);
@@ -204,7 +206,7 @@ namespace Ferretto.VW.InverterDriver
                     continue;
                 }
 
-                this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:CommandReceiveTaskFunction");
+                //this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:CommandReceiveTaskFunction");
 
                 switch (receivedMessage.Type)
                 {
@@ -219,6 +221,12 @@ namespace Ferretto.VW.InverterDriver
                     case MessageType.Stop:
                         if (receivedMessage.Data is IStopAxisMessageData stopData)
                         {
+                            if (this.currentStateMachine != null)
+                            {
+                                this.currentStateMachine.Dispose();
+                                this.currentStateMachine = null;
+                            }
+
                             this.currentStateMachine = new StopStateMachine(stopData.AxisToStop, this.inverterCommandQueue, this.eventAggregator, this.logger);
                         }
                         break;
