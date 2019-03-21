@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Utilities;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
@@ -13,6 +14,8 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         private readonly Axis axisToSwitchOn;
 
+        private readonly ILogger logger;
+
         private Timer delayTimer;
 
         private bool disposed;
@@ -23,12 +26,13 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         #region Constructors
 
-        public SwitchAxisSateMachine(Axis axisToSwitchOn, bool switchOffOtherAxis, BlockingConcurrentQueue<IoMessage> ioCommandQueue, IEventAggregator eventAggregator)
+        public SwitchAxisSateMachine(Axis axisToSwitchOn, bool switchOffOtherAxis, BlockingConcurrentQueue<IoMessage> ioCommandQueue, IEventAggregator eventAggregator, ILogger logger)
         {
             this.axisToSwitchOn = axisToSwitchOn;
             this.switchOffOtherAxis = switchOffOtherAxis;
             this.ioCommandQueue = ioCommandQueue;
             this.eventAggregator = eventAggregator;
+            this.logger = logger;
         }
 
         #endregion
@@ -58,11 +62,11 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
         {
             if (this.switchOffOtherAxis)
             {
-                this.CurrentState = new SwitchOffMotorState(axisToSwitchOn, this);
+                this.CurrentState = new SwitchOffMotorState(this.axisToSwitchOn, this.logger, this);
             }
             else
             {
-                this.CurrentState = new SwitchOnMotorState(this.axisToSwitchOn, this);
+                this.CurrentState = new SwitchOnMotorState(this.axisToSwitchOn, this.logger, this);
             }
         }
 
@@ -86,7 +90,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         private void DelayElapsed(object state)
         {
-            ChangeState(new SwitchOnMotorState(this.axisToSwitchOn, this));
+            this.ChangeState(new SwitchOnMotorState(this.axisToSwitchOn, this.logger, this));
         }
 
         #endregion

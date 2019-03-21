@@ -12,6 +12,8 @@
 
         Completed = 'C',
 
-        Error = 'E'
+        Error = 'E',
+
+        Incomplete = 'I'
     }
 }

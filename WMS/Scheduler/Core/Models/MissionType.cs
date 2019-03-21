@@ -2,6 +2,8 @@
 {
     public enum MissionType
     {
+        NotSpecified,
+
         Bypass = 'B',
 
         Inventory = 'I',

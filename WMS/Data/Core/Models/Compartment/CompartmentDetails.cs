@@ -4,8 +4,7 @@ using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class CompartmentDetails : BaseModel<int>,
-        ICanDelete
+    public class CompartmentDetails : BaseModel<int>
     {
         #region Fields
 
@@ -26,11 +25,6 @@ namespace Ferretto.WMS.Data.Core.Models
         #region Properties
 
         public int AllowedItemsCount { get; set; }
-
-        public bool CanDelete
-        {
-            get => !this.IsItemPairingFixed && this.Stock == 0;
-        }
 
         public string CompartmentStatusDescription { get; set; }
 
@@ -63,8 +57,6 @@ namespace Ferretto.WMS.Data.Core.Models
         public int? ItemId { get; set; }
 
         public string ItemMeasureUnit { get; set; }
-
-        public DateTime? LastHandlingDate { get; set; }
 
         public DateTime? LastPickDate { get; set; }
 

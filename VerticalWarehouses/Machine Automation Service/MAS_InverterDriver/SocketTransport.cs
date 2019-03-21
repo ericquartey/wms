@@ -110,7 +110,10 @@ namespace Ferretto.VW.InverterDriver
         /// <inheritdoc />
         public void Disconnect()
         {
-            if (!this.transportClient?.Connected ?? false) return;
+            if (!this.transportClient?.Connected ?? false)
+            {
+                return;
+            }
 
             this.transportStream?.Close();
             this.transportClient?.Close();
@@ -138,7 +141,7 @@ namespace Ferretto.VW.InverterDriver
             try
             {
                 var readBytes = await this.transportStream.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer.Length, stoppingToken);
-                byte[] receivedData = new byte[readBytes];
+                var receivedData = new byte[readBytes];
 
                 Array.Copy(this.receiveBuffer, receivedData, readBytes);
                 Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - ReadAsync:{BitConverter.ToString(receivedData)}");
@@ -166,7 +169,6 @@ namespace Ferretto.VW.InverterDriver
             try
             {
                 Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - WriteAsync:{BitConverter.ToString(inverterMessage)}");
-                await Task.Delay(50);
                 await this.transportStream.WriteAsync(inverterMessage, 0, inverterMessage.Length, stoppingToken);
             }
             catch (Exception ex)

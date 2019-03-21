@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Resources;
@@ -148,6 +149,15 @@ namespace Ferretto.Common.Controls
         public virtual void LoadRelatedData()
         {
             // do nothing. The derived classes can customize the behaviour
+        }
+
+        public void ShowErrorDialog(IAction action)
+        {
+            this.DialogService.ShowMessage(
+                action.Reason,
+                DesktopApp.ConfirmOperation,
+                DialogType.Warning,
+                DialogButtons.OK);
         }
 
         protected virtual bool CanExecuteRevertCommand()

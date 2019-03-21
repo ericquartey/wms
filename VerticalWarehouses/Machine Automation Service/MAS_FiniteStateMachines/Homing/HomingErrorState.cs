@@ -1,16 +1,22 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
     public class HomingErrorState : StateBase
     {
+        #region Fields
+
+        private readonly Axis axis;
+
+        #endregion
+
         #region Constructors
 
-        public HomingErrorState(IStateMachine parentMachine)
+        public HomingErrorState(IStateMachine parentMachine, Axis axis)
         {
             this.parentStateMachine = parentMachine;
+            this.axis = axis;
 
             //TEMP Notify the error condition all the world
             var newMessage = new NotificationMessage(null,
@@ -34,14 +40,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Methods
 
+        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            throw new NotImplementedException();
+            //TEMP Add your implementation code here
         }
 
+        /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            throw new NotImplementedException();
+            //TEMP Add your implementation code here
         }
 
         #endregion

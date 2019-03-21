@@ -51,7 +51,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 Id = 1,
                 ItemId = this.ItemFifo.Id,
-                RequiredQuantity = 10,
+                RequestedQuantity = 10,
                 ItemListId = listId,
                 Status = Common.DataModels.ItemListRowStatus.Waiting,
                 Priority = 3
@@ -61,7 +61,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 Id = 2,
                 ItemId = this.ItemFifo.Id,
-                RequiredQuantity = 10,
+                RequestedQuantity = 10,
                 ItemListId = listId,
                 Status = Common.DataModels.ItemListRowStatus.Waiting,
                 Priority = 1,
@@ -71,7 +71,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 Id = 3,
                 ItemId = this.ItemFifo.Id,
-                RequiredQuantity = 10,
+                RequestedQuantity = 10,
                 ItemListId = listId,
                 Status = Common.DataModels.ItemListRowStatus.Waiting,
                 Priority = 2
@@ -141,7 +141,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 "All requests should address the same bay.");
 
             Assert.AreEqual(
-                list1.ItemListRows.Sum(r => r.RequiredQuantity),
+                list1.ItemListRows.Sum(r => r.RequestedQuantity),
                 requests.Sum(r => r.RequestedQuantity),
                 "The total quantity recorded in the requests should be the same as the quantity reported in the list rows.");
 

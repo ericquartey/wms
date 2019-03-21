@@ -1,13 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.BusinessModels.Interfaces;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public class ItemListRow : BusinessObject,
-        ICanDelete, ICanBeExecuted
+    public class ItemListRow : BusinessObject
     {
         #region Fields
 
@@ -25,7 +23,7 @@ namespace Ferretto.Common.BusinessModels
 
         private string materialStatusDescription;
 
-        private int requiredQuantity;
+        private int requestedQuantity;
 
         private int rowPriority;
 
@@ -33,11 +31,7 @@ namespace Ferretto.Common.BusinessModels
 
         #region Properties
 
-        public bool CanBeExecuted => this.itemListRowStatus == ItemListRowStatus.Incomplete
-                    || this.itemListRowStatus == ItemListRowStatus.Suspended
-                    || this.itemListRowStatus == ItemListRowStatus.Waiting;
-
-        public bool CanDelete { get; set; }
+        public bool CanBeExecuted { get; set; }
 
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string Code { get => this.code; set => this.SetProperty(ref this.code, value); }
@@ -59,8 +53,8 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.MaterialStatus), ResourceType = typeof(BusinessObjects))]
         public string MaterialStatusDescription { get => this.materialStatusDescription; set => this.SetProperty(ref this.materialStatusDescription, value); }
 
-        [Display(Name = nameof(BusinessObjects.ItemListRowRequiredQuantity), ResourceType = typeof(BusinessObjects))]
-        public int RequiredQuantity { get => this.requiredQuantity; set => this.SetProperty(ref this.requiredQuantity, value); }
+        [Display(Name = nameof(BusinessObjects.ItemListRowRequestedQuantity), ResourceType = typeof(BusinessObjects))]
+        public int RequestedQuantity { get => this.requestedQuantity; set => this.SetProperty(ref this.requestedQuantity, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowPriority), ResourceType = typeof(BusinessObjects))]
         public int RowPriority { get => this.rowPriority; set => this.SetProperty(ref this.rowPriority, value); }

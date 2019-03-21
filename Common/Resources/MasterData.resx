@@ -506,6 +506,9 @@
   <data name="ItemListRowDeletedSuccessfully" xml:space="preserve">
     <value>Item List Row deleted successfully</value>
   </data>
+  <data name="ItemDeletedSuccessfully" xml:space="preserve">
+    <value>Item deleted sucessfully</value>
+  </data>
   <data name="Image" xml:space="preserve">
     <value>Image</value>
   </data>

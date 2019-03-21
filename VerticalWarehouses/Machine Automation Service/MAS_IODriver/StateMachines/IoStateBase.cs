@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
 
         ~IoStateBase()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion
@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
 
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -39,14 +39,16 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposed)
+            if (this.disposed)
+            {
                 return;
+            }
 
             if (disposing)
             {
             }
 
-            disposed = true;
+            this.disposed = true;
         }
 
         #endregion

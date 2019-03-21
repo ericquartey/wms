@@ -7,8 +7,7 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public sealed class CompartmentDetails : BusinessObject, ICompartment,
-        ICanDelete
+    public sealed class CompartmentDetails : BusinessObject, ICompartment
     {
         #region Fields
 
@@ -72,8 +71,6 @@ namespace Ferretto.Common.BusinessModels
 
         #region Properties
 
-        public bool CanDelete { get; set; }
-
         public IEnumerable<Enumeration> CompartmentStatusChoices
         {
             get => this.compartmentStatusChoices;
@@ -107,7 +104,7 @@ namespace Ferretto.Common.BusinessModels
         public DateTime CreationDate { get; set; }
 
         public override string Error => string.Join(Environment.NewLine, new[]
-                            {
+                                    {
                 this[nameof(this.XPosition)],
                 this[nameof(this.YPosition)],
                 this[nameof(this.Width)],
@@ -179,9 +176,6 @@ namespace Ferretto.Common.BusinessModels
             get => this.itemMeasureUnit;
             set => this.SetProperty(ref this.itemMeasureUnit, value);
         }
-
-        [Display(Name = nameof(BusinessObjects.CompartmentLastHandlingDate), ResourceType = typeof(BusinessObjects))]
-        public DateTime? LastHandlingDate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentLastPickDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastPickDate { get; set; }

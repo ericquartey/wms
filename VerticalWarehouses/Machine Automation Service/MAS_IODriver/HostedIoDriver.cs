@@ -8,6 +8,7 @@ using Ferretto.VW.Common_Utils.Exceptions;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_DataLayer;
+using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_IODriver.Interface;
 using Ferretto.VW.MAS_IODriver.StateMachines;
 using Ferretto.VW.MAS_IODriver.StateMachines.PowerUp;
@@ -131,8 +132,8 @@ namespace Ferretto.VW.MAS_IODriver
         {
             this.stoppingToken = stoppingToken;
 
-            var ioAddress = this.dataLayerValueManagment.GetIPAddressConfigurationValue(ConfigurationValueEnum.IoAddress);
-            var ioPort = this.dataLayerValueManagment.GetIntegerConfigurationValue(ConfigurationValueEnum.IoPort);
+            var ioAddress = this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetworkEnum.IOExpansion1, (long)ConfigurationCategoryValueEnum.SetupNetworkEnum);
+            var ioPort = this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetworkEnum.IOExpansion1Port, (long)ConfigurationCategoryValueEnum.SetupNetworkEnum);
 
             this.modbusTransport.Configure(ioAddress, ioPort);
 
@@ -176,7 +177,7 @@ namespace Ferretto.VW.MAS_IODriver
                 throw new IOException($"Exception: {ex.Message} Timer Creation Failed", ex);
             }
 
-            this.currentStateMachine = new PowerUpStateMachine(this.ioCommandQueue, this.eventAggregator);
+            this.currentStateMachine = new PowerUpStateMachine(this.ioCommandQueue, this.eventAggregator, this.logger);
             this.currentStateMachine.Start();
 
             do
@@ -196,6 +197,7 @@ namespace Ferretto.VW.MAS_IODriver
                     var errorNotification = new NotificationMessage(null, "I/O operation already in progress", MessageActor.Any,
                         MessageActor.IODriver, receivedMessage.Type, MessageStatus.OperationError, ErrorLevel.Error);
                     this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
+                    continue;
                 }
 
                 switch (receivedMessage.Type)

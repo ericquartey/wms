@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Utils.Expressions;
@@ -69,6 +70,16 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
+        public async Task<ActionModel> CanDeleteAsync(int id)
+        {
+            var action = await this.itemsDataService.CanDeleteAsync(id);
+            return new ActionModel
+            {
+                IsAllowed = action.IsAllowed,
+                Reason = action.Reason,
+            };
+        }
+
         public async Task<IOperationResult<ItemDetails>> CreateAsync(ItemDetails model)
         {
             if (model == null)
@@ -117,7 +128,19 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public Task<IOperationResult<ItemDetails>> DeleteAsync(int id) => throw new NotSupportedException();
+        public async Task<IOperationResult<ItemDetails>> DeleteAsync(int id)
+        {
+            try
+            {
+                await this.itemsDataService.DeleteAsync(id);
+
+                return new OperationResult<ItemDetails>(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<ItemDetails>(ex);
+            }
+        }
 
         public async Task<IEnumerable<Item>> GetAllAsync(
             int skip,

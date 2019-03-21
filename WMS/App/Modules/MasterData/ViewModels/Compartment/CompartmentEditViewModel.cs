@@ -44,7 +44,8 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Properties
 
         public ICommand DeleteCommand => this.deleteCommand ??
-            (this.deleteCommand = new DelegateCommand(async () => await this.ExecuteDeleteCommandAsync(), this.CanExecuteDeleteCommand));
+            (this.deleteCommand = new DelegateCommand(
+                async () => await this.ExecuteDeleteCommandAsync(), this.CanExecuteDeleteCommand));
 
         public bool ItemIdHasValue
         {
@@ -132,10 +133,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool CanExecuteDeleteCommand()
         {
-            return this.Model != null && this.Model.CanDelete;
+            return this.Model != null;
         }
 
-        private async Task ExecuteDeleteCommandAsync()
+        private async Task DeleteItemListRowAsync()
         {
             this.IsBusy = true;
 
@@ -167,6 +168,19 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.IsBusy = false;
+        }
+
+        private async Task ExecuteDeleteCommandAsync()
+        {
+            var deleteAction = await this.compartmentProvider.CanDeleteAsync(this.Model.Id);
+            if (deleteAction.IsAllowed)
+            {
+                await this.DeleteItemListRowAsync();
+            }
+            else
+            {
+                this.ShowErrorDialog(deleteAction);
+            }
         }
 
         private void LoadData()

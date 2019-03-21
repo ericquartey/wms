@@ -72,7 +72,7 @@
                               Content="{Binding ExecutionRequest.ItemListRowDetails.ItemDescription}" />
                 <wms:InfoText Grid.Row="0"
                               Grid.Column="1"
-                              Content="{Binding ExecutionRequest.ItemListRowDetails.RequiredQuantity}" />
+                              Content="{Binding ExecutionRequest.ItemListRowDetails.RequestedQuantity}" />
                 <wms:InfoText Grid.Row="1"
                               Grid.Column="1"
                               Content="{Binding ExecutionRequest.ItemListRowDetails.ItemListRowStatus}"

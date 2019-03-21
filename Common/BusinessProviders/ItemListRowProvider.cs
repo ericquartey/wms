@@ -40,6 +40,16 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
+        public async Task<ActionModel> CanDeleteAsync(int id)
+        {
+            var action = await this.itemListRowsDataService.CanDeleteAsync(id);
+            return new ActionModel
+            {
+                IsAllowed = action.IsAllowed,
+                Reason = action.Reason,
+            };
+        }
+
         public async Task<IOperationResult<ItemListRowDetails>> CreateAsync(ItemListRowDetails model)
         {
             if (model == null)
@@ -55,7 +65,7 @@ namespace Ferretto.Common.BusinessProviders
                     Code = model.Code,
                     RowPriority = model.RowPriority,
                     ItemId = model.ItemId,
-                    RequiredQuantity = model.RequiredQuantity,
+                    RequestedQuantity = model.RequestedQuantity,
                     DispatchedQuantity = model.DispatchedQuantity,
                     ItemListRowStatus = (WMS.Data.WebAPI.Contracts.ItemListRowStatus)model.ItemListRowStatus,
                     ItemDescription = model.ItemDescription,
@@ -133,13 +143,13 @@ namespace Ferretto.Common.BusinessProviders
                     Code = l.Code,
                     DispatchedQuantity = l.DispatchedQuantity,
                     ItemDescription = l.ItemDescription,
-                    ItemListRowStatus = (BusinessModels.ItemListRowStatus)l.ItemListRowStatus,
+                    ItemListRowStatus = (BusinessModels.ItemListRowStatus)l.Status,
                     ItemUnitMeasure = l.ItemUnitMeasure,
                     MaterialStatusDescription = l.MaterialStatusDescription,
-                    RequiredQuantity = l.RequiredQuantity,
+                    RequestedQuantity = l.RequestedQuantity,
                     RowPriority = l.RowPriority,
                     CreationDate = l.CreationDate,
-                    CanDelete = l.CanDelete,
+                    CanBeExecuted = l.CanBeExecuted,
                 });
         }
 
@@ -161,7 +171,7 @@ namespace Ferretto.Common.BusinessProviders
                 Code = itemListRow.Code,
                 RowPriority = itemListRow.RowPriority,
                 ItemId = itemListRow.ItemId,
-                RequiredQuantity = itemListRow.RequiredQuantity,
+                RequestedQuantity = itemListRow.RequestedQuantity,
                 DispatchedQuantity = itemListRow.DispatchedQuantity,
                 ItemListRowStatus = (BusinessModels.ItemListRowStatus)itemListRow.ItemListRowStatus,
                 ItemDescription = itemListRow.ItemDescription,
@@ -182,7 +192,7 @@ namespace Ferretto.Common.BusinessProviders
                 MaterialStatusChoices = materialStatusChoices,
                 PackageTypeChoices = packageTypeChoices,
                 ItemListId = itemListRow.ItemListId,
-                CanDelete = itemListRow.CanDelete,
+                CanBeExecuted = itemListRow.CanBeExecuted,
             };
         }
 
@@ -195,13 +205,13 @@ namespace Ferretto.Common.BusinessProviders
                     Code = l.Code,
                     RowPriority = l.RowPriority,
                     ItemDescription = l.ItemDescription,
-                    RequiredQuantity = l.RequiredQuantity,
+                    RequestedQuantity = l.RequestedQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
-                    ItemListRowStatus = (BusinessModels.ItemListRowStatus)l.ItemListRowStatus,
+                    ItemListRowStatus = (BusinessModels.ItemListRowStatus)l.Status,
                     MaterialStatusDescription = l.MaterialStatusDescription,
                     CreationDate = l.CreationDate,
                     ItemUnitMeasure = l.ItemUnitMeasure,
-                    CanDelete = l.CanDelete,
+                    CanBeExecuted = l.CanBeExecuted,
                 });
         }
 
@@ -244,7 +254,7 @@ namespace Ferretto.Common.BusinessProviders
                     Code = model.Code,
                     RowPriority = model.RowPriority,
                     ItemId = model.ItemId,
-                    RequiredQuantity = model.RequiredQuantity,
+                    RequestedQuantity = model.RequestedQuantity,
                     DispatchedQuantity = model.DispatchedQuantity,
                     ItemListRowStatus = (WMS.Data.WebAPI.Contracts.ItemListRowStatus)model.ItemListRowStatus,
                     ItemDescription = model.ItemDescription,

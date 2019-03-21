@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.VW.MAS_DataLayer.Migrations
 {
@@ -10,13 +11,14 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                 name: "ConfigurationValues",
                 columns: table => new
                 {
+                    CategoryName = table.Column<long>(nullable: false),
                     VarName = table.Column<long>(nullable: false),
                     VarType = table.Column<long>(nullable: false),
                     VarValue = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ConfigurationValues", x => x.VarName);
+                    table.PrimaryKey("PK_ConfigurationValues", x => new { x.CategoryName, x.VarName });
                 });
 
             migrationBuilder.CreateTable(
@@ -36,6 +38,30 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "LogEntries",
+                columns: table => new
+                {
+                    Data = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    Destination = table.Column<string>(nullable: true),
+                    ErrorLevel = table.Column<string>(nullable: true),
+                    Exception = table.Column<string>(nullable: true),
+                    Level = table.Column<string>(nullable: true),
+                    LogEntryID = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    LoggerName = table.Column<string>(nullable: true),
+                    Message = table.Column<string>(nullable: true),
+                    Source = table.Column<string>(nullable: true),
+                    Status = table.Column<string>(nullable: true),
+                    TimeStamp = table.Column<DateTime>(nullable: false),
+                    Type = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LogEntries", x => x.LogEntryID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RuntimeValues",
                 columns: table => new
                 {
@@ -46,19 +72,6 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RuntimeValues", x => x.VarName);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "StatusLogs",
-                columns: table => new
-                {
-                    LogMessage = table.Column<string>(nullable: true),
-                    StatusLogId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StatusLogs", x => x.StatusLogId);
                 });
 
             migrationBuilder.CreateTable(
@@ -112,13 +125,23 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
 
             migrationBuilder.InsertData(
                 table: "ConfigurationValues",
-                columns: new[] { "VarName", "VarType", "VarValue" },
-                values: new object[] { 8L, 3L, "169.254.231.248" });
+                columns: new[] { "CategoryName", "VarName", "VarType", "VarValue" },
+                values: new object[] { 0L, 2L, 5L, "169.254.231.248" });
 
             migrationBuilder.InsertData(
                 table: "ConfigurationValues",
-                columns: new[] { "VarName", "VarType", "VarValue" },
-                values: new object[] { 9L, 0L, "17221" });
+                columns: new[] { "CategoryName", "VarName", "VarType", "VarValue" },
+                values: new object[] { 0L, 17L, 2L, "17221" });
+
+            migrationBuilder.InsertData(
+                table: "ConfigurationValues",
+                columns: new[] { "CategoryName", "VarName", "VarType", "VarValue" },
+                values: new object[] { 0L, 4L, 5L, "169.254.231.10" });
+
+            migrationBuilder.InsertData(
+                table: "ConfigurationValues",
+                columns: new[] { "CategoryName", "VarName", "VarType", "VarValue" },
+                values: new object[] { 0L, 19L, 2L, "502" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cells_LoadingUnitId",
@@ -143,10 +166,10 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                 name: "FreeBlocks");
 
             migrationBuilder.DropTable(
-                name: "RuntimeValues");
+                name: "LogEntries");
 
             migrationBuilder.DropTable(
-                name: "StatusLogs");
+                name: "RuntimeValues");
 
             migrationBuilder.DropTable(
                 name: "LoadingUnits");

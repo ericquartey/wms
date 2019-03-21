@@ -26,6 +26,7 @@ namespace Ferretto.WMS.Data.WebAPI
             {
                 logBuilder.AddEventLog(new Microsoft.Extensions.Logging.EventLog.EventLogSettings { SourceName = "WMSDataService" });
             })
+            .UseApplicationInsights()
             .UseStartup<Startup>();
 
         public static void Main(string[] args)

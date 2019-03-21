@@ -132,6 +132,16 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
+        public async Task<ActionModel> CanDeleteAsync(int id)
+        {
+            var action = await this.compartmentsDataService.CanDeleteAsync(id);
+            return new ActionModel
+            {
+                IsAllowed = action.IsAllowed,
+                Reason = action.Reason,
+            };
+        }
+
         public async Task<IOperationResult<CompartmentDetails>> CreateAsync(CompartmentDetails model)
         {
             if (model == null)
@@ -259,7 +269,6 @@ namespace Ferretto.Common.BusinessProviders
                 ItemDescription = compartment.ItemDescription,
                 ItemId = compartment.ItemId,
                 ItemMeasureUnit = compartment.ItemMeasureUnit,
-                LastHandlingDate = compartment.LastHandlingDate,
                 LastPickDate = compartment.LastPickDate,
                 LastStoreDate = compartment.LastStoreDate,
                 LoadingUnit = loadingUnit,
@@ -281,7 +290,6 @@ namespace Ferretto.Common.BusinessProviders
                 Width = compartment.HasRotation ? compartment.Height : compartment.Width,
                 XPosition = compartment.XPosition,
                 YPosition = compartment.YPosition,
-                CanDelete = compartment.CanDelete,
             };
         }
 
@@ -323,7 +331,6 @@ namespace Ferretto.Common.BusinessProviders
                     ItemDescription = c.ItemDescription,
                     ItemId = c.ItemId,
                     ItemMeasureUnit = c.ItemMeasureUnit,
-                    LastHandlingDate = c.LastHandlingDate,
                     LastPickDate = c.LastPickDate,
                     LastStoreDate = c.LastStoreDate,
                     LoadingUnitCode = c.LoadingUnitCode,
@@ -392,7 +399,6 @@ namespace Ferretto.Common.BusinessProviders
                 InCycleCount = loadingUnit.InCycleCount,
                 InventoryDate = loadingUnit.InventoryDate,
                 IsCellPairingFixed = loadingUnit.IsCellPairingFixed,
-                LastHandlingDate = loadingUnit.LastHandlingDate,
                 LastPickDate = loadingUnit.LastPickDate,
                 LastStoreDate = loadingUnit.LastStoreDate,
                 Length = loadingUnit.Length,
@@ -474,7 +480,6 @@ namespace Ferretto.Common.BusinessProviders
                     ItemDescription = model.ItemDescription,
                     ItemId = model.ItemId,
                     ItemMeasureUnit = model.ItemMeasureUnit,
-                    LastHandlingDate = model.LastHandlingDate,
                     LastPickDate = model.LastPickDate,
                     LastStoreDate = model.LastStoreDate,
                     LoadingUnitCode = model.LoadingUnitCode,

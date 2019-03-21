@@ -75,7 +75,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             var mission1 = new Common.DataModels.Mission
             {
                 BayId = this.bay1.Id,
-                RequiredQuantity = 1,
+                RequestedQuantity = 1,
                 Status = Common.DataModels.MissionStatus.New
             };
 
@@ -84,7 +84,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 ItemId = this.itemFifo.Id,
                 LoadingUnitId = this.loadingUnit1.Id,
                 Stock = 10,
-                ReservedForPick = mission1.RequiredQuantity
+                ReservedForPick = mission1.RequestedQuantity
             };
 
             var request1 = new Common.DataModels.SchedulerRequest
@@ -157,7 +157,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 Id = 1,
                 BayId = this.bay1.Id,
-                RequiredQuantity = 1,
+                RequestedQuantity = 1,
                 Status = Common.DataModels.MissionStatus.New
             };
 
@@ -165,7 +165,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 Id = 2,
                 BayId = this.bay1.Id,
-                RequiredQuantity = 1,
+                RequestedQuantity = 1,
                 Status = Common.DataModels.MissionStatus.New
             };
 
@@ -175,7 +175,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 ItemId = this.itemFifo.Id,
                 LoadingUnitId = this.loadingUnit1.Id,
                 Stock = 100,
-                ReservedForPick = mission1.RequiredQuantity + mission2.RequiredQuantity
+                ReservedForPick = mission1.RequestedQuantity + mission2.RequestedQuantity
             };
 
             using (var context = this.CreateContext())

@@ -470,6 +470,9 @@
   <data name="ItemListRowDeletedSuccessfully" xml:space="preserve">
     <value>Riga lista rimossa con successo</value>
   </data>
+  <data name="ItemDeletedSuccessfully" xml:space="preserve">
+    <value>Articolo rimosso con successo</value>
+  </data>
   <data name="Image" xml:space="preserve">
     <value>Immagine</value>
   </data>
