@@ -177,10 +177,6 @@
     <value>First Store Date</value>
     <comment>Compartment - First Store Date</comment>
   </data>
-  <data name="CompartmentLastHandlingDate" xml:space="preserve">
-    <value>Last Handling Date</value>
-    <comment>Compartment - Last Handling Date</comment>
-  </data>
   <data name="CompartmentHeight" xml:space="preserve">
     <value>Height [mm]</value>
     <comment>Compartment - Height</comment>

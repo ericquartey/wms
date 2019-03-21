@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
@@ -23,7 +22,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 
         ~InverterStateMachineBase()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion
@@ -43,7 +42,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -66,14 +65,16 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposed)
+            if (this.disposed)
+            {
                 return;
+            }
 
             if (disposing)
             {
             }
 
-            disposed = true;
+            this.disposed = true;
         }
 
         #endregion

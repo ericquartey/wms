@@ -285,9 +285,6 @@
   <data name="LoadingUnitLength" xml:space="preserve">
     <value>Lunghezza [mm]</value>
   </data>
-  <data name="CompartmentLastHandlingDate" xml:space="preserve">
-    <value>Data Ultima Movimentazione</value>
-  </data>
   <data name="CompartmentIsItemPairingFixed" xml:space="preserve">
     <value>Abbinamento Fisso</value>
   </data>
