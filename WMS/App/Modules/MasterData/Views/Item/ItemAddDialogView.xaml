@@ -107,8 +107,7 @@
                 </GroupBox>
 
                 <GroupBox Grid.Row="1"
-                          Grid.Column="1"
-                          Margin="60,0,0,0"
+                          Grid.Column="0"
                           Header="{x:Static res:MasterData.WarehousingInformation}">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -164,7 +163,8 @@
                 </GroupBox>
 
                 <GroupBox Grid.Row="1"
-                          Grid.Column="0"
+                          Grid.Column="1"
+                          Margin="60,0,0,0"
                           Header="{x:Static res:MasterData.PhysicalInformation}">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -181,6 +181,7 @@
                                       Grid.Column="0"
                                       Margin="0,0,18,0"
                                       wms:ShowTitle.Show="True"
+                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                       EditValue="{Binding Path=Model.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       MinValue="1" />
                         <wms:SpinEdit Grid.Row="0"
@@ -200,6 +201,7 @@
                                       Grid.Column="0"
                                       Margin="0,0,18,0"
                                       wms:ShowTitle.Show="True"
+                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                       EditValue="{Binding Path=Model.Length, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       MinValue="1" />
                         <wms:SpinEdit Grid.Row="1"
@@ -213,6 +215,7 @@
                                       Grid.Column="0"
                                       Margin="0,0,18,0"
                                       wms:ShowTitle.Show="True"
+                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                       EditValue="{Binding Path=Model.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       MinValue="1" />
                         <wms:SpinEdit Grid.Row="2"

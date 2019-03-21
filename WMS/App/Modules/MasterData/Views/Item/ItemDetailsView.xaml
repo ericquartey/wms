@@ -35,7 +35,7 @@
         </Grid.ColumnDefinitions>
 
         <dxc:WaitIndicator Grid.Row="1"
-                           VerticalAlignment="Center"                          
+                           VerticalAlignment="Center"
                            Panel.ZIndex="1"
                            Content="{x:Static res:DesktopApp.Loading}"
                            DeferedVisibility="{Binding IsBusy}" />
@@ -202,6 +202,7 @@
                                       Grid.Column="0"
                                       Margin="0,0,18,0"
                                       wms:ShowTitle.Show="True"
+                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                       EditValue="{Binding Path=Model.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       MinValue="1" />
                         <wms:SpinEdit Grid.Row="0"
@@ -221,6 +222,7 @@
                                       Grid.Column="0"
                                       Margin="0,0,18,0"
                                       wms:ShowTitle.Show="True"
+                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                       EditValue="{Binding Path=Model.Length, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       MinValue="1" />
                         <wms:SpinEdit Grid.Row="1"
@@ -234,6 +236,7 @@
                                       Grid.Column="0"
                                       Margin="0,0,18,0"
                                       wms:ShowTitle.Show="True"
+                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                       EditValue="{Binding Path=Model.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       MinValue="1" />
                         <wms:SpinEdit Grid.Row="2"
