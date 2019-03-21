@@ -146,7 +146,7 @@ namespace MAS_DataLayerUnitTests
         //}
 
         //[TestMethod]
-        //[ExpectedException(typeof(InMemoryDataLayerException))]
+        //[ExpectedException(typeof(DataLayerException))]
         //public void TestErrorLoadFilesJson()
         //{
         //    // INFO Arrange - Empty

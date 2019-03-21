@@ -12,8 +12,8 @@
 
         String,
 
-        IPAddressType,
+        IPAddress,
 
-        UndefinedType
+        Undefined
     }
 }

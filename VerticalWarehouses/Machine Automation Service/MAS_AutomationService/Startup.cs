@@ -25,7 +25,9 @@ namespace Ferretto.VW.MAS_AutomationService
     {
         #region Fields
 
-        private const string ConnectionStringName = "AutomationService";
+        private const string PrimaryConnectionStringName = "AutomationServicePrimary";
+
+        private const string SecondaryConnectionStringName = "AutomationServiceSecondary";
 
         #endregion
 
@@ -69,11 +71,11 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSignalR();
 
             DataLayerConfiguration dataLayerConfiguration = new DataLayerConfiguration(
-                this.Configuration.GetConnectionString(ConnectionStringName),
+                this.Configuration.GetConnectionString(SecondaryConnectionStringName),
                 this.Configuration.GetValue<string>("Vertimag:DataLayer:ConfigurationFile")
             );
 
-            services.AddDbContext<DataLayerContext>(options => options.UseInMemoryDatabase("InMemoryWorkingDB"),
+            services.AddDbContext<DataLayerContext>(options => options.UseSqlite(this.Configuration.GetConnectionString(PrimaryConnectionStringName)),
                 ServiceLifetime.Singleton);
 
             services.AddSingleton<IEventAggregator, EventAggregator>();

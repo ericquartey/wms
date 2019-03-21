@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,7 +11,6 @@ using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -33,13 +31,15 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private readonly IOptions<FilesInfo> filesInfo;
 
-        private readonly DataLayerContext inMemoryDataContext;
-
         private readonly ILogger logger;
 
         private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
 
         private readonly Task notificationReceiveTask;
+
+        private readonly DataLayerContext primaryDataContext;
+
+        private readonly DataLayerContext secondaryDataContext;
 
         private CancellationToken stoppingToken;
 
@@ -47,9 +47,9 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Constructors
 
-        public DataLayer(DataLayerConfiguration dataLayerConfiguration, DataLayerContext inMemoryDataContext, IEventAggregator eventAggregator, IOptions<FilesInfo> filesInfo, ILogger<DataLayer> logger)
+        public DataLayer(DataLayerConfiguration dataLayerConfiguration, DataLayerContext primaryDataContext, IEventAggregator eventAggregator, IOptions<FilesInfo> filesInfo, ILogger<DataLayer> logger)
         {
-            if (inMemoryDataContext == null)
+            if (primaryDataContext == null)
             {
                 throw new ArgumentNullException();
             }
@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 throw new ArgumentNullException();
             }
 
-            this.inMemoryDataContext = inMemoryDataContext;
+            this.primaryDataContext = primaryDataContext;
 
             this.eventAggregator = eventAggregator;
 
@@ -77,23 +77,12 @@ namespace Ferretto.VW.MAS_DataLayer
 
             this.logger = logger;
 
-            using (var initialContext = new DataLayerContext(
-                new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(dataLayerConfiguration.ConnectionString).Options))
-            {
-                initialContext.Database.Migrate();
+            this.secondaryDataContext = new DataLayerContext(new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(dataLayerConfiguration.SecondaryConnectionString).Options);
 
-                if (!initialContext.ConfigurationValues.Any())
-                {
-                }
-                this.LoadConfigurationValuesInfo(dataLayerConfiguration.ConfigurationFilePath);
+            this.primaryDataContext.Database.Migrate();
+            this.secondaryDataContext.Database.Migrate();
 
-                foreach (var configurationValue in initialContext.ConfigurationValues)
-                {
-                    this.inMemoryDataContext.ConfigurationValues.Add(configurationValue);
-                }
-
-                this.inMemoryDataContext.SaveChanges();
-            }
+            this.LoadConfigurationValuesInfo(dataLayerConfiguration.ConfigurationFilePath);
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
 
@@ -140,11 +129,11 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <summary>
         /// FAKE constructor to be used EXCLUSIVELLY for unit testing
         /// </summary>
-        /// <param name="inMemoryDataContext"></param>
+        /// <param name="dataContext"></param>
         /// <param name="eventAggregator"></param>
-        public DataLayer(DataLayerContext inMemoryDataContext, IEventAggregator eventAggregator, IOptions<FilesInfo> filesInfo)
+        public DataLayer(DataLayerContext dataContext, IEventAggregator eventAggregator, IOptions<FilesInfo> filesInfo)
         {
-            if (inMemoryDataContext == null)
+            if (dataContext == null)
             {
                 throw new ArgumentNullException();
             }
@@ -159,7 +148,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 throw new ArgumentNullException();
             }
 
-            this.inMemoryDataContext = inMemoryDataContext;
+            this.primaryDataContext = dataContext;
 
             this.eventAggregator = eventAggregator;
 
@@ -466,7 +455,7 @@ namespace Ferretto.VW.MAS_DataLayer
                         break;
                 }
 
-                await this.inMemoryDataContext.SaveChangesAsync(this.stoppingToken);
+                await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
             } while (!this.stoppingToken.IsCancellationRequested);
         }
 
@@ -492,7 +481,7 @@ namespace Ferretto.VW.MAS_DataLayer
                         break;
                 }
 
-                await this.inMemoryDataContext.SaveChangesAsync(this.stoppingToken);
+                await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
             } while (!this.stoppingToken.IsCancellationRequested);
         }
 
@@ -504,27 +493,47 @@ namespace Ferretto.VW.MAS_DataLayer
                 throw new DataLayerException($"Invalid configuration data type: {jsonDataValue.Type.ToString()} for data {configurationData} in section {elementCategory} found in configuration file");
             }
 
-            switch (generalInfoDataType)
+            try
             {
-                case DataType.Boolean:
-                    SetBoolConfigurationValue(configurationData, (long)elementCategory, jsonDataValue.Value<bool>());
-                    break;
+                switch (generalInfoDataType)
+                {
+                    case DataType.Boolean:
+                        SetBoolConfigurationValue(configurationData, (long)elementCategory,
+                            jsonDataValue.Value<bool>());
+                        break;
 
-                case DataType.Date:
-                    SetDateTimeConfigurationValue(configurationData, (long)elementCategory, jsonDataValue.Value<DateTime>());
-                    break;
+                    case DataType.Date:
+                        SetDateTimeConfigurationValue(configurationData, (long)elementCategory,
+                            jsonDataValue.Value<DateTime>());
+                        break;
 
-                case DataType.Integer:
-                    SetIntegerConfigurationValue(configurationData, (long)elementCategory, jsonDataValue.Value<int>());
-                    break;
+                    case DataType.Integer:
+                        SetIntegerConfigurationValue(configurationData, (long)elementCategory,
+                            jsonDataValue.Value<int>());
+                        break;
 
-                case DataType.Float:
-                    SetDecimalConfigurationValue(configurationData, (long)elementCategory, jsonDataValue.Value<decimal>());
-                    break;
+                    case DataType.Float:
+                        SetDecimalConfigurationValue(configurationData, (long)elementCategory,
+                            jsonDataValue.Value<decimal>());
+                        break;
 
-                case DataType.String:
-                    SetStringConfigurationValue(configurationData, (long)elementCategory, jsonDataValue.Value<string>());
-                    break;
+                    case DataType.String:
+                        string stringValue = jsonDataValue.Value<string>();
+                        if (IPAddress.TryParse(stringValue, out IPAddress configurationValue))
+                        {
+                            SetIPAddressConfigurationValue(configurationData, (long)elementCategory, configurationValue);
+                        }
+                        else
+                        {
+                            SetStringConfigurationValue(configurationData, (long)elementCategory, stringValue);
+                        }
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogCritical($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}");
+                throw new DataLayerException($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}", DataLayerExceptionEnum.SaveData, ex);
             }
         }
 
