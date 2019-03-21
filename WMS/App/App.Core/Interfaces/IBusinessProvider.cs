@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 
-namespace Ferretto.Common.BusinessProviders
+namespace Ferretto.WMS.App.Core.Interfaces
 {
 #pragma warning disable S2436 // Types and methods should not have too many generic parameters - this interface is soon going to be dismissed
 

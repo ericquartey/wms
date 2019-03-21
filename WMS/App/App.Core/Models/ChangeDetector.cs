@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 
-namespace Ferretto.Common.BusinessModels
+namespace Ferretto.WMS.App.Core.Models
 {
     public sealed class ChangeDetector<T> : IDisposable
         where T : BusinessObject, ICloneable, INotifyPropertyChanged

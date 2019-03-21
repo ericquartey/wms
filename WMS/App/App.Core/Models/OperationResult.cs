@@ -1,6 +1,6 @@
 ﻿using Ferretto.Common.BLL.Interfaces;
 
-namespace Ferretto.Common.BusinessModels
+namespace Ferretto.WMS.App.Core.Models
 {
     public class OperationResult<TModel> : IOperationResult<TModel>
     {

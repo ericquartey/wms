@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.App.Core.Interfaces;
+using Ferretto.WMS.App.Core.Models;
 
-namespace Ferretto.Common.BusinessProviders
+namespace Ferretto.WMS.App.Core.Providers
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Major Code Smell",
@@ -213,7 +214,7 @@ namespace Ferretto.Common.BusinessProviders
                 {
                     CompartmentStatusDescription = c.CompartmentStatusDescription,
                     CompartmentTypeDescription = string.Format(
-                        Resources.MasterData.CompartmentTypeListFormatReduced,
+                        Common.Resources.MasterData.CompartmentTypeListFormatReduced,
                         c.HasRotation ? c.Width : c.Height,
                         c.HasRotation ? c.Height : c.Width),
                     Id = c.Id,

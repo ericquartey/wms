@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BusinessModels;
+using Ferretto.WMS.App.Core.Models;
 
-namespace Ferretto.Common.BusinessProviders
+namespace Ferretto.WMS.App.Core.Providers
 {
     public class CompartmentTypeProvider : ICompartmentTypeProvider
     {
@@ -59,7 +59,7 @@ namespace Ferretto.Common.BusinessProviders
         public async Task<IEnumerable<Enumeration>> GetAllAsync()
         {
             return (await this.compartmentTypesDataService.GetAllAsync())
-                .Select(c => new Enumeration(c.Id, string.Format(Resources.MasterData.CompartmentTypeListFormat, c.Width, c.Height)));
+                .Select(c => new Enumeration(c.Id, string.Format(Common.Resources.MasterData.CompartmentTypeListFormat, c.Width, c.Height)));
         }
 
         public async Task<int> GetAllCountAsync()

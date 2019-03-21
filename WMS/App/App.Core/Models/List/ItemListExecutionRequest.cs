@@ -4,18 +4,24 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Ferretto.Common.Resources;
 
-namespace Ferretto.Common.BusinessModels
+namespace Ferretto.WMS.App.Core.Models
 {
     public class ItemListExecutionRequest : BusinessObject
     {
         #region Fields
 
         private IEnumerable<Area> areaChoices;
+
         private int? areaId;
+
         private bool areaIdHasValue;
+
         private IEnumerable<Bay> bayChoices;
+
         private int? bayId;
+
         private ItemListDetails itemListDetails;
+
         private bool schedule;
 
         #endregion

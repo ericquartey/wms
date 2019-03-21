@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
 
-namespace Ferretto.Common.BusinessModels
+namespace Ferretto.WMS.App.Core.Models
 {
     public sealed class Machine : BusinessObject
     {
@@ -56,10 +56,7 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.MachineInstallationDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? InstallationDate { get; set; }
 
-        public bool IsOnLine
-        {
-            get => this.Status != MachineStatus.Offline;
-        }
+        public bool IsOnLine => this.Status != MachineStatus.Offline;
 
         [Display(Name = nameof(BusinessObjects.MachineLastPowerOn), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastPowerOn { get; set; }

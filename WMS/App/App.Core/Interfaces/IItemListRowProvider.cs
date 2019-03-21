@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Providers;
-using Ferretto.Common.BusinessModels;
+using Ferretto.WMS.App.Core.Models;
 
-namespace Ferretto.Common.BusinessProviders
+namespace Ferretto.WMS.App.Core.Interfaces
 {
     public interface IItemListRowProvider :
         IPagedBusinessProvider<ItemListRow, int>,
@@ -19,7 +19,7 @@ namespace Ferretto.Common.BusinessProviders
 
         Task<IOperationResult<ItemListRow>> ExecuteImmediatelyAsync(int listRowId, int areaId, int bayId);
 
-        Task<IEnumerable<BusinessModels.ItemListRow>> GetByItemListIdAsync(int id);
+        Task<IEnumerable<ItemListRow>> GetByItemListIdAsync(int id);
 
         Task<IOperationResult<ItemListRow>> ScheduleForExecutionAsync(int listRowId, int areaId);
 

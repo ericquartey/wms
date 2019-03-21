@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Linq;
 using Ferretto.Common.Resources;
 
-namespace Ferretto.Common.BusinessModels
+namespace Ferretto.WMS.App.Core.Models
 {
     public sealed class LoadingUnitDetails : BusinessObject
     {
@@ -361,7 +361,7 @@ namespace Ferretto.Common.BusinessModels
             }
             else
             {
-                throw new ArgumentException(string.Format(Resources.Errors.LoadingUnitOverlappingCompartment, compartmentDetails.Id, this.Id));
+                throw new ArgumentException(string.Format(Common.Resources.Errors.LoadingUnitOverlappingCompartment, compartmentDetails.Id, this.Id));
             }
         }
 

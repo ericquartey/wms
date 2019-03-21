@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Ferretto.Common.BusinessModels;
+using Ferretto.WMS.App.Core.Interfaces;
+using Ferretto.WMS.App.Core.Models;
 
-namespace Ferretto.Common.BusinessProviders
+namespace Ferretto.WMS.App.Core.Providers
 {
     public class AisleProvider : IAisleProvider
     {

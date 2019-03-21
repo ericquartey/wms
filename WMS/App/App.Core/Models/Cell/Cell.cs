@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
 
-namespace Ferretto.Common.BusinessModels
+namespace Ferretto.WMS.App.Core.Models
 {
     public sealed class Cell : BusinessObject
     {
@@ -15,6 +15,9 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(BusinessObjects.Area), ResourceType = typeof(BusinessObjects))]
         public string AreaName { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.CellType), ResourceType = typeof(BusinessObjects))]
+        public string CellTypeDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellColumn), ResourceType = typeof(BusinessObjects))]
         public int? Column { get; set; }
@@ -39,9 +42,6 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(BusinessObjects.CellStatus), ResourceType = typeof(BusinessObjects))]
         public string Status { get; set; }
-
-        [Display(Name = nameof(BusinessObjects.CellType), ResourceType = typeof(BusinessObjects))]
-        public string CellTypeDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellXCoordinate), ResourceType = typeof(BusinessObjects))]
         public int? XCoordinate { get; set; }

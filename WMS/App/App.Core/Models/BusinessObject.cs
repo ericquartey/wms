@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Resources;
 
-namespace Ferretto.Common.BusinessModels
+namespace Ferretto.WMS.App.Core.Models
 {
     public class BusinessObject : BindableBase, ICloneable, IModel<int>
     {
@@ -32,7 +32,7 @@ namespace Ferretto.Common.BusinessModels
             {
                 if (!this.IsRequiredValid(columnName))
                 {
-                    return string.Format(Resources.Errors.PropertyIsRequired, columnName);
+                    return string.Format(Common.Resources.Errors.PropertyIsRequired, columnName);
                 }
 
                 return string.Empty;

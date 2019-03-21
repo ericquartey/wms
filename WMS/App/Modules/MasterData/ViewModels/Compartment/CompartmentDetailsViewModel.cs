@@ -5,10 +5,10 @@ using CommonServiceLocator;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BusinessModels;
-using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
+using Ferretto.WMS.App.Core.Interfaces;
+using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Modules.BLL;
 
 namespace Ferretto.WMS.Modules.MasterData

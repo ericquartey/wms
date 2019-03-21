@@ -1,8 +1,7 @@
-﻿using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Providers;
-using Ferretto.Common.BusinessModels;
+﻿using Ferretto.Common.BLL.Interfaces.Providers;
+using Ferretto.WMS.App.Core.Models;
 
-namespace Ferretto.Common.BusinessProviders
+namespace Ferretto.WMS.App.Core.Interfaces
 {
     public interface ISchedulerRequestProvider :
         IPagedBusinessProvider<SchedulerRequest, int>,

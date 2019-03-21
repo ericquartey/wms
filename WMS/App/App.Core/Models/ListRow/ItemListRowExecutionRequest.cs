@@ -4,18 +4,24 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Ferretto.Common.Resources;
 
-namespace Ferretto.Common.BusinessModels
+namespace Ferretto.WMS.App.Core.Models
 {
     public class ItemListRowExecutionRequest : BusinessObject
     {
         #region Fields
 
         private IEnumerable<Area> areaChoices;
+
         private int? areaId;
+
         private bool areaIdHasValue;
+
         private IEnumerable<Bay> bayChoices;
+
         private int? bayId;
+
         private ItemListRowDetails itemListRowDetails;
+
         private bool schedule;
 
         #endregion
@@ -100,7 +106,7 @@ namespace Ferretto.Common.BusinessModels
                         if (this.areaId.HasValue == false ||
                             this.areaId.Value == 0)
                         {
-                            return Resources.BusinessObjects.ItemListExecutionAreaInvalidError;
+                            return Common.Resources.BusinessObjects.ItemListExecutionAreaInvalidError;
                         }
 
                         break;
@@ -109,7 +115,7 @@ namespace Ferretto.Common.BusinessModels
                         if ((this.bayId.HasValue == false ||
                             this.bayId.Value == 0) && !this.schedule)
                         {
-                            return Resources.BusinessObjects.ItemListExecutionBayInvalidError;
+                            return Common.Resources.BusinessObjects.ItemListExecutionBayInvalidError;
                         }
 
                         break;

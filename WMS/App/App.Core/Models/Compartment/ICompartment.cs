@@ -1,6 +1,6 @@
 ﻿using Ferretto.Common.BLL.Interfaces.Models;
 
-namespace Ferretto.Common.BusinessModels
+namespace Ferretto.WMS.App.Core.Models
 {
     public interface ICompartment : IModel<int>
     {

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.App.Core.Interfaces;
+using Ferretto.WMS.App.Core.Models;
 
-namespace Ferretto.Common.BusinessProviders
+namespace Ferretto.WMS.App.Core.Providers
 {
     public class ItemListRowProvider : IItemListRowProvider
     {
@@ -129,7 +130,7 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public async Task<IEnumerable<BusinessModels.ItemListRow>> GetAllAsync(
+        public async Task<IEnumerable<ItemListRow>> GetAllAsync(
             int skip,
             int take,
             IEnumerable<SortOption> orderBySortOptions = null,
@@ -137,13 +138,13 @@ namespace Ferretto.Common.BusinessProviders
             string searchString = null)
         {
             return (await this.itemListRowsDataService.GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString))
-                .Select(l => new BusinessModels.ItemListRow
+                .Select(l => new ItemListRow
                 {
                     Id = l.Id,
                     Code = l.Code,
                     DispatchedQuantity = l.DispatchedQuantity,
                     ItemDescription = l.ItemDescription,
-                    ItemListRowStatus = (BusinessModels.ItemListRowStatus)l.Status,
+                    ItemListRowStatus = (ItemListRowStatus)l.Status,
                     ItemUnitMeasure = l.ItemUnitMeasure,
                     MaterialStatusDescription = l.MaterialStatusDescription,
                     RequestedQuantity = l.RequestedQuantity,
@@ -173,7 +174,7 @@ namespace Ferretto.Common.BusinessProviders
                 ItemId = itemListRow.ItemId,
                 RequestedQuantity = itemListRow.RequestedQuantity,
                 DispatchedQuantity = itemListRow.DispatchedQuantity,
-                ItemListRowStatus = (BusinessModels.ItemListRowStatus)itemListRow.ItemListRowStatus,
+                ItemListRowStatus = (ItemListRowStatus)itemListRow.ItemListRowStatus,
                 ItemDescription = itemListRow.ItemDescription,
                 CreationDate = itemListRow.CreationDate,
                 ItemListCode = itemListRow.ItemListCode,
@@ -196,10 +197,10 @@ namespace Ferretto.Common.BusinessProviders
             };
         }
 
-        public async Task<IEnumerable<BusinessModels.ItemListRow>> GetByItemListIdAsync(int id)
+        public async Task<IEnumerable<ItemListRow>> GetByItemListIdAsync(int id)
         {
             return (await this.itemListsDataService.GetRowsAsync(id))
-                .Select(l => new BusinessModels.ItemListRow
+                .Select(l => new ItemListRow
                 {
                     Id = l.Id,
                     Code = l.Code,
@@ -207,7 +208,7 @@ namespace Ferretto.Common.BusinessProviders
                     ItemDescription = l.ItemDescription,
                     RequestedQuantity = l.RequestedQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
-                    ItemListRowStatus = (BusinessModels.ItemListRowStatus)l.Status,
+                    ItemListRowStatus = (ItemListRowStatus)l.Status,
                     MaterialStatusDescription = l.MaterialStatusDescription,
                     CreationDate = l.CreationDate,
                     ItemUnitMeasure = l.ItemUnitMeasure,

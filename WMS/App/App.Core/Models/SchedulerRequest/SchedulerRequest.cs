@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 using Ferretto.Common.Resources;
 
-namespace Ferretto.Common.BusinessModels
+namespace Ferretto.WMS.App.Core.Models
 {
     public class SchedulerRequest : BusinessObject
     {
@@ -19,10 +17,10 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get; set; }
 
-        [Display(Name = nameof(Scheduler.DispatchedQuantity), ResourceType = typeof(Scheduler))]
+        [Display(Name = nameof(Common.Resources.Scheduler.DispatchedQuantity), ResourceType = typeof(Common.Resources.Scheduler))]
         public int DispatchedQuantity { get; set; }
 
-        [Display(Name = nameof(Scheduler.IsInstant), ResourceType = typeof(Scheduler))]
+        [Display(Name = nameof(Common.Resources.Scheduler.IsInstant), ResourceType = typeof(Common.Resources.Scheduler))]
         public bool IsInstant { get; set; }
 
         [Display(Name = nameof(BusinessObjects.Item), ResourceType = typeof(BusinessObjects))]
@@ -37,7 +35,7 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.ItemList), ResourceType = typeof(BusinessObjects))]
         public string ListDescription { get; set; }
 
-        [Display(Name = nameof(Scheduler.ItemListRow), ResourceType = typeof(Scheduler))]
+        [Display(Name = nameof(Common.Resources.Scheduler.ItemListRow), ResourceType = typeof(Common.Resources.Scheduler))]
         public string ListRowDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnit), ResourceType = typeof(BusinessObjects))]

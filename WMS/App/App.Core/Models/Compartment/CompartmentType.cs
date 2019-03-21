@@ -1,4 +1,4 @@
-﻿namespace Ferretto.Common.BusinessModels
+﻿namespace Ferretto.WMS.App.Core.Models
 {
     public sealed class CompartmentType : BusinessObject
     {

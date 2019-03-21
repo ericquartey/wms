@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ferretto.Common.BLL.Interfaces.Models;
+﻿using Ferretto.Common.BLL.Interfaces.Models;
 
-namespace Ferretto.Common.BusinessModels
+namespace Ferretto.WMS.App.Core.Models
 {
     public class ActionModel : IAction
     {

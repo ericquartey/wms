@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ferretto.Common.BusinessModels
+namespace Ferretto.WMS.App.Core.Models
 {
     public interface IFilter
     {

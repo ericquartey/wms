@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
 
-namespace Ferretto.Common.BusinessModels
+namespace Ferretto.WMS.App.Core.Models
 {
     public class Mission : BusinessObject
     {
@@ -14,13 +14,13 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(MasterData.CellInformation), ResourceType = typeof(MasterData))]
         public string CellDescription { get; set; }
 
-        [Display(Name = nameof(Scheduler.CompartmentType), ResourceType = typeof(Scheduler))]
+        [Display(Name = nameof(Common.Resources.Scheduler.CompartmentType), ResourceType = typeof(Common.Resources.Scheduler))]
         public string CompartmentType { get; set; }
 
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get; set; }
 
-        [Display(Name = nameof(Scheduler.DispatchedQuantity), ResourceType = typeof(Scheduler))]
+        [Display(Name = nameof(Common.Resources.Scheduler.DispatchedQuantity), ResourceType = typeof(Common.Resources.Scheduler))]
         public int DispatchedQuantity { get; set; }
 
         [Display(Name = nameof(BusinessObjects.Item), ResourceType = typeof(BusinessObjects))]

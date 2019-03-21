@@ -4,17 +4,22 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Ferretto.Common.Resources;
 
-namespace Ferretto.Common.BusinessModels
+namespace Ferretto.WMS.App.Core.Models
 {
     public sealed class ItemWithdraw : BusinessObject
     {
         #region Fields
 
         private IEnumerable<Area> areaChoices;
+
         private int? areaId;
+
         private IEnumerable<Bay> bayChoices;
+
         private int? bayId;
+
         private ItemDetails itemDetails;
+
         private int quantity;
 
         #endregion
