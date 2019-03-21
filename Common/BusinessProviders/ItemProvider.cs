@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
@@ -9,6 +11,12 @@ using Ferretto.Common.Utils.Expressions;
 
 namespace Ferretto.Common.BusinessProviders
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Major Code Smell",
+        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
+        Justification = "Ok",
+        Scope = "type",
+        Target = "~T:Ferretto.Common.BusinessProviders.ItemProvider")]
     public class ItemProvider : IItemProvider
     {
         #region Fields
@@ -17,7 +25,7 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly WMS.Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService;
 
-        private readonly IImageProvider imageProvider;
+        private readonly IImageFileProvider imageFileProvider;
 
         private readonly IItemCategoryProvider itemCategoryProvider;
 
@@ -30,19 +38,19 @@ namespace Ferretto.Common.BusinessProviders
         #region Constructors
 
         public ItemProvider(
-            IImageProvider imageProvider,
             WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService,
             WMS.Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService,
             IAbcClassProvider abcClassProvider,
             IItemCategoryProvider itemCategoryProvider,
-            IMeasureUnitProvider measureUnitProvider)
+            IMeasureUnitProvider measureUnitProvider,
+            IImageFileProvider imageFileProvider)
         {
             this.itemsDataService = itemsDataService;
             this.compartmentsDataService = compartmentsDataService;
-            this.imageProvider = imageProvider;
             this.abcClassProvider = abcClassProvider;
             this.itemCategoryProvider = itemCategoryProvider;
             this.measureUnitProvider = measureUnitProvider;
+            this.imageFileProvider = imageFileProvider;
         }
 
         #endregion
@@ -70,6 +78,8 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
+                var fileNameImage = model.ImagePath != null ? await this.SaveImageAsync(model.ImagePath) : null;
+
                 var item = await this.itemsDataService.CreateAsync(new WMS.Data.WebAPI.Contracts.ItemDetails
                 {
                     AbcClassId = model.AbcClassId,
@@ -79,7 +89,7 @@ namespace Ferretto.Common.BusinessProviders
                     FifoTimePick = model.FifoTimePick,
                     FifoTimeStore = model.FifoTimeStore,
                     Height = model.Height,
-                    Image = model.Image,
+                    Image = fileNameImage,
                     InventoryDate = model.InventoryDate,
                     InventoryTolerance = model.InventoryTolerance,
                     ItemCategoryId = model.ItemCategoryId,
@@ -245,6 +255,12 @@ namespace Ferretto.Common.BusinessProviders
             {
                 var originalItem = await this.itemsDataService.GetByIdAsync(model.Id);
 
+                var fileNameImage = model.Image;
+                if (originalItem.Image != model.Image)
+                {
+                    fileNameImage = await this.SaveImageAsync(model.ImagePath);
+                }
+
                 await this.itemsDataService.UpdateAsync(new WMS.Data.WebAPI.Contracts.ItemDetails
                 {
                     AbcClassId = model.AbcClassId,
@@ -256,7 +272,7 @@ namespace Ferretto.Common.BusinessProviders
                     FifoTimeStore = model.FifoTimeStore,
                     Height = model.Height,
                     Id = model.Id,
-                    Image = model.Image,
+                    Image = fileNameImage,
                     InventoryDate = model.InventoryDate,
                     InventoryTolerance = model.InventoryTolerance,
                     ItemCategoryId = model.ItemCategoryId,
@@ -273,11 +289,6 @@ namespace Ferretto.Common.BusinessProviders
                     StoreTolerance = model.StoreTolerance,
                     Width = model.Width,
                 });
-
-                if (originalItem.Image != model.Image)
-                {
-                    this.SaveImage(model.ImagePath);
-                }
 
                 return new OperationResult<ItemDetails>(true);
             }
@@ -319,9 +330,32 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        private void SaveImage(string imagePath)
+        private static long GetFileSize(string filePath)
         {
-            this.imageProvider.SaveImage(imagePath);
+            // if you don't have permission to the folder, Directory.Exists will return False
+            if (!Directory.Exists(Path.GetDirectoryName(filePath)))
+            {
+                // if you land here, it means you don't have permission to the folder
+                Debug.Write("Permission denied");
+                return -1;
+            }
+            else if (File.Exists(filePath))
+            {
+                return new FileInfo(filePath).Length;
+            }
+
+            return 0;
+        }
+
+        private async Task<string> SaveImageAsync(string imagePath)
+        {
+            var imageFile = new ImageFile
+            {
+                Stream = new FileStream(imagePath, FileMode.Open),
+                Length = GetFileSize(imagePath),
+                FileName = Path.GetFileName(imagePath),
+            };
+            return await this.imageFileProvider.UploadAsync(imageFile);
         }
 
         #endregion

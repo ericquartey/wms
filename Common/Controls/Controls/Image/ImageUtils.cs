@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,25 +16,24 @@ namespace Ferretto.Common.Controls
     {
         #region Methods
 
-        public static ImageSource GetImage(IImageProvider imageService, string path)
+        public static async Task<ImageSource> GetImageAsync(IImageFileProvider imageService, string path)
         {
-            using (Stream imageStream = imageService.GetImage(path))
-            {
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.StreamSource = imageStream;
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.EndInit();
-                bitmap.Freeze();
+            var imageFile = await imageService.DownloadAsync(path);
 
-                return bitmap;
-            }
+            var imageStream = imageFile.Stream;
+
+            BitmapImage bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.StreamSource = imageStream;
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.EndInit();
+            return bitmap;
         }
 
-        public static ImageSource RetrieveImage(IImageProvider imageService, string imagePath)
+        public static async Task<ImageSource> RetrieveImage(IImageFileProvider imageService, string imagePath)
         {
             return !string.IsNullOrWhiteSpace(imagePath)
-                ? ImageUtils.GetImage(imageService, imagePath)
+                ? await ImageUtils.GetImageAsync(imageService, imagePath)
                 : null;
         }
 
