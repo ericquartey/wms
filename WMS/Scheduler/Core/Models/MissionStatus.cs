@@ -2,6 +2,8 @@
 {
     public enum MissionStatus
     {
+        NotSpecified,
+
         New = 'N',
 
         Waiting = 'W',
@@ -10,6 +12,8 @@
 
         Completed = 'C',
 
-        Error = 'E'
+        Error = 'E',
+
+        Incomplete = 'I'
     }
 }

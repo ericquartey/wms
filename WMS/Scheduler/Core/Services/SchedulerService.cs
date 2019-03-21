@@ -76,13 +76,13 @@ namespace Ferretto.WMS.Scheduler.Core.Services
             }
         }
 
-        public async Task<IOperationResult<Mission>> CompleteMissionAsync(int id)
+        public async Task<IOperationResult<Mission>> CompleteMissionAsync(int id, int quantity)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
                 var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionSchedulerProvider>();
 
-                var result = await missionsProvider.CompleteAsync(id);
+                var result = await missionsProvider.CompleteAsync(id, quantity);
 
                 await this.ProcessPendingRequestsAsync();
 

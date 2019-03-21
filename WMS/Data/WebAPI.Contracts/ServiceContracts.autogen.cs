@@ -878,11 +878,11 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         System.Threading.Tasks.Task<Mission> AbortAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Mission> CompleteAsync(int id);
+        System.Threading.Tasks.Task<Mission> CompleteAsync(int id, int quantity);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Mission> CompleteAsync(int id, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Mission> CompleteAsync(int id, int quantity, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Mission> ExecuteAsync(int id);
@@ -1914,8 +1914,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("registrationNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string RegistrationNumber { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("requiredQuantity", Required = Newtonsoft.Json.Required.Always)]
-        public int RequiredQuantity { get; set; }
+        [Newtonsoft.Json.JsonProperty("requestedQuantity", Required = Newtonsoft.Json.Required.Always)]
+        public int RequestedQuantity { get; set; }
     
         [Newtonsoft.Json.JsonProperty("rowPriority", Required = Newtonsoft.Json.Required.Always)]
         public int RowPriority { get; set; }
@@ -2023,8 +2023,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("materialStatusDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string MaterialStatusDescription { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("requiredQuantity", Required = Newtonsoft.Json.Required.Always)]
-        public int RequiredQuantity { get; set; }
+        [Newtonsoft.Json.JsonProperty("requestedQuantity", Required = Newtonsoft.Json.Required.Always)]
+        public int RequestedQuantity { get; set; }
     
         [Newtonsoft.Json.JsonProperty("rowPriority", Required = Newtonsoft.Json.Required.Always)]
         public int RowPriority { get; set; }
@@ -2986,6 +2986,9 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTime CreationDate { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("dispatchedQuantity", Required = Newtonsoft.Json.Required.Always)]
+        public int DispatchedQuantity { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("itemDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ItemDescription { get; set; }
     
@@ -3031,17 +3034,14 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("packageTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? PackageTypeId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("priority", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Priority { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("quantity", Required = Newtonsoft.Json.Required.Always)]
-        public int Quantity { get; set; }
+        [Newtonsoft.Json.JsonProperty("priority", Required = Newtonsoft.Json.Required.Always)]
+        public int Priority { get; set; }
     
         [Newtonsoft.Json.JsonProperty("registrationNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string RegistrationNumber { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("requiredQuantity", Required = Newtonsoft.Json.Required.Always)]
-        public int RequiredQuantity { get; set; }
+        [Newtonsoft.Json.JsonProperty("requestedQuantity", Required = Newtonsoft.Json.Required.Always)]
+        public int RequestedQuantity { get; set; }
     
         [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
         public MissionStatus Status { get; set; }
@@ -3075,6 +3075,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         Completed = 67,
     
         Error = 69,
+    
+        Incomplete = 73,
     
         New = 78,
     

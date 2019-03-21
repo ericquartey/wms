@@ -88,7 +88,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 #region Assert
 
                 Assert.AreEqual(1, missions.Count());
-                Assert.AreEqual(request2.RequestedQuantity, missions.First().Quantity);
+                Assert.AreEqual(request2.RequestedQuantity, missions.First().RequestedQuantity);
 
                 #endregion
             }
@@ -167,10 +167,10 @@ namespace Ferretto.WMS.Scheduler.Tests
                 Assert.AreEqual(2, missions.Count());
 
                 var updatedRequest = context.SchedulerRequests.Single(r => r.Id == request1.Id);
-                Assert.AreEqual(updatedRequest.RequestedQuantity, missions.Sum(m => m.Quantity));
+                Assert.AreEqual(updatedRequest.RequestedQuantity, missions.Sum(m => m.RequestedQuantity));
                 Assert.AreEqual(updatedRequest.RequestedQuantity, updatedRequest.DispatchedQuantity);
                 Assert.AreEqual(compartment2.Id, missions.First().CompartmentId);
-                Assert.AreEqual(compartment2.Stock, missions.First().Quantity);
+                Assert.AreEqual(compartment2.Stock, missions.First().RequestedQuantity);
 
                 #endregion
             }

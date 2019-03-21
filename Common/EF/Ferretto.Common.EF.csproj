@@ -7,10 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(Configuration)' == 'debug'">
-    <Content Include="Seeds\Dev.Minimal.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Seeds\Dev.Items.sql">
+    <Content Include="Seeds\*.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

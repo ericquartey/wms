@@ -889,19 +889,19 @@ SET IDENTITY_INSERT ItemLists OFF;
 
 --List Rows
 SET IDENTITY_INSERT ItemListRows ON;
-INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequiredQuantity, DispatchedQuantity, Status) VALUES (1, @ItemList1_Id, 'Code 1', 1, 1, 1, 1, 'First Item'  , 50, 10, @ItemListStatus_Wait);
-INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequiredQuantity, DispatchedQuantity, Status) VALUES (2, @ItemList1_Id, 'Code 2', 1, 1, 1, 1, 'Second Item', 40, 20, @ItemListStatus_Wait);
-INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequiredQuantity, DispatchedQuantity, Status) VALUES (3, @ItemList1_Id, 'Code 3', 1, 1, 1, 1, 'Third Item'  , 25, 10, @ItemListStatus_Comp);
+INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequestedQuantity, DispatchedQuantity, Status) VALUES (1, @ItemList1_Id, 'Code 1', 1, 1, 1, 1, 'First Item'  , 50, 10, @ItemListStatus_Wait);
+INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequestedQuantity, DispatchedQuantity, Status) VALUES (2, @ItemList1_Id, 'Code 2', 1, 1, 1, 1, 'Second Item', 40, 20, @ItemListStatus_Wait);
+INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequestedQuantity, DispatchedQuantity, Status) VALUES (3, @ItemList1_Id, 'Code 3', 1, 1, 1, 1, 'Third Item'  , 25, 10, @ItemListStatus_Comp);
 SET IDENTITY_INSERT ItemListRows OFF;
 
 -- Missions
 SET IDENTITY_INSERT Missions ON;
-INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListId, ItemListRowId, ItemId, Sub1, Sub2, MaterialStatusId, PackageTypeId, Lot, RegistrationNumber, RequiredQuantity, Priority, Status, Type) VALUES (1, 1, 1, 1, 1, 1, 1 , 1, 'A', 'B', 1, 1, 'LOTTO 1', 112233, 2, 1, 'N','P');
-INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListId, ItemListRowId, ItemId, Sub1, Sub2, MaterialStatusId, PackageTypeId, Lot, RegistrationNumber, RequiredQuantity, Priority, Status, Type) VALUES (2, 1, 1, 1, 1, 1, 1 , 1, 'A', 'B', 1, 1, 'LOTTO 2', 112233, 2, 1, 'W','B');
-INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListId, ItemListRowId, ItemId, Sub1, Sub2, MaterialStatusId, PackageTypeId, Lot, RegistrationNumber, RequiredQuantity, Priority, Status, Type) VALUES (3, 1, 1, 1, 1, 1, 1 , 1, 'A', 'B', 1, 1, 'LOTTO 3', 112233, 2, 1, 'X','I');
-INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListId, ItemListRowId, ItemId, Sub1, Sub2, MaterialStatusId, PackageTypeId, Lot, RegistrationNumber, RequiredQuantity, Priority, Status, Type) VALUES (4, 1, 1, 1, 1, 1, 1 , 1, 'A', 'B', 1, 1, 'LOTTO 4', 112233, 2, 1, 'C','T');
-INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListId, ItemListRowId, ItemId, Sub1, Sub2, MaterialStatusId, PackageTypeId, Lot, RegistrationNumber, RequiredQuantity, Priority, Status, Type) VALUES (5, 1, 1, 1, 1, 1, 1 , 1, 'A', 'B', 1, 1, 'LOTTO 5', 112233, 2, 1, 'E','R');
-INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListId, ItemListRowId, ItemId, Sub1, Sub2, MaterialStatusId, PackageTypeId, Lot, RegistrationNumber, RequiredQuantity, Priority, Status, Type) VALUES (6, 1, 1, 1, 1, 1, 1 , 1, 'A', 'B', 1, 1, 'LOTTO 6', 112233, 2, 1, 'N','O');
+INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListId, ItemListRowId, ItemId, Sub1, Sub2, MaterialStatusId, PackageTypeId, Lot, RegistrationNumber, RequestedQuantity, Priority, Status, Type) VALUES (1, 1, 1, 1, 1, 1, 1 , 1, 'A', 'B', 1, 1, 'LOTTO 1', 112233, 2, 1, 'N','P');
+INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListId, ItemListRowId, ItemId, Sub1, Sub2, MaterialStatusId, PackageTypeId, Lot, RegistrationNumber, RequestedQuantity, Priority, Status, Type) VALUES (2, 1, 1, 1, 1, 1, 1 , 1, 'A', 'B', 1, 1, 'LOTTO 2', 112233, 2, 1, 'W','B');
+INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListId, ItemListRowId, ItemId, Sub1, Sub2, MaterialStatusId, PackageTypeId, Lot, RegistrationNumber, RequestedQuantity, Priority, Status, Type) VALUES (3, 1, 1, 1, 1, 1, 1 , 1, 'A', 'B', 1, 1, 'LOTTO 3', 112233, 2, 1, 'X','I');
+INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListId, ItemListRowId, ItemId, Sub1, Sub2, MaterialStatusId, PackageTypeId, Lot, RegistrationNumber, RequestedQuantity, Priority, Status, Type) VALUES (4, 1, 1, 1, 1, 1, 1 , 1, 'A', 'B', 1, 1, 'LOTTO 4', 112233, 2, 1, 'C','T');
+INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListId, ItemListRowId, ItemId, Sub1, Sub2, MaterialStatusId, PackageTypeId, Lot, RegistrationNumber, RequestedQuantity, Priority, Status, Type) VALUES (5, 1, 1, 1, 1, 1, 1 , 1, 'A', 'B', 1, 1, 'LOTTO 5', 112233, 2, 1, 'E','R');
+INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListId, ItemListRowId, ItemId, Sub1, Sub2, MaterialStatusId, PackageTypeId, Lot, RegistrationNumber, RequestedQuantity, Priority, Status, Type) VALUES (6, 1, 1, 1, 1, 1, 1 , 1, 'A', 'B', 1, 1, 'LOTTO 6', 112233, 2, 1, 'N','O');
 SET IDENTITY_INSERT Missions OFF;
 
 

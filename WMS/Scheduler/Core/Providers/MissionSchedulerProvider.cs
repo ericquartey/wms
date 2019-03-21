@@ -53,8 +53,13 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         #region Methods
 
-        public async Task<IOperationResult<Mission>> CompleteAsync(int id)
+        public async Task<IOperationResult<Mission>> CompleteAsync(int id, int quantity)
         {
+            if (quantity <= 0)
+            {
+                return new BadRequestOperationResult<Mission>(null, "Quantity cannot be negative or zero.");
+            }
+
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var mission = await this.GetByIdAsync(id);
@@ -72,11 +77,11 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 switch (mission.Type)
                 {
                     case MissionType.Pick:
-                        result = await this.CompletePickMissionAsync(mission);
+                        result = await this.CompletePickMissionAsync(mission, quantity);
                         break;
 
                     default:
-                        throw new NotSupportedException("Only item pick operations are allowed.");
+                        return new BadRequestOperationResult<Mission>(null, "Only item pick operations are allowed.");
                 }
 
                 scope.Complete();
@@ -166,7 +171,8 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     MaterialStatusId = m.MaterialStatusId,
                     PackageTypeId = m.PackageTypeId,
                     Lot = m.Lot,
-                    Quantity = m.RequiredQuantity,
+                    RequestedQuantity = m.RequestedQuantity,
+                    DispatchedQuantity = m.DispatchedQuantity,
                     RegistrationNumber = m.RegistrationNumber,
                     Status = (MissionStatus)m.Status,
                     Sub1 = m.Sub1,
@@ -198,7 +204,9 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     MaterialStatusId = m.MaterialStatusId,
                     PackageTypeId = m.PackageTypeId,
                     Lot = m.Lot,
-                    Quantity = m.RequiredQuantity,
+                    Priority = m.Priority,
+                    RequestedQuantity = m.RequestedQuantity,
+                    DispatchedQuantity = m.DispatchedQuantity,
                     RegistrationNumber = m.RegistrationNumber,
                     Status = (MissionStatus)m.Status,
                     Sub1 = m.Sub1,
@@ -233,7 +241,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             return 0;
         }
 
-        private async Task<IOperationResult<Mission>> CompletePickMissionAsync(Mission mission)
+        private async Task<IOperationResult<Mission>> CompletePickMissionAsync(Mission mission, int quantity)
         {
             if (mission.CompartmentId.HasValue == false
                || mission.ItemId.HasValue == false)
@@ -241,11 +249,21 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 throw new InvalidOperationException();
             }
 
+            if (quantity > mission.QuantityRemainingToDispatch)
+            {
+                return new BadRequestOperationResult<Mission>(
+                    mission,
+                    $"Requested quantity ({quantity}) cannot be greater than the remaining quantity to dispatch ({mission.QuantityRemainingToDispatch}).");
+            }
+
+            mission.DispatchedQuantity += quantity;
+            mission.Status = mission.QuantityRemainingToDispatch == 0 ? MissionStatus.Completed : MissionStatus.Incomplete;
+
             var compartment = await this.compartmentProvider
                 .GetByIdForStockUpdateAsync(mission.CompartmentId.Value);
 
-            compartment.ReservedForPick -= mission.Quantity;
-            compartment.Stock -= mission.Quantity;
+            compartment.ReservedForPick -= quantity;
+            compartment.Stock -= quantity;
 
             if (compartment.Stock == 0
                 && compartment.IsItemPairingFixed == false)
@@ -257,9 +275,35 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
             await this.compartmentProvider.UpdateAsync(compartment);
 
-            mission.Status = MissionStatus.Completed;
-
             return await this.UpdateAsync(mission);
+        }
+
+        private async Task CreateRangeAsync(IEnumerable<Mission> models)
+        {
+            var missions = models.Select(
+                m => new Common.DataModels.Mission
+                {
+                    BayId = m.BayId,
+                    CellId = m.CellId,
+                    CompartmentId = m.CompartmentId,
+                    ItemId = m.ItemId,
+                    ItemListId = m.ItemListId,
+                    ItemListRowId = m.ItemListRowId,
+                    LoadingUnitId = m.LoadingUnitId,
+                    MaterialStatusId = m.MaterialStatusId,
+                    PackageTypeId = m.PackageTypeId,
+                    Priority = m.Priority,
+                    RegistrationNumber = m.RegistrationNumber,
+                    RequestedQuantity = m.RequestedQuantity,
+                    Status = (Common.DataModels.MissionStatus)m.Status,
+                    Sub1 = m.Sub1,
+                    Sub2 = m.Sub2,
+                    Type = (Common.DataModels.MissionType)m.Type
+                });
+
+            await this.databaseContext.Missions.AddRangeAsync(missions);
+
+            await this.databaseContext.SaveChangesAsync();
         }
 
         private async Task<IEnumerable<Mission>> CreateWithdrawalMissionsAsync(SchedulerRequest request)
@@ -304,13 +348,13 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                         Sub1 = compartment.Sub1,
                         Sub2 = compartment.Sub2,
                         Priority = ComputePriority(request),
-                        Quantity = quantityToExtractFromCompartment,
+                        RequestedQuantity = quantityToExtractFromCompartment,
                         Type = MissionType.Pick
                     };
 
                     this.logger.LogWarning(
                         $"Scheduler Request (id={request.Id}): generating withdrawal mission (CompartmentId={mission.CompartmentId}, " +
-                        $"BayId={mission.BayId}, Quantity={mission.Quantity}). " +
+                        $"BayId={mission.BayId}, Quantity={mission.RequestedQuantity}). " +
                         $"A total quantity of {request.QuantityLeftToDispatch} still needs to be dispatched.");
 
                     missions.Add(mission);
@@ -321,34 +365,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             this.logger.LogDebug($"Scheduler Request (id={request.Id}): a total of {missions.Count} mission(s) were created.");
 
             return missions;
-        }
-
-        private async Task CreateRangeAsync(IEnumerable<Mission> models)
-        {
-            var missions = models.Select(
-                m => new Common.DataModels.Mission
-                {
-                    BayId = m.BayId,
-                    CellId = m.CellId,
-                    CompartmentId = m.CompartmentId,
-                    ItemId = m.ItemId,
-                    ItemListId = m.ItemListId,
-                    ItemListRowId = m.ItemListRowId,
-                    LoadingUnitId = m.LoadingUnitId,
-                    MaterialStatusId = m.MaterialStatusId,
-                    PackageTypeId = m.PackageTypeId,
-                    Priority = m.Priority,
-                    RegistrationNumber = m.RegistrationNumber,
-                    RequiredQuantity = m.Quantity,
-                    Status = (Common.DataModels.MissionStatus)m.Status,
-                    Sub1 = m.Sub1,
-                    Sub2 = m.Sub2,
-                    Type = (Common.DataModels.MissionType)m.Type
-                });
-
-            await this.databaseContext.Missions.AddRangeAsync(missions);
-
-            await this.databaseContext.SaveChangesAsync();
         }
 
         private async Task UpdateLastPickDatesAsync(int itemId, StockUpdateCompartment compartment)
