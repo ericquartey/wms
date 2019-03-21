@@ -6,7 +6,9 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         #region Fields
 
-        private int quantity;
+        private int dispatchedQuantity;
+
+        private int requestedQuantity;
 
         #endregion
 
@@ -27,6 +29,12 @@ namespace Ferretto.WMS.Data.Core.Models
         public int? CompartmentTypeWidth { get; set; }
 
         public DateTime CreationDate { get; set; }
+
+        public int DispatchedQuantity
+        {
+            get => this.dispatchedQuantity;
+            set => this.dispatchedQuantity = CheckIfPositive(value);
+        }
 
         public string ItemDescription { get; set; }
 
@@ -58,17 +66,15 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? PackageTypeId { get; set; }
 
-        public int? Priority { get; set; }
-
-        public int Quantity
-        {
-            get => this.quantity;
-            set => this.quantity = CheckIfStrictlyPositive(value);
-        }
+        public int Priority { get; set; }
 
         public string RegistrationNumber { get; set; }
 
-        public int RequiredQuantity { get; set; }
+        public int RequestedQuantity
+        {
+            get => this.requestedQuantity;
+            set => this.requestedQuantity = CheckIfStrictlyPositive(value);
+        }
 
         public MissionStatus Status { get; set; } = MissionStatus.New;
 

@@ -62,10 +62,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(200, Type = typeof(Mission))]
         [ProducesResponseType(404)]
         [ProducesResponseType(400)]
-        [HttpPost("{id}/complete")]
-        public async Task<ActionResult<Mission>> CompleteAsync(int id)
+        [HttpPost("{id}/complete/{quantity}")]
+        public async Task<ActionResult<Mission>> CompleteAsync(int id, int quantity)
         {
-            var result = await this.schedulerService.CompleteMissionAsync(id);
+            var result = await this.schedulerService.CompleteMissionAsync(id, quantity);
             if (result is NotFoundOperationResult<Scheduler.Core.Models.Mission>)
             {
                 return this.NotFound(id);

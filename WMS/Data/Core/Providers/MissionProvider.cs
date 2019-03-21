@@ -91,7 +91,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 ||
                 m.Priority.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                m.RequiredQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                m.RequestedQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                 m.Type.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
@@ -129,9 +129,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                     PackageTypeDescription = m.PackageType.Description,
                     PackageTypeId = m.PackageTypeId,
                     Priority = m.Priority,
-                    Quantity = m.RequiredQuantity,
+                    DispatchedQuantity = m.DispatchedQuantity,
                     RegistrationNumber = m.RegistrationNumber,
-                    RequiredQuantity = m.RequiredQuantity,
+                    RequestedQuantity = m.RequestedQuantity,
                     Status = (MissionStatus)m.Status,
                     Sub1 = m.Sub1,
                     Sub2 = m.Sub2,

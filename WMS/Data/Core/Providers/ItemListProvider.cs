@@ -159,7 +159,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     SuspendedRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Suspended),
                     ItemListType = (ItemListType)i.ItemListType,
                     ItemListRowsCount = i.ItemListRows.Count(),
-                    ItemListItemsCount = i.ItemListRows.Sum(row => row.RequiredQuantity),
+                    ItemListItemsCount = i.ItemListRows.Sum(row => row.RequestedQuantity),
                     CreationDate = i.CreationDate
                 });
         }
@@ -174,7 +174,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Description = i.Description,
                     Priority = i.Priority,
                     ItemListType = (ItemListType)i.ItemListType,
-                    ItemListItemsCount = i.ItemListRows.Sum(row => row.RequiredQuantity),
+                    ItemListItemsCount = i.ItemListRows.Sum(row => row.RequestedQuantity),
                     RowsCount = i.ItemListRows.Count(),
                     CompletedRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Completed),
                     ExecutingRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Executing),
