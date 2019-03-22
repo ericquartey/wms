@@ -4,9 +4,9 @@
     {
         #region Properties
 
-        public int? Height { get; set; }
+        public double? Height { get; set; }
 
-        public int? Width { get; set; }
+        public double? Width { get; set; }
 
         #endregion
     }

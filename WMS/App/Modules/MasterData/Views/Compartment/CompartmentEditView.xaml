@@ -65,6 +65,7 @@
                                   Grid.Column="0"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
+                                  Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                   EditValue="{Binding Model.XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   MinValue="0" />
 
@@ -74,6 +75,7 @@
                                   HorizontalAlignment="Stretch"
                                   HorizontalContentAlignment="Right"
                                   wms:ShowTitle.Show="True"
+                                  Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                   EditValue="{Binding Model.YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   MinValue="0" />
 
@@ -82,6 +84,7 @@
                                   Grid.Column="0"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
+                                  Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                   EditValue="{Binding Model.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   MinValue="1" />
 
@@ -90,6 +93,7 @@
                                   Grid.Column="2"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
+                                  Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                   EditValue="{Binding Model.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   MinValue="1" />
 

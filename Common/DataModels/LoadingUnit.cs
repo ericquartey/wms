@@ -28,7 +28,7 @@ namespace Ferretto.Common.DataModels
 
         public int? HandlingParametersCorrection { get; set; }
 
-        public int Height { get; set; }
+        public double Height { get; set; }
 
         public int Id { get; set; }
 
