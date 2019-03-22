@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Microsoft.AspNetCore.Http;
 
-namespace Ferretto.Common.BusinessModels
+namespace Ferretto.WMS.App.Core.Models
 {
     public class ImageFile : IImageFile
     {

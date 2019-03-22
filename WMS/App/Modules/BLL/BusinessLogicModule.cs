@@ -1,8 +1,8 @@
 ﻿using System.Configuration;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Providers;
-using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Ioc;
 using Prism.Modularity;

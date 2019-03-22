@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Resources;
-using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.StaticFiles;
