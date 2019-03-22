@@ -44,7 +44,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(422)]
         [HttpGet("{id}")]
-        public async Task<ActionResult<FileStreamResult>> DownloadAsync(string id)
+        public async Task<ActionResult> DownloadAsync(string id)
         {
             if (id == null)
             {
@@ -54,7 +54,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var fileImage = await this.imageFileProvider.DownloadAsync(id);
             if (fileImage != null)
             {
-                return this.File(fileImage.FileBytes, fileImage.ContentType, fileImage.Id);
+                return this.File(fileImage.FileBytes, fileImage.ContentType, fileImage.FileName);
             }
             else
             {

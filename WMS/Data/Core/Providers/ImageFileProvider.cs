@@ -66,6 +66,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             var path = System.IO.Path.Combine(this.ImageDirectoryUri.LocalPath, key);
             byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(path);
             var success = new FileExtensionContentTypeProvider().TryGetContentType(path, out var contentType);
+            var filename = Path.GetFileName(path);
 
             if (success)
             {
@@ -73,7 +74,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 {
                     FileBytes = fileBytes,
                     ContentType = contentType,
-                    FileName = key,
+                    FileName = filename,
                 };
             }
 
