@@ -6,6 +6,8 @@ namespace Ferretto.Common.BLL.Interfaces
     {
         #region Methods
 
+        void DynamicInvoke(IPubSubEvent eventArgs);
+
         void Invoke<T>(T eventArgs)
             where T : IPubSubEvent;
 

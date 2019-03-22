@@ -43,6 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\WMS\Data\Hubs\Ferretto.WMS.Data.Hubs.csproj" />
     <ProjectReference Include="..\Resources\Ferretto.Common.Resources.csproj" />
     <ProjectReference Include="..\Utils\Ferretto.Common.Utils.csproj" />
     <ProjectReference Include="..\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj" />

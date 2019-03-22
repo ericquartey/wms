@@ -267,4 +267,7 @@
   <data name="NotPossibleExecuteOperation" xml:space="preserve">
     <value>Non è possibile portare a termine la richiesta perchè ci sono dei vincoli su: {0}</value>
   </data>
+  <data name="EventServiceInvalidArguments" xml:space="preserve">
+    <value>Argomenti non validi su {0}</value>
+  </data>
 </root>

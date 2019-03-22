@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.WMS.Data.Hubs;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Ferretto.WMS.Data.WebAPI.Hubs
@@ -11,9 +12,9 @@ namespace Ferretto.WMS.Data.WebAPI.Hubs
     {
         #region Methods
 
-        public Task MissionUpdated(int id)
+        public Task MissionUpdated(EntityChangedHubEvent entityChangedHubEvent)
         {
-            return this.Clients.All.MissionUpdated(id);
+            return this.Clients.All.EntityUpdated(entityChangedHubEvent);
         }
 
         #endregion

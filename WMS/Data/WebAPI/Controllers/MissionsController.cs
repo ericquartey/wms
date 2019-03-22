@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
@@ -27,9 +28,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IMissionProvider missionProvider;
 
-        private readonly ISchedulerService schedulerService;
-
         private readonly IHubContext<SchedulerHub, ISchedulerHub> schedulerHubContext;
+
+        private readonly ISchedulerService schedulerService;
 
         #endregion
 
@@ -76,7 +77,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.BadRequest(result.Description);
             }
 
-            await this.schedulerHubContext.Clients.All.MissionUpdated(id);
+            await this.schedulerHubContext.Clients.All.EntityUpdated(new EntityChangedHubEvent { Id = id, EntityType = nameof(Mission), Operation = HubEntityOperation.Updated });
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
             return this.Ok(updatedMission);
         }
@@ -97,7 +98,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.BadRequest(result.Description);
             }
 
-            await this.schedulerHubContext.Clients.All.MissionUpdated(id);
+            await this.schedulerHubContext.Clients.All.EntityUpdated(new EntityChangedHubEvent { Id = id, EntityType = nameof(Mission), Operation = HubEntityOperation.Updated });
+
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
             return this.Ok(updatedMission);
         }

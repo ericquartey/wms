@@ -279,4 +279,7 @@
   <data name="NotPossibleExecuteOperation" xml:space="preserve">
     <value>Unable to complete the request because there are constraints on: {0}</value>
   </data>
+  <data name="EventServiceInvalidArguments" xml:space="preserve">
+    <value>{0} Invalid Arguments</value>
+  </data>
 </root>

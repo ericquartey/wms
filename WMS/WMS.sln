@@ -80,6 +80,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App.Tests", "A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.EF.LinqPad", "..\Common\EF.LinqPad\Ferretto.Common.EF.LinqPad.csproj", "{AE50C858-C735-4BCF-BC76-D5780295FB51}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Data.Hubs", "Data\Hubs\Ferretto.WMS.Data.Hubs.csproj", "{8F0116B7-C11A-43F9-8932-BA594AD876C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Autogen|Any CPU = Autogen|Any CPU
@@ -224,6 +226,12 @@ Global
 		{AE50C858-C735-4BCF-BC76-D5780295FB51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE50C858-C735-4BCF-BC76-D5780295FB51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE50C858-C735-4BCF-BC76-D5780295FB51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F0116B7-C11A-43F9-8932-BA594AD876C0}.Autogen|Any CPU.ActiveCfg = Autogen|Any CPU
+		{8F0116B7-C11A-43F9-8932-BA594AD876C0}.Autogen|Any CPU.Build.0 = Autogen|Any CPU
+		{8F0116B7-C11A-43F9-8932-BA594AD876C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F0116B7-C11A-43F9-8932-BA594AD876C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F0116B7-C11A-43F9-8932-BA594AD876C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F0116B7-C11A-43F9-8932-BA594AD876C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -259,6 +267,7 @@ Global
 		{7A77F732-7D10-4D86-B003-A5585AB87C83} = {12BF6A8D-AC9B-4ECE-B134-FB3644430056}
 		{4AB56B79-7B0C-4D1D-87F7-B17BBE185D85} = {97B1C3A8-48D9-42B8-B32D-75369C5E7B9A}
 		{AE50C858-C735-4BCF-BC76-D5780295FB51} = {7C870AE6-46DD-493B-BAD9-FDEFE22ECA1F}
+		{8F0116B7-C11A-43F9-8932-BA594AD876C0} = {B4262EEC-49FA-4052-80C9-73E0A03BBBEA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B998A0C5-DD2C-4088-9C42-300A146A4118}
