@@ -16,8 +16,11 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty FilenameProperty = DependencyProperty.Register(
              nameof(Filename), typeof(string), typeof(WmsImageEdit), new PropertyMetadata(default(string), new PropertyChangedCallback(OnPathChanged)));
 
+        public static readonly DependencyProperty IsLoadingProperty = DependencyProperty.Register(
+                     nameof(IsLoading), typeof(bool), typeof(WmsImageEdit), new PropertyMetadata(default(bool)));
+
         public static readonly DependencyProperty PathProperty = DependencyProperty.Register(
-                     nameof(Path), typeof(string), typeof(WmsImageEdit), new PropertyMetadata(default(string)));
+                             nameof(Path), typeof(string), typeof(WmsImageEdit), new PropertyMetadata(default(string)));
 
         private readonly IImageProvider imageService;
 
@@ -40,6 +43,12 @@ namespace Ferretto.Common.Controls
         {
             get => (string)this.GetValue(FilenameProperty);
             set => this.SetValue(FilenameProperty, value);
+        }
+
+        public bool IsLoading
+        {
+            get => (bool)this.GetValue(IsLoadingProperty);
+            set => this.SetValue(IsLoadingProperty, value);
         }
 
         public string Path
@@ -75,6 +84,7 @@ namespace Ferretto.Common.Controls
         {
             if (d is WmsImageEdit wmsImage)
             {
+                wmsImage.IsLoading = true;
                 if (wmsImage.isUpdatingImage)
                 {
                     wmsImage.isUpdatingImage = false;
@@ -84,6 +94,7 @@ namespace Ferretto.Common.Controls
                 if (e.NewValue != null)
                 {
                     wmsImage.Source = await ImageUtils.RetrieveImageAsync(wmsImage.imageService, (string)e.NewValue);
+                    wmsImage.IsLoading = false;
                 }
                 else
                 {

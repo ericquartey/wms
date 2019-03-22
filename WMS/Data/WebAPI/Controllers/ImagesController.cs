@@ -52,6 +52,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             var fileImage = await this.imageProvider.DownloadAsync(id);
+            await Task.Delay(8000);
             if (fileImage != null)
             {
                 return this.File(fileImage.FileBytes, fileImage.ContentType, fileImage.FileName);
