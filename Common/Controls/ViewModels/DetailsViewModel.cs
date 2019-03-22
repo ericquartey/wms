@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
-using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Resources;
 using Ferretto.WMS.App.Core.Models;
@@ -151,10 +150,10 @@ namespace Ferretto.Common.Controls
             // do nothing. The derived classes can customize the behaviour
         }
 
-        public void ShowErrorDialog(IAction action)
+        public void ShowErrorDialog(string message)
         {
             this.DialogService.ShowMessage(
-                action.Reason,
+                message,
                 DesktopApp.ConfirmOperation,
                 DialogType.Warning,
                 DialogButtons.OK);

@@ -135,10 +135,10 @@ namespace Ferretto.Common.Controls
                 }));
         }
 
-        public void ShowErrorDialog(IAction action)
+        public void ShowErrorDialog(string message)
         {
             this.DialogService.ShowMessage(
-                action.Reason,
+                message,
                 DesktopApp.ConfirmOperation,
                 DialogType.Warning,
                 DialogButtons.OK);
