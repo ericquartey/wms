@@ -26,7 +26,7 @@ namespace Ferretto.Common.DataModels
 
         public int? FifoTimeStore { get; set; }
 
-        public int? Height { get; set; }
+        public double? Height { get; set; }
 
         public int Id { get; set; }
 
@@ -52,7 +52,7 @@ namespace Ferretto.Common.DataModels
 
         public DateTime? LastStoreDate { get; set; }
 
-        public int? Length { get; set; }
+        public double? Length { get; set; }
 
         public ItemManagementType ManagementType { get; set; }
 
@@ -74,7 +74,7 @@ namespace Ferretto.Common.DataModels
 
         public int? StoreTolerance { get; set; }
 
-        public int? Width { get; set; }
+        public double? Width { get; set; }
 
         #endregion
     }

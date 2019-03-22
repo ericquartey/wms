@@ -1,9 +1,10 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.MAS_InverterDriver;
+using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.InverterDriver.StateMachines.Stop
 {
@@ -15,15 +16,18 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
 
         private readonly Axis axisToStop;
 
+        private readonly ILogger logger;
+
         private readonly ushort parameterValue;
 
         #endregion
 
         #region Constructors
 
-        public StopState(IInverterStateMachine parentStateMachine, Axis axisToStop)
+        public StopState(IInverterStateMachine parentStateMachine, Axis axisToStop, ILogger logger)
         {
             this.parentStateMachine = parentStateMachine;
+            this.logger = logger;
             this.axisToStop = axisToStop;
 
             switch (this.axisToStop)
@@ -36,7 +40,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
                     this.parameterValue = 0x0000;
                     break;
             }
-            InverterMessage stopMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue);
+            var stopMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue);
 
             parentStateMachine.EnqueueMessage(stopMessage);
         }
@@ -45,20 +49,21 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
 
         #region Methods
 
+        /// <inheritdoc />
         public override bool ProcessMessage(InverterMessage message)
         {
-            bool returnValue = false;
+            var returnValue = false;
 
-            //Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - VoltageDisabledState:ProcessMessage");
+            //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - VoltageDisabledState:ProcessMessage");
             if (message.IsError)
             {
-                this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToStop));
+                this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToStop, this.logger));
             }
             if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
             {
                 if ((message.UShortPayload & StatusWordValue) == StatusWordValue)
                 {
-                    var messageData = new StopAxisMessageData(axisToStop);
+                    var messageData = new StopAxisMessageData(this.axisToStop);
                     var endNotification = new NotificationMessage(messageData, "Axis calibration complete", MessageActor.Any,
                         MessageActor.InverterDriver, MessageType.Stop, MessageStatus.OperationEnd);
                     this.parentStateMachine.PublishNotificationEvent(endNotification);

@@ -27,7 +27,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<IEnumerable<CompartmentDetails>> GetByLoadingUnitIdAsync(int id);
 
-        Task<int?> GetMaxCapacityAsync(int width, int height, int itemId);
+        Task<int?> GetMaxCapacityAsync(double width, double height, int itemId);
 
         #endregion
     }

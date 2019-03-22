@@ -8,17 +8,17 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         #region Fields
 
-        private int? height;
+        private double? height;
 
         private int? maxCapacity;
 
         private int stock;
 
-        private int? width;
+        private double? width;
 
-        private int? xPosition;
+        private double? xPosition;
 
-        private int? yPosition;
+        private double? yPosition;
 
         #endregion
 
@@ -40,7 +40,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public bool HasRotation { get; set; }
 
-        public int? Height
+        public double? Height
         {
             get => this.height;
             set => this.height = CheckIfStrictlyPositive(value);
@@ -57,8 +57,6 @@ namespace Ferretto.WMS.Data.Core.Models
         public int? ItemId { get; set; }
 
         public string ItemMeasureUnit { get; set; }
-
-        public DateTime? LastHandlingDate { get; set; }
 
         public DateTime? LastPickDate { get; set; }
 
@@ -98,19 +96,19 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string Sub2 { get; set; }
 
-        public int? Width
+        public double? Width
         {
             get => this.width;
             set => this.width = CheckIfStrictlyPositive(value);
         }
 
-        public int? XPosition
+        public double? XPosition
         {
             get => this.xPosition;
             set => this.xPosition = CheckIfPositive(value);
         }
 
-        public int? YPosition
+        public double? YPosition
         {
             get => this.yPosition;
             set => this.yPosition = CheckIfPositive(value);

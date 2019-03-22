@@ -7,7 +7,7 @@
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:models="clr-namespace:Ferretto.Common.BusinessModels;assembly=Ferretto.Common.BusinessModels"
+             xmlns:models="clr-namespace:Ferretto.WMS.App.Core.Models;assembly=Ferretto.WMS.App.Core"
              xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
@@ -117,8 +117,8 @@
                     <wms:WmsGridControl.View>
                         <dxg:TableView SearchPanelHorizontalAlignment="Right"
                                        ShowFilterPanelMode="Never"
-                                       ShowSearchPanelMode="Never"
-                                       ShowFixedTotalSummary="True">
+                                       ShowFixedTotalSummary="True"
+                                       ShowSearchPanelMode="Never">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="RowDoubleClick">
                                     <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentItem.Id, Mode=OneWay}"
@@ -132,14 +132,14 @@
 
                     <wms:WmsGridControl.Columns>
                         <dxg:GridColumn Width="200*"
-                                        FieldName="ItemListStatus">
+                                        FieldName="Status">
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
                                         <wms:WmsEnumIndicator Margin="5,0,0,0"
                                                               VerticalAlignment="Center"
                                                               EnumType="{x:Type models:ItemListStatus}"
-                                                              EnumValue="{Binding Data.ItemListStatus}"
+                                                              EnumValue="{Binding Data.Status}"
                                                               HideIcon="True"
                                                               IconSize="8"
                                                               ShowText="True" />
@@ -166,14 +166,14 @@
                     </wms:WmsGridControl.Columns>
 
                     <wms:WmsGridControl.SortInfo>
-                        <dxg:GridSortInfo FieldName="ItemListStatus"
+                        <dxg:GridSortInfo FieldName="Status"
                                           SortOrder="Descending" />
                     </wms:WmsGridControl.SortInfo>
 
                     <wms:WmsGridControl.TotalSummary>
-                        <dxg:GridSummaryItem SummaryType="Count"
-                                             Alignment="Left"
-                                             DisplayFormat="{x:Static res:DesktopApp.GridRowCounter}" />
+                        <dxg:GridSummaryItem Alignment="Left"
+                                             DisplayFormat="{x:Static res:DesktopApp.GridRowCounter}"
+                                             SummaryType="Count" />
                     </wms:WmsGridControl.TotalSummary>
 
                 </wms:WmsGridControl>

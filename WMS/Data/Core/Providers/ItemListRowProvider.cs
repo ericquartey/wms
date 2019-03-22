@@ -85,7 +85,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 PackageTypeId = model.PackageTypeId,
                 Priority = model.RowPriority,
                 RegistrationNumber = model.RegistrationNumber,
-                RequiredQuantity = model.RequiredQuantity,
+                RequestedQuantity = model.RequestedQuantity,
                 Status = (Common.DataModels.ItemListRowStatus)model.ItemListRowStatus,
                 Sub1 = model.Sub1,
                 Sub2 = model.Sub2
@@ -212,7 +212,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 ||
                 i.DispatchedQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                i.RequiredQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                i.RequestedQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                 i.RowPriority.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
@@ -226,10 +226,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Code = l.Code,
                     RowPriority = l.Priority,
                     ItemDescription = l.Item.Description,
-                    RequiredQuantity = l.RequiredQuantity,
+                    RequestedQuantity = l.RequestedQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
                     ItemListId = l.ItemListId,
-                    ItemListRowStatus = (ItemListRowStatus)l.Status,
+                    Status = (ItemListRowStatus)l.Status,
                     MaterialStatusDescription = l.MaterialStatus.Description,
                     CreationDate = l.CreationDate,
                     ItemUnitMeasure = l.Item.MeasureUnit.Description,
@@ -245,7 +245,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Code = l.Code,
                     RowPriority = l.Priority,
                     ItemId = l.Item.Id,
-                    RequiredQuantity = l.RequiredQuantity,
+                    RequestedQuantity = l.RequestedQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
                     ItemListRowStatus = (ItemListRowStatus)l.Status,
                     ItemDescription = l.Item.Description,

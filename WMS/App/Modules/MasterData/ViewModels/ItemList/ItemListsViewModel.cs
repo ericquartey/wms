@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
-using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls;
+using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -42,7 +42,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             if (this.CurrentItem != null)
             {
-                var status = this.CurrentItem.ItemListStatus;
+                var status = this.CurrentItem.Status;
                 if (status == ItemListStatus.Incomplete
                     || status == ItemListStatus.Suspended
                     || status == ItemListStatus.Waiting)

@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
+using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.Data.Hubs;
 using Microsoft.AspNetCore.SignalR.Client;
 using NLog;

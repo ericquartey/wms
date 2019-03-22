@@ -1,10 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.Common.BusinessModels;
+using CommonServiceLocator;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Resources;
-using CommonServiceLocator;
+using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
 namespace Ferretto.Common.Controls
@@ -66,7 +65,7 @@ namespace Ferretto.Common.Controls
              (this.closeDialogCommand = new DelegateCommand(
                  this.ExecuteCloseDialogCommand));
 
-        public ColorRequired ColorRequired { get => ColorRequired.CreateMode; }
+        public ColorRequired ColorRequired => ColorRequired.CreateMode;
 
         public ICommand CreateCommand => this.createCommand ??
             (this.createCommand = new DelegateCommand(
@@ -106,6 +105,7 @@ namespace Ferretto.Common.Controls
                 {
                     temp = string.IsNullOrWhiteSpace(this.Model.Error);
                 }
+
                 this.SetProperty(ref this.isModelValid, temp);
                 this.UpdateIsEnableError();
                 return temp;
@@ -183,6 +183,7 @@ namespace Ferretto.Common.Controls
             {
                 this.CanShowError = true;
             }
+
             return canExecute;
         }
 

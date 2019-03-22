@@ -54,7 +54,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 ItemId = compartment1.ItemId,
                 Status = Common.DataModels.MissionStatus.Executing,
                 Type = Common.DataModels.MissionType.Pick,
-                RequiredQuantity = 10
+                RequestedQuantity = 10
             };
 
             using (var context = this.CreateContext())
@@ -69,7 +69,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             #region Act
 
-            var result = await missionProvider.CompleteAsync(mission.Id);
+                var result = await missionProvider.CompleteAsync(mission.Id, mission.RequestedQuantity);
 
             #endregion
 
@@ -149,7 +149,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 ItemId = compartment1.ItemId,
                 Status = Common.DataModels.MissionStatus.Executing,
                 Type = Common.DataModels.MissionType.Pick,
-                RequiredQuantity = 7
+                RequestedQuantity = 7
             };
 
             using (var context = this.CreateContext())
@@ -166,7 +166,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var result = await missionProvider.CompleteAsync(mission.Id);
+                var result = await missionProvider.CompleteAsync(mission.Id, mission.RequestedQuantity);
 
                 #endregion
 

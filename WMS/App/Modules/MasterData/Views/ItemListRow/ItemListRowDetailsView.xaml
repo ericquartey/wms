@@ -6,7 +6,7 @@
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:models="clr-namespace:Ferretto.Common.BusinessModels;assembly=Ferretto.Common.BusinessModels"
+             xmlns:models="clr-namespace:Ferretto.WMS.App.Core.Models;assembly=Ferretto.WMS.App.Core"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
              Title="{x:Static res:Navigation.ListRowDetails}"
@@ -129,7 +129,7 @@
                                       wms:AdditionalInfo.Text="{Binding Model.ItemUnitMeasure}"
                                       wms:ShowTitle.Show="True"
                                       AllowNullInput="False"
-                                      EditValue="{Binding Model.RequiredQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Model.RequestedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="0"

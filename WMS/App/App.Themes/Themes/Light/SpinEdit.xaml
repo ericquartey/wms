@@ -14,17 +14,32 @@
                                       Control="{x:Type wms:SpinEdit}"
                                       Property="{x:Static wms:SpinEdit.EditValueProperty}" />
 
-    <Style TargetType="wms:SpinEdit">
+    <Style x:Key="SpinEditBaseStyle" TargetType="wms:SpinEdit">
         <Setter Property="ShowError" Value="False" />
-        <Setter Property="EditValueType" Value="{x:Type sys:Int32}" />
         <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource ValidationErrorTemplateStyle}" />
         <Setter Property="Template" Value="{DynamicResource SpinEditButtonEditStyle}" />
+        <Setter Property="AllowNullInput" Value="True" />
+    </Style>
+
+    <Style x:Key="SpinEditIntegerStyle" TargetType="wms:SpinEdit" BasedOn="{StaticResource SpinEditBaseStyle}">
+        <Setter Property="EditValueType" Value="{x:Type sys:Int32}" />
         <Setter Property="MaskType" Value="Numeric" />
         <Setter Property="Mask" Value="N0" />
-        <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="AllowNullInput" Value="True" />
+    </Style>
+
+    <Style x:Key="SpinEditPositiveIntegerStyle" TargetType="wms:SpinEdit" BasedOn="{StaticResource SpinEditIntegerStyle}">
         <Setter Property="MinValue" Value="0" />
     </Style>
+
+    <Style x:Key="SpinEditDecimalStyle" TargetType="wms:SpinEdit" BasedOn="{StaticResource SpinEditBaseStyle}">
+        <Setter Property="EditValueType" Value="{x:Type sys:Double}" />
+    </Style>
+
+    <Style x:Key="SpinEditPositiveDecimalStyle" TargetType="wms:SpinEdit" BasedOn="{StaticResource SpinEditDecimalStyle}">
+        <Setter Property="MinValue" Value="0" />
+    </Style>
+
+    <Style TargetType="wms:SpinEdit" BasedOn="{StaticResource SpinEditPositiveIntegerStyle}" />
 
     <ControlTemplate x:Key="SpinEditButtonEditStyle"
                      TargetType="{x:Type dxe:ButtonEdit}">
