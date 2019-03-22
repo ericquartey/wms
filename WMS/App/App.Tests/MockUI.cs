@@ -38,9 +38,13 @@ namespace Ferretto.WMS.App.Tests
 
         #endregion
 
+        #region Properties
+
         protected IUnityContainer Container => this.container;
 
         protected INavigationService NavigationService => this.navigationService;
+
+        #endregion
 
         #region Methods
 
@@ -58,15 +62,15 @@ namespace Ferretto.WMS.App.Tests
             }
         }
 
+        public virtual void CheckViewModel(INavigableViewModel viewModel)
+        {
+            SetDefaultValue(viewModel, Model);
+        }
+
         public void WaitUiComplete()
         {
             MockedApplication.MainWindow.Dispatcher.BeginInvoke(new Action(() => this.AppearOnLoaded(ViewsToProcess)), DispatcherPriority.ContextIdle);
             MockedApplication.MainWindow.ShowDialog();
-        }
-
-        public virtual void CheckViewModel(INavigableViewModel viewModel)
-        {
-            SetDefaultValue(viewModel, Model);
         }
 
         private static List<T> GetAllPublicConstantValues<T>(Type type)
