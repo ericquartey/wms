@@ -24,7 +24,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? fifoTimeStore;
 
-        private int? height;
+        private double? height;
 
         private string image;
 
@@ -42,7 +42,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private DateTime? lastStoreDate;
 
-        private int? length;
+        private double? length;
 
         private ItemManagementType managementType;
 
@@ -60,7 +60,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int totalAvailable;
 
-        private int? width;
+        private double? width;
 
         #endregion
 
@@ -147,7 +147,7 @@ namespace Ferretto.WMS.App.Core.Models
         public bool HasImageChanged { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemHeight), ResourceType = typeof(BusinessObjects))]
-        public int? Height
+        public double? Height
         {
             get => this.height;
             set => this.SetIfStrictlyPositive(ref this.height, value);
@@ -210,7 +210,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Display(Name = nameof(BusinessObjects.ItemLength), ResourceType = typeof(BusinessObjects))]
-        public int? Length
+        public double? Length
         {
             get => this.length;
             set => this.SetIfStrictlyPositive(ref this.length, value);
@@ -287,7 +287,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Display(Name = nameof(BusinessObjects.ItemWidth), ResourceType = typeof(BusinessObjects))]
-        public int? Width
+        public double? Width
         {
             get => this.width;
             set => this.SetIfStrictlyPositive(ref this.width, value);

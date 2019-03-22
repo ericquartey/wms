@@ -346,11 +346,11 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<AllowedItemInCompartment>> GetAllowedItemsAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<int?> GetMaxCapacityAsync(int width, int height, int itemId);
+        System.Threading.Tasks.Task<int?> GetMaxCapacityAsync(double width, double height, int itemId);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<int?> GetMaxCapacityAsync(int width, int height, int itemId, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<int?> GetMaxCapacityAsync(double width, double height, int itemId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<object>> GetUniqueValuesAsync(string propertyName);
@@ -1181,13 +1181,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public string CellTypeDescription { get; set; }
     
         [Newtonsoft.Json.JsonProperty("xCoordinate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? XCoordinate { get; set; }
+        public double? XCoordinate { get; set; }
     
         [Newtonsoft.Json.JsonProperty("yCoordinate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? YCoordinate { get; set; }
+        public double? YCoordinate { get; set; }
     
         [Newtonsoft.Json.JsonProperty("zCoordinate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? ZCoordinate { get; set; }
+        public double? ZCoordinate { get; set; }
     
         public string ToJson() 
         {
@@ -1343,13 +1343,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public Side Side { get; set; }
     
         [Newtonsoft.Json.JsonProperty("xCoordinate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? XCoordinate { get; set; }
+        public double? XCoordinate { get; set; }
     
         [Newtonsoft.Json.JsonProperty("yCoordinate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? YCoordinate { get; set; }
+        public double? YCoordinate { get; set; }
     
         [Newtonsoft.Json.JsonProperty("zCoordinate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? ZCoordinate { get; set; }
+        public double? ZCoordinate { get; set; }
     
         public string ToJson() 
         {
@@ -1404,7 +1404,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public int? HandlingParametersCorrection { get; set; }
     
         [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Always)]
-        public int Height { get; set; }
+        public double Height { get; set; }
     
         [Newtonsoft.Json.JsonProperty("inCycleCount", Required = Newtonsoft.Json.Required.Always)]
         public int InCycleCount { get; set; }
@@ -1428,7 +1428,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public System.DateTime? LastStoreDate { get; set; }
     
         [Newtonsoft.Json.JsonProperty("length", Required = Newtonsoft.Json.Required.Always)]
-        public int Length { get; set; }
+        public double Length { get; set; }
     
         [Newtonsoft.Json.JsonProperty("loadingUnitStatusDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string LoadingUnitStatusDescription { get; set; }
@@ -1461,7 +1461,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public int Weight { get; set; }
     
         [Newtonsoft.Json.JsonProperty("width", Required = Newtonsoft.Json.Required.Always)]
-        public int Width { get; set; }
+        public double Width { get; set; }
     
         public string ToJson() 
         {
@@ -1579,7 +1579,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public bool HasRotation { get; set; }
     
         [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Height { get; set; }
+        public double? Height { get; set; }
     
         [Newtonsoft.Json.JsonProperty("inventoryDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? InventoryDate { get; set; }
@@ -1645,13 +1645,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public string Sub2 { get; set; }
     
         [Newtonsoft.Json.JsonProperty("width", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Width { get; set; }
+        public double? Width { get; set; }
     
         [Newtonsoft.Json.JsonProperty("xPosition", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? XPosition { get; set; }
+        public double? XPosition { get; set; }
     
         [Newtonsoft.Json.JsonProperty("yPosition", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? YPosition { get; set; }
+        public double? YPosition { get; set; }
     
         public string ToJson() 
         {
@@ -1678,7 +1678,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public bool HasRotation { get; set; }
     
         [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Height { get; set; }
+        public double? Height { get; set; }
     
         [Newtonsoft.Json.JsonProperty("isItemPairingFixed", Required = Newtonsoft.Json.Required.Always)]
         public bool IsItemPairingFixed { get; set; }
@@ -1714,13 +1714,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public string Sub2 { get; set; }
     
         [Newtonsoft.Json.JsonProperty("width", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Width { get; set; }
+        public double? Width { get; set; }
     
         [Newtonsoft.Json.JsonProperty("xPosition", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? XPosition { get; set; }
+        public double? XPosition { get; set; }
     
         [Newtonsoft.Json.JsonProperty("yPosition", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? YPosition { get; set; }
+        public double? YPosition { get; set; }
     
         public string ToJson() 
         {
@@ -1804,10 +1804,10 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public int Id { get; set; }
     
         [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Height { get; set; }
+        public double? Height { get; set; }
     
         [Newtonsoft.Json.JsonProperty("width", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Width { get; set; }
+        public double? Width { get; set; }
     
         public string ToJson() 
         {
@@ -2264,7 +2264,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public int? FifoTimeStore { get; set; }
     
         [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Height { get; set; }
+        public double? Height { get; set; }
     
         [Newtonsoft.Json.JsonProperty("image", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Image { get; set; }
@@ -2291,7 +2291,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public System.DateTime? LastStoreDate { get; set; }
     
         [Newtonsoft.Json.JsonProperty("length", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Length { get; set; }
+        public double? Length { get; set; }
     
         [Newtonsoft.Json.JsonProperty("managementType", Required = Newtonsoft.Json.Required.Always)]
         public ItemManagementType ManagementType { get; set; }
@@ -2321,7 +2321,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public int TotalAvailable { get; set; }
     
         [Newtonsoft.Json.JsonProperty("width", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Width { get; set; }
+        public double? Width { get; set; }
     
         public string ToJson() 
         {
@@ -2378,7 +2378,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public int? FifoTimeStore { get; set; }
     
         [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Height { get; set; }
+        public double? Height { get; set; }
     
         [Newtonsoft.Json.JsonProperty("image", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Image { get; set; }
@@ -2405,7 +2405,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public System.DateTime? LastStoreDate { get; set; }
     
         [Newtonsoft.Json.JsonProperty("length", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Length { get; set; }
+        public double? Length { get; set; }
     
         [Newtonsoft.Json.JsonProperty("managementType", Required = Newtonsoft.Json.Required.Always)]
         public ItemManagementType ManagementType { get; set; }
@@ -2444,7 +2444,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public int TotalStock { get; set; }
     
         [Newtonsoft.Json.JsonProperty("width", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Width { get; set; }
+        public double? Width { get; set; }
     
         public string ToJson() 
         {
@@ -2599,7 +2599,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public int? HandlingParametersCorrection { get; set; }
     
         [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Always)]
-        public int Height { get; set; }
+        public double Height { get; set; }
     
         [Newtonsoft.Json.JsonProperty("inCycleCount", Required = Newtonsoft.Json.Required.Always)]
         public int InCycleCount { get; set; }
@@ -2695,16 +2695,16 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     public partial class LoadingUnitSize 
     {
         [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Always)]
-        public int Height { get; set; }
+        public double Height { get; set; }
     
         [Newtonsoft.Json.JsonProperty("length", Required = Newtonsoft.Json.Required.Always)]
-        public int Length { get; set; }
+        public double Length { get; set; }
     
         [Newtonsoft.Json.JsonProperty("weight", Required = Newtonsoft.Json.Required.Always)]
         public int Weight { get; set; }
     
         [Newtonsoft.Json.JsonProperty("width", Required = Newtonsoft.Json.Required.Always)]
-        public int Width { get; set; }
+        public double Width { get; set; }
     
         public string ToJson() 
         {
@@ -2996,10 +2996,10 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public int? CompartmentId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("compartmentTypeHeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? CompartmentTypeHeight { get; set; }
+        public double? CompartmentTypeHeight { get; set; }
     
         [Newtonsoft.Json.JsonProperty("compartmentTypeWidth", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? CompartmentTypeWidth { get; set; }
+        public double? CompartmentTypeWidth { get; set; }
     
         [Newtonsoft.Json.JsonProperty("creationDate", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]

@@ -172,16 +172,19 @@
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
+                                      Style="{DynamicResource SpinEditDecimalStyle}"
                                       EditValue="{Binding Model.XCoordinate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
+                                      Style="{DynamicResource SpinEditDecimalStyle}"
                                       EditValue="{Binding Model.YCoordinate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
+                                      Style="{DynamicResource SpinEditDecimalStyle}"
                                       EditValue="{Binding Model.ZCoordinate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </GroupBox>

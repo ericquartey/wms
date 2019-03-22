@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         [Key] public RuntimeValueEnum VarName { get; set; }
 
-        public DataTypeEnum VarType { get; set; }
+        public DataType VarType { get; set; }
 
         public string VarValue { get; set; }
 
