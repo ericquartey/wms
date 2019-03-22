@@ -11,19 +11,19 @@ using Microsoft.AspNetCore.Http;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
-    public class ImageFileProvider : IImageFileProvider
+    public class ImageProvider : IImageProvider
     {
         #region Fields
 
-        private readonly WMS.Data.WebAPI.Contracts.IImageFileDataService imageFileDataService;
+        private readonly WMS.Data.WebAPI.Contracts.IImagesDataService imageDataService;
 
         #endregion
 
         #region Constructors
 
-        public ImageFileProvider(WMS.Data.WebAPI.Contracts.IImageFileDataService imageFileDataService)
+        public ImageProvider(WMS.Data.WebAPI.Contracts.IImagesDataService imageDataService)
         {
-            this.imageFileDataService = imageFileDataService;
+            this.imageDataService = imageDataService;
         }
 
         #endregion
@@ -32,7 +32,7 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<IImageFile> DownloadAsync(string key)
         {
-            var fileResponse = await this.imageFileDataService.DownloadAsync(key);
+            var fileResponse = await this.imageDataService.DownloadAsync(key);
             return new ImageFile
             {
                 Stream = fileResponse.Stream,
@@ -46,7 +46,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 return null;
             }
 
-            return await this.imageFileDataService.UploadAsync(
+            return await this.imageDataService.UploadAsync(
                new WMS.Data.WebAPI.Contracts.FileParameter(model.OpenReadStream(), model.FileName));
         }
 

@@ -26,7 +26,7 @@ namespace Ferretto.WMS.App.Core.Providers
 
         private readonly WMS.Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService;
 
-        private readonly IImageFileProvider imageFileProvider;
+        private readonly IImageProvider imageFileProvider;
 
         private readonly IItemCategoryProvider itemCategoryProvider;
 
@@ -44,7 +44,7 @@ namespace Ferretto.WMS.App.Core.Providers
             IAbcClassProvider abcClassProvider,
             IItemCategoryProvider itemCategoryProvider,
             IMeasureUnitProvider measureUnitProvider,
-            IImageFileProvider imageFileProvider)
+            IImageProvider imageFileProvider)
         {
             this.itemsDataService = itemsDataService;
             this.compartmentsDataService = compartmentsDataService;
@@ -240,6 +240,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 StoreTolerance = item.StoreTolerance,
                 TotalAvailable = item.TotalAvailable,
                 Width = item.Width,
+                HasImageChanged = false,
             };
 
             await this.AddEnumerationsAsync(itemDetails);
@@ -276,10 +277,8 @@ namespace Ferretto.WMS.App.Core.Providers
 
             try
             {
-                var originalItem = await this.itemsDataService.GetByIdAsync(model.Id);
-
                 var fileNameImage = model.Image;
-                if (originalItem.Image != model.Image)
+                if (model.HasImageChanged)
                 {
                     fileNameImage = await this.SaveImageAsync(model.ImagePath);
                 }
@@ -360,7 +359,7 @@ namespace Ferretto.WMS.App.Core.Providers
             {
                 // if you land here, it means you don't have permission to the folder
                 Debug.Write("Permission denied");
-                return -1;
+                throw new FileLoadException();
             }
             else if (File.Exists(filePath))
             {

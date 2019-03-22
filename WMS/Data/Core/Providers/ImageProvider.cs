@@ -15,7 +15,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class ImageFileProvider : IImageFileProvider
+    public class ImageProvider : IImageProvider
     {
         #region Fields
 
@@ -31,7 +31,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Constructors
 
-        public ImageFileProvider(IConfiguration configuration)
+        public ImageProvider(IConfiguration configuration)
         {
             this.configuration = configuration;
         }

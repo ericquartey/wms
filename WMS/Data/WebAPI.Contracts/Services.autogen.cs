@@ -5226,12 +5226,12 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.0.15.0 (NJsonSchema v9.13.22.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class ImageFileDataService : ServiceBase, IImageFileDataService
+    internal partial class ImagesDataService : ServiceBase, IImagesDataService
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public ImageFileDataService(string baseUrl)
+        public ImagesDataService(string baseUrl)
         {
             BaseUrl = baseUrl; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
@@ -5266,7 +5266,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<FileResponse> DownloadAsync(string id, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ImageFile/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Images/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -5366,7 +5366,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<string> UploadAsync(FileParameter model, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ImageFile");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Images");
     
             var client_ = new System.Net.Http.HttpClient();
             try

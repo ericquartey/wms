@@ -16,7 +16,7 @@ namespace Ferretto.Common.Controls
     {
         #region Methods
 
-        public static async Task<ImageSource> GetImageAsync(IImageFileProvider imageService, string path)
+        public static async Task<ImageSource> GetImageAsync(IImageProvider imageService, string path)
         {
             var imageFile = await imageService.DownloadAsync(path);
 
@@ -30,7 +30,7 @@ namespace Ferretto.Common.Controls
             return bitmap;
         }
 
-        public static async Task<ImageSource> RetrieveImage(IImageFileProvider imageService, string imagePath)
+        public static async Task<ImageSource> RetrieveImageAsync(IImageProvider imageService, string imagePath)
         {
             return !string.IsNullOrWhiteSpace(imagePath)
                 ? await ImageUtils.GetImageAsync(imageService, imagePath)

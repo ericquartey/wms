@@ -8,7 +8,7 @@ using Ferretto.Common.BLL.Interfaces.Providers;
 
 namespace Ferretto.Common.BLL.Interfaces.Providers
 {
-    public interface IImageFileProvider : IFileProvider
+    public interface IImageProvider : IFileProvider
     {
     }
 }

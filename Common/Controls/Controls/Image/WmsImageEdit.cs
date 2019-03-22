@@ -19,7 +19,7 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty PathProperty = DependencyProperty.Register(
                      nameof(Path), typeof(string), typeof(WmsImageEdit), new PropertyMetadata(default(string)));
 
-        private readonly IImageFileProvider imageService;
+        private readonly IImageProvider imageService;
 
         private bool isUpdatingImage;
 
@@ -29,7 +29,7 @@ namespace Ferretto.Common.Controls
 
         public WmsImageEdit()
         {
-            this.imageService = ServiceLocator.Current.GetInstance<IImageFileProvider>();
+            this.imageService = ServiceLocator.Current.GetInstance<IImageProvider>();
         }
 
         #endregion
@@ -83,7 +83,7 @@ namespace Ferretto.Common.Controls
 
                 if (e.NewValue != null)
                 {
-                    wmsImage.Source = await ImageUtils.RetrieveImage(wmsImage.imageService, (string)e.NewValue);
+                    wmsImage.Source = await ImageUtils.RetrieveImageAsync(wmsImage.imageService, (string)e.NewValue);
                 }
                 else
                 {

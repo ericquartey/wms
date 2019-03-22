@@ -32,6 +32,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private object modelSelectionChangedSubscription;
 
+        private string originalImage;
+
         private Compartment selectedCompartment;
 
         private ICommand withdrawCommand;
@@ -112,6 +114,10 @@ namespace Ferretto.WMS.Modules.MasterData
         protected override async Task ExecuteSaveCommand()
         {
             this.IsBusy = true;
+            if (this.originalImage != this.Model.Image)
+            {
+                this.Model.HasImageChanged = true;
+            }
 
             var result = await this.itemProvider.UpdateAsync(this.Model);
             if (result.Success)
@@ -233,6 +239,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     this.Model = await this.itemProvider.GetByIdAsync(modelId);
                     this.ItemHasCompartments = this.Model.CompartmentsCount > 0 ? true : false;
+                    this.originalImage = this.Model.Image;
                 }
 
                 this.IsBusy = false;

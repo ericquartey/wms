@@ -44,7 +44,7 @@ namespace Ferretto.WMS.Data.Core.Extensions
                 services.AddTransient<IPackageTypeProvider, PackageTypeProvider>();
                 services.AddTransient<ISchedulerRequestProvider, SchedulerRequestProvider>();
                 services.AddTransient<IUserProvider, UserProvider>();
-                services.AddTransient<IImageFileProvider, ImageFileProvider>();
+                services.AddTransient<IImageProvider, ImageProvider>();
             }
 
             return services;

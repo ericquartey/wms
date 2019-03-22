@@ -32,7 +32,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<IMachinesDataService>(baseUrl));
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<ICompartmentsDataService>(baseUrl));
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<IUsersDataService>(baseUrl));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IImageFileDataService>(baseUrl));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IImagesDataService>(baseUrl));
 
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<IItemCompartmentTypesDataService>(baseUrl));
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<IAbcClassesDataService>(baseUrl));

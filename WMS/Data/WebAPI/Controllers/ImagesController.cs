@@ -19,21 +19,21 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ImageFileController :
+    public class ImagesController :
         ControllerBase,
         IFileController
     {
         #region Fields
 
-        private readonly IImageFileProvider imageFileProvider;
+        private readonly IImageProvider imageProvider;
 
         #endregion
 
         #region Constructors
 
-        public ImageFileController(IImageFileProvider imageFileProvider)
+        public ImagesController(IImageProvider imageProvider)
         {
-            this.imageFileProvider = imageFileProvider;
+            this.imageProvider = imageProvider;
         }
 
         #endregion
@@ -51,7 +51,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.BadRequest();
             }
 
-            var fileImage = await this.imageFileProvider.DownloadAsync(id);
+            var fileImage = await this.imageProvider.DownloadAsync(id);
             if (fileImage != null)
             {
                 return this.File(fileImage.FileBytes, fileImage.ContentType, fileImage.FileName);
@@ -72,7 +72,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.BadRequest();
             }
 
-            return this.Ok(await this.imageFileProvider.UploadAsync(model));
+            return this.Ok(await this.imageProvider.UploadAsync(model));
         }
 
         #endregion
