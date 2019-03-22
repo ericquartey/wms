@@ -33,8 +33,6 @@ namespace Ferretto.Common.DataModels
 
         public int? ItemId { get; set; }
 
-        public DateTime? LastHandlingDate { get; set; }
-
         public DateTime LastModificationDate { get; set; }
 
         public DateTime? LastPickDate { get; set; }

@@ -52,6 +52,7 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                     LoggerName = table.Column<string>(nullable: true),
                     Message = table.Column<string>(nullable: true),
                     Source = table.Column<string>(nullable: true),
+                    Status = table.Column<string>(nullable: true),
                     TimeStamp = table.Column<DateTime>(nullable: false),
                     Type = table.Column<string>(nullable: true)
                 },

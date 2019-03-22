@@ -1,19 +1,24 @@
-﻿using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Events;
+﻿using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.DTOs;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_DataLayer;
+using System;
+using System.Threading.Tasks;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TestController
+    public class TestController : ControllerBase
     {
         #region Fields
+
+        private readonly IDataLayerValueManagment dataLayerValueManagement;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -21,9 +26,10 @@ namespace Ferretto.VW.MAS_AutomationService
 
         #region Constructors
 
-        public TestController(IEventAggregator eventAggregator)
+        public TestController(IEventAggregator eventAggregator, IServiceProvider services)
         {
             this.eventAggregator = eventAggregator;
+            this.dataLayerValueManagement = services.GetService(typeof(IDataLayerValueManagment)) as IDataLayerValueManagment;
         }
 
         #endregion
@@ -112,6 +118,37 @@ namespace Ferretto.VW.MAS_AutomationService
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Stop Homing",
                 MessageActor.FiniteStateMachines, MessageActor.AutomationService, MessageType.Stop,
                 MessageVerbosity.Info));
+        }
+
+        [ProducesResponseType(200, Type = typeof(decimal))]
+        [ProducesResponseType(404)]
+        [HttpGet("DecimalConfigurationValues/{parameter}")]
+        public ActionResult<decimal> GetDecimalConfigurationParameter(string parameter)
+        {
+            decimal returnValue;
+            switch (parameter)
+            {
+                case "UpperBound":
+                    returnValue = 1000m;
+                    break;
+
+                case "LowerBound":
+                    returnValue = 10m;
+                    break;
+
+                case "Offset":
+                    returnValue = 20m;
+                    break;
+
+                case "Resolution":
+                    returnValue = 165.14m;
+                    break;
+
+                default:
+                    var message = $"No entity with the specified parameter={parameter} exists.";
+                    return this.NotFound(message);
+            }
+            return this.Ok(returnValue);
         }
 
         [HttpGet("MissionExecutedTest")]

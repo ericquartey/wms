@@ -21,6 +21,9 @@ namespace Ferretto.Common.BusinessModels
         Completed = 'C',
 
         [Display(Name = nameof(BusinessObjects.MissionStatusError), ResourceType = typeof(BusinessObjects))]
-        Error = 'E'
+        Error = 'E',
+
+        [Display(Name = nameof(BusinessObjects.MissionStatusIncomplete), ResourceType = typeof(BusinessObjects))]
+        Incomplete = 'I'
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Threading;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
+using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines
@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 
         ~InverterStateMachineBase()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion
@@ -36,6 +36,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 
         #region Methods
 
+        /// <inheritdoc />
         public virtual void ChangeState(IInverterState newState)
         {
             this.CurrentState = newState;
@@ -43,37 +44,43 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <inheritdoc />
         public void EnqueueMessage(InverterMessage message)
         {
             this.inverterCommandQueue.Enqueue(message);
         }
 
+        /// <inheritdoc />
         public bool ProcessMessage(InverterMessage message)
         {
             return this.CurrentState?.ProcessMessage(message) ?? false;
         }
 
+        /// <inheritdoc />
         public void PublishNotificationEvent(NotificationMessage notificationMessage)
         {
             this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
         }
 
+        /// <inheritdoc />
         public abstract void Start();
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposed)
+            if (this.disposed)
+            {
                 return;
+            }
 
             if (disposing)
             {
             }
 
-            disposed = true;
+            this.disposed = true;
         }
 
         #endregion

@@ -122,6 +122,8 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
 
                     b.Property<string>("Source");
 
+                    b.Property<string>("Status");
+
                     b.Property<DateTime>("TimeStamp");
 
                     b.Property<string>("Type");

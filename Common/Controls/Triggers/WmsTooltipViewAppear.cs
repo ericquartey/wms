@@ -44,6 +44,7 @@
                         .FirstOrDefault();
                 }
             }
+
             if (this.Grid?.GetSelectedRowHandles().Count() == 1)
             {
                 var rowHandle = this.Grid.GetSelectedRowHandles().FirstOrDefault();

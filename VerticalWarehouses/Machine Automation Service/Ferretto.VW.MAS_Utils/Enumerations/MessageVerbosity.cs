@@ -2,16 +2,16 @@
 {
     public enum MessageVerbosity
     {
-        Debug,
+        Trace = 0,
 
-        Info,
+        Debug = 1,
 
-        Trace,
+        Info = 2,
 
-        Warn,
+        Warning = 3,
 
-        Error,
+        Error = 4,
 
-        Fatal
+        Fatal = 5
     }
 }

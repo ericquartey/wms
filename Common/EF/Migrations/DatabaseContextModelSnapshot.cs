@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.Common.EF.Migrations
 {
-    [System.CodeDom.Compiler.GeneratedCode("EntityFramework", "v2.1")]
     [DbContext(typeof(DatabaseContext))]
     partial class DatabaseContextModelSnapshot : ModelSnapshot
     {
@@ -411,8 +410,6 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int?>("ItemId");
 
-                    b.Property<DateTime?>("LastHandlingDate");
-
                     b.Property<DateTime>("LastModificationDate")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GETUTCDATE()");
@@ -756,7 +753,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<string>("RegistrationNumber");
 
-                    b.Property<int>("RequiredQuantity");
+                    b.Property<int>("RequestedQuantity");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -814,7 +811,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<DateTime?>("InventoryDate");
 
-                    b.Property<bool?>("IsCellPairingFixed");
+                    b.Property<bool>("IsCellPairingFixed");
 
                     b.Property<DateTime?>("LastHandlingDate");
 
@@ -1144,6 +1141,8 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GETUTCDATE()");
 
+                    b.Property<int>("DispatchedQuantity");
+
                     b.Property<int?>("ItemId");
 
                     b.Property<int?>("ItemListId");
@@ -1166,7 +1165,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<string>("RegistrationNumber");
 
-                    b.Property<int>("RequiredQuantity");
+                    b.Property<int>("RequestedQuantity");
 
                     b.Property<string>("Status")
                         .IsRequired()

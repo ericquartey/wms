@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.MAS_InverterDriver;
+using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.InverterDriver.StateMachines.Stop
 {
@@ -16,15 +16,19 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
 
         private readonly Axis axisToStop;
 
+        private readonly ILogger logger;
+
         #endregion
 
         #region Constructors
 
-        public ErrorState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate)
+        public ErrorState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate, ILogger logger)
         {
-            Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - ErrorState:Ctor");
             this.parentStateMachine = parentStateMachine;
+            this.logger = logger;
             this.axisToStop = axisToCalibrate;
+
+            this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - ErrorState:Ctor");
 
             var messageData = new StopAxisMessageData(this.axisToStop);
 
@@ -37,9 +41,10 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
 
         #region Methods
 
+        /// <inheritdoc />
         public override bool ProcessMessage(InverterMessage message)
         {
-            //Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - ErrorState:ProcessMessage");
+            //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - ErrorState:ProcessMessage");
             return false;
         }
 

@@ -1,8 +1,9 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
-using Ferretto.VW.Common_Utils;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,8 @@ namespace MAS_DataLayerUnitTests
     public class DataLayerUnitTest
     {
         #region Fields
+
+        public Mock<IEventAggregator> eventAggregator;
 
         protected DataLayerContext context;
 
@@ -35,7 +38,7 @@ namespace MAS_DataLayerUnitTests
             mockEventAggregator.Setup(s => s.GetEvent<CommandEvent>()).Returns(new CommandEvent());
             mockEventAggregator.Setup(s => s.GetEvent<NotificationEvent>()).Returns(new NotificationEvent());
 
-            var path = Directory.GetCurrentDirectory();
+            this.eventAggregator = mockEventAggregator;
 
             var filesInfo = new FilesInfo
             {

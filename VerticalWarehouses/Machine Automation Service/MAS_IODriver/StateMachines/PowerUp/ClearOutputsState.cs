@@ -1,12 +1,21 @@
-﻿namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
+﻿using Microsoft.Extensions.Logging;
+
+namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 {
     public class ClearOutputsState : IoStateBase
     {
+        #region Fields
+
+        private readonly ILogger logger;
+
+        #endregion
+
         #region Constructors
 
-        public ClearOutputsState(IIoStateMachine parentStateMachine)
+        public ClearOutputsState(IIoStateMachine parentStateMachine, ILogger logger)
         {
             this.parentStateMachine = parentStateMachine;
+            this.logger = logger;
             var clearIoMessage = new IoMessage(false);
             clearIoMessage.Force = true;
 
@@ -21,7 +30,7 @@
         {
             if (message.ValidOutputs && message.OutputsCleared)
             {
-                this.parentStateMachine.ChangeState(new PulseResetState(this.parentStateMachine));
+                this.parentStateMachine.ChangeState(new PulseResetState(this.parentStateMachine, this.logger));
             }
         }
 

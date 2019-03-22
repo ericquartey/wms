@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Prism.Events;
 
@@ -106,24 +107,18 @@ namespace Ferretto.VW.MAS_DataLayer
 
             // INFO Log events
             // INFO Command full events
-            //var commandFullEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            //commandFullEvent.Subscribe(message => { this.LogMessages(message); },
-            //    ThreadOption.PublisherThread,
-            //    false);
+            var commandFullEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            commandFullEvent.Subscribe(message => { this.LogMessages(message); },
+                ThreadOption.PublisherThread,
+                false);
 
             // INFO Notification full events
-            //var notificationFullEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            //notificationFullEvent.Subscribe(message => { this.LogMessages(message); },
-            //    ThreadOption.PublisherThread,
-            //    false);
+            var notificationFullEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            notificationFullEvent.Subscribe(message => { this.LogMessages(message); },
+                ThreadOption.PublisherThread,
+                false);
 
-            //this.logger?.LogInformation("DataLayer Constructor");
-
-            var commandMessage = new CommandMessage();
-            commandMessage.Source = MessageActor.DataLayer;
-            commandMessage.Destination = MessageActor.DataLayer;
-
-            this.LogMessages(commandMessage);
+            this.logger?.LogInformation("DataLayer Constructor");
         }
 
         /// <summary>
@@ -167,7 +162,6 @@ namespace Ferretto.VW.MAS_DataLayer
                 false,
                 message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
 
-            // The old WriteLogService
             var NotificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
             NotificationEvent.Subscribe(message => { this.notificationQueue.Enqueue(message); },
                 ThreadOption.PublisherThread,
@@ -177,23 +171,39 @@ namespace Ferretto.VW.MAS_DataLayer
             // INFO Log events
             // INFO Command full events
             var commandFullEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            commandFullEvent.Subscribe(message => { this.LogMessages(message); },
-                ThreadOption.PublisherThread,
-                false);
+            commandFullEvent.Subscribe(message => { this.LogMessages(message); });
 
             // INFO Notification full events
             var notificationFullEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            notificationFullEvent.Subscribe(message => { this.LogMessages(message); },
-                ThreadOption.PublisherThread,
-                false);
+            notificationFullEvent.Subscribe(message => { this.LogMessages(message); });
         }
 
         #endregion
 
         #region Methods
 
-        /// <inheritdoc/>
-        public void LoadConfigurationValuesInfo(string configurationFilePath)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            this.stoppingToken = stoppingToken;
+
+            try
+            {
+                this.commadReceiveTask.Start();
+                this.notificationReceiveTask.Start();
+            }
+            catch (Exception ex)
+            {
+                throw new DataLayerException($"Exception: {ex.Message} while starting service threads", ex);
+            }
+        }
+
+        /// <summary>
+        /// This method is been invoked during the installation, to load the general_info.json file
+        /// </summary>
+        /// <param name="configurationValueRequest">Configuration parameters to load</param>
+        /// <exception cref="DataLayerExceptionEnum.UNKNOWN_INFO_FILE_EXCEPTION">Exception for a wrong info file input name</exception>
+        /// <exception cref="DataLayerExceptionEnum.UNDEFINED_TYPE_EXCEPTION">Exception for an unknown data type</exception>
+        private void LoadConfigurationValuesInfo(InfoFilesEnum configurationValueRequest)
         {
             using (var streamReader = new StreamReader(configurationFilePath))
             {
@@ -396,41 +406,52 @@ namespace Ferretto.VW.MAS_DataLayer
             }
         }
 
-        public void LogMessages(CommandMessage message)
+        private void LogMessages(CommandMessage message)
         {
             if (message == null)
             {
                 throw new ArgumentNullException();
             }
 
-            //string output = JsonConvert.SerializeObject(message.Data);
+            var serializedData = JsonConvert.SerializeObject(message.Data);
+
+            var logEntry = new LogEntry();
+
+            logEntry.Data = serializedData;
+            logEntry.Description = message.Description;
+            logEntry.Destination = message.Destination.ToString();
+            logEntry.Source = message.Source.ToString();
+            logEntry.TimeStamp = DateTime.Now;
+            logEntry.Type = message.Type.ToString();
+
+            this.inMemoryDataContext.LogEntries.Add(logEntry);
+
+            this.inMemoryDataContext.SaveChanges();
         }
 
-        public void LogMessages(NotificationMessage message)
+        private void LogMessages(NotificationMessage message)
         {
             if (message == null)
             {
                 throw new ArgumentNullException();
             }
 
-            //string output = JsonConvert.SerializeObject(message.Data);
+            var serializedData = JsonConvert.SerializeObject(message.Data);
 
-            //this.inMemoryDataContext.LogEntries.Add(new LogEntry { LogMessage = logMessage });
-        }
+            var logEntry = new LogEntry();
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            this.stoppingToken = stoppingToken;
+            logEntry.Data = serializedData;
+            logEntry.Description = message.Description;
+            logEntry.Destination = message.Destination.ToString();
+            logEntry.ErrorLevel = message.ErrorLevel.ToString();
+            logEntry.Source = message.Source.ToString();
+            logEntry.Status = message.Status.ToString();
+            logEntry.TimeStamp = DateTime.Now;
+            logEntry.Type = message.Type.ToString();
 
-            try
-            {
-                this.commadReceiveTask.Start();
-                this.notificationReceiveTask.Start();
-            }
-            catch (Exception ex)
-            {
-                throw new DataLayerException($"Exception: {ex.Message} while starting service threads", ex);
-            }
+            this.inMemoryDataContext.LogEntries.Add(logEntry);
+
+            this.inMemoryDataContext.SaveChanges();
         }
 
         private async Task ReceiveCommandTaskFunction()

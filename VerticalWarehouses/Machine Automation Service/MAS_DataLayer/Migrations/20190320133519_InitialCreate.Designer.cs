@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS_DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20190320100839_InitialCreate")]
+    [Migration("20190320133519_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -130,6 +130,8 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                     b.Property<string>("Message");
 
                     b.Property<string>("Source");
+
+                    b.Property<string>("Status");
 
                     b.Property<DateTime>("TimeStamp");
 
