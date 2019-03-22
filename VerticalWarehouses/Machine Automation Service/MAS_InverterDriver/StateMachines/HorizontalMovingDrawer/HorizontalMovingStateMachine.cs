@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer;
@@ -43,6 +44,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
             base.ChangeState(newState);
         }
 
+        public override void OnPublishNotification(NotificationMessage message)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override void Start()
         {
             switch (this.movingDrawer)
@@ -53,6 +59,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
             }
 
             this.CurrentState = new IdleState(this, this.currentMovingDrawer);
+        }
+
+        public override void Stop()
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion

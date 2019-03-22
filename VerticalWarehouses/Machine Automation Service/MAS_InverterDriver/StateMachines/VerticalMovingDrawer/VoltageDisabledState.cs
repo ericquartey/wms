@@ -42,6 +42,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalMovingDrawer
             return false;
         }
 
+        public override void Stop()
+        {
+            throw new System.NotImplementedException();
+        }
+
         #endregion
     }
 }

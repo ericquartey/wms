@@ -19,6 +19,8 @@ namespace Ferretto.VW.MAS_InverterDriver.Interface.StateMachines
         /// <param name="message">A <see cref="InverterMessage"/> message to enqueue.</param>
         void EnqueueMessage(InverterMessage message);
 
+        void OnPublishNotification(NotificationMessage message);
+
         /// <summary>
         /// Process a given message
         /// </summary>
@@ -36,6 +38,11 @@ namespace Ferretto.VW.MAS_InverterDriver.Interface.StateMachines
         /// Start states machine.
         /// </summary>
         void Start();
+
+        /// <summary>
+        /// Stop states machine.
+        /// </summary>
+        void Stop();
 
         #endregion
     }

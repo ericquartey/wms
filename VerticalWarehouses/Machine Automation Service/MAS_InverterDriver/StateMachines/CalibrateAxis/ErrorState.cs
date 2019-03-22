@@ -48,6 +48,12 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
             return false;
         }
 
+        /// <inheritdoc />
+        public override void Stop()
+        {
+            //TEMP
+        }
+
         #endregion
     }
 }

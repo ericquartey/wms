@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
@@ -10,13 +11,18 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         private readonly Axis axisToSwitch;
 
+        private readonly ILogger logger;
+
         #endregion
 
         #region Constructors
 
-        public HomingCalibrateAxisDoneState(IStateMachine parentMachine, Axis axisCalibrated)
+        public HomingCalibrateAxisDoneState(IStateMachine parentMachine, Axis axisCalibrated, ILogger logger)
         {
+            this.logger?.LogTrace("Homing Calibrate Axis Done state ==> ");
+
             this.parentStateMachine = parentMachine;
+            this.logger = logger;
             this.axisToSwitch = (axisCalibrated == Axis.Horizontal) ? Axis.Vertical : Axis.Horizontal;
 
             // TEMP send a message to switch axis (to IODriver)
@@ -47,7 +53,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             {
                 case MessageType.Stop:
                     //TEMP Change to homing end state (a request of stop operation has been made)
-                    this.parentStateMachine.ChangeState(new HomingEndState(this.parentStateMachine, this.axisToSwitch));
+                    this.parentStateMachine.ChangeState(new HomingEndState(this.parentStateMachine, this.axisToSwitch, this.logger));
                     break;
 
                 default:
@@ -60,6 +66,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         {
             if (message.Type == MessageType.SwitchAxis)
             {
+                this.logger?.LogTrace(string.Format("Homing Calibrate Axis Done state : Process notification message {0}-{1}", message.Type, message.Status));
+
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
@@ -69,7 +77,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
                     case MessageStatus.OperationError:
                         //TEMP Change to error state (an error has occurred)
-                        this.parentStateMachine.ChangeState(new HomingErrorState(this.parentStateMachine, this.axisToSwitch));
+                        this.parentStateMachine.ChangeState(new HomingErrorState(this.parentStateMachine, this.axisToSwitch, this.logger));
                         break;
 
                     default:
@@ -83,12 +91,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             if (this.parentStateMachine.OperationDone)
             {
                 //TEMP Change to end state (the operation is done)
-                this.parentStateMachine.ChangeState(new HomingEndState(this.parentStateMachine, this.axisToSwitch));
+                this.parentStateMachine.ChangeState(new HomingEndState(this.parentStateMachine, this.axisToSwitch, this.logger));
             }
             else
             {
                 //TEMP Change to switch end state (the operation of switch for the current axis has been done)
-                this.parentStateMachine.ChangeState(new HomingSwitchAxisDoneState(this.parentStateMachine, this.axisToSwitch));
+                this.parentStateMachine.ChangeState(new HomingSwitchAxisDoneState(this.parentStateMachine, this.axisToSwitch, this.logger));
             }
         }
 

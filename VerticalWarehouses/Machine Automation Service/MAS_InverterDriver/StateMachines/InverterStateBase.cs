@@ -39,6 +39,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         /// <inheritdoc />
         public abstract bool ProcessMessage(InverterMessage message);
 
+        public abstract void Stop();
+
         protected virtual void Dispose(bool disposing)
         {
             if (this.disposed)

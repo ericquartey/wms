@@ -12,11 +12,15 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
     {
         #region Fields
 
+        private const int sendDelay = 50;
+
         private readonly Axis axisToCalibrate;
 
         private readonly ILogger logger;
 
         private readonly ushort parameterValue;
+
+        private bool forceStop;
 
         #endregion
 
@@ -52,12 +56,30 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
                 this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate, this.logger));
             }
 
+            if (message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
+            {
+                if (this.forceStop)
+                {
+                    this.parentStateMachine.ChangeState(new EndState(this.parentStateMachine, this.axisToCalibrate, this.logger));
+                    returnValue = true;
+                }
+            }
+
             if (message.IsWriteMessage && message.ParameterId == InverterParameterId.SetOperatingModeParam)
             {
                 this.parentStateMachine.ChangeState(new ShutdownState(this.parentStateMachine, this.axisToCalibrate, this.logger));
                 returnValue = true;
             }
             return returnValue;
+        }
+
+        /// <inheritdoc />
+        public override void Stop()
+        {
+            this.forceStop = true;
+
+            var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue, sendDelay);
+            this.parentStateMachine.EnqueueMessage(inverterMessage);
         }
 
         #endregion

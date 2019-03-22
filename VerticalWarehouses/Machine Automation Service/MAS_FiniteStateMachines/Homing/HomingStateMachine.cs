@@ -3,6 +3,7 @@ using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
@@ -14,6 +15,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         private readonly Axis calibrateAxis;
 
         private readonly ICalibrateMessageData calibrateMessageData;
+
+        private readonly ILogger logger;
 
         private Axis currentAxis;
 
@@ -27,11 +30,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #region Constructors
 
-        public HomingStateMachine(IEventAggregator eventAggregator, ICalibrateMessageData calibrateMessageData)
+        public HomingStateMachine(IEventAggregator eventAggregator, ICalibrateMessageData calibrateMessageData, ILogger logger)
             : base(eventAggregator)
         {
             this.calibrateMessageData = calibrateMessageData;
             this.calibrateAxis = calibrateMessageData.AxisToCalibrate;
+            this.logger = logger;
             this.IsStopRequested = false;
             this.OperationDone = false;
         }
@@ -187,7 +191,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                     }
             }
 
-            this.CurrentState = new HomingStartState(this, this.currentAxis);
+            this.logger?.LogTrace("Homing Start ==> ");
+
+            this.CurrentState = new HomingStartState(this, this.currentAxis, this.logger);
         }
 
         /// <summary>

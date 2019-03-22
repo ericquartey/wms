@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
@@ -10,7 +11,6 @@ using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis;
 using Ferretto.VW.InverterDriver.StateMachines.Stop;
 using Ferretto.VW.MAS_DataLayer;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
@@ -144,8 +144,8 @@ namespace Ferretto.VW.InverterDriver
         {
             this.stoppingToken = stoppingToken;
 
-            var inverterAddress = this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetworkEnum.Inverter1, (long)ConfigurationCategoryValueEnum.SetupNetworkEnum);
-            var inverterPort = this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetworkEnum.Inverter1Port, (long)ConfigurationCategoryValueEnum.SetupNetworkEnum);
+            IPAddress.TryParse("169.254.231.10", out var inverterAddress);  //var inverterAddress = this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetworkEnum.Inverter1, (long)ConfigurationCategoryValueEnum.SetupNetworkEnum);
+            var inverterPort = 17221; // this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetworkEnum.Inverter1Port, (long)ConfigurationCategoryValueEnum.SetupNetworkEnum);
 
             this.socketTransport.Configure(inverterAddress, inverterPort);
 
@@ -197,7 +197,7 @@ namespace Ferretto.VW.InverterDriver
                     return Task.CompletedTask;
                 }
 
-                if (this.currentStateMachine != null)
+                if (this.currentStateMachine != null && receivedMessage.Type == MessageType.Stop)
                 {
                     var errorNotification = new NotificationMessage(null, "Inverter operation already in progress", MessageActor.Any,
                         MessageActor.InverterDriver, receivedMessage.Type, MessageStatus.OperationError, ErrorLevel.Error);
@@ -220,7 +220,15 @@ namespace Ferretto.VW.InverterDriver
                     case MessageType.Stop:
                         if (receivedMessage.Data is IStopAxisMessageData stopData)
                         {
-                            this.currentStateMachine = new StopStateMachine(stopData.AxisToStop, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                            if (this.currentStateMachine == null)
+                            {
+                                this.currentStateMachine = new StopStateMachine(stopData.AxisToStop, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                            }
+                            else
+                            {
+                                // Force a stop
+                                this.currentStateMachine.Stop();
+                            }
                         }
                         break;
                 }
@@ -270,9 +278,8 @@ namespace Ferretto.VW.InverterDriver
                         }
                         if (receivedMessage.Status == MessageStatus.OperationStop)
                         {
-                            //TODO dispose current states machine
-
-                            //TODO start the states machine for stop operation
+                            this.currentStateMachine.Dispose();
+                            this.currentStateMachine = null;
                         }
                         break;
                 }

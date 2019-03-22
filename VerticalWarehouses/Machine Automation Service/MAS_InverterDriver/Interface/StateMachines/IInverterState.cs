@@ -19,6 +19,8 @@ namespace Ferretto.VW.MAS_InverterDriver.Interface.StateMachines
         /// <returns>True if the message satisfied state business logic and caused a state transition, false otherwise</returns>
         bool ProcessMessage(InverterMessage message);
 
+        void Stop();
+
         #endregion
     }
 }

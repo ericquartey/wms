@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
@@ -10,14 +11,19 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         private readonly Axis axisToStop;
 
+        private readonly ILogger logger;
+
         #endregion
 
         #region Constructors
 
-        public HomingEndState(IStateMachine parentMachine, Axis axisToStop)
+        public HomingEndState(IStateMachine parentMachine, Axis axisToStop, ILogger logger)
         {
+            this.logger?.LogTrace("FSM Homing End state ==> ");
+
             this.parentStateMachine = parentMachine;
             this.axisToStop = axisToStop;
+            this.logger = logger;
 
             //TEMP Send a message to stop the homing to the inverter
             var stopMessageData = new StopAxisMessageData(this.axisToStop);

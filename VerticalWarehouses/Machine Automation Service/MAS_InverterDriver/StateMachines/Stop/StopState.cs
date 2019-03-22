@@ -74,6 +74,11 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
             return returnValue;
         }
 
+        public override void Stop()
+        {
+            throw new System.NotImplementedException();
+        }
+
         #endregion
     }
 }

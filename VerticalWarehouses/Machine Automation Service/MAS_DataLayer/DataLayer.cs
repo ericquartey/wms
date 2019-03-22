@@ -88,8 +88,8 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
 
                 // TEMP Temporary commented
-                this.LoadConfigurationValuesInfo(InfoFilesEnum.GeneralInfo);
-                this.LoadConfigurationValuesInfo(InfoFilesEnum.InstallationInfo);
+                //this.LoadConfigurationValuesInfo(InfoFilesEnum.GeneralInfo);
+                //this.LoadConfigurationValuesInfo(InfoFilesEnum.InstallationInfo);
 
                 foreach (var configurationValue in initialContext.ConfigurationValues)
                 {
@@ -486,6 +486,8 @@ namespace Ferretto.VW.MAS_DataLayer
 
                         break;
                 }
+
+                //x this.logger?.LogTrace(string.Format("Receive Notification Type={0} Status={1}", receivedMessage.Type, receivedMessage.Status));
 
                 await this.inMemoryDataContext.SaveChangesAsync(this.stoppingToken);
             } while (!this.stoppingToken.IsCancellationRequested);
