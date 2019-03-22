@@ -6,7 +6,8 @@ namespace Ferretto.Common.BLL.Interfaces.Models
     {
         #region Methods
 
-        public static bool CanDelete(this IPolicyDescriptor policyDescriptor)
+        public static bool CanDelete<TPolicy>(this IPolicyDescriptor<TPolicy> policyDescriptor)
+            where TPolicy : IPolicy
         {
             if (policyDescriptor == null)
             {
@@ -19,7 +20,8 @@ namespace Ferretto.Common.BLL.Interfaces.Models
                     && p.Type == PolicyType.Operation);
         }
 
-        public static string GetCanDeleteReason(this IPolicyDescriptor policyDescriptor)
+        public static string GetCanDeleteReason<TPolicy>(this IPolicyDescriptor<TPolicy> policyDescriptor)
+            where TPolicy : IPolicy
         {
             if (policyDescriptor == null)
             {

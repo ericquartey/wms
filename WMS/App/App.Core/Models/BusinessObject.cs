@@ -9,7 +9,7 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    public class BusinessObject : BindableBase, ICloneable, IModel<int>, IPolicyDescriptor
+    public class BusinessObject : BindableBase, ICloneable, IModel<int>, IPolicyDescriptor<Policy>
     {
         #region Constructors
 
@@ -23,7 +23,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         public int Id { get; set; }
 
-        public IEnumerable<IPolicy> Policies { get; set; }
+        public IEnumerable<Policy> Policies { get; set; }
 
         #endregion
 

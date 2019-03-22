@@ -2,11 +2,12 @@
 
 namespace Ferretto.Common.BLL.Interfaces.Models
 {
-    public interface IPolicyDescriptor
+    public interface IPolicyDescriptor<out TPolicy>
+        where TPolicy : IPolicy
     {
         #region Properties
 
-        IEnumerable<IPolicy> Policies { get; }
+        IEnumerable<TPolicy> Policies { get; }
 
         #endregion
     }

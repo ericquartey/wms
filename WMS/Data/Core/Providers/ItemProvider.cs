@@ -197,7 +197,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 ;
         }
 
-        private async Task<IPolicy> ComputeDeletePolicyAsync(int itemId)
+        private async Task<Policy> ComputeDeletePolicyAsync(int itemId)
         {
             var compartmentsCount =
                 await this.dataContext.Compartments

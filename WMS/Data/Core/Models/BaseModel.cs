@@ -5,11 +5,11 @@ using Ferretto.Common.BLL.Interfaces.Models;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class BaseModel<TKey> : IModel<TKey>, IPolicyDescriptor
+    public class BaseModel<TKey> : IModel<TKey>, IPolicyDescriptor<Policy>
     {
         #region Fields
 
-        private readonly ISet<IPolicy> policies = new HashSet<IPolicy>();
+        private readonly ISet<Policy> policies = new HashSet<Policy>();
 
         #endregion
 
@@ -25,13 +25,13 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public TKey Id { get; set; }
 
-        public IEnumerable<IPolicy> Policies => this.policies;
+        public IEnumerable<Policy> Policies => this.policies;
 
         #endregion
 
         #region Methods
 
-        public void AddPolicy(IPolicy policy)
+        public void AddPolicy(Policy policy)
         {
             this.policies.Add(policy);
         }
