@@ -7,11 +7,11 @@ namespace Ferretto.VW.MAS_DataLayer
     {
         #region Properties
 
-        public string AlfaNumBay1Net => this.GetStringConfigurationValue((long)SetupNetwork.AlfaNumBay1Net, (long)ConfigurationCategory.SetupNetwork);
+        public string AlfaNumBay1Net => this.GetStringConfigurationValue((long)SetupNetwork.AlfaNumBay1, (long)ConfigurationCategory.SetupNetwork);
 
-        public string AlfaNumBay2Net => this.GetStringConfigurationValue((long)SetupNetwork.AlfaNumBay2Net, (long)ConfigurationCategory.SetupNetwork);
+        public string AlfaNumBay2Net => this.GetStringConfigurationValue((long)SetupNetwork.AlfaNumBay2, (long)ConfigurationCategory.SetupNetwork);
 
-        public string AlfaNumBay3Net => this.GetStringConfigurationValue((long)SetupNetwork.AlfaNumBay3Net, (long)ConfigurationCategory.SetupNetwork);
+        public string AlfaNumBay3Net => this.GetStringConfigurationValue((long)SetupNetwork.AlfaNumBay3, (long)ConfigurationCategory.SetupNetwork);
 
         public string Inverter1 => this.GetStringConfigurationValue((long)SetupNetwork.Inverter1, (long)ConfigurationCategory.SetupNetwork);
 
@@ -33,11 +33,11 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public string IOExpansion3Port => this.GetStringConfigurationValue((long)SetupNetwork.IOExpansion3Port, (long)ConfigurationCategory.SetupNetwork);
 
-        public string LaserBay1Net => this.GetStringConfigurationValue((long)SetupNetwork.LaserBay1Net, (long)ConfigurationCategory.SetupNetwork);
+        public string LaserBay1Net => this.GetStringConfigurationValue((long)SetupNetwork.LaserBay1, (long)ConfigurationCategory.SetupNetwork);
 
-        public string LaserBay2Net => this.GetStringConfigurationValue((long)SetupNetwork.LaserBay2Net, (long)ConfigurationCategory.SetupNetwork);
+        public string LaserBay2Net => this.GetStringConfigurationValue((long)SetupNetwork.LaserBay2, (long)ConfigurationCategory.SetupNetwork);
 
-        public string LaserBay3Net => this.GetStringConfigurationValue((long)SetupNetwork.LaserBay3Net, (long)ConfigurationCategory.SetupNetwork);
+        public string LaserBay3Net => this.GetStringConfigurationValue((long)SetupNetwork.LaserBay3, (long)ConfigurationCategory.SetupNetwork);
 
         public int MachineNumber => this.GetIntegerConfigurationValue((long)SetupNetwork.MachineNumber, (long)ConfigurationCategory.SetupNetwork);
 

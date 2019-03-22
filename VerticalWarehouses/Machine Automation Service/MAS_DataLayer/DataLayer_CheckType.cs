@@ -95,17 +95,17 @@ namespace Ferretto.VW.MAS_DataLayer
                     returnValue = DataType.Boolean;
                     break;
 
-                case SetupNetwork.AlfaNumBay1Net:
-                case SetupNetwork.AlfaNumBay2Net:
-                case SetupNetwork.AlfaNumBay3Net:
+                case SetupNetwork.AlfaNumBay1:
+                case SetupNetwork.AlfaNumBay2:
+                case SetupNetwork.AlfaNumBay3:
                 case SetupNetwork.Inverter1:
                 case SetupNetwork.Inverter2:
                 case SetupNetwork.IOExpansion1:
                 case SetupNetwork.IOExpansion2:
                 case SetupNetwork.IOExpansion3:
-                case SetupNetwork.LaserBay1Net:
-                case SetupNetwork.LaserBay2Net:
-                case SetupNetwork.LaserBay3Net:
+                case SetupNetwork.LaserBay1:
+                case SetupNetwork.LaserBay2:
+                case SetupNetwork.LaserBay3:
                 case SetupNetwork.PPC1MasterIPAddress:
                 case SetupNetwork.PPC2SlaveIPAddress:
                 case SetupNetwork.PPC3SlaveIPAddress:

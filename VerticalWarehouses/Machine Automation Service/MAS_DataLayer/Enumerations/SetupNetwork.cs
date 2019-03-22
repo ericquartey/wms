@@ -18,17 +18,17 @@
 
         IOExpansion3 = 7L,
 
-        LaserBay1Net = 8L,
+        LaserBay1 = 8L,
 
-        LaserBay2Net = 9L,
+        LaserBay2 = 9L,
 
-        LaserBay3Net = 10L,
+        LaserBay3 = 10L,
 
-        AlfaNumBay1Net = 11L,
+        AlfaNumBay1 = 11L,
 
-        AlfaNumBay2Net = 12L,
+        AlfaNumBay2 = 12L,
 
-        AlfaNumBay3Net = 13L,
+        AlfaNumBay3 = 13L,
 
         SQLServerIPAddress = 14L,
 
