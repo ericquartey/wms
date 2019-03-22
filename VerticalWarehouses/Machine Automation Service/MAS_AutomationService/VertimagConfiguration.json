@@ -7,7 +7,12 @@
     "LaserBay1": true
   },
 
-  'SetupNetwork': {},
+  'SetupNetwork': {
+    "Inverter1": "169.254.231.248",
+    "Inverter1Port": 17221,
+    "IOExpansion1": "169.254.231.10",
+    "IOExpansion1Port": 502
+  },
 
   'SetupStatus': {},
 

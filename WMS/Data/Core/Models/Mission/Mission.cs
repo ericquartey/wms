@@ -24,9 +24,9 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? CompartmentId { get; set; }
 
-        public int? CompartmentTypeHeight { get; set; }
+        public double? CompartmentTypeHeight { get; set; }
 
-        public int? CompartmentTypeWidth { get; set; }
+        public double? CompartmentTypeWidth { get; set; }
 
         public DateTime CreationDate { get; set; }
 

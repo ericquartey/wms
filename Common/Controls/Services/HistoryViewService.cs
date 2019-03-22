@@ -4,7 +4,6 @@ using System.Windows.Input;
 using DevExpress.Mvvm.UI;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Utils;
-using CommonServiceLocator;
 
 namespace Ferretto.Common.Controls.Services
 {

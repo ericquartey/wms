@@ -105,51 +105,36 @@ namespace MAS_DataLayerUnitTests
 
         //    this.context.SaveChanges();
 
-        //    Assert.AreEqual(strAddress, this.dataLayer.GetStringConfigurationValue((long)GeneralInfoEnum.Address, (long)ConfigurationCategoryValueEnum.GeneralInfoEnum));
+        //    Assert.AreEqual(strAddress, this.dataLayer.GetStringConfigurationValue((long)GeneralInfoEnum.Address, (long)ConfigurationCategory.GeneralInfoEnum));
         //}
 
-        [TestMethod]
-        public void TestApplicationLogLogicCommand()
-        {
-            // INFO Arrange - Message class creation
-            ICalibrateMessageData homingData = new CalibrateMessageData(Axis.Both);
+        //[TestMethod]
+        //public void ReadGeneralInfoJson()
+        //{
+        //    this.dataLayer.LoadConfigurationValuesInfo(InfoFilesEnum.GeneralInfo);
 
-            var commandMessage = new CommandMessage(
-                homingData,
-                "Execute Homing Command",
-                MessageActor.FiniteStateMachines,
-                MessageActor.WebAPI,
-                MessageType.Homing);
+        //    Assert.IsTrue(this.context.ConfigurationValues.Any());
+        //}
 
-            // INFO Act - Insert the record in the LogEntry table
-            this.eventAggregator.Object.GetEvent<CommandEvent>().Publish(commandMessage);
+        //[TestMethod]
+        //public void ReadInstallationInfoJson()
+        //{
+        //    this.dataLayer.LoadConfigurationValuesInfo(InfoFilesEnum.InstallationInfo);
 
-            // INFO Assert - Expects to find the record in the LogEntry table
-            var returnCommandQuery = this.context.LogEntries.FirstOrDefaultAsync(x => x.Description == "Execute Homing Command");
-            Assert.IsNotNull(returnCommandQuery);
-        }
+        //    Assert.IsTrue(this.context.ConfigurationValues.Any());
+        //}
 
-        [TestMethod]
-        public void TestApplicationLogLogicNotification()
-        {
-            // INFO Arrange - Message class creation
-            var notificationMessage = new NotificationMessage(
-                null,
-                "Homing",
-                MessageActor.Any,
-                MessageActor.FiniteStateMachines,
-                MessageType.Homing,
-                MessageStatus.OperationStart,
-                ErrorLevel.NoError,
-                MessageVerbosity.Info);
+        //[TestMethod]
+        //[ExpectedException(typeof(DataLayerException))]
+        //public void TestErrorLoadFilesJson()
+        //{
+        //    // INFO Arrange - Empty
 
-            // INFO Act - Insert the record in the LogEntry table
-            this.eventAggregator.Object.GetEvent<NotificationEvent>().Publish(notificationMessage);
+        //    // INFO Act
+        //    this.dataLayer.LoadConfigurationValuesInfo((InfoFilesEnum)100);
 
-            // INFO Assert - Expects to find the record in the LogEntry table
-            var returnNotificationQuery = this.context.LogEntries.FirstOrDefaultAsync(x => x.Description == "Homing");
-            Assert.IsNotNull(returnNotificationQuery);
-        }
+        //    // INFO Assert - Expects exception
+        //}
 
         protected DataLayerContext CreateContext()
         {

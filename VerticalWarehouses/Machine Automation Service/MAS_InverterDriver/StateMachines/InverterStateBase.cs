@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 {
@@ -35,6 +36,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
             GC.SuppressFinalize(this);
         }
 
+        /// <inheritdoc />
         public abstract bool ProcessMessage(InverterMessage message);
 
         protected virtual void Dispose(bool disposing)

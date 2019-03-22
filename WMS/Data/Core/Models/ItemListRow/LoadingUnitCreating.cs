@@ -10,7 +10,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         private int? handlingParametersCorrection;
 
-        private int height;
+        private double height;
 
         private int weight;
 
@@ -38,7 +38,7 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.handlingParametersCorrection = CheckIfPositive(value);
         }
 
-        public int Height
+        public double Height
         {
             get => this.height;
             set => this.height = CheckIfStrictlyPositive(value);

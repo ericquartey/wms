@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using Ferretto.Common.BusinessModels;
+using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.Common.Controls
 {
@@ -259,6 +259,7 @@ namespace Ferretto.Common.Controls
             this.CanvasListBoxControl.SetSize(e.NewSize.Height - 1, e.NewSize.Width - 1);
             this.TrayWidth = this.CanvasListBoxControl.TrayWidth;
         }
+
         #endregion
     }
 }

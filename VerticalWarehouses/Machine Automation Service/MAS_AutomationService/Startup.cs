@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.InverterDriver;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_DataLayer;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_IODriver;
@@ -25,7 +26,9 @@ namespace Ferretto.VW.MAS_AutomationService
     {
         #region Fields
 
-        private const string ConnectionStringName = "AutomationService";
+        private const string PrimaryConnectionStringName = "AutomationServicePrimary";
+
+        private const string SecondaryConnectionStringName = "AutomationServiceSecondary";
 
         #endregion
 
@@ -68,12 +71,12 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSignalR();
 
-            DataLayerConfiguration dataLayerConfiguration = new DataLayerConfiguration(
-                this.Configuration.GetConnectionString(ConnectionStringName),
+            var dataLayerConfiguration = new DataLayerConfiguration(
+                this.Configuration.GetConnectionString(SecondaryConnectionStringName),
                 this.Configuration.GetValue<string>("Vertimag:DataLayer:ConfigurationFile")
             );
 
-            services.AddDbContext<DataLayerContext>(options => options.UseInMemoryDatabase("InMemoryWorkingDB"),
+            services.AddDbContext<DataLayerContext>(options => options.UseSqlite(this.Configuration.GetConnectionString(PrimaryConnectionStringName)),
                 ServiceLifetime.Singleton);
 
             services.AddSingleton<IEventAggregator, EventAggregator>();

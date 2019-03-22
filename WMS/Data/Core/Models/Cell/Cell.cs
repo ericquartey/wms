@@ -32,11 +32,11 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string CellTypeDescription { get; set; }
 
-        public int? XCoordinate { get; set; }
+        public double? XCoordinate { get; set; }
 
-        public int? YCoordinate { get; set; }
+        public double? YCoordinate { get; set; }
 
-        public int? ZCoordinate { get; set; }
+        public double? ZCoordinate { get; set; }
 
         #endregion
 

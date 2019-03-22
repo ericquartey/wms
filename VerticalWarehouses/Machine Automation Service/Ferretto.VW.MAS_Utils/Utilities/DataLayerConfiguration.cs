@@ -4,9 +4,9 @@
     {
         #region Constructors
 
-        public DataLayerConfiguration(string connectionString, string configurationFilePath)
+        public DataLayerConfiguration(string secondaryConnectionString, string configurationFilePath)
         {
-            this.ConnectionString = connectionString;
+            this.SecondaryConnectionString = secondaryConnectionString;
             this.ConfigurationFilePath = configurationFilePath;
         }
 
@@ -16,7 +16,7 @@
 
         public string ConfigurationFilePath { get; }
 
-        public string ConnectionString { get; }
+        public string SecondaryConnectionString { get; }
 
         #endregion
     }

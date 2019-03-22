@@ -27,21 +27,21 @@ namespace Ferretto.VW.MAS_DataLayer
             cellsNumber += 1;
 
             // INFO Inserted a control to free a booked block, in the case the drawer is refused after the weight control
-            var inMemoryFreeBlockAlreadyBooked = this.inMemoryDataContext.FreeBlocks.FirstOrDefault(s => s.LoadingUnitId == loadingUnitId);
+            var inMemoryFreeBlockAlreadyBooked = this.primaryDataContext.FreeBlocks.FirstOrDefault(s => s.LoadingUnitId == loadingUnitId);
 
             if (inMemoryFreeBlockAlreadyBooked != null)
             {
                 inMemoryFreeBlockAlreadyBooked.BlockSize = 0;
                 inMemoryFreeBlockAlreadyBooked.LoadingUnitId = 0;
 
-                this.inMemoryDataContext.SaveChanges();
+                this.primaryDataContext.SaveChanges();
             }
 
-            var inMemoryFreeBlockFirstByPriority = this.inMemoryDataContext.FreeBlocks.OrderBy(s => s.Priority).FirstOrDefault(s => s.BlockSize >= cellsNumber);
+            var inMemoryFreeBlockFirstByPriority = this.primaryDataContext.FreeBlocks.OrderBy(s => s.Priority).FirstOrDefault(s => s.BlockSize >= cellsNumber);
 
             if (inMemoryFreeBlockFirstByPriority == null)
             {
-                throw new InMemoryDataLayerException(DataLayerExceptionEnum.NO_FREE_BLOCK_BOOKING_EXCEPTION);
+                throw new DataLayerException(DataLayerExceptionEnum.NO_FREE_BLOCK_BOOKING_EXCEPTION);
             }
 
             // INFO Change the BookedCells number in the FreeBlock table
@@ -49,10 +49,10 @@ namespace Ferretto.VW.MAS_DataLayer
             inMemoryFreeBlockFirstByPriority.LoadingUnitId = loadingUnitId;
 
             // INFO Change the LoadingUnit height with the new value, in the LoadingUnit table
-            var inMemoryLoadingUnit = this.inMemoryDataContext.LoadingUnits.FirstOrDefault(s => s.LoadingUnitId == loadingUnitId);
+            var inMemoryLoadingUnit = this.primaryDataContext.LoadingUnits.FirstOrDefault(s => s.LoadingUnitId == loadingUnitId);
             inMemoryLoadingUnit.Height = loadingUnitHeight;
 
-            this.inMemoryDataContext.SaveChanges();
+            this.primaryDataContext.SaveChanges();
 
             var returnLoadingUnitPosition = new LoadingUnitPosition
             {
@@ -68,11 +68,11 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             var loadingUnitPosition = new LoadingUnitPosition();
 
-            var inMemoryCellPosition = this.inMemoryDataContext.Cells.FirstOrDefault(s => s.CellId == cellId);
+            var inMemoryCellPosition = this.primaryDataContext.Cells.FirstOrDefault(s => s.CellId == cellId);
 
             if (inMemoryCellPosition == null)
             {
-                throw new InMemoryDataLayerException(DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION);
+                throw new DataLayerException(DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION);
             }
 
             loadingUnitPosition.LoadingUnitCoord = inMemoryCellPosition.Coord;
@@ -85,11 +85,11 @@ namespace Ferretto.VW.MAS_DataLayer
         public void SetReturnLoadingUnitInLocation(int loadingUnitId)
         {
             // INFO Search in the FreeBlock table the booked cells for the drawer
-            var inMemoryFreeBlockSearchBookedCells = this.inMemoryDataContext.FreeBlocks.FirstOrDefault(s => s.BookedCellsNumber > 0 && s.LoadingUnitId == loadingUnitId);
+            var inMemoryFreeBlockSearchBookedCells = this.primaryDataContext.FreeBlocks.FirstOrDefault(s => s.BookedCellsNumber > 0 && s.LoadingUnitId == loadingUnitId);
 
             if (inMemoryFreeBlockSearchBookedCells == null)
             {
-                throw new InMemoryDataLayerException(DataLayerExceptionEnum.NO_FREE_BLOCK_BOOKED_EXCEPTION);
+                throw new DataLayerException(DataLayerExceptionEnum.NO_FREE_BLOCK_BOOKED_EXCEPTION);
             }
 
             var filledStartCell = inMemoryFreeBlockSearchBookedCells.StartCell;
@@ -97,11 +97,11 @@ namespace Ferretto.VW.MAS_DataLayer
 
             for (var currentCell = filledStartCell; currentCell <= filledLastCell; currentCell += 2)
             {
-                var inMemoryCellsSearchFilledCell = this.inMemoryDataContext.Cells.FirstOrDefault(s => s.CellId == currentCell);
+                var inMemoryCellsSearchFilledCell = this.primaryDataContext.Cells.FirstOrDefault(s => s.CellId == currentCell);
 
                 if (inMemoryCellsSearchFilledCell == null)
                 {
-                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION);
+                    throw new DataLayerException(DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION);
                 }
 
                 inMemoryCellsSearchFilledCell.WorkingStatus = Status.Occupied;
@@ -109,11 +109,11 @@ namespace Ferretto.VW.MAS_DataLayer
             }
 
             // INFO Update the LoadingUnit table when the LoadingUnit is in location
-            var loadingUnitOnMovement = this.inMemoryDataContext.LoadingUnits.FirstOrDefault(s => s.LoadingUnitId == loadingUnitId);
+            var loadingUnitOnMovement = this.primaryDataContext.LoadingUnits.FirstOrDefault(s => s.LoadingUnitId == loadingUnitId);
             loadingUnitOnMovement.CellPosition = filledStartCell;
             loadingUnitOnMovement.Status = LoadingUnitStatus.InLocation;
 
-            this.inMemoryDataContext.SaveChanges();
+            this.primaryDataContext.SaveChanges();
 
             // INFO Run the Free Block table calculation after the update
             this.CreateFreeBlockTable();
@@ -154,11 +154,11 @@ namespace Ferretto.VW.MAS_DataLayer
         // INFO Procedure called when a drawer frees some cells in a first type mission from cells to bay.
         public void SetWithdrawalLoadingUnitFromLocation(int loadingUnitId)
         {
-            var freeCells = this.inMemoryDataContext.Cells.FirstOrDefault(s => s.LoadingUnitId == loadingUnitId);
+            var freeCells = this.primaryDataContext.Cells.FirstOrDefault(s => s.LoadingUnitId == loadingUnitId);
 
             if (freeCells == null)
             {
-                throw new InMemoryDataLayerException(DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION);
+                throw new DataLayerException(DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION);
             }
 
             // INFO Copies a coloumn in another coloumn
@@ -166,11 +166,11 @@ namespace Ferretto.VW.MAS_DataLayer
             freeCells.LoadingUnitId = 0;
 
             // INFO Update the LoadingUnit table
-            var loadingUnitOnMovement = this.inMemoryDataContext.LoadingUnits.FirstOrDefault(s => s.LoadingUnitId == loadingUnitId);
+            var loadingUnitOnMovement = this.primaryDataContext.LoadingUnits.FirstOrDefault(s => s.LoadingUnitId == loadingUnitId);
             loadingUnitOnMovement.CellPosition = 0;
             loadingUnitOnMovement.Status = LoadingUnitStatus.OnMovementToBay;
 
-            this.inMemoryDataContext.SaveChanges();
+            this.primaryDataContext.SaveChanges();
 
             this.CreateFreeBlockTable();
         }
@@ -192,10 +192,10 @@ namespace Ferretto.VW.MAS_DataLayer
             var oddCellBeforePriority = -1;
 
             // INFO Remove all the records from the FreeBlocks table
-            this.inMemoryDataContext.FreeBlocks.RemoveRange(this.inMemoryDataContext.FreeBlocks);
-            this.inMemoryDataContext.SaveChanges();
+            this.primaryDataContext.FreeBlocks.RemoveRange(this.primaryDataContext.FreeBlocks);
+            this.primaryDataContext.SaveChanges();
 
-            foreach (var cell in this.inMemoryDataContext.Cells.OrderBy(cell => cell.CellId))
+            foreach (var cell in this.primaryDataContext.Cells.OrderBy(cell => cell.CellId))
             {
                 cellTablePopulated = true;
 
@@ -224,7 +224,7 @@ namespace Ferretto.VW.MAS_DataLayer
                         evenFreeBlock.BookedCellsNumber = 0;
 
                         cellCounterEven = 0;
-                        this.inMemoryDataContext.FreeBlocks.Add(evenFreeBlock);
+                        this.primaryDataContext.FreeBlocks.Add(evenFreeBlock);
                     }
 
                     // INFO Saving the Priority before
@@ -255,7 +255,7 @@ namespace Ferretto.VW.MAS_DataLayer
                         oddFreeBlock.BookedCellsNumber = 0;
 
                         cellCounterOdd = 0;
-                        this.inMemoryDataContext.FreeBlocks.Add(oddFreeBlock);
+                        this.primaryDataContext.FreeBlocks.Add(oddFreeBlock);
                     }
 
                     // INFO Saving the Priority before
@@ -265,12 +265,12 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (!cellTablePopulated)
             {
-                throw new InMemoryDataLayerException(DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION);
+                throw new DataLayerException(DataLayerExceptionEnum.CELL_NOT_FOUND_EXCEPTION);
             }
 
-            if (!this.inMemoryDataContext.FreeBlocks.Any())
+            if (!this.primaryDataContext.FreeBlocks.Any())
             {
-                throw new InMemoryDataLayerException(DataLayerExceptionEnum.NO_FREE_BLOCK_BOOKING_EXCEPTION);
+                throw new DataLayerException(DataLayerExceptionEnum.NO_FREE_BLOCK_BOOKING_EXCEPTION);
             }
         }
 

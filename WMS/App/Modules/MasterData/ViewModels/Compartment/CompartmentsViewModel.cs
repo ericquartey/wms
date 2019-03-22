@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
-using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls;
+using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -30,7 +30,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteShowDetailsCommand()
         {
-            this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.ITEMLISTDETAILS, this.CurrentItem.Id);
+            this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.COMPARTMENTDETAILS, this.CurrentItem.Id);
         }
 
         #endregion

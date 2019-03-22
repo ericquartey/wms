@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS_DataLayer
                     break;
 
                 default:
-                    returnValue = DataType.UndefinedType;
+                    returnValue = DataType.Undefined;
                     break;
             }
             return returnValue;
@@ -110,11 +110,11 @@ namespace Ferretto.VW.MAS_DataLayer
                 case SetupNetwork.PPC2SlaveIPAddress:
                 case SetupNetwork.PPC3SlaveIPAddress:
                 case SetupNetwork.SQLServerIPAddress:
-                    returnValue = DataType.IPAddressType;
+                    returnValue = DataType.IPAddress;
                     break;
 
                 default:
-                    returnValue = DataType.UndefinedType;
+                    returnValue = DataType.Undefined;
                     break;
             }
             return returnValue;
@@ -152,7 +152,7 @@ namespace Ferretto.VW.MAS_DataLayer
                     break;
 
                 default:
-                    returnValue = DataType.UndefinedType;
+                    returnValue = DataType.Undefined;
                     break;
             }
             return returnValue;
@@ -177,7 +177,7 @@ namespace Ferretto.VW.MAS_DataLayer
                     break;
 
                 default:
-                    returnValue = DataType.UndefinedType;
+                    returnValue = DataType.Undefined;
                     break;
             }
             return returnValue;
@@ -209,7 +209,7 @@ namespace Ferretto.VW.MAS_DataLayer
                     break;
 
                 default:
-                    returnValue = DataType.UndefinedType;
+                    returnValue = DataType.Undefined;
                     break;
             }
             return returnValue;
@@ -241,7 +241,7 @@ namespace Ferretto.VW.MAS_DataLayer
                     break;
 
                 default:
-                    returnValue = DataType.UndefinedType;
+                    returnValue = DataType.Undefined;
                     break;
             }
             return returnValue;
@@ -259,7 +259,7 @@ namespace Ferretto.VW.MAS_DataLayer
                     break;
 
                 default:
-                    returnValue = DataType.UndefinedType;
+                    returnValue = DataType.Undefined;
                     break;
             }
             return returnValue;
@@ -277,7 +277,7 @@ namespace Ferretto.VW.MAS_DataLayer
                     break;
 
                 default:
-                    returnValue = DataType.UndefinedType;
+                    returnValue = DataType.Undefined;
                     break;
             }
             return returnValue;
@@ -308,7 +308,7 @@ namespace Ferretto.VW.MAS_DataLayer
                     break;
 
                 default:
-                    returnValue = DataType.UndefinedType;
+                    returnValue = DataType.Undefined;
                     break;
             }
             return returnValue;
@@ -337,7 +337,7 @@ namespace Ferretto.VW.MAS_DataLayer
                     break;
 
                 default:
-                    returnValue = DataType.UndefinedType;
+                    returnValue = DataType.Undefined;
                     break;
             }
             return returnValue;
@@ -365,7 +365,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private bool CheckDataType(long parameter, long category, DataType type)
         {
-            var actualParameterType = DataType.UndefinedType;
+            var actualParameterType = DataType.Undefined;
             switch (category)
             {
                 case (long)ConfigurationCategory.Undefined:

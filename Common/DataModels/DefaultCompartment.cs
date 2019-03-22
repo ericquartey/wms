@@ -19,9 +19,9 @@
 
         public string Note { get; set; }
 
-        public int XPosition { get; set; }
+        public double XPosition { get; set; }
 
-        public int YPosition { get; set; }
+        public double YPosition { get; set; }
 
         #endregion
     }

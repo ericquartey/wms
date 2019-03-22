@@ -244,15 +244,15 @@ namespace Ferretto.WMS.Data.Core.Providers
                        .ToArrayAsync();
         }
 
-        public async Task<int?> GetMaxCapacityAsync(int width, int height, int itemId)
+        public async Task<int?> GetMaxCapacityAsync(double width, double height, int itemId)
         {
             var compartmentType = await this.dataContext.ItemsCompartmentTypes
                                       .SingleOrDefaultAsync(ict =>
                                                                 ict.ItemId == itemId &&
-                                                                ((ict.CompartmentType.Width == width &&
-                                                                  ict.CompartmentType.Height == height) ||
-                                                                 (ict.CompartmentType.Width == height &&
-                                                                  ict.CompartmentType.Height == width)));
+                                                                (((int)ict.CompartmentType.Width == (int)width &&
+                                                                        (int)ict.CompartmentType.Height == (int)height) ||
+                                                                 ((int)ict.CompartmentType.Width == (int)height &&
+                                                                     (int)ict.CompartmentType.Height == (int)width)));
 
             return compartmentType?.MaxCapacity;
         }
