@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Reflection;
-using System.Windows;
+﻿using System.Windows;
 using DevExpress.Mvvm;
-using DevExpress.Xpf.Editors;
-using Ferretto.Common.BusinessModels;
+using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.Common.Controls
 {

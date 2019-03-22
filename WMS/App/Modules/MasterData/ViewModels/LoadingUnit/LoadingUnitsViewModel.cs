@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
-using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls;
+using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData

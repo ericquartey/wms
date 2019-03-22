@@ -2,9 +2,9 @@
 using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
 namespace Ferretto.Common.Controls
