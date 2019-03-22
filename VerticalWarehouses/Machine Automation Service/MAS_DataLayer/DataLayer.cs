@@ -203,7 +203,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <param name="configurationValueRequest">Configuration parameters to load</param>
         /// <exception cref="DataLayerExceptionEnum.UNKNOWN_INFO_FILE_EXCEPTION">Exception for a wrong info file input name</exception>
         /// <exception cref="DataLayerExceptionEnum.UNDEFINED_TYPE_EXCEPTION">Exception for an unknown data type</exception>
-        private void LoadConfigurationValuesInfo(InfoFilesEnum configurationValueRequest)
+        private void LoadConfigurationValuesInfo(string configurationFilePath)
         {
             using (var streamReader = new StreamReader(configurationFilePath))
             {
@@ -424,9 +424,9 @@ namespace Ferretto.VW.MAS_DataLayer
             logEntry.TimeStamp = DateTime.Now;
             logEntry.Type = message.Type.ToString();
 
-            this.inMemoryDataContext.LogEntries.Add(logEntry);
+            this.primaryDataContext.LogEntries.Add(logEntry);
 
-            this.inMemoryDataContext.SaveChanges();
+            this.primaryDataContext.SaveChanges();
         }
 
         private void LogMessages(NotificationMessage message)
@@ -449,9 +449,9 @@ namespace Ferretto.VW.MAS_DataLayer
             logEntry.TimeStamp = DateTime.Now;
             logEntry.Type = message.Type.ToString();
 
-            this.inMemoryDataContext.LogEntries.Add(logEntry);
+            this.primaryDataContext.LogEntries.Add(logEntry);
 
-            this.inMemoryDataContext.SaveChanges();
+            this.primaryDataContext.SaveChanges();
         }
 
         private async Task ReceiveCommandTaskFunction()
