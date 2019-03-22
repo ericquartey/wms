@@ -9,7 +9,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="DevExpress.Data" Version="18.2.5" />
+      <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="2.2.0" />
+      <PackageReference Include="DevExpress.Data" Version="18.2.5" />
+      <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
         <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.3">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -28,13 +30,5 @@
         <ProjectReference Include="..\..\..\Common\Utils\Ferretto.Common.Utils.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Reference Include="Microsoft.AspNetCore.Http.Features">
-        <HintPath>..\..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.http.features\2.1.1\lib\netstandard2.0\Microsoft.AspNetCore.Http.Features.dll</HintPath>
-      </Reference>
-      <Reference Include="Microsoft.AspNetCore.StaticFiles">
-        <HintPath>..\..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.staticfiles\2.1.1\lib\netstandard2.0\Microsoft.AspNetCore.StaticFiles.dll</HintPath>
-      </Reference>
-    </ItemGroup>
 
 </Project>

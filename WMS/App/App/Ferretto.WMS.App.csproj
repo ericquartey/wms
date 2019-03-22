@@ -45,10 +45,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Images\*.jpg" />
-    <Content Include="Images\*.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Update="App.Production.config">
       <DependentUpon>App.config</DependentUpon>
     </None>
