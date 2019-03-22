@@ -2,10 +2,9 @@
 using System.Configuration;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls.Interfaces;
+using Ferretto.WMS.App.Core.Models;
 using Microsoft.AspNetCore.SignalR.Client;
-using CommonServiceLocator;
 using NLog;
 
 namespace Ferretto.Common.Controls.Services
