@@ -1,5 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.Common.Resources;
 using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models

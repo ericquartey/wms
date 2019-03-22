@@ -342,8 +342,6 @@ namespace Ferretto.WMS.App.Core.Models
             }
         }
 
-        private bool CanAddToLoadingUnit => this.LoadingUnit == null || this.LoadingUnit.CanAddCompartment(this);
-
         #endregion
 
         #region Indexers
@@ -355,10 +353,6 @@ namespace Ferretto.WMS.App.Core.Models
                 switch (columnName)
                 {
                     case nameof(this.XPosition):
-                        if (this.CanAddToLoadingUnit == false)
-                        {
-                            return Errors.CompartmentOverlaps;
-                        }
 
                         if (this.XPosition.HasValue == false)
                         {
@@ -368,10 +362,6 @@ namespace Ferretto.WMS.App.Core.Models
                         break;
 
                     case nameof(this.YPosition):
-                        if (this.CanAddToLoadingUnit == false)
-                        {
-                            return Errors.CompartmentOverlaps;
-                        }
 
                         if (this.YPosition.HasValue == false)
                         {
@@ -381,10 +371,6 @@ namespace Ferretto.WMS.App.Core.Models
                         break;
 
                     case nameof(this.Width):
-                        if (this.CanAddToLoadingUnit == false)
-                        {
-                            return Errors.CompartmentOverlaps;
-                        }
 
                         if (this.Width.HasValue == false)
                         {
@@ -394,10 +380,6 @@ namespace Ferretto.WMS.App.Core.Models
                         break;
 
                     case nameof(this.Height):
-                        if (this.CanAddToLoadingUnit == false)
-                        {
-                            return Errors.CompartmentOverlaps;
-                        }
 
                         if (this.Height.HasValue == false)
                         {

@@ -7,7 +7,7 @@ namespace Ferretto.WMS.Data.Core.Models
         #region Constructors
 
         protected OperationResult(
-            bool success,
+                    bool success,
             T entity = default(T))
         {
             this.Success = success;
