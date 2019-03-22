@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Ferretto.Common.BusinessModels;
+using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.Common.Controls
 {

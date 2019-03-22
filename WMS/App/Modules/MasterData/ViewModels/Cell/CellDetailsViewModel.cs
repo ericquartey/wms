@@ -2,10 +2,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BusinessModels;
-using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
+using Ferretto.WMS.App.Core.Interfaces;
+using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Modules.BLL;
 
 namespace Ferretto.WMS.Modules.MasterData

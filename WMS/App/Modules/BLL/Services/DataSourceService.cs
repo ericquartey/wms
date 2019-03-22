@@ -4,9 +4,9 @@ using System.Linq;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.BusinessModels;
-using Ferretto.Common.BusinessProviders;
-using Compartment = Ferretto.Common.BusinessModels.Compartment;
+using Ferretto.WMS.App.Core.Interfaces;
+using Ferretto.WMS.App.Core.Models;
+using Compartment = Ferretto.WMS.App.Core.Models.Compartment;
 
 namespace Ferretto.WMS.App.Modules.BLL
 {
