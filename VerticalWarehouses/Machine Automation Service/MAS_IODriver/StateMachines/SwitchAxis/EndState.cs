@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading;
-using Ferretto.VW.Common_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Microsoft.Extensions.Logging;
@@ -22,7 +20,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
             this.parentStateMachine = parentStateMachine;
             this.logger = logger;
 
-            this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - MAS_IODriver:EndState:Ctor");
+            //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - MAS_IODriver:EndState:Ctor");
 
             var messageData = new SwitchAxisMessageData(axisToSwitchOn);
             var endNotification = new NotificationMessage(messageData, "Motor Switch complete", MessageActor.Any,

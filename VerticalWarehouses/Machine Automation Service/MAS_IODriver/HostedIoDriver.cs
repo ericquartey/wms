@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
@@ -9,6 +8,7 @@ using Ferretto.VW.Common_Utils.Exceptions;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_DataLayer;
+using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_IODriver.Interface;
 using Ferretto.VW.MAS_IODriver.StateMachines;
 using Ferretto.VW.MAS_IODriver.StateMachines.PowerUp;
@@ -132,8 +132,10 @@ namespace Ferretto.VW.MAS_IODriver
         {
             this.stoppingToken = stoppingToken;
 
-            IPAddress.TryParse("169.254.231.10", out var ioAddress); // this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetworkEnum.IOExpansion1, (long)ConfigurationCategoryValueEnum.SetupNetworkEnum);
-            var ioPort = 502; //this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetworkEnum.IOExpansion1Port, (long)ConfigurationCategoryValueEnum.SetupNetworkEnum);
+            /*IPAddress.TryParse("169.254.231.10", out var ioAddress);*/
+            /*var ioPort = 502;*/
+            var ioAddress = this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetworkEnum.IOExpansion1, (long)ConfigurationCategoryValueEnum.SetupNetworkEnum);
+            var ioPort = this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetworkEnum.IOExpansion1Port, (long)ConfigurationCategoryValueEnum.SetupNetworkEnum);
 
             this.modbusTransport.Configure(ioAddress, ioPort);
 

@@ -191,8 +191,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                     }
             }
 
-            this.logger?.LogTrace("Homing Start ==> ");
-
             this.CurrentState = new HomingStartState(this, this.currentAxis, this.logger);
         }
 

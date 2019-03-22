@@ -23,8 +23,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.axisToCalibrate = axisToCalibrate;
             this.logger = logger;
 
-            this.logger?.LogTrace(string.Format("Axis to switch {0}", axisToCalibrate));
-
             // TEMP send a message to switch axis (to IODriver)
             var switchAxisData = new SwitchAxisMessageData(this.axisToCalibrate);
             var message = new CommandMessage(switchAxisData,
@@ -66,8 +64,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         {
             if (message.Type == MessageType.SwitchAxis)
             {
-                this.logger?.LogTrace(string.Format("Homing Start state : Process notification message {0}-{1}", message.Type, message.Status));
-
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:

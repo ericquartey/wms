@@ -48,6 +48,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         #region Methods
 
+        /// <inheritdoc />
         public override void OnPublishNotification(NotificationMessage message)
         {
             switch (message.Type)
@@ -56,6 +57,8 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
                     {
                         //TEMP Send a notification about the start operation to all the world
                         var status = (this.IsStopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd;
+
+                        this.logger?.LogTrace(string.Format("On PublishNotification CalibrateAxis States mchine -> {0}-{1}", message.Type, status));
 
                         var endNotification = new NotificationMessage(message.Data,
                             message.Description,
@@ -111,6 +114,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
             this.CurrentState = new VoltageDisabledState(this, this.currentAxis, this.logger);
         }
 
+        /// <inheritdoc />
         public override void Stop()
         {
             this.IsStopRequested = true;

@@ -19,8 +19,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         public HomingSwitchAxisDoneState(IStateMachine parentMachine, Axis axisToCalibrate, ILogger logger)
         {
-            this.logger?.LogTrace("Homing Switch Axis Done state ==> ");
-
             this.parentStateMachine = parentMachine;
             this.axisToCalibrate = axisToCalibrate;
             this.logger = logger;
@@ -66,8 +64,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         {
             if (message.Type == MessageType.CalibrateAxis)
             {
-                this.logger?.LogTrace(string.Format("Homing Switch Axis Done state : Process notification message {0}-{1}", message.Type, message.Status));
-
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:

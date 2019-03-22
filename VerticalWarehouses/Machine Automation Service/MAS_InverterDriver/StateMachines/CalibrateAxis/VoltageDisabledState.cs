@@ -62,7 +62,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         {
             var returnValue = false;
 
-            //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - VoltageDisabledState:ProcessMessage");
+            this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - VoltageDisabledState:ProcessMessage");
 
             if (message.IsError)
             {
@@ -87,6 +87,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
             return returnValue;
         }
 
+        /// <inheritdoc />
         public override void Stop()
         {
             this.forceStop = true;

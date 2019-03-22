@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading;
-using Ferretto.VW.Common_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
@@ -24,7 +22,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
             this.parentStateMachine = parentStateMachine;
             this.logger = logger;
 
-            this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - SwitchOffMotorState:Ctor");
+            //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - SwitchOffMotorState:Ctor");
 
             var switchOffAxisIoMessage = new IoMessage(false);
 

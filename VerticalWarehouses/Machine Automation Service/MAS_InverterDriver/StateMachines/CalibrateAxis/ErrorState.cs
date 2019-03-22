@@ -44,14 +44,13 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override bool ProcessMessage(InverterMessage message)
         {
-            //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - ErrorState:ProcessMessage");
+            this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - ErrorState:ProcessMessage");
             return false;
         }
 
         /// <inheritdoc />
         public override void Stop()
         {
-            //TEMP
         }
 
         #endregion

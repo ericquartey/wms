@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
@@ -11,6 +10,7 @@ using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis;
 using Ferretto.VW.InverterDriver.StateMachines.Stop;
 using Ferretto.VW.MAS_DataLayer;
+using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
@@ -144,8 +144,10 @@ namespace Ferretto.VW.InverterDriver
         {
             this.stoppingToken = stoppingToken;
 
-            IPAddress.TryParse("169.254.231.10", out var inverterAddress);  //var inverterAddress = this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetworkEnum.Inverter1, (long)ConfigurationCategoryValueEnum.SetupNetworkEnum);
-            var inverterPort = 17221; // this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetworkEnum.Inverter1Port, (long)ConfigurationCategoryValueEnum.SetupNetworkEnum);
+            /*IPAddress.TryParse("169.254.231.248", out var inverterAddress);*/
+            /*var inverterPort = 17221;*/
+            var inverterAddress = this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetworkEnum.Inverter1, (long)ConfigurationCategoryValueEnum.SetupNetworkEnum);
+            var inverterPort = this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetworkEnum.Inverter1Port, (long)ConfigurationCategoryValueEnum.SetupNetworkEnum);
 
             this.socketTransport.Configure(inverterAddress, inverterPort);
 
@@ -197,7 +199,7 @@ namespace Ferretto.VW.InverterDriver
                     return Task.CompletedTask;
                 }
 
-                if (this.currentStateMachine != null && receivedMessage.Type == MessageType.Stop)
+                if (this.currentStateMachine != null && receivedMessage.Type != MessageType.Stop)
                 {
                     var errorNotification = new NotificationMessage(null, "Inverter operation already in progress", MessageActor.Any,
                         MessageActor.InverterDriver, receivedMessage.Type, MessageStatus.OperationError, ErrorLevel.Error);
@@ -205,7 +207,7 @@ namespace Ferretto.VW.InverterDriver
                     continue;
                 }
 
-                this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:CommandReceiveTaskFunction");
+                //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:CommandReceiveTaskFunction");
 
                 switch (receivedMessage.Type)
                 {
@@ -222,6 +224,7 @@ namespace Ferretto.VW.InverterDriver
                         {
                             if (this.currentStateMachine == null)
                             {
+                                // The state machine for Stop operation is invoked
                                 this.currentStateMachine = new StopStateMachine(stopData.AxisToStop, this.inverterCommandQueue, this.eventAggregator, this.logger);
                             }
                             else
@@ -258,7 +261,7 @@ namespace Ferretto.VW.InverterDriver
                     return Task.CompletedTask;
                 }
 
-                this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:NotificationReceiveTaskFunction");
+                //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:NotificationReceiveTaskFunction");
 
                 switch (receivedMessage.Type)
                 {
@@ -370,7 +373,7 @@ namespace Ferretto.VW.InverterDriver
                     {
                         if (currentMessage.UShortPayload == this.lastHeatbeatMessage.UShortPayload)
                         {
-                            this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:ReceiveInverterData/Heartbeat Check");
+                            //this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:ReceiveInverterData/Heartbeat Check");
 
                             this.heartbeatCheck = true;
                             continue;
@@ -378,7 +381,7 @@ namespace Ferretto.VW.InverterDriver
                     }
                     else
                     {
-                        this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:ReceiveInverterData/Request Status");
+                        //this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:ReceiveInverterData/Request Status");
 
                         var readStatusWordMessage = new InverterMessage(0x00, (short)InverterParameterId.StatusWordParam);
                         this.inverterCommandQueue.Enqueue(readStatusWordMessage);

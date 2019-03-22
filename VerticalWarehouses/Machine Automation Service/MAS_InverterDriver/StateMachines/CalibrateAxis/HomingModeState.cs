@@ -50,7 +50,8 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         {
             var returnValue = false;
 
-            //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HomingModeState:ProcessMessage");
+            this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HomingModeState:ProcessMessage");
+
             if (message.IsError)
             {
                 this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate, this.logger));
