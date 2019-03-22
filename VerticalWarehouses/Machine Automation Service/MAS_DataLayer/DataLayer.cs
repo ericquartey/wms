@@ -9,6 +9,7 @@ using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
@@ -84,11 +85,8 @@ namespace Ferretto.VW.MAS_DataLayer
                 if (!initialContext.ConfigurationValues.Any())
                 {
                 }
-                this.LoadConfigurationValuesInfo(dataLayerConfiguration.ConfigurationFilePath);
 
-                // TEMP Temporary commented
-                this.LoadConfigurationValuesInfo(InfoFilesEnum.GeneralInfo);
-                this.LoadConfigurationValuesInfo(InfoFilesEnum.InstallationInfo);
+                this.LoadConfigurationValuesInfo(dataLayerConfiguration.ConfigurationFilePath);
 
                 foreach (var configurationValue in initialContext.ConfigurationValues)
                 {

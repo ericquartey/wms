@@ -1,4 +1,6 @@
-﻿using Ferretto.VW.MAS_DataLayer.Enumerations;
+﻿using System;
+using Ferretto.VW.Common_Utils;
+using Ferretto.VW.MAS_DataLayer.Enumerations;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
@@ -6,7 +8,7 @@ namespace Ferretto.VW.MAS_DataLayer
     {
         #region Methods
 
-        public DataType ConvertConfigurationValue(GeneralInfo configurationValueEnum)
+        public DataType CheckConfigurationValueType(GeneralInfo configurationValueEnum)
         {
             DataType returnValue;
             switch (configurationValueEnum)
@@ -75,7 +77,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnValue;
         }
 
-        public DataType ConvertConfigurationValue(SetupNetwork configurationValueEnum)
+        public DataType CheckConfigurationValueType(SetupNetwork configurationValueEnum)
         {
             DataType returnValue;
             switch (configurationValueEnum)
@@ -93,17 +95,17 @@ namespace Ferretto.VW.MAS_DataLayer
                     returnValue = DataType.Boolean;
                     break;
 
-                case SetupNetwork.AlfaNumBay1:
-                case SetupNetwork.AlfaNumBay2:
-                case SetupNetwork.AlfaNumBay3:
+                case SetupNetwork.AlfaNumBay1Net:
+                case SetupNetwork.AlfaNumBay2Net:
+                case SetupNetwork.AlfaNumBay3Net:
                 case SetupNetwork.Inverter1:
                 case SetupNetwork.Inverter2:
                 case SetupNetwork.IOExpansion1:
                 case SetupNetwork.IOExpansion2:
                 case SetupNetwork.IOExpansion3:
-                case SetupNetwork.LaserBay1:
-                case SetupNetwork.LaserBay2:
-                case SetupNetwork.LaserBay3:
+                case SetupNetwork.LaserBay1Net:
+                case SetupNetwork.LaserBay2Net:
+                case SetupNetwork.LaserBay3Net:
                 case SetupNetwork.PPC1MasterIPAddress:
                 case SetupNetwork.PPC2SlaveIPAddress:
                 case SetupNetwork.PPC3SlaveIPAddress:
@@ -118,12 +120,12 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnValue;
         }
 
-        public DataType ConvertConfigurationValue(SetupStatus configurationValueEnum)
+        public DataType CheckConfigurationValueType(SetupStatus configurationValueEnum)
         {
             return DataType.Boolean;
         }
 
-        public DataType ConvertConfigurationValue(VerticalAxis configurationValueEnum)
+        public DataType CheckConfigurationValueType(VerticalAxis configurationValueEnum)
         {
             DataType returnValue;
             switch (configurationValueEnum)
@@ -156,7 +158,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnValue;
         }
 
-        public DataType ConvertConfigurationValue(HorizontalAxis configurationValueEnum)
+        public DataType CheckConfigurationValueType(HorizontalAxis configurationValueEnum)
         {
             DataType returnValue;
             switch (configurationValueEnum)
@@ -181,7 +183,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnValue;
         }
 
-        public DataType ConvertConfigurationValue(HorizontalMovementForwardProfile configurationValueEnum)
+        public DataType CheckConfigurationValueType(HorizontalMovementForwardProfile configurationValueEnum)
         {
             DataType returnValue;
             switch (configurationValueEnum)
@@ -213,7 +215,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnValue;
         }
 
-        public DataType ConvertConfigurationValue(HorizontalMovementBackwardProfile configurationValueEnum)
+        public DataType CheckConfigurationValueType(HorizontalMovementBackwardProfile configurationValueEnum)
         {
             DataType returnValue;
             switch (configurationValueEnum)
@@ -245,7 +247,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnValue;
         }
 
-        public DataType ConvertConfigurationValue(VerticalManualMovements configurationValueEnum)
+        public DataType CheckConfigurationValueType(VerticalManualMovements configurationValueEnum)
         {
             DataType returnValue;
             switch (configurationValueEnum)
@@ -263,7 +265,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnValue;
         }
 
-        public DataType ConvertConfigurationValue(HorizontalManualMovements configurationValueEnum)
+        public DataType CheckConfigurationValueType(HorizontalManualMovements configurationValueEnum)
         {
             DataType returnValue;
             switch (configurationValueEnum)
@@ -281,17 +283,17 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnValue;
         }
 
-        public DataType ConvertConfigurationValue(BeltBurnishing configurationValueEnum)
+        public DataType CheckConfigurationValueType(BeltBurnishing configurationValueEnum)
         {
             return DataType.Integer;
         }
 
-        public DataType ConvertConfigurationValue(ResolutionCalibration configurationValueEnum)
+        public DataType CheckConfigurationValueType(ResolutionCalibration configurationValueEnum)
         {
             return DataType.Float;
         }
 
-        public DataType ConvertConfigurationValue(OffsetCalibration configurationValueEnum)
+        public DataType CheckConfigurationValueType(OffsetCalibration configurationValueEnum)
         {
             DataType returnValue;
             switch (configurationValueEnum)
@@ -312,12 +314,12 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnValue;
         }
 
-        public DataType ConvertConfigurationValue(CellControl configurationValueEnum)
+        public DataType CheckConfigurationValueType(CellControl configurationValueEnum)
         {
             return DataType.Float;
         }
 
-        public DataType ConvertConfigurationValue(PanelControl configurationValueEnum)
+        public DataType CheckConfigurationValueType(PanelControl configurationValueEnum)
         {
             DataType returnValue;
             switch (configurationValueEnum)
@@ -341,24 +343,130 @@ namespace Ferretto.VW.MAS_DataLayer
             return returnValue;
         }
 
-        public DataType ConvertConfigurationValue(ShutterHeightControl configurationValueEnum)
+        public DataType CheckConfigurationValueType(ShutterHeightControl configurationValueEnum)
         {
             return DataType.Float;
         }
 
-        public DataType ConvertConfigurationValue(WeightControl configurationValueEnum)
+        public DataType CheckConfigurationValueType(WeightControl configurationValueEnum)
         {
             return DataType.Float;
         }
 
-        public DataType ConvertConfigurationValue(BayPositionControl configurationValueEnum)
+        public DataType CheckConfigurationValueType(BayPositionControl configurationValueEnum)
         {
             return DataType.Float;
         }
 
-        public DataType ConvertConfigurationValue(LoadFirstDrawer configurationValueEnum)
+        public DataType CheckConfigurationValueType(LoadFirstDrawer configurationValueEnum)
         {
             return DataType.Float;
+        }
+
+        private bool CheckDataType(long parameter, long category, DataType type)
+        {
+            var actualParameterType = DataType.UndefinedType;
+            switch (category)
+            {
+                case (long)ConfigurationCategory.Undefined:
+                    {
+                        throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                    }
+                case (long)ConfigurationCategory.GeneralInfo:
+                    {
+                        actualParameterType = this.CheckConfigurationValueType((GeneralInfo)parameter);
+                        break;
+                    }
+                case (long)ConfigurationCategory.SetupNetwork:
+                    {
+                        actualParameterType = this.CheckConfigurationValueType((SetupNetwork)parameter);
+                        break;
+                    }
+                case (long)ConfigurationCategory.SetupStatus:
+                    {
+                        actualParameterType = this.CheckConfigurationValueType((SetupStatus)parameter);
+                        break;
+                    }
+                case (long)ConfigurationCategory.VerticalAxis:
+                    {
+                        actualParameterType = this.CheckConfigurationValueType((VerticalAxis)parameter);
+                        break;
+                    }
+                case (long)ConfigurationCategory.HorizontalAxis:
+                    {
+                        actualParameterType = this.CheckConfigurationValueType((HorizontalAxis)parameter);
+                        break;
+                    }
+                case (long)ConfigurationCategory.HorizontalMovementForwardProfile:
+                    {
+                        actualParameterType = this.CheckConfigurationValueType((HorizontalMovementForwardProfile)parameter);
+                        break;
+                    }
+                case (long)ConfigurationCategory.HorizontalMovementBackwardProfile:
+                    {
+                        actualParameterType = this.CheckConfigurationValueType((HorizontalMovementBackwardProfile)parameter);
+                        break;
+                    }
+                case (long)ConfigurationCategory.VerticalManualMovements:
+                    {
+                        actualParameterType = this.CheckConfigurationValueType((VerticalManualMovements)parameter);
+                        break;
+                    }
+                case (long)ConfigurationCategory.HorizontalManualMovements:
+                    {
+                        actualParameterType = this.CheckConfigurationValueType((HorizontalManualMovements)parameter);
+                        break;
+                    }
+                case (long)ConfigurationCategory.BeltBurnishing:
+                    {
+                        actualParameterType = this.CheckConfigurationValueType((BeltBurnishing)parameter);
+                        break;
+                    }
+                case (long)ConfigurationCategory.ResolutionCalibration:
+                    {
+                        actualParameterType = this.CheckConfigurationValueType((ResolutionCalibration)parameter);
+                        break;
+                    }
+                case (long)ConfigurationCategory.OffsetCalibration:
+                    {
+                        actualParameterType = this.CheckConfigurationValueType((OffsetCalibration)parameter);
+                        break;
+                    }
+                case (long)ConfigurationCategory.CellControl:
+                    {
+                        actualParameterType = this.CheckConfigurationValueType((CellControl)parameter);
+                        break;
+                    }
+                case (long)ConfigurationCategory.PanelControl:
+                    {
+                        actualParameterType = this.CheckConfigurationValueType((PanelControl)parameter);
+                        break;
+                    }
+                case (long)ConfigurationCategory.ShutterHeightControl:
+                    {
+                        actualParameterType = this.CheckConfigurationValueType((ShutterHeightControl)parameter);
+                        break;
+                    }
+                case (long)ConfigurationCategory.WeightControl:
+                    {
+                        actualParameterType = this.CheckConfigurationValueType((WeightControl)parameter);
+                        break;
+                    }
+                case (long)ConfigurationCategory.BayPositionControl:
+                    {
+                        actualParameterType = this.CheckConfigurationValueType((BayPositionControl)parameter);
+                        break;
+                    }
+                case (long)ConfigurationCategory.LoadFirstDrawer:
+                    {
+                        actualParameterType = this.CheckConfigurationValueType((LoadFirstDrawer)parameter);
+                        break;
+                    }
+                default:
+                    throw new ArgumentNullException();
+            }
+
+            return actualParameterType.Equals(type);
         }
 
         #endregion

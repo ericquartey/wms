@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Net;
 using Ferretto.VW.Common_Utils;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
 
 namespace Ferretto.VW.MAS_DataLayer
 {

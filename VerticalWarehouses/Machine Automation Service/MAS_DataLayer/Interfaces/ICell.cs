@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.MAS_DataLayer.Interfaces
 {
-    public interface IDataLayer
+    public interface ICell
     {
     }
 }
