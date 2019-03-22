@@ -10,13 +10,5 @@ namespace Ferretto.WMS.Data.WebAPI.Hubs
         Justification = "The methods names here will be exposed by SignalR, so we want that names are clean")]
     public class SchedulerHub : Hub<ISchedulerHub>
     {
-        #region Methods
-
-        public Task MissionUpdated(EntityChangedHubEvent entityChangedHubEvent)
-        {
-            return this.Clients.All.EntityUpdated(entityChangedHubEvent);
-        }
-
-        #endregion
     }
 }
