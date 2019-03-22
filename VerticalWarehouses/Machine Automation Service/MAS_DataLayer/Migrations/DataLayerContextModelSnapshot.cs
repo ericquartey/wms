@@ -53,13 +53,6 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                     b.HasKey("CategoryName", "VarName");
 
                     b.ToTable("ConfigurationValues");
-
-                    b.HasData(
-                        new { CategoryName = 0L, VarName = 2L, VarType = 5L, VarValue = "169.254.231.248" },
-                        new { CategoryName = 0L, VarName = 17L, VarType = 2L, VarValue = "17221" },
-                        new { CategoryName = 0L, VarName = 4L, VarType = 5L, VarValue = "169.254.231.10" },
-                        new { CategoryName = 0L, VarName = 19L, VarType = 2L, VarValue = "502" }
-                    );
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.FreeBlock", b =>

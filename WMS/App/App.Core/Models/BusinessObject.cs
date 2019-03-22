@@ -110,6 +110,26 @@ namespace Ferretto.WMS.App.Core.Models
             return this.SetProperty(ref member, value, propertyName);
         }
 
+        protected bool SetIfPositive(ref double? member, double? value, [CallerMemberName] string propertyName = null)
+        {
+            if (value.HasValue && value.Value < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBePositive);
+            }
+
+            return this.SetProperty(ref member, value, propertyName);
+        }
+
+        protected bool SetIfPositive(ref double member, double value, [CallerMemberName] string propertyName = null)
+        {
+            if (value < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBePositive);
+            }
+
+            return this.SetProperty(ref member, value, propertyName);
+        }
+
         protected bool SetIfStrictlyPositive(ref int? member, int? value, [CallerMemberName] string propertyName = null)
         {
             if (value.HasValue && value.Value <= 0)
@@ -121,6 +141,28 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         protected bool SetIfStrictlyPositive(ref int member, int value, [CallerMemberName] string propertyName = null)
+        {
+            if (value <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBeStrictlyPositive);
+            }
+
+            return this.SetProperty(ref member, value, propertyName);
+        }
+
+        protected bool SetIfStrictlyPositive(ref double? member, double? value,
+            [CallerMemberName] string propertyName = null)
+        {
+            if (value.HasValue && value.Value <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBeStrictlyPositive);
+            }
+
+            return this.SetProperty(ref member, value, propertyName);
+        }
+
+        protected bool SetIfStrictlyPositive(ref double member, double value,
+            [CallerMemberName] string propertyName = null)
         {
             if (value <= 0)
             {

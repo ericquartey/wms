@@ -426,7 +426,7 @@ namespace Ferretto.WMS.App.Core.Providers
             return l;
         }
 
-        public async Task<int?> GetMaxCapacityAsync(int? width, int? height, int itemId)
+        public async Task<int?> GetMaxCapacityAsync(double? width, double? height, int itemId)
         {
             if (width.HasValue && height.HasValue)
             {

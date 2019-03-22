@@ -44,13 +44,13 @@ namespace Ferretto.WMS.App.Core.Models
         public string Status { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellXCoordinate), ResourceType = typeof(BusinessObjects))]
-        public int? XCoordinate { get; set; }
+        public double? XCoordinate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellYCoordinate), ResourceType = typeof(BusinessObjects))]
-        public int? YCoordinate { get; set; }
+        public double? YCoordinate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellZCoordinate), ResourceType = typeof(BusinessObjects))]
-        public int? ZCoordinate { get; set; }
+        public double? ZCoordinate { get; set; }
 
         #endregion
     }

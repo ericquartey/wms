@@ -1,451 +1,364 @@
-﻿using System;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Newtonsoft.Json.Linq;
-using System.Linq;
-using System.Collections.Generic;
+﻿using Ferretto.VW.MAS_DataLayer.Enumerations;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
-    public partial class DataLayer : IDataLayerConverter
+    public partial class DataLayer
     {
         #region Methods
 
-        public DataTypeEnum ConvertConfigurationValue(GeneralInfoEnum configurationValueEnum)
+        public DataType ConvertConfigurationValue(GeneralInfo configurationValueEnum)
         {
-            DataTypeEnum returnValue;
+            DataType returnValue;
             switch (configurationValueEnum)
             {
-                case GeneralInfoEnum.Address:
-                case GeneralInfoEnum.CAP:
-                case GeneralInfoEnum.City:
-                case GeneralInfoEnum.ClientCode:
-                case GeneralInfoEnum.ClientName:
-                case GeneralInfoEnum.Country:
-                case GeneralInfoEnum.Latitude:
-                case GeneralInfoEnum.Longitude:
-                case GeneralInfoEnum.Model:
-                case GeneralInfoEnum.Order:
-                case GeneralInfoEnum.Province:
-                case GeneralInfoEnum.Serial:
-                    returnValue = DataTypeEnum.stringType;
+                case GeneralInfo.Address:
+                case GeneralInfo.Zip:
+                case GeneralInfo.City:
+                case GeneralInfo.ClientCode:
+                case GeneralInfo.ClientName:
+                case GeneralInfo.Country:
+                case GeneralInfo.Latitude:
+                case GeneralInfo.Longitude:
+                case GeneralInfo.Model:
+                case GeneralInfo.Order:
+                case GeneralInfo.Province:
+                case GeneralInfo.Serial:
+                    returnValue = DataType.String;
                     break;
 
-                case GeneralInfoEnum.AlfaNumBay1:
-                case GeneralInfoEnum.AlfaNumBay2:
-                case GeneralInfoEnum.AlfaNumBay3:
-                case GeneralInfoEnum.LaserBay1:
-                case GeneralInfoEnum.LaserBay2:
-                case GeneralInfoEnum.LaserBay3:
-                    returnValue = DataTypeEnum.booleanType;
+                case GeneralInfo.AlfaNumBay1:
+                case GeneralInfo.AlfaNumBay2:
+                case GeneralInfo.AlfaNumBay3:
+                case GeneralInfo.LaserBay1:
+                case GeneralInfo.LaserBay2:
+                case GeneralInfo.LaserBay3:
+                    returnValue = DataType.Boolean;
                     break;
 
-                case GeneralInfoEnum.Bay1Height1:
-                case GeneralInfoEnum.Bay1Height2:
-                case GeneralInfoEnum.Bay2Height1:
-                case GeneralInfoEnum.Bay2Height2:
-                case GeneralInfoEnum.Bay3Height1:
-                case GeneralInfoEnum.Bay3Height2:
-                case GeneralInfoEnum.Bay1Position1:
-                case GeneralInfoEnum.Bay1Position2:
-                case GeneralInfoEnum.Bay2Position1:
-                case GeneralInfoEnum.Bay2Position2:
-                case GeneralInfoEnum.Bay3Position1:
-                case GeneralInfoEnum.Bay3Position2:
-                case GeneralInfoEnum.Height:
-                case GeneralInfoEnum.MaxWeight:
-                    returnValue = DataTypeEnum.decimalType;
+                case GeneralInfo.Bay1Height1:
+                case GeneralInfo.Bay1Height2:
+                case GeneralInfo.Bay2Height1:
+                case GeneralInfo.Bay2Height2:
+                case GeneralInfo.Bay3Height1:
+                case GeneralInfo.Bay3Height2:
+                case GeneralInfo.Bay1Position1:
+                case GeneralInfo.Bay1Position2:
+                case GeneralInfo.Bay2Position1:
+                case GeneralInfo.Bay2Position2:
+                case GeneralInfo.Bay3Position1:
+                case GeneralInfo.Bay3Position2:
+                case GeneralInfo.Height:
+                case GeneralInfo.MaxWeight:
+                    returnValue = DataType.Float;
                     break;
 
-                case GeneralInfoEnum.Bay1Type:
-                case GeneralInfoEnum.Bay2Type:
-                case GeneralInfoEnum.Bay3Type:
-                case GeneralInfoEnum.Shutter1Type:
-                case GeneralInfoEnum.Shutter2Type:
-                case GeneralInfoEnum.Shutter3Type:
-                case GeneralInfoEnum.DrawersQuantity:
-                case GeneralInfoEnum.BaysQuantity:
-                    returnValue = DataTypeEnum.integerType;
+                case GeneralInfo.Bay1Type:
+                case GeneralInfo.Bay2Type:
+                case GeneralInfo.Bay3Type:
+                case GeneralInfo.Shutter1Type:
+                case GeneralInfo.Shutter2Type:
+                case GeneralInfo.Shutter3Type:
+                case GeneralInfo.DrawersQuantity:
+                case GeneralInfo.BaysQuantity:
+                    returnValue = DataType.Integer;
                     break;
 
-                case GeneralInfoEnum.InstallationDate:
-                case GeneralInfoEnum.ProductionDate:
-                    returnValue = DataTypeEnum.dateTimeType;
+                case GeneralInfo.InstallationDate:
+                case GeneralInfo.ProductionDate:
+                    returnValue = DataType.Date;
                     break;
 
                 default:
-                    returnValue = DataTypeEnum.UndefinedType;
+                    returnValue = DataType.Undefined;
                     break;
             }
             return returnValue;
         }
 
-        public DataTypeEnum ConvertConfigurationValue(SetupNetworkEnum configurationValueEnum)
+        public DataType ConvertConfigurationValue(SetupNetwork configurationValueEnum)
         {
-            DataTypeEnum returnValue;
+            DataType returnValue;
             switch (configurationValueEnum)
             {
-                case SetupNetworkEnum.MachineNumber:
-                case SetupNetworkEnum.Inverter1Port:
-                case SetupNetworkEnum.Inverter2Port:
-                case SetupNetworkEnum.IOExpansion1Port:
-                case SetupNetworkEnum.IOExpansion2Port:
-                case SetupNetworkEnum.IOExpansion3Port:
-                    returnValue = DataTypeEnum.integerType;
+                case SetupNetwork.MachineNumber:
+                case SetupNetwork.Inverter1Port:
+                case SetupNetwork.Inverter2Port:
+                case SetupNetwork.IOExpansion1Port:
+                case SetupNetwork.IOExpansion2Port:
+                case SetupNetwork.IOExpansion3Port:
+                    returnValue = DataType.Integer;
                     break;
 
-                case SetupNetworkEnum.WMS_ON:
-                    returnValue = DataTypeEnum.booleanType;
+                case SetupNetwork.WMS_ON:
+                    returnValue = DataType.Boolean;
                     break;
 
-                case SetupNetworkEnum.AlfaNumBay1:
-                case SetupNetworkEnum.AlfaNumBay2:
-                case SetupNetworkEnum.AlfaNumBay3:
-                case SetupNetworkEnum.Inverter1:
-                case SetupNetworkEnum.Inverter2:
-                case SetupNetworkEnum.IOExpansion1:
-                case SetupNetworkEnum.IOExpansion2:
-                case SetupNetworkEnum.IOExpansion3:
-                case SetupNetworkEnum.LaserBay1:
-                case SetupNetworkEnum.LaserBay2:
-                case SetupNetworkEnum.LaserBay3:
-                case SetupNetworkEnum.PPC1MasterIPAddress:
-                case SetupNetworkEnum.PPC2SlaveIPAddress:
-                case SetupNetworkEnum.PPC3SlaveIPAddress:
-                case SetupNetworkEnum.SQLServerIPAddress:
-                    returnValue = DataTypeEnum.IPAddressType;
+                case SetupNetwork.AlfaNumBay1:
+                case SetupNetwork.AlfaNumBay2:
+                case SetupNetwork.AlfaNumBay3:
+                case SetupNetwork.Inverter1:
+                case SetupNetwork.Inverter2:
+                case SetupNetwork.IOExpansion1:
+                case SetupNetwork.IOExpansion2:
+                case SetupNetwork.IOExpansion3:
+                case SetupNetwork.LaserBay1:
+                case SetupNetwork.LaserBay2:
+                case SetupNetwork.LaserBay3:
+                case SetupNetwork.PPC1MasterIPAddress:
+                case SetupNetwork.PPC2SlaveIPAddress:
+                case SetupNetwork.PPC3SlaveIPAddress:
+                case SetupNetwork.SQLServerIPAddress:
+                    returnValue = DataType.IPAddress;
                     break;
 
                 default:
-                    returnValue = DataTypeEnum.UndefinedType;
+                    returnValue = DataType.Undefined;
                     break;
             }
             return returnValue;
         }
 
-        public DataTypeEnum ConvertConfigurationValue(SetupStatusEnum configurationValueEnum)
+        public DataType ConvertConfigurationValue(SetupStatus configurationValueEnum)
         {
-            return DataTypeEnum.booleanType;
+            return DataType.Boolean;
         }
 
-        public DataTypeEnum ConvertConfigurationValue(VerticalAxisEnum configurationValueEnum)
+        public DataType ConvertConfigurationValue(VerticalAxis configurationValueEnum)
         {
-            DataTypeEnum returnValue;
+            DataType returnValue;
             switch (configurationValueEnum)
             {
-                case VerticalAxisEnum.HomingSearchDirection:
-                case VerticalAxisEnum.HomingExecuted:
-                    returnValue = DataTypeEnum.booleanType;
+                case VerticalAxis.HomingSearchDirection:
+                case VerticalAxis.HomingExecuted:
+                    returnValue = DataType.Boolean;
                     break;
 
-                case VerticalAxisEnum.HomingExitAcceleration:
-                case VerticalAxisEnum.HomingExitDeceleration:
-                case VerticalAxisEnum.HomingExitSpeed:
-                case VerticalAxisEnum.HomingSearchAcceleration:
-                case VerticalAxisEnum.HomingSearchDeceleration:
-                case VerticalAxisEnum.HomingSearchSpeed:
-                case VerticalAxisEnum.LowerBound:
-                case VerticalAxisEnum.MaxAcceleration:
-                case VerticalAxisEnum.MaxDeceleration:
-                case VerticalAxisEnum.MaxSpeed:
-                case VerticalAxisEnum.Offset:
-                case VerticalAxisEnum.Resolution:
-                case VerticalAxisEnum.UpperBound:
-                    returnValue = DataTypeEnum.decimalType;
+                case VerticalAxis.HomingExitAcceleration:
+                case VerticalAxis.HomingExitDeceleration:
+                case VerticalAxis.HomingExitSpeed:
+                case VerticalAxis.HomingSearchAcceleration:
+                case VerticalAxis.HomingSearchDeceleration:
+                case VerticalAxis.HomingSearchSpeed:
+                case VerticalAxis.LowerBound:
+                case VerticalAxis.MaxAcceleration:
+                case VerticalAxis.MaxDeceleration:
+                case VerticalAxis.MaxSpeed:
+                case VerticalAxis.Offset:
+                case VerticalAxis.Resolution:
+                case VerticalAxis.UpperBound:
+                    returnValue = DataType.Float;
                     break;
 
                 default:
-                    returnValue = DataTypeEnum.UndefinedType;
+                    returnValue = DataType.Undefined;
                     break;
             }
             return returnValue;
         }
 
-        public DataTypeEnum ConvertConfigurationValue(HorizontalAxisEnum configurationValueEnum)
+        public DataType ConvertConfigurationValue(HorizontalAxis configurationValueEnum)
         {
-            DataTypeEnum returnValue;
+            DataType returnValue;
             switch (configurationValueEnum)
             {
-                case HorizontalAxisEnum.HomingExecuted:
-                    returnValue = DataTypeEnum.booleanType;
+                case HorizontalAxis.HomingExecuted:
+                    returnValue = DataType.Boolean;
                     break;
 
-                case HorizontalAxisEnum.AntiClockWiseRun:
-                case HorizontalAxisEnum.ClockWiseRun:
-                case HorizontalAxisEnum.MaxAcceleration:
-                case HorizontalAxisEnum.MaxDeceleration:
-                case HorizontalAxisEnum.MaxSpeed:
-                case HorizontalAxisEnum.Offset:
-                    returnValue = DataTypeEnum.decimalType;
+                case HorizontalAxis.AntiClockWiseRun:
+                case HorizontalAxis.ClockWiseRun:
+                case HorizontalAxis.MaxAcceleration:
+                case HorizontalAxis.MaxDeceleration:
+                case HorizontalAxis.MaxSpeed:
+                case HorizontalAxis.Offset:
+                    returnValue = DataType.Float;
                     break;
 
                 default:
-                    returnValue = DataTypeEnum.UndefinedType;
+                    returnValue = DataType.Undefined;
                     break;
             }
             return returnValue;
         }
 
-        public DataTypeEnum ConvertConfigurationValue(HorizontalMovementForwardProfileEnum configurationValueEnum)
+        public DataType ConvertConfigurationValue(HorizontalMovementForwardProfile configurationValueEnum)
         {
-            DataTypeEnum returnValue;
+            DataType returnValue;
             switch (configurationValueEnum)
             {
-                case HorizontalMovementForwardProfileEnum.TotalSteps:
-                    returnValue = DataTypeEnum.integerType;
+                case HorizontalMovementForwardProfile.TotalSteps:
+                    returnValue = DataType.Integer;
                     break;
 
-                case HorizontalMovementForwardProfileEnum.InitialSpeed:
-                case HorizontalMovementForwardProfileEnum.Step1AccDec:
-                case HorizontalMovementForwardProfileEnum.Step1Position:
-                case HorizontalMovementForwardProfileEnum.Step1Speed:
-                case HorizontalMovementForwardProfileEnum.Step2AccDec:
-                case HorizontalMovementForwardProfileEnum.Step2Position:
-                case HorizontalMovementForwardProfileEnum.Step2Speed:
-                case HorizontalMovementForwardProfileEnum.Step3AccDec:
-                case HorizontalMovementForwardProfileEnum.Step3Position:
-                case HorizontalMovementForwardProfileEnum.Step3Speed:
-                case HorizontalMovementForwardProfileEnum.Step4AccDec:
-                case HorizontalMovementForwardProfileEnum.Step4Position:
-                case HorizontalMovementForwardProfileEnum.Step4Speed:
-                    returnValue = DataTypeEnum.decimalType;
+                case HorizontalMovementForwardProfile.InitialSpeed:
+                case HorizontalMovementForwardProfile.Step1AccDec:
+                case HorizontalMovementForwardProfile.Step1Position:
+                case HorizontalMovementForwardProfile.Step1Speed:
+                case HorizontalMovementForwardProfile.Step2AccDec:
+                case HorizontalMovementForwardProfile.Step2Position:
+                case HorizontalMovementForwardProfile.Step2Speed:
+                case HorizontalMovementForwardProfile.Step3AccDec:
+                case HorizontalMovementForwardProfile.Step3Position:
+                case HorizontalMovementForwardProfile.Step3Speed:
+                case HorizontalMovementForwardProfile.Step4AccDec:
+                case HorizontalMovementForwardProfile.Step4Position:
+                case HorizontalMovementForwardProfile.Step4Speed:
+                    returnValue = DataType.Float;
                     break;
 
                 default:
-                    returnValue = DataTypeEnum.UndefinedType;
+                    returnValue = DataType.Undefined;
                     break;
             }
             return returnValue;
         }
 
-        public DataTypeEnum ConvertConfigurationValue(HorizontalMovementBackwardProfileEnum configurationValueEnum)
+        public DataType ConvertConfigurationValue(HorizontalMovementBackwardProfile configurationValueEnum)
         {
-            DataTypeEnum returnValue;
+            DataType returnValue;
             switch (configurationValueEnum)
             {
-                case HorizontalMovementBackwardProfileEnum.TotalSteps:
-                    returnValue = DataTypeEnum.integerType;
+                case HorizontalMovementBackwardProfile.TotalSteps:
+                    returnValue = DataType.Integer;
                     break;
 
-                case HorizontalMovementBackwardProfileEnum.InitialSpeed:
-                case HorizontalMovementBackwardProfileEnum.Step1AccDec:
-                case HorizontalMovementBackwardProfileEnum.Step1Position:
-                case HorizontalMovementBackwardProfileEnum.Step1Speed:
-                case HorizontalMovementBackwardProfileEnum.Step2AccDec:
-                case HorizontalMovementBackwardProfileEnum.Step2Position:
-                case HorizontalMovementBackwardProfileEnum.Step2Speed:
-                case HorizontalMovementBackwardProfileEnum.Step3AccDec:
-                case HorizontalMovementBackwardProfileEnum.Step3Position:
-                case HorizontalMovementBackwardProfileEnum.Step3Speed:
-                case HorizontalMovementBackwardProfileEnum.Step4AccDec:
-                case HorizontalMovementBackwardProfileEnum.Step4Position:
-                case HorizontalMovementBackwardProfileEnum.Step4Speed:
-                    returnValue = DataTypeEnum.decimalType;
+                case HorizontalMovementBackwardProfile.InitialSpeed:
+                case HorizontalMovementBackwardProfile.Step1AccDec:
+                case HorizontalMovementBackwardProfile.Step1Position:
+                case HorizontalMovementBackwardProfile.Step1Speed:
+                case HorizontalMovementBackwardProfile.Step2AccDec:
+                case HorizontalMovementBackwardProfile.Step2Position:
+                case HorizontalMovementBackwardProfile.Step2Speed:
+                case HorizontalMovementBackwardProfile.Step3AccDec:
+                case HorizontalMovementBackwardProfile.Step3Position:
+                case HorizontalMovementBackwardProfile.Step3Speed:
+                case HorizontalMovementBackwardProfile.Step4AccDec:
+                case HorizontalMovementBackwardProfile.Step4Position:
+                case HorizontalMovementBackwardProfile.Step4Speed:
+                    returnValue = DataType.Float;
                     break;
 
                 default:
-                    returnValue = DataTypeEnum.UndefinedType;
+                    returnValue = DataType.Undefined;
                     break;
             }
             return returnValue;
         }
 
-        public DataTypeEnum ConvertConfigurationValue(VerticalManualMovementsEnum configurationValueEnum)
+        public DataType ConvertConfigurationValue(VerticalManualMovements configurationValueEnum)
         {
-            DataTypeEnum returnValue;
+            DataType returnValue;
             switch (configurationValueEnum)
             {
-                case VerticalManualMovementsEnum.FeedRate:
-                case VerticalManualMovementsEnum.InitialTargetPosition:
-                case VerticalManualMovementsEnum.RecoveryTargetPosition:
-                    returnValue = DataTypeEnum.decimalType;
+                case VerticalManualMovements.FeedRate:
+                case VerticalManualMovements.InitialTargetPosition:
+                case VerticalManualMovements.RecoveryTargetPosition:
+                    returnValue = DataType.Float;
                     break;
 
                 default:
-                    returnValue = DataTypeEnum.UndefinedType;
+                    returnValue = DataType.Undefined;
                     break;
             }
             return returnValue;
         }
 
-        public DataTypeEnum ConvertConfigurationValue(HorizontalManualMovementsEnum configurationValueEnum)
+        public DataType ConvertConfigurationValue(HorizontalManualMovements configurationValueEnum)
         {
-            DataTypeEnum returnValue;
+            DataType returnValue;
             switch (configurationValueEnum)
             {
-                case HorizontalManualMovementsEnum.FeedRate:
-                case HorizontalManualMovementsEnum.InitialTargetPosition:
-                case HorizontalManualMovementsEnum.RecoveryTargetPosition:
-                    returnValue = DataTypeEnum.decimalType;
+                case HorizontalManualMovements.FeedRate:
+                case HorizontalManualMovements.InitialTargetPosition:
+                case HorizontalManualMovements.RecoveryTargetPosition:
+                    returnValue = DataType.Float;
                     break;
 
                 default:
-                    returnValue = DataTypeEnum.UndefinedType;
+                    returnValue = DataType.Undefined;
                     break;
             }
             return returnValue;
         }
 
-        public DataTypeEnum ConvertConfigurationValue(BeltBurnishingEnum configurationValueEnum)
+        public DataType ConvertConfigurationValue(BeltBurnishing configurationValueEnum)
         {
-            return DataTypeEnum.integerType;
+            return DataType.Integer;
         }
 
-        public DataTypeEnum ConvertConfigurationValue(ResolutionCalibrationEnum configurationValueEnum)
+        public DataType ConvertConfigurationValue(ResolutionCalibration configurationValueEnum)
         {
-            return DataTypeEnum.decimalType;
+            return DataType.Float;
         }
 
-        public DataTypeEnum ConvertConfigurationValue(OffsetCalibrationEnum configurationValueEnum)
+        public DataType ConvertConfigurationValue(OffsetCalibration configurationValueEnum)
         {
-            DataTypeEnum returnValue;
+            DataType returnValue;
             switch (configurationValueEnum)
             {
-                case OffsetCalibrationEnum.ReferenceCell:
-                    returnValue = DataTypeEnum.integerType;
+                case OffsetCalibration.ReferenceCell:
+                    returnValue = DataType.Integer;
                     break;
 
-                case OffsetCalibrationEnum.FeedRate:
-                case OffsetCalibrationEnum.StepValue:
-                    returnValue = DataTypeEnum.decimalType;
+                case OffsetCalibration.FeedRate:
+                case OffsetCalibration.StepValue:
+                    returnValue = DataType.Float;
                     break;
 
                 default:
-                    returnValue = DataTypeEnum.UndefinedType;
+                    returnValue = DataType.Undefined;
                     break;
             }
             return returnValue;
         }
 
-        public DataTypeEnum ConvertConfigurationValue(CellControlEnum configurationValueEnum)
+        public DataType ConvertConfigurationValue(CellControl configurationValueEnum)
         {
-            return DataTypeEnum.decimalType;
+            return DataType.Float;
         }
 
-        public DataTypeEnum ConvertConfigurationValue(PanelControlEnum configurationValueEnum)
+        public DataType ConvertConfigurationValue(PanelControl configurationValueEnum)
         {
-            DataTypeEnum returnValue;
+            DataType returnValue;
             switch (configurationValueEnum)
             {
-                case PanelControlEnum.FrontInitialReferenceCell:
-                case PanelControlEnum.FrontPanelQuantity:
-                case PanelControlEnum.BackInitialReferenceCell:
-                case PanelControlEnum.BackPanelQuantity:
-                    returnValue = DataTypeEnum.integerType;
+                case PanelControl.FrontInitialReferenceCell:
+                case PanelControl.FrontPanelQuantity:
+                case PanelControl.BackInitialReferenceCell:
+                case PanelControl.BackPanelQuantity:
+                    returnValue = DataType.Integer;
                     break;
 
-                case PanelControlEnum.StepValue:
-                case PanelControlEnum.FeedRate:
-                    returnValue = DataTypeEnum.decimalType;
+                case PanelControl.StepValue:
+                case PanelControl.FeedRate:
+                    returnValue = DataType.Float;
                     break;
 
                 default:
-                    returnValue = DataTypeEnum.UndefinedType;
+                    returnValue = DataType.Undefined;
                     break;
             }
             return returnValue;
         }
 
-        public DataTypeEnum ConvertConfigurationValue(ShutterHeightControlEnum configurationValueEnum)
+        public DataType ConvertConfigurationValue(ShutterHeightControl configurationValueEnum)
         {
-            return DataTypeEnum.decimalType;
+            return DataType.Float;
         }
 
-        public DataTypeEnum ConvertConfigurationValue(WeightControlEnum configurationValueEnum)
+        public DataType ConvertConfigurationValue(WeightControl configurationValueEnum)
         {
-            return DataTypeEnum.decimalType;
+            return DataType.Float;
         }
 
-        public DataTypeEnum ConvertConfigurationValue(BayPositionControlEnum configurationValueEnum)
+        public DataType ConvertConfigurationValue(BayPositionControl configurationValueEnum)
         {
-            return DataTypeEnum.decimalType;
+            return DataType.Float;
         }
 
-        public DataTypeEnum ConvertConfigurationValue(LoadFirstDrawerEnum configurationValueEnum)
+        public DataType ConvertConfigurationValue(LoadFirstDrawer configurationValueEnum)
         {
-            return DataTypeEnum.decimalType;
-        }
-
-        public ConfigurationCategoryValueEnum GetJSonElementConfigurationCategory(KeyValuePair<string, JToken> jsonElement)
-        {
-            ConfigurationCategoryValueEnum returnValue;
-            if (Enum.GetNames(typeof(GeneralInfoEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
-            {
-                returnValue = ConfigurationCategoryValueEnum.GeneralInfoEnum;
-            }
-            else if (Enum.GetNames(typeof(SetupNetworkEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
-            {
-                returnValue = ConfigurationCategoryValueEnum.SetupNetworkEnum;
-            }
-            else if (Enum.GetNames(typeof(SetupStatusEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
-            {
-                returnValue = ConfigurationCategoryValueEnum.SetupStatusEnum;
-            }
-            else if (Enum.GetNames(typeof(VerticalAxisEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
-            {
-                returnValue = ConfigurationCategoryValueEnum.VerticalAxisEnum;
-            }
-            else if (Enum.GetNames(typeof(HorizontalAxisEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
-            {
-                returnValue = ConfigurationCategoryValueEnum.HorizontalAxisEnum;
-            }
-            else if (Enum.GetNames(typeof(HorizontalMovementForwardProfileEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
-            {
-                returnValue = ConfigurationCategoryValueEnum.HorizontalMovementForwardProfileEnum;
-            }
-            else if (Enum.GetNames(typeof(HorizontalMovementBackwardProfileEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
-            {
-                returnValue = ConfigurationCategoryValueEnum.HorizontalMovementBackwardProfileEnum;
-            }
-            else if (Enum.GetNames(typeof(VerticalManualMovementsEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
-            {
-                returnValue = ConfigurationCategoryValueEnum.VerticalManualMovementsEnum;
-            }
-            else if (Enum.GetNames(typeof(HorizontalManualMovementsEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
-            {
-                returnValue = ConfigurationCategoryValueEnum.HorizontalManualMovementsEnum;
-            }
-            else if (Enum.GetNames(typeof(BeltBurnishingEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
-            {
-                returnValue = ConfigurationCategoryValueEnum.BeltBurnishingEnum;
-            }
-            else if (Enum.GetNames(typeof(ResolutionCalibrationEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
-            {
-                returnValue = ConfigurationCategoryValueEnum.ResolutionCalibrationEnum;
-            }
-            else if (Enum.GetNames(typeof(OffsetCalibrationEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
-            {
-                returnValue = ConfigurationCategoryValueEnum.OffsetCalibrationEnum;
-            }
-            else if (Enum.GetNames(typeof(CellControlEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
-            {
-                returnValue = ConfigurationCategoryValueEnum.CellControlEnum;
-            }
-            else if (Enum.GetNames(typeof(PanelControlEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
-            {
-                returnValue = ConfigurationCategoryValueEnum.PanelControlEnum;
-            }
-            else if (Enum.GetNames(typeof(ShutterHeightControlEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
-            {
-                returnValue = ConfigurationCategoryValueEnum.ShutterHeightControlEnum;
-            }
-            else if (Enum.GetNames(typeof(WeightControlEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
-            {
-                returnValue = ConfigurationCategoryValueEnum.WeightControlEnum;
-            }
-            else if (Enum.GetNames(typeof(BayPositionControlEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
-            {
-                returnValue = ConfigurationCategoryValueEnum.BayPositionControlEnum;
-            }
-            else if (Enum.GetNames(typeof(LoadFirstDrawerEnum)).FirstOrDefault(x => nameof(jsonElement.Key) == x) != null)
-            {
-                returnValue = ConfigurationCategoryValueEnum.LoadFirstDrawerEnum;
-            }
-            else
-            {
-                returnValue = ConfigurationCategoryValueEnum.Undefined;
-            }
-            return returnValue;
+            return DataType.Float;
         }
 
         #endregion

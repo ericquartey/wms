@@ -417,6 +417,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                             b != null
                                 ? b.TotalStock + b.TotalReservedToStore - b.TotalReservedForPick
                                 : 0,
+
+                        CompartmentsCount = a.Item.Compartments.Count(),
                     });
         }
 
