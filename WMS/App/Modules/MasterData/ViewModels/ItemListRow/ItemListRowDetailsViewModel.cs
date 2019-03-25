@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using CommonServiceLocator;
 using DevExpress.Xpf.Data;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
@@ -152,14 +153,13 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task ExecuteDeleteCommandAsync()
         {
-            var deleteAction = await this.itemListRowProvider.CanDeleteAsync(this.Model.Id);
-            if (deleteAction.IsAllowed)
+            if (this.Model.CanDelete())
             {
                 await this.DeleteItemListRowAsync();
             }
             else
             {
-                this.ShowErrorDialog(deleteAction);
+                this.ShowErrorDialog(this.Model.GetCanDeleteReason());
             }
         }
 
