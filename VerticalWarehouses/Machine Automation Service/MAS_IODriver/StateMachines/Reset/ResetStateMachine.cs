@@ -23,6 +23,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
         public ResetStateMachine(BlockingConcurrentQueue<IoMessage> ioCommandQueue, IEventAggregator eventAggregator, ILogger logger)
         {
+            logger.LogTrace("Reset State machine CTor");
             this.ioCommandQueue = ioCommandQueue;
             this.eventAggregator = eventAggregator;
             this.logger = logger;
@@ -43,6 +44,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
         public override void ProcessMessage(IoMessage message)
         {
+            logger.LogTrace("Reset State maachine ProcessMessage");
             if (message.ValidOutputs && message.ResetSecurity)
             {
                 this.delayTimer = new Timer(this.DelayElapsed, null, PulseInterval, -1);    //VALUE -1 period means timer does not fire multiple times
@@ -52,6 +54,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
         public override void Start()
         {
+            logger.LogTrace("Reset State machine Start");
             this.CurrentState = new ResetOutputsState(this, this.logger);
         }
 

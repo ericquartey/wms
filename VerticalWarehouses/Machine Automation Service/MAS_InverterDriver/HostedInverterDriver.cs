@@ -111,7 +111,7 @@ namespace Ferretto.VW.InverterDriver
                 false,
                 message => message.Destination == MessageActor.InverterDriver || message.Destination == MessageActor.Any);
 
-            this.logger?.LogInformation("Hosted Inverter Driver Constructor");
+            this.logger?.LogTrace("Hosted Inverter Driver Constructor");
         }
 
         #endregion
@@ -144,15 +144,11 @@ namespace Ferretto.VW.InverterDriver
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             this.stoppingToken = stoppingToken;
-
-            IPAddress.TryParse("169.254.231.248", out var inverterAddress);
-            var inverterPort = 17221;
-
-            /*
+            
             var inverterAddress =
                 this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetwork.Inverter1, (long)ConfigurationCategory.SetupNetwork);
             var inverterPort = this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetwork.Inverter1Port, (long)ConfigurationCategory.SetupNetwork);
-            */
+            
 
             this.socketTransport.Configure(inverterAddress, inverterPort);
 

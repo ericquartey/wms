@@ -133,15 +133,12 @@ namespace Ferretto.VW.MAS_IODriver
         {
             this.stoppingToken = stoppingToken;
 
-            IPAddress.TryParse("169.254.231.10", out var ioAddress);
-            var ioPort = 502;
+            logger.LogInformation("Execute Async");
 
-            /*
             var ioAddress =
                 this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
             var ioPort =
                 this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
-            */
 
             this.modbusTransport.Configure(ioAddress, ioPort);
 
@@ -175,6 +172,8 @@ namespace Ferretto.VW.MAS_IODriver
 
         private Task CommandReceiveTaskFunction()
         {
+            logger.LogTrace("Command receive Task Start");
+
             this.pollIoTimer?.Dispose();
             try
             {
@@ -224,6 +223,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         private Task NotificationReceiveTaskFunction()
         {
+            logger.LogTrace("Notification Function Task Start");
             do
             {
                 NotificationMessage receivedMessage;
@@ -259,6 +259,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         private async Task ReceiveIoDataTaskFunction()
         {
+            logger.LogTrace("Receive IO Function Task Start");
             do
             {
                 try
@@ -294,6 +295,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         private async Task SendIoCommandTaskFunction()
         {
+            logger.LogTrace("Send IO Function Task Start");
             do
             {
                 IoMessage message;
