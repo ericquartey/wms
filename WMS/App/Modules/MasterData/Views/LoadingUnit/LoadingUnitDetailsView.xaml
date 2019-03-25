@@ -84,7 +84,7 @@
             <wms:ActionBarItem Command="{Binding SaveCommand}"
                                Content="{x:Static res:General.Save}"
                                CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/1x_web/1x_web/content/ic_save_black_24dp.png"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_save_black_24dp.png"
                                GlyphSize="Custom" />
             <wms:ActionBarItem Command="{Binding RevertCommand}"
                                Content="{x:Static res:General.Revert}"
