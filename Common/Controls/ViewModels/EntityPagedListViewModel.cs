@@ -14,7 +14,6 @@ using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils.Expressions;
-using NLog;
 
 namespace Ferretto.Common.Controls
 {
@@ -28,8 +27,6 @@ namespace Ferretto.Common.Controls
         private const string DefaultPageSizeSettingsKey = "DefaultListPageSize";
 
         private readonly IDialogService dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
-
-        private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private CriteriaOperator customFilter;
 
@@ -182,7 +179,7 @@ namespace Ferretto.Common.Controls
 
         private static IEnumerable<SortOption> GetSortOrder(FetchRowsAsyncEventArgs e)
         {
-            return e.SortOrder.Select(s => new SortOption(s.PropertyName, s.Direction));
+            return e?.SortOrder.Select(s => new SortOption(s.PropertyName, s.Direction));
         }
 
         private static CriteriaOperator JoinFilters(CriteriaOperator operator1, CriteriaOperator operator2)
@@ -221,7 +218,8 @@ namespace Ferretto.Common.Controls
                 whereString,
                 this.searchText);
 
-            return new FetchRowsResult(entities.Cast<object>().ToArray(),
+            return new FetchRowsResult(
+                entities.Cast<object>().ToArray(),
                 hasMoreRows: entities.Count() == GetPageSize());
         }
 

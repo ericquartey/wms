@@ -279,4 +279,7 @@
   <data name="NotPossibleExecuteOperation" xml:space="preserve">
     <value>Unable to complete the request because there are constraints on: {0}</value>
   </data>
+  <data name="PropertyMustBePositive" xml:space="preserve">
+    <value>The property {0} must be positive.</value>
+  </data>
 </root>

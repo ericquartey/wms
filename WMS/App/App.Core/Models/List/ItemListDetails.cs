@@ -119,7 +119,7 @@ namespace Ferretto.WMS.App.Core.Models
         public int ItemListItemsCount
         {
             get => this.itemListItemsCount;
-            set => this.SetIfPositive(ref this.itemListItemsCount, value);
+            set => this.SetProperty(ref this.itemListItemsCount, value);
         }
 
         public IEnumerable<ItemListRow> ItemListRows
@@ -169,13 +169,7 @@ namespace Ferretto.WMS.App.Core.Models
         public int Priority
         {
             get => this.priority;
-            set
-            {
-                if (this.SetIfStrictlyPositive(ref this.priority, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.priority, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemListShipmentUnitAssociated), ResourceType = typeof(BusinessObjects))]
@@ -231,9 +225,17 @@ namespace Ferretto.WMS.App.Core.Models
                 switch (columnName)
                 {
                     case nameof(this.Priority):
-                        if (this.priority < 1)
+                        if (this.Priority < 1)
                         {
                             return string.Format(Common.Resources.Errors.PropertyMustBeStriclyPositive, nameof(this.Priority));
+                        }
+
+                        break;
+
+                    case nameof(this.ItemListItemsCount):
+                        if (this.ItemListItemsCount < 0)
+                        {
+                            return string.Format(Common.Resources.Errors.PropertyMustBePositive, nameof(this.ItemListItemsCount));
                         }
 
                         break;
