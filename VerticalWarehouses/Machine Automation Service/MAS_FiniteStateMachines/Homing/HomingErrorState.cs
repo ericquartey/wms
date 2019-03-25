@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
@@ -9,13 +10,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         private readonly Axis axis;
 
+        private readonly ILogger logger;
+
         #endregion
 
         #region Constructors
 
-        public HomingErrorState(IStateMachine parentMachine, Axis axis)
+        public HomingErrorState(IStateMachine parentMachine, Axis axis, ILogger logger)
         {
             this.parentStateMachine = parentMachine;
+            this.logger = logger;
             this.axis = axis;
 
             //TEMP Notify the error condition all the world

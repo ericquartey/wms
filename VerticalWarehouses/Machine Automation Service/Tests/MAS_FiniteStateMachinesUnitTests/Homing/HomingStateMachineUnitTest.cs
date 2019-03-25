@@ -3,6 +3,7 @@ using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Homing;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Prism.Events;
@@ -22,14 +23,15 @@ namespace MAS_FiniteStateMachinesUnitTests.Homing
             var calibrateMessageData = new Mock<ICalibrateMessageData>();
             var cmdEvent = new CommandEvent();
             var notifyEvent = new NotificationEvent();
+            var loggerMock = new Mock<ILogger>();
 
             calibrateMessageData.Setup(c => c.AxisToCalibrate).Returns(Axis.Vertical);
             calibrateMessageData.Setup(c => c.Verbosity).Returns(MessageVerbosity.Info);
             eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<CommandEvent>()).Returns(cmdEvent);
             eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<NotificationEvent>()).Returns(notifyEvent);
 
-            var sm = new HomingStateMachine(eventAggregatorMock.Object, calibrateMessageData.Object);
-            sm.ChangeState(new HomingEndState(sm, Axis.Horizontal), null);
+            var sm = new HomingStateMachine(eventAggregatorMock.Object, calibrateMessageData.Object, loggerMock.Object);
+            sm.ChangeState(new HomingEndState(sm, Axis.Horizontal, loggerMock.Object), null);
 
             Assert.AreEqual(sm.GetState.Type, "HomingEndState");
         }
@@ -42,14 +44,15 @@ namespace MAS_FiniteStateMachinesUnitTests.Homing
             var calibrateMessageData = new Mock<ICalibrateMessageData>();
             var cmdEvent = new CommandEvent();
             var notifyEvent = new NotificationEvent();
+            var loggerMock = new Mock<ILogger>();
 
             calibrateMessageData.Setup(c => c.AxisToCalibrate).Returns(Axis.Vertical);
             calibrateMessageData.Setup(c => c.Verbosity).Returns(MessageVerbosity.Info);
             eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<CommandEvent>()).Returns(cmdEvent);
             eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<NotificationEvent>()).Returns(notifyEvent);
 
-            var sm = new HomingStateMachine(eventAggregatorMock.Object, calibrateMessageData.Object);
-            sm.ChangeState(new HomingCalibrateAxisDoneState(sm, Axis.Horizontal), null);
+            var sm = new HomingStateMachine(eventAggregatorMock.Object, calibrateMessageData.Object, loggerMock.Object);
+            sm.ChangeState(new HomingCalibrateAxisDoneState(sm, Axis.Horizontal, loggerMock.Object), null);
 
             Assert.AreEqual(sm.GetState.Type, "HomingCalibrateAxisDoneState");
         }
@@ -62,14 +65,15 @@ namespace MAS_FiniteStateMachinesUnitTests.Homing
             var calibrateMessageData = new Mock<ICalibrateMessageData>();
             var cmdEvent = new CommandEvent();
             var notifyEvent = new NotificationEvent();
+            var loggerMock = new Mock<ILogger>();
 
             calibrateMessageData.Setup(c => c.AxisToCalibrate).Returns(Axis.Vertical);
             calibrateMessageData.Setup(c => c.Verbosity).Returns(MessageVerbosity.Info);
             eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<CommandEvent>()).Returns(cmdEvent);
             eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<NotificationEvent>()).Returns(notifyEvent);
 
-            var sm = new HomingStateMachine(eventAggregatorMock.Object, calibrateMessageData.Object);
-            sm.ChangeState(new HomingErrorState(sm, Axis.Vertical), null);
+            var sm = new HomingStateMachine(eventAggregatorMock.Object, calibrateMessageData.Object, loggerMock.Object);
+            sm.ChangeState(new HomingErrorState(sm, Axis.Vertical, loggerMock.Object), null);
 
             Assert.AreEqual(sm.GetState.Type, "HomingErrorState");
         }
@@ -82,14 +86,15 @@ namespace MAS_FiniteStateMachinesUnitTests.Homing
             var calibrateMessageData = new Mock<ICalibrateMessageData>();
             var cmdEvent = new CommandEvent();
             var notifyEvent = new NotificationEvent();
+            var loggerMock = new Mock<ILogger>();
 
             calibrateMessageData.Setup(c => c.AxisToCalibrate).Returns(Axis.Vertical);
             calibrateMessageData.Setup(c => c.Verbosity).Returns(MessageVerbosity.Info);
             eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<CommandEvent>()).Returns(cmdEvent);
             eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<NotificationEvent>()).Returns(notifyEvent);
 
-            var sm = new HomingStateMachine(eventAggregatorMock.Object, calibrateMessageData.Object);
-            sm.ChangeState(new HomingSwitchAxisDoneState(sm, Axis.Vertical), null);
+            var sm = new HomingStateMachine(eventAggregatorMock.Object, calibrateMessageData.Object, loggerMock.Object);
+            sm.ChangeState(new HomingSwitchAxisDoneState(sm, Axis.Vertical, loggerMock.Object), null);
 
             Assert.AreEqual(sm.GetState.Type, "HomingSwitchAxisDoneState");
         }
@@ -100,11 +105,12 @@ namespace MAS_FiniteStateMachinesUnitTests.Homing
         {
             var eventAggregatorMock = new Mock<IEventAggregator>();
             var calibrateMessageData = new Mock<ICalibrateMessageData>();
+            var loggerMock = new Mock<ILogger>();
             eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<CommandEvent>()).Returns(new CommandEvent());
 
             calibrateMessageData.Setup(c => c.AxisToCalibrate).Returns(Axis.Vertical);
 
-            var sm = new HomingStateMachine(eventAggregatorMock.Object, calibrateMessageData.Object);
+            var sm = new HomingStateMachine(eventAggregatorMock.Object, calibrateMessageData.Object, loggerMock.Object);
 
             Assert.AreEqual(sm.CalibrateData.AxisToCalibrate, Axis.Vertical);
         }
@@ -115,13 +121,14 @@ namespace MAS_FiniteStateMachinesUnitTests.Homing
         {
             var eventAggregatorMock = new Mock<IEventAggregator>();
             var calibrateMessageData = new Mock<ICalibrateMessageData>();
+            var loggerMock = new Mock<ILogger>();
             eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<CommandEvent>()).Returns(new CommandEvent());
             eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<NotificationEvent>()).Returns(new NotificationEvent());
 
             calibrateMessageData.Setup(c => c.AxisToCalibrate).Returns(Axis.Vertical);
 
-            var sm = new HomingStateMachine(eventAggregatorMock.Object, calibrateMessageData.Object);
-            var errorState = new HomingErrorState(sm, Axis.Horizontal);
+            var sm = new HomingStateMachine(eventAggregatorMock.Object, calibrateMessageData.Object, loggerMock.Object);
+            var errorState = new HomingErrorState(sm, Axis.Horizontal, loggerMock.Object);
             sm.ChangeState(errorState, null);
 
             Assert.AreEqual(sm.GetState, errorState);
@@ -132,8 +139,8 @@ namespace MAS_FiniteStateMachinesUnitTests.Homing
         public void TestHomingStateMachineInvalidCreation()
         {
             var eventAggregatorMock = new Mock<IEventAggregator>();
-
-            Assert.ThrowsException<NullReferenceException>(() => new HomingStateMachine(eventAggregatorMock.Object, null));
+            var loggerMock = new Mock<ILogger>();
+            Assert.ThrowsException<NullReferenceException>(() => new HomingStateMachine(eventAggregatorMock.Object, null, loggerMock.Object));
         }
 
         [TestMethod]
@@ -143,12 +150,13 @@ namespace MAS_FiniteStateMachinesUnitTests.Homing
             var eventAggregatorMock = new Mock<IEventAggregator>();
             var calibrateMessageData = new Mock<ICalibrateMessageData>();
             var cmdEvent = new CommandEvent();
+            var loggerMock = new Mock<ILogger>();
 
             calibrateMessageData.Setup(c => c.AxisToCalibrate).Returns(Axis.Vertical);
             calibrateMessageData.Setup(c => c.Verbosity).Returns(MessageVerbosity.Info);
             eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<CommandEvent>()).Returns(cmdEvent);
 
-            var sm = new HomingStateMachine(eventAggregatorMock.Object, calibrateMessageData.Object);
+            var sm = new HomingStateMachine(eventAggregatorMock.Object, calibrateMessageData.Object, loggerMock.Object);
             sm.Start();
 
             Assert.AreEqual(sm.GetState.Type, "HomingStartState");
@@ -160,11 +168,12 @@ namespace MAS_FiniteStateMachinesUnitTests.Homing
         {
             var eventAggregatorMock = new Mock<IEventAggregator>();
             var calibrateMessageData = new Mock<ICalibrateMessageData>();
+            var loggerMock = new Mock<ILogger>();
 
             calibrateMessageData.Setup(c => c.AxisToCalibrate).Returns(Axis.Vertical);
             calibrateMessageData.Setup(c => c.Verbosity).Returns(MessageVerbosity.Info);
 
-            var sm = new HomingStateMachine(eventAggregatorMock.Object, calibrateMessageData.Object);
+            var sm = new HomingStateMachine(eventAggregatorMock.Object, calibrateMessageData.Object, loggerMock.Object);
         }
 
         #endregion
