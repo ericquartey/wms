@@ -289,11 +289,11 @@
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Machines/vertimag_xs_icon.png</value>
     <comment>@Invariant</comment>
   </data>
-  <data name="SchedulerOffLine" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/device/1x_web/ic_signal_wifi_off_black_24dp</value>
+  <data name="ServicesOffline" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/device/1x_web/ic_signal_wifi_off_black_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
-  <data name="SchedulerOnLine" xml:space="preserve">
+  <data name="ServicesOnline" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/device/1x_web/ic_signal_wifi_4_bar_black_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
@@ -471,6 +471,7 @@
   </data>
   <data name="SchedulerRequests" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-ask-question-50.png</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="Scheduler" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_date_range_white_24dp.png</value>
@@ -510,15 +511,19 @@
   </data>
   <data name="SchedulerRequestViewAll" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-europe-50.png</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="SchedulerRequestOperationInsert" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-insert-50.png</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="SchedulerRequestOperationWithdraw" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-withdraw-50.png</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="ShowDetail" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_visibility_black_36dp.png</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_not_interested_black_24dp.png</value>

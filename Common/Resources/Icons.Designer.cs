@@ -871,24 +871,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/device/1x_web/ic_signal_wifi_off_black_24dp.
-        /// </summary>
-        public static string SchedulerOffLine {
-            get {
-                return ResourceManager.GetString("SchedulerOffLine", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/device/1x_web/ic_signal_wifi_4_bar_black_24dp.png.
-        /// </summary>
-        public static string SchedulerOnLine {
-            get {
-                return ResourceManager.GetString("SchedulerOnLine", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-insert-50.png.
         /// </summary>
         public static string SchedulerRequestOperationInsert {
@@ -921,6 +903,24 @@ namespace Ferretto.Common.Resources {
         public static string SchedulerRequestViewAll {
             get {
                 return ResourceManager.GetString("SchedulerRequestViewAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/device/1x_web/ic_signal_wifi_off_black_24dp.png.
+        /// </summary>
+        public static string ServicesOffline {
+            get {
+                return ResourceManager.GetString("ServicesOffline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/device/1x_web/ic_signal_wifi_4_bar_black_24dp.png.
+        /// </summary>
+        public static string ServicesOnline {
+            get {
+                return ResourceManager.GetString("ServicesOnline", resourceCulture);
             }
         }
         
