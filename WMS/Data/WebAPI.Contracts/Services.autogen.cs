@@ -4286,14 +4286,14 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<int?> GetMaxCapacityAsync(int width, int height, int itemId)
+        public System.Threading.Tasks.Task<int?> GetMaxCapacityAsync(double width, double height, int itemId)
         {
             return GetMaxCapacityAsync(width, height, itemId, System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<int?> GetMaxCapacityAsync(int width, int height, int itemId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<int?> GetMaxCapacityAsync(double width, double height, int itemId, System.Threading.CancellationToken cancellationToken)
         {
             if (width == null)
                 throw new System.ArgumentNullException("width");

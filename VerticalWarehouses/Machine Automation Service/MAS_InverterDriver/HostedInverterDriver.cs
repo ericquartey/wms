@@ -147,8 +147,9 @@ namespace Ferretto.VW.InverterDriver
             //TEMP Temporary uncomment these code lines in order to set the IP address (and to comment the others)
             /*IPAddress.TryParse("169.254.231.248", out var inverterAddress);*/
             /*var inverterPort = 17221;*/
-            var inverterAddress = this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetworkEnum.Inverter1, (long)ConfigurationCategoryValueEnum.SetupNetworkEnum);
-            var inverterPort = this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetworkEnum.Inverter1Port, (long)ConfigurationCategoryValueEnum.SetupNetworkEnum);
+            var inverterAddress =
+                this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetwork.Inverter1, (long)ConfigurationCategory.SetupNetwork);
+            var inverterPort = this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetwork.Inverter1Port, (long)ConfigurationCategory.SetupNetwork);
 
             this.socketTransport.Configure(inverterAddress, inverterPort);
 

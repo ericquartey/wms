@@ -1,6 +1,8 @@
 using System;
-using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.WMS.Data.Core.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Ferretto.Common.Resources;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -8,17 +10,17 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         #region Fields
 
-        private int? height;
+        private double? height;
 
         private int? maxCapacity;
 
         private int stock;
 
-        private int? width;
+        private double? width;
 
-        private int? xPosition;
+        private double? xPosition;
 
-        private int? yPosition;
+        private double? yPosition;
 
         #endregion
 
@@ -40,7 +42,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public bool HasRotation { get; set; }
 
-        public int? Height
+        public double? Height
         {
             get => this.height;
             set => this.height = CheckIfStrictlyPositive(value);
@@ -96,22 +98,131 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string Sub2 { get; set; }
 
-        public int? Width
+        public double? Width
         {
             get => this.width;
             set => this.width = CheckIfStrictlyPositive(value);
         }
 
-        public int? XPosition
+        public double? XPosition
         {
             get => this.xPosition;
             set => this.xPosition = CheckIfPositive(value);
         }
 
-        public int? YPosition
+        public double? YPosition
         {
             get => this.yPosition;
             set => this.yPosition = CheckIfPositive(value);
+        }
+
+        #endregion
+
+        #region Methods
+
+        public bool CanAddToLoadingUnit(IEnumerable<CompartmentDetails> compartments, LoadingUnitDetails loadingUnit)
+        {
+            if (loadingUnit == null)
+            {
+                return false;
+            }
+
+            return (loadingUnit.LoadingUnitTypeHasCompartments
+                    &&
+                    this.XPosition + this.Width <= loadingUnit.Width
+                    &&
+                    this.YPosition + this.Height <= loadingUnit.Length
+                    &&
+                    !compartments.Any(c => HasCollision(c, this)))
+                    ||
+                    (
+                    !loadingUnit.LoadingUnitTypeHasCompartments &&
+                    !this.XPosition.HasValue &&
+                    !this.YPosition.HasValue);
+        }
+
+        public string CheckCompartment()
+        {
+            var sb = new StringBuilder();
+
+            if (this.XPosition.HasValue == false)
+            {
+                sb.AppendLine(Errors.CompartmentXPositionIsNotSpecified);
+            }
+
+            if (this.YPosition.HasValue == false)
+            {
+                sb.AppendLine(Errors.CompartmentYPositionIsNotSpecified);
+            }
+
+            if (this.Width.HasValue == false)
+            {
+                sb.AppendLine(Errors.CompartmentSizeIsNotSpecified);
+            }
+
+            if (this.Height.HasValue == false)
+            {
+                sb.AppendLine(Errors.CompartmentSizeIsNotSpecified);
+            }
+
+            if (this.maxCapacity.HasValue && this.maxCapacity.Value < this.stock)
+            {
+                sb.AppendLine(Errors.CompartmentStockGreaterThanMaxCapacity);
+            }
+
+            return sb.ToString();
+        }
+
+        private static bool HasCollision(CompartmentDetails c1, CompartmentDetails c2)
+        {
+            if (c1.Id == c2.Id)
+            {
+                return false;
+            }
+
+            var xAPositionFinal = c1.XPosition + c1.Width;
+            var yAPositionFinal = c1.YPosition + c1.Height;
+
+            var xBPositionFinal = c2.XPosition + c2.Width;
+            var yBPositionFinal = c2.YPosition + c2.Height;
+
+            // A: Top-Left
+            if (c1.XPosition >= c2.XPosition
+                && c1.XPosition < xBPositionFinal
+                && c1.YPosition >= c2.YPosition
+                && c1.YPosition < yBPositionFinal)
+            {
+                return true;
+            }
+
+            // B: Top-Right
+            if (xAPositionFinal > c2.XPosition
+                && xAPositionFinal <= xBPositionFinal
+                && c1.YPosition >= c2.YPosition
+                && c1.YPosition < yBPositionFinal)
+            {
+                return true;
+            }
+
+            // C: Bottom-Left
+            if (c1.XPosition >= c2.XPosition
+                && c1.XPosition < xBPositionFinal
+                && yAPositionFinal > c2.YPosition
+                && yAPositionFinal <= yBPositionFinal)
+            {
+                return true;
+            }
+
+            // D: Bottom-Right
+            if (xAPositionFinal > c2.XPosition
+                && xAPositionFinal <= xBPositionFinal
+                && yAPositionFinal > c2.YPosition
+                && yAPositionFinal <= yBPositionFinal)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         #endregion

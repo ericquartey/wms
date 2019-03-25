@@ -19,11 +19,11 @@ namespace Ferretto.Common.DataModels
 
         public IEnumerable<LoadingUnit> LoadingUnits { get; set; }
 
-        public int? XOffset { get; set; }
+        public double? XOffset { get; set; }
 
-        public int? YOffset { get; set; }
+        public double? YOffset { get; set; }
 
-        public int? ZOffset { get; set; }
+        public double? ZOffset { get; set; }
 
         #endregion
     }

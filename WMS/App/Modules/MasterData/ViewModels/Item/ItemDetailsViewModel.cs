@@ -2,17 +2,17 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
-using Ferretto.Common.BusinessModels;
-using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Core.Interfaces;
+using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemDetailsViewModel : DetailsViewModel<ItemDetails>, IExtensionDataEntityViewModel, IEdit
+    public class ItemDetailsViewModel : DetailsViewModel<ItemDetails>, IEdit
     {
         #region Fields
 
@@ -232,14 +232,14 @@ namespace Ferretto.WMS.Modules.MasterData
                 if (this.Data is int modelId)
                 {
                     this.Model = await this.itemProvider.GetByIdAsync(modelId);
-                    this.ItemHasCompartments = this.Model.CompartmentsCount > 0 ? true : false;
+                    this.ItemHasCompartments = this.Model.CompartmentsCount > 0;
                 }
 
                 this.IsBusy = false;
             }
             catch
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToLoadData, StatusType.Error));
             }
         }
 

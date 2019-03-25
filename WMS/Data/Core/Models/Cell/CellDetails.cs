@@ -14,11 +14,11 @@ namespace Ferretto.WMS.Data.Core.Models
 
         private int priority;
 
-        private int? xCoordinate;
+        private double? xCoordinate;
 
-        private int? yCoordinate;
+        private double? yCoordinate;
 
-        private int? zCoordinate;
+        private double? zCoordinate;
 
         #endregion
 
@@ -62,19 +62,19 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public Side Side { get; set; }
 
-        public int? XCoordinate
+        public double? XCoordinate
         {
             get => this.xCoordinate;
             set => this.xCoordinate = CheckIfPositive(value);
         }
 
-        public int? YCoordinate
+        public double? YCoordinate
         {
             get => this.yCoordinate;
             set => this.yCoordinate = CheckIfPositive(value);
         }
 
-        public int? ZCoordinate
+        public double? ZCoordinate
         {
             get => this.zCoordinate;
             set => this.zCoordinate = CheckIfPositive(value);

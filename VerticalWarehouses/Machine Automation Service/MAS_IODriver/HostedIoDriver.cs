@@ -135,8 +135,10 @@ namespace Ferretto.VW.MAS_IODriver
             //TEMP Temporary uncomment these code lines in order to set the IP address (and to comment the others)
             /*IPAddress.TryParse("169.254.231.10", out var ioAddress);*/
             /*var ioPort = 502;*/
-            var ioAddress = this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetworkEnum.IOExpansion1, (long)ConfigurationCategoryValueEnum.SetupNetworkEnum);
-            var ioPort = this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetworkEnum.IOExpansion1Port, (long)ConfigurationCategoryValueEnum.SetupNetworkEnum);
+            var ioAddress =
+                this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
+            var ioPort =
+                this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
 
             this.modbusTransport.Configure(ioAddress, ioPort);
 

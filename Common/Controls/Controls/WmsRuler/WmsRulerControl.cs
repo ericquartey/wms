@@ -1,9 +1,7 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.Controls
 {

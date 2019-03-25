@@ -9,6 +9,11 @@ namespace Ferretto.WMS.Data.Core.Models
         {
         }
 
+        public CreationErrorOperationResult(string description)
+            : base(description)
+        {
+        }
+
         #endregion
     }
 }

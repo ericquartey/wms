@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Ferretto.Common.BusinessModels;
+using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.Common.Controls
 {
@@ -350,8 +350,8 @@ namespace Ferretto.Common.Controls
             OriginVertical originVertical,
             double dimensionWidth,
             double dimensionHeight,
-            int widthCompartment,
-            int heightCompartment)
+            double widthCompartment,
+            double heightCompartment)
         {
             var ret = new Point { X = compartmentOrigin.X, Y = compartmentOrigin.Y };
 
@@ -726,8 +726,8 @@ namespace Ferretto.Common.Controls
                 this.OriginVertical,
                 this.DimensionWidth,
                 this.DimensionHeight,
-                (int)compartment.CompartmentDetails.Width,
-                (int)compartment.CompartmentDetails.Height);
+                (double)compartment.CompartmentDetails.Width,
+                (double)compartment.CompartmentDetails.Height);
 
             compartment.Top = ConvertMillimetersToPixel(
                 convertedCompartmentOrigin.Y,

@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ferretto.VW.MAS_DataLayer.Enumerations
+﻿namespace Ferretto.VW.MAS_DataLayer.Enumerations
 {
-    public enum CellControlEnum : long
+    public enum CellControl : long
     {
-        StepValue = 0L,
+        Undefined = 0L,
 
-        FeedRate = 1L,
+        StepValue = 1L,
+
+        FeedRate = 2L,
     }
 }
