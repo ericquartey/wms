@@ -83,7 +83,8 @@ namespace Ferretto.VW.MAS_DataLayer
             this.primaryDataContext.Database.Migrate();
             this.secondaryDataContext.Database.Migrate();
 
-            this.LoadConfigurationValuesInfo(dataLayerConfiguration.ConfigurationFilePath);
+            // Uncomment this code line
+            //this.LoadConfigurationValuesInfo(dataLayerConfiguration.ConfigurationFilePath);
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
 
@@ -92,31 +93,33 @@ namespace Ferretto.VW.MAS_DataLayer
             this.commadReceiveTask = new Task(async () => await this.ReceiveCommandTaskFunction());
             this.notificationReceiveTask = new Task(async () => await this.ReceiveNotificationTaskFunction());
 
+            /*
             var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
             commandEvent.Subscribe(message => { this.commandQueue.Enqueue(message); },
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
 
-            // The old WriteLogService
+             //The old WriteLogService
             var NotificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
             NotificationEvent.Subscribe(message => { this.notificationQueue.Enqueue(message); },
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
 
-            // INFO Log events
-            // INFO Command full events
+             //INFO Log events
+             //INFO Command full events
             var commandFullEvent = this.eventAggregator.GetEvent<CommandEvent>();
             commandFullEvent.Subscribe(message => { this.LogMessages(message); },
                 ThreadOption.PublisherThread,
                 false);
 
-            // INFO Notification full events
+             //INFO Notification full events
             var notificationFullEvent = this.eventAggregator.GetEvent<NotificationEvent>();
             notificationFullEvent.Subscribe(message => { this.LogMessages(message); },
                 ThreadOption.PublisherThread,
                 false);
+            */
 
             this.logger?.LogInformation("DataLayer Constructor");
         }

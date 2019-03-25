@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
@@ -132,10 +133,15 @@ namespace Ferretto.VW.MAS_IODriver
         {
             this.stoppingToken = stoppingToken;
 
+            IPAddress.TryParse("169.254.231.10", out var ioAddress);
+            var ioPort = 502;
+
+            /*
             var ioAddress =
                 this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
             var ioPort =
                 this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
+            */
 
             this.modbusTransport.Configure(ioAddress, ioPort);
 
@@ -206,6 +212,9 @@ namespace Ferretto.VW.MAS_IODriver
                 {
                     case MessageType.SwitchAxis:
                         this.ExecuteSwitchAxis(receivedMessage);
+                        break;
+                    case MessageType.IOReset:
+                        this.ExecuteIOReset(receivedMessage);
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);

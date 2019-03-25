@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
@@ -24,7 +25,7 @@ namespace Ferretto.VW.InverterDriver
     {
         #region Fields
 
-        private const int HeartbeatTimeout = 300;
+        private const int HeartbeatTimeout = 300;  
 
         private readonly Task commandReceiveTask;
 
@@ -144,9 +145,14 @@ namespace Ferretto.VW.InverterDriver
         {
             this.stoppingToken = stoppingToken;
 
+            IPAddress.TryParse("169.254.231.248", out var inverterAddress);
+            var inverterPort = 17221;
+
+            /*
             var inverterAddress =
                 this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetwork.Inverter1, (long)ConfigurationCategory.SetupNetwork);
             var inverterPort = this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetwork.Inverter1Port, (long)ConfigurationCategory.SetupNetwork);
+            */
 
             this.socketTransport.Configure(inverterAddress, inverterPort);
 
@@ -310,7 +316,7 @@ namespace Ferretto.VW.InverterDriver
         {
             while (this.heartbeatQueue.Dequeue(out var message))
             {
-                //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:ProcessHeartbeat");
+                this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:ProcessHeartbeat");
                 await this.socketTransport.WriteAsync(message.GteHeartbeatMessage(this.heartbeatSet), this.stoppingToken);
 
                 this.lastHeatbeatMessage = message;

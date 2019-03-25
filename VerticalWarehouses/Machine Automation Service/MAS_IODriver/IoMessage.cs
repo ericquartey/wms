@@ -112,7 +112,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Properties
 
-        public bool BayLightOn => this.outputs?[(int)IoPorts.CradleMotor] ?? false;
+        public bool BayLightOn => this.outputs?[(int)IoPorts.BayLight] ?? false;
 
         public bool CradleMotorOn => this.outputs?[(int)IoPorts.CradleMotor] ?? false;
 
