@@ -28,6 +28,8 @@ namespace Ferretto.VW.OperatorApp
 
         private ICommand drawerActivityButtonCommand;
 
+        private ICommand listsInWaitButtonCommand;
+
         #endregion
 
         #region Properties
@@ -61,6 +63,11 @@ namespace Ferretto.VW.OperatorApp
         public ICommand DrawerActivityButtonCommand => this.drawerActivityButtonCommand ?? (this.drawerActivityButtonCommand = new DelegateCommand(() =>
         {
             this.NavigateToView<DrawerActivityViewModel, IDrawerActivityViewModel>();
+        }));
+
+        public ICommand ListsInWaitButtonCommand => this.listsInWaitButtonCommand ?? (this.listsInWaitButtonCommand = new DelegateCommand(() =>
+        {
+            this.NavigateToView<ListsInWaitViewModel, IListsInWaitViewModel>();
         }));
 
         #endregion

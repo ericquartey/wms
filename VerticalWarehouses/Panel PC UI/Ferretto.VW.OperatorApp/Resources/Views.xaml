@@ -24,6 +24,9 @@
     <DataTemplate DataType="{x:Type viewsandviewmodels:DrawerActivityDetailViewModel}">
         <viewsandviewmodels:DrawerActivityDetailView></viewsandviewmodels:DrawerActivityDetailView>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type viewsandviewmodels:ListsInWaitViewModel}">
+        <viewsandviewmodels:ListsInWaitView></viewsandviewmodels:ListsInWaitView>
+    </DataTemplate>
 
 
 </ResourceDictionary>

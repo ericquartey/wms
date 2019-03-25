@@ -285,4 +285,22 @@
   <data name="DrawerActivityDetailPackagingType" xml:space="preserve">
     <value>Tipo di confezione:</value>
   </data>
+  <data name="ListsInWaitHeader" xml:space="preserve">
+    <value>Liste in attesa esecuzione.</value>
+  </data>
+  <data name="ListsInWaitNote" xml:space="preserve">
+    <value>Nota:</value>
+  </data>
+  <data name="ListsInWaitUp" xml:space="preserve">
+    <value>Su</value>
+  </data>
+  <data name="ListsInWaitDown" xml:space="preserve">
+    <value>Giu'</value>
+  </data>
+  <data name="ListsInWaitDetail" xml:space="preserve">
+    <value>Dettaglio lista</value>
+  </data>
+  <data name="ListsInWaitExecute" xml:space="preserve">
+    <value>Esegui lista</value>
+  </data>
 </root>

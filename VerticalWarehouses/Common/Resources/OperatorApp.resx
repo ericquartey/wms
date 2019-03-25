@@ -341,4 +341,28 @@
     <value>DrawerActivityDetailPackagingType</value>
     <comment>Label text</comment>
   </data>
+  <data name="ListsInWaitHeader" xml:space="preserve">
+    <value>ListsInWaitHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="ListsInWaitNote" xml:space="preserve">
+    <value>ListsInWaitNote</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ListsInWaitUp" xml:space="preserve">
+    <value>ListsInWaitUp</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="ListsInWaitDown" xml:space="preserve">
+    <value>ListsInWaitDown</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="ListsInWaitDetail" xml:space="preserve">
+    <value>ListsInWaitDetail</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="ListsInWaitExecute" xml:space="preserve">
+    <value>ListsInWaitExecute</value>
+    <comment>Button text</comment>
+  </data>
 </root>

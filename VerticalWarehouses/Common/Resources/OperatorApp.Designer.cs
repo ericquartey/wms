@@ -421,6 +421,60 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a ListsInWaitDetail.
+        /// </summary>
+        public static string ListsInWaitDetail {
+            get {
+                return ResourceManager.GetString("ListsInWaitDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ListsInWaitDown.
+        /// </summary>
+        public static string ListsInWaitDown {
+            get {
+                return ResourceManager.GetString("ListsInWaitDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ListsInWaitExecute.
+        /// </summary>
+        public static string ListsInWaitExecute {
+            get {
+                return ResourceManager.GetString("ListsInWaitExecute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ListsInWaitHeader.
+        /// </summary>
+        public static string ListsInWaitHeader {
+            get {
+                return ResourceManager.GetString("ListsInWaitHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ListsInWaitNote.
+        /// </summary>
+        public static string ListsInWaitNote {
+            get {
+                return ResourceManager.GetString("ListsInWaitNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ListsInWaitUp.
+        /// </summary>
+        public static string ListsInWaitUp {
+            get {
+                return ResourceManager.GetString("ListsInWaitUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Machine.
         /// </summary>
         public static string Machine {
