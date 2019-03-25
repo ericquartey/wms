@@ -107,7 +107,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     return Task.FromException(ex);
                 }
-
+                this.logger.LogTrace($"FSM - command received {receivedMessage.Type}");
                 switch (receivedMessage.Type)
                 {
                     case MessageType.AddMission:

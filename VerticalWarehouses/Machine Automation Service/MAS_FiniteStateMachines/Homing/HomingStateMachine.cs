@@ -36,6 +36,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.calibrateMessageData = calibrateMessageData;
             this.calibrateAxis = calibrateMessageData.AxisToCalibrate;
             this.logger = logger;
+            this.logger.LogTrace($"Homing State Machine ctor");
             this.IsStopRequested = false;
             this.OperationDone = false;
         }
@@ -55,6 +56,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void OnPublishNotification(NotificationMessage message)
         {
+            this.logger.LogTrace($"Homing State Machine Publish: {message.Type}");
             switch (message.Type)
             {
                 case MessageType.Homing:
@@ -100,6 +102,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
+            this.logger.LogTrace($"Homing State Machine ProcessCommand: {message.Type}");
             switch (message.Type)
             {
                 case MessageType.Stop:
@@ -117,6 +120,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
+            this.logger.LogTrace($"Homing State Machine ProcessNotification: {message.Type}");
             if (message.Type == MessageType.SwitchAxis)
             {
                 switch (message.Status)
@@ -142,7 +146,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                         //TEMP Add business logic after the CalibrateAxis operation is done successfully
                         this.NumberOfExecutedSteps++;
                         this.OperationDone = (this.NumberOfExecutedSteps == this.NMaxSteps);
-                        this.changeAxis();
+                        this.ChangeAxis();
                         break;
 
                     case MessageStatus.OperationError:
@@ -160,6 +164,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void Start()
         {
+            this.logger.LogTrace($"Homing State Machine Start");
             switch (this.calibrateAxis)
             {
                 case Axis.Both:
@@ -197,7 +202,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <summary>
         /// Change the current axis.
         /// </summary>
-        private Axis changeAxis()
+        private Axis ChangeAxis()
         {
             this.currentAxis = (this.currentAxis == Axis.Vertical) ? Axis.Horizontal : Axis.Vertical;
             return this.currentAxis;

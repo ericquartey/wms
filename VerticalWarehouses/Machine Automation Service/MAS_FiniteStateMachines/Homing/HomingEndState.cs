@@ -22,6 +22,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.parentStateMachine = parentMachine;
             this.axisToStop = axisToStop;
             this.logger = logger;
+            this.logger.LogTrace($"********** Homing End State ctor");
 
             //TEMP Send a message to stop the homing to the inverter
             var stopMessageData = new StopAxisMessageData(this.axisToStop);
@@ -47,12 +48,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
+            this.logger.LogTrace($"********** Homing Start State command {message.Type}");
             //TEMP Add your implementation code here
         }
 
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
+            this.logger.LogTrace($"********** Homing Start State notification {message.Type}");
             if (message.Type == MessageType.Homing && message.Status == MessageStatus.OperationError)
             {
                 this.parentStateMachine.PublishNotificationMessage(message);

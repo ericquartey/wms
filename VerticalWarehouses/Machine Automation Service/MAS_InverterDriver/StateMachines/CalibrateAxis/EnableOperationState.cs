@@ -106,7 +106,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         {
             this.forceStop = true;
 
-            var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue, sendDelay);
+            var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue, SEND_DELAY);
             this.parentStateMachine.EnqueueMessage(inverterMessage);
         }
 
