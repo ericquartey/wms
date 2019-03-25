@@ -23,6 +23,11 @@ namespace Ferretto.Common.Controls
 
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
+            if (values == null)
+            {
+                throw new ArgumentNullException(nameof(values));
+            }
+
             if (values.Length < 2)
             {
                 throw new ArgumentException(Errors.PropertyDescriptionConverterCheckParameterError);

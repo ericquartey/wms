@@ -23,7 +23,7 @@
                         Style="{DynamicResource ActionBarNotCustomizable}">
                         <wms:ActionBarItem
                             CustomGlyphSize="24,24"
-                            Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_arrow_back_black_24dp.png"
+                            Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_arrow_back_black_24dp.png"
                             GlyphSize="Custom"
                             IsVisible="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsHistoryView}}, Path=Content.IsVisibleBackButton}"
                             ItemClick="BackViewClick" />

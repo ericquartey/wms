@@ -188,6 +188,7 @@
   </data>
   <data name="UnableToSaveChanges" xml:space="preserve">
     <value>Unable To SaveChanges</value>
+    <comment>Notification message</comment>
   </data>
   <data name="Version" xml:space="preserve">
     <value>Version: {0}</value>
@@ -206,5 +207,13 @@
   </data>
   <data name="AreYouSureToDeleteGeneric" xml:space="preserve">
     <value>Are you sure you want to delete this {0}?</value>
+  </data>
+  <data name="ServicesOffline" xml:space="preserve">
+    <value>WMS services are offline</value>
+    <comment>Status icon tooltip</comment>
+  </data>
+  <data name="ServicesOnline" xml:space="preserve">
+    <value>Connected to WMS services</value>
+    <comment>Status icon tooltip</comment>
   </data>
 </root>

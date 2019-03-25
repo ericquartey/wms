@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
@@ -93,14 +94,13 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task ExecuteDeleteCommandAsync()
         {
-            var deleteAction = await this.itemProvider.CanDeleteAsync(this.CurrentItem.Id);
-            if (deleteAction.IsAllowed)
+            if (this.CurrentItem.CanDelete())
             {
                 await this.DeleteItemAsync();
             }
             else
             {
-                this.ShowErrorDialog(deleteAction);
+                this.ShowErrorDialog(this.CurrentItem.GetCanDeleteReason());
             }
         }
 

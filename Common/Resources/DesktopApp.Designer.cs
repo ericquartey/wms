@@ -259,6 +259,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WMS services are offline.
+        /// </summary>
+        public static string ServicesOffline {
+            get {
+                return ResourceManager.GetString("ServicesOffline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connected to WMS services.
+        /// </summary>
+        public static string ServicesOnline {
+            get {
+                return ResourceManager.GetString("ServicesOnline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable To SaveChanges.
         /// </summary>
         public static string UnableToSaveChanges {

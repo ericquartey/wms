@@ -56,6 +56,8 @@ namespace Ferretto.WMS.Data.WebAPI
                 throw new System.ArgumentNullException(nameof(env));
             }
 
+            app.UseSwagger();
+
             if (env.IsProduction())
             {
                 app.UseHsts();
@@ -65,8 +67,6 @@ namespace Ferretto.WMS.Data.WebAPI
             else
             {
                 app.UseDeveloperExceptionPage();
-
-                app.UseSwagger();
 
                 app.UseSwaggerUi3();
             }
@@ -97,20 +97,22 @@ namespace Ferretto.WMS.Data.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services
+                .AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services
+                .AddDataServiceProviders()
+                .AddSchedulerServiceProviders();
 
             var connectionString = this.Configuration.GetConnectionString("WmsConnectionString");
-
-            services.AddDbContextPool<DatabaseContext>(
-                options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Ferretto.Common.EF")));
-
-            services.AddMemoryCache();
-
-            services.AddDataServiceProviders();
-
-            services.AddSchedulerServiceProviders();
+            services
+                .AddMemoryCache()
+                .AddDbContextPool<DatabaseContext>(
+                    options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Ferretto.Common.EF")));
 
             services.AddHealthChecks();
+            services.AddSignalR();
 
             services.AddSwaggerDocument(settings =>
             {
@@ -121,8 +123,6 @@ namespace Ferretto.WMS.Data.WebAPI
                     document.Info.Description = "REST API for the WMS Data Service";
                 };
             });
-
-            services.AddSignalR();
         }
 
         #endregion
