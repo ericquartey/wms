@@ -1,14 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Ferretto.VW.MAS_DataLayer
+﻿namespace Ferretto.VW.MAS_DataLayer
 {
     public class RuntimeValue
     {
         #region Properties
 
-        [Key] public RuntimeValueEnum VarName { get; set; }
+        public long CategoryName { get; set; }
 
-        public DataType VarType { get; set; }
+        public long VarName { get; set; }
+
+        public Enumerations.DataType VarType { get; set; }
 
         public string VarValue { get; set; }
 

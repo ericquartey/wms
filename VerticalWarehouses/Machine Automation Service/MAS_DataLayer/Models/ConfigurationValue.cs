@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
+﻿using Ferretto.VW.MAS_DataLayer.Enumerations;
 
 namespace Ferretto.VW.MAS_DataLayer
 {

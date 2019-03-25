@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -110,7 +109,7 @@ namespace Ferretto.VW.MAS_DataLayer
             // INFO Log events
             // INFO Command full events
             var commandFullEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            commandFullEvent.Subscribe(message => { this.LogMessages(message); },
+            commandFullEvent.Subscribe(message => { this.LogMessagesAsync(message); },
                 ThreadOption.PublisherThread,
                 false);
 
@@ -173,7 +172,7 @@ namespace Ferretto.VW.MAS_DataLayer
             // INFO Log events
             // INFO Command full events
             var commandFullEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            commandFullEvent.Subscribe(message => { this.LogMessages(message); });
+            commandFullEvent.Subscribe(message => { this.LogMessagesAsync(message); });
 
             // INFO Notification full events
             var notificationFullEvent = this.eventAggregator.GetEvent<NotificationEvent>();
@@ -408,30 +407,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
         }
 
-        private void LogMessages(CommandMessage message)
-        {
-            if (message == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            var serializedData = JsonConvert.SerializeObject(message.Data);
-
-            var logEntry = new LogEntry();
-
-            logEntry.Data = serializedData;
-            logEntry.Description = message.Description;
-            logEntry.Destination = message.Destination.ToString();
-            logEntry.Source = message.Source.ToString();
-            logEntry.TimeStamp = DateTime.Now;
-            logEntry.Type = message.Type.ToString();
-
-            this.primaryDataContext.LogEntries.Add(logEntry);
-
-            this.primaryDataContext.SaveChanges();
-        }
-
-        private void LogMessages(NotificationMessage message)
+        private async void LogMessages(NotificationMessage message)
         {
             if (message == null)
             {
@@ -453,7 +429,30 @@ namespace Ferretto.VW.MAS_DataLayer
 
             this.primaryDataContext.LogEntries.Add(logEntry);
 
-            this.primaryDataContext.SaveChanges();
+            await this.primaryDataContext.SaveChangesAsync();
+        }
+
+        private async Task LogMessagesAsync(CommandMessage message)
+        {
+            if (message == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            var serializedData = JsonConvert.SerializeObject(message.Data);
+
+            var logEntry = new LogEntry();
+
+            logEntry.Data = serializedData;
+            logEntry.Description = message.Description;
+            logEntry.Destination = message.Destination.ToString();
+            logEntry.Source = message.Source.ToString();
+            logEntry.TimeStamp = DateTime.Now;
+            logEntry.Type = message.Type.ToString();
+
+            this.primaryDataContext.LogEntries.Add(logEntry);
+
+            await this.primaryDataContext.SaveChangesAsync();
         }
 
         private async Task ReceiveCommandTaskFunction()
@@ -520,34 +519,34 @@ namespace Ferretto.VW.MAS_DataLayer
                 switch (generalInfoDataType)
                 {
                     case DataType.Boolean:
-                        SetBoolConfigurationValue(configurationData, (long)elementCategory,
+                        this.SetBoolConfigurationValue(configurationData, (long)elementCategory,
                             jsonDataValue.Value<bool>());
                         break;
 
                     case DataType.Date:
-                        SetDateTimeConfigurationValue(configurationData, (long)elementCategory,
+                        this.SetDateTimeConfigurationValue(configurationData, (long)elementCategory,
                             jsonDataValue.Value<DateTime>());
                         break;
 
                     case DataType.Integer:
-                        SetIntegerConfigurationValue(configurationData, (long)elementCategory,
+                        this.SetIntegerConfigurationValue(configurationData, (long)elementCategory,
                             jsonDataValue.Value<int>());
                         break;
 
                     case DataType.Float:
-                        SetDecimalConfigurationValue(configurationData, (long)elementCategory,
+                        this.SetDecimalConfigurationValue(configurationData, (long)elementCategory,
                             jsonDataValue.Value<decimal>());
                         break;
 
                     case DataType.String:
-                        string stringValue = jsonDataValue.Value<string>();
-                        if (IPAddress.TryParse(stringValue, out IPAddress configurationValue))
+                        var stringValue = jsonDataValue.Value<string>();
+                        if (IPAddress.TryParse(stringValue, out var configurationValue))
                         {
-                            SetIPAddressConfigurationValue(configurationData, (long)elementCategory, configurationValue);
+                            this.SetIPAddressConfigurationValue(configurationData, (long)elementCategory, configurationValue);
                         }
                         else
                         {
-                            SetStringConfigurationValue(configurationData, (long)elementCategory, stringValue);
+                            this.SetStringConfigurationValue(configurationData, (long)elementCategory, stringValue);
                         }
                         break;
                 }

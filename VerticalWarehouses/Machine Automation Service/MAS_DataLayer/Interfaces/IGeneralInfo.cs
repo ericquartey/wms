@@ -14,6 +14,12 @@ namespace Ferretto.VW.MAS_DataLayer.Interface
 
         bool AlfaNumBay3 { get; }
 
+        int Barrier1Height { get; }
+
+        int Barrier2Height { get; }
+
+        int Barrier3Height { get; }
+
         decimal Bay1Height1 { get; }
 
         decimal Bay1Height2 { get; }
@@ -69,6 +75,12 @@ namespace Ferretto.VW.MAS_DataLayer.Interface
         string Latitude { get; }
 
         string Longitude { get; }
+
+        int MaxAcceptedBai1Height { get; }
+
+        int MaxAcceptedBai2Height { get; }
+
+        int MaxAcceptedBai3Height { get; }
 
         decimal MaxWeight { get; }
 

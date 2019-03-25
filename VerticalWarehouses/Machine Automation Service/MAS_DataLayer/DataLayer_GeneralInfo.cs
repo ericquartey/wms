@@ -17,6 +17,12 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public bool AlfaNumBay3 => this.GetBoolConfigurationValue((long)GeneralInfo.AlfaNumBay3, (long)ConfigurationCategory.GeneralInfo);
 
+        public int Barrier1Height => this.GetIntegerConfigurationValue((long)GeneralInfo.Barrier1Height, (long)ConfigurationCategory.GeneralInfo);
+
+        public int Barrier2Height => this.GetIntegerConfigurationValue((long)GeneralInfo.Barrier2Height, (long)ConfigurationCategory.GeneralInfo);
+
+        public int Barrier3Height => this.GetIntegerConfigurationValue((long)GeneralInfo.Barrier3Height, (long)ConfigurationCategory.GeneralInfo);
+
         public decimal Bay1Height1 => this.GetDecimalConfigurationValue((long)GeneralInfo.Bay1Height1, (long)ConfigurationCategory.GeneralInfo);
 
         public decimal Bay1Height2 => this.GetDecimalConfigurationValue((long)GeneralInfo.Bay1Height2, (long)ConfigurationCategory.GeneralInfo);
@@ -72,6 +78,12 @@ namespace Ferretto.VW.MAS_DataLayer
         public string Latitude => this.GetStringConfigurationValue((long)GeneralInfo.Latitude, (long)ConfigurationCategory.GeneralInfo);
 
         public string Longitude => this.GetStringConfigurationValue((long)GeneralInfo.Longitude, (long)ConfigurationCategory.GeneralInfo);
+
+        public int MaxAcceptedBai1Height => this.GetIntegerConfigurationValue((long)GeneralInfo.MaxAcceptedBai1Height, (long)ConfigurationCategory.GeneralInfo);
+
+        public int MaxAcceptedBai2Height => this.GetIntegerConfigurationValue((long)GeneralInfo.MaxAcceptedBai2Height, (long)ConfigurationCategory.GeneralInfo);
+
+        public int MaxAcceptedBai3Height => this.GetIntegerConfigurationValue((long)GeneralInfo.MaxAcceptedBai3Height, (long)ConfigurationCategory.GeneralInfo);
 
         public decimal MaxWeight => this.GetDecimalConfigurationValue((long)GeneralInfo.MaxWeight, (long)ConfigurationCategory.GeneralInfo);
 

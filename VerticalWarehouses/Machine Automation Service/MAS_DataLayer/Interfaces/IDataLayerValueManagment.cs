@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         /// <exception cref="DataLayerExceptionEnum.PARSE_EXCEPTION">Exception for a not possible parse</exception>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
-        bool GetBoolRuntimeValue(RuntimeValueEnum RuntimeValue);
+        bool GetBoolRuntimeValue(long runtimeValueEnum, long categoryValueEnum);
 
         /// <summary>
         ///     Get a DateTime variable from the configuration table
@@ -45,7 +45,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         /// <exception cref="DataLayerExceptionEnum.PARSE_EXCEPTION">Exception for a not possible parse</exception>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
-        DateTime GetDateTimeRuntimeValue(RuntimeValueEnum RuntimeValue);
+        DateTime GetDateTimeRuntimeValue(long runtimeValueEnum, long categoryValueEnum);
 
         /// <summary>
         ///     Get a decimal variable from the configuration table
@@ -65,7 +65,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         /// <exception cref="DataLayerExceptionEnum.PARSE_EXCEPTION">Exception for a not possible parse</exception>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
-        decimal GetDecimalRuntimeValue(RuntimeValueEnum RuntimeValue);
+        decimal GetDecimalRuntimeValue(long runtimeValueEnum, long categoryValueEnum);
 
         /// <summary>
         ///     Get an integer variable from the configuration table
@@ -85,7 +85,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         /// <exception cref="DataLayerExceptionEnum.PARSE_EXCEPTION">Exception for a not possible parse</exception>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
-        int GetIntegerRuntimeValue(RuntimeValueEnum RuntimeValue);
+        int GetIntegerRuntimeValue(long runtimeValueEnum, long categoryValueEnum);
 
         /// <summary>
         /// Get an IPAddress variable from the runtime table
@@ -113,7 +113,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         /// <returns>Return the value of a string runtime parameter</returns>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
-        string GetStringRuntimeValue(RuntimeValueEnum RuntimeValue);
+        string GetStringRuntimeValue(long runtimeValueEnum, long categoryValueEnum);
 
         /// <summary>
         ///     Set a bool variable in the configuration table to a new value or update it
@@ -129,7 +129,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         /// <param name="RuntimeValue">Runtime parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetBoolRuntimeValue(RuntimeValueEnum RuntimeValue, bool value);
+        void SetBoolRuntimeValue(long runtimeValueEnum, long categoryValueEnum, bool value);
 
         /// <summary>
         ///     Set a DateTime variable in the configuration table to a new value or update it
@@ -145,7 +145,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         /// <param name="RuntimeValue">Runtime parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetDateTimeRuntimeValue(RuntimeValueEnum RuntimeValue, DateTime value);
+        void SetDateTimeRuntimeValue(long runtimeValueEnum, long categoryValueEnum, DateTime value);
 
         /// <summary>
         ///     Set a decimal variable in the configuration table to a new value or update it
@@ -161,7 +161,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         /// <param name="RuntimeValue">Runtime parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetDecimalRuntimeValue(RuntimeValueEnum RuntimeValue, decimal value);
+        void SetDecimalRuntimeValue(long runtimeValueEnum, long categoryValueEnum, decimal value);
 
         /// <summary>
         ///     Set an integer variable in the configuration table to a new value or update it
@@ -177,7 +177,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         /// <param name="RuntimeValue">Runtime parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetIntegerRuntimeValue(RuntimeValueEnum RuntimeValue, int value);
+        void SetIntegerRuntimeValue(long runtimeValueEnum, long categoryValueEnum, int value);
 
         /// <summary>
         ///     Set a string variable in the configuration table to a new value or update it
@@ -193,7 +193,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         /// <param name="RuntimeValue">Runtime parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetStringRuntimeValue(RuntimeValueEnum RuntimeValue, string value);
+        void SetStringRuntimeValue(long runtimeValueEnum, long categoryValueEnum, string value);
 
         #endregion
     }
