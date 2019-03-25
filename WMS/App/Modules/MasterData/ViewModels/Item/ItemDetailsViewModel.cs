@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
+using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
@@ -17,6 +18,8 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+
+        private readonly IImageProvider imageProvider = ServiceLocator.Current.GetInstance<IImageProvider>();
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
@@ -117,6 +120,11 @@ namespace Ferretto.WMS.Modules.MasterData
             if (this.originalImage != this.Model.Image)
             {
                 this.Model.HasImageChanged = true;
+            }
+
+            if (this.Model.HasImageChanged)
+            {
+                this.Model.Image = await this.imageProvider.UploadAsync(this.Model.ImagePath, null);
             }
 
             var result = await this.itemProvider.UpdateAsync(this.Model);

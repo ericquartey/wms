@@ -1,5 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using CommonServiceLocator;
+using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
@@ -10,6 +13,8 @@ namespace Ferretto.WMS.Modules.MasterData
     public class ItemAddDialogViewModel : CreateViewModel<ItemDetails>
     {
         #region Fields
+
+        private readonly IImageProvider imageProvider = ServiceLocator.Current.GetInstance<IImageProvider>();
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
@@ -25,20 +30,28 @@ namespace Ferretto.WMS.Modules.MasterData
         protected override async Task ExecuteCreateCommand()
         {
             this.IsBusy = true;
-
-            var result = await this.itemProvider.CreateAsync(this.Model);
-            if (result.Success)
+            try
             {
-                this.TakeModelSnapshot();
+                this.Model.Image = await this.imageProvider.UploadAsync(this.Model.ImagePath, null);
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<Item, int>(this.Model.Id));
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
+                var result = await this.itemProvider.CreateAsync(this.Model);
+                if (result.Success)
+                {
+                    this.TakeModelSnapshot();
 
-                this.CloseDialogCommand.Execute(null);
+                    this.EventService.Invoke(new ModelChangedPubSubEvent<Item, int>(this.Model.Id));
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
+
+                    this.CloseDialogCommand.Execute(null);
+                }
+                else
+                {
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+                }
             }
-            else
+            catch (Exception ex)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+                Debug.WriteLine(ex.Message);
             }
 
             this.IsBusy = false;

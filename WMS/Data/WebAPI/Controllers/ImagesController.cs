@@ -65,15 +65,31 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(200, Type = typeof(string))]
         [ProducesResponseType(400)]
+        [ProducesResponseType(422)]
         [HttpPost]
         public async Task<ActionResult<string>> UploadAsync(IFormFile model)
         {
-            if (model == null)
+            if (model == null || model.Length == 0)
             {
                 return this.BadRequest();
             }
 
-            return this.Ok(await this.imageProvider.UploadAsync(model));
+            try
+            {
+                var result = await this.imageProvider.UploadAsync(null, model);
+                if (result != null)
+                {
+                    return this.Ok(result);
+                }
+                else
+                {
+                    return this.UnprocessableEntity("Error");
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.UnprocessableEntity(ex.Message);
+            }
         }
 
         #endregion

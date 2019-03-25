@@ -203,9 +203,8 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
-        private Stream ResizeImage(string imagePath)//IFormFile model)
+        private Stream ResizeImage(string imagePath)
         {
-            //var stream = model.OpenReadStream();
             var stream = new MemoryStream();
             var format = GetImageFormat(imagePath);
 
