@@ -1,5 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -8,12 +13,15 @@ using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.WMS.App.Core.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
     public class ImageProvider : IImageProvider
     {
         #region Fields
+
+        private const int defaultPixelMax = 600;
 
         private readonly WMS.Data.WebAPI.Contracts.IImagesDataService imageDataService;
 
@@ -24,6 +32,23 @@ namespace Ferretto.WMS.App.Core.Providers
         public ImageProvider(WMS.Data.WebAPI.Contracts.IImagesDataService imageDataService)
         {
             this.imageDataService = imageDataService;
+        }
+
+        #endregion
+
+        #region Properties
+
+        private static int DefaultPixelMax
+        {
+            get
+            {
+                if (int.TryParse(ConfigurationManager.AppSettings["ImagesDefaultPixelMax"], out int x))
+                {
+                    return x;
+                }
+
+                return defaultPixelMax;
+            }
         }
 
         #endregion
@@ -39,15 +64,169 @@ namespace Ferretto.WMS.App.Core.Providers
             };
         }
 
-        public async Task<string> UploadAsync(IFormFile model)
+        public async Task<string> UploadAsync(string imagePath, IFormFile model = null)
         {
-            if (model == null)
+            if (imagePath == null)
             {
                 return null;
             }
 
-            return await this.imageDataService.UploadAsync(
-               new WMS.Data.WebAPI.Contracts.FileParameter(model.OpenReadStream(), model.FileName));
+            var streamResized = this.ResizeImage(imagePath);
+            ImageFile imageFile = null;
+            if (streamResized != null)
+            {
+                imageFile = new ImageFile
+                {
+                    Stream = streamResized,
+                    Length = streamResized.Length,
+                    FileName = Path.GetFileName(imagePath),
+                };
+            }
+            else
+            {
+                imageFile = new ImageFile
+                {
+                    Stream = new FileStream(imagePath, FileMode.Open),
+                    Length = GetFileSize(imagePath),
+                    FileName = Path.GetFileName(imagePath),
+                };
+            }
+
+            var result = await this.imageDataService.UploadAsync(
+               new WMS.Data.WebAPI.Contracts.FileParameter(imageFile.OpenReadStream(), imageFile.FileName));
+
+            return result;
+        }
+
+        private static void CalculateDimensionProportioned(ref int width, ref int height)
+        {
+            if (width > height)
+            {
+                height = CalculateProportion(width, height);
+                width = DefaultPixelMax;
+            }
+            else
+            {
+                width = CalculateProportion(height, width);
+                height = DefaultPixelMax;
+            }
+        }
+
+        private static int CalculateProportion(int x, int y)
+        {
+            return (y * DefaultPixelMax) / x;
+        }
+
+        private static Bitmap CreateResizedImage(System.Drawing.Image image, int width, int height)
+        {
+            if (image != null)
+            {
+                var destRect = new Rectangle(0, 0, width, height);
+                var destImage = new Bitmap(width, height);
+
+                destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+
+                using (var graphics = Graphics.FromImage(destImage))
+                {
+                    graphics.CompositingMode = CompositingMode.SourceCopy;
+                    graphics.CompositingQuality = CompositingQuality.HighQuality;
+                    graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    graphics.SmoothingMode = SmoothingMode.HighQuality;
+                    graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+                    using (var wrapMode = new ImageAttributes())
+                    {
+                        wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+                        graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
+                    }
+                }
+
+                return destImage;
+            }
+
+            return null;
+        }
+
+        private static long GetFileSize(string filePath)
+        {
+            // if you don't have permission to the folder, Directory.Exists will return False
+            if (!Directory.Exists(Path.GetDirectoryName(filePath)))
+            {
+                // if you land here, it means you don't have permission to the folder
+                Debug.Write("Permission denied");
+                throw new FileLoadException();
+            }
+            else if (File.Exists(filePath))
+            {
+                return new FileInfo(filePath).Length;
+            }
+
+            return 0;
+        }
+
+        private static ImageFormat GetImageFormat(string fileName)
+        {
+            string extension = Path.GetExtension(fileName);
+            if (string.IsNullOrEmpty(extension))
+            {
+                throw new ArgumentException(
+                    string.Format("Unable to determine file extension for fileName: {0}", fileName));
+            }
+
+            switch (extension.ToLower())
+            {
+                case @".bmp":
+                    return ImageFormat.Bmp;
+
+                case @".gif":
+                    return ImageFormat.Gif;
+
+                case @".ico":
+                    return ImageFormat.Icon;
+
+                case @".jpg":
+                case @".jpeg":
+                    return ImageFormat.Jpeg;
+
+                case @".png":
+                    return ImageFormat.Png;
+
+                case @".tif":
+                case @".tiff":
+                    return ImageFormat.Tiff;
+
+                case @".wmf":
+                    return ImageFormat.Wmf;
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        private Stream ResizeImage(string imagePath)//IFormFile model)
+        {
+            //var stream = model.OpenReadStream();
+            var stream = new MemoryStream();
+            var format = GetImageFormat(imagePath);
+
+            Image resizedImage = null;
+            using (var image = Image.FromFile(imagePath))
+            {
+                if (image.Height > DefaultPixelMax || image.Width > DefaultPixelMax)
+                {
+                    var width = image.Width;
+                    var height = image.Height;
+                    CalculateDimensionProportioned(ref width, ref height);
+                    resizedImage = CreateResizedImage(image, width, height);
+                    resizedImage.Save(stream, format);
+                    stream.Position = 0;
+                    return stream;
+                }
+                else
+                {
+                    return null;
+                }
+            }
         }
 
         #endregion

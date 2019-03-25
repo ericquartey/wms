@@ -21,9 +21,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private const string defaultImagesDirectoryName = "Images\\";
 
-        private const int defaultPixelMax = 600;
-
-        private const int MAX_SIZE_FILE = 1024;
+        private const int defaultPixelMax = 1024;
 
         private readonly IConfiguration configuration;
 
@@ -40,16 +38,18 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Properties
 
-        private static int DefaultPixelMax
+        private int DefaultPixelMax
         {
             get
             {
-                if (int.TryParse(ConfigurationManager.AppSettings["ImagesDefaultPixelMax"], out int x))
+                if (int.TryParse(this.configuration.GetValue<string>("Image:DefaultPixelMax"), out int configValue))
                 {
-                    return x;
+                    return configValue;
                 }
-
-                return defaultPixelMax;
+                else
+                {
+                    return defaultPixelMax;
+                }
             }
         }
 
@@ -112,7 +112,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return null;
         }
 
-        public async Task<string> UploadAsync(IFormFile model)
+        public async Task<string> UploadAsync(string imagePath, IFormFile model)
         {
             // full path to file in temp location
             if (model == null)
@@ -120,36 +120,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return null;
             }
 
-            var size = model.Length;
-            if (size > MAX_SIZE_FILE)
-            {
-                // resize image
-            }
-
             using (var memoryStream = new MemoryStream())
             {
                 await model.OpenReadStream().CopyToAsync(memoryStream);
                 return this.SaveImage(model, memoryStream);
             }
-        }
-
-        private static void CalculateDimensionProportioned(ref int width, ref int height)
-        {
-            if (width > height)
-            {
-                height = CalculateProportion(width, height);
-                width = DefaultPixelMax;
-            }
-            else
-            {
-                width = CalculateProportion(height, width);
-                height = DefaultPixelMax;
-            }
-        }
-
-        private static int CalculateProportion(int x, int y)
-        {
-            return (y * DefaultPixelMax) / x;
         }
 
         private static Bitmap ResizeImage(System.Drawing.Image image, int width, int height)
@@ -182,17 +157,36 @@ namespace Ferretto.WMS.Data.Core.Providers
             return null;
         }
 
+        private void CalculateDimensionProportioned(ref int width, ref int height)
+        {
+            if (width > height)
+            {
+                height = this.CalculateProportion(width, height);
+                width = this.DefaultPixelMax;
+            }
+            else
+            {
+                width = this.CalculateProportion(height, width);
+                height = this.DefaultPixelMax;
+            }
+        }
+
+        private int CalculateProportion(int x, int y)
+        {
+            return (y * this.DefaultPixelMax) / x;
+        }
+
         private string SaveImage(IFormFile model, Stream memoryStream)
         {
-            // Load image
+            // Load image Service
             Image resizedImage = null;
             using (var image = Image.FromStream(memoryStream))
             {
-                if (image.Height > DefaultPixelMax || image.Width > DefaultPixelMax)
+                if (image.Height > this.DefaultPixelMax || image.Width > this.DefaultPixelMax)
                 {
                     var width = image.Width;
                     var height = image.Height;
-                    CalculateDimensionProportioned(ref width, ref height);
+                    this.CalculateDimensionProportioned(ref width, ref height);
                     resizedImage = ResizeImage(image, width, height);
                 }
                 else

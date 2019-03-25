@@ -13,7 +13,7 @@ namespace Ferretto.Common.BLL.Interfaces.Providers
 
         Task<IImageFile> DownloadAsync(string key);
 
-        Task<string> UploadAsync(IFormFile model);
+        Task<string> UploadAsync(string imagePath, IFormFile model);
 
         #endregion
     }
