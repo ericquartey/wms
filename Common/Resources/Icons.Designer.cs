@@ -871,7 +871,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/hardware/1x_web/ic_cast_black_24dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/device/1x_web/ic_signal_wifi_off_black_24dp.
         /// </summary>
         public static string SchedulerOffLine {
             get {
@@ -880,7 +880,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/hardware/1x_web/ic_cast_connected_black_24dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/device/1x_web/ic_signal_wifi_4_bar_black_24dp.png.
         /// </summary>
         public static string SchedulerOnLine {
             get {

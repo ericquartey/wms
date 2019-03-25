@@ -290,11 +290,11 @@
     <comment>@Invariant</comment>
   </data>
   <data name="SchedulerOffLine" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/hardware/1x_web/ic_cast_black_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/device/1x_web/ic_signal_wifi_off_black_24dp</value>
     <comment>@Invariant</comment>
   </data>
   <data name="SchedulerOnLine" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/hardware/1x_web/ic_cast_connected_black_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/device/1x_web/ic_signal_wifi_4_bar_black_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="ListViewAll" xml:space="preserve">
@@ -526,5 +526,6 @@
   </data>
   <data name="RequiredField" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-asterisk-10.png</value>
+    <comment>@Invariant</comment>
   </data>
 </root>
