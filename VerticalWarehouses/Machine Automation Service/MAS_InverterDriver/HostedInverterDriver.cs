@@ -144,6 +144,7 @@ namespace Ferretto.VW.InverterDriver
         {
             this.stoppingToken = stoppingToken;
 
+            //TEMP Temporary uncomment these code lines in order to set the IP address (and to comment the others)
             /*IPAddress.TryParse("169.254.231.248", out var inverterAddress);*/
             /*var inverterPort = 17221;*/
             var inverterAddress = this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetworkEnum.Inverter1, (long)ConfigurationCategoryValueEnum.SetupNetworkEnum);

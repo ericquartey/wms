@@ -88,8 +88,8 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
 
                 // TEMP Temporary commented
-                //this.LoadConfigurationValuesInfo(InfoFilesEnum.GeneralInfo);
-                //this.LoadConfigurationValuesInfo(InfoFilesEnum.InstallationInfo);
+                this.LoadConfigurationValuesInfo(InfoFilesEnum.GeneralInfo);
+                this.LoadConfigurationValuesInfo(InfoFilesEnum.InstallationInfo);
 
                 foreach (var configurationValue in initialContext.ConfigurationValues)
                 {
