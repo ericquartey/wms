@@ -3,11 +3,9 @@ using System.Configuration;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
-using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.Data.Hubs;
 using Microsoft.AspNetCore.SignalR.Client;
 using NLog;
-using Prism.Events;
 
 namespace Ferretto.Common.Controls.Services
 {
@@ -66,17 +64,17 @@ namespace Ferretto.Common.Controls.Services
 
         #region Methods
 
+        public static IPubSubEvent GetInstanceOfModelChanged(EntityChangedHubEvent entityChanged)
+        {
+            var entity = Type.GetType($"{BUSINESSMODELNAMESPACE}.{nameof(Ferretto.WMS.App.Core.Models)}.{entityChanged.EntityType}," +
+                                      $"{BUSINESSMODELNAMESPACE}.{nameof(Ferretto.WMS.App.Core.Models)}");
+            var constructedClass = typeof(ModelChangedPubSubEvent<,>).MakeGenericType(entity, typeof(int));
+            return Activator.CreateInstance(constructedClass, entityChanged.Id) as IPubSubEvent;
+        }
+
         public async Task EndAsync()
         {
             await this.connection.StopAsync();
-        }
-
-        public IPubSubEvent GetInstanceOfModelChanged(EntityChangedHubEvent entityChanged)
-        {
-            var entity = Type.GetType($"{BUSINESSMODELNAMESPACE}.{nameof(Ferretto.Common.BusinessModels)}.{entityChanged.EntityType}," +
-                                      $"{BUSINESSMODELNAMESPACE}.{nameof(Ferretto.Common.BusinessModels)}");
-            var constructedClass = typeof(ModelChangedPubSubEvent<,>).MakeGenericType(entity, typeof(int));
-            return Activator.CreateInstance(constructedClass, entityChanged.Id) as IPubSubEvent;
         }
 
         public async Task StartAsync()
@@ -136,7 +134,7 @@ namespace Ferretto.Common.Controls.Services
             switch (entityChanged.Operation)
             {
                 case HubEntityOperation.Updated:
-                    var modelInstance = this.GetInstanceOfModelChanged(entityChanged);
+                    var modelInstance = GetInstanceOfModelChanged(entityChanged);
                     this.eventService.DynamicInvoke(modelInstance);
                     break;
             }
