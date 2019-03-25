@@ -321,4 +321,24 @@
     <value>DrawerWaitOperation</value>
     <comment>Label text</comment>
   </data>
+  <data name="DrawerActivityDetailHeader" xml:space="preserve">
+    <value>DrawerActivityDetailHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="DrawerActivityDetailProductionDate" xml:space="preserve">
+    <value>DrawerActivityDetailProductionDate</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerActivityDetailLotto" xml:space="preserve">
+    <value>DrawerActivityDetailLotto</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerActivityDetailMaterialStatus" xml:space="preserve">
+    <value>DrawerActivityDetailMaterialStatus</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerActivityDetailPackagingType" xml:space="preserve">
+    <value>DrawerActivityDetailPackagingType</value>
+    <comment>Label text</comment>
+  </data>
 </root>

@@ -270,4 +270,19 @@
   <data name="DrawerWaitOperation" xml:space="preserve">
     <value>Operazioni schedulate:</value>
   </data>
+  <data name="DrawerActivityDetailHeader" xml:space="preserve">
+    <value>Dettaglio articolo in prelievo.</value>
+  </data>
+  <data name="DrawerActivityDetailProductionDate" xml:space="preserve">
+    <value>Data di produzione:</value>
+  </data>
+  <data name="DrawerActivityDetailLotto" xml:space="preserve">
+    <value>Lotto:</value>
+  </data>
+  <data name="DrawerActivityDetailMaterialStatus" xml:space="preserve">
+    <value>Stato materiale:</value>
+  </data>
+  <data name="DrawerActivityDetailPackagingType" xml:space="preserve">
+    <value>Tipo di confezione:</value>
+  </data>
 </root>

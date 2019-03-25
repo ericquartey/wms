@@ -44,6 +44,7 @@
       <None Remove="HelpWindows\HelpPageBase.xaml" />
       <None Remove="MainWindow.xaml" />
       <None Remove="Resources\Views.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerActivityDetailView.xaml" />
       <None Remove="ViewsAndViewModels\DrawerActivityView.xaml" />
       <None Remove="ViewsAndViewModels\DrawerWaitView.xaml" />
       <None Remove="ViewsAndViewModels\IdleView.xaml" />
