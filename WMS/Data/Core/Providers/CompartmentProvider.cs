@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
+using Ferretto.Common.Resources;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
@@ -22,16 +23,20 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly DatabaseContext dataContext;
 
+        private readonly ILoadingUnitProvider loadingUnitProvider;
+
         #endregion
 
         #region Constructors
 
         public CompartmentProvider(
             DatabaseContext dataContext,
-            ICompartmentTypeProvider compartmentTypeProvider)
+            ICompartmentTypeProvider compartmentTypeProvider,
+            ILoadingUnitProvider loadingUnitProvider)
         {
             this.dataContext = dataContext;
             this.compartmentTypeProvider = compartmentTypeProvider;
+            this.loadingUnitProvider = loadingUnitProvider;
         }
 
         #endregion
@@ -75,16 +80,29 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
+            var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(model.LoadingUnitId);
+            var compartmentsDetails = await this.GetByLoadingUnitIdAsync(model.LoadingUnitId);
+            var errors = model.CheckCompartment();
+            if (string.IsNullOrEmpty(errors) == false)
+            {
+                return new CreationErrorOperationResult<CompartmentDetails>(errors);
+            }
+
+            if (model.CanAddToLoadingUnit(compartmentsDetails, loadingUnit) == false)
+            {
+                return new CreationErrorOperationResult<CompartmentDetails>(Errors.CompartmentSetCannotBeInsertedInLoadingUnit);
+            }
+
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var createCompartmentTypeResult = await this.compartmentTypeProvider.CreateAsync(
-                                                      new CompartmentType
-                                                      {
-                                                          Width = model.Width,
-                                                          Height = model.Height
-                                                      },
-                                                      model.ItemId,
-                                                      model.MaxCapacity);
+                                                              new CompartmentType
+                                                              {
+                                                                  Width = model.Width,
+                                                                  Height = model.Height
+                                                              },
+                                                              model.ItemId,
+                                                              model.MaxCapacity);
 
                 if (!createCompartmentTypeResult.Success)
                 {
@@ -276,6 +294,19 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (existingModel == null)
             {
                 return new NotFoundOperationResult<CompartmentDetails>();
+            }
+
+            var errors = model.CheckCompartment();
+            if (string.IsNullOrEmpty(errors) == false)
+            {
+                return new CreationErrorOperationResult<CompartmentDetails>(errors);
+            }
+
+            var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(model.LoadingUnitId);
+            var compartmentsDetails = await this.GetByLoadingUnitIdAsync(model.LoadingUnitId);
+            if (model.CanAddToLoadingUnit(compartmentsDetails, loadingUnit) == false)
+            {
+                return new CreationErrorOperationResult<CompartmentDetails>(Errors.CompartmentSetCannotBeInsertedInLoadingUnit);
             }
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))

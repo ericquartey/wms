@@ -1,4 +1,5 @@
-﻿using Ferretto.WMS.App.Core.Models;
+﻿using System.Collections.Generic;
+using Ferretto.WMS.Data.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ferretto.Common.BLL.Tests
@@ -16,11 +17,10 @@ namespace Ferretto.Common.BLL.Tests
             var compartment2 = new CompartmentDetails { Id = 2, XPosition = 0, YPosition = 10, Width = 10, Height = 10 };
             var compartment3 = new CompartmentDetails { Id = 3, XPosition = 10, YPosition = 0, Width = 10, Height = 10 };
 
-            loadingUnit.AddCompartment(compartment1);
-            Assert.IsTrue(loadingUnit.CanAddCompartment(compartment2));
-            loadingUnit.AddCompartment(compartment2);
-            Assert.IsTrue(loadingUnit.CanAddCompartment(compartment3));
-            loadingUnit.AddCompartment(compartment3);
+            var compartments = new List<CompartmentDetails> { compartment1 };
+            Assert.IsTrue(compartment2.CanAddToLoadingUnit(compartments, loadingUnit));
+            compartments.Add(compartment2);
+            Assert.IsTrue(compartment3.CanAddToLoadingUnit(compartments, loadingUnit));
         }
 
         [TestMethod]
@@ -37,23 +37,23 @@ namespace Ferretto.Common.BLL.Tests
             var compartment8 = new CompartmentDetails { XPosition = 30, YPosition = 20, Width = 10, Height = 10 };
             var compartment9 = new CompartmentDetails { XPosition = 40, YPosition = 20, Width = 10, Height = 10 };
 
-            loadingUnit.AddCompartment(compartment1);
-            Assert.IsTrue(loadingUnit.CanAddCompartment(compartment2));
-            loadingUnit.AddCompartment(compartment2);
-            Assert.IsTrue(loadingUnit.CanAddCompartment(compartment3));
-            loadingUnit.AddCompartment(compartment3);
-            Assert.IsTrue(loadingUnit.CanAddCompartment(compartment4));
-            loadingUnit.AddCompartment(compartment4);
-            Assert.IsTrue(loadingUnit.CanAddCompartment(compartment5));
-            loadingUnit.AddCompartment(compartment5);
-            Assert.IsTrue(loadingUnit.CanAddCompartment(compartment6));
-            loadingUnit.AddCompartment(compartment6);
-            Assert.IsTrue(loadingUnit.CanAddCompartment(compartment7));
-            loadingUnit.AddCompartment(compartment7);
-            Assert.IsTrue(loadingUnit.CanAddCompartment(compartment8));
-            loadingUnit.AddCompartment(compartment8);
-            Assert.IsTrue(loadingUnit.CanAddCompartment(compartment9));
-            loadingUnit.AddCompartment(compartment9);
+            var compartments = new List<CompartmentDetails> { compartment1 };
+            Assert.IsTrue(compartment2.CanAddToLoadingUnit(compartments, loadingUnit));
+            compartments.Add(compartment2);
+            Assert.IsTrue(compartment3.CanAddToLoadingUnit(compartments, loadingUnit));
+            compartments.Add(compartment3);
+            Assert.IsTrue(compartment4.CanAddToLoadingUnit(compartments, loadingUnit));
+            compartments.Add(compartment4);
+            Assert.IsTrue(compartment5.CanAddToLoadingUnit(compartments, loadingUnit));
+            compartments.Add(compartment5);
+            Assert.IsTrue(compartment6.CanAddToLoadingUnit(compartments, loadingUnit));
+            compartments.Add(compartment6);
+            Assert.IsTrue(compartment7.CanAddToLoadingUnit(compartments, loadingUnit));
+            compartments.Add(compartment7);
+            Assert.IsTrue(compartment8.CanAddToLoadingUnit(compartments, loadingUnit));
+            compartments.Add(compartment8);
+            Assert.IsTrue(compartment9.CanAddToLoadingUnit(compartments, loadingUnit));
+            compartments.Add(compartment9);
         }
 
         [TestMethod]
@@ -63,9 +63,8 @@ namespace Ferretto.Common.BLL.Tests
             var compartment1 = new CompartmentDetails { Id = 1, XPosition = 30, YPosition = 30, Width = 10, Height = 10 };
             var compartment2 = new CompartmentDetails { Id = 2, XPosition = 39, YPosition = 30, Width = 10, Height = 10 };
 
-            loadingUnit.AddCompartment(compartment1);
-            Assert.IsFalse(loadingUnit.CanAddCompartment(compartment2));
-            Assert.ThrowsException<System.ArgumentException>(() => loadingUnit.AddCompartment(compartment2));
+            var compartments = new List<CompartmentDetails> { compartment1 };
+            Assert.IsFalse(compartment2.CanAddToLoadingUnit(compartments, loadingUnit));
         }
 
         [TestMethod]
@@ -73,8 +72,8 @@ namespace Ferretto.Common.BLL.Tests
         {
             var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
             var compartment = new CompartmentDetails { XPosition = 0, YPosition = 0, Width = loadingUnit.Length + 1, Height = loadingUnit.Width + 1 };
-
-            Assert.IsFalse(loadingUnit.CanAddCompartment(compartment));
+            var compartments = new List<CompartmentDetails> { compartment };
+            Assert.IsFalse(compartment.CanAddToLoadingUnit(compartments, loadingUnit));
         }
 
         [TestMethod]
@@ -82,8 +81,8 @@ namespace Ferretto.Common.BLL.Tests
         {
             var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
             var compartment = new CompartmentDetails { XPosition = 99, YPosition = 0, Width = 10, Height = 10 };
-
-            Assert.IsFalse(loadingUnit.CanAddCompartment(compartment));
+            var compartments = new List<CompartmentDetails> { compartment };
+            Assert.IsFalse(compartment.CanAddToLoadingUnit(compartments, loadingUnit));
         }
 
         [TestMethod]
@@ -91,8 +90,8 @@ namespace Ferretto.Common.BLL.Tests
         {
             var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
             var compartment = new CompartmentDetails { XPosition = 200, YPosition = 0, Width = 10, Height = 10 };
-
-            Assert.IsFalse(loadingUnit.CanAddCompartment(compartment));
+            var compartments = new List<CompartmentDetails> { compartment };
+            Assert.IsFalse(compartment.CanAddToLoadingUnit(compartments, loadingUnit));
         }
 
         [TestMethod]
@@ -101,9 +100,9 @@ namespace Ferretto.Common.BLL.Tests
             var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
             var compartment1 = new CompartmentDetails { XPosition = 0, YPosition = 0, Width = 10, Height = 10 };
             var compartment2 = new CompartmentDetails { XPosition = 0, YPosition = 11, Width = 10, Height = 10 };
-
-            loadingUnit.AddCompartment(compartment1);
-            Assert.IsTrue(loadingUnit.CanAddCompartment(compartment2));
+            var compartmentsDetails = new List<CompartmentDetails>();
+            compartmentsDetails.Add(compartment1);
+            Assert.IsTrue(compartment2.CanAddToLoadingUnit(compartmentsDetails, loadingUnit));
         }
 
         [TestMethod]
@@ -112,9 +111,9 @@ namespace Ferretto.Common.BLL.Tests
             var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
             var compartment1 = new CompartmentDetails { Id = 1, XPosition = 0, YPosition = 0, Width = 10, Height = 10 };
             var compartment2 = new CompartmentDetails { Id = 2, XPosition = 0, YPosition = 9, Width = 10, Height = 10 };
-
-            loadingUnit.AddCompartment(compartment1);
-            Assert.IsFalse(loadingUnit.CanAddCompartment(compartment2));
+            var compartmentsDetails = new List<CompartmentDetails>();
+            compartmentsDetails.Add(compartment1);
+            Assert.IsFalse(compartment2.CanAddToLoadingUnit(compartmentsDetails, loadingUnit));
         }
 
         #endregion
