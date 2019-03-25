@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
@@ -8,7 +9,7 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    public class BusinessObject : BindableBase, ICloneable, IModel<int>
+    public class BusinessObject : BindableBase, ICloneable, IModel<int>, IPolicyDescriptor<Policy>
     {
         #region Constructors
 
@@ -21,6 +22,8 @@ namespace Ferretto.WMS.App.Core.Models
         #region Properties
 
         public int Id { get; set; }
+
+        public IEnumerable<Policy> Policies { get; set; }
 
         #endregion
 

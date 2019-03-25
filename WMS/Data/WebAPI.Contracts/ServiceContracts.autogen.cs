@@ -421,25 +421,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.0.15.0 (NJsonSchema v9.13.22.0 (Newtonsoft.Json v11.0.0.0))")]
-    public partial interface IImagesDataService
-    {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> DownloadAsync(string id);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<FileResponse> DownloadAsync(string id, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<string> UploadAsync(FileParameter model);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<string> UploadAsync(FileParameter model, System.Threading.CancellationToken cancellationToken);
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.0.15.0 (NJsonSchema v9.13.22.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IItemCategoriesDataService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -609,13 +590,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.0.15.0 (NJsonSchema v9.13.22.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IItemsDataService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ActionModel> CanDeleteAsync(int id);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<ActionModel> CanDeleteAsync(int id, System.Threading.CancellationToken cancellationToken);
-    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ItemDetails> CreateAsync(ItemDetails model);
     
@@ -1040,6 +1014,9 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("Id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Id { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("Policies", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.ObjectModel.ObservableCollection<Policy> Policies { get; set; }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
@@ -1067,6 +1044,46 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<AbcClass>(data);
         }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.22.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Policy 
+    {
+        [Newtonsoft.Json.JsonProperty("IsAllowed", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsAllowed { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Reason", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Reason { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Type", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public PolicyType Type { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static Policy FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Policy>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.22.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum PolicyType
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"operation")]
+        Operation = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"property")]
+        Property = 1,
     
     }
     
@@ -1125,6 +1142,9 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     {
         [Newtonsoft.Json.JsonProperty("Id", Required = Newtonsoft.Json.Required.Always)]
         public int Id { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Policies", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.ObjectModel.ObservableCollection<Policy> Policies { get; set; }
     
         public string ToJson() 
         {
@@ -3317,69 +3337,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             return Newtonsoft.Json.JsonConvert.DeserializeObject<User>(data);
         }
     
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.0.15.0 (NJsonSchema v9.13.22.0 (Newtonsoft.Json v11.0.0.0))")]
-    public partial class FileParameter
-    {
-        public FileParameter(System.IO.Stream data)
-            : this (data, null)
-        {
-        }
-
-        public FileParameter(System.IO.Stream data, string fileName)
-            : this (data, fileName, null)
-        {
-        }
-
-        public FileParameter(System.IO.Stream data, string fileName, string contentType)
-        {
-            Data = data;
-            FileName = fileName;
-            ContentType = contentType;
-        }
-
-        public System.IO.Stream Data { get; private set; }
-
-        public string FileName { get; private set; }
-
-        public string ContentType { get; private set; }
-    }
-
-    public partial class FileResponse : System.IDisposable
-    {
-        private System.IDisposable _client; 
-        private System.IDisposable _response; 
-
-        public int StatusCode { get; private set; }
-
-        public System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>> Headers { get; private set; }
-
-        public System.IO.Stream Stream { get; private set; }
-
-        public bool IsPartial
-        {
-            get { return StatusCode == 206; }
-        }
-
-        public FileResponse(int statusCode, System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.IO.Stream stream, System.IDisposable client, System.IDisposable response)
-        {
-            StatusCode = statusCode; 
-            Headers = headers; 
-            Stream = stream; 
-            _client = client; 
-            _response = response;
-        }
-
-        public void Dispose() 
-        {
-            if (Stream != null)
-                Stream.Dispose();
-            if (_response != null)
-                _response.Dispose();
-            if (_client != null)
-                _client.Dispose();
-        }
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.0.15.0 (NJsonSchema v9.13.22.0 (Newtonsoft.Json v11.0.0.0))")]

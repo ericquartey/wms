@@ -229,7 +229,7 @@
             <wms:ActionBarItem Command="{Binding CloseDialogCommand}"
                                Content="{x:Static res:General.Cancel}"
                                CustomGlyphSize="36,36"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_highlight_off_black_36dp.png"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_highlight_off_black_36dp.png"
                                GlyphSize="Custom" />
         </wms:ActionBar>
 
