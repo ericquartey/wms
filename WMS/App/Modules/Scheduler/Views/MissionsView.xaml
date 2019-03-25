@@ -220,7 +220,7 @@
 
                     <wms:WmsGridControl.Columns>
 
-                        <dxg:GridColumn Width="90*"
+                        <dxg:GridColumn Width="50*"
                                         CellToolTipBinding="{Binding}"
                                         FieldName="Details"
                                         Header="{x:Static res:General.Details}">
@@ -306,27 +306,36 @@
                                         FieldName="Status" />
                         <dxg:GridColumn Width="140*"
                                         FieldName="BayDescription" />
-                        <dxg:GridColumn Width="370*"
+                        <dxg:GridColumn Width="260*"
                                         FieldName="ItemDescription" />
-                        <dxg:GridColumn Width="200*"
+                        <dxg:GridColumn Width="160*"
                                         FieldName="ItemListDescription" />
-                        <dxg:GridColumn Width="180*"
+                        <dxg:GridColumn Width="130*"
                                         FieldName="ItemListRowDescription" />
-                        <dxg:GridColumn Width="140*"
+                        <dxg:GridColumn Width="100*"
                                         FieldName="LoadingUnitDescription" />
-                        <dxg:GridColumn Width="90*"
+                        <dxg:GridColumn Width="50*"
                                         FieldName="Priority" />
                         <dxg:GridColumn Width="90*"
                                         CellDisplayTemplate="{StaticResource CellDisplayTemplateQuantity}"
                                         FieldName="RequestedQuantity" />
                         <dxg:GridColumn Width="90*"
+                                        CellDisplayTemplate="{StaticResource CellDisplayTemplateQuantity}"
                                         FieldName="DispatchedQuantity" />
                         <dxg:GridColumn Width="120*"
                                         FieldName="Type" />
+                        <dxg:GridColumn Width="120*"
+                                        FieldName="CreationDate">
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <dxe:TextEdit Name="PART_Editor" DisplayFormatString="g"/>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
+                        </dxg:GridColumn>
                     </wms:WmsGridControl.Columns>
 
                     <wms:WmsGridControl.SortInfo>
-                        <dxg:GridSortInfo FieldName="Priority"
+                        <dxg:GridSortInfo FieldName="CreationDate"
                                           SortOrder="Descending" />
                     </wms:WmsGridControl.SortInfo>
 
