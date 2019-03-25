@@ -2,10 +2,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Hubs;
+using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -13,7 +16,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class CompartmentTypesController :
-        ControllerBase,
+        BaseController,
         IReadAllController<CompartmentType>,
         IReadSingleController<CompartmentType, int>
     {
@@ -29,7 +32,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public CompartmentTypesController(
             ILogger<CompartmentTypesController> logger,
+            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             ICompartmentTypeProvider compartmentTypeProvider)
+            : base(hubContext)
         {
             this.logger = logger;
             this.compartmentTypeProvider = compartmentTypeProvider;
@@ -57,6 +62,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                     Detail = result.Description
                 });
             }
+
+            await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), result.Entity.Id, HubEntityOperation.Created);
 
             return this.Created(this.Request.GetUri(), result.Entity);
         }

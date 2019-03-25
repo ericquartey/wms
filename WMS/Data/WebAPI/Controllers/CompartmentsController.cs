@@ -4,17 +4,20 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Hubs;
+using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class CompartmentsController :
-        ControllerBase,
+        BaseController,
         ICreateController<CompartmentDetails>,
         IReadAllPagedController<Compartment>,
         IReadSingleController<CompartmentDetails, int>,
@@ -31,7 +34,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Constructors
 
         public CompartmentsController(
+            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             ICompartmentProvider compartmentProvider)
+            : base(hubContext)
         {
             this.compartmentProvider = compartmentProvider;
         }
@@ -64,6 +69,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 });
             }
 
+            await this.NotifyEntityUpdatedAsync(nameof(CompartmentDetails), model?.Id, HubEntityOperation.Created);
+
             return this.Created(this.Request.GetUri(), result.Entity);
         }
 
@@ -81,6 +88,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                     Status = StatusCodes.Status400BadRequest,
                     Detail = result.Description
                 });
+            }
+
+            if (models != null)
+            {
+                foreach (var entity in result.Entity)
+                {
+                    await this.NotifyEntityUpdatedAsync(nameof(CompartmentDetails), entity.Id, HubEntityOperation.Created);
+                }
             }
 
             return this.Created(this.Request.GetUri(), result.Entity);
@@ -114,6 +129,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                     });
                 }
             }
+
+            await this.NotifyEntityUpdatedAsync(nameof(CompartmentDetails), id, HubEntityOperation.Deleted);
 
             return this.Ok();
         }
@@ -246,6 +263,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                     Detail = result.Description
                 });
             }
+
+            await this.NotifyEntityUpdatedAsync(nameof(CompartmentDetails), result.Entity.Id, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
         }

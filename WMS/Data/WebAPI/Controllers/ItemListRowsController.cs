@@ -4,11 +4,14 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Hubs;
+using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -16,7 +19,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class ItemListRowsController :
-        ControllerBase,
+        BaseController,
         ICreateController<ItemListRowDetails>,
         IReadAllPagedController<ItemListRow>,
         IReadSingleController<ItemListRowDetails, int>,
@@ -38,8 +41,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public ItemListRowsController(
             ILogger<ItemListRowsController> logger,
+            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             ISchedulerService schedulerService,
             IItemListRowProvider itemListRowProvider)
+            : base(hubContext)
         {
             this.logger = logger;
             this.schedulerService = schedulerService;
@@ -74,6 +79,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 });
             }
 
+            await this.NotifyEntityUpdatedAsync(nameof(ItemListRowDetails), result.Entity.Id, HubEntityOperation.Created);
+
             return this.Created(this.Request.GetUri(), result.Entity);
         }
 
@@ -106,6 +113,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 }
             }
 
+            await this.NotifyEntityUpdatedAsync(nameof(ItemListRowDetails), id, HubEntityOperation.Deleted);
+
             return this.Ok();
         }
 
@@ -125,6 +134,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                     Status = StatusCodes.Status422UnprocessableEntity
                 });
             }
+
+            await this.NotifyEntityUpdatedAsync(nameof(Scheduler.Core.Models.ListRowExecutionRequest), request?.ListRowId, HubEntityOperation.Updated);
 
             this.logger.LogInformation($"Request of execution for list row (id={request?.ListRowId}) was accepted.");
 
@@ -244,6 +255,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                     Detail = result.Description
                 });
             }
+
+            await this.NotifyEntityUpdatedAsync(nameof(ItemListRowDetails), result.Entity.Id, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
         }

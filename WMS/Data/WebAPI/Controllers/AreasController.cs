@@ -3,9 +3,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Hubs;
+using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -13,7 +16,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class AreasController :
-        ControllerBase,
+        BaseController,
         IReadAllController<Area>,
         IReadSingleController<Area, int>
     {
@@ -33,9 +36,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public AreasController(
             ILogger<AreasController> logger,
+            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             IAreaProvider areaProvider,
             IBayProvider bayProvider,
             ICellProvider cellProvider)
+            : base(hubContext)
         {
             this.logger = logger;
             this.areaProvider = areaProvider;

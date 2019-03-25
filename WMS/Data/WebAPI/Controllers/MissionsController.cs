@@ -18,7 +18,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class MissionsController :
-        ControllerBase,
+        BaseController,
         IReadAllPagedController<Mission>,
         IReadSingleController<Mission, int>,
         IGetUniqueValuesController
@@ -29,8 +29,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IMissionProvider missionProvider;
 
-        private readonly IHubContext<SchedulerHub, ISchedulerHub> schedulerHubContext;
-
         private readonly ISchedulerService schedulerService;
 
         #endregion
@@ -39,14 +37,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public MissionsController(
             ILogger<MissionsController> logger,
+            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             IMissionProvider missionProvider,
-            ISchedulerService schedulerService,
-            IHubContext<SchedulerHub, ISchedulerHub> schedulerHubContext)
+            ISchedulerService schedulerService)
+            : base(hubContext)
         {
             this.logger = logger;
             this.missionProvider = missionProvider;
             this.schedulerService = schedulerService;
-            this.schedulerHubContext = schedulerHubContext;
         }
 
         #endregion
@@ -86,7 +84,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 });
             }
 
-            await this.schedulerHubContext.Clients.All.EntityUpdated(new EntityChangedHubEvent { Id = id, EntityType = nameof(Mission), Operation = HubEntityOperation.Updated });
+            await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
+
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
             return this.Ok(updatedMission);
         }
@@ -115,7 +114,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 });
             }
 
-            await this.schedulerHubContext.Clients.All.EntityUpdated(new EntityChangedHubEvent { Id = id, EntityType = nameof(Mission), Operation = HubEntityOperation.Updated });
+            await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
 
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
             return this.Ok(updatedMission);
