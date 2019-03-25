@@ -91,24 +91,24 @@
             <wms:ActionBarItem Command="{Binding ListExecuteCommand}"
                                Content="{x:Static res:MasterData.ListExecute}"
                                CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_play_arrow_black_24dp.png"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_arrow_black_24dp.png"
                                GlyphSize="Custom" />
 
             <wms:ActionBarItem Command="{Binding SaveCommand}"
                                Content="{x:Static res:General.Save}"
                                CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_save_black_24dp.png"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_save_black_24dp.png"
                                GlyphSize="Custom" />
             <wms:ActionBarItem Command="{Binding RevertCommand}"
                                Content="{x:Static res:General.Revert}"
                                CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_undo_black_24dp.png"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_undo_black_24dp.png"
                                GlyphSize="Custom" />
 
             <wms:ActionBarItem Command="{Binding RefreshCommand}"
                                Content="{x:Static res:General.Refresh}"
                                CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_refresh_black_24dp.png"
                                GlyphSize="Custom" />
 
         </wms:ActionBar>
@@ -287,25 +287,25 @@
                                 <wms:ActionBarItem Command="{Binding ListRowExecuteCommand}"
                                                    Content="{x:Static res:MasterData.ItemListRowExecute}"
                                                    CustomGlyphSize="24,24"
-                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_play_arrow_black_24dp.png"
+                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_arrow_black_24dp.png"
                                                    GlyphSize="Custom" />
 
                                 <wms:ActionBarItem Command="{Binding ShowDetailsListRowCommand}"
                                                    Content="{x:Static res:MasterData.ItemListRowShowDetails}"
                                                    CustomGlyphSize="24,24"
-                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_info_outline_black_24dp.png"
+                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_info_outline_black_24dp.png"
                                                    GlyphSize="Custom" />
 
                                 <wms:ActionBarItem Command="{Binding DeleteCommand}"
                                                    Content="{x:Static res:General.Delete}"
                                                    CustomGlyphSize="24,24"
-                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_delete_black_24dp.png"
+                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_delete_black_24dp.png"
                                                    GlyphSize="Custom" />
 
                                 <wms:ActionBarItem Command="{Binding AddListRowCommand}"
                                                    Content="{x:Static res:MasterData.ItemListRowAdd}"
                                                    CustomGlyphSize="24,24"
-                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_add_box_black_24dp.png"
+                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_add_box_black_24dp.png"
                                                    GlyphSize="Custom"
                                                    IsEnabled="False" />
                             </wms:ActionBar>

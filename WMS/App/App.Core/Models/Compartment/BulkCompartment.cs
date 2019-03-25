@@ -128,8 +128,6 @@ namespace Ferretto.WMS.App.Core.Models
             }
         }
 
-        private bool CanAddToLoadingUnit => this.LoadingUnit == null || this.LoadingUnit.CanAddCompartment(this);
-
         #endregion
 
         #region Indexers
@@ -146,22 +144,12 @@ namespace Ferretto.WMS.App.Core.Models
                             return Errors.CompartmentPositionCannotBeNegative;
                         }
 
-                        if (this.CanAddToLoadingUnit == false)
-                        {
-                            return Errors.CompartmentSetCannotBeInsertedInLoadingUnit;
-                        }
-
                         break;
 
                     case nameof(this.YPosition):
                         if (this.YPosition < 0)
                         {
                             return Errors.CompartmentPositionCannotBeNegative;
-                        }
-
-                        if (this.CanAddToLoadingUnit == false)
-                        {
-                            return Errors.CompartmentSetCannotBeInsertedInLoadingUnit;
                         }
 
                         break;
@@ -172,22 +160,12 @@ namespace Ferretto.WMS.App.Core.Models
                             return Errors.CompartmentSizeMustBeStrictlyPositive;
                         }
 
-                        if (this.CanAddToLoadingUnit == false)
-                        {
-                            return Errors.CompartmentSetCannotBeInsertedInLoadingUnit;
-                        }
-
                         break;
 
                     case nameof(this.Height):
                         if (this.Height <= 0)
                         {
                             return Errors.CompartmentSizeMustBeStrictlyPositive;
-                        }
-
-                        if (this.CanAddToLoadingUnit == false)
-                        {
-                            return Errors.CompartmentSetCannotBeInsertedInLoadingUnit;
                         }
 
                         break;
@@ -245,14 +223,7 @@ namespace Ferretto.WMS.App.Core.Models
                         LoadingUnitId = this.LoadingUnitId
                     };
 
-                    if (this.LoadingUnit.CanAddCompartment(compartment))
-                    {
-                        compartments.Add(compartment);
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException(Errors.BulkAddNoPossible);
-                    }
+                    compartments.Add(compartment);
                 }
             }
 

@@ -136,7 +136,7 @@
                                Style="{DynamicResource ActionBarNotCustomizable}">
                     <wms:ActionBarItem Content="{x:Static res:General.ShowDetails}"
                                        CustomGlyphSize="24,24"
-                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_info_outline_black_24dp.png"
+                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_info_outline_black_24dp.png"
                                        GlyphSize="Custom">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="ItemClick">
@@ -147,7 +147,7 @@
                     <wms:ActionBarItem Command="{Binding RefreshCommand}"
                                        Content="{x:Static res:General.Refresh}"
                                        CustomGlyphSize="24,24"
-                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
+                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_refresh_black_24dp.png"
                                        GlyphSize="Custom" />
                 </wms:ActionBar>
 
