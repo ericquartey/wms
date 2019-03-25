@@ -1,13 +1,13 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using CommonServiceLocator;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Grid;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.Services;
-using CommonServiceLocator;
 
 namespace Ferretto.Common.Controls
 {

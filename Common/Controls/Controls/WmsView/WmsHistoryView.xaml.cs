@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using CommonServiceLocator;
 using DevExpress.Mvvm.UI;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Utils;
-using CommonServiceLocator;
 
 namespace Ferretto.Common.Controls
 {

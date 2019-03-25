@@ -1,10 +1,7 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using DevExpress.Xpf.Layout.Core;
-using Ferretto.Common.BLL.Interfaces.Providers;
 using CommonServiceLocator;
+using Ferretto.Common.BLL.Interfaces.Providers;
 
 namespace Ferretto.Common.Controls
 {

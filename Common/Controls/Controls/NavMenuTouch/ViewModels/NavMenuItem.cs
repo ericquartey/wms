@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 using System.Windows.Media;
+using CommonServiceLocator;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Utils.Menu;
-using CommonServiceLocator;
 using Prism.Commands;
 
 namespace Ferretto.Common.Controls
