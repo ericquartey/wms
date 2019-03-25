@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Net;
 using Ferretto.VW.Common_Utils;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
@@ -523,7 +522,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
             else
             {
-                if (configurationValue.VarType == DataType.Boolean)
+                if (configurationValue.VarType == DataType.IPAddress)
                 {
                     configurationValue.VarValue = value.ToString();
                     this.primaryDataContext.SaveChanges();
