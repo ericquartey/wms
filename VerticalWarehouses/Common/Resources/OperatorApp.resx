@@ -265,4 +265,48 @@
     <value>NavigationMainMenuOther</value>
     <comment>Button text</comment>
   </data>
+  <data name="DrawerActivityPageHeader" xml:space="preserve">
+    <value>DrawerActivityPageHeader</value>
+    <comment>Page text</comment>
+  </data>
+  <data name="DrawerActivityList" xml:space="preserve">
+    <value>DrawerActivityList</value>
+    <comment>Labet text</comment>
+  </data>
+  <data name="DrawerActivityDescrList" xml:space="preserve">
+    <value>DrawerActivityDescrList</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerActivityItem" xml:space="preserve">
+    <value>DrawerActivityItem</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerActivityItemDescr" xml:space="preserve">
+    <value>DrawerActivityItemDescr</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerActivityPosition" xml:space="preserve">
+    <value>DrawerActivityPosition</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerActivityQtyReq" xml:space="preserve">
+    <value>DrawerActivityQtyReq</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerActivityQtyPick" xml:space="preserve">
+    <value>DrawerActivityQtyPick</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerActivityQtyCount" xml:space="preserve">
+    <value>DrawerActivityQtyPick</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerActivityDetail" xml:space="preserve">
+    <value>DrawerActivityDetail</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DrawerActivityConfirm" xml:space="preserve">
+    <value>DrawerActivityConfirm</value>
+    <comment>Button text</comment>
+  </data>
 </root>

@@ -44,6 +44,7 @@
       <None Remove="HelpWindows\HelpPageBase.xaml" />
       <None Remove="MainWindow.xaml" />
       <None Remove="Resources\Views.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerActivityView.xaml" />
       <None Remove="ViewsAndViewModels\IdleView.xaml" />
       <None Remove="ViewsAndViewModels\MainWindowBackToOAPPButtonView.xaml" />
       <None Remove="ViewsAndViewModels\MainWindowNavigationButtonsView.xaml" />
@@ -65,6 +66,9 @@
     </Compile>
     <Compile Update="HelpWindows\HelpPageBase.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\DrawerActivityView.xaml.cs">
+      <DependentUpon>DrawerActivityView.xaml</DependentUpon>
     </Compile>
     <Compile Update="ViewsAndViewModels\MainWindowNavigationButtonsView.xaml.cs">
       <DependentUpon>MainWindowNavigationButtonsView.xaml</DependentUpon>

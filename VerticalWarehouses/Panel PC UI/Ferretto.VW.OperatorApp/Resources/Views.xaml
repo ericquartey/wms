@@ -15,4 +15,8 @@
     <DataTemplate DataType="{x:Type viewsandviewmodels:MainWindowBackToOAPPButtonViewModel}">
         <viewsandviewmodels:MainWindowBackToOAPPButtonView></viewsandviewmodels:MainWindowBackToOAPPButtonView>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type viewsandviewmodels:DrawerActivityViewModel}">
+        <viewsandviewmodels:DrawerActivityView></viewsandviewmodels:DrawerActivityView>
+    </DataTemplate>
+
 </ResourceDictionary>

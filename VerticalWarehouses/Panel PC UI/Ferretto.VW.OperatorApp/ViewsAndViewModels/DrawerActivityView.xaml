@@ -1,0 +1,57 @@
+﻿<UserControl x:Class="Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerActivityView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:local="clr-namespace:Ferretto.VW.OperatorApp"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Resources="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
+             xmlns:Controls="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
+             xmlns:prism="http://prismlibrary.com/"
+             mc:Ignorable="d" >
+
+    <Grid Width="1024" Height="608">
+
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,20,0,0"
+                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                    Text="{x:Static Resources:OperatorApp.DrawerActivityPageHeader}" />
+
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,280,0,0" Width="150"
+            ContentText="147"
+            LabelText="{x:Static Resources:OperatorApp.DrawerActivityList}"/>
+
+        <Controls:CustomInputFieldControlFocusable  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="844,350,0,0" Width="160"
+            LabelText="{x:Static Resources:OperatorApp.DrawerActivityQtyReq}" />
+
+        <Button   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20"
+                  Content="{x:Static Resources:OperatorApp.DrawerActivityConfirm}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+
+        <Image HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,60,0,0" Width="900" Height="200"
+               Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/Mappa_Cassetto_2.png"
+               Stretch="Uniform" />
+
+        <Image HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="60,0,0,20" Width="170" Height="170"
+               Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/Ingranaggio.jpg"
+               Stretch="Uniform" />
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,350,0,0" Width="150"
+            ContentText="1258445984"
+            LabelText="{x:Static Resources:OperatorApp.DrawerActivityItem}"/>
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="700,350,0,0" Width="100"
+            ContentText="F-3"
+            LabelText="{x:Static Resources:OperatorApp.DrawerActivityPosition}"/>
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,280,0,0" Width="380"
+            ContentText="Gruppo riduzione secondaria"
+            LabelText="{x:Static Resources:OperatorApp.DrawerActivityDescrList}"/>
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,350,0,0" Width="380"
+            ContentText="Ingranaggio a denti dritti Z-45 e con innesti frontali"
+            LabelText="{x:Static Resources:OperatorApp.DrawerActivityItemDescr}"/>
+        <Controls:CustomInputFieldControlFocusable  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="844,420,0,0" Width="160"
+            LabelText="{x:Static Resources:OperatorApp.DrawerActivityQtyPick}" RenderTransformOrigin="0.499,0.627" />
+        <Button     Content="{x:Static Resources:OperatorApp.DrawerActivityDetail}"
+            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"
+            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,528,0,0" />
+
+    </Grid>
+</UserControl>

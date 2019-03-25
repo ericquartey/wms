@@ -228,4 +228,37 @@
   <data name="NavigationMainMenuOther" xml:space="preserve">
     <value>Altro</value>
   </data>
+  <data name="DrawerActivityPageHeader" xml:space="preserve">
+    <value>Operazione di prelievo.</value>
+  </data>
+  <data name="DrawerActivityList" xml:space="preserve">
+    <value>Codice lista:</value>
+  </data>
+  <data name="DrawerActivityDescrList" xml:space="preserve">
+    <value>Descrizione lista:</value>
+  </data>
+  <data name="DrawerActivityItem" xml:space="preserve">
+    <value>Codice articolo:</value>
+  </data>
+  <data name="DrawerActivityItemDescr" xml:space="preserve">
+    <value>Descrizione articolo:</value>
+  </data>
+  <data name="DrawerActivityPosition" xml:space="preserve">
+    <value>Posizione:</value>
+  </data>
+  <data name="DrawerActivityQtyReq" xml:space="preserve">
+    <value>Q.ta' richiesta:</value>
+  </data>
+  <data name="DrawerActivityQtyPick" xml:space="preserve">
+    <value>Q.ta' prelevata:</value>
+  </data>
+  <data name="DrawerActivityQtyCount" xml:space="preserve">
+    <value>Giacenza:</value>
+  </data>
+  <data name="DrawerActivityDetail" xml:space="preserve">
+    <value>Dettaglio</value>
+  </data>
+  <data name="DrawerActivityConfirm" xml:space="preserve">
+    <value>Conferma</value>
+  </data>
 </root>

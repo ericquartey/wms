@@ -13,7 +13,7 @@
             <StackPanel>
                 
                 <Button Margin="0,50,0,0"
-                        Command="{Binding DataContext.InstallationStateButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                        Command="{Binding DataContext.DrawerActivityButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:OperatorApp.NavigationMainMenuDrawerOperation}"
                         IsEnabled="{Binding IsInstallationStateButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />

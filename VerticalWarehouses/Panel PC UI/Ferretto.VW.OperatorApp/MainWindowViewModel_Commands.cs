@@ -1,4 +1,6 @@
-﻿using System.Windows.Input;
+﻿using System.Diagnostics;
+using System.Windows;
+using System.Windows.Input;
 using Ferretto.VW.OperatorApp.Resources;
 using Ferretto.VW.OperatorApp.Resources.Enumerations;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels;
@@ -23,6 +25,8 @@ namespace Ferretto.VW.OperatorApp
         private ICommand machineOnMarchCustomCommand;
 
         private ICommand openHelpWindow;
+
+        private ICommand drawerActivityButtonCommand;
 
         #endregion
 
@@ -53,6 +57,12 @@ namespace Ferretto.VW.OperatorApp
             this.helpWindow.Show();
             this.helpWindow.HelpContentRegion.Content = this.contentRegionCurrentViewModel;
         }));
+
+        public ICommand DrawerActivityButtonCommand => this.drawerActivityButtonCommand ?? (this.drawerActivityButtonCommand = new DelegateCommand(() =>
+        {
+            this.NavigateToView<DrawerActivityViewModel, IDrawerActivityViewModel>();
+        }));
+
         #endregion
 
         #region Methods

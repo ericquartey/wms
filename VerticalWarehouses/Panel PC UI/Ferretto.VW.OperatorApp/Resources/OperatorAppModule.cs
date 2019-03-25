@@ -26,6 +26,8 @@ namespace Ferretto.VW.OperatorApp.Resources
             var mainWindowBackToOAPPButtonVMInstance = new MainWindowBackToOAPPButtonViewModel(this.container.Resolve<IEventAggregator>());
             var mainWindowNavigationButtonsVMInstance = new MainWindowNavigationButtonsViewModel(this.container.Resolve<IEventAggregator>());
             var helpMainWindowInstance = new HelpMainWindow(container.Resolve<IEventAggregator>());
+            var drawerActivityVMInstance = new DrawerActivityViewModel(container.Resolve<IEventAggregator>());
+
 
 
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
@@ -34,9 +36,11 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IMainWindowBackToOAPPButtonViewModel>(mainWindowBackToOAPPButtonVMInstance);
             this.container.RegisterInstance<IMainWindowNavigationButtonsViewModel>(mainWindowNavigationButtonsVMInstance);
             this.container.RegisterInstance<IHelpMainWindow>(helpMainWindowInstance);
+            this.container.RegisterInstance<IDrawerActivityViewModel>(drawerActivityVMInstance);
 
 
             mainWindowVMInstance.InitializeViewModel(this.container);
+            mainWindowBackToOAPPButtonVMInstance.InitializeViewModel(this.container);
         }
 
         #endregion

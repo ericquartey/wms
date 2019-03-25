@@ -178,6 +178,105 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerActivityConfirm.
+        /// </summary>
+        public static string DrawerActivityConfirm {
+            get {
+                return ResourceManager.GetString("DrawerActivityConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerActivityDescrList.
+        /// </summary>
+        public static string DrawerActivityDescrList {
+            get {
+                return ResourceManager.GetString("DrawerActivityDescrList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerActivityDetail.
+        /// </summary>
+        public static string DrawerActivityDetail {
+            get {
+                return ResourceManager.GetString("DrawerActivityDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerActivityItem.
+        /// </summary>
+        public static string DrawerActivityItem {
+            get {
+                return ResourceManager.GetString("DrawerActivityItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerActivityItemDescr.
+        /// </summary>
+        public static string DrawerActivityItemDescr {
+            get {
+                return ResourceManager.GetString("DrawerActivityItemDescr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerActivityList.
+        /// </summary>
+        public static string DrawerActivityList {
+            get {
+                return ResourceManager.GetString("DrawerActivityList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerActivityPageHeader.
+        /// </summary>
+        public static string DrawerActivityPageHeader {
+            get {
+                return ResourceManager.GetString("DrawerActivityPageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerActivityPosition.
+        /// </summary>
+        public static string DrawerActivityPosition {
+            get {
+                return ResourceManager.GetString("DrawerActivityPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerActivityQtyPick.
+        /// </summary>
+        public static string DrawerActivityQtyCount {
+            get {
+                return ResourceManager.GetString("DrawerActivityQtyCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerActivityQtyPick.
+        /// </summary>
+        public static string DrawerActivityQtyPick {
+            get {
+                return ResourceManager.GetString("DrawerActivityQtyPick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerActivityQtyReq.
+        /// </summary>
+        public static string DrawerActivityQtyReq {
+            get {
+                return ResourceManager.GetString("DrawerActivityQtyReq", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Executable Lists&apos; Rows.
         /// </summary>
         public static string ExecutableListsRows {
