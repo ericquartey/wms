@@ -30,7 +30,7 @@
             <wms:ActionBarItem Command="{Binding CancelCommand, Mode=OneWay}"
                                Content="{x:Static res:General.Cancel}"
                                CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_cancel_black_24dp.png"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_cancel_black_24dp.png"
                                GlyphSize="Custom" />
         </wms:ActionBar>
 

@@ -183,4 +183,10 @@
   <data name="AreYouSureToDeleteGeneric" xml:space="preserve">
     <value>Sei sicuro di voler eliminare questo {0}?</value>
   </data>
+  <data name="ServicesOffline" xml:space="preserve">
+    <value>Servizi WMS offline.</value>
+  </data>
+  <data name="ServicesOnline" xml:space="preserve">
+    <value>Servizi WMS online.</value>
+  </data>
 </root>
