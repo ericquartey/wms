@@ -19,13 +19,15 @@ namespace Ferretto.Common.Controls
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private string messageIconName;
+        private readonly object statusbarEventSubscription;
 
         private string message;
 
-        private string schedulerStatusIconName;
+        private string messageIconName;
 
-        private object statusbarEventSubscription;
+        private string schedulerStatusDescription;
+
+        private string schedulerStatusIconName;
 
         #endregion
 
@@ -33,16 +35,30 @@ namespace Ferretto.Common.Controls
 
         public StatusBarViewModel(INotificationService notificationService, IEventService eventService)
         {
+            if (notificationService == null)
+            {
+                throw new ArgumentNullException(nameof(notificationService));
+            }
+
             this.eventService = eventService;
-            this.SchedulerStatusIconName = this.GetConnectionStatusIcon(notificationService.IsServiceHubConnected);
+
+            this.SchedulerStatusIconName = GetConnectionStatusIcon(notificationService.IsServiceHubConnected);
+            this.SchedulerStatusDescription = GetConnectionStatusDescription(notificationService.IsServiceHubConnected);
+            this.statusbarEventSubscription = this.eventService.Subscribe<StatusPubSubEvent>(this.OnStatusbarInfoChanged);
+
             this.keepInfoTimer.Tick += this.KeepInfoTimer_Tick;
             this.keepInfoTimer.Interval = new TimeSpan(0, 0, timeToKeepText);
-            this.statusbarEventSubscription = this.eventService.Subscribe<StatusPubSubEvent>(this.OnStatusbarInfoChanged);
         }
 
         #endregion
 
         #region Properties
+
+        public string Message
+        {
+            get => this.message;
+            set => this.SetProperty(ref this.message, value);
+        }
 
         public string MessageIconName
         {
@@ -50,10 +66,10 @@ namespace Ferretto.Common.Controls
             set => this.SetProperty(ref this.messageIconName, value);
         }
 
-        public string Message
+        public string SchedulerStatusDescription
         {
-            get => this.message;
-            set => this.SetProperty(ref this.message, value);
+            get => this.schedulerStatusDescription;
+            set => this.SetProperty(ref this.schedulerStatusDescription, value);
         }
 
         public string SchedulerStatusIconName
@@ -71,12 +87,17 @@ namespace Ferretto.Common.Controls
             this.eventService.Unsubscribe<StatusPubSubEvent>(this.statusbarEventSubscription);
         }
 
-        private string GetConnectionStatusIcon(bool isServiceHubConnected)
+        private static string GetConnectionStatusDescription(bool isServiceHubConnected)
         {
-            return isServiceHubConnected ? nameof(Icons.SchedulerOnLine) : nameof(Icons.SchedulerOffLine);
+            return isServiceHubConnected ? DesktopApp.ServicesOnline : DesktopApp.ServicesOffline;
         }
 
-        private string GetIconNameFromStatusType(StatusType status)
+        private static string GetConnectionStatusIcon(bool isServiceHubConnected)
+        {
+            return isServiceHubConnected ? nameof(Icons.ServicesOnline) : nameof(Icons.ServicesOffline);
+        }
+
+        private static string GetIconNameFromStatusType(StatusType status)
         {
             return $"{nameof(StatusType)}{status}";
         }
@@ -101,10 +122,11 @@ namespace Ferretto.Common.Controls
 
             this.keepInfoTimer.Stop();
             this.Message = eventArgs.Message;
-            this.MessageIconName = this.GetIconNameFromStatusType(eventArgs.Type);
+            this.MessageIconName = GetIconNameFromStatusType(eventArgs.Type);
             if (eventArgs.IsSchedulerOnline.HasValue)
             {
-                this.SchedulerStatusIconName = this.GetConnectionStatusIcon(eventArgs.IsSchedulerOnline.Value);
+                this.SchedulerStatusIconName = GetConnectionStatusIcon(eventArgs.IsSchedulerOnline.Value);
+                this.SchedulerStatusDescription = GetConnectionStatusDescription(eventArgs.IsSchedulerOnline.Value);
             }
 
             this.keepInfoTimer.Start();

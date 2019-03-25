@@ -70,7 +70,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_add_circle_outline_black_24dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_add_circle_outline_black_24dp.png.
         /// </summary>
         public static string Add {
             get {
@@ -88,7 +88,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_not_interested_black_24dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_not_interested_black_24dp.png.
         /// </summary>
         public static string Cancel {
             get {
@@ -223,7 +223,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_settings_white_24dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_settings_white_24dp.png.
         /// </summary>
         public static string Configuration {
             get {
@@ -232,7 +232,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/navigation/ic_arrow_drop_down_black_18dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_arrow_drop_down_black_18dp.png.
         /// </summary>
         public static string DropDown {
             get {
@@ -259,7 +259,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/communication/ic_import_export_white_24dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/communication/1x_web/ic_import_export_white_24dp.png.
         /// </summary>
         public static string ImportExport {
             get {
@@ -286,7 +286,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_check_circle_black_48dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_check_circle_black_48dp.png.
         /// </summary>
         public static string ItemListRowStatusCompleted {
             get {
@@ -295,7 +295,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/av/ic_play_circle_filled_black_48dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_circle_filled_black_48dp.png.
         /// </summary>
         public static string ItemListRowStatusExecuting {
             get {
@@ -304,7 +304,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/alert/ic_error_white_48dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/alert/1x_web/ic_error_black_48dp.png.
         /// </summary>
         public static string ItemListRowStatusIncomplete {
             get {
@@ -313,7 +313,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/av/ic_pause_circle_filled_black_48dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_pause_circle_filled_black_48dp.png.
         /// </summary>
         public static string ItemListRowStatusSuspended {
             get {
@@ -322,7 +322,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_watch_later_white_48dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_watch_later_black_48dp.png.
         /// </summary>
         public static string ItemListRowStatusWaiting {
             get {
@@ -331,7 +331,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_check_circle_black_48dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_check_circle_black_48dp.png.
         /// </summary>
         public static string ItemListStatusCompleted {
             get {
@@ -340,7 +340,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/av/ic_play_circle_filled_black_48dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_circle_filled_black_48dp.png.
         /// </summary>
         public static string ItemListStatusExecuting {
             get {
@@ -349,7 +349,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/alert/ic_error_white_48dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/alert/1x_web/ic_error_black_48dp.png.
         /// </summary>
         public static string ItemListStatusIncomplete {
             get {
@@ -358,7 +358,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/av/ic_pause_circle_filled_black_48dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_pause_circle_filled_black_48dp.png.
         /// </summary>
         public static string ItemListStatusSuspended {
             get {
@@ -367,7 +367,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_watch_later_white_48dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_watch_later_black_48dp.png.
         /// </summary>
         public static string ItemListStatusWaiting {
             get {
@@ -475,7 +475,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_list_white_24dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/editor/1x_web/ic_format_list_bulleted_white_24dp.png.
         /// </summary>
         public static string Lists {
             get {
@@ -592,7 +592,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/image/ic_brightness_1_black_18dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/1x_web/ic_brightness_1_black_18dp.png.
         /// </summary>
         public static string MachineStatusAutomatic {
             get {
@@ -601,7 +601,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/image/ic_brightness_1_black_18dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/1x_web/ic_brightness_1_black_18dp.png.
         /// </summary>
         public static string MachineStatusError {
             get {
@@ -610,7 +610,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/image/ic_brightness_1_black_18dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/1x_web/ic_brightness_1_black_18dp.png.
         /// </summary>
         public static string MachineStatusManual {
             get {
@@ -619,7 +619,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/image/ic_brightness_1_black_18dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/1x_web/ic_brightness_1_black_18dp.png.
         /// </summary>
         public static string MachineStatusOffline {
             get {
@@ -700,7 +700,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/image/ic_brightness_1_black_18dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/1x_web/ic_brightness_1_black_18dp.png.
         /// </summary>
         public static string MaintenanceStatusExpired {
             get {
@@ -709,7 +709,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/image/ic_brightness_1_black_18dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/1x_web/ic_brightness_1_black_18dp.png.
         /// </summary>
         public static string MaintenanceStatusExpiring {
             get {
@@ -718,7 +718,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/image/ic_brightness_1_black_18dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/1x_web/ic_brightness_1_black_18dp.png.
         /// </summary>
         public static string MaintenanceStatusValid {
             get {
@@ -790,7 +790,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/navigation/ic_check_black_24dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_check_black_24dp.png.
         /// </summary>
         public static string NavigationCheck {
             get {
@@ -799,7 +799,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/navigation/ic_arrow_forward_black_24dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_arrow_forward_black_24dp.png.
         /// </summary>
         public static string NavigationForward {
             get {
@@ -808,7 +808,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/editor/ic_functions_white_24dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/editor/1x_web/ic_functions_white_24dp.png.
         /// </summary>
         public static string Others {
             get {
@@ -826,7 +826,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/navigation/ic_check_black_18dp.png .
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_check_black_18dp.png .
         /// </summary>
         public static string PairingFixed {
             get {
@@ -862,29 +862,11 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_date_range_white_24dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_date_range_white_24dp.png.
         /// </summary>
         public static string Scheduler {
             get {
                 return ResourceManager.GetString("Scheduler", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/hardware/ic_cast_black_24dp.png.
-        /// </summary>
-        public static string SchedulerOffLine {
-            get {
-                return ResourceManager.GetString("SchedulerOffLine", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/hardware/ic_cast_connected_black_24dp.png.
-        /// </summary>
-        public static string SchedulerOnLine {
-            get {
-                return ResourceManager.GetString("SchedulerOnLine", resourceCulture);
             }
         }
         
@@ -925,7 +907,25 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_visibility_black_36dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/device/1x_web/ic_signal_wifi_off_black_24dp.png.
+        /// </summary>
+        public static string ServicesOffline {
+            get {
+                return ResourceManager.GetString("ServicesOffline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/device/1x_web/ic_signal_wifi_4_bar_black_24dp.png.
+        /// </summary>
+        public static string ServicesOnline {
+            get {
+                return ResourceManager.GetString("ServicesOnline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_visibility_black_36dp.png.
         /// </summary>
         public static string ShowDetail {
             get {
@@ -934,7 +934,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/alert/ic_error_black_18dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/alert/1x_web/ic_error_black_18dp.png.
         /// </summary>
         public static string StatusTypeError {
             get {
@@ -943,7 +943,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_info_black_18dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_info_black_18dp.png.
         /// </summary>
         public static string StatusTypeInformation {
             get {
@@ -952,7 +952,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_check_circle_black_18dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_check_circle_black_18dp.png.
         /// </summary>
         public static string StatusTypeNone {
             get {
@@ -961,7 +961,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_check_circle_black_18dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_check_circle_black_18dp.png.
         /// </summary>
         public static string StatusTypeSuccess {
             get {
@@ -970,7 +970,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/alert/ic_warning_black_18dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/alert/1x_web/ic_warning_black_18dp.png.
         /// </summary>
         public static string StatusTypeWarning {
             get {
@@ -988,7 +988,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_account_circle_black_18dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_account_circle_black_18dp.png.
         /// </summary>
         public static string UserProfile {
             get {

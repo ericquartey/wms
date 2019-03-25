@@ -11,6 +11,8 @@ namespace Ferretto.VW.SQLiteTarget
     {
         #region Fields
 
+        private bool disposed = false;
+
         private SQLiteConnection logConnection;
 
         #endregion
@@ -32,12 +34,29 @@ namespace Ferretto.VW.SQLiteTarget
 
         #region Methods
 
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.logConnection?.Shutdown();
+                this.logConnection?.Close();
+                this.logConnection?.Dispose();
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
+        }
+
         protected override void Write(LogEventInfo logEvent)
         {
             if (this.logConnection == null)
             {
-                this.logConnection = new SQLiteConnection($"Data Source={this.DbName};Version=3");
-                this.logConnection.Open();
+                this.ConfigureDatabase();
             }
 
             // Insert a record
@@ -56,6 +75,41 @@ namespace Ferretto.VW.SQLiteTarget
             catch (Exception)
             {
                 //TODO fix db migration issue
+            }
+        }
+
+        private void ConfigureDatabase()
+        {
+            this.logConnection = new SQLiteConnection($"Data Source={this.DbName};Version=3");
+            this.logConnection.Open();
+
+            string sqlQuery = @"SELECT name FROM sqlite_master WHERE type='table' AND name='LogEntries'";
+            object checkResult = null;
+            try
+            {
+                var checkCommand = new SQLiteCommand(sqlQuery, this.logConnection);
+                checkResult = checkCommand.ExecuteScalar();
+            }
+            catch (Exception ex)
+            {
+                this.logConnection.Close();
+                this.logConnection = null;
+            }
+
+            if (checkResult == null)
+            {
+                string sqlCommand =
+                    @"CREATE TABLE 'LogEntries' ( 'Exception' TEXT NULL, 'Level' TEXT NULL, 'LogEntryID' INTEGER NOT NULL CONSTRAINT 'PK_LogEntries' PRIMARY KEY AUTOINCREMENT, 'LoggerName' TEXT NULL, 'Message' TEXT NULL, 'TimeStamp' TEXT NOT NULL)";
+                try
+                {
+                    var createTableCommand = new SQLiteCommand(sqlCommand, this.logConnection);
+                    createTableCommand.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    this.logConnection.Close();
+                    this.logConnection = null;
+                }
             }
         }
 

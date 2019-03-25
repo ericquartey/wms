@@ -38,17 +38,17 @@
                 <wms:ActionBarItem Command="{Binding EditCommand}"
                                    Content="{x:Static res:MasterData.EditCompartment}"
                                    CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/ic_edit_black_24dp.png"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/1x_web/ic_edit_black_24dp.png"
                                    GlyphSize="Custom" />
                 <wms:ActionBarItem Command="{Binding AddCommand}"
                                    Content="{x:Static res:MasterData.AddCompartment}"
                                    CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_add_box_black_24dp.png"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_add_box_black_24dp.png"
                                    GlyphSize="Custom" />
                 <wms:ActionBarItem Command="{Binding BulkAddCommand}"
                                    Content="{x:Static res:MasterData.BulkAddCompartment}"
                                    CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/ic_photo_size_select_small_black_24dp.png"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/1x_web/ic_photo_size_select_small_black_24dp.png"
                                    GlyphSize="Custom" />
             </wms:ActionBar>
 
