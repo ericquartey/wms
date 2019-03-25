@@ -238,7 +238,6 @@ namespace Ferretto.WMS.App.Core.Providers
                 StoreTolerance = item.StoreTolerance,
                 TotalAvailable = item.TotalAvailable,
                 Width = item.Width,
-                HasImageChanged = false,
             };
 
             await this.AddEnumerationsAsync(itemDetails);
