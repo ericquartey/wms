@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -32,57 +33,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         #endregion
 
         #region Methods
-
-        public async Task<ActionModel> CanDeleteAsync(int id)
-        {
-            var compartmentsCount =
-                await this.dataContext.Compartments
-                    .CountAsync(c => c.ItemId == id);
-            var missionsCount =
-                await this.dataContext.Missions
-                    .CountAsync(m => m.ItemId == id);
-            var schedulerRequestsCount =
-                await this.dataContext.SchedulerRequests
-                    .CountAsync(r => r.ItemId == id);
-            var itemListRowsCount =
-                await this.dataContext.ItemListRows
-                    .CountAsync(r => r.ItemId == id);
-
-            var entity = new List<string>();
-            if (compartmentsCount > 0)
-            {
-                entity.Add($"{Common.Resources.BusinessObjects.Compartment} [{compartmentsCount}]");
-            }
-
-            if (itemListRowsCount > 0)
-            {
-                entity.Add($"{Common.Resources.BusinessObjects.ItemListRow} [{itemListRowsCount}]");
-            }
-
-            if (missionsCount > 0)
-            {
-                entity.Add($"{Common.Resources.BusinessObjects.Mission} [{missionsCount}]");
-            }
-
-            if (schedulerRequestsCount > 0)
-            {
-                entity.Add($"{Common.Resources.BusinessObjects.SchedulerRequest} [{schedulerRequestsCount}]");
-            }
-
-            string reason = null;
-            if (entity.Any())
-            {
-                reason = string.Format(
-                     Common.Resources.Errors.NotPossibleExecuteOperation,
-                     string.Join(", ", entity.ToArray()));
-            }
-
-            return new ActionModel
-            {
-                IsAllowed = !entity.Any(),
-                Reason = reason,
-            };
-        }
 
         public async Task<IOperationResult<ItemDetails>> CreateAsync(ItemDetails model)
         {
@@ -138,8 +88,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             var item = await this.GetByIdAsync(id);
 
-            var deleteAction = await this.CanDeleteAsync(id);
-            if (deleteAction.IsAllowed)
+            if (item.CanDelete())
             {
                 return await this.DeleteItemWithRelatedDataAsync(item, existingModel);
             }
@@ -147,25 +96,32 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 return new UnprocessableEntityOperationResult<ItemDetails>
                 {
-                    Description = deleteAction.Reason,
+                    Description = item.GetCanDeleteReason(),
                 };
             }
         }
 
         public async Task<IEnumerable<Item>> GetAllAsync(
-                    int skip,
+            int skip,
             int take,
             IEnumerable<SortOption> orderBySortOptions = null,
             string whereString = null,
             string searchString = null)
         {
-            return await this.GetAllBase()
+            var items = await this.GetAllBase()
                  .ToArrayAsync<Item, Common.DataModels.Item>(
                      skip,
                      take,
                      orderBySortOptions,
                      whereString,
                      BuildSearchExpression(searchString));
+
+            foreach (var item in items)
+            {
+                await this.SetPoliciesAsync(item);
+            }
+
+            return items;
         }
 
         public async Task<int> GetAllCountAsync(
@@ -180,8 +136,15 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<ItemDetails> GetByIdAsync(int id)
         {
-            return await this.GetAllDetailsBase()
+            var model = await this.GetAllDetailsBase()
                              .SingleOrDefaultAsync(i => i.Id == id);
+
+            if (model != null)
+            {
+                await this.SetPoliciesAsync(model);
+            }
+
+            return model;
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
@@ -232,6 +195,59 @@ namespace Ferretto.WMS.Data.Core.Providers
                 ||
                 i.MeasureUnitDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ;
+        }
+
+        private async Task<Policy> ComputeDeletePolicyAsync(int itemId)
+        {
+            var compartmentsCount =
+                await this.dataContext.Compartments
+                    .CountAsync(c => c.ItemId == itemId);
+            var missionsCount =
+                await this.dataContext.Missions
+                    .CountAsync(m => m.ItemId == itemId);
+            var schedulerRequestsCount =
+                await this.dataContext.SchedulerRequests
+                    .CountAsync(r => r.ItemId == itemId);
+            var itemListRowsCount =
+                await this.dataContext.ItemListRows
+                    .CountAsync(r => r.ItemId == itemId);
+
+            var entity = new List<string>();
+            if (compartmentsCount > 0)
+            {
+                entity.Add($"{Common.Resources.BusinessObjects.Compartment} [{compartmentsCount}]");
+            }
+
+            if (itemListRowsCount > 0)
+            {
+                entity.Add($"{Common.Resources.BusinessObjects.ItemListRow} [{itemListRowsCount}]");
+            }
+
+            if (missionsCount > 0)
+            {
+                entity.Add($"{Common.Resources.BusinessObjects.Mission} [{missionsCount}]");
+            }
+
+            if (schedulerRequestsCount > 0)
+            {
+                entity.Add($"{Common.Resources.BusinessObjects.SchedulerRequest} [{schedulerRequestsCount}]");
+            }
+
+            string reason = null;
+            if (entity.Any())
+            {
+                reason = string.Format(
+                     Common.Resources.Errors.NotPossibleExecuteOperation,
+                     string.Join(", ", entity.ToArray()));
+            }
+
+            return new Policy
+            {
+                IsAllowed = !entity.Any(),
+                Reason = reason,
+                Name = "Delete",
+                Type = PolicyType.Operation
+            };
         }
 
         private async Task<OperationResult<ItemDetails>> DeleteItemWithRelatedDataAsync(ItemDetails item, Common.DataModels.Item existingModel)
@@ -404,6 +420,11 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                         CompartmentsCount = a.Item.Compartments.Count(),
                     });
+        }
+
+        private async Task SetPoliciesAsync(BaseModel<int> model)
+        {
+            model.AddPolicy(await this.ComputeDeletePolicyAsync(model.Id));
         }
 
         #endregion

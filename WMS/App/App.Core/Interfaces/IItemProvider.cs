@@ -15,8 +15,6 @@ namespace Ferretto.WMS.App.Core.Interfaces
     {
         #region Methods
 
-        Task<ActionModel> CanDeleteAsync(int id);
-
         Task<IEnumerable<AllowedItemInCompartment>> GetAllowedByCompartmentIdAsync(int compartmentId);
 
         Task<ItemDetails> GetNewAsync();
