@@ -523,7 +523,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
             else
             {
-                if (configurationValue.VarType == DataType.Boolean)
+                if (configurationValue.VarType == DataType.IPAddress)
                 {
                     configurationValue.VarValue = value.ToString();
                     this.primaryDataContext.SaveChanges();
