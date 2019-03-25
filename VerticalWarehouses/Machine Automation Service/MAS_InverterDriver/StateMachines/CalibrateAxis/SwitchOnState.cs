@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading;
 using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
@@ -68,6 +70,18 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
             {
                 if ((message.UShortPayload & StatusWordValue) == StatusWordValue)
                 {
+                    var messageData = new CalibrateAxisMessageData(this.axisToCalibrate, MessageVerbosity.Info);
+                    var notificationMessage = new NotificationMessage(
+                        messageData,
+                        $"{this.axisToCalibrate} Homing started",
+                        MessageActor.AutomationService,
+                        MessageActor.InverterDriver,
+                        MessageType.CalibrateAxis,
+                        MessageStatus.OperationStart,
+                        ErrorLevel.NoError,
+                        MessageVerbosity.Info);
+                    this.parentStateMachine.PublishNotificationEvent(notificationMessage);
+
                     this.parentStateMachine.ChangeState(new EnableOperationState(this.parentStateMachine, this.axisToCalibrate, this.logger));
                     returnValue = true;
                 }

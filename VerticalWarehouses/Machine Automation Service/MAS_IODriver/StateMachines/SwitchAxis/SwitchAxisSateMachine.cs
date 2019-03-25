@@ -1,5 +1,7 @@
 ﻿using System.Threading;
 using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -62,10 +64,34 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
         {
             if (this.switchOffOtherAxis)
             {
+                var messageData = new CalibrateAxisMessageData(this.axisToSwitchOn, MessageVerbosity.Info);
+                var notificationMessage = new NotificationMessage(
+                    messageData,
+                    $"Switch off {this.axisToSwitchOn} axis",
+                    MessageActor.AutomationService,
+                    MessageActor.IODriver,
+                    MessageType.SwitchAxis,
+                    MessageStatus.OperationStart,
+                    ErrorLevel.NoError,
+                    MessageVerbosity.Info);
+                this.PublishNotificationEvent(notificationMessage);
+
                 this.CurrentState = new SwitchOffMotorState(this.axisToSwitchOn, this.logger, this);
             }
             else
             {
+                var messageData = new CalibrateAxisMessageData(this.axisToSwitchOn, MessageVerbosity.Info);
+                var notificationMessage = new NotificationMessage(
+                    messageData,
+                    $"Switch on {this.axisToSwitchOn} axis",
+                    MessageActor.AutomationService,
+                    MessageActor.IODriver,
+                    MessageType.SwitchAxis,
+                    MessageStatus.OperationStart,
+                    ErrorLevel.NoError,
+                    MessageVerbosity.Info);
+                this.PublishNotificationEvent(notificationMessage);
+
                 this.CurrentState = new SwitchOnMotorState(this.axisToSwitchOn, this.logger, this);
             }
         }

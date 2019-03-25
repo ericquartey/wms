@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading;
 using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
@@ -52,6 +54,18 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
             {
                 if (this.axisToSwitchOn == Axis.Horizontal && message.CradleMotorOn || this.axisToSwitchOn == Axis.Vertical && message.ElevatorMotorOn)
                 {
+                    var messageData = new CalibrateAxisMessageData(this.axisToSwitchOn, MessageVerbosity.Info);
+                    var notificationMessage = new NotificationMessage(
+                        messageData,
+                        $"Switch off {this.axisToSwitchOn} axis",
+                        MessageActor.AutomationService,
+                        MessageActor.IODriver,
+                        MessageType.SwitchAxis,
+                        MessageStatus.OperationEnd,
+                        ErrorLevel.NoError,
+                        MessageVerbosity.Info);
+                    this.parentStateMachine.PublishNotificationEvent(notificationMessage);
+
                     this.parentStateMachine.ChangeState(new SwitchOnMotorState(this.axisToSwitchOn, this.logger, this.parentStateMachine));
                 }
             }

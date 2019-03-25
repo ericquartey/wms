@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading;
 using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
@@ -57,8 +59,6 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         {
             var returnValue = false;
 
-            //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - VoltageDisabledState:ProcessMessage");
-
             if (message.IsError)
             {
                 this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate, this.logger));
@@ -68,6 +68,18 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
             {
                 if ((message.UShortPayload & StatusWordValue) == StatusWordValue)
                 {
+                    var messageData = new CalibrateAxisMessageData(this.axisToCalibrate, MessageVerbosity.Info);
+                    var notificationMessage = new NotificationMessage(
+                        messageData,
+                        $"{this.axisToCalibrate} Homing started",
+                        MessageActor.AutomationService,
+                        MessageActor.InverterDriver,
+                        MessageType.CalibrateAxis,
+                        MessageStatus.OperationStart,
+                        ErrorLevel.NoError,
+                        MessageVerbosity.Info);
+                    this.parentStateMachine.PublishNotificationEvent(notificationMessage);
+
                     this.parentStateMachine.ChangeState(new HomingModeState(this.parentStateMachine, this.axisToCalibrate, this.logger));
                     returnValue = true;
                 }

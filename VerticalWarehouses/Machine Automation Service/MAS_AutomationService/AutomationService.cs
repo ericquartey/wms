@@ -173,7 +173,9 @@ namespace Ferretto.VW.MAS_AutomationService
             },
             ThreadOption.PublisherThread,
             false,
-            (message) => message.Source == MessageActor.FiniteStateMachines && message.Destination == MessageActor.AutomationService);
+            (message) => (message.Source == MessageActor.FiniteStateMachines
+            || message.Source == MessageActor.InverterDriver
+            || message.Source == MessageActor.IODriver) && message.Destination == MessageActor.AutomationService);
         }
 
         private void ProcessAddMissionMessage(CommandMessage message)

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading;
 using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
@@ -12,7 +14,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
     {
         #region Fields
 
-        private const int sendDelay = 50;
+        private const int SEND_DELAY = 50;
 
         private const ushort StatusWordValue = 0x0037;
 
@@ -46,7 +48,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
             }
 
             var inverterMessage =
-                new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue, sendDelay);
+                new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue, SEND_DELAY);
 
             parentStateMachine.EnqueueMessage(inverterMessage);
         }
@@ -70,6 +72,18 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
             {
                 if ((message.UShortPayload & StatusWordValue) == StatusWordValue)
                 {
+                    var messageData = new CalibrateAxisMessageData(this.axisToCalibrate, MessageVerbosity.Info);
+                    var notificationMessage = new NotificationMessage(
+                        messageData,
+                        $"{this.axisToCalibrate} Homing started",
+                        MessageActor.AutomationService,
+                        MessageActor.InverterDriver,
+                        MessageType.CalibrateAxis,
+                        MessageStatus.OperationStart,
+                        ErrorLevel.NoError,
+                        MessageVerbosity.Info);
+                    this.parentStateMachine.PublishNotificationEvent(notificationMessage);
+
                     this.parentStateMachine.ChangeState(new StartingHomeState(this.parentStateMachine, this.axisToCalibrate, this.logger));
                     returnValue = true;
                 }
