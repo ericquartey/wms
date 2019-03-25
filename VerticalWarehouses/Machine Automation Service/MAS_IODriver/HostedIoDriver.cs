@@ -99,7 +99,7 @@ namespace Ferretto.VW.MAS_IODriver
                 false,
                 message => message.Destination == MessageActor.IODriver || message.Destination == MessageActor.Any);
 
-            this.logger?.LogInformation("Hosted I/O Driver Constructor");
+            this.logger?.LogTrace("Hosted I/O Driver Constructor");
         }
 
         #endregion
@@ -133,7 +133,7 @@ namespace Ferretto.VW.MAS_IODriver
         {
             this.stoppingToken = stoppingToken;
 
-            logger.LogInformation("Execute Async");
+            logger.LogTrace("Execute Async");
 
             var ioAddress =
                 this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
