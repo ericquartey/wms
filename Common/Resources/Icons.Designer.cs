@@ -304,7 +304,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/alert/1x_web/ic_error_white_48dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/alert/1x_web/ic_error_black_48dp.png.
         /// </summary>
         public static string ItemListRowStatusIncomplete {
             get {
@@ -322,7 +322,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_watch_later_white_48dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_watch_later_black_48dp.png.
         /// </summary>
         public static string ItemListRowStatusWaiting {
             get {
@@ -349,7 +349,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/alert/1x_web/ic_error_white_48dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/alert/1x_web/ic_error_black_48dp.png.
         /// </summary>
         public static string ItemListStatusIncomplete {
             get {
@@ -367,7 +367,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_watch_later_white_48dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_watch_later_black_48dp.png.
         /// </summary>
         public static string ItemListStatusWaiting {
             get {
@@ -475,7 +475,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_list_white_24dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/editor/1x_web/ic_format_list_bulleted_white_24dp.png.
         /// </summary>
         public static string Lists {
             get {
