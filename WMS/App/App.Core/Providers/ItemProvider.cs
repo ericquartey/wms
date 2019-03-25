@@ -89,8 +89,6 @@ namespace Ferretto.WMS.App.Core.Providers
 
             try
             {
-                var fileNameImage = model.ImagePath != null ? await this.SaveImageAsync(model.ImagePath) : null;
-
                 var item = await this.itemsDataService.CreateAsync(new WMS.Data.WebAPI.Contracts.ItemDetails
                 {
                     AbcClassId = model.AbcClassId,
@@ -100,7 +98,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     FifoTimePick = model.FifoTimePick,
                     FifoTimeStore = model.FifoTimeStore,
                     Height = model.Height,
-                    Image = fileNameImage,
+                    Image = model.Image,
                     InventoryDate = model.InventoryDate,
                     InventoryTolerance = model.InventoryTolerance,
                     ItemCategoryId = model.ItemCategoryId,
@@ -277,12 +275,6 @@ namespace Ferretto.WMS.App.Core.Providers
 
             try
             {
-                var fileNameImage = model.Image;
-                if (model.HasImageChanged)
-                {
-                    fileNameImage = await this.SaveImageAsync(model.ImagePath);
-                }
-
                 await this.itemsDataService.UpdateAsync(new WMS.Data.WebAPI.Contracts.ItemDetails
                 {
                     AbcClassId = model.AbcClassId,
@@ -294,7 +286,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     FifoTimeStore = model.FifoTimeStore,
                     Height = model.Height,
                     Id = model.Id,
-                    Image = fileNameImage,
+                    Image = model.Image,
                     InventoryDate = model.InventoryDate,
                     InventoryTolerance = model.InventoryTolerance,
                     ItemCategoryId = model.ItemCategoryId,
@@ -350,34 +342,6 @@ namespace Ferretto.WMS.App.Core.Providers
             {
                 return new OperationResult<SchedulerRequest>(ex);
             }
-        }
-
-        private static long GetFileSize(string filePath)
-        {
-            // if you don't have permission to the folder, Directory.Exists will return False
-            if (!Directory.Exists(Path.GetDirectoryName(filePath)))
-            {
-                // if you land here, it means you don't have permission to the folder
-                Debug.Write("Permission denied");
-                throw new FileLoadException();
-            }
-            else if (File.Exists(filePath))
-            {
-                return new FileInfo(filePath).Length;
-            }
-
-            return 0;
-        }
-
-        private async Task<string> SaveImageAsync(string imagePath)
-        {
-            var imageFile = new ImageFile
-            {
-                Stream = new FileStream(imagePath, FileMode.Open),
-                Length = GetFileSize(imagePath),
-                FileName = Path.GetFileName(imagePath),
-            };
-            return await this.imageFileProvider.UploadAsync(imageFile);
         }
 
         #endregion
