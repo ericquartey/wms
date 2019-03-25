@@ -88,6 +88,7 @@ namespace Ferretto.Common.Controls
                 if (wmsImage.isUpdatingImage)
                 {
                     wmsImage.isUpdatingImage = false;
+                    wmsImage.IsLoading = false;
                     return;
                 }
 
@@ -107,7 +108,7 @@ namespace Ferretto.Common.Controls
         {
             var dlg = new OpenFileDialog();
             dlg.Filter = EditorLocalizer.GetString(EditorStringId.ImageEdit_OpenFileFilter);
-
+            this.IsLoading = true;
             if (dlg.ShowDialog() == true)
             {
                 using (var stream = dlg.OpenFile())
@@ -123,6 +124,7 @@ namespace Ferretto.Common.Controls
                     return ImageHelper.CreateImageFromStream(ms);
                 }
             }
+            this.IsLoading = false;
 
             return null;
         }
