@@ -45,6 +45,7 @@
       <None Remove="MainWindow.xaml" />
       <None Remove="Resources\Views.xaml" />
       <None Remove="ViewsAndViewModels\DrawerActivityView.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerWaitView.xaml" />
       <None Remove="ViewsAndViewModels\IdleView.xaml" />
       <None Remove="ViewsAndViewModels\MainWindowBackToOAPPButtonView.xaml" />
       <None Remove="ViewsAndViewModels\MainWindowNavigationButtonsView.xaml" />

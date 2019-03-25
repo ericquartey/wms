@@ -277,6 +277,33 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerWaitNota.
+        /// </summary>
+        public static string DrawerWaitNota {
+            get {
+                return ResourceManager.GetString("DrawerWaitNota", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerWaitOperation.
+        /// </summary>
+        public static string DrawerWaitOperation {
+            get {
+                return ResourceManager.GetString("DrawerWaitOperation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerWaitPageHeader.
+        /// </summary>
+        public static string DrawerWaitPageHeader {
+            get {
+                return ResourceManager.GetString("DrawerWaitPageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Executable Lists&apos; Rows.
         /// </summary>
         public static string ExecutableListsRows {

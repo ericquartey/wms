@@ -309,4 +309,16 @@
     <value>DrawerActivityConfirm</value>
     <comment>Button text</comment>
   </data>
+  <data name="DrawerWaitPageHeader" xml:space="preserve">
+    <value>DrawerWaitPageHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="DrawerWaitNota" xml:space="preserve">
+    <value>DrawerWaitNota</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerWaitOperation" xml:space="preserve">
+    <value>DrawerWaitOperation</value>
+    <comment>Label text</comment>
+  </data>
 </root>

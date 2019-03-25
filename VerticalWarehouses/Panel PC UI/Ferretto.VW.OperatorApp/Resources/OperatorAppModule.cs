@@ -27,6 +27,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             var mainWindowNavigationButtonsVMInstance = new MainWindowNavigationButtonsViewModel(this.container.Resolve<IEventAggregator>());
             var helpMainWindowInstance = new HelpMainWindow(container.Resolve<IEventAggregator>());
             var drawerActivityVMInstance = new DrawerActivityViewModel(container.Resolve<IEventAggregator>());
+            var drawerWaitVMInstance = new DrawerWaitViewModel(container.Resolve<IEventAggregator>());
 
 
 
@@ -37,6 +38,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IMainWindowNavigationButtonsViewModel>(mainWindowNavigationButtonsVMInstance);
             this.container.RegisterInstance<IHelpMainWindow>(helpMainWindowInstance);
             this.container.RegisterInstance<IDrawerActivityViewModel>(drawerActivityVMInstance);
+            this.container.RegisterInstance<IDrawerWaitViewModel>(drawerWaitVMInstance);
 
 
             mainWindowVMInstance.InitializeViewModel(this.container);

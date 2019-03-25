@@ -261,4 +261,13 @@
   <data name="DrawerActivityConfirm" xml:space="preserve">
     <value>Conferma</value>
   </data>
+  <data name="DrawerWaitPageHeader" xml:space="preserve">
+    <value>In attesa arrivo nuovo cassetto.</value>
+  </data>
+  <data name="DrawerWaitNota" xml:space="preserve">
+    <value>Nota:</value>
+  </data>
+  <data name="DrawerWaitOperation" xml:space="preserve">
+    <value>Operazioni schedulate:</value>
+  </data>
 </root>
