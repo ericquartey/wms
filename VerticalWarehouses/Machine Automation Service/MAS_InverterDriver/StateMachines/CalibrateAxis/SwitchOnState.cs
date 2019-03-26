@@ -92,7 +92,6 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         }
 
         /// <inheritdoc />
-        /// <inheritdoc />
         public override void Stop()
         {
             this.forceStop = true;
