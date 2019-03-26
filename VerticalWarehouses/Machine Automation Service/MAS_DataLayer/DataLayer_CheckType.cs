@@ -370,7 +370,7 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 case (long)ConfigurationCategory.Undefined:
                     {
-                        throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                        throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
                     }
                 case (long)ConfigurationCategory.GeneralInfo:
                     {
