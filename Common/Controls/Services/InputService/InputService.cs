@@ -15,11 +15,17 @@ namespace Ferretto.Common.Controls.Services
         #region Fields
 
         private readonly Dictionary<object, Action<ShortKeyInfo>> keyNotifiers = new Dictionary<object, Action<ShortKeyInfo>>();
+
         private readonly Dictionary<object, Action<MouseDownInfo>> mouseNotifiers = new Dictionary<object, Action<MouseDownInfo>>();
+
         private readonly INavigationService navigationService;
+
         private readonly object syncKeyRoot = new object();
+
         private readonly object syncMouseRoot = new object();
+
         private FrameworkElement currentElement;
+
         private FrameworkElement currentHost;
 
         #endregion
@@ -41,7 +47,7 @@ namespace Ferretto.Common.Controls.Services
 
         #region Methods
 
-        public static string GetStringFromKey(System.Windows.Input.Key keyCode)
+        public static string GetStringFromKey(Key keyCode)
         {
             var key = new KeyConverter().ConvertToString(keyCode);
 
@@ -50,7 +56,7 @@ namespace Ferretto.Common.Controls.Services
                 key = key.Replace("NumPad", string.Empty);
             }
 
-            if (key.Equals("Space"))
+            if (key.Equals("Space", StringComparison.Ordinal))
             {
                 key = " ";
             }
@@ -80,15 +86,6 @@ namespace Ferretto.Common.Controls.Services
             }
         }
 
-        public void End()
-        {
-            if (this.currentHost != null)
-            {
-                this.currentHost.PreviewMouseDown -= this.DxWindow_PreviewMouseDown;
-                this.currentHost.PreviewKeyDown -= this.DxWindow_PreviewKeyDown;
-            }
-        }
-
         public void EndMouseNotify(object instance)
         {
             lock (this.syncMouseRoot)
@@ -111,22 +108,6 @@ namespace Ferretto.Common.Controls.Services
             }
         }
 
-        public void RaiseEvent(Key key)
-        {
-            if (Keyboard.PrimaryDevice.ActiveSource != null)
-            {
-                InputManager.Current.ProcessInput(
-                    new KeyEventArgs(
-                        Keyboard.PrimaryDevice,
-                        Keyboard.PrimaryDevice.ActiveSource,
-                        0,
-                        key)
-                    {
-                        RoutedEvent = Keyboard.KeyDownEvent
-                    });
-            }
-        }
-
         public void Start()
         {
             ShortKeys.Initialize();
@@ -137,12 +118,48 @@ namespace Ferretto.Common.Controls.Services
                             (KeyboardFocusChangedEventHandler)this.OnPreviewGotKeyboardFocus);
         }
 
-        private static bool IsValidKey(System.Windows.Input.Key key)
+        private static ShortKey GetNewShortKey(Key key, bool isControl, bool isShift, bool isTab)
         {
-            return (key >= System.Windows.Input.Key.A && key <= System.Windows.Input.Key.Z) ||
-                    (key >= System.Windows.Input.Key.D0 && key <= System.Windows.Input.Key.D9) ||
-                    (key >= System.Windows.Input.Key.F1 && key <= System.Windows.Input.Key.F24) ||
-                    (key >= System.Windows.Input.Key.NumPad0 && key <= System.Windows.Input.Key.NumPad9);
+            ShortKey shortKey = null;
+            if (isControl && isShift)
+            {
+                shortKey = new ShortKey(key, false, ModifierKeys.Control, ModifierKeys.Shift);
+            }
+            else if (isControl)
+            {
+                shortKey = new ShortKey(key, false, ModifierKeys.Control);
+            }
+            else if (isShift)
+            {
+                shortKey = new ShortKey(key, false, ModifierKeys.Shift);
+            }
+            else if (isTab)
+            {
+                shortKey = new ShortKey(key, false, ModifierKeys.Alt);
+            }
+            else
+            {
+                shortKey = new ShortKey(key, false);
+            }
+
+            return shortKey;
+        }
+
+        private static string GetSensitiveKey(Key key)
+        {
+            var keyString = GetStringFromKey(key);
+            var isCapsLockOn = (Keyboard.GetKeyStates(Key.CapsLock) & KeyStates.Toggled) == KeyStates.Toggled;
+            var onlyShiftKeyIsPressed = (Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift;
+
+            if (!isCapsLockOn
+                && !onlyShiftKeyIsPressed
+                && key >= Key.A
+                && key <= Key.Z)
+            {
+                keyString = keyString.ToLower();
+            }
+
+            return keyString;
         }
 
         private void ControlFocusHandleKeyPress(object sender, KeyEventArgs e)
@@ -157,38 +174,38 @@ namespace Ferretto.Common.Controls.Services
             var isShift = false;
             var isTab = false;
 
-            var origKey = (e.SystemKey != System.Windows.Input.Key.None) ? e.SystemKey : e.Key;
+            var origKey = (e.SystemKey != Key.None) ? e.SystemKey : e.Key;
 
             var keySt = origKey;
 
-            if (Keyboard.Modifiers == (System.Windows.Input.ModifierKeys.Control | System.Windows.Input.ModifierKeys.Shift))
+            if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Shift))
             {
                 isControl = true;
                 isShift = true;
             }
 
-            if (Keyboard.Modifiers == System.Windows.Input.ModifierKeys.Control)
+            if (Keyboard.Modifiers == ModifierKeys.Control)
             {
                 isControl = true;
             }
 
-            if (Keyboard.Modifiers == System.Windows.Input.ModifierKeys.Shift)
+            if (Keyboard.Modifiers == ModifierKeys.Shift)
             {
                 isShift = true;
             }
 
-            if (Keyboard.Modifiers == System.Windows.Input.ModifierKeys.Alt)
+            if (Keyboard.Modifiers == ModifierKeys.Alt)
             {
                 isTab = true;
             }
 
-            var shortKey = this.getNewShortKey(keySt, isControl, isShift, isTab);
+            var shortKey = GetNewShortKey(keySt, isControl, isShift, isTab);
             if (shortKey == null)
             {
                 return;
             }
 
-            shortKey.KeyString = this.GetSensitiveKey(origKey);
+            shortKey.KeyString = GetSensitiveKey(origKey);
 
             this.NotifyShortKey(shortKey, viewModel, e);
         }
@@ -226,68 +243,21 @@ namespace Ferretto.Common.Controls.Services
         {
             var menuViewModelName = $"{nameof(Common.Utils.Modules.Layout)}.{Common.Utils.Modules.Layout.REGION_MENU}";
             var view = this.navigationService.GetRegisteredView(menuViewModelName);
-            if (view != null)
-            {
-                return ((FrameworkElement)view).DataContext as INavigableViewModel;
-            }
 
-            return null;
+            return view?.DataContext as INavigableViewModel;
         }
 
-        private ShortKey getNewShortKey(Key key, bool isControl, bool isShift, bool isTab)
-        {
-            ShortKey shortKey = null;
-            if (isControl && isShift)
-            {
-                shortKey = new ShortKey(key, false, ModifierKeys.Control, ModifierKeys.Shift);
-            }
-            else if (isControl)
-            {
-                shortKey = new ShortKey(key, false, ModifierKeys.Control);
-            }
-            else if (isShift)
-            {
-                shortKey = new ShortKey(key, false, ModifierKeys.Shift);
-            }
-            else if (isTab)
-            {
-                shortKey = new ShortKey(key, false, ModifierKeys.Alt);
-            }
-            else
-            {
-                shortKey = new ShortKey(key, false);
-            }
-
-            return shortKey;
-        }
-
-        private string GetSensitiveKey(System.Windows.Input.Key key)
-        {
-            var keySt = GetStringFromKey(key);
-            var isCapsLockOn = (Keyboard.GetKeyStates(Key.CapsLock) & KeyStates.Toggled) == KeyStates.Toggled;
-            var isShiftKeyPressed = (Keyboard.Modifiers & System.Windows.Input.ModifierKeys.Shift) == System.Windows.Input.ModifierKeys.Shift;
-            if (!isCapsLockOn && !isShiftKeyPressed)
-            {
-                if (key >= System.Windows.Input.Key.A && key <= System.Windows.Input.Key.Z)
-                {
-                    keySt = keySt.ToLower();
-                }
-            }
-
-            return keySt;
-        }
-
-        private void NotifyShortKey(ShortKey shortKey, INavigableViewModel viewModel, KeyEventArgs e)
+        private void NotifyShortKey(ShortKey shortKey, INavigableViewModel viewModel, RoutedEventArgs e)
         {
             var shortKeyInfo = new ShortKeyInfo(shortKey, this.currentElement, this.currentElement.DataContext);
 
             // Check to notify Shortkey is changed
-            foreach (var ShortKeyToExecute in this.keyNotifiers.Values)
+            foreach (var shortKeyAction in this.keyNotifiers.Values)
             {
-                ShortKeyToExecute(shortKeyInfo);
+                shortKeyAction(shortKeyInfo);
             }
 
-            var handledShortKey = ShortKeys.GetShortKey(viewModel.GetType(), shortKey, out var isMain);
+            (var handledShortKey, var isMain) = ShortKeys.GetShortKey(viewModel.GetType(), shortKey);
             e.Handled = this.TryExecuteShortkey(viewModel, shortKeyInfo, handledShortKey, isMain);
         }
 
@@ -332,27 +302,24 @@ namespace Ferretto.Common.Controls.Services
 
         private bool TryExecuteShortkey(INavigableViewModel viewModel, ShortKeyInfo shortKeyInfo, ShortKey handledShortKey, bool isMain)
         {
-            var isHandled = false;
-            if (isMain)
+            if (isMain && viewModel == null)
             {
-                viewModel = this.GetMainMenuViewModel();
-                if (viewModel == null)
-                {
-                    return isHandled;
-                }
+                return false;
             }
 
+            var actualViewModel = isMain ? this.GetMainMenuViewModel() : viewModel;
+            var isHandled = false;
             if (handledShortKey != null &&
                 handledShortKey.DoAction != null)
             {
-                var shortAction = new ShortKeyAction(viewModel, this.currentElement, shortKeyInfo.ShortKey);
+                var shortAction = new ShortKeyAction(actualViewModel, this.currentElement, shortKeyInfo.ShortKey);
                 handledShortKey.DoAction.Invoke(shortAction);
-                isHandled = (isHandled == false) ? shortAction.IsHandled : true;
+                isHandled = shortAction.IsHandled;
             }
 
-            var isLastHandled = ((IShortKey)viewModel).KeyPress(shortKeyInfo);
-            isHandled = (isHandled == false) ? isLastHandled : true;
-            return isHandled;
+            var isLastHandled = ((IShortKey)actualViewModel).KeyPress(shortKeyInfo);
+
+            return isHandled || isLastHandled;
         }
 
         #endregion

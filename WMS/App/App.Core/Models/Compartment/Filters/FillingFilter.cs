@@ -2,67 +2,34 @@
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    public class FillingFilter : IFilter
+    public class FillingFilter : ICompartmentColorFilter
     {
         #region Properties
 
         public Func<ICompartment, ICompartment, string> ColorFunc => (compartment, selected) =>
         {
-            var compartmentDetails = compartment as CompartmentDetails;
-
-            if (compartmentDetails?.MaxCapacity.HasValue == false)
+            var compartmentDetails = compartment as ICapacityCompartment;
+            if (compartmentDetails == null || compartmentDetails.MaxCapacity.HasValue == false)
             {
                 return "#FF90A4AE";
             }
 
             var fillRatio = (double)compartmentDetails.Stock / compartmentDetails.MaxCapacity.Value;
-            if (fillRatio <= 0)
+
+            switch (fillRatio)
             {
-                return "#FF63BE7B";
-            }
-            else if (fillRatio < 0.1)
-            {
-                return "#FF80C77D";
-            }
-            else if (fillRatio < 0.2)
-            {
-                return "#FF9CCF7F";
-            }
-            else if (fillRatio < 0.3)
-            {
-                return "#FFB9D780";
-            }
-            else if (fillRatio < 0.4)
-            {
-                return "#FFD5DF82";
-            }
-            else if (fillRatio < 0.5)
-            {
-                return "#FFF1E784";
-            }
-            else if (fillRatio < 0.6)
-            {
-                return "#FFFEDF81";
-            }
-            else if (fillRatio < 0.7)
-            {
-                return "#FFFDC77D";
-            }
-            else if (fillRatio < 0.8)
-            {
-                return "#FFFBAF78";
-            }
-            else if (fillRatio < 0.9)
-            {
-                return "#FFFA9874";
-            }
-            else if (fillRatio < 1)
-            {
-                return "#FFF9806F";
-            }
-            else
-            {
-                return "#FFF8696B";
+                case var ratio when ratio <= 0: return "#FF63BE7B";
+                case var ratio when ratio < 0.1: return "#FF80C77D";
+                case var ratio when ratio < 0.2: return "#FF9CCF7F";
+                case var ratio when ratio < 0.3: return "#FFB9D780";
+                case var ratio when ratio < 0.4: return "#FFD5DF82";
+                case var ratio when ratio < 0.5: return "#FFF1E784";
+                case var ratio when ratio < 0.6: return "#FFFEDF81";
+                case var ratio when ratio < 0.7: return "#FFFDC77D";
+                case var ratio when ratio < 0.8: return "#FFFBAF78";
+                case var ratio when ratio < 0.9: return "#FFFA9874";
+                case var ratio when ratio < 1.0: return "#FFF9806F";
+                default: return "#FFF8696B";
             }
         };
 

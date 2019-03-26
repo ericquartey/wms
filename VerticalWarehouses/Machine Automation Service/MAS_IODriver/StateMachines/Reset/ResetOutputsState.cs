@@ -14,6 +14,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
         public ResetOutputsState(IIoStateMachine parentStateMachine, ILogger logger)
         {
+            logger.LogTrace("Reset Output State CTor");
             this.parentStateMachine = parentStateMachine;
             this.logger = logger;
             var resetIoMessage = new IoMessage(false);
@@ -28,6 +29,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
         public override void ProcessMessage(IoMessage message)
         {
+            logger.LogTrace("Reset Output State ProcessMessage");
             if (message.ValidOutputs && message.OutputsCleared)
             {
                 this.parentStateMachine.ChangeState(new EndState(this.parentStateMachine, this.logger));

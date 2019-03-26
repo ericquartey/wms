@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
@@ -25,7 +24,7 @@ namespace Ferretto.VW.InverterDriver
     {
         #region Fields
 
-        private const int HeartbeatTimeout = 9000;
+        private const int HeartbeatTimeout = 300;
 
         private readonly Task commandReceiveTask;
 
@@ -328,7 +327,7 @@ namespace Ferretto.VW.InverterDriver
         {
             while (this.heartbeatQueue.Dequeue(out var message))
             {
-                this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:ProcessHeartbeat");
+                //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:ProcessHeartbeat");
                 await this.socketTransport.WriteAsync(message.GteHeartbeatMessage(this.heartbeatSet), this.stoppingToken);
 
                 this.lastHeatbeatMessage = message;

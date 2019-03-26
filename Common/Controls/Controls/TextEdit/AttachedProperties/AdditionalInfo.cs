@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using DevExpress.Mvvm.UI;
@@ -27,9 +23,9 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        public static string GetText(DependencyObject element) => (string)element.GetValue(TextProperty);
+        public static string GetText(DependencyObject element) => (string)element?.GetValue(TextProperty);
 
-        public static void SetText(DependencyObject element, string value) => element.SetValue(TextProperty, value);
+        public static void SetText(DependencyObject element, string value) => element?.SetValue(TextProperty, value);
 
         private static void BaseEdit_Loaded(object sender, RoutedEventArgs e)
         {
@@ -61,7 +57,7 @@ namespace Ferretto.Common.Controls
 
                     if (binding)
                     {
-                        wmsLabel.Title = $"{wmsLabel.OriginalTitle} {String.Format(Resources.General.AdditionalInfo, prop)}";
+                        wmsLabel.Title = $"{wmsLabel.OriginalTitle} {string.Format(Resources.General.AdditionalInfo, prop)}";
                     }
                     else
                     {

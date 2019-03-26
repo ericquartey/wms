@@ -2,17 +2,16 @@
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    public class MaterialStatusFilter : IFilter
+    public class MaterialStatusEqualityFilter : ICompartmentColorFilter
     {
         #region Properties
 
         public Func<ICompartment, ICompartment, string> ColorFunc => (compartment, selected) =>
         {
-            var compartmentDetails = compartment as CompartmentDetails;
-            var selectedDetails = selected as CompartmentDetails;
-            if (selectedDetails != null && compartmentDetails != null)
+            if (compartment is IMaterialStatusCompartment typedCompartment
+                && selected is IMaterialStatusCompartment selectedTypedCompartment)
             {
-                if (compartmentDetails.MaterialStatusId == selectedDetails.MaterialStatusId)
+                if (typedCompartment.MaterialStatusId == selectedTypedCompartment.MaterialStatusId)
                 {
                     return "#76FF03";
                 }

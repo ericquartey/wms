@@ -5,7 +5,7 @@ using System.Windows.Threading;
 
 namespace Ferretto.Common.Controls
 {
-    public class BackgroundVisualHost : FrameworkElement
+    public class BackgroundVisualHost : FrameworkElement, IDisposable
     {
         #region Fields
 
@@ -20,6 +20,8 @@ namespace Ferretto.Common.Controls
             typeof(bool),
             typeof(BackgroundVisualHost),
             new FrameworkPropertyMetadata(false, OnIsContentShowingChanged));
+
+        private bool disposedValue;
 
         private HostVisual hostVisual;
 
@@ -64,6 +66,27 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            this.Dispose(true);
+
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposedValue)
+            {
+                if (disposing)
+                {
+                    this.threadedHelper?.Dispose();
+                }
+
+                this.disposedValue = true;
+            }
+        }
+
         protected override Visual GetVisualChild(int index)
         {
             if (this.hostVisual != null && index == 0)
@@ -71,7 +94,7 @@ namespace Ferretto.Common.Controls
                 return this.hostVisual;
             }
 
-            throw new IndexOutOfRangeException("Invalid index");
+            throw new InvalidOperationException("Invalid index");
         }
 
         protected override Size MeasureOverride(Size availableSize)
@@ -81,7 +104,7 @@ namespace Ferretto.Common.Controls
 
         private static void OnCreateContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            BackgroundVisualHost bvh = (BackgroundVisualHost)d;
+            var bvh = (BackgroundVisualHost)d;
 
             if (bvh.IsContentShowing)
             {

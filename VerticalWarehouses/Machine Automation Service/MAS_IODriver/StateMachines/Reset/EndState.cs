@@ -16,6 +16,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
         public EndState(IIoStateMachine parentStateMachine, ILogger logger)
         {
+            logger.LogInformation("End State State CTor");
             this.parentStateMachine = parentStateMachine;
             this.logger = logger;
 
@@ -31,8 +32,10 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
         public override void ProcessMessage(IoMessage message)
         {
+            logger.LogTrace("End State ProcessMessage");
             if (message.ValidOutputs && message.ElevatorMotorOn)
             {
+                logger.LogTrace("End State State ProcessMessage Notification Event");
                 var endNotification = new NotificationMessage(null, "IO Reset complete", MessageActor.Any,
                     MessageActor.IODriver, MessageType.IOReset, MessageStatus.OperationEnd);
                 this.parentStateMachine.PublishNotificationEvent(endNotification);

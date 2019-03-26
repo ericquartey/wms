@@ -86,7 +86,7 @@ namespace Ferretto.WMS.App.Core.Models
         public int? AverageWeight
         {
             get => this.averageWeight;
-            set => this.SetIfStrictlyPositive(ref this.averageWeight, value);
+            set => this.SetProperty(ref this.averageWeight, value);
         }
 
         [Required]
@@ -94,13 +94,7 @@ namespace Ferretto.WMS.App.Core.Models
         public string Code
         {
             get => this.code;
-            set
-            {
-                if (this.SetProperty(ref this.code, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.code, value);
         }
 
         public IEnumerable<Compartment> Compartments { get; set; }
@@ -126,6 +120,18 @@ namespace Ferretto.WMS.App.Core.Models
                 this[nameof(this.Code)],
                 this[nameof(this.ManagementType)],
                 this[nameof(this.AbcClassId)],
+                this[nameof(this.AverageWeight)],
+                this[nameof(this.FifoTimePick)],
+                this[nameof(this.FifoTimeStore)],
+                this[nameof(this.Height)],
+                this[nameof(this.InventoryTolerance)],
+                this[nameof(this.Length)],
+                this[nameof(this.PickTolerance)],
+                this[nameof(this.ReorderPoint)],
+                this[nameof(this.ReorderQuantity)],
+                this[nameof(this.StoreTolerance)],
+                this[nameof(this.TotalAvailable)],
+                this[nameof(this.Width)],
             }
           .Distinct()
           .Where(s => !string.IsNullOrEmpty(s)));
@@ -134,21 +140,21 @@ namespace Ferretto.WMS.App.Core.Models
         public int? FifoTimePick
         {
             get => this.fifoTimePick;
-            set => this.SetIfStrictlyPositive(ref this.fifoTimePick, value);
+            set => this.SetProperty(ref this.fifoTimePick, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemFifoStoreTime), ResourceType = typeof(BusinessObjects))]
         public int? FifoTimeStore
         {
             get => this.fifoTimeStore;
-            set => this.SetIfStrictlyPositive(ref this.fifoTimeStore, value);
+            set => this.SetProperty(ref this.fifoTimeStore, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemHeight), ResourceType = typeof(BusinessObjects))]
         public double? Height
         {
             get => this.height;
-            set => this.SetIfStrictlyPositive(ref this.height, value);
+            set => this.SetProperty(ref this.height, value);
         }
 
         public string Image
@@ -174,7 +180,7 @@ namespace Ferretto.WMS.App.Core.Models
         public int? InventoryTolerance
         {
             get => this.inventoryTolerance;
-            set => this.SetIfStrictlyPositive(ref this.inventoryTolerance, value);
+            set => this.SetProperty(ref this.inventoryTolerance, value);
         }
 
         public IEnumerable<Enumeration> ItemCategoryChoices { get; set; }
@@ -211,7 +217,7 @@ namespace Ferretto.WMS.App.Core.Models
         public double? Length
         {
             get => this.length;
-            set => this.SetIfStrictlyPositive(ref this.length, value);
+            set => this.SetProperty(ref this.length, value);
         }
 
         [Required]
@@ -219,13 +225,7 @@ namespace Ferretto.WMS.App.Core.Models
         public ItemManagementType ManagementType
         {
             get => this.managementType;
-            set
-            {
-                if (this.SetProperty(ref this.managementType, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.managementType, value);
         }
 
         public IEnumerable<Enumeration> ManagementTypeChoices { get; set; }
@@ -253,42 +253,111 @@ namespace Ferretto.WMS.App.Core.Models
         public int? PickTolerance
         {
             get => this.pickTolerance;
-            set => this.SetIfStrictlyPositive(ref this.pickTolerance, value);
+            set => this.SetProperty(ref this.pickTolerance, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemReorderPoint), ResourceType = typeof(BusinessObjects))]
         public int? ReorderPoint
         {
             get => this.reorderPoint;
-            set => this.SetIfStrictlyPositive(ref this.reorderPoint, value);
+            set => this.SetProperty(ref this.reorderPoint, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemReorderQuantity), ResourceType = typeof(BusinessObjects))]
         public int? ReorderQuantity
         {
             get => this.reorderQuantity;
-            set => this.SetIfStrictlyPositive(ref this.reorderQuantity, value);
+            set => this.SetProperty(ref this.reorderQuantity, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemStoreTolerance), ResourceType = typeof(BusinessObjects))]
         public int? StoreTolerance
         {
             get => this.storeTolerance;
-            set => this.SetIfStrictlyPositive(ref this.storeTolerance, value);
+            set => this.SetProperty(ref this.storeTolerance, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemAvailable), ResourceType = typeof(BusinessObjects))]
         public int TotalAvailable
         {
             get => this.totalAvailable;
-            set => this.SetIfPositive(ref this.totalAvailable, value);
+            set => this.SetProperty(ref this.totalAvailable, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemWidth), ResourceType = typeof(BusinessObjects))]
         public double? Width
         {
             get => this.width;
-            set => this.SetIfStrictlyPositive(ref this.width, value);
+            set => this.SetProperty(ref this.width, value);
+        }
+
+        #endregion
+
+        #region Indexers
+
+        public override string this[string columnName]
+        {
+            get
+            {
+                var baseError = base[columnName];
+                if (!string.IsNullOrEmpty(baseError))
+                {
+                    return baseError;
+                }
+
+                switch (columnName)
+                {
+                    case nameof(this.AverageWeight):
+
+                        return GetErrorMessageIfNegativeOrZero(this.AverageWeight, nameof(this.AverageWeight));
+
+                    case nameof(this.FifoTimePick):
+
+                        return GetErrorMessageIfNegativeOrZero(this.FifoTimePick, nameof(this.FifoTimePick));
+
+                    case nameof(this.FifoTimeStore):
+
+                        return GetErrorMessageIfNegativeOrZero(this.FifoTimeStore, nameof(this.FifoTimeStore));
+
+                    case nameof(this.Height):
+
+                        return GetErrorMessageIfNegativeOrZero(this.Height, nameof(this.Height));
+
+                    case nameof(this.InventoryTolerance):
+
+                        return GetErrorMessageIfNegativeOrZero(this.InventoryTolerance, nameof(this.InventoryTolerance));
+
+                    case nameof(this.Length):
+
+                        return GetErrorMessageIfNegativeOrZero(this.Length, nameof(this.Length));
+
+                    case nameof(this.PickTolerance):
+
+                        return GetErrorMessageIfNegativeOrZero(this.PickTolerance, nameof(this.PickTolerance));
+
+                    case nameof(this.ReorderPoint):
+
+                        return GetErrorMessageIfNegativeOrZero(this.ReorderPoint, nameof(this.ReorderPoint));
+
+                    case nameof(this.ReorderQuantity):
+
+                        return GetErrorMessageIfNegativeOrZero(this.ReorderQuantity, nameof(this.ReorderQuantity));
+
+                    case nameof(this.StoreTolerance):
+
+                        return GetErrorMessageIfNegativeOrZero(this.StoreTolerance, nameof(this.StoreTolerance));
+
+                    case nameof(this.TotalAvailable):
+
+                        return GetErrorMessageIfNegative(this.TotalAvailable, nameof(this.TotalAvailable));
+
+                    case nameof(this.Width):
+
+                        return GetErrorMessageIfNegativeOrZero(this.Width, nameof(this.Width));
+                }
+
+                return null;
+            }
         }
 
         #endregion

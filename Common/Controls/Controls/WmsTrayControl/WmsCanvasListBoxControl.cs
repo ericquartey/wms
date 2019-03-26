@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Ferretto.Common.Controls.Controls;
 using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.Common.Controls
@@ -160,9 +161,9 @@ namespace Ferretto.Common.Controls
             typeof(double),
             typeof(WmsCanvasListBoxControl));
 
-        private const string DEFAULTCOMPARTMENTCOLOR = "DefaultCompartmentColor";
+        private const string DefaultCompartmentColor = "DefaultCompartmentColor";
 
-        private const int OFFSET = 1;
+        private const int PixelOffset = 1;
 
         #endregion
 
@@ -171,7 +172,6 @@ namespace Ferretto.Common.Controls
         public WmsCanvasListBoxControl()
         {
             this.SnapsToDevicePixels = true;
-            RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
         }
 
         #endregion
@@ -372,14 +372,9 @@ namespace Ferretto.Common.Controls
             return ret;
         }
 
-        public static void DrawSnappedLinesBetweenPoints(DrawingContext dc, Pen pen, double lineThickness, params Point[] points)
+        public static void DrawSnappedLinesBetweenPoints(DrawingContext context, Pen pen, double lineThickness, params Point[] points)
         {
-            if (points == null)
-            {
-                return;
-            }
-
-            if (dc == null)
+            if (points == null || context == null)
             {
                 return;
             }
@@ -392,15 +387,15 @@ namespace Ferretto.Common.Controls
             }
 
             var half = lineThickness / 2;
-            points = points.Select(p => new Point(p.X + half, p.Y + half)).ToArray();
-            dc.PushGuidelineSet(guidelineSet);
+            var adjustedPoints = points.Select(p => new Point(p.X + half, p.Y + half)).ToArray();
+            context.PushGuidelineSet(guidelineSet);
 
-            for (var i = 0; i < points.Length - 1; i = i + 2)
+            for (var i = 0; i < adjustedPoints.Length - 1; i = i + 2)
             {
-                dc.DrawLine(pen, points[i], points[i + 1]);
+                context.DrawLine(pen, points[i], points[i + 1]);
             }
 
-            dc.Pop();
+            context.Pop();
         }
 
         public void ResizeCompartments()
@@ -410,7 +405,7 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            foreach (var compartment in this.Items.AsEnumerable())
+            foreach (var compartment in this.Items.AsCompartmentViewModel())
             {
                 this.ResizeCompartment(compartment);
             }
@@ -457,7 +452,7 @@ namespace Ferretto.Common.Controls
                 heightNewCalculated = heightConverted;
             }
 
-            var extraOffset = OFFSET + (this.GetSizeOfPen() / 4);
+            var extraOffset = PixelOffset + (this.GetSizeOfPen() / 4);
 
             this.Width = widthNewCalculated;
             this.Height = heightNewCalculated;
@@ -515,11 +510,18 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            foreach (var compartment in this.Items.AsEnumerable())
+            foreach (var compartment in this.Items.AsCompartmentViewModel())
             {
                 compartment.ColorFill = this.GetColorFilter(compartment.CompartmentDetails);
                 compartment.IsReadOnly = this.IsReadOnly;
             }
+        }
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+
+            RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
         }
 
         protected override void OnRender(DrawingContext drawingContext)
@@ -531,7 +533,7 @@ namespace Ferretto.Common.Controls
             var stepXPixel = ConvertMillimetersToPixel(this.Step, this.TrayWidth, this.DimensionWidth);
             var stepYPixel = ConvertMillimetersToPixel(this.Step, this.TrayHeight, this.DimensionHeight);
 
-            var posY = this.OriginVertical == OriginVertical.Top ? stepYPixel : this.ActualHeight - stepYPixel - OFFSET;
+            var posY = this.OriginVertical == OriginVertical.Top ? stepYPixel : this.ActualHeight - stepYPixel - PixelOffset;
             while (posY > 0 && posY < this.TrayHeight)
             {
                 points.Add(new Point(0, posY));
@@ -546,7 +548,7 @@ namespace Ferretto.Common.Controls
                 }
             }
 
-            var posX = this.OriginHorizontal == OriginHorizontal.Left ? stepXPixel : this.ActualWidth - stepXPixel - OFFSET;
+            var posX = this.OriginHorizontal == OriginHorizontal.Left ? stepXPixel : this.ActualWidth - stepXPixel - PixelOffset;
             while (posX > 0 && posX < this.TrayWidth)
             {
                 points.Add(new Point(posX, 0));
@@ -685,7 +687,7 @@ namespace Ferretto.Common.Controls
 
         private string GetColorFilter(ICompartment compartment)
         {
-            var colorFill = Application.Current.Resources[DEFAULTCOMPARTMENTCOLOR].ToString();
+            var colorFill = Application.Current.Resources[DefaultCompartmentColor].ToString();
             if (this.IsReadOnly == false &&
                 this.SelectedColorFilterFunc != null)
             {
@@ -753,52 +755,50 @@ namespace Ferretto.Common.Controls
 
         private void SetSelectedItem()
         {
-            if (this.SelectedCompartment == null ||
-                this.Items == null)
+            if (this.SelectedCompartment == null
+                || this.Items == null)
             {
                 this.SelectedItem = null;
                 return;
             }
 
-            var foundCompartment = this.Items.AsEnumerable().FirstOrDefault(c => c.CompartmentDetails.Id == this.SelectedCompartment.Id);
-            if (foundCompartment == null)
+            var compartment = this.Items
+                .AsCompartmentViewModel()
+                .FirstOrDefault(c => c.CompartmentDetails.Id == this.SelectedCompartment.Id);
+
+            if (compartment == null)
             {
                 this.SelectedItem = null;
                 return;
             }
 
-            if (this.SelectedItem != null &&
-                ((WmsCompartmentViewModel)this.SelectedItem).CompartmentDetails.Id == this.SelectedCompartment.Id)
+            if (this.SelectedItem != null
+                && ((WmsCompartmentViewModel)this.SelectedItem).CompartmentDetails.Id == this.SelectedCompartment.Id)
             {
                 return;
             }
 
-            this.SelectedItem = foundCompartment;
+            this.SelectedItem = compartment;
             this.UpdateColorCompartments();
             this.ResizeCompartment(this.SelectedItem as WmsCompartmentViewModel);
         }
 
         private void UpdateColorCompartments()
         {
-            if (this.Items == null || this.SelectedColorFilterFunc == null)
+            if (this.SelectedColorFilterFunc == null)
             {
                 return;
             }
 
-            foreach (var item in this.Items.AsEnumerable())
+            foreach (var item in this.Items.AsCompartmentViewModel())
             {
-                item.ColorFill = this.SelectedColorFilterFunc.Invoke(item.CompartmentDetails, this.SelectedCompartment) ?? Application.Current.Resources[DEFAULTCOMPARTMENTCOLOR].ToString();
+                item.ColorFill = this.SelectedColorFilterFunc.Invoke(item.CompartmentDetails, this.SelectedCompartment) ?? Application.Current.Resources[DefaultCompartmentColor].ToString();
             }
         }
 
         private void UpdateIsCompartmentSelectable()
         {
-            if (this.Items == null)
-            {
-                return;
-            }
-
-            foreach (var compartment in this.Items.AsEnumerable())
+            foreach (var compartment in this.Items.AsCompartmentViewModel())
             {
                 compartment.IsSelectable = this.IsCompartmentSelectable;
             }

@@ -11,7 +11,10 @@
     {
         #region Fields
 
-        public static readonly DependencyProperty TooltipProperty = DependencyProperty.Register(nameof(Tooltip), typeof(string), typeof(WmsTooltipViewAppear));
+        public static readonly DependencyProperty TooltipProperty = DependencyProperty.Register(
+            nameof(Tooltip),
+            typeof(string),
+            typeof(WmsTooltipViewAppear));
 
         #endregion
 
@@ -29,20 +32,18 @@
 
         #region Methods
 
-        protected override void Invoke(object inputArgs)
+        protected override void Invoke(object parameter)
         {
-            if (inputArgs is ItemClickEventArgs clickEventArgs)
+            if (parameter is ItemClickEventArgs clickEventArgs
+                && clickEventArgs.Source is ActionBarItem actionBarItem)
             {
-                if (clickEventArgs.Source is ActionBarItem actionBarItem)
-                {
-                    var gridParent = LayoutTreeHelper.GetVisualParents(actionBarItem)
-                        .OfType<Grid>()
-                        .FirstOrDefault();
+                var gridParent = LayoutTreeHelper.GetVisualParents(actionBarItem)
+                    .OfType<Grid>()
+                    .FirstOrDefault();
 
-                    this.Grid = LayoutTreeHelper.GetVisualChildren(gridParent)
-                        .OfType<WmsGridControl>()
-                        .FirstOrDefault();
-                }
+                this.Grid = LayoutTreeHelper.GetVisualChildren(gridParent)
+                    .OfType<WmsGridControl>()
+                    .FirstOrDefault();
             }
 
             if (this.Grid?.GetSelectedRowHandles().Count() == 1)
@@ -54,7 +55,6 @@
                 if (cell != null)
                 {
                     var toolTip = new ToolTip();
-
                     if (cell.ToolTip is ToolTip cellTooltip)
                     {
                         toolTip.Content = cellTooltip.Content;
