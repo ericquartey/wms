@@ -121,6 +121,17 @@ namespace Ferretto.WMS.App.Core.Models
                 this[nameof(this.ManagementType)],
                 this[nameof(this.AbcClassId)],
                 this[nameof(this.AverageWeight)],
+                this[nameof(this.FifoTimePick)],
+                this[nameof(this.FifoTimeStore)],
+                this[nameof(this.Height)],
+                this[nameof(this.InventoryTolerance)],
+                this[nameof(this.Length)],
+                this[nameof(this.PickTolerance)],
+                this[nameof(this.ReorderPoint)],
+                this[nameof(this.ReorderQuantity)],
+                this[nameof(this.StoreTolerance)],
+                this[nameof(this.TotalAvailable)],
+                this[nameof(this.Width)],
             }
           .Distinct()
           .Where(s => !string.IsNullOrEmpty(s)));

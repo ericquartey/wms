@@ -104,6 +104,7 @@ namespace Ferretto.WMS.App.Core.Models
                 this[nameof(this.Code)],
                 this[nameof(this.ItemListType)],
                 this[nameof(this.Status)],
+                this[nameof(this.ItemListItemsCount)],
                 this[nameof(this.Priority)],
             }
           .Distinct()
@@ -138,13 +139,7 @@ namespace Ferretto.WMS.App.Core.Models
         public ItemListType ItemListType
         {
             get => this.itemListType;
-            set
-            {
-                if (this.SetProperty(ref this.itemListType, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.itemListType, value);
         }
 
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
@@ -198,13 +193,7 @@ namespace Ferretto.WMS.App.Core.Models
         public ItemListStatus Status
         {
             get => this.status;
-            set
-            {
-                if (this.SetProperty(ref this.status, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.status, value);
         }
 
         #endregion

@@ -112,6 +112,9 @@ namespace Ferretto.WMS.App.Core.Models
                                     {
                 this[nameof(this.XPosition)],
                 this[nameof(this.YPosition)],
+                this[nameof(this.ReservedForPick)],
+                this[nameof(this.ReservedToStore)],
+                this[nameof(this.FifoTime)],
                 this[nameof(this.Width)],
                 this[nameof(this.Height)],
                 this[nameof(this.MaxCapacity)],
