@@ -6,7 +6,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.Common.Controls
 {
-    public class BaseNavigationViewModel : BindableBase, INavigableViewModel, IShortKey, IDisposable
+    public class BaseNavigationViewModel : BindableBase, INavigableViewModel, IShortKey
     {
         #region Constructors
 
@@ -101,7 +101,7 @@ namespace Ferretto.Common.Controls
         /// <para>Free resources</para>
         /// </summary>
         /// <param name="disposing">If true the delete of managed object is required</param>
-        private void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (this.IsDisposed == false)
             {

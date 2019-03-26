@@ -47,14 +47,19 @@ namespace Ferretto.Common.Controls
                 throw new InvalidOperationException(Errors.ConverterCanConvertOnlyToVisibilityType);
             }
 
-            bool isValueNull = value == null;
+            var isValueNull = value == null;
 
             if (this.Invert)
             {
                 isValueNull = !isValueNull;
             }
 
-            return isValueNull ? (this.Hide ? Visibility.Hidden : Visibility.Collapsed) : Visibility.Visible;
+            if (isValueNull)
+            {
+                return this.Hide ? Visibility.Hidden : Visibility.Collapsed;
+            }
+
+            return Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -2,7 +2,7 @@
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    public class EditReadOnlyFilter : IFilter
+    public class EditReadOnlyFilter : ICompartmentColorFilter
     {
         #region Properties
 

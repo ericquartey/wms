@@ -1,16 +1,14 @@
 ﻿using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using CommonServiceLocator;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Docking;
 using DevExpress.Xpf.Docking.Base;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Resources;
-using CommonServiceLocator;
 using Prism.Regions;
-using System.Windows.Threading;
-using System;
 
 namespace Ferretto.Common.Controls
 {
@@ -24,13 +22,11 @@ namespace Ferretto.Common.Controls
 
         public static readonly DependencyProperty StartViewNameProperty = DependencyProperty.Register(nameof(StartViewName), typeof(string), typeof(WmsMainDockLayoutManager));
 
-        private readonly IInputService inputService;
-
         private readonly INavigationService navigationService;
 
         private LoadingDecorator busyIndicator;
 
-        private bool isControlPressed = false;
+        private bool isControlPressed;
 
         #endregion
 
@@ -41,21 +37,18 @@ namespace Ferretto.Common.Controls
             Current = this;
             this.DataContext = null;
             this.navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
-            this.inputService = ServiceLocator.Current.GetInstance<IInputService>();
+
             this.Loaded += this.WmsMainDockLayoutManager_Loaded;
-            this.DockItemClosing += this.WmsMainDockLayoutManager_DockItemClosing;
+            this.DockItemClosing += WmsMainDockLayoutManager_DockItemClosing;
             this.DockOperationCompleted += this.WmsMainDockLayoutManager_DockOperationCompleted;
             this.ClosedPanelsBarVisibility = ClosedPanelsBarVisibility.Never;
-            this.inputService.BeginMouseNotify(this, this.OnMouseDown);
-            this.inputService.BeginShortKeyNotify(this, (shortKey) => this.isControlPressed = (shortKey.ShortKey.ModifierKeyFirst == ModifierKeys.Control));
         }
 
         #endregion
 
         #region Properties
 
-        public static WmsMainDockLayoutManager Current
-        { get; private set; }
+        public static WmsMainDockLayoutManager Current { get; private set; }
 
         public bool ShowBusyOnStartUp
         {
@@ -177,7 +170,26 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        private void NewLayoutPanel_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+
+            var inputService = ServiceLocator.Current.GetInstance<IInputService>();
+            inputService.BeginMouseNotify(this, this.OnMouseDown);
+            inputService.BeginShortKeyNotify(this, (shortKey) => this.isControlPressed = (shortKey.ShortKey.ModifierKeyFirst == ModifierKeys.Control));
+        }
+
+        private static void WmsMainDockLayoutManager_DockItemClosing(object sender, ItemCancelEventArgs e)
+        {
+            if (!(((DevExpress.Xpf.Docking.ContentItem)e.Item).Content is INavigableView vmsView))
+            {
+                return;
+            }
+
+            vmsView.Disappear();
+        }
+
+        private void NewLayoutPanel_Loaded(object sender, RoutedEventArgs e)
         {
             if (this.busyIndicator != null &&
                 this.ShowBusyOnStartUp)
@@ -197,17 +209,7 @@ namespace Ferretto.Common.Controls
             this.isControlPressed = (Keyboard.Modifiers & System.Windows.Input.ModifierKeys.Control) == System.Windows.Input.ModifierKeys.Control;
         }
 
-        private void WmsMainDockLayoutManager_DockItemClosing(object sender, ItemCancelEventArgs e)
-        {
-            if (!(((DevExpress.Xpf.Docking.ContentItem)e.Item).Content is INavigableView vmsView))
-            {
-                return;
-            }
-
-            vmsView.Disappear();
-        }
-
-        private void WmsMainDockLayoutManager_DockOperationCompleted(object sender, DevExpress.Xpf.Docking.Base.DockOperationCompletedEventArgs e)
+        private void WmsMainDockLayoutManager_DockOperationCompleted(object sender, DockOperationCompletedEventArgs e)
         {
             var item = e.Item;
             if (item.Parent == null)
@@ -244,13 +246,11 @@ namespace Ferretto.Common.Controls
 
         private void WmsMainDockLayoutManager_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            if ((string.IsNullOrEmpty(this.StartModuleName) &&
-                string.IsNullOrEmpty(this.StartViewName)) == false)
+            if ((string.IsNullOrEmpty(this.StartModuleName)
+                && string.IsNullOrEmpty(this.StartViewName)
+                && this.navigationService.IsUnitTest) == false)
             {
-                if (this.navigationService.IsUnitTest == false)
-                {
-                    this.navigationService.Appear(this.StartModuleName, this.StartViewName);
-                }
+                this.navigationService.Appear(this.StartModuleName, this.StartViewName);
             }
         }
 
