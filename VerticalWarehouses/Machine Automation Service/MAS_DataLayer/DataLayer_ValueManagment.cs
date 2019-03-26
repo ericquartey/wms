@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
@@ -301,7 +302,7 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public async void SetBoolConfigurationValue(long configurationValueEnum, long categoryValueEnum, bool value)
+        public async Task SetBoolConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, bool value)
         {
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Boolean))
                 throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
@@ -334,7 +335,7 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public async void SetBoolRuntimeValue(long runtimeValueEnum, long categoryValueEnum, bool value)
+        public async Task SetBoolRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum, bool value)
         {
             if (!this.CheckConfigurationDataType(runtimeValueEnum, categoryValueEnum, ConfigurationDataType.Boolean))
                 throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
@@ -367,7 +368,7 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public async void SetDateTimeConfigurationValue(long configurationValueEnum, long categoryValueEnum, DateTime value)
+        public async Task SetDateTimeConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, DateTime value)
         {
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Date))
                 throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
@@ -400,7 +401,7 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public async void SetDateTimeRuntimeValue(long runtimeValueEnum, long categoryValueEnum, DateTime value)
+        public async Task SetDateTimeRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum, DateTime value)
         {
             if (!this.CheckConfigurationDataType(runtimeValueEnum, categoryValueEnum, ConfigurationDataType.Date))
                 throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
@@ -433,7 +434,7 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public async void SetDecimalConfigurationValue(long configurationValueEnum, long categoryValueEnum, decimal value)
+        public async Task SetDecimalConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, decimal value)
         {
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Float))
                 throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
@@ -466,7 +467,7 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public async void SetDecimalRuntimeValue(long runtimeValueEnum, long categoryValueEnum, decimal value)
+        public async Task SetDecimalRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum, decimal value)
         {
             if (!this.CheckConfigurationDataType(runtimeValueEnum, categoryValueEnum, ConfigurationDataType.Float))
                 throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
@@ -498,7 +499,7 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public async void SetIntegerConfigurationValue(long configurationValueEnum, long categoryValueEnum, int value)
+        public async Task SetIntegerConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, int value)
         {
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Integer))
                 throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
@@ -531,7 +532,7 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public async void SetIntegerRuntimeValue(long runtimeValueEnum, long categoryValueEnum, int value)
+        public async Task SetIntegerRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum, int value)
         {
             if (!this.CheckConfigurationDataType(runtimeValueEnum, categoryValueEnum, ConfigurationDataType.Integer))
                 throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
@@ -564,7 +565,7 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public async void SetIPAddressConfigurationValue(long configurationValueEnum, long categoryValueEnum, IPAddress value)
+        public async Task SetIPAddressConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, IPAddress value)
         {
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.IPAddress))
                 throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
@@ -597,7 +598,7 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public async void SetStringConfigurationValue(long configurationValueEnum, long categoryValueEnum, string value)
+        public async Task SetStringConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, string value)
         {
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.String))
                 throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
@@ -630,7 +631,7 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public async void SetStringRuntimeValue(long runtimeValueEnum, long categoryValueEnum, string value)
+        public async Task SetStringRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum, string value)
         {
             if (!this.CheckConfigurationDataType(runtimeValueEnum, categoryValueEnum, ConfigurationDataType.String))
                 throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);

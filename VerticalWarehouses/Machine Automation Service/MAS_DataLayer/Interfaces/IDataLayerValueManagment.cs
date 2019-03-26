@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace Ferretto.VW.MAS_DataLayer.Interfaces
 {
@@ -121,7 +122,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         /// <param name="configurationValueEnum">Configuration parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetBoolConfigurationValue(long configurationValueEnum, long categoryValueEnum, bool value);
+        Task SetBoolConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, bool value);
 
         /// <summary>
         ///     Set a bool variable in the runtime table to a new value or update it
@@ -129,7 +130,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         /// <param name="RuntimeValue">Runtime parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetBoolRuntimeValue(long runtimeValueEnum, long categoryValueEnum, bool value);
+        Task SetBoolRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum, bool value);
 
         /// <summary>
         ///     Set a DateTime variable in the configuration table to a new value or update it
@@ -137,7 +138,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         /// <param name="RuntimeValue">Configuration parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetDateTimeConfigurationValue(long configurationValueEnum, long categoryValueEnum, DateTime value);
+        Task SetDateTimeConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, DateTime value);
 
         /// <summary>
         ///     Set a DateTime variable in the runtime table to a new value or update it
@@ -145,7 +146,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         /// <param name="RuntimeValue">Runtime parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetDateTimeRuntimeValue(long runtimeValueEnum, long categoryValueEnum, DateTime value);
+        Task SetDateTimeRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum, DateTime value);
 
         /// <summary>
         ///     Set a decimal variable in the configuration table to a new value or update it
@@ -153,7 +154,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         /// <param name="configurationValueEnum">Configuration parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetDecimalConfigurationValue(long configurationValueEnum, long categoryValueEnum, decimal value);
+        Task SetDecimalConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, decimal value);
 
         /// <summary>
         ///     Set a decimal variable in the runtime table to a new value or update it
@@ -161,7 +162,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         /// <param name="RuntimeValue">Runtime parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetDecimalRuntimeValue(long runtimeValueEnum, long categoryValueEnum, decimal value);
+        Task SetDecimalRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum, decimal value);
 
         /// <summary>
         ///     Set an integer variable in the configuration table to a new value or update it
@@ -169,7 +170,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         /// <param name="configurationValueEnum">Configuration parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetIntegerConfigurationValue(long configurationValueEnum, long categoryValueEnum, int value);
+        Task SetIntegerConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, int value);
 
         /// <summary>
         ///     Set an integer variable in the runtime table to a new value or update it
@@ -177,7 +178,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         /// <param name="RuntimeValue">Runtime parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetIntegerRuntimeValue(long runtimeValueEnum, long categoryValueEnum, int value);
+        Task SetIntegerRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum, int value);
 
         /// <summary>
         ///     Set a string variable in the configuration table to a new value or update it
@@ -185,7 +186,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         /// <param name="configurationValueEnum">Configuration parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetStringConfigurationValue(long configurationValueEnum, long categoryValueEnum, string value);
+        Task SetStringConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, string value);
 
         /// <summary>
         ///     Set a string variable in the runtime table to a new value or update it
@@ -193,7 +194,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         /// <param name="RuntimeValue">Runtime parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetStringRuntimeValue(long runtimeValueEnum, long categoryValueEnum, string value);
+        Task SetStringRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum, string value);
 
         #endregion
     }
