@@ -6,42 +6,11 @@ namespace Ferretto.WMS.Scheduler.Core.Models
     {
         #region Fields
 
+        public const int InstantRequestPriority = 1;
+
         private int dispatchedQuantity;
 
         private int requestedQuantity;
-
-        #endregion
-
-        #region Constructors
-
-        public SchedulerRequest()
-        {
-        }
-
-        public SchedulerRequest(SchedulerRequest request)
-        {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
-            this.AreaId = request.AreaId;
-            this.BayId = request.BayId;
-            this.IsInstant = request.IsInstant;
-            this.ItemId = request.ItemId;
-            this.ListId = request.ListId;
-            this.ListRowId = request.ListRowId;
-            this.LoadingUnitId = request.LoadingUnitId;
-            this.LoadingUnitTypeId = request.LoadingUnitTypeId;
-            this.Lot = request.Lot;
-            this.MaterialStatusId = request.MaterialStatusId;
-            this.PackageTypeId = request.PackageTypeId;
-            this.RegistrationNumber = request.RegistrationNumber;
-            this.RequestedQuantity = request.RequestedQuantity;
-            this.Sub1 = request.Sub1;
-            this.Sub2 = request.Sub2;
-            this.Type = request.Type;
-        }
 
         #endregion
 
@@ -104,6 +73,34 @@ namespace Ferretto.WMS.Scheduler.Core.Models
         public string Sub2 { get; set; }
 
         public OperationType Type { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        public static SchedulerRequest FromWithdrawalOptions(int itemId, ItemWithdrawOptions options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            return new SchedulerRequest
+            {
+                AreaId = options.AreaId,
+                BayId = options.BayId,
+                IsInstant = options.RunImmediately,
+                ItemId = itemId,
+                Lot = options.Lot,
+                MaterialStatusId = options.MaterialStatusId,
+                PackageTypeId = options.PackageTypeId,
+                RegistrationNumber = options.RegistrationNumber,
+                RequestedQuantity = options.RequestedQuantity,
+                Sub1 = options.Sub1,
+                Sub2 = options.Sub2,
+                Type = OperationType.Withdrawal
+            };
+        }
 
         #endregion
     }
