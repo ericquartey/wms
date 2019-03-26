@@ -20,8 +20,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
 
-        private readonly IImageProvider imageProvider = ServiceLocator.Current.GetInstance<IImageProvider>();
-
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
         private IEnumerable<Compartment> compartmentsDataSource;
@@ -35,8 +33,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private object modelRefreshSubscription;
 
         private object modelSelectionChangedSubscription;
-
-        private string originalImage;
 
         private Compartment selectedCompartment;
 
@@ -118,15 +114,6 @@ namespace Ferretto.WMS.Modules.MasterData
         protected override async Task ExecuteSaveCommandAsync()
         {
             this.IsBusy = true;
-            if (this.originalImage != this.Model.Image)
-            {
-                this.Model.HasImageChanged = true;
-            }
-
-            if (this.Model.HasImageChanged)
-            {
-                this.Model.Image = await this.imageProvider.UploadAsync(this.Model.ImagePath, null);
-            }
 
             var result = await this.itemProvider.UpdateAsync(this.Model);
             if (result.Success)
@@ -247,7 +234,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     this.Model = await this.itemProvider.GetByIdAsync(modelId);
                     this.ItemHasCompartments = this.Model.CompartmentsCount > 0;
-                    this.originalImage = this.Model.Image;
                 }
 
                 this.IsBusy = false;

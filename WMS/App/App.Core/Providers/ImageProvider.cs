@@ -64,14 +64,14 @@ namespace Ferretto.WMS.App.Core.Providers
             };
         }
 
-        public async Task<string> UploadAsync(string imagePath, IFormFile model = null)
+        public async Task<string> UploadAsync(string imagePath, IFormFile model)
         {
             if (imagePath == null)
             {
                 return null;
             }
 
-            var streamResized = this.ResizeImage(imagePath);
+            var streamResized = ResizeImage(imagePath);
             ImageFile imageFile = null;
             if (streamResized != null)
             {
@@ -203,7 +203,7 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
-        private Stream ResizeImage(string imagePath)
+        private static Stream ResizeImage(string imagePath)
         {
             var stream = new MemoryStream();
             var format = GetImageFormat(imagePath);

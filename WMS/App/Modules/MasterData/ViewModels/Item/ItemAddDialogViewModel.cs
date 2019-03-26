@@ -14,8 +14,6 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private readonly IImageProvider imageProvider = ServiceLocator.Current.GetInstance<IImageProvider>();
-
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
         #endregion
@@ -32,8 +30,6 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = true;
             try
             {
-                this.Model.Image = await this.imageProvider.UploadAsync(this.Model.ImagePath, null);
-
                 var result = await this.itemProvider.CreateAsync(this.Model);
                 if (result.Success)
                 {

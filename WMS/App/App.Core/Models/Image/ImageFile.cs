@@ -10,6 +10,12 @@ using Microsoft.AspNetCore.Http;
 
 namespace Ferretto.WMS.App.Core.Models
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Performance",
+        "CA1819:Properties should not return arrays",
+        Justification = "Ok",
+        Scope = "member",
+        Target = "~P:Ferretto.WMS.App.Core.Models.ImageFile.FileBytes")]
     public class ImageFile : IImageFile
     {
         #region Properties

@@ -5,6 +5,12 @@ using Ferretto.Common.BLL.Interfaces.Providers;
 
 namespace Ferretto.Common.Controls
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Major Bug",
+        "S3168:\"async\" methods should not return \"void\"",
+        Justification = "Ok",
+        Scope = "member",
+        Target = "~M:Ferretto.Common.Controls.WmsImageEdit.OnCommandActionChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)")]
     public partial class WmsImage : UserControl
     {
         #region Fields

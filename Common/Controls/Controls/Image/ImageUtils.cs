@@ -18,6 +18,11 @@ namespace Ferretto.Common.Controls
 
         public static async Task<ImageSource> GetImageAsync(IImageProvider imageService, string path)
         {
+            if (imageService == null)
+            {
+                throw new ArgumentNullException(nameof(imageService));
+            }
+
             var imageFile = await imageService.DownloadAsync(path);
 
             var imageStream = imageFile.Stream;
