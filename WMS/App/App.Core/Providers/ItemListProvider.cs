@@ -73,13 +73,7 @@ namespace Ferretto.WMS.App.Core.Providers
         {
             try
             {
-                await this.itemListsDataService.ExecuteAsync(
-                    new WMS.Data.WebAPI.Contracts.ListExecutionRequest
-                    {
-                        ListId = listId,
-                        AreaId = areaId,
-                        BayId = bayId
-                    });
+                await this.itemListsDataService.ExecuteAsync(listId, areaId, bayId);
 
                 return new OperationResult<ItemList>(true);
             }
@@ -171,12 +165,7 @@ namespace Ferretto.WMS.App.Core.Providers
         {
             try
             {
-                await this.itemListsDataService.ExecuteAsync(
-                    new WMS.Data.WebAPI.Contracts.ListExecutionRequest
-                    {
-                        ListId = listId,
-                        AreaId = areaId
-                    });
+                await this.itemListsDataService.ExecuteAsync(listId, areaId, bayId: null);
 
                 return new OperationResult<ItemList>(true);
             }

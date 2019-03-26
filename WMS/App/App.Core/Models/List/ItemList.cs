@@ -20,7 +20,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private ItemListType itemListType;
 
-        private int priority;
+        private int? priority;
 
         private ItemListStatus status;
 
@@ -51,7 +51,7 @@ namespace Ferretto.WMS.App.Core.Models
         public ItemListType ItemListType { get => this.itemListType; set => this.SetProperty(ref this.itemListType, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListPriority), ResourceType = typeof(BusinessObjects))]
-        public int Priority { get => this.priority; set => this.SetProperty(ref this.priority, value); }
+        public int? Priority { get => this.priority; set => this.SetProperty(ref this.priority, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListStatus), ResourceType = typeof(BusinessObjects))]
         public ItemListStatus Status { get => this.status; set => this.SetProperty(ref this.status, value); }

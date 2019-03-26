@@ -34,7 +34,7 @@ namespace Ferretto.Common.DataModels
 
         public IEnumerable<Mission> Missions { get; set; }
 
-        public int Priority { get; set; }
+        public int? Priority { get; set; }
 
         public IEnumerable<SchedulerRequest> SchedulerRequests { get; set; }
 

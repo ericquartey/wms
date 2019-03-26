@@ -9,7 +9,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         private int itemListItemsCount;
 
-        private int priority;
+        private int? priority;
 
         #endregion
 
@@ -62,7 +62,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public DateTime? LastModificationDate { get; set; }
 
-        public int Priority
+        public int? Priority
         {
             get => this.priority;
             set => this.priority = CheckIfStrictlyPositive(value);

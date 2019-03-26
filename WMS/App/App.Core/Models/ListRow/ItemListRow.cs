@@ -22,9 +22,9 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string materialStatusDescription;
 
-        private int requestedQuantity;
+        private int? priority;
 
-        private int rowPriority;
+        private int requestedQuantity;
 
         #endregion
 
@@ -56,7 +56,7 @@ namespace Ferretto.WMS.App.Core.Models
         public int RequestedQuantity { get => this.requestedQuantity; set => this.SetProperty(ref this.requestedQuantity, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowPriority), ResourceType = typeof(BusinessObjects))]
-        public int RowPriority { get => this.rowPriority; set => this.SetProperty(ref this.rowPriority, value); }
+        public int? RowPriority { get => this.priority; set => this.SetProperty(ref this.priority, value); }
 
         #endregion
     }

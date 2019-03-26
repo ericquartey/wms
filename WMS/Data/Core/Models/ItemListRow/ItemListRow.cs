@@ -24,9 +24,9 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string MaterialStatusDescription { get; set; }
 
-        public int RequestedQuantity { get; set; }
+        public int? Priority { get; set; }
 
-        public int RowPriority { get; set; }
+        public int RequestedQuantity { get; set; }
 
         public ItemListRowStatus Status { get; set; }
 
