@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Threading;
 using CommonServiceLocator;
 using Ferretto.Common.Controls.Interfaces;
@@ -20,11 +21,11 @@ namespace Ferretto.Common.Controls.Services
 
         private readonly Dictionary<string, INavigableView> dialogs = new Dictionary<string, INavigableView>();
 
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly IRegionManager regionManager;
 
         private readonly Dictionary<string, ViewModelBind> registrations = new Dictionary<string, ViewModelBind>();
-
-        private bool isInUnitTest;
 
         private INavigableView lastViewActivated;
 
@@ -42,7 +43,7 @@ namespace Ferretto.Common.Controls.Services
 
         #region Properties
 
-        public bool IsUnitTest { get => this.isInUnitTest; set => this.isInUnitTest = value; }
+        public bool IsUnitTest { get; set; }
 
         #endregion
 
@@ -50,7 +51,7 @@ namespace Ferretto.Common.Controls.Services
 
         public void Appear<TViewModel>()
         {
-            var (moduleName, viewModelName) = MvvmNaming.GetViewModelNames<TViewModel>();
+            var(moduleName, viewModelName) = MvvmNaming.GetViewModelNames<TViewModel>();
             this.Appear(moduleName, viewModelName);
         }
 
@@ -61,9 +62,7 @@ namespace Ferretto.Common.Controls.Services
                 return null;
             }
 
-            NLog.LogManager
-                   .GetCurrentClassLogger()
-                   .Trace(string.Format("Opening view '{0}' of module '{1}'.", viewModelName, moduleName));
+            this.logger.Trace(string.Format("Opening view '{0}' of module '{1}'.", viewModelName, moduleName));
 
             try
             {
@@ -76,9 +75,7 @@ namespace Ferretto.Common.Controls.Services
             }
             catch (Exception ex)
             {
-                NLog.LogManager
-                    .GetCurrentClassLogger()
-                    .Error(ex, string.Format("Cannot show view '{0}' for module '{1}'.", viewModelName, moduleName));
+                this.logger.Error(ex, string.Format("Cannot show view '{0}' for module '{1}'.", viewModelName, moduleName));
             }
 
             return null;
@@ -91,9 +88,7 @@ namespace Ferretto.Common.Controls.Services
                 return;
             }
 
-            NLog.LogManager
-               .GetCurrentClassLogger()
-               .Trace(string.Format("Closing view '{0}' (mapId='{1}').", view.Title, view.MapId));
+            this.logger.Trace(string.Format("Closing view '{0}' (mapId='{1}').", view.Title, view.MapId));
 
             try
             {
@@ -108,9 +103,7 @@ namespace Ferretto.Common.Controls.Services
             }
             catch (Exception ex)
             {
-                NLog.LogManager
-                    .GetCurrentClassLogger()
-                    .Error(ex, string.Format("Cannot close view '{0}' (mapId='{1}').", view.Title, view.MapId));
+                this.logger.Error(ex, string.Format("Cannot close view '{0}' (mapId='{1}').", view.Title, view.MapId));
             }
         }
 
@@ -135,9 +128,7 @@ namespace Ferretto.Common.Controls.Services
             }
             catch (Exception ex)
             {
-                NLog.LogManager
-                    .GetCurrentClassLogger()
-                    .Error(ex, string.Format("Cannot close view model '{0}' (mapId='{1}').", viewModel.GetType().Name, viewModel.MapId));
+                this.logger.Error(ex, string.Format("Cannot close view model '{0}' (mapId='{1}').", viewModel.GetType().Name, viewModel.MapId));
             }
         }
 
@@ -159,7 +150,7 @@ namespace Ferretto.Common.Controls.Services
             return this.regionManager.Regions[instanceModuleViewName].ActiveViews.First() as INavigableView;
         }
 
-        public INavigableViewModel GetRegisteredViewModel(string mapId, object data)
+        public INavigableViewModel GetRegisteredViewModel(string mapId, object data = null)
         {
             var viewModel = GetViewModelByMapId(mapId);
             viewModel.MapId = mapId;
@@ -168,7 +159,7 @@ namespace Ferretto.Common.Controls.Services
             return viewModel;
         }
 
-        public INavigableView GetView(string moduleViewName, object data)
+        public INavigableView GetView(string moduleViewName, object data = null)
         {
             var registeredView = ServiceLocator.Current.GetInstance<INavigableView>(moduleViewName);
             registeredView.Token = moduleViewName;
@@ -190,25 +181,22 @@ namespace Ferretto.Common.Controls.Services
 
         public INavigableViewModel GetViewModelFromActiveWindow()
         {
-            foreach (var viewToCheck in this.dialogs.Values)
+            var activeDialog = this.dialogs.Values.Cast<Window>().FirstOrDefault(d => d.IsActive);
+            if (activeDialog != null)
             {
-                var dlg = viewToCheck as WmsDialogView;
-                if (dlg.IsActive)
+                return activeDialog.DataContext as INavigableViewModel;
+            }
+
+            if (WmsMainDockLayoutManager.GetActiveView() is ContentControl activeView)
+            {
+                if (activeView.Content is IWmsHistoryView historyView)
                 {
-                    return dlg.DataContext as INavigableViewModel;
+                    return historyView.GetCurrentViewModel();
                 }
-            }
-
-            var activeView = WmsMainDockLayoutManager.GetActiveView();
-            if (activeView != null &&
-                ((WmsView)activeView).Content is IWmsHistoryView histView)
-            {
-                return histView.GetCurrentViewModel();
-            }
-
-            if (activeView is INavigableView view)
-            {
-                return view.DataContext as INavigableViewModel;
+                else if (activeView is INavigableView navigableView)
+                {
+                    return navigableView.DataContext as INavigableViewModel;
+                }
             }
 
             return null;
@@ -249,12 +237,13 @@ namespace Ferretto.Common.Controls.Services
         /// <remarks>This method shall be called only after the Register method has been invoked to ensure there is an association registered between the view type and the view model type.
         /// Multiple calls to this method are allowed and they will generate new instances of the view model.</remarks>
         /// <returns>A new instance of the view model associated to the specified view.</returns>
-        public INavigableViewModel RegisterAndGetViewModel(string viewName, string token, object data)
+        public INavigableViewModel RegisterAndGetViewModel(string viewName, string token, object data = null)
         {
             if (this.registrations.ContainsKey(viewName) == false)
             {
                 throw new InvalidOperationException(
-                    $"Before invoking the ({nameof(this.RegisterAndGetViewModel)}) method, the {nameof(this.Register)} method needs to be called in order to register an association between the specified view and a view model type.");
+                    $"Before invoking the ({nameof(this.RegisterAndGetViewModel)}) method, the {nameof(this.Register)} method needs to be called " +
+                    "in order to register an association between the specified view and a view model type.");
             }
 
             var viewModelBind = this.registrations[viewName];
@@ -309,17 +298,6 @@ namespace Ferretto.Common.Controls.Services
             }
 
             return ServiceLocator.Current.GetInstance<INavigableViewModel>(mapId);
-        }
-
-        private void ActivateView(string moduleViewName, string instanceModuleViewName)
-        {
-            var region = this.regionManager.Regions[instanceModuleViewName];
-            var view = region.Views.FirstOrDefault(v =>
-                                    v.GetType().ToString().Equals(moduleViewName, StringComparison.InvariantCulture));
-            if (view != null)
-            {
-                WmsMainDockLayoutManager.Current.ActivateView(((WmsView)view).MapId);
-            }
         }
 
         private INavigableView AddToRegion(string moduleViewName, object data)
@@ -377,32 +355,6 @@ namespace Ferretto.Common.Controls.Services
             return newId;
         }
 
-        private string GetStateNotChanged(string moduleViewName, ViewModelBind viewModelBind)
-        {
-            foreach (var id in viewModelBind.Ids)
-            {
-                var instanceModuleViewName = $"{moduleViewName}.{id}";
-                if (this.regionManager.Regions.ContainsRegionWithName(instanceModuleViewName) == false)
-                {
-                    return null;
-                }
-
-                var viewActive = this.regionManager.Regions[instanceModuleViewName].ActiveViews.First();
-                if (viewActive == null)
-                {
-                    return null;
-                }
-
-                var viewModel = ((INavigableView)viewActive).DataContext;
-                if (string.IsNullOrEmpty(((INavigableViewModel)viewModel).StateId))
-                {
-                    return id;
-                }
-            }
-
-            return null;
-        }
-
         private ViewModelBind GetViewModelBind(string fullViewName)
         {
             return this.registrations.ContainsKey(fullViewName) ? this.registrations[fullViewName] : null;
@@ -411,7 +363,7 @@ namespace Ferretto.Common.Controls.Services
         private void RegisterDialog(string moduleViewName, INavigableView registeredView)
         {
             this.dialogs.Add(moduleViewName, registeredView);
-            WmsDialogView.ShowDialog(registeredView, this.isInUnitTest);
+            WmsDialogView.ShowDialog(registeredView, this.IsUnitTest);
         }
 
         private void RegisterType(ViewModelBind viewModelBind, string instanceModuleViewName)

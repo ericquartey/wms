@@ -68,7 +68,7 @@ namespace Ferretto.Common.Controls
             this.CheckBackVisibility();
         }
 
-        public void Appear(string moduleName, string viewModelName, object data = null)
+        public void Appear(string moduleName, string viewModelName, object data)
         {
             if (string.IsNullOrEmpty(viewModelName))
             {

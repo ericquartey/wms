@@ -89,6 +89,26 @@ namespace Ferretto.WMS.App.Core.Models
             return !this.HasEmptyValue(propertyInfo);
         }
 
+        protected static string GetErrorMessageIfNegative(double? value, string propertyName)
+        {
+            if (value.HasValue && value.Value < 0)
+            {
+                return string.Format(Common.Resources.Errors.PropertyMustBePositive, propertyName);
+            }
+
+            return null;
+        }
+
+        protected static string GetErrorMessageIfNegativeOrZero(double? value, string propertyName)
+        {
+            if (value.HasValue && value.Value <= 0)
+            {
+                return string.Format(Common.Resources.Errors.PropertyMustBeStriclyPositive, propertyName);
+            }
+
+            return null;
+        }
+
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
             base.OnPropertyChanged(args);

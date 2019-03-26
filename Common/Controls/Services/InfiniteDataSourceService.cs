@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using DevExpress.Xpf.Data;
-using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Utils.Expressions;
@@ -13,7 +11,8 @@ using Prism.Mvvm;
 
 namespace Ferretto.Common.Controls.Services
 {
-    public class InfiniteDataSourceService<TModel, TKey> : BindableBase where TModel : IModel<TKey>
+    public class InfiniteDataSourceService<TModel, TKey> : BindableBase
+        where TModel : IModel<TKey>
     {
         #region Fields
 
@@ -41,10 +40,7 @@ namespace Ferretto.Common.Controls.Services
         public InfiniteAsyncSource DataSource
         {
             get => this.dataSource;
-            set
-            {
-                this.SetProperty(ref this.dataSource, value);
-            }
+            set => this.SetProperty(ref this.dataSource, value);
         }
 
         public IPagedBusinessProvider<TModel, TKey> Provider
@@ -81,7 +77,7 @@ namespace Ferretto.Common.Controls.Services
 
         private static IEnumerable<SortOption> GetSortOrder(FetchRowsAsyncEventArgs e)
         {
-            return e.SortOrder.Select(s => new SortOption(s.PropertyName, s.Direction));
+            return e?.SortOrder.Select(s => new SortOption(s.PropertyName, s.Direction));
         }
 
         private async Task<FetchRowsResult> FetchRowsAsync(FetchRowsAsyncEventArgs e)
@@ -93,7 +89,7 @@ namespace Ferretto.Common.Controls.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message.Split(new[] { '\n', '\r' })[0]);
+                throw new InvalidOperationException(ex.Message.Split(new[] { '\n', '\r' })[0]);
             }
         }
 

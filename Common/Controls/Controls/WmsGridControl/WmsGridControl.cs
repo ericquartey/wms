@@ -70,7 +70,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        private static void SetSelectedItem(WmsGridControl gridControl, IModel<int> bo)
+        private static void SetSelectedItem(GridControl gridControl, IModel<int> bo)
         {
             var rowHandle = gridControl.FindRowByValue(nameof(IModel<int>.Id), bo.Id);
             if (rowHandle > -1)

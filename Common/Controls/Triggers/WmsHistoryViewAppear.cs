@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Interactivity;
-using Ferretto.Common.Controls.Interfaces;
 using CommonServiceLocator;
+using Ferretto.Common.Controls.Interfaces;
 
 namespace Ferretto.Common.Controls
 {

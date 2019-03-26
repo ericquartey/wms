@@ -39,13 +39,9 @@ namespace Ferretto.Common.Controls
             this.navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
 
             this.Loaded += this.WmsMainDockLayoutManager_Loaded;
-            this.DockItemClosing += this.WmsMainDockLayoutManager_DockItemClosing;
+            this.DockItemClosing += WmsMainDockLayoutManager_DockItemClosing;
             this.DockOperationCompleted += this.WmsMainDockLayoutManager_DockOperationCompleted;
             this.ClosedPanelsBarVisibility = ClosedPanelsBarVisibility.Never;
-
-            var inputService = ServiceLocator.Current.GetInstance<IInputService>();
-            inputService.BeginMouseNotify(this, this.OnMouseDown);
-            inputService.BeginShortKeyNotify(this, (shortKey) => this.isControlPressed = (shortKey.ShortKey.ModifierKeyFirst == ModifierKeys.Control));
         }
 
         #endregion
@@ -174,7 +170,26 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        private void NewLayoutPanel_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+
+            var inputService = ServiceLocator.Current.GetInstance<IInputService>();
+            inputService.BeginMouseNotify(this, this.OnMouseDown);
+            inputService.BeginShortKeyNotify(this, (shortKey) => this.isControlPressed = (shortKey.ShortKey.ModifierKeyFirst == ModifierKeys.Control));
+        }
+
+        private static void WmsMainDockLayoutManager_DockItemClosing(object sender, ItemCancelEventArgs e)
+        {
+            if (!(((DevExpress.Xpf.Docking.ContentItem)e.Item).Content is INavigableView vmsView))
+            {
+                return;
+            }
+
+            vmsView.Disappear();
+        }
+
+        private void NewLayoutPanel_Loaded(object sender, RoutedEventArgs e)
         {
             if (this.busyIndicator != null &&
                 this.ShowBusyOnStartUp)
@@ -194,17 +209,7 @@ namespace Ferretto.Common.Controls
             this.isControlPressed = (Keyboard.Modifiers & System.Windows.Input.ModifierKeys.Control) == System.Windows.Input.ModifierKeys.Control;
         }
 
-        private void WmsMainDockLayoutManager_DockItemClosing(object sender, ItemCancelEventArgs e)
-        {
-            if (!(((DevExpress.Xpf.Docking.ContentItem)e.Item).Content is INavigableView vmsView))
-            {
-                return;
-            }
-
-            vmsView.Disappear();
-        }
-
-        private void WmsMainDockLayoutManager_DockOperationCompleted(object sender, DevExpress.Xpf.Docking.Base.DockOperationCompletedEventArgs e)
+        private void WmsMainDockLayoutManager_DockOperationCompleted(object sender, DockOperationCompletedEventArgs e)
         {
             var item = e.Item;
             if (item.Parent == null)

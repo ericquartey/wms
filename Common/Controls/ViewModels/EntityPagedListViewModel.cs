@@ -38,6 +38,8 @@ namespace Ferretto.Common.Controls
 
         private string searchText;
 
+        private Tile selectedFilterTile;
+
         #endregion
 
         #region Properties

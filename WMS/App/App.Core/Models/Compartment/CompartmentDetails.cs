@@ -6,7 +6,13 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    public sealed class CompartmentDetails : BusinessObject, ICompartment
+    public sealed class CompartmentDetails :
+        BusinessObject,
+        ICompartment,
+        ITypedCompartment,
+        ICapacityCompartment,
+        IPairedCompartment,
+        IMaterialStatusCompartment
     {
         #region Fields
 
@@ -118,7 +124,7 @@ namespace Ferretto.WMS.App.Core.Models
         public int? FifoTime
         {
             get => this.fifoTime;
-            set => this.SetIfPositive(ref this.fifoTime, value);
+            set => this.SetProperty(ref this.fifoTime, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentFirstStoreDate), ResourceType = typeof(BusinessObjects))]
@@ -130,13 +136,7 @@ namespace Ferretto.WMS.App.Core.Models
         {
             get => this.height;
 
-            set
-            {
-                if (this.SetIfStrictlyPositive(ref this.height, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.height, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentLastInventoryDate), ResourceType = typeof(BusinessObjects))]
@@ -230,13 +230,7 @@ namespace Ferretto.WMS.App.Core.Models
         public int? MaxCapacity
         {
             get => this.maxCapacity;
-            set
-            {
-                if (this.SetIfStrictlyPositive(ref this.maxCapacity, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.maxCapacity, value);
         }
 
         public IEnumerable<Enumeration> PackageTypeChoices
@@ -263,27 +257,21 @@ namespace Ferretto.WMS.App.Core.Models
         public int ReservedForPick
         {
             get => this.reservedForPick;
-            set => this.SetIfPositive(ref this.reservedForPick, value);
+            set => this.SetProperty(ref this.reservedForPick, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentReservedToStore), ResourceType = typeof(BusinessObjects))]
         public int ReservedToStore
         {
             get => this.reservedToStore;
-            set => this.SetIfPositive(ref this.reservedToStore, value);
+            set => this.SetProperty(ref this.reservedToStore, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentStock), ResourceType = typeof(BusinessObjects))]
         public int Stock
         {
             get => this.stock;
-            set
-            {
-                if (this.SetIfPositive(ref this.stock, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.stock, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentSub1), ResourceType = typeof(BusinessObjects))]
@@ -305,13 +293,7 @@ namespace Ferretto.WMS.App.Core.Models
         public double? Width
         {
             get => this.width;
-            set
-            {
-                if (this.SetIfStrictlyPositive(ref this.width, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.width, value);
         }
 
         [Required]
@@ -319,13 +301,7 @@ namespace Ferretto.WMS.App.Core.Models
         public double? XPosition
         {
             get => this.xPosition;
-            set
-            {
-                if (this.SetIfPositive(ref this.xPosition, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.xPosition, value);
         }
 
         [Required]
@@ -333,13 +309,7 @@ namespace Ferretto.WMS.App.Core.Models
         public double? YPosition
         {
             get => this.yPosition;
-            set
-            {
-                if (this.SetIfPositive(ref this.yPosition, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.yPosition, value);
         }
 
         #endregion
@@ -350,59 +320,50 @@ namespace Ferretto.WMS.App.Core.Models
         {
             get
             {
+                var baseError = base[columnName];
+                if (!string.IsNullOrEmpty(baseError))
+                {
+                    return baseError;
+                }
+
                 switch (columnName)
                 {
                     case nameof(this.XPosition):
-
-                        if (this.XPosition.HasValue == false)
-                        {
-                            return Errors.CompartmentXPositionIsNotSpecified;
-                        }
-
-                        break;
+                        return GetErrorMessageIfNegative(this.XPosition, nameof(this.XPosition));
 
                     case nameof(this.YPosition):
-
-                        if (this.YPosition.HasValue == false)
-                        {
-                            return Errors.CompartmentYPositionIsNotSpecified;
-                        }
-
-                        break;
+                        return GetErrorMessageIfNegative(this.YPosition, nameof(this.YPosition));
 
                     case nameof(this.Width):
-
-                        if (this.Width.HasValue == false)
-                        {
-                            return Errors.CompartmentSizeIsNotSpecified;
-                        }
-
-                        break;
+                        return GetErrorMessageIfNegativeOrZero(this.Width, nameof(this.Width));
 
                     case nameof(this.Height):
+                        return GetErrorMessageIfNegative(this.Height, nameof(this.Height));
 
-                        if (this.Height.HasValue == false)
-                        {
-                            return Errors.CompartmentSizeIsNotSpecified;
-                        }
+                    case nameof(this.ReservedForPick):
+                        return GetErrorMessageIfNegative(this.ReservedForPick, nameof(this.ReservedForPick));
 
-                        break;
+                    case nameof(this.ReservedToStore):
+                        return GetErrorMessageIfNegative(this.ReservedToStore, nameof(this.ReservedToStore));
 
                     case nameof(this.MaxCapacity):
-                        if (this.maxCapacity.HasValue && this.maxCapacity.Value < this.stock)
+                        if (this.MaxCapacity.HasValue && this.MaxCapacity.Value < this.stock)
                         {
                             return Errors.CompartmentStockGreaterThanMaxCapacity;
                         }
 
-                        break;
+                        return GetErrorMessageIfNegative(this.MaxCapacity, nameof(this.MaxCapacity));
+
+                    case nameof(this.FifoTime):
+                        return GetErrorMessageIfNegative(this.FifoTime, nameof(this.FifoTime));
 
                     case nameof(this.Stock):
-                        if (this.maxCapacity.HasValue && this.maxCapacity.Value < this.stock)
+                        if (this.maxCapacity.HasValue && this.maxCapacity.Value < this.Stock)
                         {
                             return Errors.CompartmentStockGreaterThanMaxCapacity;
                         }
 
-                        break;
+                        return GetErrorMessageIfNegative(this.Stock, nameof(this.Stock));
                 }
 
                 return base[columnName];

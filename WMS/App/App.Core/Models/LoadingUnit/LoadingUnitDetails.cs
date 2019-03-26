@@ -262,7 +262,6 @@ namespace Ferretto.WMS.App.Core.Models
             get
             {
                 var baseError = base[columnName];
-
                 if (!string.IsNullOrEmpty(baseError))
                 {
                     return baseError;
@@ -271,12 +270,7 @@ namespace Ferretto.WMS.App.Core.Models
                 switch (columnName)
                 {
                     case nameof(this.HandlingParametersCorrection):
-                        if (this.HandlingParametersCorrection < 0)
-                        {
-                            return string.Format(Errors.PropertyMustBePositive, nameof(this.HandlingParametersCorrection));
-                        }
-
-                        break;
+                        return GetErrorMessageIfNegative(this.HandlingParametersCorrection, nameof(this.HandlingParametersCorrection));
 
                     case nameof(this.Height):
                         if (this.height < 1)
@@ -287,36 +281,16 @@ namespace Ferretto.WMS.App.Core.Models
                         break;
 
                     case nameof(this.InCycleCount):
-                        if (this.InCycleCount < 0)
-                        {
-                            return string.Format(Errors.PropertyMustBePositive, nameof(this.InCycleCount));
-                        }
-
-                        break;
+                        return GetErrorMessageIfNegative(this.InCycleCount, nameof(this.InCycleCount));
 
                     case nameof(this.Length):
-                        if (this.Length < 0)
-                        {
-                            return string.Format(Errors.PropertyMustBePositive, nameof(this.Length));
-                        }
-
-                        break;
+                        return GetErrorMessageIfNegative(this.Length, nameof(this.Length));
 
                     case nameof(this.OtherCycleCount):
-                        if (this.OtherCycleCount < 0)
-                        {
-                            return string.Format(Errors.PropertyMustBePositive, nameof(this.OtherCycleCount));
-                        }
-
-                        break;
+                        return GetErrorMessageIfNegative(this.OtherCycleCount, nameof(this.OtherCycleCount));
 
                     case nameof(this.OutCycleCount):
-                        if (this.OutCycleCount < 0)
-                        {
-                            return string.Format(Errors.PropertyMustBePositive, nameof(this.OutCycleCount));
-                        }
-
-                        break;
+                        return GetErrorMessageIfNegative(this.OutCycleCount, nameof(this.OutCycleCount));
 
                     case nameof(this.Weight):
                         if (this.weight < 1)
@@ -327,12 +301,7 @@ namespace Ferretto.WMS.App.Core.Models
                         break;
 
                     case nameof(this.Width):
-                        if (this.width <= 0)
-                        {
-                            return string.Format(Errors.PropertyMustBeStriclyPositive, nameof(this.Height));
-                        }
-
-                        break;
+                        return GetErrorMessageIfNegativeOrZero(this.Width, nameof(this.Width));
 
                     case nameof(this.LoadingUnitTypeId):
                         if (this.LoadingUnitTypeId == 0)
