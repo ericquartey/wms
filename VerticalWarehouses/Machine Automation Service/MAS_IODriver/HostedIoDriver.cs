@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
@@ -132,38 +133,14 @@ namespace Ferretto.VW.MAS_IODriver
         {
             this.stoppingToken = stoppingToken;
 
-            var ioAddress =
-                this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
-            var ioPort =
-                this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
-
-            this.modbusTransport.Configure(ioAddress, ioPort);
-
-            bool connectionResult;
-            try
-            {
-                connectionResult = this.modbusTransport.Connect();
-            }
-            catch (Exception ex)
-            {
-                throw new IoDriverException($"Exception: {ex.Message} while connecting to Modbus I/O master", IoDriverExceptionCode.CreationFailure, ex);
-            }
-
-            if (!connectionResult)
-            {
-                throw new IoDriverException("Failed to connect to Modbus I/O master");
-            }
-
             try
             {
                 this.commandReceiveTask.Start();
                 this.notificationReceiveTask.Start();
-                this.ioReceiveTask.Start();
-                this.ioSendTask.Start();
             }
             catch (Exception ex)
             {
-                throw new IOException($"Exception: {ex.Message} while starting service threads", ex);
+                throw new IOException($"Exception: {ex.Message} while starting service message threads", ex);
             }
         }
 
@@ -229,6 +206,10 @@ namespace Ferretto.VW.MAS_IODriver
 
                 switch (receivedMessage.Type)
                 {
+                    case MessageType.DataLayerReady:
+                        this.StartHardwareCommunications();
+                        break;
+
                     case MessageType.IOPowerUp:
                     case MessageType.SwitchAxis:
                         if (receivedMessage.Status == MessageStatus.OperationEnd &&
@@ -307,6 +288,41 @@ namespace Ferretto.VW.MAS_IODriver
                     this.currentStateMachine.ProcessMessage(message);
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
+        }
+
+        private void StartHardwareCommunications()
+        {
+            var ioAddress =
+                this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
+            var ioPort =
+                this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
+
+            this.modbusTransport.Configure(ioAddress, ioPort);
+
+            bool connectionResult;
+            try
+            {
+                connectionResult = this.modbusTransport.Connect();
+            }
+            catch (Exception ex)
+            {
+                throw new IoDriverException($"Exception: {ex.Message} while connecting to Modbus I/O master", IoDriverExceptionCode.CreationFailure, ex);
+            }
+
+            if (!connectionResult)
+            {
+                throw new IoDriverException("Failed to connect to Modbus I/O master");
+            }
+
+            try
+            {
+                this.ioReceiveTask.Start();
+                this.ioSendTask.Start();
+            }
+            catch (Exception ex)
+            {
+                throw new IOException($"Exception: {ex.Message} while starting service hardware threads", ex);
+            }
         }
 
         #endregion

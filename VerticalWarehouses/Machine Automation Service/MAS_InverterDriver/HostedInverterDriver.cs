@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
@@ -144,33 +145,10 @@ namespace Ferretto.VW.InverterDriver
         {
             this.stoppingToken = stoppingToken;
 
-            var inverterAddress =
-                this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetwork.Inverter1, (long)ConfigurationCategory.SetupNetwork);
-            var inverterPort = this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetwork.Inverter1Port, (long)ConfigurationCategory.SetupNetwork);
-
-            this.socketTransport.Configure(inverterAddress, inverterPort);
-
-            try
-            {
-                await this.socketTransport.ConnectAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new InverterDriverException($"Exception {ex.Message} while Connecting Receiver Socket Transport",
-                    ex);
-            }
-
-            if (!this.socketTransport.IsConnected)
-            {
-                throw new InverterDriverException("Socket Transport failed to connect");
-            }
-
             try
             {
                 this.commandReceiveTask.Start();
                 this.notificationReceiveTask.Start();
-                this.inverterReceiveTask.Start();
-                this.inverterSendTask.Start();
             }
             catch (Exception ex)
             {
@@ -255,6 +233,10 @@ namespace Ferretto.VW.InverterDriver
 
                 switch (receivedMessage.Type)
                 {
+                    case MessageType.DataLayerReady:
+                        this.StartHardwareCommunications();
+                        break;
+
                     case MessageType.CalibrateAxis:
                         if (receivedMessage.Status == MessageStatus.OperationEnd)
                         {
@@ -430,6 +412,40 @@ namespace Ferretto.VW.InverterDriver
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
+        }
+
+        private async Task StartHardwareCommunications()
+        {
+            var inverterAddress =
+                this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetwork.Inverter1, (long)ConfigurationCategory.SetupNetwork);
+            var inverterPort = this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetwork.Inverter1Port, (long)ConfigurationCategory.SetupNetwork);
+
+            this.socketTransport.Configure(inverterAddress, inverterPort);
+
+            try
+            {
+                await this.socketTransport.ConnectAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new InverterDriverException($"Exception {ex.Message} while Connecting Receiver Socket Transport",
+                    ex);
+            }
+
+            if (!this.socketTransport.IsConnected)
+            {
+                throw new InverterDriverException("Socket Transport failed to connect");
+            }
+
+            try
+            {
+                this.inverterReceiveTask.Start();
+                this.inverterSendTask.Start();
+            }
+            catch (Exception ex)
+            {
+                throw new InverterDriverException($"Exception: {ex.Message} while starting service threads", ex);
+            }
         }
 
         #endregion

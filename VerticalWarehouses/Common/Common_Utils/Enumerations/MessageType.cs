@@ -56,6 +56,8 @@
 
         StopAction,
 
-        UpDown
+        UpDown,
+
+        DataLayerReady
     }
 }
