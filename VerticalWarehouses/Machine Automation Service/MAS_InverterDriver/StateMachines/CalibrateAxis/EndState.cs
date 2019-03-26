@@ -33,7 +33,8 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
             var messageData = new CalibrateAxisMessageData(axisToCalibrate);
             var endNotification = new NotificationMessage(messageData, "Axis calibration complete", MessageActor.Any,
                 MessageActor.InverterDriver, MessageType.CalibrateAxis, MessageStatus.OperationEnd);
-            this.parentStateMachine.PublishNotificationEvent(endNotification);
+            //this.parentStateMachine.PublishNotificationEvent(endNotification);
+            this.parentStateMachine.OnPublishNotification(endNotification);
         }
 
         #endregion
@@ -43,13 +44,19 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override bool ProcessMessage(InverterMessage message)
         {
-            //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - EndState:ProcessMessage");
+            this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - EndState:ProcessMessage");
+
             if (message.IsError)
             {
                 this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate, this.logger));
             }
 
             return true;
+        }
+
+        /// <inheritdoc />
+        public override void Stop()
+        {
         }
 
         #endregion
