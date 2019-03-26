@@ -18,8 +18,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Methods
 
+        /// <inheritdoc />
         public abstract void ProcessCommandMessage(CommandMessage message);
 
+        /// <inheritdoc />
         public abstract void ProcessNotificationMessage(NotificationMessage message);
 
         #endregion

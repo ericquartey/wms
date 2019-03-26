@@ -22,12 +22,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        protected override async void ExecuteClearCommand()
+        protected override async Task ExecuteClearCommandAsync()
         {
             await this.LoadDataAsync();
         }
 
-        protected override async Task ExecuteCreateCommand()
+        protected override async Task ExecuteCreateCommandAsync()
         {
             this.IsBusy = true;
             try

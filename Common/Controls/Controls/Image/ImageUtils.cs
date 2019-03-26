@@ -12,7 +12,7 @@ using Ferretto.Common.BLL.Interfaces.Providers;
 
 namespace Ferretto.Common.Controls
 {
-    public class ImageUtils
+    public static class ImageUtils
     {
         #region Methods
 
@@ -32,6 +32,11 @@ namespace Ferretto.Common.Controls
 
         public static async Task<ImageSource> RetrieveImageAsync(IImageProvider imageService, string imagePath)
         {
+            if (imageService == null)
+            {
+                throw new System.ArgumentNullException(nameof(imageService));
+            }
+
             return !string.IsNullOrWhiteSpace(imagePath)
                 ? await ImageUtils.GetImageAsync(imageService, imagePath)
                 : null;

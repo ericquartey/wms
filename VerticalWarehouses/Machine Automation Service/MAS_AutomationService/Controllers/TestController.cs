@@ -172,6 +172,14 @@ namespace Ferretto.VW.MAS_AutomationService
                 MessageVerbosity.Info));
         }
 
+        [HttpGet("ResetIO")]
+        public void ResetIO()
+        {
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "ResetIO",
+                MessageActor.IODriver, MessageActor.AutomationService, MessageType.IOReset,
+                MessageVerbosity.Info));
+        }
+
         #endregion
     }
 }

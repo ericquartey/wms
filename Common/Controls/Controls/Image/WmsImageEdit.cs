@@ -1,11 +1,11 @@
 ﻿using System.IO;
 using System.Windows;
 using System.Windows.Media;
+using CommonServiceLocator;
 using DevExpress.Xpf.Core.Native;
 using DevExpress.Xpf.Editors;
-using CommonServiceLocator;
-using Microsoft.Win32;
 using Ferretto.Common.BLL.Interfaces.Providers;
+using Microsoft.Win32;
 
 namespace Ferretto.Common.Controls
 {

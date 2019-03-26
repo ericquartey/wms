@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -27,8 +28,6 @@ namespace Ferretto.Common.Controls
         public WmsFilterControl()
         {
             this.InitializeComponent();
-
-            this.FilterStackPanel.DataContext = this;
         }
 
         #endregion
@@ -54,6 +53,13 @@ namespace Ferretto.Common.Controls
         #endregion
 
         #region Methods
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+
+            this.FilterStackPanel.DataContext = this;
+        }
 
         private void ExecuteClearFilterCommand()
         {

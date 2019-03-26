@@ -2,14 +2,14 @@
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    public class CompartmentFilter : IFilter
+    public class CompartmentFilter : ICompartmentColorFilter
     {
         #region Properties
 
         public Func<ICompartment, ICompartment, string> ColorFunc => (compartment, selected) =>
         {
-            var compartmentDetails = compartment as CompartmentDetails;
-            var selectedDetails = selected as CompartmentDetails;
+            var compartmentDetails = compartment as ITypedCompartment;
+            var selectedDetails = selected as ITypedCompartment;
 
             if (selectedDetails != null && compartmentDetails != null)
             {

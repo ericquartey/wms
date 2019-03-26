@@ -4,6 +4,7 @@ using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines;
 using Ferretto.VW.MAS_FiniteStateMachines.Homing;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -18,7 +19,9 @@ namespace MAS_FiniteStateMachinesUnitTests.Homing
         [TestCategory("Unit")]
         public void TestHomingStartStateInvalidCreation()
         {
-            Assert.ThrowsException<NullReferenceException>(() => new HomingStartState(null, Axis.Vertical));
+            var loggerMock = new Mock<ILogger>();
+
+            Assert.ThrowsException<NullReferenceException>(() => new HomingStartState(null, Axis.Vertical, loggerMock.Object));
         }
 
         [TestMethod]
@@ -33,7 +36,9 @@ namespace MAS_FiniteStateMachinesUnitTests.Homing
             var parent = new Mock<IStateMachine>();
             parent.As<IHomingStateMachine>().Setup(p => p.CalibrateData).Returns(calibrateMessageData.Object);
 
-            var state = new HomingStartState(parent.Object, Axis.Vertical);
+            var loggerMock = new Mock<ILogger>();
+
+            var state = new HomingStartState(parent.Object, Axis.Vertical, loggerMock.Object);
 
             Assert.AreEqual(state.Type, "HomingStartState");
         }

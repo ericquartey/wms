@@ -35,7 +35,7 @@ namespace Ferretto.WMS.App.Core.Models
         public int Columns
         {
             get => this.columns;
-            set => this.SetIfStrictlyPositive(ref this.columns, value);
+            set => this.SetProperty(ref this.columns, value);
         }
 
         public override string Error => string.Join(Environment.NewLine, new[]

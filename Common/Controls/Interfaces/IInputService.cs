@@ -18,13 +18,9 @@ namespace Ferretto.Common.Controls.Interfaces
 
         void BeginShortKeyNotify(object instance, Action<ShortKeyInfo> callback);
 
-        void End();
-
         void EndMouseNotify(object instance);
 
         void EndShortKeyNotify(object instance);
-
-        void RaiseEvent(System.Windows.Input.Key key);
 
         void Start();
 

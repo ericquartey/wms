@@ -33,9 +33,9 @@ namespace Ferretto.WMS.Modules.MasterData
             throw new NotSupportedException();
         }
 
-        protected override Task ExecuteRevertCommand() => throw new NotSupportedException();
+        protected override Task ExecuteRevertCommandAsync() => throw new NotSupportedException();
 
-        protected override async Task ExecuteSaveCommand()
+        protected override async Task ExecuteSaveCommandAsync()
         {
             if (!this.IsModelValid)
             {

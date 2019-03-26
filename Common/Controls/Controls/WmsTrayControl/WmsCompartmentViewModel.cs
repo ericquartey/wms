@@ -1,22 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Controls;
-using Ferretto.WMS.App.Core.Models;
+﻿using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.Common.Controls
 {
-    public static class CompartmentExtensions
-    {
-        #region Methods
-
-        public static IEnumerable<WmsCompartmentViewModel> AsEnumerable(this ItemCollection listItems)
-        {
-            return listItems.Cast<WmsCompartmentViewModel>();
-        }
-
-        #endregion
-    }
-
     public class WmsCompartmentViewModel : Prism.Mvvm.BindableBase
     {
         #region Fields
