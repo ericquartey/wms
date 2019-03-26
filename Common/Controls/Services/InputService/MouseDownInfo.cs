@@ -9,7 +9,7 @@
             this.Sender = sender;
             this.OriginalSource = originalSource;
             this.ButtonPressed = buttonPressed;
-            this.UIElementObj = uiElementObj;
+            this.UiElementObj = uiElementObj;
             this.Data = data;
         }
 
@@ -27,7 +27,7 @@
 
         public object Sender { get; set; }
 
-        public object UIElementObj { get; set; }
+        public object UiElementObj { get; set; }
 
         #endregion
     }

@@ -55,6 +55,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         }
 
         /// <inheritdoc />
+        public abstract void OnPublishNotification(NotificationMessage message);
+
+        /// <inheritdoc />
         public bool ProcessMessage(InverterMessage message)
         {
             return this.CurrentState?.ProcessMessage(message) ?? false;
@@ -68,6 +71,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 
         /// <inheritdoc />
         public abstract void Start();
+
+        /// <inheritdoc />
+        public abstract void Stop();
 
         protected virtual void Dispose(bool disposing)
         {

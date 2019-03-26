@@ -4,12 +4,13 @@ using System.Windows.Media;
 
 namespace Ferretto.Common.Controls
 {
-    public class VisualTargetPresentationSource : PresentationSource
+    public class VisualTargetPresentationSource : PresentationSource, IDisposable
     {
         #region Fields
 
         private readonly VisualTarget visualTarget;
-        private bool isDisposed = false;
+
+        private bool isDisposed;
 
         #endregion
 
@@ -59,10 +60,25 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        internal void Dispose()
+        public void Dispose()
         {
-            this.RemoveSource();
-            this.isDisposed = true;
+            this.Dispose(true);
+
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.isDisposed)
+            {
+                if (disposing)
+                {
+                    this.visualTarget?.Dispose();
+                    this.RemoveSource();
+                }
+
+                this.isDisposed = true;
+            }
         }
 
         protected override CompositionTarget GetCompositionTargetCore()

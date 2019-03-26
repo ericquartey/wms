@@ -98,7 +98,7 @@ namespace Ferretto.VW.MAS_IODriver
                 false,
                 message => message.Destination == MessageActor.IODriver || message.Destination == MessageActor.Any);
 
-            this.logger?.LogInformation("Hosted I/O Driver Constructor");
+            this.logger?.LogTrace("Hosted I/O Driver Constructor");
         }
 
         #endregion
@@ -132,6 +132,9 @@ namespace Ferretto.VW.MAS_IODriver
         {
             this.stoppingToken = stoppingToken;
 
+            //TEMP Temporary uncomment these code lines in order to set the IP address (and to comment the others)
+            /*IPAddress.TryParse("169.254.231.10", out var ioAddress);*/
+            /*var ioPort = 502;*/
             var ioAddress =
                 this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
             var ioPort =
@@ -140,6 +143,8 @@ namespace Ferretto.VW.MAS_IODriver
             this.modbusTransport.Configure(ioAddress, ioPort);
 
             bool connectionResult;
+            this.logger?.LogTrace("Hosted I/O Execute Async");
+
             try
             {
                 connectionResult = this.modbusTransport.Connect();
@@ -182,6 +187,8 @@ namespace Ferretto.VW.MAS_IODriver
             this.currentStateMachine = new PowerUpStateMachine(this.ioCommandQueue, this.eventAggregator, this.logger);
             this.currentStateMachine.Start();
 
+            this.logger?.LogTrace("Hosted I/O Command Receive Task Function");
+
             do
             {
                 CommandMessage receivedMessage;
@@ -207,6 +214,10 @@ namespace Ferretto.VW.MAS_IODriver
                     case MessageType.SwitchAxis:
                         this.ExecuteSwitchAxis(receivedMessage);
                         break;
+
+                    case MessageType.IOReset:
+                        this.ExecuteIOReset(receivedMessage);
+                        break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
 
@@ -215,6 +226,8 @@ namespace Ferretto.VW.MAS_IODriver
 
         private Task NotificationReceiveTaskFunction()
         {
+            this.logger?.LogTrace("Hosted I/O Notification Receive Task Function");
+
             do
             {
                 NotificationMessage receivedMessage;
@@ -250,6 +263,8 @@ namespace Ferretto.VW.MAS_IODriver
 
         private async Task ReceiveIoDataTaskFunction()
         {
+            this.logger?.LogTrace("Hosted I/O Receive IO Data Task Function");
+
             do
             {
                 try
@@ -285,6 +300,8 @@ namespace Ferretto.VW.MAS_IODriver
 
         private async Task SendIoCommandTaskFunction()
         {
+            this.logger?.LogTrace("Hosted I/O Send IO Command Task Function");
+
             do
             {
                 IoMessage message;

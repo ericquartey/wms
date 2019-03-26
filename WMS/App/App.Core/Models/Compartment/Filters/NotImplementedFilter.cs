@@ -2,7 +2,7 @@
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    public class NotImplementedFilter : IFilter
+    public class NotImplementedFilter : ICompartmentColorFilter
     {
         #region Properties
 

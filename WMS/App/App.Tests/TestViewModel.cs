@@ -2,7 +2,12 @@
 
 namespace Ferretto.WMS.App.Tests
 {
+#pragma warning disable S3881 // "IDisposable" should be implemented correctly
+#pragma warning disable CA1063 // Implement IDisposable Correctly
+
     public class TestViewModel : INavigableViewModel
+#pragma warning restore CA1063 // Implement IDisposable Correctly
+#pragma warning restore S3881 // "IDisposable" should be implemented correctly
     {
         #region Properties
 
@@ -33,9 +38,14 @@ namespace Ferretto.WMS.App.Tests
             // Test method. Nothing to do here.
         }
 
+#pragma warning disable CA1816 // Dispose methods should call SuppressFinalize
+#pragma warning disable CA1063 // Implement IDisposable Correctly
+
         public void Dispose()
+#pragma warning restore CA1063 // Implement IDisposable Correctly
+#pragma warning restore CA1816 // Dispose methods should call SuppressFinalize
         {
-            // Test method. Implement dispose
+            // Test method. Nothing to do here.
         }
 
         #endregion

@@ -27,7 +27,9 @@ namespace Ferretto.Common.Controls.Services
         {
             this.inputService = inputService;
             this.navigationService = navigationService;
+#pragma warning disable S3366 // "this" should not be exposed from constructors: in this scenario, the class has no mechanism to handle post-construction initialization
             this.inputService.BeginMouseNotify(this, this.OnMouseDown);
+#pragma warning restore S3366 // "this" should not be exposed from constructors
         }
 
         #endregion

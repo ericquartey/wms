@@ -232,7 +232,7 @@
 
                     <wms:WmsGridControl.Columns>
 
-                        <dxg:GridColumn Width="65*"
+                        <dxg:GridColumn Width="50*"
                                         CellToolTipBinding="{Binding}"
                                         FieldName="Details"
                                         Header="{x:Static res:General.Details}">
@@ -334,7 +334,7 @@
 
                         <dxg:GridColumn Width="100*"
                                         FieldName="BayDescription" />
-                        <dxg:GridColumn Width="360*"
+                        <dxg:GridColumn Width="340*"
                                         FieldName="ItemDescription" />
                         <dxg:GridColumn Width="180*"
                                         FieldName="ListDescription" />
@@ -348,11 +348,19 @@
                         <dxg:GridColumn Width="100*"
                                         CellDisplayTemplate="{StaticResource CellDisplayTemplateQuantity}"
                                         FieldName="RequestedQuantity" />
+                        <dxg:GridColumn Width="120*"
+                                        FieldName="CreationDate">
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <dxe:TextEdit Name="PART_Editor" DisplayFormatString="g"/>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
+                        </dxg:GridColumn>
                     </wms:WmsGridControl.Columns>
 
                     <wms:WmsGridControl.SortInfo>
-                        <dxg:GridSortInfo FieldName="RequestedQuantity"
-                                          SortOrder="Ascending" />
+                        <dxg:GridSortInfo FieldName="CreationDate"
+                                          SortOrder="Descending" />
                     </wms:WmsGridControl.SortInfo>
 
                     <wms:WmsGridControl.TotalSummary>

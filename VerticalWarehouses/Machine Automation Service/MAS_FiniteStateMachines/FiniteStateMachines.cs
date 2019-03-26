@@ -183,7 +183,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             {
                 //TODO handle the calibration data and pass to the calibrate states machine
                 //TODO apply Finite State Machine Business Logic to the message
-                this.currentStateMachine = new HomingStateMachine(this.eventAggregator, data);
+                this.currentStateMachine = new HomingStateMachine(this.eventAggregator, data, this.logger);
 
                 this.currentStateMachine.Start();
             }
