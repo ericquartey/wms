@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
@@ -43,9 +44,21 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
         #region Methods
 
         /// <inheritdoc />
+        public override void OnPublishNotification(NotificationMessage message)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
         public override void Start()
         {
             this.CurrentState = new StopState(this, this.axisToStop, this.logger);
+        }
+
+        /// <inheritdoc />
+        public override void Stop()
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion

@@ -21,8 +21,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         /// <summary>
         /// On publishing the notification message by the state machine.
+        /// The notification message is kept, it is handled and after it is published.
         /// </summary>
-        /// <param name="message">A <see cref="NotificationMessage"/> message to be published.</param>
+        /// <param name="message">A <see cref="NotificationMessage"/> message to be handled and published.</param>
         void OnPublishNotification(NotificationMessage message);
 
         /// <summary>

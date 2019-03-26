@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
@@ -25,7 +24,7 @@ namespace Ferretto.VW.InverterDriver
     {
         #region Fields
 
-        private const int HeartbeatTimeout = 300;  
+        private const int HeartbeatTimeout = 300;
 
         private readonly Task commandReceiveTask;
 
@@ -111,7 +110,7 @@ namespace Ferretto.VW.InverterDriver
                 false,
                 message => message.Destination == MessageActor.InverterDriver || message.Destination == MessageActor.Any);
 
-            this.logger?.LogTrace("Hosted Inverter Driver Constructor");
+            this.logger?.LogInformation("Hosted Inverter Driver Constructor");
         }
 
         #endregion
@@ -144,11 +143,13 @@ namespace Ferretto.VW.InverterDriver
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             this.stoppingToken = stoppingToken;
-            
+
+            //TEMP Temporary uncomment these code lines in order to set the IP address (and to comment the others)
+            /*IPAddress.TryParse("169.254.231.248", out var inverterAddress);*/
+            /*var inverterPort = 17221;*/
             var inverterAddress =
                 this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetwork.Inverter1, (long)ConfigurationCategory.SetupNetwork);
             var inverterPort = this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetwork.Inverter1Port, (long)ConfigurationCategory.SetupNetwork);
-            
 
             this.socketTransport.Configure(inverterAddress, inverterPort);
 
@@ -200,7 +201,7 @@ namespace Ferretto.VW.InverterDriver
                     return Task.CompletedTask;
                 }
 
-                if (this.currentStateMachine != null)
+                if (this.currentStateMachine != null && receivedMessage.Type != MessageType.Stop)
                 {
                     var errorNotification = new NotificationMessage(null, "Inverter operation already in progress", MessageActor.Any,
                         MessageActor.InverterDriver, receivedMessage.Type, MessageStatus.OperationError, ErrorLevel.Error);
@@ -208,7 +209,7 @@ namespace Ferretto.VW.InverterDriver
                     continue;
                 }
 
-                this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:CommandReceiveTaskFunction");
+                //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:CommandReceiveTaskFunction");
 
                 switch (receivedMessage.Type)
                 {
@@ -223,7 +224,16 @@ namespace Ferretto.VW.InverterDriver
                     case MessageType.Stop:
                         if (receivedMessage.Data is IStopAxisMessageData stopData)
                         {
-                            this.currentStateMachine = new StopStateMachine(stopData.AxisToStop, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                            if (this.currentStateMachine == null)
+                            {
+                                // The state machine for Stop operation is invoked
+                                this.currentStateMachine = new StopStateMachine(stopData.AxisToStop, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                            }
+                            else
+                            {
+                                // Force a stop
+                                this.currentStateMachine.Stop();
+                            }
                         }
                         break;
                 }
@@ -253,7 +263,7 @@ namespace Ferretto.VW.InverterDriver
                     return Task.CompletedTask;
                 }
 
-                this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:NotificationReceiveTaskFunction");
+                //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:NotificationReceiveTaskFunction");
 
                 switch (receivedMessage.Type)
                 {
@@ -267,6 +277,11 @@ namespace Ferretto.VW.InverterDriver
 
                     case MessageType.Stop:
                         if (receivedMessage.Status == MessageStatus.OperationEnd)
+                        {
+                            this.currentStateMachine.Dispose();
+                            this.currentStateMachine = null;
+                        }
+                        if (receivedMessage.Status == MessageStatus.OperationStop)
                         {
                             this.currentStateMachine.Dispose();
                             this.currentStateMachine = null;
@@ -360,7 +375,7 @@ namespace Ferretto.VW.InverterDriver
                     {
                         if (currentMessage.UShortPayload == this.lastHeatbeatMessage.UShortPayload)
                         {
-                            this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:ReceiveInverterData/Heartbeat Check");
+                            //this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:ReceiveInverterData/Heartbeat Check");
 
                             this.heartbeatCheck = true;
                             continue;
@@ -368,7 +383,7 @@ namespace Ferretto.VW.InverterDriver
                     }
                     else
                     {
-                        this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:ReceiveInverterData/Request Status");
+                        //this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:ReceiveInverterData/Request Status");
 
                         var readStatusWordMessage = new InverterMessage(0x00, (short)InverterParameterId.StatusWordParam);
                         this.inverterCommandQueue.Enqueue(readStatusWordMessage);
