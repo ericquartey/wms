@@ -2,20 +2,16 @@
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    public class LinkedItemFilter : IFilter
+    public class LinkedItemFilter : ICompartmentColorFilter
     {
         #region Properties
 
         public Func<ICompartment, ICompartment, string> ColorFunc => (compartment, selected) =>
         {
-            var compartmentDetails = compartment as CompartmentDetails;
-            var selectedDetails = selected as CompartmentDetails;
-
-            if (selectedDetails != null && compartmentDetails != null)
+            if (compartment is IPairedCompartment pairedCompartment
+                && selected is IPairedCompartment selectedPairedCompartment)
             {
-                if (compartment == selected
-                    &&
-                    compartmentDetails.IsItemPairingFixed == selectedDetails.IsItemPairingFixed)
+                if (pairedCompartment.IsItemPairingFixed == selectedPairedCompartment.IsItemPairingFixed)
                 {
                     return "#76FF03";
                 }

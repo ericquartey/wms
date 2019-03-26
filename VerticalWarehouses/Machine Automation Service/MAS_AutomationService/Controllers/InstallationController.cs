@@ -1,14 +1,14 @@
-﻿using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.Common_Utils.Messages;
+﻿using System;
+using Ferretto.VW.Common_Utils.DTOs;
 using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_DataLayer.Enumerations;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.Common_Utils.DTOs;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
-using Ferretto.VW.MAS_DataLayer;
-using System;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                 return this.NotFound($"No configuration category found for {category} value");
             }
 
-            string errorMessage = string.Empty;
+            var errorMessage = string.Empty;
             long parameterId = 0;
             switch (configurationCategory)
             {

@@ -8,8 +8,8 @@ using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Exceptions;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
-using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_IODriver.Interface;
 using Ferretto.VW.MAS_IODriver.StateMachines;
 using Ferretto.VW.MAS_IODriver.StateMachines.PowerUp;
@@ -99,7 +99,7 @@ namespace Ferretto.VW.MAS_IODriver
                 false,
                 message => message.Destination == MessageActor.IODriver || message.Destination == MessageActor.Any);
 
-            this.logger?.LogInformation("Hosted I/O Driver Constructor");
+            this.logger?.LogTrace("Hosted I/O Driver Constructor");
         }
 
         #endregion
@@ -159,6 +159,8 @@ namespace Ferretto.VW.MAS_IODriver
             this.currentStateMachine = new PowerUpStateMachine(this.ioCommandQueue, this.eventAggregator, this.logger);
             this.currentStateMachine.Start();
 
+            this.logger?.LogTrace("Hosted I/O Command Receive Task Function");
+
             do
             {
                 CommandMessage receivedMessage;
@@ -184,6 +186,10 @@ namespace Ferretto.VW.MAS_IODriver
                     case MessageType.SwitchAxis:
                         this.ExecuteSwitchAxis(receivedMessage);
                         break;
+
+                    case MessageType.IOReset:
+                        this.ExecuteIOReset(receivedMessage);
+                        break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
 
@@ -192,6 +198,8 @@ namespace Ferretto.VW.MAS_IODriver
 
         private Task NotificationReceiveTaskFunction()
         {
+            this.logger?.LogTrace("Hosted I/O Notification Receive Task Function");
+
             do
             {
                 NotificationMessage receivedMessage;
@@ -231,6 +239,8 @@ namespace Ferretto.VW.MAS_IODriver
 
         private async Task ReceiveIoDataTaskFunction()
         {
+            this.logger?.LogTrace("Hosted I/O Receive IO Data Task Function");
+
             do
             {
                 try
@@ -266,6 +276,8 @@ namespace Ferretto.VW.MAS_IODriver
 
         private async Task SendIoCommandTaskFunction()
         {
+            this.logger?.LogTrace("Hosted I/O Send IO Command Task Function");
+
             do
             {
                 IoMessage message;

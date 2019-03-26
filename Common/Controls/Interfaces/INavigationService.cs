@@ -18,11 +18,11 @@ namespace Ferretto.Common.Controls.Interfaces
 
         void Disappear(INavigableViewModel viewModel);
 
-        void Disappear(INavigableView viewModel);
+        void Disappear(INavigableView view);
 
         string GetNewViewModelName(string fullViewName);
 
-        INavigableView GetRegisteredView(string viewName);
+        INavigableView GetRegisteredView(string instanceModuleViewName);
 
         INavigableViewModel GetRegisteredViewModel(string mapId, object data = null);
 

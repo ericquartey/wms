@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 using System.Windows.Media;
+using CommonServiceLocator;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Utils.Menu;
-using CommonServiceLocator;
 using Prism.Commands;
 
 namespace Ferretto.Common.Controls
@@ -81,7 +81,10 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            var breadCrumb = currBreadCrumb != string.Empty ? $"{currBreadCrumb} >> {this.DisplayName}" : this.DisplayName;
+            var breadCrumb = string.IsNullOrEmpty(currBreadCrumb) == false
+                ? $"{currBreadCrumb} >> {this.DisplayName}"
+                : this.DisplayName;
+
             this.Child = new TileNavMenuChildItem(breadCrumb);
             foreach (var child in children)
             {

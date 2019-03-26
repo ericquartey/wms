@@ -50,6 +50,8 @@
 
         IOPowerUp,
 
+        IOReset,
+
         SensorsChanged,
 
         Movement,

@@ -37,7 +37,7 @@ namespace Ferretto.Common.Controls
 
         #region Constructors
 
-        public CreateViewModel()
+        protected CreateViewModel()
         {
             this.changeDetector.ModifiedChanged += this.ChangeDetector_ModifiedChanged;
         }
@@ -57,8 +57,8 @@ namespace Ferretto.Common.Controls
         }
 
         public ICommand ClearCommand => this.clearCommand ??
-                    (this.clearCommand = new DelegateCommand(
-                this.ExecuteClearCommand,
+            (this.clearCommand = new DelegateCommand(
+                async () => await this.ExecuteClearCommandAsync(),
                 this.CanExecuteClearCommand));
 
         public ICommand CloseDialogCommand => this.closeDialogCommand ??
@@ -69,7 +69,7 @@ namespace Ferretto.Common.Controls
 
         public ICommand CreateCommand => this.createCommand ??
             (this.createCommand = new DelegateCommand(
-                async () => await this.ExecuteCreateCommand(),
+                async () => await this.ExecuteCreateCommandAsync(),
                 this.CanExecuteCreateCommand));
 
         public IDialogService DialogService => this.dialogService;
@@ -193,14 +193,14 @@ namespace Ferretto.Common.Controls
             ((DelegateCommand)this.CreateCommand)?.RaiseCanExecuteChanged();
         }
 
-        protected abstract void ExecuteClearCommand();
+        protected abstract Task ExecuteClearCommandAsync();
 
         protected void ExecuteCloseDialogCommand()
         {
             this.Disappear();
         }
 
-        protected abstract Task ExecuteCreateCommand();
+        protected abstract Task ExecuteCreateCommandAsync();
 
         protected virtual void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {

@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
-using DevExpress.Xpf.Data;
+using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using CommonServiceLocator;
 using Prism.Commands;
 
 namespace Ferretto.Common.Controls
@@ -20,8 +19,6 @@ namespace Ferretto.Common.Controls
         where TModel : IModel<TKey>
     {
         #region Fields
-
-        protected Tile selectedFilterTile;
 
         private ICommand addCommand;
 
@@ -38,6 +35,8 @@ namespace Ferretto.Common.Controls
         private ICommand refreshCommand;
 
         private object selectedFilterDataSource;
+
+        private Tile selectedFilterTile;
 
         private object selectedItem;
 
@@ -89,7 +88,7 @@ namespace Ferretto.Common.Controls
         }
 
         /// <summary>
-        /// When set to True, skips the usage of the DevExpress InstantFeedbackSource.
+        /// Gets or sets a value indicating whether to skip the usage of the DevExpress InstantFeedbackSource.
         /// </summary>
         public bool FlattenDataSource
         {
@@ -173,8 +172,6 @@ namespace Ferretto.Common.Controls
         protected override async Task OnAppearAsync()
         {
             // TODO: check cycle because OnAppear is Async
-            // await base.OnAppearAsync();
-
             try
             {
                 var dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
@@ -187,7 +184,7 @@ namespace Ferretto.Common.Controls
 
                 await this.UpdateFilterTilesCountsAsync().ConfigureAwait(true);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 this.EventService.Invoke(new StatusPubSubEvent(ex));
             }

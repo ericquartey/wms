@@ -1,24 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Ferretto.Common.BLL.Interfaces.Providers;
 
 namespace Ferretto.Common.Controls
 {
-    public class ImageUtils
+    public static class ImageUtils
     {
         #region Methods
 
-        public static ImageSource GetImage(IImageProvider imageService, string path)
+        public static ImageSource RetrieveImage(IImageProvider imageService, string imagePath)
         {
-            using (Stream imageStream = imageService.GetImage(path))
+            if (imageService == null)
             {
-                BitmapImage bitmap = new BitmapImage();
+                throw new System.ArgumentNullException(nameof(imageService));
+            }
+
+            return !string.IsNullOrWhiteSpace(imagePath)
+                ? GetImage(imageService, imagePath)
+                : null;
+        }
+
+        private static ImageSource GetImage(IImageProvider imageService, string path)
+        {
+            using (var imageStream = imageService.GetImage(path))
+            {
+                var bitmap = new BitmapImage();
                 bitmap.BeginInit();
                 bitmap.StreamSource = imageStream;
                 bitmap.CacheOption = BitmapCacheOption.OnLoad;
@@ -27,13 +33,6 @@ namespace Ferretto.Common.Controls
 
                 return bitmap;
             }
-        }
-
-        public static ImageSource RetrieveImage(IImageProvider imageService, string imagePath)
-        {
-            return !string.IsNullOrWhiteSpace(imagePath)
-                ? ImageUtils.GetImage(imageService, imagePath)
-                : null;
         }
 
         #endregion

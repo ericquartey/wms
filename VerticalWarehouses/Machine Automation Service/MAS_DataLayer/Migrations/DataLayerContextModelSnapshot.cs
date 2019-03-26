@@ -88,7 +88,11 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
 
                     b.Property<decimal>("CellPosition");
 
+                    b.Property<string>("Description");
+
                     b.Property<decimal>("Height");
+
+                    b.Property<decimal>("MaxWeight");
 
                     b.Property<long>("Status");
 
@@ -135,13 +139,15 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS_DataLayer.RuntimeValue", b =>
                 {
+                    b.Property<long>("CategoryName");
+
                     b.Property<long>("VarName");
 
                     b.Property<long>("VarType");
 
                     b.Property<string>("VarValue");
 
-                    b.HasKey("VarName");
+                    b.HasKey("CategoryName", "VarName");
 
                     b.ToTable("RuntimeValues");
                 });
