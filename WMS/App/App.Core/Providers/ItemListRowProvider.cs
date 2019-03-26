@@ -60,11 +60,11 @@ namespace Ferretto.WMS.App.Core.Providers
 
             try
             {
-                var itemListRow = await this.itemListRowsDataService.CreateAsync(new WMS.Data.WebAPI.Contracts.ItemListRowDetails
+                var itemListRow = await this.itemListRowsDataService.CreateAsync(new Data.WebAPI.Contracts.ItemListRowDetails
                 {
                     Id = model.Id,
                     Code = model.Code,
-                    RowPriority = model.RowPriority,
+                    Priority = model.RowPriority,
                     ItemId = model.ItemId,
                     RequestedQuantity = model.RequestedQuantity,
                     DispatchedQuantity = model.DispatchedQuantity,
@@ -114,13 +114,7 @@ namespace Ferretto.WMS.App.Core.Providers
         {
             try
             {
-                await this.itemListRowsDataService.ExecuteAsync(
-                    new WMS.Data.WebAPI.Contracts.ListRowExecutionRequest
-                    {
-                        ListRowId = listRowId,
-                        AreaId = areaId,
-                        BayId = bayId
-                    });
+                await this.itemListRowsDataService.ExecuteAsync(listRowId, areaId, bayId);
 
                 return new OperationResult<ItemListRow>(true);
             }
@@ -148,7 +142,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     ItemUnitMeasure = l.ItemUnitMeasure,
                     MaterialStatusDescription = l.MaterialStatusDescription,
                     RequestedQuantity = l.RequestedQuantity,
-                    RowPriority = l.RowPriority,
+                    RowPriority = l.Priority,
                     CreationDate = l.CreationDate,
                     CanBeExecuted = l.CanBeExecuted,
                 });
@@ -161,39 +155,39 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<ItemListRowDetails> GetByIdAsync(int id)
         {
-            var itemListRow = await this.itemListRowsDataService.GetByIdAsync(id);
+            var row = await this.itemListRowsDataService.GetByIdAsync(id);
 
             var materialStatusChoices = await this.materialStatusProvider.GetAllAsync();
             var packageTypeChoices = await this.packageTypeProvider.GetAllAsync();
 
             return new ItemListRowDetails
             {
-                Id = itemListRow.Id,
-                Code = itemListRow.Code,
-                RowPriority = itemListRow.RowPriority,
-                ItemId = itemListRow.ItemId,
-                RequestedQuantity = itemListRow.RequestedQuantity,
-                DispatchedQuantity = itemListRow.DispatchedQuantity,
-                ItemListRowStatus = (ItemListRowStatus)itemListRow.ItemListRowStatus,
-                ItemDescription = itemListRow.ItemDescription,
-                CreationDate = itemListRow.CreationDate,
-                ItemListCode = itemListRow.ItemListCode,
-                ItemListDescription = itemListRow.ItemListDescription,
-                ItemListType = (ItemListType)itemListRow.ItemListType,
-                CompletionDate = itemListRow.CompletionDate,
-                LastExecutionDate = itemListRow.LastExecutionDate,
-                LastModificationDate = itemListRow.LastModificationDate,
-                Lot = itemListRow.Lot,
-                RegistrationNumber = itemListRow.RegistrationNumber,
-                Sub1 = itemListRow.Sub1,
-                Sub2 = itemListRow.Sub2,
-                PackageTypeId = itemListRow.PackageTypeId,
-                MaterialStatusId = itemListRow.MaterialStatusId,
-                ItemUnitMeasure = itemListRow.ItemUnitMeasure,
+                Id = row.Id,
+                Code = row.Code,
+                RowPriority = row.Priority,
+                ItemId = row.ItemId,
+                RequestedQuantity = row.RequestedQuantity,
+                DispatchedQuantity = row.DispatchedQuantity,
+                ItemListRowStatus = (ItemListRowStatus)row.ItemListRowStatus,
+                ItemDescription = row.ItemDescription,
+                CreationDate = row.CreationDate,
+                ItemListCode = row.ItemListCode,
+                ItemListDescription = row.ItemListDescription,
+                ItemListType = (ItemListType)row.ItemListType,
+                CompletionDate = row.CompletionDate,
+                LastExecutionDate = row.LastExecutionDate,
+                LastModificationDate = row.LastModificationDate,
+                Lot = row.Lot,
+                RegistrationNumber = row.RegistrationNumber,
+                Sub1 = row.Sub1,
+                Sub2 = row.Sub2,
+                PackageTypeId = row.PackageTypeId,
+                MaterialStatusId = row.MaterialStatusId,
+                ItemUnitMeasure = row.ItemUnitMeasure,
                 MaterialStatusChoices = materialStatusChoices,
                 PackageTypeChoices = packageTypeChoices,
-                ItemListId = itemListRow.ItemListId,
-                CanBeExecuted = itemListRow.CanBeExecuted,
+                ItemListId = row.ItemListId,
+                CanBeExecuted = row.CanBeExecuted,
             };
         }
 
@@ -204,7 +198,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 {
                     Id = l.Id,
                     Code = l.Code,
-                    RowPriority = l.RowPriority,
+                    RowPriority = l.Priority,
                     ItemDescription = l.ItemDescription,
                     RequestedQuantity = l.RequestedQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
@@ -225,12 +219,7 @@ namespace Ferretto.WMS.App.Core.Providers
         {
             try
             {
-                await this.itemListRowsDataService
-                    .ExecuteAsync(new WMS.Data.WebAPI.Contracts.ListRowExecutionRequest
-                    {
-                        ListRowId = listRowId,
-                        AreaId = areaId
-                    });
+                await this.itemListRowsDataService.ExecuteAsync(listRowId, areaId, bayId: null);
 
                 return new OperationResult<ItemListRow>(true);
             }
@@ -253,7 +242,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 {
                     Id = model.Id,
                     Code = model.Code,
-                    RowPriority = model.RowPriority,
+                    Priority = model.RowPriority,
                     ItemId = model.ItemId,
                     RequestedQuantity = model.RequestedQuantity,
                     DispatchedQuantity = model.DispatchedQuantity,

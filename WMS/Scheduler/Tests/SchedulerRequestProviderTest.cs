@@ -13,35 +13,6 @@ namespace Ferretto.WMS.Scheduler.Tests
         [TestMethod]
         [TestProperty(
             "Description",
-            @"GIVEN that a non-withdrawal request is created \
-               WHEN the FullyQualifyWithdrawalRequestAsync method is called with the invalid request\
-               THEN the method should throw an exception")]
-        public async Task FullyQualifyWithdrawalRequestWithInvalidArgumentTest()
-        {
-            #region Arrange
-
-            var provider = this.GetService<ISchedulerRequestProvider>();
-
-            var request = new SchedulerRequest
-            {
-                Type = OperationType.Insertion
-            };
-
-            #endregion
-
-            using (var context = this.CreateContext())
-            {
-                #region Act + Assert
-
-                await Assert.ThrowsExceptionAsync<System.ArgumentException>(() => provider.FullyQualifyWithdrawalRequestAsync(request));
-
-                #endregion
-            }
-        }
-
-        [TestMethod]
-        [TestProperty(
-            "Description",
             @"GIVEN that a null request is created \
                WHEN the FullyQualifyWithdrawalRequestAsync method is called with the null new request\
                THEN the method should throw an exception")]
@@ -50,7 +21,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             #region Arrange
 
             var provider = this.GetService<ISchedulerRequestProvider>();
-            SchedulerRequest request = null;
+            ItemWithdrawOptions options = null;
 
             #endregion
 
@@ -58,7 +29,8 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act + Assert
 
-                await Assert.ThrowsExceptionAsync<System.ArgumentNullException>(() => provider.FullyQualifyWithdrawalRequestAsync(request));
+                await Assert.ThrowsExceptionAsync<System.ArgumentNullException>(
+                    () => provider.FullyQualifyWithdrawalRequestAsync(0, options));
 
                 #endregion
             }
