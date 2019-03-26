@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces;
+﻿using Ferretto.VW.OperatorApp.Interfaces;
 using Prism.Events;
 using Prism.Mvvm;
 

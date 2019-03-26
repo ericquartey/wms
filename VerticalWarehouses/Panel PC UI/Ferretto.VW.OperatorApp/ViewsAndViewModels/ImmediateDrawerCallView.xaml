@@ -1,0 +1,55 @@
+﻿<UserControl x:Class="Ferretto.VW.OperatorApp.ViewsAndViewModels.ImmediateDrawerCallView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:local="clr-namespace:Ferretto.VW.OperatorApp"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Resources="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
+             xmlns:Controls="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
+             xmlns:prism="http://prismlibrary.com/"
+             mc:Ignorable="d" >
+
+    <Grid   Width="1024" Height="608">
+
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,40,0,0"
+                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                    Text="{x:Static Resources:OperatorApp.ImmediateDrawerCallHeader}" />
+        
+        <DataGrid    HorizontalAlignment="Left" Height="350" Margin="170,90,0,0" VerticalAlignment="Top" Width="600" FontFamily="Helvetica Neue" FontSize="16"
+                     Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
+                     HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
+                     RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}">
+
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}"  Header="Cassetto" Width="100"/>
+                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Altezza" Width="90"/>
+                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Peso" Width="90"/>
+                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Cella" Width="90"/>
+                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Lato" Width="90"/>
+                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Stato" Width="80"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
+        
+        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,90,20,0"
+                  Content="{x:Static Resources:OperatorApp.ItemSearchUp}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        
+        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,160,20,0"
+                  Content="{x:Static Resources:OperatorApp.ItemSearchDown}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        
+        <Button   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,168"
+                  Content="{x:Static Resources:OperatorApp.ImmediateDrawerCallDrawerCall}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,530,0,0" Width="500"
+                                               ContentText="Cassetto bloccato."
+                                               LabelText="{x:Static Resources:OperatorApp.ItemDetailNote}"/>
+        
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,460,0,0" Width="150"
+                                               ContentText="1012"
+                                               LabelText="{x:Static Resources:OperatorApp.ImmediateDrawerCallRequiredDrawer}"/>
+
+    </Grid>
+</UserControl>

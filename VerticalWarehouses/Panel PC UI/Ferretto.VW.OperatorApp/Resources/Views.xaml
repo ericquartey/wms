@@ -33,6 +33,9 @@
     <DataTemplate DataType="{x:Type viewsandviewmodels:ItemDetailViewModel}">
         <viewsandviewmodels:ItemDetailView></viewsandviewmodels:ItemDetailView>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type viewsandviewmodels:ImmediateDrawerCallViewModel}">
+        <viewsandviewmodels:ImmediateDrawerCallView></viewsandviewmodels:ImmediateDrawerCallView>
+    </DataTemplate>
 
 
 </ResourceDictionary>

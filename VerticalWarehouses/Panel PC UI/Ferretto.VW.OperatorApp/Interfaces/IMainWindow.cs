@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ferretto.VW.OperatorApp
+namespace Ferretto.VW.OperatorApp.Interfaces
 {
-    public interface IHelpMainWindow
+    public interface IMainWindow
     {
     }
 }

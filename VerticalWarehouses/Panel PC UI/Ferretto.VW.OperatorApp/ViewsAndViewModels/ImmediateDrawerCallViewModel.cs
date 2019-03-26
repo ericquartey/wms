@@ -9,7 +9,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
 {
-    public class ItemDetailViewModel : BindableBase, IItemDetailViewModel
+    public class ImmediateDrawerCallViewModel : BindableBase, IImmediateDrawerCallViewModel
     {
         #region Fields
 
@@ -19,7 +19,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
 
         #region Constructors
 
-        public ItemDetailViewModel(IEventAggregator eventAggregator)
+        public ImmediateDrawerCallViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
         }

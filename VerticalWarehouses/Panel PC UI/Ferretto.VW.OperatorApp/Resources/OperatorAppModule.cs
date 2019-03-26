@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces;
+﻿using Ferretto.VW.OperatorApp.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Events;
@@ -32,6 +32,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             var listsInWaitVMInstance = new ListsInWaitViewModel(container.Resolve<IEventAggregator>());
             var itemSearchVMInstance = new ItemSearchViewModel(container.Resolve<IEventAggregator>());
             var itemDetailVMInstance = new ItemDetailViewModel(container.Resolve<IEventAggregator>());
+            var immediateDrawerCallVMInstance = new ImmediateDrawerCallViewModel(container.Resolve<IEventAggregator>());
 
 
 
@@ -47,6 +48,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IListsInWaitViewModel>(listsInWaitVMInstance);
             this.container.RegisterInstance<IItemSearchViewModel>(itemSearchVMInstance);
             this.container.RegisterInstance<IItemDetailViewModel>(itemDetailVMInstance);
+            this.container.RegisterInstance<IImmediateDrawerCallViewModel>(immediateDrawerCallVMInstance);
 
 
             mainWindowVMInstance.InitializeViewModel(this.container);

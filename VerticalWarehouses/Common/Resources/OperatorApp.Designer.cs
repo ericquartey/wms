@@ -367,6 +367,33 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a ImmediateDrawerCallDrawerCall.
+        /// </summary>
+        public static string ImmediateDrawerCallDrawerCall {
+            get {
+                return ResourceManager.GetString("ImmediateDrawerCallDrawerCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ImmediateDrawerCallHeader.
+        /// </summary>
+        public static string ImmediateDrawerCallHeader {
+            get {
+                return ResourceManager.GetString("ImmediateDrawerCallHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ImmediateDrawerCallRequiredDrawer.
+        /// </summary>
+        public static string ImmediateDrawerCallRequiredDrawer {
+            get {
+                return ResourceManager.GetString("ImmediateDrawerCallRequiredDrawer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Instant Article.
         /// </summary>
         public static string InstantArticle {

@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.Utils.Interfaces;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces
+namespace Ferretto.VW.OperatorApp.Interfaces
 {
-    public interface IMainWindowViewModel
+    public interface IMainWindowNavigationButtonsViewModel : IViewModel
     {
     }
 }

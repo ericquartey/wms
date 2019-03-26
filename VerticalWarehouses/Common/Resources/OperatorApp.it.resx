@@ -348,4 +348,13 @@
   <data name="ItemDetailNote" xml:space="preserve">
     <value>Note:</value>
   </data>
+  <data name="ImmediateDrawerCallHeader" xml:space="preserve">
+    <value>Richiesta immediata cassetto.</value>
+  </data>
+  <data name="ImmediateDrawerCallDrawerCall" xml:space="preserve">
+    <value>Chiama cassetto</value>
+  </data>
+  <data name="ImmediateDrawerCallRequiredDrawer" xml:space="preserve">
+    <value>Cassetto richiesto:</value>
+  </data>
 </root>

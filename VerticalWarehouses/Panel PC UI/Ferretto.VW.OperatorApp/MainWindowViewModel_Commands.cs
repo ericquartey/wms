@@ -4,7 +4,7 @@ using System.Windows.Input;
 using Ferretto.VW.OperatorApp.Resources;
 using Ferretto.VW.OperatorApp.Resources.Enumerations;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces;
+using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.Utils.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Commands;

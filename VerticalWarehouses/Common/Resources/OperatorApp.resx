@@ -425,4 +425,16 @@
     <value>ItemDetailNote</value>
     <comment>Label text</comment>
   </data>
+  <data name="ImmediateDrawerCallHeader" xml:space="preserve">
+    <value>ImmediateDrawerCallHeader</value>
+    <comment>Page Header</comment>
+  </data>
+  <data name="ImmediateDrawerCallDrawerCall" xml:space="preserve">
+    <value>ImmediateDrawerCallDrawerCall</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="ImmediateDrawerCallRequiredDrawer" xml:space="preserve">
+    <value>ImmediateDrawerCallRequiredDrawer</value>
+    <comment>Label text</comment>
+  </data>
 </root>

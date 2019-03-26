@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces;
+using Ferretto.VW.OperatorApp.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
