@@ -49,9 +49,9 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Debug.WriteLine(ex.Message);
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
             }
 
             this.IsBusy = false;
