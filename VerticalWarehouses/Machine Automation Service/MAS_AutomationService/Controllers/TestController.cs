@@ -1,14 +1,13 @@
-﻿using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.Common_Utils.Messages;
+﻿using System;
+using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.Common_Utils.DTOs;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
-using Ferretto.VW.MAS_DataLayer;
-using System;
-using System.Threading.Tasks;
 
 namespace Ferretto.VW.MAS_AutomationService
 {

@@ -26,9 +26,11 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                 columns: table => new
                 {
                     CellPosition = table.Column<decimal>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
                     Height = table.Column<decimal>(nullable: false),
                     LoadingUnitId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    MaxWeight = table.Column<decimal>(nullable: false),
                     Status = table.Column<long>(nullable: false),
                     Weight = table.Column<decimal>(nullable: false)
                 },
@@ -65,13 +67,14 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                 name: "RuntimeValues",
                 columns: table => new
                 {
+                    CategoryName = table.Column<long>(nullable: false),
                     VarName = table.Column<long>(nullable: false),
                     VarType = table.Column<long>(nullable: false),
                     VarValue = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RuntimeValues", x => x.VarName);
+                    table.PrimaryKey("PK_RuntimeValues", x => new { x.CategoryName, x.VarName });
                 });
 
             migrationBuilder.CreateTable(
@@ -122,26 +125,6 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                         principalColumn: "LoadingUnitId",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.InsertData(
-                table: "ConfigurationValues",
-                columns: new[] { "CategoryName", "VarName", "VarType", "VarValue" },
-                values: new object[] { 0L, 2L, 5L, "169.254.231.248" });
-
-            migrationBuilder.InsertData(
-                table: "ConfigurationValues",
-                columns: new[] { "CategoryName", "VarName", "VarType", "VarValue" },
-                values: new object[] { 0L, 17L, 2L, "17221" });
-
-            migrationBuilder.InsertData(
-                table: "ConfigurationValues",
-                columns: new[] { "CategoryName", "VarName", "VarType", "VarValue" },
-                values: new object[] { 0L, 4L, 5L, "169.254.231.10" });
-
-            migrationBuilder.InsertData(
-                table: "ConfigurationValues",
-                columns: new[] { "CategoryName", "VarName", "VarType", "VarValue" },
-                values: new object[] { 0L, 19L, 2L, "502" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cells_LoadingUnitId",

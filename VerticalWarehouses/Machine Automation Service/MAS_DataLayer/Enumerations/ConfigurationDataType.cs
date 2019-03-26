@@ -1,6 +1,6 @@
-﻿namespace Ferretto.VW.MAS_DataLayer
+﻿namespace Ferretto.VW.MAS_DataLayer.Enumerations
 {
-    public enum DataType : long
+    public enum ConfigurationDataType : long
     {
         Boolean,
 
