@@ -409,4 +409,20 @@
     <value>ItemSearchCall</value>
     <comment>Button text</comment>
   </data>
+  <data name="ItemDetailHeader" xml:space="preserve">
+    <value>ItemDetailHeader</value>
+    <comment>Page Header</comment>
+  </data>
+  <data name="ItemDetailManagement" xml:space="preserve">
+    <value>ItemDetailManagement</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ItemDetailPeriod" xml:space="preserve">
+    <value>ItemDetailPeriod</value>
+    <comment>Labet text</comment>
+  </data>
+  <data name="ItemDetailNote" xml:space="preserve">
+    <value>ItemDetailNote</value>
+    <comment>Label text</comment>
+  </data>
 </root>

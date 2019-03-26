@@ -336,4 +336,16 @@
   <data name="ItemSearchCall" xml:space="preserve">
     <value>Chiama articolo</value>
   </data>
+  <data name="ItemDetailHeader" xml:space="preserve">
+    <value>Dettaglio articolo.</value>
+  </data>
+  <data name="ItemDetailManagement" xml:space="preserve">
+    <value>Tipo di gestione:</value>
+  </data>
+  <data name="ItemDetailPeriod" xml:space="preserve">
+    <value>Periodo FIFO:</value>
+  </data>
+  <data name="ItemDetailNote" xml:space="preserve">
+    <value>Note:</value>
+  </data>
 </root>
