@@ -1,20 +1,38 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using CommonServiceLocator;
+using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core.Native;
 using DevExpress.Xpf.Editors;
+using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
+using Ferretto.Common.Controls.Interfaces;
+using Ferretto.WMS.App.Core.Models;
 using Microsoft.Win32;
 
 namespace Ferretto.Common.Controls
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Major Bug",
+        "S3168:\"async\" methods should not return \"void\"",
+        Justification = "Ok",
+        Scope = "member",
+        Target = "~M:Ferretto.Common.Controls.WmsImageEdit.OnCommandActionChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)")]
     public class WmsImageEdit : ImageEdit
     {
         #region Fields
 
+        public static readonly DependencyProperty CommandActionProperty = DependencyProperty.Register(
+                             nameof(CommandAction), typeof(WmsCommand), typeof(WmsImageEdit), new PropertyMetadata(OnCommandActionChanged));
+
         public static readonly DependencyProperty FilenameProperty = DependencyProperty.Register(
-             nameof(Filename), typeof(string), typeof(WmsImageEdit), new PropertyMetadata(default(string), new PropertyChangedCallback(OnPathChanged)));
+                             nameof(Filename), typeof(string), typeof(WmsImageEdit), new PropertyMetadata(default(string), new PropertyChangedCallback(OnPathChanged)));
 
         public static readonly DependencyProperty IsLoadingProperty = DependencyProperty.Register(
                      nameof(IsLoading), typeof(bool), typeof(WmsImageEdit), new PropertyMetadata(default(bool)));
@@ -39,6 +57,12 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
+        public WmsCommand CommandAction
+        {
+            get => (WmsCommand)this.GetValue(CommandActionProperty);
+            set => this.SetValue(CommandActionProperty, value);
+        }
+
         public string Filename
         {
             get => (string)this.GetValue(FilenameProperty);
@@ -57,9 +81,20 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(PathProperty, value);
         }
 
+        public Func<Task> UploadAction
+        {
+            get => new Func<Task>(async () => await this.UploadImageAsync());
+        }
+
         #endregion
 
         #region Methods
+
+        public async Task UploadImageAsync()
+        {
+            var image = await this.imageService.UploadAsync(this.Path, null);
+            this.Filename = image;
+        }
 
         protected override void LoadCore()
         {
@@ -77,6 +112,16 @@ namespace Ferretto.Common.Controls
             if (newValue == null)
             {
                 this.Path = null;
+            }
+        }
+
+        private static void OnCommandActionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is WmsImageEdit wmsImageEdit && e.NewValue is ICommand command)
+            {
+                var wmsCommand = (WmsCommand)command;
+                /*call image service*/
+                wmsCommand.BeforeExecute(wmsImageEdit.UploadAction);
             }
         }
 
@@ -124,8 +169,8 @@ namespace Ferretto.Common.Controls
                     return ImageHelper.CreateImageFromStream(ms);
                 }
             }
-            this.IsLoading = false;
 
+            this.IsLoading = false;
             return null;
         }
 
