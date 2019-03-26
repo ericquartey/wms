@@ -150,8 +150,6 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.fifoTimeStore, value);
         }
 
-        public bool HasImageChanged { get; set; }
-
         [Display(Name = nameof(BusinessObjects.ItemHeight), ResourceType = typeof(BusinessObjects))]
         public double? Height
         {

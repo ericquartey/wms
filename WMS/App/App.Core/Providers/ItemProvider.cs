@@ -27,8 +27,6 @@ namespace Ferretto.WMS.App.Core.Providers
 
         private readonly WMS.Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService;
 
-        private readonly IImageProvider imageFileProvider;
-
         private readonly IItemCategoryProvider itemCategoryProvider;
 
         private readonly WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService;
@@ -44,15 +42,13 @@ namespace Ferretto.WMS.App.Core.Providers
             WMS.Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService,
             IAbcClassProvider abcClassProvider,
             IItemCategoryProvider itemCategoryProvider,
-            IMeasureUnitProvider measureUnitProvider,
-            IImageProvider imageFileProvider)
+            IMeasureUnitProvider measureUnitProvider)
         {
             this.itemsDataService = itemsDataService;
             this.compartmentsDataService = compartmentsDataService;
             this.abcClassProvider = abcClassProvider;
             this.itemCategoryProvider = itemCategoryProvider;
             this.measureUnitProvider = measureUnitProvider;
-            this.imageFileProvider = imageFileProvider;
         }
 
         #endregion
