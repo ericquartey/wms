@@ -11,7 +11,7 @@ namespace Ferretto.WMS.Scheduler.Core.Interfaces
     {
         #region Methods
 
-        Task<IEnumerable<SchedulerRequest>> PrepareForExecutionAsync(ListExecutionRequest request);
+        Task<IEnumerable<SchedulerRequest>> PrepareForExecutionAsync(int id, int areaId, int? bayId);
 
         #endregion
     }
