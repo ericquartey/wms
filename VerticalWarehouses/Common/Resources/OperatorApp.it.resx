@@ -303,4 +303,37 @@
   <data name="ListsInWaitExecute" xml:space="preserve">
     <value>Esegui lista</value>
   </data>
+  <data name="ItemSearchHeader" xml:space="preserve">
+    <value>Ricerca articolo per codice o descrizione.</value>
+  </data>
+  <data name="ItemSearchKeySearch" xml:space="preserve">
+    <value>Cerca per codice:</value>
+  </data>
+  <data name="ItemSearchSearch" xml:space="preserve">
+    <value>Cerca articolo</value>
+  </data>
+  <data name="ItemSearchQtyAvailable" xml:space="preserve">
+    <value>Quantita' disponibile:</value>
+  </data>
+  <data name="ItemSearchQtyRequest" xml:space="preserve">
+    <value>Quantita' richiesta:</value>
+  </data>
+  <data name="ItemSearchTop" xml:space="preserve">
+    <value>Inizio</value>
+  </data>
+  <data name="ItemSearchUp" xml:space="preserve">
+    <value>Su</value>
+  </data>
+  <data name="ItemSearchDown" xml:space="preserve">
+    <value>Giu</value>
+  </data>
+  <data name="ItemSearchBottom" xml:space="preserve">
+    <value>Fine</value>
+  </data>
+  <data name="ItemSearchDetail" xml:space="preserve">
+    <value>Dettaglio articolo</value>
+  </data>
+  <data name="ItemSearchCall" xml:space="preserve">
+    <value>Chiama articolo</value>
+  </data>
 </root>

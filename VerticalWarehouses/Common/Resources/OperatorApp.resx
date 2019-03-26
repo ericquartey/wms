@@ -365,4 +365,48 @@
     <value>ListsInWaitExecute</value>
     <comment>Button text</comment>
   </data>
+  <data name="ItemSearchHeader" xml:space="preserve">
+    <value>ItemSearchHeader</value>
+    <comment>Page Header</comment>
+  </data>
+  <data name="ItemSearchKeySearch" xml:space="preserve">
+    <value>ItemSearchKeySearch</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ItemSearchSearch" xml:space="preserve">
+    <value>ItemSearchSearch</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="ItemSearchQtyAvailable" xml:space="preserve">
+    <value>ItemSearchQtyAvailable</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ItemSearchQtyRequest" xml:space="preserve">
+    <value>ItemSearchQtyRequest</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ItemSearchTop" xml:space="preserve">
+    <value>ItemSearchTop</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="ItemSearchUp" xml:space="preserve">
+    <value>ItemSearchUo</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="ItemSearchDown" xml:space="preserve">
+    <value>ItemSearchDown</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="ItemSearchBottom" xml:space="preserve">
+    <value>ItemSearchBottom</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="ItemSearchDetail" xml:space="preserve">
+    <value>ItemSearchDetail</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="ItemSearchCall" xml:space="preserve">
+    <value>ItemSearchCall</value>
+    <comment>Button text</comment>
+  </data>
 </root>

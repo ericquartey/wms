@@ -376,6 +376,105 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemSearchBottom.
+        /// </summary>
+        public static string ItemSearchBottom {
+            get {
+                return ResourceManager.GetString("ItemSearchBottom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemSearchCall.
+        /// </summary>
+        public static string ItemSearchCall {
+            get {
+                return ResourceManager.GetString("ItemSearchCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemSearchDetail.
+        /// </summary>
+        public static string ItemSearchDetail {
+            get {
+                return ResourceManager.GetString("ItemSearchDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemSearchDown.
+        /// </summary>
+        public static string ItemSearchDown {
+            get {
+                return ResourceManager.GetString("ItemSearchDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemSearchHeader.
+        /// </summary>
+        public static string ItemSearchHeader {
+            get {
+                return ResourceManager.GetString("ItemSearchHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemSearchKeySearch.
+        /// </summary>
+        public static string ItemSearchKeySearch {
+            get {
+                return ResourceManager.GetString("ItemSearchKeySearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemSearchQtyAvailable.
+        /// </summary>
+        public static string ItemSearchQtyAvailable {
+            get {
+                return ResourceManager.GetString("ItemSearchQtyAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemSearchQtyRequest.
+        /// </summary>
+        public static string ItemSearchQtyRequest {
+            get {
+                return ResourceManager.GetString("ItemSearchQtyRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemSearchSearch.
+        /// </summary>
+        public static string ItemSearchSearch {
+            get {
+                return ResourceManager.GetString("ItemSearchSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemSearchTop.
+        /// </summary>
+        public static string ItemSearchTop {
+            get {
+                return ResourceManager.GetString("ItemSearchTop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemSearchUo.
+        /// </summary>
+        public static string ItemSearchUp {
+            get {
+                return ResourceManager.GetString("ItemSearchUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a LIFO Period:.
         /// </summary>
         public static string LIFOPeriod {

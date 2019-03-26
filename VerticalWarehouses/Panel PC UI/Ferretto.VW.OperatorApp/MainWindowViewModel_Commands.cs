@@ -30,6 +30,8 @@ namespace Ferretto.VW.OperatorApp
 
         private ICommand listsInWaitButtonCommand;
 
+        private ICommand itemSearchButtonCommand;
+
         #endregion
 
         #region Properties
@@ -68,6 +70,11 @@ namespace Ferretto.VW.OperatorApp
         public ICommand ListsInWaitButtonCommand => this.listsInWaitButtonCommand ?? (this.listsInWaitButtonCommand = new DelegateCommand(() =>
         {
             this.NavigateToView<ListsInWaitViewModel, IListsInWaitViewModel>();
+        }));
+
+        public ICommand ItemSearchButtonCommand => this.itemSearchButtonCommand ?? (this.itemSearchButtonCommand = new DelegateCommand(() =>
+        {
+            this.NavigateToView<ItemSearchViewModel, IItemSearchViewModel>();
         }));
 
         #endregion

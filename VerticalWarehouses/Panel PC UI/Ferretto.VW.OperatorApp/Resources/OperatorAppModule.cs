@@ -30,6 +30,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             var drawerWaitVMInstance = new DrawerWaitViewModel(container.Resolve<IEventAggregator>());
             var drawerActivityDetailVMInstance = new DrawerActivityDetailViewModel(container.Resolve<IEventAggregator>());
             var listsInWaitVMInstance = new ListsInWaitViewModel(container.Resolve<IEventAggregator>());
+            var itemSearchVMInstance = new ItemSearchViewModel(container.Resolve<IEventAggregator>());
 
 
 
@@ -43,6 +44,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IDrawerWaitViewModel>(drawerWaitVMInstance);
             this.container.RegisterInstance<IDrawerActivityDetailViewModel>(drawerActivityDetailVMInstance);
             this.container.RegisterInstance<IListsInWaitViewModel>(listsInWaitVMInstance);
+            this.container.RegisterInstance<IItemSearchViewModel>(itemSearchVMInstance);
 
 
             mainWindowVMInstance.InitializeViewModel(this.container);
