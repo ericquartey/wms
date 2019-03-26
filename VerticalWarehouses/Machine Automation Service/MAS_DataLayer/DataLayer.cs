@@ -29,9 +29,9 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
 
-        private readonly IEventAggregator eventAggregator;
+        private readonly DataLayerConfiguration dataLayerConfiguration;
 
-        private readonly IOptions<FilesInfo> filesInfo;
+        private readonly IEventAggregator eventAggregator;
 
         private readonly ILogger logger;
 
@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private readonly DataLayerContext primaryDataContext;
 
-        private readonly DataLayerContext secondaryDataContext;
+        private DataLayerContext secondaryDataContext;
 
         private CancellationToken stoppingToken;
 
@@ -49,7 +49,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Constructors
 
-        public DataLayer(DataLayerConfiguration dataLayerConfiguration, DataLayerContext primaryDataContext, IEventAggregator eventAggregator, IOptions<FilesInfo> filesInfo, ILogger<DataLayer> logger)
+        public DataLayer(DataLayerConfiguration dataLayerConfiguration, DataLayerContext primaryDataContext, IEventAggregator eventAggregator, ILogger<DataLayer> logger)
         {
             if (primaryDataContext == null)
             {
@@ -61,30 +61,18 @@ namespace Ferretto.VW.MAS_DataLayer
                 throw new ArgumentNullException();
             }
 
-            if (filesInfo == null)
-            {
-                throw new ArgumentNullException();
-            }
-
             if (logger == null)
             {
                 throw new ArgumentNullException();
             }
 
+            this.dataLayerConfiguration = dataLayerConfiguration;
+
             this.primaryDataContext = primaryDataContext;
 
             this.eventAggregator = eventAggregator;
 
-            this.filesInfo = filesInfo;
-
             this.logger = logger;
-
-            this.secondaryDataContext = new DataLayerContext(new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(dataLayerConfiguration.SecondaryConnectionString).Options);
-
-            this.primaryDataContext.Database.Migrate();
-            this.secondaryDataContext.Database.Migrate();
-
-            this.LoadConfigurationValuesInfo(dataLayerConfiguration.ConfigurationFilePath);
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
 
@@ -93,31 +81,31 @@ namespace Ferretto.VW.MAS_DataLayer
             this.commadReceiveTask = new Task(async () => await this.ReceiveCommandTaskFunction());
             this.notificationReceiveTask = new Task(async () => await this.ReceiveNotificationTaskFunction());
 
-            var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            commandEvent.Subscribe(message => { this.commandQueue.Enqueue(message); },
-                ThreadOption.PublisherThread,
-                false,
-                message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
+            //var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            //commandEvent.Subscribe(message => { this.commandQueue.Enqueue(message); },
+            //    ThreadOption.PublisherThread,
+            //    false,
+            //    message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
 
-            // The old WriteLogService
-            var NotificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            NotificationEvent.Subscribe(message => { this.notificationQueue.Enqueue(message); },
-                ThreadOption.PublisherThread,
-                false,
-                message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
+            //// The old WriteLogService
+            //var NotificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            //NotificationEvent.Subscribe(message => { this.notificationQueue.Enqueue(message); },
+            //    ThreadOption.PublisherThread,
+            //    false,
+            //    message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
 
-            // INFO Log events
-            // INFO Command full events
-            var commandFullEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            commandFullEvent.Subscribe(message => { this.LogMessagesAsync(message); },
-                ThreadOption.PublisherThread,
-                false);
+            //// INFO Log events
+            //// INFO Command full events
+            //var commandFullEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            //commandFullEvent.Subscribe(message => { this.LogMessages(message); },
+            //    ThreadOption.PublisherThread,
+            //    false);
 
-            // INFO Notification full events
-            var notificationFullEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            notificationFullEvent.Subscribe(message => { this.LogMessages(message); },
-                ThreadOption.PublisherThread,
-                false);
+            //// INFO Notification full events
+            //var notificationFullEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            //notificationFullEvent.Subscribe(message => { this.LogMessages(message); },
+            //    ThreadOption.PublisherThread,
+            //    false);
 
             this.logger?.LogInformation("DataLayer Constructor");
         }
@@ -147,8 +135,6 @@ namespace Ferretto.VW.MAS_DataLayer
             this.primaryDataContext = dataContext;
 
             this.eventAggregator = eventAggregator;
-
-            this.filesInfo = filesInfo;
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
 
@@ -457,6 +443,21 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private async Task ReceiveCommandTaskFunction()
         {
+            this.primaryDataContext.Database.Migrate();
+
+            //this.secondaryDataContext = new DataLayerContext(new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(dataLayerConfiguration.SecondaryConnectionString).Options);
+            //this.secondaryDataContext.Database.Migrate();
+
+            //try
+            //{
+            //    this.LoadConfigurationValuesInfo(dataLayerConfiguration.ConfigurationFilePath);
+            //}
+
+            //catch (DataLayerException ex)
+            //{
+            //    this.logger.LogError("Failed to load configuration values");
+            //}
+
             do
             {
                 CommandMessage receivedMessage;
