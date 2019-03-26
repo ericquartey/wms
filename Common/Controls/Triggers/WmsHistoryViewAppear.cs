@@ -10,13 +10,26 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty IdProperty = DependencyProperty.Register(nameof(Id), typeof(object), typeof(WmsHistoryViewAppear));
+        public static readonly DependencyProperty IdProperty = DependencyProperty.Register(
+            nameof(Id),
+            typeof(object),
+            typeof(WmsHistoryViewAppear));
 
-        public static readonly DependencyProperty IsHandledProperty = DependencyProperty.Register(nameof(IsHandled), typeof(bool), typeof(WmsHistoryViewAppear), new PropertyMetadata(true));
+        public static readonly DependencyProperty IsHandledProperty = DependencyProperty.Register(
+            nameof(IsHandled),
+            typeof(bool),
+            typeof(WmsHistoryViewAppear),
+            new PropertyMetadata(true));
 
-        public static readonly DependencyProperty StartModuleNameProperty = DependencyProperty.Register(nameof(StartModuleName), typeof(string), typeof(WmsHistoryViewAppear));
+        public static readonly DependencyProperty StartModuleNameProperty = DependencyProperty.Register(
+            nameof(StartModuleName),
+            typeof(string),
+            typeof(WmsHistoryViewAppear));
 
-        public static readonly DependencyProperty StartViewNameProperty = DependencyProperty.Register(nameof(StartViewName), typeof(string), typeof(WmsHistoryViewAppear));
+        public static readonly DependencyProperty StartViewNameProperty = DependencyProperty.Register(
+            nameof(StartViewName),
+            typeof(string),
+            typeof(WmsHistoryViewAppear));
 
         private readonly IHistoryViewService historyViewService = ServiceLocator.Current.GetInstance<IHistoryViewService>();
 
