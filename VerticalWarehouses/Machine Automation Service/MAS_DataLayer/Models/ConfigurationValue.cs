@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public long VarName { get; set; }
 
-        public DataType VarType { get; set; }
+        public ConfigurationDataType VarType { get; set; }
 
         public string VarValue { get; set; }
 

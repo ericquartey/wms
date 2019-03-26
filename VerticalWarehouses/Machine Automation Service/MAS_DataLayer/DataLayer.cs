@@ -510,36 +510,36 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private void SaveConfigurationData(ConfigurationCategory elementCategory, long configurationData, JToken jsonDataValue)
         {
-            if (!Enum.TryParse(jsonDataValue.Type.ToString(), false, out DataType generalInfoDataType))
+            if (!Enum.TryParse(jsonDataValue.Type.ToString(), false, out ConfigurationDataType generalInfoConfigurationDataType))
             {
                 throw new DataLayerException($"Invalid configuration data type: {jsonDataValue.Type.ToString()} for data {configurationData} in section {elementCategory} found in configuration file");
             }
 
             try
             {
-                switch (generalInfoDataType)
+                switch (generalInfoConfigurationDataType)
                 {
-                    case DataType.Boolean:
+                    case ConfigurationDataType.Boolean:
                         this.SetBoolConfigurationValue(configurationData, (long)elementCategory,
                             jsonDataValue.Value<bool>());
                         break;
 
-                    case DataType.Date:
+                    case ConfigurationDataType.Date:
                         this.SetDateTimeConfigurationValue(configurationData, (long)elementCategory,
                             jsonDataValue.Value<DateTime>());
                         break;
 
-                    case DataType.Integer:
+                    case ConfigurationDataType.Integer:
                         this.SetIntegerConfigurationValue(configurationData, (long)elementCategory,
                             jsonDataValue.Value<int>());
                         break;
 
-                    case DataType.Float:
+                    case ConfigurationDataType.Float:
                         this.SetDecimalConfigurationValue(configurationData, (long)elementCategory,
                             jsonDataValue.Value<decimal>());
                         break;
 
-                    case DataType.String:
+                    case ConfigurationDataType.String:
                         var stringValue = jsonDataValue.Value<string>();
                         if (IPAddress.TryParse(stringValue, out var configurationValue))
                         {

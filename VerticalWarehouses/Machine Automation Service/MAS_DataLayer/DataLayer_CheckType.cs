@@ -8,9 +8,9 @@ namespace Ferretto.VW.MAS_DataLayer
     {
         #region Methods
 
-        public DataType CheckConfigurationValueType(GeneralInfo configurationValueEnum)
+        public ConfigurationDataType CheckConfigurationValueType(GeneralInfo configurationValueEnum)
         {
-            DataType returnValue;
+            ConfigurationDataType returnValue;
             switch (configurationValueEnum)
             {
                 case GeneralInfo.Address:
@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 case GeneralInfo.Order:
                 case GeneralInfo.Province:
                 case GeneralInfo.Serial:
-                    returnValue = DataType.String;
+                    returnValue = ConfigurationDataType.String;
                     break;
 
                 case GeneralInfo.AlfaNumBay1:
@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 case GeneralInfo.LaserBay1:
                 case GeneralInfo.LaserBay2:
                 case GeneralInfo.LaserBay3:
-                    returnValue = DataType.Boolean;
+                    returnValue = ConfigurationDataType.Boolean;
                     break;
 
                 case GeneralInfo.Bay1Height1:
@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 case GeneralInfo.Bay3Position2:
                 case GeneralInfo.Height:
                 case GeneralInfo.MaxWeight:
-                    returnValue = DataType.Float;
+                    returnValue = ConfigurationDataType.Float;
                     break;
 
                 case GeneralInfo.Bay1Type:
@@ -62,24 +62,24 @@ namespace Ferretto.VW.MAS_DataLayer
                 case GeneralInfo.Shutter3Type:
                 case GeneralInfo.DrawersQuantity:
                 case GeneralInfo.BaysQuantity:
-                    returnValue = DataType.Integer;
+                    returnValue = ConfigurationDataType.Integer;
                     break;
 
                 case GeneralInfo.InstallationDate:
                 case GeneralInfo.ProductionDate:
-                    returnValue = DataType.Date;
+                    returnValue = ConfigurationDataType.Date;
                     break;
 
                 default:
-                    returnValue = DataType.Undefined;
+                    returnValue = ConfigurationDataType.Undefined;
                     break;
             }
             return returnValue;
         }
 
-        public DataType CheckConfigurationValueType(SetupNetwork configurationValueEnum)
+        public ConfigurationDataType CheckConfigurationValueType(SetupNetwork configurationValueEnum)
         {
-            DataType returnValue;
+            ConfigurationDataType returnValue;
             switch (configurationValueEnum)
             {
                 case SetupNetwork.MachineNumber:
@@ -88,11 +88,11 @@ namespace Ferretto.VW.MAS_DataLayer
                 case SetupNetwork.IOExpansion1Port:
                 case SetupNetwork.IOExpansion2Port:
                 case SetupNetwork.IOExpansion3Port:
-                    returnValue = DataType.Integer;
+                    returnValue = ConfigurationDataType.Integer;
                     break;
 
                 case SetupNetwork.WMS_ON:
-                    returnValue = DataType.Boolean;
+                    returnValue = ConfigurationDataType.Boolean;
                     break;
 
                 case SetupNetwork.AlfaNumBay1:
@@ -110,29 +110,29 @@ namespace Ferretto.VW.MAS_DataLayer
                 case SetupNetwork.PPC2SlaveIPAddress:
                 case SetupNetwork.PPC3SlaveIPAddress:
                 case SetupNetwork.SQLServerIPAddress:
-                    returnValue = DataType.IPAddress;
+                    returnValue = ConfigurationDataType.IPAddress;
                     break;
 
                 default:
-                    returnValue = DataType.Undefined;
+                    returnValue = ConfigurationDataType.Undefined;
                     break;
             }
             return returnValue;
         }
 
-        public DataType CheckConfigurationValueType(SetupStatus configurationValueEnum)
+        public ConfigurationDataType CheckConfigurationValueType(SetupStatus configurationValueEnum)
         {
-            return DataType.Boolean;
+            return ConfigurationDataType.Boolean;
         }
 
-        public DataType CheckConfigurationValueType(VerticalAxis configurationValueEnum)
+        public ConfigurationDataType CheckConfigurationValueType(VerticalAxis configurationValueEnum)
         {
-            DataType returnValue;
+            ConfigurationDataType returnValue;
             switch (configurationValueEnum)
             {
                 case VerticalAxis.HomingSearchDirection:
                 case VerticalAxis.HomingExecuted:
-                    returnValue = DataType.Boolean;
+                    returnValue = ConfigurationDataType.Boolean;
                     break;
 
                 case VerticalAxis.HomingExitAcceleration:
@@ -148,23 +148,23 @@ namespace Ferretto.VW.MAS_DataLayer
                 case VerticalAxis.Offset:
                 case VerticalAxis.Resolution:
                 case VerticalAxis.UpperBound:
-                    returnValue = DataType.Float;
+                    returnValue = ConfigurationDataType.Float;
                     break;
 
                 default:
-                    returnValue = DataType.Undefined;
+                    returnValue = ConfigurationDataType.Undefined;
                     break;
             }
             return returnValue;
         }
 
-        public DataType CheckConfigurationValueType(HorizontalAxis configurationValueEnum)
+        public ConfigurationDataType CheckConfigurationValueType(HorizontalAxis configurationValueEnum)
         {
-            DataType returnValue;
+            ConfigurationDataType returnValue;
             switch (configurationValueEnum)
             {
                 case HorizontalAxis.HomingExecuted:
-                    returnValue = DataType.Boolean;
+                    returnValue = ConfigurationDataType.Boolean;
                     break;
 
                 case HorizontalAxis.AntiClockWiseRun:
@@ -173,23 +173,23 @@ namespace Ferretto.VW.MAS_DataLayer
                 case HorizontalAxis.MaxDeceleration:
                 case HorizontalAxis.MaxSpeed:
                 case HorizontalAxis.Offset:
-                    returnValue = DataType.Float;
+                    returnValue = ConfigurationDataType.Float;
                     break;
 
                 default:
-                    returnValue = DataType.Undefined;
+                    returnValue = ConfigurationDataType.Undefined;
                     break;
             }
             return returnValue;
         }
 
-        public DataType CheckConfigurationValueType(HorizontalMovementForwardProfile configurationValueEnum)
+        public ConfigurationDataType CheckConfigurationValueType(HorizontalMovementForwardProfile configurationValueEnum)
         {
-            DataType returnValue;
+            ConfigurationDataType returnValue;
             switch (configurationValueEnum)
             {
                 case HorizontalMovementForwardProfile.TotalSteps:
-                    returnValue = DataType.Integer;
+                    returnValue = ConfigurationDataType.Integer;
                     break;
 
                 case HorizontalMovementForwardProfile.InitialSpeed:
@@ -205,23 +205,23 @@ namespace Ferretto.VW.MAS_DataLayer
                 case HorizontalMovementForwardProfile.Step4AccDec:
                 case HorizontalMovementForwardProfile.Step4Position:
                 case HorizontalMovementForwardProfile.Step4Speed:
-                    returnValue = DataType.Float;
+                    returnValue = ConfigurationDataType.Float;
                     break;
 
                 default:
-                    returnValue = DataType.Undefined;
+                    returnValue = ConfigurationDataType.Undefined;
                     break;
             }
             return returnValue;
         }
 
-        public DataType CheckConfigurationValueType(HorizontalMovementBackwardProfile configurationValueEnum)
+        public ConfigurationDataType CheckConfigurationValueType(HorizontalMovementBackwardProfile configurationValueEnum)
         {
-            DataType returnValue;
+            ConfigurationDataType returnValue;
             switch (configurationValueEnum)
             {
                 case HorizontalMovementBackwardProfile.TotalSteps:
-                    returnValue = DataType.Integer;
+                    returnValue = ConfigurationDataType.Integer;
                     break;
 
                 case HorizontalMovementBackwardProfile.InitialSpeed:
@@ -237,135 +237,135 @@ namespace Ferretto.VW.MAS_DataLayer
                 case HorizontalMovementBackwardProfile.Step4AccDec:
                 case HorizontalMovementBackwardProfile.Step4Position:
                 case HorizontalMovementBackwardProfile.Step4Speed:
-                    returnValue = DataType.Float;
+                    returnValue = ConfigurationDataType.Float;
                     break;
 
                 default:
-                    returnValue = DataType.Undefined;
+                    returnValue = ConfigurationDataType.Undefined;
                     break;
             }
             return returnValue;
         }
 
-        public DataType CheckConfigurationValueType(VerticalManualMovements configurationValueEnum)
+        public ConfigurationDataType CheckConfigurationValueType(VerticalManualMovements configurationValueEnum)
         {
-            DataType returnValue;
+            ConfigurationDataType returnValue;
             switch (configurationValueEnum)
             {
                 case VerticalManualMovements.FeedRate:
                 case VerticalManualMovements.InitialTargetPosition:
                 case VerticalManualMovements.RecoveryTargetPosition:
-                    returnValue = DataType.Float;
+                    returnValue = ConfigurationDataType.Float;
                     break;
 
                 default:
-                    returnValue = DataType.Undefined;
+                    returnValue = ConfigurationDataType.Undefined;
                     break;
             }
             return returnValue;
         }
 
-        public DataType CheckConfigurationValueType(HorizontalManualMovements configurationValueEnum)
+        public ConfigurationDataType CheckConfigurationValueType(HorizontalManualMovements configurationValueEnum)
         {
-            DataType returnValue;
+            ConfigurationDataType returnValue;
             switch (configurationValueEnum)
             {
                 case HorizontalManualMovements.FeedRate:
                 case HorizontalManualMovements.InitialTargetPosition:
                 case HorizontalManualMovements.RecoveryTargetPosition:
-                    returnValue = DataType.Float;
+                    returnValue = ConfigurationDataType.Float;
                     break;
 
                 default:
-                    returnValue = DataType.Undefined;
+                    returnValue = ConfigurationDataType.Undefined;
                     break;
             }
             return returnValue;
         }
 
-        public DataType CheckConfigurationValueType(BeltBurnishing configurationValueEnum)
+        public ConfigurationDataType CheckConfigurationValueType(BeltBurnishing configurationValueEnum)
         {
-            return DataType.Integer;
+            return ConfigurationDataType.Integer;
         }
 
-        public DataType CheckConfigurationValueType(ResolutionCalibration configurationValueEnum)
+        public ConfigurationDataType CheckConfigurationValueType(ResolutionCalibration configurationValueEnum)
         {
-            return DataType.Float;
+            return ConfigurationDataType.Float;
         }
 
-        public DataType CheckConfigurationValueType(OffsetCalibration configurationValueEnum)
+        public ConfigurationDataType CheckConfigurationValueType(OffsetCalibration configurationValueEnum)
         {
-            DataType returnValue;
+            ConfigurationDataType returnValue;
             switch (configurationValueEnum)
             {
                 case OffsetCalibration.ReferenceCell:
-                    returnValue = DataType.Integer;
+                    returnValue = ConfigurationDataType.Integer;
                     break;
 
                 case OffsetCalibration.FeedRate:
                 case OffsetCalibration.StepValue:
-                    returnValue = DataType.Float;
+                    returnValue = ConfigurationDataType.Float;
                     break;
 
                 default:
-                    returnValue = DataType.Undefined;
+                    returnValue = ConfigurationDataType.Undefined;
                     break;
             }
             return returnValue;
         }
 
-        public DataType CheckConfigurationValueType(CellControl configurationValueEnum)
+        public ConfigurationDataType CheckConfigurationValueType(CellControl configurationValueEnum)
         {
-            return DataType.Float;
+            return ConfigurationDataType.Float;
         }
 
-        public DataType CheckConfigurationValueType(PanelControl configurationValueEnum)
+        public ConfigurationDataType CheckConfigurationValueType(PanelControl configurationValueEnum)
         {
-            DataType returnValue;
+            ConfigurationDataType returnValue;
             switch (configurationValueEnum)
             {
                 case PanelControl.FrontInitialReferenceCell:
                 case PanelControl.FrontPanelQuantity:
                 case PanelControl.BackInitialReferenceCell:
                 case PanelControl.BackPanelQuantity:
-                    returnValue = DataType.Integer;
+                    returnValue = ConfigurationDataType.Integer;
                     break;
 
                 case PanelControl.StepValue:
                 case PanelControl.FeedRate:
-                    returnValue = DataType.Float;
+                    returnValue = ConfigurationDataType.Float;
                     break;
 
                 default:
-                    returnValue = DataType.Undefined;
+                    returnValue = ConfigurationDataType.Undefined;
                     break;
             }
             return returnValue;
         }
 
-        public DataType CheckConfigurationValueType(ShutterHeightControl configurationValueEnum)
+        public ConfigurationDataType CheckConfigurationValueType(ShutterHeightControl configurationValueEnum)
         {
-            return DataType.Float;
+            return ConfigurationDataType.Float;
         }
 
-        public DataType CheckConfigurationValueType(WeightControl configurationValueEnum)
+        public ConfigurationDataType CheckConfigurationValueType(WeightControl configurationValueEnum)
         {
-            return DataType.Float;
+            return ConfigurationDataType.Float;
         }
 
-        public DataType CheckConfigurationValueType(BayPositionControl configurationValueEnum)
+        public ConfigurationDataType CheckConfigurationValueType(BayPositionControl configurationValueEnum)
         {
-            return DataType.Float;
+            return ConfigurationDataType.Float;
         }
 
-        public DataType CheckConfigurationValueType(LoadFirstDrawer configurationValueEnum)
+        public ConfigurationDataType CheckConfigurationValueType(LoadFirstDrawer configurationValueEnum)
         {
-            return DataType.Float;
+            return ConfigurationDataType.Float;
         }
 
-        private bool CheckDataType(long parameter, long category, DataType type)
+        private bool CheckConfigurationDataType(long parameter, long category, ConfigurationDataType type)
         {
-            var actualParameterType = DataType.Undefined;
+            var actualParameterType = ConfigurationDataType.Undefined;
             switch (category)
             {
                 case (long)ConfigurationCategory.Undefined:
