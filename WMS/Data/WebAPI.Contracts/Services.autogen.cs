@@ -6365,7 +6365,10 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemListRows/{id}/execute?");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Append("areaId=").Append(System.Uri.EscapeDataString(ConvertToString(areaId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append("bayId=").Append(System.Uri.EscapeDataString(bayId != null ? ConvertToString(bayId, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
+            if (bayId != null) 
+            {
+                urlBuilder_.Append("bayId=").Append(System.Uri.EscapeDataString(ConvertToString(bayId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
             urlBuilder_.Length--;
     
             var client_ = new System.Net.Http.HttpClient();
@@ -7042,7 +7045,10 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemLists/{id}/execute?");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Append("areaId=").Append(System.Uri.EscapeDataString(ConvertToString(areaId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append("bayId=").Append(System.Uri.EscapeDataString(bayId != null ? ConvertToString(bayId, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
+            if (bayId != null) 
+            {
+                urlBuilder_.Append("bayId=").Append(System.Uri.EscapeDataString(ConvertToString(bayId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
             urlBuilder_.Length--;
     
             var client_ = new System.Net.Http.HttpClient();
