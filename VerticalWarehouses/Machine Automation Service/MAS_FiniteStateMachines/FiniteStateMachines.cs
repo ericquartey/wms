@@ -150,7 +150,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     return Task.CompletedTask;
                 }
-
+                this.logger.LogTrace($"FSM MessageReceiveData {receivedMessage.Type}");
                 if (this.currentStateMachine != null)
                 {
                     this.currentStateMachine.ProcessNotificationMessage(receivedMessage);

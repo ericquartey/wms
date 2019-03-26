@@ -44,12 +44,6 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
         #region Methods
 
         /// <inheritdoc />
-        public override void OnPublishNotification(NotificationMessage message)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        /// <inheritdoc />
         public override void Start()
         {
             this.CurrentState = new StopState(this, this.axisToStop, this.logger);

@@ -33,6 +33,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 MessageType.Stop,
                 MessageVerbosity.Info);
             this.parentStateMachine.PublishCommandMessage(inverterMessage);
+
+            var notificationMessageData = new CalibrateAxisMessageData(this.axisToStop, MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                notificationMessageData,
+                "Homing Completed",
+                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
+                MessageType.CalibrateAxis,
+                MessageStatus.OperationEnd,
+                ErrorLevel.NoError,
+                MessageVerbosity.Info);
+
+            this.parentStateMachine.PublishNotificationMessage(notificationMessage);
+
+            this.logger.LogTrace("FSM Homing End ctor");
         }
 
         #endregion
@@ -48,14 +63,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogTrace($"********** Homing Start State command {message.Type}");
+            this.logger.LogTrace($"FSM Homing End processCommandMessage {message.Type}");
             //TEMP Add your implementation code here
         }
 
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogTrace($"********** Homing Start State notification {message.Type}");
+            this.logger.LogTrace($"FSM Homing End processNotificationMessage {message.Type}");
             if (message.Type == MessageType.Homing && message.Status == MessageStatus.OperationError)
             {
                 this.parentStateMachine.PublishNotificationMessage(message);

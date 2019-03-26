@@ -32,6 +32,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 MessageType.CalibrateAxis,
                 MessageVerbosity.Info);
             this.parentStateMachine.PublishCommandMessage(newMessage);
+            this.logger.LogTrace("FSM Homing Switch Axis ctor");
         }
 
         #endregion
@@ -47,6 +48,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
+            this.logger.LogTrace($"FSM Homing Switch Axis processCommandMessage {message.Type}");
             switch (message.Type)
             {
                 case MessageType.Stop:
@@ -62,6 +64,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
+            this.logger.LogTrace($"FSM Homing SwitchAxis processNotificationMessage {message.Type}");
             if (message.Type == MessageType.CalibrateAxis)
             {
                 switch (message.Status)

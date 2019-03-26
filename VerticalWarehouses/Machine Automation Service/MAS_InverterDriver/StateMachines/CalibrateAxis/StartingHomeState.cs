@@ -81,18 +81,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
                 if ((message.UShortPayload & StatusWordValue) == StatusWordValue)
                 {
-                    var messageData = new CalibrateAxisMessageData(this.axisToCalibrate, MessageVerbosity.Info);
-                    var notificationMessage = new NotificationMessage(
-                        messageData,
-                        $"{this.axisToCalibrate} Homing started",
-                        MessageActor.AutomationService,
-                        MessageActor.InverterDriver,
-                        MessageType.CalibrateAxis,
-                        MessageStatus.OperationExecuting,
-                        ErrorLevel.NoError,
-                        MessageVerbosity.Info);
-                    this.parentStateMachine.PublishNotificationEvent(notificationMessage);
-
+                    this.logger?.LogTrace($"StartingHomeState processmessage condition met");
                     this.parentStateMachine.ChangeState(new EndState(this.parentStateMachine, this.axisToCalibrate, this.logger));
                     returnValue = true;
                 }
@@ -105,7 +94,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         public override void Stop()
         {
             this.forceStop = true;
-
+            this.logger?.LogTrace($"StartingHomeState stop");
             var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue, sendDelay);
             this.parentStateMachine.EnqueueMessage(inverterMessage);
         }

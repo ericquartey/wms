@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Microsoft.Extensions.Logging;
@@ -39,6 +40,19 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.logger.LogTrace($"Homing State Machine ctor");
             this.IsStopRequested = false;
             this.OperationDone = false;
+
+            var notificationMessageData = new CalibrateAxisMessageData(this.calibrateAxis, MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                notificationMessageData,
+                "Homing Completed",
+                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
+                MessageType.CalibrateAxis,
+                MessageStatus.OperationExecuting,
+                ErrorLevel.NoError,
+                MessageVerbosity.Info);
+
+            this.PublishNotificationMessage(notificationMessage);
         }
 
         #endregion

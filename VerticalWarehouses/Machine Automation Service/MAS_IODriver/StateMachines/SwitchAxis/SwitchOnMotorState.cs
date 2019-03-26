@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
             this.axisToSwitchOn = axisToSwitchOn;
             this.parentStateMachine = parentStateMachine;
             this.logger = logger;
-
+            this.logger.LogTrace($"SwitchOnMotorState ctor");
             //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - SwitchOnMotorState:Ctor");
 
             var switchOnAxisIoMessage = new IoMessage(false);
@@ -47,10 +47,12 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         public override void ProcessMessage(IoMessage message)
         {
+            this.logger.LogTrace($"SwitchOnMotorState processMessage");
             if (message.ValidOutputs)
             {
                 if (this.axisToSwitchOn == Axis.Horizontal && message.CradleMotorOn || this.axisToSwitchOn == Axis.Vertical && message.ElevatorMotorOn)
                 {
+                    this.logger.LogTrace($"SwitchOnMotorState processMessage condition met");
                     var messageData = new CalibrateAxisMessageData(this.axisToSwitchOn, MessageVerbosity.Info);
                     var notificationMessage = new NotificationMessage(
                         messageData,

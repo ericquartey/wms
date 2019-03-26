@@ -56,7 +56,7 @@ namespace Ferretto.VW.MAS_AutomationService
         {
             switch (messageType)
             {
-                case MessageType.Homing:
+                case MessageType.CalibrateAxis:
                     return ActionType.Homing;
 
                 case MessageType.HorizontalHoming:

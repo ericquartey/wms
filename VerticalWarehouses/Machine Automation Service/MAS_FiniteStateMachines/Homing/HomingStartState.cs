@@ -23,8 +23,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.axisToCalibrate = axisToCalibrate;
             this.logger = logger;
 
-            this.logger.LogTrace("********** Homing Start State ctor");
-
             // TEMP send a message to switch axis (to IODriver)
             var switchAxisData = new SwitchAxisMessageData(this.axisToCalibrate);
             var message = new CommandMessage(switchAxisData,
@@ -34,6 +32,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 MessageType.SwitchAxis,
                 MessageVerbosity.Info);
             this.parentStateMachine.PublishCommandMessage(message);
+
+            var notificationMessageData = new CalibrateAxisMessageData(this.axisToCalibrate, MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                notificationMessageData,
+                "Homing Completed",
+                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
+                MessageType.CalibrateAxis,
+                MessageStatus.OperationExecuting,
+                ErrorLevel.NoError,
+                MessageVerbosity.Info);
+
+            this.parentStateMachine.PublishNotificationMessage(notificationMessage);
+
+            this.logger.LogTrace("FSM Homing Start ctor");
         }
 
         #endregion
@@ -49,7 +62,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogTrace($"********** Homing Start State command {message.Type}");
+            this.logger.LogTrace($"FSM Homing Start processCommandMessage {message.Type}");
             switch (message.Type)
             {
                 case MessageType.Stop:
@@ -65,7 +78,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogTrace($"********** Homing Start State notification {message.Type}");
+            this.logger.LogTrace($"FSM Homing Start processNotificationMessage {message.Type}");
             if (message.Type == MessageType.SwitchAxis)
             {
                 switch (message.Status)

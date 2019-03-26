@@ -70,18 +70,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
             if (message.IsWriteMessage && message.ParameterId == InverterParameterId.SetOperatingModeParam)
             {
-                var messageData = new CalibrateAxisMessageData(this.axisToCalibrate, MessageVerbosity.Info);
-                var notificationMessage = new NotificationMessage(
-                    messageData,
-                    $"{this.axisToCalibrate} Homing started",
-                    MessageActor.AutomationService,
-                    MessageActor.InverterDriver,
-                    MessageType.CalibrateAxis,
-                    MessageStatus.OperationStart,
-                    ErrorLevel.NoError,
-                    MessageVerbosity.Info);
-                this.parentStateMachine.PublishNotificationEvent(notificationMessage);
-
+                this.logger?.LogTrace($"HomingModeState processmessage condition met");
                 this.parentStateMachine.ChangeState(new ShutdownState(this.parentStateMachine, this.axisToCalibrate, this.logger));
                 returnValue = true;
             }
@@ -92,7 +81,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         public override void Stop()
         {
             this.forceStop = true;
-
+            this.logger?.LogTrace($"HomingModeState stop");
             var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue, sendDelay);
             this.parentStateMachine.EnqueueMessage(inverterMessage);
         }

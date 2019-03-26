@@ -35,6 +35,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
             this.ioCommandQueue = ioCommandQueue;
             this.eventAggregator = eventAggregator;
             this.logger = logger;
+            this.logger.LogTrace($"Switch Axis State Machine ctor");
         }
 
         #endregion
@@ -53,6 +54,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
         /// <inheritdoc/>
         public override void ProcessMessage(IoMessage message)
         {
+            this.logger.LogTrace($"Switch Axis State Machine Process Message");
             if (message.ValidOutputs && !message.ElevatorMotorOn && !message.CradleMotorOn)
             {
                 this.delayTimer = new Timer(this.DelayElapsed, null, PauseInterval, -1);    //VALUE -1 period means timer does not fire multiple times
@@ -62,6 +64,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         public override void Start()
         {
+            this.logger.LogTrace($"Switch Axis State Machine Start");
             if (this.switchOffOtherAxis)
             {
                 var messageData = new CalibrateAxisMessageData(this.axisToSwitchOn, MessageVerbosity.Info);

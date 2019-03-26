@@ -29,11 +29,10 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         #region Constructors
 
-        public InstallationController(IEventAggregator eventAggregator, IServiceProvider services, ILogger logger)
+        public InstallationController(IEventAggregator eventAggregator, IServiceProvider services)
         {
             this.eventAggregator = eventAggregator;
             this.dataLayerValueManagement = services.GetService(typeof(IDataLayerValueManagment)) as IDataLayerValueManagment;
-            this.logger = logger;
         }
 
         #endregion
@@ -43,7 +42,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpGet("ExecuteHoming")]
         public void ExecuteHoming()
         {
-            this.logger.LogTrace("Execute Homing");
+            //this.logger.LogTrace("Execute Homing");
             ICalibrateMessageData homingData = new CalibrateMessageData(Axis.Both);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(homingData, "Execute Homing Command", MessageActor.FiniteStateMachines, MessageActor.WebAPI, MessageType.Homing));
         }

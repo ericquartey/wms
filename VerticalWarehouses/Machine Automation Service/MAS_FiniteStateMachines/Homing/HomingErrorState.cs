@@ -32,6 +32,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 ErrorLevel.Error,
                 MessageVerbosity.Info);
             this.parentStateMachine.PublishNotificationMessage(newMessage);
+
+            this.logger.LogTrace("FSM Homing Error ctor");
         }
 
         #endregion
@@ -47,12 +49,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
+            this.logger.LogTrace($"FSM Homing Error processCommandMessage {message.Type}");
             //TEMP Add your implementation code here
         }
 
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
+            this.logger.LogTrace($"FSM Homing Error processNotificationMessage {message.Type}");
             //TEMP Add your implementation code here
         }
 

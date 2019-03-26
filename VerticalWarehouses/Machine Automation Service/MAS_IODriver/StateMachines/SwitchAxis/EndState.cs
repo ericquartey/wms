@@ -19,11 +19,10 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
         {
             this.parentStateMachine = parentStateMachine;
             this.logger = logger;
-
-            //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - MAS_IODriver:EndState:Ctor");
+            this.logger.LogTrace($"EndState ctor");
 
             var messageData = new SwitchAxisMessageData(axisToSwitchOn);
-            var endNotification = new NotificationMessage(messageData, "Motor Switch complete", MessageActor.AutomationService,
+            var endNotification = new NotificationMessage(messageData, "Motor Switch complete", MessageActor.Any,
                 MessageActor.IODriver, MessageType.SwitchAxis, MessageStatus.OperationEnd);
             this.parentStateMachine.PublishNotificationEvent(endNotification);
         }
@@ -34,6 +33,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         public override void ProcessMessage(IoMessage message)
         {
+            this.logger.LogTrace($"EndState processMessage");
         }
 
         #endregion

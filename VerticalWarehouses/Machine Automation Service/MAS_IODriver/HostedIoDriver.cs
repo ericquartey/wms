@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
@@ -204,11 +205,15 @@ namespace Ferretto.VW.MAS_IODriver
                     this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
                     continue;
                 }
-
+                this.logger.LogTrace($"HostedIODriver command received {receivedMessage.Type} ");
                 switch (receivedMessage.Type)
                 {
                     case MessageType.SwitchAxis:
                         this.ExecuteSwitchAxis(receivedMessage);
+                        break;
+
+                    case MessageType.IOReset:
+                        this.ExecuteIOReset(receivedMessage);
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);

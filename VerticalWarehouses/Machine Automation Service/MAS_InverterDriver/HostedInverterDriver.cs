@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
@@ -24,7 +25,7 @@ namespace Ferretto.VW.InverterDriver
     {
         #region Fields
 
-        private const int HeartbeatTimeout = 300;
+        private const int HeartbeatTimeout = 9000;
 
         private readonly Task commandReceiveTask;
 
@@ -270,7 +271,7 @@ namespace Ferretto.VW.InverterDriver
                     case MessageType.CalibrateAxis:
                         if (receivedMessage.Status == MessageStatus.OperationEnd)
                         {
-                            this.currentStateMachine.Dispose();
+                            this.currentStateMachine?.Dispose();
                             this.currentStateMachine = null;
                         }
                         break;
@@ -278,12 +279,12 @@ namespace Ferretto.VW.InverterDriver
                     case MessageType.Stop:
                         if (receivedMessage.Status == MessageStatus.OperationEnd)
                         {
-                            this.currentStateMachine.Dispose();
+                            this.currentStateMachine?.Dispose();
                             this.currentStateMachine = null;
                         }
                         if (receivedMessage.Status == MessageStatus.OperationStop)
                         {
-                            this.currentStateMachine.Dispose();
+                            this.currentStateMachine?.Dispose();
                             this.currentStateMachine = null;
                         }
                         break;
@@ -327,7 +328,7 @@ namespace Ferretto.VW.InverterDriver
         {
             while (this.heartbeatQueue.Dequeue(out var message))
             {
-                //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:ProcessHeartbeat");
+                this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:ProcessHeartbeat");
                 await this.socketTransport.WriteAsync(message.GteHeartbeatMessage(this.heartbeatSet), this.stoppingToken);
 
                 this.lastHeatbeatMessage = message;

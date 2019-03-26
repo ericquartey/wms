@@ -31,10 +31,9 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
             this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - EndState:Ctor");
 
             var messageData = new CalibrateAxisMessageData(axisToCalibrate);
-            var endNotification = new NotificationMessage(messageData, "Axis calibration complete", MessageActor.AutomationService,
+            var endNotification = new NotificationMessage(messageData, "Axis calibration complete", MessageActor.Any,
                 MessageActor.InverterDriver, MessageType.CalibrateAxis, MessageStatus.OperationEnd);
-            //this.parentStateMachine.PublishNotificationEvent(endNotification);
-            this.parentStateMachine.OnPublishNotification(endNotification);
+            this.parentStateMachine.PublishNotificationEvent(endNotification);
         }
 
         #endregion
