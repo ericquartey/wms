@@ -106,7 +106,9 @@ namespace MAS_FiniteStateMachinesUnitTests.Homing
             var eventAggregatorMock = new Mock<IEventAggregator>();
             var calibrateMessageData = new Mock<ICalibrateMessageData>();
             var loggerMock = new Mock<ILogger>();
+            var notifyEvent = new NotificationEvent();
             eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<CommandEvent>()).Returns(new CommandEvent());
+            eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<NotificationEvent>()).Returns(notifyEvent);
 
             calibrateMessageData.Setup(c => c.AxisToCalibrate).Returns(Axis.Vertical);
 
@@ -151,10 +153,11 @@ namespace MAS_FiniteStateMachinesUnitTests.Homing
             var calibrateMessageData = new Mock<ICalibrateMessageData>();
             var cmdEvent = new CommandEvent();
             var loggerMock = new Mock<ILogger>();
-
+            var notifyEvent = new NotificationEvent();
             calibrateMessageData.Setup(c => c.AxisToCalibrate).Returns(Axis.Vertical);
             calibrateMessageData.Setup(c => c.Verbosity).Returns(MessageVerbosity.Info);
             eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<CommandEvent>()).Returns(cmdEvent);
+            eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<NotificationEvent>()).Returns(notifyEvent);
 
             var sm = new HomingStateMachine(eventAggregatorMock.Object, calibrateMessageData.Object, loggerMock.Object);
             sm.Start();
@@ -169,9 +172,10 @@ namespace MAS_FiniteStateMachinesUnitTests.Homing
             var eventAggregatorMock = new Mock<IEventAggregator>();
             var calibrateMessageData = new Mock<ICalibrateMessageData>();
             var loggerMock = new Mock<ILogger>();
-
+            var notifyEvent = new NotificationEvent();
             calibrateMessageData.Setup(c => c.AxisToCalibrate).Returns(Axis.Vertical);
             calibrateMessageData.Setup(c => c.Verbosity).Returns(MessageVerbosity.Info);
+            eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<NotificationEvent>()).Returns(notifyEvent);
 
             var sm = new HomingStateMachine(eventAggregatorMock.Object, calibrateMessageData.Object, loggerMock.Object);
         }
