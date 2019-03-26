@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -90,86 +89,34 @@ namespace Ferretto.WMS.App.Core.Models
             return !this.HasEmptyValue(propertyInfo);
         }
 
-        protected bool SetIfPositive(ref int? member, int? value, [CallerMemberName] string propertyName = null)
+        protected static string GetErrorMessageIfNegative(double? value, string propertyName)
         {
             if (value.HasValue && value.Value < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBePositive);
+                return string.Format(Common.Resources.Errors.PropertyMustBePositive, propertyName);
             }
 
-            return this.SetProperty(ref member, value, propertyName);
+            return null;
         }
 
-        protected bool SetIfPositive(ref int member, int value, [CallerMemberName] string propertyName = null)
-        {
-            if (value < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBePositive);
-            }
-
-            return this.SetProperty(ref member, value, propertyName);
-        }
-
-        protected bool SetIfPositive(ref double? member, double? value, [CallerMemberName] string propertyName = null)
-        {
-            if (value.HasValue && value.Value < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBePositive);
-            }
-
-            return this.SetProperty(ref member, value, propertyName);
-        }
-
-        protected bool SetIfPositive(ref double member, double value, [CallerMemberName] string propertyName = null)
-        {
-            if (value < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBePositive);
-            }
-
-            return this.SetProperty(ref member, value, propertyName);
-        }
-
-        protected bool SetIfStrictlyPositive(ref int? member, int? value, [CallerMemberName] string propertyName = null)
+        protected static string GetErrorMessageIfNegativeOrZero(double? value, string propertyName)
         {
             if (value.HasValue && value.Value <= 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBeStrictlyPositive);
+                return string.Format(Common.Resources.Errors.PropertyMustBeStriclyPositive, propertyName);
             }
 
-            return this.SetProperty(ref member, value, propertyName);
+            return null;
         }
 
-        protected bool SetIfStrictlyPositive(ref int member, int value, [CallerMemberName] string propertyName = null)
+        protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
-            if (value <= 0)
+            base.OnPropertyChanged(args);
+
+            if (args?.PropertyName != nameof(this.Error))
             {
-                throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBeStrictlyPositive);
+                this.RaisePropertyChanged(nameof(this.Error));
             }
-
-            return this.SetProperty(ref member, value, propertyName);
-        }
-
-        protected bool SetIfStrictlyPositive(ref double? member, double? value,
-            [CallerMemberName] string propertyName = null)
-        {
-            if (value.HasValue && value.Value <= 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBeStrictlyPositive);
-            }
-
-            return this.SetProperty(ref member, value, propertyName);
-        }
-
-        protected bool SetIfStrictlyPositive(ref double member, double value,
-            [CallerMemberName] string propertyName = null)
-        {
-            if (value <= 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBeStrictlyPositive);
-            }
-
-            return this.SetProperty(ref member, value, propertyName);
         }
 
         #endregion

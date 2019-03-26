@@ -475,6 +475,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The property {0} must be positive..
+        /// </summary>
+        public static string PropertyMustBePositive {
+            get {
+                return ResourceManager.GetString("PropertyMustBePositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The property {0} must be strictly positive..
         /// </summary>
         public static string PropertyMustBeStriclyPositive {

@@ -3,11 +3,15 @@ using System.Windows.Input;
 
 namespace Ferretto.Common.Controls.Services
 {
-    public class ShortKey
+    public class ShortKey : ICloneable
     {
         #region Constructors
 
-        public ShortKey(Key key, bool isHandled)
+        public ShortKey(
+            Key key,
+            bool isHandled,
+            ModifierKeys modifierKeyFirst = ModifierKeys.None,
+            ModifierKeys modifierKeySecond = ModifierKeys.None)
         {
             this.IsHandled = isHandled;
             this.Key = key;
@@ -21,63 +25,25 @@ namespace Ferretto.Common.Controls.Services
             this.Description = description;
         }
 
-        public ShortKey(Key keySt, bool isHandled, ModifierKeys modifierKeyFirst = ModifierKeys.None, ModifierKeys modifierKeySecond = ModifierKeys.None)
+        public ShortKey(
+            Key keySt,
+            bool isHandled,
+            ModifierKeys modifierKeyFirst,
+            Action<ShortKeyAction> action)
             : this(keySt, isHandled)
         {
             this.ModifierKeyFirst = modifierKeyFirst;
-            this.ModifierKeySecond = modifierKeySecond;
-        }
-
-        public ShortKey(Key keySt, bool isHandled, string description, ModifierKeys modifierKeyFirst = ModifierKeys.None, ModifierKeys modifierKeySecond = ModifierKeys.None)
-            : this(keySt, isHandled, description)
-        {
-            this.ModifierKeyFirst = modifierKeyFirst;
-            this.ModifierKeySecond = modifierKeySecond;
-        }
-
-        public ShortKey(Key keySt, bool isHandled, ModifierKeys modifierKeyFirst, Action<ShortKeyAction> action)
-            : this(keySt, isHandled)
-        {
-            this.ModifierKeyFirst = modifierKeyFirst;
-
-            this.DoAction = action;
-        }
-
-        public ShortKey(Key keySt, bool isHandled, ModifierKeys modifierKeyFirst, ModifierKeys modifierKeySecond, Action<ShortKeyAction> action)
-            : this(keySt, isHandled)
-        {
-            this.ModifierKeyFirst = modifierKeyFirst;
-            this.ModifierKeySecond = modifierKeySecond;
-
-            this.DoAction = action;
-        }
-
-        public ShortKey(Key keySt, bool isHandled, string description, ModifierKeys modifierKeyFirst, ModifierKeys modifierKeySecond, Action<ShortKeyAction> action)
-            : this(keySt, isHandled, description)
-        {
-            this.ModifierKeyFirst = modifierKeyFirst;
-            this.ModifierKeySecond = modifierKeySecond;
-
-            this.DoAction = action;
-        }
-
-        public ShortKey(Key keySt, bool isHandled, Action<ShortKeyAction> action, ModifierKeys modifierKeyFirst = ModifierKeys.None, ModifierKeys modifierKeySecond = ModifierKeys.None)
-            : this(keySt, isHandled)
-        {
-            this.ModifierKeyFirst = modifierKeyFirst;
-            this.ModifierKeySecond = modifierKeySecond;
 
             this.DoAction = action;
         }
 
         public ShortKey(
-                Key keySt,
-                bool isHandled,
-                string description,
-                Action<ShortKeyAction> action,
-                ModifierKeys modifierKeyFirst = ModifierKeys.None,
-                ModifierKeys modifierKeySecond = ModifierKeys.None)
-            : this(keySt, isHandled, description)
+            Key keySt,
+            bool isHandled,
+            Action<ShortKeyAction> action,
+            ModifierKeys modifierKeyFirst = ModifierKeys.None,
+            ModifierKeys modifierKeySecond = ModifierKeys.None)
+            : this(keySt, isHandled)
         {
             this.ModifierKeyFirst = modifierKeyFirst;
             this.ModifierKeySecond = modifierKeySecond;
@@ -121,10 +87,9 @@ namespace Ferretto.Common.Controls.Services
 
         #region Methods
 
-        public ShortKey Clone()
+        public object Clone()
         {
-            var shortKey = new ShortKey(this.Key, this.IsHandled, this.Description, this.ModifierKeyFirst, this.ModifierKeySecond, this.DoAction);
-            return shortKey;
+            return this.MemberwiseClone();
         }
 
         public string FormatString()

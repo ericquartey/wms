@@ -2,7 +2,7 @@
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    public interface IFilter
+    public interface ICompartmentColorFilter
     {
         #region Properties
 

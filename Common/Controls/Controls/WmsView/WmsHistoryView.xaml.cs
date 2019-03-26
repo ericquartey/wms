@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using CommonServiceLocator;
 using DevExpress.Mvvm.UI;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Utils;
-using CommonServiceLocator;
 
 namespace Ferretto.Common.Controls
 {
@@ -68,7 +68,7 @@ namespace Ferretto.Common.Controls
             this.CheckBackVisibility();
         }
 
-        public void Appear(string moduleName, string viewModelName, object data = null)
+        public void Appear(string moduleName, string viewModelName, object data)
         {
             if (string.IsNullOrEmpty(viewModelName))
             {
