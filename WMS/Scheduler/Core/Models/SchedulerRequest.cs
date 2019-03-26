@@ -87,6 +87,8 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public int? PackageTypeId { get; set; }
 
+        public int? Priority { get; set; }
+
         public int QuantityLeftToDispatch => this.requestedQuantity - this.dispatchedQuantity;
 
         public string RegistrationNumber { get; set; }
