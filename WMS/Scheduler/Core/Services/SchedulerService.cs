@@ -181,6 +181,34 @@ namespace Ferretto.WMS.Scheduler.Core.Services
             }
         }
 
+        public async Task<IOperationResult<ItemList>> SuspendListAsync(int id)
+        {
+            this.logger.LogDebug($"Suspending execution of list id={id}.");
+
+            using (var scope = this.scopeFactory.CreateScope())
+            {
+                var listProvider = scope.ServiceProvider.GetRequiredService<IItemListSchedulerProvider>();
+
+                await listProvider.SuspendAsync(id);
+            }
+
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<IOperationResult<ItemListRow>> SuspendListRowAsync(int id)
+        {
+            this.logger.LogDebug($"Suspending execution of list row id={id}.");
+
+            using (var scope = this.scopeFactory.CreateScope())
+            {
+                var rowProvider = scope.ServiceProvider.GetRequiredService<IItemListRowSchedulerProvider>();
+
+                await rowProvider.SuspendAsync(id);
+            }
+
+            throw new System.NotImplementedException();
+        }
+
         private async Task SeedDatabaseAsync(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade database, CancellationToken stoppingToken)
         {
             try

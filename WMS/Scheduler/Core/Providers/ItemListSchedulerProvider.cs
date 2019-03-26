@@ -91,6 +91,12 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             return requests;
         }
 
+        public async Task<IOperationResult<ItemList>> SuspendAsync(int id)
+        {
+            await this.GetByIdAsync(id);
+            throw new NotImplementedException();
+        }
+
         public async Task<IOperationResult<ItemList>> UpdateAsync(ItemList model)
         {
             if (model == null)

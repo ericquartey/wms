@@ -12,6 +12,8 @@ namespace Ferretto.WMS.Scheduler.Core.Interfaces
 
         Task<IOperationResult<SchedulerRequest>> PrepareForExecutionAsync(int id, int areaId, int? bayId);
 
+        Task<IOperationResult<ItemListRow>> SuspendAsync(int id);
+
         #endregion
     }
 }

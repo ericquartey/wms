@@ -48,6 +48,12 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             return new SuccessOperationResult<ItemListRow>(model);
         }
 
+        public async Task<IOperationResult<ItemListRow>> SuspendAsync(int id)
+        {
+            await this.GetByIdAsync(id);
+            throw new System.NotImplementedException();
+        }
+
         #endregion
     }
 }

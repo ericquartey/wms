@@ -200,6 +200,33 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
+        [HttpPost("{id}/suspend")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        public async Task<ActionResult<ItemList>> SuspendAsync(int id)
+        {
+            var result = await this.schedulerService.SuspendListAsync(id);
+            if (result is UnprocessableEntityOperationResult<ItemList>)
+            {
+                return this.UnprocessableEntity(new ProblemDetails
+                {
+                    Status = StatusCodes.Status422UnprocessableEntity,
+                    Detail = result.Description
+                });
+            }
+            else if (result is NotFoundOperationResult<ItemList>)
+            {
+                return this.NotFound(new ProblemDetails
+                {
+                    Status = StatusCodes.Status404NotFound,
+                    Detail = result.Description
+                });
+            }
+
+            return this.Ok(result.Entity);
+        }
+
         [ProducesResponseType(typeof(ItemListDetails), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
