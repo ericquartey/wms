@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.App.Core.Extensions;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 
@@ -133,16 +134,6 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
-        public async Task<ActionModel> CanDeleteAsync(int id)
-        {
-            var action = await this.compartmentsDataService.CanDeleteAsync(id);
-            return new ActionModel
-            {
-                IsAllowed = action.IsAllowed,
-                Reason = action.Reason,
-            };
-        }
-
         public async Task<IOperationResult<CompartmentDetails>> CreateAsync(CompartmentDetails model)
         {
             if (model == null)
@@ -227,6 +218,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     Stock = c.Stock,
                     Sub1 = c.Sub1,
                     Sub2 = c.Sub2,
+                    Policies = c.GetPolicies(),
                 });
         }
 
@@ -291,6 +283,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 Width = compartment.HasRotation ? compartment.Height : compartment.Width,
                 XPosition = compartment.XPosition,
                 YPosition = compartment.YPosition,
+                Policies = compartment.GetPolicies(),
             };
         }
 
@@ -310,6 +303,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     Stock = c.Stock,
                     Sub1 = c.Sub1,
                     Sub2 = c.Sub2,
+                    Policies = c.GetPolicies(),
                 });
         }
 
@@ -350,6 +344,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     Width = c.HasRotation ? c.Height : c.Width,
                     XPosition = c.XPosition,
                     YPosition = c.YPosition,
+                    Policies = c.GetPolicies(),
                 });
         }
 
@@ -416,6 +411,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 ReferenceType = (ReferenceType)loadingUnit.ReferenceType,
                 Weight = loadingUnit.Weight,
                 Width = loadingUnit.Width,
+                Policies = loadingUnit.GetPolicies(),
             };
 
             foreach (var compartment in await this.GetByLoadingUnitIdAsync(id))
