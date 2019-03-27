@@ -29,6 +29,8 @@ namespace Ferretto.Common.DataModels
 
         public List<Mission> Missions { get; set; }
 
+        public int Priority { get; set; }
+
         public IEnumerable<SchedulerRequest> SchedulerRequests { get; set; }
 
         #endregion

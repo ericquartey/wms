@@ -83,7 +83,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Lot = model.Lot,
                 MaterialStatusId = model.MaterialStatusId,
                 PackageTypeId = model.PackageTypeId,
-                Priority = model.RowPriority,
+                Priority = model.Priority,
                 RegistrationNumber = model.RegistrationNumber,
                 RequestedQuantity = model.RequestedQuantity,
                 Status = (Common.DataModels.ItemListRowStatus)model.ItemListRowStatus,
@@ -201,20 +201,20 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return null;
             }
 
-            return (i) =>
-                i.Code.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+            return (r) =>
+                r.Code.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                i.ItemDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                r.ItemDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                i.ItemUnitMeasure.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                r.ItemUnitMeasure.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                i.MaterialStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                r.MaterialStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                i.DispatchedQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                r.DispatchedQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                i.RequestedQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                r.RequestedQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                i.RowPriority.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
+                r.Priority.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private IQueryable<ItemListRow> GetAllBase()
@@ -224,7 +224,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 {
                     Id = l.Id,
                     Code = l.Code,
-                    RowPriority = l.Priority,
+                    Priority = l.Priority,
                     ItemDescription = l.Item.Description,
                     RequestedQuantity = l.RequestedQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
@@ -243,7 +243,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 {
                     Id = l.Id,
                     Code = l.Code,
-                    RowPriority = l.Priority,
+                    Priority = l.Priority,
                     ItemId = l.Item.Id,
                     RequestedQuantity = l.RequestedQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,

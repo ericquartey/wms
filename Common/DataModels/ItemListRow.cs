@@ -42,7 +42,7 @@ namespace Ferretto.Common.DataModels
 
         public int? PackageTypeId { get; set; }
 
-        public int Priority { get; set; }
+        public int? Priority { get; set; }
 
         public string RegistrationNumber { get; set; }
 

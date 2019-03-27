@@ -63,16 +63,11 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             return models;
         }
 
-        public async Task<SchedulerRequest> FullyQualifyWithdrawalRequestAsync(SchedulerRequest schedulerRequest)
+        public async Task<SchedulerRequest> FullyQualifyWithdrawalRequestAsync(int itemId, ItemWithdrawOptions options)
         {
-            if (schedulerRequest == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(schedulerRequest));
-            }
-
-            if (schedulerRequest.Type != OperationType.Withdrawal)
-            {
-                throw new ArgumentException("Only withdrawal requests are supported.", nameof(schedulerRequest));
+                throw new ArgumentNullException(nameof(options));
             }
 
             var aggregatedCompartments = this.dataContext.Compartments
@@ -81,23 +76,23 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 .ThenInclude(c => c.Aisle)
                 .ThenInclude(a => a.Area)
                 .Where(c =>
-                    c.ItemId == schedulerRequest.ItemId
+                    c.ItemId == itemId
                     &&
-                    c.LoadingUnit.Cell.Aisle.Area.Id == schedulerRequest.AreaId
+                    c.LoadingUnit.Cell.Aisle.Area.Id == options.AreaId
                     &&
-                    (schedulerRequest.BayId.HasValue == false || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == schedulerRequest.BayId))
+                    (options.BayId.HasValue == false || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == options.BayId))
                     &&
-                    (schedulerRequest.Sub1 == null || c.Sub1 == schedulerRequest.Sub1)
+                    (options.Sub1 == null || c.Sub1 == options.Sub1)
                     &&
-                    (schedulerRequest.Sub2 == null || c.Sub2 == schedulerRequest.Sub2)
+                    (options.Sub2 == null || c.Sub2 == options.Sub2)
                     &&
-                    (schedulerRequest.Lot == null || c.Lot == schedulerRequest.Lot)
+                    (options.Lot == null || c.Lot == options.Lot)
                     &&
-                    (schedulerRequest.PackageTypeId.HasValue == false || c.PackageTypeId == schedulerRequest.PackageTypeId)
+                    (options.PackageTypeId.HasValue == false || c.PackageTypeId == options.PackageTypeId)
                     &&
-                    (schedulerRequest.MaterialStatusId.HasValue == false || c.MaterialStatusId == schedulerRequest.MaterialStatusId)
+                    (options.MaterialStatusId.HasValue == false || c.MaterialStatusId == options.MaterialStatusId)
                     &&
-                    (schedulerRequest.RegistrationNumber == null || c.RegistrationNumber == schedulerRequest.RegistrationNumber))
+                    (options.RegistrationNumber == null || c.RegistrationNumber == options.RegistrationNumber))
                 .GroupBy(
                     x => new { x.Sub1, x.Sub2, x.Lot, x.PackageTypeId, x.MaterialStatusId, x.RegistrationNumber },
                     (key, group) => new
@@ -114,7 +109,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     });
 
             var aggregatedRequests = this.dataContext.SchedulerRequests
-                .Where(r => r.ItemId == schedulerRequest.ItemId);
+                .Where(r => r.ItemId == itemId);
 
             var compartmentSets = aggregatedCompartments
                 .GroupJoin(
@@ -137,27 +132,32 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     RegistrationNumber = g.c.RegistrationNumber,
                     FirstStoreDate = g.c.FirstStoreDate
                 })
-                .Where(x => x.Availability >= schedulerRequest.RequestedQuantity);
+                .Where(x => x.Availability >= options.RequestedQuantity);
 
             var item = await this.dataContext.Items
                 .Select(i => new { i.Id, i.ManagementType })
-                .SingleAsync(i => i.Id == schedulerRequest.ItemId);
+                .SingleAsync(i => i.Id == itemId);
 
-            var orderedCompartmentSets = this.compartmentSchedulerProvider
-                .OrderCompartmentsByManagementType(compartmentSets, (ItemManagementType)item.ManagementType);
+            var bestCompartment = await this.compartmentSchedulerProvider
+                .OrderCompartmentsByManagementType(compartmentSets, (ItemManagementType)item.ManagementType)
+                .FirstOrDefaultAsync();
 
-            return await orderedCompartmentSets
-                  .Select(
-                  c => new SchedulerRequest(schedulerRequest)
-                  {
-                      Lot = c.Lot,
-                      MaterialStatusId = c.MaterialStatusId,
-                      PackageTypeId = c.PackageTypeId,
-                      RegistrationNumber = c.RegistrationNumber,
-                      Sub1 = c.Sub1,
-                      Sub2 = c.Sub2
-                  })
-              .FirstOrDefaultAsync();
+            if (bestCompartment == null)
+            {
+                return null;
+            }
+
+            var qualifiedRequest = SchedulerRequest.FromWithdrawalOptions(itemId, options);
+
+            qualifiedRequest.Lot = bestCompartment.Lot;
+            qualifiedRequest.MaterialStatusId = bestCompartment.MaterialStatusId;
+            qualifiedRequest.PackageTypeId = bestCompartment.PackageTypeId;
+            qualifiedRequest.RegistrationNumber = bestCompartment.RegistrationNumber;
+            qualifiedRequest.Sub1 = bestCompartment.Sub1;
+            qualifiedRequest.Sub2 = bestCompartment.Sub2;
+            qualifiedRequest.Priority = await this.ComputeRequestPriorityAsync(qualifiedRequest);
+
+            return qualifiedRequest;
         }
 
         /// <summary>
@@ -207,7 +207,8 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                    RequestedQuantity = r.RequestedQuantity,
                    DispatchedQuantity = r.DispatchedQuantity,
                    Sub1 = r.Sub1,
-                   Sub2 = r.Sub2
+                   Sub2 = r.Sub2,
+                   Priority = r.Priority
                })
                .ToArrayAsync();
         }
@@ -248,6 +249,41 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 Sub1 = model.Sub1,
                 Sub2 = model.Sub2
             };
+        }
+
+        private async Task<int?> ComputeRequestPriorityAsync(SchedulerRequest schedulerRequest)
+        {
+            if (schedulerRequest.IsInstant)
+            {
+                return SchedulerRequest.InstantRequestPriority;
+            }
+
+            int? priority = null;
+            if (schedulerRequest.ListRowId.HasValue)
+            {
+                var list = await this.dataContext.ItemLists.SingleAsync(l => l.Id == schedulerRequest.ListId.Value);
+                if (list.Priority.HasValue)
+                {
+                    priority = list.Priority.Value;
+                }
+
+                if (schedulerRequest.ListRowId.HasValue)
+                {
+                    var row = await this.dataContext.ItemListRows.SingleAsync(r => r.Id == schedulerRequest.ListRowId.Value);
+                    if (row.Priority.HasValue)
+                    {
+                        priority += row.Priority.Value;
+                    }
+                }
+            }
+
+            if (schedulerRequest.BayId.HasValue)
+            {
+                var bay = await this.dataContext.Bays.SingleAsync(b => b.Id == schedulerRequest.BayId.Value);
+                priority += bay.Priority;
+            }
+
+            return priority;
         }
 
         #endregion
