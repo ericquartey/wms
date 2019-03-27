@@ -20,6 +20,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         {
             this.parentStateMachine = parentMachine;
             this.logger = logger;
+            this.logger.LogTrace($"1-Constructor");
             this.axis = axis;
 
             //TEMP Notify the error condition all the world
@@ -31,9 +32,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 MessageStatus.OperationError,
                 ErrorLevel.Error,
                 MessageVerbosity.Info);
+            this.logger.LogTrace($"2-Constructor: published notification: {newMessage.Type}, {newMessage.Status}, {newMessage.Destination}");
             this.parentStateMachine.PublishNotificationMessage(newMessage);
-
-            this.logger.LogTrace("FSM Homing Error ctor");
         }
 
         #endregion
@@ -49,14 +49,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogTrace($"FSM Homing Error processCommandMessage {message.Type}");
+            this.logger.LogTrace($"Command processed: {message.Type}, {message.Destination}, {message.Source}");
             //TEMP Add your implementation code here
         }
 
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogTrace($"FSM Homing Error processNotificationMessage {message.Type}");
+            this.logger.LogTrace($"Notification processed: {message.Type}, {message.Status}, {message.Destination}");
             //TEMP Add your implementation code here
         }
 

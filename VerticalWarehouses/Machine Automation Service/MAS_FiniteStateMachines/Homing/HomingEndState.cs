@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.parentStateMachine = parentMachine;
             this.axisToStop = axisToStop;
             this.logger = logger;
-            this.logger.LogTrace($"********** Homing End State ctor");
+            this.logger.LogTrace($"1-Constructor");
 
             //TEMP Send a message to stop the homing to the inverter
             var stopMessageData = new StopAxisMessageData(this.axisToStop);
@@ -33,6 +33,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 MessageType.Stop,
                 MessageVerbosity.Info);
             this.parentStateMachine.PublishCommandMessage(inverterMessage);
+            this.logger.LogTrace($"2-Constructor: published command: {inverterMessage.Type}, {inverterMessage.Destination}");
 
             var notificationMessageData = new CalibrateAxisMessageData(this.axisToStop, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
@@ -44,10 +45,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 MessageStatus.OperationEnd,
                 ErrorLevel.NoError,
                 MessageVerbosity.Info);
-
+            this.logger.LogTrace($"3-Constructor: published notification: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
             this.parentStateMachine.PublishNotificationMessage(notificationMessage);
-
-            this.logger.LogTrace("FSM Homing End ctor");
         }
 
         #endregion
@@ -63,14 +62,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogTrace($"FSM Homing End processCommandMessage {message.Type}");
+            this.logger.LogTrace($"Command processed: {message.Type}, {message.Destination}, {message.Source}");
             //TEMP Add your implementation code here
         }
 
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogTrace($"FSM Homing End processNotificationMessage {message.Type}");
+            this.logger.LogTrace($"Notification processed: {message.Type}, {message.Status}, {message.Destination}");
             if (message.Type == MessageType.Homing && message.Status == MessageStatus.OperationError)
             {
                 this.parentStateMachine.PublishNotificationMessage(message);

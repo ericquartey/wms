@@ -107,7 +107,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     return Task.FromException(ex);
                 }
-                this.logger.LogTrace($"FSM - command received {receivedMessage.Type}");
+                this.logger.LogTrace($"Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}");
                 switch (receivedMessage.Type)
                 {
                     case MessageType.AddMission:
@@ -150,7 +150,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     return Task.CompletedTask;
                 }
-                this.logger.LogTrace($"FSM MessageReceiveData {receivedMessage.Type}");
+                this.logger.LogTrace($"1-Notification received: {receivedMessage.Type}, {receivedMessage.Status}, destination: {receivedMessage.Destination}");
+
+                if (receivedMessage.Status == MessageStatus.OperationEnd && receivedMessage.Source == MessageActor.FiniteStateMachines)
+                {
+                    this.logger.LogTrace($"2-Point hitted");
+                    this.currentStateMachine = null;
+                }
                 if (this.currentStateMachine != null)
                 {
                     this.currentStateMachine.ProcessNotificationMessage(receivedMessage);

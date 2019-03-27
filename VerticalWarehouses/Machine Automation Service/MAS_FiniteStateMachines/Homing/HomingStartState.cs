@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.parentStateMachine = parentMachine;
             this.axisToCalibrate = axisToCalibrate;
             this.logger = logger;
-
+            this.logger.LogTrace($"1-Constructor");
             // TEMP send a message to switch axis (to IODriver)
             var switchAxisData = new SwitchAxisMessageData(this.axisToCalibrate);
             var message = new CommandMessage(switchAxisData,
@@ -31,6 +31,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 MessageActor.FiniteStateMachines,
                 MessageType.SwitchAxis,
                 MessageVerbosity.Info);
+            this.logger.LogTrace($"2-Constructor: published command: {message.Type}, {message.Destination}");
             this.parentStateMachine.PublishCommandMessage(message);
 
             var notificationMessageData = new CalibrateAxisMessageData(this.axisToCalibrate, MessageVerbosity.Info);
@@ -43,10 +44,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 MessageStatus.OperationExecuting,
                 ErrorLevel.NoError,
                 MessageVerbosity.Info);
-
+            this.logger.LogTrace($"3-Constructor: published notification: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
             this.parentStateMachine.PublishNotificationMessage(notificationMessage);
-
-            this.logger.LogTrace("FSM Homing Start ctor");
         }
 
         #endregion
@@ -62,7 +61,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogTrace($"FSM Homing Start processCommandMessage {message.Type}");
+            this.logger.LogTrace($"Command processed: {message.Type}, {message.Destination}, {message.Source}");
             switch (message.Type)
             {
                 case MessageType.Stop:
@@ -78,7 +77,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogTrace($"FSM Homing Start processNotificationMessage {message.Type}");
+            this.logger.LogTrace($"Notification processed: {message.Type}, {message.Status}, {message.Destination}");
             if (message.Type == MessageType.SwitchAxis)
             {
                 switch (message.Status)

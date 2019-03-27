@@ -21,6 +21,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         {
             this.parentStateMachine = parentMachine;
             this.logger = logger;
+            this.logger.LogTrace($"1-Constructor");
             this.axisToSwitch = (axisCalibrated == Axis.Horizontal) ? Axis.Vertical : Axis.Horizontal;
 
             // TEMP send a message to switch axis (to IODriver)
@@ -31,9 +32,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 MessageActor.FiniteStateMachines,
                 MessageType.SwitchAxis,
                 MessageVerbosity.Info);
+            this.logger.LogTrace($"2-Constructor: published command: {message.Type}, {message.Destination}");
             this.parentStateMachine.PublishCommandMessage(message);
-
-            this.logger.LogTrace("FSM Homing Done ctor");
         }
 
         #endregion
@@ -49,7 +49,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogTrace($"FSM Homing Done processCommandMessage {message.Type}");
+            this.logger.LogTrace($"Command processed: {message.Type}, {message.Destination}, {message.Source}");
             switch (message.Type)
             {
                 case MessageType.Stop:
@@ -65,22 +65,25 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogTrace($"FSM Homing Done processNotificationMessage {message.Type}");
+            this.logger.LogTrace($"1-Notification processed: {message.Type}, {message.Status}, {message.Destination}");
             if (message.Type == MessageType.SwitchAxis)
             {
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
                         //TEMP the SwitchAxis operation is done successfully
+                        this.logger.LogTrace($"2-OperationEndCase: {message.Type}, {message.Status}, {message.Destination}");
                         this.ProcessEndSwitching(message);
                         break;
 
                     case MessageStatus.OperationError:
                         //TEMP Change to error state (an error has occurred)
+                        this.logger.LogTrace($"3-Change State to HomingErrorState");
                         this.parentStateMachine.ChangeState(new HomingErrorState(this.parentStateMachine, this.axisToSwitch, this.logger));
                         break;
 
                     default:
+                        this.logger.LogTrace($"4-Hitted defauls case");
                         break;
                 }
             }

@@ -162,9 +162,10 @@ namespace Ferretto.VW.MAS_AutomationService
             {
                 try
                 {
-                    this.logger.LogTrace($"AutomationService receives message {message.Type}, {message.Status}");
+                    this.logger.LogTrace($"UI's Notification: {message.Type}, {message.Status}");
                     var dataMessage = MessageParser.GetActionUpdateData(message);
                     this.hub.Clients.All.OnActionUpdateToAllConnectedClients(dataMessage);
+                    this.logger.LogTrace($"UI's Notification translated: {dataMessage.ActionType}, {dataMessage.ActionStatus}, {dataMessage.NotificationType}");
                 }
                 catch
                 {

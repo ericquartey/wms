@@ -33,7 +33,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
             this.inverterCommandQueue = inverterCommandQueue;
             this.eventAggregator = eventAggregator;
             this.logger = logger;
-            this.logger.LogTrace($"CalibrateAxisStateMachine ctor");
+            this.logger.LogTrace($"Constructor");
             this.IsStopRequested = false;
         }
 
@@ -53,19 +53,19 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override void PublishNotificationEvent(NotificationMessage message)
         {
-            this.logger.LogTrace($"CalibrateAxisStateMachine publish notification {message.Type}");
             if (this.CurrentState is EndState)
             {
                 var status = (this.IsStopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd;
                 message.Status = status;
             }
+            this.logger.LogTrace($"Notification published: {message.Type}, {message.Status}, {message.Destination}");
             base.PublishNotificationEvent(message);
         }
 
         /// <inheritdoc />
         public override void Start()
         {
-            this.logger.LogTrace($"CalibrateAxisStateMachine start");
+            this.logger.LogTrace($"Start");
             switch (this.axisToCalibrate)
             {
                 case Axis.Both:
@@ -85,7 +85,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         public override void Stop()
         {
             this.IsStopRequested = true;
-            this.logger.LogTrace($"CalibrateAxisStateMachine stop");
+            this.logger.LogTrace($"Stop");
             this.CurrentState.Stop();
         }
 

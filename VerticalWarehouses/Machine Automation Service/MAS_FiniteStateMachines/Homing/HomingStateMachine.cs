@@ -37,7 +37,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.calibrateMessageData = calibrateMessageData;
             this.calibrateAxis = calibrateMessageData.AxisToCalibrate;
             this.logger = logger;
-            this.logger.LogTrace($"Homing State Machine ctor");
+            this.logger.LogTrace($"1-Constructor");
             this.IsStopRequested = false;
             this.OperationDone = false;
 
@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 MessageStatus.OperationExecuting,
                 ErrorLevel.NoError,
                 MessageVerbosity.Info);
-
+            this.logger.LogTrace($"2-Constructor: published notification: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
             this.PublishNotificationMessage(notificationMessage);
         }
 
@@ -70,7 +70,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void OnPublishNotification(NotificationMessage message)
         {
-            this.logger.LogTrace($"Homing State Machine Publish: {message.Type}");
             switch (message.Type)
             {
                 case MessageType.Homing:
@@ -84,7 +83,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                             MessageStatus.OperationStart,
                             ErrorLevel.NoError,
                             MessageVerbosity.Info);
-
+                        this.logger.LogTrace($"1-Notification published: {newMessage.Type}, {newMessage.Status}, {newMessage.Destination}");
                         this.EventAggregator.GetEvent<NotificationEvent>().Publish(newMessage);
                         break;
                     }
@@ -102,7 +101,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                             msgStatus,
                             ErrorLevel.NoError,
                             MessageVerbosity.Info);
-
+                        this.logger.LogTrace($"2-Notification published: {newMessage.Type}, {newMessage.Status}, {newMessage.Destination}");
                         this.EventAggregator.GetEvent<NotificationEvent>().Publish(newMessage);
                         break;
                     }
@@ -116,7 +115,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogTrace($"Homing State Machine ProcessCommand: {message.Type}");
+            this.logger.LogTrace($"Command processed: {message.Type}, destination: {message.Destination}, source: {message.Source}");
             switch (message.Type)
             {
                 case MessageType.Stop:
@@ -127,14 +126,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 default:
                     break;
             }
-
             this.CurrentState?.ProcessCommandMessage(message);
         }
 
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogTrace($"Homing State Machine ProcessNotification: {message.Type}");
+            this.logger.LogTrace($"Notification processed: {message.Type}, {message.Status}, {message.Destination}");
             if (message.Type == MessageType.SwitchAxis)
             {
                 switch (message.Status)
@@ -171,14 +169,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                         break;
                 }
             }
-
             this.CurrentState?.ProcessNotificationMessage(message);
         }
 
         /// <inheritdoc/>
         public override void Start()
         {
-            this.logger.LogTrace($"Homing State Machine Start");
+            this.logger.LogTrace($"1-Start");
             switch (this.calibrateAxis)
             {
                 case Axis.Both:
@@ -209,7 +206,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                         break;
                     }
             }
-
+            this.logger.LogTrace($"2-Start: ChangeState: Axis:{this.currentAxis}, MaxSteps:{this.NMaxSteps}, ExecutedSteps:{this.NumberOfExecutedSteps}");
             this.CurrentState = new HomingStartState(this, this.currentAxis, this.logger);
         }
 

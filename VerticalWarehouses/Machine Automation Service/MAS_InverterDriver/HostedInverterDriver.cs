@@ -200,7 +200,7 @@ namespace Ferretto.VW.InverterDriver
                 {
                     return Task.CompletedTask;
                 }
-
+                this.logger.LogTrace($"Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}");
                 if (this.currentStateMachine != null && receivedMessage.Type != MessageType.Stop)
                 {
                     var errorNotification = new NotificationMessage(null, "Inverter operation already in progress", MessageActor.Any,
@@ -262,8 +262,7 @@ namespace Ferretto.VW.InverterDriver
                 {
                     return Task.CompletedTask;
                 }
-
-                //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:NotificationReceiveTaskFunction");
+                this.logger.LogTrace($"Notification received: {receivedMessage.Type}, {receivedMessage.Status}, destination: {receivedMessage.Destination}");
 
                 switch (receivedMessage.Type)
                 {

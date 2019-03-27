@@ -22,8 +22,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
             this.axisToSwitchOn = axisToSwitchOn;
             this.parentStateMachine = parentStateMachine;
             this.logger = logger;
-            this.logger.LogTrace($"SwitchOnMotorState ctor");
-            //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - SwitchOnMotorState:Ctor");
+            this.logger.LogTrace($"Constructor");
 
             var switchOnAxisIoMessage = new IoMessage(false);
 
@@ -47,12 +46,11 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         public override void ProcessMessage(IoMessage message)
         {
-            this.logger.LogTrace($"SwitchOnMotorState processMessage");
+            this.logger.LogTrace($"1-Message processed: {message.Inputs?.ToString()}, {message.Outputs?.ToString()}");
             if (message.ValidOutputs)
             {
                 if (this.axisToSwitchOn == Axis.Horizontal && message.CradleMotorOn || this.axisToSwitchOn == Axis.Vertical && message.ElevatorMotorOn)
                 {
-                    this.logger.LogTrace($"SwitchOnMotorState processMessage condition met");
                     var messageData = new CalibrateAxisMessageData(this.axisToSwitchOn, MessageVerbosity.Info);
                     var notificationMessage = new NotificationMessage(
                         messageData,
@@ -63,8 +61,9 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
                         MessageStatus.OperationEnd,
                         ErrorLevel.NoError,
                         MessageVerbosity.Info);
+                    this.logger.LogTrace($"2-Notification published: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
                     this.parentStateMachine.PublishNotificationEvent(notificationMessage);
-
+                    this.logger.LogTrace($"3-Change State to EndState");
                     this.parentStateMachine.ChangeState(new EndState(this.axisToSwitchOn, this.logger, this.parentStateMachine));
                 }
             }
