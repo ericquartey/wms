@@ -34,28 +34,7 @@ namespace Ferretto.Common.Controls.Services
                        DispatcherPriority.Normal,
                        new Action(() =>
                        {
-                           if (Application.Current.MainWindow.IsVisible == false)
-                           {
-                               return;
-                           }
-
-                           if (this.wmsMessagePopup != null &&
-                               this.wmsMessagePopup.IsVisible == false)
-                           {
-                               this.wmsMessagePopup.Disappear();
-                               this.wmsMessagePopup = null;
-                           }
-
-                           if (this.wmsMessagePopup == null)
-                           {
-                               this.wmsMessagePopup = new WmsMessagePopup();
-                               WmsMessagePopup.ShowDialog(this.wmsMessagePopup as INavigableView, true);
-                           }
-
-                           Application.Current.Dispatcher.BeginInvoke(
-                                    DispatcherPriority.Loaded,
-                                    new Action(() =>
-                                    ((WmsMessagePopupViewModel)this.wmsMessagePopup.DataContext).Update(title, message, isError)));
+                           this.ShowMessagePopupError(title, message, isError);
                        }));
         }
 
@@ -153,6 +132,32 @@ namespace Ferretto.Common.Controls.Services
                 title,
                 ConvertDialogButtons(buttons),
                 ConvertDialogIcon(type)));
+        }
+
+        private void ShowMessagePopupError(string title, string message, bool isError)
+        {
+            if (Application.Current.MainWindow.IsVisible == false)
+            {
+                return;
+            }
+
+            if (this.wmsMessagePopup != null &&
+                this.wmsMessagePopup.IsVisible == false)
+            {
+                this.wmsMessagePopup.Disappear();
+                this.wmsMessagePopup = null;
+            }
+
+            if (this.wmsMessagePopup == null)
+            {
+                this.wmsMessagePopup = new WmsMessagePopup();
+                WmsMessagePopup.ShowDialog(this.wmsMessagePopup as INavigableView, true);
+            }
+
+            Application.Current.Dispatcher.BeginInvoke(
+                     DispatcherPriority.Loaded,
+                     new Action(() =>
+                     ((WmsMessagePopupViewModel)this.wmsMessagePopup.DataContext).Update(title, message, isError)));
         }
 
         #endregion
