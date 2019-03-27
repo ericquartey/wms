@@ -311,30 +311,30 @@ namespace Ferretto.VW.MAS_IODriver
 
             this.modbusTransport.Configure(ioAddress, ioPort);
 
-            //bool connectionResult;
-            //try
-            //{
-            //    connectionResult = this.modbusTransport.Connect();
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw new IoDriverException($"Exception: {ex.Message} while connecting to Modbus I/O master", IoDriverExceptionCode.CreationFailure, ex);
-            //}
+            bool connectionResult;
+            try
+            {
+                connectionResult = this.modbusTransport.Connect();
+            }
+            catch (Exception ex)
+            {
+                throw new IoDriverException($"Exception: {ex.Message} while connecting to Modbus I/O master", IoDriverExceptionCode.CreationFailure, ex);
+            }
 
-            //if (!connectionResult)
-            //{
-            //    throw new IoDriverException("Failed to connect to Modbus I/O master");
-            //}
+            if (!connectionResult)
+            {
+                throw new IoDriverException("Failed to connect to Modbus I/O master");
+            }
 
-            //try
-            //{
-            //    this.ioReceiveTask.Start();
-            //    this.ioSendTask.Start();
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw new IOException($"Exception: {ex.Message} while starting service hardware threads", ex);
-            //}
+            try
+            {
+                this.ioReceiveTask.Start();
+                this.ioSendTask.Start();
+            }
+            catch (Exception ex)
+            {
+                throw new IOException($"Exception: {ex.Message} while starting service hardware threads", ex);
+            }
         }
 
         #endregion

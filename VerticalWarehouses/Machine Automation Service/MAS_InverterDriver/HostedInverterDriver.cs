@@ -436,30 +436,30 @@ namespace Ferretto.VW.InverterDriver
 
             this.socketTransport.Configure(inverterAddress, inverterPort);
 
-            //try
-            //{
-            //    await this.socketTransport.ConnectAsync();
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw new InverterDriverException($"Exception {ex.Message} while Connecting Receiver Socket Transport",
-            //        ex);
-            //}
+            try
+            {
+                await this.socketTransport.ConnectAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new InverterDriverException($"Exception {ex.Message} while Connecting Receiver Socket Transport",
+                    ex);
+            }
 
-            //if (!this.socketTransport.IsConnected)
-            //{
-            //    throw new InverterDriverException("Socket Transport failed to connect");
-            //}
+            if (!this.socketTransport.IsConnected)
+            {
+                throw new InverterDriverException("Socket Transport failed to connect");
+            }
 
-            //try
-            //{
-            //    this.inverterReceiveTask.Start();
-            //    this.inverterSendTask.Start();
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw new InverterDriverException($"Exception: {ex.Message} while starting service threads", ex);
-            //}
+            try
+            {
+                this.inverterReceiveTask.Start();
+                this.inverterSendTask.Start();
+            }
+            catch (Exception ex)
+            {
+                throw new InverterDriverException($"Exception: {ex.Message} while starting service threads", ex);
+            }
         }
 
         #endregion
