@@ -110,7 +110,7 @@ namespace Ferretto.Common.Controls
 
         public async Task UploadImageAsync()
         {
-            var image = await this.fileProvider.UploadAsync(this.Path, null);
+            var image = await this.fileProvider.UploadAsync(this.Path);
             this.Filename = image;
         }
 

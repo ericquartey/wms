@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 
 namespace Ferretto.WMS.App.Core.Interfaces
 {
@@ -9,7 +8,7 @@ namespace Ferretto.WMS.App.Core.Interfaces
 
         Task<IImageFile> DownloadAsync(string key);
 
-        Task<string> UploadAsync(string imagePath, IFormFile model);
+        Task<string> UploadAsync(string imagePath);
 
         #endregion
     }

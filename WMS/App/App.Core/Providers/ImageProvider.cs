@@ -8,7 +8,6 @@ using System.IO;
 using System.Threading.Tasks;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
-using Microsoft.AspNetCore.Http;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
@@ -51,7 +50,7 @@ namespace Ferretto.WMS.App.Core.Providers
             };
         }
 
-        public async Task<string> UploadAsync(string imagePath, IFormFile model)
+        public async Task<string> UploadAsync(string imagePath)
         {
             if (imagePath == null)
             {
