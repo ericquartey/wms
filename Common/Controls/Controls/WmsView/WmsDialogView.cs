@@ -48,8 +48,6 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
-        public WmsViewType ViewType { get; }
-
         public object Data { get; set; }
 
         public string FocusedStart
@@ -76,6 +74,8 @@ namespace Ferretto.Common.Controls
 
         public string Token { get; set; }
 
+        public WmsViewType ViewType { get; }
+
         #endregion
 
         #region Methods
@@ -92,7 +92,8 @@ namespace Ferretto.Common.Controls
                 wmsDialog.Owner = Application.Current.MainWindow;
                 wmsDialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 
-                if (wmsDialog.Mode == WmsDialogType.DialogWindow)
+                if (wmsDialog.Mode == WmsDialogType.DialogWindow ||
+                    wmsDialog.Mode == WmsDialogType.DialogError)
                 {
                     if (wmsDialog.Owner.WindowState != WindowState.Maximized)
                     {
@@ -154,6 +155,10 @@ namespace Ferretto.Common.Controls
             this.Disappear();
         }
 
+        protected virtual void OnDataContextLoaded()
+        {
+        }
+
         private static void EnableControls(WmsDialogView dialogView, bool isEnabled)
         {
             var childrenToCheck = LayoutTreeHelper.GetVisualChildren(dialogView).OfType<IEnabled>();
@@ -176,14 +181,16 @@ namespace Ferretto.Common.Controls
             }
 
             this.DataContext = string.IsNullOrEmpty(this.MapId) == false
-                ? this.navigationService.GetRegisteredViewModel(this.MapId, this.Data)
-                : this.navigationService.RegisterAndGetViewModel(
-                    this.GetType().ToString(),
-                    this.GetMainViewToken(),
-                    this.Data);
+               ? this.navigationService.GetRegisteredViewModel(this.MapId, this.Data)
+               : this.navigationService.RegisterAndGetViewModel(
+                   this.GetType().ToString(),
+                   this.GetMainViewToken(),
+                   this.Data);
 
             ((INavigableViewModel)this.DataContext)?.Appear();
             FormControl.SetFocus(this, this.FocusedStart);
+
+            this.OnDataContextLoaded();
         }
 
         private string GetAttachedViewModel()
@@ -208,6 +215,10 @@ namespace Ferretto.Common.Controls
             string theme = null;
             switch (this.Mode)
             {
+                case WmsDialogType.DialogError:
+                    theme = nameof(WmsDialogType.DialogError);
+                    break;
+
                 case WmsDialogType.DialogPopup:
                     theme = nameof(WmsDialogType.DialogPopup);
                     break;

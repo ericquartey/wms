@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using System.Windows.Threading;
 using DevExpress.Xpf.WindowsUI;
 using Ferretto.Common.Controls.Interfaces;
 
@@ -6,7 +8,56 @@ namespace Ferretto.Common.Controls.Services
 {
     public class DialogService : IDialogService
     {
+        #region Fields
+
+        private readonly INavigationService navigationService;
+
+        private WmsMessagePopup wmsMessagePopup;
+
+        #endregion
+
+        #region Constructors
+
+        public DialogService(INavigationService navigationService)
+        {
+            this.navigationService = navigationService;
+            this.navigationService.Register<WmsMessagePopup, WmsMessagePopupViewModel>();
+        }
+
+        #endregion
+
         #region Methods
+
+        public void ShowErrorDialog(string title, string message, bool isError)
+        {
+            Application.Current.Dispatcher.BeginInvoke(
+                       DispatcherPriority.Normal,
+                       new Action(() =>
+                       {
+                           if (Application.Current.MainWindow.IsVisible == false)
+                           {
+                               return;
+                           }
+
+                           if (this.wmsMessagePopup != null &&
+                               this.wmsMessagePopup.IsVisible == false)
+                           {
+                               this.wmsMessagePopup.Disappear();
+                               this.wmsMessagePopup = null;
+                           }
+
+                           if (this.wmsMessagePopup == null)
+                           {
+                               this.wmsMessagePopup = new WmsMessagePopup();
+                               WmsMessagePopup.ShowDialog(this.wmsMessagePopup as INavigableView, true);
+                           }
+
+                           Application.Current.Dispatcher.BeginInvoke(
+                                    DispatcherPriority.Loaded,
+                                    new Action(() =>
+                                    ((WmsMessagePopupViewModel)this.wmsMessagePopup.DataContext).Update(title, message, isError)));
+                       }));
+        }
 
         public DialogResult ShowMessage(string message, string title)
         {

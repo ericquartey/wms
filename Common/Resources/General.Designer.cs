@@ -133,6 +133,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connection status.
+        /// </summary>
+        public static string ConnectionStatus {
+            get {
+                return ResourceManager.GetString("ConnectionStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection to Data Service restored.
+        /// </summary>
+        public static string ConnetionToDataServiceRestored {
+            get {
+                return ResourceManager.GetString("ConnetionToDataServiceRestored", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create.
         /// </summary>
         public static string Create {
@@ -210,6 +228,15 @@ namespace Ferretto.Common.Resources {
         public static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error on connection to Data Service.
+        /// </summary>
+        public static string ErrorOnConnetionToDataService {
+            get {
+                return ResourceManager.GetString("ErrorOnConnetionToDataService", resourceCulture);
             }
         }
         
@@ -426,6 +453,15 @@ namespace Ferretto.Common.Resources {
         public static string ShowDetails {
             get {
                 return ResourceManager.GetString("ShowDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shut Down App.
+        /// </summary>
+        public static string ShutDownApp {
+            get {
+                return ResourceManager.GetString("ShutDownApp", resourceCulture);
             }
         }
         

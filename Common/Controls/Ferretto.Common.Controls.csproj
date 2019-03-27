@@ -52,6 +52,4 @@
     <ProjectReference Include="..\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj" />
   </ItemGroup>
 
-
-
 </Project>

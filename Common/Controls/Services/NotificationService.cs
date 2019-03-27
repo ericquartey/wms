@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Configuration;
 using System.Threading.Tasks;
+using System.Timers;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
+using Ferretto.Common.Resources;
 using Ferretto.WMS.App.Core.Models;
 using Microsoft.AspNetCore.SignalR.Client;
 using NLog;
@@ -16,6 +18,8 @@ namespace Ferretto.Common.Controls.Services
         private const int MaxRetryConnectionTimeout = 10000;
 
         private const string MissionUpdatedMessage = "MissionUpdated";
+
+        private readonly IDialogService dialogService;
 
         private readonly IEventService eventService;
 
@@ -35,9 +39,10 @@ namespace Ferretto.Common.Controls.Services
 
         #region Constructors
 
-        public NotificationService(IEventService eventService)
+        public NotificationService(IEventService eventService, IDialogService dialogService)
         {
             this.eventService = eventService;
+            this.dialogService = dialogService;
             this.url = ConfigurationManager.AppSettings["NotificationHubEndpoint"];
             this.schedulerHubPath = ConfigurationManager.AppSettings["SchedulerHubPath"];
             this.logger = LogManager.GetCurrentClassLogger();
@@ -55,6 +60,7 @@ namespace Ferretto.Common.Controls.Services
                 if (value != this.isServiceHubConnected)
                 {
                     this.isServiceHubConnected = value;
+                    this.NotifyErrorDialog();
                     this.eventService.Invoke(new StatusPubSubEvent() { IsSchedulerOnline = this.isServiceHubConnected });
                 }
             }
@@ -124,6 +130,12 @@ namespace Ferretto.Common.Controls.Services
         {
             this.logger.Debug($"Message {MissionUpdatedMessage} received from server");
             this.eventService.Invoke(new ModelChangedPubSubEvent<Mission, int>(id));
+        }
+
+        private void NotifyErrorDialog()
+        {
+            var msg = this.isServiceHubConnected ? General.ConnetionToDataServiceRestored : General.ErrorOnConnetionToDataService;
+            this.dialogService.ShowErrorDialog(General.ConnectionStatus, msg, this.isServiceHubConnected == false);
         }
 
         private async Task WaitForReconnection()
