@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Ferretto.VW.MAS_DataLayer.Interface
 {
@@ -6,101 +7,101 @@ namespace Ferretto.VW.MAS_DataLayer.Interface
     {
         #region Properties
 
-        string Address { get; }
+        Task<string> Address { get; }
 
-        bool AlfaNumBay1 { get; }
+        Task<bool> AlfaNumBay1 { get; }
 
-        bool AlfaNumBay2 { get; }
+        Task<bool> AlfaNumBay2 { get; }
 
-        bool AlfaNumBay3 { get; }
+        Task<bool> AlfaNumBay3 { get; }
 
-        int Barrier1Height { get; }
+        Task<int> Barrier1Height { get; }
 
-        int Barrier2Height { get; }
+        Task<int> Barrier2Height { get; }
 
-        int Barrier3Height { get; }
+        Task<int> Barrier3Height { get; }
 
-        decimal Bay1Height1 { get; }
+        Task<decimal> Bay1Height1 { get; }
 
-        decimal Bay1Height2 { get; }
+        Task<decimal> Bay1Height2 { get; }
 
-        decimal Bay1Position1 { get; }
+        Task<decimal> Bay1Position1 { get; }
 
-        decimal Bay1Position2 { get; }
+        Task<decimal> Bay1Position2 { get; }
 
-        int Bay1Type { get; }
+        Task<int> Bay1Type { get; }
 
-        decimal Bay2Height1 { get; }
+        Task<decimal> Bay2Height1 { get; }
 
-        decimal Bay2Height2 { get; }
+        Task<decimal> Bay2Height2 { get; }
 
-        decimal Bay2Position1 { get; }
+        Task<decimal> Bay2Position1 { get; }
 
-        decimal Bay2Position2 { get; }
+        Task<decimal> Bay2Position2 { get; }
 
-        int Bay2Type { get; }
+        Task<int> Bay2Type { get; }
 
-        decimal Bay3Height1 { get; }
+        Task<decimal> Bay3Height1 { get; }
 
-        decimal Bay3Height2 { get; }
+        Task<decimal> Bay3Height2 { get; }
 
-        decimal Bay3Position1 { get; }
+        Task<decimal> Bay3Position1 { get; }
 
-        decimal Bay3Position2 { get; }
+        Task<decimal> Bay3Position2 { get; }
 
-        int Bay3Type { get; }
+        Task<int> Bay3Type { get; }
 
-        int BaysQuantity { get; }
+        Task<int> BaysQuantity { get; }
 
-        string City { get; }
+        Task<string> City { get; }
 
-        string ClientCode { get; }
+        Task<string> ClientCode { get; }
 
-        string ClientName { get; }
+        Task<string> ClientName { get; }
 
-        string Country { get; }
+        Task<string> Country { get; }
 
-        int DrawersQuantity { get; }
+        Task<int> DrawersQuantity { get; }
 
-        decimal Height { get; }
+        Task<decimal> Height { get; }
 
-        DateTime InstallationDate { get; }
+        Task<DateTime> InstallationDate { get; }
 
-        bool LaserBay1 { get; }
+        Task<bool> LaserBay1 { get; }
 
-        bool LaserBay2 { get; }
+        Task<bool> LaserBay2 { get; }
 
-        bool LaserBay3 { get; }
+        Task<bool> LaserBay3 { get; }
 
-        string Latitude { get; }
+        Task<string> Latitude { get; }
 
-        string Longitude { get; }
+        Task<string> Longitude { get; }
 
-        int MaxAcceptedBai1Height { get; }
+        Task<int> MaxAcceptedBai1Height { get; }
 
-        int MaxAcceptedBai2Height { get; }
+        Task<int> MaxAcceptedBai2Height { get; }
 
-        int MaxAcceptedBai3Height { get; }
+        Task<int> MaxAcceptedBai3Height { get; }
 
-        decimal MaxWeight { get; }
+        Task<decimal> MaxWeight { get; }
 
-        string Model { get; }
+        Task<string> Model { get; }
 
-        string Order { get; }
+        Task<string> Order { get; }
 
-        DateTime ProductionDate { get; }
+        Task<DateTime> ProductionDate { get; }
 
-        string Province { get; }
+        Task<string> Province { get; }
 
-        string Serial { get; }
+        Task<string> Serial { get; }
 
-        int Shutter1Type { get; }
+        Task<int> Shutter1Type { get; }
 
-        int Shutter2Type { get; }
+        Task<int> Shutter2Type { get; }
 
-        int Shutter3Type { get; }
+        Task<int> Shutter3Type { get; }
 
-        string Zip { get; }
+        Task<string> Zip { get; }
 
         #endregion
     }

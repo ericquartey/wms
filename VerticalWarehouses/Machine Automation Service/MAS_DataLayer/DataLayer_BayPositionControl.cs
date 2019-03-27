@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS_DataLayer.Enumerations;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 
 namespace Ferretto.VW.MAS_DataLayer
@@ -7,7 +8,7 @@ namespace Ferretto.VW.MAS_DataLayer
     {
         #region Properties
 
-        public decimal StepValueBP => this.GetDecimalConfigurationValue((long)BayPositionControl.StepValue, (long)ConfigurationCategory.BayPositionControl);
+        public Task<decimal> StepValueBP => this.GetDecimalConfigurationValueAsync((long)BayPositionControl.StepValue, (long)ConfigurationCategory.BayPositionControl);
 
         #endregion
     }

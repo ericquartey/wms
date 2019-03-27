@@ -224,7 +224,7 @@ namespace Ferretto.VW.InverterDriver
             //TODO notify control word change error
         }
 
-        private Task NotificationReceiveTaskFunction()
+        private async Task NotificationReceiveTaskFunction()
         {
             do
             {
@@ -235,7 +235,7 @@ namespace Ferretto.VW.InverterDriver
                 }
                 catch (OperationCanceledException)
                 {
-                    return Task.CompletedTask;
+                    return;
                 }
 
                 //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:NotificationReceiveTaskFunction");
@@ -243,7 +243,7 @@ namespace Ferretto.VW.InverterDriver
                 switch (receivedMessage.Type)
                 {
                     case MessageType.DataLayerReady:
-                        this.StartHardwareCommunications();
+                        await this.StartHardwareCommunications();
                         break;
 
                     case MessageType.CalibrateAxis:
@@ -268,7 +268,7 @@ namespace Ferretto.VW.InverterDriver
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
-            return Task.CompletedTask;
+            return;
         }
 
         private async Task ProcessCommand()
@@ -430,36 +430,36 @@ namespace Ferretto.VW.InverterDriver
 
         private async Task StartHardwareCommunications()
         {
-            var inverterAddress =
-                this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetwork.Inverter1, (long)ConfigurationCategory.SetupNetwork);
-            var inverterPort = this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetwork.Inverter1Port, (long)ConfigurationCategory.SetupNetwork);
+            var inverterAddress = await
+                this.dataLayerValueManagment.GetIPAddressConfigurationValueAsync((long)SetupNetwork.Inverter1, (long)ConfigurationCategory.SetupNetwork);
+            var inverterPort = await this.dataLayerValueManagment.GetIntegerConfigurationValueAsync((long)SetupNetwork.Inverter1Port, (long)ConfigurationCategory.SetupNetwork);
 
             this.socketTransport.Configure(inverterAddress, inverterPort);
 
-            try
-            {
-                await this.socketTransport.ConnectAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new InverterDriverException($"Exception {ex.Message} while Connecting Receiver Socket Transport",
-                    ex);
-            }
+            //try
+            //{
+            //    await this.socketTransport.ConnectAsync();
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw new InverterDriverException($"Exception {ex.Message} while Connecting Receiver Socket Transport",
+            //        ex);
+            //}
 
-            if (!this.socketTransport.IsConnected)
-            {
-                throw new InverterDriverException("Socket Transport failed to connect");
-            }
+            //if (!this.socketTransport.IsConnected)
+            //{
+            //    throw new InverterDriverException("Socket Transport failed to connect");
+            //}
 
-            try
-            {
-                this.inverterReceiveTask.Start();
-                this.inverterSendTask.Start();
-            }
-            catch (Exception ex)
-            {
-                throw new InverterDriverException($"Exception: {ex.Message} while starting service threads", ex);
-            }
+            //try
+            //{
+            //    this.inverterReceiveTask.Start();
+            //    this.inverterSendTask.Start();
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw new InverterDriverException($"Exception: {ex.Message} while starting service threads", ex);
+            //}
         }
 
         #endregion

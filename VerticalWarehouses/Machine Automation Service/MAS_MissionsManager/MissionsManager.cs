@@ -108,6 +108,7 @@ namespace Ferretto.VW.MAS_MissionsManager
                 {
                     return Task.CompletedTask;
                 }
+
                 switch (receivedMessage.Type)
                 {
                     case MessageType.AddMission:
