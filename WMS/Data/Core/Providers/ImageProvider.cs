@@ -67,7 +67,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             var path = Path.Combine(this.ImageVirtualPath, key);
             var success = this.contentTypeProvider.TryGetContentType(path, out var contentType);
 
-            if (success)
+            if (success && File.Exists(path))
             {
                 return new ImageFile
                 {

@@ -33,6 +33,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(200, Type = typeof(FileStreamResult))]
         [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         [HttpGet("{id}")]
         public ActionResult Download(string id)
         {
@@ -47,9 +48,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.File(imageFileInfo.Stream, imageFileInfo.ContentType, id);
             }
 
-            return this.BadRequest(new ProblemDetails
+            return this.NotFound(new ProblemDetails
             {
-                Status = StatusCodes.Status400BadRequest,
+                Status = StatusCodes.Status404NotFound,
             });
         }
 
