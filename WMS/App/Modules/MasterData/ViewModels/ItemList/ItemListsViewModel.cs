@@ -35,7 +35,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.NavigationService.Appear(
                 nameof(MasterData),
-                Common.Utils.Modules.MasterData.ITEMLISTADDDIALOG);
+                Common.Utils.Modules.MasterData.ITEMLISTADD);
         }
 
         private bool CanExecuteListCommand()
