@@ -6,16 +6,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.WMS.App.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Performance",
-        "CA1819:Properties should not return arrays",
-        Justification = "Ok",
-        Scope = "member",
-        Target = "~P:Ferretto.WMS.App.Core.Models.ImageFile.FileBytes")]
     public class ImageFile : IImageFile
     {
         #region Properties
@@ -23,8 +18,6 @@ namespace Ferretto.WMS.App.Core.Models
         public string ContentDisposition { get; set; }
 
         public string ContentType { get; set; }
-
-        public byte[] FileBytes { get; set; }
 
         public string FileName { get; set; }
 

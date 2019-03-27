@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using CommonServiceLocator;
-using Ferretto.Common.BLL.Interfaces.Providers;
+using Ferretto.WMS.App.Core.Interfaces;
 
 namespace Ferretto.Common.Controls
 {
@@ -23,13 +23,13 @@ namespace Ferretto.Common.Controls
                     if (d is WmsImage wmsImage)
                     {
                         wmsImage.InnerImage.Source = await ImageUtils
-                            .RetrieveImageAsync(wmsImage.imageService, (string)e.NewValue)
+                            .GetImageAsync(wmsImage.imageService, (string)e.NewValue)
                             .ConfigureAwait(true);
                         wmsImage.HasImage = e.NewValue != null;
                     }
                 }));
 
-        private readonly IImageProvider imageService;
+        private readonly IFileProvider imageService;
 
         #endregion
 
@@ -39,7 +39,7 @@ namespace Ferretto.Common.Controls
         {
             this.InitializeComponent();
 
-            this.imageService = ServiceLocator.Current.GetInstance<IImageProvider>();
+            this.imageService = ServiceLocator.Current.GetInstance<IFileProvider>();
         }
 
         #endregion

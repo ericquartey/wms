@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Ferretto.Common.BLL.Interfaces.Providers;
+using Ferretto.WMS.App.Core.Interfaces;
 
 namespace Ferretto.Common.Controls
 {
@@ -16,14 +17,19 @@ namespace Ferretto.Common.Controls
     {
         #region Methods
 
-        public static async Task<ImageSource> GetImageAsync(IImageProvider imageService, string path)
+        public static async Task<ImageSource> GetImageAsync(IFileProvider fileProvider, string path)
         {
-            if (imageService == null)
+            if (fileProvider == null)
             {
-                throw new ArgumentNullException(nameof(imageService));
+                throw new ArgumentNullException(nameof(fileProvider));
             }
 
-            var imageFile = await imageService.DownloadAsync(path);
+            if (path == null)
+            {
+                return null;
+            }
+
+            var imageFile = await fileProvider.DownloadAsync(path);
 
             var imageStream = imageFile.Stream;
 
@@ -33,18 +39,6 @@ namespace Ferretto.Common.Controls
             bitmap.CacheOption = BitmapCacheOption.OnLoad;
             bitmap.EndInit();
             return bitmap;
-        }
-
-        public static async Task<ImageSource> RetrieveImageAsync(IImageProvider imageService, string imagePath)
-        {
-            if (imageService == null)
-            {
-                throw new System.ArgumentNullException(nameof(imageService));
-            }
-
-            return !string.IsNullOrWhiteSpace(imagePath)
-                ? await ImageUtils.GetImageAsync(imageService, imagePath)
-                : null;
         }
 
         #endregion

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Ferretto.Common.BLL.Interfaces.Models;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace Ferretto.Common.BLL.Interfaces.Providers
+namespace Ferretto.WMS.App.Core.Interfaces
 {
     public interface IFileProvider
     {

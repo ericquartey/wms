@@ -8,6 +8,7 @@ using CommonServiceLocator;
 using DevExpress.Xpf.Core.Native;
 using DevExpress.Xpf.Editors;
 using Ferretto.Common.BLL.Interfaces.Providers;
+using Ferretto.WMS.App.Core.Interfaces;
 using Microsoft.Win32;
 
 namespace Ferretto.Common.Controls
@@ -40,7 +41,7 @@ namespace Ferretto.Common.Controls
                         if (e.NewValue != null)
                         {
                             wmsImage.Source = await ImageUtils
-                                .RetrieveImageAsync(wmsImage.imageService, (string)e.NewValue)
+                                .GetImageAsync(wmsImage.fileProvider, (string)e.NewValue)
                                 .ConfigureAwait(true);
                             wmsImage.IsLoading = false;
                         }
@@ -57,7 +58,7 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty PathProperty = DependencyProperty.Register(
                              nameof(Path), typeof(string), typeof(WmsImageEdit), new PropertyMetadata(default(string)));
 
-        private readonly IImageProvider imageService;
+        private readonly IFileProvider fileProvider;
 
         private bool isUpdatingImage;
 
@@ -67,7 +68,7 @@ namespace Ferretto.Common.Controls
 
         public WmsImageEdit()
         {
-            this.imageService = ServiceLocator.Current.GetInstance<IImageProvider>();
+            this.fileProvider = ServiceLocator.Current.GetInstance<IFileProvider>();
         }
 
         #endregion
@@ -109,7 +110,7 @@ namespace Ferretto.Common.Controls
 
         public async Task UploadImageAsync()
         {
-            var image = await this.imageService.UploadAsync(this.Path, null);
+            var image = await this.fileProvider.UploadAsync(this.Path, null);
             this.Filename = image;
         }
 

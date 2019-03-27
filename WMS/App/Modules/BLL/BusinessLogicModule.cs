@@ -79,7 +79,7 @@ namespace Ferretto.WMS.App.Modules.BLL
             containerRegistry.Register<IPackageTypeProvider, PackageTypeProvider>();
             containerRegistry.Register<ISchedulerRequestProvider, SchedulerRequestProvider>();
             containerRegistry.Register<IUserProvider, UserProvider>();
-            containerRegistry.Register<IImageProvider, ImageProvider>();
+            containerRegistry.Register<IFileProvider, ImageProvider>();
         }
 
         private static void RegisterDataServiceEndpoints(IContainerRegistry containerRegistry)
