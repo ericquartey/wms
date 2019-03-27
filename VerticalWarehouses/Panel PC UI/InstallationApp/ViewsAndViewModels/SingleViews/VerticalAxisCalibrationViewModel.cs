@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Windows.Input;
-using Prism.Commands;
-using Prism.Mvvm;
-using Microsoft.Practices.Unity;
-using Prism.Events;
-using Ferretto.VW.InstallationApp.Resources;
-using System.Net.Http;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
 using System.Configuration;
 using System.Net.Http;
+using System.Windows.Input;
+using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
+using Ferretto.VW.InstallationApp.Resources;
+using Microsoft.Practices.Unity;
+using Prism.Commands;
+using Prism.Events;
+using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -136,7 +135,7 @@ namespace Ferretto.VW.InstallationApp
 
         public async void SubscribeMethodToEvent()
         {
-            this.GetParameterValues();
+            //this.GetParameterValues();  // uncomment
             this.receivedActionUpdateToken = this.eventAggregator.GetEvent<MAS_Event>().Subscribe(
                 (msg) => this.UpdateCurrentActionStatus(msg),
                 ThreadOption.PublisherThread,
@@ -168,6 +167,12 @@ namespace Ferretto.VW.InstallationApp
                                 this.IsStartButtonActive = true;
                                 this.IsStopButtonActive = false;
                                 break;
+
+                            case ActionStatus.Error:
+                                this.NoteString = VW.Resources.InstallationApp.HomingError;
+                                this.IsStartButtonActive = true;
+                                this.IsStopButtonActive = false;
+                                break;
                         }
                         break;
 
@@ -184,6 +189,12 @@ namespace Ferretto.VW.InstallationApp
 
                             case ActionStatus.Completed:
                                 this.NoteString = VW.Resources.InstallationApp.HorizontalHomingCompleted;
+                                break;
+
+                            case ActionStatus.Error:
+                                this.NoteString = VW.Resources.InstallationApp.HorizontalHomingError;
+                                this.IsStartButtonActive = true;
+                                this.IsStopButtonActive = false;
                                 break;
                         }
                         break;
@@ -202,6 +213,12 @@ namespace Ferretto.VW.InstallationApp
                             case ActionStatus.Completed:
                                 this.NoteString = VW.Resources.InstallationApp.VerticalHomingCompleted;
                                 break;
+
+                            case ActionStatus.Error:
+                                this.NoteString = VW.Resources.InstallationApp.VerticalHomingError;
+                                this.IsStartButtonActive = true;
+                                this.IsStopButtonActive = false;
+                                break;
                         }
                         break;
 
@@ -214,6 +231,12 @@ namespace Ferretto.VW.InstallationApp
 
                             case ActionStatus.Completed:
                                 this.NoteString = VW.Resources.InstallationApp.SwitchEngineCompleted;
+                                break;
+
+                            case ActionStatus.Error:
+                                this.NoteString = VW.Resources.InstallationApp.SwitchEngineError;
+                                this.IsStartButtonActive = true;
+                                this.IsStopButtonActive = false;
                                 break;
                         }
                         break;
@@ -244,10 +267,12 @@ namespace Ferretto.VW.InstallationApp
         {
             try
             {
-                var client = new HttpClient();
-                await client.GetStringAsync(new Uri(this.installationController + this.homingController));
                 this.IsStartButtonActive = false;
                 this.IsStopButtonActive = true;
+
+                var client = new HttpClient();
+                //await client.GetStringAsync(new Uri(this.installationController + this.homingController));  // uncomment this code line
+                await client.GetStringAsync(new Uri(this.installationController + "/HomingTest"));            // remove this line
             }
             catch (Exception)
             {

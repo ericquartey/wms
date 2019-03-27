@@ -1,14 +1,13 @@
-﻿using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.Common_Utils.Messages;
+﻿using System;
+using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
-using Microsoft.AspNetCore.Mvc;
-using Prism.Events;
+using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.Common_Utils.DTOs;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer;
-using System;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
@@ -74,7 +73,13 @@ namespace Ferretto.VW.MAS_AutomationService
             await Task.Delay(2000);
             this.eventAggregator.GetEvent<NotificationEvent>()
                 .Publish(new NotificationMessage(null, "Horizontal Homing Executing", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationExecuting));
-            await Task.Delay(4000);
+            await Task.Delay(2000);
+
+            this.eventAggregator.GetEvent<NotificationEvent>()
+                .Publish(new NotificationMessage(null, "Horizontal Homing Error", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationError));
+            await Task.Delay(2000);
+            return;
+            /*
             this.eventAggregator.GetEvent<NotificationEvent>()
                 .Publish(new NotificationMessage(null, "Horizontal Homing Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationEnd));
             await Task.Delay(2000);
@@ -110,6 +115,7 @@ namespace Ferretto.VW.MAS_AutomationService
             await Task.Delay(2000);
             this.eventAggregator.GetEvent<NotificationEvent>()
                 .Publish(new NotificationMessage(null, "Homing Completed", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationEnd));
+            */
         }
 
         [HttpGet("HomingStop")]
@@ -164,19 +170,19 @@ namespace Ferretto.VW.MAS_AutomationService
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(message);
         }
 
-        [HttpGet("StopFSM")]
-        public void StopFiniteStateMachine()
-        {
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Stop Homing",
-                MessageActor.FiniteStateMachines, MessageActor.AutomationService, MessageType.Stop,
-                MessageVerbosity.Info));
-        }
-
         [HttpGet("ResetIO")]
         public void ResetIO()
         {
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "ResetIO",
                 MessageActor.IODriver, MessageActor.AutomationService, MessageType.IOReset,
+                MessageVerbosity.Info));
+        }
+
+        [HttpGet("StopFSM")]
+        public void StopFiniteStateMachine()
+        {
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Stop Homing",
+                MessageActor.FiniteStateMachines, MessageActor.AutomationService, MessageType.Stop,
                 MessageVerbosity.Info));
         }
 
