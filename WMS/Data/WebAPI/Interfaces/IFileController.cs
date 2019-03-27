@@ -11,7 +11,7 @@ namespace Ferretto.WMS.Data.WebAPI.Interfaces
     {
         #region Methods
 
-        Task<ActionResult> DownloadAsync(string id);
+        ActionResult Download(string id);
 
         Task<ActionResult<string>> UploadAsync(IFormFile model);
 

@@ -1,6 +1,5 @@
 ﻿using System.Configuration;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Providers;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -79,7 +78,7 @@ namespace Ferretto.WMS.App.Modules.BLL
             containerRegistry.Register<IPackageTypeProvider, PackageTypeProvider>();
             containerRegistry.Register<ISchedulerRequestProvider, SchedulerRequestProvider>();
             containerRegistry.Register<IUserProvider, UserProvider>();
-            containerRegistry.Register<IImageProvider, ImageProvider>();
+            containerRegistry.Register<IFileProvider, ImageProvider>();
         }
 
         private static void RegisterDataServiceEndpoints(IContainerRegistry containerRegistry)

@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Configuration;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Threading.Tasks;
-using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.BLL.Interfaces.Providers;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.FileProviders;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -25,13 +23,19 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly IConfiguration configuration;
 
+        private readonly IFileProvider fileProvider;
+
+        private readonly IContentTypeProvider contentTypeProvider;
+
         #endregion
 
         #region Constructors
 
-        public ImageProvider(IConfiguration configuration)
+        public ImageProvider(IConfiguration configuration, IFileProvider fileProvider, IContentTypeProvider contentTypeProvider)
         {
             this.configuration = configuration;
+            this.fileProvider = fileProvider;
+            this.contentTypeProvider = contentTypeProvider;
         }
 
         #endregion
@@ -42,82 +46,45 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             get
             {
-                if (int.TryParse(this.configuration.GetValue<string>("Image:DefaultPixelMax"), out int configValue))
+                if (int.TryParse(this.configuration.GetValue<string>("Image:DefaultPixelMax"), out var configValue))
                 {
                     return configValue;
                 }
-                else
-                {
-                    return defaultPixelMax;
-                }
+
+                return defaultPixelMax;
             }
         }
 
-        private Uri ImageDirectoryUri =>
-               new Uri(System.IO.Path.Combine(Environment.CurrentDirectory, this.configuration.GetValue<string>("Image:Path") ?? defaultImagesDirectoryName));
+        private string ImageVirtualPath =>
+            this.configuration.GetValue<string>("Image:Path") ?? defaultImagesDirectoryName;
 
         #endregion
 
         #region Methods
 
-        public async Task<IImageFile> DownloadAsync(string key)
+        public ImageFile GetById(string key)
         {
-            var path = System.IO.Path.Combine(this.ImageDirectoryUri.LocalPath, key);
-            byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(path);
-            var success = new FileExtensionContentTypeProvider().TryGetContentType(path, out var contentType);
-            var filename = Path.GetFileName(path);
+            var path = Path.Combine(this.ImageVirtualPath, key);
+            var success = this.contentTypeProvider.TryGetContentType(path, out var contentType);
 
-            if (success)
+            if (success && File.Exists(path))
             {
                 return new ImageFile
                 {
-                    FileBytes = fileBytes,
                     ContentType = contentType,
-                    FileName = filename,
+                    Stream = this.fileProvider.GetFileInfo(path).CreateReadStream(),
+                    Path = path,
                 };
             }
 
             return null;
         }
 
-        public ImageFile GetImage(string pathName)
+        public async Task<string> CreateAsync(IFormFile model)
         {
-            if (string.IsNullOrWhiteSpace(pathName))
-            {
-                return null;
-            }
-
-            var uri = new Uri(this.ImageDirectoryUri, pathName);
-
-            if (!this.ImageDirectoryUri.IsBaseOf(uri))
-            {
-                throw new ArgumentException(
-                    Errors.SpecifiedPathNotInConfiguredImageFolder,
-                    nameof(pathName));
-            }
-
-            var file = File.Exists(uri.LocalPath) ? File.Open(uri.LocalPath, FileMode.Open, FileAccess.Read) : null;
-            if (file != null)
-            {
-                var imageFile = new ImageFile
-                {
-                    FileName = uri.LocalPath,
-                    Name = file.Name,
-                    ContentType = file.GetType().ToString(),
-                    Length = file.Length,
-                };
-                return imageFile;
-            }
-
-            return null;
-        }
-
-        public async Task<string> UploadAsync(string imagePath, IFormFile model)
-        {
-            // full path to file in temp location
             if (model == null)
             {
-                return null;
+                throw new ArgumentNullException(nameof(model));
             }
 
             using (var memoryStream = new MemoryStream())
@@ -127,7 +94,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
-        private static Bitmap ResizeImage(System.Drawing.Image image, int width, int height)
+        private static Bitmap ResizeImage(Image image, int width, int height)
         {
             if (image != null)
             {
@@ -178,35 +145,34 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private string SaveImage(IFormFile model, Stream memoryStream)
         {
-            // Load image Service
-            Image resizedImage = null;
             using (var image = Image.FromStream(memoryStream))
             {
-                if (image.Height > this.DefaultPixelMax || image.Width > this.DefaultPixelMax)
+                var resizedImage = image;
+                var toBeResized = image.Height > this.DefaultPixelMax || image.Width > this.DefaultPixelMax;
+                if (toBeResized)
                 {
                     var width = image.Width;
                     var height = image.Height;
                     this.CalculateDimensionProportioned(ref width, ref height);
                     resizedImage = ResizeImage(image, width, height);
                 }
-                else
-                {
-                    resizedImage = image;
-                }
 
                 var extension = Path.GetExtension(model.FileName);
-                string fileName = Path.GetFileName($"{DateTime.Now.Ticks}{extension}");
+                var fileName = Path.GetFileName($"{DateTime.Now.Ticks}{extension}");
 
-                var uri = new Uri(this.ImageDirectoryUri, fileName);
-                var uriLocalPath = uri.LocalPath;
-                if (File.Exists(uriLocalPath))
+                var imagePath = Path.Combine(this.ImageVirtualPath, fileName);
+                if (File.Exists(imagePath))
                 {
                     fileName = Path.GetFileName($"{DateTime.Now.Ticks}{DateTime.Now.Millisecond}{extension}");
-                    uri = new Uri(this.ImageDirectoryUri, fileName);
+                    imagePath = Path.Combine(this.ImageVirtualPath, fileName);
                 }
 
-                resizedImage.Save(uriLocalPath);
-                resizedImage.Dispose();
+                resizedImage.Save(imagePath);
+                if (toBeResized)
+                {
+                    resizedImage.Dispose();
+                }
+
                 return fileName;
             }
         }

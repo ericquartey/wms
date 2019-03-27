@@ -1,5 +1,4 @@
-﻿using Ferretto.Common.BLL.Interfaces.Providers;
-using Ferretto.WMS.Data.Core.Interfaces;
+﻿using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Providers;
 using Microsoft.Extensions.DependencyInjection;
 

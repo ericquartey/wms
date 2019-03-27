@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.WMS.Data.Core.Interfaces;
-using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.StaticFiles;
-using Microsoft.Extensions.Configuration;
-using NSwag.Annotations;
+using Microsoft.Extensions.FileProviders;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
@@ -42,25 +33,25 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(200, Type = typeof(FileStreamResult))]
         [ProducesResponseType(400)]
-        [ProducesResponseType(422)]
+        [ProducesResponseType(404)]
         [HttpGet("{id}")]
-        public async Task<ActionResult> DownloadAsync(string id)
+        public ActionResult Download(string id)
         {
             if (id == null)
             {
                 return this.BadRequest();
             }
 
-            var fileImage = await this.imageProvider.DownloadAsync(id);
-            await Task.Delay(8000);
-            if (fileImage != null)
+            var imageFileInfo = this.imageProvider.GetById(id);
+            if (imageFileInfo != null)
             {
-                return this.File(fileImage.FileBytes, fileImage.ContentType, fileImage.FileName);
+                return this.File(imageFileInfo.Stream, imageFileInfo.ContentType, id);
             }
-            else
+
+            return this.NotFound(new ProblemDetails
             {
-                return this.UnprocessableEntity();
-            }
+                Status = StatusCodes.Status404NotFound,
+            });
         }
 
         [ProducesResponseType(200, Type = typeof(string))]
@@ -76,15 +67,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             try
             {
-                var result = await this.imageProvider.UploadAsync(null, model);
+                var result = await this.imageProvider.CreateAsync(model);
                 if (result != null)
                 {
                     return this.Ok(result);
                 }
-                else
-                {
-                    return this.UnprocessableEntity("Error");
-                }
+
+                return this.UnprocessableEntity("Error");
             }
             catch (Exception ex)
             {

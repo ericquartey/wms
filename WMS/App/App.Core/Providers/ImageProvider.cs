@@ -1,35 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.BLL.Interfaces.Providers;
+using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
-    public class ImageProvider : IImageProvider
+    public class ImageProvider : IFileProvider
     {
         #region Fields
 
         private const int defaultPixelMax = 600;
 
-        private readonly WMS.Data.WebAPI.Contracts.IImagesDataService imageDataService;
+        private readonly Data.WebAPI.Contracts.IImagesDataService imageDataService;
 
         #endregion
 
         #region Constructors
 
-        public ImageProvider(WMS.Data.WebAPI.Contracts.IImagesDataService imageDataService)
+        public ImageProvider(Data.WebAPI.Contracts.IImagesDataService imageDataService)
         {
             this.imageDataService = imageDataService;
         }
@@ -38,18 +32,10 @@ namespace Ferretto.WMS.App.Core.Providers
 
         #region Properties
 
-        private static int DefaultPixelMax
-        {
-            get
-            {
-                if (int.TryParse(ConfigurationManager.AppSettings["ImagesDefaultPixelMax"], out int x))
-                {
-                    return x;
-                }
-
-                return defaultPixelMax;
-            }
-        }
+        private static int DefaultPixelMax => int.TryParse(
+            ConfigurationManager.AppSettings["ImagesDefaultPixelMax"], out var x) ?
+            x :
+            defaultPixelMax;
 
         #endregion
 
@@ -64,7 +50,7 @@ namespace Ferretto.WMS.App.Core.Providers
             };
         }
 
-        public async Task<string> UploadAsync(string imagePath, IFormFile model)
+        public async Task<string> UploadAsync(string imagePath)
         {
             if (imagePath == null)
             {
@@ -72,7 +58,7 @@ namespace Ferretto.WMS.App.Core.Providers
             }
 
             var streamResized = ResizeImage(imagePath);
-            ImageFile imageFile = null;
+            ImageFile imageFile;
             if (streamResized != null)
             {
                 imageFile = new ImageFile
@@ -93,7 +79,7 @@ namespace Ferretto.WMS.App.Core.Providers
             }
 
             var result = await this.imageDataService.UploadAsync(
-               new WMS.Data.WebAPI.Contracts.FileParameter(imageFile.OpenReadStream(), imageFile.FileName));
+               new Data.WebAPI.Contracts.FileParameter(imageFile.OpenReadStream(), imageFile.FileName));
 
             return result;
         }
@@ -114,37 +100,37 @@ namespace Ferretto.WMS.App.Core.Providers
 
         private static int CalculateProportion(int x, int y)
         {
-            return (y * DefaultPixelMax) / x;
+            return y * DefaultPixelMax / x;
         }
 
         private static Bitmap CreateResizedImage(System.Drawing.Image image, int width, int height)
         {
-            if (image != null)
+            if (image == null)
             {
-                var destRect = new Rectangle(0, 0, width, height);
-                var destImage = new Bitmap(width, height);
-
-                destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
-
-                using (var graphics = Graphics.FromImage(destImage))
-                {
-                    graphics.CompositingMode = CompositingMode.SourceCopy;
-                    graphics.CompositingQuality = CompositingQuality.HighQuality;
-                    graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                    graphics.SmoothingMode = SmoothingMode.HighQuality;
-                    graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-
-                    using (var wrapMode = new ImageAttributes())
-                    {
-                        wrapMode.SetWrapMode(WrapMode.TileFlipXY);
-                        graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
-                    }
-                }
-
-                return destImage;
+                return null;
             }
 
-            return null;
+            var destRect = new Rectangle(0, 0, width, height);
+            var destImage = new Bitmap(width, height);
+
+            destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+
+            using (var graphics = Graphics.FromImage(destImage))
+            {
+                graphics.CompositingMode = CompositingMode.SourceCopy;
+                graphics.CompositingQuality = CompositingQuality.HighQuality;
+                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                graphics.SmoothingMode = SmoothingMode.HighQuality;
+                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+                using (var wrapMode = new ImageAttributes())
+                {
+                    wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+                    graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
+                }
+            }
+
+            return destImage;
         }
 
         private static long GetFileSize(string filePath)
@@ -156,21 +142,17 @@ namespace Ferretto.WMS.App.Core.Providers
                 Debug.Write("Permission denied");
                 throw new FileLoadException();
             }
-            else if (File.Exists(filePath))
-            {
-                return new FileInfo(filePath).Length;
-            }
 
-            return 0;
+            return File.Exists(filePath) ? new FileInfo(filePath).Length : 0;
         }
 
         private static ImageFormat GetImageFormat(string fileName)
         {
-            string extension = Path.GetExtension(fileName);
+            var extension = Path.GetExtension(fileName);
             if (string.IsNullOrEmpty(extension))
             {
                 throw new ArgumentException(
-                    string.Format("Unable to determine file extension for fileName: {0}", fileName));
+                    $"Unable to determine file extension for fileName: {fileName}");
             }
 
             switch (extension.ToLower())
@@ -208,23 +190,20 @@ namespace Ferretto.WMS.App.Core.Providers
             var stream = new MemoryStream();
             var format = GetImageFormat(imagePath);
 
-            Image resizedImage = null;
             using (var image = Image.FromFile(imagePath))
             {
-                if (image.Height > DefaultPixelMax || image.Width > DefaultPixelMax)
-                {
-                    var width = image.Width;
-                    var height = image.Height;
-                    CalculateDimensionProportioned(ref width, ref height);
-                    resizedImage = CreateResizedImage(image, width, height);
-                    resizedImage.Save(stream, format);
-                    stream.Position = 0;
-                    return stream;
-                }
-                else
+                if (image.Height <= DefaultPixelMax && image.Width <= DefaultPixelMax)
                 {
                     return null;
                 }
+
+                var width = image.Width;
+                var height = image.Height;
+                CalculateDimensionProportioned(ref width, ref height);
+                var resizedImage = CreateResizedImage(image, width, height);
+                resizedImage.Save(stream, format);
+                stream.Position = 0;
+                return stream;
             }
         }
 
