@@ -57,10 +57,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.File(fileImage.FileBytes, fileImage.ContentType, fileImage.FileName);
             }
-            else
-            {
-                return this.UnprocessableEntity();
-            }
+
+            return this.UnprocessableEntity();
         }
 
         [ProducesResponseType(200, Type = typeof(string))]

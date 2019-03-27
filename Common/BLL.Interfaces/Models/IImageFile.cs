@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.IO;
 using Microsoft.AspNetCore.Http;
 
 namespace Ferretto.Common.BLL.Interfaces.Models
