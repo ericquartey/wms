@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -89,6 +90,14 @@ namespace Ferretto.Common.Controls
         #endregion
 
         #region Methods
+
+        public override void Clear()
+        {
+            base.Clear();
+            this.Filename = null;
+            this.Path = null;
+            this.IsLoading = false;
+        }
 
         public async Task UploadImageAsync()
         {
