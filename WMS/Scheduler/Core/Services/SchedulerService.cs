@@ -83,7 +83,7 @@ namespace Ferretto.WMS.Scheduler.Core.Services
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
-                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionSchedulerProvider>();
+                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionExecutionSchedulerProvider>();
 
                 var result = await missionsProvider.CompleteAsync(missionId, quantity);
 
@@ -107,7 +107,7 @@ namespace Ferretto.WMS.Scheduler.Core.Services
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
-                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionSchedulerProvider>();
+                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionExecutionSchedulerProvider>();
 
                 return await missionsProvider.ExecuteAsync(missionId);
             }
