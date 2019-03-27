@@ -6,31 +6,71 @@ namespace Ferretto.Common.BLL.Interfaces.Models
     {
         #region Methods
 
+        public static bool CanCreate<TPolicy>(this IPolicyDescriptor<TPolicy> policyDescriptor)
+            where TPolicy : IPolicy
+        {
+            return policyDescriptor.CanExecuteOperation(CommonPolicies.Create.ToString());
+        }
+
         public static bool CanDelete<TPolicy>(this IPolicyDescriptor<TPolicy> policyDescriptor)
             where TPolicy : IPolicy
         {
-            if (policyDescriptor == null)
+            return policyDescriptor.CanExecuteOperation(CommonPolicies.Delete.ToString());
+        }
+
+        public static bool CanExecuteOperation<TPolicy>(
+            this IPolicyDescriptor<TPolicy> policyDescriptor,
+            string operationName)
+            where TPolicy : IPolicy
+        {
+            if (policyDescriptor == null || operationName == null)
             {
                 throw new System.ArgumentNullException(nameof(policyDescriptor));
             }
 
             return policyDescriptor.Policies
-                .Any(p => p.IsAllowed == true
-                    && p.Name == CommonPolicies.Delete.ToString()
+                .Any(p => p.IsAllowed
+                    && p.Name == operationName
                     && p.Type == PolicyType.Operation);
+        }
+
+        public static bool CanUpdate<TPolicy>(this IPolicyDescriptor<TPolicy> policyDescriptor)
+            where TPolicy : IPolicy
+        {
+            return policyDescriptor.CanExecuteOperation(CommonPolicies.Update.ToString());
+        }
+
+        public static string GetCanCreateReason<TPolicy>(this IPolicyDescriptor<TPolicy> policyDescriptor)
+            where TPolicy : IPolicy
+        {
+            return policyDescriptor.GetCanExecuteOperationReason(CommonPolicies.Create.ToString());
         }
 
         public static string GetCanDeleteReason<TPolicy>(this IPolicyDescriptor<TPolicy> policyDescriptor)
             where TPolicy : IPolicy
         {
-            if (policyDescriptor == null)
+            return policyDescriptor.GetCanExecuteOperationReason(CommonPolicies.Delete.ToString());
+        }
+
+        public static string GetCanExecuteOperationReason<TPolicy>(
+            this IPolicyDescriptor<TPolicy> policyDescriptor,
+            string operationName)
+            where TPolicy : IPolicy
+        {
+            if (policyDescriptor == null || operationName == null)
             {
                 throw new System.ArgumentNullException(nameof(policyDescriptor));
             }
 
             return policyDescriptor.Policies
-                .SingleOrDefault(p => p.Name == CommonPolicies.Delete.ToString()
+                .SingleOrDefault(p => p.Name == operationName
                     && p.Type == PolicyType.Operation)?.Reason;
+        }
+
+        public static string GetCanUpdateReason<TPolicy>(this IPolicyDescriptor<TPolicy> policyDescriptor)
+            where TPolicy : IPolicy
+        {
+            return policyDescriptor.GetCanExecuteOperationReason(CommonPolicies.Update.ToString());
         }
 
         #endregion
