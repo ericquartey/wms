@@ -1,29 +1,17 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using CommonServiceLocator;
-using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core.Native;
 using DevExpress.Xpf.Editors;
-using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
-using Ferretto.Common.Controls.Interfaces;
-using Ferretto.WMS.App.Core.Models;
 using Microsoft.Win32;
 
 namespace Ferretto.Common.Controls
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Major Bug",
-        "S3168:\"async\" methods should not return \"void\"",
-        Justification = "Ok",
-        Scope = "member",
-        Target = "~M:Ferretto.Common.Controls.WmsImageEdit.OnCommandActionChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)")]
     public class WmsImageEdit : ImageEdit
     {
         #region Fields
@@ -32,7 +20,36 @@ namespace Ferretto.Common.Controls
                              nameof(CommandAction), typeof(WmsCommand), typeof(WmsImageEdit), new PropertyMetadata(OnCommandActionChanged));
 
         public static readonly DependencyProperty FilenameProperty = DependencyProperty.Register(
-                             nameof(Filename), typeof(string), typeof(WmsImageEdit), new PropertyMetadata(default(string), new PropertyChangedCallback(OnPathChanged)));
+            nameof(Filename),
+            typeof(string),
+            typeof(WmsImageEdit),
+            new PropertyMetadata(
+                default(string),
+                async (d, e) =>
+                {
+                    if (d is WmsImageEdit wmsImage)
+                    {
+                        wmsImage.IsLoading = true;
+                        if (wmsImage.isUpdatingImage)
+                        {
+                            wmsImage.isUpdatingImage = false;
+                            wmsImage.IsLoading = false;
+                            return;
+                        }
+
+                        if (e.NewValue != null)
+                        {
+                            wmsImage.Source = await ImageUtils
+                                .RetrieveImageAsync(wmsImage.imageService, (string)e.NewValue)
+                                .ConfigureAwait(true);
+                            wmsImage.IsLoading = false;
+                        }
+                        else
+                        {
+                            wmsImage.Source = null;
+                        }
+                    }
+                }));
 
         public static readonly DependencyProperty IsLoadingProperty = DependencyProperty.Register(
                      nameof(IsLoading), typeof(bool), typeof(WmsImageEdit), new PropertyMetadata(default(bool)));
@@ -83,7 +100,7 @@ namespace Ferretto.Common.Controls
 
         public Func<Task> UploadAction
         {
-            get => new Func<Task>(async () => await this.UploadImageAsync());
+            get => async () => await this.UploadImageAsync();
         }
 
         #endregion
@@ -120,39 +137,17 @@ namespace Ferretto.Common.Controls
             if (d is WmsImageEdit wmsImageEdit && e.NewValue is ICommand command)
             {
                 var wmsCommand = (WmsCommand)command;
-                /*call image service*/
                 wmsCommand.BeforeExecute(wmsImageEdit.UploadAction);
-            }
-        }
-
-        private static async void OnPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is WmsImageEdit wmsImage)
-            {
-                wmsImage.IsLoading = true;
-                if (wmsImage.isUpdatingImage)
-                {
-                    wmsImage.isUpdatingImage = false;
-                    wmsImage.IsLoading = false;
-                    return;
-                }
-
-                if (e.NewValue != null)
-                {
-                    wmsImage.Source = await ImageUtils.RetrieveImageAsync(wmsImage.imageService, (string)e.NewValue);
-                    wmsImage.IsLoading = false;
-                }
-                else
-                {
-                    wmsImage.Source = null;
-                }
             }
         }
 
         private ImageSource LoadImage()
         {
-            var dlg = new OpenFileDialog();
-            dlg.Filter = EditorLocalizer.GetString(EditorStringId.ImageEdit_OpenFileFilter);
+            var dlg = new OpenFileDialog
+            {
+                Filter = EditorLocalizer.GetString(EditorStringId.ImageEdit_OpenFileFilter)
+            };
+
             this.IsLoading = true;
             if (dlg.ShowDialog() == true)
             {

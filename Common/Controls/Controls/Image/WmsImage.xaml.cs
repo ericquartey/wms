@@ -5,21 +5,29 @@ using Ferretto.Common.BLL.Interfaces.Providers;
 
 namespace Ferretto.Common.Controls
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Major Bug",
-        "S3168:\"async\" methods should not return \"void\"",
-        Justification = "Ok",
-        Scope = "member",
-        Target = "~M:Ferretto.Common.Controls.WmsImageEdit.OnCommandActionChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)")]
     public partial class WmsImage : UserControl
     {
         #region Fields
 
         public static readonly DependencyProperty HasImageProperty = DependencyProperty.Register(
-         nameof(HasImage), typeof(bool), typeof(WmsImage), new PropertyMetadata(default(bool)));
+            nameof(HasImage), typeof(bool), typeof(WmsImage), new PropertyMetadata(default(bool)));
 
         public static readonly DependencyProperty PathProperty = DependencyProperty.Register(
-                 nameof(Path), typeof(string), typeof(WmsImage), new PropertyMetadata(default(string), new PropertyChangedCallback(OnPathChanged)));
+            nameof(Path),
+            typeof(string),
+            typeof(WmsImage),
+            new PropertyMetadata(
+                default(string),
+                async (d, e) =>
+                {
+                    if (d is WmsImage wmsImage)
+                    {
+                        wmsImage.InnerImage.Source = await ImageUtils
+                            .RetrieveImageAsync(wmsImage.imageService, (string)e.NewValue)
+                            .ConfigureAwait(true);
+                        wmsImage.HasImage = e.NewValue != null;
+                    }
+                }));
 
         private readonly IImageProvider imageService;
 
@@ -48,19 +56,6 @@ namespace Ferretto.Common.Controls
         {
             get => (string)this.GetValue(PathProperty);
             set => this.SetValue(PathProperty, value);
-        }
-
-        #endregion
-
-        #region Methods
-
-        private static async void OnPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is WmsImage wmsImage)
-            {
-                wmsImage.InnerImage.Source = await ImageUtils.RetrieveImageAsync(wmsImage.imageService, (string)e.NewValue);
-                wmsImage.HasImage = e.NewValue != null;
-            }
         }
 
         #endregion
