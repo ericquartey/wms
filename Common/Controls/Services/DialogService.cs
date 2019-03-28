@@ -10,8 +10,6 @@ namespace Ferretto.Common.Controls.Services
     {
         #region Fields
 
-        private readonly INavigationService navigationService;
-
         private WmsMessagePopup wmsMessagePopup;
 
         #endregion
@@ -20,8 +18,7 @@ namespace Ferretto.Common.Controls.Services
 
         public DialogService(INavigationService navigationService)
         {
-            this.navigationService = navigationService;
-            this.navigationService.Register<WmsMessagePopup, WmsMessagePopupViewModel>();
+            navigationService?.Register<WmsMessagePopup, WmsMessagePopupViewModel>();
         }
 
         #endregion

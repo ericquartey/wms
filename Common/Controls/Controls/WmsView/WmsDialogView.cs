@@ -23,7 +23,7 @@ namespace Ferretto.Common.Controls
             nameof(HeaderIsEnabled),
             typeof(bool),
             typeof(WmsDialogView),
-            new FrameworkPropertyMetadata(false, OnHeaderIsEnabledChanged));
+            new FrameworkPropertyMetadata(false, EnableControls));
 
         public static readonly DependencyProperty ModeProperty = DependencyProperty.Register(
             nameof(Mode),
@@ -159,18 +159,19 @@ namespace Ferretto.Common.Controls
         {
         }
 
-        private static void EnableControls(WmsDialogView dialogView, bool isEnabled)
+        private static void EnableControls(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is WmsDialogView dialogView &&
+                e.NewValue is bool isEnabled)
+            {
+                SetControlEnabledState(dialogView, isEnabled);
+            }
+        }
+
+        private static void SetControlEnabledState(DependencyObject dialogView, bool isEnabled)
         {
             var childrenToCheck = LayoutTreeHelper.GetVisualChildren(dialogView).OfType<IEnabled>();
             childrenToCheck.ForEach(c => c.IsEnabled = isEnabled);
-        }
-
-        private static void OnHeaderIsEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is WmsDialogView dialogView && e.NewValue is bool isEnabled)
-            {
-                EnableControls(dialogView, isEnabled);
-            }
         }
 
         private void CheckDataContext()

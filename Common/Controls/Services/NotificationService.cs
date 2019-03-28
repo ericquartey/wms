@@ -61,7 +61,7 @@ namespace Ferretto.Common.Controls.Services
                 {
                     this.isServiceHubConnected = value;
                     this.NotifyErrorDialog();
-                    this.eventService.Invoke(new StatusPubSubEvent() { IsSchedulerOnline = this.isServiceHubConnected });
+                    this.eventService.Invoke(new StatusPubSubEvent { IsSchedulerOnline = this.isServiceHubConnected });
                 }
             }
         }
@@ -83,7 +83,7 @@ namespace Ferretto.Common.Controls.Services
             }
             catch
             {
-                await this.WaitForReconnection();
+                await this.WaitForReconnectionAsync();
                 await this.connection?.StartAsync();
             }
         }
@@ -102,7 +102,7 @@ namespace Ferretto.Common.Controls.Services
                 catch (Exception ex)
                 {
                     this.logger.Warn(ex, "Connection failed.");
-                    await this.WaitForReconnection();
+                    await this.WaitForReconnectionAsync();
                 }
             }
         }
@@ -119,7 +119,7 @@ namespace Ferretto.Common.Controls.Services
             {
                 this.logger.Debug("Connection to hub closed.");
                 this.IsServiceHubConnected = false;
-                await this.WaitForReconnection();
+                await this.WaitForReconnectionAsync();
                 await this.ConnectAsync();
             };
 
@@ -138,7 +138,7 @@ namespace Ferretto.Common.Controls.Services
             this.dialogService.ShowErrorDialog(General.ConnectionStatus, msg, this.isServiceHubConnected == false);
         }
 
-        private async Task WaitForReconnection()
+        private async Task WaitForReconnectionAsync()
         {
             var reconnectionTime = this.random.Next(0, MaxRetryConnectionTimeout);
             this.logger.Debug($"Retrying connection in {reconnectionTime / 1000} seconds...");

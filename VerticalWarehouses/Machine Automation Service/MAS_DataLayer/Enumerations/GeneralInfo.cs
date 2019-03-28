@@ -87,5 +87,17 @@
         AlfaNumBay2 = 41L,
 
         AlfaNumBay3 = 42L,
+
+        Barrier1Height = 43L,
+
+        Barrier2Height = 44L,
+
+        Barrier3Height = 45L,
+
+        MaxAcceptedBai1Height = 46L,
+
+        MaxAcceptedBai2Height = 47L,
+
+        MaxAcceptedBai3Height = 48L,
     }
 }

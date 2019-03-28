@@ -54,6 +54,8 @@
 
         public int? PackageTypeId { get; set; }
 
+        public int? Priority { get; set; }
+
         public string RegistrationNumber { get; set; }
 
         public int RequestedQuantity { get; set; }

@@ -144,7 +144,7 @@ namespace Ferretto.VW.InverterDriver
                 var receivedData = new byte[readBytes];
 
                 Array.Copy(this.receiveBuffer, receivedData, readBytes);
-                Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - ReadAsync:{BitConverter.ToString(receivedData)}");
+                // Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - ReadAsync:{BitConverter.ToString(receivedData)}");
             }
             catch (Exception ex)
             {
@@ -168,7 +168,7 @@ namespace Ferretto.VW.InverterDriver
 
             try
             {
-                Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - WriteAsync:{BitConverter.ToString(inverterMessage)}");
+                // Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - WriteAsync:{BitConverter.ToString(inverterMessage)}");
                 await this.transportStream.WriteAsync(inverterMessage, 0, inverterMessage.Length, stoppingToken);
             }
             catch (Exception ex)
@@ -191,7 +191,7 @@ namespace Ferretto.VW.InverterDriver
 
             try
             {
-                Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - WriteAsyncDelay:{BitConverter.ToString(inverterMessage)} - Delay:{delay}");
+                // Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - WriteAsyncDelay:{BitConverter.ToString(inverterMessage)} - Delay:{delay}");
                 if (delay > 0)
                 {
                     await Task.Delay(delay);

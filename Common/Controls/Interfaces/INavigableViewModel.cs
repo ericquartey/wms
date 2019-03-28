@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.Common.Controls.Interfaces
 {
-    public interface INavigableViewModel
+    public interface INavigableViewModel : System.IDisposable
     {
         #region Properties
 
@@ -21,8 +21,6 @@
         bool CanDisappear();
 
         void Disappear();
-
-        void Dispose();
 
         #endregion
     }

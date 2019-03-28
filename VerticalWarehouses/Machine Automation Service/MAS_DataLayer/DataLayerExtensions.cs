@@ -1,0 +1,18 @@
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
+using Microsoft.EntityFrameworkCore.Migrations.Operations.Builders;
+
+namespace Ferretto.VW.MAS_DataLayer
+{
+    public static class DataLayerExtensions
+    {
+        #region Methods
+
+        private static OperationBuilder<SqlOperation> CreateUser(this MigrationBuilder migrationBuilder)
+        {
+            return migrationBuilder.Sql("");
+        }
+
+        #endregion
+    }
+}

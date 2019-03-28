@@ -327,19 +327,18 @@ namespace Ferretto.WMS.App.Core.Providers
             try
             {
                 await this.itemsDataService.WithdrawAsync(
-                   new WMS.Data.WebAPI.Contracts.SchedulerRequest
-                   {
-                       AreaId = itemWithdraw.AreaId.Value,
-                       BayId = itemWithdraw.BayId,
-                       IsInstant = true,
-                       ItemId = itemWithdraw.ItemDetails.Id,
-                       Lot = itemWithdraw.Lot,
-                       RegistrationNumber = itemWithdraw.RegistrationNumber,
-                       RequestedQuantity = itemWithdraw.Quantity,
-                       Sub1 = itemWithdraw.Sub1,
-                       Sub2 = itemWithdraw.Sub2,
-                       Type = WMS.Data.WebAPI.Contracts.OperationType.Withdrawal,
-                   });
+                    itemWithdraw.ItemDetails.Id,
+                    new Data.WebAPI.Contracts.ItemWithdrawOptions
+                    {
+                        AreaId = itemWithdraw.AreaId.Value,
+                        BayId = itemWithdraw.BayId,
+                        RunImmediately = true,
+                        Lot = itemWithdraw.Lot,
+                        RegistrationNumber = itemWithdraw.RegistrationNumber,
+                        RequestedQuantity = itemWithdraw.Quantity,
+                        Sub1 = itemWithdraw.Sub1,
+                        Sub2 = itemWithdraw.Sub2
+                    });
 
                 return new OperationResult<SchedulerRequest>(true);
             }
