@@ -44,7 +44,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             var notificationMessageData = new CalibrateAxisMessageData(this.calibrateAxis, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
-                "Homing Completed",
+                "Homing Started",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.CalibrateAxis,
