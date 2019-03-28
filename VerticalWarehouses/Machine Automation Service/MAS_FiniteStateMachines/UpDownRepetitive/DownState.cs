@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
@@ -27,7 +28,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
                 MessageActor.FiniteStateMachines,
                 MessageType.UpDown,
                 MessageStatus.OperationExecuting);
-            this.parentStateMachine.OnPublishNotification(notifyMessage);
+            this.parentStateMachine.PublishNotificationMessage(notifyMessage);
 
             var target = this.upDownMessageData.TargetUpperBound;
             //TEMP Values are retrieve by the DataLayer i.e. var speed = this.data.GetSpeedValue();

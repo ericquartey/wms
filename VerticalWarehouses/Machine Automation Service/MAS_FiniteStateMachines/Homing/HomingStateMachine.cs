@@ -21,6 +21,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         private Axis currentAxis;
 
+        private bool disposed;
+
         private bool IsStopRequested;
 
         private int NMaxSteps;
@@ -32,91 +34,34 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         #region Constructors
 
         public HomingStateMachine(IEventAggregator eventAggregator, ICalibrateMessageData calibrateMessageData, ILogger logger)
-            : base(eventAggregator)
+            : base(eventAggregator, logger)
         {
+            this.logger = logger;
+            this.logger.LogTrace($"1:Homing State Machine ctor");
+
             this.calibrateMessageData = calibrateMessageData;
             this.calibrateAxis = calibrateMessageData.AxisToCalibrate;
-            this.logger = logger;
-            this.logger.LogTrace($"Homing State Machine ctor");
             this.IsStopRequested = false;
             this.OperationDone = false;
-
-            var notificationMessageData = new CalibrateAxisMessageData(this.calibrateAxis, MessageVerbosity.Info);
-            var notificationMessage = new NotificationMessage(
-                notificationMessageData,
-                "Homing Completed",
-                MessageActor.Any,
-                MessageActor.FiniteStateMachines,
-                MessageType.CalibrateAxis,
-                MessageStatus.OperationExecuting,
-                ErrorLevel.NoError,
-                MessageVerbosity.Info);
-
-            this.PublishNotificationMessage(notificationMessage);
         }
 
         #endregion
 
-        #region Properties
+        #region Destructors
 
-        public ICalibrateMessageData CalibrateData => this.calibrateMessageData;
-
-        public IState GetState => this.CurrentState;
+        ~HomingStateMachine()
+        {
+            this.Dispose(false);
+        }
 
         #endregion
 
         #region Methods
 
         /// <inheritdoc/>
-        public override void OnPublishNotification(NotificationMessage message)
-        {
-            this.logger.LogTrace($"Homing State Machine Publish: {message.Type}");
-            switch (message.Type)
-            {
-                case MessageType.Homing:
-                    {
-                        //TEMP Send a notification about the start operation to all the world
-                        var newMessage = new NotificationMessage(null,
-                            "Homing",
-                            MessageActor.Any,
-                            MessageActor.FiniteStateMachines,
-                            MessageType.Homing,
-                            MessageStatus.OperationStart,
-                            ErrorLevel.NoError,
-                            MessageVerbosity.Info);
-
-                        this.EventAggregator.GetEvent<NotificationEvent>().Publish(newMessage);
-                        break;
-                    }
-
-                case MessageType.Stop:
-                    {
-                        var msgStatus = (this.IsStopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd;
-
-                        //TEMP Send a notification about the end (/stop) operation to all the world
-                        var newMessage = new NotificationMessage(null,
-                            "End Homing",
-                            MessageActor.Any,
-                            MessageActor.FiniteStateMachines,
-                            MessageType.Stop,
-                            msgStatus,
-                            ErrorLevel.NoError,
-                            MessageVerbosity.Info);
-
-                        this.EventAggregator.GetEvent<NotificationEvent>().Publish(newMessage);
-                        break;
-                    }
-                default:
-                    {
-                        break;
-                    }
-            }
-        }
-
-        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogTrace($"Homing State Machine ProcessCommand: {message.Type}");
+            this.logger.LogTrace($"2:Process CommandMessage {message.Type} Source {message.Source}");
             switch (message.Type)
             {
                 case MessageType.Stop:
@@ -134,14 +79,24 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogTrace($"Homing State Machine ProcessNotification: {message.Type}");
+            this.logger.LogTrace($"3:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
             if (message.Type == MessageType.SwitchAxis)
             {
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        //TEMP Add business logic after the Switch axis operation is done successfully
-                        break;
+                        if (this.OperationDone)
+                        {
+                            //TEMP Change to end state (the operation is done)
+                            this.ChangeState(new HomingEndState(this, this.currentAxis, this.logger));
+                        }
+                        else
+                        {
+                            //TEMP Change to switch end state (the operation of switch for the current axis has been done)
+                            this.ChangeState(new HomingSwitchAxisDoneState(this, this.currentAxis, this.logger));
+                        }
+
+                        return;
 
                     case MessageStatus.OperationError:
                         //TEMP Add business logic when an error occurs
@@ -176,41 +131,54 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         }
 
         /// <inheritdoc/>
+        public override void PublishNotificationMessage(NotificationMessage message)
+        {
+            this.logger.LogTrace($"4:Publish NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
+
+            base.PublishNotificationMessage(message);
+        }
+
+        /// <inheritdoc/>
         public override void Start()
         {
-            this.logger.LogTrace($"Homing State Machine Start");
+            this.logger.LogTrace($"5:Starting FSM");
             switch (this.calibrateAxis)
             {
                 case Axis.Both:
-                    {
-                        this.NMaxSteps = 3;
-                        this.NumberOfExecutedSteps = 0;
-                        this.currentAxis = Axis.Horizontal;
-                        break;
-                    }
+                    this.NMaxSteps = 3;
+                    this.NumberOfExecutedSteps = 0;
+                    this.currentAxis = Axis.Horizontal;
+                    break;
+
                 case Axis.Horizontal:
-                    {
-                        this.NMaxSteps = 1;
-                        this.NumberOfExecutedSteps = 0;
-                        this.currentAxis = Axis.Horizontal;
-                        break;
-                    }
+                    this.NMaxSteps = 1;
+                    this.NumberOfExecutedSteps = 0;
+                    this.currentAxis = Axis.Horizontal;
+                    break;
 
                 case Axis.Vertical:
-                    {
-                        this.NMaxSteps = 1;
-                        this.NumberOfExecutedSteps = 0;
-                        this.currentAxis = Axis.Vertical;
-                        break;
-                    }
-
-                default:
-                    {
-                        break;
-                    }
+                    this.NMaxSteps = 1;
+                    this.NumberOfExecutedSteps = 0;
+                    this.currentAxis = Axis.Vertical;
+                    break;
             }
 
             this.CurrentState = new HomingStartState(this, this.currentAxis, this.logger);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
         }
 
         /// <summary>

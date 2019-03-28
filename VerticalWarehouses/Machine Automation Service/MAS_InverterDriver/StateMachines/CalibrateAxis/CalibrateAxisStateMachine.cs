@@ -53,12 +53,12 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override void PublishNotificationEvent(NotificationMessage message)
         {
-            this.logger.LogTrace($"CalibrateAxisStateMachine publish notification {message.Type}");
             if (this.CurrentState is EndState)
             {
                 var status = (this.IsStopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd;
                 message.Status = status;
             }
+            this.logger.LogTrace($"CalibrateAxisStateMachine publish notification {message.Type} Status {message.Status}");
             base.PublishNotificationEvent(message);
         }
 

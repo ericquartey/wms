@@ -58,6 +58,8 @@
 
         StopAction,
 
-        UpDown
+        UpDown,
+
+        InverterReset
     }
 }

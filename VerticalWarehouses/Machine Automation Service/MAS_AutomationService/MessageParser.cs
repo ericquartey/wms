@@ -68,6 +68,9 @@ namespace Ferretto.VW.MAS_AutomationService
                 case MessageType.SwitchAxis:
                     return ActionType.SwitchEngine;
 
+                case MessageType.Homing:
+                    return ActionType.Homing;
+
                 default:
                     return ActionType.None;
             }

@@ -221,7 +221,7 @@ namespace Ferretto.VW.InverterDriver
 
                         break;
 
-                    case MessageType.Stop:
+                    case MessageType.InverterReset:
                         if (receivedMessage.Data is IStopAxisMessageData stopData)
                         {
                             if (this.currentStateMachine == null)

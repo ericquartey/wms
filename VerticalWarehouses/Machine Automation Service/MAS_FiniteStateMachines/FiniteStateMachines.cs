@@ -7,6 +7,7 @@ using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_FiniteStateMachines.Homing;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_FiniteStateMachines.Mission;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -22,7 +23,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly ILogger logger;
+        private readonly ILogger<FiniteStateMachines> logger;
 
         private readonly BlockingConcurrentQueue<CommandMessage> messageQueue;
 
@@ -31,6 +32,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         private readonly BlockingConcurrentQueue<NotificationMessage> notifyQueue;
 
         private IStateMachine currentStateMachine;
+
+        private bool disposed;
 
         private CancellationToken stoppingToken;
 
@@ -43,13 +46,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.eventAggregator = eventAggregator;
 
             this.logger = logger;
+            this.logger?.LogInformation("1:Finite State Machine Constructor");
 
             this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
 
             this.notifyQueue = new BlockingConcurrentQueue<NotificationMessage>();
 
             this.commadReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
-            this.messageReceiveTask = new Task(() => this.MessageReceiveData());
+            this.messageReceiveTask = new Task(() => this.NotificationReceiveTaskFunction());
 
             var machineManagerMessagEvent = this.eventAggregator.GetEvent<CommandEvent>();
             machineManagerMessagEvent.Subscribe(message =>
@@ -68,13 +72,34 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Destination == MessageActor.FiniteStateMachines || message.Destination == MessageActor.Any);
+        }
 
-            this.logger?.LogInformation("Finite State Machine Constructor");
+        #endregion
+
+        #region Destructors
+
+        ~FiniteStateMachines()
+        {
+            this.Dispose(false);
         }
 
         #endregion
 
         #region Methods
+
+        protected void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+        }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
@@ -107,7 +132,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     return Task.FromException(ex);
                 }
-                this.logger.LogTrace($"FSM - command received {receivedMessage.Type}");
+                if (this.currentStateMachine != null && receivedMessage.Type != MessageType.Stop)
+                {
+                    var errorNotification = new NotificationMessage(null, "Inverter operation already in progress", MessageActor.Any,
+                        MessageActor.InverterDriver, receivedMessage.Type, MessageStatus.OperationError, ErrorLevel.Error);
+                    this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
+                    continue;
+                }
+
+                this.logger.LogTrace($"2:Received CommandMessage {receivedMessage.Type} Source {receivedMessage.Source}");
+
                 switch (receivedMessage.Type)
                 {
                     case MessageType.AddMission:
@@ -130,14 +164,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         this.ProcessStopActionMessage(receivedMessage);
                         break;
                 }
-
-                //TEMP this.currentStateMachine.ProcessCommandMessage(receivedMessage);
             } while (!this.stoppingToken.IsCancellationRequested);
 
             return Task.CompletedTask;
         }
 
-        private Task MessageReceiveData()
+        private Task NotificationReceiveTaskFunction()
         {
             do
             {
@@ -150,11 +182,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     return Task.CompletedTask;
                 }
-                this.logger.LogTrace($"FSM MessageReceiveData {receivedMessage.Type}");
-                if (this.currentStateMachine != null)
+
+                this.logger.LogTrace($"3:Received NotificationMessage {receivedMessage.Type} Source {receivedMessage.Source} Status {receivedMessage.Status}");
+
+                if (receivedMessage.Status == MessageStatus.OperationEnd &&
+                    receivedMessage.Source == MessageActor.FiniteStateMachines)
                 {
-                    this.currentStateMachine.ProcessNotificationMessage(receivedMessage);
+                    this.logger.LogTrace($"4:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                    this.currentStateMachine = null;
                 }
+
+                this.currentStateMachine?.ProcessNotificationMessage(receivedMessage);
             } while (!this.stoppingToken.IsCancellationRequested);
 
             return Task.CompletedTask;
@@ -162,48 +200,31 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private void ProcessAddMissionMessage(CommandMessage message)
         {
-            if (this.currentStateMachine != null)
-            {
-                //TODO throw concurrent action exception
-            }
-
             //TODO apply Finite State Machine Business Logic to the message
             this.currentStateMachine = new MissionStateMachine(this.eventAggregator);
+            this.logger.LogTrace($"5:Starting {this.currentStateMachine.GetType()}");
             this.currentStateMachine.Start();
         }
 
         private void ProcessHomingMessage(CommandMessage message)
         {
-            if (this.currentStateMachine != null)
-            {
-                //TODO throw concurrent action exception
-            }
-
             if (message.Data is ICalibrateMessageData data)
             {
                 //TODO handle the calibration data and pass to the calibrate states machine
                 //TODO apply Finite State Machine Business Logic to the message
                 this.currentStateMachine = new HomingStateMachine(this.eventAggregator, data, this.logger);
-
+                this.logger.LogTrace($"6:Starting {this.currentStateMachine.GetType()}");
                 this.currentStateMachine.Start();
             }
         }
 
         private void ProcessStopActionMessage(CommandMessage receivedMessage)
         {
-            if (this.currentStateMachine == null)
-            {
-                //TODO throw missing state machine exception
-            }
         }
 
         private void ProcessStopMessage(CommandMessage receivedMessage)
         {
-            if (this.currentStateMachine == null)
-            {
-                //TODO throw missing state machine exception
-            }
-
+            this.logger.LogTrace($"7:Processing Command {receivedMessage.Type} Source {receivedMessage.Source}");
             this.currentStateMachine.ProcessCommandMessage(receivedMessage);
         }
 

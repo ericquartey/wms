@@ -88,20 +88,8 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
                     this.logger.LogTrace($"VoltageDisabledState process message condition met");
 
                     this.parentStateMachine.ChangeState(new HomingModeState(this.parentStateMachine, this.axisToCalibrate, this.logger));
-                    returnValue = true;
 
-                    var messageData = new CalibrateAxisMessageData(this.axisToCalibrate, MessageVerbosity.Info);
-                    var notificationMessage = new NotificationMessage(
-                        messageData,
-                        $"{this.axisToCalibrate} Homing started",
-                        MessageActor.Any,
-                        MessageActor.InverterDriver,
-                        MessageType.CalibrateAxis,
-                        MessageStatus.OperationStart,
-                        ErrorLevel.NoError,
-                        MessageVerbosity.Info);
-                    this.parentStateMachine.PublishNotificationEvent(notificationMessage);
-                    return returnValue;
+                    return true;
                 }
 
                 if ((message.UShortPayload & RESET_STATUS_WORD_VALUE) == RESET_STATUS_WORD_VALUE)

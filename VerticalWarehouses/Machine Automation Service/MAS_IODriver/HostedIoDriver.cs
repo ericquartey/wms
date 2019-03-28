@@ -126,6 +126,8 @@ namespace Ferretto.VW.MAS_IODriver
                 this.pollIoTimer?.Dispose();
                 base.Dispose();
             }
+
+            this.disposed = true;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)

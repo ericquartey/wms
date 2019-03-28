@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
@@ -19,10 +20,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         public HomingEndState(IStateMachine parentMachine, Axis axisToStop, ILogger logger)
         {
+            this.logger = logger;
+            this.logger.LogTrace("1:HomingEndState");
             this.parentStateMachine = parentMachine;
             this.axisToStop = axisToStop;
-            this.logger = logger;
-            this.logger.LogTrace($"********** Homing End State ctor");
 
             //TEMP Send a message to stop the homing to the inverter
             var stopMessageData = new StopAxisMessageData(this.axisToStop);
@@ -30,24 +31,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 "Homing Stop",
                 MessageActor.InverterDriver,
                 MessageActor.FiniteStateMachines,
-                MessageType.Stop,
-                MessageVerbosity.Info);
+                MessageType.InverterReset);
             this.parentStateMachine.PublishCommandMessage(inverterMessage);
-
-            var notificationMessageData = new CalibrateAxisMessageData(this.axisToStop, MessageVerbosity.Info);
-            var notificationMessage = new NotificationMessage(
-                notificationMessageData,
-                "Homing Completed",
-                MessageActor.Any,
-                MessageActor.FiniteStateMachines,
-                MessageType.CalibrateAxis,
-                MessageStatus.OperationEnd,
-                ErrorLevel.NoError,
-                MessageVerbosity.Info);
-
-            this.parentStateMachine.PublishNotificationMessage(notificationMessage);
-
-            this.logger.LogTrace("FSM Homing End ctor");
         }
 
         #endregion
@@ -63,45 +48,27 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogTrace($"FSM Homing End processCommandMessage {message.Type}");
+            this.logger.LogTrace($"2:Process CommandMessage {message.Type} Source {message.Source}");
             //TEMP Add your implementation code here
         }
 
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogTrace($"FSM Homing End processNotificationMessage {message.Type}");
-            if (message.Type == MessageType.Homing && message.Status == MessageStatus.OperationError)
-            {
-                this.parentStateMachine.PublishNotificationMessage(message);
-            }
+            this.logger.LogTrace($"3:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
-            if (message.Type == MessageType.CalibrateAxis)
+            if (message.Type == MessageType.InverterReset)
             {
-                //TEMP Send a notification about the end (/stop) operation to all the world
-                var newMessage = new NotificationMessage(null,
-                    "End Homing",
+                var notificationMessageData = new CalibrateAxisMessageData(this.axisToStop, MessageVerbosity.Info);
+                var notificationMessage = new NotificationMessage(
+                    notificationMessageData,
+                    "Homing Completed",
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
-                    MessageType.Stop,
-                    message.Status,
-                    ErrorLevel.NoError,
-                    MessageVerbosity.Info);
-                this.parentStateMachine.OnPublishNotification(newMessage);
-            }
+                    MessageType.Homing,
+                    MessageStatus.OperationEnd);
 
-            if (message.Type == MessageType.SwitchAxis)
-            {
-                //TEMP Send a notification about the end (/stop) operation to all the world
-                var newMessage = new NotificationMessage(null,
-                    "End Homing",
-                    MessageActor.Any,
-                    MessageActor.FiniteStateMachines,
-                    MessageType.Stop,
-                    message.Status,
-                    ErrorLevel.NoError,
-                    MessageVerbosity.Info);
-                this.parentStateMachine.OnPublishNotification(newMessage);
+                this.parentStateMachine.PublishNotificationMessage(notificationMessage);
             }
         }
 
