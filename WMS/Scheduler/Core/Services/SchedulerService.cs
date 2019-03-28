@@ -42,17 +42,24 @@ namespace Ferretto.WMS.Scheduler.Core.Services
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
                 var requestsProvider = serviceScope.ServiceProvider.GetRequiredService<ISchedulerRequestProvider>();
-
-                using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                try
                 {
-                    var qualifiedRequest = await requestsProvider.FullyQualifyWithdrawalRequestAsync(itemId, options);
+                    SchedulerRequest qualifiedRequest = null;
+                    using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                    {
+                        qualifiedRequest = await requestsProvider.FullyQualifyWithdrawalRequestAsync(itemId, options);
+                        if (qualifiedRequest != null)
+                        {
+                            await requestsProvider.CreateAsync(qualifiedRequest);
+
+                            transactionScope.Complete();
+
+                            this.logger.LogDebug($"Scheduler Request (id={qualifiedRequest.Id}): Withdrawal for item={qualifiedRequest.ItemId} was accepted and stored.");
+                        }
+                    }
+
                     if (qualifiedRequest != null)
                     {
-                        await requestsProvider.CreateAsync(qualifiedRequest);
-
-                        transactionScope.Complete();
-                        this.logger.LogDebug($"Scheduler Request (id={qualifiedRequest.Id}): Withdrawal for item={qualifiedRequest.ItemId} was accepted and stored.");
-
                         await this.ProcessPendingRequestsAsync();
 
                         return new SuccessOperationResult<SchedulerRequest>(qualifiedRequest);
@@ -61,6 +68,10 @@ namespace Ferretto.WMS.Scheduler.Core.Services
                     {
                         return new BadRequestOperationResult<SchedulerRequest>(qualifiedRequest);
                     }
+                }
+                catch (System.Exception ex)
+                {
+                    return new BadRequestOperationResult<SchedulerRequest>(null, ex.Message);
                 }
             }
         }
@@ -77,6 +88,34 @@ namespace Ferretto.WMS.Scheduler.Core.Services
 
                 return new SuccessOperationResult<IEnumerable<SchedulerRequest>>(acceptedRequests);
             }
+        }
+
+        public async Task<IOperationResult<ItemList>> SuspendListAsync(int id)
+        {
+            this.logger.LogDebug($"Suspending execution of list id={id}.");
+
+            using (var scope = this.scopeFactory.CreateScope())
+            {
+                var listProvider = scope.ServiceProvider.GetRequiredService<IItemListSchedulerProvider>();
+
+                await listProvider.SuspendAsync(id);
+            }
+
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<IOperationResult<ItemListRow>> SuspendListRowAsync(int id)
+        {
+            this.logger.LogDebug($"Suspending execution of list row id={id}.");
+
+            using (var scope = this.scopeFactory.CreateScope())
+            {
+                var rowProvider = scope.ServiceProvider.GetRequiredService<IItemListRowSchedulerProvider>();
+
+                await rowProvider.SuspendAsync(id);
+            }
+
+            throw new System.NotImplementedException();
         }
 
         public async Task<IOperationResult<Mission>> CompleteMissionAsync(int missionId, int quantity)
@@ -179,34 +218,6 @@ namespace Ferretto.WMS.Scheduler.Core.Services
                 this.logger.LogCritical("Unable to check database structure.");
                 await this.StopAsync(stoppingToken);
             }
-        }
-
-        public async Task<IOperationResult<ItemList>> SuspendListAsync(int id)
-        {
-            this.logger.LogDebug($"Suspending execution of list id={id}.");
-
-            using (var scope = this.scopeFactory.CreateScope())
-            {
-                var listProvider = scope.ServiceProvider.GetRequiredService<IItemListSchedulerProvider>();
-
-                await listProvider.SuspendAsync(id);
-            }
-
-            throw new System.NotImplementedException();
-        }
-
-        public async Task<IOperationResult<ItemListRow>> SuspendListRowAsync(int id)
-        {
-            this.logger.LogDebug($"Suspending execution of list row id={id}.");
-
-            using (var scope = this.scopeFactory.CreateScope())
-            {
-                var rowProvider = scope.ServiceProvider.GetRequiredService<IItemListRowSchedulerProvider>();
-
-                await rowProvider.SuspendAsync(id);
-            }
-
-            throw new System.NotImplementedException();
         }
 
         private async Task SeedDatabaseAsync(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade database, CancellationToken stoppingToken)
