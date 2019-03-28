@@ -12,6 +12,8 @@ namespace Ferretto.Common.Controls
 
         DialogPopup,
 
-        DialogWindow
+        DialogWindow,
+
+        DialogError
     }
 }
