@@ -1,52 +1,55 @@
-﻿namespace Ferretto.VW.MAS_DataLayer.Interfaces
+﻿using System.Net;
+using System.Threading.Tasks;
+
+namespace Ferretto.VW.MAS_DataLayer.Interfaces
 {
     public interface ISetupNetwork
     {
         #region Properties
 
-        string AlfaNumBay1Net { get; }
+        Task<IPAddress> AlfaNumBay1Net { get; }
 
-        string AlfaNumBay2Net { get; }
+        Task<IPAddress> AlfaNumBay2Net { get; }
 
-        string AlfaNumBay3Net { get; }
+        Task<IPAddress> AlfaNumBay3Net { get; }
 
-        string Inverter1 { get; }
+        Task<IPAddress> Inverter1 { get; }
 
-        string Inverter1Port { get; }
+        Task<int> Inverter1Port { get; }
 
-        string Inverter2 { get; }
+        Task<IPAddress> Inverter2 { get; }
 
-        string Inverter2Port { get; }
+        Task<int> Inverter2Port { get; }
 
-        string IOExpansion1 { get; }
+        Task<IPAddress> IOExpansion1 { get; }
 
-        string IOExpansion1Port { get; }
+        Task<int> IOExpansion1Port { get; }
 
-        string IOExpansion2 { get; }
+        Task<IPAddress> IOExpansion2 { get; }
 
-        string IOExpansion2Port { get; }
+        Task<int> IOExpansion2Port { get; }
 
-        string IOExpansion3 { get; }
+        Task<IPAddress> IOExpansion3 { get; }
 
-        string IOExpansion3Port { get; }
+        Task<int> IOExpansion3Port { get; }
 
-        string LaserBay1Net { get; }
+        Task<IPAddress> LaserBay1Net { get; }
 
-        string LaserBay2Net { get; }
+        Task<IPAddress> LaserBay2Net { get; }
 
-        string LaserBay3Net { get; }
+        Task<IPAddress> LaserBay3Net { get; }
 
-        int MachineNumber { get; }
+        Task<int> MachineNumber { get; }
 
-        string PPC1MasterIPAddress { get; }
+        Task<IPAddress> PPC1MasterIPAddress { get; }
 
-        string PPC2SlaveIPAddress { get; }
+        Task<IPAddress> PPC2SlaveIPAddress { get; }
 
-        string PPC3SlaveIPAddress { get; }
+        Task<IPAddress> PPC3SlaveIPAddress { get; }
 
-        string SQLServerIPAddress { get; }
+        Task<IPAddress> SQLServerIPAddress { get; }
 
-        bool WMS_ON { get; }
+        Task<bool> WMS_ON { get; }
 
         #endregion
     }

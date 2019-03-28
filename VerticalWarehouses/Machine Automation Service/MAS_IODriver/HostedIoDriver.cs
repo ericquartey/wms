@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
@@ -139,45 +140,10 @@ namespace Ferretto.VW.MAS_IODriver
 
             this.stoppingToken = stoppingToken;
 
-            var ioAddress = this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
-
-            this.logger.LogTrace($"2:ioAddress : { ioAddress}");
-
-            var ioPort = this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
-
-            this.logger.LogTrace($"3:ioPort : { ioPort}");
-
-            this.modbusTransport.Configure(ioAddress, ioPort);
-
-            bool connectionResult;
-
-            try
-            {
-                this.logger.LogDebug("4:Connecting Transport");
-
-                connectionResult = this.modbusTransport.Connect();
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogCritical($"5:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.CreationFailure}");
-
-                throw new IoDriverException($"Exception: {ex.Message} while connecting to Modbus I/O master", IoDriverExceptionCode.CreationFailure, ex);
-            }
-
-            if (!connectionResult)
-            {
-                this.logger.LogCritical("6:Failed to connect to Modbus I/O master");
-
-                throw new IoDriverException("Failed to connect to Modbus I/O master");
-            }
-
-            this.logger.LogDebug("7:Starting Tasks");
             try
             {
                 this.commandReceiveTask.Start();
                 this.notificationReceiveTask.Start();
-                this.ioReceiveTask.Start();
-                this.ioSendTask.Start();
             }
             catch (Exception ex)
             {
@@ -258,7 +224,7 @@ namespace Ferretto.VW.MAS_IODriver
             return Task.CompletedTask;
         }
 
-        private Task NotificationReceiveTaskFunction()
+        private async Task NotificationReceiveTaskFunction()
         {
             this.logger.LogDebug("1:Method Start");
 
@@ -283,6 +249,10 @@ namespace Ferretto.VW.MAS_IODriver
 
                 switch (receivedMessage.Type)
                 {
+                    case MessageType.DataLayerReady:
+                        await this.StartHardwareCommunications();
+                        break;
+
                     case MessageType.IOPowerUp:
                     case MessageType.SwitchAxis:
                         if (receivedMessage.Status == MessageStatus.OperationEnd &&
@@ -388,6 +358,41 @@ namespace Ferretto.VW.MAS_IODriver
             } while (!this.stoppingToken.IsCancellationRequested);
 
             this.logger.LogDebug("5:Method End");
+        }
+
+        private async Task StartHardwareCommunications()
+        {
+            var ioAddress = await
+                this.dataLayerValueManagment.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
+            var ioPort = await
+                this.dataLayerValueManagment.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
+
+            this.modbusTransport.Configure(ioAddress, ioPort);
+
+            bool connectionResult;
+            try
+            {
+                connectionResult = this.modbusTransport.Connect();
+            }
+            catch (Exception ex)
+            {
+                throw new IoDriverException($"Exception: {ex.Message} while connecting to Modbus I/O master", IoDriverExceptionCode.CreationFailure, ex);
+            }
+
+            if (!connectionResult)
+            {
+                throw new IoDriverException("Failed to connect to Modbus I/O master");
+            }
+
+            try
+            {
+                this.ioReceiveTask.Start();
+                this.ioSendTask.Start();
+            }
+            catch (Exception ex)
+            {
+                throw new IOException($"Exception: {ex.Message} while starting service hardware threads", ex);
+            }
         }
 
         #endregion

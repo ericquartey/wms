@@ -1,22 +1,24 @@
-﻿namespace Ferretto.VW.MAS_DataLayer.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace Ferretto.VW.MAS_DataLayer.Interfaces
 {
     public interface IHorizontalAxis
     {
         #region Properties
 
-        decimal AntiClockWiseRun { get; }
+        Task<decimal> AntiClockWiseRun { get; }
 
-        decimal ClockWiseRun { get; }
+        Task<decimal> ClockWiseRun { get; }
 
-        bool HomingExecutedHA { get; }
+        Task<bool> HomingExecutedHA { get; }
 
-        decimal MaxAccelerationHA { get; }
+        Task<decimal> MaxAccelerationHA { get; }
 
-        decimal MaxDecelerationHA { get; }
+        Task<decimal> MaxDecelerationHA { get; }
 
-        decimal MaxSpeedHA { get; }
+        Task<decimal> MaxSpeedHA { get; }
 
-        decimal OffsetHA { get; }
+        Task<decimal> OffsetHA { get; }
 
         #endregion
     }

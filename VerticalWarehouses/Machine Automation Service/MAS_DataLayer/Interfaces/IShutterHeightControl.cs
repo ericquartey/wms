@@ -1,12 +1,14 @@
-﻿namespace Ferretto.VW.MAS_DataLayer.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace Ferretto.VW.MAS_DataLayer.Interfaces
 {
     public interface IShutterHeightControl
     {
         #region Properties
 
-        decimal FeedRateSH { get; }
+        Task<decimal> FeedRateSH { get; }
 
-        decimal RequiredTolerance { get; }
+        Task<decimal> RequiredTolerance { get; }
 
         #endregion
     }
