@@ -29,6 +29,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalMovingDrawer
             throw new NotImplementedException();
         }
 
+        public override void Stop()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

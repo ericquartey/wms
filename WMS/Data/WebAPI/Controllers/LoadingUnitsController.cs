@@ -217,6 +217,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result.Entity);
         }
 
+        [HttpPost("{id}/withdraw")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        public async Task<ActionResult> WithdrawAsync(int id)
+        {
+            await this.loadingUnitProvider.GetByIdAsync(id);
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

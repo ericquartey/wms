@@ -1,14 +1,13 @@
-﻿using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.Common_Utils.Messages;
+﻿using System;
+using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.Common_Utils.DTOs;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
-using Ferretto.VW.MAS_DataLayer;
-using System;
-using System.Threading.Tasks;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
@@ -169,6 +168,14 @@ namespace Ferretto.VW.MAS_AutomationService
         {
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Stop Homing",
                 MessageActor.FiniteStateMachines, MessageActor.AutomationService, MessageType.Stop,
+                MessageVerbosity.Info));
+        }
+
+        [HttpGet("ResetIO")]
+        public void ResetIO()
+        {
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "ResetIO",
+                MessageActor.IODriver, MessageActor.AutomationService, MessageType.IOReset,
                 MessageVerbosity.Info));
         }
 

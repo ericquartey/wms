@@ -106,13 +106,8 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             #region Act
 
-            var requests = await schedulerService.ExecuteListAsync(
-                new ListExecutionRequest
-                {
-                    ListId = list1.Id,
-                    AreaId = bay2.AreaId,
-                    BayId = bay2.Id
-                });
+            var result = await schedulerService.ExecuteListAsync(list1.Id, bay2.AreaId, bay2.Id);
+            var requests = result.Entity;
 
             #endregion
 

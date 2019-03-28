@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.InverterDriver;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_DataLayer;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_IODriver;
@@ -65,12 +66,10 @@ namespace Ferretto.VW.MAS_AutomationService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<FilesInfo>(this.Configuration.GetSection("FilesInfo"));
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSignalR();
 
-            DataLayerConfiguration dataLayerConfiguration = new DataLayerConfiguration(
+            var dataLayerConfiguration = new DataLayerConfiguration(
                 this.Configuration.GetConnectionString(SecondaryConnectionStringName),
                 this.Configuration.GetValue<string>("Vertimag:DataLayer:ConfigurationFile")
             );
@@ -84,7 +83,6 @@ namespace Ferretto.VW.MAS_AutomationService
                 dataLayerConfiguration,
                 provider.GetService<DataLayerContext>(),
                 provider.GetService<IEventAggregator>(),
-                provider.GetService<IOptions<FilesInfo>>(),
                 provider.GetService<ILogger<DataLayer>>()));
 
             services.AddSingleton<IHostedService, DataLayer>(provider =>

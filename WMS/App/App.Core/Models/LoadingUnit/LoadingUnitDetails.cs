@@ -62,13 +62,7 @@ namespace Ferretto.WMS.App.Core.Models
         public string AbcClassId
         {
             get => this.abcClassId;
-            set
-            {
-                if (this.SetProperty(ref this.abcClassId, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.abcClassId, value);
         }
 
         public int? AisleId
@@ -109,13 +103,7 @@ namespace Ferretto.WMS.App.Core.Models
         public string Code
         {
             get => this.code;
-            set
-            {
-                if (this.SetProperty(ref this.code, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.code, value);
         }
 
         public BindingList<ICompartment> Compartments => this.compartments;
@@ -127,27 +115,30 @@ namespace Ferretto.WMS.App.Core.Models
 
         public override string Error => string.Join(Environment.NewLine, new[]
             {
-                this[nameof(this.Code)],
-                this[nameof(this.LoadingUnitTypeId)],
-                this[nameof(this.AbcClassId)],
+                this[nameof(this.HandlingParametersCorrection)],
                 this[nameof(this.Height)],
-                this[nameof(this.Weight)],
-                this[nameof(this.LoadingUnitStatusId)],
-                this[nameof(this.ReferenceType)],
                 this[nameof(this.InCycleCount)],
-                this[nameof(this.OutCycleCount)],
+                this[nameof(this.Length)],
+                this[nameof(this.LoadingUnitTypeId)],
+                this[nameof(this.Weight)],
+                this[nameof(this.Width)],
+                this[nameof(this.AbcClassId)],
+                this[nameof(this.Code)],
+                this[nameof(this.LoadingUnitStatusId)],
                 this[nameof(this.OtherCycleCount)],
+                this[nameof(this.OutCycleCount)],
+                this[nameof(this.ReferenceType)],
             }
-          .Distinct()
-         .Where(s => !string.IsNullOrEmpty(s)));
+            .Distinct()
+            .Where(s => !string.IsNullOrEmpty(s)));
 
         [Display(
-                    Name = nameof(BusinessObjects.LoadingUnitHandlingParametersCorrection),
+            Name = nameof(BusinessObjects.LoadingUnitHandlingParametersCorrection),
             ResourceType = typeof(BusinessObjects))]
         public int? HandlingParametersCorrection
         {
             get => this.handlingParametersCorrection;
-            set => this.SetIfPositive(ref this.handlingParametersCorrection, value);
+            set => this.SetProperty(ref this.handlingParametersCorrection, value);
         }
 
         [Required]
@@ -155,13 +146,7 @@ namespace Ferretto.WMS.App.Core.Models
         public double Height
         {
             get => this.height;
-            set
-            {
-                if (this.SetProperty(ref this.height, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.height, value);
         }
 
         [Required]
@@ -169,13 +154,7 @@ namespace Ferretto.WMS.App.Core.Models
         public int InCycleCount
         {
             get => this.inCycleCount;
-            set
-            {
-                if (this.SetProperty(ref this.inCycleCount, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.inCycleCount, value);
         }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitInventoryDate), ResourceType = typeof(BusinessObjects))]
@@ -201,7 +180,7 @@ namespace Ferretto.WMS.App.Core.Models
         public double Length
         {
             get => this.length;
-            set => this.SetIfStrictlyPositive(ref this.length, value);
+            set => this.SetProperty(ref this.length, value);
         }
 
         public IEnumerable<EnumerationString> LoadingUnitStatusChoices { get; set; }
@@ -214,13 +193,7 @@ namespace Ferretto.WMS.App.Core.Models
         public string LoadingUnitStatusId
         {
             get => this.loadingUnitStatusId;
-            set
-            {
-                if (this.SetProperty(ref this.loadingUnitStatusId, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.loadingUnitStatusId, value);
         }
 
         public IEnumerable<Enumeration> LoadingUnitTypeChoices { get; set; }
@@ -235,13 +208,7 @@ namespace Ferretto.WMS.App.Core.Models
         public int LoadingUnitTypeId
         {
             get => this.loadingUnitTypeId;
-            set
-            {
-                if (this.SetProperty(ref this.loadingUnitTypeId, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.loadingUnitTypeId, value);
         }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitNotes), ResourceType = typeof(BusinessObjects))]
@@ -266,13 +233,7 @@ namespace Ferretto.WMS.App.Core.Models
         public ReferenceType? ReferenceType
         {
             get => this.referenceType;
-            set
-            {
-                if (this.SetProperty(ref this.referenceType, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.referenceType, value);
         }
 
         public IEnumerable<EnumerationString> ReferenceTypeChoices { get; set; }
@@ -282,20 +243,14 @@ namespace Ferretto.WMS.App.Core.Models
         public int Weight
         {
             get => this.weight;
-            set
-            {
-                if (this.SetIfPositive(ref this.weight, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.weight, value);
         }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitWidth), ResourceType = typeof(BusinessObjects))]
         public double Width
         {
             get => this.width;
-            set => this.SetIfStrictlyPositive(ref this.width, value);
+            set => this.SetProperty(ref this.width, value);
         }
 
         #endregion
@@ -307,7 +262,6 @@ namespace Ferretto.WMS.App.Core.Models
             get
             {
                 var baseError = base[columnName];
-
                 if (!string.IsNullOrEmpty(baseError))
                 {
                     return baseError;
@@ -315,26 +269,44 @@ namespace Ferretto.WMS.App.Core.Models
 
                 switch (columnName)
                 {
+                    case nameof(this.HandlingParametersCorrection):
+                        return GetErrorMessageIfNegative(this.HandlingParametersCorrection, nameof(this.HandlingParametersCorrection));
+
                     case nameof(this.Height):
                         if (this.height < 1)
                         {
-                            return string.Format(Common.Resources.Errors.PropertyMustBeStriclyPositive, nameof(this.Height));
+                            return string.Format(Errors.PropertyMustBePositive, nameof(this.Height));
                         }
 
                         break;
+
+                    case nameof(this.InCycleCount):
+                        return GetErrorMessageIfNegative(this.InCycleCount, nameof(this.InCycleCount));
+
+                    case nameof(this.Length):
+                        return GetErrorMessageIfNegative(this.Length, nameof(this.Length));
+
+                    case nameof(this.OtherCycleCount):
+                        return GetErrorMessageIfNegative(this.OtherCycleCount, nameof(this.OtherCycleCount));
+
+                    case nameof(this.OutCycleCount):
+                        return GetErrorMessageIfNegative(this.OutCycleCount, nameof(this.OutCycleCount));
 
                     case nameof(this.Weight):
                         if (this.weight < 1)
                         {
-                            return string.Format(Common.Resources.Errors.PropertyMustBeStriclyPositive, nameof(this.Weight));
+                            return string.Format(Errors.PropertyMustBePositive, nameof(this.Weight));
                         }
 
                         break;
 
+                    case nameof(this.Width):
+                        return GetErrorMessageIfNegativeOrZero(this.Width, nameof(this.Width));
+
                     case nameof(this.LoadingUnitTypeId):
                         if (this.LoadingUnitTypeId == 0)
                         {
-                            return string.Format(Common.Resources.Errors.PropertyMustHaveValue, nameof(this.LoadingUnitTypeId));
+                            return string.Format(Errors.PropertyMustHaveValue, nameof(this.LoadingUnitTypeId));
                         }
 
                         break;
@@ -355,91 +327,7 @@ namespace Ferretto.WMS.App.Core.Models
                 throw new ArgumentNullException(nameof(compartmentDetails));
             }
 
-            if (this.CanAddCompartment(compartmentDetails))
-            {
-                this.compartments.Add(compartmentDetails);
-            }
-            else
-            {
-                throw new ArgumentException(string.Format(Common.Resources.Errors.LoadingUnitOverlappingCompartment, compartmentDetails.Id, this.Id));
-            }
-        }
-
-        public bool CanAddCompartment(ICompartment compartment)
-        {
-            if (compartment == null)
-            {
-                throw new ArgumentNullException(nameof(compartment));
-            }
-
-            return
-                (
-                    this.LoadingUnitTypeHasCompartments
-                    &&
-                    compartment.XPosition + compartment.Width <= this.Width
-                    &&
-                    compartment.YPosition + compartment.Height <= this.Length
-                    &&
-                    !this.compartments.Any(c => HasCollision(c, compartment)))
-                ||
-                (
-                    this.LoadingUnitTypeHasCompartments == false
-                    &&
-                    compartment.XPosition.HasValue == false
-                    &&
-                    compartment.YPosition.HasValue == false);
-        }
-
-        private static bool HasCollision(ICompartment c1, ICompartment c2)
-        {
-            if (c1.Id == c2.Id)
-            {
-                return false;
-            }
-
-            var xAPositionFinal = c1.XPosition + c1.Width;
-            var yAPositionFinal = c1.YPosition + c1.Height;
-
-            var xBPositionFinal = c2.XPosition + c2.Width;
-            var yBPositionFinal = c2.YPosition + c2.Height;
-
-            // A: Top-Left
-            if (c1.XPosition >= c2.XPosition
-                && c1.XPosition < xBPositionFinal
-                && c1.YPosition >= c2.YPosition
-                && c1.YPosition < yBPositionFinal)
-            {
-                return true;
-            }
-
-            // B: Top-Right
-            if (xAPositionFinal > c2.XPosition
-                && xAPositionFinal <= xBPositionFinal
-                && c1.YPosition >= c2.YPosition
-                && c1.YPosition < yBPositionFinal)
-            {
-                return true;
-            }
-
-            // C: Bottom-Left
-            if (c1.XPosition >= c2.XPosition
-                && c1.XPosition < xBPositionFinal
-                && yAPositionFinal > c2.YPosition
-                && yAPositionFinal <= yBPositionFinal)
-            {
-                return true;
-            }
-
-            // D: Bottom-Right
-            if (xAPositionFinal > c2.XPosition
-                && xAPositionFinal <= xBPositionFinal
-                && yAPositionFinal > c2.YPosition
-                && yAPositionFinal <= yBPositionFinal)
-            {
-                return true;
-            }
-
-            return false;
+            this.compartments.Add(compartmentDetails);
         }
 
         #endregion

@@ -58,14 +58,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
-        [HttpGet("{id}/candelete")]
-        public async Task<ActionResult<ActionModel>> CanDeleteAsync(int id)
-        {
-            return await this.itemProvider.CanDeleteAsync(id);
-        }
-
         [ProducesResponseType(typeof(ItemDetails), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
@@ -256,19 +248,22 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(typeof(SchedulerRequest), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [HttpPost(nameof(Withdraw))]
-        public async Task<IActionResult> Withdraw([FromBody] SchedulerRequest request)
+        [HttpPost("{id}/withdraw")]
+        public async Task<ActionResult<SchedulerRequest>> Withdraw(
+            int id,
+            [FromBody] Scheduler.Core.Models.ItemWithdrawOptions withdrawOptions)
         {
-            var acceptedRequest = await this.schedulerService.WithdrawItemAsync(request);
-            if (acceptedRequest == null)
+            var result = await this.schedulerService.WithdrawItemAsync(id, withdrawOptions);
+            if (result is UnprocessableEntityOperationResult<SchedulerRequest>)
             {
                 return this.UnprocessableEntity(new ProblemDetails
                 {
-                    Status = StatusCodes.Status422UnprocessableEntity
+                    Status = StatusCodes.Status422UnprocessableEntity,
+                    Detail = result.Description
                 });
             }
 
-            return this.CreatedAtAction(nameof(this.Withdraw), new { id = acceptedRequest.Id }, acceptedRequest);
+            return this.CreatedAtAction(nameof(this.Withdraw), new { id = result.Entity.Id }, result.Entity);
         }
 
         #endregion

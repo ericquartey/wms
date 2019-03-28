@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
@@ -16,7 +18,7 @@ namespace Ferretto.VW.MAS_DataLayer
         #region Methods
 
         // INFO Method used when a drawer backs in the magazine from bay (return mission).
-        public LoadingUnitPosition GetFreeBlockPosition(decimal loadingUnitHeight, int loadingUnitId)
+        public async Task<LoadingUnitPosition> GetFreeBlockPositionAsync(decimal loadingUnitHeight, int loadingUnitId)
         {
             var cellSpacing = 1;//this.GetIntegerConfigurationValue((long)ConfigurationValueEnum.CellSpacing, (long)ConfigurationCategory.GeneralInfoEnum);
 
@@ -33,7 +35,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 inMemoryFreeBlockAlreadyBooked.BlockSize = 0;
                 inMemoryFreeBlockAlreadyBooked.LoadingUnitId = 0;
 
-                this.primaryDataContext.SaveChanges();
+                await this.primaryDataContext.SaveChangesAsync();
             }
 
             var inMemoryFreeBlockFirstByPriority = this.primaryDataContext.FreeBlocks.OrderBy(s => s.Priority).FirstOrDefault(s => s.BlockSize >= cellsNumber);
@@ -51,7 +53,7 @@ namespace Ferretto.VW.MAS_DataLayer
             var inMemoryLoadingUnit = this.primaryDataContext.LoadingUnits.FirstOrDefault(s => s.LoadingUnitId == loadingUnitId);
             inMemoryLoadingUnit.Height = loadingUnitHeight;
 
-            this.primaryDataContext.SaveChanges();
+            await this.primaryDataContext.SaveChangesAsync();
 
             var returnLoadingUnitPosition = new LoadingUnitPosition
             {
@@ -81,7 +83,7 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         // INFO Method called when a drawer backs in the magazine and it occupies some cells
-        public void SetReturnLoadingUnitInLocation(int loadingUnitId)
+        public async void SetReturnLoadingUnitInLocation(int loadingUnitId)
         {
             // INFO Search in the FreeBlock table the booked cells for the drawer
             var inMemoryFreeBlockSearchBookedCells = this.primaryDataContext.FreeBlocks.FirstOrDefault(s => s.BookedCellsNumber > 0 && s.LoadingUnitId == loadingUnitId);
@@ -112,7 +114,7 @@ namespace Ferretto.VW.MAS_DataLayer
             loadingUnitOnMovement.CellPosition = filledStartCell;
             loadingUnitOnMovement.Status = LoadingUnitStatus.InLocation;
 
-            this.primaryDataContext.SaveChanges();
+            await this.primaryDataContext.SaveChangesAsync();
 
             // INFO Run the Free Block table calculation after the update
             this.CreateFreeBlockTable();
@@ -138,7 +140,7 @@ namespace Ferretto.VW.MAS_DataLayer
         //                inMemoryCellCurrentValue.Side = cell.Side;
         //                inMemoryCellCurrentValue.Status = cell.Status;
 
-        //                this.inMemoryDataContext.SaveChanges();
+        //                await this.inMemoryDataContext.SaveChangesAsync();
         //            }
         //            else
         //            {
@@ -151,7 +153,7 @@ namespace Ferretto.VW.MAS_DataLayer
         //}
 
         // INFO Procedure called when a drawer frees some cells in a first type mission from cells to bay.
-        public void SetWithdrawalLoadingUnitFromLocation(int loadingUnitId)
+        public async void SetWithdrawalLoadingUnitFromLocation(int loadingUnitId)
         {
             var freeCells = this.primaryDataContext.Cells.FirstOrDefault(s => s.LoadingUnitId == loadingUnitId);
 
@@ -169,13 +171,13 @@ namespace Ferretto.VW.MAS_DataLayer
             loadingUnitOnMovement.CellPosition = 0;
             loadingUnitOnMovement.Status = LoadingUnitStatus.OnMovementToBay;
 
-            this.primaryDataContext.SaveChanges();
+            await this.primaryDataContext.SaveChangesAsync();
 
             this.CreateFreeBlockTable();
         }
 
         // INFO Procedure to create the Free Blocks table
-        private void CreateFreeBlockTable()
+        private async void CreateFreeBlockTable()
         {
             var cellTablePopulated = false;
 
@@ -192,7 +194,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
             // INFO Remove all the records from the FreeBlocks table
             this.primaryDataContext.FreeBlocks.RemoveRange(this.primaryDataContext.FreeBlocks);
-            this.primaryDataContext.SaveChanges();
+            await this.primaryDataContext.SaveChangesAsync();
 
             foreach (var cell in this.primaryDataContext.Cells.OrderBy(cell => cell.CellId))
             {

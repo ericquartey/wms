@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System.Windows;
-using DevExpress.Mvvm.UI;
-using DevExpress.Xpf.Editors;
+﻿using System.Windows;
 
 namespace Ferretto.Common.Controls
 {
@@ -18,9 +15,9 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        public static bool GetShow(DependencyObject obj) => (bool)obj.GetValue(ShowProperty);
+        public static bool GetShow(DependencyObject element) => (bool)element?.GetValue(ShowProperty);
 
-        public static void SetShow(DependencyObject obj, bool value) => obj.SetValue(ShowProperty, value);
+        public static void SetShow(DependencyObject element, bool value) => element?.SetValue(ShowProperty, value);
 
         #endregion
     }

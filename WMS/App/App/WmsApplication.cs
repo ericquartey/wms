@@ -33,9 +33,9 @@ namespace Ferretto.WMS.App
         {
             containerRegistry.Register<IImageProvider, ImageProvider>();
             var navigationService = container.Resolve<NavigationService>();
+            containerRegistry.RegisterInstance<INavigationService>(navigationService);
             var eventService = container.Resolve<EventService>();
             containerRegistry.RegisterInstance<IEventService>(eventService);
-            containerRegistry.RegisterInstance<INavigationService>(navigationService);
             var inputService = container.Resolve<InputService>();
             containerRegistry.RegisterInstance<IInputService>(inputService);
             var dialogService = container.Resolve<DialogService>();

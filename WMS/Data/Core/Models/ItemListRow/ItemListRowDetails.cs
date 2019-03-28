@@ -1,6 +1,4 @@
 ﻿using System;
-using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -46,11 +44,11 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? PackageTypeId { get; set; }
 
+        public int? Priority { get; set; }
+
         public string RegistrationNumber { get; set; }
 
         public int RequestedQuantity { get; set; }
-
-        public int RowPriority { get; set; }
 
         public string Sub1 { get; set; }
 

@@ -11,7 +11,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         private int itemListRowsCount;
 
-        private int priority;
+        private int? priority;
 
         #endregion
 
@@ -46,7 +46,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public ItemListType ItemListType { get; set; }
 
-        public int Priority
+        public int? Priority
         {
             get => this.priority;
             set => this.priority = CheckIfPositive(value);

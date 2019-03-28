@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
@@ -84,14 +85,24 @@ namespace Ferretto.WMS.App.Core.Models
         public int? Column
         {
             get => this.column;
-            set => this.SetIfStrictlyPositive(ref this.column, value);
+            set => this.SetProperty(ref this.column, value);
         }
+
+        public override string Error => string.Join(System.Environment.NewLine, new[]
+            {
+                this[nameof(this.Column)],
+                this[nameof(this.Floor)],
+                this[nameof(this.Number)],
+                this[nameof(this.Priority)],
+            }
+            .Distinct()
+            .Where(s => !string.IsNullOrEmpty(s)));
 
         [Display(Name = nameof(BusinessObjects.CellFloor), ResourceType = typeof(BusinessObjects))]
         public int? Floor
         {
             get => this.floor;
-            set => this.SetIfStrictlyPositive(ref this.floor, value);
+            set => this.SetProperty(ref this.floor, value);
         }
 
         public IEnumerable<LoadingUnitDetails> LoadingUnits { get; set; }
@@ -102,14 +113,14 @@ namespace Ferretto.WMS.App.Core.Models
         public int? Number
         {
             get => this.number;
-            set => this.SetIfStrictlyPositive(ref this.number, value);
+            set => this.SetProperty(ref this.number, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CellPriority), ResourceType = typeof(BusinessObjects))]
         public int Priority
         {
             get => this.priority;
-            set => this.SetIfStrictlyPositive(ref this.priority, value);
+            set => this.SetProperty(ref this.priority, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CellSide), ResourceType = typeof(BusinessObjects))]
@@ -140,6 +151,67 @@ namespace Ferretto.WMS.App.Core.Models
         {
             get => this.zCoordinate;
             set => this.SetProperty(ref this.zCoordinate, value);
+        }
+
+        #endregion
+
+        #region Indexers
+
+        public override string this[string columnName]
+        {
+            get
+            {
+                var baseError = base[columnName];
+                if (!string.IsNullOrEmpty(baseError))
+                {
+                    return baseError;
+                }
+
+                switch (columnName)
+                {
+                    case nameof(this.Column):
+                        {
+                            if (this.Column < 0)
+                            {
+                                return string.Format(Errors.PropertyMustBePositive, nameof(this.Column));
+                            }
+
+                            break;
+                        }
+
+                    case nameof(this.Floor):
+                        {
+                            if (this.Floor < 0)
+                            {
+                                return string.Format(Errors.PropertyMustBePositive, nameof(this.Floor));
+                            }
+
+                            break;
+                        }
+
+                    case nameof(this.Number):
+                        {
+                            if (this.Number < 0)
+                            {
+                                return string.Format(Errors.PropertyMustBePositive, nameof(this.Number));
+                            }
+
+                            break;
+                        }
+
+                    case nameof(this.Priority):
+                        {
+                            if (this.Priority < 0)
+                            {
+                                return string.Format(Errors.PropertyMustBePositive, nameof(this.Priority));
+                            }
+
+                            break;
+                        }
+                }
+
+                return null;
+            }
         }
 
         #endregion

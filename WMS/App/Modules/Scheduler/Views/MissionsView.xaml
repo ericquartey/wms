@@ -136,7 +136,7 @@
                                Style="{DynamicResource ActionBarNotCustomizable}">
                     <wms:ActionBarItem Content="{x:Static res:General.ShowDetails}"
                                        CustomGlyphSize="24,24"
-                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_info_outline_black_24dp.png"
+                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_info_outline_black_24dp.png"
                                        GlyphSize="Custom">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="ItemClick">
@@ -147,7 +147,7 @@
                     <wms:ActionBarItem Command="{Binding RefreshCommand}"
                                        Content="{x:Static res:General.Refresh}"
                                        CustomGlyphSize="24,24"
-                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
+                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_refresh_black_24dp.png"
                                        GlyphSize="Custom" />
                 </wms:ActionBar>
 
@@ -220,7 +220,7 @@
 
                     <wms:WmsGridControl.Columns>
 
-                        <dxg:GridColumn Width="90*"
+                        <dxg:GridColumn Width="50*"
                                         CellToolTipBinding="{Binding}"
                                         FieldName="Details"
                                         Header="{x:Static res:General.Details}">
@@ -306,27 +306,36 @@
                                         FieldName="Status" />
                         <dxg:GridColumn Width="140*"
                                         FieldName="BayDescription" />
-                        <dxg:GridColumn Width="370*"
+                        <dxg:GridColumn Width="260*"
                                         FieldName="ItemDescription" />
-                        <dxg:GridColumn Width="200*"
+                        <dxg:GridColumn Width="160*"
                                         FieldName="ItemListDescription" />
-                        <dxg:GridColumn Width="180*"
+                        <dxg:GridColumn Width="130*"
                                         FieldName="ItemListRowDescription" />
-                        <dxg:GridColumn Width="140*"
+                        <dxg:GridColumn Width="100*"
                                         FieldName="LoadingUnitDescription" />
-                        <dxg:GridColumn Width="90*"
+                        <dxg:GridColumn Width="50*"
                                         FieldName="Priority" />
                         <dxg:GridColumn Width="90*"
                                         CellDisplayTemplate="{StaticResource CellDisplayTemplateQuantity}"
                                         FieldName="RequestedQuantity" />
                         <dxg:GridColumn Width="90*"
+                                        CellDisplayTemplate="{StaticResource CellDisplayTemplateQuantity}"
                                         FieldName="DispatchedQuantity" />
                         <dxg:GridColumn Width="120*"
                                         FieldName="Type" />
+                        <dxg:GridColumn Width="120*"
+                                        FieldName="CreationDate">
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <dxe:TextEdit Name="PART_Editor" DisplayFormatString="g"/>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
+                        </dxg:GridColumn>
                     </wms:WmsGridControl.Columns>
 
                     <wms:WmsGridControl.SortInfo>
-                        <dxg:GridSortInfo FieldName="Priority"
+                        <dxg:GridSortInfo FieldName="CreationDate"
                                           SortOrder="Descending" />
                     </wms:WmsGridControl.SortInfo>
 

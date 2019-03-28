@@ -78,29 +78,29 @@
             <wms:ActionBarItem Command="{Binding EditCommand}"
                                Content="{x:Static res:General.Edit}"
                                CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/editor/ic_mode_edit_black_24dp.png"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/editor/1x_web/ic_mode_edit_black_24dp.png"
                                GlyphSize="Custom"
                                IsVisible="{Binding Model.LoadingUnitTypeHasCompartments}" />
             <wms:ActionBarItem Command="{Binding SaveCommand}"
                                Content="{x:Static res:General.Save}"
                                CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_save_black_24dp.png"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_save_black_24dp.png"
                                GlyphSize="Custom" />
             <wms:ActionBarItem Command="{Binding RevertCommand}"
                                Content="{x:Static res:General.Revert}"
                                CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_undo_black_24dp.png"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_undo_black_24dp.png"
                                GlyphSize="Custom" />
             <wms:ActionBarItem Command="{Binding WithdrawCommand}"
                                Content="{x:Static res:MasterData.Withdraw}"
                                CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_play_arrow_black_24dp.png"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_arrow_black_24dp.png"
                                GlyphSize="Custom"
                                IsEnabled="False" />
             <wms:ActionBarItem Command="{Binding RefreshCommand}"
                                Content="{x:Static res:General.Refresh}"
                                CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_refresh_black_24dp.png"
                                GlyphSize="Custom" />
         </wms:ActionBar>
 
@@ -233,9 +233,9 @@
                         <wms:SpinEdit Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
                                       AllowNullInput="False"
-                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                       EditValue="{Binding Path=Model.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      MinValue="1" />
+                                      MinValue="1"
+                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
                         <wms:SpinEdit Grid.Column="1"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"

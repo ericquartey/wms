@@ -6,17 +6,21 @@ using System.Windows.Threading;
 
 namespace Ferretto.Common.Controls
 {
-    public class ThreadedVisualHelper
+    public class ThreadedVisualHelper : IDisposable
     {
         #region Fields
 
         private const string backgroundVisualHostName = "BackgroundVisualHostThread";
 
         private readonly BackgroundVisualHost.CreateVisualContent createContent;
+
         private readonly HostVisual hostVisual = new HostVisual();
+
         private readonly Action invalidateMeasure;
 
         private readonly AutoResetEvent sync = new AutoResetEvent(false);
+
+        private bool disposedValue;
 
         #endregion
 
@@ -52,9 +56,28 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
         public void Exit()
         {
             this.Dispatcher.BeginInvokeShutdown(DispatcherPriority.Send);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposedValue)
+            {
+                if (disposing)
+                {
+                    this.sync?.Dispose();
+                }
+
+                this.disposedValue = true;
+            }
         }
 
         private void CreateAndShowContent()
