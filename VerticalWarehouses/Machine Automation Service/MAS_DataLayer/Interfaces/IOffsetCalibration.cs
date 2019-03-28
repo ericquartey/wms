@@ -1,14 +1,16 @@
-﻿namespace Ferretto.VW.MAS_DataLayer.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace Ferretto.VW.MAS_DataLayer.Interfaces
 {
     public interface IOffsetCalibration
     {
         #region Properties
 
-        decimal FeedRateOC { get; }
+        Task<decimal> FeedRateOC { get; }
 
-        int ReferenceCell { get; }
+        Task<int> ReferenceCell { get; }
 
-        decimal StepValue { get; }
+        Task<decimal> StepValue { get; }
 
         #endregion
     }

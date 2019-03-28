@@ -1,54 +1,56 @@
-﻿namespace Ferretto.VW.MAS_DataLayer.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace Ferretto.VW.MAS_DataLayer.Interfaces
 {
     public interface ISetupStatus
     {
         #region Properties
 
-        bool Bay1ControlDone { get; set; }
+        Task<bool> Bay1ControlDone { get; }
 
-        bool Bay2ControlDone { get; set; }
+        Task<bool> Bay2ControlDone { get; }
 
-        bool Bay3ControlDone { get; set; }
+        Task<bool> Bay3ControlDone { get; }
 
-        bool BeltBurnishingDone { get; set; }
+        Task<bool> BeltBurnishingDone { get; }
 
-        bool CellsControlDone { get; set; }
+        Task<bool> CellsControlDone { get; }
 
-        bool DrawersLoadedDone { get; set; }
+        Task<bool> DrawersLoadedDone { get; }
 
-        bool FirstDrawerLoadDone { get; set; }
+        Task<bool> FirstDrawerLoadDone { get; }
 
-        bool HorizontalHomingDone { get; set; }
+        Task<bool> HorizontalHomingDone { get; }
 
-        bool Laser1Done { get; set; }
+        Task<bool> Laser1Done { get; }
 
-        bool Laser2Done { get; set; }
+        Task<bool> Laser2Done { get; }
 
-        bool Laser3Done { get; set; }
+        Task<bool> Laser3Done { get; }
 
-        bool MachineDone { get; set; }
+        Task<bool> MachineDone { get; }
 
-        bool PanelsControlDone { get; set; }
+        Task<bool> PanelsControlDone { get; }
 
-        bool Shape1Done { get; set; }
+        Task<bool> Shape1Done { get; }
 
-        bool Shape2Done { get; set; }
+        Task<bool> Shape2Done { get; }
 
-        bool Shape3Done { get; set; }
+        Task<bool> Shape3Done { get; }
 
-        bool Shutter1Done { get; set; }
+        Task<bool> Shutter1Done { get; }
 
-        bool Shutter2Done { get; set; }
+        Task<bool> Shutter2Done { get; }
 
-        bool Shutter3Done { get; set; }
+        Task<bool> Shutter3Done { get; }
 
-        bool VerticalHomingDone { get; set; }
+        Task<bool> VerticalHomingDone { get; }
 
-        bool VerticalOffsetDone { get; set; }
+        Task<bool> VerticalOffsetDone { get; }
 
-        bool VerticalResolutionDone { get; set; }
+        Task<bool> VerticalResolutionDone { get; }
 
-        bool WheightMeasurementDone { get; set; }
+        Task<bool> WheightMeasurementDone { get; }
 
         #endregion
     }

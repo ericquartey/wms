@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.DTOs;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
@@ -53,7 +54,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(404)]
         [HttpGet("DecimalConfigurationParameter/{category}/{parameter}")]
-        public ActionResult<decimal> GetDecimalConfigurationParameter(string category, string parameter)
+        public async Task<ActionResult<decimal>> GetDecimalConfigurationParameterAsync(string category, string parameter)
         {
             long.TryParse(parameter, out var parameterId);
             long.TryParse(category, out var categoryId);
@@ -64,7 +65,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
                 try
                 {
-                    value = this.dataLayerValueManagement.GetDecimalConfigurationValue(parameterId, categoryId);
+                    value = await this.dataLayerValueManagement.GetDecimalConfigurationValueAsync(parameterId, categoryId);
                 }
                 catch (Exception)
                 {

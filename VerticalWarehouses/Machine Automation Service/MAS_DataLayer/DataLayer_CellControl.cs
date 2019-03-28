@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS_DataLayer.Enumerations;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 
 namespace Ferretto.VW.MAS_DataLayer
@@ -7,9 +8,9 @@ namespace Ferretto.VW.MAS_DataLayer
     {
         #region Properties
 
-        public decimal FeedRateCC => this.GetDecimalConfigurationValue((long)CellControl.FeedRate, (long)ConfigurationCategory.CellControl);
+        public Task<decimal> FeedRateCC => this.GetDecimalConfigurationValueAsync((long)CellControl.FeedRate, (long)ConfigurationCategory.CellControl);
 
-        public decimal StepValueCC => this.GetDecimalConfigurationValue((long)CellControl.StepValue, (long)ConfigurationCategory.CellControl);
+        public Task<decimal> StepValueCC => this.GetDecimalConfigurationValueAsync((long)CellControl.StepValue, (long)ConfigurationCategory.CellControl);
 
         #endregion
     }

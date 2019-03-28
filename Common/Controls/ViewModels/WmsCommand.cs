@@ -30,7 +30,10 @@ namespace Ferretto.Common.Controls
 
         protected override async void Execute(object parameter)
         {
-            await this.ActionBefore();
+            if (this.ActionBefore != null)
+            {
+                await this.ActionBefore();
+            }
             base.Execute(parameter);
         }
 

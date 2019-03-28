@@ -1,14 +1,16 @@
-﻿namespace Ferretto.VW.MAS_DataLayer.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace Ferretto.VW.MAS_DataLayer.Interfaces
 {
     public interface IVerticalManualMovements
     {
         #region Properties
 
-        decimal FeedRateVM { get; }
+        Task<decimal> FeedRateVM { get; }
 
-        decimal InitialTargetPositionVM { get; }
+        Task<decimal> InitialTargetPositionVM { get; }
 
-        decimal RecoveryTargetPositionVM { get; }
+        Task<decimal> RecoveryTargetPositionVM { get; }
 
         #endregion
     }

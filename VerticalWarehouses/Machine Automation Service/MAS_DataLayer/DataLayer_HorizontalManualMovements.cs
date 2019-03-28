@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS_DataLayer.Enumerations;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 
 namespace Ferretto.VW.MAS_DataLayer
@@ -7,11 +8,11 @@ namespace Ferretto.VW.MAS_DataLayer
     {
         #region Properties
 
-        public decimal FeedRateHM => this.GetDecimalConfigurationValue((long)HorizontalManualMovements.FeedRate, (long)ConfigurationCategory.HorizontalManualMovements);
+        public Task<decimal> FeedRateHM => this.GetDecimalConfigurationValueAsync((long)HorizontalManualMovements.FeedRate, (long)ConfigurationCategory.HorizontalManualMovements);
 
-        public decimal InitialTargetPositionHM => this.GetDecimalConfigurationValue((long)HorizontalManualMovements.InitialTargetPosition, (long)ConfigurationCategory.HorizontalManualMovements);
+        public Task<decimal> InitialTargetPositionHM => this.GetDecimalConfigurationValueAsync((long)HorizontalManualMovements.InitialTargetPosition, (long)ConfigurationCategory.HorizontalManualMovements);
 
-        public decimal RecoveryTargetPositionHM => this.GetDecimalConfigurationValue((long)HorizontalManualMovements.RecoveryTargetPosition, (long)ConfigurationCategory.HorizontalManualMovements);
+        public Task<decimal> RecoveryTargetPositionHM => this.GetDecimalConfigurationValueAsync((long)HorizontalManualMovements.RecoveryTargetPosition, (long)ConfigurationCategory.HorizontalManualMovements);
 
         #endregion
     }
