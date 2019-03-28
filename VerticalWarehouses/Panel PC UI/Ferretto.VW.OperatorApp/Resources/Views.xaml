@@ -5,7 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Ferretto.VW.OperatorApp.Resources"
              xmlns:viewsandviewmodels="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels"
+             xmlns:viewsandviewmodelsother="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.Other"
              mc:Ignorable="d">
+    
     <DataTemplate DataType="{x:Type viewsandviewmodels:IdleViewModel}">
         <viewsandviewmodels:IdleView></viewsandviewmodels:IdleView>
     </DataTemplate>
@@ -36,6 +38,8 @@
     <DataTemplate DataType="{x:Type viewsandviewmodels:ImmediateDrawerCallViewModel}">
         <viewsandviewmodels:ImmediateDrawerCallView></viewsandviewmodels:ImmediateDrawerCallView>
     </DataTemplate>
-
+    <DataTemplate DataType="{x:Type viewsandviewmodelsother:GeneralInfoViewModel}">
+        <viewsandviewmodelsother:GeneralInfoView></viewsandviewmodelsother:GeneralInfoView>
+    </DataTemplate>
 
 </ResourceDictionary>

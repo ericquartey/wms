@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.GeneralInfoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:local="clr-namespace:Ferretto.VW.OperatorApp"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Resources="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
+             xmlns:Controls="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
+             xmlns:prism="http://prismlibrary.com/"
+             mc:Ignorable="d" >
+
+    <Grid   Width="1024" Height="608">
+
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="340,40,0,0"
+                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                    Text="{x:Static Resources:OperatorApp.GeneralInfoHeader}" />
+        
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="340,100,0,0" Width="300"
+                                               ContentText="VRT EF 84 L 990-BIS H 6345"
+                                               LabelText="{x:Static Resources:OperatorApp.GeneralInfoModel}"/>
+        
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="340,320,0,0" Width="200"
+                                               ContentText="2017-02-12"
+                                               LabelText="{x:Static Resources:OperatorApp.GeneralInfoInstallationDate}"/>
+        
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="340,170,0,0" Width="150"
+                                               ContentText="54"
+                                               LabelText="{x:Static Resources:OperatorApp.GeneralInfoTotDrawers}"/>
+        
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="690,100,0,0" Width="300"
+                                               ContentText="VW_190012"
+                                               LabelText="{x:Static Resources:OperatorApp.GeneralInfoSerial}"/>
+        
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="690,170,0,0" Width="150"
+                                               ContentText="1.1.01 Beta"
+                                               LabelText="{x:Static Resources:OperatorApp.GeneralInfoSwRelease}"/>
+        
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="690,320,0,0" Width="200"
+                                               ContentText="2019-03-05"
+                                               LabelText="{x:Static Resources:OperatorApp.GeneralInfoNextMaintenanceDate}"/>
+        
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="340,390,0,0" Width="200"
+                                               ContentText="2018-03-05"
+                                               LabelText="{x:Static Resources:OperatorApp.GeneralInfoLastMaintenanceDate}"/>
+        
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="690,390,0,0" Width="300"
+                                               ContentText="Manutenzione richiesta."
+                                               LabelText="{x:Static Resources:OperatorApp.GeneralInfoOperativeStatus}"/>
+
+    </Grid>
+</UserControl>

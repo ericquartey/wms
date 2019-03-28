@@ -437,4 +437,44 @@
     <value>ImmediateDrawerCallRequiredDrawer</value>
     <comment>Label text</comment>
   </data>
+  <data name="DrawerActivityRowList" xml:space="preserve">
+    <value>DrawerActivityRowList</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="GeneralInfoHeader" xml:space="preserve">
+    <value>GeneralInfoHeader</value>
+    <comment>Page Header</comment>
+  </data>
+  <data name="GeneralInfoModel" xml:space="preserve">
+    <value>GeneralInfoModel</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="GeneralInfoSerial" xml:space="preserve">
+    <value>GeneralInfoSerial</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="GeneralInfoTotDrawers" xml:space="preserve">
+    <value>GeneralInfoTotDrawers</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="GeneralInfoSwRelease" xml:space="preserve">
+    <value>GeneralInfoSwRelease</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="GeneralInfoInstallationDate" xml:space="preserve">
+    <value>GeneralInfoInstallationDate</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="GeneralInfoLastMaintenanceDate" xml:space="preserve">
+    <value>GeneralInfoLastMaintenanceDate</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="GeneralInfoNextMaintenanceDate" xml:space="preserve">
+    <value>GeneralInfoNextMaintenanceDate</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="GeneralInfoOperativeStatus" xml:space="preserve">
+    <value>GeneralInfoOperativeStatus</value>
+    <comment>Label text</comment>
+  </data>
 </root>

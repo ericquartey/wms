@@ -44,8 +44,8 @@
                                                LabelText="{x:Static Resources:OperatorApp.DrawerActivityItemDescr}"/>
         
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="200,170,0,0" Width="150"
-                                               ContentText="147"
-                                               LabelText="{x:Static Resources:OperatorApp.DrawerActivityList}"/>
+                                               ContentText="4"
+                                               LabelText="{x:Static Resources:OperatorApp.DrawerActivityRowList}"/>
         
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="201,340,0,0" Width="150"
                                                ContentText="2019-02-12"

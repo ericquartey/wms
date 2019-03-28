@@ -357,4 +357,34 @@
   <data name="ImmediateDrawerCallRequiredDrawer" xml:space="preserve">
     <value>Cassetto richiesto:</value>
   </data>
+  <data name="DrawerActivityRowList" xml:space="preserve">
+    <value>Riga lista:</value>
+  </data>
+  <data name="GeneralInfoHeader" xml:space="preserve">
+    <value>Informazioni generali.</value>
+  </data>
+  <data name="GeneralInfoModel" xml:space="preserve">
+    <value>Modello:</value>
+  </data>
+  <data name="GeneralInfoSerial" xml:space="preserve">
+    <value>Numero di serie:</value>
+  </data>
+  <data name="GeneralInfoTotDrawers" xml:space="preserve">
+    <value>Numero cassetti:</value>
+  </data>
+  <data name="GeneralInfoSwRelease" xml:space="preserve">
+    <value>Release sw.:</value>
+  </data>
+  <data name="GeneralInfoInstallationDate" xml:space="preserve">
+    <value>Data di installazione:</value>
+  </data>
+  <data name="GeneralInfoLastMaintenanceDate" xml:space="preserve">
+    <value>Data ultima manutenzione:</value>
+  </data>
+  <data name="GeneralInfoNextMaintenanceDate" xml:space="preserve">
+    <value>Data prossima manutenzione:</value>
+  </data>
+  <data name="GeneralInfoOperativeStatus" xml:space="preserve">
+    <value>Stato operativo macchina:</value>
+  </data>
 </root>

@@ -322,6 +322,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerActivityRowList.
+        /// </summary>
+        public static string DrawerActivityRowList {
+            get {
+                return ResourceManager.GetString("DrawerActivityRowList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a DrawerWaitNota.
         /// </summary>
         public static string DrawerWaitNota {
@@ -363,6 +372,87 @@ namespace Ferretto.VW.Resources {
         public static string FIFOPeriod {
             get {
                 return ResourceManager.GetString("FIFOPeriod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a GeneralInfoHeader.
+        /// </summary>
+        public static string GeneralInfoHeader {
+            get {
+                return ResourceManager.GetString("GeneralInfoHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a GeneralInfoInstallationDate.
+        /// </summary>
+        public static string GeneralInfoInstallationDate {
+            get {
+                return ResourceManager.GetString("GeneralInfoInstallationDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a GeneralInfoLastMaintenanceDate.
+        /// </summary>
+        public static string GeneralInfoLastMaintenanceDate {
+            get {
+                return ResourceManager.GetString("GeneralInfoLastMaintenanceDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a GeneralInfoModel.
+        /// </summary>
+        public static string GeneralInfoModel {
+            get {
+                return ResourceManager.GetString("GeneralInfoModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a GeneralInfoNextMaintenanceDate.
+        /// </summary>
+        public static string GeneralInfoNextMaintenanceDate {
+            get {
+                return ResourceManager.GetString("GeneralInfoNextMaintenanceDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a GeneralInfoOperativeStatus.
+        /// </summary>
+        public static string GeneralInfoOperativeStatus {
+            get {
+                return ResourceManager.GetString("GeneralInfoOperativeStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a GeneralInfoSerial.
+        /// </summary>
+        public static string GeneralInfoSerial {
+            get {
+                return ResourceManager.GetString("GeneralInfoSerial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a GeneralInfoSwRelease.
+        /// </summary>
+        public static string GeneralInfoSwRelease {
+            get {
+                return ResourceManager.GetString("GeneralInfoSwRelease", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a GeneralInfoTotDrawers.
+        /// </summary>
+        public static string GeneralInfoTotDrawers {
+            get {
+                return ResourceManager.GetString("GeneralInfoTotDrawers", resourceCulture);
             }
         }
         

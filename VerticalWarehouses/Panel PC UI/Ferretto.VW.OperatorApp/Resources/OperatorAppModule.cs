@@ -3,6 +3,7 @@ using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Events;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other;
 
 namespace Ferretto.VW.OperatorApp.Resources
 {
@@ -33,6 +34,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             var itemSearchVMInstance = new ItemSearchViewModel(container.Resolve<IEventAggregator>());
             var itemDetailVMInstance = new ItemDetailViewModel(container.Resolve<IEventAggregator>());
             var immediateDrawerCallVMInstance = new ImmediateDrawerCallViewModel(container.Resolve<IEventAggregator>());
+            var generalInfoVMInstance = new GeneralInfoViewModel(container.Resolve<IEventAggregator>());
 
 
 
@@ -49,6 +51,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IItemSearchViewModel>(itemSearchVMInstance);
             this.container.RegisterInstance<IItemDetailViewModel>(itemDetailVMInstance);
             this.container.RegisterInstance<IImmediateDrawerCallViewModel>(immediateDrawerCallVMInstance);
+            this.container.RegisterInstance<IGeneralInfoViewModel>(generalInfoVMInstance);
 
 
             mainWindowVMInstance.InitializeViewModel(this.container);
