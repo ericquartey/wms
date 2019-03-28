@@ -81,6 +81,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             var result = await this.compartmentProvider.CreateRangeAsync(models);
 
+            if (models == null)
+            {
+                return this.BadRequest();
+            }
+
             if (!result.Success)
             {
                 return this.BadRequest(new ProblemDetails
@@ -90,12 +95,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 });
             }
 
-            if (models != null)
+            foreach (var entity in result.Entity)
             {
-                foreach (var entity in result.Entity)
-                {
-                    await this.NotifyEntityUpdatedAsync(nameof(CompartmentDetails), entity.Id, HubEntityOperation.Created);
-                }
+                await this.NotifyEntityUpdatedAsync(nameof(CompartmentDetails), entity.Id, HubEntityOperation.Created);
             }
 
             return this.Created(this.Request.GetUri(), result.Entity);
