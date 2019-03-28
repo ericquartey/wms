@@ -5,9 +5,6 @@ namespace Ferretto.WMS.App.Core.Models
 {
     public enum ItemListRowStatus
     {
-        [Display(Name = "")]
-        NotSpecified,
-
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusNew), ResourceType = typeof(BusinessObjects))]
         New = 'N',
 

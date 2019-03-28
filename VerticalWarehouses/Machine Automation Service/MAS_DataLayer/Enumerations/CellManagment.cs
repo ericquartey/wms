@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS_DataLayer
+﻿namespace Ferretto.VW.MAS_DataLayer.Enumerations
 {
     public enum Side : long
     {

@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS_DataLayer
+﻿using Ferretto.VW.MAS_DataLayer.Enumerations;
+
+namespace Ferretto.VW.MAS_DataLayer
 {
     public class FreeBlock
     {
