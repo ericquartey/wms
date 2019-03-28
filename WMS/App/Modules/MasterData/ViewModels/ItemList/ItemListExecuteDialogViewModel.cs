@@ -72,9 +72,9 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand ExecuteListCommand => this.executeListCommand ??
-                            (this.executeListCommand = new DelegateCommand(
-                                 async () => await this.ExecuteListAsync(),
-                                 this.CanExecuteList));
+            (this.executeListCommand = new DelegateCommand(
+                async () => await this.ExecuteListAsync(),
+                this.CanExecuteList));
 
         public string ValidationError
         {

@@ -46,7 +46,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public ICommand DeleteCompartmentCommand => this.deleteCompartmentCommand ??
             (this.deleteCompartmentCommand = new DelegateCommand(
-                async () => await this.DeleteCompartmentAsync(), this.CanDeleteCompartment));
+                async () => await this.DeleteCompartmentAsync(),
+                this.CanDeleteCompartment));
 
         public bool ItemIdHasValue
         {

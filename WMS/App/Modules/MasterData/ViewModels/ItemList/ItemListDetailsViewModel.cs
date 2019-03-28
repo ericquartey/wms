@@ -57,9 +57,9 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Properties
 
         public ICommand AddListRowCommand => this.addListRowCommand ??
-                                   (this.addListRowCommand = new DelegateCommand(
-                                        this.AddListRow,
-                                        this.CanAddListRow));
+            (this.addListRowCommand = new DelegateCommand(
+                this.AddListRow,
+                this.CanAddListRow));
 
         public ICommand DeleteListRowCommand => this.deleteListRowCommand ??
             (this.deleteListRowCommand = new DelegateCommand(
@@ -73,9 +73,9 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand ExecuteListCommand => this.executeListCommand ??
-                                   (this.executeListCommand = new DelegateCommand(
-                                        this.ExecuteList,
-                                        this.CanExecuteList));
+            (this.executeListCommand = new DelegateCommand(
+                this.ExecuteList,
+                this.CanExecuteList));
 
         public bool ListHasRows
         {
@@ -84,9 +84,10 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
-                                   (this.executeListRowCommand = new DelegateCommand(
-                                        this.ExecuteListRow,
-                                        this.CanExecuteListRow).ObservesProperty(() => this.SelectedItemListRow));
+            (this.executeListRowCommand = new DelegateCommand(
+                    this.ExecuteListRow,
+                    this.CanExecuteListRow)
+                .ObservesProperty(() => this.SelectedItemListRow));
 
         public ItemListRow SelectedItemListRow
         {

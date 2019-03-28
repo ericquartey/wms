@@ -63,7 +63,7 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand EditCompartmentCommand => this.editCompartmentCommand ??
-                               (this.editCompartmentCommand = new DelegateCommand(this.EditCompartment));
+            (this.editCompartmentCommand = new DelegateCommand(this.EditCompartment));
 
         public bool IsCompartmentSelectableTray
         {

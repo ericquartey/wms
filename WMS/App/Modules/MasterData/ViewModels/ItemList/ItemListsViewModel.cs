@@ -19,16 +19,16 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Properties
 
         public ICommand ExecuteListCommand => this.executeListCommand ??
-                  (this.executeListCommand = new DelegateCommand(
-                           this.ExecuteList,
-                           this.CanExecuteList)
-            .ObservesProperty(() => this.CurrentItem));
+            (this.executeListCommand = new DelegateCommand(
+                    this.ExecuteList,
+                    this.CanExecuteList)
+                .ObservesProperty(() => this.CurrentItem));
 
         public ICommand ShowListDetailsCommand => this.showListDetailsCommand ??
-                          (this.showListDetailsCommand = new DelegateCommand(
-                                  this.ShowListDetails,
-                                  this.CanShowListDetails)
-            .ObservesProperty(() => this.CurrentItem));
+            (this.showListDetailsCommand = new DelegateCommand(
+                    this.ShowListDetails,
+                    this.CanShowListDetails)
+                .ObservesProperty(() => this.CurrentItem));
 
         #endregion
 

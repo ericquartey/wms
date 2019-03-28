@@ -72,9 +72,9 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
-                    (this.executeListRowCommand = new DelegateCommand(
-                         async () => await this.ExecuteListRowAsync(),
-                         this.CanExecuteListRow));
+            (this.executeListRowCommand = new DelegateCommand(
+                async () => await this.ExecuteListRowAsync(),
+                this.CanExecuteListRow));
 
         #endregion
 

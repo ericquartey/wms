@@ -16,7 +16,9 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Properties
 
         public ICommand ShowCellDetailsCommand => this.showCellDetailsCommand ??
-                          (this.showCellDetailsCommand = new DelegateCommand(this.ShowCellDetails, this.CanShowCellDetails)
+            (this.showCellDetailsCommand = new DelegateCommand(
+                    this.ShowCellDetails,
+                    this.CanShowCellDetails)
             .ObservesProperty(() => this.CurrentItem));
 
         #endregion
