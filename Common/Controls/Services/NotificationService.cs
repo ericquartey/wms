@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
+using Ferretto.Common.Resources;
 using Ferretto.WMS.Data.Hubs;
 using Microsoft.AspNetCore.SignalR.Client;
 using NLog;
@@ -12,8 +13,6 @@ namespace Ferretto.Common.Controls.Services
     public class NotificationService : INotificationService
     {
         #region Fields
-
-        private const string BUSINESSMODELNAMESPACE = "Ferretto.Common";
 
         private const int MaxRetryConnectionTimeout = 10000;
 
@@ -66,8 +65,14 @@ namespace Ferretto.Common.Controls.Services
 
         public static IPubSubEvent GetInstanceOfModelChanged(EntityChangedHubEvent entityChanged)
         {
-            var entity = Type.GetType($"{BUSINESSMODELNAMESPACE}.{nameof(Ferretto.WMS.App.Core.Models)}.{entityChanged.EntityType}," +
-                                      $"{BUSINESSMODELNAMESPACE}.{nameof(Ferretto.WMS.App.Core.Models)}");
+            var assemblyName = typeof(Ferretto.WMS.App.Core.Models.Item).Assembly.GetName().Name;
+            var entityName = $"{assemblyName}.{nameof(Ferretto.WMS.App.Core.Models)}.{entityChanged.EntityType},{assemblyName}";
+            var entity = Type.GetType(entityName);
+            if (entity == null)
+            {
+                throw new InvalidOperationException(string.Format(Errors.UnableToResolveEntity, entityName));
+            }
+
             var constructedClass = typeof(ModelChangedPubSubEvent<,>).MakeGenericType(entity, typeof(int));
             return Activator.CreateInstance(constructedClass, entityChanged.Id) as IPubSubEvent;
         }

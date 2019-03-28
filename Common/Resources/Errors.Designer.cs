@@ -529,6 +529,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to resolve entity {0}.
+        /// </summary>
+        public static string UnableToResolveEntity {
+            get {
+                return ResourceManager.GetString("UnableToResolveEntity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to save changes..
         /// </summary>
         public static string UnableToSaveChanges {

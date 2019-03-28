@@ -131,7 +131,7 @@ namespace Ferretto.Common.Controls.Services
 
         private string GetEntiykeyFromPubSubEvent(IPubSubEvent eventArgs)
         {
-            var st = Array.ConvertAll<Type, string>(eventArgs.GetType().GenericTypeArguments, Convert.ToString);
+            var st = Array.ConvertAll<Type, string>(eventArgs.GetType().GenericTypeArguments, Convert.ToString);            
             var eventType = $"{eventArgs.GetType().Namespace}.{eventArgs.GetType().Name}";
             return string.Join(",", eventType, string.Join(",", st));
         }

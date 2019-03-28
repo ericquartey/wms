@@ -270,4 +270,7 @@
   <data name="EventServiceInvalidArguments" xml:space="preserve">
     <value>Argomenti non validi su {0}</value>
   </data>
+  <data name="UnableToResolveEntity" xml:space="preserve">
+    <value>Impossibile risolvere entità {0}</value>
+  </data>
 </root>
