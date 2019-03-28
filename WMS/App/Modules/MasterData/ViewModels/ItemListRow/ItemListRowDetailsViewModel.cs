@@ -21,11 +21,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
-        private ICommand deleteCommand;
+        private ICommand deleteListRowCommand;
 
         private InfiniteAsyncSource itemsDataSource;
 
-        private ICommand listRowExecuteCommand;
+        private ICommand executeListRowCommand;
 
         private object modelChangedEventSubscription;
 
@@ -46,9 +46,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public ICommand DeleteCommand => this.deleteCommand ??
-            (this.deleteCommand = new DelegateCommand(
-                async () => await this.ExecuteDeleteCommandAsync()));
+        public ICommand DeleteListRowCommand => this.deleteListRowCommand ??
+            (this.deleteListRowCommand = new DelegateCommand(
+                async () => await this.DeleteListRowCommandAsync()));
 
         public InfiniteAsyncSource ItemsDataSource
         {
@@ -56,10 +56,9 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.itemsDataSource, value);
         }
 
-        public ICommand ListRowExecuteCommand => this.listRowExecuteCommand ??
-                                   (this.listRowExecuteCommand = new DelegateCommand(
-                                        this.ExecuteListRowCommand,
-                                        this.CanExecuteListRowCommand));
+        public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
+                                   (this.executeListRowCommand = new DelegateCommand(
+                                        this.ExecuteListRow));
 
         #endregion
 
@@ -69,8 +68,8 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             base.EvaluateCanExecuteCommands();
 
-            ((DelegateCommand)this.ListRowExecuteCommand)?.RaiseCanExecuteChanged();
-            ((DelegateCommand)this.DeleteCommand)?.RaiseCanExecuteChanged();
+            ((DelegateCommand)this.ExecuteListRowCommand)?.RaiseCanExecuteChanged();
+            ((DelegateCommand)this.DeleteListRowCommand)?.RaiseCanExecuteChanged();
         }
 
         protected override async Task ExecuteRefreshCommandAsync()
@@ -118,11 +117,6 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnDispose();
         }
 
-        private bool CanExecuteListRowCommand()
-        {
-            return this.Model?.CanBeExecuted == true;
-        }
-
         private async Task DeleteItemListRowAsync()
         {
             this.IsBusy = true;
@@ -151,7 +145,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = false;
         }
 
-        private async Task ExecuteDeleteCommandAsync()
+        private async Task DeleteListRowCommandAsync()
         {
             if (this.Model.CanDelete())
             {
@@ -163,18 +157,25 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        private void ExecuteListRowCommand()
+        private void ExecuteListRow()
         {
-            this.IsBusy = true;
+            if (this.Model?.CanExecuteOperation("Execute") == true)
+            {
+                this.IsBusy = true;
 
-            this.NavigationService.Appear(
-                nameof(MasterData),
-                Common.Utils.Modules.MasterData.EXECUTELISTROWDIALOG,
-                new
-                {
-                    Id = this.Model.Id
-                });
-            this.IsBusy = false;
+                this.NavigationService.Appear(
+                    nameof(MasterData),
+                    Common.Utils.Modules.MasterData.EXECUTELISTROWDIALOG,
+                    new
+                    {
+                        Id = this.Model.Id
+                    });
+                this.IsBusy = false;
+            }
+            else
+            {
+                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason("Execute"));
+            }
         }
 
         private void Initialize()

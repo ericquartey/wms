@@ -23,7 +23,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
-        private ICommand deleteCommand;
+        private ICommand deleteCompartmentCommand;
 
         private bool itemIdHasValue;
 
@@ -44,9 +44,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public ICommand DeleteCommand => this.deleteCommand ??
-            (this.deleteCommand = new DelegateCommand(
-                async () => await this.ExecuteDeleteCommandAsync(), this.CanExecuteDeleteCommand));
+        public ICommand DeleteCompartmentCommand => this.deleteCompartmentCommand ??
+            (this.deleteCompartmentCommand = new DelegateCommand(
+                async () => await this.DeleteCompartmentAsync(), this.CanDeleteCompartment));
 
         public bool ItemIdHasValue
         {
@@ -68,7 +68,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             base.EvaluateCanExecuteCommands();
 
-            ((DelegateCommand)this.deleteCommand)?.RaiseCanExecuteChanged();
+            ((DelegateCommand)this.deleteCompartmentCommand)?.RaiseCanExecuteChanged();
         }
 
         protected override Task ExecuteRefreshCommandAsync()
@@ -132,7 +132,7 @@ namespace Ferretto.WMS.Modules.MasterData
             base.Model_PropertyChanged(sender, e);
         }
 
-        private bool CanExecuteDeleteCommand()
+        private bool CanDeleteCompartment()
         {
             return this.Model != null;
         }
@@ -171,7 +171,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = false;
         }
 
-        private async Task ExecuteDeleteCommandAsync()
+        private async Task DeleteCompartmentAsync()
         {
             if (this.Model.CanDelete())
             {

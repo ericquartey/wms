@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.App.Core.Extensions;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 
@@ -104,7 +105,8 @@ namespace Ferretto.WMS.App.Core.Providers
                     ItemListType = (ItemListType)l.ItemListType,
                     ItemListRowsCount = l.ItemListRowsCount,
                     ItemListItemsCount = l.ItemListRowsCount,
-                    CreationDate = l.CreationDate
+                    CreationDate = l.CreationDate,
+                    Policies = l.GetPolicies(),
                 });
         }
 
@@ -146,8 +148,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 FirstExecutionDate = itemList.FirstExecutionDate,
                 ExecutionEndDate = itemList.ExecutionEndDate,
                 ItemListTypeDescription = itemList.ItemListTypeDescription,
-                CanAddNewRow = itemList.CanAddNewRow,
-                CanBeExecuted = itemList.CanBeExecuted
+                Policies = itemList.GetPolicies(),
             };
         }
 
@@ -204,10 +205,8 @@ namespace Ferretto.WMS.App.Core.Providers
                         LastModificationDate = model.LastModificationDate,
                         FirstExecutionDate = model.FirstExecutionDate,
                         ExecutionEndDate = model.ExecutionEndDate,
-                        CanAddNewRow = model.CanAddNewRow,
                         ItemListRowsCount = model.ItemListRowsCount,
                         ItemListTypeDescription = model.ItemListTypeDescription,
-                        CanBeExecuted = model.CanBeExecuted
                     });
 
                 return new OperationResult<ItemListDetails>(true);

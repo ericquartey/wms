@@ -25,7 +25,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private IDataSource<AllowedItemInCompartment, int> allowedItemsDataSource;
 
-        private ICommand editCommand;
+        private ICommand editCompartmentCommand;
 
         private bool isCompartmentSelectableTray;
 
@@ -62,8 +62,8 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.allowedItemsDataSource, value);
         }
 
-        public ICommand EditCommand => this.editCommand ??
-                               (this.editCommand = new DelegateCommand(this.ExecuteEditCommand));
+        public ICommand EditCompartmentCommand => this.editCompartmentCommand ??
+                               (this.editCompartmentCommand = new DelegateCommand(this.EditCompartment));
 
         public bool IsCompartmentSelectableTray
         {
@@ -155,7 +155,7 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnDispose();
         }
 
-        private void ExecuteEditCommand()
+        private void EditCompartment()
         {
             var args = new LoadingUnitArgs { LoadingUnitId = this.Model.LoadingUnitId, CompartmentId = this.Model.Id };
             this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.LOADINGUNITEDIT, args);

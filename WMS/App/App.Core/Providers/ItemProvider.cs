@@ -6,6 +6,7 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.App.Core.Extensions;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 
@@ -164,14 +165,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     TotalReservedToStore = i.TotalReservedToStore,
                     TotalStock = i.TotalStock,
                     TotalAvailable = i.TotalAvailable,
-                    Policies = i.Policies.Select(p =>
-                        new Policy
-                        {
-                            IsAllowed = p.IsAllowed,
-                            Name = p.Name,
-                            Reason = p.Reason,
-                            Type = (PolicyType)p.Type
-                        })
+                    Policies = i.GetPolicies(),
                 });
         }
 
@@ -229,14 +223,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 StoreTolerance = item.StoreTolerance,
                 TotalAvailable = item.TotalAvailable,
                 Width = item.Width,
-                Policies = item.Policies.Select(p =>
-                    new Policy
-                    {
-                        IsAllowed = p.IsAllowed,
-                        Name = p.Name,
-                        Reason = p.Reason,
-                        Type = (PolicyType)p.Type
-                    })
+                Policies = item.GetPolicies(),
             };
 
             await this.AddEnumerationsAsync(itemDetails);

@@ -9,26 +9,26 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private ICommand showDetailsCommand;
+        private ICommand showCompartmentDetailsCommand;
 
         #endregion
 
         #region Properties
 
-        public ICommand ShowDetailsCommand => this.showDetailsCommand ??
-                          (this.showDetailsCommand = new DelegateCommand(this.ExecuteShowDetailsCommand, this.CanShowDetailsCommand)
+        public ICommand ShowCompartmentDetailsCommand => this.showCompartmentDetailsCommand ??
+                          (this.showCompartmentDetailsCommand = new DelegateCommand(this.ShowCompartmentDetails, this.CanShowCompartmentDetails)
             .ObservesProperty(() => this.CurrentItem));
 
         #endregion
 
         #region Methods
 
-        private bool CanShowDetailsCommand()
+        private bool CanShowCompartmentDetails()
         {
             return this.CurrentItem != null;
         }
 
-        private void ExecuteShowDetailsCommand()
+        private void ShowCompartmentDetails()
         {
             this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.COMPARTMENTDETAILS, this.CurrentItem.Id);
         }
