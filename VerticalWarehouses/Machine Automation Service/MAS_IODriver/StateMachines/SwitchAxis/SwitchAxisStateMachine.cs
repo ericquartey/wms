@@ -8,7 +8,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 {
-    public class SwitchAxisSateMachine : IoStateMachineBase
+    public class SwitchAxisStateMachine : IoStateMachineBase
     {
         #region Fields
 
@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         #region Constructors
 
-        public SwitchAxisSateMachine(Axis axisToSwitchOn, bool switchOffOtherAxis, BlockingConcurrentQueue<IoMessage> ioCommandQueue, IEventAggregator eventAggregator, ILogger logger)
+        public SwitchAxisStateMachine(Axis axisToSwitchOn, bool switchOffOtherAxis, BlockingConcurrentQueue<IoMessage> ioCommandQueue, IEventAggregator eventAggregator, ILogger logger)
         {
             this.axisToSwitchOn = axisToSwitchOn;
             this.switchOffOtherAxis = switchOffOtherAxis;
@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         #region Destructors
 
-        ~SwitchAxisSateMachine()
+        ~SwitchAxisStateMachine()
         {
             this.Dispose(false);
         }

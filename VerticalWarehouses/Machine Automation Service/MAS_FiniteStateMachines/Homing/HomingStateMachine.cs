@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.CalibrateAxis,
-                MessageStatus.OperationExecuting,
+                MessageStatus.OperationStart,
                 ErrorLevel.NoError,
                 MessageVerbosity.Info);
             this.logger.LogTrace($"2-Constructor: published notification: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
