@@ -477,4 +477,32 @@
     <value>GeneralInfoOperativeStatus</value>
     <comment>Label text</comment>
   </data>
+  <data name="DrawerCompactingHeader" xml:space="preserve">
+    <value>DrawerCompactingHeader</value>
+    <comment>Page Header</comment>
+  </data>
+  <data name="DrawerCompactingSide" xml:space="preserve">
+    <value>DrawerCompactingSide</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerCompactingFragmentNumber" xml:space="preserve">
+    <value>DrawerCompactingFragmentNumber</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerCompactingMaxSpaceRecoverable" xml:space="preserve">
+    <value>DrawerCompactingMaxSpaceRecoverable</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerCompactingSpaceToRecover" xml:space="preserve">
+    <value>DrawerCompactingSpaceToRecover</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerCompactingAntCompact" xml:space="preserve">
+    <value>DrawerCompactingAntCompact</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DrawerCompactingRearCompact" xml:space="preserve">
+    <value>DrawerCompactingRearCompact</value>
+    <comment>Button text</comment>
+  </data>
 </root>

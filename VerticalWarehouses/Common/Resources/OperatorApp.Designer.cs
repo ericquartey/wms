@@ -331,6 +331,69 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerCompactingAntCompact.
+        /// </summary>
+        public static string DrawerCompactingAntCompact {
+            get {
+                return ResourceManager.GetString("DrawerCompactingAntCompact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerCompactingFragmentNumber.
+        /// </summary>
+        public static string DrawerCompactingFragmentNumber {
+            get {
+                return ResourceManager.GetString("DrawerCompactingFragmentNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerCompactingHeader.
+        /// </summary>
+        public static string DrawerCompactingHeader {
+            get {
+                return ResourceManager.GetString("DrawerCompactingHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerCompactingMaxSpaceRecoverable.
+        /// </summary>
+        public static string DrawerCompactingMaxSpaceRecoverable {
+            get {
+                return ResourceManager.GetString("DrawerCompactingMaxSpaceRecoverable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerCompactingRearCompact.
+        /// </summary>
+        public static string DrawerCompactingRearCompact {
+            get {
+                return ResourceManager.GetString("DrawerCompactingRearCompact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerCompactingSide.
+        /// </summary>
+        public static string DrawerCompactingSide {
+            get {
+                return ResourceManager.GetString("DrawerCompactingSide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerCompactingSpaceToRecover.
+        /// </summary>
+        public static string DrawerCompactingSpaceToRecover {
+            get {
+                return ResourceManager.GetString("DrawerCompactingSpaceToRecover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a DrawerWaitNota.
         /// </summary>
         public static string DrawerWaitNota {

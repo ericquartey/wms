@@ -35,6 +35,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             var itemDetailVMInstance = new ItemDetailViewModel(container.Resolve<IEventAggregator>());
             var immediateDrawerCallVMInstance = new ImmediateDrawerCallViewModel(container.Resolve<IEventAggregator>());
             var generalInfoVMInstance = new GeneralInfoViewModel(container.Resolve<IEventAggregator>());
+            var drawerCompactingVMInstance = new DrawerCompactingViewModel(container.Resolve<IEventAggregator>());
 
 
 
@@ -52,6 +53,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IItemDetailViewModel>(itemDetailVMInstance);
             this.container.RegisterInstance<IImmediateDrawerCallViewModel>(immediateDrawerCallVMInstance);
             this.container.RegisterInstance<IGeneralInfoViewModel>(generalInfoVMInstance);
+            this.container.RegisterInstance<IDrawerCompactingViewModel>(drawerCompactingVMInstance);
 
 
             mainWindowVMInstance.InitializeViewModel(this.container);
