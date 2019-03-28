@@ -533,4 +533,12 @@
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-asterisk-10.png</value>
     <comment>@Invariant</comment>
   </data>
+  <data name="ItemListRowStatusNew" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_watch_later_black_48dp.png</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="ItemListStatusNew" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_watch_later_black_48dp.png</value>
+    <comment>@Invariant</comment>
+  </data>
 </root>
