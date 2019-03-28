@@ -15,7 +15,7 @@ namespace Ferretto.Common.EF.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
+                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -87,6 +87,8 @@ namespace Ferretto.Common.EF.Migrations
                     b.Property<int?>("LoadingUnitsBufferSize");
 
                     b.Property<int?>("MachineId");
+
+                    b.Property<int>("Priority");
 
                     b.HasKey("Id");
 
@@ -698,7 +700,7 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GETUTCDATE()");
 
-                    b.Property<int>("Priority")
+                    b.Property<int?>("Priority")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(1);
 
@@ -749,7 +751,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int?>("PackageTypeId");
 
-                    b.Property<int>("Priority");
+                    b.Property<int?>("Priority");
 
                     b.Property<string>("RegistrationNumber");
 
@@ -1262,6 +1264,8 @@ namespace Ferretto.Common.EF.Migrations
                         .HasColumnType("char(1)");
 
                     b.Property<int?>("PackageTypeId");
+
+                    b.Property<int?>("Priority");
 
                     b.Property<string>("RegistrationNumber");
 

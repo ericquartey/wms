@@ -13,7 +13,7 @@ namespace Ferretto.WMS.Scheduler.Core.Interfaces
 
         Task<IEnumerable<SchedulerRequest>> CreateRangeAsync(IEnumerable<SchedulerRequest> models);
 
-        Task<SchedulerRequest> FullyQualifyWithdrawalRequestAsync(SchedulerRequest schedulerRequest);
+        Task<SchedulerRequest> FullyQualifyWithdrawalRequestAsync(int itemId, ItemWithdrawOptions options);
 
         Task<IEnumerable<SchedulerRequest>> GetRequestsToProcessAsync();
 

@@ -25,10 +25,11 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         #region Methods
 
-        public async Task<IOperationResult<SchedulerRequest>> PrepareForExecutionAsync(ListRowExecutionRequest model)
+        public async Task<IOperationResult<SchedulerRequest>> PrepareForExecutionAsync(int id, int areaId, int? bayId)
         {
             await this.databaseContext.SaveChangesAsync();
 
+            // TODO: implement method
             return new SuccessOperationResult<SchedulerRequest>(null);
         }
 

@@ -32,7 +32,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string job;
 
-        private int priority;
+        private int? priority;
 
         private bool shipmentUnitAssociated;
 
@@ -161,7 +161,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Required]
         [Display(Name = nameof(BusinessObjects.ItemListPriority), ResourceType = typeof(BusinessObjects))]
-        public int Priority
+        public int? Priority
         {
             get => this.priority;
             set => this.SetProperty(ref this.priority, value);

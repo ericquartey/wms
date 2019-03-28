@@ -61,16 +61,14 @@ namespace Ferretto.WMS.Scheduler.Tests
 
                 var provider = this.GetService<ISchedulerRequestProvider>();
 
-                var schedulerRequest = new SchedulerRequest
+                var options = new ItemWithdrawOptions
                 {
-                    ItemId = this.Item1.Id,
                     AreaId = this.Area1.Id,
                     BayId = this.Bay1.Id,
-                    RequestedQuantity = 1,
-                    Type = OperationType.Withdrawal
+                    RequestedQuantity = 1
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -140,15 +138,13 @@ namespace Ferretto.WMS.Scheduler.Tests
 
                 var provider = this.GetService<ISchedulerRequestProvider>();
 
-                var schedulerRequest = new SchedulerRequest
+                var options = new ItemWithdrawOptions
                 {
-                    ItemId = this.Item1.Id,
                     AreaId = this.Area1.Id,
-                    RequestedQuantity = 1,
-                    Type = OperationType.Withdrawal
+                    RequestedQuantity = 1
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -196,16 +192,14 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var schedulerRequest = new SchedulerRequest
+                var options = new ItemWithdrawOptions
                 {
-                    ItemId = this.Item1.Id,
                     AreaId = this.Area1.Id,
                     BayId = OtherBayId,
-                    RequestedQuantity = 1,
-                    Type = OperationType.Withdrawal
+                    RequestedQuantity = 1
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -256,16 +250,14 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var schedulerRequest = new SchedulerRequest
+                var options = new ItemWithdrawOptions
                 {
-                    ItemId = this.Item1.Id,
                     AreaId = this.Area1.Id,
                     RequestedQuantity = 1,
-                    IsInstant = true,
-                    Type = OperationType.Withdrawal
+                    RunImmediately = true
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -360,15 +352,13 @@ namespace Ferretto.WMS.Scheduler.Tests
 
                 var provider = this.GetService<ISchedulerRequestProvider>();
 
-                var schedulerRequest = new SchedulerRequest
+                var options = new ItemWithdrawOptions
                 {
-                    ItemId = this.ItemFifo.Id,
                     AreaId = this.Area1.Id,
-                    RequestedQuantity = 1,
-                    Type = OperationType.Withdrawal
+                    RequestedQuantity = 1
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.ItemFifo.Id, options);
 
                 #endregion
 
@@ -416,15 +406,13 @@ namespace Ferretto.WMS.Scheduler.Tests
 
                 var provider = this.GetService<ISchedulerRequestProvider>();
 
-                var schedulerRequest = new SchedulerRequest
+                var options = new ItemWithdrawOptions
                 {
-                    ItemId = this.Item1.Id,
                     AreaId = this.Area1.Id,
-                    RequestedQuantity = 1,
-                    Type = OperationType.Withdrawal
+                    RequestedQuantity = 1
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -484,15 +472,13 @@ namespace Ferretto.WMS.Scheduler.Tests
 
                 var provider = this.GetService<ISchedulerRequestProvider>();
 
-                var schedulerRequest = new SchedulerRequest
+                var options = new ItemWithdrawOptions
                 {
-                    ItemId = this.Item1.Id,
                     AreaId = this.Area1.Id,
-                    RequestedQuantity = 1,
-                    Type = OperationType.Withdrawal
+                    RequestedQuantity = 1
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -562,15 +548,13 @@ namespace Ferretto.WMS.Scheduler.Tests
 
                 var provider = this.GetService<ISchedulerRequestProvider>();
 
-                var schedulerRequest = new SchedulerRequest
+                var options = new ItemWithdrawOptions
                 {
-                    ItemId = this.Item1.Id,
                     AreaId = this.Area1.Id,
-                    RequestedQuantity = 1,
-                    Type = OperationType.Withdrawal
+                    RequestedQuantity = 1
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -663,15 +647,13 @@ namespace Ferretto.WMS.Scheduler.Tests
 
                 var provider = this.GetService<ISchedulerRequestProvider>();
 
-                var schedulerRequest = new SchedulerRequest
+                var options = new ItemWithdrawOptions
                 {
-                    ItemId = this.ItemVolume.Id,
                     AreaId = this.Area1.Id,
-                    RequestedQuantity = 1,
-                    Type = OperationType.Withdrawal
+                    RequestedQuantity = 1
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.ItemVolume.Id, options);
 
                 #endregion
 
@@ -753,15 +735,13 @@ namespace Ferretto.WMS.Scheduler.Tests
 
                 var provider = this.GetService<ISchedulerRequestProvider>();
 
-                var schedulerRequest = new SchedulerRequest
+                var options = new ItemWithdrawOptions
                 {
-                    ItemId = this.Item1.Id,
                     AreaId = this.Area1.Id,
-                    RequestedQuantity = 2,
-                    Type = OperationType.Withdrawal
+                    RequestedQuantity = 2
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -840,15 +820,13 @@ namespace Ferretto.WMS.Scheduler.Tests
 
                 var provider = this.GetService<ISchedulerRequestProvider>();
 
-                var schedulerRequest = new SchedulerRequest
+                var options = new ItemWithdrawOptions
                 {
-                    ItemId = this.Item1.Id,
                     AreaId = this.Area1.Id,
-                    RequestedQuantity = compartment2.Stock - request2.RequestedQuantity,
-                    Type = OperationType.Withdrawal
+                    RequestedQuantity = compartment2.Stock - request2.RequestedQuantity
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
 
                 #endregion
 

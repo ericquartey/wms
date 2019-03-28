@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
@@ -7,8 +8,8 @@ using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Exceptions;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
-using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_IODriver.Interface;
 using Ferretto.VW.MAS_IODriver.StateMachines;
 using Ferretto.VW.MAS_IODriver.StateMachines.PowerUp;
@@ -132,43 +133,14 @@ namespace Ferretto.VW.MAS_IODriver
         {
             this.stoppingToken = stoppingToken;
 
-            //TEMP Temporary uncomment these code lines in order to set the IP address (and to comment the others)
-            /*IPAddress.TryParse("169.254.231.10", out var ioAddress);*/
-            /*var ioPort = 502;*/
-            var ioAddress =
-                this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
-            var ioPort =
-                this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
-
-            this.modbusTransport.Configure(ioAddress, ioPort);
-
-            bool connectionResult;
-            this.logger?.LogTrace("Hosted I/O Execute Async");
-
-            try
-            {
-                connectionResult = this.modbusTransport.Connect();
-            }
-            catch (Exception ex)
-            {
-                throw new IoDriverException($"Exception: {ex.Message} while connecting to Modbus I/O master", IoDriverExceptionCode.CreationFailure, ex);
-            }
-
-            if (!connectionResult)
-            {
-                throw new IoDriverException("Failed to connect to Modbus I/O master");
-            }
-
             try
             {
                 this.commandReceiveTask.Start();
                 this.notificationReceiveTask.Start();
-                this.ioReceiveTask.Start();
-                this.ioSendTask.Start();
             }
             catch (Exception ex)
             {
-                throw new IOException($"Exception: {ex.Message} while starting service threads", ex);
+                throw new IOException($"Exception: {ex.Message} while starting service message threads", ex);
             }
         }
 
@@ -224,7 +196,7 @@ namespace Ferretto.VW.MAS_IODriver
             return Task.CompletedTask;
         }
 
-        private Task NotificationReceiveTaskFunction()
+        private async Task NotificationReceiveTaskFunction()
         {
             this.logger?.LogTrace("Hosted I/O Notification Receive Task Function");
 
@@ -237,11 +209,15 @@ namespace Ferretto.VW.MAS_IODriver
                 }
                 catch (OperationCanceledException)
                 {
-                    return Task.CompletedTask;
+                    return;
                 }
 
                 switch (receivedMessage.Type)
                 {
+                    case MessageType.DataLayerReady:
+                        await this.StartHardwareCommunications();
+                        break;
+
                     case MessageType.IOPowerUp:
                     case MessageType.SwitchAxis:
                         if (receivedMessage.Status == MessageStatus.OperationEnd &&
@@ -253,7 +229,7 @@ namespace Ferretto.VW.MAS_IODriver
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
-            return Task.CompletedTask;
+            return;
         }
 
         private void ReadIoData(object state)
@@ -324,6 +300,41 @@ namespace Ferretto.VW.MAS_IODriver
                     this.currentStateMachine.ProcessMessage(message);
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
+        }
+
+        private async Task StartHardwareCommunications()
+        {
+            var ioAddress = await
+                this.dataLayerValueManagment.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
+            var ioPort = await
+                this.dataLayerValueManagment.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
+
+            this.modbusTransport.Configure(ioAddress, ioPort);
+
+            bool connectionResult;
+            try
+            {
+                connectionResult = this.modbusTransport.Connect();
+            }
+            catch (Exception ex)
+            {
+                throw new IoDriverException($"Exception: {ex.Message} while connecting to Modbus I/O master", IoDriverExceptionCode.CreationFailure, ex);
+            }
+
+            if (!connectionResult)
+            {
+                throw new IoDriverException("Failed to connect to Modbus I/O master");
+            }
+
+            try
+            {
+                this.ioReceiveTask.Start();
+                this.ioSendTask.Start();
+            }
+            catch (Exception ex)
+            {
+                throw new IOException($"Exception: {ex.Message} while starting service hardware threads", ex);
+            }
         }
 
         #endregion

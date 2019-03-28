@@ -4,6 +4,6 @@
     {
         Undefined = 0L,
 
-        CycleQuandity = 1L,
+        CycleQuantity = 1L,
     }
 }
