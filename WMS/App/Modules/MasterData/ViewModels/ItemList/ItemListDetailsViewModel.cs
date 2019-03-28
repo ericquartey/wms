@@ -286,8 +286,8 @@ namespace Ferretto.WMS.Modules.MasterData
             this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<ItemList>>(
                 async eventArgs => { await this.LoadDataAsync(); },
                 this.Token,
-                true,
-                true);
+                keepSubscriberReferenceAlive: true,
+                forceUiThread: true);
 
             this.modelChangedEventSubscription = this.EventService
                 .Subscribe<ModelChangedPubSubEvent<ItemList, int>>(
@@ -308,8 +308,8 @@ namespace Ferretto.WMS.Modules.MasterData
                         }
                     },
                     this.Token,
-                    true,
-                    true);
+                    keepSubscriberReferenceAlive: true,
+                    forceUiThread: true);
         }
 
         private async Task LoadDataAsync()
