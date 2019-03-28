@@ -1,14 +1,16 @@
-﻿namespace Ferretto.VW.MAS_DataLayer.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace Ferretto.VW.MAS_DataLayer.Interfaces
 {
     public interface IWeightControl
     {
         #region Properties
 
-        decimal FeedRateWC { get; }
+        Task<decimal> FeedRateWC { get; }
 
-        decimal RequiredToleranceWC { get; }
+        Task<decimal> RequiredToleranceWC { get; }
 
-        decimal TestRun { get; }
+        Task<decimal> TestRun { get; }
 
         #endregion
     }

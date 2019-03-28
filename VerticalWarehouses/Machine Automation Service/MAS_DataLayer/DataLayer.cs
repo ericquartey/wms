@@ -14,7 +14,6 @@ using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Prism.Events;
@@ -110,61 +109,6 @@ namespace Ferretto.VW.MAS_DataLayer
             this.logger?.LogInformation("DataLayer Constructor");
         }
 
-        /// <summary>
-        /// FAKE constructor to be used EXCLUSIVELLY for unit testing
-        /// </summary>
-        /// <param name="dataContext"></param>
-        /// <param name="eventAggregator"></param>
-        public DataLayer(DataLayerContext dataContext, IEventAggregator eventAggregator, IOptions<FilesInfo> filesInfo)
-        {
-            if (dataContext == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            if (eventAggregator == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            if (filesInfo == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            this.primaryDataContext = dataContext;
-
-            this.eventAggregator = eventAggregator;
-
-            this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
-
-            this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
-
-            this.commadReceiveTask = new Task(async () => await this.ReceiveCommandTaskFunction());
-            this.notificationReceiveTask = new Task(async () => await this.ReceiveNotificationTaskFunction());
-
-            var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            commandEvent.Subscribe(message => { this.commandQueue.Enqueue(message); },
-                ThreadOption.PublisherThread,
-                false,
-                message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
-
-            var NotificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            NotificationEvent.Subscribe(message => { this.notificationQueue.Enqueue(message); },
-                ThreadOption.PublisherThread,
-                false,
-                message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
-
-            // INFO Log events
-            // INFO Command full events
-            var commandFullEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            commandFullEvent.Subscribe(message => { this.LogMessagesAsync(message); });
-
-            // INFO Notification full events
-            var notificationFullEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            notificationFullEvent.Subscribe(message => { this.LogMessages(message); });
-        }
-
         #endregion
 
         #region Methods
@@ -187,7 +131,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <summary>
         /// This method is been invoked during the installation, to load the general_info.json file
         /// </summary>
-        /// <param name="configurationValueRequest">Configuration parameters to load</param>
+        /// <param name="configurationFilePath">Configuration parameters to load</param>
         /// <exception cref="DataLayerExceptionEnum.UNKNOWN_INFO_FILE_EXCEPTION">Exception for a wrong info file input name</exception>
         /// <exception cref="DataLayerExceptionEnum.UNDEFINED_TYPE_EXCEPTION">Exception for an unknown data type</exception>
         private async Task LoadConfigurationValuesInfoAsync(string configurationFilePath)
@@ -445,18 +389,21 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             this.primaryDataContext.Database.Migrate();
 
-            //this.secondaryDataContext = new DataLayerContext(new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(dataLayerConfiguration.SecondaryConnectionString).Options);
-            //this.secondaryDataContext.Database.Migrate();
+            this.secondaryDataContext = new DataLayerContext(new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(dataLayerConfiguration.SecondaryConnectionString).Options);
+            this.secondaryDataContext.Database.Migrate();
 
-            //try
-            //{
-            //    this.LoadConfigurationValuesInfo(dataLayerConfiguration.ConfigurationFilePath);
-            //}
+            try
+            {
+                await this.LoadConfigurationValuesInfoAsync(dataLayerConfiguration.ConfigurationFilePath);
+            }
+            catch (DataLayerException ex)
+            {
+                this.logger.LogError("Failed to load configuration values");
+            }
 
-            //catch (DataLayerException ex)
-            //{
-            //    this.logger.LogError("Failed to load configuration values");
-            //}
+            var errorNotification = new NotificationMessage(null, "DataLayer initialization complete", MessageActor.Any,
+                MessageActor.DataLayer, MessageType.DataLayerReady, MessageStatus.NoStatus);
+            this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
 
             do
             {

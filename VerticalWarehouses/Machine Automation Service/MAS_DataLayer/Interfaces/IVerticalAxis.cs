@@ -1,38 +1,40 @@
-﻿namespace Ferretto.VW.MAS_DataLayer.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace Ferretto.VW.MAS_DataLayer.Interfaces
 {
     public interface IVerticalAxis
     {
         #region Properties
 
-        bool HomingExecuted { get; }
+        Task<bool> HomingExecuted { get; }
 
-        decimal HomingExitAcceleration { get; }
+        Task<decimal> HomingExitAcceleration { get; }
 
-        decimal HomingExitDeceleration { get; }
+        Task<decimal> HomingExitDeceleration { get; }
 
-        decimal HomingExitSpeed { get; }
+        Task<decimal> HomingExitSpeed { get; }
 
-        decimal HomingSearchAcceleration { get; }
+        Task<decimal> HomingSearchAcceleration { get; }
 
-        decimal HomingSearchDeceleration { get; }
+        Task<decimal> HomingSearchDeceleration { get; }
 
-        bool HomingSearchDirection { get; }
+        Task<bool> HomingSearchDirection { get; }
 
-        decimal HomingSearchSpeed { get; }
+        Task<decimal> HomingSearchSpeed { get; }
 
-        decimal LowerBound { get; }
+        Task<decimal> LowerBound { get; }
 
-        decimal MaxAcceleration { get; }
+        Task<decimal> MaxAcceleration { get; }
 
-        decimal MaxDeceleration { get; }
+        Task<decimal> MaxDeceleration { get; }
 
-        decimal MaxSpeed { get; }
+        Task<decimal> MaxSpeed { get; }
 
-        decimal Offset { get; }
+        Task<decimal> Offset { get; }
 
-        decimal Resolution { get; }
+        Task<decimal> Resolution { get; }
 
-        decimal UpperBound { get; }
+        Task<decimal> UpperBound { get; }
 
         #endregion
     }
