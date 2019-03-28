@@ -80,8 +80,6 @@ namespace Ferretto.WMS.Modules.MasterData
             this.NavigationService.Register<ItemListRowAddDialogView, ItemListRowAddDialogViewModel>();
             this.NavigationService.Register<ItemListRowDetailsView, ItemListRowDetailsViewModel>();
             this.NavigationService.Register<ItemListRowExecuteDialogView, ItemListRowExecuteDialogViewModel>();
-
-            this.NavigationService.Register<FilterDialogView, FilterDialogViewModel>();
         }
 
         #endregion
