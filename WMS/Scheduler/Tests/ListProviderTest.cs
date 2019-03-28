@@ -47,7 +47,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 LoadingUnitsBufferSize = 10
             };
 
-            var row1 = new Common.DataModels.ItemListRow
+            var rowLowPriority = new Common.DataModels.ItemListRow
             {
                 Id = 1,
                 ItemId = this.ItemFifo.Id,
@@ -57,7 +57,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 Priority = 3
             };
 
-            var row2 = new Common.DataModels.ItemListRow
+            var rowHighPriority = new Common.DataModels.ItemListRow
             {
                 Id = 2,
                 ItemId = this.ItemFifo.Id,
@@ -67,7 +67,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 Priority = 1,
             };
 
-            var row3 = new Common.DataModels.ItemListRow
+            var rowMediumPriority = new Common.DataModels.ItemListRow
             {
                 Id = 3,
                 ItemId = this.ItemFifo.Id,
@@ -80,7 +80,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             var list1 = new Common.DataModels.ItemList
             {
                 Id = listId,
-                ItemListRows = new[] { row1, row2, row3 }
+                ItemListRows = new[] { rowLowPriority, rowHighPriority, rowMediumPriority }
             };
 
             var compartment1 = new Common.DataModels.Compartment
@@ -93,9 +93,9 @@ namespace Ferretto.WMS.Scheduler.Tests
             using (var context = this.CreateContext())
             {
                 context.Compartments.Add(compartment1);
-                context.ItemListRows.Add(row1);
-                context.ItemListRows.Add(row2);
-                context.ItemListRows.Add(row3);
+                context.ItemListRows.Add(rowLowPriority);
+                context.ItemListRows.Add(rowHighPriority);
+                context.ItemListRows.Add(rowMediumPriority);
                 context.ItemLists.Add(list1);
                 context.Bays.Add(bay2);
 
@@ -119,7 +119,10 @@ namespace Ferretto.WMS.Scheduler.Tests
             var updatedList = await listProvider.GetByIdAsync(list1.Id);
             var missions = await missionProvider.GetAllAsync();
 
-            Assert.AreEqual(ListStatus.Executing, updatedList.Status);
+            Assert.AreEqual(
+                ListStatus.Executing,
+                updatedList.Status,
+                "The list should be in the Executing state.");
 
             Assert.AreEqual(
                 3,
@@ -151,12 +154,12 @@ namespace Ferretto.WMS.Scheduler.Tests
                 "The first generated mission should refer to the list with highest priority.");
 
             Assert.AreEqual(
-                row2.Id,
+                rowHighPriority.Id,
                 missions.First().ItemListRowId,
                 "The first generated mission should refer to the row with highest priority.");
 
             Assert.AreEqual(
-                row1.Id,
+                rowLowPriority.Id,
                 missions.Last().ItemListRowId,
                 "The last generated mission should refer to the row with lowest priority.");
 
