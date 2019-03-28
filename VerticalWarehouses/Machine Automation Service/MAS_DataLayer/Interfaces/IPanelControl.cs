@@ -1,20 +1,22 @@
-﻿namespace Ferretto.VW.MAS_DataLayer.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace Ferretto.VW.MAS_DataLayer.Interfaces
 {
     public interface IPanelControl
     {
         #region Properties
 
-        int BackInitialReferenceCell { get; }
+        Task<int> BackInitialReferenceCell { get; }
 
-        int BackPanelQuantity { get; }
+        Task<int> BackPanelQuantity { get; }
 
-        decimal FeedRatePC { get; }
+        Task<decimal> FeedRatePC { get; }
 
-        int FrontInitialReferenceCell { get; }
+        Task<int> FrontInitialReferenceCell { get; }
 
-        int FrontPanelQuantity { get; }
+        Task<int> FrontPanelQuantity { get; }
 
-        decimal StepValuePC { get; }
+        Task<decimal> StepValuePC { get; }
 
         #endregion
     }

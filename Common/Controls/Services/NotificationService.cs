@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Configuration;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
