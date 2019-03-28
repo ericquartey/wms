@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.InstallationApp.Resources
 {
-    public class MAS_Event : PubSubEvent<MAS_EventMessage>
+    public class MAS_ErrorEvent : PubSubEvent<MAS_EventMessage>
     {
     }
 }

@@ -37,6 +37,8 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isPopupOpen;
 
+        private Visibility isServiceViewButtonVisible;
+
         private bool machineModeSelectionBool;
 
         private bool machineOnMarchSelectionBool;
@@ -95,6 +97,8 @@ namespace Ferretto.VW.InstallationApp
         public Visibility IsNavigationButtonRegionExpanded { get => this.isNavigationButtonRegionExpanded; set => this.SetProperty(ref this.isNavigationButtonRegionExpanded, value); }
 
         public bool IsPopupOpen { get => this.isPopupOpen; set => this.SetProperty(ref this.isPopupOpen, value); }
+
+        public Visibility IsServiceViewButtonVisible { get => this.isServiceViewButtonVisible; set => this.SetProperty(ref this.isServiceViewButtonVisible, value); }
 
         public ICommand MachineModeCustomCommand => this.machineModeCustomCommand ?? (this.machineModeCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineModeEvent()));
 
@@ -162,15 +166,12 @@ namespace Ferretto.VW.InstallationApp
             false,
             message => message.Type == InstallationApp_EventMessageType.ExitView);
 
-            /**/
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe((message) =>
+            this.eventAggregator.GetEvent<MAS_ErrorEvent>().Subscribe((message) =>
             {
                 this.IsErrorViewButtonVisible = Visibility.Visible;
             },
             ThreadOption.PublisherThread,
-            false,
-            message => message.Type == InstallationApp_EventMessageType.Error);
-            /**/
+            false);
 
             MainWindow.FinishedMachineModeChangeStateEventHandler += () => { this.MachineModeSelectionBool = !this.MachineModeSelectionBool; };
             MainWindow.FinishedMachineOnMarchChangeStateEventHandler += () => { this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool; };

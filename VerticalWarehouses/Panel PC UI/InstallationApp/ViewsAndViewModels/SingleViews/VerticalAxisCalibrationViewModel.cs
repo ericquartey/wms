@@ -172,9 +172,6 @@ namespace Ferretto.VW.InstallationApp
                                 this.NoteString = VW.Resources.InstallationApp.HomingError;
                                 this.IsStartButtonActive = true;
                                 this.IsStopButtonActive = false;
-
-                                this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(Resources.Enumerables.InstallationApp_EventMessageType.Error));
-
                                 break;
                         }
                         break;
@@ -198,9 +195,6 @@ namespace Ferretto.VW.InstallationApp
                                 this.NoteString = VW.Resources.InstallationApp.HorizontalHomingError;
                                 this.IsStartButtonActive = true;
                                 this.IsStopButtonActive = false;
-
-                                this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(Resources.Enumerables.InstallationApp_EventMessageType.Error));
-
                                 break;
                         }
                         break;
@@ -224,9 +218,6 @@ namespace Ferretto.VW.InstallationApp
                                 this.NoteString = VW.Resources.InstallationApp.VerticalHomingError;
                                 this.IsStartButtonActive = true;
                                 this.IsStopButtonActive = false;
-
-                                this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(Resources.Enumerables.InstallationApp_EventMessageType.Error));
-
                                 break;
                         }
                         break;
@@ -246,9 +237,6 @@ namespace Ferretto.VW.InstallationApp
                                 this.NoteString = VW.Resources.InstallationApp.SwitchEngineError;
                                 this.IsStartButtonActive = true;
                                 this.IsStopButtonActive = false;
-
-                                this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(Resources.Enumerables.InstallationApp_EventMessageType.Error));
-
                                 break;
                         }
                         break;

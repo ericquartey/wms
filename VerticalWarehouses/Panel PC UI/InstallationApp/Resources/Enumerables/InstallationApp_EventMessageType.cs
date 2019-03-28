@@ -8,8 +8,6 @@
 
         BackToVWApp,
 
-        InstallationInfoChanged,
-
-        Error
+        InstallationInfoChanged
     }
 }
