@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
@@ -35,7 +34,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             ISchedulerRequestProvider schedulerRequestProvider,
             ICompartmentSchedulerProvider compartmentProvider,
             IItemSchedulerProvider itemProvider,
-            IItemListSchedulerProvider itemListSchedulerProvider,
             ILogger<MissionSchedulerProvider> logger)
         {
             this.databaseContext = databaseContext;
@@ -58,40 +56,35 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 return new List<Mission>();
             }
 
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            IEnumerable<Mission> missions = new List<Mission>();
+
+            this.logger.LogDebug($"A total of {requests.Count()} requests need to be processed.");
+
+            foreach (var request in requests)
             {
-                IEnumerable<Mission> missions = new List<Mission>();
+                this.logger.LogDebug($"Scheduler Request (id={request.Id}) for item (id={request.ItemId}) is the next in line to be processed.");
 
-                this.logger.LogDebug($"A total of {requests.Count()} requests need to be processed.");
-
-                foreach (var request in requests)
+                switch (request.Type)
                 {
-                    this.logger.LogDebug($"Scheduler Request (id={request.Id}) for item (id={request.ItemId}) is the next in line to be processed.");
+                    case OperationType.Withdrawal:
+                        missions = await this.CreateWithdrawalMissionsAsync(request);
+                        break;
 
-                    switch (request.Type)
-                    {
-                        case OperationType.Withdrawal:
-                            missions = await this.CreateWithdrawalMissionsAsync(request);
-                            break;
+                    case OperationType.Insertion:
+                        throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because insertion requests are not yet implemented.");
 
-                        case OperationType.Insertion:
-                            throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because insertion requests are not yet implemented.");
+                    case OperationType.Replacement:
+                        throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because replacement requests are not yet implemented.");
 
-                        case OperationType.Replacement:
-                            throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because replacement requests are not yet implemented.");
+                    case OperationType.Reorder:
+                        throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because reorder requests are not yet implemented.");
 
-                        case OperationType.Reorder:
-                            throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because reorder requests are not yet implemented.");
-
-                        default:
-                            throw new InvalidOperationException($"Cannot process scheduler request id={request.Id} because operation type cannot be understood.");
-                    }
+                    default:
+                        throw new InvalidOperationException($"Cannot process scheduler request id={request.Id} because operation type cannot be understood.");
                 }
-
-                scope.Complete();
-
-                return missions;
             }
+
+            return missions;
         }
 
         public async Task<IEnumerable<Mission>> GetAllAsync()
