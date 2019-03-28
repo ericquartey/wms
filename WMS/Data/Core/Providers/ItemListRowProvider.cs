@@ -86,7 +86,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Priority = model.Priority,
                 RegistrationNumber = model.RegistrationNumber,
                 RequestedQuantity = model.RequestedQuantity,
-                Status = (Common.DataModels.ItemListRowStatus)model.ItemListRowStatus,
+                Status = (Common.DataModels.ItemListRowStatus)model.Status,
                 Sub1 = model.Sub1,
                 Sub2 = model.Sub2
             });
@@ -247,7 +247,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     ItemId = l.Item.Id,
                     RequestedQuantity = l.RequestedQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
-                    ItemListRowStatus = (ItemListRowStatus)l.Status,
+                    Status = (ItemListRowStatus)l.Status,
                     ItemDescription = l.Item.Description,
                     CreationDate = l.CreationDate,
                     ItemListCode = l.ItemList.Code,

@@ -333,10 +333,27 @@
                             </wms:WmsGridControl.View>
 
                             <wms:WmsGridControl.Columns>
+                                <dxg:GridColumn Width="120*"
+                                                FieldName="Status" >
+                                    <dxg:GridColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <wms:WmsEnumIndicator Margin="5,0,0,0"
+                                                              VerticalAlignment="Center"
+                                                              EnumType="{x:Type models:ItemListRowStatus}"
+                                                              EnumValue="{Binding Data.Status}"
+                                                              HideIcon="True"
+                                                              IconSize="8"
+                                                              ShowText="True" />
+
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </dxg:GridColumn.CellTemplate>
+                                </dxg:GridColumn>
+                                <dxg:GridColumn Width="80*"
+                                                FieldName="Priority" />
                                 <dxg:GridColumn Width="100*"
                                                 FieldName="Code" />
-                                <dxg:GridColumn Width="80*"
-                                                FieldName="RowPriority" />
                                 <dxg:GridColumn Width="400*"
                                                 FieldName="ItemDescription" />
                                 <dxg:GridColumn Width="120*"
@@ -351,15 +368,15 @@
                                                 CellDisplayTemplate="{StaticResource CellDisplayTemplateDispatchedQuantity}"
                                                 FieldName="DispatchedQuantity" />
                                 <dxg:GridColumn Width="120*"
-                                                FieldName="ItemListRowStatus" />
-                                <dxg:GridColumn Width="120*"
                                                 FieldName="MaterialStatusDescription" />
                                 <dxg:GridColumn Width="150*"
                                                 FieldName="CreationDate" />
                             </wms:WmsGridControl.Columns>
 
                             <wms:WmsGridControl.SortInfo>
-                                <dxg:GridSortInfo FieldName="Code"
+                                <dxg:GridSortInfo FieldName="Priority"
+                                                  SortOrder="Ascending" />
+                                <dxg:GridSortInfo FieldName="Status"
                                                   SortOrder="Ascending" />
                             </wms:WmsGridControl.SortInfo>
 

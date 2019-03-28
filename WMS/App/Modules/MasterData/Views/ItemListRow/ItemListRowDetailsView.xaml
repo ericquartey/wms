@@ -136,14 +136,14 @@
                                       HorizontalAlignment="Stretch"
                                       wms:ShowTitle.Show="True"
                                       AllowNullInput="False"
-                                      EditValue="{Binding Path=Model.RowPriority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      EditValue="{Binding Path=Model.Priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       MinValue="1" />
 
-                        <wms:ComboBox x:Name="ItemListRowStatus"
+                        <wms:ComboBox x:Name="Status"
                                       Grid.Row="3"
                                       Grid.Column="0"
                                       wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Path=Model.ItemListRowStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      EditValue="{Binding Path=Model.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemTemplate="{DynamicResource ComboBoxEditTranslation}">
                             <dxmvvm:Interaction.Behaviors>
                                 <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type models:ItemListRowStatus}"
@@ -287,7 +287,7 @@
                               Margin="20,0"
                               Header="{x:Static res:MasterData.ExecutionDetails}">
                         <wms:WmsEnumIndicator EnumType="{x:Type models:ItemListRowStatus}"
-                                              EnumValue="{Binding Model.ItemListRowStatus}"
+                                              EnumValue="{Binding Model.Status}"
                                               IconSize="48"
                                               ShowText="True" />
                     </GroupBox>
