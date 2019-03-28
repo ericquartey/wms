@@ -9,11 +9,9 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
     {
         #region Fields
 
-        private Timer delayTimer;
-
         private const int PulseInterval = 350;
 
-        private readonly ILogger logger;
+        private Timer delayTimer;
 
         private bool disposed;
 
@@ -23,10 +21,14 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
         public ResetStateMachine(BlockingConcurrentQueue<IoMessage> ioCommandQueue, IEventAggregator eventAggregator, ILogger logger)
         {
+            logger.LogDebug("1:Method Start");
+
             logger.LogTrace("Reset State machine CTor");
             this.ioCommandQueue = ioCommandQueue;
             this.eventAggregator = eventAggregator;
             this.logger = logger;
+
+            this.logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -44,17 +46,21 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
         public override void ProcessMessage(IoMessage message)
         {
-            logger.LogTrace("Reset State maachine ProcessMessage");
+            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace(string.Format("2:{0}:{1}", message.ValidOutputs, message.ResetSecurity));
+
             if (message.ValidOutputs && message.ResetSecurity)
             {
                 this.delayTimer = new Timer(this.DelayElapsed, null, PulseInterval, -1);    //VALUE -1 period means timer does not fire multiple times
             }
+
             base.ProcessMessage(message);
+
+            this.logger.LogDebug("4:Method End");
         }
 
         public override void Start()
         {
-            logger.LogTrace("Reset State machine Start");
             this.CurrentState = new ResetOutputsState(this, this.logger);
         }
 
@@ -78,9 +84,15 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
         private void DelayElapsed(object state)
         {
+            this.logger.LogDebug("1:Method Start");
+
             var pulseIoMessage = new IoMessage(false);
 
+            this.logger.LogTrace(string.Format("2:{0}", pulseIoMessage));
+
             this.EnqueueMessage(pulseIoMessage);
+
+            this.logger.LogDebug("3:Method Start");
         }
 
         #endregion

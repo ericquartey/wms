@@ -66,11 +66,12 @@ namespace Ferretto.VW.MAS_IODriver
 
         public HostedIoDriver(IEventAggregator eventAggregator, IModbusTransport modbusTransport, IDataLayerValueManagment dataLayerValueManagment, ILogger<HostedIoDriver> logger)
         {
+            logger.LogDebug("1:Method Start");
+
+            this.logger = logger;
             this.eventAggregator = eventAggregator;
             this.dataLayerValueManagment = dataLayerValueManagment;
             this.modbusTransport = modbusTransport;
-
-            this.logger = logger;
 
             this.ioStatus = new IoStatus();
             this.pollIoEvent = new ManualResetEventSlim(false);
@@ -86,11 +87,15 @@ namespace Ferretto.VW.MAS_IODriver
             this.ioReceiveTask = new Task(async () => await this.ReceiveIoDataTaskFunction());
             this.ioSendTask = new Task(async () => await this.SendIoCommandTaskFunction());
 
+            this.logger.LogTrace("2:Contructor Subscription Command");
+
             var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
             commandEvent.Subscribe(message => { this.commandQueue.Enqueue(message); },
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Destination == MessageActor.IODriver || message.Destination == MessageActor.Any);
+
+            this.logger.LogTrace("3:Contructor Subscription Notification");
 
             var notificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
             notificationEvent.Subscribe(message => { this.notificationQueue.Enqueue(message); },
@@ -98,7 +103,7 @@ namespace Ferretto.VW.MAS_IODriver
                 false,
                 message => message.Destination == MessageActor.IODriver || message.Destination == MessageActor.Any);
 
-            this.logger?.LogTrace("Hosted I/O Driver Constructor");
+            this.logger.LogDebug("4:Method End");
         }
 
         #endregion
@@ -130,35 +135,43 @@ namespace Ferretto.VW.MAS_IODriver
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            this.logger.LogDebug("1:Method Start");
+
             this.stoppingToken = stoppingToken;
 
-            //TEMP Temporary uncomment these code lines in order to set the IP address (and to comment the others)
-            /*IPAddress.TryParse("169.254.231.10", out var ioAddress);*/
-            /*var ioPort = 502;*/
-            var ioAddress =
-                this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
-            var ioPort =
-                this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
+            var ioAddress = this.dataLayerValueManagment.GetIPAddressConfigurationValue((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
+
+            this.logger.LogTrace($"2:ioAddress : { ioAddress}");
+
+            var ioPort = this.dataLayerValueManagment.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
+
+            this.logger.LogTrace($"3:ioPort : { ioPort}");
 
             this.modbusTransport.Configure(ioAddress, ioPort);
 
             bool connectionResult;
-            this.logger?.LogTrace("Hosted I/O Execute Async");
 
             try
             {
+                this.logger.LogDebug("4:Connecting Transport");
+
                 connectionResult = this.modbusTransport.Connect();
             }
             catch (Exception ex)
             {
+                this.logger.LogCritical($"5:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.CreationFailure}");
+
                 throw new IoDriverException($"Exception: {ex.Message} while connecting to Modbus I/O master", IoDriverExceptionCode.CreationFailure, ex);
             }
 
             if (!connectionResult)
             {
+                this.logger.LogCritical("6:Failed to connect to Modbus I/O master");
+
                 throw new IoDriverException("Failed to connect to Modbus I/O master");
             }
 
+            this.logger.LogDebug("7:Starting Tasks");
             try
             {
                 this.commandReceiveTask.Start();
@@ -168,12 +181,18 @@ namespace Ferretto.VW.MAS_IODriver
             }
             catch (Exception ex)
             {
+                this.logger.LogCritical($"3:Exception: {ex.Message} while starting service threads");
+
                 throw new IOException($"Exception: {ex.Message} while starting service threads", ex);
             }
+
+            this.logger.LogDebug("8:Method End");
         }
 
         private Task CommandReceiveTaskFunction()
         {
+            this.logger.LogDebug("1:Method Start");
+
             this.pollIoTimer?.Dispose();
             try
             {
@@ -181,13 +200,13 @@ namespace Ferretto.VW.MAS_IODriver
             }
             catch (Exception ex)
             {
+                this.logger.LogCritical($"2:Exception: {ex.Message} Timer Creation Failed");
+
                 throw new IOException($"Exception: {ex.Message} Timer Creation Failed", ex);
             }
 
             this.currentStateMachine = new PowerUpStateMachine(this.ioCommandQueue, this.eventAggregator, this.logger);
             this.currentStateMachine.Start();
-
-            this.logger?.LogTrace("Hosted I/O Command Receive Task Function");
 
             do
             {
@@ -195,9 +214,16 @@ namespace Ferretto.VW.MAS_IODriver
                 try
                 {
                     this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+
+                    this.logger.LogTrace(string.Format("3:{0}:{1}:{2}",
+                        receivedMessage.Type,
+                        receivedMessage.Destination,
+                        receivedMessage));
                 }
                 catch (OperationCanceledException)
                 {
+                    this.logger.LogDebug("4:Method End");
+
                     return Task.CompletedTask;
                 }
 
@@ -205,6 +231,12 @@ namespace Ferretto.VW.MAS_IODriver
                 {
                     var errorNotification = new NotificationMessage(null, "I/O operation already in progress", MessageActor.Any,
                         MessageActor.IODriver, receivedMessage.Type, MessageStatus.OperationError, ErrorLevel.Error);
+
+                    this.logger.LogTrace(string.Format("5:{0}:{1}:{2}",
+                        errorNotification.Type,
+                        errorNotification.Destination,
+                        errorNotification.Status));
+
                     this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
                     continue;
                 }
@@ -221,12 +253,14 @@ namespace Ferretto.VW.MAS_IODriver
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
 
+            this.logger.LogDebug("6:Method End");
+
             return Task.CompletedTask;
         }
 
         private Task NotificationReceiveTaskFunction()
         {
-            this.logger?.LogTrace("Hosted I/O Notification Receive Task Function");
+            this.logger.LogDebug("1:Method Start");
 
             do
             {
@@ -234,9 +268,16 @@ namespace Ferretto.VW.MAS_IODriver
                 try
                 {
                     this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+
+                    this.logger.LogTrace(string.Format("2:{0}:{1}:{2}",
+                        receivedMessage.Type,
+                        receivedMessage.Destination,
+                        receivedMessage.Status));
                 }
                 catch (OperationCanceledException)
                 {
+                    this.logger.LogDebug("3:Method End");
+
                     return Task.CompletedTask;
                 }
 
@@ -253,6 +294,9 @@ namespace Ferretto.VW.MAS_IODriver
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
+
+            this.logger.LogDebug("4:Method End");
+
             return Task.CompletedTask;
         }
 
@@ -263,10 +307,12 @@ namespace Ferretto.VW.MAS_IODriver
 
         private async Task ReceiveIoDataTaskFunction()
         {
-            this.logger?.LogTrace("Hosted I/O Receive IO Data Task Function");
+            this.logger.LogDebug("1:Method Start");
 
             do
             {
+                IoMessage message;
+
                 try
                 {
                     this.pollIoEvent.Wait(Timeout.Infinite, this.stoppingToken);
@@ -274,6 +320,8 @@ namespace Ferretto.VW.MAS_IODriver
                 }
                 catch (OperationCanceledException)
                 {
+                    this.logger.LogDebug("2:Method End");
+
                     return;
                 }
 
@@ -283,6 +331,8 @@ namespace Ferretto.VW.MAS_IODriver
                 }
                 catch (Exception ex)
                 {
+                    this.logger.LogCritical($"3:Exception: {ex.Message} while reading async error - ExceptionCode: {IoDriverExceptionCode.CreationFailure}");
+
                     throw new IoDriverException($"Exception: {ex.Message} while reading async error", IoDriverExceptionCode.CreationFailure, ex);
                 }
 
@@ -293,14 +343,20 @@ namespace Ferretto.VW.MAS_IODriver
 
                 if (this.ioStatus.UpdateInputStates(this.inputData))
                 {
-                    this.currentStateMachine?.ProcessMessage(new IoMessage(this.inputData, true));
+                    message = new IoMessage(this.inputData, true);
+
+                    this.logger.LogTrace(string.Format("4:{0}", message));
+
+                    this.currentStateMachine?.ProcessMessage(message);
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
+
+            this.logger.LogDebug("5:Method End");
         }
 
         private async Task SendIoCommandTaskFunction()
         {
-            this.logger?.LogTrace("Hosted I/O Send IO Command Task Function");
+            this.logger.LogDebug("1:Method Start");
 
             do
             {
@@ -308,9 +364,13 @@ namespace Ferretto.VW.MAS_IODriver
                 try
                 {
                     this.ioCommandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out message);
+
+                    this.logger.LogTrace(string.Format("2:{0}", message));
                 }
                 catch (OperationCanceledException)
                 {
+                    this.logger.LogDebug("3:Method End");
+
                     return;
                 }
 
@@ -321,9 +381,13 @@ namespace Ferretto.VW.MAS_IODriver
                         await this.modbusTransport.WriteAsync(message.Outputs);
                     }
 
+                    this.logger.LogTrace(string.Format("4:{0}", message));
+
                     this.currentStateMachine.ProcessMessage(message);
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
+
+            this.logger.LogDebug("5:Method End");
         }
 
         #endregion
