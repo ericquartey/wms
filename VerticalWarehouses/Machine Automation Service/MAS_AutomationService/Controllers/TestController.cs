@@ -36,6 +36,22 @@ namespace Ferretto.VW.MAS_AutomationService
 
         #region Methods
 
+        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(500)]
+        [HttpGet("GetInstallationStatus")]
+        public ActionResult<bool[]> GetInstallationStatus()
+        {
+            bool[] installationStatus = { true, true, true, true, false, false, false, false, false, false, false, false, false, false, false };
+            if (installationStatus != null)
+            {
+                return this.Ok(installationStatus);
+            }
+            else
+            {
+                return this.StatusCode(500);
+            }
+        }
+
         [HttpGet("AddMissionTest")]
         public void AddMission()
         {
