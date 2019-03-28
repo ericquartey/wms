@@ -73,14 +73,10 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.IsBusy = true;
                 this.ItemsDataSource = null;
 
-                if (this.Data?.GetType() == typeof(int))
+                if (this.Data is int listId)
                 {
-                    this.Model = await this.itemListRowProvider.GetNewAsync((int)this.Data);
-
-                    if (this.Model != null)
-                    {
-                        this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(this.itemProvider).DataSource;
-                    }
+                    this.Model = await this.itemListRowProvider.GetNewAsync(listId);
+                    this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(this.itemProvider).DataSource;
                 }
             }
             catch
