@@ -62,28 +62,20 @@ namespace Ferretto.WMS.App.Core.Providers
             {
                 var itemListRow = await this.itemListRowsDataService.CreateAsync(new Data.WebAPI.Contracts.ItemListRowDetails
                 {
-                    Id = model.Id,
                     Code = model.Code,
                     Priority = model.RowPriority,
                     ItemId = model.ItemId,
+                    ItemListId = model.ItemListId,
                     RequestedQuantity = model.RequestedQuantity,
                     DispatchedQuantity = model.DispatchedQuantity,
                     ItemListRowStatus = (WMS.Data.WebAPI.Contracts.ItemListRowStatus)model.ItemListRowStatus,
-                    ItemDescription = model.ItemDescription,
-                    CreationDate = model.CreationDate,
                     ItemListCode = model.ItemListCode,
-                    ItemListDescription = model.ItemListDescription,
-                    ItemListType = (WMS.Data.WebAPI.Contracts.ItemListType)model.ItemListType,
-                    CompletionDate = model.CompletionDate,
-                    LastExecutionDate = model.LastExecutionDate,
-                    LastModificationDate = model.LastModificationDate,
                     Lot = model.Lot,
                     RegistrationNumber = model.RegistrationNumber,
                     Sub1 = model.Sub1,
                     Sub2 = model.Sub2,
                     PackageTypeId = model.PackageTypeId,
                     MaterialStatusId = model.MaterialStatusId,
-                    ItemUnitMeasure = model.ItemUnitMeasure,
                 });
 
                 model.Id = itemListRow.Id;
@@ -157,8 +149,8 @@ namespace Ferretto.WMS.App.Core.Providers
         {
             var row = await this.itemListRowsDataService.GetByIdAsync(id);
 
-            var materialStatusChoices = await this.materialStatusProvider.GetAllAsync();
-            var packageTypeChoices = await this.packageTypeProvider.GetAllAsync();
+            var enumeration = new ItemListRowDetails();
+            await this.AddEnumerationsAsync(enumeration);
 
             return new ItemListRowDetails
             {
@@ -184,8 +176,8 @@ namespace Ferretto.WMS.App.Core.Providers
                 PackageTypeId = row.PackageTypeId,
                 MaterialStatusId = row.MaterialStatusId,
                 ItemUnitMeasure = row.ItemUnitMeasure,
-                MaterialStatusChoices = materialStatusChoices,
-                PackageTypeChoices = packageTypeChoices,
+                MaterialStatusChoices = enumeration.MaterialStatusChoices,
+                PackageTypeChoices = enumeration.PackageTypeChoices,
                 ItemListId = row.ItemListId,
                 CanBeExecuted = row.CanBeExecuted,
             };
@@ -208,6 +200,14 @@ namespace Ferretto.WMS.App.Core.Providers
                     ItemUnitMeasure = l.ItemUnitMeasure,
                     CanBeExecuted = l.CanBeExecuted,
                 });
+        }
+
+        public async Task<ItemListRowDetails> GetNewAsync(int idList)
+        {
+            var row = new ItemListRowDetails();
+            row.ItemListId = idList;
+            await this.AddEnumerationsAsync(row);
+            return row;
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
@@ -270,6 +270,15 @@ namespace Ferretto.WMS.App.Core.Providers
             catch (Exception ex)
             {
                 return new OperationResult<ItemListRowDetails>(ex);
+            }
+        }
+
+        private async Task AddEnumerationsAsync(ItemListRowDetails row)
+        {
+            if (row != null)
+            {
+                row.MaterialStatusChoices = await this.materialStatusProvider.GetAllAsync();
+                row.PackageTypeChoices = await this.packageTypeProvider.GetAllAsync();
             }
         }
 
