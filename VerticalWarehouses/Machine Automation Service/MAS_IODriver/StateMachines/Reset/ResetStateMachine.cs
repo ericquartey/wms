@@ -23,7 +23,6 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
         {
             logger.LogDebug("1:Method Start");
 
-            logger.LogTrace("Reset State machine CTor");
             this.ioCommandQueue = ioCommandQueue;
             this.eventAggregator = eventAggregator;
             this.logger = logger;

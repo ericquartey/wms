@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
             base.ProcessMessage(message);
 
-            this.logger.LogDebug("4:Method End");
+            this.logger.LogDebug("3:Method End");
         }
 
         public override void Start()

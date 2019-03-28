@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS_IODriver
                         }
                         else
                         {
-                            this.currentStateMachine = new SwitchAxisSateMachine(Axis.Horizontal, this.ioStatus.ElevatorMotorOn, this.ioCommandQueue, this.eventAggregator, this.logger);
+                            this.currentStateMachine = new SwitchAxisStateMachine(Axis.Horizontal, this.ioStatus.ElevatorMotorOn, this.ioCommandQueue, this.eventAggregator, this.logger);
 
                             this.logger.LogDebug("3:Method Start Horizontal Axis");
 
@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS_IODriver
                         }
                         else
                         {
-                            this.currentStateMachine = new SwitchAxisSateMachine(Axis.Vertical, this.ioStatus.CradleMotorOn, this.ioCommandQueue, this.eventAggregator, this.logger);
+                            this.currentStateMachine = new SwitchAxisStateMachine(Axis.Vertical, this.ioStatus.CradleMotorOn, this.ioCommandQueue, this.eventAggregator, this.logger);
 
                             this.logger.LogDebug("5:Method Start Vertical Axis");
 

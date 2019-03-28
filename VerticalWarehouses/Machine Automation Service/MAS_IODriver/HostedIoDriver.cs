@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
@@ -140,6 +139,7 @@ namespace Ferretto.VW.MAS_IODriver
 
             this.stoppingToken = stoppingToken;
 
+            this.logger.LogDebug("2:Starting Tasks");
             try
             {
                 this.commandReceiveTask.Start();
@@ -152,7 +152,7 @@ namespace Ferretto.VW.MAS_IODriver
                 throw new IOException($"Exception: {ex.Message} while starting service threads", ex);
             }
 
-            this.logger.LogDebug("8:Method End");
+            this.logger.LogDebug("4:Method End");
         }
 
         private Task CommandReceiveTaskFunction()
@@ -244,7 +244,7 @@ namespace Ferretto.VW.MAS_IODriver
                 {
                     this.logger.LogDebug("3:Method End");
 
-                    return Task.CompletedTask;
+                    return;
                 }
 
                 switch (receivedMessage.Type)
@@ -267,7 +267,7 @@ namespace Ferretto.VW.MAS_IODriver
 
             this.logger.LogDebug("4:Method End");
 
-            return Task.CompletedTask;
+            return;
         }
 
         private void ReadIoData(object state)
@@ -362,10 +362,14 @@ namespace Ferretto.VW.MAS_IODriver
 
         private async Task StartHardwareCommunications()
         {
+            this.logger.LogDebug("1:Method Start");
+
             var ioAddress = await
                 this.dataLayerValueManagment.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
             var ioPort = await
                 this.dataLayerValueManagment.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
+
+            this.logger.LogTrace($"2:ioAddress={ioAddress}:ioPort={ioPort}");
 
             this.modbusTransport.Configure(ioAddress, ioPort);
 
@@ -376,11 +380,15 @@ namespace Ferretto.VW.MAS_IODriver
             }
             catch (Exception ex)
             {
+                this.logger.LogCritical($"3:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.CreationFailure}");
+
                 throw new IoDriverException($"Exception: {ex.Message} while connecting to Modbus I/O master", IoDriverExceptionCode.CreationFailure, ex);
             }
 
             if (!connectionResult)
             {
+                this.logger.LogCritical("4:Failed to connect to Modbus I/O master");
+
                 throw new IoDriverException("Failed to connect to Modbus I/O master");
             }
 
@@ -391,8 +399,12 @@ namespace Ferretto.VW.MAS_IODriver
             }
             catch (Exception ex)
             {
+                this.logger.LogCritical($"5:Exception: {ex.Message} while starting service hardware threads - ExceptionCode: {IoDriverExceptionCode.CreationFailure}");
+
                 throw new IOException($"Exception: {ex.Message} while starting service hardware threads", ex);
             }
+
+            this.logger.LogDebug("6:Method End");
         }
 
         #endregion
