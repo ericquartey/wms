@@ -49,9 +49,9 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     Code = i.Code,
                     Rows = i.ItemListRows.Select(r => new ItemListRow
                     {
-                        Code = r.Code,
                         Id = r.Id,
                         ItemId = r.ItemId,
+                        ListId = r.ItemListId,
                         Lot = r.Lot,
                         MaterialStatusId = r.MaterialStatusId,
                         PackageTypeId = r.PackageTypeId,
@@ -118,40 +118,12 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
             foreach (var row in list.Rows)
             {
-                var options = new ItemWithdrawOptions
+                var result = await this.itemListRowSchedulerProvider.PrepareForExecutionAsync(row, areaId, bayId);
+
+                if (result.Success)
                 {
-                    RunImmediately = false,
-                    BayId = bayId,
-                    AreaId = areaId,
-                    RequestedQuantity = row.RequestedQuantity,
-                    Lot = row.Lot,
-                    MaterialStatusId = row.MaterialStatusId,
-                    PackageTypeId = row.PackageTypeId,
-                    RegistrationNumber = row.RegistrationNumber,
-                    Sub1 = row.Sub1,
-                    Sub2 = row.Sub2,
-                };
-
-                var qualifiedRequest = await this.schedulerRequestProvider
-                    .FullyQualifyWithdrawalRequestAsync(row.ItemId, options);
-
-                if (qualifiedRequest != null)
-                {
-                    qualifiedRequest.ListId = list.Id;
-                    qualifiedRequest.ListRowId = row.Id;
-
-                    requests.Add(qualifiedRequest);
-
-                    row.Status = bayId.HasValue
-                        ? ListRowStatus.Executing
-                        : ListRowStatus.Waiting;
+                    requests.Add(result.Entity);
                 }
-                else
-                {
-                    row.Status = ListRowStatus.Suspended;
-                }
-
-                await this.itemListRowSchedulerProvider.UpdateAsync(row);
             }
 
             return requests;

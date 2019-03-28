@@ -14,6 +14,7 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public DateTime? LastExecutionDate { get; set; }
 
+        public int ListId { get; set; }
 
         public string Lot { get; set; }
 
