@@ -84,7 +84,7 @@ namespace Ferretto.WMS.App.Core.Models
             this[nameof(this.RequestedQuantity)],
             this[nameof(this.Code)],
             this[nameof(this.ItemId)],
-            this[nameof(this.ItemListRowStatus)],
+            this[nameof(this.Status)],
         }
         .Distinct()
         .Where(s => !string.IsNullOrEmpty(s)));
@@ -188,7 +188,7 @@ namespace Ferretto.WMS.App.Core.Models
                     case nameof(this.ItemId):
                         return GetErrorMessageIfNegativeOrZero(this.ItemId, nameof(this.ItemId));
 
-                    case nameof(this.ItemListRowStatus):
+                    case nameof(this.Status):
                         break;
                 }
 
