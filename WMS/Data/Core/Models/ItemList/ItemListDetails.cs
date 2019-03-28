@@ -62,6 +62,9 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public DateTime? LastModificationDate { get; set; }
 
+        [JsonIgnore]
+        public int NewRowsCount { get; internal set; }
+
         public int? Priority
         {
             get => this.priority;
@@ -79,6 +82,7 @@ namespace Ferretto.WMS.Data.Core.Models
         public ItemListStatus Status => ItemList.GetStatus(
            this.RowsCount,
            this.CompletedRowsCount,
+           this.NewRowsCount,
            this.ExecutingRowsCount,
            this.WaitingRowsCount,
            this.IncompleteRowsCount,
