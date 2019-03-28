@@ -74,7 +74,7 @@ namespace Ferretto.WMS.App.Core.Models
         public int Quantity
         {
             get => this.quantity;
-            set => this.SetIfPositive(ref this.quantity, value);
+            set => this.SetProperty(ref this.quantity, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemWithdrawRegistrationNumber), ResourceType = typeof(BusinessObjects))]

@@ -9,11 +9,11 @@ using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Prism.Events;
@@ -109,61 +109,6 @@ namespace Ferretto.VW.MAS_DataLayer
             this.logger?.LogInformation("DataLayer Constructor");
         }
 
-        /// <summary>
-        /// FAKE constructor to be used EXCLUSIVELLY for unit testing
-        /// </summary>
-        /// <param name="dataContext"></param>
-        /// <param name="eventAggregator"></param>
-        public DataLayer(DataLayerContext dataContext, IEventAggregator eventAggregator, IOptions<FilesInfo> filesInfo)
-        {
-            if (dataContext == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            if (eventAggregator == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            if (filesInfo == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            this.primaryDataContext = dataContext;
-
-            this.eventAggregator = eventAggregator;
-
-            this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
-
-            this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
-
-            this.commadReceiveTask = new Task(async () => await this.ReceiveCommandTaskFunction());
-            this.notificationReceiveTask = new Task(async () => await this.ReceiveNotificationTaskFunction());
-
-            var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            commandEvent.Subscribe(message => { this.commandQueue.Enqueue(message); },
-                ThreadOption.PublisherThread,
-                false,
-                message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
-
-            var NotificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            NotificationEvent.Subscribe(message => { this.notificationQueue.Enqueue(message); },
-                ThreadOption.PublisherThread,
-                false,
-                message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
-
-            // INFO Log events
-            // INFO Command full events
-            var commandFullEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            commandFullEvent.Subscribe(message => { this.LogMessages(message); });
-
-            // INFO Notification full events
-            var notificationFullEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            notificationFullEvent.Subscribe(message => { this.LogMessages(message); });
-        }
-
         #endregion
 
         #region Methods
@@ -186,10 +131,10 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <summary>
         /// This method is been invoked during the installation, to load the general_info.json file
         /// </summary>
-        /// <param name="configurationValueRequest">Configuration parameters to load</param>
+        /// <param name="configurationFilePath">Configuration parameters to load</param>
         /// <exception cref="DataLayerExceptionEnum.UNKNOWN_INFO_FILE_EXCEPTION">Exception for a wrong info file input name</exception>
         /// <exception cref="DataLayerExceptionEnum.UNDEFINED_TYPE_EXCEPTION">Exception for an unknown data type</exception>
-        private void LoadConfigurationValuesInfo(string configurationFilePath)
+        private async Task LoadConfigurationValuesInfoAsync(string configurationFilePath)
         {
             using (var streamReader = new StreamReader(configurationFilePath))
             {
@@ -213,7 +158,7 @@ namespace Ferretto.VW.MAS_DataLayer
                                     throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
                                 }
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)generalInfoData, jsonData.Value);
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)generalInfoData, jsonData.Value);
 
                                 break;
 
@@ -223,7 +168,7 @@ namespace Ferretto.VW.MAS_DataLayer
                                     throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
                                 }
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)setupNetworkData, jsonData.Value);
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)setupNetworkData, jsonData.Value);
 
                                 break;
 
@@ -233,7 +178,7 @@ namespace Ferretto.VW.MAS_DataLayer
                                     throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
                                 }
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)setupStatusData, jsonData.Value);
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)setupStatusData, jsonData.Value);
 
                                 break;
 
@@ -243,7 +188,7 @@ namespace Ferretto.VW.MAS_DataLayer
                                     throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
                                 }
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)verticalAxisData, jsonData.Value);
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)verticalAxisData, jsonData.Value);
 
                                 break;
 
@@ -253,7 +198,7 @@ namespace Ferretto.VW.MAS_DataLayer
                                     throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
                                 }
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)horizontalAxisData, jsonData.Value);
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)horizontalAxisData, jsonData.Value);
 
                                 break;
 
@@ -263,7 +208,7 @@ namespace Ferretto.VW.MAS_DataLayer
                                     throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
                                 }
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)horizontalMovementForwardProfileData, jsonData.Value);
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)horizontalMovementForwardProfileData, jsonData.Value);
 
                                 break;
 
@@ -273,7 +218,7 @@ namespace Ferretto.VW.MAS_DataLayer
                                     throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
                                 }
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)horizontalMovementBackwardProfileData, jsonData.Value);
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)horizontalMovementBackwardProfileData, jsonData.Value);
 
                                 break;
 
@@ -283,7 +228,7 @@ namespace Ferretto.VW.MAS_DataLayer
                                     throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
                                 }
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)verticalManualMovementsData, jsonData.Value);
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)verticalManualMovementsData, jsonData.Value);
 
                                 break;
 
@@ -293,7 +238,7 @@ namespace Ferretto.VW.MAS_DataLayer
                                     throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
                                 }
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)horizontalManualMovementsData, jsonData.Value);
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)horizontalManualMovementsData, jsonData.Value);
 
                                 break;
 
@@ -303,7 +248,7 @@ namespace Ferretto.VW.MAS_DataLayer
                                     throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
                                 }
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)beltBurnishingData, jsonData.Value);
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)beltBurnishingData, jsonData.Value);
 
                                 break;
 
@@ -313,7 +258,7 @@ namespace Ferretto.VW.MAS_DataLayer
                                     throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
                                 }
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)resolutionCalibrationData, jsonData.Value);
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)resolutionCalibrationData, jsonData.Value);
 
                                 break;
 
@@ -323,7 +268,7 @@ namespace Ferretto.VW.MAS_DataLayer
                                     throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
                                 }
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)offsetCalibrationData, jsonData.Value);
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)offsetCalibrationData, jsonData.Value);
 
                                 break;
 
@@ -333,7 +278,7 @@ namespace Ferretto.VW.MAS_DataLayer
                                     throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
                                 }
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)cellControlData, jsonData.Value);
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)cellControlData, jsonData.Value);
 
                                 break;
 
@@ -343,7 +288,7 @@ namespace Ferretto.VW.MAS_DataLayer
                                     throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
                                 }
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)panelControlData, jsonData.Value);
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)panelControlData, jsonData.Value);
 
                                 break;
 
@@ -353,7 +298,7 @@ namespace Ferretto.VW.MAS_DataLayer
                                     throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
                                 }
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)shutterHeightControlData, jsonData.Value);
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)shutterHeightControlData, jsonData.Value);
 
                                 break;
 
@@ -363,7 +308,7 @@ namespace Ferretto.VW.MAS_DataLayer
                                     throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
                                 }
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)weightControlData, jsonData.Value);
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)weightControlData, jsonData.Value);
 
                                 break;
 
@@ -373,7 +318,7 @@ namespace Ferretto.VW.MAS_DataLayer
                                     throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
                                 }
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)bayPositionControlData, jsonData.Value);
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)bayPositionControlData, jsonData.Value);
 
                                 break;
 
@@ -383,7 +328,7 @@ namespace Ferretto.VW.MAS_DataLayer
                                     throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
                                 }
 
-                                this.SaveConfigurationData(jsonElementCategory, (long)loadFirstDrawerData, jsonData.Value);
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)loadFirstDrawerData, jsonData.Value);
 
                                 break;
                         }
@@ -392,30 +337,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
         }
 
-        private void LogMessages(CommandMessage message)
-        {
-            if (message == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            var serializedData = JsonConvert.SerializeObject(message.Data);
-
-            var logEntry = new LogEntry();
-
-            logEntry.Data = serializedData;
-            logEntry.Description = message.Description;
-            logEntry.Destination = message.Destination.ToString();
-            logEntry.Source = message.Source.ToString();
-            logEntry.TimeStamp = DateTime.Now;
-            logEntry.Type = message.Type.ToString();
-
-            this.primaryDataContext.LogEntries.Add(logEntry);
-
-            this.primaryDataContext.SaveChanges();
-        }
-
-        private void LogMessages(NotificationMessage message)
+        private async void LogMessages(NotificationMessage message)
         {
             if (message == null)
             {
@@ -437,25 +359,51 @@ namespace Ferretto.VW.MAS_DataLayer
 
             this.primaryDataContext.LogEntries.Add(logEntry);
 
-            this.primaryDataContext.SaveChanges();
+            await this.primaryDataContext.SaveChangesAsync();
+        }
+
+        private async Task LogMessagesAsync(CommandMessage message)
+        {
+            if (message == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            var serializedData = JsonConvert.SerializeObject(message.Data);
+
+            var logEntry = new LogEntry();
+
+            logEntry.Data = serializedData;
+            logEntry.Description = message.Description;
+            logEntry.Destination = message.Destination.ToString();
+            logEntry.Source = message.Source.ToString();
+            logEntry.TimeStamp = DateTime.Now;
+            logEntry.Type = message.Type.ToString();
+
+            this.primaryDataContext.LogEntries.Add(logEntry);
+
+            await this.primaryDataContext.SaveChangesAsync();
         }
 
         private async Task ReceiveCommandTaskFunction()
         {
             this.primaryDataContext.Database.Migrate();
 
-            //this.secondaryDataContext = new DataLayerContext(new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(dataLayerConfiguration.SecondaryConnectionString).Options);
-            //this.secondaryDataContext.Database.Migrate();
+            this.secondaryDataContext = new DataLayerContext(new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(dataLayerConfiguration.SecondaryConnectionString).Options);
+            this.secondaryDataContext.Database.Migrate();
 
-            //try
-            //{
-            //    this.LoadConfigurationValuesInfo(dataLayerConfiguration.ConfigurationFilePath);
-            //}
+            try
+            {
+                await this.LoadConfigurationValuesInfoAsync(dataLayerConfiguration.ConfigurationFilePath);
+            }
+            catch (DataLayerException ex)
+            {
+                this.logger.LogError("Failed to load configuration values");
+            }
 
-            //catch (DataLayerException ex)
-            //{
-            //    this.logger.LogError("Failed to load configuration values");
-            //}
+            var errorNotification = new NotificationMessage(null, "DataLayer initialization complete", MessageActor.Any,
+                MessageActor.DataLayer, MessageType.DataLayerReady, MessageStatus.NoStatus);
+            this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
 
             do
             {
@@ -507,46 +455,46 @@ namespace Ferretto.VW.MAS_DataLayer
             } while (!this.stoppingToken.IsCancellationRequested);
         }
 
-        private void SaveConfigurationData(ConfigurationCategory elementCategory, long configurationData, JToken jsonDataValue)
+        private async Task SaveConfigurationDataAsync(ConfigurationCategory elementCategory, long configurationData, JToken jsonDataValue)
         {
-            if (!Enum.TryParse(jsonDataValue.Type.ToString(), false, out DataType generalInfoDataType))
+            if (!Enum.TryParse(jsonDataValue.Type.ToString(), false, out ConfigurationDataType generalInfoConfigurationDataType))
             {
                 throw new DataLayerException($"Invalid configuration data type: {jsonDataValue.Type.ToString()} for data {configurationData} in section {elementCategory} found in configuration file");
             }
 
             try
             {
-                switch (generalInfoDataType)
+                switch (generalInfoConfigurationDataType)
                 {
-                    case DataType.Boolean:
-                        this.SetBoolConfigurationValue(configurationData, (long)elementCategory,
+                    case ConfigurationDataType.Boolean:
+                        await this.SetBoolConfigurationValueAsync(configurationData, (long)elementCategory,
                             jsonDataValue.Value<bool>());
                         break;
 
-                    case DataType.Date:
-                        this.SetDateTimeConfigurationValue(configurationData, (long)elementCategory,
+                    case ConfigurationDataType.Date:
+                        await this.SetDateTimeConfigurationValueAsync(configurationData, (long)elementCategory,
                             jsonDataValue.Value<DateTime>());
                         break;
 
-                    case DataType.Integer:
-                        this.SetIntegerConfigurationValue(configurationData, (long)elementCategory,
+                    case ConfigurationDataType.Integer:
+                        await this.SetIntegerConfigurationValueAsync(configurationData, (long)elementCategory,
                             jsonDataValue.Value<int>());
                         break;
 
-                    case DataType.Float:
-                        this.SetDecimalConfigurationValue(configurationData, (long)elementCategory,
+                    case ConfigurationDataType.Float:
+                        await this.SetDecimalConfigurationValueAsync(configurationData, (long)elementCategory,
                             jsonDataValue.Value<decimal>());
                         break;
 
-                    case DataType.String:
+                    case ConfigurationDataType.String:
                         var stringValue = jsonDataValue.Value<string>();
                         if (IPAddress.TryParse(stringValue, out var configurationValue))
                         {
-                            this.SetIPAddressConfigurationValue(configurationData, (long)elementCategory, configurationValue);
+                            await this.SetIPAddressConfigurationValueAsync(configurationData, (long)elementCategory, configurationValue);
                         }
                         else
                         {
-                            this.SetStringConfigurationValue(configurationData, (long)elementCategory, stringValue);
+                            await this.SetStringConfigurationValueAsync(configurationData, (long)elementCategory, stringValue);
                         }
                         break;
                 }

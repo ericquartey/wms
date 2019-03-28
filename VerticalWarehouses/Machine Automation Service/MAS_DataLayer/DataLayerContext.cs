@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -77,6 +76,7 @@ namespace Ferretto.VW.MAS_DataLayer
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ConfigurationValue>().HasKey(cv => new { cv.CategoryName, cv.VarName });
+            modelBuilder.Entity<RuntimeValue>().HasKey(cv => new { cv.CategoryName, cv.VarName });
         }
 
         #endregion

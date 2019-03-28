@@ -1,14 +1,14 @@
-﻿using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.Common_Utils.Messages;
+﻿using System;
+using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.DTOs;
 using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.Common_Utils.DTOs;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
-using Ferretto.VW.MAS_DataLayer;
-using System;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
@@ -70,241 +70,29 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(404)]
         [HttpGet("DecimalConfigurationParameter/{category}/{parameter}")]
-        public ActionResult<decimal> GetDecimalConfigurationParameter(string category, string parameter)
+        public async Task<ActionResult<decimal>> GetDecimalConfigurationParameterAsync(string category, string parameter)
         {
-            if (!Enum.TryParse(category, false, out ConfigurationCategory configurationCategory))
-            {
-                return this.NotFound($"No configuration category found for {category} value");
-            }
-
-            string errorMessage = string.Empty;
-            long parameterId = 0;
-            switch (configurationCategory)
-            {
-                case ConfigurationCategory.GeneralInfo:
-                    if (!Enum.TryParse(parameter, false, out GeneralInfo generalInfoData))
-                    {
-                        errorMessage = $"No configuration value {parameter} found in category {category}";
-                    }
-                    else
-                    {
-                        parameterId = (long)generalInfoData;
-                    }
-
-                    break;
-
-                case ConfigurationCategory.SetupNetwork:
-                    if (!Enum.TryParse(parameter, false, out SetupNetwork setupNetworkData))
-                    {
-                        errorMessage = $"No configuration value {parameter} found in category {category}";
-                    }
-                    else
-                    {
-                        parameterId = (long)setupNetworkData;
-                    }
-
-                    break;
-
-                case ConfigurationCategory.SetupStatus:
-                    if (!Enum.TryParse(parameter, false, out SetupStatus setupStatusData))
-                    {
-                        errorMessage = $"No configuration value {parameter} found in category {category}";
-                    }
-                    else
-                    {
-                        parameterId = (long)setupStatusData;
-                    }
-
-                    break;
-
-                case ConfigurationCategory.VerticalAxis:
-                    if (!Enum.TryParse(parameter, false, out VerticalAxis verticalAxisData))
-                    {
-                        errorMessage = $"No configuration value {parameter} found in category {category}";
-                    }
-                    else
-                    {
-                        parameterId = (long)verticalAxisData;
-                    }
-
-                    break;
-
-                case ConfigurationCategory.HorizontalAxis:
-                    if (!Enum.TryParse(parameter, false, out HorizontalAxis horizontalAxisData))
-                    {
-                        errorMessage = $"No configuration value {parameter} found in category {category}";
-                    }
-                    else
-                    {
-                        parameterId = (long)horizontalAxisData;
-                    }
-
-                    break;
-
-                case ConfigurationCategory.HorizontalMovementForwardProfile:
-                    if (!Enum.TryParse(parameter, false, out HorizontalMovementForwardProfile horizontalMovementForwardProfileData))
-                    {
-                        errorMessage = $"No configuration value {parameter} found in category {category}";
-                    }
-                    else
-                    {
-                        parameterId = (long)horizontalMovementForwardProfileData;
-                    }
-
-                    break;
-
-                case ConfigurationCategory.HorizontalMovementBackwardProfile:
-                    if (!Enum.TryParse(parameter, false, out HorizontalMovementBackwardProfile horizontalMovementBackwardProfileData))
-                    {
-                        errorMessage = $"No configuration value {parameter} found in category {category}";
-                    }
-                    else
-                    {
-                        parameterId = (long)horizontalMovementBackwardProfileData;
-                    }
-
-                    break;
-
-                case ConfigurationCategory.VerticalManualMovements:
-                    if (!Enum.TryParse(parameter, false, out VerticalManualMovements verticalManualMovementsData))
-                    {
-                        errorMessage = $"No configuration value {parameter} found in category {category}";
-                    }
-                    else
-                    {
-                        parameterId = (long)verticalManualMovementsData;
-                    }
-
-                    break;
-
-                case ConfigurationCategory.HorizontalManualMovements:
-                    if (!Enum.TryParse(parameter, false, out HorizontalManualMovements horizontalManualMovementsData))
-                    {
-                        errorMessage = $"No configuration value {parameter} found in category {category}";
-                    }
-                    else
-                    {
-                        parameterId = (long)horizontalManualMovementsData;
-                    }
-
-                    break;
-
-                case ConfigurationCategory.BeltBurnishing:
-                    if (!Enum.TryParse(parameter, false, out BeltBurnishing beltBurnishingData))
-                    {
-                        errorMessage = $"No configuration value {parameter} found in category {category}";
-                    }
-                    else
-                    {
-                        parameterId = (long)beltBurnishingData;
-                    }
-
-                    break;
-
-                case ConfigurationCategory.ResolutionCalibration:
-                    if (!Enum.TryParse(parameter, false, out ResolutionCalibration resolutionCalibrationData))
-                    {
-                        errorMessage = $"No configuration value {parameter} found in category {category}";
-                    }
-                    else
-                    {
-                        parameterId = (long)resolutionCalibrationData;
-                    }
-
-                    break;
-
-                case ConfigurationCategory.OffsetCalibration:
-                    if (!Enum.TryParse(parameter, false, out OffsetCalibration offsetCalibrationData))
-                    {
-                        errorMessage = $"No configuration value {parameter} found in category {category}";
-                    }
-                    else
-                    {
-                        parameterId = (long)offsetCalibrationData;
-                    }
-
-                    break;
-
-                case ConfigurationCategory.CellControl:
-                    if (!Enum.TryParse(parameter, false, out CellControl cellControlData))
-                    {
-                        errorMessage = $"No configuration value {parameter} found in category {category}";
-                    }
-                    else
-                    {
-                        parameterId = (long)cellControlData;
-                    }
-
-                    break;
-
-                case ConfigurationCategory.PanelControl:
-                    if (!Enum.TryParse(parameter, false, out PanelControl panelControlData))
-                    {
-                        errorMessage = $"No configuration value {parameter} found in category {category}";
-                    }
-                    else
-                    {
-                        parameterId = (long)panelControlData;
-                    }
-
-                    break;
-
-                case ConfigurationCategory.ShutterHeightControl:
-                    if (!Enum.TryParse(parameter, false, out ShutterHeightControl shutterHeightControlData))
-                    {
-                        errorMessage = $"No configuration value {parameter} found in category {category}";
-                    }
-                    else
-                    {
-                        parameterId = (long)shutterHeightControlData;
-                    }
-
-                    break;
-
-                case ConfigurationCategory.WeightControl:
-                    if (!Enum.TryParse(parameter, false, out WeightControl weightControlData))
-                    {
-                        errorMessage = $"No configuration value {parameter} found in category {category}";
-                    }
-                    else
-                    {
-                        parameterId = (long)weightControlData;
-                    }
-
-                    break;
-
-                case ConfigurationCategory.BayPositionControl:
-                    if (!Enum.TryParse(parameter, false, out BayPositionControl bayPositionControlData))
-                    {
-                        errorMessage = $"No configuration value {parameter} found in category {category}";
-                    }
-                    else
-                    {
-                        parameterId = (long)bayPositionControlData;
-                    }
-
-                    break;
-
-                case ConfigurationCategory.LoadFirstDrawer:
-                    if (!Enum.TryParse(parameter, false, out LoadFirstDrawer loadFirstDrawerData))
-                    {
-                        errorMessage = $"No configuration value {parameter} found in category {category}";
-                    }
-                    else
-                    {
-                        parameterId = (long)loadFirstDrawerData;
-                    }
-
-                    break;
-            }
+            long.TryParse(parameter, out var parameterId);
+            long.TryParse(category, out var categoryId);
 
             if (parameterId != 0)
             {
-                return this.Ok(this.dataLayerValueManagement.GetDecimalConfigurationValue(parameterId, (long)configurationCategory));
+                decimal value;
+
+                try
+                {
+                    value = await this.dataLayerValueManagement.GetDecimalConfigurationValueAsync(parameterId, categoryId);
+                }
+                catch (Exception)
+                {
+                    return this.NotFound("Parameter not found");
+                }
+
+                return this.Ok(value);
             }
             else
             {
-                return this.NotFound(errorMessage);
+                return this.NotFound("Parameter not found");
             }
         }
 

@@ -22,21 +22,18 @@ namespace Ferretto.Common.Controls.Services
 
         #region Methods
 
-        public static ShortKey GetShortKey(Type view, ShortKey shortKey, out bool isMain)
+        public static(ShortKey shortKey, bool isMain) GetShortKey(Type view, ShortKey shortKey)
         {
             ShortKey shortKeyFound = null;
-            isMain = false;
+            var isMain = false;
 
-            if (view != null)
+            // Check on view
+            if (view != null && ViewShortKeys.ContainsKey(view.ToString()))
             {
-                // Check on view
-                if (ViewShortKeys.ContainsKey(view.ToString()))
+                var keys = ViewShortKeys[view.ToString()];
+                if (keys.Count > 0)
                 {
-                    var keys = ViewShortKeys[view.ToString()];
-                    if (keys.Count > 0)
-                    {
-                        shortKeyFound = Getkey(keys, shortKey);
-                    }
+                    shortKeyFound = Getkey(keys, shortKey);
                 }
             }
 
@@ -47,7 +44,7 @@ namespace Ferretto.Common.Controls.Services
                 isMain = shortKeyFound != null;
             }
 
-            return shortKeyFound;
+            return (shortKeyFound, isMain);
         }
 
         public static void Initialize()
@@ -95,9 +92,12 @@ namespace Ferretto.Common.Controls.Services
             #endregion
         }
 
-        private static ShortKey Getkey(List<ShortKey> keys, ShortKey shortKey)
+        private static ShortKey Getkey(IEnumerable<ShortKey> keys, ShortKey shortKey)
         {
-            return keys.Where(s => s.Key == shortKey.Key && s.ModifierKeyFirst == shortKey.ModifierKeyFirst && s.ModifierKeySecond == shortKey.ModifierKeySecond).FirstOrDefault();
+            return keys
+                .FirstOrDefault(s => s.Key == shortKey.Key
+                    && s.ModifierKeyFirst == shortKey.ModifierKeyFirst
+                    && s.ModifierKeySecond == shortKey.ModifierKeySecond);
         }
 
         #endregion

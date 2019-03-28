@@ -16,6 +16,12 @@ namespace Ferretto.WMS.Modules.Layout
     [ModuleDependency(nameof(Common.Utils.Modules.BusinessLogic))]
     public class LayoutModule : IModule
     {
+        #region Fields
+
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
+        #endregion
+
         #region Constructors
 
         public LayoutModule(IUnityContainer container, IRegionManager regionManager)
@@ -40,26 +46,26 @@ namespace Ferretto.WMS.Modules.Layout
         {
             var notificationService = ServiceLocator.Current.GetInstance<INotificationService>();
             notificationService.StartAsync().ConfigureAwait(true);
+
             var inputService = ServiceLocator.Current.GetInstance<IInputService>();
             inputService.Start();
+
             this.RegionManager.RegisterViewWithRegion(
                 $"{nameof(Common.Utils.Modules.Layout)}.{Common.Utils.Modules.Layout.REGION_MAINCONTENT}",
                 typeof(LayoutView));
+
             this.RegionManager.RegisterViewWithRegion(
                 $"{nameof(Common.Utils.Modules.Layout)}.{Common.Utils.Modules.Layout.REGION_MENU}", typeof(MenuView));
 
-            NLog.LogManager
-               .GetCurrentClassLogger()
-               .Trace("Module loaded.");
+            this.logger.Trace("Module loaded.");
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingLayoutModule);
 
-            NLog.LogManager
-               .GetCurrentClassLogger()
-               .Trace("Loading module ...");
+            this.logger.Trace("Loading module ...");
+
             var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
             navigationService.Register<LayoutView, LayoutViewModel>();
             navigationService.Register<MenuView, MenuViewModel>();

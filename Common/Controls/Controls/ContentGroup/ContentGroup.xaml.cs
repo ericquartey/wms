@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Ferretto.Common.Controls
@@ -7,11 +8,15 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty ControlContentProperty =
-            DependencyProperty.Register(nameof(ControlContent), typeof(object), typeof(ContentGroup));
+        public static readonly DependencyProperty ControlContentProperty = DependencyProperty.Register(
+            nameof(ControlContent),
+            typeof(object),
+            typeof(ContentGroup));
 
-        public static readonly DependencyProperty LabelProperty =
-            DependencyProperty.Register(nameof(Label), typeof(string), typeof(ContentGroup));
+        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(
+            nameof(Label),
+            typeof(string),
+            typeof(ContentGroup));
 
         #endregion
 
@@ -20,7 +25,6 @@ namespace Ferretto.Common.Controls
         public ContentGroup()
         {
             this.InitializeComponent();
-            this.GridContentGroup.DataContext = this;
         }
 
         #endregion
@@ -37,6 +41,17 @@ namespace Ferretto.Common.Controls
         {
             get => (string)this.GetValue(LabelProperty);
             set => this.SetValue(LabelProperty, value);
+        }
+
+        #endregion
+
+        #region Methods
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+
+            this.GridContentGroup.DataContext = this;
         }
 
         #endregion

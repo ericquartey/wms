@@ -48,8 +48,6 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
-        public WmsViewType ViewType { get; }
-
         public object Data { get; set; }
 
         public string FocusedStart
@@ -75,6 +73,8 @@ namespace Ferretto.Common.Controls
         }
 
         public string Token { get; set; }
+
+        public WmsViewType ViewType { get; }
 
         #endregion
 
@@ -154,18 +154,19 @@ namespace Ferretto.Common.Controls
             this.Disappear();
         }
 
-        private static void EnableControls(WmsDialogView dialogView, bool isEnabled)
+        private static void OnHeaderIsEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is WmsDialogView dialogView
+                && e.NewValue is bool isEnabled)
+            {
+                SetControlEnabledState(dialogView, isEnabled);
+            }
+        }
+
+        private static void SetControlEnabledState(DependencyObject dialogView, bool isEnabled)
         {
             var childrenToCheck = LayoutTreeHelper.GetVisualChildren(dialogView).OfType<IEnabled>();
             childrenToCheck.ForEach(c => c.IsEnabled = isEnabled);
-        }
-
-        private static void OnHeaderIsEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is WmsDialogView dialogView && e.NewValue is bool isEnabled)
-            {
-                EnableControls(dialogView, isEnabled);
-            }
         }
 
         private void CheckDataContext()

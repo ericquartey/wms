@@ -32,7 +32,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string job;
 
-        private int priority;
+        private int? priority;
 
         private bool shipmentUnitAssociated;
 
@@ -104,6 +104,7 @@ namespace Ferretto.WMS.App.Core.Models
                 this[nameof(this.Code)],
                 this[nameof(this.ItemListType)],
                 this[nameof(this.Status)],
+                this[nameof(this.ItemListItemsCount)],
                 this[nameof(this.Priority)],
             }
           .Distinct()
@@ -119,7 +120,7 @@ namespace Ferretto.WMS.App.Core.Models
         public int ItemListItemsCount
         {
             get => this.itemListItemsCount;
-            set => this.SetIfPositive(ref this.itemListItemsCount, value);
+            set => this.SetProperty(ref this.itemListItemsCount, value);
         }
 
         public IEnumerable<ItemListRow> ItemListRows
@@ -138,13 +139,7 @@ namespace Ferretto.WMS.App.Core.Models
         public ItemListType ItemListType
         {
             get => this.itemListType;
-            set
-            {
-                if (this.SetProperty(ref this.itemListType, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.itemListType, value);
         }
 
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
@@ -166,16 +161,10 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Required]
         [Display(Name = nameof(BusinessObjects.ItemListPriority), ResourceType = typeof(BusinessObjects))]
-        public int Priority
+        public int? Priority
         {
             get => this.priority;
-            set
-            {
-                if (this.SetIfStrictlyPositive(ref this.priority, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.priority, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemListShipmentUnitAssociated), ResourceType = typeof(BusinessObjects))]
@@ -204,13 +193,7 @@ namespace Ferretto.WMS.App.Core.Models
         public ItemListStatus Status
         {
             get => this.status;
-            set
-            {
-                if (this.SetProperty(ref this.status, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.status, value);
         }
 
         #endregion
@@ -231,9 +214,17 @@ namespace Ferretto.WMS.App.Core.Models
                 switch (columnName)
                 {
                     case nameof(this.Priority):
-                        if (this.priority < 1)
+                        if (this.Priority < 1)
                         {
                             return string.Format(Common.Resources.Errors.PropertyMustBeStriclyPositive, nameof(this.Priority));
+                        }
+
+                        break;
+
+                    case nameof(this.ItemListItemsCount):
+                        if (this.ItemListItemsCount < 0)
+                        {
+                            return string.Format(Common.Resources.Errors.PropertyMustBePositive, nameof(this.ItemListItemsCount));
                         }
 
                         break;

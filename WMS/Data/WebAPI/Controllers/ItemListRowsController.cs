@@ -109,24 +109,25 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok();
         }
 
-        [HttpPost("execute")]
+        [HttpPost("{id}/execute")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        public async Task<ActionResult> ExecuteAsync(Scheduler.Core.Models.ListRowExecutionRequest request)
+        public async Task<ActionResult> ExecuteAsync(int id, int areaId, int? bayId = null)
         {
-            var acceptedRequests = await this.schedulerService.ExecuteListRowAsync(request);
-            if (acceptedRequests == null)
+            var result = await this.schedulerService.ExecuteListRowAsync(id, areaId, bayId);
+            if (result is UnprocessableEntityOperationResult<ItemListRow>)
             {
-                this.logger.LogWarning($"Request of execution for list row (id={request?.ListRowId}) could not be processed.");
+                this.logger.LogWarning($"Request of execution for list row (id={id}) could not be processed.");
 
                 return this.UnprocessableEntity(new ProblemDetails
                 {
-                    Status = StatusCodes.Status422UnprocessableEntity
+                    Status = StatusCodes.Status422UnprocessableEntity,
+                    Detail = result.Description
                 });
             }
 
-            this.logger.LogInformation($"Request of execution for list row (id={request?.ListRowId}) was accepted.");
+            this.logger.LogInformation($"Request of execution for list row (id={id}) was accepted.");
 
             return this.Ok();
         }
