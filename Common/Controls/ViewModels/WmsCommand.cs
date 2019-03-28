@@ -34,6 +34,7 @@ namespace Ferretto.Common.Controls
             {
                 await this.ActionBefore();
             }
+
             base.Execute(parameter);
         }
 
