@@ -331,6 +331,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerActivityUpdateMaxQuantity.
+        /// </summary>
+        public static string DrawerActivityUpdateMaxQuantity {
+            get {
+                return ResourceManager.GetString("DrawerActivityUpdateMaxQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a DrawerCompactingAntCompact.
         /// </summary>
         public static string DrawerCompactingAntCompact {

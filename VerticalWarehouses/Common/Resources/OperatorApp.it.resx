@@ -408,4 +408,7 @@
   <data name="DrawerCompactingRearCompact" xml:space="preserve">
     <value>Compatta posteriore</value>
   </data>
+  <data name="DrawerActivityUpdateMaxQuantity" xml:space="preserve">
+    <value>Aggiorna quantita' massima</value>
+  </data>
 </root>

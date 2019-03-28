@@ -43,11 +43,11 @@
                   Content="{x:Static Resources:OperatorApp.ImmediateDrawerCallDrawerCall}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,530,0,0" Width="500"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,530,0,0" MaxWidth="500"
                                                ContentText="Cassetto bloccato."
                                                LabelText="{x:Static Resources:OperatorApp.ItemDetailNote}"/>
         
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,460,0,0" Width="150"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,460,0,0" MaxWidth="200"
                                                ContentText="1012"
                                                LabelText="{x:Static Resources:OperatorApp.ImmediateDrawerCallRequiredDrawer}"/>
 

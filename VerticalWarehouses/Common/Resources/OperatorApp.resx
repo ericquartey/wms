@@ -505,4 +505,8 @@
     <value>DrawerCompactingRearCompact</value>
     <comment>Button text</comment>
   </data>
+  <data name="DrawerActivityUpdateMaxQuantity" xml:space="preserve">
+    <value>DrawerActivityUpdateMaxQuantity</value>
+    <comment>Button text</comment>
+  </data>
 </root>
