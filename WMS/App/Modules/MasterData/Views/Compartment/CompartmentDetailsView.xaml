@@ -366,7 +366,7 @@
                                            Margin="0,0,0,5"
                                            HorizontalAlignment="Right"
                                            Style="{DynamicResource ActionBarNotCustomizable}">
-                                <wms:ActionBarItem Command="{Binding EditCommand}"
+                                <wms:ActionBarItem Command="{Binding EditCompartmentCommand}"
                                                    Content="{x:Static res:MasterData.EditLoadingUnit}"
                                                    CustomGlyphSize="24,24"
                                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/1x_web/ic_edit_black_24dp.png"

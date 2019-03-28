@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.App.Core.Extensions;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 
@@ -90,6 +91,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     XCoordinate = c.XCoordinate,
                     YCoordinate = c.YCoordinate,
                     ZCoordinate = c.ZCoordinate,
+                    Policies = c.GetPolicies(),
                 });
         }
 
@@ -147,6 +149,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 XCoordinate = cell.XCoordinate,
                 YCoordinate = cell.YCoordinate,
                 ZCoordinate = cell.ZCoordinate,
+                Policies = cell.GetPolicies(),
             };
         }
 

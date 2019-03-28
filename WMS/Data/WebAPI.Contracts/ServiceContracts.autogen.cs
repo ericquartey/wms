@@ -283,13 +283,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     public partial interface ICompartmentsDataService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ActionModel> CanDeleteAsync(int id);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<ActionModel> CanDeleteAsync(int id, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<CompartmentDetails> CreateAsync(CompartmentDetails model);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -461,13 +454,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.0.15.0 (NJsonSchema v9.13.22.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IItemListRowsDataService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ActionModel> CanDeleteAsync(int id);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<ActionModel> CanDeleteAsync(int id, System.Threading.CancellationToken cancellationToken);
-    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ItemListRowDetails> CreateAsync(ItemListRowDetails model);
     
@@ -1493,6 +1479,9 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("LoadingUnitTypeId", Required = Newtonsoft.Json.Required.Always)]
         public int LoadingUnitTypeId { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("MissionsCount", Required = Newtonsoft.Json.Required.Always)]
+        public int MissionsCount { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Note", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Note { get; set; }
     
@@ -1506,6 +1495,9 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public ReferenceType ReferenceType { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("SchedulerRequestsCount", Required = Newtonsoft.Json.Required.Always)]
+        public int SchedulerRequestsCount { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Weight", Required = Newtonsoft.Json.Required.Always)]
         public int Weight { get; set; }
@@ -1568,27 +1560,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public static CellType FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<CellType>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.22.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class ActionModel 
-    {
-        [Newtonsoft.Json.JsonProperty("IsAllowed", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsAllowed { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("Reason", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Reason { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static ActionModel FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ActionModel>(data);
         }
     
     }
@@ -1897,9 +1868,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.22.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class ItemListRowDetails : BaseModelOfInt32
     {
-        [Newtonsoft.Json.JsonProperty("CanBeExecuted", Required = Newtonsoft.Json.Required.Always)]
-        public bool CanBeExecuted { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("Code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Code { get; set; }
     
@@ -1927,11 +1895,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     
         [Newtonsoft.Json.JsonProperty("ItemListId", Required = Newtonsoft.Json.Required.Always)]
         public int ItemListId { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("ItemListRowStatus", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public ItemListRowStatus ItemListRowStatus { get; set; }
     
         [Newtonsoft.Json.JsonProperty("ItemListType", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
@@ -1965,6 +1928,14 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("RequestedQuantity", Required = Newtonsoft.Json.Required.Always)]
         public int RequestedQuantity { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("SchedulerRequestsCount", Required = Newtonsoft.Json.Required.Always)]
+        public int SchedulerRequestsCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Status", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ItemListRowStatus Status { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Sub1", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Sub1 { get; set; }
     
@@ -1980,6 +1951,23 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ItemListRowDetails>(data);
         }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.22.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum ItemListType
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"notSpecified")]
+        NotSpecified = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"inventory")]
+        Inventory = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"pick")]
+        Pick = 2,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"put")]
+        Put = 3,
     
     }
     
@@ -2007,28 +1995,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.22.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum ItemListType
-    {
-        [System.Runtime.Serialization.EnumMember(Value = @"notSpecified")]
-        NotSpecified = 0,
-    
-        [System.Runtime.Serialization.EnumMember(Value = @"inventory")]
-        Inventory = 1,
-    
-        [System.Runtime.Serialization.EnumMember(Value = @"pick")]
-        Pick = 2,
-    
-        [System.Runtime.Serialization.EnumMember(Value = @"put")]
-        Put = 3,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.22.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class ItemListRow : BaseModelOfInt32
     {
-        [Newtonsoft.Json.JsonProperty("CanBeExecuted", Required = Newtonsoft.Json.Required.Always)]
-        public bool CanBeExecuted { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("Code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Code { get; set; }
     
@@ -2057,6 +2025,9 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("RequestedQuantity", Required = Newtonsoft.Json.Required.Always)]
         public int RequestedQuantity { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("SchedulerRequestsCount", Required = Newtonsoft.Json.Required.Always)]
+        public int SchedulerRequestsCount { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Status", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
@@ -2079,12 +2050,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     {
         [Newtonsoft.Json.JsonProperty("AreaName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string AreaName { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("CanAddNewRow", Required = Newtonsoft.Json.Required.Always)]
-        public bool CanAddNewRow { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("CanBeExecuted", Required = Newtonsoft.Json.Required.Always)]
-        public bool CanBeExecuted { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Code { get; set; }
@@ -2230,6 +2195,15 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.22.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class ItemDetails : BaseModelOfInt32
     {
+        [Newtonsoft.Json.JsonProperty("ItemListRowsCount", Required = Newtonsoft.Json.Required.Always)]
+        public int ItemListRowsCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("MissionsCount", Required = Newtonsoft.Json.Required.Always)]
+        public int MissionsCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("SchedulerRequestsCount", Required = Newtonsoft.Json.Required.Always)]
+        public int SchedulerRequestsCount { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("AbcClassId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string AbcClassId { get; set; }
     
@@ -2346,6 +2320,18 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.22.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Item : BaseModelOfInt32
     {
+        [Newtonsoft.Json.JsonProperty("CompartmentsCount", Required = Newtonsoft.Json.Required.Always)]
+        public int CompartmentsCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ItemListRowsCount", Required = Newtonsoft.Json.Required.Always)]
+        public int ItemListRowsCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("MissionsCount", Required = Newtonsoft.Json.Required.Always)]
+        public int MissionsCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("SchedulerRequestsCount", Required = Newtonsoft.Json.Required.Always)]
+        public int SchedulerRequestsCount { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("AbcClassDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string AbcClassDescription { get; set; }
     
@@ -2502,7 +2488,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("ListRowStatus", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public ListRowStatus ListRowStatus { get; set; }
+        public ItemListRowStatus2 ListRowStatus { get; set; }
     
         [Newtonsoft.Json.JsonProperty("LoadingUnitId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? LoadingUnitId { get; set; }
@@ -2555,7 +2541,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.22.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum ListRowStatus
+    public enum ItemListRowStatus2
     {
         [System.Runtime.Serialization.EnumMember(Value = @"notSpecified")]
         NotSpecified = 0,
@@ -2747,11 +2733,20 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("Code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Code { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("CompartmentsCount", Required = Newtonsoft.Json.Required.Always)]
+        public int CompartmentsCount { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("LoadingUnitStatusDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string LoadingUnitStatusDescription { get; set; }
     
         [Newtonsoft.Json.JsonProperty("LoadingUnitTypeDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string LoadingUnitTypeDescription { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("MissionsCount", Required = Newtonsoft.Json.Required.Always)]
+        public int MissionsCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("SchedulerRequestsCount", Required = Newtonsoft.Json.Required.Always)]
+        public int SchedulerRequestsCount { get; set; }
     
         public string ToJson() 
         {

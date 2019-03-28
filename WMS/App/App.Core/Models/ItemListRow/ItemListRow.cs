@@ -16,7 +16,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string itemDescription;
 
-        private ItemListRowStatus itemListRowStatus;
+        private ItemListRowStatus status;
 
         private string itemUnitMeasure;
 
@@ -29,8 +29,6 @@ namespace Ferretto.WMS.App.Core.Models
         #endregion
 
         #region Properties
-
-        public bool CanBeExecuted { get; set; }
 
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string Code { get => this.code; set => this.SetProperty(ref this.code, value); }
@@ -45,7 +43,7 @@ namespace Ferretto.WMS.App.Core.Models
         public string ItemDescription { get => this.itemDescription; set => this.SetProperty(ref this.itemDescription, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusDescription), ResourceType = typeof(BusinessObjects))]
-        public ItemListRowStatus ItemListRowStatus { get => this.itemListRowStatus; set => this.SetProperty(ref this.itemListRowStatus, value); }
+        public ItemListRowStatus Status { get => this.status; set => this.SetProperty(ref this.status, value); }
 
         public string ItemUnitMeasure { get => this.itemUnitMeasure; set => this.SetProperty(ref this.itemUnitMeasure, value); }
 

@@ -23,7 +23,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private IEnumerable<Compartment> compartmentsDataSource;
 
-        private ICommand deleteCommand;
+        private ICommand deleteItemCommand;
 
         private bool itemHasCompartments;
 
@@ -35,7 +35,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private Compartment selectedCompartment;
 
-        private ICommand withdrawCommand;
+        private ICommand withdrawItemCommand;
 
         #endregion
 
@@ -56,9 +56,9 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.compartmentsDataSource, value);
         }
 
-        public ICommand DeleteCommand => this.deleteCommand ??
-            (this.deleteCommand = new DelegateCommand(
-                async () => await this.ExecuteDeleteCommandAsync()));
+        public ICommand DeleteItemCommand => this.deleteItemCommand ??
+            (this.deleteItemCommand = new DelegateCommand(
+                async () => await this.DeleteItemAsync()));
 
         public bool ItemHasCompartments
         {
@@ -72,10 +72,9 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.selectedCompartment, value);
         }
 
-        public ICommand WithdrawCommand => this.withdrawCommand ??
-                                          (this.withdrawCommand = new DelegateCommand(
-                                               this.ExecuteWithdraw,
-                                               this.CanExecuteWithdraw));
+        public ICommand WithdrawItemCommand => this.withdrawItemCommand ??
+            (this.withdrawItemCommand = new DelegateCommand(
+                this.WithdrawItem));
 
         #endregion
 
@@ -97,7 +96,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             base.EvaluateCanExecuteCommands();
 
-            ((DelegateCommand)this.WithdrawCommand)?.RaiseCanExecuteChanged();
+            ((DelegateCommand)this.WithdrawItemCommand)?.RaiseCanExecuteChanged();
         }
 
         protected override async Task ExecuteRefreshCommandAsync()
@@ -145,15 +144,16 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnDispose();
         }
 
-        private bool CanExecuteWithdraw()
-        {
-            return this.Model?.TotalAvailable > 0;
-        }
-
         private async Task DeleteItemAsync()
         {
+            if (!this.Model.CanDelete())
+            {
+                this.ShowErrorDialog(this.Model.GetCanDeleteReason());
+                return;
+            }
+
             var userChoice = this.DialogService.ShowMessage(
-                string.Format(DesktopApp.AreYouSureToDeleteGeneric, BusinessObjects.ItemListRow),
+                string.Format(DesktopApp.AreYouSureToDeleteGeneric, BusinessObjects.Item),
                 DesktopApp.ConfirmOperation,
                 DialogType.Question,
                 DialogButtons.YesNo);
@@ -174,20 +174,14 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        private async Task ExecuteDeleteCommandAsync()
+        private void WithdrawItem()
         {
-            if (this.Model.CanDelete())
+            if (!this.Model.CanExecuteOperation("Withdraw"))
             {
-                await this.DeleteItemAsync();
+                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason("Withdraw"));
+                return;
             }
-            else
-            {
-                this.ShowErrorDialog(this.Model.GetCanDeleteReason());
-            }
-        }
 
-        private void ExecuteWithdraw()
-        {
             this.IsBusy = true;
 
             this.NavigationService.Appear(
