@@ -29,11 +29,15 @@ namespace Ferretto.VW.InstallationApp
 
         private BindableBase exitViewButtonRegionCurrentViewModel;
 
+        private Visibility isErrorViewButtonVisible;
+
         private bool isExitViewButtonRegionExpanded;
 
         private Visibility isNavigationButtonRegionExpanded = Visibility.Visible;
 
         private bool isPopupOpen;
+
+        private Visibility isServiceViewButtonVisible;
 
         private bool machineModeSelectionBool;
 
@@ -51,6 +55,8 @@ namespace Ferretto.VW.InstallationApp
         {
             this.eventAggregator = eventAggregator;
             this.helpWindow = new HelpMainWindow(eventAggregator);
+
+            this.IsErrorViewButtonVisible = Visibility.Collapsed;
         }
 
         #endregion
@@ -73,22 +79,26 @@ namespace Ferretto.VW.InstallationApp
         }));
 
         public ICommand BackToVWAPPCommand => this.backToVWAPPCommand ?? (this.backToVWAPPCommand = new DelegateCommand(() =>
-                {
-                    this.IsPopupOpen = false;
-                    this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.BackToVWApp));
-                    ClickedOnMachineModeEventHandler = null;
-                    ClickedOnMachineOnMarchEventHandler = null;
-                }));
+        {
+            this.IsPopupOpen = false;
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.BackToVWApp));
+            ClickedOnMachineModeEventHandler = null;
+            ClickedOnMachineOnMarchEventHandler = null;
+        }));
 
         public BindableBase ContentRegionCurrentViewModel { get => this.contentRegionCurrentViewModel; set => this.SetProperty(ref this.contentRegionCurrentViewModel, value); }
 
         public BindableBase ExitViewButtonRegionCurrentViewModel { get => this.exitViewButtonRegionCurrentViewModel; set => this.SetProperty(ref this.exitViewButtonRegionCurrentViewModel, value); }
+
+        public Visibility IsErrorViewButtonVisible { get => this.isErrorViewButtonVisible; set => this.SetProperty(ref this.isErrorViewButtonVisible, value); }
 
         public bool IsExitViewButtonRegionExpanded { get => this.isExitViewButtonRegionExpanded; set => this.SetProperty(ref this.isExitViewButtonRegionExpanded, value); }
 
         public Visibility IsNavigationButtonRegionExpanded { get => this.isNavigationButtonRegionExpanded; set => this.SetProperty(ref this.isNavigationButtonRegionExpanded, value); }
 
         public bool IsPopupOpen { get => this.isPopupOpen; set => this.SetProperty(ref this.isPopupOpen, value); }
+
+        public Visibility IsServiceViewButtonVisible { get => this.isServiceViewButtonVisible; set => this.SetProperty(ref this.isServiceViewButtonVisible, value); }
 
         public ICommand MachineModeCustomCommand => this.machineModeCustomCommand ?? (this.machineModeCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineModeEvent()));
 
@@ -155,6 +165,13 @@ namespace Ferretto.VW.InstallationApp
             ThreadOption.PublisherThread,
             false,
             message => message.Type == InstallationApp_EventMessageType.ExitView);
+
+            this.eventAggregator.GetEvent<MAS_ErrorEvent>().Subscribe((message) =>
+            {
+                this.IsErrorViewButtonVisible = Visibility.Visible;
+            },
+            ThreadOption.PublisherThread,
+            false);
 
             MainWindow.FinishedMachineModeChangeStateEventHandler += () => { this.MachineModeSelectionBool = !this.MachineModeSelectionBool; };
             MainWindow.FinishedMachineOnMarchChangeStateEventHandler += () => { this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool; };
