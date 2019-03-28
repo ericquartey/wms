@@ -30,5 +30,10 @@
         <ProjectReference Include="..\..\..\Common\Utils\Ferretto.Common.Utils.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <Compile Update="**\*.Policies.cs">
+            <DependentUpon>$([System.String]::Copy('%(Filename)').Replace( '.Policies', '' ))%(Extension)</DependentUpon>
+        </Compile>
+    </ItemGroup>
 
 </Project>

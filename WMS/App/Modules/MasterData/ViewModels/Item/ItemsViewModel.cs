@@ -18,29 +18,33 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
-        private ICommand deleteCommand;
+        private ICommand deleteItemCommand;
 
-        private ICommand showDetailsCommand;
+        private ICommand showItemDetailsCommand;
 
-        private ICommand withdrawCommand;
+        private ICommand withdrawItemCommand;
 
         #endregion
 
         #region Properties
 
-        public ICommand DeleteCommand => this.deleteCommand ??
-            (this.deleteCommand = new DelegateCommand(
-                async () => await this.ExecuteDeleteCommandAsync(),
-                this.CanExecuteDeleteCommand).ObservesProperty(() => this.CurrentItem));
-
-        public ICommand ShowDetailsCommand => this.showDetailsCommand ??
-            (this.showDetailsCommand = new DelegateCommand(this.ExecuteShowDetailsCommand, this.CanShowDetailsCommand)
+        public ICommand DeleteItemCommand => this.deleteItemCommand ??
+            (this.deleteItemCommand = new DelegateCommand(
+                    async () => await this.DeleteItemAsync(),
+                    this.CanDeleteItem)
                 .ObservesProperty(() => this.CurrentItem));
 
-        public ICommand WithdrawCommand => this.withdrawCommand ??
-            (this.withdrawCommand = new DelegateCommand(
-                this.ExecuteWithdraw,
-                this.CanExecuteWithdraw).ObservesProperty(() => this.CurrentItem));
+        public ICommand ShowItemDetailsCommand => this.showItemDetailsCommand ??
+            (this.showItemDetailsCommand = new DelegateCommand(
+                    this.ShowItemDetails,
+                    this.CanShowItemDetails)
+                .ObservesProperty(() => this.CurrentItem));
+
+        public ICommand WithdrawItemCommand => this.withdrawItemCommand ??
+            (this.withdrawItemCommand = new DelegateCommand(
+                    this.WithdrawItem,
+                    this.CanWithdrawItem)
+                .ObservesProperty(() => this.CurrentItem));
 
         #endregion
 
@@ -53,25 +57,31 @@ namespace Ferretto.WMS.Modules.MasterData
                 Common.Utils.Modules.MasterData.ITEMADDDIALOG);
         }
 
-        private bool CanExecuteDeleteCommand()
+        private bool CanDeleteItem()
         {
             return this.CurrentItem != null;
         }
 
-        private bool CanExecuteWithdraw()
+        private bool CanWithdrawItem()
         {
-            return this.CurrentItem?.TotalAvailable > 0;
+            return this.CurrentItem != null;
         }
 
-        private bool CanShowDetailsCommand()
+        private bool CanShowItemDetails()
         {
             return this.CurrentItem != null;
         }
 
         private async Task DeleteItemAsync()
         {
+            if (!this.CurrentItem.CanDelete())
+            {
+                this.ShowErrorDialog(this.CurrentItem.GetCanDeleteReason());
+                return;
+            }
+
             var userChoice = this.DialogService.ShowMessage(
-                string.Format(DesktopApp.AreYouSureToDeleteGeneric, BusinessObjects.ItemListRow),
+                string.Format(DesktopApp.AreYouSureToDeleteGeneric, BusinessObjects.Item),
                 DesktopApp.ConfirmOperation,
                 DialogType.Question,
                 DialogButtons.YesNo);
@@ -92,19 +102,7 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        private async Task ExecuteDeleteCommandAsync()
-        {
-            if (this.CurrentItem.CanDelete())
-            {
-                await this.DeleteItemAsync();
-            }
-            else
-            {
-                this.ShowErrorDialog(this.CurrentItem.GetCanDeleteReason());
-            }
-        }
-
-        private void ExecuteShowDetailsCommand()
+        private void ShowItemDetails()
         {
             this.HistoryViewService.Appear(
                 nameof(Modules.MasterData),
@@ -112,8 +110,14 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.CurrentItem.Id);
         }
 
-        private void ExecuteWithdraw()
+        private void WithdrawItem()
         {
+            if (!this.CurrentItem.CanExecuteOperation("Withdraw"))
+            {
+                this.ShowErrorDialog(this.CurrentItem.GetCanExecuteOperationReason("Withdraw"));
+                return;
+            }
+
             this.NavigationService.Appear(
                 nameof(MasterData),
                 Common.Utils.Modules.MasterData.WITHDRAWDIALOG,

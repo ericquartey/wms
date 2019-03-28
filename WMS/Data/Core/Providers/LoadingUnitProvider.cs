@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -13,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class LoadingUnitProvider : ILoadingUnitProvider
+    internal partial class LoadingUnitProvider : ILoadingUnitProvider
     {
         #region Fields
 
@@ -67,6 +68,27 @@ namespace Ferretto.WMS.Data.Core.Providers
             return new SuccessOperationResult<LoadingUnitCreating>(model);
         }
 
+        public async Task<IOperationResult<LoadingUnitDetails>> DeleteAsync(int id)
+        {
+            var existingModel = await this.GetByIdAsync(id);
+            if (existingModel == null)
+            {
+                return new NotFoundOperationResult<LoadingUnitDetails>();
+            }
+
+            if (!existingModel.CanDelete())
+            {
+                return new UnprocessableEntityOperationResult<LoadingUnitDetails>
+                {
+                    Description = existingModel.GetCanDeleteReason(),
+                };
+            }
+
+            this.dataContext.Remove(existingModel);
+            await this.dataContext.SaveChangesAsync();
+            return new SuccessOperationResult<LoadingUnitDetails>();
+        }
+
         public async Task<IEnumerable<LoadingUnit>> GetAllAsync(
             int skip,
             int take,
@@ -74,13 +96,20 @@ namespace Ferretto.WMS.Data.Core.Providers
             string whereString = null,
             string searchString = null)
         {
-            return await this.GetAllBase()
+            var models = await this.GetAllBase()
                 .ToArrayAsync<LoadingUnit, Common.DataModels.LoadingUnit>(
                     skip,
                     take,
                     orderBySortOptions,
                     whereString,
                     BuildSearchExpression(searchString));
+
+            foreach (var model in models)
+            {
+                this.SetPolicies(model);
+            }
+
+            return models;
         }
 
         public async Task<int> GetAllCountAsync(
@@ -96,19 +125,20 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<LoadingUnitDetails>> GetByCellIdAsync(int id)
         {
             return await this.GetAllDetailsBase()
-                       .Where(l => l.CellId == id)
-                       .ToArrayAsync();
+                .Where(l => l.CellId == id)
+                .ToArrayAsync();
         }
 
         public async Task<LoadingUnitDetails> GetByIdAsync(int id)
         {
-            var compartmentsCount =
-                await this.dataContext.Compartments
-                    .CountAsync(c => c.LoadingUnitId == id);
-
             var result = await this.GetAllDetailsBase()
-                             .SingleOrDefaultAsync(l => l.Id == id);
-            result.CompartmentsCount = compartmentsCount;
+                .SingleOrDefaultAsync(l => l.Id == id);
+
+            if (result != null)
+            {
+                this.SetPolicies(result);
+            }
+
             return result;
         }
 
@@ -120,9 +150,9 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.GetUniqueValuesAsync(
-                       propertyName,
-                       this.dataContext.LoadingUnits,
-                       this.GetAllBase());
+                propertyName,
+                this.dataContext.LoadingUnits,
+                this.GetAllBase());
         }
 
         public async Task<IOperationResult<LoadingUnitDetails>> UpdateAsync(LoadingUnitDetails model)
@@ -132,14 +162,22 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.dataContext.LoadingUnits.Find(model.Id);
-
+            var existingModel = await this.GetByIdAsync(model.Id);
             if (existingModel == null)
             {
                 return new NotFoundOperationResult<LoadingUnitDetails>();
             }
 
-            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+            if (!existingModel.CanUpdate())
+            {
+                return new UnprocessableEntityOperationResult<LoadingUnitDetails>
+                {
+                    Description = existingModel.GetCanDeleteReason(),
+                };
+            }
+
+            var existingDataModel = this.dataContext.LoadingUnits.Find(model.Id);
+            this.dataContext.Entry(existingDataModel).CurrentValues.SetValues(model);
             await this.dataContext.SaveChangesAsync();
 
             return new SuccessOperationResult<LoadingUnitDetails>(model);
@@ -189,6 +227,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                     CellSide = (Side)l.Cell.Side,
                     CellNumber = l.Cell.CellNumber,
                     CellPositionDescription = l.CellPosition.Description,
+
+                    CompartmentsCount = l.Compartments.Count(),
+                    MissionsCount = l.Missions.Count(),
+                    SchedulerRequestsCount = l.SchedulerRequests.Count(),
                 });
         }
 
@@ -227,6 +269,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                     CellId = l.CellId,
                     AisleId = l.Cell.AisleId,
                     AreaId = l.Cell.Aisle.AreaId,
+
+                    CompartmentsCount = l.Compartments.Count(),
+                    MissionsCount = l.Missions.Count(),
+                    SchedulerRequestsCount = l.SchedulerRequests.Count(),
                 });
         }
 

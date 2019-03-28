@@ -6,7 +6,6 @@ using Ferretto.WMS.Data.Core.Models;
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
     public interface ICellProvider :
-        ICreateAsyncProvider<CellDetails, int>,
         IReadAllPagedAsyncProvider<Cell, int>,
         IReadSingleAsyncProvider<CellDetails, int>,
         IUpdateAsyncProvider<CellDetails, int>,

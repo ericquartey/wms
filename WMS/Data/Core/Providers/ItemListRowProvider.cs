@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -13,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class ItemListRowProvider : IItemListRowProvider
+    internal partial class ItemListRowProvider : IItemListRowProvider
     {
         #region Fields
 
@@ -31,41 +32,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         #endregion
 
         #region Methods
-
-        public async Task<ActionModel> CanDeleteAsync(int id)
-        {
-            var schedulerRequestsCount =
-                await this.dataContext.SchedulerRequests
-                    .CountAsync(r => r.ItemId == id);
-
-            var status = (ItemListRowStatus)this.dataContext.ItemListRows.Where(r => r.Id == id)
-                .Select(r => r.Status).FirstOrDefault();
-
-            var entity = new List<string>();
-            if (schedulerRequestsCount > 0)
-            {
-                entity.Add($"{Common.Resources.BusinessObjects.SchedulerRequest} [{schedulerRequestsCount}]");
-            }
-
-            if (status != ItemListRowStatus.Waiting)
-            {
-                entity.Add($"{Common.Resources.BusinessObjects.ItemListStatus} [{ItemListRowStatus.Waiting}]");
-            }
-
-            string reason = null;
-            if (entity.Any())
-            {
-                reason = string.Format(
-                        Common.Resources.Errors.NotPossibleExecuteOperation,
-                        string.Join(", ", entity.ToArray()));
-            }
-
-            return new ActionModel
-            {
-                IsAllowed = !entity.Any(),
-                Reason = reason,
-            };
-        }
 
         public async Task<IOperationResult<ItemListRowDetails>> CreateAsync(ItemListRowDetails model)
         {
@@ -86,7 +52,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Priority = model.Priority,
                 RegistrationNumber = model.RegistrationNumber,
                 RequestedQuantity = model.RequestedQuantity,
-                Status = (Common.DataModels.ItemListRowStatus)model.ItemListRowStatus,
+                Status = (Common.DataModels.ItemListRowStatus)model.Status,
                 Sub1 = model.Sub1,
                 Sub2 = model.Sub2
             });
@@ -106,23 +72,23 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<ItemListRowDetails>> DeleteAsync(int id)
         {
-            var existingModel = this.dataContext.ItemListRows.Find(id);
+            var existingModel = await this.GetByIdAsync(id);
             if (existingModel == null)
             {
                 return new NotFoundOperationResult<ItemListRowDetails>();
             }
 
-            var deleteAction = await this.CanDeleteAsync(id);
-            if (deleteAction.IsAllowed)
+            if (!existingModel.CanDelete())
             {
-                this.dataContext.Remove(existingModel);
-                await this.dataContext.SaveChangesAsync();
-                return new SuccessOperationResult<ItemListRowDetails>();
+                return new UnprocessableEntityOperationResult<ItemListRowDetails>
+                {
+                    Description = existingModel.GetCanDeleteReason(),
+                };
             }
-            else
-            {
-                return new UnprocessableEntityOperationResult<ItemListRowDetails>();
-            }
+
+            this.dataContext.Remove(existingModel);
+            await this.dataContext.SaveChangesAsync();
+            return new SuccessOperationResult<ItemListRowDetails>();
         }
 
         public async Task<IEnumerable<ItemListRow>> GetAllAsync(
@@ -132,13 +98,20 @@ namespace Ferretto.WMS.Data.Core.Providers
             string whereString = null,
             string searchString = null)
         {
-            return await this.GetAllBase()
+            var models = await this.GetAllBase()
                 .ToArrayAsync<ItemListRow, Common.DataModels.ItemListRow>(
                     skip,
                     take,
                     orderBySortOptions,
                     whereString,
                     BuildSearchExpression(searchString));
+
+            foreach (var model in models)
+            {
+                this.SetPolicies(model);
+            }
+
+            return models;
         }
 
         public async Task<int> GetAllCountAsync(
@@ -153,10 +126,15 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<ItemListRowDetails> GetByIdAsync(int id)
         {
-            var itemListRowDetails = await this.GetAllDetailsBase()
+            var model = await this.GetAllDetailsBase()
                        .SingleOrDefaultAsync(i => i.Id == id);
 
-            return itemListRowDetails;
+            if (model != null)
+            {
+                this.SetPolicies(model);
+            }
+
+            return model;
         }
 
         public async Task<IEnumerable<ItemListRow>> GetByItemListIdAsync(int id)
@@ -181,14 +159,22 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.dataContext.ItemListRows.Find(model.Id);
-
+            var existingModel = await this.GetByIdAsync(model.Id);
             if (existingModel == null)
             {
                 return new NotFoundOperationResult<ItemListRowDetails>();
             }
 
-            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+            if (!existingModel.CanUpdate())
+            {
+                return new UnprocessableEntityOperationResult<ItemListRowDetails>
+                {
+                    Description = existingModel.GetCanDeleteReason(),
+                };
+            }
+
+            var existingDataModel = this.dataContext.ItemListRows.Find(model.Id);
+            this.dataContext.Entry(existingDataModel).CurrentValues.SetValues(model);
             await this.dataContext.SaveChangesAsync();
 
             return new SuccessOperationResult<ItemListRowDetails>(model);
@@ -233,6 +219,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     MaterialStatusDescription = l.MaterialStatus.Description,
                     CreationDate = l.CreationDate,
                     ItemUnitMeasure = l.Item.MeasureUnit.Description,
+
+                    SchedulerRequestsCount = l.SchedulerRequests.Count(),
                 });
         }
 
@@ -247,7 +235,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     ItemId = l.Item.Id,
                     RequestedQuantity = l.RequestedQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
-                    ItemListRowStatus = (ItemListRowStatus)l.Status,
+                    Status = (ItemListRowStatus)l.Status,
                     ItemDescription = l.Item.Description,
                     CreationDate = l.CreationDate,
                     ItemListCode = l.ItemList.Code,
@@ -264,6 +252,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     PackageTypeId = l.PackageTypeId,
                     MaterialStatusId = l.MaterialStatusId,
                     ItemUnitMeasure = l.Item.MeasureUnit.Description,
+
+                    SchedulerRequestsCount = l.SchedulerRequests.Count(),
                 });
         }
 

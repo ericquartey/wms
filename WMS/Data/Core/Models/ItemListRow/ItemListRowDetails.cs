@@ -2,13 +2,9 @@
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class ItemListRowDetails : BaseModel<int>
+    public class ItemListRowDetails : BaseModel<int>, IStatusItemListRow, ICountersItemListRow
     {
         #region Properties
-
-        public bool CanBeExecuted => this.ItemListRowStatus == ItemListRowStatus.Incomplete ||
-                   this.ItemListRowStatus == ItemListRowStatus.Suspended ||
-                   this.ItemListRowStatus == ItemListRowStatus.Waiting;
 
         public string Code { get; set; }
 
@@ -27,8 +23,6 @@ namespace Ferretto.WMS.Data.Core.Models
         public string ItemListDescription { get; set; }
 
         public int ItemListId { get; set; }
-
-        public ItemListRowStatus ItemListRowStatus { get; set; }
 
         public ItemListType ItemListType { get; set; }
 
@@ -49,6 +43,10 @@ namespace Ferretto.WMS.Data.Core.Models
         public string RegistrationNumber { get; set; }
 
         public int RequestedQuantity { get; set; }
+
+        public int SchedulerRequestsCount { get; set; }
+
+        public ItemListRowStatus Status { get; set; }
 
         public string Sub1 { get; set; }
 

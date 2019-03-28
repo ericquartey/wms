@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Resources;
 using Ferretto.WMS.App.Core.Models;
@@ -171,7 +172,8 @@ namespace Ferretto.Common.Controls
                 && this.changeDetector.IsModified
                 && this.IsModelValid
                 && !this.IsBusy
-                && this.changeDetector.IsRequiredValid;
+                && this.changeDetector.IsRequiredValid
+                && this.Model.CanUpdate();
         }
 
         protected virtual void EvaluateCanExecuteCommands()
