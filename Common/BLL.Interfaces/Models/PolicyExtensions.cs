@@ -23,9 +23,14 @@ namespace Ferretto.Common.BLL.Interfaces.Models
             string operationName)
             where TPolicy : IPolicy
         {
-            if (policyDescriptor == null || operationName == null)
+            if (policyDescriptor == null)
             {
                 throw new System.ArgumentNullException(nameof(policyDescriptor));
+            }
+
+            if (operationName == null)
+            {
+                throw new System.ArgumentNullException(nameof(operationName));
             }
 
             return policyDescriptor.Policies
@@ -57,9 +62,14 @@ namespace Ferretto.Common.BLL.Interfaces.Models
             string operationName)
             where TPolicy : IPolicy
         {
-            if (policyDescriptor == null || operationName == null)
+            if (policyDescriptor == null)
             {
                 throw new System.ArgumentNullException(nameof(policyDescriptor));
+            }
+
+            if (operationName == null)
+            {
+                throw new System.ArgumentNullException(nameof(operationName));
             }
 
             return policyDescriptor.Policies
