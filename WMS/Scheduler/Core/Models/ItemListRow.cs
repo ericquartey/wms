@@ -21,11 +21,11 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public int? PackageTypeId { get; set; }
 
+        public int? Priority { get; set; }
+
         public string RegistrationNumber { get; set; }
 
         public int RequestedQuantity { get; set; }
-
-        public int RowPriority { get; set; }
 
         public ListRowStatus Status { get; set; }
 
