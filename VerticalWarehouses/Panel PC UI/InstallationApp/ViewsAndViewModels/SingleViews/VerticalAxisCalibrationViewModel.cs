@@ -135,7 +135,7 @@ namespace Ferretto.VW.InstallationApp
 
         public async void SubscribeMethodToEvent()
         {
-            //this.GetParameterValues();  // uncomment
+            this.GetParameterValues();
             this.receivedActionUpdateToken = this.eventAggregator.GetEvent<MAS_Event>().Subscribe(
                 (msg) => this.UpdateCurrentActionStatus(msg),
                 ThreadOption.PublisherThread,
@@ -271,8 +271,7 @@ namespace Ferretto.VW.InstallationApp
                 this.IsStopButtonActive = true;
 
                 var client = new HttpClient();
-                //await client.GetStringAsync(new Uri(this.installationController + this.homingController));  // uncomment this code line
-                await client.GetStringAsync(new Uri(this.installationController + "/HomingTest"));            // remove this line
+                await client.GetStringAsync(new Uri(this.installationController + this.homingController));
             }
             catch (Exception)
             {
