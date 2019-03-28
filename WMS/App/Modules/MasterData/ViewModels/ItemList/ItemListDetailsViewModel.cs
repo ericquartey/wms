@@ -222,7 +222,11 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.IsBusy = true;
 
-            // TODO
+            this.NavigationService.Appear(
+                            nameof(MasterData),
+                            Common.Utils.Modules.MasterData.ITEMLISTROWADD,
+                            this.Model.Id);
+
             this.IsBusy = false;
         }
 

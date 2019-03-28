@@ -18,6 +18,8 @@ namespace Ferretto.WMS.App.Core.Interfaces
 
         Task<IEnumerable<ItemListRow>> GetByItemListIdAsync(int id);
 
+        Task<ItemListRowDetails> GetNewAsync(int idList);
+
         Task<IOperationResult<ItemListRow>> ScheduleForExecutionAsync(int listRowId, int areaId);
 
         #endregion

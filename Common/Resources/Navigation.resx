@@ -264,4 +264,7 @@
   <data name="LoadingUnitAdd" xml:space="preserve">
     <value>Add Loading Unit</value>
   </data>
+  <data name="ItemListRowAdd" xml:space="preserve">
+    <value>Add Item List Row</value>
+  </data>
 </root>

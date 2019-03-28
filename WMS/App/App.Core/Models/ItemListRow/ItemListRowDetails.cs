@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
@@ -63,6 +64,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         #region Properties
 
+        [Required]
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string Code { get => this.code; set => this.SetProperty(ref this.code, value); }
 
@@ -72,12 +74,25 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get => this.creationDate; set => this.SetProperty(ref this.creationDate, value); }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.ItemListRowDispatchedQuantity), ResourceType = typeof(BusinessObjects))]
         public int DispatchedQuantity { get => this.dispatchedQuantity; set => this.SetProperty(ref this.dispatchedQuantity, value); }
+
+        public override string Error => string.Join(Environment.NewLine, new[]
+        {
+            this[nameof(this.DispatchedQuantity)],
+            this[nameof(this.RequestedQuantity)],
+            this[nameof(this.Code)],
+            this[nameof(this.ItemId)],
+            this[nameof(this.ItemListRowStatus)],
+        }
+        .Distinct()
+        .Where(s => !string.IsNullOrEmpty(s)));
 
         [Display(Name = nameof(BusinessObjects.ItemListRowItemDescription), ResourceType = typeof(BusinessObjects))]
         public string ItemDescription { get => this.itemDescription; set => this.SetProperty(ref this.itemDescription, value); }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.ItemListRowItemDescription), ResourceType = typeof(BusinessObjects))]
         public int ItemId { get => this.itemId; set => this.SetProperty(ref this.itemId, value); }
 
@@ -90,6 +105,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.ItemList), ResourceType = typeof(BusinessObjects))]
         public int ItemListId { get => this.itemListId; set => this.SetProperty(ref this.itemListId, value); }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusDescription), ResourceType = typeof(BusinessObjects))]
         public ItemListRowStatus Status { get => this.status; set => this.SetProperty(ref this.status, value); }
 
@@ -131,6 +147,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.ItemListRowRegistrationNumber), ResourceType = typeof(BusinessObjects))]
         public string RegistrationNumber { get => this.registrationNumber; set => this.SetProperty(ref this.registrationNumber, value); }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.ItemListRowRequestedQuantity), ResourceType = typeof(BusinessObjects))]
         public int RequestedQuantity { get => this.requestedQuantity; set => this.SetProperty(ref this.requestedQuantity, value); }
 
@@ -142,6 +159,42 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Display(Name = nameof(BusinessObjects.ItemListRowSub2), ResourceType = typeof(BusinessObjects))]
         public string Sub2 { get => this.sub2; set => this.SetProperty(ref this.sub2, value); }
+
+        #endregion
+
+        #region Indexers
+
+        public override string this[string columnName]
+        {
+            get
+            {
+                var baseError = base[columnName];
+                if (!string.IsNullOrEmpty(baseError))
+                {
+                    return baseError;
+                }
+
+                switch (columnName)
+                {
+                    case nameof(this.DispatchedQuantity):
+                        return GetErrorMessageIfNegative(this.DispatchedQuantity, nameof(this.DispatchedQuantity));
+
+                    case nameof(this.RequestedQuantity):
+                        return GetErrorMessageIfNegative(this.RequestedQuantity, nameof(this.RequestedQuantity));
+
+                    case nameof(this.Code):
+                        break;
+
+                    case nameof(this.ItemId):
+                        return GetErrorMessageIfNegativeOrZero(this.ItemId, nameof(this.ItemId));
+
+                    case nameof(this.ItemListRowStatus):
+                        break;
+                }
+
+                return null;
+            }
+        }
 
         #endregion
     }

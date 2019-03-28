@@ -1,12 +1,14 @@
-﻿namespace Ferretto.VW.MAS_DataLayer.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace Ferretto.VW.MAS_DataLayer.Interfaces
 {
     public interface ICellControl
     {
         #region Properties
 
-        decimal FeedRateCC { get; }
+        Task<decimal> FeedRateCC { get; }
 
-        decimal StepValueCC { get; }
+        Task<decimal> StepValueCC { get; }
 
         #endregion
     }

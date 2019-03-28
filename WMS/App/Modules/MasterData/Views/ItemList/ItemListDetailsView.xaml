@@ -306,8 +306,7 @@
                                                    Content="{x:Static res:MasterData.ItemListRowAdd}"
                                                    CustomGlyphSize="24,24"
                                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_add_box_black_24dp.png"
-                                                   GlyphSize="Custom"
-                                                   IsEnabled="False" />
+                                                   GlyphSize="Custom" />
                             </wms:ActionBar>
                         </Grid>
                     </GroupBox.Header>
