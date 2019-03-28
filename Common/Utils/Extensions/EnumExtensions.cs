@@ -18,7 +18,7 @@ namespace Ferretto.Common.Utils.Extensions
             }
 
             var displayName = $"[{enumValue}]";
-            var info = enumType.GetMember(enumValue.ToString()).First();
+            var info = enumType.GetMember(enumValue.ToString()).FirstOrDefault();
 
             if (info != null && info.CustomAttributes.Any())
             {

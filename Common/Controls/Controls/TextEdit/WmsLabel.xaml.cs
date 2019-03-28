@@ -91,6 +91,11 @@ namespace Ferretto.Common.Controls
             this.Visibility = isVisible ? Visibility.Visible : Visibility.Collapsed;
             if (isVisible)
             {
+                if (parent == null)
+                {
+                    return;
+                }
+
                 this.ShowBusinessObjectValueComboBox(parent);
             }
         }
@@ -278,9 +283,19 @@ namespace Ferretto.Common.Controls
 
             if (bindingExpression == null)
             {
+                DependencyProperty property = null;
+                if (parent.GetType() == typeof(ComboBox))
+                {
+                    property = ComboBox.BusinessObjectValueProperty;
+                }
+                else if (parent.GetType() == typeof(LookUpEdit))
+                {
+                    property = LookUpEdit.BusinessObjectValueProperty;
+                }
+
                 bindingExpression = BindingOperations.GetBindingExpression(
                     parent,
-                    ComboBox.BusinessObjectValueProperty);
+                    property);
             }
 
             var path = bindingExpression.ParentBinding.Path.Path;
