@@ -1,6 +1,6 @@
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class Compartment : BaseModel<int>
+    public class Compartment : BaseModel<int>, IPairedCompartment, ICapacityCompartment
     {
         #region Properties
 

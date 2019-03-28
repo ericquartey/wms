@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils.Expressions;
@@ -15,7 +16,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class CompartmentProvider : ICompartmentProvider
+    internal partial class CompartmentProvider : ICompartmentProvider
     {
         #region Fields
 
@@ -42,36 +43,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         #endregion
 
         #region Methods
-
-        public async Task<ActionModel> CanDeleteAsync(int id)
-        {
-            var compartment = await this.GetByIdAsync(id);
-
-            var entity = new List<string>();
-            if (compartment.Stock > 0)
-            {
-                entity.Add($"{Common.Resources.BusinessObjects.ItemStock} [{compartment.Stock}]");
-            }
-
-            if (compartment.IsItemPairingFixed)
-            {
-                entity.Add($"{Common.Resources.BusinessObjects.PairingFixed}");
-            }
-
-            string reason = null;
-            if (entity.Any())
-            {
-                reason = string.Format(
-                        Common.Resources.Errors.NotPossibleExecuteOperation,
-                        string.Join(", ", entity.ToArray()));
-            }
-
-            return new ActionModel
-            {
-                IsAllowed = !entity.Any(),
-                Reason = reason,
-            };
-        }
 
         public async Task<IOperationResult<CompartmentDetails>> CreateAsync(CompartmentDetails model)
         {
@@ -163,23 +134,20 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<CompartmentDetails>> DeleteAsync(int id)
         {
-            var existingModel = this.dataContext.Compartments.Find(id);
+            var existingModel = await this.GetByIdAsync(id);
             if (existingModel == null)
             {
                 return new NotFoundOperationResult<CompartmentDetails>();
             }
 
-            var deleteAction = await this.CanDeleteAsync(id);
-            if (deleteAction.IsAllowed)
-            {
-                this.dataContext.Remove(existingModel);
-                await this.dataContext.SaveChangesAsync();
-                return new SuccessOperationResult<CompartmentDetails>();
-            }
-            else
+            if (!existingModel.CanDelete())
             {
                 return new UnprocessableEntityOperationResult<CompartmentDetails>();
             }
+
+            this.dataContext.Remove(existingModel);
+            await this.dataContext.SaveChangesAsync();
+            return new SuccessOperationResult<CompartmentDetails>();
         }
 
         public async Task<IEnumerable<Compartment>> GetAllAsync(
@@ -189,13 +157,20 @@ namespace Ferretto.WMS.Data.Core.Providers
             string whereString = null,
             string searchString = null)
         {
-            return await this.GetAllBase()
+            var models = await this.GetAllBase()
                 .ToArrayAsync<Compartment, Common.DataModels.Compartment>(
                     skip,
                     take,
                     orderBySortOptions,
                     whereString,
                     BuildSearchExpression(searchString));
+
+            foreach (var model in models)
+            {
+                this.SetPolicies(model);
+            }
+
+            return models;
         }
 
         public async Task<int> GetAllCountAsync(
@@ -237,15 +212,16 @@ namespace Ferretto.WMS.Data.Core.Providers
                     .SelectMany(c => c.CompartmentType.ItemsCompartmentTypes)
                     .CountAsync();
 
-            var result = await this.GetAllDetailsBase()
+            var model = await this.GetAllDetailsBase()
                        .SingleOrDefaultAsync(c => c.Id == id);
 
-            if (result != null)
+            if (model != null)
             {
-                result.AllowedItemsCount = allowedItemsCount;
+                model.AllowedItemsCount = allowedItemsCount;
+                this.SetPolicies(model);
             }
 
-            return result;
+            return model;
         }
 
         public async Task<IEnumerable<Compartment>> GetByItemIdAsync(int id)
@@ -290,16 +266,24 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.dataContext.Compartments.Find(model.Id);
+            var errors = model.CheckCompartment();
+            if (string.IsNullOrEmpty(errors) == false)
+            {
+                return new CreationErrorOperationResult<CompartmentDetails>(errors);
+            }
+
+            var existingModel = await this.GetByIdAsync(model.Id);
             if (existingModel == null)
             {
                 return new NotFoundOperationResult<CompartmentDetails>();
             }
 
-            var errors = model.CheckCompartment();
-            if (string.IsNullOrEmpty(errors) == false)
+            if (!existingModel.CanUpdate())
             {
-                return new CreationErrorOperationResult<CompartmentDetails>(errors);
+                return new UnprocessableEntityOperationResult<CompartmentDetails>
+                {
+                    Description = existingModel.GetCanDeleteReason(),
+                };
             }
 
             var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(model.LoadingUnitId);
@@ -325,8 +309,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                     return new CreationErrorOperationResult<CompartmentDetails>();
                 }
 
+                var existingDataModel = this.dataContext.Compartments.Find(model.Id);
                 model.CompartmentTypeId = createCompartmentTypeResult.Entity.Id;
-                this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                this.dataContext.Entry(existingDataModel).CurrentValues.SetValues(model);
                 await this.dataContext.SaveChangesAsync();
 
                 scope.Complete();
