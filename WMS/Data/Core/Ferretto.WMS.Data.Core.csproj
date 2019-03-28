@@ -29,30 +29,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Providers\ItemProvider.Policies.cs">
-        <DependentUpon>ItemProvider.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Providers\ItemListRowProvider.Policies.cs">
-        <DependentUpon>ItemListRowProvider.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Providers\CompartmentProvider.Policies.cs">
-        <DependentUpon>CompartmentProvider.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Providers\CellProvider.Policies.cs">
-        <DependentUpon>CellProvider.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Providers\CompartmentTypeProvider.Policies.cs">
-        <DependentUpon>CompartmentTypeProvider.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Providers\ItemCompartmentTypeProvider.Policies.cs">
-        <DependentUpon>ItemCompartmentTypeProvider.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Providers\ItemListProvider.Policies.cs">
-        <DependentUpon>ItemListProvider.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Providers\LoadingUnitProvider.Policies.cs">
-        <DependentUpon>LoadingUnitProvider.cs</DependentUpon>
-      </Compile>
+        <Compile Update="**\*.Policies.cs">
+            <DependentUpon>$([System.String]::Copy('%(Filename)').Replace( '.Policies', '' ))%(Extension)</DependentUpon>
+        </Compile>
     </ItemGroup>
 
 </Project>
