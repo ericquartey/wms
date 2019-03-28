@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS_AutomationService
         [HttpGet("GetInstallationStatus")]
         public ActionResult<bool[]> GetInstallationStatus()
         {
-            bool[] installationStatus = { true, true, true, true, false, false, false, false, false, false, false, false, false, false, false };
+            bool[] installationStatus = { true, false, true, false, false, true, false, true, false, true, false, false, false, false, false };
             if (installationStatus != null)
             {
                 return this.Ok(installationStatus);
