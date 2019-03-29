@@ -16,14 +16,18 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
         public EndState(IIoStateMachine parentStateMachine, ILogger logger)
         {
-            logger.LogInformation("End State State CTor");
-            this.parentStateMachine = parentStateMachine;
+            logger.LogDebug("1:Method Start");
+
             this.logger = logger;
-
+            this.parentStateMachine = parentStateMachine;
             var resetSecurityIoMessage = new IoMessage(false);
-            resetSecurityIoMessage.SwitchElevatorMotor(true);
 
+            this.logger.LogTrace(string.Format("2:{0}", resetSecurityIoMessage));
+
+            resetSecurityIoMessage.SwitchElevatorMotor(true);
             parentStateMachine.EnqueueMessage(resetSecurityIoMessage);
+
+            this.logger.LogDebug("3:Method End");
         }
 
         #endregion
@@ -32,14 +36,27 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
         public override void ProcessMessage(IoMessage message)
         {
-            logger.LogTrace("End State ProcessMessage");
+            this.logger.LogDebug("1:Method Start");
+
+            this.logger.LogTrace(string.Format("2:{0}:{1}",
+                message.ValidOutputs,
+                message.ElevatorMotorOn));
+
             if (message.ValidOutputs && message.ElevatorMotorOn)
             {
-                logger.LogTrace("End State State ProcessMessage Notification Event");
+                this.logger.LogTrace("End State State ProcessMessage Notification Event");
                 var endNotification = new NotificationMessage(null, "IO Reset complete", MessageActor.Any,
                     MessageActor.IODriver, MessageType.IOReset, MessageStatus.OperationEnd);
+
+                this.logger.LogTrace(string.Format("3:{0}:{1}:{2}",
+                    endNotification.Type,
+                    endNotification.Destination,
+                    endNotification.Status));
+
                 this.parentStateMachine.PublishNotificationEvent(endNotification);
             }
+
+            this.logger.LogDebug("4:Method End");
         }
 
         #endregion
