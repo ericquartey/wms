@@ -47,7 +47,8 @@ namespace Ferretto.Common.EF.Configurations
             builder.Property(i => i.Status)
                .IsRequired()
                .HasColumnType("char(1)")
-               .HasConversion(x => (char)x, x => (ItemListRowStatus)Enum.ToObject(typeof(ItemListRowStatus), x));
+               .HasConversion(x => (char)x, x => (ItemListRowStatus)Enum.ToObject(typeof(ItemListRowStatus), x))
+               .HasDefaultValueSql($"'{(char)ItemListRowStatus.New}'");
         }
 
         #endregion
