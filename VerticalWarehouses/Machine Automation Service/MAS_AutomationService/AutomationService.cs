@@ -53,6 +53,8 @@ namespace Ferretto.VW.MAS_AutomationService
             this.InitializeMethodSubscription();
 
             this.logger?.LogInformation("Automation Service Constructor");
+
+            this.StartTestCycles();
         }
 
         #endregion
@@ -188,7 +190,7 @@ namespace Ferretto.VW.MAS_AutomationService
         private async void StartTestCycles()
         {
             this.TESTStartBoolSensorsCycle();
-            this.TESTStartStringMessageCycle();
+            //this.TESTStartStringMessageCycle();
         }
 
         #endregion
