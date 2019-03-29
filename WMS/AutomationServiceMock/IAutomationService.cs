@@ -16,6 +16,8 @@ namespace Ferretto.WMS.AutomationServiceMock
 
         Task<Bay> GetBayAsync();
 
+        Task<IEnumerable<ItemList>> GetListsAsync();
+
         Task<IEnumerable<Mission>> GetMissionsAsync();
 
         Task InitializeAsync();

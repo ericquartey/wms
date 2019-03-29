@@ -28,15 +28,17 @@ namespace Ferretto.WMS.AutomationServiceMock
         {
             Login = 1,
 
-            ListMissions = 2,
-
-            CompleteMission = 4,
+            DisplayMissions = 2,
 
             ExecuteMission = 3,
 
-            ExecuteList = 5,
+            CompleteMission = 4,
 
-            Exit = 6
+            DisplayLists = 5,
+
+            ExecuteList = 6,
+
+            Exit = 7
         }
 
         #endregion
@@ -114,11 +116,19 @@ namespace Ferretto.WMS.AutomationServiceMock
 
                     break;
 
-                case UserSelection.ListMissions:
+                case UserSelection.DisplayMissions:
 
                     var missions = await automationService.GetMissionsAsync();
 
                     PrintMissionsTable(missions);
+
+                    break;
+
+                case UserSelection.DisplayLists:
+
+                    var lists = await automationService.GetListsAsync();
+
+                    PrintListsTable(lists);
 
                     break;
 
@@ -221,9 +231,10 @@ namespace Ferretto.WMS.AutomationServiceMock
                     Console.WriteLine();
                     Console.WriteLine("Select option: ");
                     Console.WriteLine($"{(int)UserSelection.Login} - Login to PPC");
-                    Console.WriteLine($"{(int)UserSelection.ListMissions} - List missions");
+                    Console.WriteLine($"{(int)UserSelection.DisplayMissions} - Display missions");
                     Console.WriteLine($"{(int)UserSelection.ExecuteMission} - Execute mission");
                     Console.WriteLine($"{(int)UserSelection.CompleteMission} - Complete mission");
+                    Console.WriteLine($"{(int)UserSelection.DisplayLists} - Display Lists");
                     Console.WriteLine($"{(int)UserSelection.ExecuteList} - Execute List");
                     Console.WriteLine($"{(int)UserSelection.Exit} - Exit");
                     Console.Write("> ");
@@ -297,6 +308,33 @@ namespace Ferretto.WMS.AutomationServiceMock
             Console.WriteLine($"|__________|_____|____________|__________________________________________|____________|");
         }
 
+        private static void PrintListsTable(IEnumerable<ItemList> lists)
+        {
+            if (!lists.Any())
+            {
+                Console.WriteLine("No lists are available.");
+
+                return;
+            }
+
+            Console.WriteLine("Lists (by priority):");
+
+            Console.WriteLine(
+                $"| {nameof(ItemList.Priority), 8} " +
+                $"| {nameof(ItemList.Id), 3} " +
+                $"| {nameof(ItemList.Status), -10} " +
+                $"| Quantities |");
+
+            Console.WriteLine($"|----------|-----|------------|");
+
+            foreach (var list in lists)
+            {
+                PrintListTableRow(list);
+            }
+
+            Console.WriteLine($"|__________|_____|____________|");
+        }
+
         private static void PrintMissionTableRow(Mission mission)
         {
             var trimmedDescription = mission.ItemDescription.Substring(0, Math.Min(40, mission.ItemDescription.Length));
@@ -304,6 +342,12 @@ namespace Ferretto.WMS.AutomationServiceMock
 
             Console.WriteLine(
                 $"| {mission.Priority, 8} | {mission.Id, 3} | {mission.Status, -10} | {trimmedDescription, -40} | {quantities, 10} |");
+        }
+
+        private static void PrintListTableRow(ItemList list)
+        {
+            Console.WriteLine(
+                $"| {list.Priority, 8} | {list.Id, 3} | {list.Status, -10} |");
         }
 
         #endregion

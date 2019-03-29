@@ -84,6 +84,25 @@ namespace Ferretto.WMS.AutomationServiceMock
         public async Task<Bay> GetBayAsync() => await this.baysDataService.GetByIdAsync(
                                     this.configuration.GetValue<int>("Warehouse:Bay:Id"));
 
+        public async Task<IEnumerable<ItemList>> GetListsAsync()
+        {
+            try
+            {
+                return await this.listsDataService.GetAllAsync(
+                    null,
+                    null,
+                    "([Status] == 'Waiting' || [Status] == 'Executing' || [Status] == 'Completed' || [Status] == 'Incomplete')",
+                    "Priority Descending",
+                    null);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unable to display lists: {ex.Message}");
+            }
+
+            return new List<ItemList>();
+        }
+
         public async Task<IEnumerable<Mission>> GetMissionsAsync()
         {
             try
