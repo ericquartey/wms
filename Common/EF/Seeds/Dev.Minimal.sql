@@ -856,7 +856,8 @@ DECLARE
 --Lists
 DECLARE
   @ItemList1_Id int = 1,
-  @ItemList2_Id int = 2;
+  @ItemList2_Id int = 2,
+  @ItemList3_Id int = 3;
 
 DECLARE
   @ItemListType_Put char(1) = 'U',
@@ -874,6 +875,7 @@ DECLARE
 SET IDENTITY_INSERT ItemLists ON;
 INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList1_Id, 'List-1', @ItemListType_Pik, 'First List', 1, 1, '2018-11-16 12:33:14', '2017-10-05 14:16:00', NULL, NULL);
 INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList2_Id, 'List-2', @ItemListType_Pik, 'Second List', 2, 1, '2018-11-16 12:33:14', '2017-10-05 14:16:00', NULL, NULL);
+INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList3_Id, 'List.3', @ItemListType_Pik, 'List without availability', 2, 1, '2018-11-16 12:33:14', '2017-10-05 14:16:00', NULL, NULL);
 SET IDENTITY_INSERT ItemLists OFF;
 
 --List Rows
@@ -881,7 +883,8 @@ SET IDENTITY_INSERT ItemListRows ON;
 INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, RequestedQuantity, DispatchedQuantity, Status) VALUES (1, @ItemList1_Id, 'List1\Row1', 2   , 1, 3, 0, @ListRowStatus_New);
 INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, RequestedQuantity, DispatchedQuantity, Status) VALUES (2, @ItemList1_Id, 'List1\Row2', 1   , 1, 5, 0, @ListRowStatus_New);
 INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, RequestedQuantity, DispatchedQuantity, Status) VALUES (3, @ItemList1_Id, 'List1\Row3', 1   , 1, 9, 0, @ListRowStatus_New);
-INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, RequestedQuantity, DispatchedQuantity, Status) VALUES (4, @ItemList2_Id, 'List2\Row1', NULL, 2, 6, 0, @ListRowStatus_New);
+INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, RequestedQuantity, DispatchedQuantity, Status) VALUES (4, @ItemList2_Id, 'List2\Row1', NULL, 3, 6, 0, @ListRowStatus_New);
+INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, RequestedQuantity, DispatchedQuantity, Status) VALUES (5, @ItemList3_Id, 'List3\Row1', NULL, 2, 6, 0, @ListRowStatus_New);
 SET IDENTITY_INSERT ItemListRows OFF;
 
 
