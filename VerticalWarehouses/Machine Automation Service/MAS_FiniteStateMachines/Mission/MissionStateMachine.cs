@@ -16,57 +16,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
         #region Constructors
 
         public MissionStateMachine(IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            : base(eventAggregator, null)
         {
         }
 
         #endregion
 
         #region Methods
-
-        /// <inheritdoc/>
-        public override void OnPublishNotification(NotificationMessage message)
-        {
-            switch (message.Type)
-            {
-                case MessageType.StartAction:
-                    {
-                        //TEMP Send a notification about the start operation to all the world
-                        var newMessage = new NotificationMessage(null,
-                            "Mission Start",
-                            MessageActor.Any,
-                            MessageActor.FiniteStateMachines,
-                            MessageType.Positioning,
-                            MessageStatus.OperationStart,
-                            ErrorLevel.NoError,
-                            MessageVerbosity.Info);
-
-                        this.EventAggregator.GetEvent<NotificationEvent>().Publish(newMessage);
-                        break;
-                    }
-
-                case MessageType.Stop:
-                    {
-                        var msgStatus = (this.IsStopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd;
-                        //TEMP Send a notification about the end (/stop) operation to all the world
-                        var newMessage = new NotificationMessage(null,
-                            "Mission End",
-                            MessageActor.Any,
-                            MessageActor.FiniteStateMachines,
-                            MessageType.Stop,
-                            msgStatus,
-                            ErrorLevel.NoError,
-                            MessageVerbosity.Info);
-
-                        this.EventAggregator.GetEvent<NotificationEvent>().Publish(newMessage);
-                        break;
-                    }
-                default:
-                    {
-                        break;
-                    }
-            }
-        }
 
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
@@ -110,6 +66,50 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
             }
 
             this.CurrentState?.ProcessNotificationMessage(message);
+        }
+
+        /// <inheritdoc/>
+        public override void PublishNotificationMessage(NotificationMessage message)
+        {
+            switch (message.Type)
+            {
+                case MessageType.StartAction:
+                    {
+                        //TEMP Send a notification about the start operation to all the world
+                        var newMessage = new NotificationMessage(null,
+                            "Mission Start",
+                            MessageActor.Any,
+                            MessageActor.FiniteStateMachines,
+                            MessageType.Positioning,
+                            MessageStatus.OperationStart,
+                            ErrorLevel.NoError,
+                            MessageVerbosity.Info);
+
+                        this.EventAggregator.GetEvent<NotificationEvent>().Publish(newMessage);
+                        break;
+                    }
+
+                case MessageType.Stop:
+                    {
+                        var msgStatus = (this.IsStopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd;
+                        //TEMP Send a notification about the end (/stop) operation to all the world
+                        var newMessage = new NotificationMessage(null,
+                            "Mission End",
+                            MessageActor.Any,
+                            MessageActor.FiniteStateMachines,
+                            MessageType.Stop,
+                            msgStatus,
+                            ErrorLevel.NoError,
+                            MessageVerbosity.Info);
+
+                        this.EventAggregator.GetEvent<NotificationEvent>().Publish(newMessage);
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
         }
 
         /// <inheritdoc/>

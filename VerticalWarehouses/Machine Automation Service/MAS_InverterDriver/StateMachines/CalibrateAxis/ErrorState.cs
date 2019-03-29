@@ -27,13 +27,13 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
             this.logger = logger;
-
-            this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - ErrorState:Ctor");
+            this.logger.LogTrace($"1-Constructor");
 
             var messageData = new CalibrateAxisMessageData(this.axisToCalibrate);
 
             var errorNotification = new NotificationMessage(messageData, "Inverter operation error", MessageActor.Any,
                 MessageActor.InverterDriver, MessageType.CalibrateAxis, MessageStatus.OperationError, ErrorLevel.Error);
+            this.logger.LogTrace($"2-Constructor: published notification: {errorNotification.Type}, {errorNotification.Status}, {errorNotification.Destination}");
             parentStateMachine.PublishNotificationEvent(errorNotification);
         }
 
@@ -44,7 +44,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override bool ProcessMessage(InverterMessage message)
         {
-            this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - ErrorState:ProcessMessage");
+            this.logger.LogTrace($"Message processed: {message.ParameterId}, {message.Payload}");
             return false;
         }
 

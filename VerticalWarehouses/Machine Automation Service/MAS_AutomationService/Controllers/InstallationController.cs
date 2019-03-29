@@ -9,6 +9,7 @@ using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
@@ -22,6 +23,8 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly ILogger logger;
+
         #endregion
 
         #region Constructors
@@ -30,6 +33,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         {
             this.eventAggregator = eventAggregator;
             this.dataLayerValueManagement = services.GetService(typeof(IDataLayerValueManagment)) as IDataLayerValueManagment;
+            this.logger = services.GetService(typeof(ILogger)) as ILogger;
         }
 
         #endregion

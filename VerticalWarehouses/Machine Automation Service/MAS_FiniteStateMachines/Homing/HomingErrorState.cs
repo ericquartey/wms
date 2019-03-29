@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
@@ -20,6 +21,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         {
             this.parentStateMachine = parentMachine;
             this.logger = logger;
+            this.logger.LogTrace($"1-Constructor");
             this.axis = axis;
 
             //TEMP Notify the error condition all the world
@@ -31,6 +33,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 MessageStatus.OperationError,
                 ErrorLevel.Error,
                 MessageVerbosity.Info);
+            this.logger.LogTrace($"2-Constructor: published notification: {newMessage.Type}, {newMessage.Status}, {newMessage.Destination}");
             this.parentStateMachine.PublishNotificationMessage(newMessage);
         }
 
@@ -47,12 +50,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
+            this.logger.LogTrace($"Command processed: {message.Type}, {message.Destination}, {message.Source}");
             //TEMP Add your implementation code here
         }
 
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
+            this.logger.LogTrace($"Notification processed: {message.Type}, {message.Status}, {message.Destination}");
             //TEMP Add your implementation code here
         }
 
