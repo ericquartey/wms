@@ -16,8 +16,6 @@
 
         public const string EXECUTELISTROWDIALOG = "ItemListRowExecuteDialogViewModel";
 
-        public const string FILTERDIALOG = "FilterDialogViewModel";
-
         public const string ITEMADDDIALOG = "ItemAddDialogViewModel";
 
         public const string ITEMDETAILS = "ItemDetailsViewModel";

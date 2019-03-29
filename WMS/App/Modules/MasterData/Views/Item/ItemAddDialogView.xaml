@@ -181,9 +181,9 @@
                                       Grid.Column="0"
                                       Margin="0,0,18,0"
                                       wms:ShowTitle.Show="True"
-                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                       EditValue="{Binding Path=Model.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      MinValue="1" />
+                                      MinValue="1"
+                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="1"
                                       Margin="0,0,18,0"
@@ -201,9 +201,9 @@
                                       Grid.Column="0"
                                       Margin="0,0,18,0"
                                       wms:ShowTitle.Show="True"
-                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                       EditValue="{Binding Path=Model.Length, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      MinValue="1" />
+                                      MinValue="1"
+                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,18,0"
@@ -215,9 +215,9 @@
                                       Grid.Column="0"
                                       Margin="0,0,18,0"
                                       wms:ShowTitle.Show="True"
-                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                       EditValue="{Binding Path=Model.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      MinValue="1" />
+                                      MinValue="1"
+                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="1"
                                       Margin="0,0,18,0"
@@ -237,6 +237,7 @@
                                       Height="400"
                                       BorderBrush="{DynamicResource CommonSecondaryLight}"
                                       BorderThickness="1"
+                                      CommandAction="{Binding CreateCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                       Filename="{Binding Path=Model.Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       Path="{Binding Path=Model.ImagePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </GroupBox>

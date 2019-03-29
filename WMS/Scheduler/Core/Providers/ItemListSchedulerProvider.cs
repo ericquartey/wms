@@ -57,7 +57,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                         PackageTypeId = r.PackageTypeId,
                         RegistrationNumber = r.RegistrationNumber,
                         RequestedQuantity = r.RequestedQuantity,
-                        Status = (ListRowStatus)r.Status,
+                        Status = (ItemListRowStatus)r.Status,
                         Sub1 = r.Sub1,
                         Sub2 = r.Sub2,
                     })
@@ -137,12 +137,12 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     requests.Add(qualifiedRequest);
 
                     row.Status = bayId.HasValue
-                        ? ListRowStatus.Executing
-                        : ListRowStatus.Waiting;
+                        ? ItemListRowStatus.Executing
+                        : ItemListRowStatus.Waiting;
                 }
                 else
                 {
-                    row.Status = ListRowStatus.Suspended;
+                    row.Status = ItemListRowStatus.Suspended;
                 }
 
                 await this.itemListRowSchedulerProvider.UpdateAsync(row);

@@ -79,7 +79,7 @@
                     <custom:CustomMainWindowErrorButton Margin="10,0,0,0"
                                                         ContentText="Error"
                                                         CustomCommand="{Binding ErrorButtonCommand}"
-                                                        Visibility="Visible"/>
+                                                        Visibility="{Binding IsErrorViewButtonVisible}"/>
                     <custom:CustomMainWindowServiceButton Margin="10,0,0,0"
                                                          ContentText="Service"
                                                         CustomCommand="{Binding ErrorButtonCommand}" />

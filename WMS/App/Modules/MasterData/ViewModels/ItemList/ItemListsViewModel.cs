@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls;
 using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
@@ -9,23 +10,25 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private ICommand listExecuteCommand;
+        private ICommand executeListCommand;
 
-        private ICommand showDetailsCommand;
+        private ICommand showListDetailsCommand;
 
         #endregion
 
         #region Properties
 
-        public ICommand ListExecuteCommand => this.listExecuteCommand ??
-                  (this.listExecuteCommand = new DelegateCommand(
-                           this.ExecuteListCommand,
-                           this.CanExecuteListCommand)
-            .ObservesProperty(() => this.CurrentItem));
+        public ICommand ExecuteListCommand => this.executeListCommand ??
+            (this.executeListCommand = new DelegateCommand(
+                    this.ExecuteList,
+                    this.CanExecuteList)
+                .ObservesProperty(() => this.CurrentItem));
 
-        public ICommand ShowDetailsCommand => this.showDetailsCommand ??
-                          (this.showDetailsCommand = new DelegateCommand(this.ExecuteShowDetailsCommand, this.CanShowDetailsCommand)
-            .ObservesProperty(() => this.CurrentItem));
+        public ICommand ShowListDetailsCommand => this.showListDetailsCommand ??
+            (this.showListDetailsCommand = new DelegateCommand(
+                    this.ShowListDetails,
+                    this.CanShowListDetails)
+                .ObservesProperty(() => this.CurrentItem));
 
         #endregion
 
@@ -38,28 +41,17 @@ namespace Ferretto.WMS.Modules.MasterData
                 Common.Utils.Modules.MasterData.ITEMLISTADD);
         }
 
-        private bool CanExecuteListCommand()
+        private bool CanExecuteList()
         {
-            if (this.CurrentItem != null)
-            {
-                var status = this.CurrentItem.Status;
-                if (status == ItemListStatus.Incomplete
-                    || status == ItemListStatus.Suspended
-                    || status == ItemListStatus.Waiting)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return this.CurrentItem?.CanExecuteOperation("Execute") == true;
         }
 
-        private bool CanShowDetailsCommand()
+        private bool CanShowListDetails()
         {
             return this.CurrentItem != null;
         }
 
-        private void ExecuteListCommand()
+        private void ExecuteList()
         {
             this.NavigationService.Appear(
                 nameof(MasterData),
@@ -70,7 +62,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 });
         }
 
-        private void ExecuteShowDetailsCommand()
+        private void ShowListDetails()
         {
             this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.ITEMLISTDETAILS, this.CurrentItem.Id);
         }
