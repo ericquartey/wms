@@ -33,6 +33,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 MessageActor.FiniteStateMachines,
                 MessageType.SwitchAxis,
                 MessageVerbosity.Info);
+            this.logger.LogTrace($"2-Constructor: published command: {message.Type}, {message.Destination}");
             this.parentStateMachine.PublishCommandMessage(message);
         }
 
@@ -76,10 +77,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
                     case MessageStatus.OperationError:
                         //TEMP Change to error state (an error has occurred)
+                        this.logger.LogTrace($"3-Change State to HomingErrorState");
                         this.parentStateMachine.ChangeState(new HomingErrorState(this.parentStateMachine, this.axisToSwitch, this.logger));
                         break;
 
                     default:
+                        this.logger.LogTrace($"4-Hitted defauls case");
                         break;
                 }
             }

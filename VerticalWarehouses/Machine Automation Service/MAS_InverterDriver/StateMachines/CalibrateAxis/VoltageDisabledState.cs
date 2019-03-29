@@ -35,8 +35,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
             this.logger = logger;
-
-            this.logger.LogTrace($"VoltageDisabledState ctor");
+            this.logger.LogTrace($"1-Constructor");
 
             switch (this.axisToCalibrate)
             {
@@ -63,6 +62,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
                 MessageStatus.OperationStart,
                 ErrorLevel.NoError,
                 MessageVerbosity.Info);
+            this.logger.LogTrace($"2-Constructor: published notification: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
             this.parentStateMachine.PublishNotificationEvent(notificationMessage);
         }
 
@@ -73,11 +73,12 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override bool ProcessMessage(InverterMessage message)
         {
-            this.logger.LogTrace($"VoltageDisabledState process message");
+            this.logger.LogTrace($"1-Message processed: {message.ParameterId}, {message.Payload}");
             var returnValue = false;
 
             if (message.IsError)
             {
+                this.logger.LogTrace($"2-Change State to ErrorState");
                 this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate, this.logger));
             }
 
@@ -85,8 +86,6 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
             {
                 if ((message.UShortPayload & STATUS_WORD_VALUE) == STATUS_WORD_VALUE)
                 {
-                    this.logger.LogTrace($"VoltageDisabledState process message condition met");
-
                     this.parentStateMachine.ChangeState(new HomingModeState(this.parentStateMachine, this.axisToCalibrate, this.logger));
 
                     return true;
@@ -94,6 +93,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
                 if ((message.UShortPayload & RESET_STATUS_WORD_VALUE) == RESET_STATUS_WORD_VALUE)
                 {
+                    this.logger.LogTrace($"4-Change state to EndState");
                     this.parentStateMachine.ChangeState(new EndState(this.parentStateMachine, this.axisToCalibrate, this.logger));
                     returnValue = true;
                 }
@@ -105,7 +105,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override void Stop()
         {
-            this.logger.LogTrace("VoltageDisabledState stop");
+            this.logger.LogTrace("Stop");
             var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue, sendDelay);
             this.parentStateMachine.EnqueueMessage(inverterMessage);
         }

@@ -78,14 +78,15 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
                 var notificationMessage = new NotificationMessage(
                     messageData,
                     $"Switch off {this.axisToSwitchOn} axis",
-                    MessageActor.AutomationService,
+                    MessageActor.Any,
                     MessageActor.IODriver,
                     MessageType.SwitchAxis,
                     MessageStatus.OperationStart,
                     ErrorLevel.NoError,
                     MessageVerbosity.Info);
+                this.logger.LogTrace($"2-Start Notification published: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
                 this.PublishNotificationEvent(notificationMessage);
-
+                this.logger.LogTrace($"3-Change State to SwitchOffMotorState");
                 this.CurrentState = new SwitchOffMotorState(this.axisToSwitchOn, this.logger, this);
             }
             else
@@ -94,14 +95,16 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
                 var notificationMessage = new NotificationMessage(
                     messageData,
                     $"Switch on {this.axisToSwitchOn} axis",
-                    MessageActor.AutomationService,
+                    MessageActor.Any,
                     MessageActor.IODriver,
                     MessageType.SwitchAxis,
                     MessageStatus.OperationStart,
                     ErrorLevel.NoError,
                     MessageVerbosity.Info);
+                this.logger.LogTrace($"4-Start Notification published: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
                 this.PublishNotificationEvent(notificationMessage);
 
+                this.logger.LogTrace($"5-Change State to SwitchOnMotorState");
                 this.CurrentState = new SwitchOnMotorState(this.axisToSwitchOn, this.logger, this);
             }
 
@@ -128,6 +131,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         private void DelayElapsed(object state)
         {
+            this.logger.LogTrace($"Change State to SwitchOnMotorState");
             this.ChangeState(new SwitchOnMotorState(this.axisToSwitchOn, this.logger, this));
         }
 

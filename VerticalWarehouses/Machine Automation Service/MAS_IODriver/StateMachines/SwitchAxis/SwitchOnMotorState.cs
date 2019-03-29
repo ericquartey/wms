@@ -61,7 +61,6 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
                 if (this.axisToSwitchOn == Axis.Horizontal && message.CradleMotorOn || this.axisToSwitchOn == Axis.Vertical && message.ElevatorMotorOn)
                 {
-                    this.logger.LogTrace($"SwitchOnMotorState processMessage condition met");
                     var messageData = new CalibrateAxisMessageData(this.axisToSwitchOn, MessageVerbosity.Info);
                     var notificationMessage = new NotificationMessage(
                         messageData,
@@ -72,8 +71,9 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
                         MessageStatus.OperationEnd,
                         ErrorLevel.NoError,
                         MessageVerbosity.Info);
+                    this.logger.LogTrace($"2-Notification published: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
                     this.parentStateMachine.PublishNotificationEvent(notificationMessage);
-
+                    this.logger.LogTrace($"3-Change State to EndState");
                     this.parentStateMachine.ChangeState(new EndState(this.axisToSwitchOn, this.logger, this.parentStateMachine));
                 }
             }

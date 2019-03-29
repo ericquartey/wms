@@ -172,7 +172,6 @@ namespace Ferretto.VW.MAS_IODriver
 
                 throw new IOException($"Exception: {ex.Message} Timer Creation Failed", ex);
             }
-
             this.currentStateMachine = new PowerUpStateMachine(this.ioCommandQueue, this.eventAggregator, this.logger);
             this.currentStateMachine.Start();
 
@@ -194,7 +193,7 @@ namespace Ferretto.VW.MAS_IODriver
 
                     return Task.CompletedTask;
                 }
-
+                this.logger.LogTrace($"Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}");
                 if (this.currentStateMachine != null)
                 {
                     var errorNotification = new NotificationMessage(null, "I/O operation already in progress", MessageActor.Any,
@@ -208,7 +207,6 @@ namespace Ferretto.VW.MAS_IODriver
                     this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
                     continue;
                 }
-                this.logger.LogTrace($"HostedIODriver command received {receivedMessage.Type} ");
                 switch (receivedMessage.Type)
                 {
                     case MessageType.SwitchAxis:
@@ -248,7 +246,7 @@ namespace Ferretto.VW.MAS_IODriver
 
                     return;
                 }
-
+                this.logger.LogTrace($"Notification received: {receivedMessage.Type}, {receivedMessage.Status}, destination: {receivedMessage.Destination}");
                 switch (receivedMessage.Type)
                 {
                     case MessageType.DataLayerReady:
