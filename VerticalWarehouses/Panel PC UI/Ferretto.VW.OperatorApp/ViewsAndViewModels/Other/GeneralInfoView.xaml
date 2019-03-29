@@ -11,39 +11,39 @@
 
     <Grid   Width="1024" Height="608">
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="340,40,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="340,40,0,0" MaxWidth="500"
                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                     Text="{x:Static Resources:OperatorApp.GeneralInfoHeader}" />
         
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="340,100,0,0" Width="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="340,100,0,0" MaxWidth="300"
                                                ContentText="VRT EF 84 L 990-BIS H 6345"
                                                LabelText="{x:Static Resources:OperatorApp.GeneralInfoModel}"/>
-        
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="340,320,0,0" Width="200"
+
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="340,320,0,0" MaxWidth="300"
                                                ContentText="2017-02-12"
                                                LabelText="{x:Static Resources:OperatorApp.GeneralInfoInstallationDate}"/>
-        
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="340,170,0,0" Width="150"
+
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="340,170,0,0" MaxWidth="300"
                                                ContentText="54"
                                                LabelText="{x:Static Resources:OperatorApp.GeneralInfoTotDrawers}"/>
-        
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="690,100,0,0" Width="300"
+
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="690,100,0,0" MaxWidth="300"
                                                ContentText="VW_190012"
                                                LabelText="{x:Static Resources:OperatorApp.GeneralInfoSerial}"/>
-        
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="690,170,0,0" Width="150"
+
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="690,170,0,0" MaxWidth="300"
                                                ContentText="1.1.01 Beta"
                                                LabelText="{x:Static Resources:OperatorApp.GeneralInfoSwRelease}"/>
-        
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="690,320,0,0" Width="200"
+
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="690,320,0,0" MaxWidth="300"
                                                ContentText="2019-03-05"
                                                LabelText="{x:Static Resources:OperatorApp.GeneralInfoNextMaintenanceDate}"/>
-        
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="340,390,0,0" Width="200"
+
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="340,390,0,0" MaxWidth="300"
                                                ContentText="2018-03-05"
                                                LabelText="{x:Static Resources:OperatorApp.GeneralInfoLastMaintenanceDate}"/>
-        
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="690,390,0,0" Width="300"
+
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="690,390,0,0" MaxWidth="300"
                                                ContentText="Manutenzione richiesta."
                                                LabelText="{x:Static Resources:OperatorApp.GeneralInfoOperativeStatus}"/>
 

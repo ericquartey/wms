@@ -23,7 +23,7 @@
                   Content="{x:Static Resources:OperatorApp.ItemSearchUp}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,450,0,0" Width="380"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,450,0,0" MaxWidth="380"
                                                ContentText="1254"
                                                LabelText="{x:Static Resources:OperatorApp.ItemSearchKeySearch}"/>
 
@@ -41,10 +41,10 @@
         </DataGrid>
         
         <Controls:CustomInputFieldControlFocusable  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
-                                                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="610,530,0,0" Width="160"
+                                                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="610,530,0,0" MaxWidth="200"
                                                     LabelText="{x:Static Resources:OperatorApp.ItemSearchQtyRequest}" />
         
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="610,450,0,0" Width="150"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="610,450,0,0" MaxWidth="200"
                                                ContentText="14"
                                                LabelText="{x:Static Resources:OperatorApp.ItemSearchQtyAvailable}"/>
         

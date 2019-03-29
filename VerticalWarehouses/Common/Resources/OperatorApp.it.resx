@@ -387,4 +387,28 @@
   <data name="GeneralInfoOperativeStatus" xml:space="preserve">
     <value>Stato operativo macchina:</value>
   </data>
+  <data name="DrawerCompactingHeader" xml:space="preserve">
+    <value>Procedura di compattazione cassetti.</value>
+  </data>
+  <data name="DrawerCompactingSide" xml:space="preserve">
+    <value>Lato:</value>
+  </data>
+  <data name="DrawerCompactingFragmentNumber" xml:space="preserve">
+    <value>Numero frammenti:</value>
+  </data>
+  <data name="DrawerCompactingMaxSpaceRecoverable" xml:space="preserve">
+    <value>Spazio max. recuperabile:</value>
+  </data>
+  <data name="DrawerCompactingSpaceToRecover" xml:space="preserve">
+    <value>Spazio da recuperare:</value>
+  </data>
+  <data name="DrawerCompactingAntCompact" xml:space="preserve">
+    <value>Compatta anteriore</value>
+  </data>
+  <data name="DrawerCompactingRearCompact" xml:space="preserve">
+    <value>Compatta posteriore</value>
+  </data>
+  <data name="DrawerActivityUpdateMaxQuantity" xml:space="preserve">
+    <value>Aggiorna quantita' massima</value>
+  </data>
 </root>

@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
+namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 {
     /// <summary>
-    /// Logica di interazione per ImmediateDrawerCallView.xaml
+    /// Logica di interazione per DrawerCompactingView.xaml
     /// </summary>
-    public partial class ImmediateDrawerCallView : UserControl
+    public partial class DrawerCompactingView : UserControl
     {
-        public ImmediateDrawerCallView()
+        public DrawerCompactingView()
         {
             InitializeComponent();
         }

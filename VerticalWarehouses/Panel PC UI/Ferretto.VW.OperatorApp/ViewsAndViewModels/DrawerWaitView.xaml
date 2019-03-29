@@ -15,10 +15,10 @@
                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                     Text="{x:Static Resources:OperatorApp.DrawerWaitPageHeader}" />
         
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,320,0,0" Width="150"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,320,0,0" MaxWidth="200"
             ContentText="3"
             LabelText="{x:Static Resources:OperatorApp.DrawerWaitOperation}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,180,0,0" Width="380"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,180,0,0" MaxWidth="400"
             ContentText="Operazione precedente terminata."
             LabelText="{x:Static Resources:OperatorApp.DrawerWaitNota}"/>
 

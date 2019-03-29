@@ -31,7 +31,7 @@
                   Content="{x:Static Resources:OperatorApp.ListsInWaitExecute}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,465,0,0" Width="380"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,465,0,0" MaxWidth="500"
                                                ContentText="Lista non eseguibile nella macchina corrente"
                                                LabelText="{x:Static Resources:OperatorApp.ListsInWaitNote}"/>
         
