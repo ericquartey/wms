@@ -20,8 +20,7 @@ namespace Ferretto.VW.MAS_AutomationService
                     logging.AddConsole();
                 })
                 .UseNLog()
-                .UseStartup<Startup>()
-            ;
+                .UseStartup<Startup>();
         }
 
         public static void Main(string[] args)

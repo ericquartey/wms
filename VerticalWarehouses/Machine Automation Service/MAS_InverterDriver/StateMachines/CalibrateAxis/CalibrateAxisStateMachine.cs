@@ -58,7 +58,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
                 var status = (this.IsStopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd;
                 message.Status = status;
             }
-            this.logger.LogTrace($"Notification published: {message.Type}, {message.Status}, {message.Destination}");
+            this.logger.LogTrace($"Notification published: {message.Type}, {message.Status}, destination: {message.Destination}, source: {message.Source}");
             base.PublishNotificationEvent(message);
         }
 

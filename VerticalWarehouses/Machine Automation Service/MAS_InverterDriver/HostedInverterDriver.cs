@@ -111,7 +111,7 @@ namespace Ferretto.VW.InverterDriver
                 false,
                 message => message.Destination == MessageActor.InverterDriver || message.Destination == MessageActor.Any);
 
-            this.logger?.LogInformation("Hosted Inverter Driver Constructor");
+            this.logger?.LogInformation($"Hosted Inverter Driver Constructor");
         }
 
         #endregion
@@ -175,7 +175,7 @@ namespace Ferretto.VW.InverterDriver
                 {
                     return Task.CompletedTask;
                 }
-                this.logger.LogTrace($"Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}");
+                this.logger.LogTrace($"Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}");
                 if (this.currentStateMachine != null && receivedMessage.Type != MessageType.Stop)
                 {
                     var errorNotification = new NotificationMessage(null, "Inverter operation already in progress", MessageActor.Any,
@@ -183,8 +183,6 @@ namespace Ferretto.VW.InverterDriver
                     this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
                     continue;
                 }
-
-                //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:CommandReceiveTaskFunction");
 
                 switch (receivedMessage.Type)
                 {
@@ -237,7 +235,7 @@ namespace Ferretto.VW.InverterDriver
                 {
                     return;
                 }
-                this.logger.LogTrace($"Notification received: {receivedMessage.Type}, {receivedMessage.Status}, destination: {receivedMessage.Destination}");
+                this.logger.LogTrace($"Notification received: {receivedMessage.Type}, {receivedMessage.Status}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}");
 
                 switch (receivedMessage.Type)
                 {
@@ -274,8 +272,6 @@ namespace Ferretto.VW.InverterDriver
         {
             while (this.inverterCommandQueue.Dequeue(out var message))
             {
-                //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:ProcessCommand");
-
                 if (message.ParameterId == InverterParameterId.ControlWordParam)
                 {
                     this.lastControlMessage = new InverterMessage(message);
@@ -305,7 +301,6 @@ namespace Ferretto.VW.InverterDriver
         {
             while (this.heartbeatQueue.Dequeue(out var message))
             {
-                //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:ProcessHeartbeat");
                 await this.socketTransport.WriteAsync(message.GteHeartbeatMessage(this.heartbeatSet), this.stoppingToken);
 
                 this.lastHeatbeatMessage = message;
@@ -323,7 +318,6 @@ namespace Ferretto.VW.InverterDriver
                 try
                 {
                     inverterData = await this.socketTransport.ReadAsync(this.stoppingToken);
-                    //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:ReceiveInverterData/Read Async");
                 }
                 catch (OperationCanceledException)
                 {
@@ -402,8 +396,6 @@ namespace Ferretto.VW.InverterDriver
 
         private async Task SendInverterCommand()
         {
-            this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - HostedInverterDriver:SendInverterCommand/Start");
-
             //INFO Create WaitHandle array to wait for multiple events
             var commandHandles = new[]
             {
