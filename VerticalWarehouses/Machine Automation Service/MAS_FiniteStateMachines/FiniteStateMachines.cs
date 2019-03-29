@@ -123,6 +123,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         {
             do
             {
+                this.logger.LogTrace($"1.5:Wait CommandMessage");
                 CommandMessage receivedMessage;
                 try
                 {
@@ -174,6 +175,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             do
             {
                 NotificationMessage receivedMessage;
+                this.logger.LogTrace($"2.5:Wait NotificationMessage");
                 try
                 {
                     this.notifyQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);

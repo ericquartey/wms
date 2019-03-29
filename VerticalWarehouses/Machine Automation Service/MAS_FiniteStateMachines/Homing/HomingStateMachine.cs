@@ -73,7 +73,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                     break;
             }
 
-            this.CurrentState?.ProcessCommandMessage(message);
+            this.CurrentState.ProcessCommandMessage(message);
         }
 
         /// <inheritdoc/>
@@ -127,7 +127,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 }
             }
 
-            this.CurrentState?.ProcessNotificationMessage(message);
+            this.CurrentState.ProcessNotificationMessage(message);
         }
 
         /// <inheritdoc/>
@@ -164,6 +164,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             }
 
             this.CurrentState = new HomingStartState(this, this.currentAxis, this.logger);
+            this.logger.LogTrace($"6:CurrentState{CurrentState.GetType()}");
         }
 
         protected override void Dispose(bool disposing)

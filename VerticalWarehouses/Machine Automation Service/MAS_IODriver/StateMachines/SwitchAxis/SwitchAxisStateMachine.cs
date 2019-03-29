@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
         public override void Start()
         {
             this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace(string.Format("2:{ 0}", this.switchOffOtherAxis));
+            this.logger.LogTrace(string.Format("2:{0}", this.switchOffOtherAxis));
 
             if (this.switchOffOtherAxis)
             {

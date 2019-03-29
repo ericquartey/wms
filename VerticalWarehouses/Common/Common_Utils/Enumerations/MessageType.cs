@@ -60,7 +60,7 @@
 
         UpDown,
 
-        DataLayerReady
+        DataLayerReady,
 
         InverterReset
     }

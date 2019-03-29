@@ -190,7 +190,7 @@ namespace Ferretto.VW.MAS_IODriver
                 }
                 catch (OperationCanceledException)
                 {
-                    this.logger.LogDebug("4:Method End");
+                    this.logger.LogDebug("4:Method End - Operation Canceled");
 
                     return Task.CompletedTask;
                 }
