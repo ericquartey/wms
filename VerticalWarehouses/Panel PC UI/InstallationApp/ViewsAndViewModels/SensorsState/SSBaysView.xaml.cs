@@ -14,6 +14,14 @@ namespace Ferretto.VW.InstallationApp
             this.InitializeComponent();
         }
 
-        #endregion Constructors
+        #endregion
+
+        #region Methods
+
+        private void CustomSensorControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+        }
+
+        #endregion
     }
 }

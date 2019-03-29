@@ -90,6 +90,17 @@ namespace Ferretto.VW.MAS_AutomationService
             this.disposed = true;
         }
 
+        public async void TESTStartBoolSensorsCycle()
+        {
+            while (true)
+            {
+                var message = new bool[] { (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), };
+                Console.WriteLine(message[0].ToString() + " " + message[1].ToString() + " " + message[2].ToString() + " " + message[3].ToString());
+                await this.hub.Clients.All.OnSensorsChangedToAllConnectedClients(message);
+                await Task.Delay(1000);
+            }
+        }
+
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             this.stoppingToken = stoppingToken;
@@ -227,30 +238,18 @@ namespace Ferretto.VW.MAS_AutomationService
             this.logger.LogDebug("2:Method End");
         }
 
-        #endregion
+        private async void StartTestCycles()
+        {
+            this.TESTStartBoolSensorsCycle();
+            //this.TESTStartStringMessageCycle();
+        }
 
-        //private async void StartTestCycles()
-        //{
-        //    this.TESTStartBoolSensorsCycle();
-        //    this.TESTStartStringMessageCycle();
-        //}
+        #endregion
 
         //public void SendMessageToAllConnectedClients(NotificationMessage notificationMessage)
         //{
         //    this.hub.Clients.All.OnSendMessageToAllConnectedClients(notificationMessage.Description);
         //}
-
-        //public async void TESTStartBoolSensorsCycle()
-        //{
-        //    while (true)
-        //    {
-        //        var message = new bool[] { (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), };
-        //        Console.WriteLine(message[0].ToString() + " " + message[1].ToString() + " " + message[2].ToString() + " " + message[3].ToString());
-        //        await this.hub.Clients.All.OnSensorsChangedToAllConnectedClients(message);
-        //        await Task.Delay(1000);
-        //    }
-        //}
-
         //public async void TESTStartStringMessageCycle()
         //{
         //    while (true)
