@@ -28,6 +28,8 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         public CalibrateAxisStateMachine(Axis axisToCalibrate, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
         {
+            this.logger.LogDebug("1:Method Start");
+
             this.axisToCalibrate = axisToCalibrate;
             this.inverterCommandQueue = inverterCommandQueue;
             this.eventAggregator = eventAggregator;
@@ -51,14 +53,15 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override void OnPublishNotification(NotificationMessage message)
         {
+            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace($"2:Type={message.Type}:Destination={message.Destination}:Status={message.Status}");
+
             switch (message.Type)
             {
                 case MessageType.CalibrateAxis:
                     {
                         //TEMP Send a notification about the start operation to all the world
                         var status = (this.IsStopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd;
-
-                        this.logger?.LogTrace(string.Format("On PublishNotification CalibrateAxis States mchine -> {0}-{1}", message.Type, status));
 
                         var endNotification = new NotificationMessage(message.Data,
                             message.Description,
@@ -68,7 +71,9 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
                             status
                         );
 
-                        base.PublishNotificationEvent(endNotification); //x this.eventAggregator.GetEvent<NotificationEvent>().Publish(message);
+                        this.logger.LogTrace($"3:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
+
+                        base.PublishNotificationEvent(endNotification);
                         break;
                     }
 
@@ -94,11 +99,16 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
                         break;
                     }
             }
+
+            this.logger.LogDebug("3:Method End");
         }
 
         /// <inheritdoc />
         public override void Start()
         {
+            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace($"2:Axis to calibrate={this.axisToCalibrate}");
+
             switch (this.axisToCalibrate)
             {
                 case Axis.Both:
@@ -112,6 +122,8 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
             }
 
             this.CurrentState = new VoltageDisabledState(this, this.currentAxis, this.logger);
+
+            this.logger.LogDebug("3:Method End");
         }
 
         /// <inheritdoc />

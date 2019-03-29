@@ -181,10 +181,7 @@ namespace Ferretto.VW.MAS_IODriver
                 {
                     this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
 
-                    this.logger.LogTrace(string.Format("3:{0}:{1}:{2}",
-                        receivedMessage.Type,
-                        receivedMessage.Destination,
-                        receivedMessage));
+                    this.logger.LogTrace($"3:Type={receivedMessage.Type}:Destination={receivedMessage.Destination}:receivedMessage={receivedMessage}");
                 }
                 catch (OperationCanceledException)
                 {
@@ -198,10 +195,10 @@ namespace Ferretto.VW.MAS_IODriver
                     var errorNotification = new NotificationMessage(null, "I/O operation already in progress", MessageActor.Any,
                         MessageActor.IODriver, receivedMessage.Type, MessageStatus.OperationError, ErrorLevel.Error);
 
-                    this.logger.LogTrace(string.Format("5:{0}:{1}:{2}",
+                    this.logger.LogTrace($"5:Type={0}:Destination={1}:Status={2}",
                         errorNotification.Type,
                         errorNotification.Destination,
-                        errorNotification.Status));
+                        errorNotification.Status);
 
                     this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
                     continue;
@@ -234,11 +231,7 @@ namespace Ferretto.VW.MAS_IODriver
                 try
                 {
                     this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
-
-                    this.logger.LogTrace(string.Format("2:{0}:{1}:{2}",
-                        receivedMessage.Type,
-                        receivedMessage.Destination,
-                        receivedMessage.Status));
+                    this.logger.LogTrace($"2:Type={receivedMessage.Type}:Destination={receivedMessage.Destination}:Status={receivedMessage.Status}");
                 }
                 catch (OperationCanceledException)
                 {
@@ -315,7 +308,7 @@ namespace Ferretto.VW.MAS_IODriver
                 {
                     message = new IoMessage(this.inputData, true);
 
-                    this.logger.LogTrace(string.Format("4:{0}", message));
+                    this.logger.LogTrace($"4:{message}");
 
                     this.currentStateMachine?.ProcessMessage(message);
                 }
@@ -335,7 +328,7 @@ namespace Ferretto.VW.MAS_IODriver
                 {
                     this.ioCommandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out message);
 
-                    this.logger.LogTrace(string.Format("2:{0}", message));
+                    this.logger.LogTrace($"2:message={message}");
                 }
                 catch (OperationCanceledException)
                 {
@@ -351,7 +344,7 @@ namespace Ferretto.VW.MAS_IODriver
                         await this.modbusTransport.WriteAsync(message.Outputs);
                     }
 
-                    this.logger.LogTrace(string.Format("4:{0}", message));
+                    this.logger.LogTrace($"4:message={message}");
 
                     this.currentStateMachine.ProcessMessage(message);
                 }

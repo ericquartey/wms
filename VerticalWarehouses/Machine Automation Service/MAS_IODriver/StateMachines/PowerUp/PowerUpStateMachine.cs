@@ -47,9 +47,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
         {
             this.logger.LogDebug("1:Method Start");
 
-            this.logger.LogTrace(string.Format("2:{0}:{1}",
-                message.ValidOutputs,
-                message.ResetSecurity));
+            this.logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Reset Security={message.ResetSecurity}");
 
             if (message.ValidOutputs && message.ResetSecurity)
             {

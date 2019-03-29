@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
@@ -24,16 +23,19 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
 
         public ErrorState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate, ILogger logger)
         {
+            this.logger.LogDebug("1:Method Start");
+
             this.parentStateMachine = parentStateMachine;
             this.logger = logger;
             this.axisToStop = axisToCalibrate;
-
-            this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - ErrorState:Ctor");
 
             var messageData = new StopAxisMessageData(this.axisToStop);
 
             var errorNotification = new NotificationMessage(messageData, "Inverter operation error", MessageActor.Any,
                 MessageActor.InverterDriver, MessageType.Stop, MessageStatus.OperationError, ErrorLevel.Error);
+
+            this.logger.LogTrace($"2:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
+
             parentStateMachine.PublishNotificationEvent(errorNotification);
         }
 

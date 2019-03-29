@@ -82,10 +82,10 @@ namespace Ferretto.VW.MAS_InverterDriver
                 BitConverter.ToInt16(rawMessage,
                     4); //VALUE parameterId is always stored starting at byte intex 4 in the byte array
 
-            this.payload = new byte[payloadLenght];
+            this.payload = new byte[this.payloadLenght];
             try
             {
-                Array.Copy(rawMessage, 6, this.payload, 0, payloadLenght);
+                Array.Copy(rawMessage, 6, this.payload, 0, this.payloadLenght);
             }
             catch (Exception ex)
             {
@@ -203,7 +203,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             readMessage[2] = this.SystemIndex;
             readMessage[3] = this.DataSetIndex;
 
-            if (this.parameterId.Equals(InverterParameterId.ControlWordParam) || IsWriteMessage)
+            if (this.parameterId.Equals(InverterParameterId.ControlWordParam) || this.IsWriteMessage)
             {
                 throw new InverterDriverException("Invalid Operation", InverterDriverExceptionCode.RequestReadOnWriteOnlyParameter);
             }
@@ -224,7 +224,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         public byte[] GetWriteMessage()
         {
-            if (this.parameterId.Equals(InverterParameterId.StatusWordParam) || !IsWriteMessage)
+            if (this.parameterId.Equals(InverterParameterId.StatusWordParam) || !this.IsWriteMessage)
             {
                 throw new InverterDriverException("Invalid Operation", InverterDriverExceptionCode.RequerstWriteOnReadOnlyParameter);
             }
@@ -280,6 +280,25 @@ namespace Ferretto.VW.MAS_InverterDriver
             }
 
             return this.GetWriteMessage();
+        }
+
+        public override string ToString()
+        {
+            var returnString = new StringBuilder();
+
+            returnString.Append(string.Format("InverterMessage:IsWriteMessage:{0}", this.IsWriteMessage ? "T" : "F"));
+            returnString.Append(string.Format("-parameterId:{0:X}-", this.parameterId));
+
+            returnString.Append("-payload[");
+
+            for (var i = 0; i < this.payload?.Length; i++)
+            {
+                returnString.Append(string.Format("{0:X}.", this.payload[i]));
+            }
+
+            returnString.Append("]");
+
+            return returnString.ToString();
         }
 
         private object ConvertPayload()
