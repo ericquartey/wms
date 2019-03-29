@@ -246,9 +246,9 @@ namespace Ferretto.Common.Controls
 
         private void WmsMainDockLayoutManager_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            if ((string.IsNullOrEmpty(this.StartModuleName)
+            if (string.IsNullOrEmpty(this.StartModuleName)
                 && string.IsNullOrEmpty(this.StartViewName)
-                && this.navigationService.IsUnitTest) == false)
+                && this.navigationService.IsUnitTest == false)
             {
                 this.navigationService.Appear(this.StartModuleName, this.StartViewName);
             }

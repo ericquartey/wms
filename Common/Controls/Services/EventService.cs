@@ -88,13 +88,16 @@ namespace Ferretto.Common.Controls.Services
             var eventBus = this.GetEventBus<TEventArgs>();
             lock (this.registeredEvents)
             {
-                var entityKey = this.subscriptionTokens[subscriptionToken].ToString();
-                if (this.registeredEvents.ContainsKey(entityKey))
+                if (this.subscriptionTokens.ContainsKey(subscriptionToken))
                 {
-                    var subscriptions = this.registeredEvents[entityKey];
-                    var subscriptionToRemove = subscriptions.Single(s => s.Token == subscriptionToken);
-                    subscriptions.Remove(subscriptionToRemove);
-                    this.subscriptionTokens.Remove(subscriptionToken);
+                    var entityKey = this.subscriptionTokens[subscriptionToken].ToString();
+                    if (this.registeredEvents.ContainsKey(entityKey))
+                    {
+                        var subscriptions = this.registeredEvents[entityKey];
+                        var subscriptionToRemove = subscriptions.Single(s => s.Token == subscriptionToken);
+                        subscriptions.Remove(subscriptionToRemove);
+                        this.subscriptionTokens.Remove(subscriptionToken);
+                    }
                 }
             }
 
