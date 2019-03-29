@@ -56,7 +56,11 @@ namespace Ferretto.VW.Common_Utils.Utilities
             }
             catch (OperationCanceledException)
             {
-                //INFO Just exit as timeout expiration eve if the operation was actually cancelled
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Exception {ex.Message} while trying to dequeue object from blocking queue {this.GetType()}");
             }
 
             result = default(T);

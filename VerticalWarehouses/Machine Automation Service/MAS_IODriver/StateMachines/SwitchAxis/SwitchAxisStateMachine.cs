@@ -8,15 +8,13 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 {
-    public class SwitchAxisSateMachine : IoStateMachineBase
+    public class SwitchAxisStateMachine : IoStateMachineBase
     {
         #region Fields
 
         private const int PauseInterval = 250;
 
         private readonly Axis axisToSwitchOn;
-
-        private readonly ILogger logger;
 
         private Timer delayTimer;
 
@@ -28,21 +26,24 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         #region Constructors
 
-        public SwitchAxisSateMachine(Axis axisToSwitchOn, bool switchOffOtherAxis, BlockingConcurrentQueue<IoMessage> ioCommandQueue, IEventAggregator eventAggregator, ILogger logger)
+        public SwitchAxisStateMachine(Axis axisToSwitchOn, bool switchOffOtherAxis, BlockingConcurrentQueue<IoMessage> ioCommandQueue, IEventAggregator eventAggregator, ILogger logger)
         {
+            logger.LogDebug("1:Method Start");
+
             this.axisToSwitchOn = axisToSwitchOn;
             this.switchOffOtherAxis = switchOffOtherAxis;
             this.ioCommandQueue = ioCommandQueue;
             this.eventAggregator = eventAggregator;
             this.logger = logger;
-            this.logger.LogTrace($"Switch Axis State Machine ctor");
+
+            this.logger.LogDebug("2:Method End");
         }
 
         #endregion
 
         #region Destructors
 
-        ~SwitchAxisSateMachine()
+        ~SwitchAxisStateMachine()
         {
             this.Dispose(false);
         }
@@ -54,17 +55,23 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
         /// <inheritdoc/>
         public override void ProcessMessage(IoMessage message)
         {
-            this.logger.LogTrace($"Switch Axis State Machine Process Message");
+            this.logger.LogDebug("1:Method Start");
+
             if (message.ValidOutputs && !message.ElevatorMotorOn && !message.CradleMotorOn)
             {
                 this.delayTimer = new Timer(this.DelayElapsed, null, PauseInterval, -1);    //VALUE -1 period means timer does not fire multiple times
             }
+
+            this.logger.LogTrace(string.Format("2:{0}:{1}:{2}", message.ValidOutputs, message.ElevatorMotorOn, message.CradleMotorOn));
+
             base.ProcessMessage(message);
         }
 
         public override void Start()
         {
-            this.logger.LogTrace($"Switch Axis State Machine Start");
+            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace(string.Format("2:{ 0}", this.switchOffOtherAxis));
+
             if (this.switchOffOtherAxis)
             {
                 var messageData = new CalibrateAxisMessageData(this.axisToSwitchOn, MessageVerbosity.Info);
@@ -97,6 +104,8 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
                 this.CurrentState = new SwitchOnMotorState(this.axisToSwitchOn, this.logger, this);
             }
+
+            this.logger.LogDebug("3:End Start");
         }
 
         protected override void Dispose(bool disposing)

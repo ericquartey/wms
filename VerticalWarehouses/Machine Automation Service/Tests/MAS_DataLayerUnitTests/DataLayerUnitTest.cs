@@ -1,11 +1,5 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
+﻿using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.MAS_DataLayer;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -27,28 +21,26 @@ namespace MAS_DataLayerUnitTests
 
         #endregion
 
-        #region Methods
+        //[TestInitialize]
+        //public void CreateNewContext()
+        //{
+        //    this.context = this.CreateContext();
 
-        [TestInitialize]
-        public void CreateNewContext()
-        {
-            this.context = this.CreateContext();
+        //    var mockEventAggregator = new Mock<IEventAggregator>();
+        //    mockEventAggregator.Setup(s => s.GetEvent<CommandEvent>()).Returns(new CommandEvent());
+        //    mockEventAggregator.Setup(s => s.GetEvent<NotificationEvent>()).Returns(new NotificationEvent());
 
-            var mockEventAggregator = new Mock<IEventAggregator>();
-            mockEventAggregator.Setup(s => s.GetEvent<CommandEvent>()).Returns(new CommandEvent());
-            mockEventAggregator.Setup(s => s.GetEvent<NotificationEvent>()).Returns(new NotificationEvent());
+        //    this.eventAggregator = mockEventAggregator;
 
-            this.eventAggregator = mockEventAggregator;
+        //    var filesInfo = new FilesInfo
+        //    {
+        //        GeneralInfoPath = @"..\..\..\..\..\MAS_AutomationService\general_info.json",
+        //        InstallationInfoPath = @"..\..\..\..\..\MAS_AutomationService\installation_info.json"
+        //    };
+        //    var iOptions = Options.Create(filesInfo);
 
-            var filesInfo = new FilesInfo
-            {
-                GeneralInfoPath = @"..\..\..\..\..\MAS_AutomationService\general_info.json",
-                InstallationInfoPath = @"..\..\..\..\..\MAS_AutomationService\installation_info.json"
-            };
-            var iOptions = Options.Create(filesInfo);
-
-            this.dataLayer = new DataLayer(this.context, mockEventAggregator.Object, iOptions);
-        }
+        //    this.dataLayer = new DataLayer(this.context, mockEventAggregator.Object, iOptions);
+        //}
 
         //[TestMethod]
         //public void GetBoolConfigurationValue()
@@ -160,14 +152,12 @@ namespace MAS_DataLayerUnitTests
         //    // INFO Assert - Expects exception
         //}
 
-        protected DataLayerContext CreateContext()
-        {
-            return new DataLayerContext(
-                new DbContextOptionsBuilder<DataLayerContext>()
-                    .UseInMemoryDatabase(this.GetType().FullName)
-                    .Options);
-        }
-
-        #endregion
+        //protected DataLayerContext CreateContext()
+        //{
+        //    return new DataLayerContext(
+        //        new DbContextOptionsBuilder<DataLayerContext>()
+        //            .UseInMemoryDatabase(this.GetType().FullName)
+        //            .Options);
+        //}
     }
 }

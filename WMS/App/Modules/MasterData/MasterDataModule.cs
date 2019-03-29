@@ -59,6 +59,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.NavigationService.Register<ItemsView, ItemsViewModel>();
             this.NavigationService.Register<ItemDetailsView, ItemDetailsViewModel>();
             this.NavigationService.Register<ItemAddDialogView, ItemAddDialogViewModel>();
+            this.NavigationService.Register<WithdrawDialogView, WithdrawDialogViewModel>();
 
             this.NavigationService.Register<CellsView, CellsViewModel>();
             this.NavigationService.Register<CellDetailsView, CellDetailsViewModel>();
@@ -71,15 +72,14 @@ namespace Ferretto.WMS.Modules.MasterData
             this.NavigationService.Register<LoadingUnitEditView, LoadingUnitEditViewModel>();
             this.NavigationService.Register<LoadingUnitAddDialogView, LoadingUnitAddDialogViewModel>();
 
-            this.NavigationService.Register<WithdrawDialogView, WithdrawDialogViewModel>();
-            this.NavigationService.Register<ItemListExecuteDialogView, ItemListExecuteDialogViewModel>();
-            this.NavigationService.Register<ItemListRowExecuteDialogView, ItemListRowExecuteDialogViewModel>();
-
             this.NavigationService.Register<ItemListsView, ItemListsViewModel>();
             this.NavigationService.Register<ItemListDetailsView, ItemListDetailsViewModel>();
             this.NavigationService.Register<ItemListAddDialogView, ItemListAddDialogViewModel>();
+            this.NavigationService.Register<ItemListExecuteDialogView, ItemListExecuteDialogViewModel>();
 
+            this.NavigationService.Register<ItemListRowAddDialogView, ItemListRowAddDialogViewModel>();
             this.NavigationService.Register<ItemListRowDetailsView, ItemListRowDetailsViewModel>();
+            this.NavigationService.Register<ItemListRowExecuteDialogView, ItemListRowExecuteDialogViewModel>();
 
             this.NavigationService.Register<FilterDialogView, FilterDialogViewModel>();
         }

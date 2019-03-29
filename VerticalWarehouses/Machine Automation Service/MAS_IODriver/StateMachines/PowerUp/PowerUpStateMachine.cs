@@ -11,8 +11,6 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         private const int PulseInterval = 350;
 
-        private readonly ILogger logger;
-
         private Timer delayTimer;
 
         private bool disposed;
@@ -23,9 +21,13 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         public PowerUpStateMachine(BlockingConcurrentQueue<IoMessage> ioCommandQueue, IEventAggregator eventAggregator, ILogger logger)
         {
+            logger.LogDebug("1:Method Start");
+
+            this.logger = logger;
             this.ioCommandQueue = ioCommandQueue;
             this.eventAggregator = eventAggregator;
-            this.logger = logger;
+
+            this.logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -43,11 +45,20 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         public override void ProcessMessage(IoMessage message)
         {
+            this.logger.LogDebug("1:Method Start");
+
+            this.logger.LogTrace(string.Format("2:{0}:{1}",
+                message.ValidOutputs,
+                message.ResetSecurity));
+
             if (message.ValidOutputs && message.ResetSecurity)
             {
                 this.delayTimer = new Timer(this.DelayElapsed, null, PulseInterval, -1);    //VALUE -1 period means timer does not fire multiple times
             }
+
             base.ProcessMessage(message);
+
+            this.logger.LogDebug("3:Method End");
         }
 
         public override void Start()
