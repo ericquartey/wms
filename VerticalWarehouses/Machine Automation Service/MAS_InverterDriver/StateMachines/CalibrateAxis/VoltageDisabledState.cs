@@ -30,7 +30,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         public VoltageDisabledState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate, ILogger logger)
         {
-            this.logger.LogDebug("1:Method Start");
+            logger.LogDebug("1:Method Start");
 
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
@@ -116,7 +116,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         public override void Stop()
         {
             this.logger.LogDebug("1:Method Start");
-            
+
             var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue, sendDelay);
 
             this.logger.LogTrace($"2:inverterMessage={inverterMessage}");

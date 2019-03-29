@@ -23,7 +23,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
 
         public ErrorState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate, ILogger logger)
         {
-            this.logger.LogDebug("1:Method Start");
+            logger.LogDebug("1:Method Start");
 
             this.parentStateMachine = parentStateMachine;
             this.logger = logger;

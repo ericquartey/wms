@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         }
 
         /// <inheritdoc />
-        public void PublishNotificationEvent(NotificationMessage notificationMessage)
+        public virtual void PublishNotificationEvent(NotificationMessage notificationMessage)
         {
             this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
         }

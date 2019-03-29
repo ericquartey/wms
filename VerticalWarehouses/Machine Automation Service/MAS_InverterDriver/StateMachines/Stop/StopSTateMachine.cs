@@ -23,7 +23,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
 
         public StopStateMachine(Axis axisToStop, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
         {
-            this.logger.LogDebug("1:Method Start");
+            logger.LogDebug("1:Method Start");
 
             this.axisToStop = axisToStop;
             this.inverterCommandQueue = inverterCommandQueue;

@@ -1,6 +1,4 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
@@ -28,7 +26,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         public HomingModeState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate, ILogger logger)
         {
-            this.logger.LogDebug("1:Method Start");
+            logger.LogDebug("1:Method Start");
 
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;

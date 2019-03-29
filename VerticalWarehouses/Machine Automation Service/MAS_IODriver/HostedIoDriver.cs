@@ -235,7 +235,7 @@ namespace Ferretto.VW.MAS_IODriver
                 }
                 catch (OperationCanceledException)
                 {
-                    this.logger.LogDebug("3:Method End");
+                    this.logger.LogDebug("3:Method End operation cancelled");
 
                     return;
                 }
@@ -283,7 +283,7 @@ namespace Ferretto.VW.MAS_IODriver
                 }
                 catch (OperationCanceledException)
                 {
-                    this.logger.LogDebug("2:Method End");
+                    this.logger.LogDebug("2:Method End operation cancelled");
 
                     return;
                 }
@@ -332,7 +332,7 @@ namespace Ferretto.VW.MAS_IODriver
                 }
                 catch (OperationCanceledException)
                 {
-                    this.logger.LogDebug("3:Method End");
+                    this.logger.LogDebug("3:Method End operation cancelled");
 
                     return;
                 }

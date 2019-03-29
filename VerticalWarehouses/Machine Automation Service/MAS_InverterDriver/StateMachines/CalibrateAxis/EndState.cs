@@ -22,7 +22,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         public EndState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate, ILogger logger)
         {
-            this.logger.LogDebug("1:Method Start");
+            logger.LogDebug("1:Method Start");
 
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;

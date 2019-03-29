@@ -26,7 +26,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
 
         public StopState(IInverterStateMachine parentStateMachine, Axis axisToStop, ILogger logger)
         {
-            this.logger.LogDebug("1:Method Start");
+            logger.LogDebug("1:Method Start");
 
             this.parentStateMachine = parentStateMachine;
             this.logger = logger;
