@@ -43,7 +43,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 {
                     Id = r.Id,
                     ListId = r.ItemListId,
-                    Status = (ListRowStatus)r.Status,
+                    Status = (ItemListRowStatus)r.Status,
                     DispatchedQuantity = r.DispatchedQuantity,
                     Priority = r.Priority
                 })
@@ -103,25 +103,25 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             if (completeMissionsCount == involvedMissions.Count()
                 && involvedMissions.Sum(m => m.DispatchedQuantity) == row.RequestedQuantity)
             {
-                row.Status = ListRowStatus.Completed;
+                row.Status = ItemListRowStatus.Completed;
                 row.CompletionDate = now;
             }
             else if (waitingMissionsCount == involvedMissions.Count())
             {
-                row.Status = ListRowStatus.Waiting;
+                row.Status = ItemListRowStatus.Waiting;
             }
             else if (hasErroredMissions)
             {
-                row.Status = ListRowStatus.Error;
+                row.Status = ItemListRowStatus.Error;
             }
             else if (hasExecutingMissions)
             {
-                row.Status = ListRowStatus.Executing;
+                row.Status = ItemListRowStatus.Executing;
                 row.LastExecutionDate = now;
             }
             else if (hasIncompleteMissions)
             {
-                row.Status = ListRowStatus.Incomplete;
+                row.Status = ItemListRowStatus.Incomplete;
             }
 
             if (currentStatus != row.Status)
@@ -158,12 +158,12 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 qualifiedRequest.ListRowId = row.Id;
 
                 row.Status = bayId.HasValue
-                    ? ListRowStatus.Executing
-                    : ListRowStatus.Waiting;
+                    ? ItemListRowStatus.Executing
+                    : ItemListRowStatus.Waiting;
             }
             else
             {
-                row.Status = ListRowStatus.Waiting;
+                row.Status = ItemListRowStatus.Waiting;
             }
 
             await this.UpdateRowStatusAsync(row, System.DateTime.UtcNow);

@@ -28,7 +28,7 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public int RequestedQuantity { get; set; }
 
-        public ListRowStatus Status { get; set; }
+        public ItemListRowStatus Status { get; set; }
 
         public string Sub1 { get; set; }
 

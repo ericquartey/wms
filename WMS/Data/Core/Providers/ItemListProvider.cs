@@ -200,7 +200,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Completed),
                     ExecutingRowsCount =
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Executing),
-                    NewRowsCount = 
+                    NewRowsCount =
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.New),
                     WaitingRowsCount =
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Waiting),

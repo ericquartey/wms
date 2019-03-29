@@ -179,17 +179,17 @@ namespace Ferretto.WMS.App.Core.Providers
             return (await this.itemListsDataService.GetRowsAsync(id))
                 .Select(r => new ItemListRow
                 {
-                    Id = l.Id,
-                    Code = l.Code,
-                    RowPriority = l.Priority,
-                    ItemDescription = l.ItemDescription,
-                    RequestedQuantity = l.RequestedQuantity,
-                    DispatchedQuantity = l.DispatchedQuantity,
-                    Status = (ItemListRowStatus)l.Status,
-                    MaterialStatusDescription = l.MaterialStatusDescription,
-                    CreationDate = l.CreationDate,
-                    ItemUnitMeasure = l.ItemUnitMeasure,
-                    Policies = l.GetPolicies(),
+                    Id = r.Id,
+                    Code = r.Code,
+                    Priority = r.Priority,
+                    ItemDescription = r.ItemDescription,
+                    RequestedQuantity = r.RequestedQuantity,
+                    DispatchedQuantity = r.DispatchedQuantity,
+                    Status = (ItemListRowStatus)r.Status,
+                    MaterialStatusDescription = r.MaterialStatusDescription,
+                    CreationDate = r.CreationDate,
+                    ItemUnitMeasure = r.ItemUnitMeasure,
+                    Policies = r.GetPolicies(),
                 });
         }
 
