@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Animation;
+using Ferretto.Common.Controls.Interfaces;
 
 namespace Ferretto.Common.Controls
 {
@@ -29,6 +30,7 @@ namespace Ferretto.Common.Controls
         public WmsMessagePopup()
         {
             this.InitializeComponent();
+            ((IWmsWindow)Application.Current.MainWindow).Lock(true);
         }
 
         #endregion
@@ -85,6 +87,7 @@ namespace Ferretto.Common.Controls
             {
                 this.sbShowConnected.Completed -= this.SbShowConnected_Completed;
                 this.Close();
+                ((IWmsWindow)Application.Current.MainWindow).Lock(false);
             }
         }
 

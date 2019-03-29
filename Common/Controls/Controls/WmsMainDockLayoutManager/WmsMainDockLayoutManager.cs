@@ -250,6 +250,8 @@ namespace Ferretto.Common.Controls
                 && string.IsNullOrEmpty(this.StartViewName)
                 && this.navigationService.IsUnitTest) == false)
             {
+                var notificationService = ServiceLocator.Current.GetInstance<INotificationService>();
+                notificationService.CheckForDataErrorConnection();
                 this.navigationService.Appear(this.StartModuleName, this.StartViewName);
             }
         }
