@@ -22,7 +22,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool advancedWithdraw;
 
-        private ICommand advancedWithdrawCommand;
+        private ICommand showAdvancedWithdrawCommand;
 
         private bool isBusy;
 
@@ -30,7 +30,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ICommand runWithdrawCommand;
 
-        private ICommand simpleWithdrawCommand;
+        private ICommand showSimpleWithdrawCommand;
 
         private bool validationEnabled;
 
@@ -59,9 +59,9 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        public ICommand AdvancedWithdrawCommand => this.advancedWithdrawCommand ??
-                                                   (this.advancedWithdrawCommand = new DelegateCommand(
-                                                       this.ExecuteAdvancedWithdrawCommand));
+        public ICommand ShowAdvancedWithdrawCommand => this.showAdvancedWithdrawCommand ??
+            (this.showAdvancedWithdrawCommand = new DelegateCommand(
+                this.ShowAdvancedWithdraw));
 
         public bool IsBusy
         {
@@ -87,17 +87,17 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand RunWithdrawCommand => this.runWithdrawCommand ??
-                                              (this.runWithdrawCommand = new DelegateCommand(
-                                                                     async () => await this.ExecuteRunWithdrawAsync(),
-                                                                     this.CanExecuteRunWithdraw)
-                                                  .ObservesProperty(() => this.ItemWithdraw)
-                                                  .ObservesProperty(() => this.ItemWithdraw.Quantity));
+            (this.runWithdrawCommand = new DelegateCommand(
+                    async () => await this.RunWithdrawAsync(),
+                    this.CanRunWithdraw)
+                .ObservesProperty(() => this.ItemWithdraw)
+                .ObservesProperty(() => this.ItemWithdraw.Quantity));
 
         public bool SimpleWithdraw => !this.advancedWithdraw;
 
-        public ICommand SimpleWithdrawCommand => this.simpleWithdrawCommand ??
-                                                 (this.simpleWithdrawCommand = new DelegateCommand(
-                                                     this.ExecuteSimpleWithdrawCommand));
+        public ICommand ShowSimpleWithdrawCommand => this.showSimpleWithdrawCommand ??
+            (this.showSimpleWithdrawCommand = new DelegateCommand(
+                this.ShowSimpleWithdraw));
 
         public string ValidationError
         {
@@ -127,17 +127,17 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnDispose();
         }
 
-        private bool CanExecuteRunWithdraw()
+        private bool CanRunWithdraw()
         {
             return !this.validationEnabled || this.ExecuteValidation();
         }
 
-        private void ExecuteAdvancedWithdrawCommand()
+        private void ShowAdvancedWithdraw()
         {
             this.AdvancedWithdraw = true;
         }
 
-        private async Task ExecuteRunWithdrawAsync()
+        private async Task RunWithdrawAsync()
         {
             this.validationEnabled = true;
 
@@ -166,7 +166,7 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        private void ExecuteSimpleWithdrawCommand()
+        private void ShowSimpleWithdraw()
         {
             this.AdvancedWithdraw = false;
         }

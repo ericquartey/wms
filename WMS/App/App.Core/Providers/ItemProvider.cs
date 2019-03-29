@@ -1,16 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.App.Core.Extensions;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Major Code Smell",
+        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
+        Justification = "Ok",
+        Scope = "type",
+        Target = "~T:Ferretto.Common.BusinessProviders.ItemProvider")]
     public class ItemProvider : IItemProvider
     {
         #region Fields
@@ -18,8 +27,6 @@ namespace Ferretto.WMS.App.Core.Providers
         private readonly IAbcClassProvider abcClassProvider;
 
         private readonly WMS.Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService;
-
-        private readonly IImageProvider imageProvider;
 
         private readonly IItemCategoryProvider itemCategoryProvider;
 
@@ -32,7 +39,6 @@ namespace Ferretto.WMS.App.Core.Providers
         #region Constructors
 
         public ItemProvider(
-            IImageProvider imageProvider,
             WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService,
             WMS.Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService,
             IAbcClassProvider abcClassProvider,
@@ -41,7 +47,6 @@ namespace Ferretto.WMS.App.Core.Providers
         {
             this.itemsDataService = itemsDataService;
             this.compartmentsDataService = compartmentsDataService;
-            this.imageProvider = imageProvider;
             this.abcClassProvider = abcClassProvider;
             this.itemCategoryProvider = itemCategoryProvider;
             this.measureUnitProvider = measureUnitProvider;
@@ -164,14 +169,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     TotalReservedToStore = i.TotalReservedToStore,
                     TotalStock = i.TotalStock,
                     TotalAvailable = i.TotalAvailable,
-                    Policies = i.Policies.Select(p =>
-                        new Policy
-                        {
-                            IsAllowed = p.IsAllowed,
-                            Name = p.Name,
-                            Reason = p.Reason,
-                            Type = (PolicyType)p.Type
-                        })
+                    Policies = i.GetPolicies(),
                 });
         }
 
@@ -229,14 +227,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 StoreTolerance = item.StoreTolerance,
                 TotalAvailable = item.TotalAvailable,
                 Width = item.Width,
-                Policies = item.Policies.Select(p =>
-                    new Policy
-                    {
-                        IsAllowed = p.IsAllowed,
-                        Name = p.Name,
-                        Reason = p.Reason,
-                        Type = (PolicyType)p.Type
-                    })
+                Policies = item.GetPolicies(),
             };
 
             await this.AddEnumerationsAsync(itemDetails);
@@ -273,8 +264,6 @@ namespace Ferretto.WMS.App.Core.Providers
 
             try
             {
-                var originalItem = await this.itemsDataService.GetByIdAsync(model.Id);
-
                 await this.itemsDataService.UpdateAsync(new WMS.Data.WebAPI.Contracts.ItemDetails
                 {
                     AbcClassId = model.AbcClassId,
@@ -303,11 +292,6 @@ namespace Ferretto.WMS.App.Core.Providers
                     StoreTolerance = model.StoreTolerance,
                     Width = model.Width,
                 });
-
-                if (originalItem.Image != model.Image)
-                {
-                    this.SaveImage(model.ImagePath);
-                }
 
                 return new OperationResult<ItemDetails>(true);
             }
@@ -346,11 +330,6 @@ namespace Ferretto.WMS.App.Core.Providers
             {
                 return new OperationResult<SchedulerRequest>(ex);
             }
-        }
-
-        private void SaveImage(string imagePath)
-        {
-            this.imageProvider.SaveImage(imagePath);
         }
 
         #endregion

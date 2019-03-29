@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class ItemListDetails : BaseModel<int>
+    public class ItemListDetails : BaseModel<int>, IStatusItemList
     {
         #region Fields
 
@@ -16,12 +16,6 @@ namespace Ferretto.WMS.Data.Core.Models
         #region Properties
 
         public string AreaName { get; set; }
-
-        public bool CanAddNewRow => this.Status != ItemListStatus.Completed;
-
-        public bool CanBeExecuted => this.Status == ItemListStatus.Incomplete
-                   || this.Status == ItemListStatus.Suspended
-                   || this.Status == ItemListStatus.Waiting;
 
         public string Code { get; set; }
 

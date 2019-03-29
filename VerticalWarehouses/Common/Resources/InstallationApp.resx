@@ -1132,4 +1132,20 @@
     <value>Vertical Homing Started...</value>
     <comment>Output Text</comment>
   </data>
+  <data name="VerticalHomingError" xml:space="preserve">
+    <value>Vertical Homing Error</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="HorizontalHomingError" xml:space="preserve">
+    <value>Horizontal Homing Error</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="SwitchEngineError" xml:space="preserve">
+    <value>Switch Engine Error</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="HomingError" xml:space="preserve">
+    <value>Homing Error</value>
+    <comment>Output Text</comment>
+  </data>
 </root>

@@ -1,16 +1,20 @@
-﻿using Prism.Mvvm;
+﻿ using Prism.Mvvm;
 using Ferretto.VW.Utils.Source;
 using System;
 using Microsoft.Practices.Unity;
 using Prism.Events;
-using Ferretto.VW.InstallationApp.Resources;
-using Ferretto.VW.InstallationApp.Resources.Enumerables;
+using System.Net.Http;
+using System.Configuration;
 
 namespace Ferretto.VW.InstallationApp
 {
     public class InstallationStateViewModel : BindableBase, IInstallationStateViewModel
     {
         #region Fields
+
+        private string installationController = ConfigurationManager.AppSettings.Get("InstallationController");
+
+        private string getInstallationStatus = ConfigurationManager.AppSettings.Get("GetInstallationStatus");
 
         public IUnityContainer Container;
 
@@ -20,7 +24,7 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isBeltBurnishingDone;
 
-        private bool isCellPositionDone;
+        private bool isCellPositionVerifyDone;
 
         private bool isHorizontalHomingDone;
 
@@ -32,9 +36,9 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isMachineDone;
 
-        private bool isOffsetVerifyDone;
+        private bool isVerticalOffsetVerifyDone;
 
-        private bool isSetResolutionDone;
+        private bool isVerticalResolutionDone;
 
         private bool isShapeShutter1Done;
 
@@ -61,10 +65,7 @@ namespace Ferretto.VW.InstallationApp
 
         public InstallationStateViewModel()
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe((message) => { this.UpdateData(); },
-                ThreadOption.PublisherThread,
-                false,
-                message => message.Type == InstallationApp_EventMessageType.InstallationInfoChanged);
+            // TODO
         }
 
         #endregion
@@ -73,7 +74,7 @@ namespace Ferretto.VW.InstallationApp
 
         public bool IsBeltBurnishingDone { get => this.isBeltBurnishingDone; set => this.SetProperty(ref this.isBeltBurnishingDone, value); }
 
-        public bool IsCellPositionDone { get => this.isCellPositionDone; set => this.SetProperty(ref this.isCellPositionDone, value); }
+        public bool IsCellPositionVerifyDone { get => this.isCellPositionVerifyDone; set => this.SetProperty(ref this.isCellPositionVerifyDone, value); }
 
         public bool IsHorizontalHomingDone { get => this.isHorizontalHomingDone; set => this.SetProperty(ref this.isHorizontalHomingDone, value); }
 
@@ -85,9 +86,9 @@ namespace Ferretto.VW.InstallationApp
 
         public bool IsMachineDone { get => this.isMachineDone; set => this.SetProperty(ref this.isMachineDone, value); }
 
-        public bool IsOffsetVerifyDone { get => this.isOffsetVerifyDone; set => this.SetProperty(ref this.isOffsetVerifyDone, value); }
+        public bool IsVerticalOffsetVerifyDone { get => this.isVerticalOffsetVerifyDone; set => this.SetProperty(ref this.isVerticalOffsetVerifyDone, value); }
 
-        public bool IsSetResolutionDone { get => this.isSetResolutionDone; set => this.SetProperty(ref this.isSetResolutionDone, value); }
+        public bool IsVerticalResolutionDone { get => this.isVerticalResolutionDone; set => this.SetProperty(ref this.isVerticalResolutionDone, value); }
 
         public bool IsShapeShutter1Done { get => this.isShapeShutter1Done; set => this.SetProperty(ref this.isShapeShutter1Done, value); }
 
@@ -109,42 +110,48 @@ namespace Ferretto.VW.InstallationApp
 
         public void ExitFromViewMethod()
         {
-            // TODO
+            this.UnSubscribeMethodFromEvent();
         }
 
-        public void InitializeViewModel(IUnityContainer _container)
+        public async void GetInstallationState()
         {
-            this.Container = _container;
-            this.Data = (DataManager)this.Container.Resolve<IDataManager>();
-            this.UpdateData();
+            var client = new HttpClient();
+            var response = await client.GetAsync(new Uri(this.installationController + this.getInstallationStatus));
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var installationStatus = response.Content.ReadAsAsync<bool[]>().Result;
+                this.IsVerticalHomingDone = installationStatus[0];
+                this.IsHorizontalHomingDone = installationStatus[1];
+                this.IsBeltBurnishingDone = installationStatus[2];
+                this.IsVerticalResolutionDone = installationStatus[3];
+                this.IsVerticalOffsetVerifyDone = installationStatus[4];
+                this.IsCellPositionVerifyDone = installationStatus[5];
+                this.IsShutter1InstallationProcedureDone = installationStatus[6];
+                this.IsShutter2InstallationProcedureDone = installationStatus[7];
+                this.IsShutter3InstallationProcedureDone = installationStatus[8];
+                this.IsShapeShutter1Done = installationStatus[9];
+                this.IsShapeShutter2Done = installationStatus[10];
+                this.IsShapeShutter3Done = installationStatus[11];
+                this.IsLaserShutter1Done = installationStatus[12];
+                this.IsLaserShutter2Done = installationStatus[13];
+                this.IsLaserShutter3Done = installationStatus[14];
+            }
         }
 
-        public void SubscribeMethodToEvent()
+        public void InitializeViewModel(IUnityContainer container)
         {
-            // TODO
+            this.Container = container;
+        }
+
+        public async void SubscribeMethodToEvent()
+        {
+            this.GetInstallationState();
         }
 
         public void UnSubscribeMethodFromEvent()
         {
             // TODO
-        }
-
-        private void UpdateData()
-        {
-            this.IsBeltBurnishingDone = this.Data.InstallationInfo.Belt_Burnishing;
-            this.IsShutter1InstallationProcedureDone = this.Data.InstallationInfo.Ok_Shutter1;
-            this.IsShutter2InstallationProcedureDone = this.Data.InstallationInfo.Ok_Shutter2;
-            this.IsShutter3InstallationProcedureDone = this.Data.InstallationInfo.Ok_Shutter3;
-            this.IsHorizontalHomingDone = this.Data.InstallationInfo.Origin_X_Axis;
-            this.IsLaserShutter1Done = this.Data.InstallationInfo.Ok_Laser1;
-            this.IsLaserShutter2Done = this.Data.InstallationInfo.Ok_Laser2;
-            this.IsLaserShutter3Done = this.Data.InstallationInfo.Ok_Laser3;
-            this.IsMachineDone = this.Data.InstallationInfo.Machine_Ok;
-            this.IsShapeShutter1Done = this.Data.InstallationInfo.Ok_Shape1;
-            this.IsShapeShutter2Done = this.Data.InstallationInfo.Ok_Shape2;
-            this.IsShapeShutter3Done = this.Data.InstallationInfo.Ok_Shape3;
-            this.IsSetResolutionDone = this.Data.InstallationInfo.Set_Y_Resolution;
-            this.IsVerticalHomingDone = this.Data.InstallationInfo.Origin_Y_Axis;
         }
 
         #endregion

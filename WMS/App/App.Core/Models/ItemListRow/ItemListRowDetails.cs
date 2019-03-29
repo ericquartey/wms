@@ -28,7 +28,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int itemListId;
 
-        private ItemListRowStatus itemListRowStatus;
+        private ItemListRowStatus status;
 
         private ItemListStatus itemListStatus;
 
@@ -64,8 +64,6 @@ namespace Ferretto.WMS.App.Core.Models
 
         #region Properties
 
-        public bool CanBeExecuted { get; set; }
-
         [Required]
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string Code { get => this.code; set => this.SetProperty(ref this.code, value); }
@@ -86,7 +84,7 @@ namespace Ferretto.WMS.App.Core.Models
             this[nameof(this.RequestedQuantity)],
             this[nameof(this.Code)],
             this[nameof(this.ItemId)],
-            this[nameof(this.ItemListRowStatus)],
+            this[nameof(this.Status)],
         }
         .Distinct()
         .Where(s => !string.IsNullOrEmpty(s)));
@@ -109,7 +107,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Required]
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusDescription), ResourceType = typeof(BusinessObjects))]
-        public ItemListRowStatus ItemListRowStatus { get => this.itemListRowStatus; set => this.SetProperty(ref this.itemListRowStatus, value); }
+        public ItemListRowStatus Status { get => this.status; set => this.SetProperty(ref this.status, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListStatus), ResourceType = typeof(BusinessObjects))]
         public ItemListStatus ItemListStatus { get => this.itemListStatus; set => this.SetProperty(ref this.itemListStatus, value); }
@@ -190,7 +188,7 @@ namespace Ferretto.WMS.App.Core.Models
                     case nameof(this.ItemId):
                         return GetErrorMessageIfNegativeOrZero(this.ItemId, nameof(this.ItemId));
 
-                    case nameof(this.ItemListRowStatus):
+                    case nameof(this.Status):
                         break;
                 }
 

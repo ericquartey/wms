@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Resources;
 using Ferretto.WMS.App.Core.Models;
@@ -109,9 +110,8 @@ namespace Ferretto.Common.Controls
         }
 
         public ICommand RefreshCommand => this.refreshCommand ??
-            (this.refreshCommand = new DelegateCommand(
-                async () => await this.ExecuteRefreshCommandAsync(),
-                this.CanExecuteRefreshCommand));
+                    (this.refreshCommand = new DelegateCommand(
+                async () => await this.ExecuteRefreshCommandAsync(), this.CanExecuteRefreshCommand));
 
         public ICommand RevertCommand => this.revertCommand ??
             (this.revertCommand = new DelegateCommand(
@@ -119,7 +119,7 @@ namespace Ferretto.Common.Controls
                 this.CanExecuteRevertCommand));
 
         public ICommand SaveCommand => this.saveCommand ??
-            (this.saveCommand = new DelegateCommand(
+            (this.saveCommand = new WmsCommand(
                 async () => await this.ExecuteSaveCommandAsync(),
                 this.CanExecuteSaveCommand));
 
@@ -172,7 +172,8 @@ namespace Ferretto.Common.Controls
                 && this.changeDetector.IsModified
                 && this.IsModelValid
                 && !this.IsBusy
-                && this.changeDetector.IsRequiredValid;
+                && this.changeDetector.IsRequiredValid
+                && this.Model.CanUpdate();
         }
 
         protected virtual void EvaluateCanExecuteCommands()

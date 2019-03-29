@@ -21,7 +21,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private IEnumerable<CompartmentDetails> compartmentsDataSource;
 
-        private ICommand editCommand;
+        private ICommand editLoadingUnitCommand;
 
         private bool isCompartmentSelectableTray;
 
@@ -41,7 +41,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private Func<ICompartment, ICompartment, string> trayColoringFunc;
 
-        private ICommand withdrawCommand;
+        private ICommand withdrawLoadingUnitCommand;
 
         #endregion
 
@@ -62,8 +62,8 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.compartmentsDataSource, value);
         }
 
-        public ICommand EditCommand => this.editCommand ??
-               (this.editCommand = new DelegateCommand(this.ExecuteEditCommand));
+        public ICommand EditLoadingUnitCommand => this.editLoadingUnitCommand ??
+               (this.editLoadingUnitCommand = new DelegateCommand(this.EditLoadingUnit));
 
         public bool IsCompartmentSelectableTray
         {
@@ -97,8 +97,8 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.trayColoringFunc, value);
         }
 
-        public ICommand WithdrawCommand => this.withdrawCommand ??
-            (this.withdrawCommand = new DelegateCommand(ExecuteWithdrawCommand));
+        public ICommand WithdrawLoadingUnitCommand => this.withdrawLoadingUnitCommand ??
+            (this.withdrawLoadingUnitCommand = new DelegateCommand(WithdrawLoadingUnit));
 
         #endregion
 
@@ -156,12 +156,12 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnDispose();
         }
 
-        private static void ExecuteWithdrawCommand()
+        private static void WithdrawLoadingUnit()
         {
             throw new NotImplementedException();
         }
 
-        private void ExecuteEditCommand()
+        private void EditLoadingUnit()
         {
             var args = new LoadingUnitArgs { LoadingUnitId = this.Model.Id, CompartmentId = this.SelectedCompartment?.Id };
             this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.LOADINGUNITEDIT, args);

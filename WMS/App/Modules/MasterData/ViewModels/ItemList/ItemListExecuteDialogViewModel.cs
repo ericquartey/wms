@@ -26,7 +26,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool isBusy;
 
-        private ICommand runListExecuteCommand;
+        private ICommand executeListCommand;
 
         private string validationError;
 
@@ -71,10 +71,10 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.isBusy, value);
         }
 
-        public ICommand RunListExecuteCommand => this.runListExecuteCommand ??
-                            (this.runListExecuteCommand = new DelegateCommand(
-                                 async () => await this.ExecuteListCommandAsync(),
-                                 this.CanExecuteListCommand));
+        public ICommand ExecuteListCommand => this.executeListCommand ??
+            (this.executeListCommand = new DelegateCommand(
+                async () => await this.ExecuteListAsync(),
+                this.CanExecuteList));
 
         public string ValidationError
         {
@@ -101,12 +101,12 @@ namespace Ferretto.WMS.Modules.MasterData
             this.executionRequest.PropertyChanged += this.OnAreaIdChanged;
         }
 
-        private bool CanExecuteListCommand()
+        private bool CanExecuteList()
         {
             return string.IsNullOrEmpty(this.executionRequest.Error);
         }
 
-        private async Task ExecuteListCommandAsync()
+        private async Task ExecuteListAsync()
         {
             Debug.Assert(this.executionRequest.AreaId.HasValue, "The parameter must always have a value.");
 
@@ -153,7 +153,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void OnItemListPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            ((DelegateCommand)this.RunListExecuteCommand)?.RaiseCanExecuteChanged();
+            ((DelegateCommand)this.ExecuteListCommand)?.RaiseCanExecuteChanged();
         }
 
         #endregion

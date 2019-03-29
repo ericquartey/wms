@@ -193,7 +193,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                    BayId = r.BayId,
                    CreationDate = r.CreationDate,
                    IsInstant = r.IsInstant,
-                   ListRowStatus = r.ListRow != null ? (ListRowStatus)r.ListRow.Status : ListRowStatus.NotSpecified,
+                   ListRowStatus = r.ListRow != null ? (ItemListRowStatus)r.ListRow.Status : ItemListRowStatus.NotSpecified,
                    ItemId = r.ItemId,
                    ListId = r.ListId,
                    ListRowId = r.ListRowId,

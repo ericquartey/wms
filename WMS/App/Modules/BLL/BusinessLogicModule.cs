@@ -78,6 +78,7 @@ namespace Ferretto.WMS.App.Modules.BLL
             containerRegistry.Register<IPackageTypeProvider, PackageTypeProvider>();
             containerRegistry.Register<ISchedulerRequestProvider, SchedulerRequestProvider>();
             containerRegistry.Register<IUserProvider, UserProvider>();
+            containerRegistry.Register<IFileProvider, ImageProvider>();
         }
 
         private static void RegisterDataServiceEndpoints(IContainerRegistry containerRegistry)
@@ -110,6 +111,7 @@ namespace Ferretto.WMS.App.Modules.BLL
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IPackageTypesDataService>(serviceEndPoint));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<ISchedulerRequestsDataService>(serviceEndPoint));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IUsersDataService>(serviceEndPoint));
+            containerRegistry.RegisterInstance(DataServiceFactory.GetService<IImagesDataService>(serviceEndPoint));
         }
 
         #endregion

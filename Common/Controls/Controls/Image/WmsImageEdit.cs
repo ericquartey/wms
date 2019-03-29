@@ -1,10 +1,15 @@
-﻿using System.IO;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using CommonServiceLocator;
 using DevExpress.Xpf.Core.Native;
 using DevExpress.Xpf.Editors;
 using Ferretto.Common.BLL.Interfaces.Providers;
+using Ferretto.WMS.App.Core.Interfaces;
 using Microsoft.Win32;
 
 namespace Ferretto.Common.Controls
@@ -13,13 +18,48 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
+        public static readonly DependencyProperty CommandActionProperty = DependencyProperty.Register(
+                             nameof(CommandAction), typeof(WmsCommand), typeof(WmsImageEdit), new PropertyMetadata(OnCommandActionChanged));
+
         public static readonly DependencyProperty FilenameProperty = DependencyProperty.Register(
-             nameof(Filename), typeof(string), typeof(WmsImageEdit), new PropertyMetadata(default(string), new PropertyChangedCallback(OnPathChanged)));
+            nameof(Filename),
+            typeof(string),
+            typeof(WmsImageEdit),
+            new PropertyMetadata(
+                default(string),
+                async (d, e) =>
+                {
+                    if (d is WmsImageEdit wmsImage)
+                    {
+                        wmsImage.IsLoading = true;
+                        if (wmsImage.isUpdatingImage)
+                        {
+                            wmsImage.isUpdatingImage = false;
+                            wmsImage.IsLoading = false;
+                            return;
+                        }
+
+                        if (e.NewValue != null)
+                        {
+                            wmsImage.Source = await ImageUtils
+                                .GetImageAsync(wmsImage.fileProvider, (string)e.NewValue)
+                                .ConfigureAwait(true);
+                            wmsImage.IsLoading = false;
+                        }
+                        else
+                        {
+                            wmsImage.Source = null;
+                        }
+                    }
+                }));
+
+        public static readonly DependencyProperty IsLoadingProperty = DependencyProperty.Register(
+                     nameof(IsLoading), typeof(bool), typeof(WmsImageEdit), new PropertyMetadata(default(bool)));
 
         public static readonly DependencyProperty PathProperty = DependencyProperty.Register(
-                     nameof(Path), typeof(string), typeof(WmsImageEdit), new PropertyMetadata(default(string)));
+                             nameof(Path), typeof(string), typeof(WmsImageEdit), new PropertyMetadata(default(string)));
 
-        private readonly IImageProvider imageService;
+        private readonly IFileProvider fileProvider;
 
         private bool isUpdatingImage;
 
@@ -29,17 +69,29 @@ namespace Ferretto.Common.Controls
 
         public WmsImageEdit()
         {
-            this.imageService = ServiceLocator.Current.GetInstance<IImageProvider>();
+            this.fileProvider = ServiceLocator.Current.GetInstance<IFileProvider>();
         }
 
         #endregion
 
         #region Properties
 
+        public WmsCommand CommandAction
+        {
+            get => (WmsCommand)this.GetValue(CommandActionProperty);
+            set => this.SetValue(CommandActionProperty, value);
+        }
+
         public string Filename
         {
             get => (string)this.GetValue(FilenameProperty);
             set => this.SetValue(FilenameProperty, value);
+        }
+
+        public bool IsLoading
+        {
+            get => (bool)this.GetValue(IsLoadingProperty);
+            set => this.SetValue(IsLoadingProperty, value);
         }
 
         public string Path
@@ -48,9 +100,28 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(PathProperty, value);
         }
 
+        public Func<Task> UploadAction
+        {
+            get => async () => await this.UploadImageAsync();
+        }
+
         #endregion
 
         #region Methods
+
+        public override void Clear()
+        {
+            base.Clear();
+            this.Filename = null;
+            this.Path = null;
+            this.IsLoading = false;
+        }
+
+        public async Task UploadImageAsync()
+        {
+            var image = await this.fileProvider.UploadAsync(this.Path);
+            this.Filename = image;
+        }
 
         protected override void LoadCore()
         {
@@ -71,32 +142,23 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        private static void OnPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnCommandActionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsImageEdit wmsImage)
+            if (d is WmsImageEdit wmsImageEdit && e.NewValue is ICommand command)
             {
-                if (wmsImage.isUpdatingImage)
-                {
-                    wmsImage.isUpdatingImage = false;
-                    return;
-                }
-
-                if (e.NewValue != null)
-                {
-                    wmsImage.Source = ImageUtils.RetrieveImage(wmsImage.imageService, (string)e.NewValue);
-                }
-                else
-                {
-                    wmsImage.Source = null;
-                }
+                var wmsCommand = (WmsCommand)command;
+                wmsCommand.BeforeExecute(wmsImageEdit.UploadAction);
             }
         }
 
         private ImageSource LoadImage()
         {
-            var dlg = new OpenFileDialog();
-            dlg.Filter = EditorLocalizer.GetString(EditorStringId.ImageEdit_OpenFileFilter);
+            var dlg = new OpenFileDialog
+            {
+                Filter = EditorLocalizer.GetString(EditorStringId.ImageEdit_OpenFileFilter)
+            };
 
+            this.IsLoading = true;
             if (dlg.ShowDialog() == true)
             {
                 using (var stream = dlg.OpenFile())
@@ -113,6 +175,7 @@ namespace Ferretto.Common.Controls
                 }
             }
 
+            this.IsLoading = false;
             return null;
         }
 
