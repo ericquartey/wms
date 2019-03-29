@@ -51,8 +51,24 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [Route("ExecuteMovement")]
         public void ExecuteMovement([FromBody]MovementMessageDataDTO data)
         {
-            var messageData = new MovementMessageData(data);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebAPI, MessageType.Movement));
+           var messageData = new MovementMessageData(data);
+           this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebAPI, MessageType.Movement));
+        }
+
+        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(500)]
+        [HttpGet("GetInstallationStatus")]
+        public ActionResult<bool[]> GetInstallationStatus()
+        {
+            return this.StatusCode(500, "Not implemented yet");
+            //TEMP bool[] installationStatus = DataLayer.GetInstallationStatus();
+            // if (installationStatus != null)
+            //{
+            //    return this.Ok(installationStatus);
+            //} else
+            //{
+            //    return StatusCode(500);
+            //}
         }
 
         [ProducesResponseType(200, Type = typeof(decimal))]

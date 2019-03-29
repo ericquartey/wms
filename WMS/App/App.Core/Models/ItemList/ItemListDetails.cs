@@ -53,10 +53,6 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.areaName, value);
         }
 
-        public bool CanAddNewRow { get; set; }
-
-        public bool CanBeExecuted { get; set; }
-
         [Required]
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string Code

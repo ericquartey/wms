@@ -44,7 +44,7 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public int? ListRowId { get; set; }
 
-        public ListRowStatus ListRowStatus { get; set; }
+        public ItemListRowStatus ListRowStatus { get; set; }
 
         public int? LoadingUnitId { get; set; }
 

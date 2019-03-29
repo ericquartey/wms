@@ -473,4 +473,7 @@
   <data name="ItemDeletedSuccessfully" xml:space="preserve">
     <value>Articolo rimosso con successo</value>
   </data>
+  <data name="Image" xml:space="preserve">
+    <value>Immagine</value>
+  </data>
 </root>

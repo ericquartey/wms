@@ -509,4 +509,7 @@
   <data name="ItemDeletedSuccessfully" xml:space="preserve">
     <value>Item deleted sucessfully</value>
   </data>
+  <data name="Image" xml:space="preserve">
+    <value>Image</value>
+  </data>
 </root>

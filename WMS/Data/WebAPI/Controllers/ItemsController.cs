@@ -86,10 +86,12 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 {
                     return this.UnprocessableEntity();
                 }
-                else
+
+                return this.UnprocessableEntity(new ProblemDetails
                 {
-                    return this.NotFound();
-                }
+                    Status = StatusCodes.Status422UnprocessableEntity,
+                    Detail = result.Description
+                });
             }
 
             return this.Ok();

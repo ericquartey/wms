@@ -41,6 +41,10 @@ namespace Ferretto.VW.VWApp
         private void RaiseActionUpdatedEvent(object sender, IActionUpdateData data)
         {
             var messageData = new MAS_EventMessage(data.NotificationType, data.ActionType, data.ActionStatus);
+            if (data.ActionStatus == ActionStatus.Error)
+            {
+                this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(messageData);
+            }
             this.eventAggregator.GetEvent<MAS_Event>().Publish(messageData);
         }
 

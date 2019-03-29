@@ -17,8 +17,6 @@ namespace Ferretto.WMS.App.Core.Interfaces
 
         Task<IOperationResult<ICompartment>> AddRangeAsync(IEnumerable<ICompartment> compartments);
 
-        Task<ActionModel> CanDeleteAsync(int id);
-
         Task<IEnumerable<Compartment>> GetByItemIdAsync(int id);
 
         Task<IEnumerable<CompartmentDetails>> GetByLoadingUnitIdAsync(int id);
