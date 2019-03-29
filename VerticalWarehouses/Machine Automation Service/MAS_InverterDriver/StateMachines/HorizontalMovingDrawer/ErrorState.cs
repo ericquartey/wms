@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
 {
@@ -24,6 +25,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer
         #region Methods
 
         public override bool ProcessMessage(InverterMessage message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Stop()
         {
             throw new NotImplementedException();
         }

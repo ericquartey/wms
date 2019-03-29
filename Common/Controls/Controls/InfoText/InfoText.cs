@@ -22,6 +22,18 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty IsPillVisibleProperty = DependencyProperty.Register(
             nameof(IsPillVisible), typeof(bool), typeof(InfoText), new PropertyMetadata(default(bool)));
 
+        public static readonly DependencyProperty IsPropertNullProperty = DependencyProperty.Register(
+            nameof(IsPropertyNull), typeof(bool), typeof(InfoText), new PropertyMetadata(true));
+
+        #endregion
+
+        #region Constructors
+
+        public InfoText()
+        {
+            this.ContentText = Common.Resources.General.NotSpecified;
+        }
+
         #endregion
 
         #region Properties
@@ -48,6 +60,12 @@ namespace Ferretto.Common.Controls
         {
             get => (bool)this.GetValue(IsPillVisibleProperty);
             set => this.SetValue(IsPillVisibleProperty, value);
+        }
+
+        public bool IsPropertyNull
+        {
+            get => (bool)this.GetValue(IsPropertNullProperty);
+            set => this.SetValue(IsPropertNullProperty, value);
         }
 
         public string SymbolName
@@ -83,6 +101,8 @@ namespace Ferretto.Common.Controls
             {
                 return;
             }
+
+            this.IsPropertyNull = false;
 
             var propertyInfo = bindingExpression?.ResolvedSource?.GetType()
                 .GetProperty(bindingExpression.ResolvedSourcePropertyName);

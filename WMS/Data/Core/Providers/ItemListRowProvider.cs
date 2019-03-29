@@ -32,6 +32,41 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
+        public async Task<ActionModel> CanDeleteAsync(int id)
+        {
+            var schedulerRequestsCount =
+                await this.dataContext.SchedulerRequests
+                    .CountAsync(r => r.ItemId == id);
+
+            var status = (ItemListRowStatus)this.dataContext.ItemListRows.Where(r => r.Id == id)
+                .Select(r => r.Status).FirstOrDefault();
+
+            var entity = new List<string>();
+            if (schedulerRequestsCount > 0)
+            {
+                entity.Add($"{Common.Resources.BusinessObjects.SchedulerRequest} [{schedulerRequestsCount}]");
+            }
+
+            if (status != ItemListRowStatus.Waiting)
+            {
+                entity.Add($"{Common.Resources.BusinessObjects.ItemListStatus} [{ItemListRowStatus.Waiting}]");
+            }
+
+            string reason = null;
+            if (entity.Any())
+            {
+                reason = string.Format(
+                        Common.Resources.Errors.NotPossibleExecuteOperation,
+                        string.Join(", ", entity.ToArray()));
+            }
+
+            return new ActionModel
+            {
+                IsAllowed = !entity.Any(),
+                Reason = reason,
+            };
+        }
+
         public async Task<IOperationResult<ItemListRowDetails>> CreateAsync(ItemListRowDetails model)
         {
             if (model == null)
@@ -48,9 +83,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Lot = model.Lot,
                 MaterialStatusId = model.MaterialStatusId,
                 PackageTypeId = model.PackageTypeId,
-                Priority = model.RowPriority,
+                Priority = model.Priority,
                 RegistrationNumber = model.RegistrationNumber,
-                RequiredQuantity = model.RequiredQuantity,
+                RequestedQuantity = model.RequestedQuantity,
                 Status = (Common.DataModels.ItemListRowStatus)model.ItemListRowStatus,
                 Sub1 = model.Sub1,
                 Sub2 = model.Sub2
@@ -77,8 +112,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new NotFoundOperationResult<ItemListRowDetails>();
             }
 
-            var itemListRow = await this.GetByIdAsync(id);
-            if (itemListRow.CanDelete)
+            var deleteAction = await this.CanDeleteAsync(id);
+            if (deleteAction.IsAllowed)
             {
                 this.dataContext.Remove(existingModel);
                 await this.dataContext.SaveChangesAsync();
@@ -166,20 +201,20 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return null;
             }
 
-            return (i) =>
-                i.Code.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+            return (r) =>
+                r.Code.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                i.ItemDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                r.ItemDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                i.ItemUnitMeasure.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                r.ItemUnitMeasure.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                i.MaterialStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                r.MaterialStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                i.DispatchedQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                r.DispatchedQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                i.RequiredQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                r.RequestedQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                i.RowPriority.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
+                r.Priority.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private IQueryable<ItemListRow> GetAllBase()
@@ -189,16 +224,15 @@ namespace Ferretto.WMS.Data.Core.Providers
                 {
                     Id = l.Id,
                     Code = l.Code,
-                    RowPriority = l.Priority,
+                    Priority = l.Priority,
                     ItemDescription = l.Item.Description,
-                    RequiredQuantity = l.RequiredQuantity,
+                    RequestedQuantity = l.RequestedQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
                     ItemListId = l.ItemListId,
-                    ItemListRowStatus = (ItemListRowStatus)l.Status,
+                    Status = (ItemListRowStatus)l.Status,
                     MaterialStatusDescription = l.MaterialStatus.Description,
                     CreationDate = l.CreationDate,
                     ItemUnitMeasure = l.Item.MeasureUnit.Description,
-                    HasSchedulerRequestAssociated = l.SchedulerRequests.Any(),
                 });
         }
 
@@ -209,9 +243,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 {
                     Id = l.Id,
                     Code = l.Code,
-                    RowPriority = l.Priority,
+                    Priority = l.Priority,
                     ItemId = l.Item.Id,
-                    RequiredQuantity = l.RequiredQuantity,
+                    RequestedQuantity = l.RequestedQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
                     ItemListRowStatus = (ItemListRowStatus)l.Status,
                     ItemDescription = l.Item.Description,
@@ -230,7 +264,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     PackageTypeId = l.PackageTypeId,
                     MaterialStatusId = l.MaterialStatusId,
                     ItemUnitMeasure = l.Item.MeasureUnit.Description,
-                    HasSchedulerRequestAssociated = l.SchedulerRequests.Any(),
                 });
         }
 

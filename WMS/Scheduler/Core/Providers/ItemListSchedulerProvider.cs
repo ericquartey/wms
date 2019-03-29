@@ -56,7 +56,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                         MaterialStatusId = r.MaterialStatusId,
                         PackageTypeId = r.PackageTypeId,
                         RegistrationNumber = r.RegistrationNumber,
-                        RequestedQuantity = r.RequiredQuantity,
+                        RequestedQuantity = r.RequestedQuantity,
                         Status = (ListRowStatus)r.Status,
                         Sub1 = r.Sub1,
                         Sub2 = r.Sub2,
@@ -72,15 +72,15 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             return list;
         }
 
-        public async Task<IEnumerable<SchedulerRequest>> PrepareForExecutionAsync(ListExecutionRequest request)
+        public async Task<IEnumerable<SchedulerRequest>> PrepareForExecutionAsync(int id, int areaId, int? bayId)
         {
             IEnumerable<SchedulerRequest> requests = null;
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                var list = await this.GetByIdAsync(request.ListId);
+                var list = await this.GetByIdAsync(id);
 
-                requests = await this.BuildRequestsAsync(list, request);
+                requests = await this.BuildRequestsAsync(list, areaId, bayId);
 
                 await this.UpdateAsync(list);
                 await this.schedulerRequestProvider.CreateRangeAsync(requests);
@@ -106,24 +106,18 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             return new SuccessOperationResult<ItemList>(model);
         }
 
-        private async Task<IEnumerable<SchedulerRequest>> BuildRequestsAsync(ItemList list, ListExecutionRequest executionRequest)
+        private async Task<IEnumerable<SchedulerRequest>> BuildRequestsAsync(ItemList list, int areaId, int? bayId)
         {
             var requests = new List<SchedulerRequest>(list.Rows.Count());
 
             foreach (var row in list.Rows)
             {
-                row.Status = executionRequest.BayId.HasValue ? ListRowStatus.Executing : ListRowStatus.Waiting;
-
-                var schedulerRequest = new SchedulerRequest
+                var options = new ItemWithdrawOptions
                 {
-                    IsInstant = false,
-                    Type = OperationType.Withdrawal,
-                    BayId = executionRequest.BayId,
-                    AreaId = executionRequest.AreaId,
+                    RunImmediately = false,
+                    BayId = bayId,
+                    AreaId = areaId,
                     RequestedQuantity = row.RequestedQuantity,
-                    ItemId = row.ItemId,
-                    ListId = executionRequest.ListId,
-                    ListRowId = row.Id,
                     Lot = row.Lot,
                     MaterialStatusId = row.MaterialStatusId,
                     PackageTypeId = row.PackageTypeId,
@@ -132,19 +126,19 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     Sub2 = row.Sub2,
                 };
 
-                var qualifiedRequest = await this.schedulerRequestProvider.FullyQualifyWithdrawalRequestAsync(schedulerRequest);
+                var qualifiedRequest = await this.schedulerRequestProvider
+                    .FullyQualifyWithdrawalRequestAsync(row.ItemId, options);
+
                 if (qualifiedRequest != null)
                 {
+                    qualifiedRequest.ListId = list.Id;
+                    qualifiedRequest.ListRowId = row.Id;
+
                     requests.Add(qualifiedRequest);
 
-                    if (executionRequest.BayId.HasValue)
-                    {
-                        row.Status = ListRowStatus.Executing;
-                    }
-                    else
-                    {
-                        row.Status = ListRowStatus.Waiting;
-                    }
+                    row.Status = bayId.HasValue
+                        ? ListRowStatus.Executing
+                        : ListRowStatus.Waiting;
                 }
                 else
                 {

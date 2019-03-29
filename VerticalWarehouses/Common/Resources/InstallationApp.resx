@@ -1092,4 +1092,44 @@
     <value>SaveRestoreConfigAbortRestoreButton</value>
     <comment>Button text</comment>
   </data>
+  <data name="HomingCompleted" xml:space="preserve">
+    <value>Homing Completed...</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="HomingStarted" xml:space="preserve">
+    <value>Homing started...</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="HorizontalHomingCompleted" xml:space="preserve">
+    <value>Horizontal Homing Completed...</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="HorizontalHomingExecuting" xml:space="preserve">
+    <value>Horizontal Homing Executing...</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="HorizontalHomingStarted" xml:space="preserve">
+    <value>Horizontal Homing Started...</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="SwitchEngineCompleted" xml:space="preserve">
+    <value>Switch Engine Completed...</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="SwitchEngineStarted" xml:space="preserve">
+    <value>Switch Engine Started...</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="VerticalHomingCompleted" xml:space="preserve">
+    <value>Vertical Homing Completed...</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="VerticalHomingExecuting" xml:space="preserve">
+    <value>Vertical Homing Executing...</value>
+    <comment>Output Text</comment>
+  </data>
+  <data name="VerticalHomingStarted" xml:space="preserve">
+    <value>Vertical Homing Started...</value>
+    <comment>Output Text</comment>
+  </data>
 </root>

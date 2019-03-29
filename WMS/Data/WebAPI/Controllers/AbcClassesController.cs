@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -37,22 +38,22 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<AbcClass>))]
+        [ProducesResponseType(typeof(IEnumerable<AbcClass>), StatusCodes.Status200OK)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AbcClass>>> GetAllAsync()
         {
             return this.Ok(await this.abcClassProvider.GetAllAsync());
         }
 
-        [ProducesResponseType(200, Type = typeof(int))]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync()
         {
             return this.Ok(await this.abcClassProvider.GetAllCountAsync());
         }
 
-        [ProducesResponseType(200, Type = typeof(AbcClass))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(AbcClass), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         public async Task<ActionResult<AbcClass>> GetByIdAsync(string id)
         {
@@ -61,7 +62,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 var message = $"No entity with the specified id={id} exists.";
                 this.logger.LogWarning(message);
-                return this.NotFound(message);
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = message,
+                    Status = StatusCodes.Status404NotFound
+                });
             }
 
             return this.Ok(result);

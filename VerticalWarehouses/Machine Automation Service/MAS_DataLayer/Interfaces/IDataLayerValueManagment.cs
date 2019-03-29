@@ -1,126 +1,136 @@
 ﻿using System;
 using System.Net;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Query.ExpressionVisitors.Internal;
 
-namespace Ferretto.VW.MAS_DataLayer
+namespace Ferretto.VW.MAS_DataLayer.Interfaces
 {
     public interface IDataLayerValueManagment
     {
         #region Methods
 
         /// <summary>
-        /// Get the data type on the input data
-        /// </summary>
-        /// <param name="configurationValueEnum"></param>
-        /// <returns></returns>
-        DataTypeEnum ConvertConfigurationValue(ConfigurationValueEnum configurationValueEnum);
-
-        /// <summary>
         ///     Get a bool variable from the configuration table
         /// </summary>
         /// <param name="configurationValueEnum"></param>
+        /// <param name="categoryValueEnum"></param>
         /// <returns>Return the value of a bool configuration parameter</returns>
         /// <exception cref="DataLayerExceptionEnum.PARSE_EXCEPTION">Exception for a not possible parse</exception>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
-        bool GetBoolConfigurationValue(ConfigurationValueEnum configurationValueEnum);
+        Task<bool> GetBoolConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum);
 
         /// <summary>
         ///     Get a bool variable from the runtime table
         /// </summary>
-        /// <param name="runtimeValueEnum"></param>
+        /// <param name="RuntimeValue"></param>
+        /// <param name="categoryValueEnum"></param>
         /// <returns>Return the value of a bool runtime parameter</returns>
         /// <exception cref="DataLayerExceptionEnum.PARSE_EXCEPTION">Exception for a not possible parse</exception>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
-        bool GetBoolRuntimeValue(RuntimeValueEnum runtimeValueEnum);
+        Task<bool> GetBoolRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum);
 
         /// <summary>
         ///     Get a DateTime variable from the configuration table
         /// </summary>
         /// <param name="configurationValueEnum"></param>
+        /// <param name="categoryValueEnum"></param>
         /// <returns>Return the value of a DateTime configuration parameter</returns>
         /// <exception cref="DataLayerExceptionEnum.PARSE_EXCEPTION">Exception for a not possible parse</exception>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
-        DateTime GetDateTimeConfigurationValue(ConfigurationValueEnum configurationValueEnum);
+        Task<DateTime> GetDateTimeConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum);
 
         /// <summary>
         ///     Get a DateTime variable from the runtime table
         /// </summary>
         /// <param name="runtimeValueEnum"></param>
+        /// <param name="categoryValueEnum"></param>
+        /// <param name="RuntimeValue"></param>
         /// <returns>Return the value of a DateTime runtime parameter</returns>
         /// <exception cref="DataLayerExceptionEnum.PARSE_EXCEPTION">Exception for a not possible parse</exception>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
-        DateTime GetDateTimeRuntimeValue(RuntimeValueEnum runtimeValueEnum);
+        Task<DateTime> GetDateTimeRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum);
 
         /// <summary>
         ///     Get a decimal variable from the configuration table
         /// </summary>
         /// <param name="configurationValueEnum">Configuration parameter to get</param>
+        /// <param name="categoryValueEnum"></param>
         /// <returns>Return the value of a decimal configuration parameter</returns>
         /// <exception cref="DataLayerExceptionEnum.PARSE_EXCEPTION">Exception for a not possible parse</exception>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
-        decimal GetDecimalConfigurationValue(ConfigurationValueEnum configurationValueEnum);
+        Task<decimal> GetDecimalConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum);
 
         /// <summary>
         ///     Get a decimal variable from the runtime table
         /// </summary>
-        /// <param name="runtimeValueEnum">Runtime parameter to get</param>
+        /// <param name="runtimeValueEnum"></param>
+        /// <param name="categoryValueEnum"></param>
+        /// <param name="RuntimeValue">Runtime parameter to get</param>
         /// <returns>Return the value of a decimal runtime parameter</returns>
         /// <exception cref="DataLayerExceptionEnum.PARSE_EXCEPTION">Exception for a not possible parse</exception>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
-        decimal GetDecimalRuntimeValue(RuntimeValueEnum runtimeValueEnum);
+        Task<decimal> GetDecimalRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum);
 
         /// <summary>
         ///     Get an integer variable from the configuration table
         /// </summary>
         /// <param name="configurationValueEnum">Configuration parameter to get</param>
+        /// <param name="categoryValueEnum"></param>
         /// <returns>Return the value of an integer configuration parameter</returns>
         /// <exception cref="DataLayerExceptionEnum.PARSE_EXCEPTION">Exception for a not possible parse</exception>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
-        int GetIntegerConfigurationValue(ConfigurationValueEnum configurationValueEnum);
+        Task<int> GetIntegerConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum);
 
         /// <summary>
         ///     Get an integer variable from the runtime table
         /// </summary>
-        /// <param name="runtimeValueEnum">Runtime parameter to get</param>
+        /// <param name="runtimeValueEnum"></param>
+        /// <param name="categoryValueEnum"></param>
+        /// <param name="RuntimeValue">Runtime parameter to get</param>
         /// <returns>Return the value of an integer runtime parameter</returns>
         /// <exception cref="DataLayerExceptionEnum.PARSE_EXCEPTION">Exception for a not possible parse</exception>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
-        int GetIntegerRuntimeValue(RuntimeValueEnum runtimeValueEnum);
+        Task<int> GetIntegerRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum);
 
         /// <summary>
         /// Get an IPAddress variable from the runtime table
         /// </summary>
         /// <param name="configurationValueEnum">Configuration parameter to get</param>
+        /// <param name="categoryValueEnum"></param>
         /// <returns>Return the value of an IPAddfress configuration parameter</returns>
         /// <exception cref="DataLayerExceptionEnum.PARSE_EXCEPTION">Exception for a not possible parse</exception>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
-        IPAddress GetIPAddressConfigurationValue(ConfigurationValueEnum configurationValueEnum);
+        Task<IPAddress> GetIPAddressConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum);
 
         /// <summary>
         ///     Get a string variable from the configuration table
         /// </summary>
         /// <param name="configurationValueEnum">Configuration parameter to get</param>
+        /// <param name="categoryValueEnum"></param>
         /// <returns>Return the value of a string configuration parameter</returns>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
-        string GetStringConfigurationValue(ConfigurationValueEnum configurationValueEnum);
+        Task<string> GetStringConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum);
 
         /// <summary>
         ///     Get a string variable from the runtime table
         /// </summary>
-        /// <param name="runtimeValueEnum">Runtime parameter to get</param>
+        /// <param name="runtimeValueEnum"></param>
+        /// <param name="categoryValueEnum"></param>
+        /// <param name="RuntimeValue">Runtime parameter to get</param>
         /// <returns>Return the value of a string runtime parameter</returns>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a bad DataType request</exception>
         /// <exception cref="ArgumentNullException">Exception for variable not found</exception>
-        string GetStringRuntimeValue(RuntimeValueEnum runtimeValueEnum);
+        Task<string> GetStringRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum);
 
         /// <summary>
         ///     Set a bool variable in the configuration table to a new value or update it
@@ -128,31 +138,31 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <param name="configurationValueEnum">Configuration parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetBoolConfigurationValue(ConfigurationValueEnum configurationValueEnum, bool value);
+        Task SetBoolConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, bool value);
 
         /// <summary>
         ///     Set a bool variable in the runtime table to a new value or update it
         /// </summary>
-        /// <param name="runtimeValueEnum">Runtime parameter to set</param>
+        /// <param name="RuntimeValue">Runtime parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetBoolRuntimeValue(RuntimeValueEnum runtimeValueEnum, bool value);
+        Task SetBoolRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum, bool value);
 
         /// <summary>
         ///     Set a DateTime variable in the configuration table to a new value or update it
         /// </summary>
-        /// <param name="runtimeValueEnum">Configuration parameter to set</param>
+        /// <param name="RuntimeValue">Configuration parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetDateTimeConfigurationValue(ConfigurationValueEnum configurationValueEnum, DateTime value);
+        Task SetDateTimeConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, DateTime value);
 
         /// <summary>
         ///     Set a DateTime variable in the runtime table to a new value or update it
         /// </summary>
-        /// <param name="runtimeValueEnum">Runtime parameter to set</param>
+        /// <param name="RuntimeValue">Runtime parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetDateTimeRuntimeValue(RuntimeValueEnum runtimeValueEnum, DateTime value);
+        Task SetDateTimeRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum, DateTime value);
 
         /// <summary>
         ///     Set a decimal variable in the configuration table to a new value or update it
@@ -160,15 +170,15 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <param name="configurationValueEnum">Configuration parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetDecimalConfigurationValue(ConfigurationValueEnum configurationValueEnum, decimal value);
+        Task SetDecimalConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, decimal value);
 
         /// <summary>
         ///     Set a decimal variable in the runtime table to a new value or update it
         /// </summary>
-        /// <param name="runtimeValueEnum">Runtime parameter to set</param>
+        /// <param name="RuntimeValue">Runtime parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetDecimalRuntimeValue(RuntimeValueEnum runtimeValueEnum, decimal value);
+        Task SetDecimalRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum, decimal value);
 
         /// <summary>
         ///     Set an integer variable in the configuration table to a new value or update it
@@ -176,15 +186,15 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <param name="configurationValueEnum">Configuration parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetIntegerConfigurationValue(ConfigurationValueEnum configurationValueEnum, int value);
+        Task SetIntegerConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, int value);
 
         /// <summary>
         ///     Set an integer variable in the runtime table to a new value or update it
         /// </summary>
-        /// <param name="runtimeValueEnum">Runtime parameter to set</param>
+        /// <param name="RuntimeValue">Runtime parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetIntegerRuntimeValue(RuntimeValueEnum runtimeValueEnum, int value);
+        Task SetIntegerRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum, int value);
 
         /// <summary>
         ///     Set a string variable in the configuration table to a new value or update it
@@ -192,15 +202,15 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <param name="configurationValueEnum">Configuration parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetStringConfigurationValue(ConfigurationValueEnum configurationValueEnum, string value);
+        Task SetStringConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, string value);
 
         /// <summary>
         ///     Set a string variable in the runtime table to a new value or update it
         /// </summary>
-        /// <param name="runtimeValueEnum">Runtime parameter to set</param>
+        /// <param name="RuntimeValue">Runtime parameter to set</param>
         /// <param name="value">The new value</param>
         /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
-        void SetStringRuntimeValue(RuntimeValueEnum runtimeValueEnum, string value);
+        Task SetStringRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum, string value);
 
         #endregion
     }

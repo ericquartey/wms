@@ -241,6 +241,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Item List Row.
+        /// </summary>
+        public static string ItemListRowAdd {
+            get {
+                return ResourceManager.GetString("ItemListRowAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List Row Execution.
         /// </summary>
         public static string ItemListRowExecution {
@@ -268,7 +277,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Details of List.
+        ///   Looks up a localized string similar to List Details.
         /// </summary>
         public static string ListDetails {
             get {

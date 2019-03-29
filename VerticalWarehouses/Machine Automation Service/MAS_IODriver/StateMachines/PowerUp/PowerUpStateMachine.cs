@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using Ferretto.VW.Common_Utils.Utilities;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
@@ -10,6 +11,8 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         private const int PulseInterval = 350;
 
+        private readonly ILogger logger;
+
         private Timer delayTimer;
 
         private bool disposed;
@@ -18,10 +21,11 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         #region Constructors
 
-        public PowerUpStateMachine(BlockingConcurrentQueue<IoMessage> ioCommandQueue, IEventAggregator eventAggregator)
+        public PowerUpStateMachine(BlockingConcurrentQueue<IoMessage> ioCommandQueue, IEventAggregator eventAggregator, ILogger logger)
         {
             this.ioCommandQueue = ioCommandQueue;
             this.eventAggregator = eventAggregator;
+            this.logger = logger;
         }
 
         #endregion
@@ -30,7 +34,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         ~PowerUpStateMachine()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion
@@ -41,14 +45,14 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
         {
             if (message.ValidOutputs && message.ResetSecurity)
             {
-                this.delayTimer = new Timer(DelayElapsed, null, PulseInterval, -1);    //VALUE -1 period means timer does not fire multiple times
+                this.delayTimer = new Timer(this.DelayElapsed, null, PulseInterval, -1);    //VALUE -1 period means timer does not fire multiple times
             }
             base.ProcessMessage(message);
         }
 
         public override void Start()
         {
-            this.CurrentState = new ClearOutputsState(this);
+            this.CurrentState = new ClearOutputsState(this, this.logger);
         }
 
         protected override void Dispose(bool disposing)
@@ -61,7 +65,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
             if (disposing)
             {
                 this.delayTimer?.Dispose();
-                CurrentState.Dispose();
+                this.CurrentState.Dispose();
             }
 
             this.disposed = true;

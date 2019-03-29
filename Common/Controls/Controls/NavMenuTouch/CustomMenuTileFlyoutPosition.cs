@@ -23,17 +23,17 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        public static bool GetEnabled(DependencyObject obj)
+        public static bool GetEnabled(DependencyObject element)
         {
-            return (bool)obj?.GetValue(EnabledProperty);
+            return (bool)element?.GetValue(EnabledProperty);
         }
 
-        public static void SetEnabled(DependencyObject obj, bool value)
+        public static void SetEnabled(DependencyObject element, bool value)
         {
-            obj?.SetValue(EnabledProperty, value);
+            element?.SetValue(EnabledProperty, value);
         }
 
-        private static void CloseParentFlyout(UIElement element)
+        private static void CloseParentFlyout(DependencyObject element)
         {
             if (element == null)
             {

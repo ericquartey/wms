@@ -24,5 +24,6 @@ steps:
 
 - template: azure-pipeline-wms-ui-template.yml
   parameters:
-    BuildConfiguration: 'debug'
+    BuildConfiguration: 'DebugWmsUI'
+    BuildProjectConfiguration: 'Debug'
     BuildPlatform: 'any cpu'

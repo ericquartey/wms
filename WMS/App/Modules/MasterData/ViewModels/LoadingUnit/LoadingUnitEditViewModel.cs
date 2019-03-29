@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
-using Ferretto.Common.BusinessModels;
-using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
+using Ferretto.WMS.App.Core.Interfaces;
+using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData

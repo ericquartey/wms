@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -8,29 +9,24 @@ namespace Ferretto.WMS.Data.Core.Models
 
         private int itemListItemsCount;
 
-        private int priority;
+        private int? priority;
 
         #endregion
 
         #region Properties
 
-        public bool CanAddNewRow
-        {
-            get => this.ItemListStatus != ItemListStatus.Completed;
-        }
-
-        public bool CanBeExecuted
-        {
-            get => this.ItemListStatus == ItemListStatus.Incomplete
-                   || this.ItemListStatus == ItemListStatus.Suspended
-                   || this.ItemListStatus == ItemListStatus.Waiting;
-        }
-
-        public int ItemListRowsCount { get; set; }
-
         public string AreaName { get; set; }
 
+        public bool CanAddNewRow => this.Status != ItemListStatus.Completed;
+
+        public bool CanBeExecuted => this.Status == ItemListStatus.Incomplete
+                   || this.Status == ItemListStatus.Suspended
+                   || this.Status == ItemListStatus.Waiting;
+
         public string Code { get; set; }
+
+        [JsonIgnore]
+        public int CompletedRowsCount { get; internal set; }
 
         public DateTime CreationDate { get; set; }
 
@@ -40,9 +36,15 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string Description { get; set; }
 
+        [JsonIgnore]
+        public int ExecutingRowsCount { get; internal set; }
+
         public DateTime? ExecutionEndDate { get; set; }
 
         public DateTime? FirstExecutionDate { get; set; }
+
+        [JsonIgnore]
+        public int IncompleteRowsCount { get; internal set; }
 
         public int ItemListItemsCount
         {
@@ -50,7 +52,7 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.itemListItemsCount = CheckIfPositive(value);
         }
 
-        public ItemListStatus ItemListStatus { get; set; }
+        public int ItemListRowsCount { get; set; }
 
         public ItemListType ItemListType { get; set; }
 
@@ -60,17 +62,33 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public DateTime? LastModificationDate { get; set; }
 
-        public int Priority
+        public int? Priority
         {
             get => this.priority;
             set => this.priority = CheckIfStrictlyPositive(value);
         }
+
+        public int RowsCount { get; set; }
 
         public bool ShipmentUnitAssociated { get; set; }
 
         public string ShipmentUnitCode { get; set; }
 
         public string ShipmentUnitDescription { get; set; }
+
+        public ItemListStatus Status => ItemList.GetStatus(
+           this.RowsCount,
+           this.CompletedRowsCount,
+           this.ExecutingRowsCount,
+           this.WaitingRowsCount,
+           this.IncompleteRowsCount,
+           this.SuspendedRowsCount);
+
+        [JsonIgnore]
+        public int SuspendedRowsCount { get; internal set; }
+
+        [JsonIgnore]
+        public int WaitingRowsCount { get; internal set; }
 
         #endregion
     }

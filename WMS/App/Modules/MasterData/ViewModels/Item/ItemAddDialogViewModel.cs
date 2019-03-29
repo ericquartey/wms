@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using CommonServiceLocator;
-using Ferretto.Common.BusinessModels;
-using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
+using Ferretto.WMS.App.Core.Interfaces;
+using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
@@ -17,12 +17,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        protected override async void ExecuteClearCommand()
+        protected override async Task ExecuteClearCommandAsync()
         {
             await this.LoadDataAsync();
         }
 
-        protected override async Task ExecuteCreateCommand()
+        protected override async Task ExecuteCreateCommandAsync()
         {
             this.IsBusy = true;
 

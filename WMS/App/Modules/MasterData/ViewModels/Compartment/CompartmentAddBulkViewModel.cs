@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CommonServiceLocator;
-using Ferretto.Common.BusinessModels;
-using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
+using Ferretto.WMS.App.Core.Interfaces;
+using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
@@ -33,9 +33,9 @@ namespace Ferretto.WMS.Modules.MasterData
             throw new NotSupportedException();
         }
 
-        protected override Task ExecuteRevertCommand() => throw new NotSupportedException();
+        protected override Task ExecuteRevertCommandAsync() => throw new NotSupportedException();
 
-        protected override async Task ExecuteSaveCommand()
+        protected override async Task ExecuteSaveCommandAsync()
         {
             if (!this.IsModelValid)
             {

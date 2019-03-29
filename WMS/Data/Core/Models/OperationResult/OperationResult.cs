@@ -7,7 +7,15 @@ namespace Ferretto.WMS.Data.Core.Models
         #region Constructors
 
         protected OperationResult(
-            bool success,
+             string description,
+             T entity = default(T))
+             : this(false)
+        {
+            this.Description = description;
+        }
+
+        protected OperationResult(
+                    bool success,
             T entity = default(T))
         {
             this.Success = success;
@@ -18,7 +26,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         #region Properties
 
-        public string Description { get; private set; }
+        public string Description { get; set; }
 
         public T Entity { get; private set; }
 

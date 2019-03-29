@@ -4,8 +4,8 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using DevExpress.Mvvm.UI;
-using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls.Interfaces;
+using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.Common.Controls
 {

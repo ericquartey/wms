@@ -28,43 +28,10 @@ namespace MAS_FiniteStateMachinesUnitTests.UpDownRepetitive
             upDownMessageData.Setup(c => c.TargetLowerBound).Returns(125.75m);
 
             var sm = new UpDownRepetitiveStateMachine(eventAggregatorMock.Object, upDownMessageData.Object);
-            var upState = new UpState(sm);
-            sm.ChangeState(upState, null);
+            var upState = new UpState(sm, upDownMessageData.Object);
+            sm.ChangeState(upState);
 
             Assert.AreEqual(sm.GetState, upState);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void TestUpDownRepetitiveStateMachineGetterSetterParameters()
-        {
-            var eventAggregatorMock = new Mock<IEventAggregator>();
-            var upDownMessageData = new Mock<IUpDownRepetitiveMessageData>();
-            eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<CommandEvent>()).Returns(new CommandEvent());
-
-            var sm = new UpDownRepetitiveStateMachine(eventAggregatorMock.Object, upDownMessageData.Object);
-            sm.NumberOfCompletedCycles = 125;
-
-            Assert.AreEqual(sm.NumberOfCompletedCycles, 125);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void TestUpDownRepetitiveStateMachineGetUpDownRepetitiveMessageParameter()
-        {
-            var eventAggregatorMock = new Mock<IEventAggregator>();
-            var upDownMessageData = new Mock<IUpDownRepetitiveMessageData>();
-            eventAggregatorMock.Setup(aggregator => aggregator.GetEvent<CommandEvent>()).Returns(new CommandEvent());
-
-            upDownMessageData.Setup(c => c.NumberOfRequiredCycles).Returns(150);
-            upDownMessageData.Setup(c => c.TargetUpperBound).Returns(15000.25m);
-            upDownMessageData.Setup(c => c.TargetLowerBound).Returns(250.25m);
-
-            var sm = new UpDownRepetitiveStateMachine(eventAggregatorMock.Object, upDownMessageData.Object);
-
-            Assert.AreEqual(sm.UpDownRepetitiveData.NumberOfRequiredCycles, 150);
-            Assert.AreEqual(sm.UpDownRepetitiveData.TargetUpperBound, 15000.25m);
-            Assert.AreEqual(sm.UpDownRepetitiveData.TargetLowerBound, 250.25m);
         }
 
         [TestMethod]

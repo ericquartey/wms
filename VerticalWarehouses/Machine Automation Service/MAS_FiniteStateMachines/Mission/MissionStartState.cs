@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
@@ -39,6 +38,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         #region Methods
 
+        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
             switch (message.Type)
@@ -49,7 +49,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
                     break;
 
                 case MessageType.EndAction:
-                    //TODO add state business logic to stop current action
+                    //TODO add state business logic to end current action
                     this.ProcessEndAction(message);
                     break;
 
@@ -59,9 +59,45 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
             }
         }
 
+        /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            throw new NotImplementedException();
+            if (message.Type == MessageType.EndAction)
+            {
+                switch (message.Status)
+                {
+                    case MessageStatus.OperationEnd:
+                        //TEMP Change to mission end state after the Mission is done successfully
+                        this.parentStateMachine.ChangeState(new MissionEndState(this.parentStateMachine), null);
+                        break;
+
+                    case MessageStatus.OperationError:
+                        //TEMP Change to error state when an error has occurred
+                        this.parentStateMachine.ChangeState(new MissionErrorState(this.parentStateMachine), null);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            if (message.Type == MessageType.ErrorAction)
+            {
+                switch (message.Status)
+                {
+                    case MessageStatus.OperationError:
+                        {
+                            //TEMP Change to error state when an error has occurred
+                            this.parentStateMachine.ChangeState(new MissionErrorState(this.parentStateMachine), null);
+                            break;
+                        }
+
+                    default:
+                        {
+                            break;
+                        }
+                }
+            }
         }
 
         private void ProcessEndAction(CommandMessage message)

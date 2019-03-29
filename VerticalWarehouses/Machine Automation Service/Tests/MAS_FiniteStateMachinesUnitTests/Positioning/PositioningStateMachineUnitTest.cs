@@ -47,7 +47,7 @@ namespace MAS_FiniteStateMachinesUnitTests.Positioning
             positionMessageData.Setup(c => c.TargetPosition).Returns(1000.0m);
 
             var sm = new PositioningStateMachine(eventAggregatorMock.Object, positionMessageData.Object);
-            var endState = new PositioningEndState(sm);
+            var endState = new PositioningEndState(sm, positionMessageData.Object);
             sm.ChangeState(endState, null);
 
             Assert.AreEqual(sm.GetState, endState);

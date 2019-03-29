@@ -2,12 +2,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
-using Ferretto.Common.BusinessModels;
-using Ferretto.Common.BusinessProviders;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Core.Interfaces;
+using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -122,12 +123,12 @@ namespace Ferretto.WMS.Modules.MasterData
             await this.LoadDataAsync();
         }
 
-        protected override async Task ExecuteRevertCommand()
+        protected override async Task ExecuteRevertCommandAsync()
         {
             await this.LoadDataAsync();
         }
 
-        protected override async Task ExecuteSaveCommand()
+        protected override async Task ExecuteSaveCommandAsync()
         {
             this.IsBusy = true;
 
@@ -170,7 +171,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool CanExecuteDeleteCommand()
         {
-            return this.selectedItemListRow?.CanDelete == true;
+            return this.selectedItemListRow != null;
         }
 
         private bool CanExecuteListCommand()
@@ -188,15 +189,7 @@ namespace Ferretto.WMS.Modules.MasterData
             return this.selectedItemListRow != null;
         }
 
-        private void ExecuteAddListRowCommand()
-        {
-            this.IsBusy = true;
-
-            // TODO
-            this.IsBusy = false;
-        }
-
-        private async Task ExecuteDeleteCommandAsync()
+        private async Task DeleteItemListRowAsync()
         {
             this.IsBusy = true;
 
@@ -224,6 +217,30 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.IsBusy = false;
+        }
+
+        private void ExecuteAddListRowCommand()
+        {
+            this.IsBusy = true;
+
+            this.NavigationService.Appear(
+                            nameof(MasterData),
+                            Common.Utils.Modules.MasterData.ITEMLISTROWADD,
+                            this.Model.Id);
+
+            this.IsBusy = false;
+        }
+
+        private async Task ExecuteDeleteCommandAsync()
+        {
+            if (this.SelectedItemListRow.CanDelete())
+            {
+                await this.DeleteItemListRowAsync();
+            }
+            else
+            {
+                this.ShowErrorDialog(this.SelectedItemListRow.GetCanDeleteReason());
+            }
         }
 
         private void ExecuteListCommand()

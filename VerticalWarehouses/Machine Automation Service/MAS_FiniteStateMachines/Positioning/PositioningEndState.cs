@@ -1,7 +1,7 @@
 ﻿using System;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 {
@@ -11,23 +11,24 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         private readonly Axis axisMovement;
 
+        private readonly IPositioningMessageData positioningMessageData;
+
         #endregion
 
         #region Constructors
 
-        public PositioningEndState(IStateMachine parentMachine)
+        public PositioningEndState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData)
         {
             this.parentStateMachine = parentMachine;
+            this.positioningMessageData = positioningMessageData;
+            this.axisMovement = positioningMessageData.AxisMovement;
 
-            var positioninigData = ((IPositioningStateMachine)this.parentStateMachine).PositioningData;
-            this.axisMovement = positioninigData.AxisMovement;
-
-            //TEMP Send a message to stop the homing to the inverter (is it useful?)
+            //TEMP Send a message to stop the homing to the inverter
             var inverterMessage = new CommandMessage(null,
                 string.Format("Positioning {0} Stop", this.axisMovement),
                 MessageActor.InverterDriver,
                 MessageActor.FiniteStateMachines,
-                MessageType.Stop, //TEMP or MessageType.Homing
+                MessageType.Stop,
                 MessageVerbosity.Info);
             this.parentStateMachine.PublishCommandMessage(inverterMessage);
 
@@ -36,12 +37,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                 string.Format("End Positioning {0}", this.axisMovement),
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.Stop,  //TEMP or MessageType.Homing
+                MessageType.Stop,
                 MessageStatus.OperationEnd,
                 ErrorLevel.NoError,
                 MessageVerbosity.Info);
-
-            this.parentStateMachine.PublishNotificationMessage(newMessage);
+            this.parentStateMachine.OnPublishNotification(newMessage);
         }
 
         #endregion
@@ -54,25 +54,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #region Methods
 
+        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
             if (message.Type == MessageType.Positioning && message.Status == MessageStatus.OperationError)
             {
-                this.ProcessErrorOperation(message);
+                //TEMP Publish a notification about the error
+                this.parentStateMachine.PublishNotificationMessage(message);
             }
-        }
-
-        private void ProcessErrorOperation(NotificationMessage message)
-        {
-            message.Destination = MessageActor.Any;
-
-            //TEMP Send a notification about the error
-            this.parentStateMachine.PublishNotificationMessage(message);
         }
 
         #endregion

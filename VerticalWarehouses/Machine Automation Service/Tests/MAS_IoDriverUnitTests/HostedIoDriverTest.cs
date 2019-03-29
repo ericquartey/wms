@@ -1,11 +1,4 @@
-using System.Threading;
-using System.Threading.Tasks;
-using Ferretto.VW.MAS_DataLayer;
-using Ferretto.VW.MAS_IODriver;
-using Ferretto.VW.MAS_IODriver.Interface;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Prism.Events;
-using Moq;
 
 namespace MAS_IoDriverUnitTests
 {

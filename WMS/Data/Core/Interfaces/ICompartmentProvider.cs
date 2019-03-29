@@ -16,8 +16,10 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     {
         #region Methods
 
+        Task<ActionModel> CanDeleteAsync(int id);
+
         Task<IOperationResult<IEnumerable<CompartmentDetails>>> CreateRangeAsync(
-            IEnumerable<CompartmentDetails> compartments);
+                    IEnumerable<CompartmentDetails> compartments);
 
         Task<IEnumerable<AllowedItemInCompartment>> GetAllowedItemsAsync(int id);
 
@@ -25,7 +27,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<IEnumerable<CompartmentDetails>> GetByLoadingUnitIdAsync(int id);
 
-        Task<int?> GetMaxCapacityAsync(int width, int height, int itemId);
+        Task<int?> GetMaxCapacityAsync(double width, double height, int itemId);
 
         #endregion
     }

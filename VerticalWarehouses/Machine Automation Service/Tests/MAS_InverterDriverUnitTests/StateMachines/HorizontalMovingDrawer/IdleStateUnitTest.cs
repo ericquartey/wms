@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.MAS_InverterDriver;
-using Ferretto.VW.MAS_InverterDriver.StateMachines;
+using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.HorizontalMovingDrawer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -13,6 +13,7 @@ namespace MAS_InverterDriverUnitTests.StateMachines.HorizontalMovingDrawer
         #region Fields
 
         private readonly ushort parameterValue;
+
         private InverterMessage message;
 
         #endregion
@@ -30,6 +31,8 @@ namespace MAS_InverterDriverUnitTests.StateMachines.HorizontalMovingDrawer
             Assert.IsNotNull(inverterMessage);
         }
 
+        #endregion
+
         /* TEMP
         [TestMethod]
         public void IsTrueNotifyMessage()
@@ -38,13 +41,13 @@ namespace MAS_InverterDriverUnitTests.StateMachines.HorizontalMovingDrawer
 
             var errorState = new ErrorState(parentStateMachineMock.Object, Axis.Horizontal);
             var voltageDisabledState = new VoltageDisabledState(parentStateMachineMock.Object, Axis.Horizontal);
-            
+
             if (message.IsError)
             {
                 Assert.IsTrue(errorState);
             }
 
-            if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)           
+            if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
                 if (message.ShortPayload == this.parameterValue)
                 {
                    Assert.IsTrue(voltageDisabledState);
@@ -52,7 +55,5 @@ namespace MAS_InverterDriverUnitTests.StateMachines.HorizontalMovingDrawer
         }
 
         */
-
-        #endregion
     }
 }

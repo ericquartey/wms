@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -17,11 +18,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     {
         #region Fields
 
-        private readonly ILogger<AislesController> logger;
-
         private readonly IAisleProvider aisleProvider;
 
         private readonly ICellProvider cellProvider;
+
+        private readonly ILogger<AislesController> logger;
 
         #endregion
 
@@ -41,22 +42,22 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Aisle>))]
+        [ProducesResponseType(typeof(IEnumerable<Aisle>), StatusCodes.Status200OK)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Aisle>>> GetAllAsync()
         {
             return this.Ok(await this.aisleProvider.GetAllAsync());
         }
 
-        [ProducesResponseType(200, Type = typeof(int))]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync()
         {
             return this.Ok(await this.aisleProvider.GetAllCountAsync());
         }
 
-        [ProducesResponseType(200, Type = typeof(Aisle))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(Aisle), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         public async Task<ActionResult<Aisle>> GetByIdAsync(int id)
         {
@@ -65,13 +66,17 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 var message = $"No entity with the specified id={id} exists.";
                 this.logger.LogWarning(message);
-                return this.NotFound(message);
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = message,
+                    Status = StatusCodes.Status404NotFound
+                });
             }
 
             return this.Ok(result);
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Cell>))]
+        [ProducesResponseType(typeof(IEnumerable<Cell>), StatusCodes.Status200OK)]
         [HttpGet("{id}/cells")]
         public async Task<ActionResult<IEnumerable<Cell>>> GetCellsAsync(int id)
         {

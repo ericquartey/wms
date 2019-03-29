@@ -3,6 +3,7 @@ using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -31,8 +32,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(201, Type = typeof(ItemCompartmentType))]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(typeof(ItemCompartmentType), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
         public async Task<ActionResult<ItemCompartmentType>> CreateAsync(ItemCompartmentType model)
         {
@@ -40,7 +41,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             if (!result.Success)
             {
-                return this.BadRequest();
+                return this.BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = result.Description
+                });
             }
 
             return this.Created(this.Request.GetUri(), result.Entity);

@@ -1,4 +1,5 @@
 using System;
+using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -7,17 +8,28 @@ namespace Ferretto.WMS.Data.Core.Models
         #region Fields
 
         private int? averageWeight;
+
         private int? fifoTimePick;
+
         private int? fifoTimeStore;
-        private int? height;
+
+        private double? height;
+
         private int? inventoryTolerance;
-        private int? length;
+
+        private double? length;
+
         private int? pickTolerance;
+
         private int? reorderPoint;
+
         private int? reorderQuantity;
+
         private int? storeTolerance;
+
         private int totalAvailable;
-        private int? width;
+
+        private double? width;
 
         #endregion
 
@@ -51,7 +63,7 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.fifoTimeStore = CheckIfStrictlyPositive(value);
         }
 
-        public int? Height
+        public double? Height
         {
             get => this.height;
             set => this.height = CheckIfStrictlyPositive(value);
@@ -77,7 +89,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public DateTime? LastStoreDate { get; set; }
 
-        public int? Length
+        public double? Length
         {
             get => this.length;
             set => this.length = CheckIfStrictlyPositive(value);
@@ -121,7 +133,7 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.totalAvailable = CheckIfPositive(value);
         }
 
-        public int? Width
+        public double? Width
         {
             get => this.width;
             set => this.width = CheckIfStrictlyPositive(value);

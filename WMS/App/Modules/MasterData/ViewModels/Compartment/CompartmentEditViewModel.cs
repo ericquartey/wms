@@ -4,12 +4,13 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
 using DevExpress.Xpf.Data;
-using Ferretto.Common.BusinessModels;
-using Ferretto.Common.BusinessProviders;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Core.Interfaces;
+using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -44,7 +45,8 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Properties
 
         public ICommand DeleteCommand => this.deleteCommand ??
-            (this.deleteCommand = new DelegateCommand(async () => await this.ExecuteDeleteCommandAsync(), this.CanExecuteDeleteCommand));
+            (this.deleteCommand = new DelegateCommand(
+                async () => await this.ExecuteDeleteCommandAsync(), this.CanExecuteDeleteCommand));
 
         public bool ItemIdHasValue
         {
@@ -74,9 +76,9 @@ namespace Ferretto.WMS.Modules.MasterData
             throw new NotSupportedException();
         }
 
-        protected override Task ExecuteRevertCommand() => throw new NotSupportedException();
+        protected override Task ExecuteRevertCommandAsync() => throw new NotSupportedException();
 
-        protected override async Task ExecuteSaveCommand()
+        protected override async Task ExecuteSaveCommandAsync()
         {
             this.IsBusy = true;
 
@@ -132,10 +134,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool CanExecuteDeleteCommand()
         {
-            return this.Model != null && this.Model.CanDelete;
+            return this.Model != null;
         }
 
-        private async Task ExecuteDeleteCommandAsync()
+        private async Task DeleteItemListRowAsync()
         {
             this.IsBusy = true;
 
@@ -167,6 +169,18 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.IsBusy = false;
+        }
+
+        private async Task ExecuteDeleteCommandAsync()
+        {
+            if (this.Model.CanDelete())
+            {
+                await this.DeleteItemListRowAsync();
+            }
+            else
+            {
+                this.ShowErrorDialog(this.Model.GetCanDeleteReason());
+            }
         }
 
         private void LoadData()

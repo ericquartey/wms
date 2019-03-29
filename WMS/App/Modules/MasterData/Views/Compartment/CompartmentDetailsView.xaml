@@ -41,18 +41,18 @@
             <wms:ActionBarItem Command="{Binding SaveCommand}"
                                Content="{x:Static res:General.Save}"
                                CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_save_black_24dp.png"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_save_black_24dp.png"
                                GlyphSize="Custom" />
             <wms:ActionBarItem Command="{Binding RevertCommand}"
                                Content="{x:Static res:General.Revert}"
                                CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_undo_black_24dp.png"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_undo_black_24dp.png"
                                GlyphSize="Custom" />
 
             <wms:ActionBarItem Command="{Binding RefreshCommand}"
                                Content="{x:Static res:General.Refresh}"
                                CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_refresh_black_24dp.png"
                                GlyphSize="Custom" />
         </wms:ActionBar>
 
@@ -273,6 +273,7 @@
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
+                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                       EditValue="{Binding Model.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False"
                                       MinValue="1" />
@@ -280,6 +281,7 @@
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
+                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                       EditValue="{Binding Model.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False"
                                       MinValue="1" />
@@ -287,12 +289,14 @@
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
+                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                       EditValue="{Binding Model.XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
+                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                       EditValue="{Binding Model.YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False" />
                     </Grid>
@@ -365,7 +369,7 @@
                                 <wms:ActionBarItem Command="{Binding EditCommand}"
                                                    Content="{x:Static res:MasterData.EditLoadingUnit}"
                                                    CustomGlyphSize="24,24"
-                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/ic_edit_black_24dp.png"
+                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/1x_web/ic_edit_black_24dp.png"
                                                    GlyphSize="Custom" />
                             </wms:ActionBar>
                         </Grid>
@@ -399,8 +403,6 @@
                     <StackPanel Orientation="Vertical">
                         <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.CreationDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"
-                                      Content="{Binding Model.LastHandlingDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.InventoryDate}" />
                         <wms:InfoText HorizontalAlignment="Left"

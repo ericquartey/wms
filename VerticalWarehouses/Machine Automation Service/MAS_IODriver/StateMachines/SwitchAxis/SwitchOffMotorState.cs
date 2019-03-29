@@ -1,13 +1,13 @@
-﻿using System;
-using System.Threading;
-using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.MAS_IODriver.StateMachines.PowerUp;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 {
     public class SwitchOffMotorState : IoStateBase
     {
         #region Fields
+
+        private readonly ILogger logger;
 
         private Axis axisToSwitchOn;
 
@@ -16,12 +16,14 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
         #region Constructors
 
         /// <inheritdoc />
-        public SwitchOffMotorState(Axis axisToSwitchOn, IIoStateMachine parentStateMachine)
+        public SwitchOffMotorState(Axis axisToSwitchOn, ILogger logger, IIoStateMachine parentStateMachine)
         {
-            Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - SwitchOffMotorState:Ctor");
             this.axisToSwitchOn = axisToSwitchOn;
-
             this.parentStateMachine = parentStateMachine;
+            this.logger = logger;
+
+            //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - SwitchOffMotorState:Ctor");
+
             var switchOffAxisIoMessage = new IoMessage(false);
 
             switch (axisToSwitchOn)
@@ -48,7 +50,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
             {
                 if (this.axisToSwitchOn == Axis.Horizontal && message.CradleMotorOn || this.axisToSwitchOn == Axis.Vertical && message.ElevatorMotorOn)
                 {
-                    this.parentStateMachine.ChangeState(new SwitchOnMotorState(this.axisToSwitchOn, this.parentStateMachine));
+                    this.parentStateMachine.ChangeState(new SwitchOnMotorState(this.axisToSwitchOn, this.logger, this.parentStateMachine));
                 }
             }
         }

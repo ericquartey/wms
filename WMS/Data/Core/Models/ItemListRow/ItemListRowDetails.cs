@@ -1,23 +1,14 @@
 ﻿using System;
-using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class ItemListRowDetails : BaseModel<int>,
-        ICanDelete, ICanBeExecuted
+    public class ItemListRowDetails : BaseModel<int>
     {
         #region Properties
 
         public bool CanBeExecuted => this.ItemListRowStatus == ItemListRowStatus.Incomplete ||
                    this.ItemListRowStatus == ItemListRowStatus.Suspended ||
                    this.ItemListRowStatus == ItemListRowStatus.Waiting;
-
-        public bool CanDelete
-        {
-            get => this.ItemListRowStatus == ItemListRowStatus.Waiting
-                && !this.HasSchedulerRequestAssociated;
-        }
 
         public string Code { get; set; }
 
@@ -26,8 +17,6 @@ namespace Ferretto.WMS.Data.Core.Models
         public DateTime CreationDate { get; set; }
 
         public int DispatchedQuantity { get; set; }
-
-        public bool HasSchedulerRequestAssociated { get; set; }
 
         public string ItemDescription { get; set; }
 
@@ -55,11 +44,11 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? PackageTypeId { get; set; }
 
+        public int? Priority { get; set; }
+
         public string RegistrationNumber { get; set; }
 
-        public int RequiredQuantity { get; set; }
-
-        public int RowPriority { get; set; }
+        public int RequestedQuantity { get; set; }
 
         public string Sub1 { get; set; }
 

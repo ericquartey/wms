@@ -4,9 +4,9 @@ using System.Linq;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.BusinessModels;
-using Ferretto.Common.BusinessProviders;
-using Compartment = Ferretto.Common.BusinessModels.Compartment;
+using Ferretto.WMS.App.Core.Interfaces;
+using Ferretto.WMS.App.Core.Models;
+using Compartment = Ferretto.WMS.App.Core.Models.Compartment;
 
 namespace Ferretto.WMS.App.Modules.BLL
 {
@@ -193,14 +193,14 @@ namespace Ferretto.WMS.App.Modules.BLL
                     "ItemListViewStatusWaiting",
                     Common.Resources.MasterData.ItemListStatusWaiting,
                     itemListProvider,
-                    $"[ItemListStatus] == '{ItemListStatus.Waiting}' {typeFilter}"));
+                    $"[Status] == '{ItemListStatus.Waiting}' {typeFilter}"));
 
             listFilters.Add(
                 new PagedDataSource<ItemList, int>(
                     "ItemListViewStatusCompleted",
                     Common.Resources.MasterData.ItemListStatusCompleted,
                     itemListProvider,
-                    $"[ItemListStatus] == '{ItemListStatus.Completed}' {typeFilter}"));
+                    $"[Status] == '{ItemListStatus.Completed}' {typeFilter}"));
 
             return listFilters.Cast<IFilterDataSource<TModel, TKey>>();
         }

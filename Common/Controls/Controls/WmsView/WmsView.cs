@@ -59,8 +59,6 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
-        public WmsViewType ViewType { get; }
-
         public object Data { get; set; }
 
         public bool EnableHistoryView
@@ -107,6 +105,8 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(ViewModelProperty, value);
         }
 
+        public WmsViewType ViewType { get; }
+
         #endregion
 
         #region Methods
@@ -135,14 +135,19 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            this.DataContext = !string.IsNullOrEmpty(this.MapId)
+            var viewModel = !string.IsNullOrEmpty(this.MapId)
                 ? this.navigationService.GetRegisteredViewModel(this.MapId, this.Data)
                 : // Is Main WMSView registered
-                this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken(),
+                this.navigationService.RegisterAndGetViewModel(
+                    this.GetType().ToString(),
+                    this.GetMainViewToken(),
                     this.Data);
 
-            this.ViewModel = (INavigableViewModel)this.DataContext;
-            ((INavigableViewModel)this.DataContext)?.Appear();
+            this.DataContext = viewModel;
+            this.ViewModel = viewModel;
+
+            viewModel?.Appear();
+
             FormControl.SetFocus(this, this.FocusedStart);
         }
 
@@ -171,7 +176,7 @@ namespace Ferretto.Common.Controls
 
         private string GetAttachedViewModel()
         {
-            return $"{this.GetType().ToString()}{Utils.Common.MODEL_SUFFIX}";
+            return $"{this.GetType()}{Utils.Common.MODEL_SUFFIX}";
         }
 
         private WmsView GetCloned()

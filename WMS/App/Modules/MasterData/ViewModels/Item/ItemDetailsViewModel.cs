@@ -2,16 +2,18 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
-using Ferretto.Common.BusinessModels;
-using Ferretto.Common.BusinessProviders;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Core.Interfaces;
+using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemDetailsViewModel : DetailsViewModel<ItemDetails>, IExtensionDataEntityViewModel, IEdit
+    public class ItemDetailsViewModel : DetailsViewModel<ItemDetails>, IEdit
     {
         #region Fields
 
@@ -20,6 +22,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
         private IEnumerable<Compartment> compartmentsDataSource;
+
+        private ICommand deleteCommand;
 
         private bool itemHasCompartments;
 
@@ -51,6 +55,10 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.compartmentsDataSource;
             set => this.SetProperty(ref this.compartmentsDataSource, value);
         }
+
+        public ICommand DeleteCommand => this.deleteCommand ??
+            (this.deleteCommand = new DelegateCommand(
+                async () => await this.ExecuteDeleteCommandAsync()));
 
         public bool ItemHasCompartments
         {
@@ -97,12 +105,12 @@ namespace Ferretto.WMS.Modules.MasterData
             await this.LoadDataAsync();
         }
 
-        protected override async Task ExecuteRevertCommand()
+        protected override async Task ExecuteRevertCommandAsync()
         {
             await this.LoadDataAsync();
         }
 
-        protected override async Task ExecuteSaveCommand()
+        protected override async Task ExecuteSaveCommandAsync()
         {
             this.IsBusy = true;
 
@@ -140,6 +148,42 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool CanExecuteWithdraw()
         {
             return this.Model?.TotalAvailable > 0;
+        }
+
+        private async Task DeleteItemAsync()
+        {
+            var userChoice = this.DialogService.ShowMessage(
+                string.Format(DesktopApp.AreYouSureToDeleteGeneric, BusinessObjects.ItemListRow),
+                DesktopApp.ConfirmOperation,
+                DialogType.Question,
+                DialogButtons.YesNo);
+
+            if (userChoice == DialogResult.Yes)
+            {
+                var result = await this.itemProvider.DeleteAsync(this.Model.Id);
+                if (result.Success)
+                {
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemDeletedSuccessfully, StatusType.Success));
+                    this.EventService.Invoke(new RefreshModelsPubSubEvent<Item>(this.Model.Id));
+                    this.HistoryViewService.Previous();
+                }
+                else
+                {
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+                }
+            }
+        }
+
+        private async Task ExecuteDeleteCommandAsync()
+        {
+            if (this.Model.CanDelete())
+            {
+                await this.DeleteItemAsync();
+            }
+            else
+            {
+                this.ShowErrorDialog(this.Model.GetCanDeleteReason());
+            }
         }
 
         private void ExecuteWithdraw()
@@ -188,14 +232,14 @@ namespace Ferretto.WMS.Modules.MasterData
                 if (this.Data is int modelId)
                 {
                     this.Model = await this.itemProvider.GetByIdAsync(modelId);
-                    this.ItemHasCompartments = this.Model.CompartmentsCount > 0 ? true : false;
+                    this.ItemHasCompartments = this.Model.CompartmentsCount > 0;
                 }
 
                 this.IsBusy = false;
             }
             catch
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToLoadData, StatusType.Error));
             }
         }
 
