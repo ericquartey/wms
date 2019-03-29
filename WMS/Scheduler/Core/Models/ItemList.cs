@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace Ferretto.WMS.Scheduler.Core.Models
 {
@@ -9,39 +8,75 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public string Code { get; set; }
 
+        public int CompletedRowsCount { get; set; }
+
+        public int ExecutingRowsCount { get; set; }
+
+        public int IncompleteRowsCount { get; set; }
+
+        public int NewRowsCount { get; set; }
+
         public IEnumerable<ItemListRow> Rows { get; set; }
 
-        public ListStatus Status
+        public ListStatus Status => GetStatus(
+            this.TotalRowsCount,
+            this.CompletedRowsCount,
+            this.NewRowsCount,
+            this.ExecutingRowsCount,
+            this.WaitingRowsCount,
+            this.IncompleteRowsCount,
+            this.SuspendedRowsCount);
+
+        public int SuspendedRowsCount { get; set; }
+
+        public int TotalRowsCount { get; set; }
+
+        public int WaitingRowsCount { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        internal static ListStatus GetStatus(
+            int rowCount,
+            int completedRowsCount,
+            int newRowsCount,
+            int executingRowsCount,
+            int waitingRowsCount,
+            int incompleteRowsCount,
+            int suspendedRowsCount)
         {
-            get
+            if (rowCount == completedRowsCount)
             {
-                if (this.Rows.All(r => r.Status == ListRowStatus.Completed))
-                {
-                    return ListStatus.Completed;
-                }
-
-                if (this.Rows.Any(r => r.Status == ListRowStatus.Executing))
-                {
-                    return ListStatus.Executing;
-                }
-
-                if (this.Rows.Any(r => r.Status == ListRowStatus.Suspended))
-                {
-                    return ListStatus.Waiting;
-                }
-
-                if (this.Rows.Any(r => r.Status == ListRowStatus.Incomplete))
-                {
-                    return ListStatus.Incomplete;
-                }
-
-                if (this.Rows.Any(r => r.Status == ListRowStatus.Waiting))
-                {
-                    return ListStatus.Waiting;
-                }
-
-                return ListStatus.NotSpecified;
+                return ListStatus.Completed;
             }
+
+            if (rowCount == newRowsCount)
+            {
+                return ListStatus.New;
+            }
+
+            if (executingRowsCount > 0)
+            {
+                return ListStatus.Executing;
+            }
+
+            if (waitingRowsCount > 0)
+            {
+                return ListStatus.Waiting;
+            }
+
+            if (incompleteRowsCount > 0)
+            {
+                return ListStatus.Incomplete;
+            }
+
+            if (suspendedRowsCount > 0)
+            {
+                return ListStatus.Suspended;
+            }
+
+            return ListStatus.NotSpecified;
         }
 
         #endregion

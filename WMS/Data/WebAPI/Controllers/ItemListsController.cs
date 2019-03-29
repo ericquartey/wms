@@ -75,17 +75,18 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpPost("{id}/execute")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<ActionResult> ExecuteAsync(int id, int areaId, int? bayId = null)
         {
             var result = await this.schedulerService.ExecuteListAsync(id, areaId, bayId);
-            if (result is UnprocessableEntityOperationResult<ItemList>)
+
+            if (result is Scheduler.Core.Models.BadRequestOperationResult
+                <IEnumerable<Scheduler.Core.Models.SchedulerRequest>>)
             {
                 this.logger.LogWarning($"Request of execution for list (id={id}) could not be processed.");
 
-                return this.UnprocessableEntity(new ProblemDetails
+                return this.BadRequest(new ProblemDetails
                 {
-                    Status = StatusCodes.Status422UnprocessableEntity,
+                    Status = StatusCodes.Status400BadRequest,
                     Detail = result.Description
                 });
             }
