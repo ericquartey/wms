@@ -133,10 +133,11 @@ namespace Ferretto.VW.InstallationApp
             this.GateSensorABay3 = this.ioSensorsStatus.GateSensorABay3;
             this.GateSensorBBay3 = this.ioSensorsStatus.GateSensorBBay3;
 
-            this.LuPresentInBay1 = message[0];
-            this.HeightControlCheck1 = message[1];
-            this.GateSensorABay1 = message[2];
-            this.GateSensorBBay1 = message[3];
+            // TEMP These code lines will be remove
+            //this.LuPresentInBay1 = message[0];
+            //this.HeightControlCheck1 = message[1];
+            //this.GateSensorABay1 = message[2];
+            //this.GateSensorBBay1 = message[3];
         }
 
         #endregion

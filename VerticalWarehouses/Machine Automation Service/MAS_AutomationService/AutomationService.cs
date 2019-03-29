@@ -59,8 +59,6 @@ namespace Ferretto.VW.MAS_AutomationService
             this.InitializeMethodSubscriptions();
 
             this.logger.LogDebug("2:Method End");
-
-            this.StartTestCycles();
         }
 
         #endregion
