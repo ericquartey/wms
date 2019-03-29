@@ -30,8 +30,11 @@
 
     <ControlTemplate x:Key="{dxet:ImageEditThemeKey ResourceKey=Template}"
                      TargetType="{x:Type dxe:ImageEdit}">
-        <Grid x:Name="PART_Root">
-            <!--ONLY SL
+        <wms:BusyIndicator Grid.Row="2"
+                           Grid.ColumnSpan="2"
+                           IsBusy="{Binding Path=IsLoading, RelativeSource={RelativeSource TemplatedParent}}">
+            <Grid x:Name="PART_Root">
+                <!--ONLY SL
             <Grid.Resources>
                 <ControlTemplate x:Key="EmptyBorderTemplate" TargetType="ContentControl">
                     <Border Background="{TemplateBinding Background}">
@@ -56,31 +59,32 @@
                 </VisualStateGroup>
             </VisualStateManager.VisualStateGroups>
             ONLY SL-->
-            <ContentControl x:Name="Border"
-                            HorizontalContentAlignment="Stretch"
-                            VerticalContentAlignment="Stretch"
-                            dx:FocusHelper2.Focusable="False"
-                            help:ControlHelper.ShowFocusedState="{Binding Path=IsKeyboardFocusWithin, RelativeSource={RelativeSource TemplatedParent}}"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Template="{TemplateBinding ActualBorderTemplate}">
+                <ContentControl x:Name="Border"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch"
+                                dx:FocusHelper2.Focusable="False"
+                                help:ControlHelper.ShowFocusedState="{Binding Path=IsKeyboardFocusWithin, RelativeSource={RelativeSource TemplatedParent}}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Template="{TemplateBinding ActualBorderTemplate}">
 
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <dxep:ErrorControl x:Name="PART_ErrorPresenter"
-                                       Grid.Column="0" />
-                    <dxep:EditorControl x:Name="PART_Content"
-                                        Grid.Column="1"
-                                        Padding="{TemplateBinding Padding}"
-                                        Foreground="{TemplateBinding Foreground}"
-                                        Template="{TemplateBinding ActualEditorControlTemplate}" />
-                </Grid>
-            </ContentControl>
-        </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <dxep:ErrorControl x:Name="PART_ErrorPresenter"
+                                           Grid.Column="0" />
+                        <dxep:EditorControl x:Name="PART_Content"
+                                            Grid.Column="1"
+                                            Padding="{TemplateBinding Padding}"
+                                            Foreground="{TemplateBinding Foreground}"
+                                            Template="{TemplateBinding ActualEditorControlTemplate}" />
+                    </Grid>
+                </ContentControl>
+            </Grid>
+        </wms:BusyIndicator>
     </ControlTemplate>
 
     <ControlTemplate x:Key="{dxet:ImageEditThemeKey ResourceKey=MenuTemplate}"

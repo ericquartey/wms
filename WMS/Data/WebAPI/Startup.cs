@@ -1,13 +1,16 @@
-﻿using Ferretto.Common.EF;
+﻿using System.Collections.Generic;
+using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Scheduler.Core.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using NSwag.AspNetCore;
 
 namespace Ferretto.WMS.Data.WebAPI
@@ -123,6 +126,11 @@ namespace Ferretto.WMS.Data.WebAPI
                     document.Info.Description = "REST API for the WMS Data Service";
                 };
             });
+
+            services.AddSingleton(a => (a.GetService(
+                typeof(IHostingEnvironment)) as IHostingEnvironment)?.ContentRootFileProvider);
+
+            services.AddSingleton<IContentTypeProvider>(new FileExtensionContentTypeProvider());
         }
 
         #endregion

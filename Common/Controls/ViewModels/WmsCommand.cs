@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
 namespace Ferretto.Common.Controls
@@ -13,11 +7,6 @@ namespace Ferretto.Common.Controls
     public class WmsCommand : DelegateCommand
     {
         #region Constructors
-
-        public WmsCommand(Action executeMethod)
-            : base(executeMethod)
-        {
-        }
 
         public WmsCommand(Action executeMethod, Func<bool> canExecuteMethod)
             : base(executeMethod, canExecuteMethod)
