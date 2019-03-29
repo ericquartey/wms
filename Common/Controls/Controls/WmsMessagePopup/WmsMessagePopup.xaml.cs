@@ -29,6 +29,7 @@ namespace Ferretto.Common.Controls
         public WmsMessagePopup()
         {
             this.InitializeComponent();
+            Application.Current.MainWindow.ResizeMode = ResizeMode.NoResize;
         }
 
         #endregion
@@ -85,6 +86,7 @@ namespace Ferretto.Common.Controls
             {
                 this.sbShowConnected.Completed -= this.SbShowConnected_Completed;
                 this.Close();
+                Application.Current.MainWindow.ResizeMode = ResizeMode.CanResize;
             }
         }
 
