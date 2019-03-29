@@ -26,15 +26,17 @@ namespace Ferretto.WMS.AutomationServiceMock
 
         private enum UserSelection
         {
-            Login,
+            Login = 1,
 
-            ListMissions,
+            ListMissions = 2,
 
-            CompleteMission,
+            CompleteMission = 4,
 
-            ExecuteMission,
+            ExecuteMission = 3,
 
-            Exit
+            ExecuteList = 5,
+
+            Exit = 6
         }
 
         #endregion
@@ -97,7 +99,17 @@ namespace Ferretto.WMS.AutomationServiceMock
                     if (executeMissionId > 0)
                     {
                         await automationService.ExecuteMissionAsync(executeMissionId);
-                        Console.WriteLine($"Request sent.");
+                        Console.WriteLine($"Mission execution request sent.");
+                    }
+
+                    break;
+
+                case UserSelection.ExecuteList:
+                    var executeListId = GetListId();
+                    if (executeListId > 0)
+                    {
+                        await automationService.ExecuteListAsync(executeListId);
+                        Console.WriteLine($"List execution request sent.");
                     }
 
                     break;
@@ -117,7 +129,7 @@ namespace Ferretto.WMS.AutomationServiceMock
                 case UserSelection.Login:
                     // notify the scheduler that a user logged in
                     // to the PanelPC associated to the specified bay
-                    await automationService.NotifyUserLoginAsync(bayId: 1);
+                    await automationService.NotifyUserLoginAsync();
                     Console.WriteLine($"Request sent.");
                     break;
 
@@ -127,6 +139,23 @@ namespace Ferretto.WMS.AutomationServiceMock
             }
 
             return exitRequested;
+        }
+
+        private static int GetListId()
+        {
+            Console.Write("Insert list id: ");
+            var listIdString = Console.ReadLine();
+
+            if (int.TryParse(listIdString, out var listId))
+            {
+                return listId;
+            }
+            else
+            {
+                Console.WriteLine("Unable to parse list id.");
+            }
+
+            return -1;
         }
 
         private static int GetMissionId()
@@ -167,9 +196,7 @@ namespace Ferretto.WMS.AutomationServiceMock
         {
             var netcoreEnvironment = System.Environment.GetEnvironmentVariable(NetcoreEnvironmentEnvVariable);
 
-            return netcoreEnvironment != null
-                ? string.Format(ParametrizedApplicationSettingsFile, netcoreEnvironment)
-                : DefaultApplicationSettingsFile;
+            return string.Format(ParametrizedApplicationSettingsFile, netcoreEnvironment);
         }
 
         private static async Task Main(string[] args)
@@ -178,8 +205,15 @@ namespace Ferretto.WMS.AutomationServiceMock
             {
                 Console.WriteLine("VertiMAG Panel PC");
                 Console.WriteLine("-----------------");
+                Console.WriteLine("Press <ENTER> to boot.");
+                Console.Write(">");
+                Console.ReadLine();
 
                 var automationService = BuildConfiguration(args);
+                var bay = await automationService.GetBayAsync();
+
+                Console.WriteLine($"Serving bay '{bay.Description}'");
+                Console.WriteLine("-----------------");
 
                 var exitRequested = false;
                 while (exitRequested == false)
@@ -188,8 +222,9 @@ namespace Ferretto.WMS.AutomationServiceMock
                     Console.WriteLine("Select option: ");
                     Console.WriteLine($"{(int)UserSelection.Login} - Login to PPC");
                     Console.WriteLine($"{(int)UserSelection.ListMissions} - List missions");
-                    Console.WriteLine($"{(int)UserSelection.CompleteMission} - Complete mission");
                     Console.WriteLine($"{(int)UserSelection.ExecuteMission} - Execute mission");
+                    Console.WriteLine($"{(int)UserSelection.CompleteMission} - Complete mission");
+                    Console.WriteLine($"{(int)UserSelection.ExecuteList} - Execute List");
                     Console.WriteLine($"{(int)UserSelection.Exit} - Exit");
                     Console.Write("> ");
 

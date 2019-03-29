@@ -10,13 +10,17 @@ namespace Ferretto.WMS.AutomationServiceMock
 
         Task CompleteMissionAsync(int missionId, int quantity);
 
+        Task ExecuteListAsync(int listId);
+
         Task ExecuteMissionAsync(int missionId);
+
+        Task<Bay> GetBayAsync();
 
         Task<IEnumerable<Mission>> GetMissionsAsync();
 
         Task InitializeAsync();
 
-        Task NotifyUserLoginAsync(int bayId);
+        Task NotifyUserLoginAsync();
 
         #endregion
     }
