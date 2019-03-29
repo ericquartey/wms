@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Interfaces;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
@@ -18,8 +16,8 @@ namespace Ferretto.VW.MAS_AutomationService
         {
             if (notificationMessage != null)
             {
-                var actionType = GetActionTypeFromMessageType(notificationMessage.Type);
-                var actionStatus = GetActionStatusFromMessageStatus(notificationMessage.Status);
+                var actionType = GetActionTypeFromMessageType(notificationMessage);
+                var actionStatus = GetActionStatusFromMessageStatus(notificationMessage);
                 return new ActionUpdateData(NotificationType.CurrentActionStatus, actionType, actionStatus);
             }
             else
@@ -28,9 +26,9 @@ namespace Ferretto.VW.MAS_AutomationService
             }
         }
 
-        private static ActionStatus GetActionStatusFromMessageStatus(MessageStatus messageStatus)
+        private static ActionStatus GetActionStatusFromMessageStatus(NotificationMessage message)
         {
-            switch (messageStatus)
+            switch (message.Status)
             {
                 case MessageStatus.OperationStart:
                     return ActionStatus.Start;
@@ -52,21 +50,31 @@ namespace Ferretto.VW.MAS_AutomationService
             }
         }
 
-        private static ActionType GetActionTypeFromMessageType(MessageType messageType)
+        private static ActionType GetActionTypeFromMessageType(NotificationMessage message)
         {
-            switch (messageType)
+            switch (message.Type)
             {
-                case MessageType.Homing:
-                    return ActionType.Homing;
+                case MessageType.CalibrateAxis:
+                    if (message.Data is ICalibrateAxisMessageData calibrateMessageData)
+                    {
+                        if (calibrateMessageData.AxisToCalibrate == Axis.Horizontal)
+                        {
+                            return ActionType.HorizontalHoming;
+                        }
 
-                case MessageType.HorizontalHoming:
-                    return ActionType.HorizontalHoming;
+                        if (calibrateMessageData.AxisToCalibrate == Axis.Vertical)
+                        {
+                            return ActionType.VerticalHoming;
+                        }
+                    }
 
-                case MessageType.VerticalHoming:
-                    return ActionType.VerticalHoming;
+                    return ActionType.None;
 
                 case MessageType.SwitchAxis:
                     return ActionType.SwitchEngine;
+
+                case MessageType.Homing:
+                    return ActionType.Homing;
 
                 default:
                     return ActionType.None;

@@ -44,11 +44,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
             base.ChangeState(newState);
         }
 
-        public override void OnPublishNotification(NotificationMessage message)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override void Start()
         {
             switch (this.movingDrawer)

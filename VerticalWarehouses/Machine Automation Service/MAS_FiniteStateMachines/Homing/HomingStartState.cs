@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
@@ -19,9 +20,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         public HomingStartState(IStateMachine parentMachine, Axis axisToCalibrate, ILogger logger)
         {
+            this.logger = logger;
+            this.logger.LogTrace("1:HomingStartState");
+
             this.parentStateMachine = parentMachine;
             this.axisToCalibrate = axisToCalibrate;
-            this.logger = logger;
 
             // TEMP send a message to switch axis (to IODriver)
             var switchAxisData = new SwitchAxisMessageData(this.axisToCalibrate);
@@ -29,9 +32,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 string.Format("Switch Axis {0}", this.axisToCalibrate),
                 MessageActor.IODriver,
                 MessageActor.FiniteStateMachines,
-                MessageType.SwitchAxis,
-                MessageVerbosity.Info);
+                MessageType.SwitchAxis);
             this.parentStateMachine.PublishCommandMessage(message);
+
+            var notificationMessageData = new CalibrateAxisMessageData(this.axisToCalibrate, MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                notificationMessageData,
+                "Starting Homing",
+                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
+                MessageType.CalibrateAxis,
+                MessageStatus.OperationExecuting,
+                ErrorLevel.NoError);
+
+            this.parentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
         #endregion
@@ -47,14 +61,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
+            this.logger.LogTrace($"2:Process CommandMessage {message.Type} Source {message.Source}");
             switch (message.Type)
             {
                 case MessageType.Stop:
                     //TEMP Change to homing end state (a request of stop operation has been made)
                     this.parentStateMachine.ChangeState(new HomingEndState(this.parentStateMachine, this.axisToCalibrate, this.logger));
-                    break;
-
-                default:
                     break;
             }
         }
@@ -62,6 +74,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
+            this.logger.LogTrace($"3:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
             if (message.Type == MessageType.SwitchAxis)
             {
                 switch (message.Status)
@@ -74,9 +87,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                     case MessageStatus.OperationError:
                         //TEMP Change to error state (an error has occurred)
                         this.parentStateMachine.ChangeState(new HomingErrorState(this.parentStateMachine, this.axisToCalibrate, this.logger));
-                        break;
-
-                    default:
                         break;
                 }
             }

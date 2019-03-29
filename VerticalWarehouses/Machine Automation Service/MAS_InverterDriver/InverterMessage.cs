@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Text;
 using Ferretto.VW.Common_Utils.Exceptions;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Exceptions;
 
 namespace Ferretto.VW.MAS_InverterDriver
 {
@@ -189,6 +191,26 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         #region Methods
 
+        public byte[] GetHeartbeatMessage(bool setBit)
+        {
+            if (this.parameterId != (short)InverterParameterId.ControlWordParam)
+                throw new InverterDriverException("Invalid parameter id");
+
+            this.heartbeatMessage = true;
+
+            //VALUE 14th byte of control word value represents Heartbeat flag
+            if (setBit)
+            {
+                this.payload[1] |= 0x40;
+            }
+            else
+            {
+                this.payload[1] &= 0xBF;
+            }
+
+            return this.GetWriteMessage();
+        }
+
         /// <summary>
         ///     Returns a byte array from the current Inverter Message ready to be sent to the Inverter hardware
         /// </summary>
@@ -260,26 +282,6 @@ namespace Ferretto.VW.MAS_InverterDriver
             }
 
             return writeMessage;
-        }
-
-        public byte[] GteHeartbeatMessage(bool setBit)
-        {
-            if (this.parameterId != (short)InverterParameterId.ControlWordParam)
-                throw new InverterDriverException("Invalid parameter id");
-
-            this.heartbeatMessage = true;
-
-            //VALUE 14th byte of control word value represents Heartbeat flag
-            if (setBit)
-            {
-                this.payload[1] |= 0x40;
-            }
-            else
-            {
-                this.payload[1] &= 0xBF;
-            }
-
-            return this.GetWriteMessage();
         }
 
         private object ConvertPayload()
