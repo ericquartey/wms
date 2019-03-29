@@ -2,7 +2,7 @@
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class Item : BaseModel<int>
+    public class Item : BaseModel<int>, IAvailabilityItem, ICountersItem
     {
         #region Fields
 
@@ -39,6 +39,14 @@ namespace Ferretto.WMS.Data.Core.Models
         #endregion
 
         #region Properties
+
+        public int CompartmentsCount { get; set; }
+
+        public int ItemListRowsCount { get; set; }
+
+        public int MissionsCount { get; set; }
+
+        public int SchedulerRequestsCount { get; set; }
 
         public string AbcClassDescription { get; set; }
 

@@ -979,6 +979,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Homing Error.
+        /// </summary>
+        public static string HomingError {
+            get {
+                return ResourceManager.GetString("HomingError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Homing started....
         /// </summary>
         public static string HomingStarted {
@@ -1002,6 +1011,15 @@ namespace Ferretto.VW.Resources {
         public static string HorizontalHomingCompleted {
             get {
                 return ResourceManager.GetString("HorizontalHomingCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Horizontal Homing Error.
+        /// </summary>
+        public static string HorizontalHomingError {
+            get {
+                return ResourceManager.GetString("HorizontalHomingError", resourceCulture);
             }
         }
         
@@ -2113,6 +2131,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Switch Engine Error.
+        /// </summary>
+        public static string SwitchEngineError {
+            get {
+                return ResourceManager.GetString("SwitchEngineError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Switch Engine Started....
         /// </summary>
         public static string SwitchEngineStarted {
@@ -2271,6 +2298,15 @@ namespace Ferretto.VW.Resources {
         public static string VerticalHomingCompleted {
             get {
                 return ResourceManager.GetString("VerticalHomingCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical Homing Error.
+        /// </summary>
+        public static string VerticalHomingError {
+            get {
+                return ResourceManager.GetString("VerticalHomingError", resourceCulture);
             }
         }
         

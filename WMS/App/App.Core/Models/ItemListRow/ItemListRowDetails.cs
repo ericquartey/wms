@@ -64,8 +64,6 @@ namespace Ferretto.WMS.App.Core.Models
 
         #region Properties
 
-        public bool CanBeExecuted { get; set; }
-
         [Required]
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string Code { get => this.code; set => this.SetProperty(ref this.code, value); }
@@ -152,6 +150,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.ItemListRowRequestedQuantity), ResourceType = typeof(BusinessObjects))]
         public int RequestedQuantity { get => this.requestedQuantity; set => this.SetProperty(ref this.requestedQuantity, value); }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusDescription), ResourceType = typeof(BusinessObjects))]
         public ItemListRowStatus Status { get => this.status; set => this.SetProperty(ref this.status, value); }
 

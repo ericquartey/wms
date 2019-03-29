@@ -15,7 +15,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class ItemProvider : IItemProvider
+    internal partial class ItemProvider : IItemProvider
     {
         #region Fields
 
@@ -80,25 +80,21 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<ItemDetails>> DeleteAsync(int id)
         {
-            var existingModel = this.dataContext.Items.Find(id);
+            var existingModel = await this.GetByIdAsync(id);
             if (existingModel == null)
             {
                 return new NotFoundOperationResult<ItemDetails>();
             }
 
-            var item = await this.GetByIdAsync(id);
-
-            if (item.CanDelete())
-            {
-                return await this.DeleteItemWithRelatedDataAsync(item, existingModel);
-            }
-            else
+            if (!existingModel.CanDelete())
             {
                 return new UnprocessableEntityOperationResult<ItemDetails>
                 {
-                    Description = item.GetCanDeleteReason(),
+                    Description = existingModel.GetCanDeleteReason(),
                 };
             }
+
+            return await this.DeleteWithRelatedDataAsync(existingModel.Id);
         }
 
         public async Task<IEnumerable<Item>> GetAllAsync(
@@ -108,7 +104,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             string whereString = null,
             string searchString = null)
         {
-            var items = await this.GetAllBase()
+            var models = await this.GetAllBase()
                  .ToArrayAsync<Item, Common.DataModels.Item>(
                      skip,
                      take,
@@ -116,12 +112,12 @@ namespace Ferretto.WMS.Data.Core.Providers
                      whereString,
                      BuildSearchExpression(searchString));
 
-            foreach (var item in items)
+            foreach (var model in models)
             {
-                await this.SetPoliciesAsync(item);
+                this.SetPolicies(model);
             }
 
-            return items;
+            return models;
         }
 
         public async Task<int> GetAllCountAsync(
@@ -141,7 +137,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             if (model != null)
             {
-                await this.SetPoliciesAsync(model);
+                this.SetPolicies(model);
             }
 
             return model;
@@ -162,14 +158,22 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.dataContext.Items.Find(model.Id);
-
+            var existingModel = await this.GetByIdAsync(model.Id);
             if (existingModel == null)
             {
                 return new NotFoundOperationResult<ItemDetails>();
             }
 
-            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+            if (!existingModel.CanUpdate())
+            {
+                return new UnprocessableEntityOperationResult<ItemDetails>
+                {
+                    Description = existingModel.GetCanDeleteReason(),
+                };
+            }
+
+            var existingDataModel = this.dataContext.Items.Find(model.Id);
+            this.dataContext.Entry(existingDataModel).CurrentValues.SetValues(model);
             await this.dataContext.SaveChangesAsync();
 
             return new SuccessOperationResult<ItemDetails>(model);
@@ -193,79 +197,31 @@ namespace Ferretto.WMS.Data.Core.Providers
                 ||
                 i.TotalAvailable.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                i.MeasureUnitDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ;
+                i.MeasureUnitDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
-        private async Task<Policy> ComputeDeletePolicyAsync(int itemId)
-        {
-            var compartmentsCount =
-                await this.dataContext.Compartments
-                    .CountAsync(c => c.ItemId == itemId);
-            var missionsCount =
-                await this.dataContext.Missions
-                    .CountAsync(m => m.ItemId == itemId);
-            var schedulerRequestsCount =
-                await this.dataContext.SchedulerRequests
-                    .CountAsync(r => r.ItemId == itemId);
-            var itemListRowsCount =
-                await this.dataContext.ItemListRows
-                    .CountAsync(r => r.ItemId == itemId);
-
-            var entity = new List<string>();
-            if (compartmentsCount > 0)
-            {
-                entity.Add($"{Common.Resources.BusinessObjects.Compartment} [{compartmentsCount}]");
-            }
-
-            if (itemListRowsCount > 0)
-            {
-                entity.Add($"{Common.Resources.BusinessObjects.ItemListRow} [{itemListRowsCount}]");
-            }
-
-            if (missionsCount > 0)
-            {
-                entity.Add($"{Common.Resources.BusinessObjects.Mission} [{missionsCount}]");
-            }
-
-            if (schedulerRequestsCount > 0)
-            {
-                entity.Add($"{Common.Resources.BusinessObjects.SchedulerRequest} [{schedulerRequestsCount}]");
-            }
-
-            string reason = null;
-            if (entity.Any())
-            {
-                reason = string.Format(
-                     Common.Resources.Errors.NotPossibleExecuteOperation,
-                     string.Join(", ", entity.ToArray()));
-            }
-
-            return new Policy
-            {
-                IsAllowed = !entity.Any(),
-                Reason = reason,
-                Name = "Delete",
-                Type = PolicyType.Operation
-            };
-        }
-
-        private async Task<OperationResult<ItemDetails>> DeleteItemWithRelatedDataAsync(ItemDetails item, Common.DataModels.Item existingModel)
+        private async Task<OperationResult<ItemDetails>> DeleteWithRelatedDataAsync(int id)
         {
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
+                var existingModel = this.dataContext.Items.Find(id);
+                if (existingModel == null)
+                {
+                    return new NotFoundOperationResult<ItemDetails>();
+                }
+
                 var areaCount =
                 await this.dataContext.ItemsAreas
-                    .CountAsync(c => c.ItemId == item.Id);
+                    .CountAsync(c => c.ItemId == id);
 
                 var compartmentTypeCount =
                 await this.dataContext.ItemsAreas
-                    .CountAsync(c => c.ItemId == item.Id);
+                    .CountAsync(c => c.ItemId == id);
 
                 if (areaCount > 0)
                 {
                     var area = await this.dataContext.ItemsAreas
-                        .Where(a => a.ItemId == item.Id)
+                        .Where(a => a.ItemId == id)
                         .ToListAsync();
                     this.dataContext.RemoveRange(area);
                 }
@@ -273,7 +229,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 if (compartmentTypeCount > 0)
                 {
                     var compartmentType = await this.dataContext.ItemsCompartmentTypes
-                        .Where(t => t.ItemId == item.Id)
+                        .Where(t => t.ItemId == id)
                         .ToListAsync();
                     this.dataContext.RemoveRange(compartmentType);
                 }
@@ -347,6 +303,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                         ItemCategoryId = i.Item.ItemCategoryId,
                         ItemCategoryDescription = i.Item.ItemCategory.Description,
                         AbcClassDescription = i.Item.AbcClass.Description,
+
+                        CompartmentsCount = i.Item.Compartments.Count(),
+                        MissionsCount = i.Item.Missions.Count(),
+                        SchedulerRequestsCount = i.Item.SchedulerRequests.Count(),
+                        ItemListRowsCount = i.Item.ItemListRows.Count(),
                     });
         }
 
@@ -380,51 +341,49 @@ namespace Ferretto.WMS.Data.Core.Providers
                     })
                 .SelectMany(
                     temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
-                    (a, b) => new ItemDetails
+                    (i, c) => new ItemDetails
                     {
-                        Id = a.Item.Id,
-                        Code = a.Item.Code,
-                        Description = a.Item.Description,
-                        ItemCategoryId = a.Item.ItemCategoryId,
-                        Note = a.Item.Note,
+                        Id = i.Item.Id,
+                        Code = i.Item.Code,
+                        Description = i.Item.Description,
+                        ItemCategoryId = i.Item.ItemCategoryId,
+                        Note = i.Item.Note,
 
-                        AbcClassId = a.Item.AbcClassId,
-                        MeasureUnitId = a.Item.MeasureUnitId,
-                        MeasureUnitDescription = a.Item.MeasureUnit.Description,
-                        ManagementType = (ItemManagementType)a.Item.ManagementType,
-                        FifoTimePick = a.Item.FifoTimePick,
-                        FifoTimeStore = a.Item.FifoTimeStore,
-                        ReorderPoint = a.Item.ReorderPoint,
-                        ReorderQuantity = a.Item.ReorderQuantity,
+                        AbcClassId = i.Item.AbcClassId,
+                        MeasureUnitId = i.Item.MeasureUnitId,
+                        MeasureUnitDescription = i.Item.MeasureUnit.Description,
+                        ManagementType = (ItemManagementType)i.Item.ManagementType,
+                        FifoTimePick = i.Item.FifoTimePick,
+                        FifoTimeStore = i.Item.FifoTimeStore,
+                        ReorderPoint = i.Item.ReorderPoint,
+                        ReorderQuantity = i.Item.ReorderQuantity,
 
-                        Height = a.Item.Height,
-                        Length = a.Item.Length,
-                        Width = a.Item.Width,
-                        PickTolerance = a.Item.PickTolerance,
-                        StoreTolerance = a.Item.StoreTolerance,
-                        InventoryTolerance = a.Item.InventoryTolerance,
-                        AverageWeight = a.Item.AverageWeight,
+                        Height = i.Item.Height,
+                        Length = i.Item.Length,
+                        Width = i.Item.Width,
+                        PickTolerance = i.Item.PickTolerance,
+                        StoreTolerance = i.Item.StoreTolerance,
+                        InventoryTolerance = i.Item.InventoryTolerance,
+                        AverageWeight = i.Item.AverageWeight,
 
-                        Image = a.Item.Image,
+                        Image = i.Item.Image,
 
-                        CreationDate = a.Item.CreationDate,
-                        InventoryDate = a.Item.InventoryDate,
-                        LastModificationDate = a.Item.LastModificationDate,
-                        LastPickDate = a.Item.LastPickDate,
-                        LastStoreDate = a.Item.LastStoreDate,
+                        CreationDate = i.Item.CreationDate,
+                        InventoryDate = i.Item.InventoryDate,
+                        LastModificationDate = i.Item.LastModificationDate,
+                        LastPickDate = i.Item.LastPickDate,
+                        LastStoreDate = i.Item.LastStoreDate,
 
                         TotalAvailable =
-                            b != null
-                                ? b.TotalStock + b.TotalReservedToStore - b.TotalReservedForPick
+                            c != null
+                                ? c.TotalStock + c.TotalReservedToStore - c.TotalReservedForPick
                                 : 0,
 
-                        CompartmentsCount = a.Item.Compartments.Count(),
+                        CompartmentsCount = i.Item.Compartments.Count(),
+                        MissionsCount = i.Item.Missions.Count(),
+                        SchedulerRequestsCount = i.Item.SchedulerRequests.Count(),
+                        ItemListRowsCount = i.Item.ItemListRows.Count(),
                     });
-        }
-
-        private async Task SetPoliciesAsync(BaseModel<int> model)
-        {
-            model.AddPolicy(await this.ComputeDeletePolicyAsync(model.Id));
         }
 
         #endregion

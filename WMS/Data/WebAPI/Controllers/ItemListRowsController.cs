@@ -50,14 +50,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
-        [HttpGet("{id}/candelete")]
-        public async Task<ActionResult<ActionModel>> CanDeleteAsync(int id)
-        {
-            return await this.itemListRowProvider.CanDeleteAsync(id);
-        }
-
         [ProducesResponseType(typeof(ItemListRowDetails), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
@@ -96,14 +88,12 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                         Detail = result.Description
                     });
                 }
-                else
+
+                return this.NotFound(new ProblemDetails
                 {
-                    return this.NotFound(new ProblemDetails
-                    {
-                        Status = StatusCodes.Status404NotFound,
-                        Detail = result.Description
-                    });
-                }
+                    Status = StatusCodes.Status404NotFound,
+                    Detail = result.Description
+                });
             }
 
             return this.Ok();

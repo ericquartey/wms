@@ -1,9 +1,8 @@
 using System;
-using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class ItemDetails : BaseModel<int>
+    public class ItemDetails : BaseModel<int>, IAvailabilityItem, ICountersItem
     {
         #region Fields
 
@@ -34,6 +33,12 @@ namespace Ferretto.WMS.Data.Core.Models
         #endregion
 
         #region Properties
+
+        public int ItemListRowsCount { get; set; }
+
+        public int MissionsCount { get; set; }
+
+        public int SchedulerRequestsCount { get; set; }
 
         public string AbcClassId { get; set; }
 

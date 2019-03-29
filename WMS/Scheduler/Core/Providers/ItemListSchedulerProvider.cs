@@ -64,7 +64,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                         PackageTypeId = r.PackageTypeId,
                         RegistrationNumber = r.RegistrationNumber,
                         RequestedQuantity = r.RequestedQuantity,
-                        Status = (ListRowStatus)r.Status,
+                        Status = (ItemListRowStatus)r.Status,
                         Sub1 = r.Sub1,
                         Sub2 = r.Sub2,
                     })

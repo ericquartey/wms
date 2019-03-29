@@ -137,7 +137,7 @@
                                HorizontalAlignment="Right"
                                VerticalAlignment="Bottom"
                                Style="{DynamicResource ActionBarNotCustomizable}">
-                    <wms:ActionBarItem Command="{Binding RunListRowExecuteCommand}"
+                    <wms:ActionBarItem Command="{Binding ExecuteListRowCommand}"
                                        Content="{x:Static res:MasterData.RunItemListRow}"
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_circle_outline_black_24dp.png"

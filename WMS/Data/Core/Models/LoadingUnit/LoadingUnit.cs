@@ -1,6 +1,6 @@
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class LoadingUnit : BaseModel<int>
+    public class LoadingUnit : BaseModel<int>, ICountersLoadingUnit
     {
         #region Properties
 
@@ -22,9 +22,15 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string Code { get; set; }
 
+        public int CompartmentsCount { get; set; }
+
         public string LoadingUnitStatusDescription { get; set; }
 
         public string LoadingUnitTypeDescription { get; set; }
+
+        public int MissionsCount { get; set; }
+
+        public int SchedulerRequestsCount { get; set; }
 
         #endregion
     }

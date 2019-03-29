@@ -30,8 +30,6 @@ namespace Ferretto.WMS.App.Core.Models
 
         #region Properties
 
-        public bool CanBeExecuted { get; set; }
-
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string Code { get => this.code; set => this.SetProperty(ref this.code, value); }
 

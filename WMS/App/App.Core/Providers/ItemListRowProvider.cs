@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.App.Core.Extensions;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 
@@ -40,16 +41,6 @@ namespace Ferretto.WMS.App.Core.Providers
         #endregion
 
         #region Methods
-
-        public async Task<ActionModel> CanDeleteAsync(int id)
-        {
-            var action = await this.itemListRowsDataService.CanDeleteAsync(id);
-            return new ActionModel
-            {
-                IsAllowed = action.IsAllowed,
-                Reason = action.Reason,
-            };
-        }
 
         public async Task<IOperationResult<ItemListRowDetails>> CreateAsync(ItemListRowDetails model)
         {
@@ -136,7 +127,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     RequestedQuantity = l.RequestedQuantity,
                     Priority = l.Priority,
                     CreationDate = l.CreationDate,
-                    CanBeExecuted = l.CanBeExecuted,
+                    Policies = l.GetPolicies(),
                 });
         }
 
@@ -179,7 +170,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 MaterialStatusChoices = enumeration.MaterialStatusChoices,
                 PackageTypeChoices = enumeration.PackageTypeChoices,
                 ItemListId = row.ItemListId,
-                CanBeExecuted = row.CanBeExecuted,
+                Policies = row.GetPolicies(),
             };
         }
 
@@ -188,17 +179,17 @@ namespace Ferretto.WMS.App.Core.Providers
             return (await this.itemListsDataService.GetRowsAsync(id))
                 .Select(r => new ItemListRow
                 {
-                    Id = r.Id,
-                    Code = r.Code,
-                    Priority = r.Priority,
-                    ItemDescription = r.ItemDescription,
-                    RequestedQuantity = r.RequestedQuantity,
-                    DispatchedQuantity = r.DispatchedQuantity,
-                    Status = (ItemListRowStatus)r.Status,
-                    MaterialStatusDescription = r.MaterialStatusDescription,
-                    CreationDate = r.CreationDate,
-                    ItemUnitMeasure = r.ItemUnitMeasure,
-                    CanBeExecuted = r.CanBeExecuted,
+                    Id = l.Id,
+                    Code = l.Code,
+                    RowPriority = l.Priority,
+                    ItemDescription = l.ItemDescription,
+                    RequestedQuantity = l.RequestedQuantity,
+                    DispatchedQuantity = l.DispatchedQuantity,
+                    Status = (ItemListRowStatus)l.Status,
+                    MaterialStatusDescription = l.MaterialStatusDescription,
+                    CreationDate = l.CreationDate,
+                    ItemUnitMeasure = l.ItemUnitMeasure,
+                    Policies = l.GetPolicies(),
                 });
         }
 

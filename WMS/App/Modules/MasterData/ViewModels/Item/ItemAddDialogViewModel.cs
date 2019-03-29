@@ -1,5 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using CommonServiceLocator;
+using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
@@ -25,18 +28,24 @@ namespace Ferretto.WMS.Modules.MasterData
         protected override async Task ExecuteCreateCommandAsync()
         {
             this.IsBusy = true;
-
-            var result = await this.itemProvider.CreateAsync(this.Model);
-            if (result.Success)
+            try
             {
-                this.TakeModelSnapshot();
+                var result = await this.itemProvider.CreateAsync(this.Model);
+                if (result.Success)
+                {
+                    this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<Item, int>(this.Model.Id));
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
+                    this.EventService.Invoke(new ModelChangedPubSubEvent<Item, int>(this.Model.Id));
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
 
-                this.CloseDialogCommand.Execute(null);
+                    this.CloseDialogCommand.Execute(null);
+                }
+                else
+                {
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+                }
             }
-            else
+            catch (Exception)
             {
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
             }

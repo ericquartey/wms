@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.App.Core.Extensions;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 
@@ -122,6 +123,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     CellSide = (Side?)l.CellSide,
                     CellNumber = l.CellNumber,
                     CellPositionDescription = l.CellPositionDescription,
+                    Policies = l.GetPolicies(),
                 });
         }
 
@@ -174,7 +176,8 @@ namespace Ferretto.WMS.App.Core.Providers
                     CellId = l.CellId,
                     AisleId = l.AisleId,
                     AreaId = l.AreaId,
-                    CompartmentsCount = l.CompartmentsCount
+                    CompartmentsCount = l.CompartmentsCount,
+                    Policies = l.GetPolicies(),
                 });
         }
 
@@ -228,6 +231,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 AisleId = loadingUnit.AisleId,
                 AreaId = loadingUnit.AreaId,
                 CompartmentsCount = loadingUnit.CompartmentsCount,
+                Policies = loadingUnit.GetPolicies(),
 
                 AbcClassChoices = loadingUnitEnumeration.AbcClassChoices,
                 CellPositionChoices = loadingUnitEnumeration.CellPositionChoices,
@@ -288,7 +292,8 @@ namespace Ferretto.WMS.App.Core.Providers
                     ItemId = c.ItemId,
                     IsItemPairingFixed = c.IsItemPairingFixed,
                     LoadingUnitHasCompartments = c.LoadingUnitHasCompartments,
-                    ItemMeasureUnit = c.ItemMeasureUnit
+                    ItemMeasureUnit = c.ItemMeasureUnit,
+                    Policies = c.GetPolicies(),
                 });
         }
 
