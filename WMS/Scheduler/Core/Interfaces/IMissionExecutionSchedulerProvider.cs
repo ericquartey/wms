@@ -12,6 +12,8 @@ namespace Ferretto.WMS.Scheduler.Core.Interfaces
 
         Task<IOperationResult<Mission>> ExecuteAsync(int id);
 
+        Task UpdateRowStatusAsync(ItemListRow row, System.DateTime now);
+
         #endregion
     }
 }

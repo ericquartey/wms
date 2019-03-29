@@ -14,8 +14,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         private readonly DatabaseContext databaseContext;
 
-        private readonly IMissionSchedulerProvider missionProvider;
-
         private readonly ISchedulerRequestProvider schedulerRequestProvider;
 
         #endregion
@@ -24,11 +22,9 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         public ItemListRowSchedulerProvider(
             DatabaseContext databaseContext,
-            IMissionSchedulerProvider missionProvider,
             ISchedulerRequestProvider schedulerRequestProvider)
         {
             this.databaseContext = databaseContext;
-            this.missionProvider = missionProvider;
             this.schedulerRequestProvider = schedulerRequestProvider;
         }
 
@@ -87,47 +83,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             await this.databaseContext.SaveChangesAsync();
 
             return new SuccessOperationResult<ItemListRow>(model);
-        }
-
-        public async Task UpdateRowStatusAsync(ItemListRow row, System.DateTime now)
-        {
-            var currentStatus = row.Status;
-            var involvedMissions = await this.missionProvider.GetByListRowIdAsync(row.Id);
-
-            var completeMissionsCount = involvedMissions.Count(m => m.Status == MissionStatus.Completed);
-            var waitingMissionsCount = involvedMissions.Count(m => m.Status == MissionStatus.Waiting);
-            var hasExecutingMissions = involvedMissions.Any(m => m.Status == MissionStatus.Executing);
-            var hasErroredMissions = involvedMissions.Any(m => m.Status == MissionStatus.Error);
-            var hasIncompleteMissions = involvedMissions.Any(m => m.Status == MissionStatus.Incomplete);
-
-            if (completeMissionsCount == involvedMissions.Count()
-                && involvedMissions.Sum(m => m.DispatchedQuantity) == row.RequestedQuantity)
-            {
-                row.Status = ItemListRowStatus.Completed;
-                row.CompletionDate = now;
-            }
-            else if (waitingMissionsCount == involvedMissions.Count())
-            {
-                row.Status = ItemListRowStatus.Waiting;
-            }
-            else if (hasErroredMissions)
-            {
-                row.Status = ItemListRowStatus.Error;
-            }
-            else if (hasExecutingMissions)
-            {
-                row.Status = ItemListRowStatus.Executing;
-                row.LastExecutionDate = now;
-            }
-            else if (hasIncompleteMissions)
-            {
-                row.Status = ItemListRowStatus.Incomplete;
-            }
-
-            if (currentStatus != row.Status)
-            {
-                await this.UpdateAsync(row);
-            }
         }
 
         private async Task<IOperationResult<SchedulerRequest>> ExecutionAsync(

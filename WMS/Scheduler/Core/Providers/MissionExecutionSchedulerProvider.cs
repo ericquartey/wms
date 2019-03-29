@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
@@ -25,6 +26,8 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         private readonly IMissionSchedulerProvider missionProvider;
 
+        private readonly IItemListRowSchedulerProvider rowProvider;
+
         private readonly IServiceScopeFactory scopeFactory;
 
         #endregion
@@ -36,6 +39,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             DatabaseContext databaseContext,
             ICompartmentSchedulerProvider compartmentProvider,
             IMissionSchedulerProvider missionProvider,
+            IItemListRowSchedulerProvider rowProvider,
             IItemSchedulerProvider itemProvider,
             ILogger<MissionExecutionSchedulerProvider> logger)
         {
@@ -44,6 +48,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             this.missionProvider = missionProvider;
             this.scopeFactory = scopeFactory;
             this.itemProvider = itemProvider;
+            this.rowProvider = rowProvider;
             this.databaseContext = databaseContext;
         }
 
@@ -104,8 +109,15 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             }
 
             mission.Status = MissionStatus.Executing;
+            var result = await this.missionProvider.UpdateAsync(mission);
 
-            return await this.missionProvider.UpdateAsync(mission);
+            if (mission.ItemListRowId.HasValue)
+            {
+                var row = await this.rowProvider.GetByIdAsync(mission.ItemListRowId.Value);
+                await this.UpdateRowStatusAsync(row, System.DateTime.UtcNow);
+            }
+
+            return result;
         }
 
         public async Task<IOperationResult<T>> UpdateEntityAsync<T, TDataModel>(T model, DbSet<TDataModel> dbSet)
@@ -114,7 +126,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
         {
             if (model == null)
             {
-                throw new System.ArgumentNullException(nameof(model));
+                throw new ArgumentNullException(nameof(model));
             }
 
             var existingModel = dbSet.Find(model.Id);
@@ -123,6 +135,47 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             await this.databaseContext.SaveChangesAsync();
 
             return new SuccessOperationResult<T>(model);
+        }
+
+        public async Task UpdateRowStatusAsync(ItemListRow row, DateTime now)
+        {
+            var involvedMissions = await this.missionProvider.GetByListRowIdAsync(row.Id);
+
+            var completeMissionsCount = involvedMissions.Count(m => m.Status == MissionStatus.Completed);
+            var hasWaitingMissions = involvedMissions.Any(m => m.Status == MissionStatus.Waiting);
+            var hasExecutingMissions = involvedMissions.Any(m => m.Status == MissionStatus.Executing);
+            var hasErroredMissions = involvedMissions.Any(m => m.Status == MissionStatus.Error);
+            var hasIncompleteMissions = involvedMissions.Any(m => m.Status == MissionStatus.Incomplete);
+
+            if (involvedMissions.Any() == false)
+            {
+                row.Status = ItemListRowStatus.New;
+            }
+            else if (completeMissionsCount == involvedMissions.Count()
+                && involvedMissions.Sum(m => m.DispatchedQuantity) == row.RequestedQuantity)
+            {
+                row.Status = ItemListRowStatus.Completed;
+                row.CompletionDate = now;
+            }
+            else if (hasErroredMissions)
+            {
+                row.Status = ItemListRowStatus.Error;
+            }
+            else if (hasExecutingMissions)
+            {
+                row.Status = ItemListRowStatus.Executing;
+                row.LastExecutionDate = now;
+            }
+            else if (hasWaitingMissions)
+            {
+                row.Status = ItemListRowStatus.Waiting;
+            }
+            else if (hasIncompleteMissions)
+            {
+                row.Status = ItemListRowStatus.Incomplete;
+            }
+
+            await this.rowProvider.UpdateAsync(row);
         }
 
         private static void UpdateCompartment(StockUpdateCompartment compartment, int quantity, DateTime now)
@@ -176,7 +229,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
-                var rowProvider = serviceScope.ServiceProvider.GetRequiredService<IItemListRowSchedulerProvider>();
                 var loadingUnitProvider = serviceScope.ServiceProvider.GetRequiredService<ILoadingUnitSchedulerProvider>();
 
                 var compartment = await this.compartmentProvider.GetByIdForStockUpdateAsync(mission.CompartmentId.Value);
@@ -193,16 +245,16 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
                 using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    if (mission.ItemListRowId.HasValue)
-                    {
-                        var row = await rowProvider.GetByIdAsync(mission.ItemListRowId.Value);
-                        await rowProvider.UpdateRowStatusAsync(row, now);
-                    }
-
                     var result = await this.UpdateEntityAsync(mission, this.databaseContext.Missions);
                     await this.UpdateEntityAsync(loadingUnit, this.databaseContext.LoadingUnits);
                     await this.UpdateEntityAsync(item, this.databaseContext.Items);
                     await this.UpdateEntityAsync(compartment, this.databaseContext.Compartments);
+
+                    if (mission.ItemListRowId.HasValue)
+                    {
+                        var row = await this.rowProvider.GetByIdAsync(mission.ItemListRowId.Value);
+                        await this.UpdateRowStatusAsync(row, now);
+                    }
 
                     scope.Complete();
 
