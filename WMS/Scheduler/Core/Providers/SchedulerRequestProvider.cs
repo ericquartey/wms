@@ -176,14 +176,14 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
         public async Task<IEnumerable<SchedulerRequest>> GetRequestsToProcessAsync()
         {
             return await this.dataContext.SchedulerRequests
-               .Where(r =>
-                    r.BayId.HasValue
-                    &&
-                    r.RequestedQuantity > r.DispatchedQuantity
-                    &&
-                    r.Bay.LoadingUnitsBufferSize > r.Bay.Missions.Count(m => m.Status != Common.DataModels.MissionStatus.Completed)
-                    &&
-                    (r.ListRowId.HasValue == false || r.ListRow.Status == Common.DataModels.ItemListRowStatus.Executing))
+               .Where(r => r.BayId.HasValue
+                    && r.RequestedQuantity > r.DispatchedQuantity)
+               .Where(r => r.Bay.LoadingUnitsBufferSize > r.Bay.Missions.Count(m =>
+                        m.Status != Common.DataModels.MissionStatus.Completed
+                        && m.Status != Common.DataModels.MissionStatus.Incomplete))
+               .Where(r => r.ListRowId.HasValue == false
+                    || (r.ListRow.Status == Common.DataModels.ItemListRowStatus.Executing
+                    || r.ListRow.Status == Common.DataModels.ItemListRowStatus.Waiting))
                .OrderBy(r => r.ListId.HasValue ? r.List.Priority : int.MaxValue)
                .ThenBy(r => r.ListRowId.HasValue ? r.ListRow.Priority : int.MaxValue)
                .Select(r => new SchedulerRequest
@@ -193,7 +193,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                    BayId = r.BayId,
                    CreationDate = r.CreationDate,
                    IsInstant = r.IsInstant,
-                   ListRowStatus = r.ListRow != null ? (ItemListRowStatus)r.ListRow.Status : ItemListRowStatus.NotSpecified,
                    ItemId = r.ItemId,
                    ListId = r.ListId,
                    ListRowId = r.ListRowId,

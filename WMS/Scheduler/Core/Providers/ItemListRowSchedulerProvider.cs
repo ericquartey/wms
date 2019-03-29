@@ -38,6 +38,16 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 .Select(r => new ItemListRow
                 {
                     Id = r.Id,
+                    CompletionDate = r.CompletionDate,
+                    ItemId = r.ItemId,
+                    LastExecutionDate = r.LastExecutionDate,
+                    Lot = r.Lot,
+                    MaterialStatusId = r.MaterialStatusId,
+                    PackageTypeId = r.PackageTypeId,
+                    RegistrationNumber = r.RegistrationNumber,
+                    RequestedQuantity = r.RequestedQuantity,
+                    Sub1 = r.Sub1,
+                    Sub2 = r.Sub2,
                     ListId = r.ItemListId,
                     Status = (ItemListRowStatus)r.Status,
                     DispatchedQuantity = r.DispatchedQuantity,
@@ -112,16 +122,12 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 qualifiedRequest.ListId = row.ListId;
                 qualifiedRequest.ListRowId = row.Id;
 
-                row.Status = bayId.HasValue
-                    ? ItemListRowStatus.Executing
-                    : ItemListRowStatus.Waiting;
+                row.Status = ItemListRowStatus.Waiting;
             }
             else
             {
-                row.Status = ItemListRowStatus.Waiting;
+                row.Status = ItemListRowStatus.New;
             }
-
-            await this.UpdateRowStatusAsync(row, System.DateTime.UtcNow);
 
             await this.UpdateAsync(row);
 
