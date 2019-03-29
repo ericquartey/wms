@@ -1,4 +1,6 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
@@ -10,6 +12,8 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
     {
         #region Fields
 
+        private const ushort RESET_STATUS_WORD_VALUE = 0x0250;
+
         private const int sendDelay = 100;
 
         private const ushort StatusWordValue = 0x1037;
@@ -19,8 +23,6 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         private readonly ILogger logger;
 
         private readonly ushort parameterValue;
-
-        private bool forceStop;
 
         #endregion
 
@@ -69,21 +71,22 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
             if (message.IsError)
             {
+                this.logger.LogTrace($"2-Change State to ErrorState");
                 this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate, this.logger));
             }
 
             if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
             {
-                this.logger.LogTrace($"3:Force Stop={this.forceStop}:UShortPayload={message.UShortPayload}:StatusWordValue={StatusWordValue}");
-
-                if (this.forceStop)
+                if ((message.UShortPayload & StatusWordValue) == StatusWordValue)
                 {
+                    this.logger.LogTrace($"3-Change State to EndState");
                     this.parentStateMachine.ChangeState(new EndState(this.parentStateMachine, this.axisToCalibrate, this.logger));
                     returnValue = true;
                 }
 
-                if ((message.UShortPayload & StatusWordValue) == StatusWordValue)
+                if ((message.UShortPayload & RESET_STATUS_WORD_VALUE) == RESET_STATUS_WORD_VALUE)
                 {
+                    this.logger.LogTrace($"4-Change State to EndState");
                     this.parentStateMachine.ChangeState(new EndState(this.parentStateMachine, this.axisToCalibrate, this.logger));
                     returnValue = true;
                 }
@@ -99,7 +102,6 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         {
             this.logger.LogDebug("1:Method Start");
 
-            this.forceStop = true;
 
             var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue, sendDelay);
 

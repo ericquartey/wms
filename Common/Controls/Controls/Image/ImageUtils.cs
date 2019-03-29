@@ -1,6 +1,15 @@
-﻿using System.Windows.Media;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Ferretto.Common.BLL.Interfaces.Providers;
+using Ferretto.WMS.App.Core.Interfaces;
 
 namespace Ferretto.Common.Controls
 {
@@ -8,31 +17,28 @@ namespace Ferretto.Common.Controls
     {
         #region Methods
 
-        public static ImageSource RetrieveImage(IImageProvider imageService, string imagePath)
+        public static async Task<ImageSource> GetImageAsync(IFileProvider fileProvider, string path)
         {
-            if (imageService == null)
+            if (fileProvider == null)
             {
-                throw new System.ArgumentNullException(nameof(imageService));
+                throw new ArgumentNullException(nameof(fileProvider));
             }
 
-            return !string.IsNullOrWhiteSpace(imagePath)
-                ? GetImage(imageService, imagePath)
-                : null;
-        }
-
-        private static ImageSource GetImage(IImageProvider imageService, string path)
-        {
-            using (var imageStream = imageService.GetImage(path))
+            if (path == null)
             {
-                var bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.StreamSource = imageStream;
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.EndInit();
-                bitmap.Freeze();
-
-                return bitmap;
+                return null;
             }
+
+            var imageFile = await fileProvider.DownloadAsync(path);
+
+            var imageStream = imageFile.Stream;
+
+            BitmapImage bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.StreamSource = imageStream;
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.EndInit();
+            return bitmap;
         }
 
         #endregion

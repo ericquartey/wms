@@ -130,7 +130,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         public override void Stop()
         {
             this.IsStopRequested = true;
-
+            this.logger.LogTrace($"Stop");
             this.CurrentState.Stop();
         }
 

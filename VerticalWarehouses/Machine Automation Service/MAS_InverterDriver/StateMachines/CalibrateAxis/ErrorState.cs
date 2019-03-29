@@ -27,6 +27,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
             this.logger = logger;
+            this.logger.LogTrace($"1-Constructor");
 
             var messageData = new CalibrateAxisMessageData(this.axisToCalibrate);
 
@@ -47,6 +48,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override bool ProcessMessage(InverterMessage message)
         {
+            this.logger.LogTrace($"1:Message processed: {message.ParameterId}, {message.Payload}");
             return false;
         }
 

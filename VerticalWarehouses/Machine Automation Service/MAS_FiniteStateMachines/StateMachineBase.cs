@@ -1,6 +1,9 @@
-﻿using Ferretto.VW.Common_Utils.Events;
+﻿using System;
+using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines
@@ -9,15 +12,29 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
     {
         #region Fields
 
+        protected readonly ILogger logger;
+
         protected BlockingConcurrentQueue<CommandMessage> stateMachineCommandQueue;
+
+        private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        protected StateMachineBase(IEventAggregator eventAggregator)
+        protected StateMachineBase(IEventAggregator eventAggregator, ILogger logger)
         {
+            this.logger = logger;
             this.EventAggregator = eventAggregator;
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~StateMachineBase()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -42,14 +59,19 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         public void ChangeState(IState newState, CommandMessage message = null)
         {
             this.CurrentState = newState;
-            if (message != null) this.EventAggregator.GetEvent<CommandEvent>().Publish(message);
+            this.logger.LogTrace($"1:{newState.GetType()}");
+            if (message != null)
+            {
+                this.logger.LogTrace($"2:{newState.GetType()}{message.Type}:{message.Destination}");
+                this.EventAggregator.GetEvent<CommandEvent>().Publish(message);
+            }
         }
 
-        /// <summary>
-        /// On publishing the notification message by the state machine.
-        /// </summary>
-        /// <param name="message">A <see cref="NotificationMessage"/> message to be published.</param>
-        public abstract void OnPublishNotification(NotificationMessage message);
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         /// <summary>
         /// Process the command message incoming to the Finite State Machines.
@@ -67,8 +89,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         /// Publish a given Command message via EventAggregator.
         /// </summary>
         /// <param name="message">A <see cref="CommandMessage"/> command message to be sent.</param>
-        public void PublishCommandMessage(CommandMessage message)
+        public virtual void PublishCommandMessage(CommandMessage message)
         {
+            this.logger.LogTrace($"2:{message.Type}:{message.Destination}");
             this.EventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
 
@@ -76,8 +99,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         /// Publish a given Notification message via EventAggregator.
         /// </summary>
         /// <param name="message">A <see cref="NotificationMessage"/> notification message to be sent.</param>
-        public void PublishNotificationMessage(NotificationMessage message)
+        public virtual void PublishNotificationMessage(NotificationMessage message)
         {
+            this.logger.LogTrace($"3:{message.Type}:{message.Destination}");
             this.EventAggregator.GetEvent<NotificationEvent>().Publish(message);
         }
 
@@ -85,6 +109,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         /// Start the states machine.
         /// </summary>
         public abstract void Start();
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+        }
 
         #endregion
     }

@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
         #region Constructors
 
         public UpDownRepetitiveStateMachine(IEventAggregator eventAggregator, IUpDownRepetitiveMessageData upDownMessageData)
-                                    : base(eventAggregator)
+                                    : base(eventAggregator, null)
         {
             this.upDownMessageData = upDownMessageData;
             this.NumberOfRequestedCycles = upDownMessageData.NumberOfRequiredCycles;
@@ -42,53 +42,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
         #endregion
 
         #region Methods
-
-        /// <inheritdoc/>
-        public override void OnPublishNotification(NotificationMessage message)
-        {
-            switch (message.Type)
-            {
-                case MessageType.UpDown:
-                    {
-                        var numberOfCompletedCycles = this.NumberOfCompletedHalfCycles / 2;
-                        var upDownMessage = new UpDownRepetitiveNotificationMessageData(numberOfCompletedCycles);
-
-                        //TEMP Send a notification about the up&down progression to all the world
-                        var newMessage = new NotificationMessage(upDownMessage,
-                            "Up&Down executing",
-                            MessageActor.Any,
-                            MessageActor.FiniteStateMachines,
-                            MessageType.UpDown,
-                            MessageStatus.OperationExecuting,
-                            ErrorLevel.NoError,
-                            MessageVerbosity.Info);
-
-                        this.EventAggregator.GetEvent<NotificationEvent>().Publish(newMessage);
-                        break;
-                    }
-
-                case MessageType.Stop:
-                    {
-                        var msgStatus = (this.IsStopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd;
-                        //TEMP Send a notification about the end (/stop) operation to all the world
-                        var newMessage = new NotificationMessage(null,
-                            "Up&Down End",
-                            MessageActor.Any,
-                            MessageActor.FiniteStateMachines,
-                            MessageType.Stop,
-                            msgStatus,
-                            ErrorLevel.NoError,
-                            MessageVerbosity.Info);
-
-                        this.EventAggregator.GetEvent<NotificationEvent>().Publish(newMessage);
-                        break;
-                    }
-                default:
-                    {
-                        break;
-                    }
-            }
-        }
 
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
@@ -133,6 +86,53 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
             }
 
             this.CurrentState?.ProcessNotificationMessage(message);
+        }
+
+        /// <inheritdoc/>
+        public override void PublishNotificationMessage(NotificationMessage message)
+        {
+            switch (message.Type)
+            {
+                case MessageType.UpDown:
+                    {
+                        var numberOfCompletedCycles = this.NumberOfCompletedHalfCycles / 2;
+                        var upDownMessage = new UpDownRepetitiveNotificationMessageData(numberOfCompletedCycles);
+
+                        //TEMP Send a notification about the up&down progression to all the world
+                        var newMessage = new NotificationMessage(upDownMessage,
+                            "Up&Down executing",
+                            MessageActor.Any,
+                            MessageActor.FiniteStateMachines,
+                            MessageType.UpDown,
+                            MessageStatus.OperationExecuting,
+                            ErrorLevel.NoError,
+                            MessageVerbosity.Info);
+
+                        this.EventAggregator.GetEvent<NotificationEvent>().Publish(newMessage);
+                        break;
+                    }
+
+                case MessageType.Stop:
+                    {
+                        var msgStatus = (this.IsStopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd;
+                        //TEMP Send a notification about the end (/stop) operation to all the world
+                        var newMessage = new NotificationMessage(null,
+                            "Up&Down End",
+                            MessageActor.Any,
+                            MessageActor.FiniteStateMachines,
+                            MessageType.Stop,
+                            msgStatus,
+                            ErrorLevel.NoError,
+                            MessageVerbosity.Info);
+
+                        this.EventAggregator.GetEvent<NotificationEvent>().Publish(newMessage);
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
         }
 
         /// <inheritdoc/>

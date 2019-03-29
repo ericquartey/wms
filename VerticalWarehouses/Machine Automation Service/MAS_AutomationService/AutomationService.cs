@@ -8,6 +8,7 @@ using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
+using Ferretto.VW.MAS_Utils.Exceptions;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -19,7 +20,9 @@ namespace Ferretto.VW.MAS_AutomationService
     {
         #region Fields
 
-        private readonly Task commadReceiveTask;
+        private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
+
+        private readonly Task commandReceiveTask;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -27,9 +30,11 @@ namespace Ferretto.VW.MAS_AutomationService
 
         private readonly ILogger logger;
 
-        private readonly BlockingConcurrentQueue<CommandMessage> messageQueue;
+        private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
 
-        private ManualResetEventSlim messageReceived;
+        private readonly Task notificationReceiveTask;
+
+        private bool disposed;
 
         private CancellationToken stoppingToken;
 
@@ -39,59 +44,48 @@ namespace Ferretto.VW.MAS_AutomationService
 
         public AutomationService(IEventAggregator eventAggregator, IHubContext<InstallationHub, IInstallationHub> hub, ILogger<AutomationService> logger)
         {
+            logger.LogDebug("1:Method Start");
             this.eventAggregator = eventAggregator;
             this.hub = hub;
 
             this.logger = logger;
 
-            this.messageReceived = new ManualResetEventSlim(false);
-            this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
-            this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
+            this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
+            this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
 
-            this.commadReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
+            this.commandReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
+            this.notificationReceiveTask = new Task(() => this.NotificationReceiveTaskFunction());
 
-            this.InitializeMethodSubscription();
+            this.InitializeMethodSubscriptions();
 
-            this.logger?.LogInformation("Automation Service Constructor");
+            this.logger.LogDebug("2:Method End");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~AutomationService()
+        {
+            this.Dispose(false);
         }
 
         #endregion
 
         #region Methods
 
-        public void SendMessageToAllConnectedClients(NotificationMessage notificationMessage)
+        public void Dispose(bool disposing)
         {
-            this.hub.Clients.All.OnSendMessageToAllConnectedClients(notificationMessage.Description);
-        }
-
-        public new Task StopAsync(CancellationToken stoppingToken)
-        {
-            var returnValue = base.StopAsync(stoppingToken);
-
-            return returnValue;
-        }
-
-        public async void TESTStartBoolSensorsCycle()
-        {
-            while (true)
+            if (this.disposed)
             {
-                var message = new bool[] { (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), };
-                Console.WriteLine(message[0].ToString() + " " + message[1].ToString() + " " + message[2].ToString() + " " + message[3].ToString());
-                await this.hub.Clients.All.OnSensorsChangedToAllConnectedClients(message);
-                await Task.Delay(1000);
+                return;
             }
-        }
 
-        public async void TESTStartStringMessageCycle()
-        {
-            while (true)
+            if (disposing)
             {
-                var message = new[] { "pippo", "topolino", "pluto", "paperino", "minnie", "qui", "quo", "qua" };
-                var randomInt = new Random().Next(message.Length);
-                Console.WriteLine(message[randomInt]);
-                await this.hub.Clients.All.OnSendMessageToAllConnectedClients(message[randomInt]);
-                await Task.Delay(1000);
             }
+
+            this.disposed = true;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -100,27 +94,30 @@ namespace Ferretto.VW.MAS_AutomationService
 
             try
             {
-                this.commadReceiveTask.Start();
+                this.commandReceiveTask.Start();
+                this.notificationReceiveTask.Start();
             }
             catch (Exception ex)
             {
-                //TODO define custom Exception
-                throw new Exception($"Exception: {ex.Message} while starting service threads", ex);
+                throw new AutomationServiceException($"Exception: {ex.Message} while starting service threads", ex);
             }
         }
 
-        private Task CommandReceiveTaskFunction()
+        private void CommandReceiveTaskFunction()
         {
+            this.logger.LogDebug("1:Method Start");
             do
             {
                 CommandMessage receivedMessage;
                 try
                 {
-                    this.messageQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                    this.logger.LogTrace($"2:Dequeued Message:{receivedMessage.Type}:Destination{receivedMessage.Source}");
                 }
                 catch (OperationCanceledException ex)
                 {
-                    return Task.FromException(ex);
+                    this.logger.LogDebug("3:Method End - Operation Canceled");
+                    return;
                 }
                 switch (receivedMessage.Type)
                 {
@@ -132,65 +129,136 @@ namespace Ferretto.VW.MAS_AutomationService
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
-            return Task.CompletedTask;
+
+            this.logger.LogDebug("4:Method End");
         }
 
-        private void InitializeMethodSubscription()
+        private void InitializeMethodSubscriptions()
         {
-            var webApiMessagEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            var finiteStateMachineMessageEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-
-            webApiMessagEvent.Subscribe(message =>
-            {
-                this.messageQueue.Enqueue(message);
-                this.messageReceived.Set();
-            },
+            this.logger.LogTrace("1:Commands Subscription");
+            var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            commandEvent.Subscribe(commandMessage =>
+                {
+                    this.commandQueue.Enqueue(commandMessage);
+                },
                 ThreadOption.PublisherThread,
                 false,
-                message => message.Destination == MessageActor.AutomationService);
+                commandMessage => commandMessage.Destination == MessageActor.AutomationService || commandMessage.Destination == MessageActor.Any);
 
-            finiteStateMachineMessageEvent.Subscribe(message =>
-            {
-                if (message.Data is ISensorsChangedMessageData)
+            this.logger.LogTrace("2:Notifications Subscription");
+            var notificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            notificationEvent.Subscribe(notificationMessage =>
                 {
-                    this.hub.Clients.All.OnSensorsChangedToAllConnectedClients(((ISensorsChangedMessageData)message.Data).SensorsStates);
-                }
-            }, ThreadOption.PublisherThread,
-            false,
-            (message) => message.Source == MessageActor.FiniteStateMachines && message.Type == MessageType.SensorsChanged);
+                    this.notificationQueue.Enqueue(notificationMessage);
+                },
+                ThreadOption.PublisherThread,
+                false,
+                notificationMessage => notificationMessage.Destination == MessageActor.AutomationService || notificationMessage.Destination == MessageActor.Any);
+        }
 
-            finiteStateMachineMessageEvent.Subscribe(message =>
+        private void NotificationReceiveTaskFunction()
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            do
             {
+                NotificationMessage receivedMessage;
                 try
                 {
-                    var dataMessage = MessageParser.GetActionUpdateData(message);
-                    this.hub.Clients.All.OnActionUpdateToAllConnectedClients(dataMessage);
+                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+
+                    this.logger.LogTrace(string.Format("2:{0}:{1}:{2}",
+                        receivedMessage.Type,
+                        receivedMessage.Destination,
+                        receivedMessage.Status));
                 }
-                catch
+                catch (OperationCanceledException)
                 {
-                    throw;
+                    this.logger.LogDebug("3:Method End - Operation Canceled");
+
+                    return;
                 }
-            },
-            ThreadOption.PublisherThread,
-            false,
-            (message) => message.Source == MessageActor.FiniteStateMachines && message.Destination == MessageActor.AutomationService);
+
+                switch (receivedMessage.Type)
+                {
+                    case MessageType.SensorsChanged:
+                        if (receivedMessage.Data is ISensorsChangedMessageData)
+                        {
+                            this.hub.Clients.All.OnSensorsChangedToAllConnectedClients(((ISensorsChangedMessageData)receivedMessage.Data).SensorsStates);
+                        }
+                        break;
+
+                    case MessageType.Homing:
+                    case MessageType.DataLayerReady:
+                    case MessageType.IOPowerUp:
+                    case MessageType.SwitchAxis:
+                    case MessageType.CalibrateAxis:
+                        try
+                        {
+                            this.logger.LogTrace($"4:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            var dataMessage = MessageParser.GetActionUpdateData(receivedMessage);
+                            this.hub.Clients.All.OnActionUpdateToAllConnectedClients(dataMessage);
+                            this.logger.LogTrace($"5:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                        }
+                        catch (Exception ex)
+                        {
+                            this.logger.LogTrace($"6:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
+                        }
+                        break;
+                }
+            } while (!this.stoppingToken.IsCancellationRequested);
+
+            this.logger.LogDebug("4:Method End");
+
+            return;
         }
 
         private void ProcessAddMissionMessage(CommandMessage message)
         {
-            //TODO apply Automation Service Business Logic to the message
+            this.logger.LogDebug("1:Method Start");
 
             message.Source = MessageActor.AutomationService;
             message.Destination = MessageActor.MissionsManager;
             this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
-        }
 
-        private async void StartTestCycles()
-        {
-            this.TESTStartBoolSensorsCycle();
-            this.TESTStartStringMessageCycle();
+            this.logger.LogDebug("2:Method End");
         }
 
         #endregion
+
+        //private async void StartTestCycles()
+        //{
+        //    this.TESTStartBoolSensorsCycle();
+        //    this.TESTStartStringMessageCycle();
+        //}
+
+        //public void SendMessageToAllConnectedClients(NotificationMessage notificationMessage)
+        //{
+        //    this.hub.Clients.All.OnSendMessageToAllConnectedClients(notificationMessage.Description);
+        //}
+
+        //public async void TESTStartBoolSensorsCycle()
+        //{
+        //    while (true)
+        //    {
+        //        var message = new bool[] { (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), };
+        //        Console.WriteLine(message[0].ToString() + " " + message[1].ToString() + " " + message[2].ToString() + " " + message[3].ToString());
+        //        await this.hub.Clients.All.OnSensorsChangedToAllConnectedClients(message);
+        //        await Task.Delay(1000);
+        //    }
+        //}
+
+        //public async void TESTStartStringMessageCycle()
+        //{
+        //    while (true)
+        //    {
+        //        var message = new[] { "pippo", "topolino", "pluto", "paperino", "minnie", "qui", "quo", "qua" };
+        //        var randomInt = new Random().Next(message.Length);
+        //        Console.WriteLine(message[randomInt]);
+        //        await this.hub.Clients.All.OnSendMessageToAllConnectedClients(message[randomInt]);
+        //        await Task.Delay(1000);
+        //    }
+        //}
     }
 }

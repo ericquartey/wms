@@ -68,7 +68,7 @@ namespace Ferretto.Common.Controls
         public ColorRequired ColorRequired => ColorRequired.CreateMode;
 
         public ICommand CreateCommand => this.createCommand ??
-            (this.createCommand = new DelegateCommand(
+            (this.createCommand = new WmsCommand(
                 async () => await this.ExecuteCreateCommandAsync(),
                 this.CanExecuteCreateCommand));
 
