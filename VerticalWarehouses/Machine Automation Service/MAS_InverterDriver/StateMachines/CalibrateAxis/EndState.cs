@@ -35,7 +35,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
             this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
-            this.parentStateMachine.OnPublishNotification(endNotification);
+            this.parentStateMachine.PublishNotificationEvent(endNotification);
 
             this.logger.LogDebug("3:Method End");
         }

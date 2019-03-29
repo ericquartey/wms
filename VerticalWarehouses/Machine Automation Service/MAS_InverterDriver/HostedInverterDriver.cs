@@ -44,8 +44,6 @@ namespace Ferretto.VW.InverterDriver
 
         private readonly ILogger logger;
 
-        private readonly BlockingConcurrentQueue<CommandMessage> messageQueue;
-
         private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
 
         private readonly Task notificationReceiveTask;
@@ -167,7 +165,7 @@ namespace Ferretto.VW.InverterDriver
                 CommandMessage receivedMessage;
                 try
                 {
-                    this.messageQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
 
                     this.logger.LogTrace($"2:Type={receivedMessage.Type}:Destination={receivedMessage.Destination}:{receivedMessage}");
                 }

@@ -1,5 +1,4 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
@@ -49,59 +48,6 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         #endregion
 
         #region Methods
-
-        /// <inheritdoc />
-        public override void OnPublishNotification(NotificationMessage message)
-        {
-            this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace($"2:Type={message.Type}:Destination={message.Destination}:Status={message.Status}");
-
-            switch (message.Type)
-            {
-                case MessageType.CalibrateAxis:
-                    {
-                        //TEMP Send a notification about the start operation to all the world
-                        var status = (this.IsStopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd;
-
-                        var endNotification = new NotificationMessage(message.Data,
-                            message.Description,
-                            MessageActor.Any,
-                            MessageActor.InverterDriver,
-                            MessageType.CalibrateAxis,
-                            status
-                        );
-
-                        this.logger.LogTrace($"3:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
-
-                        base.PublishNotificationEvent(endNotification);
-                        break;
-                    }
-
-                case MessageType.Stop:
-                    {
-                        //var msgStatus = (this.IsStopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd;
-
-                        ////TEMP Send a notification about the end (/stop) operation to all the world
-                        //var newMessage = new NotificationMessage(null,
-                        //    "End Homing",
-                        //    MessageActor.Any,
-                        //    MessageActor.FiniteStateMachines,
-                        //    MessageType.Stop,
-                        //    msgStatus,
-                        //    ErrorLevel.NoError,
-                        //    MessageVerbosity.Info);
-
-                        //this.eventAggregator.GetEvent<NotificationEvent>().Publish(newMessage);
-                        break;
-                    }
-                default:
-                    {
-                        break;
-                    }
-            }
-
-            this.logger.LogDebug("3:Method End");
-        }
 
         /// <inheritdoc />
         public override void Start()
