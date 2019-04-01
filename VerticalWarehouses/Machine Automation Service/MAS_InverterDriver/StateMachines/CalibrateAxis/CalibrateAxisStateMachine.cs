@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
@@ -29,11 +28,12 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         public CalibrateAxisStateMachine(Axis axisToCalibrate, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
         {
+            logger.LogDebug("1:Method Start");
+
             this.axisToCalibrate = axisToCalibrate;
             this.inverterCommandQueue = inverterCommandQueue;
             this.eventAggregator = eventAggregator;
             this.logger = logger;
-            this.logger.LogTrace($"Constructor");
             this.IsStopRequested = false;
         }
 
@@ -58,14 +58,18 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
                 var status = (this.IsStopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd;
                 message.Status = status;
             }
-            this.logger.LogTrace($"Notification published: {message.Type}, {message.Status}, destination: {message.Destination}, source: {message.Source}");
+
+            this.logger.LogTrace($"1:Type={message.Type}:Destination={message.Destination}:Status={message.Status}");
+
             base.PublishNotificationEvent(message);
         }
 
         /// <inheritdoc />
         public override void Start()
         {
-            this.logger.LogTrace($"Start");
+            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace($"2:Axis to calibrate={this.axisToCalibrate}");
+
             switch (this.axisToCalibrate)
             {
                 case Axis.Both:
@@ -79,13 +83,16 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
             }
 
             this.CurrentState = new VoltageDisabledState(this, this.currentAxis, this.logger);
+
+            this.logger.LogDebug("3:Method End");
         }
 
         /// <inheritdoc />
         public override void Stop()
         {
+            this.logger.LogDebug("1:Method Start");
+
             this.IsStopRequested = true;
-            this.logger.LogTrace($"Stop");
             this.CurrentState.Stop();
         }
 

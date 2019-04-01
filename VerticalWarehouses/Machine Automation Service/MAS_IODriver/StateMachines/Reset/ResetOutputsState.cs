@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
             var resetIoMessage = new IoMessage(false);
             resetIoMessage.Force = true;
 
-            this.logger.LogTrace($"2:{resetIoMessage}");
+            this.logger.LogTrace($"2:Reset IO={resetIoMessage}");
 
             parentStateMachine.EnqueueMessage(resetIoMessage);
 
@@ -48,7 +48,8 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
         public override void ProcessMessage(IoMessage message)
         {
             this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace($"2:{message.ValidOutputs}:{message.OutputsCleared}");
+
+            this.logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Outputs cleared={message.OutputsCleared}");
 
             if (message.ValidOutputs && message.OutputsCleared)
             {

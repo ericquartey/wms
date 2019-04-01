@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS_IODriver
                             var endNotification = new FieldNotificationMessage(receivedMessage.Data, "Switch to Horizontal axis completed", FieldMessageActor.Any,
                                 FieldMessageActor.IoDriver, FieldMessageType.SwitchAxis, MessageStatus.OperationEnd);
 
-                            this.logger.LogTrace($"2:{endNotification.Type}:{endNotification.Destination}:{endNotification.Status}");
+                            this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
                             this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(endNotification);
                         }
@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS_IODriver
                         {
                             this.currentStateMachine = new SwitchAxisStateMachine(Axis.Horizontal, this.ioStatus.ElevatorMotorOn, this.ioCommandQueue, this.eventAggregator, this.logger);
 
-                            this.logger.LogDebug("3:Method Start Horizontal Axis");
+                            this.logger.LogDebug("3:Method Start State Machine");
 
                             this.currentStateMachine.Start();
                         }
@@ -49,7 +49,7 @@ namespace Ferretto.VW.MAS_IODriver
                             var endNotification = new FieldNotificationMessage(receivedMessage.Data, "Switch to Vertical axis completed", FieldMessageActor.Any,
                                 FieldMessageActor.IoDriver, FieldMessageType.SwitchAxis, MessageStatus.OperationEnd);
 
-                            this.logger.LogTrace($"4:{endNotification.Type}:{endNotification.Destination}:{endNotification.Status}");
+                            this.logger.LogTrace($"4:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
                             this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(endNotification);
                         }
@@ -57,7 +57,7 @@ namespace Ferretto.VW.MAS_IODriver
                         {
                             this.currentStateMachine = new SwitchAxisStateMachine(Axis.Vertical, this.ioStatus.CradleMotorOn, this.ioCommandQueue, this.eventAggregator, this.logger);
 
-                            this.logger.LogDebug("5:Method Start Vertical Axis");
+                            this.logger.LogDebug("5:Method Start State Machine");
 
                             this.currentStateMachine.Start();
                         }
@@ -72,8 +72,7 @@ namespace Ferretto.VW.MAS_IODriver
                                 FieldMessageActor.IoDriver, receivedMessage.Type, MessageStatus.OperationError,
                                 ErrorLevel.Error);
 
-                            this.logger.LogTrace(
-                                $"6:{errorNotification.Type}:{errorNotification.Destination}:{errorNotification.Status}");
+                            this.logger.LogTrace($"6:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
 
                             this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
                         }

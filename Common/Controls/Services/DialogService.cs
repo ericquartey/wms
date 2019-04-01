@@ -138,6 +138,12 @@ namespace Ferretto.Common.Controls.Services
                 return;
             }
 
+            if (this.wmsMessagePopup == null &&
+                isError == false)
+            {
+                return;
+            }
+
             if (this.wmsMessagePopup != null &&
                 this.wmsMessagePopup.IsVisible == false)
             {

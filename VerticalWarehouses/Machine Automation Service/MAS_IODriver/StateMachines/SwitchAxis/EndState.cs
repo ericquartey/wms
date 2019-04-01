@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
             var endNotification = new FieldNotificationMessage(messageData, "Motor Switch complete", FieldMessageActor.Any,
                 FieldMessageActor.IoDriver, FieldMessageType.SwitchAxis, MessageStatus.OperationEnd);
 
-            this.logger.LogTrace($"2:{endNotification.Type}:{endNotification.Destination}:{endNotification.Status}");
+            this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
             this.parentStateMachine.PublishNotificationEvent(endNotification);
 
