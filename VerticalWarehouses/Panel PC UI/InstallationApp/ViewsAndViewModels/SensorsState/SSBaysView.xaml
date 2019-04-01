@@ -30,7 +30,7 @@
                                     VerticalAlignment="Top"
                                     LabelText="{x:Static res:InstallationApp.HeightControlCheck1}"
                                     SensorState="{Binding HeightControlCheck1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" Loaded="CustomSensorControl_Loaded" />
+                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}"/>
 
         <custom:CustomSensorControl Margin="100,190,0,0"
                                     HorizontalAlignment="Left"
