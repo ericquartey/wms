@@ -97,7 +97,7 @@ namespace Ferretto.VW.InverterDriver
             this.lastControlMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, (ushort)0x0000);
 
             this.InitializeMethodSubscriptions();
-            logger.LogDebug("4:Method End");
+            logger.LogDebug("3:Method End");
         }
 
         #endregion
@@ -271,7 +271,6 @@ namespace Ferretto.VW.InverterDriver
 
                     return;
                 }
-                this.logger.LogTrace($"Notification received: {receivedMessage.Type}, {receivedMessage.Status}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}");
 
                 switch (receivedMessage.Type)
                 {
@@ -291,7 +290,7 @@ namespace Ferretto.VW.InverterDriver
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
 
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogDebug("4:Method End");
 
             return;
         }
