@@ -56,6 +56,12 @@
     <DataTemplate DataType="{x:Type viewsandviewmodelsother:DrawerCompactingViewModel}">
         <viewsandviewmodelsother:DrawerCompactingView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type viewsandviewmodelsother:OtherMainViewModel}">
+            <viewsandviewmodelsother:OtherMainView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewsandviewmodelsother:OtherNavigationViewModel}">
+        <viewsandviewmodelsother:OtherNavigationView />
+    </DataTemplate>
 
 
 </ResourceDictionary>

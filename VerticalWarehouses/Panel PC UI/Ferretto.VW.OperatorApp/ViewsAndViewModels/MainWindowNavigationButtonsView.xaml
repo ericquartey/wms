@@ -29,7 +29,7 @@
                         Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
                 <Button Margin="0,250,0,0"
-                        Command="{Binding DataContext.LowSpeedMovementsTestButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                        Command="{Binding DataContext.OtherButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:OperatorApp.NavigationMainMenuOther}"
                         IsEnabled="{Binding IsLowSpeedMovementsTestButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />

@@ -10,6 +10,7 @@ using Prism.Mvvm;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other;
 
 namespace Ferretto.VW.OperatorApp
 {
@@ -32,6 +33,8 @@ namespace Ferretto.VW.OperatorApp
         private ICommand machineOnMarchCustomCommand;
 
         private ICommand openHelpWindow;
+
+        private ICommand otherButtonCommand;
 
         #endregion
 
@@ -77,6 +80,8 @@ namespace Ferretto.VW.OperatorApp
             this.helpWindow.Show();
             this.helpWindow.HelpContentRegion.Content = this.contentRegionCurrentViewModel;
         }));
+
+        public ICommand OtherButtonCommand => this.otherButtonCommand ?? (this.otherButtonCommand = new DelegateCommand(() => this.NavigateToView<OtherMainViewModel, IOtherMainViewModel>()));
 
         #endregion
 

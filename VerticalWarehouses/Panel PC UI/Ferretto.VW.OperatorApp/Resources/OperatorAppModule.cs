@@ -42,6 +42,8 @@ namespace Ferretto.VW.OperatorApp.Resources
             var drawerCompactingVMInstance = new DrawerCompactingViewModel(container.Resolve<IEventAggregator>());
             var drawerOperationsMainVMInstance = new DrawerOperationsMainViewModel(container.Resolve<IEventAggregator>());
             var drawerOperationsFooterVMInstance = new DrawerOperationsFooterViewModel(container.Resolve<IEventAggregator>());
+            var otherMainVMInstance = new OtherMainViewModel(container.Resolve<IEventAggregator>());
+            var otherNavigationVMInstance = new OtherNavigationViewModel(container.Resolve<IEventAggregator>());
 
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
@@ -60,12 +62,16 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IDrawerCompactingViewModel>(drawerCompactingVMInstance);
             this.container.RegisterInstance<IDrawerOperationsMainViewModel>(drawerOperationsMainVMInstance);
             this.container.RegisterInstance<IDrawerOperationsFooterViewModel>(drawerOperationsFooterVMInstance);
+            this.container.RegisterInstance<IOtherMainViewModel>(otherMainVMInstance);
+            this.container.RegisterInstance<IOtherNavigationViewModel>(otherNavigationVMInstance);
 
             mainWindowVMInstance.InitializeViewModel(this.container);
             mainWindowBackToOAPPButtonVMInstance.InitializeViewModel(this.container);
             drawerOperationsMainVMInstance.InitializeViewModel(this.container);
             drawerActivityVMInstance.InitializeViewModel(this.container);
             drawerOperationsFooterVMInstance.InitializeViewModel(this.container);
+            otherMainVMInstance.InitializeViewModel(this.container);
+            otherNavigationVMInstance.InitializeViewModel(this.container);
 
             mainWindowBackToOAPPButtonVMInstance.InitializeButtons();
             drawerOperationsFooterVMInstance.InitializeButtons();
