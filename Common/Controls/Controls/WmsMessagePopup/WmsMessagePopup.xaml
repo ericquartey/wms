@@ -24,14 +24,10 @@
         <Color x:Key="Connected">#FF16640A</Color>
 
         <Storyboard x:Key="sbShowErrorConnection" RepeatBehavior="Forever">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="thunderPath">
                 <EasingDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:1.5" Value="1"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:2" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:2.5" Value="1"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:4" Value="1"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:4.6" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:5" Value="1"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
 
