@@ -3,9 +3,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.DataModels;
 using Ferretto.WMS.Data.Core.Interfaces;
+using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Controllers;
+using Ferretto.WMS.Data.WebAPI.Hubs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Ferretto.WMS.Data.Tests
 {
@@ -23,6 +27,33 @@ namespace Ferretto.WMS.Data.Tests
         #endregion
 
         #region Methods
+
+        [TestMethod]
+        public async Task ComplexAndOrGroups()
+        {
+            #region Arrange
+
+            var schedulerRequestsController = this.MockController();
+
+            #endregion
+
+            #region Act
+
+            var actionResult1 = await schedulerRequestsController.GetAllAsync(
+                0,
+                int.MaxValue,
+                "StartsWith([BayDescription], 'Bay') And [OperationType] = ##ToString#Insertion# Or [BayDescription] <> 'Bay #2' And [RequestedQuantity] = 2");
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsInstanceOfType(actionResult1.Result, typeof(OkObjectResult));
+            var result1 = (IEnumerable<Core.Models.SchedulerRequest>)((OkObjectResult)actionResult1.Result).Value;
+            Assert.AreEqual(1, result1.Count());
+
+            #endregion
+        }
 
         [TestInitialize]
         public void Initialize()
@@ -356,36 +387,10 @@ namespace Ferretto.WMS.Data.Tests
             #endregion
         }
 
-        [TestMethod]
-        public async Task ComplexAndOrGroups()
-        {
-            #region Arrange
-
-            var schedulerRequestsController = this.MockController();
-
-            #endregion
-
-            #region Act
-
-            var actionResult1 = await schedulerRequestsController.GetAllAsync(
-                0,
-                int.MaxValue,
-                "StartsWith([BayDescription], 'Bay') And [OperationType] = ##ToString#Insertion# Or [BayDescription] <> 'Bay #2' And [RequestedQuantity] = 2");
-
-            #endregion
-
-            #region Assert
-
-            Assert.IsInstanceOfType(actionResult1.Result, typeof(OkObjectResult));
-            var result1 = (IEnumerable<Core.Models.SchedulerRequest>)((OkObjectResult)actionResult1.Result).Value;
-            Assert.AreEqual(1, result1.Count());
-
-            #endregion
-        }
-
         private SchedulerRequestsController MockController()
         {
             return new SchedulerRequestsController(
+                new Mock<IHubContext<SchedulerHub, ISchedulerHub>>().Object,
                 this.ServiceProvider.GetService(
                     typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider);
         }
