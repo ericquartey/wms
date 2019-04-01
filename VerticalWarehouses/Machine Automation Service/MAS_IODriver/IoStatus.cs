@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Ferretto.VW.MAS_IODriver.Enumerations;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_IODriver
 {
@@ -8,9 +9,9 @@ namespace Ferretto.VW.MAS_IODriver
     {
         #region Fields
 
-        private const int totalInputs = 8;
+        private const int TOTAL_INPUTS = 8;
 
-        private const int totalOutputs = 5;
+        private const int TOTAL_OUTPUTS = 5;
 
         private bool[] inputs;
 
@@ -22,14 +23,8 @@ namespace Ferretto.VW.MAS_IODriver
 
         public IoStatus()
         {
-            this.inputs = new bool[totalInputs];
-            this.outputs = new bool[totalOutputs];
-        }
-
-        public IoStatus(IoMessage message)
-        {
-            this.inputs = new bool[totalInputs];
-            this.outputs = new bool[totalOutputs];
+            this.inputs = new bool[TOTAL_INPUTS];
+            this.outputs = new bool[TOTAL_OUTPUTS];
         }
 
         #endregion
@@ -58,7 +53,7 @@ namespace Ferretto.VW.MAS_IODriver
             }
 
             bool updateRequired = false;
-            for (int index = 0; index < totalInputs; index++)
+            for (int index = 0; index < TOTAL_INPUTS; index++)
             {
                 if (this.inputs[index] != newInputStates[index])
                 {
@@ -70,7 +65,7 @@ namespace Ferretto.VW.MAS_IODriver
             {
                 if (updateRequired)
                 {
-                    Array.Copy(newInputStates, this.inputs, totalInputs);
+                    Array.Copy(newInputStates, this.inputs, TOTAL_INPUTS);
                 }
             }
             catch (Exception ex)
@@ -90,7 +85,7 @@ namespace Ferretto.VW.MAS_IODriver
                 throw new IOException($"Output states length mismatch while updating I/O driver status");
             }
 
-            for (int index = 0; index < totalOutputs; index++)
+            for (int index = 0; index < TOTAL_OUTPUTS; index++)
             {
                 if (this.outputs[index] != newOutputStates[index])
                 {

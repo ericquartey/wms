@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ferretto.VW.MAS_IODriver.StateMachines
+namespace Ferretto.VW.MAS_IODriver.Interface
 {
     public interface IIoState : IDisposable
     {

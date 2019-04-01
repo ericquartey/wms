@@ -2,5 +2,14 @@
 {
     public enum FieldMessageType
     {
+        NoType = 0,
+
+        SwitchAxis,
+
+        IoReset,
+
+        DataLayerReady,
+
+        IoPowerUp
     }
 }

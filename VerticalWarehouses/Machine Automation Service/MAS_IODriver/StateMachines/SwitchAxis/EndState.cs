@@ -1,7 +1,10 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.MAS_IODriver.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 {
@@ -10,6 +13,8 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
         #region Fields
 
         private readonly ILogger logger;
+
+        private bool disposed;
 
         #endregion
 
@@ -22,14 +27,11 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
             this.parentStateMachine = parentStateMachine;
 
-            var messageData = new SwitchAxisMessageData(axisToSwitchOn);
-            var endNotification = new NotificationMessage(messageData, "Motor Switch complete", MessageActor.Any,
-                MessageActor.IODriver, MessageType.SwitchAxis, MessageStatus.OperationEnd);
+            var messageData = new SwitchAxisFieldMessageData(axisToSwitchOn, Axis.None, MessageVerbosity.Info);
+            var endNotification = new FieldNotificationMessage(messageData, "Motor Switch complete", FieldMessageActor.Any,
+                FieldMessageActor.IoDriver, FieldMessageType.SwitchAxis, MessageStatus.OperationEnd);
 
-            this.logger.LogTrace(string.Format("2:{0}:{1}:{2}",
-                endNotification.Type,
-                endNotification.Destination,
-                endNotification.Status));
+            this.logger.LogTrace($"2:{endNotification.Type}:{endNotification.Destination}:{endNotification.Status}");
 
             this.parentStateMachine.PublishNotificationEvent(endNotification);
 
@@ -38,11 +40,36 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         #endregion
 
+        #region Destructors
+
+        ~EndState()
+        {
+            this.Dispose(false);
+        }
+
+        #endregion
+
         #region Methods
 
         public override void ProcessMessage(IoMessage message)
         {
-            this.logger.LogTrace($"1-Message processed: {message.Inputs?.ToString()}, {message.Outputs?.ToString()}");
+            this.logger.LogTrace($"1:Message processed: {message}");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

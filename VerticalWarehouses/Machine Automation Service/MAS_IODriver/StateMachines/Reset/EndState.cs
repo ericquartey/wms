@@ -1,6 +1,9 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.MAS_IODriver.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 {
@@ -9,6 +12,8 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
         #region Fields
 
         private readonly ILogger logger;
+
+        private bool disposed;
 
         #endregion
 
@@ -22,12 +27,21 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
             this.parentStateMachine = parentStateMachine;
             var resetSecurityIoMessage = new IoMessage(false);
 
-            this.logger.LogTrace(string.Format("2:{0}", resetSecurityIoMessage));
+            this.logger.LogTrace($"2:{resetSecurityIoMessage}");
 
             resetSecurityIoMessage.SwitchElevatorMotor(true);
             parentStateMachine.EnqueueMessage(resetSecurityIoMessage);
 
             this.logger.LogDebug("3:Method End");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~EndState()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -38,25 +52,36 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
         {
             this.logger.LogDebug("1:Method Start");
 
-            this.logger.LogTrace(string.Format("2:{0}:{1}",
-                message.ValidOutputs,
-                message.ElevatorMotorOn));
+            this.logger.LogTrace($"2:{message.ValidOutputs}:{message.ElevatorMotorOn}");
 
             if (message.ValidOutputs && message.ElevatorMotorOn)
             {
                 this.logger.LogTrace("End State State ProcessMessage Notification Event");
-                var endNotification = new NotificationMessage(null, "IO Reset complete", MessageActor.Any,
-                    MessageActor.IODriver, MessageType.IOReset, MessageStatus.OperationEnd);
+                var endNotification = new FieldNotificationMessage(null, "IO Reset complete", FieldMessageActor.Any,
+                    FieldMessageActor.IoDriver, FieldMessageType.IoReset, MessageStatus.OperationEnd);
 
-                this.logger.LogTrace(string.Format("3:{0}:{1}:{2}",
-                    endNotification.Type,
-                    endNotification.Destination,
-                    endNotification.Status));
+                this.logger.LogTrace($"3:{endNotification.Type}:{endNotification.Destination}:{endNotification.Status}");
 
                 this.parentStateMachine.PublishNotificationEvent(endNotification);
             }
 
             this.logger.LogDebug("4:Method End");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

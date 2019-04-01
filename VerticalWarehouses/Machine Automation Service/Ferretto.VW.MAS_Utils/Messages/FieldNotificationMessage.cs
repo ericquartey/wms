@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
+using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_Utils.Messages
 {
@@ -12,7 +13,7 @@ namespace Ferretto.VW.MAS_Utils.Messages
         {
         }
 
-        public FieldNotificationMessage(IMessageData data,
+        public FieldNotificationMessage(IFieldMessageData data,
             string description,
             FieldMessageActor destination,
             FieldMessageActor source,
@@ -33,7 +34,7 @@ namespace Ferretto.VW.MAS_Utils.Messages
 
         #region Properties
 
-        public IMessageData Data { get; }
+        public IFieldMessageData Data { get; }
 
         public string Description { get; }
 

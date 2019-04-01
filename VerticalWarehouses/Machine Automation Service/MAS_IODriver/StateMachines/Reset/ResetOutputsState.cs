@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Ferretto.VW.MAS_IODriver.Interface;
+using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 {
@@ -7,6 +9,8 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
         #region Fields
 
         private readonly ILogger logger;
+
+        private bool disposed;
 
         #endregion
 
@@ -21,11 +25,20 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
             var resetIoMessage = new IoMessage(false);
             resetIoMessage.Force = true;
 
-            this.logger.LogTrace(string.Format("2:{0}", resetIoMessage));
+            this.logger.LogTrace($"2:{resetIoMessage}");
 
             parentStateMachine.EnqueueMessage(resetIoMessage);
 
             this.logger.LogDebug("3:Method End");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~ResetOutputsState()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -35,7 +48,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
         public override void ProcessMessage(IoMessage message)
         {
             this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace(string.Format("2:{0}:{1}", message.ValidOutputs, message.OutputsCleared));
+            this.logger.LogTrace($"2:{message.ValidOutputs}:{message.OutputsCleared}");
 
             if (message.ValidOutputs && message.OutputsCleared)
             {
@@ -43,6 +56,22 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
             }
 
             this.logger.LogDebug("3:Method End");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

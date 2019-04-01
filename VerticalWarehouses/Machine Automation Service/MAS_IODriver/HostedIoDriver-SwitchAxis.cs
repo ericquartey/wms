@@ -1,9 +1,12 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
+using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_IODriver
 {
@@ -11,26 +14,23 @@ namespace Ferretto.VW.MAS_IODriver
     {
         #region Methods
 
-        private void ExecuteSwitchAxis(CommandMessage receivedMessage)
+        private void ExecuteSwitchAxis(FieldCommandMessage receivedMessage)
         {
             this.logger.LogDebug("1:Method Start");
 
-            if (receivedMessage.Data is ISwitchAxisMessageData)
+            if (receivedMessage.Data is ISwitchAxisFieldMessageData switchAxisMessageData)
             {
-                switch (((ISwitchAxisMessageData)receivedMessage.Data).AxisToSwitch)
+                switch (switchAxisMessageData.AxisToSwitchOn)
                 {
                     case Axis.Horizontal:
                         if (this.ioStatus.CradleMotorOn)
                         {
-                            var endNotification = new NotificationMessage(receivedMessage.Data, "Switch to Horizontal axis completed", MessageActor.Any,
-                                MessageActor.IODriver, MessageType.SwitchAxis, MessageStatus.OperationEnd);
+                            var endNotification = new FieldNotificationMessage(receivedMessage.Data, "Switch to Horizontal axis completed", FieldMessageActor.Any,
+                                FieldMessageActor.IoDriver, FieldMessageType.SwitchAxis, MessageStatus.OperationEnd);
 
-                            this.logger.LogTrace(string.Format("2:{0}:{1}:{2}",
-                                endNotification.Type,
-                                endNotification.Destination,
-                                endNotification.Status));
+                            this.logger.LogTrace($"2:{endNotification.Type}:{endNotification.Destination}:{endNotification.Status}");
 
-                            this.eventAggregator?.GetEvent<NotificationEvent>().Publish(endNotification);
+                            this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(endNotification);
                         }
                         else
                         {
@@ -46,15 +46,12 @@ namespace Ferretto.VW.MAS_IODriver
                     case Axis.Vertical:
                         if (this.ioStatus.ElevatorMotorOn)
                         {
-                            var endNotification = new NotificationMessage(receivedMessage.Data, "Switch to Vertical axis completed", MessageActor.Any,
-                                MessageActor.IODriver, MessageType.SwitchAxis, MessageStatus.OperationEnd);
+                            var endNotification = new FieldNotificationMessage(receivedMessage.Data, "Switch to Vertical axis completed", FieldMessageActor.Any,
+                                FieldMessageActor.IoDriver, FieldMessageType.SwitchAxis, MessageStatus.OperationEnd);
 
-                            this.logger.LogTrace(string.Format("4:{0}:{1}:{2}",
-                                endNotification.Type,
-                                endNotification.Destination,
-                                endNotification.Status));
+                            this.logger.LogTrace($"4:{endNotification.Type}:{endNotification.Destination}:{endNotification.Status}");
 
-                            this.eventAggregator?.GetEvent<NotificationEvent>().Publish(endNotification);
+                            this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(endNotification);
                         }
                         else
                         {
@@ -68,19 +65,17 @@ namespace Ferretto.VW.MAS_IODriver
                         break;
 
                     case Axis.Both:
-                        if (receivedMessage.Destination == MessageActor.IODriver)
+                        if (receivedMessage.Destination == FieldMessageActor.IoDriver)
                         {
-                            var errorNotification = new NotificationMessage(receivedMessage.Data,
-                                "Invalid I/O operation", MessageActor.Any,
-                                MessageActor.IODriver, receivedMessage.Type, MessageStatus.OperationError,
+                            var errorNotification = new FieldNotificationMessage(receivedMessage.Data,
+                                "Invalid I/O operation", FieldMessageActor.Any,
+                                FieldMessageActor.IoDriver, receivedMessage.Type, MessageStatus.OperationError,
                                 ErrorLevel.Error);
 
-                            this.logger.LogTrace(string.Format("6:{0}:{1}:{2}",
-                                errorNotification.Type,
-                                errorNotification.Destination,
-                                errorNotification.Status));
+                            this.logger.LogTrace(
+                                $"6:{errorNotification.Type}:{errorNotification.Destination}:{errorNotification.Status}");
 
-                            this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
+                            this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
                         }
 
                         break;

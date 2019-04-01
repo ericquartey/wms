@@ -2,6 +2,7 @@
 using Ferretto.VW.Common_Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 {
@@ -9,7 +10,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
     {
         #region Fields
 
-        private const int PulseInterval = 350;
+        private const int PULSE_INTERVAL = 350;
 
         private Timer delayTimer;
 
@@ -23,11 +24,11 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
         {
             logger.LogDebug("1:Method Start");
 
-            this.logger = logger;
-            this.ioCommandQueue = ioCommandQueue;
-            this.eventAggregator = eventAggregator;
+            this.Logger = logger;
+            this.IoCommandQueue = ioCommandQueue;
+            this.EventAggregator = eventAggregator;
 
-            this.logger.LogDebug("2:Method End");
+            this.Logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -45,25 +46,23 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         public override void ProcessMessage(IoMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.Logger.LogDebug("1:Method Start");
 
-            this.logger.LogTrace(string.Format("2:{0}:{1}",
-                message.ValidOutputs,
-                message.ResetSecurity));
+            this.Logger.LogTrace($"2:{message.ValidOutputs}:{message.ResetSecurity}");
 
             if (message.ValidOutputs && message.ResetSecurity)
             {
-                this.delayTimer = new Timer(this.DelayElapsed, null, PulseInterval, -1);    //VALUE -1 period means timer does not fire multiple times
+                this.delayTimer = new Timer(this.DelayElapsed, null, PULSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
             }
 
             base.ProcessMessage(message);
 
-            this.logger.LogDebug("3:Method End");
+            this.Logger.LogDebug("3:Method End");
         }
 
         public override void Start()
         {
-            this.CurrentState = new ClearOutputsState(this, this.logger);
+            this.CurrentState = new ClearOutputsState(this, this.Logger);
         }
 
         protected override void Dispose(bool disposing)

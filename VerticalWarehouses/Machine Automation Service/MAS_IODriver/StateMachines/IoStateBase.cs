@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.VW.MAS_IODriver.Interface;
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines
 {

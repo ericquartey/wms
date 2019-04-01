@@ -3,18 +3,20 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Exceptions;
-using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_IODriver.Interface;
-using Ferretto.VW.MAS_IODriver.StateMachines;
 using Ferretto.VW.MAS_IODriver.StateMachines.PowerUp;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
+// ReSharper disable ParameterHidesMember
 
 namespace Ferretto.VW.MAS_IODriver
 {
@@ -22,13 +24,13 @@ namespace Ferretto.VW.MAS_IODriver
     {
         #region Fields
 
-        private const int IoPollingInterval = 50;
+        private const int IO_POLLING_INTERVAL = 50;
 
-        private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
+        private readonly BlockingConcurrentQueue<FieldCommandMessage> commandQueue;
 
         private readonly Task commandReceiveTask;
 
-        private readonly IDataLayerValueManagment dataLayerValueManagment;
+        private readonly IDataLayerValueManagment dataLayerValueManagement;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -44,7 +46,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         private readonly IModbusTransport modbusTransport;
 
-        private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
+        private readonly BlockingConcurrentQueue<FieldNotificationMessage> notificationQueue;
 
         private readonly Task notificationReceiveTask;
 
@@ -64,13 +66,13 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Constructors
 
-        public HostedIoDriver(IEventAggregator eventAggregator, IModbusTransport modbusTransport, IDataLayerValueManagment dataLayerValueManagment, ILogger<HostedIoDriver> logger)
+        public HostedIoDriver(IEventAggregator eventAggregator, IModbusTransport modbusTransport, IDataLayerValueManagment dataLayerValueManagement, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
 
             this.logger = logger;
             this.eventAggregator = eventAggregator;
-            this.dataLayerValueManagment = dataLayerValueManagment;
+            this.dataLayerValueManagement = dataLayerValueManagement;
             this.modbusTransport = modbusTransport;
 
             this.ioStatus = new IoStatus();
@@ -78,32 +80,18 @@ namespace Ferretto.VW.MAS_IODriver
 
             this.ioCommandQueue = new BlockingConcurrentQueue<IoMessage>();
 
-            this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
+            this.commandQueue = new BlockingConcurrentQueue<FieldCommandMessage>();
 
-            this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
+            this.notificationQueue = new BlockingConcurrentQueue<FieldNotificationMessage>();
 
             this.commandReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
-            this.notificationReceiveTask = new Task(() => this.NotificationReceiveTaskFunction());
+            this.notificationReceiveTask = new Task(async () => await this.NotificationReceiveTaskFunction());
             this.ioReceiveTask = new Task(async () => await this.ReceiveIoDataTaskFunction());
             this.ioSendTask = new Task(async () => await this.SendIoCommandTaskFunction());
 
-            this.logger.LogTrace("2:Contructor Subscription Command");
+            this.InitializeMethodSubscriptions();
 
-            var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            commandEvent.Subscribe(message => { this.commandQueue.Enqueue(message); },
-                ThreadOption.PublisherThread,
-                false,
-                message => message.Destination == MessageActor.IODriver || message.Destination == MessageActor.Any);
-
-            this.logger.LogTrace("3:Contructor Subscription Notification");
-
-            var notificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            notificationEvent.Subscribe(message => { this.notificationQueue.Enqueue(message); },
-                ThreadOption.PublisherThread,
-                false,
-                message => message.Destination == MessageActor.IODriver || message.Destination == MessageActor.Any);
-
-            this.logger.LogDebug("4:Method End");
+            this.logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -135,7 +123,7 @@ namespace Ferretto.VW.MAS_IODriver
             this.disposed = true;
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             this.logger.LogDebug("1:Method Start");
 
@@ -155,16 +143,18 @@ namespace Ferretto.VW.MAS_IODriver
             }
 
             this.logger.LogDebug("4:Method End");
+
+            return Task.CompletedTask;
         }
 
-        private Task CommandReceiveTaskFunction()
+        private void CommandReceiveTaskFunction()
         {
             this.logger.LogDebug("1:Method Start");
 
             this.pollIoTimer?.Dispose();
             try
             {
-                this.pollIoTimer = new Timer(this.ReadIoData, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IoPollingInterval));
+                this.pollIoTimer = new Timer(this.ReadIoData, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IO_POLLING_INTERVAL));
             }
             catch (Exception ex)
             {
@@ -177,51 +167,62 @@ namespace Ferretto.VW.MAS_IODriver
 
             do
             {
-                CommandMessage receivedMessage;
+                FieldCommandMessage receivedMessage;
                 try
                 {
                     this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
 
-                    this.logger.LogTrace(string.Format("3:{0}:{1}:{2}",
-                        receivedMessage.Type,
-                        receivedMessage.Destination,
-                        receivedMessage));
+                    this.logger.LogTrace($"3:{receivedMessage.Type}:{receivedMessage.Destination}:{receivedMessage}");
                 }
                 catch (OperationCanceledException)
                 {
                     this.logger.LogDebug("4:Method End - Operation Canceled");
 
-                    return Task.CompletedTask;
+                    return;
                 }
                 this.logger.LogTrace($"Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}");
                 if (this.currentStateMachine != null)
                 {
-                    var errorNotification = new NotificationMessage(null, "I/O operation already in progress", MessageActor.Any,
-                        MessageActor.IODriver, receivedMessage.Type, MessageStatus.OperationError, ErrorLevel.Error);
+                    var errorNotification = new FieldNotificationMessage(null, "I/O operation already in progress", FieldMessageActor.Any,
+                        FieldMessageActor.IoDriver, receivedMessage.Type, MessageStatus.OperationError, ErrorLevel.Error);
 
-                    this.logger.LogTrace(string.Format("5:{0}:{1}:{2}",
-                        errorNotification.Type,
-                        errorNotification.Destination,
-                        errorNotification.Status));
+                    this.logger.LogTrace($"5:{errorNotification.Type}:{errorNotification.Destination}:{errorNotification.Status}");
 
-                    this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
+                    this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
                     continue;
                 }
                 switch (receivedMessage.Type)
                 {
-                    case MessageType.SwitchAxis:
+                    case FieldMessageType.SwitchAxis:
                         this.ExecuteSwitchAxis(receivedMessage);
                         break;
 
-                    case MessageType.IOReset:
-                        this.ExecuteIOReset(receivedMessage);
+                    case FieldMessageType.IoReset:
+                        this.ExecuteIoReset();
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
 
             this.logger.LogDebug("6:Method End");
+        }
 
-            return Task.CompletedTask;
+        private void InitializeMethodSubscriptions()
+        {
+            this.logger.LogTrace("1:Commands Subscription");
+
+            var commandEvent = this.eventAggregator.GetEvent<FieldCommandEvent>();
+            commandEvent.Subscribe(commandMessage => { this.commandQueue.Enqueue(commandMessage); },
+                ThreadOption.PublisherThread,
+                false,
+                commandMessage => commandMessage.Destination == FieldMessageActor.IoDriver || commandMessage.Destination == FieldMessageActor.Any);
+
+            this.logger.LogTrace("1:Notifications Subscription");
+
+            var notificationEvent = this.eventAggregator.GetEvent<FieldNotificationEvent>();
+            notificationEvent.Subscribe(notificationMessage => { this.notificationQueue.Enqueue(notificationMessage); },
+                ThreadOption.PublisherThread,
+                false,
+                notificationMessage => notificationMessage.Destination == FieldMessageActor.IoDriver || notificationMessage.Destination == FieldMessageActor.Any);
         }
 
         private async Task NotificationReceiveTaskFunction()
@@ -230,15 +231,12 @@ namespace Ferretto.VW.MAS_IODriver
 
             do
             {
-                NotificationMessage receivedMessage;
+                FieldNotificationMessage receivedMessage;
                 try
                 {
                     this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
 
-                    this.logger.LogTrace(string.Format("2:{0}:{1}:{2}",
-                        receivedMessage.Type,
-                        receivedMessage.Destination,
-                        receivedMessage.Status));
+                    this.logger.LogTrace($"2:{receivedMessage.Type}:{receivedMessage.Destination}:{receivedMessage.Status}");
                 }
                 catch (OperationCanceledException)
                 {
@@ -249,16 +247,16 @@ namespace Ferretto.VW.MAS_IODriver
                 this.logger.LogTrace($"Notification received: {receivedMessage.Type}, {receivedMessage.Status}, destination: {receivedMessage.Destination}");
                 switch (receivedMessage.Type)
                 {
-                    case MessageType.DataLayerReady:
+                    case FieldMessageType.DataLayerReady:
                         await this.StartHardwareCommunications();
                         break;
 
-                    case MessageType.IOPowerUp:
-                    case MessageType.SwitchAxis:
+                    case FieldMessageType.IoPowerUp:
+                    case FieldMessageType.SwitchAxis:
                         if (receivedMessage.Status == MessageStatus.OperationEnd &&
                             receivedMessage.ErrorLevel == ErrorLevel.NoError)
                         {
-                            this.currentStateMachine.Dispose();
+                            this.currentStateMachine?.Dispose();
                             this.currentStateMachine = null;
                         }
                         break;
@@ -266,8 +264,6 @@ namespace Ferretto.VW.MAS_IODriver
             } while (!this.stoppingToken.IsCancellationRequested);
 
             this.logger.LogDebug("4:Method End");
-
-            return;
         }
 
         private void ReadIoData(object state)
@@ -281,8 +277,6 @@ namespace Ferretto.VW.MAS_IODriver
 
             do
             {
-                IoMessage message;
-
                 try
                 {
                     this.pollIoEvent.Wait(Timeout.Infinite, this.stoppingToken);
@@ -313,9 +307,9 @@ namespace Ferretto.VW.MAS_IODriver
 
                 if (this.ioStatus.UpdateInputStates(this.inputData))
                 {
-                    message = new IoMessage(this.inputData, true);
+                    var message = new IoMessage(this.inputData, true);
 
-                    this.logger.LogTrace(string.Format("4:{0}", message));
+                    this.logger.LogTrace($"4:{message}");
 
                     this.currentStateMachine?.ProcessMessage(message);
                 }
@@ -335,7 +329,7 @@ namespace Ferretto.VW.MAS_IODriver
                 {
                     this.ioCommandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out message);
 
-                    this.logger.LogTrace(string.Format("2:{0}", message));
+                    this.logger.LogTrace($"2:{message}");
                 }
                 catch (OperationCanceledException)
                 {
@@ -351,7 +345,7 @@ namespace Ferretto.VW.MAS_IODriver
                         await this.modbusTransport.WriteAsync(message.Outputs);
                     }
 
-                    this.logger.LogTrace(string.Format("4:{0}", message));
+                    this.logger.LogTrace($"4:{message}");
 
                     this.currentStateMachine.ProcessMessage(message);
                 }
@@ -365,9 +359,9 @@ namespace Ferretto.VW.MAS_IODriver
             this.logger.LogDebug("1:Method Start");
 
             var ioAddress = await
-                this.dataLayerValueManagment.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
+                this.dataLayerValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
             var ioPort = await
-                this.dataLayerValueManagment.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
+                this.dataLayerValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
 
             this.logger.LogTrace($"2:ioAddress={ioAddress}:ioPort={ioPort}");
 

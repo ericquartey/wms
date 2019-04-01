@@ -1,7 +1,7 @@
 ﻿using System;
-using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages;
 
-namespace Ferretto.VW.MAS_IODriver.StateMachines
+namespace Ferretto.VW.MAS_IODriver.Interface
 {
     public interface IIoStateMachine : IDisposable
     {
@@ -13,11 +13,8 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
 
         void ProcessMessage(IoMessage message);
 
-        void PublishNotificationEvent(NotificationMessage notificationMessage);
+        void PublishNotificationEvent(FieldNotificationMessage notificationMessage);
 
-        /// <summary>
-        ///
-        /// </summary>
         void Start();
 
         #endregion

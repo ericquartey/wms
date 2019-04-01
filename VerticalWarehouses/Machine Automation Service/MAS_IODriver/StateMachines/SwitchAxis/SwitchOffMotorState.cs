@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.MAS_IODriver.Interface;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 {
@@ -9,9 +9,11 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
     {
         #region Fields
 
+        private readonly Axis axisToSwitchOn;
+
         private readonly ILogger logger;
 
-        private Axis axisToSwitchOn;
+        private bool disposed;
 
         #endregion
 
@@ -25,11 +27,10 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
             this.axisToSwitchOn = axisToSwitchOn;
             this.parentStateMachine = parentStateMachine;
             this.logger = logger;
-            this.logger.LogTrace($"Constructor");
 
             var switchOffAxisIoMessage = new IoMessage(false);
 
-            this.logger.LogTrace(string.Format("2:{0}", switchOffAxisIoMessage));
+            this.logger.LogTrace($"2:{switchOffAxisIoMessage}");
 
             switch (axisToSwitchOn)
             {
@@ -43,7 +44,16 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
             }
             parentStateMachine.EnqueueMessage(switchOffAxisIoMessage);
 
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogDebug("4:Method End");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~SwitchOffMotorState()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -56,28 +66,32 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
             if (message.ValidOutputs)
             {
-                this.logger.LogTrace(string.Format("2:{0}:{1}:{2}", this.axisToSwitchOn, message.CradleMotorOn, message.ElevatorMotorOn));
+                this.logger.LogTrace($"2:{this.axisToSwitchOn}:{message.CradleMotorOn}:{message.ElevatorMotorOn}");
 
                 if (this.axisToSwitchOn == Axis.Horizontal && message.CradleMotorOn || this.axisToSwitchOn == Axis.Vertical && message.ElevatorMotorOn)
                 {
-                    var messageData = new CalibrateAxisMessageData(this.axisToSwitchOn, MessageVerbosity.Info);
-                    var notificationMessage = new NotificationMessage(
-                        messageData,
-                        $"Switch off {this.axisToSwitchOn} axis",
-                        MessageActor.AutomationService,
-                        MessageActor.IODriver,
-                        MessageType.SwitchAxis,
-                        MessageStatus.OperationEnd,
-                        ErrorLevel.NoError,
-                        MessageVerbosity.Info);
-                    this.logger.LogTrace($"2-Notification published: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
-                    this.parentStateMachine.PublishNotificationEvent(notificationMessage);
-                    this.logger.LogTrace($"4-Change State to SwitchOnMotorState");
+                    this.logger.LogTrace($"3:Change State to SwitchOnMotorState");
                     this.parentStateMachine.ChangeState(new SwitchOnMotorState(this.axisToSwitchOn, this.logger, this.parentStateMachine));
                 }
             }
 
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogDebug("4:Method End");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

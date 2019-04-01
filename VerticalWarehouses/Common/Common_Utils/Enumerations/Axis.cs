@@ -2,6 +2,8 @@
 {
     public enum Axis
     {
+        None,
+
         Horizontal,
 
         Vertical,

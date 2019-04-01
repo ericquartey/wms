@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Ferretto.VW.MAS_IODriver.Interface;
+using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 {
@@ -7,6 +9,8 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
         #region Fields
 
         private readonly ILogger logger;
+
+        private bool disposed;
 
         #endregion
 
@@ -21,12 +25,21 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
             var resetSecurityIoMessage = new IoMessage(false);
 
-            this.logger.LogTrace(string.Format("2:{0}", resetSecurityIoMessage));
+            this.logger.LogTrace($"2:{resetSecurityIoMessage}");
 
             resetSecurityIoMessage.SwitchResetSecurity(true);
             parentStateMachine.EnqueueMessage(resetSecurityIoMessage);
 
             this.logger.LogDebug("3:Method End");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~PulseResetState()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -37,9 +50,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
         {
             this.logger.LogDebug("1:Method Start");
 
-            this.logger.LogTrace(string.Format("2:{0}:{1}",
-                message.ValidOutputs,
-                message.ResetSecurity));
+            this.logger.LogTrace($"2:{message.ValidOutputs}:{message.ResetSecurity}");
 
             if (message.ValidOutputs && !message.ResetSecurity)
             {
@@ -47,6 +58,22 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
             }
 
             this.logger.LogDebug("3:Method End");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

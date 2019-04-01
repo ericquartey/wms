@@ -14,10 +14,6 @@
 
         FiniteStateMachines,
 
-        InverterDriver,
-
-        IODriver,
-
         DataLayer,
 
         Any
