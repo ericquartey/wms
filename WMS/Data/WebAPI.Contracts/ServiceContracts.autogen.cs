@@ -2472,9 +2472,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("listRowId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? ListRowId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("listRowStatus", Required = Newtonsoft.Json.Required.Always)]
-        public ItemListRowStatus2 ListRowStatus { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("loadingUnitId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? LoadingUnitId { get; set; }
     
@@ -2520,27 +2517,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<SchedulerRequest>(data);
         }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.22.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum ItemListRowStatus2
-    {
-        NotSpecified = 0,
-    
-        Completed = 67,
-    
-        Error = 69,
-    
-        Incomplete = 73,
-    
-        New = 78,
-    
-        Suspended = 83,
-    
-        Waiting = 87,
-    
-        Executing = 88,
     
     }
     
