@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!--
-    Microsoft ResX Schema
-
+  <!-- 
+    Microsoft ResX Schema 
+    
     Version 2.0
-
-    The primary goals of this format is to allow a simple XML format
-    that is mostly human readable. The generation and parsing of the
-    various data types are done through the TypeConverter classes
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
     associated with the data types.
-
+    
     Example:
-
+    
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-
-    There are any number of "resheader" rows that contain simple
+                
+    There are any number of "resheader" rows that contain simple 
     name/value pairs.
-
-    Each data row contains a name, and value. The row also contains a
-    type or mimetype. Type corresponds to a .NET class that support
-    text/value conversion through the TypeConverter architecture.
-    Classes that don't support this are serialized and stored with the
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
     mimetype set.
-
-    The mimetype is used for serialized objects, and tells the
-    ResXResourceReader how to depersist the object. This is currently not
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
     extensible. For a given mimetype the value must be set accordingly:
-
-    Note - application/x-microsoft.net.object.binary.base64 is the format
-    that the ResXResourceWriter will generate, however the reader can
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
     read any of the formats listed below.
-
+    
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-
+    
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array
+    value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -250,263 +250,263 @@
     <comment>Button - Title text</comment>
   </data>
   <data name="NavigationMainMenuDrawerOperation" xml:space="preserve">
-    <value>NavigationMainMenuDrawerOperation</value>
+    <value>Drawer operations</value>
     <comment>Button text</comment>
   </data>
   <data name="NavigationMainMenuLists" xml:space="preserve">
-    <value>NavigationMainMenuLists</value>
+    <value>Waiting lists</value>
     <comment>Button text</comment>
   </data>
   <data name="NavigationMainMenuItems" xml:space="preserve">
-    <value>NavigationMainMenuItems</value>
+    <value>Search item</value>
     <comment>Button text</comment>
   </data>
   <data name="NavigationMainMenuOther" xml:space="preserve">
-    <value>NavigationMainMenuOther</value>
+    <value>Other</value>
     <comment>Button text</comment>
   </data>
   <data name="DrawerActivityPageHeader" xml:space="preserve">
-    <value>DrawerActivityPageHeader</value>
+    <value>Picking operations</value>
     <comment>Page text</comment>
   </data>
   <data name="DrawerActivityList" xml:space="preserve">
-    <value>DrawerActivityList</value>
+    <value>List code:</value>
     <comment>Labet text</comment>
   </data>
   <data name="DrawerActivityDescrList" xml:space="preserve">
-    <value>DrawerActivityDescrList</value>
+    <value>List description:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityItem" xml:space="preserve">
-    <value>DrawerActivityItem</value>
+    <value>Item code:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityItemDescr" xml:space="preserve">
-    <value>DrawerActivityItemDescr</value>
+    <value>Item description:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityPosition" xml:space="preserve">
-    <value>DrawerActivityPosition</value>
+    <value>Position:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityQtyReq" xml:space="preserve">
-    <value>DrawerActivityQtyReq</value>
+    <value>Requested quantity:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityQtyPick" xml:space="preserve">
-    <value>DrawerActivityQtyPick</value>
+    <value>Picked quantity:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityQtyCount" xml:space="preserve">
-    <value>DrawerActivityQtyPick</value>
+    <value>Stock:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityDetail" xml:space="preserve">
-    <value>DrawerActivityDetail</value>
+    <value>Detail</value>
     <comment>Button text</comment>
   </data>
   <data name="DrawerActivityConfirm" xml:space="preserve">
-    <value>DrawerActivityConfirm</value>
+    <value>Confirm</value>
     <comment>Button text</comment>
   </data>
   <data name="DrawerWaitPageHeader" xml:space="preserve">
-    <value>DrawerWaitPageHeader</value>
+    <value>Waiting for new drawer</value>
     <comment>Page header</comment>
   </data>
   <data name="DrawerWaitNota" xml:space="preserve">
-    <value>DrawerWaitNota</value>
+    <value>Note:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerWaitOperation" xml:space="preserve">
-    <value>DrawerWaitOperation</value>
+    <value>Scheduled operations:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityDetailHeader" xml:space="preserve">
-    <value>DrawerActivityDetailHeader</value>
+    <value>Picking item detail:</value>
     <comment>Page header</comment>
   </data>
   <data name="DrawerActivityDetailProductionDate" xml:space="preserve">
-    <value>DrawerActivityDetailProductionDate</value>
+    <value>Production date:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityDetailLotto" xml:space="preserve">
-    <value>DrawerActivityDetailLotto</value>
+    <value>Lot:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityDetailMaterialStatus" xml:space="preserve">
-    <value>DrawerActivityDetailMaterialStatus</value>
+    <value>Material status:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityDetailPackagingType" xml:space="preserve">
-    <value>DrawerActivityDetailPackagingType</value>
+    <value>Packaging type:</value>
     <comment>Label text</comment>
   </data>
   <data name="ListsInWaitHeader" xml:space="preserve">
-    <value>ListsInWaitHeader</value>
+    <value>Waiting for execution lists</value>
     <comment>Page header</comment>
   </data>
   <data name="ListsInWaitNote" xml:space="preserve">
-    <value>ListsInWaitNote</value>
+    <value>Note:</value>
     <comment>Label text</comment>
   </data>
   <data name="ListsInWaitUp" xml:space="preserve">
-    <value>ListsInWaitUp</value>
+    <value>Up</value>
     <comment>Button text</comment>
   </data>
   <data name="ListsInWaitDown" xml:space="preserve">
-    <value>ListsInWaitDown</value>
+    <value>Down</value>
     <comment>Button text</comment>
   </data>
   <data name="ListsInWaitDetail" xml:space="preserve">
-    <value>ListsInWaitDetail</value>
+    <value>List detail</value>
     <comment>Button text</comment>
   </data>
   <data name="ListsInWaitExecute" xml:space="preserve">
-    <value>ListsInWaitExecute</value>
+    <value>Execute list</value>
     <comment>Button text</comment>
   </data>
   <data name="ItemSearchHeader" xml:space="preserve">
-    <value>ItemSearchHeader</value>
+    <value>Search item by code or description</value>
     <comment>Page Header</comment>
   </data>
   <data name="ItemSearchKeySearch" xml:space="preserve">
-    <value>ItemSearchKeySearch</value>
+    <value>Search by code:</value>
     <comment>Label text</comment>
   </data>
   <data name="ItemSearchSearch" xml:space="preserve">
-    <value>ItemSearchSearch</value>
+    <value>Search item</value>
     <comment>Button text</comment>
   </data>
   <data name="ItemSearchQtyAvailable" xml:space="preserve">
-    <value>ItemSearchQtyAvailable</value>
+    <value>Available quantity:</value>
     <comment>Label text</comment>
   </data>
   <data name="ItemSearchQtyRequest" xml:space="preserve">
-    <value>ItemSearchQtyRequest</value>
+    <value>Requested quantity:</value>
     <comment>Label text</comment>
   </data>
   <data name="ItemSearchTop" xml:space="preserve">
-    <value>ItemSearchTop</value>
+    <value>Top</value>
     <comment>Button text</comment>
   </data>
   <data name="ItemSearchUp" xml:space="preserve">
-    <value>ItemSearchUo</value>
+    <value>Up</value>
     <comment>Button text</comment>
   </data>
   <data name="ItemSearchDown" xml:space="preserve">
-    <value>ItemSearchDown</value>
+    <value>Down</value>
     <comment>Button text</comment>
   </data>
   <data name="ItemSearchBottom" xml:space="preserve">
-    <value>ItemSearchBottom</value>
+    <value>Bottom</value>
     <comment>Button text</comment>
   </data>
   <data name="ItemSearchDetail" xml:space="preserve">
-    <value>ItemSearchDetail</value>
+    <value>Item detail</value>
     <comment>Button text</comment>
   </data>
   <data name="ItemSearchCall" xml:space="preserve">
-    <value>ItemSearchCall</value>
+    <value>Item call</value>
     <comment>Button text</comment>
   </data>
   <data name="ItemDetailHeader" xml:space="preserve">
-    <value>ItemDetailHeader</value>
+    <value>Item detail</value>
     <comment>Page Header</comment>
   </data>
   <data name="ItemDetailManagement" xml:space="preserve">
-    <value>ItemDetailManagement</value>
+    <value>Managing type:</value>
     <comment>Label text</comment>
   </data>
   <data name="ItemDetailPeriod" xml:space="preserve">
-    <value>ItemDetailPeriod</value>
+    <value>FIFO period:</value>
     <comment>Labet text</comment>
   </data>
   <data name="ItemDetailNote" xml:space="preserve">
-    <value>ItemDetailNote</value>
+    <value>Notes:</value>
     <comment>Label text</comment>
   </data>
   <data name="ImmediateDrawerCallHeader" xml:space="preserve">
-    <value>ImmediateDrawerCallHeader</value>
+    <value>Immediate drawer call</value>
     <comment>Page Header</comment>
   </data>
   <data name="ImmediateDrawerCallDrawerCall" xml:space="preserve">
-    <value>ImmediateDrawerCallDrawerCall</value>
+    <value>Drawer call</value>
     <comment>Button text</comment>
   </data>
   <data name="ImmediateDrawerCallRequiredDrawer" xml:space="preserve">
-    <value>ImmediateDrawerCallRequiredDrawer</value>
+    <value>Requested drawer:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityRowList" xml:space="preserve">
-    <value>DrawerActivityRowList</value>
+    <value>List's row:</value>
     <comment>Label text</comment>
   </data>
   <data name="GeneralInfoHeader" xml:space="preserve">
-    <value>GeneralInfoHeader</value>
+    <value>General informations</value>
     <comment>Page Header</comment>
   </data>
   <data name="GeneralInfoModel" xml:space="preserve">
-    <value>GeneralInfoModel</value>
+    <value>Model:</value>
     <comment>Label text</comment>
   </data>
   <data name="GeneralInfoSerial" xml:space="preserve">
-    <value>GeneralInfoSerial</value>
+    <value>Serial number:</value>
     <comment>Label text</comment>
   </data>
   <data name="GeneralInfoTotDrawers" xml:space="preserve">
-    <value>GeneralInfoTotDrawers</value>
+    <value>Drawer quantity:</value>
     <comment>Label text</comment>
   </data>
   <data name="GeneralInfoSwRelease" xml:space="preserve">
-    <value>GeneralInfoSwRelease</value>
+    <value>Released software version:</value>
     <comment>Label text</comment>
   </data>
   <data name="GeneralInfoInstallationDate" xml:space="preserve">
-    <value>GeneralInfoInstallationDate</value>
+    <value>Installation date:</value>
     <comment>Label text</comment>
   </data>
   <data name="GeneralInfoLastMaintenanceDate" xml:space="preserve">
-    <value>GeneralInfoLastMaintenanceDate</value>
+    <value>Last maintenance date:</value>
     <comment>Label text</comment>
   </data>
   <data name="GeneralInfoNextMaintenanceDate" xml:space="preserve">
-    <value>GeneralInfoNextMaintenanceDate</value>
+    <value>Next maintenance date:</value>
     <comment>Label text</comment>
   </data>
   <data name="GeneralInfoOperativeStatus" xml:space="preserve">
-    <value>GeneralInfoOperativeStatus</value>
+    <value>Operative machine's state:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerCompactingHeader" xml:space="preserve">
-    <value>DrawerCompactingHeader</value>
+    <value>Compaction drawer procedure</value>
     <comment>Page Header</comment>
   </data>
   <data name="DrawerCompactingSide" xml:space="preserve">
-    <value>DrawerCompactingSide</value>
+    <value>Side:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerCompactingFragmentNumber" xml:space="preserve">
-    <value>DrawerCompactingFragmentNumber</value>
+    <value>Fragments quantity:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerCompactingMaxSpaceRecoverable" xml:space="preserve">
-    <value>DrawerCompactingMaxSpaceRecoverable</value>
+    <value>Max recoverable space:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerCompactingSpaceToRecover" xml:space="preserve">
-    <value>DrawerCompactingSpaceToRecover</value>
+    <value>Space to recover:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerCompactingAntCompact" xml:space="preserve">
-    <value>DrawerCompactingAntCompact</value>
+    <value>Compact front side</value>
     <comment>Button text</comment>
   </data>
   <data name="DrawerCompactingRearCompact" xml:space="preserve">
-    <value>DrawerCompactingRearCompact</value>
+    <value>Compact back side</value>
     <comment>Button text</comment>
   </data>
   <data name="DrawerActivityUpdateMaxQuantity" xml:space="preserve">
-    <value>DrawerActivityUpdateMaxQuantity</value>
+    <value>Update max quantity</value>
     <comment>Button text</comment>
   </data>
 </root>

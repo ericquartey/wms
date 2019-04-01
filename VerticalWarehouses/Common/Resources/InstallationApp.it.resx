@@ -683,7 +683,7 @@
     <value>Modifica blocco celle</value>
   </data>
   <data name="CellsSideControlDescription" xml:space="preserve">
-    <value>Modifica quote gruppo celle.</value>
+    <value>Modifica quote gruppo celle</value>
   </data>
   <data name="CellsSideControlInitialCell" xml:space="preserve">
     <value>Cella iniziale:</value>
@@ -725,7 +725,7 @@
     <value>Carica primo cassetto</value>
   </data>
   <data name="LoadFirstDrawerPageHeader" xml:space="preserve">
-    <value>Carico primo cassetto e test celle.</value>
+    <value>Carico primo cassetto e test celle</value>
   </data>
   <data name="LoadFirstDrawerTotCellsToCheck" xml:space="preserve">
     <value>Totale celle da testare:</value>
@@ -866,7 +866,7 @@
     <value>Errore calibrazione</value>
   </data>
   <data name="HomingCompleted" xml:space="preserve">
-    <value>Calibrazione completata</value>
+    <value>Calibrazione completata con successo</value>
   </data>
   <data name="HomingStarted" xml:space="preserve">
     <value>Start calibrazione</value>
@@ -888,5 +888,11 @@
   </data>
   <data name="VerticalHomingStarted" xml:space="preserve">
     <value>Start calibrazione asse verticale</value>
+  </data>
+  <data name="SwitchEngineCompleted" xml:space="preserve">
+    <value>Cambio motore completato</value>
+  </data>
+  <data name="SwitchEngineStarted" xml:space="preserve">
+    <value>Cambio motore iniziato</value>
   </data>
 </root>
