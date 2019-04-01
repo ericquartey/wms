@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Resources;
@@ -69,6 +70,14 @@ namespace Ferretto.Common.Controls.Services
         #endregion
 
         #region Methods
+
+        public void CheckForDataErrorConnection()
+        {
+            if (this.isServiceHubConnected == false)
+            {
+                this.NotifyErrorDialog();
+            }
+        }
 
         public async Task EndAsync()
         {

@@ -227,18 +227,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
         #endregion
 
-        //private async void StartTestCycles()
-        //{
-        //    this.TESTStartBoolSensorsCycle();
-        //    this.TESTStartStringMessageCycle();
-        //}
-
-        //public void SendMessageToAllConnectedClients(NotificationMessage notificationMessage)
-        //{
-        //    this.hub.Clients.All.OnSendMessageToAllConnectedClients(notificationMessage.Description);
-        //}
-
-        //public async void TESTStartBoolSensorsCycle()
+        //TEMP public async void TESTStartBoolSensorsCycle()
         //{
         //    while (true)
         //    {
@@ -249,7 +238,18 @@ namespace Ferretto.VW.MAS_AutomationService
         //    }
         //}
 
-        //public async void TESTStartStringMessageCycle()
+        //TEMP private async void StartTestCycles()
+        //{
+        //    this.TESTStartBoolSensorsCycle();
+        //    this.TESTStartStringMessageCycle();
+        //}
+
+        //TEMP public void SendMessageToAllConnectedClients(NotificationMessage notificationMessage)
+        //{
+        //    this.hub.Clients.All.OnSendMessageToAllConnectedClients(notificationMessage.Description);
+        //}
+
+        //TEMP public async void TESTStartStringMessageCycle()
         //{
         //    while (true)
         //    {
