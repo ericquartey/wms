@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-using Ferretto.VW.Common_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Exceptions;
 
@@ -282,6 +281,21 @@ namespace Ferretto.VW.MAS_InverterDriver
             }
 
             return writeMessage;
+        }
+
+        public override string ToString()
+        {
+            var returnString = new StringBuilder();
+
+            returnString.Append("InverterMessage:");
+
+            returnString.Append($"IsWriteMessage={this.IsWriteMessage}:");
+
+            returnString.Append($"parameterId={this.parameterId:X}:");
+
+            returnString.Append($"payloadLenght={this.payloadLenght:X}");
+
+            return returnString.ToString();
         }
 
         private object ConvertPayload()

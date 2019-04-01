@@ -23,7 +23,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         {
             this.movingDrawer = movingDrawer;
             this.inverterCommandQueue = inverterCommandQueue;
-            //this.priorityInverterCommandQueue = priorityInverterCommandQueue;
         }
 
         #endregion

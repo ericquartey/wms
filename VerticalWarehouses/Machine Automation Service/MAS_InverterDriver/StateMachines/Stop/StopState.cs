@@ -76,12 +76,15 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
                     var messageData = new StopAxisMessageData(this.axisToStop);
                     var endNotification = new NotificationMessage(messageData, "Axis calibration complete", MessageActor.Any,
                         MessageActor.InverterDriver, MessageType.InverterReset, MessageStatus.OperationEnd);
+
+                    this.logger.LogTrace($"4:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
+
                     this.parentStateMachine.PublishNotificationEvent(endNotification);
                     returnValue = true;
                 }
             }
 
-            this.logger.LogDebug("4:Method End");
+            this.logger.LogDebug("5:Method End");
 
             return returnValue;
         }

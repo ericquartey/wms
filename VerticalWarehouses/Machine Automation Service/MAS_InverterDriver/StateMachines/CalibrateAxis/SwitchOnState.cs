@@ -33,7 +33,6 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
             this.logger = logger;
-            this.logger.LogTrace($"Constructor");
 
             this.logger.LogTrace($"2:Axis to calibrate={this.axisToCalibrate}");
 
@@ -64,30 +63,27 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         public override bool ProcessMessage(InverterMessage message)
         {
             this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
+            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}:InverterParameterId.StatusWordParam={InverterParameterId.StatusWordParam}");
 
             var returnValue = false;
 
             if (message.IsError)
             {
-                this.logger.LogTrace($"2-Change State to ErrorState");
                 this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate, this.logger));
             }
 
             if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
             {
-                this.logger.LogTrace($"3:UShortPayload={message.UShortPayload}:StatusWordValue={StatusWordValue}");
+                this.logger.LogTrace($"3:UShortPayload={message.UShortPayload}:StatusWordValue={StatusWordValue}:RESET_STATUS_WORD_VALUE={RESET_STATUS_WORD_VALUE}");
 
                 if ((message.UShortPayload & StatusWordValue) == StatusWordValue)
                 {
-                    this.logger.LogTrace($"3-Change State to EnableOperationState");
                     this.parentStateMachine.ChangeState(new EnableOperationState(this.parentStateMachine, this.axisToCalibrate, this.logger));
                     returnValue = true;
                 }
 
                 if ((message.UShortPayload & RESET_STATUS_WORD_VALUE) == RESET_STATUS_WORD_VALUE)
                 {
-                    this.logger.LogTrace($"4-Change State to EndState");
                     this.parentStateMachine.ChangeState(new EndState(this.parentStateMachine, this.axisToCalibrate, this.logger));
                     returnValue = true;
                 }

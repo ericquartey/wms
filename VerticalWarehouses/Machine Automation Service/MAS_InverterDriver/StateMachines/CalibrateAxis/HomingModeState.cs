@@ -31,7 +31,6 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
             this.logger = logger;
-            this.logger.LogTrace($"Constructor");
 
             this.parameterValue = 0x0006;
 
@@ -59,19 +58,21 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
             if (message.IsError)
             {
-                this.logger.LogTrace($"2-Change State to ErrorState");
                 this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate, this.logger));
             }
 
+            this.logger.LogTrace($"3:InverterParameterId.SetOperatingModeParam={InverterParameterId.SetOperatingModeParam}");
+
             if (message.IsWriteMessage && message.ParameterId == InverterParameterId.SetOperatingModeParam)
             {
-                this.logger.LogTrace($"3-Change State to ShutdownState");
                 this.parentStateMachine.ChangeState(new ShutdownState(this.parentStateMachine, this.axisToCalibrate, this.logger));
                 returnValue = true;
             }
+
+            this.logger.LogTrace($"3:UShortPayload={message.UShortPayload}:RESET_STATUS_WORD_VALUE={RESET_STATUS_WORD_VALUE}");
+
             if ((message.UShortPayload & RESET_STATUS_WORD_VALUE) == RESET_STATUS_WORD_VALUE)
             {
-                this.logger.LogTrace($"4-Change State to EndState");
                 this.parentStateMachine.ChangeState(new EndState(this.parentStateMachine, this.axisToCalibrate, this.logger));
                 returnValue = true;
             }

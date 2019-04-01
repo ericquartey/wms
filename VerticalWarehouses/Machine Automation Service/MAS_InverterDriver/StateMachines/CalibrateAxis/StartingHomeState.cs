@@ -69,28 +69,29 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
             if (message.IsError)
             {
-                this.logger.LogTrace($"2-Change State to ErrorState");
                 this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate, this.logger));
             }
 
+            this.logger.LogTrace($"3:InverterParameterId.StatusWordParam={InverterParameterId.StatusWordParam}");
+
             if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
             {
+                this.logger.LogTrace($"4:UShortPayload={message.UShortPayload}:StatusWordValue={StatusWordValue}:RESET_STATUS_WORD_VALUE={RESET_STATUS_WORD_VALUE}");
+
                 if ((message.UShortPayload & StatusWordValue) == StatusWordValue)
                 {
-                    this.logger.LogTrace($"3-Change State to EndState");
                     this.parentStateMachine.ChangeState(new EndState(this.parentStateMachine, this.axisToCalibrate, this.logger));
                     returnValue = true;
                 }
 
                 if ((message.UShortPayload & RESET_STATUS_WORD_VALUE) == RESET_STATUS_WORD_VALUE)
                 {
-                    this.logger.LogTrace($"4-Change State to EndState");
                     this.parentStateMachine.ChangeState(new EndState(this.parentStateMachine, this.axisToCalibrate, this.logger));
                     returnValue = true;
                 }
             }
 
-            this.logger.LogDebug("4:Method End");
+            this.logger.LogDebug("5:Method End");
 
             return returnValue;
         }

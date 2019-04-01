@@ -46,7 +46,6 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
         /// <inheritdoc />
         public override bool ProcessMessage(InverterMessage message)
         {
-            //TEMP this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - ErrorState:ProcessMessage");
             return false;
         }
 

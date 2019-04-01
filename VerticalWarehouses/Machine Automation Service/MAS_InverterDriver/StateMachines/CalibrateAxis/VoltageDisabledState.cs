@@ -35,7 +35,6 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
             this.logger = logger;
-            this.logger.LogTrace($"1-Constructor");
 
             this.logger.LogTrace($"2:Axis to calibrate={this.axisToCalibrate}");
 
@@ -66,7 +65,9 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
                 MessageStatus.OperationStart,
                 ErrorLevel.NoError,
                 MessageVerbosity.Info);
-            this.logger.LogTrace($"2-Constructor: published notification: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
+
+            this.logger.LogTrace($"4:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
+
             this.parentStateMachine.PublishNotificationEvent(notificationMessage);
         }
 
@@ -78,19 +79,18 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         public override bool ProcessMessage(InverterMessage message)
         {
             this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
+            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}:InverterParameterId.StatusWordParam{InverterParameterId.StatusWordParam}");
 
             var returnValue = false;
 
             if (message.IsError)
             {
-                this.logger.LogTrace($"2-Change State to ErrorState");
                 this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate, this.logger));
             }
 
             if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
             {
-                this.logger.LogTrace($"3:UShortPayload={message.UShortPayload}:STATUS_WORD_VALUE={STATUS_WORD_VALUE}");
+                this.logger.LogTrace($"3:UShortPayload={message.UShortPayload}:STATUS_WORD_VALUE={STATUS_WORD_VALUE}:RESET_STATUS_WORD_VALUE={RESET_STATUS_WORD_VALUE}");
 
                 if ((message.UShortPayload & STATUS_WORD_VALUE) == STATUS_WORD_VALUE)
                 {
@@ -101,7 +101,6 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
                 if ((message.UShortPayload & RESET_STATUS_WORD_VALUE) == RESET_STATUS_WORD_VALUE)
                 {
-                    this.logger.LogTrace($"4-Change state to EndState");
                     this.parentStateMachine.ChangeState(new EndState(this.parentStateMachine, this.axisToCalibrate, this.logger));
                     returnValue = true;
                 }
