@@ -62,10 +62,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
 
         public void PublishNotificationEvent(NotificationMessage notificationMessage)
         {
-            this.logger.LogTrace(string.Format("1:{0}:{1}:{2}",
-                notificationMessage.Type,
-                notificationMessage.Destination,
-                notificationMessage.Status));
+            this.logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 
             this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
         }

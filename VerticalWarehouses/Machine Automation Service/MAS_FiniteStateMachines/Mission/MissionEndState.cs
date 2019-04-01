@@ -1,6 +1,7 @@
 ﻿using System;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 {
@@ -18,7 +19,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
                 MessageActor.FiniteStateMachines,
                 MessageType.EndMission,
                 MessageStatus.OperationEnd);
-            this.parentStateMachine.OnPublishNotification(newMessage);
+            this.parentStateMachine.PublishNotificationMessage(newMessage);
         }
 
         #endregion

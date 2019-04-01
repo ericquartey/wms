@@ -1,6 +1,7 @@
 ﻿using System;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
@@ -39,7 +40,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
                 ErrorLevel.NoError,
                 MessageVerbosity.Info);
 
-            this.parentStateMachine.OnPublishNotification(newMessage);
+            this.parentStateMachine.PublishNotificationMessage(newMessage);
         }
 
         #endregion

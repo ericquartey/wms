@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
             var resetSecurityIoMessage = new IoMessage(false);
 
-            this.logger.LogTrace(string.Format("2:{0}", resetSecurityIoMessage));
+            this.logger.LogTrace($"2:Reset Security IO={resetSecurityIoMessage}");
 
             resetSecurityIoMessage.SwitchResetSecurity(true);
             parentStateMachine.EnqueueMessage(resetSecurityIoMessage);
@@ -36,10 +36,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
         public override void ProcessMessage(IoMessage message)
         {
             this.logger.LogDebug("1:Method Start");
-
-            this.logger.LogTrace(string.Format("2:{0}:{1}",
-                message.ValidOutputs,
-                message.ResetSecurity));
+            this.logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
 
             if (message.ValidOutputs && !message.ResetSecurity)
             {

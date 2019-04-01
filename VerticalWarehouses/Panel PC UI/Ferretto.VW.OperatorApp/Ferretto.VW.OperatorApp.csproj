@@ -91,6 +91,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="HelpWindows\HelpInitialPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="HelpWindows\HelpMainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="HelpWindows\HelpPageBase.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\DrawerActivityDetailView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\DrawerActivityView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\DrawerWaitView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
     <None Update="ViewsAndViewModels\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>

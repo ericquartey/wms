@@ -1,4 +1,6 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
@@ -23,10 +25,11 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
             this.axisToSwitchOn = axisToSwitchOn;
             this.parentStateMachine = parentStateMachine;
             this.logger = logger;
+            this.logger.LogTrace($"Constructor");
 
             var switchOffAxisIoMessage = new IoMessage(false);
 
-            this.logger.LogTrace(string.Format("2:{0}", switchOffAxisIoMessage));
+            this.logger.LogTrace($"2:Switch off axis IO={switchOffAxisIoMessage}");
 
             switch (axisToSwitchOn)
             {
@@ -38,7 +41,6 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
                     switchOffAxisIoMessage.SwitchCradleMotor(false);
                     break;
             }
-
             parentStateMachine.EnqueueMessage(switchOffAxisIoMessage);
 
             this.logger.LogDebug("3:Method End");
@@ -54,10 +56,23 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
             if (message.ValidOutputs)
             {
-                this.logger.LogTrace(string.Format("2:{0}:{1}:{2}", this.axisToSwitchOn, message.CradleMotorOn, message.ElevatorMotorOn));
+                this.logger.LogTrace($"2:this.Axis to switch on={this.axisToSwitchOn}:Cradle motor on{message.CradleMotorOn}:Elevator motor on={message.ElevatorMotorOn}");
 
                 if (this.axisToSwitchOn == Axis.Horizontal && message.CradleMotorOn || this.axisToSwitchOn == Axis.Vertical && message.ElevatorMotorOn)
                 {
+                    var messageData = new CalibrateAxisMessageData(this.axisToSwitchOn, MessageVerbosity.Info);
+                    var notificationMessage = new NotificationMessage(
+                        messageData,
+                        $"Switch off {this.axisToSwitchOn} axis",
+                        MessageActor.AutomationService,
+                        MessageActor.IODriver,
+                        MessageType.SwitchAxis,
+                        MessageStatus.OperationEnd,
+                        ErrorLevel.NoError,
+                        MessageVerbosity.Info);
+                    this.logger.LogTrace($"2-Notification published: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
+                    this.parentStateMachine.PublishNotificationEvent(notificationMessage);
+                    this.logger.LogTrace($"4-Change State to SwitchOnMotorState");
                     this.parentStateMachine.ChangeState(new SwitchOnMotorState(this.axisToSwitchOn, this.logger, this.parentStateMachine));
                 }
             }

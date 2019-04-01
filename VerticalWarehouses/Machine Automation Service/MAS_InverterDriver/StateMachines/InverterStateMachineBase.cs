@@ -55,16 +55,13 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         }
 
         /// <inheritdoc />
-        public abstract void OnPublishNotification(NotificationMessage message);
-
-        /// <inheritdoc />
         public bool ProcessMessage(InverterMessage message)
         {
             return this.CurrentState?.ProcessMessage(message) ?? false;
         }
 
         /// <inheritdoc />
-        public void PublishNotificationEvent(NotificationMessage notificationMessage)
+        public virtual void PublishNotificationEvent(NotificationMessage notificationMessage)
         {
             this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
         }

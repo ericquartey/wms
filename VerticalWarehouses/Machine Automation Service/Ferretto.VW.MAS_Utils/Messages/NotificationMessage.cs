@@ -44,7 +44,7 @@ namespace Ferretto.VW.Common_Utils.Messages
 
         public MessageActor Source { get; set; }
 
-        public MessageStatus Status { get; }
+        public MessageStatus Status { get; set; }
 
         public MessageType Type { get; }
 

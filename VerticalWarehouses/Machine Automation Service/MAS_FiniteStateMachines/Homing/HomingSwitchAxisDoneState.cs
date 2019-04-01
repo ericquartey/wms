@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
@@ -19,9 +20,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         public HomingSwitchAxisDoneState(IStateMachine parentMachine, Axis axisToCalibrate, ILogger logger)
         {
+            this.logger = logger;
+            this.logger.LogTrace("1:HomingSwitchAxisDoneState");
+
             this.parentStateMachine = parentMachine;
             this.axisToCalibrate = axisToCalibrate;
-            this.logger = logger;
 
             //TEMP send a message to start the homing for a horizontal axis (to inverter and other components)
             var calibrateAxisData = new CalibrateAxisMessageData(this.axisToCalibrate);
@@ -31,6 +34,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 MessageActor.FiniteStateMachines,
                 MessageType.CalibrateAxis,
                 MessageVerbosity.Info);
+            this.logger.LogTrace($"2-Constructor: published command: {newMessage.Type}, {newMessage.Destination}");
             this.parentStateMachine.PublishCommandMessage(newMessage);
         }
 
@@ -47,6 +51,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
+            this.logger.LogTrace($"2:Process CommandMessage {message.Type} Source {message.Source}");
             switch (message.Type)
             {
                 case MessageType.Stop:
@@ -62,21 +67,25 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
+            this.logger.LogTrace($"3:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
             if (message.Type == MessageType.CalibrateAxis)
             {
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
                         //TEMP Change to homing calibrate end state (the operation of homing for the current axis is done successfully)
+                        this.logger.LogTrace($"2-Change State to HomingCalibrateAxisDoneState");
                         this.parentStateMachine.ChangeState(new HomingCalibrateAxisDoneState(this.parentStateMachine, this.axisToCalibrate, this.logger));
                         break;
 
                     case MessageStatus.OperationError:
                         //TEMP Change to error state (an error has occurred)
+                        this.logger.LogTrace($"3-Change State to HomingErrorState");
                         this.parentStateMachine.ChangeState(new HomingErrorState(this.parentStateMachine, this.axisToCalibrate, this.logger));
                         break;
 
                     default:
+                        this.logger.LogTrace($"4-Hitted default case, no further action performed: {message.Status}");
                         break;
                 }
             }

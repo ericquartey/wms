@@ -20,13 +20,6 @@ namespace Ferretto.VW.MAS_InverterDriver.Interface.StateMachines
         void EnqueueMessage(InverterMessage message);
 
         /// <summary>
-        /// On publishing a notification message.
-        /// The notification message is kept, it is handled and after it is published.
-        /// </summary>
-        /// <param name="message">The <see cref="NotificationMessage"/> message to be handled and published.</param>
-        void OnPublishNotification(NotificationMessage message);
-
-        /// <summary>
         /// Process a given message.
         /// </summary>
         /// <param name="message">The <see cref="InverterMessage"/> message to be processed.</param>

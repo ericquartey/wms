@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
-using Ferretto.VW.Common_Utils.Exceptions;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Exceptions;
 
 namespace Ferretto.VW.MAS_InverterDriver
 {
@@ -82,10 +83,10 @@ namespace Ferretto.VW.MAS_InverterDriver
                 BitConverter.ToInt16(rawMessage,
                     4); //VALUE parameterId is always stored starting at byte intex 4 in the byte array
 
-            this.payload = new byte[payloadLenght];
+            this.payload = new byte[this.payloadLenght];
             try
             {
-                Array.Copy(rawMessage, 6, this.payload, 0, payloadLenght);
+                Array.Copy(rawMessage, 6, this.payload, 0, this.payloadLenght);
             }
             catch (Exception ex)
             {
@@ -189,6 +190,26 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         #region Methods
 
+        public byte[] GetHeartbeatMessage(bool setBit)
+        {
+            if (this.parameterId != (short)InverterParameterId.ControlWordParam)
+                throw new InverterDriverException("Invalid parameter id");
+
+            this.heartbeatMessage = true;
+
+            //VALUE 14th byte of control word value represents Heartbeat flag
+            if (setBit)
+            {
+                this.payload[1] |= 0x40;
+            }
+            else
+            {
+                this.payload[1] &= 0xBF;
+            }
+
+            return this.GetWriteMessage();
+        }
+
         /// <summary>
         ///     Returns a byte array from the current Inverter Message ready to be sent to the Inverter hardware
         /// </summary>
@@ -203,7 +224,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             readMessage[2] = this.SystemIndex;
             readMessage[3] = this.DataSetIndex;
 
-            if (this.parameterId.Equals(InverterParameterId.ControlWordParam) || IsWriteMessage)
+            if (this.parameterId.Equals(InverterParameterId.ControlWordParam) || this.IsWriteMessage)
             {
                 throw new InverterDriverException("Invalid Operation", InverterDriverExceptionCode.RequestReadOnWriteOnlyParameter);
             }
@@ -224,7 +245,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         public byte[] GetWriteMessage()
         {
-            if (this.parameterId.Equals(InverterParameterId.StatusWordParam) || !IsWriteMessage)
+            if (this.parameterId.Equals(InverterParameterId.StatusWordParam) || !this.IsWriteMessage)
             {
                 throw new InverterDriverException("Invalid Operation", InverterDriverExceptionCode.RequerstWriteOnReadOnlyParameter);
             }
@@ -262,24 +283,19 @@ namespace Ferretto.VW.MAS_InverterDriver
             return writeMessage;
         }
 
-        public byte[] GteHeartbeatMessage(bool setBit)
+        public override string ToString()
         {
-            if (this.parameterId != (short)InverterParameterId.ControlWordParam)
-                throw new InverterDriverException("Invalid parameter id");
+            var returnString = new StringBuilder();
 
-            this.heartbeatMessage = true;
+            returnString.Append("InverterMessage:");
 
-            //VALUE 14th byte of control word value represents Heartbeat flag
-            if (setBit)
-            {
-                this.payload[1] |= 0x40;
-            }
-            else
-            {
-                this.payload[1] &= 0xBF;
-            }
+            returnString.Append($"IsWriteMessage={this.IsWriteMessage}:");
 
-            return this.GetWriteMessage();
+            returnString.Append($"parameterId={this.parameterId:X}:");
+
+            returnString.Append($"payloadLenght={this.payloadLenght:X}");
+
+            return returnString.ToString();
         }
 
         private object ConvertPayload()
