@@ -411,4 +411,16 @@
   <data name="DrawerActivityUpdateMaxQuantity" xml:space="preserve">
     <value>Aggiorna quantita' massima</value>
   </data>
+  <data name="OtherNavigationCompaction" xml:space="preserve">
+    <value>Compattazione</value>
+  </data>
+  <data name="OtherNavigationStatistics" xml:space="preserve">
+    <value>Statistiche</value>
+  </data>
+  <data name="OtherNavigationMaintenance" xml:space="preserve">
+    <value>Manutenzione</value>
+  </data>
+  <data name="OtherNavigationErrorSimulation" xml:space="preserve">
+    <value>Simulazione Errori</value>
+  </data>
 </root>

@@ -871,6 +871,42 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compaction.
+        /// </summary>
+        public static string OtherNavigationCompaction {
+            get {
+                return ResourceManager.GetString("OtherNavigationCompaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error Simulation.
+        /// </summary>
+        public static string OtherNavigationErrorSimulation {
+            get {
+                return ResourceManager.GetString("OtherNavigationErrorSimulation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maintenance.
+        /// </summary>
+        public static string OtherNavigationMaintenance {
+            get {
+                return ResourceManager.GetString("OtherNavigationMaintenance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Statistics.
+        /// </summary>
+        public static string OtherNavigationStatistics {
+            get {
+                return ResourceManager.GetString("OtherNavigationStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Packaging type:.
         /// </summary>
         public static string PackagingType {
