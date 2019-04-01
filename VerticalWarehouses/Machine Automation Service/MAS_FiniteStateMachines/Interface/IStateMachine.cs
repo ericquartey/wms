@@ -1,15 +1,10 @@
-﻿using Ferretto.VW.Common_Utils.Messages;
+﻿using System;
+using Ferretto.VW.Common_Utils.Messages;
 
-namespace Ferretto.VW.MAS_FiniteStateMachines
+namespace Ferretto.VW.MAS_FiniteStateMachines.Interface
 {
-    public interface IStateMachine
+    public interface IStateMachine : IDisposable
     {
-        #region Properties
-
-        bool OperationDone { get; set; }
-
-        #endregion
-
         #region Methods
 
         /// <summary>
@@ -18,13 +13,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         /// <param name="newState">The new state</param>
         /// <param name="message">A message to be published</param>
         void ChangeState(IState newState, CommandMessage message = null);
-
-        /// <summary>
-        /// On publishing the notification message by the state machine.
-        /// The notification message is kept, it is handled and after it is published.
-        /// </summary>
-        /// <param name="message">A <see cref="NotificationMessage"/> message to be handled and published.</param>
-        void OnPublishNotification(NotificationMessage message);
 
         /// <summary>
         /// Process the command message incoming to the Finite State Machines.

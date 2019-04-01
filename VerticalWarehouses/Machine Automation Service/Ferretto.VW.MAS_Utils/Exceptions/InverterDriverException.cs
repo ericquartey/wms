@@ -1,33 +1,9 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using Ferretto.VW.MAS_Utils.Enumerations;
 
-namespace Ferretto.VW.Common_Utils.Exceptions
+namespace Ferretto.VW.MAS_Utils.Exceptions
 {
-    public enum InverterDriverExceptionCode
-    {
-        SocketOpen = 1,
-
-        RemoteEndPointCreationFailure,
-
-        TcpClientCreationFailed,
-
-        TcpInverterConnectionFailed,
-
-        GetNetworkStreamFailed,
-
-        UninitializedNetworkStream,
-
-        MisconfiguredNetworkStream,
-
-        NetworkStreamReadFailure,
-
-        NetworkStreamWriteFailure,
-
-        RequestReadOnWriteOnlyParameter,
-
-        RequerstWriteOnReadOnlyParameter
-    }
-
     public class InverterDriverException : Exception
     {
         #region Constructors

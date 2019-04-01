@@ -28,6 +28,8 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         public CalibrateAxisStateMachine(Axis axisToCalibrate, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
         {
+            logger.LogDebug("1:Method Start");
+
             this.axisToCalibrate = axisToCalibrate;
             this.inverterCommandQueue = inverterCommandQueue;
             this.eventAggregator = eventAggregator;
@@ -49,56 +51,25 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         #region Methods
 
         /// <inheritdoc />
-        public override void OnPublishNotification(NotificationMessage message)
+        public override void PublishNotificationEvent(NotificationMessage message)
         {
-            switch (message.Type)
+            if (this.CurrentState is EndState)
             {
-                case MessageType.CalibrateAxis:
-                    {
-                        //TEMP Send a notification about the start operation to all the world
-                        var status = (this.IsStopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd;
-
-                        this.logger?.LogTrace(string.Format("On PublishNotification CalibrateAxis States mchine -> {0}-{1}", message.Type, status));
-
-                        var endNotification = new NotificationMessage(message.Data,
-                            message.Description,
-                            MessageActor.Any,
-                            MessageActor.InverterDriver,
-                            MessageType.CalibrateAxis,
-                            status
-                        );
-
-                        base.PublishNotificationEvent(endNotification); //x this.eventAggregator.GetEvent<NotificationEvent>().Publish(message);
-                        break;
-                    }
-
-                case MessageType.Stop:
-                    {
-                        //var msgStatus = (this.IsStopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd;
-
-                        ////TEMP Send a notification about the end (/stop) operation to all the world
-                        //var newMessage = new NotificationMessage(null,
-                        //    "End Homing",
-                        //    MessageActor.Any,
-                        //    MessageActor.FiniteStateMachines,
-                        //    MessageType.Stop,
-                        //    msgStatus,
-                        //    ErrorLevel.NoError,
-                        //    MessageVerbosity.Info);
-
-                        //this.eventAggregator.GetEvent<NotificationEvent>().Publish(newMessage);
-                        break;
-                    }
-                default:
-                    {
-                        break;
-                    }
+                var status = (this.IsStopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd;
+                message.Status = status;
             }
+
+            this.logger.LogTrace($"1:Type={message.Type}:Destination={message.Destination}:Status={message.Status}");
+
+            base.PublishNotificationEvent(message);
         }
 
         /// <inheritdoc />
         public override void Start()
         {
+            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace($"2:Axis to calibrate={this.axisToCalibrate}");
+
             switch (this.axisToCalibrate)
             {
                 case Axis.Both:
@@ -112,13 +83,16 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
             }
 
             this.CurrentState = new VoltageDisabledState(this, this.currentAxis, this.logger);
+
+            this.logger.LogDebug("3:Method End");
         }
 
         /// <inheritdoc />
         public override void Stop()
         {
-            this.IsStopRequested = true;
+            this.logger.LogDebug("1:Method Start");
 
+            this.IsStopRequested = true;
             this.CurrentState.Stop();
         }
 

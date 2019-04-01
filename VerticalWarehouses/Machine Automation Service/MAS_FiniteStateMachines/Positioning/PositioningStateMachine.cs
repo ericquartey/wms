@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
         #region Constructors
 
         public PositioningStateMachine(IEventAggregator eventAggregator, IPositioningMessageData positioningMessageData)
-            : base(eventAggregator)
+            : base(eventAggregator, null)
         {
             this.axisMovement = positioningMessageData.AxisMovement;
             this.positioningMessageData = positioningMessageData;
@@ -41,50 +41,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
         #endregion
 
         #region Methods
-
-        /// <inheritdoc/>
-        public override void OnPublishNotification(NotificationMessage message)
-        {
-            switch (message.Type)
-            {
-                case MessageType.Movement:
-                    {
-                        //TEMP Send a notification about the start operation to all the world
-                        var newMessage = new NotificationMessage(null,
-                            string.Format("Start Positioning {0}", this.axisMovement),
-                            MessageActor.Any,
-                            MessageActor.FiniteStateMachines,
-                            MessageType.Positioning,
-                            MessageStatus.OperationStart,
-                            ErrorLevel.NoError,
-                            MessageVerbosity.Info);
-
-                        this.EventAggregator.GetEvent<NotificationEvent>().Publish(newMessage);
-                        break;
-                    }
-
-                case MessageType.Stop:
-                    {
-                        var msgStatus = (this.IsStopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd;
-                        //TEMP Send a notification about the end (/stop) operation to all the world
-                        var newMessage = new NotificationMessage(null,
-                            string.Format("End Positioning {0}", this.axisMovement),
-                            MessageActor.Any,
-                            MessageActor.FiniteStateMachines,
-                            MessageType.Stop,
-                            msgStatus,
-                            ErrorLevel.NoError,
-                            MessageVerbosity.Info);
-
-                        this.EventAggregator.GetEvent<NotificationEvent>().Publish(newMessage);
-                        break;
-                    }
-                default:
-                    {
-                        break;
-                    }
-            }
-        }
 
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
@@ -125,6 +81,50 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             }
 
             this.CurrentState?.ProcessNotificationMessage(message);
+        }
+
+        /// <inheritdoc/>
+        public override void PublishNotificationMessage(NotificationMessage message)
+        {
+            switch (message.Type)
+            {
+                case MessageType.Movement:
+                    {
+                        //TEMP Send a notification about the start operation to all the world
+                        var newMessage = new NotificationMessage(null,
+                            string.Format("Start Positioning {0}", this.axisMovement),
+                            MessageActor.Any,
+                            MessageActor.FiniteStateMachines,
+                            MessageType.Positioning,
+                            MessageStatus.OperationStart,
+                            ErrorLevel.NoError,
+                            MessageVerbosity.Info);
+
+                        this.EventAggregator.GetEvent<NotificationEvent>().Publish(newMessage);
+                        break;
+                    }
+
+                case MessageType.Stop:
+                    {
+                        var msgStatus = (this.IsStopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd;
+                        //TEMP Send a notification about the end (/stop) operation to all the world
+                        var newMessage = new NotificationMessage(null,
+                            string.Format("End Positioning {0}", this.axisMovement),
+                            MessageActor.Any,
+                            MessageActor.FiniteStateMachines,
+                            MessageType.Stop,
+                            msgStatus,
+                            ErrorLevel.NoError,
+                            MessageVerbosity.Info);
+
+                        this.EventAggregator.GetEvent<NotificationEvent>().Publish(newMessage);
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
         }
 
         /// <inheritdoc/>

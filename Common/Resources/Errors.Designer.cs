@@ -376,6 +376,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} Invalid Arguments.
+        /// </summary>
+        public static string EventServiceInvalidArguments {
+            get {
+                return ResourceManager.GetString("EventServiceInvalidArguments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ItemType was not specified..
         /// </summary>
         public static string ItemTypeWasNotSpecified {
@@ -525,6 +534,15 @@ namespace Ferretto.Common.Resources {
         public static string UnableToLoadData {
             get {
                 return ResourceManager.GetString("UnableToLoadData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to resolve entity {0}.
+        /// </summary>
+        public static string UnableToResolveEntity {
+            get {
+                return ResourceManager.GetString("UnableToResolveEntity", resourceCulture);
             }
         }
         

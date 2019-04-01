@@ -131,6 +131,8 @@ namespace Ferretto.VW.MAS_IODriver
                 this.pollIoTimer?.Dispose();
                 base.Dispose();
             }
+
+            this.disposed = true;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -170,7 +172,6 @@ namespace Ferretto.VW.MAS_IODriver
 
                 throw new IOException($"Exception: {ex.Message} Timer Creation Failed", ex);
             }
-
             this.currentStateMachine = new PowerUpStateMachine(this.ioCommandQueue, this.eventAggregator, this.logger);
             this.currentStateMachine.Start();
 
@@ -181,32 +182,28 @@ namespace Ferretto.VW.MAS_IODriver
                 {
                     this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
 
-                    this.logger.LogTrace(string.Format("3:{0}:{1}:{2}",
-                        receivedMessage.Type,
-                        receivedMessage.Destination,
-                        receivedMessage));
+                    this.logger.LogTrace($"3:Type={receivedMessage.Type}:Destination={receivedMessage.Destination}:receivedMessage={receivedMessage}");
                 }
                 catch (OperationCanceledException)
                 {
-                    this.logger.LogDebug("4:Method End");
+                    this.logger.LogDebug("4:Method End - Operation Canceled");
 
                     return Task.CompletedTask;
                 }
-
+                this.logger.LogTrace($"Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}");
                 if (this.currentStateMachine != null)
                 {
                     var errorNotification = new NotificationMessage(null, "I/O operation already in progress", MessageActor.Any,
                         MessageActor.IODriver, receivedMessage.Type, MessageStatus.OperationError, ErrorLevel.Error);
 
-                    this.logger.LogTrace(string.Format("5:{0}:{1}:{2}",
+                    this.logger.LogTrace($"5:Type={0}:Destination={1}:Status={2}",
                         errorNotification.Type,
                         errorNotification.Destination,
-                        errorNotification.Status));
+                        errorNotification.Status);
 
                     this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
                     continue;
                 }
-
                 switch (receivedMessage.Type)
                 {
                     case MessageType.SwitchAxis:
@@ -234,19 +231,15 @@ namespace Ferretto.VW.MAS_IODriver
                 try
                 {
                     this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
-
-                    this.logger.LogTrace(string.Format("2:{0}:{1}:{2}",
-                        receivedMessage.Type,
-                        receivedMessage.Destination,
-                        receivedMessage.Status));
+                    this.logger.LogTrace($"2:Type={receivedMessage.Type}:Destination={receivedMessage.Destination}:Status={receivedMessage.Status}");
                 }
                 catch (OperationCanceledException)
                 {
-                    this.logger.LogDebug("3:Method End");
+                    this.logger.LogDebug("3:Method End operation cancelled");
 
                     return;
                 }
-
+                this.logger.LogTrace($"Notification received: {receivedMessage.Type}, {receivedMessage.Status}, destination: {receivedMessage.Destination}");
                 switch (receivedMessage.Type)
                 {
                     case MessageType.DataLayerReady:
@@ -290,7 +283,7 @@ namespace Ferretto.VW.MAS_IODriver
                 }
                 catch (OperationCanceledException)
                 {
-                    this.logger.LogDebug("2:Method End");
+                    this.logger.LogDebug("2:Method End operation cancelled");
 
                     return;
                 }
@@ -315,7 +308,7 @@ namespace Ferretto.VW.MAS_IODriver
                 {
                     message = new IoMessage(this.inputData, true);
 
-                    this.logger.LogTrace(string.Format("4:{0}", message));
+                    this.logger.LogTrace($"4:{message}");
 
                     this.currentStateMachine?.ProcessMessage(message);
                 }
@@ -335,11 +328,11 @@ namespace Ferretto.VW.MAS_IODriver
                 {
                     this.ioCommandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out message);
 
-                    this.logger.LogTrace(string.Format("2:{0}", message));
+                    this.logger.LogTrace($"2:message={message}");
                 }
                 catch (OperationCanceledException)
                 {
-                    this.logger.LogDebug("3:Method End");
+                    this.logger.LogDebug("3:Method End operation cancelled");
 
                     return;
                 }
@@ -351,7 +344,7 @@ namespace Ferretto.VW.MAS_IODriver
                         await this.modbusTransport.WriteAsync(message.Outputs);
                     }
 
-                    this.logger.LogTrace(string.Format("4:{0}", message));
+                    this.logger.LogTrace($"4:message={message}");
 
                     this.currentStateMachine.ProcessMessage(message);
                 }
