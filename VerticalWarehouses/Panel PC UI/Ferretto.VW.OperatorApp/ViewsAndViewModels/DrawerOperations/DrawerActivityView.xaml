@@ -50,6 +50,7 @@
                                                     Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
                                                     LabelText="{x:Static Resources:OperatorApp.DrawerActivityQtyPick}" RenderTransformOrigin="0.499,0.627" />
         <Button     Content="{x:Static Resources:OperatorApp.DrawerActivityDetail}"
+                    Command="{Binding DrawerDetailsButtonCommand}"
             Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"
             HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,528,0,0" />
         <Button   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,220,20"

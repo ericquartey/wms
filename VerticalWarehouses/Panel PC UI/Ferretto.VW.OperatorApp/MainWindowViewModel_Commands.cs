@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Ferretto.VW.OperatorApp.Resources;
 using Ferretto.VW.OperatorApp.Resources.Enumerations;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels;
@@ -9,6 +7,7 @@ using Ferretto.VW.Utils.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Mvvm;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
 
 namespace Ferretto.VW.OperatorApp
 {
@@ -20,17 +19,17 @@ namespace Ferretto.VW.OperatorApp
 
         private ICommand backToVWAPPCommand;
 
+        private ICommand drawerActivityButtonCommand;
+
+        private ICommand itemSearchButtonCommand;
+
+        private ICommand listsInWaitButtonCommand;
+
         private ICommand machineModeCustomCommand;
 
         private ICommand machineOnMarchCustomCommand;
 
         private ICommand openHelpWindow;
-
-        private ICommand drawerActivityButtonCommand;
-
-        private ICommand listsInWaitButtonCommand;
-
-        private ICommand itemSearchButtonCommand;
 
         #endregion
 
@@ -39,8 +38,8 @@ namespace Ferretto.VW.OperatorApp
         public ICommand BackToMainWindowNavigationButtonsViewButtonCommand => this.backToMainWindowNavigationButtonsViewCommand ??
             (this.backToMainWindowNavigationButtonsViewCommand = new DelegateCommand(() =>
         {
-            this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
-            this.ContentRegionCurrentViewModel = (IdleViewModel)this.container.Resolve<IIdleViewModel>();
+            this.ChangeNavigationRegion<MainWindowNavigationButtonsViewModel, IMainWindowNavigationButtonsViewModel>();
+            this.NavigateToView<IdleViewModel, IIdleViewModel>();
             this.eventAggregator.GetEvent<OperatorApp_Event>().Publish(new OperatorApp_EventMessage(OperatorApp_EventMessageType.ExitView));
         }));
 
@@ -52,19 +51,14 @@ namespace Ferretto.VW.OperatorApp
             ClickedOnMachineOnMarchEventHandler = null;
         }));
 
-        public ICommand MachineModeCustomCommand => this.machineModeCustomCommand ?? (this.machineModeCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineModeEvent()));
-
-        public ICommand MachineOnMarchCustomCommand => this.machineOnMarchCustomCommand ?? (this.machineOnMarchCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineOnMarchEvent()));
-
-        public ICommand OpenHelpWindow => this.openHelpWindow ?? (this.openHelpWindow = new DelegateCommand(() =>
-        {
-            this.helpWindow.Show();
-            this.helpWindow.HelpContentRegion.Content = this.contentRegionCurrentViewModel;
-        }));
-
         public ICommand DrawerActivityButtonCommand => this.drawerActivityButtonCommand ?? (this.drawerActivityButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<DrawerActivityViewModel, IDrawerActivityViewModel>();
+            this.NavigateToView<DrawerOperationsMainViewModel, IDrawerOperationsMainViewModel>();
+        }));
+
+        public ICommand ItemSearchButtonCommand => this.itemSearchButtonCommand ?? (this.itemSearchButtonCommand = new DelegateCommand(() =>
+        {
+            this.NavigateToView<ItemSearchViewModel, IItemSearchViewModel>();
         }));
 
         public ICommand ListsInWaitButtonCommand => this.listsInWaitButtonCommand ?? (this.listsInWaitButtonCommand = new DelegateCommand(() =>
@@ -72,9 +66,14 @@ namespace Ferretto.VW.OperatorApp
             this.NavigateToView<ListsInWaitViewModel, IListsInWaitViewModel>();
         }));
 
-        public ICommand ItemSearchButtonCommand => this.itemSearchButtonCommand ?? (this.itemSearchButtonCommand = new DelegateCommand(() =>
+        public ICommand MachineModeCustomCommand => this.machineModeCustomCommand ?? (this.machineModeCustomCommand = new DelegateCommand(() => RaiseClickedOnMachineModeEvent()));
+
+        public ICommand MachineOnMarchCustomCommand => this.machineOnMarchCustomCommand ?? (this.machineOnMarchCustomCommand = new DelegateCommand(() => RaiseClickedOnMachineOnMarchEvent()));
+
+        public ICommand OpenHelpWindow => this.openHelpWindow ?? (this.openHelpWindow = new DelegateCommand(() =>
         {
-            this.NavigateToView<ItemSearchViewModel, IItemSearchViewModel>();
+            this.helpWindow.Show();
+            this.helpWindow.HelpContentRegion.Content = this.contentRegionCurrentViewModel;
         }));
 
         #endregion

@@ -4,6 +4,7 @@ using Prism.Modularity;
 using Prism.Events;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
 
 namespace Ferretto.VW.OperatorApp.Resources
 {
@@ -36,8 +37,8 @@ namespace Ferretto.VW.OperatorApp.Resources
             var immediateDrawerCallVMInstance = new ImmediateDrawerCallViewModel(container.Resolve<IEventAggregator>());
             var generalInfoVMInstance = new GeneralInfoViewModel(container.Resolve<IEventAggregator>());
             var drawerCompactingVMInstance = new DrawerCompactingViewModel(container.Resolve<IEventAggregator>());
-
-
+            var drawerOperationsMainVMInstance = new DrawerOperationsMainViewModel(container.Resolve<IEventAggregator>());
+            var drawerOperationsFooterVMInstance = new DrawerOperationsFooterViewModel(container.Resolve<IEventAggregator>());
 
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
@@ -54,10 +55,14 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IImmediateDrawerCallViewModel>(immediateDrawerCallVMInstance);
             this.container.RegisterInstance<IGeneralInfoViewModel>(generalInfoVMInstance);
             this.container.RegisterInstance<IDrawerCompactingViewModel>(drawerCompactingVMInstance);
-
+            this.container.RegisterInstance<IDrawerOperationsMainViewModel>(drawerOperationsMainVMInstance);
 
             mainWindowVMInstance.InitializeViewModel(this.container);
             mainWindowBackToOAPPButtonVMInstance.InitializeViewModel(this.container);
+            drawerOperationsMainVMInstance.InitializeViewModel(this.container);
+            drawerActivityVMInstance.InitializeViewModel(this.container);
+            drawerOperationsFooterVMInstance.InitializeViewModel(this.container);
+            mainWindowBackToOAPPButtonVMInstance.InitializeBottomButtons();
         }
 
         #endregion

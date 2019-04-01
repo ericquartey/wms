@@ -30,17 +30,17 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
 
         public void ExitFromViewMethod()
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         public void SubscribeMethodToEvent()
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         #endregion

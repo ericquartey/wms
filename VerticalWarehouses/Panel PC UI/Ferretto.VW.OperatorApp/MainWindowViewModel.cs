@@ -3,6 +3,7 @@ using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.Resources;
 using Ferretto.VW.OperatorApp.Resources.Enumerations;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels;
+using Ferretto.VW.Utils.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -18,9 +19,9 @@ namespace Ferretto.VW.OperatorApp
     {
         #region Fields
 
-        private readonly HelpMainWindow helpWindow;
-
         private readonly IEventAggregator eventAggregator;
+
+        private readonly HelpMainWindow helpWindow;
 
         private IUnityContainer container;
 
@@ -78,32 +79,52 @@ namespace Ferretto.VW.OperatorApp
 
         #region Methods
 
+        public void ChangeFooter<T, I>()
+            where T : BindableBase, I
+            where I : IViewModel
+        {
+            this.ExitViewButtonRegionCurrentViewModel = this.container.Resolve<I>() as T;
+        }
+
+        public void ChangeNavigationRegion<T, I>()
+            where T : BindableBase, I
+            where I : IViewModel
+        {
+            this.NavigationRegionCurrentViewModel = this.container.Resolve<I>() as T;
+        }
+
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
+            this.ChangeNavigationRegion<MainWindowNavigationButtonsViewModel, IMainWindowNavigationButtonsViewModel>();
             this.ExitViewButtonRegionCurrentViewModel = null;
-            this.ContentRegionCurrentViewModel = (IdleViewModel)this.container.Resolve<IIdleViewModel>();
+            this.ContentRegionCurrentViewModel = this.container.Resolve<IIdleViewModel>() as IdleViewModel;
             this.InitializeEvents();
         }
 
+        private static void RaiseClickedOnMachineModeEvent() => ClickedOnMachineModeEventHandler();
+
+        private static void RaiseClickedOnMachineOnMarchEvent() => ClickedOnMachineOnMarchEventHandler();
+
         private void InitializeEvents()
         {
-            this.eventAggregator.GetEvent<OperatorApp_Event>().Subscribe((message) =>
+            this.eventAggregator.GetEvent<OperatorApp_Event>().Subscribe(
+                (message) =>
             {
                 this.NavigationRegionCurrentViewModel = null;
-                this.ExitViewButtonRegionCurrentViewModel = (MainWindowBackToOAPPButtonViewModel)this.container.Resolve<IMainWindowBackToOAPPButtonViewModel>();
-                ((MainWindowBackToOAPPButtonViewModel)this.container.Resolve<IMainWindowBackToOAPPButtonViewModel>()).InitializeBottomButtons();
+                this.ChangeFooter<MainWindowBackToOAPPButtonViewModel, IMainWindowBackToOAPPButtonViewModel>();
+                this.container.Resolve<IMainWindowBackToOAPPButtonViewModel>().InitializeBottomButtons();
             },
             ThreadOption.PublisherThread,
             false,
             message => message.Type == OperatorApp_EventMessageType.EnterView);
 
-            this.eventAggregator.GetEvent<OperatorApp_Event>().Subscribe((message) =>
+            this.eventAggregator.GetEvent<OperatorApp_Event>().Subscribe(
+                (message) =>
             {
-                this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
+                this.ChangeNavigationRegion<MainWindowNavigationButtonsViewModel, IMainWindowNavigationButtonsViewModel>();
                 this.ExitViewButtonRegionCurrentViewModel = null;
-                ((MainWindowBackToOAPPButtonViewModel)this.container.Resolve<IMainWindowBackToOAPPButtonViewModel>()).FinalizeBottomButtons();
+                this.container.Resolve<IMainWindowBackToOAPPButtonViewModel>().FinalizeBottomButtons();
             },
             ThreadOption.PublisherThread,
             false,
@@ -114,10 +135,6 @@ namespace Ferretto.VW.OperatorApp
             ClickedOnMachineModeEventHandler += () => { };
             ClickedOnMachineOnMarchEventHandler += () => { };
         }
-
-        private void RaiseClickedOnMachineModeEvent() => ClickedOnMachineModeEventHandler();
-
-        private void RaiseClickedOnMachineOnMarchEvent() => ClickedOnMachineOnMarchEventHandler();
 
         #endregion
     }

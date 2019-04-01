@@ -8,11 +8,11 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.Interfaces
 {
-    public interface IMainWindowViewModel
+    public interface IDrawerOperationsMainViewModel : IViewModel
     {
         #region Methods
 
-        void ChangeFooter<T, I>()
+        void NavigateToView<T, I>()
             where T : BindableBase, I
             where I : IViewModel;
 
