@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading;
-using Ferretto.VW.Common_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.MAS_InverterDriver;
@@ -24,16 +22,21 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         public EndState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate, ILogger logger)
         {
+            logger.LogDebug("1:Method Start");
+
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
             this.logger = logger;
-            this.logger.LogTrace($"1-Constructor");
 
             var messageData = new CalibrateAxisMessageData(axisToCalibrate);
             var endNotification = new NotificationMessage(messageData, "Axis calibration complete", MessageActor.Any,
                 MessageActor.InverterDriver, MessageType.CalibrateAxis, MessageStatus.OperationEnd);
-            this.logger.LogTrace($"2-Constructor: published notification: {endNotification.Type}, {endNotification.Status}, {endNotification.Destination}");
+
+            this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
+
             this.parentStateMachine.PublishNotificationEvent(endNotification);
+
+            this.logger.LogDebug("3:Method End");
         }
 
         #endregion
@@ -43,13 +46,15 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override bool ProcessMessage(InverterMessage message)
         {
-            this.logger.LogTrace($"1-Message processed: {message.ParameterId}, {message.Payload}");
+            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace($"2:Is Error={message.IsError}:Axis to calibrate={this.axisToCalibrate}");
 
             if (message.IsError)
             {
-                this.logger.LogTrace($"2- Change State to ErrorState");
                 this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate, this.logger));
             }
+
+            this.logger.LogDebug("3:Method End");
 
             return true;
         }

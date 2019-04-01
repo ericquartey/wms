@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
             var resetSecurityIoMessage = new IoMessage(false);
 
-            this.logger.LogTrace(string.Format("2:{0}", resetSecurityIoMessage));
+            this.logger.LogTrace($"2:Reset Security IO={resetSecurityIoMessage}");
 
             resetSecurityIoMessage.SwitchElevatorMotor(true);
 
@@ -45,10 +45,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
                 var endNotification = new NotificationMessage(null, "I/O Powerup complete", MessageActor.Any,
                     MessageActor.IODriver, MessageType.IOPowerUp, MessageStatus.OperationEnd);
 
-                this.logger.LogTrace(string.Format("2:{0}:{1}:{2}",
-                    endNotification.Type,
-                    endNotification.Destination,
-                    endNotification.Status));
+                this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
                 this.parentStateMachine.PublishNotificationEvent(endNotification);
             }

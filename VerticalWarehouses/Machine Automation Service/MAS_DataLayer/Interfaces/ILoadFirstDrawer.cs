@@ -1,10 +1,12 @@
-﻿namespace Ferretto.VW.MAS_DataLayer.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace Ferretto.VW.MAS_DataLayer.Interfaces
 {
     public interface ILoadFirstDrawer
     {
         #region Properties
 
-        decimal FeedRate { get; }
+        Task<decimal> FeedRateLFD { get; }
 
         #endregion
     }

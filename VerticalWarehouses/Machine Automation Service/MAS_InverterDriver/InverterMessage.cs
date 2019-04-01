@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-using Ferretto.VW.Common_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Exceptions;
 
@@ -84,10 +83,10 @@ namespace Ferretto.VW.MAS_InverterDriver
                 BitConverter.ToInt16(rawMessage,
                     4); //VALUE parameterId is always stored starting at byte intex 4 in the byte array
 
-            this.payload = new byte[payloadLenght];
+            this.payload = new byte[this.payloadLenght];
             try
             {
-                Array.Copy(rawMessage, 6, this.payload, 0, payloadLenght);
+                Array.Copy(rawMessage, 6, this.payload, 0, this.payloadLenght);
             }
             catch (Exception ex)
             {
@@ -225,7 +224,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             readMessage[2] = this.SystemIndex;
             readMessage[3] = this.DataSetIndex;
 
-            if (this.parameterId.Equals(InverterParameterId.ControlWordParam) || IsWriteMessage)
+            if (this.parameterId.Equals(InverterParameterId.ControlWordParam) || this.IsWriteMessage)
             {
                 throw new InverterDriverException("Invalid Operation", InverterDriverExceptionCode.RequestReadOnWriteOnlyParameter);
             }
@@ -246,7 +245,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         public byte[] GetWriteMessage()
         {
-            if (this.parameterId.Equals(InverterParameterId.StatusWordParam) || !IsWriteMessage)
+            if (this.parameterId.Equals(InverterParameterId.StatusWordParam) || !this.IsWriteMessage)
             {
                 throw new InverterDriverException("Invalid Operation", InverterDriverExceptionCode.RequerstWriteOnReadOnlyParameter);
             }
@@ -282,6 +281,21 @@ namespace Ferretto.VW.MAS_InverterDriver
             }
 
             return writeMessage;
+        }
+
+        public override string ToString()
+        {
+            var returnString = new StringBuilder();
+
+            returnString.Append("InverterMessage:");
+
+            returnString.Append($"IsWriteMessage={this.IsWriteMessage}:");
+
+            returnString.Append($"parameterId={this.parameterId:X}:");
+
+            returnString.Append($"payloadLenght={this.payloadLenght:X}");
+
+            return returnString.ToString();
         }
 
         private object ConvertPayload()
