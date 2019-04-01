@@ -45,8 +45,6 @@ namespace Ferretto.VW.InstallationApp
 
         private IOSensorsStatus ioSensorsStatus;
 
-        
-
         private SubscriptionToken updateSensorsStateToken;
 
         #endregion
