@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Ferretto.VW.MAS_DataLayer.Interface
+namespace Ferretto.VW.MAS_DataLayer.Interfaces
 {
     public interface IGeneralInfo
     {

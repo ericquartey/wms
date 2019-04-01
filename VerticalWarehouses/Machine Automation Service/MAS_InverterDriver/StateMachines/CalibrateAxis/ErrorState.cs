@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading;
-using Ferretto.VW.Common_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.MAS_InverterDriver;
@@ -24,17 +22,22 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
 
         public ErrorState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate, ILogger logger)
         {
+            logger.LogDebug("1:Method Start");
+
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
             this.logger = logger;
-            this.logger.LogTrace($"1-Constructor");
 
             var messageData = new CalibrateAxisMessageData(this.axisToCalibrate);
 
             var errorNotification = new NotificationMessage(messageData, "Inverter operation error", MessageActor.Any,
                 MessageActor.InverterDriver, MessageType.CalibrateAxis, MessageStatus.OperationError, ErrorLevel.Error);
-            this.logger.LogTrace($"2-Constructor: published notification: {errorNotification.Type}, {errorNotification.Status}, {errorNotification.Destination}");
+
+            this.logger.LogTrace($"2:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
+
             parentStateMachine.PublishNotificationEvent(errorNotification);
+
+            this.logger.LogDebug("3:Method End");
         }
 
         #endregion
@@ -44,7 +47,8 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override bool ProcessMessage(InverterMessage message)
         {
-            this.logger.LogTrace($"Message processed: {message.ParameterId}, {message.Payload}");
+            this.logger.LogTrace($"1:message={message}");
+
             return false;
         }
 

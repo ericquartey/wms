@@ -62,7 +62,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
                 this.delayTimer = new Timer(this.DelayElapsed, null, PauseInterval, -1);    //VALUE -1 period means timer does not fire multiple times
             }
 
-            this.logger.LogTrace(string.Format("2:{0}:{1}:{2}", message.ValidOutputs, message.ElevatorMotorOn, message.CradleMotorOn));
+            this.logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Elevator motor on={message.ElevatorMotorOn}:Cradle motor on={message.CradleMotorOn}");
 
             base.ProcessMessage(message);
         }
@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
         public override void Start()
         {
             this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace(string.Format("2:{0}", this.switchOffOtherAxis));
+            this.logger.LogTrace($"2:Switch off other axis={this.switchOffOtherAxis}");
 
             if (this.switchOffOtherAxis)
             {

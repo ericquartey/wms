@@ -16,7 +16,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Prism.Events;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
@@ -84,6 +83,60 @@ namespace Ferretto.VW.MAS_AutomationService
                 provider.GetService<DataLayerContext>(),
                 provider.GetService<IEventAggregator>(),
                 provider.GetService<ILogger<DataLayer>>()));
+
+            services.AddSingleton<IBayPositionControl, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<IBeltBurnishing, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<ICellControl, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<IGeneralInfo, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<IHorizontalAxis, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<IHorizontalManualMovements, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<IHorizontalMovementBackwardProfile, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<IHorizontalMovementForwardProfile, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<ILoadFirstDrawer, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<IOffsetCalibration, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<IPanelControl, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<IResolutionCalibration, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<ISetupNetwork, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<ISetupStatus, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<IShutterHeightControl, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<IVerticalAxis, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<IVerticalManualMovements, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<IWeightControl, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
 
             services.AddSingleton<IHostedService, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);

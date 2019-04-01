@@ -46,7 +46,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
         public override void ProcessMessage(IoMessage message)
         {
             this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace(string.Format("2:{0}:{1}", message.ValidOutputs, message.ResetSecurity));
+            this.logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
 
             if (message.ValidOutputs && message.ResetSecurity)
             {
@@ -87,11 +87,11 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
             var pulseIoMessage = new IoMessage(false);
 
-            this.logger.LogTrace(string.Format("2:{0}", pulseIoMessage));
+            this.logger.LogTrace($"2:Pulse IO={pulseIoMessage}");
 
             this.EnqueueMessage(pulseIoMessage);
 
-            this.logger.LogDebug("3:Method Start");
+            this.logger.LogDebug("3:Method End");
         }
 
         #endregion
