@@ -46,8 +46,11 @@
       <None Remove="Resources\Views.xaml" />
       <None Remove="ViewsAndViewModels\DrawerActivityDetailView.xaml" />
       <None Remove="ViewsAndViewModels\DrawerActivityView.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerOperations\Details\DrawerActivityDetailView.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerOperations\DrawerActivityView.xaml" />
       <None Remove="ViewsAndViewModels\DrawerOperations\DrawerOperationsFooterView.xaml" />
       <None Remove="ViewsAndViewModels\DrawerOperations\DrawerOperationsMainView.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerOperations\DrawerWaitView.xaml" />
       <None Remove="ViewsAndViewModels\DrawerWaitView.xaml" />
       <None Remove="ViewsAndViewModels\IdleView.xaml" />
       <None Remove="ViewsAndViewModels\ImmediateDrawerCallView.xaml" />
@@ -58,6 +61,9 @@
       <None Remove="ViewsAndViewModels\MainWindowNavigationButtonsView.xaml" />
       <None Remove="ViewsAndViewModels\Other\DrawerCompactingView.xaml" />
       <None Remove="ViewsAndViewModels\Other\GeneralInfoView.xaml" />
+      <None Remove="ViewsAndViewModels\SearchItem\ItemDetailView.xaml" />
+      <None Remove="ViewsAndViewModels\SearchItem\ItemSearchView.xaml" />
+      <None Remove="ViewsAndViewModels\WaitingLists\ListsInWaitView.xaml" />
     </ItemGroup>
 
   <ItemGroup>
@@ -77,37 +83,16 @@
     <Compile Update="HelpWindows\HelpPageBase.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
-    <Compile Update="ViewsAndViewModels\DrawerOperations\DrawerActivityView.xaml.cs">
-      <DependentUpon>DrawerActivityView.xaml</DependentUpon>
-    </Compile>
     <Compile Update="ViewsAndViewModels\MainWindowNavigationButtonsView.xaml.cs">
       <DependentUpon>MainWindowNavigationButtonsView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="ViewsAndViewModels\DrawerOperations\Details\DrawerActivityDetailView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="ViewsAndViewModels\DrawerOperations\DrawerActivityView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="ViewsAndViewModels\DrawerOperations\DrawerWaitView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
     <None Update="ViewsAndViewModels\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
     <None Update="ViewsAndViewModels\Other\ImmediateDrawerCallView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="ViewsAndViewModels\SearchItem\ItemDetailView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="ViewsAndViewModels\SearchItem\ItemSearchView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="ViewsAndViewModels\WaitingLists\ListsInWaitView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
   </ItemGroup>

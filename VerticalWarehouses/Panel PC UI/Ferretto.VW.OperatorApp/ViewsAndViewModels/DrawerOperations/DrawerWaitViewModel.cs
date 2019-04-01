@@ -7,7 +7,7 @@ using Ferretto.VW.OperatorApp.Interfaces;
 using Prism.Events;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
+namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 {
     public class DrawerWaitViewModel : BindableBase, IDrawerWaitViewModel
     {
@@ -44,6 +44,5 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
         }
 
         #endregion
-
     }
 }

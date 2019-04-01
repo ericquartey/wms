@@ -113,7 +113,7 @@ namespace Ferretto.VW.OperatorApp
             {
                 this.NavigationRegionCurrentViewModel = null;
                 this.ChangeFooter<MainWindowBackToOAPPButtonViewModel, IMainWindowBackToOAPPButtonViewModel>();
-                this.container.Resolve<IMainWindowBackToOAPPButtonViewModel>().InitializeBottomButtons();
+                this.container.Resolve<IMainWindowBackToOAPPButtonViewModel>().InitializeButtons();
             },
             ThreadOption.PublisherThread,
             false,

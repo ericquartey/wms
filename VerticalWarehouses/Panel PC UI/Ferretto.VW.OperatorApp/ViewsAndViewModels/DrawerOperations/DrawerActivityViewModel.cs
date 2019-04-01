@@ -6,7 +6,7 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
+namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 {
     public class DrawerActivityViewModel : BindableBase, IDrawerActivityViewModel
     {

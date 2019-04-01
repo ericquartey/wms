@@ -5,6 +5,9 @@ using Prism.Events;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
 
 namespace Ferretto.VW.OperatorApp.Resources
 {
@@ -56,13 +59,16 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IGeneralInfoViewModel>(generalInfoVMInstance);
             this.container.RegisterInstance<IDrawerCompactingViewModel>(drawerCompactingVMInstance);
             this.container.RegisterInstance<IDrawerOperationsMainViewModel>(drawerOperationsMainVMInstance);
+            this.container.RegisterInstance<IDrawerOperationsFooterViewModel>(drawerOperationsFooterVMInstance);
 
             mainWindowVMInstance.InitializeViewModel(this.container);
             mainWindowBackToOAPPButtonVMInstance.InitializeViewModel(this.container);
             drawerOperationsMainVMInstance.InitializeViewModel(this.container);
             drawerActivityVMInstance.InitializeViewModel(this.container);
             drawerOperationsFooterVMInstance.InitializeViewModel(this.container);
-            mainWindowBackToOAPPButtonVMInstance.InitializeBottomButtons();
+
+            mainWindowBackToOAPPButtonVMInstance.InitializeButtons();
+            drawerOperationsFooterVMInstance.InitializeButtons();
         }
 
         #endregion

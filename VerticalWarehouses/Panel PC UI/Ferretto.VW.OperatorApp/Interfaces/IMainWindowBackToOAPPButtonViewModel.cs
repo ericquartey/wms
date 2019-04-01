@@ -20,7 +20,7 @@ namespace Ferretto.VW.OperatorApp.Interfaces
 
         void FinalizeBottomButtons();
 
-        void InitializeBottomButtons();
+        void InitializeButtons();
 
         #endregion
     }

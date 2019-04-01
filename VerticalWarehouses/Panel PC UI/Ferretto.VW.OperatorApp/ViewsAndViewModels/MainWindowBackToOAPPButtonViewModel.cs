@@ -48,7 +48,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
             this.BackButtonCommand = null;
         }
 
-        public void InitializeBottomButtons()
+        public void InitializeButtons()
         {
             this.BackButtonCommand = new CompositeCommand();
             this.BackButtonCommand.RegisterCommand(((MainWindowViewModel)this.container.Resolve<IMainWindowViewModel>()).BackToMainWindowNavigationButtonsViewButtonCommand);

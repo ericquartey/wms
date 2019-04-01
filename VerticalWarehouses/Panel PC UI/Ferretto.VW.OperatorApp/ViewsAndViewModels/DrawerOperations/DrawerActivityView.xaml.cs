@@ -13,10 +13,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
+namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 {
     /// <summary>
-    /// Logica di interazione per DrawerActivity.xaml
+    /// Interaction logic for DrawerActivityView.xaml
     /// </summary>
     public partial class DrawerActivityView : UserControl
     {

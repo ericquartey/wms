@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="Ferretto.VW.OperatorApp.ViewsAndViewModels.ListsInWaitView"
+﻿<UserControl x:Class="Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListsInWaitView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:local="clr-namespace:Ferretto.VW.OperatorApp"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists"
              xmlns:Resources="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
              xmlns:Controls="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
              xmlns:prism="http://prismlibrary.com/"
@@ -18,23 +18,23 @@
         <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,90,20,0"
                   Content="{x:Static Resources:OperatorApp.ListsInWaitUp}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        
+
         <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,160,20,0"
                   Content="{x:Static Resources:OperatorApp.ListsInWaitDown}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        
+
         <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,380,20,0"
                   Content="{x:Static Resources:OperatorApp.ListsInWaitDetail}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        
+
         <Button   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20"
                   Content="{x:Static Resources:OperatorApp.ListsInWaitExecute}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        
+
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,465,0,0" MaxWidth="500"
                                                ContentText="Lista non eseguibile nella macchina corrente"
                                                LabelText="{x:Static Resources:OperatorApp.ListsInWaitNote}"/>
-        
+
         <DataGrid HorizontalAlignment="Left" Height="350" Margin="170,90,0,0" VerticalAlignment="Top" Width="600" FontFamily="Helvetica Neue" FontSize="16"
                   Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
                   HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"

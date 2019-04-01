@@ -13,10 +13,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
+namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists
 {
     /// <summary>
-    /// Logica di interazione per ListsInWaitView.xaml
+    /// Interaction logic for ListsInWaitView.xaml
     /// </summary>
     public partial class ListsInWaitView : UserControl
     {

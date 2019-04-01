@@ -13,10 +13,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
+namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 {
     /// <summary>
-    /// Logica di interazione per ItemDetailView.xaml
+    /// Interaction logic for ItemDetailView.xaml
     /// </summary>
     public partial class ItemDetailView : UserControl
     {

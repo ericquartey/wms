@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.OperatorApp.Interfaces;
+﻿using System.Windows.Input;
+using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.Resources;
 using Ferretto.VW.OperatorApp.Resources.Enumerations;
 using Ferretto.VW.Utils.Interfaces;
@@ -14,6 +15,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
+
+        private ICommand backToMainWindowNavigationButtonsViewButtonCommand;
 
         private IUnityContainer container;
 
@@ -37,6 +40,9 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         #endregion
 
         #region Methods
+
+        public ICommand BackToMainWindowNavigationButtonsViewButtonCommand() => this.backToMainWindowNavigationButtonsViewButtonCommand ??
+            new DelegateCommand(() => { this.NavigateToView<DrawerActivityViewModel, IDrawerActivityViewModel>(); });
 
         public void ExitFromViewMethod()
         {

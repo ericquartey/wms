@@ -7,9 +7,9 @@ using Ferretto.VW.OperatorApp.Interfaces;
 using Prism.Events;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
+namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists
 {
-     public class ListsInWaitViewModel : BindableBase, IListsInWaitViewModel
+    public class ListsInWaitViewModel : BindableBase, IListsInWaitViewModel
     {
         #region Fields
 
@@ -44,6 +44,5 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
         }
 
         #endregion
-
     }
 }

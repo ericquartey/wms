@@ -31,12 +31,14 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         #region Properties
 
+        public CompositeCommand BackButtonCommand { get; set; }
+
         public ICommand BackToDrawerOperationsMainView => this.backToDrawerOperationsMainView ?? (this.backToDrawerOperationsMainView = new DelegateCommand(
             () =>
-            {
-                this.container.Resolve<IDrawerOperationsMainViewModel>().NavigateToView<DrawerActivityViewModel, IDrawerActivityViewModel>();
-            }
-            ));
+    {
+        this.container.Resolve<IDrawerOperationsMainViewModel>().NavigateToView<DrawerActivityViewModel, IDrawerActivityViewModel>();
+    }
+    ));
 
         #endregion
 
@@ -45,6 +47,12 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         public void ExitFromViewMethod()
         {
             // TODO
+        }
+
+        public void InitializeButtons()
+        {
+            this.BackButtonCommand = new CompositeCommand();
+            this.BackButtonCommand.RegisterCommand(this.container.Resolve<IDrawerOperationsMainViewModel>().BackToMainWindowNavigationButtonsViewButtonCommand());
         }
 
         public void InitializeViewModel(IUnityContainer container)
