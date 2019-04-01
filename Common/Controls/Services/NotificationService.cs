@@ -1,6 +1,7 @@
 using System;
 using System.Configuration;
 using System.Threading.Tasks;
+using System.Windows;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Resources;

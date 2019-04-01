@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
@@ -91,16 +92,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 
         private void ProcessEndPositioning(NotificationMessage message)
         {
-            if (this.parentStateMachine.OperationDone)
-            {
-                //TEMP The up&down procedure has been done completely
-                this.parentStateMachine.ChangeState(new UpDownEndState(this.parentStateMachine, this.upDownMessageData));
-            }
-            else
-            {
-                //TEMP Change to the Down state
-                this.parentStateMachine.ChangeState(new DownState(this.parentStateMachine, this.upDownMessageData));
-            }
+            //if (this.parentStateMachine.OperationDone)
+            //{
+            //    //TEMP The up&down procedure has been done completely
+            //    this.parentStateMachine.ChangeState(new UpDownEndState(this.parentStateMachine, this.upDownMessageData));
+            //}
+            //else
+            //{
+            //    //TEMP Change to the Down state
+            //    this.parentStateMachine.ChangeState(new DownState(this.parentStateMachine, this.upDownMessageData));
+            //}
         }
 
         #endregion

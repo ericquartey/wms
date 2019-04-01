@@ -27,14 +27,13 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
             this.parentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
             this.logger = logger;
-
-            this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - EndState:Ctor");
+            this.logger.LogTrace($"1-Constructor");
 
             var messageData = new CalibrateAxisMessageData(axisToCalibrate);
             var endNotification = new NotificationMessage(messageData, "Axis calibration complete", MessageActor.Any,
                 MessageActor.InverterDriver, MessageType.CalibrateAxis, MessageStatus.OperationEnd);
-            //this.parentStateMachine.PublishNotificationEvent(endNotification);
-            this.parentStateMachine.OnPublishNotification(endNotification);
+            this.logger.LogTrace($"2-Constructor: published notification: {endNotification.Type}, {endNotification.Status}, {endNotification.Destination}");
+            this.parentStateMachine.PublishNotificationEvent(endNotification);
         }
 
         #endregion
@@ -44,10 +43,11 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override bool ProcessMessage(InverterMessage message)
         {
-            this.logger?.LogTrace($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - EndState:ProcessMessage");
+            this.logger.LogTrace($"1-Message processed: {message.ParameterId}, {message.Payload}");
 
             if (message.IsError)
             {
+                this.logger.LogTrace($"2- Change State to ErrorState");
                 this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate, this.logger));
             }
 

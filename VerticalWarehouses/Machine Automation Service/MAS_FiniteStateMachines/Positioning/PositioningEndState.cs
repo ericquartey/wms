@@ -2,6 +2,7 @@
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 {
@@ -41,7 +42,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                 MessageStatus.OperationEnd,
                 ErrorLevel.NoError,
                 MessageVerbosity.Info);
-            this.parentStateMachine.OnPublishNotification(newMessage);
+            this.parentStateMachine.PublishNotificationMessage(newMessage);
         }
 
         #endregion
