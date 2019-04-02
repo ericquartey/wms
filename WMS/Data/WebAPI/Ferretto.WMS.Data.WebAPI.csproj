@@ -20,6 +20,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="2.2.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.6.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Api.Analyzers" Version="2.2.0" />
@@ -53,6 +54,7 @@
     <ProjectReference Include="..\..\..\Common\Utils\Ferretto.Common.Utils.csproj" />
     <ProjectReference Include="..\..\Scheduler\Core\Ferretto.WMS.Scheduler.Core.csproj" />
     <ProjectReference Include="..\Core\Ferretto.WMS.Data.Core.csproj" />
+    <ProjectReference Include="..\Hubs\Ferretto.WMS.Data.Hubs.csproj" />
   </ItemGroup>
 
   <ItemGroup>

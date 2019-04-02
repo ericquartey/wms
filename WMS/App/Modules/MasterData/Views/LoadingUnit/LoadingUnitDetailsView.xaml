@@ -75,7 +75,7 @@
                        HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
 
-            <wms:ActionBarItem Command="{Binding EditCommand}"
+            <wms:ActionBarItem Command="{Binding EditLoadingUnitCommand}"
                                Content="{x:Static res:General.Edit}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/editor/1x_web/ic_mode_edit_black_24dp.png"
@@ -92,7 +92,7 @@
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_undo_black_24dp.png"
                                GlyphSize="Custom" />
-            <wms:ActionBarItem Command="{Binding WithdrawCommand}"
+            <wms:ActionBarItem Command="{Binding WithdrawLoadingUnitCommand}"
                                Content="{x:Static res:MasterData.Withdraw}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_arrow_black_24dp.png"

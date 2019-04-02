@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Ferretto.VW.Common_Utils.Enumerations;
+using System.Text;
 using Ferretto.VW.MAS_IODriver.Enumerations;
 
 namespace Ferretto.VW.MAS_IODriver
@@ -142,7 +142,7 @@ namespace Ferretto.VW.MAS_IODriver
         {
             if (this.outputs == null)
             {
-                throw new ArgumentNullException(nameof(Outputs), "Message Digital Outputs are not initialized correctly");
+                throw new ArgumentNullException(nameof(this.Outputs), "Message Digital Outputs are not initialized correctly");
             }
 
             if (switchOn)
@@ -166,7 +166,7 @@ namespace Ferretto.VW.MAS_IODriver
         {
             if (this.outputs == null)
             {
-                throw new ArgumentNullException(nameof(Outputs), "Message Digital Outputs are not initialized correctly");
+                throw new ArgumentNullException(nameof(this.Outputs), "Message Digital Outputs are not initialized correctly");
             }
 
             if (switchOn)
@@ -190,12 +190,35 @@ namespace Ferretto.VW.MAS_IODriver
         {
             if (this.outputs == null)
             {
-                throw new ArgumentNullException(nameof(Outputs), "Message Digital Outputs are not initialized correctly");
+                throw new ArgumentNullException(nameof(this.Outputs), "Message Digital Outputs are not initialized correctly");
             }
 
             this.outputs[(int)IoPorts.ResetSecurity] = switchOn;
 
             return true;
+        }
+
+        public override string ToString()
+        {
+            var returnString = new StringBuilder();
+
+            returnString.Append("IoMessage:I[");
+
+            for (var i = 0; i < this.inputs?.Length; i++)
+            {
+                returnString.Append(string.Format("{0}.", this.inputs[i] ? "T" : "F"));
+            }
+
+            returnString.Append("]-O[");
+
+            for (var i = 0; i < this.outputs?.Length; i++)
+            {
+                returnString.Append(string.Format("{0}.", this.outputs[i] ? "T" : "F"));
+            }
+
+            returnString.Append("]");
+
+            return returnString.ToString();
         }
 
         #endregion

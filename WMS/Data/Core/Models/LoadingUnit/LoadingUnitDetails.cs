@@ -2,7 +2,7 @@ using System;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class LoadingUnitDetails : BaseModel<int>
+    public class LoadingUnitDetails : BaseModel<int>, ICountersLoadingUnit
     {
         #region Fields
 
@@ -82,6 +82,8 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int LoadingUnitTypeId { get; set; }
 
+        public int MissionsCount { get; set; }
+
         public string Note { get; set; }
 
         public int OtherCycleCount { get; set; }
@@ -89,6 +91,8 @@ namespace Ferretto.WMS.Data.Core.Models
         public int OutCycleCount { get; set; }
 
         public ReferenceType ReferenceType { get; set; }
+
+        public int SchedulerRequestsCount { get; set; }
 
         public int Weight
         {

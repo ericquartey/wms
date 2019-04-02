@@ -916,6 +916,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string ItemListRowStatus {
+            get {
+                return ResourceManager.GetString("ItemListRowStatus", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Completed.
         /// </summary>
         public static string ItemListRowStatusCompleted {
@@ -1940,7 +1949,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("MissionRequestedQuantity", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Completed.
         /// </summary>
@@ -1976,7 +1985,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("MissionStatusIncomplete", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to New.
         /// </summary>

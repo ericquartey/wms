@@ -4,6 +4,8 @@
     {
         #region Methods
 
+        void ShowErrorDialog(string title, string message, bool isError);
+
         /// <summary>
         /// Shows a message dialog and returns the button selected by user.
         /// </summary>

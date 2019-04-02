@@ -2,6 +2,7 @@
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines
@@ -13,6 +14,8 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
         protected IEventAggregator eventAggregator;
 
         protected BlockingConcurrentQueue<IoMessage> ioCommandQueue;
+
+        protected ILogger logger;
 
         private bool disposed = false;
 
@@ -59,6 +62,8 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
 
         public void PublishNotificationEvent(NotificationMessage notificationMessage)
         {
+            this.logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
+
             this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
         }
 

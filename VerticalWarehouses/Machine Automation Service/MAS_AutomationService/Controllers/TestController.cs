@@ -35,6 +35,22 @@ namespace Ferretto.VW.MAS_AutomationService
 
         #region Methods
 
+        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(500)]
+        [HttpGet("GetInstallationStatus")]
+        public ActionResult<bool[]> GetInstallationStatus()
+        {
+            bool[] installationStatus = { true, false, true, false, false, true, false, true, false, true, false, false, false, false, false };
+            if (installationStatus != null)
+            {
+                return this.Ok(installationStatus);
+            }
+            else
+            {
+                return this.StatusCode(500);
+            }
+        }
+
         [HttpGet("AddMissionTest")]
         public void AddMission()
         {
@@ -73,7 +89,12 @@ namespace Ferretto.VW.MAS_AutomationService
             await Task.Delay(2000);
             this.eventAggregator.GetEvent<NotificationEvent>()
                 .Publish(new NotificationMessage(null, "Horizontal Homing Executing", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationExecuting));
-            await Task.Delay(4000);
+            await Task.Delay(2000);
+
+            //TEMP this.eventAggregator.GetEvent<NotificationEvent>()
+            //TEMP     .Publish(new NotificationMessage(null, "Horizontal Homing Error", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationError));
+            //TEMP await Task.Delay(2000);
+
             this.eventAggregator.GetEvent<NotificationEvent>()
                 .Publish(new NotificationMessage(null, "Horizontal Homing Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationEnd));
             await Task.Delay(2000);
@@ -163,19 +184,19 @@ namespace Ferretto.VW.MAS_AutomationService
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(message);
         }
 
-        [HttpGet("StopFSM")]
-        public void StopFiniteStateMachine()
-        {
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Stop Homing",
-                MessageActor.FiniteStateMachines, MessageActor.AutomationService, MessageType.Stop,
-                MessageVerbosity.Info));
-        }
-
         [HttpGet("ResetIO")]
         public void ResetIO()
         {
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "ResetIO",
                 MessageActor.IODriver, MessageActor.AutomationService, MessageType.IOReset,
+                MessageVerbosity.Info));
+        }
+
+        [HttpGet("StopFSM")]
+        public void StopFiniteStateMachine()
+        {
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Stop Homing",
+                MessageActor.FiniteStateMachines, MessageActor.AutomationService, MessageType.Stop,
                 MessageVerbosity.Info));
         }
 

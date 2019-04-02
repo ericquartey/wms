@@ -2,9 +2,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Hubs;
+using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -12,7 +15,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class PackageTypesController :
-        ControllerBase,
+        BaseController,
         IReadAllController<PackageType>,
         IReadSingleController<PackageType, int>
     {
@@ -28,7 +31,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public PackageTypesController(
             ILogger<PackageTypesController> logger,
+            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             IPackageTypeProvider packageTypeProvider)
+            : base(hubContext)
         {
             this.logger = logger;
             this.packageTypeProvider = packageTypeProvider;

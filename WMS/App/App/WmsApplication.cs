@@ -11,6 +11,8 @@ using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
+using Ferretto.WMS.App.Core.Interfaces;
+using Ferretto.WMS.App.Core.Providers;
 using Prism;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -31,10 +33,10 @@ namespace Ferretto.WMS.App
 
         public static void RegisterTypes(IContainerRegistry containerRegistry, IContainerProvider container)
         {
-            containerRegistry.Register<IEventService, EventService>();
-            containerRegistry.Register<IImageProvider, ImageProvider>();
             var navigationService = container.Resolve<NavigationService>();
             containerRegistry.RegisterInstance<INavigationService>(navigationService);
+            var eventService = container.Resolve<EventService>();
+            containerRegistry.RegisterInstance<IEventService>(eventService);
             var inputService = container.Resolve<InputService>();
             containerRegistry.RegisterInstance<IInputService>(inputService);
             var dialogService = container.Resolve<DialogService>();

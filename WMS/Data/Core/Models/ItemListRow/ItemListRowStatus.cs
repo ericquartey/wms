@@ -2,8 +2,6 @@
 {
     public enum ItemListRowStatus
     {
-        NotSpecified,
-
         Waiting = 'W',
 
         Executing = 'E',

@@ -2,9 +2,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Hubs;
+using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -12,7 +15,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class AislesController :
-        ControllerBase,
+        BaseController,
         IReadAllController<Aisle>,
         IReadSingleController<Aisle, int>
     {
@@ -30,8 +33,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public AislesController(
             ILogger<AislesController> logger,
+            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             IAisleProvider aisleProvider,
             ICellProvider cellProvider)
+            : base(hubContext)
         {
             this.logger = logger;
             this.aisleProvider = aisleProvider;

@@ -88,7 +88,7 @@
                        HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
 
-            <wms:ActionBarItem Command="{Binding ListExecuteCommand}"
+            <wms:ActionBarItem Command="{Binding ExecuteListCommand}"
                                Content="{x:Static res:MasterData.ListExecute}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_arrow_black_24dp.png"
@@ -286,20 +286,20 @@
                                            HorizontalAlignment="Right"
                                            Style="{DynamicResource ActionBarNotCustomizable}">
 
-                                <wms:ActionBarItem Command="{Binding ListRowExecuteCommand}"
+                                <wms:ActionBarItem Command="{Binding ExecuteListRowCommand}"
                                                    Content="{x:Static res:MasterData.ItemListRowExecute}"
                                                    CustomGlyphSize="24,24"
                                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_arrow_black_24dp.png"
                                                    GlyphSize="Custom"
                                                    Reason="{Binding ExecuteRowReason}" />
 
-                                <wms:ActionBarItem Command="{Binding ShowDetailsListRowCommand}"
+                                <wms:ActionBarItem Command="{Binding ShowListRowDetailsCommand}"
                                                    Content="{x:Static res:MasterData.ItemListRowShowDetails}"
                                                    CustomGlyphSize="24,24"
                                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_info_outline_black_24dp.png"
                                                    GlyphSize="Custom" />
 
-                                <wms:ActionBarItem Command="{Binding DeleteCommand}"
+                                <wms:ActionBarItem Command="{Binding DeleteListRowCommand}"
                                                    Content="{x:Static res:General.Delete}"
                                                    CustomGlyphSize="24,24"
                                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_delete_black_24dp.png"
@@ -311,7 +311,6 @@
                                                    CustomGlyphSize="24,24"
                                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_add_box_black_24dp.png"
                                                    GlyphSize="Custom"
-                                                   IsEnabled="False"
                                                    Reason="{Binding AddRowReason}" />
                             </wms:ActionBar>
                         </Grid>
@@ -356,7 +355,7 @@
                                                 CellDisplayTemplate="{StaticResource CellDisplayTemplateDispatchedQuantity}"
                                                 FieldName="DispatchedQuantity" />
                                 <dxg:GridColumn Width="120*"
-                                                FieldName="ItemListRowStatus" />
+                                                FieldName="Status" />
                                 <dxg:GridColumn Width="120*"
                                                 FieldName="MaterialStatusDescription" />
                                 <dxg:GridColumn Width="150*"

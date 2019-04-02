@@ -14,12 +14,11 @@ namespace Ferretto.WMS.App.Core.Interfaces
         IDeleteAsyncProvider<ItemListRowDetails, int>
     {
         #region Methods
-
-        Task<ActionModel> CanDeleteAsync(int id);
-
         Task<IOperationResult<ItemListRow>> ExecuteImmediatelyAsync(int listRowId, int areaId, int bayId);
 
         Task<IEnumerable<ItemListRow>> GetByItemListIdAsync(int id);
+
+        Task<ItemListRowDetails> GetNewAsync(int idList);
 
         Task<IOperationResult<ItemListRow>> ScheduleForExecutionAsync(int listRowId, int areaId);
 

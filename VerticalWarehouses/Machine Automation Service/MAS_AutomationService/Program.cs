@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore;
+﻿using System;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
@@ -19,8 +20,7 @@ namespace Ferretto.VW.MAS_AutomationService
                     logging.AddConsole();
                 })
                 .UseNLog()
-                .UseStartup<Startup>()
-            ;
+                .UseStartup<Startup>();
         }
 
         public static void Main(string[] args)

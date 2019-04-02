@@ -44,7 +44,7 @@
                        HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
 
-            <wms:ActionBarItem Command="{Binding WithdrawCommand}"
+            <wms:ActionBarItem Command="{Binding WithdrawItemCommand}"
                                Content="{x:Static res:MasterData.Withdraw}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_arrow_black_24dp.png"
@@ -63,7 +63,7 @@
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_undo_black_24dp.png"
                                GlyphSize="Custom" />
 
-            <wms:ActionBarItem Command="{Binding DeleteCommand}"
+            <wms:ActionBarItem Command="{Binding DeleteItemCommand}"
                                Content="{x:Static res:General.Delete}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_delete_black_24dp.png"
@@ -328,34 +328,41 @@
                       Visibility="{Binding Model, Converter={StaticResource RTVC}}">
 
             <Border Style="{StaticResource InfoBoxBorderStyle}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <GroupBox Margin="20,0"
+                              Header="{x:Static res:MasterData.Image}">
 
-                <GroupBox Margin="20,0"
-                          Header="{x:Static res:MasterData.OtherInformation}">
-                    <StackPanel Orientation="Vertical">
                         <wms:WmsImageEdit MaxWidth="300"
                                           MaxHeight="400"
                                           BorderBrush="{DynamicResource CommonSecondaryLight}"
                                           BorderThickness="1"
+                                          CommandAction="{Binding SaveCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                           Filename="{Binding Path=Model.Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           Path="{Binding Path=Model.ImagePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <wms:InfoText HorizontalAlignment="Left"
-                                      Content="{Binding Path=Model.CreationDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"
-                                      Content="{Binding Path=Model.LastModificationDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"
-                                      Content="{Binding Path=Model.InventoryDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"
-                                      Content="{Binding Path=Model.LastPickDate}" />
-                        <wms:InfoText HorizontalAlignment="Left"
-                                      Content="{Binding Path=Model.LastStoreDate}" />
-                    </StackPanel>
-
-                </GroupBox>
-
+                    </GroupBox>
+                    <GroupBox Grid.Row="1"
+                              Margin="20,0"
+                              Header="{x:Static res:MasterData.OtherInformation}">
+                        <StackPanel Orientation="Vertical">
+                            <wms:InfoText HorizontalAlignment="Left"
+                                          Content="{Binding Path=Model.CreationDate}" />
+                            <wms:InfoText HorizontalAlignment="Left"
+                                          Content="{Binding Path=Model.LastModificationDate}" />
+                            <wms:InfoText HorizontalAlignment="Left"
+                                          Content="{Binding Path=Model.InventoryDate}" />
+                            <wms:InfoText HorizontalAlignment="Left"
+                                          Content="{Binding Path=Model.LastPickDate}" />
+                            <wms:InfoText HorizontalAlignment="Left"
+                                          Content="{Binding Path=Model.LastStoreDate}" />
+                        </StackPanel>
+                    </GroupBox>
+                </Grid>
             </Border>
-
         </ScrollViewer>
-
     </Grid>
-
 </wms:WmsView>

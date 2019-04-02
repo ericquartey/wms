@@ -246,10 +246,12 @@ namespace Ferretto.Common.Controls
 
         private void WmsMainDockLayoutManager_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            if ((string.IsNullOrEmpty(this.StartModuleName)
-                && string.IsNullOrEmpty(this.StartViewName)
-                && this.navigationService.IsUnitTest) == false)
+            if (string.IsNullOrEmpty(this.StartModuleName) == false &&
+                string.IsNullOrEmpty(this.StartViewName) == false &&
+                this.navigationService.IsUnitTest == false)
             {
+                var notificationService = ServiceLocator.Current.GetInstance<INotificationService>();
+                notificationService.CheckForDataErrorConnection();
                 this.navigationService.Appear(this.StartModuleName, this.StartViewName);
             }
         }

@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Exceptions;
+using Ferretto.VW.MAS_Utils.Exceptions;
 
 namespace Ferretto.VW.MAS_InverterDriver.Interface
 {

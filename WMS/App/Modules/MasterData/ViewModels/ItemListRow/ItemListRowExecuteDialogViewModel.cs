@@ -26,7 +26,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool isBusy;
 
-        private ICommand runListRowExecuteCommand;
+        private ICommand executeListRowCommand;
 
         #endregion
 
@@ -71,10 +71,10 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.isBusy, value);
         }
 
-        public ICommand RunListRowExecuteCommand => this.runListRowExecuteCommand ??
-                    (this.runListRowExecuteCommand = new DelegateCommand(
-                         async () => await this.ExecuteListRowCommandAsync(),
-                         this.CanExecuteListRowCommand));
+        public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
+            (this.executeListRowCommand = new DelegateCommand(
+                async () => await this.ExecuteListRowAsync(),
+                this.CanExecuteListRow));
 
         #endregion
 
@@ -95,13 +95,13 @@ namespace Ferretto.WMS.Modules.MasterData
             this.executionRequest.PropertyChanged += this.OnAreaIdChanged;
         }
 
-        private bool CanExecuteListRowCommand()
+        private bool CanExecuteListRow()
         {
             this.RaisePropertyChanged(nameof(this.executionRequest.Error));
             return string.IsNullOrEmpty(this.executionRequest.Error);
         }
 
-        private async Task ExecuteListRowCommandAsync()
+        private async Task ExecuteListRowAsync()
         {
             Debug.Assert(this.executionRequest.AreaId.HasValue, "The parameter must always have a value.");
 
@@ -141,7 +141,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void OnItemListRowPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            ((DelegateCommand)this.RunListRowExecuteCommand)?.RaiseCanExecuteChanged();
+            ((DelegateCommand)this.ExecuteListRowCommand)?.RaiseCanExecuteChanged();
         }
 
         #endregion

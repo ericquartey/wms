@@ -80,7 +80,7 @@
                                HorizontalAlignment="Left"
                                Style="{DynamicResource ActionBarNotCustomizable}">
 
-                    <wms:ActionBarItem Command="{Binding ShowDetailsCommand}"
+                    <wms:ActionBarItem Command="{Binding ShowLoadingUnitDetailsCommand}"
                                        Content="{x:Static res:General.ShowDetails}"
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_info_outline_black_24dp.png"
@@ -91,7 +91,7 @@
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_add_circle_outline_black_24dp.png"
                                        GlyphSize="Custom"
                                        Reason="{Binding AddReason}" />
-                    <wms:ActionBarItem Command="{Binding WithdrawCommand}"
+                    <wms:ActionBarItem Command="{Binding WithdrawLoadingUnitCommand}"
                                        Content="{x:Static res:MasterData.Withdraw}"
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_arrow_black_24dp.png"
