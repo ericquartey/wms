@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalMovingDrawer
 {
@@ -39,6 +40,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalMovingDrawer
                         this.movingDrawer));
 
             return false;
+        }
+
+        public override void Stop()
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion

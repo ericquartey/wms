@@ -10,6 +10,7 @@ using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_AutomationService
@@ -24,6 +25,8 @@ namespace Ferretto.VW.MAS_AutomationService
 
         private readonly IHubContext<InstallationHub, IInstallationHub> hub;
 
+        private readonly ILogger logger;
+
         private readonly BlockingConcurrentQueue<CommandMessage> messageQueue;
 
         private ManualResetEventSlim messageReceived;
@@ -34,10 +37,12 @@ namespace Ferretto.VW.MAS_AutomationService
 
         #region Constructors
 
-        public AutomationService(IEventAggregator eventAggregator, IHubContext<InstallationHub, IInstallationHub> hub)
+        public AutomationService(IEventAggregator eventAggregator, IHubContext<InstallationHub, IInstallationHub> hub, ILogger<AutomationService> logger)
         {
             this.eventAggregator = eventAggregator;
             this.hub = hub;
+
+            this.logger = logger;
 
             this.messageReceived = new ManualResetEventSlim(false);
             this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
@@ -46,6 +51,8 @@ namespace Ferretto.VW.MAS_AutomationService
             this.commadReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
 
             this.InitializeMethodSubscription();
+
+            this.logger?.LogInformation("Automation Service Constructor");
         }
 
         #endregion

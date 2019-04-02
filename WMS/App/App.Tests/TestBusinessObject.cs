@@ -1,4 +1,4 @@
-﻿using Ferretto.Common.BusinessModels;
+﻿using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.App.Tests
 {

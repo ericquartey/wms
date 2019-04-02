@@ -15,27 +15,27 @@ namespace Ferretto.WMS.Scheduler.Core.Models
         {
             get
             {
-                if (this.Rows.All(r => r.Status == ListRowStatus.Completed))
+                if (this.Rows.All(r => r.Status == ItemListRowStatus.Completed))
                 {
                     return ListStatus.Completed;
                 }
 
-                if (this.Rows.Any(r => r.Status == ListRowStatus.Executing))
+                if (this.Rows.Any(r => r.Status == ItemListRowStatus.Executing))
                 {
                     return ListStatus.Executing;
                 }
 
-                if (this.Rows.Any(r => r.Status == ListRowStatus.Suspended))
+                if (this.Rows.Any(r => r.Status == ItemListRowStatus.Suspended))
                 {
                     return ListStatus.Waiting;
                 }
 
-                if (this.Rows.Any(r => r.Status == ListRowStatus.Incomplete))
+                if (this.Rows.Any(r => r.Status == ItemListRowStatus.Incomplete))
                 {
                     return ListStatus.Incomplete;
                 }
 
-                if (this.Rows.Any(r => r.Status == ListRowStatus.Waiting))
+                if (this.Rows.Any(r => r.Status == ItemListRowStatus.Waiting))
                 {
                     return ListStatus.Waiting;
                 }

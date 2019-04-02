@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils;
+using Ferretto.VW.MAS_DataLayer.Enumerations;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
@@ -10,146 +14,24 @@ namespace Ferretto.VW.MAS_DataLayer
         #region Methods
 
         /// <inheritdoc/>
-        public DataTypeEnum ConvertConfigurationValue(ConfigurationValueEnum configurationValueEnum)
-        {
-            DataTypeEnum returnValue;
-
-            switch (configurationValueEnum)
-            {
-                // INFO General info variables
-                case ConfigurationValueEnum.Address:
-                case ConfigurationValueEnum.City:
-                case ConfigurationValueEnum.Client_Code:
-                case ConfigurationValueEnum.Client_Name:
-                case ConfigurationValueEnum.Country:
-                case ConfigurationValueEnum.Latitude:
-                case ConfigurationValueEnum.Longitude:
-                case ConfigurationValueEnum.Model:
-                case ConfigurationValueEnum.Order:
-                case ConfigurationValueEnum.Province:
-                case ConfigurationValueEnum.Serial:
-                    {
-                        returnValue = DataTypeEnum.stringType;
-                        break;
-                    }
-
-                // INFO General info variables
-                case ConfigurationValueEnum.Alfa_Num_1:
-                case ConfigurationValueEnum.Alfa_Num_2:
-                case ConfigurationValueEnum.Alfa_Num_3:
-                case ConfigurationValueEnum.Laser_1:
-                case ConfigurationValueEnum.Laser_2:
-                case ConfigurationValueEnum.Laser_3:
-                case ConfigurationValueEnum.WMS_ON:
-                // INFO Installation Info
-                case ConfigurationValueEnum.Belt_Burnishing:
-                case ConfigurationValueEnum.Machine_Ok:
-                case ConfigurationValueEnum.Shutter_1_Ok:
-                case ConfigurationValueEnum.Shutter_2_Ok:
-                case ConfigurationValueEnum.Shutter_3_Ok:
-                case ConfigurationValueEnum.Laser_1_Ok:
-                case ConfigurationValueEnum.Laser_2_Ok:
-                case ConfigurationValueEnum.Laser_3_Ok:
-                case ConfigurationValueEnum.Shape_1_Ok:
-                case ConfigurationValueEnum.Shape_2_Ok:
-                case ConfigurationValueEnum.Shape_3_Ok:
-                case ConfigurationValueEnum.Weight_Check:
-                case ConfigurationValueEnum.Origin_Y_Axis:
-                case ConfigurationValueEnum.Origin_Z_Axis:
-                case ConfigurationValueEnum.Check_Y_Offset:
-                case ConfigurationValueEnum.Cells_Check:
-                case ConfigurationValueEnum.Check_Shelf_Panel:
-                case ConfigurationValueEnum.Check_Bay_1:
-                case ConfigurationValueEnum.Check_Bay_2:
-                case ConfigurationValueEnum.Check_Bay_3:
-                case ConfigurationValueEnum.Load_First_Drawer:
-                case ConfigurationValueEnum.Load_Empty_Drawers:
-                case ConfigurationValueEnum.Set_Y_Resolution:
-                    {
-                        returnValue = DataTypeEnum.booleanType;
-                        break;
-                    }
-
-                case ConfigurationValueEnum.InverterPort:
-                case ConfigurationValueEnum.IoPort:
-                // INFO General info variables
-                case ConfigurationValueEnum.Bays_Quantity:
-                case ConfigurationValueEnum.Machine_Number_In_Area:
-                case ConfigurationValueEnum.Type_Bay_1:
-                case ConfigurationValueEnum.Type_Bay_2:
-                case ConfigurationValueEnum.Type_Bay_3:
-                case ConfigurationValueEnum.Type_Shutter_1:
-                case ConfigurationValueEnum.Type_Shutter_2:
-                case ConfigurationValueEnum.Type_Shutter_3:
-                case ConfigurationValueEnum.Drawers:
-                case ConfigurationValueEnum.Carrying_Capacity:
-                    {
-                        returnValue = DataTypeEnum.integerType;
-                        break;
-                    }
-
-                case ConfigurationValueEnum.cellSpacing:
-                case ConfigurationValueEnum.resolution:
-                // INFO General info variables
-                case ConfigurationValueEnum.Height:
-                case ConfigurationValueEnum.Height_Bay_1_Position_1:
-                case ConfigurationValueEnum.Height_Bay_1_Position_2:
-                case ConfigurationValueEnum.Height_Bay_2_Position_1:
-                case ConfigurationValueEnum.Height_Bay_2_Position_2:
-                case ConfigurationValueEnum.Height_Bay_3_Position_1:
-                case ConfigurationValueEnum.Height_Bay_3_Position_2:
-                case ConfigurationValueEnum.Bay_1_Position_1:
-                case ConfigurationValueEnum.Bay_1_Position_2:
-                case ConfigurationValueEnum.Bay_2_Position_1:
-                case ConfigurationValueEnum.Bay_2_Position_2:
-                case ConfigurationValueEnum.Bay_3_Position_1:
-                case ConfigurationValueEnum.Bay_3_Position_2:
-                    {
-                        returnValue = DataTypeEnum.decimalType;
-                        break;
-                    }
-
-                // INFO General info variables
-                case ConfigurationValueEnum.Installation_Date:
-                    {
-                        returnValue = DataTypeEnum.dateTimeType;
-                        break;
-                    }
-
-                case ConfigurationValueEnum.InverterAddress:
-                case ConfigurationValueEnum.IoAddress:
-                    {
-                        returnValue = DataTypeEnum.IPAddressType;
-                        break;
-                    }
-
-                // INFO Unknow variable type
-                default:
-                    {
-                        returnValue = DataTypeEnum.UndefinedType;
-                        break;
-                    }
-            }
-
-            return returnValue;
-        }
-
-        /// <inheritdoc/>
-        public bool GetBoolConfigurationValue(ConfigurationValueEnum configurationValueEnum)
+        public async Task<bool> GetBoolConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum)
         {
             var returnBoolValue = false;
 
-            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Boolean))
+                throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+
+            var configurationValue = await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
 
             if (configurationValue != null)
             {
-                if (configurationValue.VarType == DataTypeEnum.booleanType)
+                if (configurationValue.VarType == ConfigurationDataType.Boolean)
                 {
                     if (!bool.TryParse(configurationValue.VarValue, out returnBoolValue))
-                        throw new InMemoryDataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
+                        throw new DataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
                 }
                 else
-                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                    throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
             }
             else
                 throw new ArgumentNullException();
@@ -158,21 +40,24 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public bool GetBoolRuntimeValue(RuntimeValueEnum runtimeValueEnum)
+        public async Task<bool> GetBoolRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum)
         {
             var returnBoolValue = false;
 
-            var runtimeValue = this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
+            if (!this.CheckConfigurationDataType(runtimeValueEnum, categoryValueEnum, ConfigurationDataType.Boolean))
+                throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+
+            var runtimeValue = await this.primaryDataContext.RuntimeValues.FirstOrDefaultAsync(s => s.VarName == runtimeValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
 
             if (runtimeValue != null)
             {
-                if (runtimeValue.VarType == DataTypeEnum.booleanType)
+                if (runtimeValue.VarType == ConfigurationDataType.Boolean)
                 {
                     if (!bool.TryParse(runtimeValue.VarValue, out returnBoolValue))
-                        throw new InMemoryDataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
+                        throw new DataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
                 }
                 else
-                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                    throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
             }
             else
                 throw new ArgumentNullException();
@@ -181,21 +66,24 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public DateTime GetDateTimeConfigurationValue(ConfigurationValueEnum configurationValueEnum)
+        public async Task<DateTime> GetDateTimeConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum)
         {
             DateTime returnDateTimeValue;
 
-            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Date))
+                throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+
+            var configurationValue = await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
 
             if (configurationValue != null)
             {
-                if (configurationValue.VarType == DataTypeEnum.dateTimeType)
+                if (configurationValue.VarType == ConfigurationDataType.Date)
                 {
                     if (!DateTime.TryParse(configurationValue.VarValue, out returnDateTimeValue))
-                        throw new InMemoryDataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
+                        throw new DataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
                 }
                 else
-                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                    throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
             }
             else
                 throw new ArgumentNullException();
@@ -204,21 +92,24 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public DateTime GetDateTimeRuntimeValue(RuntimeValueEnum runtimeValueEnum)
+        public async Task<DateTime> GetDateTimeRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum)
         {
             DateTime returnDateTimeValue;
 
-            var runtimeValue = this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
+            if (!this.CheckConfigurationDataType(runtimeValueEnum, categoryValueEnum, ConfigurationDataType.Date))
+                throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+
+            var runtimeValue = await this.primaryDataContext.RuntimeValues.FirstOrDefaultAsync(s => s.VarName == runtimeValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
 
             if (runtimeValue != null)
             {
-                if (runtimeValue.VarType == DataTypeEnum.dateTimeType)
+                if (runtimeValue.VarType == ConfigurationDataType.Date)
                 {
                     if (!DateTime.TryParse(runtimeValue.VarValue, out returnDateTimeValue))
-                        throw new InMemoryDataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
+                        throw new DataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
                 }
                 else
-                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                    throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
             }
             else
                 throw new ArgumentNullException();
@@ -227,21 +118,24 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public decimal GetDecimalConfigurationValue(ConfigurationValueEnum configurationValueEnum)
+        public async Task<decimal> GetDecimalConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum)
         {
             decimal returnDecimalValue = 0;
 
-            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Float))
+                throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+
+            var configurationValue = await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
 
             if (configurationValue != null)
             {
-                if (configurationValue.VarType == DataTypeEnum.decimalType)
+                if (configurationValue.VarType == ConfigurationDataType.Float)
                 {
                     if (!decimal.TryParse(configurationValue.VarValue, out returnDecimalValue))
-                        throw new InMemoryDataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
+                        throw new DataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
                 }
                 else
-                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                    throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
             }
             else
                 throw new ArgumentNullException();
@@ -250,22 +144,25 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public decimal GetDecimalRuntimeValue(RuntimeValueEnum runtimeValueEnum)
+        public async Task<decimal> GetDecimalRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum)
         {
             decimal returnDecimalValue = 0;
 
+            if (!this.CheckConfigurationDataType(runtimeValueEnum, categoryValueEnum, ConfigurationDataType.Float))
+                throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+
             var runtimeValue =
-                this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
+                await this.primaryDataContext.RuntimeValues.FirstOrDefaultAsync(s => s.VarName == runtimeValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
 
             if (runtimeValue != null)
             {
-                if (runtimeValue.VarType == DataTypeEnum.decimalType)
+                if (runtimeValue.VarType == ConfigurationDataType.Float)
                 {
                     if (!decimal.TryParse(runtimeValue.VarValue, out returnDecimalValue))
-                        throw new InMemoryDataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
+                        throw new DataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
                 }
                 else
-                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                    throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
             }
             else
                 throw new ArgumentNullException();
@@ -274,22 +171,25 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public int GetIntegerConfigurationValue(ConfigurationValueEnum configurationValueEnum)
+        public async Task<int> GetIntegerConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum)
         {
             var returnIntegerValue = 0;
 
+            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Integer))
+                throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+
             var configurationValue =
-                this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+                await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
 
             if (configurationValue != null)
             {
-                if (configurationValue.VarType == DataTypeEnum.integerType)
+                if (configurationValue.VarType == ConfigurationDataType.Integer)
                 {
                     if (!int.TryParse(configurationValue.VarValue, out returnIntegerValue))
-                        throw new InMemoryDataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
+                        throw new DataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
                 }
                 else
-                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                    throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
             }
             else
                 throw new ArgumentNullException();
@@ -298,22 +198,25 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public int GetIntegerRuntimeValue(RuntimeValueEnum runtimeValueEnum)
+        public async Task<int> GetIntegerRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum)
         {
             var returnIntegerValue = 0;
 
+            if (!this.CheckConfigurationDataType(runtimeValueEnum, categoryValueEnum, ConfigurationDataType.Integer))
+                throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+
             var runtimeValue =
-                this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
+                await this.primaryDataContext.RuntimeValues.FirstOrDefaultAsync(s => s.VarName == runtimeValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
 
             if (runtimeValue != null)
             {
-                if (runtimeValue.VarType == DataTypeEnum.integerType)
+                if (runtimeValue.VarType == ConfigurationDataType.Integer)
                 {
                     if (!int.TryParse(runtimeValue.VarValue, out returnIntegerValue))
-                        throw new InMemoryDataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
+                        throw new DataLayerException(DataLayerExceptionEnum.PARSE_EXCEPTION);
                 }
                 else
-                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                    throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
             }
             else
                 throw new ArgumentNullException();
@@ -322,19 +225,22 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public IPAddress GetIPAddressConfigurationValue(ConfigurationValueEnum configurationValueEnum)
+        public async Task<IPAddress> GetIPAddressConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum)
         {
             IPAddress returnIPAddressValue;
 
+            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.IPAddress))
+                throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+
             var configurationValue =
-                this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+                await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
 
             if (configurationValue != null)
             {
-                if (configurationValue.VarType == DataTypeEnum.IPAddressType)
+                if (configurationValue.VarType == ConfigurationDataType.IPAddress)
                     returnIPAddressValue = IPAddress.Parse(configurationValue.VarValue);
                 else
-                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                    throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
             }
             else
                 throw new ArgumentNullException();
@@ -343,19 +249,21 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public string GetStringConfigurationValue(ConfigurationValueEnum configurationValueEnum)
+        public async Task<string> GetStringConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum)
         {
             var returnStringValue = "";
 
-            var configurationValue =
-                this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.String))
+                throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+
+            var configurationValue = await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
 
             if (configurationValue != null)
             {
-                if (configurationValue.VarType == DataTypeEnum.stringType)
+                if (configurationValue.VarType == ConfigurationDataType.String)
                     returnStringValue = configurationValue.VarValue;
                 else
-                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                    throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
             }
             else
                 throw new ArgumentNullException();
@@ -364,21 +272,24 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public string GetStringRuntimeValue(RuntimeValueEnum runtimeValueEnum)
+        public async Task<string> GetStringRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum)
         {
             var returnStringValue = "";
 
-            var runtimeValue = this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
+            if (!this.CheckConfigurationDataType(runtimeValueEnum, categoryValueEnum, ConfigurationDataType.String))
+                throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+
+            var runtimeValue = await this.primaryDataContext.RuntimeValues.FirstOrDefaultAsync(s => s.VarName == runtimeValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
 
             if (runtimeValue != null)
             {
-                if (runtimeValue.VarType == DataTypeEnum.stringType)
+                if (runtimeValue.VarType == ConfigurationDataType.String)
                 {
                     returnStringValue = runtimeValue.VarValue;
                 }
                 else
                 {
-                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                    throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
                 }
             }
             else
@@ -390,293 +301,363 @@ namespace Ferretto.VW.MAS_DataLayer
         }
 
         /// <inheritdoc/>
-        public void SetBoolConfigurationValue(ConfigurationValueEnum configurationValueEnum, bool value)
+        public async Task SetBoolConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, bool value)
         {
-            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Boolean))
+                throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+
+            var configurationValue = await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
 
             if (configurationValue == null)
             {
                 var newConfigurationValue = new ConfigurationValue();
+                newConfigurationValue.CategoryName = categoryValueEnum;
                 newConfigurationValue.VarName = configurationValueEnum;
-                newConfigurationValue.VarType = DataTypeEnum.booleanType;
+                newConfigurationValue.VarType = ConfigurationDataType.Boolean;
                 newConfigurationValue.VarValue = value.ToString();
 
-                this.inMemoryDataContext.ConfigurationValues.Add(newConfigurationValue);
-                this.inMemoryDataContext.SaveChanges();
+                this.primaryDataContext.ConfigurationValues.Add(newConfigurationValue);
+                await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
             }
             else
             {
-                if (configurationValue.VarType == DataTypeEnum.booleanType)
+                if (configurationValue.VarType == ConfigurationDataType.Boolean)
                 {
                     configurationValue.VarValue = value.ToString();
-                    this.inMemoryDataContext.SaveChanges();
+                    await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
                 }
                 else
                 {
-                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                    throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
                 }
             }
         }
 
         /// <inheritdoc/>
-        public void SetBoolRuntimeValue(RuntimeValueEnum runtimeValueEnum, bool value)
+        public async Task SetBoolRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum, bool value)
         {
-            var runtimeValue = this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
+            if (!this.CheckConfigurationDataType(runtimeValueEnum, categoryValueEnum, ConfigurationDataType.Boolean))
+                throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+
+            var runtimeValue = await this.primaryDataContext.RuntimeValues.FirstOrDefaultAsync(s => s.VarName == runtimeValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
+
+            if (runtimeValue == null)
+            {
+                var newRuntimeValue = new RuntimeValue();
+                newRuntimeValue.CategoryName = categoryValueEnum;
+                newRuntimeValue.VarName = runtimeValueEnum;
+                newRuntimeValue.VarType = ConfigurationDataType.Boolean;
+                newRuntimeValue.VarValue = value.ToString();
+
+                this.primaryDataContext.RuntimeValues.Add(newRuntimeValue);
+                await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
+            }
+            else
+            {
+                if (runtimeValue.VarType == ConfigurationDataType.Boolean)
+                {
+                    runtimeValue.VarValue = value.ToString();
+                    await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
+                }
+                else
+                {
+                    throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task SetDateTimeConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, DateTime value)
+        {
+            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Date))
+                throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+
+            var configurationValue = await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
+
+            if (configurationValue == null)
+            {
+                var newConfigurationValue = new ConfigurationValue();
+                newConfigurationValue.CategoryName = categoryValueEnum;
+                newConfigurationValue.VarName = configurationValueEnum;
+                newConfigurationValue.VarType = ConfigurationDataType.Date;
+                newConfigurationValue.VarValue = value.ToString();
+
+                this.primaryDataContext.ConfigurationValues.Add(newConfigurationValue);
+                await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
+            }
+            else
+            {
+                if (configurationValue.VarType == ConfigurationDataType.Date)
+                {
+                    configurationValue.VarValue = value.ToString();
+                    await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
+                }
+                else
+                {
+                    throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task SetDateTimeRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum, DateTime value)
+        {
+            if (!this.CheckConfigurationDataType(runtimeValueEnum, categoryValueEnum, ConfigurationDataType.Date))
+                throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+
+            var runtimeValue = await this.primaryDataContext.RuntimeValues.FirstOrDefaultAsync(s => s.VarName == runtimeValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
+
+            if (runtimeValue == null)
+            {
+                var newRuntimeValue = new RuntimeValue();
+                newRuntimeValue.CategoryName = categoryValueEnum;
+                newRuntimeValue.VarName = runtimeValueEnum;
+                newRuntimeValue.VarType = ConfigurationDataType.Date;
+                newRuntimeValue.VarValue = value.ToString();
+
+                this.primaryDataContext.RuntimeValues.Add(newRuntimeValue);
+                await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
+            }
+            else
+            {
+                if (runtimeValue.VarType == ConfigurationDataType.Date)
+                {
+                    runtimeValue.VarValue = value.ToString();
+                    await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
+                }
+                else
+                {
+                    throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task SetDecimalConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, decimal value)
+        {
+            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Float))
+                throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+
+            var configurationValue = await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
+
+            if (configurationValue == null)
+            {
+                var newConfigurationValue = new ConfigurationValue();
+                newConfigurationValue.CategoryName = categoryValueEnum;
+                newConfigurationValue.VarName = configurationValueEnum;
+                newConfigurationValue.VarType = ConfigurationDataType.Float;
+                newConfigurationValue.VarValue = value.ToString();
+
+                this.primaryDataContext.ConfigurationValues.Add(newConfigurationValue);
+                await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
+            }
+            else
+            {
+                if (configurationValue.VarType == ConfigurationDataType.Float)
+                {
+                    configurationValue.VarValue = value.ToString();
+                    await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
+                }
+                else
+                {
+                    throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task SetDecimalRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum, decimal value)
+        {
+            if (!this.CheckConfigurationDataType(runtimeValueEnum, categoryValueEnum, ConfigurationDataType.Float))
+                throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+
+            var runtimeValue = await this.primaryDataContext.RuntimeValues.FirstOrDefaultAsync(s => s.VarName == runtimeValueEnum, cancellationToken: this.stoppingToken);
 
             if (runtimeValue == null)
             {
                 var newRuntimeValue = new RuntimeValue();
                 newRuntimeValue.VarName = runtimeValueEnum;
-                newRuntimeValue.VarType = DataTypeEnum.booleanType;
+                newRuntimeValue.VarType = ConfigurationDataType.Float;
                 newRuntimeValue.VarValue = value.ToString();
 
-                this.inMemoryDataContext.RuntimeValues.Add(newRuntimeValue);
-                this.inMemoryDataContext.SaveChanges();
+                this.primaryDataContext.RuntimeValues.Add(newRuntimeValue);
+                await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
             }
             else
             {
-                if (runtimeValue.VarType == DataTypeEnum.booleanType)
+                if (runtimeValue.VarType == ConfigurationDataType.Float)
                 {
                     runtimeValue.VarValue = value.ToString();
-                    this.inMemoryDataContext.SaveChanges();
+                    await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
                 }
                 else
                 {
-                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                    throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
                 }
             }
         }
 
         /// <inheritdoc/>
-        public void SetDateTimeConfigurationValue(ConfigurationValueEnum configurationValueEnum, DateTime value)
+        public async Task SetIntegerConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, int value)
         {
-            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Integer))
+                throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+
+            var configurationValue = await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
 
             if (configurationValue == null)
             {
                 var newConfigurationValue = new ConfigurationValue();
+                newConfigurationValue.CategoryName = categoryValueEnum;
                 newConfigurationValue.VarName = configurationValueEnum;
-                newConfigurationValue.VarType = DataTypeEnum.dateTimeType;
+                newConfigurationValue.VarType = ConfigurationDataType.Integer;
                 newConfigurationValue.VarValue = value.ToString();
 
-                this.inMemoryDataContext.ConfigurationValues.Add(newConfigurationValue);
-                this.inMemoryDataContext.SaveChanges();
+                this.primaryDataContext.ConfigurationValues.Add(newConfigurationValue);
+                await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
             }
             else
             {
-                if (configurationValue.VarType == DataTypeEnum.dateTimeType)
+                if (configurationValue.VarType == ConfigurationDataType.Integer)
                 {
                     configurationValue.VarValue = value.ToString();
-                    this.inMemoryDataContext.SaveChanges();
+                    await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
                 }
                 else
                 {
-                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                    throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
                 }
             }
         }
 
         /// <inheritdoc/>
-        public void SetDateTimeRuntimeValue(RuntimeValueEnum runtimeValueEnum, DateTime value)
+        public async Task SetIntegerRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum, int value)
         {
-            var runtimeValue = this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
+            if (!this.CheckConfigurationDataType(runtimeValueEnum, categoryValueEnum, ConfigurationDataType.Integer))
+                throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+
+            var runtimeValue = await this.primaryDataContext.RuntimeValues.FirstOrDefaultAsync(s => s.VarName == runtimeValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
 
             if (runtimeValue == null)
             {
                 var newRuntimeValue = new RuntimeValue();
+                newRuntimeValue.CategoryName = categoryValueEnum;
                 newRuntimeValue.VarName = runtimeValueEnum;
-                newRuntimeValue.VarType = DataTypeEnum.dateTimeType;
+                newRuntimeValue.VarType = ConfigurationDataType.Integer;
                 newRuntimeValue.VarValue = value.ToString();
 
-                this.inMemoryDataContext.RuntimeValues.Add(newRuntimeValue);
-                this.inMemoryDataContext.SaveChanges();
+                this.primaryDataContext.RuntimeValues.Add(newRuntimeValue);
+                await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
             }
             else
             {
-                if (runtimeValue.VarType == DataTypeEnum.dateTimeType)
+                if (runtimeValue.VarType == ConfigurationDataType.Integer)
                 {
                     runtimeValue.VarValue = value.ToString();
-                    this.inMemoryDataContext.SaveChanges();
+                    await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
                 }
                 else
                 {
-                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                    throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
                 }
             }
         }
 
         /// <inheritdoc/>
-        public void SetDecimalConfigurationValue(ConfigurationValueEnum configurationValueEnum, decimal value)
+        public async Task SetIPAddressConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, IPAddress value)
         {
-            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.IPAddress))
+                throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+
+            var configurationValue = await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
 
             if (configurationValue == null)
             {
                 var newConfigurationValue = new ConfigurationValue();
+                newConfigurationValue.CategoryName = categoryValueEnum;
                 newConfigurationValue.VarName = configurationValueEnum;
-                newConfigurationValue.VarType = DataTypeEnum.decimalType;
+                newConfigurationValue.VarType = ConfigurationDataType.IPAddress;
                 newConfigurationValue.VarValue = value.ToString();
 
-                this.inMemoryDataContext.ConfigurationValues.Add(newConfigurationValue);
-                this.inMemoryDataContext.SaveChanges();
+                this.primaryDataContext.ConfigurationValues.Add(newConfigurationValue);
+                await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
             }
             else
             {
-                if (configurationValue.VarType == DataTypeEnum.decimalType)
+                if (configurationValue.VarType == ConfigurationDataType.IPAddress)
                 {
                     configurationValue.VarValue = value.ToString();
-                    this.inMemoryDataContext.SaveChanges();
+                    await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
                 }
                 else
                 {
-                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                    throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
                 }
             }
         }
 
         /// <inheritdoc/>
-        public void SetDecimalRuntimeValue(RuntimeValueEnum runtimeValueEnum, decimal value)
+        public async Task SetStringConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, string value)
         {
-            var runtimeValue = this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
+            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.String))
+                throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
 
-            if (runtimeValue == null)
-            {
-                var newRuntimeValue = new RuntimeValue();
-                newRuntimeValue.VarName = runtimeValueEnum;
-                newRuntimeValue.VarType = DataTypeEnum.decimalType;
-                newRuntimeValue.VarValue = value.ToString();
-
-                this.inMemoryDataContext.RuntimeValues.Add(newRuntimeValue);
-                this.inMemoryDataContext.SaveChanges();
-            }
-            else
-            {
-                if (runtimeValue.VarType == DataTypeEnum.decimalType)
-                {
-                    runtimeValue.VarValue = value.ToString();
-                    this.inMemoryDataContext.SaveChanges();
-                }
-                else
-                {
-                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
-                }
-            }
-        }
-
-        /// <inheritdoc/>
-        public void SetIntegerConfigurationValue(ConfigurationValueEnum configurationValueEnum, int value)
-        {
-            var configurationValue =
-                this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
+            var configurationValue = await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
 
             if (configurationValue == null)
             {
                 var newConfigurationValue = new ConfigurationValue();
+                newConfigurationValue.CategoryName = categoryValueEnum;
                 newConfigurationValue.VarName = configurationValueEnum;
-                newConfigurationValue.VarType = DataTypeEnum.integerType;
-                newConfigurationValue.VarValue = value.ToString();
-
-                this.inMemoryDataContext.ConfigurationValues.Add(newConfigurationValue);
-                this.inMemoryDataContext.SaveChanges();
-            }
-            else
-            {
-                if (configurationValue.VarType == DataTypeEnum.integerType)
-                {
-                    configurationValue.VarValue = value.ToString();
-                    this.inMemoryDataContext.SaveChanges();
-                }
-                else
-                {
-                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
-                }
-            }
-        }
-
-        /// <inheritdoc/>
-        public void SetIntegerRuntimeValue(RuntimeValueEnum runtimeValueEnum, int value)
-        {
-            var runtimeValue =
-                this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
-
-            if (runtimeValue == null)
-            {
-                var newRuntimeValue = new RuntimeValue();
-                newRuntimeValue.VarName = runtimeValueEnum;
-                newRuntimeValue.VarType = DataTypeEnum.integerType;
-                newRuntimeValue.VarValue = value.ToString();
-
-                this.inMemoryDataContext.RuntimeValues.Add(newRuntimeValue);
-                this.inMemoryDataContext.SaveChanges();
-            }
-            else
-            {
-                if (runtimeValue.VarType == DataTypeEnum.integerType)
-                {
-                    runtimeValue.VarValue = value.ToString();
-                    this.inMemoryDataContext.SaveChanges();
-                }
-                else
-                {
-                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
-                }
-            }
-        }
-
-        /// <inheritdoc/>
-        public void SetStringConfigurationValue(ConfigurationValueEnum configurationValueEnum, string value)
-        {
-            var configurationValue = this.inMemoryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum);
-
-            if (configurationValue == null)
-            {
-                var newConfigurationValue = new ConfigurationValue();
-                newConfigurationValue.VarName = configurationValueEnum;
-                newConfigurationValue.VarType = DataTypeEnum.stringType;
+                newConfigurationValue.VarType = ConfigurationDataType.String;
                 newConfigurationValue.VarValue = value;
 
-                this.inMemoryDataContext.ConfigurationValues.Add(newConfigurationValue);
-                this.inMemoryDataContext.SaveChanges();
+                this.primaryDataContext.ConfigurationValues.Add(newConfigurationValue);
+                await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
             }
             else
             {
-                if (configurationValue.VarType == DataTypeEnum.stringType)
+                if (configurationValue.VarType == ConfigurationDataType.String)
                 {
                     configurationValue.VarValue = value;
-                    this.inMemoryDataContext.SaveChanges();
+                    await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
                 }
                 else
                 {
-                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                    throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
                 }
             }
         }
 
         /// <inheritdoc/>
-        public void SetStringRuntimeValue(RuntimeValueEnum runtimeValueEnum, string value)
+        public async Task SetStringRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum, string value)
         {
-            var runtimeValue = this.inMemoryDataContext.RuntimeValues.FirstOrDefault(s => s.VarName == runtimeValueEnum);
+            if (!this.CheckConfigurationDataType(runtimeValueEnum, categoryValueEnum, ConfigurationDataType.String))
+                throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+
+            var runtimeValue = await this.primaryDataContext.RuntimeValues.FirstOrDefaultAsync(s => s.VarName == runtimeValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
 
             if (runtimeValue == null)
             {
                 var newRuntimeValue = new RuntimeValue();
+                newRuntimeValue.CategoryName = categoryValueEnum;
                 newRuntimeValue.VarName = runtimeValueEnum;
-                newRuntimeValue.VarType = DataTypeEnum.stringType;
+                newRuntimeValue.VarType = ConfigurationDataType.String;
                 newRuntimeValue.VarValue = value;
 
-                this.inMemoryDataContext.RuntimeValues.Add(newRuntimeValue);
-                this.inMemoryDataContext.SaveChanges();
+                this.primaryDataContext.RuntimeValues.Add(newRuntimeValue);
+                await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
             }
             else
             {
-                if (runtimeValue.VarType == DataTypeEnum.stringType)
+                if (runtimeValue.VarType == ConfigurationDataType.String)
                 {
                     runtimeValue.VarValue = value;
-                    this.inMemoryDataContext.SaveChanges();
+                    await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
                 }
                 else
                 {
-                    throw new InMemoryDataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                    throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
                 }
             }
         }

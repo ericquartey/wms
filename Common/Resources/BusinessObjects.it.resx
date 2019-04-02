@@ -285,9 +285,6 @@
   <data name="LoadingUnitLength" xml:space="preserve">
     <value>Lunghezza [mm]</value>
   </data>
-  <data name="CompartmentLastHandlingDate" xml:space="preserve">
-    <value>Data Ultima Movimentazione</value>
-  </data>
   <data name="CompartmentIsItemPairingFixed" xml:space="preserve">
     <value>Abbinamento Fisso</value>
   </data>
@@ -598,10 +595,6 @@
     <value>Priorità</value>
     <comment>List Row - Priority</comment>
   </data>
-  <data name="ItemListRowRequiredQuantity" xml:space="preserve">
-    <value>Quantità Richiesta</value>
-    <comment>List Row - Required Quantity</comment>
-  </data>
   <data name="ItemListRowStatusDescription" xml:space="preserve">
     <value>Stato</value>
     <comment>List Row - Status</comment>
@@ -767,7 +760,7 @@
     <value>Data Ultima Esecuzione</value>
   </data>
   <data name="MissionStatusNew" xml:space="preserve">
-    <value>Nuovo</value>
+    <value>Nuova</value>
   </data>
   <data name="MissionStatusWaiting" xml:space="preserve">
     <value>In attesa</value>
@@ -776,10 +769,10 @@
     <value>In esecuzione</value>
   </data>
   <data name="MissionStatusCompleted" xml:space="preserve">
-    <value>Completato</value>
+    <value>Completata</value>
   </data>
   <data name="MissionStatusError" xml:space="preserve">
-    <value>Errore</value>
+    <value>In Errore</value>
   </data>
   <data name="MissionTypeBypass" xml:space="preserve">
     <value>Bypass</value>
@@ -825,5 +818,26 @@
   </data>
   <data name="ItemListRow" xml:space="preserve">
     <value>Riga Lista</value>
+  </data>
+  <data name="Mission" xml:space="preserve">
+    <value>Missione</value>
+  </data>
+  <data name="Compartment" xml:space="preserve">
+    <value>Scomparto</value>
+  </data>
+  <data name="SchedulerRequest" xml:space="preserve">
+    <value>Richiesta Schedulatore</value>
+  </data>
+  <data name="MissionStatusIncomplete" xml:space="preserve">
+    <value>Incompleta</value>
+  </data>
+  <data name="MissionRequestedQuantity" xml:space="preserve">
+    <value>Quantità Richiesta</value>
+  </data>
+  <data name="ItemListRowStatus" xml:space="preserve">
+    <value>Stato</value>
+  </data>
+  <data name="ItemListRowRequestedQuantity" xml:space="preserve">
+    <value>Quantità Richiesta</value>
   </data>
 </root>

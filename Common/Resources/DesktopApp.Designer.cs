@@ -70,15 +70,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Applying database migrations ....
-        /// </summary>
-        public static string ApplyingDatabaseMigrations {
-            get {
-                return ResourceManager.GetString("ApplyingDatabaseMigrations", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete this compartment?.
         /// </summary>
         public static string AreYouSureToDeleteCompartment {
@@ -115,15 +106,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Checking database structure ....
-        /// </summary>
-        public static string CheckingDatabaseStructure {
-            get {
-                return ResourceManager.GetString("CheckingDatabaseStructure", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Configuring Prism module catalog ....
         /// </summary>
         public static string ConfiguringPrismModuleCatalog {
@@ -147,15 +129,6 @@ namespace Ferretto.Common.Resources {
         public static string CustomFilter {
             get {
                 return ResourceManager.GetString("CustomFilter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Initializing Entity Framework ... done..
-        /// </summary>
-        public static string DoneInitializingEntityFramework {
-            get {
-                return ResourceManager.GetString("DoneInitializingEntityFramework", resourceCulture);
             }
         }
         
@@ -192,15 +165,6 @@ namespace Ferretto.Common.Resources {
         public static string InitializingCompartmentModule {
             get {
                 return ResourceManager.GetString("InitializingCompartmentModule", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Initializing Entity Framework ....
-        /// </summary>
-        public static string InitializingEntityFramework {
-            get {
-                return ResourceManager.GetString("InitializingEntityFramework", resourceCulture);
             }
         }
         
@@ -286,20 +250,29 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reseeding database ....
-        /// </summary>
-        public static string ReseedingDatabase {
-            get {
-                return ResourceManager.GetString("ReseedingDatabase", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
         public static string SearchLabel {
             get {
                 return ResourceManager.GetString("SearchLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WMS services are offline.
+        /// </summary>
+        public static string ServicesOffline {
+            get {
+                return ResourceManager.GetString("ServicesOffline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connected to WMS services.
+        /// </summary>
+        public static string ServicesOnline {
+            get {
+                return ResourceManager.GetString("ServicesOnline", resourceCulture);
             }
         }
         

@@ -119,7 +119,8 @@
                                     MinWidth="65"
                                     Margin="6,0,0,0"
                                     Background="Red"
-                                    Content="{x:Static res:General.Ok}" />
+                                    Content="{x:Static res:General.Ok}"
+                                    Style="{StaticResource ButtonMessageUIStyle}" />
                         </Grid>
                         <Grid x:Name="okCancelGrid"
                               Visibility="Collapsed">

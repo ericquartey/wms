@@ -7,15 +7,15 @@ using Ferretto.Common.Resources;
 namespace Ferretto.Common.Controls
 {
     [StyleTypedProperty(Property = nameof(BusyIndicator.BusyStyle), StyleTargetType = typeof(Control))]
-    public class BusyIndicator : Decorator
+    public class BusyIndicator : Decorator, IDisposable
     {
         #region Fields
 
         public static readonly DependencyProperty BusyHorizontalAlignmentProperty = DependencyProperty.Register(
-          nameof(BusyHorizontalAlignment),
-          typeof(HorizontalAlignment),
-          typeof(BusyIndicator),
-          new FrameworkPropertyMetadata(HorizontalAlignment.Center));
+            nameof(BusyHorizontalAlignment),
+            typeof(HorizontalAlignment),
+            typeof(BusyIndicator),
+            new FrameworkPropertyMetadata(HorizontalAlignment.Center));
 
         public static readonly DependencyProperty BusyStyleProperty =
             DependencyProperty.Register(
@@ -25,28 +25,28 @@ namespace Ferretto.Common.Controls
             new FrameworkPropertyMetadata(OnBusyStyleChanged));
 
         public static readonly DependencyProperty BusyVerticalAlignmentProperty = DependencyProperty.Register(
-          nameof(BusyVerticalAlignment),
-          typeof(VerticalAlignment),
-          typeof(BusyIndicator),
-          new FrameworkPropertyMetadata(VerticalAlignment.Center));
+            nameof(BusyVerticalAlignment),
+            typeof(VerticalAlignment),
+            typeof(BusyIndicator),
+            new FrameworkPropertyMetadata(VerticalAlignment.Center));
 
         public static readonly DependencyProperty IsBusyProperty = DependencyProperty.Register(
             nameof(IsBusy),
             typeof(bool),
             typeof(BusyIndicator),
-            new FrameworkPropertyMetadata(
-                false,
-                FrameworkPropertyMetadataOptions.AffectsMeasure));
+            new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
-        public static readonly DependencyProperty ShowModeProperty =
-                        DependencyProperty.Register(
-                            nameof(ShowMode),
-                            typeof(IndicatorType),
-                            typeof(BusyIndicator),
-                        new FrameworkPropertyMetadata(IndicatorType.Default, OnIndicatorTypeChanged));
+        public static readonly DependencyProperty ShowModeProperty = DependencyProperty.Register(
+            nameof(ShowMode),
+            typeof(IndicatorType),
+            typeof(BusyIndicator),
+            new FrameworkPropertyMetadata(IndicatorType.Default, OnIndicatorTypeChanged));
 
         private const string suffixStyle = "Style";
+
         private readonly BackgroundVisualHost busyHost = new BackgroundVisualHost();
+
+        private bool disposedValue;
 
         #endregion
 
@@ -122,6 +122,13 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
+        public void Dispose()
+        {
+            this.Dispose(true);
+
+            GC.SuppressFinalize(this);
+        }
+
         protected override Size ArrangeOverride(Size arrangeSize)
         {
             var ret = new Size(0, 0);
@@ -135,6 +142,19 @@ namespace Ferretto.Common.Controls
             this.busyHost.Arrange(new Rect(arrangeSize));
 
             return new Size(Math.Max(ret.Width, this.busyHost.RenderSize.Width), Math.Max(ret.Height, this.busyHost.RenderSize.Height));
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposedValue)
+            {
+                if (disposing)
+                {
+                    this.busyHost?.Dispose();
+                }
+
+                this.disposedValue = true;
+            }
         }
 
         protected override System.Windows.Media.Visual GetVisualChild(int index)
@@ -155,7 +175,7 @@ namespace Ferretto.Common.Controls
                 return this.busyHost;
             }
 
-            throw new IndexOutOfRangeException(Errors.BusyIndicatorInvalidIndex);
+            throw new InvalidOperationException(Errors.BusyIndicatorInvalidIndex);
         }
 
         protected override Size MeasureOverride(Size constraint)

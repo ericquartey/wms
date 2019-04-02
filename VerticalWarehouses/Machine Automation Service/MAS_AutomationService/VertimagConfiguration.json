@@ -1,0 +1,48 @@
+{
+  'GeneralInfo': {
+    "Order": "1234ABC",
+    "ProductionDate": "2011-07-14T19:43:37+0100",
+    "Height": 10.5,
+    "DrawersQuantity": 50,
+    "LaserBay1": true
+  },
+
+  'SetupNetwork': {
+    "Inverter1": "169.254.231.248",
+    "Inverter1Port": 17221,
+    "IOExpansion1": "169.254.231.10",
+    "IOExpansion1Port": 502
+  },
+
+  'SetupStatus': {},
+
+  'VerticalAxis': {},
+
+  'HorizontalAxis': {},
+
+  'HorizontalMovementForwardProfile': {},
+
+  'HorizontalMovementBackwardProfile': {},
+
+  'VerticalManualMovements': {},
+
+  'HorizontalManualMovements': {},
+
+  'BeltBurnishing': {},
+
+  'ResolutionCalibration': {},
+
+  'OffsetCalibration': {},
+
+  'CellControl': {},
+
+  'PanelControl': {},
+
+  'ShutterHeightControl': {},
+
+  'WeightControl': {},
+
+  'BayPositionControl': {},
+
+  'LoadFirstDrawer': {}
+}

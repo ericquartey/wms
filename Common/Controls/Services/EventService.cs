@@ -40,14 +40,13 @@ namespace Ferretto.Common.Controls.Services
                 bool forceUiThread = false)
             where TEventArgs : IPubSubEvent
         {
-            if (this.navigationService.IsUnitTest)
-            {
-                forceUiThread = false;
-            }
+            var actualThread = this.navigationService.IsUnitTest || forceUiThread == false
+                ? ThreadOption.PublisherThread
+                : ThreadOption.UIThread;
 
             return this.GetEventBus<TEventArgs>().Subscribe(
                 action,
-                forceUiThread ? ThreadOption.UIThread : ThreadOption.PublisherThread,
+                actualThread,
                 keepSubscriberReferenceAlive,
                 x => string.IsNullOrEmpty(x.Token) || x.Token == token);
         }

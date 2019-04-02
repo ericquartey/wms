@@ -1,6 +1,6 @@
-﻿using Ferretto.Common.BLL.Interfaces;
+﻿using CommonServiceLocator;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
-using CommonServiceLocator;
 
 namespace Ferretto.Common.Controls
 {
@@ -9,7 +9,9 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
+
         private readonly IHistoryViewService historyViewService = ServiceLocator.Current.GetInstance<IHistoryViewService>();
+
         private readonly INavigationService navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
 
         #endregion

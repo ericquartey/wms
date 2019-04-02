@@ -21,7 +21,6 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty OriginalTitleProperty = DependencyProperty.RegisterAttached(
                    nameof(OriginalTitle), typeof(string), typeof(WmsLabel), new UIPropertyMetadata());
 
-        // private
         public static readonly DependencyProperty TitleProperty = DependencyProperty.RegisterAttached(
            nameof(Title), typeof(string), typeof(WmsLabel));
 
@@ -87,11 +86,16 @@ namespace Ferretto.Common.Controls
             this.SizeChanged += this.WmsLabel_SizeChanged;
         }
 
-        public void Show(bool show, BaseEdit parent)
+        public void Show(bool isVisible, DependencyObject parent)
         {
-            this.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
-            if (show)
+            this.Visibility = isVisible ? Visibility.Visible : Visibility.Collapsed;
+            if (isVisible)
             {
+                if (parent == null)
+                {
+                    return;
+                }
+
                 this.ShowBusinessObjectValueComboBox(parent);
             }
         }
@@ -101,7 +105,7 @@ namespace Ferretto.Common.Controls
             this.WmsIcon.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private SolidColorBrush ConvertColor(ColorRequired color)
+        private static SolidColorBrush ConvertColor(ColorRequired color)
         {
             switch (color)
             {
@@ -172,17 +176,18 @@ namespace Ferretto.Common.Controls
         {
             var posChar = (this.Title.Length < STARTMAXLENGTHCHECK) ? this.Title.Length : STARTMAXLENGTHCHECK;
             var currText = new StringBuilder(this.Title.Substring(0, posChar));
-            while (posChar < this.Title.Length)
+
+            var maxTextWidthReached = false;
+            while (posChar < this.Title.Length && maxTextWidthReached == false)
             {
                 currText.Append(this.Title[posChar]);
-                if (this.GetTextWidth(currText.ToString()) > maxTextWidth)
-                {
-                    if (this.Title.Equals(currText.ToString(), StringComparison.Ordinal) == false)
-                    {
-                        currText.Append(TRIMTEXT);
-                    }
+                var currentTextWidth = this.GetTextWidth(currText.ToString());
+                maxTextWidthReached = currentTextWidth > maxTextWidth;
 
-                    break;
+                if (maxTextWidthReached
+                    && this.Title.Equals(currText.ToString(), StringComparison.Ordinal) == false)
+                {
+                    currText.Append(TRIMTEXT);
                 }
 
                 posChar++;
@@ -191,9 +196,14 @@ namespace Ferretto.Common.Controls
             return currText.ToString();
         }
 
-        private double GetTextWidth(string text) => new FormattedText(text, System.Threading.Thread.CurrentThread.CurrentCulture,
-                                                         this.FlowDirection, this.GetInterface, this.FontSize, this.Foreground,
-                                                         VisualTreeHelper.GetDpi(this).PixelsPerDip).Width;
+        private double GetTextWidth(string text) => new FormattedText(
+            text,
+            System.Threading.Thread.CurrentThread.CurrentCulture,
+            this.FlowDirection,
+            this.GetInterface,
+            this.FontSize,
+            this.Foreground,
+            VisualTreeHelper.GetDpi(this).PixelsPerDip).Width;
 
         private void On_Loaded(object sender, RoutedEventArgs e)
         {
@@ -212,7 +222,7 @@ namespace Ferretto.Common.Controls
         {
             if (this.DataContext is IExtensionDataEntityViewModel viewModel)
             {
-                this.colorRequiredIcon = this.ConvertColor(viewModel.ColorRequired);
+                this.colorRequiredIcon = ConvertColor(viewModel.ColorRequired);
                 if (this.colorRequiredIcon != null)
                 {
                     this.WmsIcon.ColorizeBrush = this.colorRequiredIcon;
@@ -253,7 +263,7 @@ namespace Ferretto.Common.Controls
             {
                 var editorControl = LayoutTreeHelper.GetVisualParents(childEditor as DependencyObject).FirstOrDefault() as FrameworkElement;
                 var newWidth = width + this.endTitleTextMargin;
-                if (newWidth == 0)
+                if ((int)newWidth == 0)
                 {
                     return;
                 }
@@ -264,7 +274,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        private void ShowBusinessObjectValueComboBox(BaseEdit parent)
+        private void ShowBusinessObjectValueComboBox(DependencyObject parent)
         {
             var type = this.DataContext.GetType();
             var bindingExpression = BindingOperations.GetBindingExpression(
@@ -273,9 +283,19 @@ namespace Ferretto.Common.Controls
 
             if (bindingExpression == null)
             {
+                DependencyProperty property = null;
+                if (parent.GetType() == typeof(ComboBox))
+                {
+                    property = ComboBox.BusinessObjectValueProperty;
+                }
+                else if (parent.GetType() == typeof(LookUpEdit))
+                {
+                    property = LookUpEdit.BusinessObjectValueProperty;
+                }
+
                 bindingExpression = BindingOperations.GetBindingExpression(
                     parent,
-                    ComboBox.BusinessObjectValueProperty);
+                    property);
             }
 
             var path = bindingExpression.ParentBinding.Path.Path;

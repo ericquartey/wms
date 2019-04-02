@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 
@@ -11,9 +13,11 @@ namespace Ferretto.VW.MAS_AutomationService
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TestController
+    public class TestController : ControllerBase
     {
         #region Fields
+
+        private readonly IDataLayerValueManagment dataLayerValueManagement;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -21,14 +25,31 @@ namespace Ferretto.VW.MAS_AutomationService
 
         #region Constructors
 
-        public TestController(IEventAggregator eventAggregator)
+        public TestController(IEventAggregator eventAggregator, IServiceProvider services)
         {
             this.eventAggregator = eventAggregator;
+            this.dataLayerValueManagement = services.GetService(typeof(IDataLayerValueManagment)) as IDataLayerValueManagment;
         }
 
         #endregion
 
         #region Methods
+
+        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(500)]
+        [HttpGet("GetInstallationStatus")]
+        public ActionResult<bool[]> GetInstallationStatus()
+        {
+            bool[] installationStatus = { true, false, true, false, false, true, false, true, false, true, false, false, false, false, false };
+            if (installationStatus != null)
+            {
+                return this.Ok(installationStatus);
+            }
+            else
+            {
+                return this.StatusCode(500);
+            }
+        }
 
         [HttpGet("AddMissionTest")]
         public void AddMission()
@@ -68,7 +89,12 @@ namespace Ferretto.VW.MAS_AutomationService
             await Task.Delay(2000);
             this.eventAggregator.GetEvent<NotificationEvent>()
                 .Publish(new NotificationMessage(null, "Horizontal Homing Executing", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationExecuting));
-            await Task.Delay(4000);
+            await Task.Delay(2000);
+
+            //TEMP this.eventAggregator.GetEvent<NotificationEvent>()
+            //TEMP     .Publish(new NotificationMessage(null, "Horizontal Homing Error", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationError));
+            //TEMP await Task.Delay(2000);
+
             this.eventAggregator.GetEvent<NotificationEvent>()
                 .Publish(new NotificationMessage(null, "Horizontal Homing Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationEnd));
             await Task.Delay(2000);
@@ -114,6 +140,37 @@ namespace Ferretto.VW.MAS_AutomationService
                 MessageVerbosity.Info));
         }
 
+        [ProducesResponseType(200, Type = typeof(decimal))]
+        [ProducesResponseType(404)]
+        [HttpGet("DecimalConfigurationValues/{parameter}")]
+        public ActionResult<decimal> GetDecimalConfigurationParameter(string parameter)
+        {
+            decimal returnValue;
+            switch (parameter)
+            {
+                case "UpperBound":
+                    returnValue = 1000m;
+                    break;
+
+                case "LowerBound":
+                    returnValue = 10m;
+                    break;
+
+                case "Offset":
+                    returnValue = 20m;
+                    break;
+
+                case "Resolution":
+                    returnValue = 165.14m;
+                    break;
+
+                default:
+                    var message = $"No entity with the specified parameter={parameter} exists.";
+                    return this.NotFound(message);
+            }
+            return this.Ok(returnValue);
+        }
+
         [HttpGet("MissionExecutedTest")]
         public void MissionExecuted()
         {
@@ -125,6 +182,14 @@ namespace Ferretto.VW.MAS_AutomationService
                 MessageType.EndAction,
                 MessageStatus.OperationEnd);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(message);
+        }
+
+        [HttpGet("ResetIO")]
+        public void ResetIO()
+        {
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "ResetIO",
+                MessageActor.IODriver, MessageActor.AutomationService, MessageType.IOReset,
+                MessageVerbosity.Info));
         }
 
         [HttpGet("StopFSM")]

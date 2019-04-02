@@ -9,15 +9,15 @@ namespace Ferretto.WMS.Scheduler.Core.Interfaces
     {
         #region Methods
 
-        Task<IOperationResult<Mission>> CompleteMissionAsync(int id);
+        Task<IOperationResult<Mission>> CompleteMissionAsync(int missionId, int quantity);
 
-        Task<IEnumerable<SchedulerRequest>> ExecuteListAsync(ListExecutionRequest request);
+        Task<IOperationResult<IEnumerable<SchedulerRequest>>> ExecuteListAsync(int listId, int areaId, int? bayId);
 
-        Task<IOperationResult<SchedulerRequest>> ExecuteListRowAsync(ListRowExecutionRequest request);
+        Task<IOperationResult<SchedulerRequest>> ExecuteListRowAsync(int rowId, int areaId, int? bayId);
 
-        Task<IOperationResult<Mission>> ExecuteMissionAsync(int id);
+        Task<IOperationResult<Mission>> ExecuteMissionAsync(int missionId);
 
-        Task<SchedulerRequest> WithdrawItemAsync(SchedulerRequest request);
+        Task<IOperationResult<SchedulerRequest>> WithdrawItemAsync(int itemId, ItemWithdrawOptions options);
 
         #endregion
     }

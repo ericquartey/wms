@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 {
@@ -11,21 +11,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 
         private readonly int nRequiredCycles;
 
+        private readonly IUpDownRepetitiveMessageData upDownMessageData;
+
         #endregion
 
         #region Constructors
 
-        public UpDownStartState(IStateMachine parentMachine)
+        public UpDownStartState(IStateMachine parentMachine, IUpDownRepetitiveMessageData upDownMessageData)
         {
             this.parentStateMachine = parentMachine;
+            this.upDownMessageData = upDownMessageData;
 
-            // Go to the Down
+            this.nRequiredCycles = this.upDownMessageData.NumberOfRequiredCycles;
 
-            var upDownMessageData = ((IUpDownRepetitiveStateMachine)this.parentStateMachine).UpDownRepetitiveData;
-            this.nRequiredCycles = upDownMessageData.NumberOfRequiredCycles;
-
-            var target = upDownMessageData.TargetLowerBound;
-            //var speed = this.data.GetSpeedValue();
+            var target = this.upDownMessageData.TargetLowerBound;
+            //TEMP Retrieve parameters from DataLayer i.e. var speed = this.data.GetSpeedValue();
             var speed = 0.0m;
             var acceleration = 0.0m;
             var deceleration = 0.0m;
@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
                 "Up&Down start state",
                 MessageActor.InverterDriver,
                 MessageActor.FiniteStateMachines,
-                MessageType.Positioning, //TEMP or MessageType.Homing
+                MessageType.Positioning,
                 MessageVerbosity.Info);
             this.parentStateMachine.PublishCommandMessage(newMessage);
         }
@@ -51,13 +51,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 
         #region Methods
 
+        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
             switch (message.Type)
             {
                 case MessageType.Stop:
-                    //TODO add state business logic to stop current action
-                    this.ProcessStopPositioning(message);
+                    //TEMP Change to up&down end state (a request of stop operation has been made)
+                    this.parentStateMachine.ChangeState(new UpDownEndState(this.parentStateMachine, this.upDownMessageData));
                     break;
 
                 default:
@@ -65,6 +66,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
             }
         }
 
+        /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
             if (message.Type == MessageType.Positioning)
@@ -78,7 +80,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 
                     case MessageStatus.OperationError:
                         //TEMP an error occurs
-                        this.ProcessErrorPositioning(message);
+                        this.parentStateMachine.ChangeState(new UpDownErrorState(this.parentStateMachine, this.upDownMessageData));
                         break;
 
                     default:
@@ -89,46 +91,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 
         private void ProcessEndPositioning(NotificationMessage message)
         {
-            //TEMP The positioning operation has been done
-            //TEMP var newMessage = new CommandMessage(null,
-            //TEMP    string.Format("End Positioning {0}", this.axisMovement),
-            //TEMP    MessageActor.InverterDriver,
-            //TEMP    MessageActor.FiniteStateMachines,
-            //TEMP    MessageType.StopPositioning,
-            //TEMP    MessageVerbosity.Info);
-
-            //x ((IUpDownRepetitiveStateMachine)this.parentStateMachine).NumberOfCompletedCycles++;
-            if (((IUpDownRepetitiveStateMachine)this.parentStateMachine).NumberOfCompletedCycles == this.nRequiredCycles)
+            if (this.parentStateMachine.OperationDone)
             {
-                // the up&down procedure has been done completely
-                ((IUpDownRepetitiveStateMachine)this.parentStateMachine).IsStopRequested = false;
-                this.parentStateMachine.ChangeState(new UpDownEndState(this.parentStateMachine), null);
+                //TEMP Change to up&down end state
+                this.parentStateMachine.ChangeState(new UpDownEndState(this.parentStateMachine, this.upDownMessageData));
             }
             else
             {
-                // change to the Up state
-                this.parentStateMachine.ChangeState(new UpState(this.parentStateMachine), null);
+                //TEMP Change to the Up state
+                this.parentStateMachine.ChangeState(new UpState(this.parentStateMachine, this.upDownMessageData));
             }
-        }
-
-        private void ProcessErrorPositioning(NotificationMessage message)
-        {
-            this.parentStateMachine.ChangeState(new UpDownErrorState(this.parentStateMachine), null);
-        }
-
-        private void ProcessStopPositioning(CommandMessage message)
-        {
-            //TEMP This is a request to stop the operation of positioning
-            var newMessage = new CommandMessage(null,
-                "Stop Requested",
-                MessageActor.InverterDriver,
-                MessageActor.FiniteStateMachines,
-                MessageType.Stop,
-                MessageVerbosity.Info);
-
-            ((IUpDownRepetitiveStateMachine)this.parentStateMachine).IsStopRequested = true;
-
-            this.parentStateMachine.ChangeState(new UpDownEndState(this.parentStateMachine), null);
         }
 
         #endregion

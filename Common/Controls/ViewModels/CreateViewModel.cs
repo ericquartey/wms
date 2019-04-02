@@ -1,10 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.Common.BusinessModels;
+using CommonServiceLocator;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Resources;
-using CommonServiceLocator;
+using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
 namespace Ferretto.Common.Controls
@@ -38,7 +37,7 @@ namespace Ferretto.Common.Controls
 
         #region Constructors
 
-        public CreateViewModel()
+        protected CreateViewModel()
         {
             this.changeDetector.ModifiedChanged += this.ChangeDetector_ModifiedChanged;
         }
@@ -58,19 +57,19 @@ namespace Ferretto.Common.Controls
         }
 
         public ICommand ClearCommand => this.clearCommand ??
-                    (this.clearCommand = new DelegateCommand(
-                this.ExecuteClearCommand,
+            (this.clearCommand = new DelegateCommand(
+                async () => await this.ExecuteClearCommandAsync(),
                 this.CanExecuteClearCommand));
 
         public ICommand CloseDialogCommand => this.closeDialogCommand ??
              (this.closeDialogCommand = new DelegateCommand(
                  this.ExecuteCloseDialogCommand));
 
-        public ColorRequired ColorRequired { get => ColorRequired.CreateMode; }
+        public ColorRequired ColorRequired => ColorRequired.CreateMode;
 
         public ICommand CreateCommand => this.createCommand ??
-            (this.createCommand = new DelegateCommand(
-                async () => await this.ExecuteCreateCommand(),
+            (this.createCommand = new WmsCommand(
+                async () => await this.ExecuteCreateCommandAsync(),
                 this.CanExecuteCreateCommand));
 
         public IDialogService DialogService => this.dialogService;
@@ -106,6 +105,7 @@ namespace Ferretto.Common.Controls
                 {
                     temp = string.IsNullOrWhiteSpace(this.Model.Error);
                 }
+
                 this.SetProperty(ref this.isModelValid, temp);
                 this.UpdateIsEnableError();
                 return temp;
@@ -183,6 +183,7 @@ namespace Ferretto.Common.Controls
             {
                 this.CanShowError = true;
             }
+
             return canExecute;
         }
 
@@ -192,14 +193,14 @@ namespace Ferretto.Common.Controls
             ((DelegateCommand)this.CreateCommand)?.RaiseCanExecuteChanged();
         }
 
-        protected abstract void ExecuteClearCommand();
+        protected abstract Task ExecuteClearCommandAsync();
 
         protected void ExecuteCloseDialogCommand()
         {
             this.Disappear();
         }
 
-        protected abstract Task ExecuteCreateCommand();
+        protected abstract Task ExecuteCreateCommandAsync();
 
         protected virtual void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {

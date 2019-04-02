@@ -11,13 +11,13 @@ namespace Ferretto.Common.DataModels
 
         public IEnumerable<DefaultCompartment> DefaultCompartments { get; set; }
 
-        public int? Height { get; set; }
+        public double? Height { get; set; }
 
         public int Id { get; set; }
 
         public IEnumerable<ItemCompartmentType> ItemsCompartmentTypes { get; set; }
 
-        public int? Width { get; set; }
+        public double? Width { get; set; }
 
         #endregion
     }

@@ -853,4 +853,40 @@
   <data name="SaveRestoreConfigAbortRestoreButton" xml:space="preserve">
     <value>Annulla caricamento</value>
   </data>
+  <data name="VerticalHomingError" xml:space="preserve">
+    <value>Errore calibrazione asse verticale</value>
+  </data>
+  <data name="HorizontalHomingError" xml:space="preserve">
+    <value>Errore calibrazione asse orizzontale</value>
+  </data>
+  <data name="SwitchEngineError" xml:space="preserve">
+    <value>Errore scambio assi</value>
+  </data>
+  <data name="HomingError" xml:space="preserve">
+    <value>Errore calibrazione</value>
+  </data>
+  <data name="HomingCompleted" xml:space="preserve">
+    <value>Calibrazione completata</value>
+  </data>
+  <data name="HomingStarted" xml:space="preserve">
+    <value>Start calibrazione</value>
+  </data>
+  <data name="HorizontalHomingCompleted" xml:space="preserve">
+    <value>Calibrazione asse orizzontale completata</value>
+  </data>
+  <data name="HorizontalHomingExecuting" xml:space="preserve">
+    <value>Calibrazione asse orizzontale in esecuzione</value>
+  </data>
+  <data name="HorizontalHomingStarted" xml:space="preserve">
+    <value>Start calibrazione asse orizzontale </value>
+  </data>
+  <data name="VerticalHomingCompleted" xml:space="preserve">
+    <value>Calibrazione asse verrticale completata</value>
+  </data>
+  <data name="VerticalHomingExecuting" xml:space="preserve">
+    <value>Calibrazione asse verticale in esecuzione</value>
+  </data>
+  <data name="VerticalHomingStarted" xml:space="preserve">
+    <value>Start calibrazione asse verticale</value>
+  </data>
 </root>

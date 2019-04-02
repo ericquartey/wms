@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
-using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls;
+using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -10,20 +10,22 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private ICommand showDetailsCommand;
+        private ICommand showLoadingUnitDetailsCommand;
 
-        private ICommand withdrawCommand;
+        private ICommand withdrawLoadingUnitCommand;
 
         #endregion
 
         #region Properties
 
-        public ICommand ShowDetailsCommand => this.showDetailsCommand ??
-                          (this.showDetailsCommand = new DelegateCommand(this.ExecuteShowDetailsCommand, this.CanShowDetailsCommand)
-            .ObservesProperty(() => this.CurrentItem));
+        public ICommand ShowLoadingUnitDetailsCommand => this.showLoadingUnitDetailsCommand ??
+            (this.showLoadingUnitDetailsCommand = new DelegateCommand(
+                    this.ShowLoadingUnitDetails,
+                    this.CanShowLoadingUnitDetails)
+                .ObservesProperty(() => this.CurrentItem));
 
-        public ICommand WithdrawCommand => this.withdrawCommand ??
-                (this.withdrawCommand = new DelegateCommand(ExecuteWithdrawCommand));
+        public ICommand WithdrawLoadingUnitCommand => this.withdrawLoadingUnitCommand ??
+                (this.withdrawLoadingUnitCommand = new DelegateCommand(WithdrawLoadingUnit));
 
         #endregion
 
@@ -36,19 +38,19 @@ namespace Ferretto.WMS.Modules.MasterData
                 Common.Utils.Modules.MasterData.LOADINGUNITADD);
         }
 
-        private static void ExecuteWithdrawCommand()
+        private static void WithdrawLoadingUnit()
         {
             throw new NotImplementedException();
         }
 
-        private bool CanShowDetailsCommand()
+        private bool CanShowLoadingUnitDetails()
         {
             return this.CurrentItem != null;
         }
 
-        private void ExecuteShowDetailsCommand()
+        private void ShowLoadingUnitDetails()
         {
-            this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.ITEMLISTDETAILS, this.CurrentItem.Id);
+            this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.LOADINGUNITDETAILS, this.CurrentItem.Id);
         }
 
         #endregion

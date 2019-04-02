@@ -1,5 +1,5 @@
-﻿using Ferretto.Common.BusinessModels;
-using Ferretto.Common.Controls;
+﻿using Ferretto.Common.Controls;
+using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.Modules.Scheduler
 {

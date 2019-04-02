@@ -38,9 +38,9 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public DbSet<LoadingUnit> LoadingUnits { get; set; }
 
-        public DbSet<RuntimeValue> RuntimeValues { get; set; }
+        public DbSet<LogEntry> LogEntries { get; set; }
 
-        public DbSet<StatusLog> StatusLogs { get; set; }
+        public DbSet<RuntimeValue> RuntimeValues { get; set; }
 
         #endregion
 
@@ -75,10 +75,8 @@ namespace Ferretto.VW.MAS_DataLayer
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = ConfigurationValueEnum.InverterAddress, VarType = DataTypeEnum.IPAddressType, VarValue = "169.254.231.248" });
-            modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = ConfigurationValueEnum.InverterPort, VarType = DataTypeEnum.integerType, VarValue = "17221" });
-            modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = ConfigurationValueEnum.IoAddress, VarType = DataTypeEnum.IPAddressType, VarValue = "169.254.231.10" });
-            modelBuilder.Entity<ConfigurationValue>().HasData(new ConfigurationValue { VarName = ConfigurationValueEnum.IoPort, VarType = DataTypeEnum.integerType, VarValue = "502" });
+            modelBuilder.Entity<ConfigurationValue>().HasKey(cv => new { cv.CategoryName, cv.VarName });
+            modelBuilder.Entity<RuntimeValue>().HasKey(cv => new { cv.CategoryName, cv.VarName });
         }
 
         #endregion

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -13,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class CellProvider : ICellProvider
+    internal partial class CellProvider : ICellProvider
     {
         #region Fields
 
@@ -32,38 +33,6 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public async Task<IOperationResult<CellDetails>> CreateAsync(CellDetails model)
-        {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            var entry = await this.dataContext.Cells.AddAsync(new Common.DataModels.Cell
-            {
-                AbcClassId = model.AbcClassId,
-                AisleId = model.AisleId,
-                CellNumber = model.Number,
-                CellStatusId = model.CellStatusId,
-                CellTypeId = model.CellTypeId,
-                Column = model.Column,
-                Floor = model.Floor,
-                Priority = model.Priority,
-                Side = (Common.DataModels.Side)model.Side,
-                XCoordinate = model.XCoordinate,
-                YCoordinate = model.YCoordinate,
-                ZCoordinate = model.ZCoordinate,
-            });
-
-            var changedEntitiesCount = await this.dataContext.SaveChangesAsync();
-            if (changedEntitiesCount > 0)
-            {
-                model.Id = entry.Entity.Id;
-            }
-
-            return new SuccessOperationResult<CellDetails>(model);
-        }
-
         public async Task<IEnumerable<Cell>> GetAllAsync(
             int skip,
             int take,
@@ -71,13 +40,20 @@ namespace Ferretto.WMS.Data.Core.Providers
             string whereString = null,
             string searchString = null)
         {
-            return await this.GetAllBase()
+            var models = await this.GetAllBase()
                 .ToArrayAsync<Cell, Common.DataModels.Cell>(
                     skip,
                     take,
                     orderBySortOptions,
                     whereString,
                     BuildSearchExpression(searchString));
+
+            foreach (var model in models)
+            {
+                this.SetPolicies(model);
+            }
+
+            return models;
         }
 
         public async Task<int> GetAllCountAsync(
@@ -146,7 +122,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             var loadingUnitsCount = await this.dataContext.LoadingUnits
                                         .CountAsync(l => l.CellId == id);
 
-            return await this.dataContext.Cells
+            var model = await this.dataContext.Cells
                        .Select(c => new CellDetails
                        {
                            Id = c.Id,
@@ -166,6 +142,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                            ZCoordinate = c.ZCoordinate,
                        })
                        .SingleOrDefaultAsync(c => c.Id == id);
+
+            if (model != null)
+            {
+                this.SetPolicies(model);
+            }
+
+            return model;
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
@@ -183,14 +166,22 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.dataContext.Cells.Find(model.Id);
-
+            var existingModel = await this.GetByIdAsync(model.Id);
             if (existingModel == null)
             {
                 return new NotFoundOperationResult<CellDetails>();
             }
 
-            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+            if (!existingModel.CanUpdate())
+            {
+                return new UnprocessableEntityOperationResult<CellDetails>
+                {
+                    Description = existingModel.GetCanDeleteReason(),
+                };
+            }
+
+            var existingDataModel = this.dataContext.Cells.Find(model.Id);
+            this.dataContext.Entry(existingDataModel).CurrentValues.SetValues(model);
             await this.dataContext.SaveChangesAsync();
 
             return new SuccessOperationResult<CellDetails>(model);

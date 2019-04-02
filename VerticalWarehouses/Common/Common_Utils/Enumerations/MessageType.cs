@@ -50,12 +50,16 @@
 
         IOPowerUp,
 
+        IOReset,
+
         SensorsChanged,
 
         Movement,
 
         StopAction,
 
-        UpDown
+        UpDown,
+
+        DataLayerReady
     }
 }

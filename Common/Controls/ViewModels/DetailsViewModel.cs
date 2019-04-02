@@ -1,9 +1,10 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
-using Ferretto.Common.BusinessModels;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
 namespace Ferretto.Common.Controls
@@ -33,7 +34,7 @@ namespace Ferretto.Common.Controls
 
         #region Constructors
 
-        public DetailsViewModel()
+        protected DetailsViewModel()
         {
             this.changeDetector.ModifiedChanged += this.ChangeDetector_ModifiedChanged;
         }
@@ -42,7 +43,25 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
+        public ColorRequired ColorRequired
+        {
+            get => this.colorRequired;
+            set => this.SetProperty(ref this.colorRequired, value);
+        }
+
         public IDialogService DialogService { get; } = ServiceLocator.Current.GetInstance<IDialogService>();
+
+        public bool IsBusy
+        {
+            get => this.isBusy;
+            set
+            {
+                if (this.SetProperty(ref this.isBusy, value))
+                {
+                    this.EvaluateCanExecuteCommands();
+                }
+            }
+        }
 
         public bool IsModelIdValid => this.Model?.Id > 0;
 
@@ -62,38 +81,6 @@ namespace Ferretto.Common.Controls
 
                 this.SetProperty(ref this.isModelValid, temp);
                 return temp;
-            }
-        }
-
-        public ICommand RefreshCommand => this.refreshCommand ??
-            (this.refreshCommand = new DelegateCommand(
-                async () => await this.ExecuteRefreshCommandAsync(), this.CanExecuteRefreshCommand));
-
-        public ICommand RevertCommand => this.revertCommand ??
-            (this.revertCommand = new DelegateCommand(
-                async () => await this.ExecuteRevertWithPrompt(),
-                this.CanExecuteRevertCommand));
-
-        public ICommand SaveCommand => this.saveCommand ??
-            (this.saveCommand = new DelegateCommand(
-                async () => await this.ExecuteSaveCommand(),
-                this.CanExecuteSaveCommand));
-
-        public ColorRequired ColorRequired
-        {
-            get => this.colorRequired;
-            set => this.SetProperty(ref this.colorRequired, value);
-        }
-
-        public bool IsBusy
-        {
-            get => this.isBusy;
-            set
-            {
-                if (this.SetProperty(ref this.isBusy, value))
-                {
-                    this.EvaluateCanExecuteCommands();
-                }
             }
         }
 
@@ -121,6 +108,20 @@ namespace Ferretto.Common.Controls
                 }
             }
         }
+
+        public ICommand RefreshCommand => this.refreshCommand ??
+                    (this.refreshCommand = new DelegateCommand(
+                async () => await this.ExecuteRefreshCommandAsync(), this.CanExecuteRefreshCommand));
+
+        public ICommand RevertCommand => this.revertCommand ??
+            (this.revertCommand = new DelegateCommand(
+                async () => await this.ExecuteRevertWithPromptAsync(),
+                this.CanExecuteRevertCommand));
+
+        public ICommand SaveCommand => this.saveCommand ??
+            (this.saveCommand = new WmsCommand(
+                async () => await this.ExecuteSaveCommandAsync(),
+                this.CanExecuteSaveCommand));
 
         #endregion
 
@@ -150,6 +151,15 @@ namespace Ferretto.Common.Controls
             // do nothing. The derived classes can customize the behaviour
         }
 
+        public void ShowErrorDialog(string message)
+        {
+            this.DialogService.ShowMessage(
+                message,
+                DesktopApp.ConfirmOperation,
+                DialogType.Warning,
+                DialogButtons.OK);
+        }
+
         protected virtual bool CanExecuteRevertCommand()
         {
             return this.changeDetector.IsModified == true
@@ -162,7 +172,8 @@ namespace Ferretto.Common.Controls
                 && this.changeDetector.IsModified
                 && this.IsModelValid
                 && !this.IsBusy
-                && this.changeDetector.IsRequiredValid;
+                && this.changeDetector.IsRequiredValid
+                && this.Model.CanUpdate();
         }
 
         protected virtual void EvaluateCanExecuteCommands()
@@ -174,9 +185,9 @@ namespace Ferretto.Common.Controls
 
         protected abstract Task ExecuteRefreshCommandAsync();
 
-        protected abstract Task ExecuteRevertCommand();
+        protected abstract Task ExecuteRevertCommandAsync();
 
-        protected abstract Task ExecuteSaveCommand();
+        protected abstract Task ExecuteSaveCommandAsync();
 
         protected virtual void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -200,8 +211,7 @@ namespace Ferretto.Common.Controls
 
         private bool CanExecuteRefreshCommand()
         {
-            return
-                !this.changeDetector.IsModified
+            return !this.changeDetector.IsModified
                 && !this.IsBusy;
         }
 
@@ -210,7 +220,7 @@ namespace Ferretto.Common.Controls
             this.EvaluateCanExecuteCommands();
         }
 
-        private async Task ExecuteRevertWithPrompt()
+        private async Task ExecuteRevertWithPromptAsync()
         {
             var result = this.DialogService.ShowMessage(
                 DesktopApp.AreYouSureToRevertChanges,
@@ -220,7 +230,7 @@ namespace Ferretto.Common.Controls
 
             if (result == DialogResult.Yes)
             {
-                await this.ExecuteRevertCommand();
+                await this.ExecuteRevertCommandAsync();
             }
         }
 

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -13,7 +15,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class ItemProvider : IItemProvider
+    internal partial class ItemProvider : IItemProvider
     {
         #region Fields
 
@@ -76,6 +78,25 @@ namespace Ferretto.WMS.Data.Core.Providers
             return new SuccessOperationResult<ItemDetails>(model);
         }
 
+        public async Task<IOperationResult<ItemDetails>> DeleteAsync(int id)
+        {
+            var existingModel = await this.GetByIdAsync(id);
+            if (existingModel == null)
+            {
+                return new NotFoundOperationResult<ItemDetails>();
+            }
+
+            if (!existingModel.CanDelete())
+            {
+                return new UnprocessableEntityOperationResult<ItemDetails>
+                {
+                    Description = existingModel.GetCanDeleteReason(),
+                };
+            }
+
+            return await this.DeleteWithRelatedDataAsync(existingModel.Id);
+        }
+
         public async Task<IEnumerable<Item>> GetAllAsync(
             int skip,
             int take,
@@ -83,13 +104,20 @@ namespace Ferretto.WMS.Data.Core.Providers
             string whereString = null,
             string searchString = null)
         {
-            return await this.GetAllBase()
-                .ToArrayAsync<Item, Common.DataModels.Item>(
-                    skip,
-                    take,
-                    orderBySortOptions,
-                    whereString,
-                    BuildSearchExpression(searchString));
+            var models = await this.GetAllBase()
+                 .ToArrayAsync<Item, Common.DataModels.Item>(
+                     skip,
+                     take,
+                     orderBySortOptions,
+                     whereString,
+                     BuildSearchExpression(searchString));
+
+            foreach (var model in models)
+            {
+                this.SetPolicies(model);
+            }
+
+            return models;
         }
 
         public async Task<int> GetAllCountAsync(
@@ -104,14 +132,15 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<ItemDetails> GetByIdAsync(int id)
         {
-            var compartmentsCount =
-                await this.dataContext.Compartments
-                    .CountAsync(c => c.ItemId == id);
-
-            var result = await this.GetAllDetailsBase()
+            var model = await this.GetAllDetailsBase()
                              .SingleOrDefaultAsync(i => i.Id == id);
-            result.CompartmentsCount = compartmentsCount;
-            return result;
+
+            if (model != null)
+            {
+                this.SetPolicies(model);
+            }
+
+            return model;
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
@@ -129,14 +158,22 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.dataContext.Items.Find(model.Id);
-
+            var existingModel = await this.GetByIdAsync(model.Id);
             if (existingModel == null)
             {
                 return new NotFoundOperationResult<ItemDetails>();
             }
 
-            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+            if (!existingModel.CanUpdate())
+            {
+                return new UnprocessableEntityOperationResult<ItemDetails>
+                {
+                    Description = existingModel.GetCanDeleteReason(),
+                };
+            }
+
+            var existingDataModel = this.dataContext.Items.Find(model.Id);
+            this.dataContext.Entry(existingDataModel).CurrentValues.SetValues(model);
             await this.dataContext.SaveChangesAsync();
 
             return new SuccessOperationResult<ItemDetails>(model);
@@ -160,8 +197,49 @@ namespace Ferretto.WMS.Data.Core.Providers
                 ||
                 i.TotalAvailable.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                i.MeasureUnitDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ;
+                i.MeasureUnitDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        private async Task<OperationResult<ItemDetails>> DeleteWithRelatedDataAsync(int id)
+        {
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                var existingModel = this.dataContext.Items.Find(id);
+                if (existingModel == null)
+                {
+                    return new NotFoundOperationResult<ItemDetails>();
+                }
+
+                var areaCount =
+                await this.dataContext.ItemsAreas
+                    .CountAsync(c => c.ItemId == id);
+
+                var compartmentTypeCount =
+                await this.dataContext.ItemsAreas
+                    .CountAsync(c => c.ItemId == id);
+
+                if (areaCount > 0)
+                {
+                    var area = await this.dataContext.ItemsAreas
+                        .Where(a => a.ItemId == id)
+                        .ToListAsync();
+                    this.dataContext.RemoveRange(area);
+                }
+
+                if (compartmentTypeCount > 0)
+                {
+                    var compartmentType = await this.dataContext.ItemsCompartmentTypes
+                        .Where(t => t.ItemId == id)
+                        .ToListAsync();
+                    this.dataContext.RemoveRange(compartmentType);
+                }
+
+                this.dataContext.Remove(existingModel);
+                await this.dataContext.SaveChangesAsync();
+                scope.Complete();
+
+                return new SuccessOperationResult<ItemDetails>();
+            }
         }
 
         private IQueryable<Item> GetAllBase(
@@ -225,6 +303,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                         ItemCategoryId = i.Item.ItemCategoryId,
                         ItemCategoryDescription = i.Item.ItemCategory.Description,
                         AbcClassDescription = i.Item.AbcClass.Description,
+
+                        CompartmentsCount = i.Item.Compartments.Count(),
+                        MissionsCount = i.Item.Missions.Count(),
+                        SchedulerRequestsCount = i.Item.SchedulerRequests.Count(),
+                        ItemListRowsCount = i.Item.ItemListRows.Count(),
                     });
         }
 
@@ -258,43 +341,48 @@ namespace Ferretto.WMS.Data.Core.Providers
                     })
                 .SelectMany(
                     temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
-                    (a, b) => new ItemDetails
+                    (i, c) => new ItemDetails
                     {
-                        Id = a.Item.Id,
-                        Code = a.Item.Code,
-                        Description = a.Item.Description,
-                        ItemCategoryId = a.Item.ItemCategoryId,
-                        Note = a.Item.Note,
+                        Id = i.Item.Id,
+                        Code = i.Item.Code,
+                        Description = i.Item.Description,
+                        ItemCategoryId = i.Item.ItemCategoryId,
+                        Note = i.Item.Note,
 
-                        AbcClassId = a.Item.AbcClassId,
-                        MeasureUnitId = a.Item.MeasureUnitId,
-                        MeasureUnitDescription = a.Item.MeasureUnit.Description,
-                        ManagementType = (ItemManagementType)a.Item.ManagementType,
-                        FifoTimePick = a.Item.FifoTimePick,
-                        FifoTimeStore = a.Item.FifoTimeStore,
-                        ReorderPoint = a.Item.ReorderPoint,
-                        ReorderQuantity = a.Item.ReorderQuantity,
+                        AbcClassId = i.Item.AbcClassId,
+                        MeasureUnitId = i.Item.MeasureUnitId,
+                        MeasureUnitDescription = i.Item.MeasureUnit.Description,
+                        ManagementType = (ItemManagementType)i.Item.ManagementType,
+                        FifoTimePick = i.Item.FifoTimePick,
+                        FifoTimeStore = i.Item.FifoTimeStore,
+                        ReorderPoint = i.Item.ReorderPoint,
+                        ReorderQuantity = i.Item.ReorderQuantity,
 
-                        Height = a.Item.Height,
-                        Length = a.Item.Length,
-                        Width = a.Item.Width,
-                        PickTolerance = a.Item.PickTolerance,
-                        StoreTolerance = a.Item.StoreTolerance,
-                        InventoryTolerance = a.Item.InventoryTolerance,
-                        AverageWeight = a.Item.AverageWeight,
+                        Height = i.Item.Height,
+                        Length = i.Item.Length,
+                        Width = i.Item.Width,
+                        PickTolerance = i.Item.PickTolerance,
+                        StoreTolerance = i.Item.StoreTolerance,
+                        InventoryTolerance = i.Item.InventoryTolerance,
+                        AverageWeight = i.Item.AverageWeight,
 
-                        Image = a.Item.Image,
+                        Image = i.Item.Image,
 
-                        CreationDate = a.Item.CreationDate,
-                        InventoryDate = a.Item.InventoryDate,
-                        LastModificationDate = a.Item.LastModificationDate,
-                        LastPickDate = a.Item.LastPickDate,
-                        LastStoreDate = a.Item.LastStoreDate,
+                        CreationDate = i.Item.CreationDate,
+                        InventoryDate = i.Item.InventoryDate,
+                        LastModificationDate = i.Item.LastModificationDate,
+                        LastPickDate = i.Item.LastPickDate,
+                        LastStoreDate = i.Item.LastStoreDate,
 
                         TotalAvailable =
-                            b != null
-                                ? b.TotalStock + b.TotalReservedToStore - b.TotalReservedForPick
+                            c != null
+                                ? c.TotalStock + c.TotalReservedToStore - c.TotalReservedForPick
                                 : 0,
+
+                        CompartmentsCount = i.Item.Compartments.Count(),
+                        MissionsCount = i.Item.Missions.Count(),
+                        SchedulerRequestsCount = i.Item.SchedulerRequests.Count(),
+                        ItemListRowsCount = i.Item.ItemListRows.Count(),
                     });
         }
 

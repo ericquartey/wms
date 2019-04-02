@@ -6,12 +6,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using CommonServiceLocator;
 using DevExpress.Data.Filtering;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
+using Ferretto.Common.Controls.Interfaces;
+using Ferretto.Common.Resources;
 using Ferretto.Common.Utils.Expressions;
-using NLog;
 
 namespace Ferretto.Common.Controls
 {
@@ -24,7 +26,7 @@ namespace Ferretto.Common.Controls
 
         private const string DefaultPageSizeSettingsKey = "DefaultListPageSize";
 
-        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly IDialogService dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
 
         private CriteriaOperator customFilter;
 
@@ -35,6 +37,8 @@ namespace Ferretto.Common.Controls
         private IPagedBusinessProvider<TModel, TKey> provider;
 
         private string searchText;
+
+        private Tile selectedFilterTile;
 
         #endregion
 
@@ -54,6 +58,8 @@ namespace Ferretto.Common.Controls
                 }
             }
         }
+
+        public IDialogService DialogService => this.dialogService;
 
         /// <summary>
         /// Gets or sets the fixed filter of the grid.
@@ -128,6 +134,15 @@ namespace Ferretto.Common.Controls
                 }));
         }
 
+        public void ShowErrorDialog(string message)
+        {
+            this.DialogService.ShowMessage(
+                message,
+                DesktopApp.ConfirmOperation,
+                DialogType.Warning,
+                DialogButtons.OK);
+        }
+
         public override async Task UpdateFilterTilesCountsAsync()
         {
             foreach (var filterTile in this.Filters)
@@ -166,7 +181,7 @@ namespace Ferretto.Common.Controls
 
         private static IEnumerable<SortOption> GetSortOrder(FetchRowsAsyncEventArgs e)
         {
-            return e.SortOrder.Select(s => new SortOption(s.PropertyName, s.Direction));
+            return e?.SortOrder.Select(s => new SortOption(s.PropertyName, s.Direction));
         }
 
         private static CriteriaOperator JoinFilters(CriteriaOperator operator1, CriteriaOperator operator2)
@@ -205,7 +220,8 @@ namespace Ferretto.Common.Controls
                 whereString,
                 this.searchText);
 
-            return new FetchRowsResult(entities.Cast<object>().ToArray(),
+            return new FetchRowsResult(
+                entities.Cast<object>().ToArray(),
                 hasMoreRows: entities.Count() == GetPageSize());
         }
 

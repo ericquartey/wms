@@ -12,6 +12,16 @@ namespace Ferretto.WMS.AutomationServiceMock
 {
     internal static class Program
     {
+        #region Fields
+
+        private const string DefaultApplicationSettingsFile = "appsettings.json";
+
+        private const string NetcoreEnvironmentEnvVariable = "ASPNETCORE_ENVIRONMENT";
+
+        private const string ParametrizedApplicationSettingsFile = "appsettings.{0}.json";
+
+        #endregion
+
         #region Enums
 
         private enum UserSelection
@@ -33,10 +43,13 @@ namespace Ferretto.WMS.AutomationServiceMock
 
         private static IAutomationService BuildConfiguration(string[] args)
         {
+            var applicationSettingsFile = GetSettingFileFromEnvironment();
+
             var configuration = new ConfigurationBuilder()
-             .AddJsonFile("appsettings.json", optional: false)
-             .AddCommandLine(args)
-             .Build();
+                .AddJsonFile(DefaultApplicationSettingsFile, false, false)
+                .AddJsonFile(applicationSettingsFile, true, false)
+                .AddCommandLine(args)
+                .Build();
 
             var serviceProvider = ConfigureServices(configuration);
 
@@ -70,9 +83,10 @@ namespace Ferretto.WMS.AutomationServiceMock
             {
                 case UserSelection.CompleteMission:
                     var completeMissionId = GetMissionId();
-                    if (completeMissionId > 0)
+                    var quantity = GetQuantity();
+                    if (completeMissionId > 0 && quantity > 0)
                     {
-                        await automationService.CompleteMissionAsync(completeMissionId);
+                        await automationService.CompleteMissionAsync(completeMissionId, quantity);
                         Console.WriteLine($"Request sent.");
                     }
 
@@ -132,6 +146,32 @@ namespace Ferretto.WMS.AutomationServiceMock
             return -1;
         }
 
+        private static int GetQuantity()
+        {
+            Console.Write("Insert quantity: ");
+            var quantityString = Console.ReadLine();
+
+            if (int.TryParse(quantityString, out var quantity))
+            {
+                return quantity;
+            }
+            else
+            {
+                Console.WriteLine("Unable to parse mission quantity.");
+            }
+
+            return -1;
+        }
+
+        private static string GetSettingFileFromEnvironment()
+        {
+            var netcoreEnvironment = System.Environment.GetEnvironmentVariable(NetcoreEnvironmentEnvVariable);
+
+            return netcoreEnvironment != null
+                ? string.Format(ParametrizedApplicationSettingsFile, netcoreEnvironment)
+                : DefaultApplicationSettingsFile;
+        }
+
         private static async Task Main(string[] args)
         {
             try
@@ -164,7 +204,7 @@ namespace Ferretto.WMS.AutomationServiceMock
                     }
                 }
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 Console.WriteLine($"An unexpected error occurred: {ex.Message}");
                 Console.WriteLine();
@@ -185,25 +225,50 @@ namespace Ferretto.WMS.AutomationServiceMock
                 return;
             }
 
-            Console.WriteLine("Available missions:");
+            Console.WriteLine("Available missions (by priority, then by creation date):");
 
             Console.WriteLine(
                 $"| {nameof(Mission.Priority), 8} " +
                 $"| {nameof(Mission.Id), 3} " +
                 $"| {nameof(Mission.Status), -10} " +
                 $"| {nameof(Mission.ItemDescription), -40} " +
-                $"| {nameof(Mission.RequiredQuantity)} |");
+                $"| Quantities |");
 
-            Console.WriteLine($"|----------|-----|------------|------------------------------------------|------------------|");
+            Console.WriteLine($"|----------|-----|------------|------------------------------------------|------------|");
 
-            foreach (var mission in missions.OrderByDescending(m => m.Priority))
+            var completedMissions = missions
+                   .Where(m => m.Status == MissionStatus.Completed || m.Status == MissionStatus.Incomplete)
+                   .OrderBy(m => m.Priority)
+                   .ThenBy(m => m.CreationDate);
+
+            foreach (var mission in missions
+                                        .Except(completedMissions)
+                                        .OrderBy(m => m.Priority)
+                                        .ThenBy(m => m.CreationDate))
             {
-                var trimmedDescription = mission.ItemDescription.Substring(0, Math.Min(40, mission.ItemDescription.Length));
-                Console.WriteLine(
-                    $"| {mission.Priority, 8} | {mission.Id, 3} | {mission.Status, -10} | {trimmedDescription, -40} | {mission.RequiredQuantity, 16} |");
+                PrintMissionTableRow(mission);
             }
 
-            Console.WriteLine($"|__________|_____|____________|__________________________________________|__________________|");
+            if (completedMissions.Any())
+            {
+                Console.WriteLine($"|----------|-----|------------|------------------------------------------|------------|");
+
+                foreach (var mission in completedMissions)
+                {
+                    PrintMissionTableRow(mission);
+                }
+            }
+
+            Console.WriteLine($"|__________|_____|____________|__________________________________________|____________|");
+        }
+
+        private static void PrintMissionTableRow(Mission mission)
+        {
+            var trimmedDescription = mission.ItemDescription.Substring(0, Math.Min(40, mission.ItemDescription.Length));
+            var quantities = $"{mission.DispatchedQuantity, 2} / {mission.RequestedQuantity, 2}";
+
+            Console.WriteLine(
+                $"| {mission.Priority, 8} | {mission.Id, 3} | {mission.Status, -10} | {trimmedDescription, -40} | {quantities, 10} |");
         }
 
         #endregion

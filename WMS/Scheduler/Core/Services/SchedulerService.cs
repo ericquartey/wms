@@ -37,52 +37,55 @@ namespace Ferretto.WMS.Scheduler.Core.Services
             await base.StartAsync(cancellationToken);
         }
 
-        public async Task<SchedulerRequest> WithdrawItemAsync(SchedulerRequest request)
+        public async Task<IOperationResult<SchedulerRequest>> WithdrawItemAsync(int itemId, ItemWithdrawOptions options)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
                 var requestsProvider = serviceScope.ServiceProvider.GetRequiredService<ISchedulerRequestProvider>();
 
-                SchedulerRequest qualifiedRequest = null;
                 using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    qualifiedRequest = await requestsProvider.FullyQualifyWithdrawalRequestAsync(request);
+                    var qualifiedRequest = await requestsProvider.FullyQualifyWithdrawalRequestAsync(itemId, options);
                     if (qualifiedRequest != null)
                     {
                         await requestsProvider.CreateAsync(qualifiedRequest);
 
                         transactionScope.Complete();
                         this.logger.LogDebug($"Scheduler Request (id={qualifiedRequest.Id}): Withdrawal for item={qualifiedRequest.ItemId} was accepted and stored.");
+
+                        await this.ProcessPendingRequestsAsync();
+
+                        return new SuccessOperationResult<SchedulerRequest>(qualifiedRequest);
+                    }
+                    else
+                    {
+                        return new BadRequestOperationResult<SchedulerRequest>(qualifiedRequest);
                     }
                 }
-
-                await this.ProcessPendingRequestsAsync();
-
-                return qualifiedRequest;
             }
         }
 
-        public async Task<IEnumerable<SchedulerRequest>> ExecuteListAsync(ListExecutionRequest request)
+        public async Task<IOperationResult<IEnumerable<SchedulerRequest>>> ExecuteListAsync(int listId, int areaId, int? bayId)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
                 var listsProvider = serviceScope.ServiceProvider.GetRequiredService<IItemListSchedulerProvider>();
 
-                var acceptedRequests = await listsProvider.PrepareForExecutionAsync(request);
+                var acceptedRequests = await listsProvider.PrepareForExecutionAsync(listId, areaId, bayId);
 
                 await this.ProcessPendingRequestsAsync();
 
-                return acceptedRequests;
+                return new SuccessOperationResult<IEnumerable<SchedulerRequest>>(acceptedRequests);
             }
         }
 
-        public async Task<IOperationResult<Mission>> CompleteMissionAsync(int id)
+        public async Task<IOperationResult<Mission>> CompleteMissionAsync(int missionId, int quantity)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
                 var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionSchedulerProvider>();
 
-                var result = await missionsProvider.CompleteAsync(id);
+                var result = await missionsProvider.CompleteAsync(missionId, quantity);
 
                 await this.ProcessPendingRequestsAsync();
 
@@ -90,23 +93,23 @@ namespace Ferretto.WMS.Scheduler.Core.Services
             }
         }
 
-        public async Task<IOperationResult<SchedulerRequest>> ExecuteListRowAsync(ListRowExecutionRequest request)
+        public async Task<IOperationResult<SchedulerRequest>> ExecuteListRowAsync(int rowId, int areaId, int? bayId)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
                 var listRowProvider = serviceScope.ServiceProvider.GetRequiredService<IItemListRowSchedulerProvider>();
 
-                return await listRowProvider.PrepareForExecutionAsync(request);
+                return await listRowProvider.PrepareForExecutionAsync(rowId, areaId, bayId);
             }
         }
 
-        public async Task<IOperationResult<Mission>> ExecuteMissionAsync(int id)
+        public async Task<IOperationResult<Mission>> ExecuteMissionAsync(int missionId)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
                 var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionSchedulerProvider>();
 
-                return await missionsProvider.ExecuteAsync(id);
+                return await missionsProvider.ExecuteAsync(missionId);
             }
         }
 
@@ -159,15 +162,7 @@ namespace Ferretto.WMS.Scheduler.Core.Services
 
                         await database.MigrateAsync();
 
-                        this.logger.LogDebug($"Reseeding database ...");
-
-                        var cleanAll = await System.IO.File.ReadAllTextAsync(@"bin\Debug\netcoreapp2.1\Seeds\Dev.CleanAll.sql");
-                        var initDbScript = await System.IO.File.ReadAllTextAsync(@"bin\Debug\netcoreapp2.1\Seeds\Dev.InitDb.sql");
-                        var itemsScript = await System.IO.File.ReadAllTextAsync(@"bin\Debug\netcoreapp2.1\Seeds\Dev.Items.sql");
-
-                        await database.ExecuteSqlCommandAsync(cleanAll);
-                        await database.ExecuteSqlCommandAsync(initDbScript);
-                        await database.ExecuteSqlCommandAsync(itemsScript);
+                        await this.SeedDatabaseAsync(database, stoppingToken);
 #else
                         this.logger.LogCritical("Database is not up to date. Please apply the migrations and restart the service.");
                         await this.StopAsync(stoppingToken);
@@ -182,6 +177,25 @@ namespace Ferretto.WMS.Scheduler.Core.Services
             catch
             {
                 this.logger.LogCritical("Unable to check database structure.");
+                await this.StopAsync(stoppingToken);
+            }
+        }
+
+        private async Task SeedDatabaseAsync(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade database, CancellationToken stoppingToken)
+        {
+            try
+            {
+                this.logger.LogDebug($"Reseeding database (Dev.Minimal.sql) ...");
+                var minimalDbScript = await System.IO.File.ReadAllTextAsync(@"bin\Debug\netcoreapp2.2\win7-x64\Seeds\Dev.Minimal.sql");
+                await database.ExecuteSqlCommandAsync(minimalDbScript);
+
+                this.logger.LogDebug($"Reseeding database (Dev.Items.sql) ...");
+                var itemsScript = await System.IO.File.ReadAllTextAsync(@"bin\Debug\netcoreapp2.2\win7-x64\Seeds\Dev.Items.sql");
+                await database.ExecuteSqlCommandAsync(itemsScript);
+            }
+            catch (System.Exception ex)
+            {
+                this.logger.LogCritical($"Unable to seed database: {ex.Message}");
                 await this.StopAsync(stoppingToken);
             }
         }

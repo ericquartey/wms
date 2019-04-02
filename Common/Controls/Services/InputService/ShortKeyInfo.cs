@@ -7,7 +7,7 @@
         public ShortKeyInfo(ShortKey shortKey, object uiElementObj, object data)
         {
             this.ShortKey = shortKey;
-            this.UIElementObj = uiElementObj;
+            this.UiElementObj = uiElementObj;
             this.Data = data;
         }
 
@@ -19,7 +19,7 @@
 
         public ShortKey ShortKey { get; set; }
 
-        public object UIElementObj { get; set; }
+        public object UiElementObj { get; set; }
 
         #endregion
     }

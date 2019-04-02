@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BusinessProviders;
+using Ferretto.WMS.App.Core.Interfaces;
+using Ferretto.WMS.App.Core.Providers;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -77,6 +78,7 @@ namespace Ferretto.WMS.App.Modules.BLL
             containerRegistry.Register<IPackageTypeProvider, PackageTypeProvider>();
             containerRegistry.Register<ISchedulerRequestProvider, SchedulerRequestProvider>();
             containerRegistry.Register<IUserProvider, UserProvider>();
+            containerRegistry.Register<IFileProvider, ImageProvider>();
         }
 
         private static void RegisterDataServiceEndpoints(IContainerRegistry containerRegistry)
@@ -109,6 +111,7 @@ namespace Ferretto.WMS.App.Modules.BLL
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IPackageTypesDataService>(serviceEndPoint));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<ISchedulerRequestsDataService>(serviceEndPoint));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IUsersDataService>(serviceEndPoint));
+            containerRegistry.RegisterInstance(DataServiceFactory.GetService<IImagesDataService>(serviceEndPoint));
         }
 
         #endregion

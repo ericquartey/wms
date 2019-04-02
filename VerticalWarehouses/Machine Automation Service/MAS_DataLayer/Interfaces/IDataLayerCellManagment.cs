@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS_DataLayer
+﻿using System.Threading.Tasks;
+
+namespace Ferretto.VW.MAS_DataLayer.Interfaces
 {
     public interface IDataLayerCellManagment
     {
@@ -10,7 +12,7 @@
         /// <param name="drawerHeight">Drawer height to insert in the magazine</param>
         /// <param name="loadingUnitId">Id of the Drawer we take into account</param>
         /// <returns>An object with position and side for a return mission</returns>
-        LoadingUnitPosition GetFreeBlockPosition(decimal loadingUnitHeight, int loadingUnitId);
+        Task<LoadingUnitPosition> GetFreeBlockPositionAsync(decimal loadingUnitHeight, int loadingUnitId);
 
         /// <summary>
         /// Get to the mission the lowest cell position for a drawer

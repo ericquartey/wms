@@ -1,11 +1,13 @@
 ﻿using Ferretto.VW.InverterDriver;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_DataLayer;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_IODriver;
 using Ferretto.VW.MAS_IODriver.Interface;
 using Ferretto.VW.MAS_MissionsManager;
+using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Prism.Events;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
@@ -23,7 +26,9 @@ namespace Ferretto.VW.MAS_AutomationService
     {
         #region Fields
 
-        private const string ConnectionStringName = "AutomationService";
+        private const string PrimaryConnectionStringName = "AutomationServicePrimary";
+
+        private const string SecondaryConnectionStringName = "AutomationServiceSecondary";
 
         #endregion
 
@@ -61,25 +66,24 @@ namespace Ferretto.VW.MAS_AutomationService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<FilesInfo>(this.Configuration.GetSection("FilesInfo"));
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSignalR();
 
-            var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
-            services.AddDbContext<DataLayerContext>(options => options.UseInMemoryDatabase("InMemoryWorkingDB"),
+            var dataLayerConfiguration = new DataLayerConfiguration(
+                this.Configuration.GetConnectionString(SecondaryConnectionStringName),
+                this.Configuration.GetValue<string>("Vertimag:DataLayer:ConfigurationFile")
+            );
+
+            services.AddDbContext<DataLayerContext>(options => options.UseSqlite(this.Configuration.GetConnectionString(PrimaryConnectionStringName)),
                 ServiceLifetime.Singleton);
 
             services.AddSingleton<IEventAggregator, EventAggregator>();
 
             services.AddSingleton<IDataLayer, DataLayer>(provider => new DataLayer(
-                connectionString,
+                dataLayerConfiguration,
                 provider.GetService<DataLayerContext>(),
                 provider.GetService<IEventAggregator>(),
-                provider.GetService<IOptions<FilesInfo>>()));
-
-            services.AddSingleton<IWriteLogService, DataLayer>(provider =>
-                provider.GetService<IDataLayer>() as DataLayer);
+                provider.GetService<ILogger<DataLayer>>()));
 
             services.AddSingleton<IHostedService, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
@@ -90,7 +94,6 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSingleton<IDataLayerValueManagment, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
-            services.AddSingleton<ISocketTransport, SocketTransport>();
             this.RegisterSocketTransport(services);
 
             this.RegisterModbusTransport(services);

@@ -20,6 +20,8 @@
 
         UNDEFINED_TYPE_EXCEPTION = 105,
 
-        UNKNOWN_INFO_FILE_EXCEPTION = 106
+        UNKNOWN_INFO_FILE_EXCEPTION = 106,
+
+        SaveData = 1001
     }
 }

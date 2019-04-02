@@ -274,4 +274,21 @@
   <data name="SelectValue" xml:space="preserve">
     <value>Select a value</value>
   </data>
+  <data name="NotSpecified" xml:space="preserve">
+    <value>Not Specified</value>
+  </data>
+  <data name="ShutDownApp" xml:space="preserve">
+    <value>Shut Down App</value>
+  </data>
+  <data name="ConnectionStatus" xml:space="preserve">
+    <value>Connection status</value>
+  </data>
+  <data name="ErrorOnConnetionToDataService" xml:space="preserve">
+    <value>Error on connection to Data Service</value>
+    <comment>Dialog popup message</comment>
+  </data>
+  <data name="ConnetionToDataServiceRestored" xml:space="preserve">
+    <value>Connection to Data Service restored</value>
+    <comment>Dialog popup message</comment>
+  </data>
 </root>

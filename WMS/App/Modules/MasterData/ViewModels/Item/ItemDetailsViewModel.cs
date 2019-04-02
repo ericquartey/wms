@@ -2,16 +2,19 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
-using Ferretto.Common.BusinessModels;
-using Ferretto.Common.BusinessProviders;
+using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Core.Interfaces;
+using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemDetailsViewModel : DetailsViewModel<ItemDetails>, IExtensionDataEntityViewModel, IEdit
+    public class ItemDetailsViewModel : DetailsViewModel<ItemDetails>, IEdit
     {
         #region Fields
 
@@ -20,6 +23,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
         private IEnumerable<Compartment> compartmentsDataSource;
+
+        private ICommand deleteItemCommand;
 
         private bool itemHasCompartments;
 
@@ -31,7 +36,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private Compartment selectedCompartment;
 
-        private ICommand withdrawCommand;
+        private ICommand withdrawItemCommand;
 
         #endregion
 
@@ -52,6 +57,10 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.compartmentsDataSource, value);
         }
 
+        public ICommand DeleteItemCommand => this.deleteItemCommand ??
+            (this.deleteItemCommand = new DelegateCommand(
+                async () => await this.DeleteItemAsync()));
+
         public bool ItemHasCompartments
         {
             get => this.itemHasCompartments;
@@ -64,10 +73,9 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.selectedCompartment, value);
         }
 
-        public ICommand WithdrawCommand => this.withdrawCommand ??
-                                          (this.withdrawCommand = new DelegateCommand(
-                                               this.ExecuteWithdraw,
-                                               this.CanExecuteWithdraw));
+        public ICommand WithdrawItemCommand => this.withdrawItemCommand ??
+            (this.withdrawItemCommand = new DelegateCommand(
+                this.WithdrawItem));
 
         #endregion
 
@@ -89,7 +97,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             base.EvaluateCanExecuteCommands();
 
-            ((DelegateCommand)this.WithdrawCommand)?.RaiseCanExecuteChanged();
+            ((DelegateCommand)this.WithdrawItemCommand)?.RaiseCanExecuteChanged();
         }
 
         protected override async Task ExecuteRefreshCommandAsync()
@@ -97,12 +105,12 @@ namespace Ferretto.WMS.Modules.MasterData
             await this.LoadDataAsync();
         }
 
-        protected override async Task ExecuteRevertCommand()
+        protected override async Task ExecuteRevertCommandAsync()
         {
             await this.LoadDataAsync();
         }
 
-        protected override async Task ExecuteSaveCommand()
+        protected override async Task ExecuteSaveCommandAsync()
         {
             this.IsBusy = true;
 
@@ -137,13 +145,44 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnDispose();
         }
 
-        private bool CanExecuteWithdraw()
+        private async Task DeleteItemAsync()
         {
-            return this.Model?.TotalAvailable > 0;
+            if (!this.Model.CanDelete())
+            {
+                this.ShowErrorDialog(this.Model.GetCanDeleteReason());
+                return;
+            }
+
+            var userChoice = this.DialogService.ShowMessage(
+                string.Format(DesktopApp.AreYouSureToDeleteGeneric, BusinessObjects.Item),
+                DesktopApp.ConfirmOperation,
+                DialogType.Question,
+                DialogButtons.YesNo);
+
+            if (userChoice == DialogResult.Yes)
+            {
+                var result = await this.itemProvider.DeleteAsync(this.Model.Id);
+                if (result.Success)
+                {
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemDeletedSuccessfully, StatusType.Success));
+                    this.EventService.Invoke(new RefreshModelsPubSubEvent<Item>(this.Model.Id));
+                    this.HistoryViewService.Previous();
+                }
+                else
+                {
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+                }
+            }
         }
 
-        private void ExecuteWithdraw()
+        private void WithdrawItem()
         {
+            if (!this.Model.CanExecuteOperation("Withdraw"))
+            {
+                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason("Withdraw"));
+                return;
+            }
+
             this.IsBusy = true;
 
             this.NavigationService.Appear(
@@ -188,14 +227,14 @@ namespace Ferretto.WMS.Modules.MasterData
                 if (this.Data is int modelId)
                 {
                     this.Model = await this.itemProvider.GetByIdAsync(modelId);
-                    this.ItemHasCompartments = this.Model.CompartmentsCount > 0 ? true : false;
+                    this.ItemHasCompartments = this.Model.CompartmentsCount > 0;
                 }
 
                 this.IsBusy = false;
             }
             catch
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToLoadData, StatusType.Error));
             }
         }
 

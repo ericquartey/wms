@@ -466,6 +466,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Image.
+        /// </summary>
+        public static string Image {
+            get {
+                return ResourceManager.GetString("Image", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string ItemAll {
@@ -480,6 +489,15 @@ namespace Ferretto.Common.Resources {
         public static string ItemClassA {
             get {
                 return ResourceManager.GetString("ItemClassA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item deleted sucessfully.
+        /// </summary>
+        public static string ItemDeletedSuccessfully {
+            get {
+                return ResourceManager.GetString("ItemDeletedSuccessfully", resourceCulture);
             }
         }
         

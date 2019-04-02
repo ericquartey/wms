@@ -2,6 +2,7 @@
 using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines
@@ -14,6 +15,8 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
 
         protected BlockingConcurrentQueue<IoMessage> ioCommandQueue;
 
+        protected ILogger logger;
+
         private bool disposed = false;
 
         #endregion
@@ -22,7 +25,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
 
         ~IoStateMachineBase()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion
@@ -37,13 +40,13 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
 
         public void ChangeState(IIoState newState)
         {
-            CurrentState.Dispose();
+            this.CurrentState.Dispose();
             this.CurrentState = newState;
         }
 
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -59,6 +62,11 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
 
         public void PublishNotificationEvent(NotificationMessage notificationMessage)
         {
+            this.logger.LogTrace(string.Format("1:{0}:{1}:{2}",
+                notificationMessage.Type,
+                notificationMessage.Destination,
+                notificationMessage.Status));
+
             this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
         }
 
@@ -66,14 +74,16 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposed)
+            if (this.disposed)
+            {
                 return;
+            }
 
             if (disposing)
             {
             }
 
-            disposed = true;
+            this.disposed = true;
         }
 
         #endregion

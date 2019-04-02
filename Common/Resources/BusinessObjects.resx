@@ -177,10 +177,6 @@
     <value>First Store Date</value>
     <comment>Compartment - First Store Date</comment>
   </data>
-  <data name="CompartmentLastHandlingDate" xml:space="preserve">
-    <value>Last Handling Date</value>
-    <comment>Compartment - Last Handling Date</comment>
-  </data>
   <data name="CompartmentHeight" xml:space="preserve">
     <value>Height [mm]</value>
     <comment>Compartment - Height</comment>
@@ -749,10 +745,6 @@
     <value>Priority</value>
     <comment>List Row - Priority</comment>
   </data>
-  <data name="ItemListRowRequiredQuantity" xml:space="preserve">
-    <value>Required Quantity</value>
-    <comment>List Row - Required Quantity</comment>
-  </data>
   <data name="ItemListRowStatusDescription" xml:space="preserve">
     <value>Status</value>
     <comment>List Row - Status</comment>
@@ -1008,5 +1000,29 @@
   </data>
   <data name="ItemListRow" xml:space="preserve">
     <value>Item List Row</value>
+  </data>
+  <data name="MissionStatusIncomplete" xml:space="preserve">
+    <value>Incomplete</value>
+    <comment>Mission Status - Incomplete</comment>
+  </data>
+  <data name="ItemListRowRequestedQuantity" xml:space="preserve">
+    <value>Requested Quantity</value>
+    <comment>List Row - Requested Quantity</comment>
+  </data>
+  <data name="MissionRequestedQuantity" xml:space="preserve">
+    <value>Requested Quantity</value>
+  </data>
+  <data name="Mission" xml:space="preserve">
+    <value>Mission</value>
+  </data>
+  <data name="Compartment" xml:space="preserve">
+    <value>Compartment</value>
+  </data>
+  <data name="SchedulerRequest" xml:space="preserve">
+    <value>Scheduler Request</value>
+  </data>
+  <data name="ItemListRowStatus" xml:space="preserve">
+    <value>Status</value>
+    <comment>ItemListRow - Status</comment>
   </data>
 </root>
