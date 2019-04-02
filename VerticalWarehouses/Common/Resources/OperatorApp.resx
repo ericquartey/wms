@@ -509,4 +509,12 @@
     <value>DrawerActivityUpdateMaxQuantity</value>
     <comment>Button text</comment>
   </data>
+  <data name="StatisticsGeneralDataHeader" xml:space="preserve">
+    <value>StatisticsGeneralDataHeader</value>
+    <comment>Page Header</comment>
+  </data>
+  <data name="StatisticsGeneralTestData" xml:space="preserve">
+    <value>StatisticsGeneralTestData</value>
+    <comment>Progress bar label</comment>
+  </data>
 </root>

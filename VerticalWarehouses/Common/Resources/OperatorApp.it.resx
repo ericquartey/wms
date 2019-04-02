@@ -411,4 +411,10 @@
   <data name="DrawerActivityUpdateMaxQuantity" xml:space="preserve">
     <value>Aggiorna quantita' massima</value>
   </data>
+  <data name="StatisticsGeneralDataHeader" xml:space="preserve">
+    <value>Statistica : dati generali.</value>
+  </data>
+  <data name="StatisticsGeneralTestData" xml:space="preserve">
+    <value>Prova Progress bar:</value>
+  </data>
 </root>

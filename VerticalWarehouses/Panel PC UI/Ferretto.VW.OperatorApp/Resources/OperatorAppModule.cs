@@ -4,6 +4,8 @@ using Prism.Modularity;
 using Prism.Events;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics;
+
 
 namespace Ferretto.VW.OperatorApp.Resources
 {
@@ -36,6 +38,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             var immediateDrawerCallVMInstance = new ImmediateDrawerCallViewModel(container.Resolve<IEventAggregator>());
             var generalInfoVMInstance = new GeneralInfoViewModel(container.Resolve<IEventAggregator>());
             var drawerCompactingVMInstance = new DrawerCompactingViewModel(container.Resolve<IEventAggregator>());
+            var statisticsGeneralDataVMInstance = new StatisticsGeneralDataViewModel(container.Resolve<IEventAggregator>());
 
 
 
@@ -54,6 +57,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IImmediateDrawerCallViewModel>(immediateDrawerCallVMInstance);
             this.container.RegisterInstance<IGeneralInfoViewModel>(generalInfoVMInstance);
             this.container.RegisterInstance<IDrawerCompactingViewModel>(drawerCompactingVMInstance);
+            this.container.RegisterInstance<IStatisticsGeneralDataViewModel>(statisticsGeneralDataVMInstance);
 
 
             mainWindowVMInstance.InitializeViewModel(this.container);

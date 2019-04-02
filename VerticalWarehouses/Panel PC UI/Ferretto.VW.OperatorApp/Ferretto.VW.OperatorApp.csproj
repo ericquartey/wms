@@ -56,6 +56,7 @@
       <None Remove="ViewsAndViewModels\MainWindowNavigationButtonsView.xaml" />
       <None Remove="ViewsAndViewModels\Other\DrawerCompactingView.xaml" />
       <None Remove="ViewsAndViewModels\Other\GeneralInfoView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\Statistics\StatisticsGeneralDataView.xaml" />
     </ItemGroup>
 
   <ItemGroup>
@@ -90,10 +91,6 @@
     <None Update="ViewsAndViewModels\Other\ImmediateDrawerCallView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ViewsAndViewModels\Other\Statistics\" />
   </ItemGroup>
 
   </Project>
