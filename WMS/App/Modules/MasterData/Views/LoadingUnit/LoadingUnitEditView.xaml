@@ -44,7 +44,8 @@
                                    Content="{x:Static res:MasterData.AddCompartment}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_add_box_black_24dp.png"
-                                   GlyphSize="Custom" />
+                                   GlyphSize="Custom"
+                                   Reason="{Binding AddReason}" />
                 <wms:ActionBarItem Command="{Binding BulkAddCommand}"
                                    Content="{x:Static res:MasterData.BulkAddCompartment}"
                                    CustomGlyphSize="24,24"
