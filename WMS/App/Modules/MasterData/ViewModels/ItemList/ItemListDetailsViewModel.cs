@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
@@ -23,7 +24,13 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ICommand addListRowCommand;
 
+        private string addRowReason;
+
         private ICommand deleteCommand;
+
+        private string deleteRowReason;
+
+        private string executeRowReason;
 
         private IEnumerable<ItemListRow> itemListRowDataSource;
 
@@ -61,10 +68,28 @@ namespace Ferretto.WMS.Modules.MasterData
                                         this.ExecuteAddListRowCommand,
                                         this.CanExecuteAddListRowCommand));
 
+        public string AddRowReason
+        {
+            get => this.addRowReason;
+            set => this.SetProperty(ref this.addRowReason, value);
+        }
+
         public ICommand DeleteCommand => this.deleteCommand ??
             (this.deleteCommand = new DelegateCommand(
                 async () => await this.ExecuteDeleteCommandAsync(),
                 this.CanExecuteDeleteCommand).ObservesProperty(() => this.SelectedItemListRow));
+
+        public string DeleteRowReason
+        {
+            get => this.deleteRowReason;
+            set => this.SetProperty(ref this.deleteRowReason, value);
+        }
+
+        public string ExecuteRowReason
+        {
+            get => this.executeRowReason;
+            set => this.SetProperty(ref this.executeRowReason, value);
+        }
 
         public IEnumerable<ItemListRow> ItemListRowDataSource
         {
@@ -91,7 +116,11 @@ namespace Ferretto.WMS.Modules.MasterData
         public ItemListRow SelectedItemListRow
         {
             get => this.selectedItemListRow;
-            set => this.SetProperty(ref this.selectedItemListRow, value);
+            set
+            {
+                this.SetProperty(ref this.selectedItemListRow, value);
+                this.UpdateMoreReasons();
+            }
         }
 
         public ICommand ShowDetailsListRowCommand => this.showDetailsListRowCommand ??
@@ -315,7 +344,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
                     this.Model = await this.itemListProvider.GetByIdAsync(modelId);
                     this.ListHasRows = this.Model.ItemListRowsCount > 0;
-
+                    this.UpdateMoreReasons();
                     this.IsBusy = false;
                 }
                 catch
@@ -323,6 +352,13 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
                 }
             }
+        }
+
+        private void UpdateMoreReasons()
+        {
+            this.ExecuteRowReason = this.SelectedItemListRow?.Policies?.Where(p => p.Name == "Execute").Select(p => p.Reason).FirstOrDefault();
+            this.AddRowReason = this.SelectedItemListRow?.Policies?.Where(p => p.Name == "Add").Select(p => p.Reason).FirstOrDefault();
+            this.DeleteRowReason = this.SelectedItemListRow?.Policies?.Where(p => p.Name == "Delete").Select(p => p.Reason).FirstOrDefault();
         }
 
         #endregion
