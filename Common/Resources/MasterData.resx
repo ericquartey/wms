@@ -509,4 +509,7 @@
   <data name="ItemDeletedSuccessfully" xml:space="preserve">
     <value>Item deleted sucessfully</value>
   </data>
+  <data name="AllowedOperation" xml:space="preserve">
+    <value>Allowed operation</value>
+  </data>
 </root>

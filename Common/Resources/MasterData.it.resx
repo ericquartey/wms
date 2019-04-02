@@ -473,4 +473,7 @@
   <data name="ItemDeletedSuccessfully" xml:space="preserve">
     <value>Articolo rimosso con successo</value>
   </data>
+  <data name="AllowedOperation" xml:space="preserve">
+    <value>Operazione consentita</value>
+  </data>
 </root>
