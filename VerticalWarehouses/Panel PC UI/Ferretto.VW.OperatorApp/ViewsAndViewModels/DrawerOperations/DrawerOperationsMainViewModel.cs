@@ -61,7 +61,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             this.eventAggregator.GetEvent<OperatorApp_Event>().Publish(new OperatorApp_EventMessage(OperatorApp_EventMessageType.EnterView));
             var desiredViewModel = this.container.Resolve<I>() as T;
             desiredViewModel.SubscribeMethodToEvent();
-            this.container.Resolve<IMainWindowBackToOAPPButtonViewModel>().BackButtonCommand.RegisterCommand(new DelegateCommand(desiredViewModel.ExitFromViewMethod));
+            this.container.Resolve<IDrawerOperationsFooterViewModel>().BackButtonCommand.RegisterCommand(new DelegateCommand(desiredViewModel.ExitFromViewMethod));
             this.DrawerOperationsContentRegion = desiredViewModel;
         }
 

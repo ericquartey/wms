@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -34,7 +35,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         public ICommand DrawerDetailsButtonCommand => this.drawerDetailsButtonCommand ?? (this.drawerDetailsButtonCommand = new DelegateCommand(
             () =>
             {
-                this.container.Resolve<IDrawerOperationsMainViewModel>().NavigateToView<DrawerWaitViewModel, IDrawerWaitViewModel>();
+                this.container.Resolve<IDrawerOperationsMainViewModel>().NavigateToView<DrawerActivityDetailViewModel, IDrawerActivityDetailViewModel>();
                 this.container.Resolve<IMainWindowViewModel>().ChangeFooter<DrawerOperationsFooterViewModel, IDrawerOperationsFooterViewModel>();
             }));
 
