@@ -3,11 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.EF;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Ferretto.WMS.Scheduler.Core.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Scheduler.Core.Providers
@@ -18,9 +15,9 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         private readonly ICompartmentSchedulerProvider compartmentProvider;
 
-        private readonly DatabaseContext databaseContext;
-
         private readonly IItemSchedulerProvider itemProvider;
+
+        private readonly ILoadingUnitSchedulerProvider loadingUnitProvider;
 
         private readonly ILogger<MissionExecutionSchedulerProvider> logger;
 
@@ -28,28 +25,24 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         private readonly IItemListRowSchedulerProvider rowProvider;
 
-        private readonly IServiceScopeFactory scopeFactory;
-
         #endregion
 
         #region Constructors
 
         public MissionExecutionSchedulerProvider(
-            IServiceScopeFactory scopeFactory,
-            DatabaseContext databaseContext,
             ICompartmentSchedulerProvider compartmentProvider,
             IMissionSchedulerProvider missionProvider,
             IItemListRowSchedulerProvider rowProvider,
             IItemSchedulerProvider itemProvider,
+            ILoadingUnitSchedulerProvider loadingUnitProvider,
             ILogger<MissionExecutionSchedulerProvider> logger)
         {
             this.logger = logger;
             this.compartmentProvider = compartmentProvider;
             this.missionProvider = missionProvider;
-            this.scopeFactory = scopeFactory;
             this.itemProvider = itemProvider;
             this.rowProvider = rowProvider;
-            this.databaseContext = databaseContext;
+            this.loadingUnitProvider = loadingUnitProvider;
         }
 
         #endregion
@@ -114,27 +107,10 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             if (mission.ItemListRowId.HasValue)
             {
                 var row = await this.rowProvider.GetByIdAsync(mission.ItemListRowId.Value);
-                await this.UpdateRowStatusAsync(row, System.DateTime.UtcNow);
+                await this.UpdateRowStatusAsync(row, DateTime.UtcNow);
             }
 
             return result;
-        }
-
-        public async Task<IOperationResult<T>> UpdateEntityAsync<T, TDataModel>(T model, DbSet<TDataModel> dbSet)
-            where T : Model
-            where TDataModel : class
-        {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            var existingModel = dbSet.Find(model.Id);
-            this.databaseContext.Entry(existingModel).CurrentValues.SetValues(model);
-
-            await this.databaseContext.SaveChangesAsync();
-
-            return new SuccessOperationResult<T>(model);
         }
 
         public async Task UpdateRowStatusAsync(ItemListRow row, DateTime now)
@@ -226,13 +202,10 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             }
 
             var now = DateTime.UtcNow;
-
-            using (var serviceScope = this.scopeFactory.CreateScope())
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                var loadingUnitProvider = serviceScope.ServiceProvider.GetRequiredService<ILoadingUnitSchedulerProvider>();
-
                 var compartment = await this.compartmentProvider.GetByIdForStockUpdateAsync(mission.CompartmentId.Value);
-                var loadingUnit = await loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId);
+                var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId);
                 var item = await this.itemProvider.GetByIdAsync(mission.ItemId.Value);
 
                 UpdateCompartment(compartment, quantity, now);
@@ -243,23 +216,20 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
                 UpdateMission(mission, quantity);
 
-                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                var result = await this.missionProvider.UpdateAsync(mission);
+                await this.loadingUnitProvider.UpdateAsync(loadingUnit);
+                await this.itemProvider.UpdateAsync(item);
+                await this.compartmentProvider.UpdateAsync(compartment);
+
+                if (mission.ItemListRowId.HasValue)
                 {
-                    var result = await this.UpdateEntityAsync(mission, this.databaseContext.Missions);
-                    await this.UpdateEntityAsync(loadingUnit, this.databaseContext.LoadingUnits);
-                    await this.UpdateEntityAsync(item, this.databaseContext.Items);
-                    await this.UpdateEntityAsync(compartment, this.databaseContext.Compartments);
-
-                    if (mission.ItemListRowId.HasValue)
-                    {
-                        var row = await this.rowProvider.GetByIdAsync(mission.ItemListRowId.Value);
-                        await this.UpdateRowStatusAsync(row, now);
-                    }
-
-                    scope.Complete();
-
-                    return result;
+                    var row = await this.rowProvider.GetByIdAsync(mission.ItemListRowId.Value);
+                    await this.UpdateRowStatusAsync(row, now);
                 }
+
+                scope.Complete();
+
+                return result;
             }
         }
 
