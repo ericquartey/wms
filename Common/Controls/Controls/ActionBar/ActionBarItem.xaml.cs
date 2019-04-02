@@ -29,7 +29,7 @@ namespace Ferretto.Common.Controls
 
         public string Reason
         {
-            get => this.Policy?.Reason;
+            get => (string)this.GetValue(ReasonProperty);
             set => this.SetValue(ReasonProperty, value);
         }
 
