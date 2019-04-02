@@ -8,6 +8,7 @@ using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics;
 
 namespace Ferretto.VW.OperatorApp.Resources
 {
@@ -44,6 +45,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             var drawerOperationsFooterVMInstance = new DrawerOperationsFooterViewModel(container.Resolve<IEventAggregator>());
             var otherMainVMInstance = new OtherMainViewModel(container.Resolve<IEventAggregator>());
             var otherNavigationVMInstance = new OtherNavigationViewModel(container.Resolve<IEventAggregator>());
+            var statisticsGeneralDataVMInstance = new StatisticsGeneralDataViewModel(container.Resolve<IEventAggregator>());
 
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
@@ -64,6 +66,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IDrawerOperationsFooterViewModel>(drawerOperationsFooterVMInstance);
             this.container.RegisterInstance<IOtherMainViewModel>(otherMainVMInstance);
             this.container.RegisterInstance<IOtherNavigationViewModel>(otherNavigationVMInstance);
+            this.container.RegisterInstance<IStatisticsGeneralDataViewModel>(statisticsGeneralDataVMInstance);
 
             mainWindowVMInstance.InitializeViewModel(this.container);
             mainWindowBackToOAPPButtonVMInstance.InitializeViewModel(this.container);

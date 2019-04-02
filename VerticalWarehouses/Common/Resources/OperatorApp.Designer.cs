@@ -977,5 +977,23 @@ namespace Ferretto.VW.Resources {
                 return ResourceManager.GetString("SearchCode", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a StatisticsGeneralDataHeader.
+        /// </summary>
+        public static string StatisticsGeneralDataHeader {
+            get {
+                return ResourceManager.GetString("StatisticsGeneralDataHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a StatisticsGeneralTestData.
+        /// </summary>
+        public static string StatisticsGeneralTestData {
+            get {
+                return ResourceManager.GetString("StatisticsGeneralTestData", resourceCulture);
+            }
+        }
     }
 }

@@ -423,4 +423,10 @@
   <data name="OtherNavigationErrorSimulation" xml:space="preserve">
     <value>Simulazione Errori</value>
   </data>
+  <data name="StatisticsGeneralDataHeader" xml:space="preserve">
+    <value>Statistica : dati generali.</value>
+  </data>
+  <data name="StatisticsGeneralTestData" xml:space="preserve">
+    <value>Prova Progress bar:</value>
+  </data>
 </root>

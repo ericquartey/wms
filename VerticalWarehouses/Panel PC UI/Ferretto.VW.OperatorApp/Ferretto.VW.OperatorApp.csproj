@@ -66,6 +66,7 @@
       <None Remove="ViewsAndViewModels\SearchItem\ItemDetailView.xaml" />
       <None Remove="ViewsAndViewModels\SearchItem\ItemSearchView.xaml" />
       <None Remove="ViewsAndViewModels\WaitingLists\ListsInWaitView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\Statistics\StatisticsGeneralDataView.xaml" />
     </ItemGroup>
 
   <ItemGroup>
