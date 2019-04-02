@@ -22,6 +22,12 @@ namespace Ferretto.Common.Controls
 
         private ICommand addCommand;
 
+        private string addReason;
+
+        private string deleteReason;
+
+        private string executeReason;
+
         private IEnumerable<IFilterDataSource<TModel, TKey>> filterDataSources;
 
         private IEnumerable<Tile> filterTiles;
@@ -34,11 +40,15 @@ namespace Ferretto.Common.Controls
 
         private ICommand refreshCommand;
 
+        private string saveReason;
+
         private object selectedFilterDataSource;
 
         private Tile selectedFilterTile;
 
         private object selectedItem;
+
+        private string withdrawReason;
 
         #endregion
 
@@ -55,6 +65,12 @@ namespace Ferretto.Common.Controls
 
         public ICommand AddCommand => this.addCommand ??
               (this.addCommand = new DelegateCommand(this.ExecuteAddCommand));
+
+        public string AddReason
+        {
+            get => this.addReason;
+            set => this.SetProperty(ref this.addReason, value);
+        }
 
         public ColorRequired ColorRequired => ColorRequired.Default;
 
@@ -81,6 +97,18 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        public string DeleteReason
+        {
+            get => this.deleteReason;
+            set => this.SetProperty(ref this.deleteReason, value);
+        }
+
+        public string ExecuteReason
+        {
+            get => this.executeReason;
+            set => this.SetProperty(ref this.executeReason, value);
+        }
+
         public IEnumerable<Tile> Filters
         {
             get => this.filterTiles;
@@ -99,6 +127,12 @@ namespace Ferretto.Common.Controls
         public ICommand RefreshCommand => this.refreshCommand ??
                (this.refreshCommand = new DelegateCommand(
                this.ExecuteRefreshCommand));
+
+        public string SaveReason
+        {
+            get => this.saveReason;
+            set => this.SetProperty(ref this.saveReason, value);
+        }
 
         public virtual Tile SelectedFilter
         {
@@ -127,8 +161,15 @@ namespace Ferretto.Common.Controls
                 if (this.SetProperty(ref this.selectedItem, value))
                 {
                     this.RaisePropertyChanged(nameof(this.CurrentItem));
+                    this.UpdateReasons();
                 }
             }
+        }
+
+        public string WithdrawReason
+        {
+            get => this.withdrawReason;
+            set => this.SetProperty(ref this.withdrawReason, value);
         }
 
         protected IEnumerable<IFilterDataSource<TModel, TKey>> FilterDataSources => this.filterDataSources;
@@ -202,6 +243,18 @@ namespace Ferretto.Common.Controls
         {
             this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<TModel>>(eventArgs => { this.LoadRelatedData(); }, this.Token, true, true);
             this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<TModel, TKey>>(eventArgs => { this.LoadRelatedData(); });
+        }
+
+        private void UpdateReasons()
+        {
+            if (this.CurrentItem is IPolicyDescriptor<IPolicy> selected)
+            {
+                this.AddReason = selected?.Policies?.Where(p => p.Name == "Add").Select(p => p.Reason).FirstOrDefault();
+                this.DeleteReason = selected?.Policies?.Where(p => p.Name == "Delete").Select(p => p.Reason).FirstOrDefault();
+                this.SaveReason = selected?.Policies?.Where(p => p.Name == "Save").Select(p => p.Reason).FirstOrDefault();
+                this.WithdrawReason = selected?.Policies?.Where(p => p.Name == "Withdraw").Select(p => p.Reason).FirstOrDefault();
+                this.ExecuteReason = selected?.Policies?.Where(p => p.Name == "Execute").Select(p => p.Reason).FirstOrDefault();
+            }
         }
 
         #endregion

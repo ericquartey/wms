@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.Common.Controls.Interfaces;
@@ -15,7 +16,13 @@ namespace Ferretto.Common.Controls
 
         private readonly ChangeDetector<T> changeDetector = new ChangeDetector<T>();
 
+        private string addReason;
+
         private ColorRequired colorRequired = ColorRequired.EditMode;
+
+        private string deleteReason;
+
+        private string executeReason;
 
         private bool isBusy;
 
@@ -28,6 +35,10 @@ namespace Ferretto.Common.Controls
         private ICommand revertCommand;
 
         private ICommand saveCommand;
+
+        private string saveReason;
+
+        private string withdrawReason;
 
         #endregion
 
@@ -42,13 +53,31 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
+        public string AddReason
+        {
+            get => this.addReason;
+            set => this.SetProperty(ref this.addReason, value);
+        }
+
         public ColorRequired ColorRequired
         {
             get => this.colorRequired;
             set => this.SetProperty(ref this.colorRequired, value);
         }
 
+        public string DeleteReason
+        {
+            get => this.deleteReason;
+            set => this.SetProperty(ref this.deleteReason, value);
+        }
+
         public IDialogService DialogService { get; } = ServiceLocator.Current.GetInstance<IDialogService>();
+
+        public string ExecuteReason
+        {
+            get => this.executeReason;
+            set => this.SetProperty(ref this.executeReason, value);
+        }
 
         public bool IsBusy
         {
@@ -102,6 +131,7 @@ namespace Ferretto.Common.Controls
                         this.model.PropertyChanged += this.Model_PropertyChanged;
                     }
 
+                    this.UpdateReasons();
                     this.LoadRelatedData();
                     this.EvaluateCanExecuteCommands();
                 }
@@ -120,8 +150,19 @@ namespace Ferretto.Common.Controls
 
         public ICommand SaveCommand => this.saveCommand ??
             (this.saveCommand = new DelegateCommand(
-                async () => await this.ExecuteSaveCommandAsync(),
-                this.CanExecuteSaveCommand));
+                async () => await this.ExecuteSaveCommandAsync()));
+
+        public string SaveReason
+        {
+            get => this.saveReason;
+            set => this.SetProperty(ref this.saveReason, value);
+        }
+
+        public string WithdrawReason
+        {
+            get => this.withdrawReason;
+            set => this.SetProperty(ref this.withdrawReason, value);
+        }
 
         #endregion
 
@@ -190,6 +231,7 @@ namespace Ferretto.Common.Controls
 
         protected virtual void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            this.UpdateReasons();
             this.EvaluateCanExecuteCommands();
         }
 
@@ -231,6 +273,15 @@ namespace Ferretto.Common.Controls
             {
                 await this.ExecuteRevertCommandAsync();
             }
+        }
+
+        private void UpdateReasons()
+        {
+            this.AddReason = this.Model?.Policies?.Where(p => p.Name == "Add").Select(p => p.Reason).FirstOrDefault();
+            this.DeleteReason = this.Model?.Policies?.Where(p => p.Name == "Delete").Select(p => p.Reason).FirstOrDefault();
+            this.SaveReason = this.Model?.Policies?.Where(p => p.Name == "Save").Select(p => p.Reason).FirstOrDefault();
+            this.WithdrawReason = this.Model?.Policies?.Where(p => p.Name == "Withdraw").Select(p => p.Reason).FirstOrDefault();
+            this.ExecuteReason = this.Model?.Policies?.Where(p => p.Name == "Execute").Select(p => p.Reason).FirstOrDefault();
         }
 
         #endregion
