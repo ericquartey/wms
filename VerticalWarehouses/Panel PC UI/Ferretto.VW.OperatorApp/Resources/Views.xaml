@@ -36,7 +36,7 @@
     <DataTemplate DataType="{x:Type viewsandviewmodelsdraweroperations:DrawerActivityViewModel}">
         <viewsandviewmodelsdraweroperations:DrawerActivityView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewsandviewmodelsdraweroperationsdetails:DrawerActivityDetailView}">
+    <DataTemplate DataType="{x:Type viewsandviewmodelsdraweroperationsdetails:DrawerActivityDetailViewModel}">
         <viewsandviewmodelsdraweroperationsdetails:DrawerActivityDetailView />
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewsandviewmodelswaitinglists:ListsInWaitViewModel}">

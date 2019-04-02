@@ -46,6 +46,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             var otherMainVMInstance = new OtherMainViewModel(container.Resolve<IEventAggregator>());
             var otherNavigationVMInstance = new OtherNavigationViewModel(container.Resolve<IEventAggregator>());
             var statisticsGeneralDataVMInstance = new StatisticsGeneralDataViewModel(container.Resolve<IEventAggregator>());
+            var statisticMainVMInstance = new StatisticsMainViewModel(container.Resolve<IEventAggregator>());
 
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
@@ -67,6 +68,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IOtherMainViewModel>(otherMainVMInstance);
             this.container.RegisterInstance<IOtherNavigationViewModel>(otherNavigationVMInstance);
             this.container.RegisterInstance<IStatisticsGeneralDataViewModel>(statisticsGeneralDataVMInstance);
+            this.container.RegisterInstance<IStatisticsMainViewModel>(statisticMainVMInstance);
 
             mainWindowVMInstance.InitializeViewModel(this.container);
             mainWindowBackToOAPPButtonVMInstance.InitializeViewModel(this.container);
@@ -75,6 +77,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             drawerOperationsFooterVMInstance.InitializeViewModel(this.container);
             otherMainVMInstance.InitializeViewModel(this.container);
             otherNavigationVMInstance.InitializeViewModel(this.container);
+            statisticMainVMInstance.InitializeViewModel(this.container);
 
             mainWindowBackToOAPPButtonVMInstance.InitializeButtons();
             drawerOperationsFooterVMInstance.InitializeButtons();
