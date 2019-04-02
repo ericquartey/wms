@@ -25,11 +25,11 @@ namespace Ferretto.VW.Common_Utils.IO
 
         #region Properties
 
-        public bool AntiIntrusionGateBay1 => this.inputs?[(int)IOMachineSensors.AntiIntrusionGateBay1] ?? false;
+        public bool AntiIntrusionShutterBay1 => this.inputs?[(int)IOMachineSensors.AntiIntrusionShutterBay1] ?? false;
 
-        public bool AntiIntrusionGateBay2 => this.inputs?[(int)IOMachineSensors.AntiIntrusionGateBay2] ?? false;
+        public bool AntiIntrusionShutterBay2 => this.inputs?[(int)IOMachineSensors.AntiIntrusionShutterBay2] ?? false;
 
-        public bool AntiIntrusionGateBay3 => this.inputs?[(int)IOMachineSensors.AntiIntrusionGateBay3] ?? false;
+        public bool AntiIntrusionShutterBay3 => this.inputs?[(int)IOMachineSensors.AntiIntrusionShutterBay3] ?? false;
 
         public bool CradleMotorSelected => this.inputs?[(int)IOMachineSensors.CradleMotorSelected] ?? false;
 
@@ -37,17 +37,17 @@ namespace Ferretto.VW.Common_Utils.IO
 
         public bool EmergencyEndRun => this.inputs?[(int)IOMachineSensors.EmergencyEndRun] ?? false;
 
-        public bool GateSensorABay1 => this.inputs?[(int)IOMachineSensors.GateSensorABay1] ?? false;
+        public bool ShutterSensorABay1 => this.inputs?[(int)IOMachineSensors.ShutterSensorABay1] ?? false;
 
-        public bool GateSensorABay2 => this.inputs?[(int)IOMachineSensors.GateSensorABay2] ?? false;
+        public bool ShutterSensorABay2 => this.inputs?[(int)IOMachineSensors.ShutterSensorABay2] ?? false;
 
-        public bool GateSensorABay3 => this.inputs?[(int)IOMachineSensors.GateSensorABay3] ?? false;
+        public bool ShutterSensorABay3 => this.inputs?[(int)IOMachineSensors.ShutterSensorABay3] ?? false;
 
-        public bool GateSensorBBay1 => this.inputs?[(int)IOMachineSensors.GateSensorBBay1] ?? false;
+        public bool ShutterSensorBBay1 => this.inputs?[(int)IOMachineSensors.ShutterSensorBBay1] ?? false;
 
-        public bool GateSensorBBay2 => this.inputs?[(int)IOMachineSensors.GateSensorBBay2] ?? false;
+        public bool ShutterSensorBBay2 => this.inputs?[(int)IOMachineSensors.ShutterSensorBBay2] ?? false;
 
-        public bool GateSensorBBay3 => this.inputs?[(int)IOMachineSensors.GateSensorBBay3] ?? false;
+        public bool ShutterSensorBBay3 => this.inputs?[(int)IOMachineSensors.ShutterSensorBBay3] ?? false;
 
         public bool HeightControlCheckBay1 => this.inputs?[(int)IOMachineSensors.HeightControlCheckBay1] ?? false;
 

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Ferretto.WMS.Data.WebAPI.Hubs
+namespace Ferretto.WMS.Data.Hubs
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Major Code Smell",
@@ -10,7 +10,7 @@ namespace Ferretto.WMS.Data.WebAPI.Hubs
     {
         #region Methods
 
-        Task MissionUpdated(int id);
+        Task EntityUpdated(EntityChangedHubEvent entityChangedHubEvent);
 
         #endregion
     }
