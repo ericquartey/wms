@@ -1,5 +1,6 @@
 using System;
 using System.Configuration;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
@@ -75,8 +76,9 @@ namespace Ferretto.Common.Controls.Services
                 return null;
             }
 
+            var modelsAssembly = ConfigurationManager.AppSettings["ModelsAssembly"];
             var modelsNamespace = ConfigurationManager.AppSettings["ModelsNamespace"];
-            var entityName = $"{modelsNamespace}.{entityChanged.EntityType}";
+            var entityName = $"{modelsNamespace}.{entityChanged.EntityType},{modelsAssembly}";
             var entity = Type.GetType(entityName);
             if (entity == null)
             {
