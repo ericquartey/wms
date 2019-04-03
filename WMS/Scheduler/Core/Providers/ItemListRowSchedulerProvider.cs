@@ -12,6 +12,8 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
     {
         #region Fields
 
+        private readonly IBaySchedulerProvider bayProvider;
+
         private readonly DatabaseContext databaseContext;
 
         private readonly ISchedulerRequestProvider schedulerRequestProvider;
@@ -22,10 +24,12 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         public ItemListRowSchedulerProvider(
             DatabaseContext databaseContext,
-            ISchedulerRequestProvider schedulerRequestProvider)
+            ISchedulerRequestProvider schedulerRequestProvider,
+            IBaySchedulerProvider bayProvider)
         {
             this.databaseContext = databaseContext;
             this.schedulerRequestProvider = schedulerRequestProvider;
+            this.bayProvider = bayProvider;
         }
 
         #endregion
@@ -131,8 +135,11 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
             await this.UpdateAsync(row);
 
-            if (qualifiedRequest != null)
+                if (bayId.HasValue && !executeAsPartOfList)
             {
+                    await this.bayProvider.UpdatePriorityAsync(bayId.Value);
+                }
+
                 return new SuccessOperationResult<SchedulerRequest>(qualifiedRequest);
             }
             else

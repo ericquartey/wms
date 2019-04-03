@@ -15,9 +15,11 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
     {
         #region Fields
 
+        private readonly IBaySchedulerProvider bayProvider;
+
         private readonly DatabaseContext databaseContext;
 
-        private readonly IItemListRowSchedulerProvider itemListRowSchedulerProvider;
+        private readonly IItemListRowSchedulerProvider rowProvider;
 
         private readonly ISchedulerRequestProvider schedulerRequestProvider;
 
@@ -28,11 +30,13 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
         public ItemListSchedulerProvider(
             DatabaseContext databaseContext,
             IItemListRowSchedulerProvider itemListRowSchedulerProvider,
+            IBaySchedulerProvider bayProvider,
             ISchedulerRequestProvider schedulerRequestProvider)
         {
             this.databaseContext = databaseContext;
-            this.itemListRowSchedulerProvider = itemListRowSchedulerProvider;
+            this.rowProvider = itemListRowSchedulerProvider;
             this.schedulerRequestProvider = schedulerRequestProvider;
+            this.bayProvider = bayProvider;
         }
 
         #endregion
@@ -100,6 +104,10 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
                 await this.UpdateAsync(list);
                 await this.schedulerRequestProvider.CreateRangeAsync(requests);
+                if (bayId.HasValue)
+                {
+                    await this.bayProvider.UpdatePriorityAsync(bayId.Value);
+                }
 
                 scope.Complete();
 
@@ -134,7 +142,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
             foreach (var row in list.Rows)
             {
-                var result = await this.itemListRowSchedulerProvider.PrepareForExecutionAsync(row, areaId, bayId);
+                var result = await this.rowProvider.PrepareForExecutionInListAsync(row, areaId, bayId);
 
                 if (result.Success)
                 {
