@@ -124,9 +124,14 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
                 await this.UpdateAsync(row);
 
-                if (bayId.HasValue && !executeAsPartOfList)
+                if (!executeAsPartOfList)
                 {
-                    await this.bayProvider.UpdatePriorityAsync(bayId.Value, row.Priority);
+                    if (bayId.HasValue)
+                    {
+                        await this.bayProvider.UpdatePriorityAsync(bayId.Value, row.Priority);
+                    }
+
+                    await this.schedulerRequestProvider.CreateAsync(qualifiedRequest);
                 }
 
                 return new SuccessOperationResult<SchedulerRequest>(qualifiedRequest);

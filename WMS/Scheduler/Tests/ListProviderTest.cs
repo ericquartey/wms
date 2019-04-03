@@ -254,7 +254,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 AND a compartment that can satisfy the list \
                 AND a bay that can accept two new missions \
                WHEN the new list is requested for execution \
-                AND the number of scheduler requests matches the number of list rows \
+               THEN the number of scheduler requests matches the number of list rows \
                 AND the number of missions matches the number of list rows \
                 AND the total amount of items for each row is covered by the requests \
                 AND the list is in the Waiting state \
@@ -351,9 +351,9 @@ namespace Ferretto.WMS.Scheduler.Tests
                 "Number of scheduler requests should match the number of list rows.");
 
             Assert.AreEqual(
-                 list1.ItemListRows.Count(),
+                list1.ItemListRows.Count(),
                 missions.Count(),
-                "The number of missions shouls match the number of list rows.");
+                "The number of missions should match the number of list rows.");
 
             Assert.IsTrue(
                 requests.All(r => r.BayId == this.Bay1.Id),
@@ -363,6 +363,88 @@ namespace Ferretto.WMS.Scheduler.Tests
                 list1.ItemListRows.Sum(r => r.RequestedQuantity),
                 requests.Sum(r => r.RequestedQuantity),
                 "The total quantity recorded in the requests should be the same as the quantity reported in the list rows.");
+
+            #endregion
+        }
+
+        [TestMethod]
+        [TestProperty(
+          "Description",
+         @"GIVEN a new list with prioritized rows \
+             AND a compartment that can satisfy the list \
+            WHEN a single row is executed \
+            THEN the row is in the Waiting state  \
+             AND the list is in the Waiting state  \
+             AND the priority of the bay is incremented by the row priority, plus one")]
+        public async Task RowExecutionWithPriority()
+        {
+            #region Arrange
+
+            var schedulerService = this.GetService<ISchedulerService>();
+
+            var missionProvider = this.GetService<IMissionSchedulerProvider>();
+
+            var listId = 1;
+
+            var itemId = this.ItemFifo.Id;
+
+            var row1 = new Common.DataModels.ItemListRow
+            {
+                Id = 1,
+                ItemId = itemId,
+                RequestedQuantity = 1,
+                ItemListId = listId,
+                Status = Common.DataModels.ItemListRowStatus.New,
+                Priority = 32,
+            };
+
+            var list1 = new Common.DataModels.ItemList
+            {
+                Id = listId,
+                ItemListRows = new[] { row1 }
+            };
+
+            var compartment1 = new Common.DataModels.Compartment
+            {
+                ItemId = itemId,
+                LoadingUnitId = this.LoadingUnit1.Id,
+                Stock = 100
+            };
+
+            using (var context = this.CreateContext())
+            {
+                context.Compartments.Add(compartment1);
+                context.ItemListRows.Add(row1);
+                context.ItemLists.Add(list1);
+
+                context.SaveChanges();
+            }
+
+            #endregion
+
+            #region Act
+
+            await schedulerService.ExecuteListRowAsync(row1.Id, this.Bay1.AreaId, this.Bay1.Id);
+
+            #endregion
+
+            #region Assert
+
+            var updatedBayPriority = this.CreateContext().Bays.Single(b => b.Id == this.Bay1.Id).Priority;
+
+            Assert.AreEqual(
+                this.Bay1.Priority + row1.Priority + 1,
+                updatedBayPriority,
+                "The priority of the bay should be incremented by the row priority, plus one");
+
+            var missions = await missionProvider.GetByListRowIdAsync(row1.Id);
+
+            Assert.AreEqual(1, missions.Count());
+
+            Assert.AreEqual(
+                this.Bay1.Priority + row1.Priority,
+                missions.First().Priority,
+                "The generated mission related to the row should have as priority the sum of the row's priority and of the bay.");
 
             #endregion
         }

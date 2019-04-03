@@ -138,7 +138,11 @@ namespace Ferretto.WMS.Scheduler.Core.Services
             {
                 var listRowProvider = serviceScope.ServiceProvider.GetRequiredService<IItemListRowSchedulerProvider>();
 
-                return await listRowProvider.PrepareForExecutionAsync(rowId, areaId, bayId);
+                var result = await listRowProvider.PrepareForExecutionAsync(rowId, areaId, bayId);
+
+                await this.ProcessPendingRequestsAsync();
+
+                return result;
             }
         }
 

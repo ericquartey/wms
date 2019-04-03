@@ -155,9 +155,11 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 .Where(m => m.ItemListRowId == listRowId)
                 .Select(m => new Mission
                 {
+                    Id = m.Id,
                     Status = (MissionStatus)m.Status,
                     DispatchedQuantity = m.DispatchedQuantity,
-                    RequestedQuantity = m.RequestedQuantity
+                    RequestedQuantity = m.RequestedQuantity,
+                    Priority = m.Priority
                 })
                 .ToArrayAsync();
         }
