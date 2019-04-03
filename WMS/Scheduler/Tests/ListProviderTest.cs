@@ -137,7 +137,9 @@ namespace Ferretto.WMS.Scheduler.Tests
             #region Arrange
 
             var schedulerService = this.GetService<ISchedulerService>();
+
             var listId = 1;
+
             var bay2 = new Common.DataModels.Bay
             {
                 Id = 2,
@@ -145,15 +147,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 LoadingUnitsBufferSize = 10,
                 Priority = 1
             };
-            var rowLowPriority = new Common.DataModels.ItemListRow
-            {
-                Id = 1,
-                ItemId = this.ItemFifo.Id,
-                RequestedQuantity = 10,
-                ItemListId = listId,
-                Status = Common.DataModels.ItemListRowStatus.New,
-                Priority = 3
-            };
+
             var rowHighPriority = new Common.DataModels.ItemListRow
             {
                 Id = 2,
@@ -161,8 +155,9 @@ namespace Ferretto.WMS.Scheduler.Tests
                 RequestedQuantity = 20,
                 ItemListId = listId,
                 Status = Common.DataModels.ItemListRowStatus.New,
-                Priority = 1,
+                Priority = 2,
             };
+
             var rowMediumPriority = new Common.DataModels.ItemListRow
             {
                 Id = 3,
@@ -170,8 +165,19 @@ namespace Ferretto.WMS.Scheduler.Tests
                 RequestedQuantity = 30,
                 ItemListId = listId,
                 Status = Common.DataModels.ItemListRowStatus.New,
-                Priority = 2
+                Priority = 3
             };
+
+            var rowLowPriority = new Common.DataModels.ItemListRow
+            {
+                Id = 1,
+                ItemId = this.ItemFifo.Id,
+                RequestedQuantity = 10,
+                ItemListId = listId,
+                Status = Common.DataModels.ItemListRowStatus.New,
+                Priority = 4
+            };
+
             var list1 = new Common.DataModels.ItemList
             {
                 Id = listId,
@@ -182,12 +188,14 @@ namespace Ferretto.WMS.Scheduler.Tests
                     rowMediumPriority
                 }
             };
+
             var compartment1 = new Common.DataModels.Compartment
             {
                 ItemId = this.ItemFifo.Id,
                 LoadingUnitId = this.LoadingUnit1.Id,
                 Stock = 100
             };
+
             using (var context = this.CreateContext())
             {
                 context.Compartments.Add(compartment1);
@@ -196,6 +204,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 context.ItemListRows.Add(rowMediumPriority);
                 context.ItemLists.Add(list1);
                 context.Bays.Add(bay2);
+
                 context.SaveChanges();
             }
 
@@ -203,7 +212,6 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             #region Act
 
-            await schedulerService.ExecuteListAsync(list1.Id, bay2.AreaId, null);
             await schedulerService.ExecuteListAsync(list1.Id, bay2.AreaId, bay2.Id);
 
             #endregion
@@ -213,14 +221,24 @@ namespace Ferretto.WMS.Scheduler.Tests
             var missionProvider = this.GetService<IMissionSchedulerProvider>();
             var missions = await missionProvider.GetAllAsync();
             var updatedBayPriority = this.CreateContext().Bays.Single(b => b.Id == bay2.Id).Priority;
+
+            var expectedPriority = bay2.Priority + 1 +
+                System.Math.Max(
+                    System.Math.Max(
+                        rowLowPriority.Priority.Value,
+                        rowHighPriority.Priority.Value),
+                    rowMediumPriority.Priority.Value);
+
             Assert.AreEqual(
-                bay2.Priority + 1,
+                expectedPriority,
                 updatedBayPriority,
-                "The priority of the bay is increased of one unit.");
+                "The priority of the bay is increased of one unit with respect to the highest priority value.");
+
             Assert.AreEqual(
                 bay2.Priority + rowHighPriority.Priority,
                 missions.SingleOrDefault(m => m.ItemListRowId == rowHighPriority.Id)?.Priority,
                 "The generated mission related to the high priority row should have as priority the sum of the row's priority and of the bay.");
+
             Assert.AreEqual(
                 bay2.Priority + rowLowPriority.Priority,
                 missions.SingleOrDefault(m => m.ItemListRowId == rowLowPriority.Id)?.Priority,

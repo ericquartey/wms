@@ -257,24 +257,10 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         private async Task<int?> ComputeRequestPriorityAsync(SchedulerRequest schedulerRequest, int? rowPriority)
         {
-            if (schedulerRequest.IsInstant)
-            {
-                return SchedulerRequest.InstantRequestPriority;
-            }
-
             int? priority = null;
-            if (schedulerRequest.ListRowId.HasValue)
+            if (rowPriority.HasValue)
             {
-                var list = await this.dataContext.ItemLists.SingleAsync(l => l.Id == schedulerRequest.ListId.Value);
-                if (list.Priority.HasValue)
-                {
-                    priority = list.Priority.Value;
-                }
-
-                if (rowPriority.HasValue)
-                {
-                    priority = priority.HasValue ? priority + rowPriority.Value : rowPriority.Value;
-                }
+                priority = rowPriority.Value;
             }
 
             if (schedulerRequest.BayId.HasValue)

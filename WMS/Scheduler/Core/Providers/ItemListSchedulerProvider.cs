@@ -107,7 +107,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 await this.schedulerRequestProvider.CreateRangeAsync(requests);
                 if (bayId.HasValue)
                 {
-                    await this.bayProvider.UpdatePriorityAsync(bayId.Value);
+                    await this.bayProvider.UpdatePriorityAsync(bayId.Value, list.Rows.Max(r => r.Priority));
                 }
 
                 scope.Complete();

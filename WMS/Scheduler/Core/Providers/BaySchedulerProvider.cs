@@ -24,7 +24,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         #region Methods
 
-        public async Task UpdatePriorityAsync(int id)
+        public async Task<int> UpdatePriorityAsync(int id, int? increment)
         {
             var bay = await this.databaseContext.Bays.SingleOrDefaultAsync(b => b.Id == id);
             if (bay == null)
@@ -32,10 +32,20 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 throw new System.ArgumentException($"No bay with the id {id} exists", nameof(id));
             }
 
-            bay.Priority++;
+            if (increment.HasValue)
+            {
+                bay.Priority += increment.Value + 1;
+            }
+            else
+            {
+                bay.Priority++;
+            }
+
             this.databaseContext.Bays.Update(bay);
 
             await this.databaseContext.SaveChangesAsync();
+
+            return bay.Priority;
         }
 
         #endregion
