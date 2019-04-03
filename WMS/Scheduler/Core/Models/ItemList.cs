@@ -29,7 +29,7 @@ namespace Ferretto.WMS.Scheduler.Core.Models
         #region Methods
 
         public ListStatus GetStatus() => GetStatus(
-                                    this.TotalRowsCount,
+            this.TotalRowsCount,
             this.CompletedRowsCount,
             this.NewRowsCount,
             this.ExecutingRowsCount,
