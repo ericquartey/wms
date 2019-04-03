@@ -1,7 +1,5 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Microsoft.Extensions.Logging;
@@ -127,6 +125,18 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 }
             }
 
+            if (message.Type == MessageType.InverterReset)
+            {
+                switch (message.Status)
+                {
+                    case MessageStatus.OperationError:
+                        //TEMP Add business logic after an error occurs
+                        break;
+
+                    default: break;
+                }
+            }
+
             this.CurrentState.ProcessNotificationMessage(message);
         }
 
@@ -164,7 +174,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             }
 
             this.CurrentState = new HomingStartState(this, this.currentAxis, this.logger);
-            this.logger.LogTrace($"6:CurrentState{CurrentState.GetType()}");
+            this.logger.LogTrace($"6:CurrentState{this.CurrentState.GetType()}");
         }
 
         protected override void Dispose(bool disposing)
