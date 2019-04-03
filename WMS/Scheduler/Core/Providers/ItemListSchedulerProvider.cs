@@ -64,6 +64,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                         ItemId = r.ItemId,
                         ListId = r.ItemListId,
                         Lot = r.Lot,
+                        Priority = r.Priority,
                         MaterialStatusId = r.MaterialStatusId,
                         PackageTypeId = r.PackageTypeId,
                         RegistrationNumber = r.RegistrationNumber,

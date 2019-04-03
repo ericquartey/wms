@@ -67,15 +67,15 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
         {
             var row = await this.GetByIdAsync(id);
 
-            return await this.ExecutionAsync(row, areaId, bayId);
+            return await this.ExecutionAsync(row, areaId, bayId, false);
         }
 
-        public async Task<IOperationResult<SchedulerRequest>> PrepareForExecutionAsync(
+        public async Task<IOperationResult<SchedulerRequest>> PrepareForExecutionInListAsync(
             ItemListRow row,
             int areaId,
             int? bayId)
         {
-            return await this.ExecutionAsync(row, areaId, bayId);
+            return await this.ExecutionAsync(row, areaId, bayId, true);
         }
 
         public async Task<IOperationResult<ItemListRow>> SuspendAsync(int id)
@@ -99,14 +99,11 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             return new SuccessOperationResult<ItemListRow>(model);
         }
 
-        private async Task<IOperationResult<SchedulerRequest>> ExecutionAsync(
-            ItemListRow row,
-            int areaId,
-            int? bayId)
+        private async Task<IOperationResult<SchedulerRequest>> ExecutionAsync(ItemListRow row, int areaId, int? bayId, bool executeAsPartOfList)
         {
             var options = new ItemWithdrawOptions
             {
-                RunImmediately = false,
+                RunImmediately = bayId.HasValue,
                 BayId = bayId,
                 AreaId = areaId,
                 RequestedQuantity = row.RequestedQuantity,
@@ -119,24 +116,16 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             };
 
             var qualifiedRequest = await this.schedulerRequestProvider
-                .FullyQualifyWithdrawalRequestAsync(row.ItemId, options);
+                .FullyQualifyWithdrawalRequestAsync(row.ItemId, options, row);
 
             if (qualifiedRequest != null)
             {
-                qualifiedRequest.ListId = row.ListId;
-                qualifiedRequest.ListRowId = row.Id;
-
                 row.Status = ItemListRowStatus.Waiting;
-            }
-            else
-            {
-                row.Status = ItemListRowStatus.New;
-            }
 
-            await this.UpdateAsync(row);
+                await this.UpdateAsync(row);
 
                 if (bayId.HasValue && !executeAsPartOfList)
-            {
+                {
                     await this.bayProvider.UpdatePriorityAsync(bayId.Value);
                 }
 
