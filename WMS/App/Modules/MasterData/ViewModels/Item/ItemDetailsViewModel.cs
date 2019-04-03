@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
@@ -37,6 +38,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private Compartment selectedCompartment;
 
         private ICommand withdrawItemCommand;
+
+        private string withdrawReason;
 
         #endregion
 
@@ -77,6 +80,12 @@ namespace Ferretto.WMS.Modules.MasterData
             (this.withdrawItemCommand = new DelegateCommand(
                 this.WithdrawItem));
 
+        public string WithdrawReason
+        {
+            get => this.withdrawReason;
+            set => this.SetProperty(ref this.withdrawReason, value);
+        }
+
         #endregion
 
         #region Methods
@@ -91,6 +100,11 @@ namespace Ferretto.WMS.Modules.MasterData
             this.CompartmentsDataSource = this.Model != null
                 ? await this.compartmentProvider.GetByItemIdAsync(this.Model.Id)
                 : null;
+        }
+
+        public override void UpdateMoreReasons()
+        {
+            this.WithdrawReason = this.Model?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Withdraw)).Select(p => p.Reason).FirstOrDefault();
         }
 
         protected override void EvaluateCanExecuteCommands()
@@ -175,27 +189,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        private void WithdrawItem()
-        {
-            if (!this.Model.CanExecuteOperation("Withdraw"))
-            {
-                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason("Withdraw"));
-                return;
-            }
-
-            this.IsBusy = true;
-
-            this.NavigationService.Appear(
-                nameof(MasterData),
-                Common.Utils.Modules.MasterData.WITHDRAWDIALOG,
-                new
-                {
-                    Id = this.Model.Id
-                });
-
-            this.IsBusy = false;
-        }
-
         private void Initialize()
         {
             this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<Item>>(async eventArgs => await this.LoadDataAsync(), this.Token, true, true);
@@ -236,6 +229,27 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToLoadData, StatusType.Error));
             }
+        }
+
+        private void WithdrawItem()
+        {
+            if (!this.Model.CanExecuteOperation(nameof(BusinessPolicies.Withdraw)))
+            {
+                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason(nameof(BusinessPolicies.Withdraw)));
+                return;
+            }
+
+            this.IsBusy = true;
+
+            this.NavigationService.Appear(
+                nameof(MasterData),
+                Common.Utils.Modules.MasterData.WITHDRAWDIALOG,
+                new
+                {
+                    Id = this.Model.Id
+                });
+
+            this.IsBusy = false;
         }
 
         #endregion

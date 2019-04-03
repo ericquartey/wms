@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
 using DevExpress.Xpf.Data;
@@ -23,9 +24,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ICommand deleteListRowCommand;
 
-        private InfiniteAsyncSource itemsDataSource;
-
         private ICommand executeListRowCommand;
+
+        private string executeReason;
+
+        private InfiniteAsyncSource itemsDataSource;
 
         private object modelChangedEventSubscription;
 
@@ -50,19 +53,30 @@ namespace Ferretto.WMS.Modules.MasterData
             (this.deleteListRowCommand = new DelegateCommand(
                 async () => await this.DeleteListRowCommandAsync()));
 
+        public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
+            (this.executeListRowCommand = new DelegateCommand(
+                this.ExecuteListRow));
+
+        public string ExecuteReason
+        {
+            get => this.executeReason;
+            set => this.SetProperty(ref this.executeReason, value);
+        }
+
         public InfiniteAsyncSource ItemsDataSource
         {
             get => this.itemsDataSource;
             set => this.SetProperty(ref this.itemsDataSource, value);
         }
 
-        public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
-            (this.executeListRowCommand = new DelegateCommand(
-                this.ExecuteListRow));
-
         #endregion
 
         #region Methods
+
+        public override void UpdateMoreReasons()
+        {
+            this.ExecuteReason = this.Model?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Execute)).Select(p => p.Reason).FirstOrDefault();
+        }
 
         protected override void EvaluateCanExecuteCommands()
         {
