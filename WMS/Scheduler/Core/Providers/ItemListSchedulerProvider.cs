@@ -84,26 +84,24 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var list = await this.GetByIdAsync(id);
-
-                if (list.Status != ListStatus.New)
+                var listStatus = list.GetStatus();
+                if (listStatus != ListStatus.New)
                 {
-                    if (list.Status == ListStatus.Waiting && bayId.HasValue == false)
+                    if (listStatus == ListStatus.Waiting && bayId.HasValue == false)
                     {
                         return new BadRequestOperationResult<IEnumerable<SchedulerRequest>>(
                             null,
                             "Cannot execute the list because no bay was specified.");
                     }
-                    else if (list.Status != ListStatus.Waiting)
+                    else if (listStatus != ListStatus.Waiting)
                     {
                         return new BadRequestOperationResult<IEnumerable<SchedulerRequest>>(
                             null,
-                            $"Cannot execute the list bacause its current state is {list.Status}.");
+                            $"Cannot execute the list bacause its current state is {listStatus}.");
                     }
                 }
 
-                requests = await this.BuildRequestsAsync(list, areaId, bayId);
-
-                await this.UpdateAsync(list);
+                requests = await this.BuildRequestsForRowsAsync(list, areaId, bayId);
                 await this.schedulerRequestProvider.CreateRangeAsync(requests);
                 if (bayId.HasValue)
                 {
@@ -137,7 +135,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             return new SuccessOperationResult<ItemList>(model);
         }
 
-        private async Task<IEnumerable<SchedulerRequest>> BuildRequestsAsync(ItemList list, int areaId, int? bayId)
+        private async Task<IEnumerable<SchedulerRequest>> BuildRequestsForRowsAsync(ItemList list, int areaId, int? bayId)
         {
             var requests = new List<SchedulerRequest>(list.Rows.Count());
 
