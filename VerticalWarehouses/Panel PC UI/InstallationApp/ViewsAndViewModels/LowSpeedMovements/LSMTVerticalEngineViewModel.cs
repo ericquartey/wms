@@ -31,11 +31,11 @@ namespace Ferretto.VW.InstallationApp
 
         private IEventAggregator eventAggregator;
 
-        private ICommand moveDownButtonCommand;
+        private DelegateCommand moveDownButtonCommand;
 
-        private ICommand moveUpButtonCommand;
+        private DelegateCommand moveUpButtonCommand;
 
-        private ICommand stopButtonCommand;
+        private DelegateCommand stopButtonCommand;
 
         #endregion
 
@@ -52,11 +52,11 @@ namespace Ferretto.VW.InstallationApp
 
         public string CurrentPosition { get => this.currentPosition; set => this.SetProperty(ref this.currentPosition, value); }
 
-        public ICommand MoveDownButtonCommand => this.moveDownButtonCommand ?? (this.moveDownButtonCommand = new DelegateCommand(() => this.MoveDownVerticalAxisAsync()));
+        public DelegateCommand MoveDownButtonCommand => this.moveDownButtonCommand ?? (this.moveDownButtonCommand = new DelegateCommand(async () => await this.MoveDownVerticalAxisAsync()));
 
-        public ICommand MoveUpButtonCommand => this.moveUpButtonCommand ?? (this.moveUpButtonCommand = new DelegateCommand(() => this.MoveUpVerticalAxisAsync()));
+        public DelegateCommand MoveUpButtonCommand => this.moveUpButtonCommand ?? (this.moveUpButtonCommand = new DelegateCommand(async () => await this.MoveUpVerticalAxisAsync()));
 
-        public ICommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(() => this.StopVerticalAxisAsync()));
+        public DelegateCommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(async () => await this.StopVerticalAxisAsync()));
 
         #endregion
 
