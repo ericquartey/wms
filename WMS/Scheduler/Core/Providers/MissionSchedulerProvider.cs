@@ -229,7 +229,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     .GetCandidateWithdrawalCompartments(request);
 
                 var orderedCompartments = this.compartmentProvider
-                    .OrderCompartmentsByManagementType(compartments, item.ManagementType);
+                    .OrderPickCompartmentsByManagementType(compartments, item.ManagementType);
 
                 var compartment = orderedCompartments.FirstOrDefault();
                 if (compartment == null)

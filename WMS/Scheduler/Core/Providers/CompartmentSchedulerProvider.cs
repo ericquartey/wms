@@ -110,7 +110,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 });
         }
 
-        public IQueryable<T> OrderCompartmentsByManagementType<T>(IQueryable<T> compartments, ItemManagementType type)
+        public IQueryable<T> OrderPickCompartmentsByManagementType<T>(IQueryable<T> compartments, ItemManagementType type)
             where T : IOrderableCompartment
         {
             switch (type)
