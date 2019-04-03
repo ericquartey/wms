@@ -240,9 +240,9 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 }
                 else
                 {
-                    var quantityToExtractFromCompartment = Math.Min(compartment.Availability, request.QuantityLeftToDispatch);
+                    var quantityToExtractFromCompartment = Math.Min(compartment.Availability, request.QuantityLeftToReserve);
                     compartment.ReservedForPick += quantityToExtractFromCompartment;
-                    request.DispatchedQuantity += quantityToExtractFromCompartment;
+                    request.ReservedQuantity += quantityToExtractFromCompartment;
 
                     await this.compartmentProvider.UpdateAsync(compartment);
                     await this.schedulerRequestProvider.UpdateAsync(request);
@@ -267,7 +267,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     this.logger.LogWarning(
                         $"Scheduler Request (id={request.Id}): generating withdrawal mission (CompartmentId={mission.CompartmentId}, " +
                         $"BayId={mission.BayId}, Quantity={mission.RequestedQuantity}). " +
-                        $"A total quantity of {request.QuantityLeftToDispatch} still needs to be dispatched.");
+                        $"A total quantity of {request.QuantityLeftToReserve} still needs to be dispatched.");
 
                     missions.Add(mission);
                 }
