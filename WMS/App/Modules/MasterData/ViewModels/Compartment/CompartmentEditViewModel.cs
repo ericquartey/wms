@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -154,7 +154,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 var result = await this.compartmentProvider.DeleteAsync(this.Model.Id);
                 if (result.Success)
                 {
-                    loadingUnit.Compartments.Remove(this.Model as ICompartment);
+                    loadingUnit.Compartments.Remove(this.Model as IDrawableCompartment);
 
                     this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.CompartmentDeletedSuccessfully, StatusType.Success));
 
