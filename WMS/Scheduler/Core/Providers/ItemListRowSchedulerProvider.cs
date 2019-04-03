@@ -103,7 +103,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
         {
             var options = new ItemWithdrawOptions
             {
-                RunImmediately = bayId.HasValue,
+                RunImmediately = false,
                 BayId = bayId,
                 AreaId = areaId,
                 RequestedQuantity = row.RequestedQuantity,
