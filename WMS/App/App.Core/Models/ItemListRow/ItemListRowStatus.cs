@@ -5,11 +5,14 @@ namespace Ferretto.WMS.App.Core.Models
 {
     public enum ItemListRowStatus
     {
+        [Display(Name = nameof(BusinessObjects.ItemListRowStatusNew), ResourceType = typeof(BusinessObjects))]
+        New = 'N',
+
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusWaiting), ResourceType = typeof(BusinessObjects))]
         Waiting = 'W',
 
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusExecuting), ResourceType = typeof(BusinessObjects))]
-        Executing = 'E',
+        Executing = 'X',
 
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusCompleted), ResourceType = typeof(BusinessObjects))]
         Completed = 'C',
@@ -18,6 +21,9 @@ namespace Ferretto.WMS.App.Core.Models
         Incomplete = 'I',
 
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusSuspended), ResourceType = typeof(BusinessObjects))]
-        Suspended = 'S'
+        Suspended = 'S',
+
+        [Display(Name = nameof(BusinessObjects.ItemListRowStatusError), ResourceType = typeof(BusinessObjects))]
+        Error = 'E',
     }
 }

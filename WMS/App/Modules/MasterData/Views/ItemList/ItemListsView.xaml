@@ -140,7 +140,7 @@
                                     <StackPanel Orientation="Horizontal">
                                         <wms:WmsEnumIndicator Margin="5,0,0,0"
                                                               VerticalAlignment="Center"
-                                                              EnumType="{x:Type models:ItemListStatus}"
+                                                              EnumType="{x:Type models:ItemListRowStatus}"
                                                               EnumValue="{Binding Data.Status}"
                                                               HideIcon="True"
                                                               IconSize="8"

@@ -943,6 +943,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string ItemListRowStatusError {
+            get {
+                return ResourceManager.GetString("ItemListRowStatusError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Executing.
         /// </summary>
         public static string ItemListRowStatusExecuting {
@@ -957,6 +966,15 @@ namespace Ferretto.Common.Resources {
         public static string ItemListRowStatusIncomplete {
             get {
                 return ResourceManager.GetString("ItemListRowStatusIncomplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        public static string ItemListRowStatusNew {
+            get {
+                return ResourceManager.GetString("ItemListRowStatusNew", resourceCulture);
             }
         }
         
@@ -1033,6 +1051,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string ItemListStatusError {
+            get {
+                return ResourceManager.GetString("ItemListStatusError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Executing.
         /// </summary>
         public static string ItemListStatusExecuting {
@@ -1047,6 +1074,15 @@ namespace Ferretto.Common.Resources {
         public static string ItemListStatusIncomplete {
             get {
                 return ResourceManager.GetString("ItemListStatusIncomplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        public static string ItemListStatusNew {
+            get {
+                return ResourceManager.GetString("ItemListStatusNew", resourceCulture);
             }
         }
         
