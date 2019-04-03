@@ -38,7 +38,10 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                    {
                        Id = b.Id,
                        LoadingUnitsBufferSize = b.LoadingUnitsBufferSize,
-                       LoadingUnitsBufferUsage = b.Missions.Count(m => m.Status != Common.DataModels.MissionStatus.Completed)
+                       LoadingUnitsBufferUsage = b.Missions.Count(
+                           m => m.Status != Common.DataModels.MissionStatus.Completed
+                           &&
+                           m.Status != Common.DataModels.MissionStatus.Incomplete)
                    })
                })
                .SingleAsync(a => a.Id == id);
