@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -71,7 +71,7 @@ namespace Ferretto.Common.Controls
         {
             get
             {
-                var temp = false;
+                bool temp;
                 if (!this.changeDetector.IsModified || this.Model == null)
                 {
                     temp = true;
@@ -174,8 +174,7 @@ namespace Ferretto.Common.Controls
                 && this.changeDetector.IsModified
                 && this.IsModelValid
                 && !this.IsBusy
-                && this.changeDetector.IsRequiredValid
-                && this.Model.CanUpdate();
+                && this.changeDetector.IsRequiredValid;
         }
 
         protected virtual void EvaluateCanExecuteCommands()
@@ -189,9 +188,23 @@ namespace Ferretto.Common.Controls
 
         protected abstract Task ExecuteRevertCommandAsync();
 
-        protected abstract Task ExecuteSaveCommandAsync();
+        protected virtual Task<bool> ExecuteSaveCommandAsync()
+        {
+            // TODO: will be rewritten in scope of Task
+            // https://ferrettogroup.visualstudio.com/Warehouse%20Management%20System/_workitems/edit/2158
+             dynamic dynamicModel = this.Model;
 
-        protected virtual void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+            if (!PolicyExtensions.CanUpdate(dynamicModel))
+            {
+                this.ShowErrorDialog(PolicyExtensions.GetCanUpdateReason(dynamicModel));
+
+                return Task.FromResult(false);
+            }
+
+            return Task.FromResult(true);
+        }
+
+        protected virtual void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             this.EvaluateCanExecuteCommands();
         }
