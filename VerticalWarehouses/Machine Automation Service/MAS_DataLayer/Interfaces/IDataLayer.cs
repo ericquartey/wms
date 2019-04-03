@@ -2,5 +2,13 @@
 {
     public interface IDataLayer
     {
+        #region Methods
+
+        /// <summary>
+        ///     Exchamge the primary and secondary context, to call when the primary DB can't work.
+        /// </summary>
+        void switchDB();
+
+        #endregion
     }
 }

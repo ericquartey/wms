@@ -30,7 +30,7 @@ namespace Ferretto.VW.InverterDriver
 
         private readonly Task commandReceiveTask;
 
-        private readonly IDataLayerValueManagment dataLayerValueManagment;
+        private readonly IDataLayerConfigurationValueManagment dataLayerValueManagment;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -72,13 +72,13 @@ namespace Ferretto.VW.InverterDriver
 
         #region Constructors
 
-        public HostedInverterDriver(IEventAggregator eventAggregator, ISocketTransport socketTransport, IDataLayerValueManagment dataLayerValueManagment, ILogger<HostedInverterDriver> logger)
+        public HostedInverterDriver(IEventAggregator eventAggregator, ISocketTransport socketTransport, IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment, ILogger<HostedInverterDriver> logger)
         {
             logger.LogDebug("1:Method Start");
 
             this.socketTransport = socketTransport;
             this.eventAggregator = eventAggregator;
-            this.dataLayerValueManagment = dataLayerValueManagment;
+            this.dataLayerValueManagment = dataLayerConfigurationValueManagment;
             this.logger = logger;
 
             this.heartbeatQueue = new BlockingConcurrentQueue<InverterMessage>();

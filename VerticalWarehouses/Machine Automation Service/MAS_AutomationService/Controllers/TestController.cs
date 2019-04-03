@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS_AutomationService
     {
         #region Fields
 
-        private readonly IDataLayerValueManagment dataLayerValueManagement;
+        private readonly IDataLayerConfigurationValueManagment dataLayerValueManagement;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS_AutomationService
         public TestController(IEventAggregator eventAggregator, IServiceProvider services)
         {
             this.eventAggregator = eventAggregator;
-            this.dataLayerValueManagement = services.GetService(typeof(IDataLayerValueManagment)) as IDataLayerValueManagment;
+            this.dataLayerValueManagement = services.GetService(typeof(IDataLayerConfigurationValueManagment)) as IDataLayerConfigurationValueManagment;
         }
 
         #endregion

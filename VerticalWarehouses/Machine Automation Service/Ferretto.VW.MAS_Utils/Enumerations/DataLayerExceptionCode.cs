@@ -1,13 +1,13 @@
-﻿namespace Ferretto.VW.Common_Utils
+﻿namespace Ferretto.VW.Common_Utils.Enumerations
 {
-    public enum DataLayerExceptionEnum
+    public enum DataLayerExceptionCode
     {
         // INFO DataLayer constructor exceptions
         DATALAYER_CONTEXT_EXCEPTION = 001,
 
         EVENTAGGREGATOR_EXCEPTION = 002,
 
-        // INFO InMemory exceptions
+        // INFO SQLite exceptions
         PARSE_EXCEPTION = 100,
 
         DATATYPE_EXCEPTION = 101,
@@ -22,6 +22,8 @@
 
         UNKNOWN_INFO_FILE_EXCEPTION = 106,
 
-        SaveData = 1001
+        UPDATE_PARTITIONS_EXCEPTION = 107,
+
+        SAVE_DATA_EXCEPTION = 1001
     }
 }

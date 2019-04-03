@@ -1,0 +1,476 @@
+﻿using System;
+using System.Linq.Expressions;
+using System.Net;
+using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils;
+using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.MAS_DataLayer.Enumerations;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+
+namespace Ferretto.VW.MAS_DataLayer
+{
+    public partial class DataLayer : IDataLayerConfigurationValueManagment
+    {
+        #region Methods
+
+        /// <inheritdoc/>
+        public async Task<bool> GetBoolConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            var returnBoolValue = false;
+            ConfigurationValue primaryConfigurationValue;
+
+            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Boolean))
+            {
+                this.logger.LogCritical($"2:Exception: get Boolean for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DATATYPE_EXCEPTION}");
+                throw new DataLayerException(DataLayerExceptionCode.DATATYPE_EXCEPTION);
+            }
+
+            try
+            {
+                primaryConfigurationValue =
+                    await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
+            }
+            catch
+            {
+                this.logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID}", DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID);
+
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID);
+            }
+
+            if (primaryConfigurationValue != null)
+            {
+                if (!bool.TryParse(primaryConfigurationValue.VarValue, out returnBoolValue))
+                {
+                    this.logger.LogCritical($"4:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.PARSE_VALUE}", DataLayerPersistentExceptionCode.PARSE_VALUE);
+                    throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PARSE_VALUE);
+                }
+            }
+            else
+            {
+                this.logger.LogCritical($"5:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.VALUE_NOT_FOUND}");
+
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.VALUE_NOT_FOUND);
+            }
+
+            return returnBoolValue;
+        }
+
+        /// <inheritdoc/>
+        public async Task<DateTime> GetDateTimeConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            DateTime returnDateTimeValue;
+            ConfigurationValue primaryConfigurationValue;
+
+            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Date))
+            {
+                this.logger.LogCritical($"2:Exception: get DateTime for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DATATYPE_EXCEPTION}");
+                throw new DataLayerException(DataLayerExceptionCode.DATATYPE_EXCEPTION);
+            }
+
+            try
+            {
+                primaryConfigurationValue =
+                    await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
+            }
+            catch
+            {
+                this.logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID}", DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID);
+
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID);
+            }
+
+            if (primaryConfigurationValue != null)
+            {
+                if (!DateTime.TryParse(primaryConfigurationValue.VarValue, out returnDateTimeValue))
+                {
+                    this.logger.LogCritical($"4:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.PARSE_VALUE}", DataLayerPersistentExceptionCode.PARSE_VALUE);
+                    throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PARSE_VALUE);
+                }
+            }
+            else
+            {
+                this.logger.LogCritical($"5:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.VALUE_NOT_FOUND}");
+
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.VALUE_NOT_FOUND);
+            }
+
+            return returnDateTimeValue;
+        }
+
+        /// <inheritdoc/>
+        public async Task<decimal> GetDecimalConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            decimal returnDecimalValue = 0;
+            ConfigurationValue primaryConfigurationValue;
+
+            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Float))
+            {
+                this.logger.LogCritical($"2:Exception: get Decimal for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DATATYPE_EXCEPTION}");
+                throw new DataLayerException(DataLayerExceptionCode.DATATYPE_EXCEPTION);
+            }
+
+            try
+            {
+                primaryConfigurationValue =
+                    await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
+            }
+            catch
+            {
+                this.logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID}", DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID);
+
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID);
+            }
+
+            if (primaryConfigurationValue != null)
+            {
+                if (!decimal.TryParse(primaryConfigurationValue.VarValue, out returnDecimalValue))
+                {
+                    this.logger.LogCritical($"4:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.PARSE_VALUE}", DataLayerPersistentExceptionCode.PARSE_VALUE);
+                    throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PARSE_VALUE);
+                }
+            }
+            else
+            {
+                this.logger.LogCritical($"5:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.VALUE_NOT_FOUND}");
+
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.VALUE_NOT_FOUND);
+            }
+
+            return returnDecimalValue;
+        }
+
+        /// <inheritdoc/>
+        public async Task<int> GetIntegerConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            var returnIntegerValue = 0;
+            ConfigurationValue primaryConfigurationValue;
+
+            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Integer))
+            {
+                this.logger.LogCritical($"2:Exception: get Integer for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DATATYPE_EXCEPTION}");
+                throw new DataLayerException(DataLayerExceptionCode.DATATYPE_EXCEPTION);
+            }
+
+            try
+            {
+                primaryConfigurationValue =
+                    await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
+            }
+            catch
+            {
+                this.logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID}", DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID);
+
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID);
+            }
+
+            if (primaryConfigurationValue != null)
+            {
+                if (!int.TryParse(primaryConfigurationValue.VarValue, out returnIntegerValue))
+                {
+                    this.logger.LogCritical($"4:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.PARSE_VALUE}", DataLayerPersistentExceptionCode.PARSE_VALUE);
+                    throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PARSE_VALUE);
+                }
+            }
+            else
+            {
+                this.logger.LogCritical($"5:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.VALUE_NOT_FOUND}");
+
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.VALUE_NOT_FOUND);
+            }
+
+            return returnIntegerValue;
+        }
+
+        /// <inheritdoc/>
+        public async Task<IPAddress> GetIPAddressConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            IPAddress returnIPAddressValue = null;
+            ConfigurationValue primaryConfigurationValue;
+
+            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.IPAddress))
+            {
+                this.logger.LogCritical($"2:Exception: get IP Address for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DATATYPE_EXCEPTION}");
+                throw new DataLayerException(DataLayerExceptionCode.DATATYPE_EXCEPTION);
+            }
+
+            try
+            {
+                primaryConfigurationValue =
+                    await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
+            }
+            catch
+            {
+                this.logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID}", DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID);
+
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID);
+            }
+
+            if (primaryConfigurationValue != null)
+            {
+                returnIPAddressValue = IPAddress.Parse(primaryConfigurationValue.VarValue);
+            }
+            else
+            {
+                this.logger.LogCritical($"4:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.VALUE_NOT_FOUND}");
+
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.VALUE_NOT_FOUND);
+            }
+
+            return returnIPAddressValue;
+        }
+
+        /// <inheritdoc/>
+        public async Task<string> GetStringConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            var returnStringValue = "";
+            ConfigurationValue primaryConfigurationValue;
+
+            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.String))
+            {
+                this.logger.LogCritical($"2:Exception: get string for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DATATYPE_EXCEPTION}");
+                throw new DataLayerException(DataLayerExceptionCode.DATATYPE_EXCEPTION);
+            }
+            try
+            {
+                primaryConfigurationValue =
+                    await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
+            }
+            catch
+            {
+                this.logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID}", DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID);
+
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID);
+            }
+
+            if (primaryConfigurationValue != null)
+            {
+                returnStringValue = primaryConfigurationValue.VarValue;
+            }
+            else
+            {
+                this.logger.LogCritical($"4:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.VALUE_NOT_FOUND}");
+
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.VALUE_NOT_FOUND);
+            }
+
+            return returnStringValue;
+        }
+
+        /// <inheritdoc/>
+        public async Task SetBoolConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, bool value)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Boolean))
+            {
+                this.logger.LogCritical($"2:Exception: wrong datatype during set Boolean - Exception Code: {DataLayerExceptionCode.DATATYPE_EXCEPTION}");
+
+                throw new DataLayerException(DataLayerExceptionCode.DATATYPE_EXCEPTION);
+            }
+
+            var newConfigurationValue = new ConfigurationValue();
+            newConfigurationValue.CategoryName = categoryValueEnum;
+            newConfigurationValue.VarName = configurationValueEnum;
+            newConfigurationValue.VarType = ConfigurationDataType.Boolean;
+            newConfigurationValue.VarValue = value.ToString();
+
+            await this.SetConfigurationValueCommonAsync(newConfigurationValue, ConfigurationDataType.Boolean);
+        }
+
+        /// <inheritdoc/>
+        public async Task SetDateTimeConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, DateTime value)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Date))
+            {
+                this.logger.LogCritical($"2:Exception: wrong datatype during set Date - Exception Code: {DataLayerExceptionCode.DATATYPE_EXCEPTION}");
+
+                throw new DataLayerException(DataLayerExceptionCode.DATATYPE_EXCEPTION);
+            }
+
+            var newConfigurationValue = new ConfigurationValue();
+            newConfigurationValue.CategoryName = categoryValueEnum;
+            newConfigurationValue.VarName = configurationValueEnum;
+            newConfigurationValue.VarType = ConfigurationDataType.Date;
+            newConfigurationValue.VarValue = value.ToString();
+
+            await this.SetConfigurationValueCommonAsync(newConfigurationValue, ConfigurationDataType.Date);
+        }
+
+        /// <inheritdoc/>
+        public async Task SetDecimalConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, decimal value)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Float))
+            {
+                this.logger.LogCritical($"2:Exception: wrong datatype during set Decimal - Exception Code: {DataLayerExceptionCode.DATATYPE_EXCEPTION}");
+
+                throw new DataLayerException(DataLayerExceptionCode.DATATYPE_EXCEPTION);
+            }
+
+            var newConfigurationValue = new ConfigurationValue();
+            newConfigurationValue.CategoryName = categoryValueEnum;
+            newConfigurationValue.VarName = configurationValueEnum;
+            newConfigurationValue.VarType = ConfigurationDataType.Float;
+            newConfigurationValue.VarValue = value.ToString();
+
+            await this.SetConfigurationValueCommonAsync(newConfigurationValue, ConfigurationDataType.Float);
+        }
+
+        /// <inheritdoc/>
+        public async Task SetIntegerConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, int value)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Integer))
+            {
+                this.logger.LogCritical($"2:Exception: wrong datatype during set Integer - Exception Code: {DataLayerExceptionCode.DATATYPE_EXCEPTION}");
+
+                throw new DataLayerException(DataLayerExceptionCode.DATATYPE_EXCEPTION);
+            }
+
+            var newConfigurationValue = new ConfigurationValue();
+            newConfigurationValue.CategoryName = categoryValueEnum;
+            newConfigurationValue.VarName = configurationValueEnum;
+            newConfigurationValue.VarType = ConfigurationDataType.Integer;
+            newConfigurationValue.VarValue = value.ToString();
+
+            await this.SetConfigurationValueCommonAsync(newConfigurationValue, ConfigurationDataType.Integer);
+        }
+
+        /// <inheritdoc/>
+        public async Task SetIPAddressConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, IPAddress value)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.IPAddress))
+            {
+                this.logger.LogCritical($"2:Exception: wrong datatype during set IP Address - Exception Code: {DataLayerExceptionCode.DATATYPE_EXCEPTION}");
+
+                throw new DataLayerException(DataLayerExceptionCode.DATATYPE_EXCEPTION);
+            }
+
+            var newConfigurationValue = new ConfigurationValue();
+            newConfigurationValue.CategoryName = categoryValueEnum;
+            newConfigurationValue.VarName = configurationValueEnum;
+            newConfigurationValue.VarType = ConfigurationDataType.IPAddress;
+            newConfigurationValue.VarValue = value.ToString();
+
+            await this.SetConfigurationValueCommonAsync(newConfigurationValue, ConfigurationDataType.IPAddress);
+        }
+
+        /// <inheritdoc/>
+        public async Task SetStringConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, string value)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.String))
+            {
+                this.logger.LogCritical($"2:Exception: wrong datatype during set String - Exception Code: {DataLayerExceptionCode.DATATYPE_EXCEPTION}");
+
+                throw new DataLayerException(DataLayerExceptionCode.DATATYPE_EXCEPTION);
+            }
+
+            var newConfigurationValue = new ConfigurationValue();
+            newConfigurationValue.CategoryName = categoryValueEnum;
+            newConfigurationValue.VarName = configurationValueEnum;
+            newConfigurationValue.VarType = ConfigurationDataType.String;
+            newConfigurationValue.VarValue = value;
+
+            await this.SetConfigurationValueCommonAsync(newConfigurationValue, ConfigurationDataType.String);
+        }
+
+        private async Task SetConfigurationValueCommonAsync(ConfigurationValue newConfigurationValue, ConfigurationDataType configurationDataType)
+        {
+            var primaryPartitionError = false;
+            var secondaryPartitionError = false;
+
+            this.logger.LogDebug("1:Method Start");
+
+            Expression<Func<ConfigurationValue, bool>> queryString = s => s.VarName == newConfigurationValue.VarName && s.CategoryName == newConfigurationValue.CategoryName;
+            var primaryConfigurationValue = await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(queryString, cancellationToken: this.stoppingToken);
+
+            try
+            {
+                if (primaryConfigurationValue == null)
+                {
+                    this.primaryDataContext.ConfigurationValues.Add(newConfigurationValue);
+                }
+                else
+                {
+                    primaryConfigurationValue.VarValue = newConfigurationValue.VarValue;
+                }
+                await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
+            }
+            catch
+            {
+                primaryPartitionError = true;
+            }
+
+            // INFO It is true if the secondary DB is not suppressed
+            if (!this.suppressSecondary)
+            {
+                try
+                {
+                    // INFO the secondaryPartition must be aligned at the primary
+                    if (primaryConfigurationValue == null)
+                    {
+                        this.secondaryDataContext.ConfigurationValues.Add(newConfigurationValue);
+                    }
+                    else
+                    {
+                        var secondaryConfigurationValue = await this.secondaryDataContext.ConfigurationValues.FirstOrDefaultAsync(queryString, cancellationToken: this.stoppingToken);
+                        secondaryConfigurationValue.VarValue = newConfigurationValue.VarValue;
+                    }
+
+                    await this.secondaryDataContext.SaveChangesAsync(this.stoppingToken);
+                }
+                catch
+                {
+                    secondaryPartitionError = true;
+                }
+            }
+
+            if (primaryPartitionError && secondaryPartitionError)
+            {
+                this.logger.LogCritical($"2:Exception: impossible writing {newConfigurationValue.VarName} in primary and secondary partition - Exception Code: {DataLayerPersistentExceptionCode.PRIMARY_AND_SECONDARY_PARTITION_FAILURE}");
+
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PRIMARY_AND_SECONDARY_PARTITION_FAILURE);
+            }
+
+            if (primaryPartitionError && !secondaryPartitionError)
+            {
+                this.logger.LogCritical($"3:Exception: impossible writing {newConfigurationValue.VarName} in primary partition - Exception Code: {DataLayerPersistentExceptionCode.PRIMARY_AND_SECONDARY_PARTITION_FAILURE}");
+
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PRIMARY_PARTITION_FAILURE);
+            }
+
+            if (!primaryPartitionError && secondaryPartitionError)
+            {
+                this.logger.LogCritical($"4:Exception: impossible writing {newConfigurationValue.VarName} in primary and secondary partition - Exception Code: {DataLayerPersistentExceptionCode.PRIMARY_AND_SECONDARY_PARTITION_FAILURE}");
+
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.SECONDARY_PARTITION_FAILURE);
+            }
+
+            this.logger.LogDebug("5:Method End");
+        }
+
+        #endregion
+    }
+}
