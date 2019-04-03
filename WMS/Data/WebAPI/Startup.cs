@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Ferretto.Common.EF;
+﻿using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Scheduler.Core.Extensions;
@@ -10,7 +9,6 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using NSwag.AspNetCore;
 
 namespace Ferretto.WMS.Data.WebAPI
@@ -74,6 +72,8 @@ namespace Ferretto.WMS.Data.WebAPI
                 app.UseSwaggerUi3();
             }
 
+            app.UseAuthentication();
+
             var wakeupHubEndpoint = this.Configuration["Hubs:WakeUp"];
             if (string.IsNullOrWhiteSpace(wakeupHubEndpoint) == false)
             {
@@ -103,6 +103,14 @@ namespace Ferretto.WMS.Data.WebAPI
             services
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = "http://localhost:5000";
+                    options.RequireHttpsMetadata = false;
+                    options.Audience = "wms-data";
+                });
 
             services
                 .AddDataServiceProviders()
