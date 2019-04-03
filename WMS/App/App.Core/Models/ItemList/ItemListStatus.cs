@@ -11,8 +11,14 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.ItemListStatusWaiting), ResourceType = typeof(BusinessObjects))]
         Waiting = 'W',
 
+        [Display(Name = nameof(BusinessObjects.ItemListStatusNew), ResourceType = typeof(BusinessObjects))]
+        New = 'N',
+
         [Display(Name = nameof(BusinessObjects.ItemListStatusExecuting), ResourceType = typeof(BusinessObjects))]
-        Executing = 'E',
+        Executing = 'X',
+
+        [Display(Name = nameof(BusinessObjects.ItemListStatusError), ResourceType = typeof(BusinessObjects))]
+        Error = 'E',
 
         [Display(Name = nameof(BusinessObjects.ItemListStatusCompleted), ResourceType = typeof(BusinessObjects))]
         Completed = 'C',

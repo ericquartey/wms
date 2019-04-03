@@ -759,8 +759,10 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
+                        .ValueGeneratedOnAdd()
                         .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
-                        .HasColumnType("char(1)");
+                        .HasColumnType("char(1)")
+                        .HasDefaultValueSql("'N'");
 
                     b.Property<string>("Sub1");
 

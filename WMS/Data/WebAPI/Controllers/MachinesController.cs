@@ -4,9 +4,12 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Hubs;
+using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -14,7 +17,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class MachinesController :
-        ControllerBase,
+        BaseController,
         IReadAllPagedController<Machine>,
         IReadSingleController<Machine, int>,
         IGetUniqueValuesController
@@ -31,7 +34,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public MachinesController(
             ILogger<MachinesController> logger,
+            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             IMachineProvider machineProvider)
+            : base(hubContext)
         {
             this.logger = logger;
             this.machineProvider = machineProvider;

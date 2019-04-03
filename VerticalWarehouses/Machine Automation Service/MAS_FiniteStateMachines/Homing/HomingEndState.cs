@@ -59,6 +59,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
             if (message.Type == MessageType.InverterReset)
             {
+                //TEMP Homing routine is completed successfully
                 var notificationMessageData = new CalibrateAxisMessageData(this.axisToStop, MessageVerbosity.Info);
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
@@ -67,6 +68,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                     MessageActor.FiniteStateMachines,
                     MessageType.Homing,
                     MessageStatus.OperationEnd);
+
+                this.parentStateMachine.PublishNotificationMessage(notificationMessage);
+            }
+
+            if (message.Type == MessageType.CalibrateAxis || message.Type == MessageType.SwitchAxis)
+            {
+                //TEMP Homing routine has been stopped and so not completed successfully
+                var notificationMessageData = new CalibrateAxisMessageData(this.axisToStop, MessageVerbosity.Info);
+                var notificationMessage = new NotificationMessage(
+                    notificationMessageData,
+                    "Homing not Completed",
+                    MessageActor.Any,
+                    MessageActor.FiniteStateMachines,
+                    MessageType.Homing,
+                    MessageStatus.OperationStop);
 
                 this.parentStateMachine.PublishNotificationMessage(notificationMessage);
             }

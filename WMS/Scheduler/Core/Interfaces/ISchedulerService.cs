@@ -17,6 +17,10 @@ namespace Ferretto.WMS.Scheduler.Core.Interfaces
 
         Task<IOperationResult<Mission>> ExecuteMissionAsync(int missionId);
 
+        Task<IOperationResult<ItemList>> SuspendListAsync(int id);
+
+        Task<IOperationResult<ItemListRow>> SuspendListRowAsync(int id);
+
         Task<IOperationResult<SchedulerRequest>> WithdrawItemAsync(int itemId, ItemWithdrawOptions options);
 
         #endregion

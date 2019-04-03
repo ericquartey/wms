@@ -16,8 +16,6 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string itemDescription;
 
-        private ItemListRowStatus status;
-
         private string itemUnitMeasure;
 
         private string materialStatusDescription;
@@ -25,6 +23,8 @@ namespace Ferretto.WMS.App.Core.Models
         private int? priority;
 
         private int requestedQuantity;
+
+        private ItemListRowStatus status;
 
         #endregion
 
@@ -42,19 +42,19 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.ItemListRowItemDescription), ResourceType = typeof(BusinessObjects))]
         public string ItemDescription { get => this.itemDescription; set => this.SetProperty(ref this.itemDescription, value); }
 
-        [Display(Name = nameof(BusinessObjects.ItemListRowStatusDescription), ResourceType = typeof(BusinessObjects))]
-        public ItemListRowStatus Status { get => this.status; set => this.SetProperty(ref this.status, value); }
-
         public string ItemUnitMeasure { get => this.itemUnitMeasure; set => this.SetProperty(ref this.itemUnitMeasure, value); }
 
         [Display(Name = nameof(BusinessObjects.MaterialStatus), ResourceType = typeof(BusinessObjects))]
         public string MaterialStatusDescription { get => this.materialStatusDescription; set => this.SetProperty(ref this.materialStatusDescription, value); }
 
+        [Display(Name = nameof(BusinessObjects.ItemListRowPriority), ResourceType = typeof(BusinessObjects))]
+        public int? Priority { get => this.priority; set => this.SetProperty(ref this.priority, value); }
+
         [Display(Name = nameof(BusinessObjects.ItemListRowRequestedQuantity), ResourceType = typeof(BusinessObjects))]
         public int RequestedQuantity { get => this.requestedQuantity; set => this.SetProperty(ref this.requestedQuantity, value); }
 
-        [Display(Name = nameof(BusinessObjects.ItemListRowPriority), ResourceType = typeof(BusinessObjects))]
-        public int? RowPriority { get => this.priority; set => this.SetProperty(ref this.priority, value); }
+        [Display(Name = nameof(BusinessObjects.ItemListRowStatusDescription), ResourceType = typeof(BusinessObjects))]
+        public ItemListRowStatus Status { get => this.status; set => this.SetProperty(ref this.status, value); }
 
         #endregion
     }
