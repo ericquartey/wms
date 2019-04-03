@@ -93,14 +93,14 @@
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_arrow_black_24dp.png"
                                GlyphSize="Custom"
-                               Reason="{Binding ExecuteReason}" />
+                               TooltipText="{Binding ExecuteReason}" />
 
             <wms:ActionBarItem Command="{Binding SaveCommand}"
                                Content="{x:Static res:General.Save}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_save_black_24dp.png"
                                GlyphSize="Custom"
-                               Reason="{Binding SaveReason}" />
+                               TooltipText="{Binding SaveReason}" />
             <wms:ActionBarItem Command="{Binding RevertCommand}"
                                Content="{x:Static res:General.Revert}"
                                CustomGlyphSize="24,24"
@@ -291,7 +291,7 @@
                                                    CustomGlyphSize="24,24"
                                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_arrow_black_24dp.png"
                                                    GlyphSize="Custom"
-                                                   Reason="{Binding ExecuteRowReason}" />
+                                                   TooltipText="{Binding ExecuteRowReason}" />
 
                                 <wms:ActionBarItem Command="{Binding ShowListRowDetailsCommand}"
                                                    Content="{x:Static res:MasterData.ItemListRowShowDetails}"
@@ -304,14 +304,14 @@
                                                    CustomGlyphSize="24,24"
                                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_delete_black_24dp.png"
                                                    GlyphSize="Custom"
-                                                   Reason="{Binding DeleteRowReason}" />
+                                                   TooltipText="{Binding DeleteRowReason}" />
 
                                 <wms:ActionBarItem Command="{Binding AddListRowCommand}"
                                                    Content="{x:Static res:MasterData.ItemListRowAdd}"
                                                    CustomGlyphSize="24,24"
                                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_add_box_black_24dp.png"
                                                    GlyphSize="Custom"
-                                                   Reason="{Binding AddRowReason}" />
+                                                   TooltipText="{Binding AddRowReason}" />
                             </wms:ActionBar>
                         </Grid>
                     </GroupBox.Header>
